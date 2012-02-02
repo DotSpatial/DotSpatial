@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{01A845C6-D391-4258-81B0-C6ABF23D3364}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Controls</RootNamespace>
+    <AssemblyName>DotSpatial.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Release\bin\DotSpatial.Controls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DotSpatial.Controls.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Docking\DockablePanelEventArgs.cs" />
+    <Compile Include="Docking\DockablePanel.cs" />
+    <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Extensions\ShowExtensionsDialog.cs" />
+    <Compile Include="Extensions\AppManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CohenSutherland.cs" />
+    <Compile Include="Docking\IDockManager.cs" />
+    <Compile Include="Header\ActionItem.cs" />
+    <Compile Include="Header\DropDownActionItem.cs" />
+    <Compile Include="Header\HeaderControl.cs" />
+    <Compile Include="Header\GroupedItem.cs" />
+    <Compile Include="Header\HeaderItem.cs" />
+    <Compile Include="Header\IHeaderControl.cs" />
+    <Compile Include="Header\IStatusControl.cs" />
+    <Compile Include="Header\MenuContainerItem.cs" />
+    <Compile Include="Header\RootItem.cs" />
+    <Compile Include="Header\RootItemEventArgs.cs" />
+    <Compile Include="Header\SelectedValueChangedEventArgs.cs" />
+    <Compile Include="Header\SeparatorItem.cs" />
+    <Compile Include="Header\SimpleActionItem.cs" />
+    <Compile Include="Header\MenuBarHeaderControl.cs" />
+    <Compile Include="Header\StatusPanel.cs" />
+    <Compile Include="Header\TextEntryActionItem.cs" />
+    <Compile Include="IMapLiDARLayer.cs" />
+    <Compile Include="MapFrameProjectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapFrameProjectionDialog.Designer.cs">
+      <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureIdentifier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneralTypeConverter.cs" />
+    <Compile Include="IBasicMap.cs" />
+    <Compile Include="Images.Designer.cs">
+      <DependentUpon>Images.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="IMapView.cs" />
+    <Compile Include="IPreviewMap.cs" />
+    <Compile Include="IPreviewMapHandler.cs" />
+    <Compile Include="IUserControl.cs" />
+    <Compile Include="LayoutBitmap.cs" />
+    <Compile Include="LayoutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayoutDocToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayoutElement.cs" />
+    <Compile Include="LayoutEnums.cs" />
+    <Compile Include="LayoutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayoutInsertToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayoutLayerEditor.cs" />
+    <Compile Include="LayoutLegend.cs" />
+    <Compile Include="LayoutListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayoutMap.cs" />
+    <Compile Include="LayoutMapEditor.cs" />
+    <Compile Include="LayoutMapToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayoutMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayoutNorthArrow.cs" />
+    <Compile Include="LayoutPropertyGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayoutRectangle.cs" />
+    <Compile Include="LayoutScaleBar.cs" />
+    <Compile Include="LayoutText.cs" />
+    <Compile Include="LayoutZoomToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DrawLegendItemArgs.cs" />
+    <Compile Include="ILegend.cs" />
+    <Compile Include="ILegendHandler.cs" />
+    <Compile Include="Legend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ItemMouseEventArgs.cs" />
+    <Compile Include="LegendBox.cs" />
+    <Compile Include="ListBoxDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChunkEventArgs.cs" />
+    <Compile Include="IMap.cs" />
+    <Compile Include="Map.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Map.designer.cs">
+      <DependentUpon>Map.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActionMode.cs" />
+    <Compile Include="MapFrameExt.cs" />
+    <Compile Include="MapFrameProjectionHelper.cs" />
+    <Compile Include="MapLayerEnumerator.cs" />
+    <Compile Include="MapLiDARLayer.cs" />
+    <Compile Include="MessageStrings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="IMapImageLayer.cs" />
+    <Compile Include="MapImageLayer.cs" />
+    <Compile Include="MapTiledImageLayer.cs" />
+    <Compile Include="IMapFrame.cs" />
+    <Compile Include="IMapGroup.cs" />
+    <Compile Include="IMapLayer.cs" />
+    <Compile Include="IMapLayerCollection.cs" />
+    <Compile Include="IMapLabelLayer.cs" />
+    <Compile Include="MapDrawTextArgs.cs" />
+    <Compile Include="MapLabelLayer.cs" />
+    <Compile Include="MapArgs.cs" />
+    <Compile Include="MapDrawArgs.cs" />
+    <Compile Include="MapFrame.cs" />
+    <Compile Include="MapGroup.cs" />
+    <Compile Include="MapLayerCollection.cs" />
+    <Compile Include="MapLayerExt.cs" />
+    <Compile Include="GeoLayerEnumerator.cs" />
+    <Compile Include="IMapRasterLayer.cs" />
+    <Compile Include="MapRasterLayer.cs" />
+    <Compile Include="ProjectChangeTracker.cs" />
+    <Compile Include="SerializationManager.cs" />
+    <Compile Include="SerializingEventArgs.cs" />
+    <Compile Include="ShapefileLayerProvider.cs" />
+    <Compile Include="MapTileLayer.cs" />
+    <Compile Include="ClipArgs.cs" />
+    <Compile Include="DuplicationPreventer.cs" />
+    <Compile Include="IMapFeatureLayer.cs" />
+    <Compile Include="IMapLineLayer.cs" />
+    <Compile Include="IMapPointLayer.cs" />
+    <Compile Include="IMapPolygonLayer.cs" />
+    <Compile Include="MapLineLayer.cs" />
+    <Compile Include="MapPointLayer.cs" />
+    <Compile Include="MapPolygonLayer.cs" />
+    <Compile Include="SoutherlandHodgman.cs" />
+    <Compile Include="MapFunctionClickZoom.cs" />
+    <Compile Include="FunctionMode.cs" />
+    <Compile Include="GeoMouseArgs.cs" />
+    <Compile Include="MapFunctionGlyph.cs" />
+    <Compile Include="MapFunctionIdentify.cs" />
+    <Compile Include="IMapFunction.cs" />
+    <Compile Include="MapFunctionLabelSelect.cs" />
+    <Compile Include="MapFunction.cs" />
+    <Compile Include="MapFunctionPan.cs" />
+    <Compile Include="MapFunctionSelect.cs" />
+    <Compile Include="YieldStyles.cs" />
+    <Compile Include="MapFunctionZoom.cs" />
+    <Compile Include="MapFunctionZoomOut.cs" />
+    <Compile Include="MessageStrings.zh-CN.Designer.cs">
+      <DependentUpon>MessageStrings.zh-CN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Modeler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelerToolstrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PageSetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IconMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SpatialProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SpatialStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SpatialStatusStrip.Designer.cs">
+      <DependentUpon>SpatialStatusStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SpatialToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolManagerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MapFrameProjectionDialog.resx">
+      <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureIdentifier.resx">
+      <DependentUpon>FeatureIdentifier.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureIdentifier.zh-CN.resx">
+      <DependentUpon>FeatureIdentifier.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutControl.resx">
+      <DependentUpon>LayoutControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm.resx">
+      <DependentUpon>LayoutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm.zh-CN.resx">
+      <DependentUpon>LayoutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutListBox.resx">
+      <DependentUpon>LayoutListBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutListBox.zh-CN.resx">
+      <DependentUpon>LayoutListBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutPropertyGrid.resx">
+      <DependentUpon>LayoutPropertyGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBoxDialog.resx">
+      <DependentUpon>ListBoxDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBoxDialog.zh-CN.resx">
+      <DependentUpon>ListBoxDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Map.resx">
+      <DependentUpon>Map.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>MessageStrings1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageStrings.zh-CN.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageStrings.zh-CN.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modeler.resx">
+      <DependentUpon>Modeler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelerForm.resx">
+      <DependentUpon>ModelerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelerForm.zh-CN.resx">
+      <DependentUpon>ModelerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageSetupForm.resx">
+      <DependentUpon>PageSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageSetupForm.zh-CN.resx">
+      <DependentUpon>PageSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpatialToolStrip.resx">
+      <DependentUpon>SpatialToolStrip.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolManager.resx">
+      <DependentUpon>ToolManager.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SpatialToolStrip.ico" />
+    <EmbeddedResource Include="SpatialProgressBar.ico" />
+    <EmbeddedResource Include="SpatialStatusStrip.ico" />
+    <None Include="DotSpatial.Controls.snk" />
+    <None Include="package.nuspec" />
+    <None Include="Resources\TextBox.ico" />
+    <None Include="Resources\Separator.ico" />
+    <None Include="Resources\Nud.ico" />
+    <None Include="Resources\Label.ico" />
+    <None Include="Resources\Combo.ico" />
+    <None Include="Resources\Color.ico" />
+    <None Include="Resources\CheckBox.ico" />
+    <None Include="Resources\Button.ico" />
+    <None Include="Layers.ico" />
+    <None Include="Map.ico" />
+    <None Include="Resources\AddLayer1.png" />
+    <EmbeddedResource Include="Resources\Angle.ico" />
+    <None Include="Resources\Apple.png" />
+    <None Include="Resources\calculator.png" />
+    <None Include="Resources\color_scheme.png" />
+    <None Include="Resources\Checked.ico" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\cursorHand.cur" />
+    <None Include="Resources\DropDown.ico" />
+    <None Include="Resources\file_close.png" />
+    <None Include="Resources\file_new.png" />
+    <None Include="Resources\file_saveas.png" />
+    <None Include="Resources\FolderOpen.png" />
+    <None Include="Resources\layer_add.ico" />
+    <None Include="Resources\layout_zoom_full_extent.ico" />
+    <None Include="Resources\layout_zoom_in.ico" />
+    <None Include="Resources\layout_zoom_out.ico" />
+    <None Include="Resources\Legend.png" />
+    <None Include="Resources\LinkData.png" />
+    <None Include="Resources\Layers.ico" />
+    <None Include="Resources\map.png" />
+    <None Include="Resources\mnuLayerClear.png" />
+    <None Include="Resources\NewModel.ico" />
+    <None Include="Resources\NewModel.png" />
+    <None Include="Resources\NewShape.ico" />
+    <None Include="Resources\NewShapefile.ico" />
+    <None Include="Resources\NorthArrow.png" />
+    <None Include="Resources\PageSetup.ico" />
+    <None Include="Resources\Pan.ico" />
+    <None Include="Resources\PanMap.png" />
+    <None Include="Resources\printer.png" />
+    <None Include="Resources\printer_icon.ico" />
+    <None Include="Resources\Rectangle.png" />
+    <None Include="Resources\RunModel.png" />
+    <None Include="Resources\save.ico" />
+    <None Include="Resources\ScaleBar.png" />
+    <None Include="Resources\select.ico" />
+    <None Include="Resources\select_all.png" />
+    <None Include="Resources\select_none.png" />
+    <None Include="Resources\table_edit.ico" />
+    <None Include="Resources\table_edit.png" />
+    <None Include="Resources\text.png" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\Unchecked.ico" />
+    <None Include="Resources\zoom_full_extent.ico" />
+    <None Include="Resources\zoom_in.ico" />
+    <None Include="Resources\zoom_out.ico" />
+    <None Include="Resources\ZoomFullMap.png" />
+    <None Include="Resources\ZoomFullView.png" />
+    <None Include="Resources\ZoomInMap.png" />
+    <None Include="Resources\ZoomOutMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Name>DotSpatial.Extensions</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
+      <Project>{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}</Project>
+      <Name>DotSpatial.Modeling.Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
+      <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
+      <Name>DotSpatial.Projections.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Name>DotSpatial.Serialization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
+      <Project>{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}</Project>
+      <Name>DotSpatial.Symbology.Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Name>DotSpatial.Topology</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

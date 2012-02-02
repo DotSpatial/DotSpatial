@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Data.Forms</RootNamespace>
+    <AssemblyName>DotSpatial.Data.Forms</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Release\bin\DotSpatial.Data.Forms.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DotSpatial.Data.Forms.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataFormsMessageStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataFormsMessageStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DataManagerExt.cs" />
+    <Compile Include="DialogImages.Designer.cs">
+      <DependentUpon>DialogImages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DirectoryItem.cs" />
+    <Compile Include="DirectoryView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ExtentDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExtentDialog.Designer.cs">
+      <DependentUpon>ExtentDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureSetExt.cs" />
+    <Compile Include="FileItem.cs" />
+    <Compile Include="FolderItem.cs" />
+    <Compile Include="HighlightEventArgs.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="ILogManager.cs" />
+    <Compile Include="InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemType.cs" />
+    <Compile Include="LogManager.cs" />
+    <Compile Include="NavigateEventArgs.cs" />
+    <Compile Include="OpenDataDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenFileElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RasterFormExt.cs" />
+    <Compile Include="ScrollingControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SelectEventArgs.cs" />
+    <Compile Include="ShapefileExt.cs" />
+    <Compile Include="TimedProgressMeter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TryXmlDocument.cs" />
+    <Compile Include="TryXMLDocumentException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataFormsMessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataFormsMessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogImages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DialogImages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DirectoryView.resx">
+      <DependentUpon>DirectoryView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExtentDialog.resx">
+      <DependentUpon>ExtentDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBox.zh-CN.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDataDialog.resx">
+      <DependentUpon>OpenDataDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDataDialog.zh-CN.resx">
+      <DependentUpon>OpenDataDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenFileElement.resx">
+      <DependentUpon>OpenFileElement.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScrollingControl.resx">
+      <DependentUpon>ScrollingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Name>DotSpatial.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
+      <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
+      <Name>DotSpatial.Projections.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Name>DotSpatial.Serialization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Name>DotSpatial.Topology</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotSpatial.Data.Forms.snk" />
+    <None Include="package.nuspec" />
+    <None Include="Resources\FileFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileGrid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderOpen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileLine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FilePoint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FilePolygon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

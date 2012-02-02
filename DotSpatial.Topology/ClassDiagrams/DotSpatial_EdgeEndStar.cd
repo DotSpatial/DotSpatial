@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.GeometriesGraph.DirectedEdgeStar">
+    <Position X="18" Y="28.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAkQAAgABAABAAAAAAAAABAggAAgEEACEIAAA=</HashCode>
+      <FileName>GeometryGraph\DirectedEdgeStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeEndStar">
+    <Position X="17" Y="22.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAgEgjAAAABBAIQAAACAAwAAAAAAgAAIIAAAUIAgA=</HashCode>
+      <FileName>GeometryGraph\EdgeEndStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.EdgeEndBundleStar">
+    <Position X="15.5" Y="28.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundleStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

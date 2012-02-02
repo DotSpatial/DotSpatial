@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\temp\pub" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profilo1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/DotSpatial.Symbology.pdb" publishTime="03/01/2011 14:14:15" />
+    <file relUrl="bin/DotSpatial.Topology.xml" publishTime="03/01/2011 14:03:46" />
+    <file relUrl="bin/DotSpatial.Serialization.dll" publishTime="03/01/2011 14:03:39" />
+    <file relUrl="bin/zh-CN/DotSpatial.Projections.Forms.resources.dll" publishTime="03/01/2011 14:14:10" />
+    <file relUrl="bin/DotSpatial.Modeling.Forms.xml" publishTime="03/01/2011 14:14:18" />
+    <file relUrl="bin/en-US/DotSpatial.Symbology.Forms.resources.dll" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="bin/DotSpatial.Data.pdb" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="bin/DotSpatial.WebControls.dll" publishTime="03/01/2011 14:14:24" />
+    <file relUrl="bin/DotSpatial.Projections.xml" publishTime="03/01/2011 14:14:07" />
+    <file relUrl="bin/DotSpatial.Data.Forms.pdb" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="Web.config" publishTime="03/01/2011 14:14:29" />
+    <file relUrl="bin/DemoWEB.pdb" publishTime="03/01/2011 14:14:27" />
+    <file relUrl="bin/DotSpatial.WebControls.pdb" publishTime="03/01/2011 14:14:24" />
+    <file relUrl="bin/DotSpatial.Controls.xml" publishTime="03/01/2011 14:14:21" />
+    <file relUrl="bin/DotSpatial.Controls.pdb" publishTime="03/01/2011 14:14:21" />
+    <file relUrl="bin/DotSpatial.Data.Forms.dll" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="bin/Ionic.Zip.dll" publishTime="02/28/2011 05:40:12" />
+    <file relUrl="bin/DotSpatial.Symbology.dll" publishTime="03/01/2011 14:14:15" />
+    <file relUrl="bin/zh-CN/DotSpatial.Symbology.Forms.resources.dll" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="bin/DotSpatial.Data.dll" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="bin/DotSpatial.Modeling.Forms.dll" publishTime="03/01/2011 14:14:19" />
+    <file relUrl="bin/zh-CN/DotSpatial.Controls.resources.dll" publishTime="03/01/2011 14:14:22" />
+    <file relUrl="bin/DotSpatial.Symbology.Forms.pdb" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="default.aspx" publishTime="02/08/2011 16:29:24" />
+    <file relUrl="bin/zh-MO/DotSpatial.Modeling.Forms.resources.dll" publishTime="03/01/2011 14:14:19" />
+    <file relUrl="bin/DotSpatial.Modeling.Forms.pdb" publishTime="03/01/2011 14:14:18" />
+    <file relUrl="bin/DotSpatial.Symbology.Forms.xml" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="bin/DemoWEB.dll" publishTime="03/01/2011 14:14:27" />
+    <file relUrl="bin/DotSpatial.Topology.pdb" publishTime="03/01/2011 14:03:47" />
+    <file relUrl="bin/DotSpatial.Projections.Forms.pdb" publishTime="03/01/2011 14:14:09" />
+    <file relUrl="bin/cs/DotSpatial.Symbology.Forms.resources.dll" publishTime="03/01/2011 14:14:18" />
+    <file relUrl="bin/zh-CHS/DotSpatial.Symbology.Forms.resources.dll" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="bin/zh-CN/DotSpatial.Data.Forms.resources.dll" publishTime="03/01/2011 14:14:13" />
+    <file relUrl="bin/DotSpatial.Symbology.Forms.dll" publishTime="03/01/2011 14:14:17" />
+    <file relUrl="bin/DotSpatial.Controls.dll" publishTime="03/01/2011 14:14:22" />
+    <file relUrl="bin/DotSpatial.Data.Forms.xml" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="bin/DotSpatial.Projections.dll" publishTime="03/01/2011 14:14:07" />
+    <file relUrl="bin/DotSpatial.Data.xml" publishTime="03/01/2011 14:14:12" />
+    <file relUrl="bin/DotSpatial.Serialization.pdb" publishTime="03/01/2011 14:03:39" />
+    <file relUrl="bin/DotSpatial.Projections.pdb" publishTime="03/01/2011 14:14:07" />
+    <file relUrl="bin/zh-CN/DotSpatial.Modeling.Forms.resources.dll" publishTime="03/01/2011 14:14:19" />
+    <file relUrl="ImageHandler.ashx" publishTime="02/08/2011 15:50:50" />
+    <file relUrl="bin/DotSpatial.WebControls.xml" publishTime="03/01/2011 14:14:24" />
+    <file relUrl="bin/DotSpatial.Topology.dll" publishTime="03/01/2011 14:03:47" />
+    <file relUrl="bin/DotSpatial.Symbology.xml" publishTime="03/01/2011 14:14:15" />
+    <file relUrl="bin/DotSpatial.Projections.Forms.xml" publishTime="03/01/2011 14:14:09" />
+    <file relUrl="bin/DotSpatial.Projections.Forms.dll" publishTime="03/01/2011 14:14:09" />
+    <file relUrl="bin/DotSpatial.Serialization.xml" publishTime="03/01/2011 14:03:39" />
+  </publishProfile>
+</publishData>

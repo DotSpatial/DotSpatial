@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DuplicateTableName" xml:space="preserve">
+    <value>The name %S was found for more than one lla Table in the Nad folder.</value>
+  </data>
+  <data name="Err10_ZeroRecFlattening" xml:space="preserve">
+    <value>The reciprocal flattening (1/f) = 0</value>
+  </data>
+  <data name="Err11_LatitudeOutOfBounds" xml:space="preserve">
+    <value>The Latitude was greater than 90 or less than -90</value>
+  </data>
+  <data name="Err12_ESquareNegative" xml:space="preserve">
+    <value>The square of eccentricity cannot be a negative value.</value>
+  </data>
+  <data name="Err13_NoMajorRadius" xml:space="preserve">
+    <value>The given semi-major axis was 0 or not given.</value>
+  </data>
+  <data name="Err14_LatLonOutOfBounds" xml:space="preserve">
+    <value>The Latitude or Longitude exceeded limits</value>
+  </data>
+  <data name="Err15_InvalidXY" xml:space="preserve">
+    <value>The cartesian X or Y coordinate was invalid</value>
+  </data>
+  <data name="Err16_ImproperDMS" xml:space="preserve">
+    <value>The Degree Minute Second value is formed imporperly</value>
+  </data>
+  <data name="Err17_NonConvergentRMeridDist" xml:space="preserve">
+    <value>The inverse meridinal distance was non-convergent</value>
+  </data>
+  <data name="Err18_NonConvergentRPhi2" xml:space="preserve">
+    <value>The inverse Phi2 value was non-converngent</value>
+  </data>
+  <data name="Err19_TrigException" xml:space="preserve">
+    <value>The ArcCosign or ArcSign value was too large.</value>
+  </data>
+  <data name="Err1_NoArguments" xml:space="preserve">
+    <value>No arguments in initialization list</value>
+  </data>
+  <data name="Err20_ToleranceConditionError" xml:space="preserve">
+    <value>Tolerance Condition Error</value>
+  </data>
+  <data name="Err21_ConicLatitudeError" xml:space="preserve">
+    <value>The conic lat_1 value cannot be its -lat_2</value>
+  </data>
+  <data name="Err22_Lat1TooLarge" xml:space="preserve">
+    <value>Latitude 1 cannot be greater than or equal to 90</value>
+  </data>
+  <data name="Err23_Lat1TooSmall" xml:space="preserve">
+    <value>Latitude 2 cannot be equal to 0</value>
+  </data>
+  <data name="Err24_Lat_tsTooLarge" xml:space="preserve">
+    <value>The lat_ts parameter cannot be greater than or equal to 90</value>
+  </data>
+  <data name="Err25_NoControlPtSeparation" xml:space="preserve">
+    <value>There was no distance between the control points</value>
+  </data>
+  <data name="Err26_ProjectionNotRotated" xml:space="preserve">
+    <value>Projection not selected to be rotated</value>
+  </data>
+  <data name="Err27_WorMTooSmall" xml:space="preserve">
+    <value>W &lt;= 0 or M &lt;= 0</value>
+  </data>
+  <data name="Err28_LsatOutOfBounds" xml:space="preserve">
+    <value>lsat not in 1-5 range</value>
+  </data>
+  <data name="Err29_PathNotInRange" xml:space="preserve">
+    <value>Path not in range</value>
+  </data>
+  <data name="Err2_NoOptions" xml:space="preserve">
+    <value>No options found in 'init' file</value>
+  </data>
+  <data name="Err30_HTooSmall" xml:space="preserve">
+    <value>H was negative or 0</value>
+  </data>
+  <data name="Err31_KTooSmall" xml:space="preserve">
+    <value>K was less than 0</value>
+  </data>
+  <data name="Err32_LatOutOfBounds" xml:space="preserve">
+    <value>The central latitude was 0 or 90 or alpha = 90</value>
+  </data>
+  <data name="Err33_InvalidLatitudes" xml:space="preserve">
+    <value>Lat_1 = lat_2 or lat_1 = 0 or lat_2 = 90</value>
+  </data>
+  <data name="Err34_EllipticalRequired" xml:space="preserve">
+    <value>Elliptical Usage Required</value>
+  </data>
+  <data name="Err35_InvalidUTMZone" xml:space="preserve">
+    <value>The UTM zone parameter was invalid</value>
+  </data>
+  <data name="Err36_TchebyException" xml:space="preserve">
+    <value>The arguments were out of range for Tcheby eval</value>
+  </data>
+  <data name="Err37_ProjNotFound" xml:space="preserve">
+    <value>Projection Not Found</value>
+  </data>
+  <data name="Err38_CorrectionNotFound" xml:space="preserve">
+    <value>Failed to load NAD27-83 correction file</value>
+  </data>
+  <data name="Err39_NorMnotSpecified" xml:space="preserve">
+    <value>Both n and m must be specified and &gt; 0</value>
+  </data>
+  <data name="Err3_NoColon" xml:space="preserve">
+    <value>No colon in init= string</value>
+  </data>
+  <data name="Err40_InvalidN" xml:space="preserve">
+    <value>N&lt;= 0, n &gt; 1 or not specified</value>
+  </data>
+  <data name="Err41_Lat1OrLat2Missing" xml:space="preserve">
+    <value>lat_1 or lat_2 not specified</value>
+  </data>
+  <data name="Err42_Lat1EqualsLat2" xml:space="preserve">
+    <value>|lat_1| =|lat_2| </value>
+  </data>
+  <data name="Err43_MeanLatError" xml:space="preserve">
+    <value>lat_0 is pi/2 from mean lat</value>
+  </data>
+  <data name="Err44_CoordinateUnreadable" xml:space="preserve">
+    <value>Failed to parse coordinate system definition</value>
+  </data>
+  <data name="Err45_GeocentricMissingZ" xml:space="preserve">
+    <value>Geocentric transformation missing z or ellips</value>
+  </data>
+  <data name="Err46_UknownPMID" xml:space="preserve">
+    <value>Uknown prime meridian conversion ID</value>
+  </data>
+  <data name="Err4_NotNamed" xml:space="preserve">
+    <value>Projection not named</value>
+  </data>
+  <data name="Err5_UknownProjection" xml:space="preserve">
+    <value>UnknownProjectionId</value>
+  </data>
+  <data name="Err6_EffectiveEccentricity1" xml:space="preserve">
+    <value>Effective eccentricity = 1</value>
+  </data>
+  <data name="Err7_UknownUnitID" xml:space="preserve">
+    <value>Unkown unit conversion ID</value>
+  </data>
+  <data name="Err8_Invalidboolean" xml:space="preserve">
+    <value>Invalid boolean parameter argument</value>
+  </data>
+  <data name="Err9_UknownEllipse" xml:space="preserve">
+    <value>The elliptical parameter ellps= was unkown</value>
+  </data>
+  <data name="IndexMismatch" xml:space="preserve">
+    <value>There was an index mismatch problem with the specified file.</value>
+  </data>
+  <data name="InverseShiftFailed" xml:space="preserve">
+    <value>Inverse grid shift iteration faield, presumably at grid edge.  Using first approximation.</value>
+  </data>
+  <data name="InvShiftConvergeFailed" xml:space="preserve">
+    <value>Inverse grid shift iterator failed to converge.</value>
+  </data>
+</root>

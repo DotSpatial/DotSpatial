@@ -1,0 +1,3 @@
+﻿The dlls in this GdalExtension project reference 32 bit native dlls (DotSpatial\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0)
+By default, the sample application runs as x86, so this extension will run in WOW64.
+If you want to run this extension in a 64 bit application, you will need to reference 64 bit native dlls which you can obtain from  http://www.gisinternals.com/sdk/.

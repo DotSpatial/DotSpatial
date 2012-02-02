@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4997615E-8C0C-498B-AB73-076454481964}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Data.Tests</RootNamespace>
+    <AssemblyName>DotSpatial.Data.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\x86\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SupportFiles\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DoubleRasterTest.cs" />
+    <Compile Include="ExtentTest.cs" />
+    <Compile Include="FeatureListTests.cs" />
+    <Compile Include="FeatureSetTest.cs" />
+    <Compile Include="FeatureSourceTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FeatureSetTests.cs" />
+    <Compile Include="RasterBoundTests.cs" />
+    <Compile Include="RasterTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension32\DotSpatial.Data.Rasters.GdalExtension32.csproj">
+      <Project>{67FA6D4E-E221-482C-B242-1E5A59F7244A}</Project>
+      <Name>DotSpatial.Data.Rasters.GdalExtension32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
+      <Project>{51C6E16E-920E-4D36-B41E-D48ABEF837E7}</Project>
+      <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_Clip2.aux" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\dblbnd.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\hdr.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\prj.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\sta.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\vat.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001x.adf" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc.dir" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002r.001" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005r.001" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008r.001" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.dat" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.nit" />
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011r.001" />
+    <None Include="Data\Shapefiles\cities.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\cities.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\cities.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\cities.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\counties.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\counties.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\counties.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\counties.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\lakes.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\lakes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\lakes.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\lakes.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\rivers.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\rivers.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\rivers.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\rivers.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\roads.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\roads.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\roads.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\roads.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\states.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\states.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\states.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\states.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.sbn">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.sbx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Topology_Test.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\metadata.xml" />
+    <Content Include="Data\Shapefiles\Topology_Test.shp.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

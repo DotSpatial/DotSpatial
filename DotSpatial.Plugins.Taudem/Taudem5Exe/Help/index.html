@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl-nl" lang="nl-nl" dir="ltr">
+<head>
+    <title>Multicore Watershed Delineation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+    <div id="wrapper">
+        <h1>
+            Multicore Watershed Delineation</h1>
+        Since version 4.8.2 MapWindow adopted version 5 of the <a href="http://hydrology.usu.edu/taudem/taudem5.0/index.html"
+            target="_blank">TauDEM</a> software. TauDEM, <i>Terrain Analysis Using Digital Elevation
+                Maps</i>, is the main component of the MapWindow <i>Watershed Delineation</i>
+        plugin. </p>
+        <p>
+            TauDEM version 5 is designed for modern multicore architectures. A <i>multicore</i>
+            CPU has more than one processor: 2, 4, even more. By using an implementation of
+            the <i>Message Passing Interface</i> (MPI), TauDEM version 5 can take advantage
+            of multiple cores, splitting tasks between them, and speeding up calculations. It
+            is also able to process much bigger DEMs: up to 4GB.
+        </p>
+        <p>
+            The implementation of MPI used by TauDEM is <a href="http://www.mcs.anl.gov/research/projects/mpich2/"
+                target="_blank">MPICH2</a> from the Argonne National Laboratory in the USA.
+            MPICH2 is free, open source software. It is a little tricky to install on Windows,
+            and not all users will need it, so the approach adopted for MapWindow is as follows:
+        </p>
+        <ul>
+            <li>By default MPICH2 is not installed. TauDEM will run without it, in "single process"
+                mode. </li>
+            <li>You may obtain and install MPICH2, and we give some instructions below. Then MapWindow
+                will discover that MPICH2's program manager is running, and will take advantage
+                of it. There is no point in doing this unless you have a multicore CPU, and probably
+                not much unless you have large DEMs. To give an example, on a dual-core machine
+                I managed to get a reduction of just over 30% on the 36 minutes need to calculate
+                the D8 flow directions for a DEM with 36 million cells. The best number of processes
+                for this calculation was 8. </li>
+        </ul>
+        <h2>
+            Installing MPICH2</h2>
+        Note that you need to be an administrator to install MPICH2.
+        <ul>
+            <li>Download the installer from the MPICH2 <a href="http://www.mcs.anl.gov/research/projects/mpich2/"
+                target="_blank">web site</a>. The current stable release for MPICH2 is 1.4.1. It
+                was released on Aug. 24th, 2011. It is almost always advisable to choose the latest
+                stable release. Get the 64-bit version if you have a 64-bit machine. </li>
+            <li>MPICH2 supports multi-process computations across several machines. So you may get
+                a Windows firewall query as to whether you want to allow the MPICH2 program manager,
+                smpd, access to networks. Since TauDEM only runs multiple processes inside your
+                machine you may <i>Keep Blocking</i> access (Windows XP) or <i>Cancel</i> access
+                (Vista and Windows 7) (unless, of course, you are using MPICH2 for other purposes
+                for which it needs network access).
+                <img src="blockxp.jpg" alt="Blocking network access on Windows XP" width="434" height="312"
+                    class="leftimage" />
+                <img src="block7.jpg" alt="Blocking network access on Windows 7" width="437" height="312"
+                    class="rightimage" />
+                <br clear="all" />
+            </li>
+            <li>
+                <img src="behappy7.jpg" alt="Supplying the secret word" width="513" height="420"
+                    class="rightimage" />
+                During installation you are asked for a <i>secret word</i> to be used for security
+                in inter-machine communication. Again, for TauDEM you are not interested, so you
+                can leave the default secret word of "behappy".
+                <br clear="all" />
+            </li>
+            <li>
+                <img src="path7.jpg" alt="Adding to the path" width="624" height="576" class="rightimage" />
+                You need to add MPICH2's bin folder to your Path environment variable.
+                <br />
+                To do this, in Windows 7: select Start (the icon in the bottom left of your screen)
+                -> Computer -> Properties -> Advanced System Settings -> Advanced -> Environment
+                Variables -> Path (in System variables) -> Edit, and add <tt>;C:\Program Files\MPICH2\Bin</tt>
+                to the end of the Path. (The initial ";" is the separator between entries.)
+                <br />
+                In Windows XP, select Start -> right click on My Computer -> Properties -> Advanced
+                -> Environment Variables and then as in Windows 7.
+                <br clear="all" />
+            </li>
+            <li>
+                <img src="register7.jpg" alt="Supplying your password" width="677" height="342" class="rightimage" />
+                You need to register a program <i>mpiexec</i>, supplying it with your login password.
+                To do this you need to start a command window in administrator mode. In Windows
+                7, select Start -> All Programs -> Accessories, right click on Command Prompt ->
+                Run as Administrator. In Windows XP, select Start -> All Programs -> Accessories
+                -> Command Prompt.
+                <br />
+                Then use the command<br />
+                <tt>mpiexec -register</tt>
+                <br />
+                At the prompts supply your user name (or just hit Enter if the default is you) and
+                then provide and confirm your login password. You need an administrator account
+                with a password!
+                <br clear="all" />
+            </li>
+            <li>
+                <img src="mpicheck7.jpg" alt="Checking MPICH2" width="677" height="342" class="rightimage" />
+                The moment has come to check all is well. In the same command window, cd to<br />
+                <tt>C:\Program Files\MPICH2\examples</tt> and try the command
+                <br />
+                <tt>mpiexec -n 2 cpi</tt> cpi is a small program for calculating &pi;. As you can
+                see, this failed the first time for me. I tried <tt>smpd -install</tt> which reinstalled
+                the MPICH2 program manager smpd, and then I was able to run the cpi program with
+                2 processes.
+                <br />
+                Now it is ready for use with MapWindow: installation is complete.
+                <br clear="all" />
+            </li>
+            <li>You can download some sample data from the TauDEM website:
+                <br />
+                <a href="http://hydrology.usu.edu/taudem/taudem5.0/CubDemo.zip" target="_blank">Logan
+                    River Example Data</a><br />
+                <a href="http://hydrology.usu.edu/taudem/taudem5.0/LoganDemo.zip" target="_blank">Cub
+                    River Example Data </a>
+                <br />
+                <a href="http://hydrology.usu.edu/taudem/taudem5.0/TauDEM_Tools.chm" target="_blank">
+                    TauDEM 5.0 Help File</a> [CHM, 148 KB] — To activate the file: After downloading
+                to your local disk, right click on the file and select Properties. At the bottom
+                of the General Tab, click on the Unblock button. </li>
+        </ul>
+        <p class="disclaimer">
+            Copyright (C) This page was created by Chris George and updated by Paul Meems</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.ShortCircuitedGeometryVisitor">
+    <Position X="20.5" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\ShortCircuitedGeometryVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.EnvelopeIntersectsVisitor">
+    <Position X="17.75" Y="11.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.ContainsPointVisitor">
+    <Position X="20.5" Y="11.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAAAQAAAAAAAAAAAAAgAAAAAAAEAAAABA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.LineIntersectsVisitor">
+    <Position X="23.25" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAQAQAAAAAACAAAAAAgAAAAAAAgAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

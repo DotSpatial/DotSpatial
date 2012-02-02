@@ -1,0 +1,2556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.CentroidArea" Collapsed="true">
+    <Position X="28" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAUgAAAIEEAAAAAAQAAAAAAAAAAAAoAAAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.CentroidLine" Collapsed="true">
+    <Position X="29.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAIAAAAAAAAIAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.CentroidPoint" Collapsed="true">
+    <Position X="31.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAEAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.CGAlgorithms" Collapsed="true">
+    <Position X="33.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAgAAABAQAAAACAAAAAABIAAAAEBACCACAAAIAAKA=</HashCode>
+      <FileName>Algorithm\CGAlgorithms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.ConvexHull" Collapsed="true">
+    <Position X="28" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYAAAAAGAAAAAAAAAEAEAAAAAAAgABJABQgAAAAAAAA=</HashCode>
+      <FileName>Algorithm\ConvexHull.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.HCoordinate" Collapsed="true">
+    <Position X="31.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAAAAAAAAAYAhgAAAIYAA=</HashCode>
+      <FileName>Algorithm\HCoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.InteriorPointArea" Collapsed="true">
+    <Position X="36.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIIAAAAAQAgAAAACAAAAAAAAACAAAAAgAAAMAAAAAA=</HashCode>
+      <FileName>Algorithm\InteriorPointArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.InteriorPointLine" Collapsed="true">
+    <Position X="38.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAABAAAAAACAAABAAACAAAAAgAAAAAAAACA=</HashCode>
+      <FileName>Algorithm\InteriorPointLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.InteriorPointPoint" Collapsed="true">
+    <Position X="40.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAABAAAAAACAAAAAAACAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\InteriorPointPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.LineIntersector" Collapsed="true">
+    <Position X="16.75" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAAADKAAEIgAAHBQgAAABIgAgAAgAAwAAkAiAACAA=</HashCode>
+      <FileName>Algorithm\LineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.MCPointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAgAAAAEGAAAAAAAAAAAwAAAAACAA=</HashCode>
+      <FileName>Algorithm\MCPointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.MinimumDiameter" Collapsed="true">
+    <Position X="45.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEUAAEAAAQQAAAABAAAgAABEBAAABAEAAAAQ=</HashCode>
+      <FileName>Algorithm\MinimumDiameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.NonRobustCGAlgorithms" Collapsed="true">
+    <Position X="43.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAACA=</HashCode>
+      <FileName>Algorithm\NonRobustCGAlgorithms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.NonRobustLineIntersector" Collapsed="true">
+    <Position X="15.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAgAAAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\NonRobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.NotRepresentableException" Collapsed="true">
+    <Position X="45.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\NotRepresentableException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.PointLocator" Collapsed="true">
+    <Position X="38.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAECAAAAAAAAAAABAAAAQAAAAABAAAAAAAQAAIA=</HashCode>
+      <FileName>Algorithm\PointLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.RobustDeterminant" Collapsed="true">
+    <Position X="45.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\RobustDeterminant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.RobustLineIntersector" Collapsed="true">
+    <Position X="17.75" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAEAgAAAAEAAAAAAAAAAABAgAAAAAAAQAAAAAAAAgA=</HashCode>
+      <FileName>Algorithm\RobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.SimplePointInAreaLocator" Collapsed="true">
+    <Position X="52.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAQAABA=</HashCode>
+      <FileName>Algorithm\SimplePointInAreaLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.SimplePointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\SimplePointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Algorithm.SIRtreePointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAEAAAAAAAAEAAAAAAAAAAAAwAAAAACAA=</HashCode>
+      <FileName>Algorithm\SIRtreePointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations.GeometryTransform" Collapsed="true">
+    <Position X="49" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAQAAABGAAAAAAAAACAEAAAIAAgADgAAg=</HashCode>
+      <FileName>CoordinateSystems\Transformations\GeometryTransform.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Features.AttributesTable" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABIAAAAgAACAAIAAQABAAAEAEACABAAAEAAAA=</HashCode>
+      <FileName>Features\AttributesTable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Features.Feature" Collapsed="true">
+    <Position X="35" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Features\Feature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Coordinate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQE4AUAwAAAAAAAgIBAAABgAQAAYjE=</HashCode>
+      <FileName>Geometries\Coordinate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateArrays" Collapsed="true">
+    <Position X="33.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEAAIAAAAABAQAAAwAAJAAAAAAAAIAAAAABjAAACAAA=</HashCode>
+      <FileName>Geometries\CoordinateArrays.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateArraySequence" Collapsed="true">
+    <Position X="25.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAJAAEAAAgAAQAAAAAQCABYgAAAAAAABg=</HashCode>
+      <FileName>Geometries\CoordinateArraySequence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateArraySequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateArraySequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Geometries\CoordinateList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateSequences" Collapsed="true">
+    <Position X="42" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateSequences.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateStructSequence" Collapsed="true">
+    <Position X="25.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAABA=</HashCode>
+      <FileName>Geometries\CoordinateStructSequence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateStructSequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateStructSequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.DefaultCoordinateSequence" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAJAAECAAgAARAAAAAQCABYgAAAAAAABA=</HashCode>
+      <FileName>Geometries\DefaultCoordinateSequence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.DefaultCoordinateSequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAABAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\DefaultCoordinateSequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Envelope" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MBgABBAwBAAAAAQMkBAAAEBAAAAAAIBIAAAmAQAQArA=</HashCode>
+      <FileName>Geometries\Envelope.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Geometry" Collapsed="true">
+    <Position X="18.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KQxEQhAEiJBolJTEsEhAAABIYCxARIBAsBTCASAZXrg=</HashCode>
+      <FileName>Geometries\Geometry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.GeometryCollection" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQRAQAAEgJAIBBACGAIAAARIIAAAQAAAABBAAQAEBBA=</HashCode>
+      <FileName>Geometries\GeometryCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.GeometryCollectionEnumerator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQEAAAAAAABABAAACAAAAgAAAAAAAAIAAAAAABAAA=</HashCode>
+      <FileName>Geometries\GeometryCollectionEnumerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.GeometryFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAiACKiAgCIgAACEIAiIANhAACAAMgACAARAAAA=</HashCode>
+      <FileName>Geometries\GeometryFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.LinearRing" Collapsed="true">
+    <Position X="19.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\LinearRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.LineSegment" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAQABAQEkgCgSABAAECAAIBAgkACACAAAiA=</HashCode>
+      <FileName>Geometries\LineSegment.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.LineString" Collapsed="true">
+    <Position X="19.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBQZAjEAJAARAAAGAIAAARIIAAAQEAAAFBCAAAABBg=</HashCode>
+      <FileName>Geometries\LineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.MultiLineString" Collapsed="true">
+    <Position X="13" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAAAAAAAAIAAAAIAAAAQEAAAABCAAAABAA=</HashCode>
+      <FileName>Geometries\MultiLineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.MultiPoint" Collapsed="true">
+    <Position X="15.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAABAAAAAoAAAAIAAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>Geometries\MultiPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.MultiPolygon" Collapsed="true">
+    <Position X="17.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAAAAAAAAIAAAAIAAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>Geometries\MultiPolygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.PackedCoordinateSequence" Collapsed="true">
+    <Position X="11.75" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAJAQAAAACAgRAAAAoQCABYgAAAAAAABA=</HashCode>
+      <FileName>Geometries\PackedCoordinateSequence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.PackedDoubleCoordinateSequence" Collapsed="true">
+    <Position X="10.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAQAAABgACAAAgAAAAAAABA=</HashCode>
+      <FileName>Geometries\PackedCoordinateSequence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.PackedFloatCoordinateSequence" Collapsed="true">
+    <Position X="12.75" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAQAAABgACAAAgAAAAAAABA=</HashCode>
+      <FileName>Geometries\PackedCoordinateSequence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.PackedCoordinateSequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAQABQUAAAQAAAAAAAAA=</HashCode>
+      <FileName>Geometries\PackedCoordinateSequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Point" Collapsed="true">
+    <Position X="22" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAQABEAJAABAAAEAooAAAIIAAAQAAAABBAAAAAZBE=</HashCode>
+      <FileName>Geometries\Point.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Polygon" Collapsed="true">
+    <Position X="24.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAQAAEIJwABACIFAIAAABIIAQEQAAAABBAAQAABBA=</HashCode>
+      <FileName>Geometries\Polygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.PrecisionModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="50.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAiAIAAQEgAIAAQAaAAAAgIjAgAAAIAAAAiA=</HashCode>
+      <FileName>Geometries\PrecisionModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.TopologyException" Collapsed="true">
+    <Position X="36.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAABAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\TopologyException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Triangle" Collapsed="true">
+    <Position X="43.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAQAAAEGAAABAgAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Triangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.GeometryEditor" Collapsed="true">
+    <Position X="42" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAgAAAAAAAAAAAAAAAAAAACAAAAABAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\GeometryEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.GeometryTransformer" Collapsed="true">
+    <Position X="23.5" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAQEAAgQEAAAAAAAAQAAkACAEAAAAgQoACgAAg=</HashCode>
+      <FileName>Geometries\Utilities\GeometryTransformer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.LinearComponentExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABIAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\LinearComponentExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.PointExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAABAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\PointExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.PolygonExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAEBAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\PolygonExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Geometries.Utilities.ShortCircuitedGeometryVisitor" Collapsed="true">
+    <Position X="20" Y="8.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\ShortCircuitedGeometryVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Depth" Collapsed="true">
+    <Position X="31.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIIAAACAAAAAAAEGAAABAAAAAAAAAAIAAIAIAAAACA=</HashCode>
+      <FileName>GeometriesGraph\Depth.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.DirectedEdge" Collapsed="true">
+    <Position X="24.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gkAKAAAAQkAABIVAQAChAEAAAAgCAAABAAAAIIPAAgA=</HashCode>
+      <FileName>GeometriesGraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.DirectedEdgeStar" Collapsed="true">
+    <Position X="7.75" Y="22.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGIAkQAAABBAAAABAAAAAAAAAgAAAgEEACEoAAA=</HashCode>
+      <FileName>GeometriesGraph\DirectedEdgeStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Edge" Collapsed="true">
+    <Position X="22.75" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAABAAKAAEQhACEgAAAGAQAMAgkAMAgIBAAIIEESjA=</HashCode>
+      <FileName>GeometriesGraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeEnd" Collapsed="true">
+    <Position X="23.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEAAIAEAAABBwEAAAYAAAEAEAABQAAgAQCAAEABAA=</HashCode>
+      <FileName>GeometriesGraph\EdgeEnd.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeEndStar" Collapsed="true">
+    <Position X="6.75" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgEgDAAAAJBAIAAAAAAAwAAAAAAAAAAIAAAGIBgA=</HashCode>
+      <FileName>GeometriesGraph\EdgeEndStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeIntersection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAABAQAAQQAAAAAAAAAAQBAAAFAAAEAAAA=</HashCode>
+      <FileName>GeometriesGraph\EdgeIntersection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeIntersectionList" Collapsed="true">
+    <Position X="45.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAAAAgAQAAAIAAAgAAAQAAAEACCA=</HashCode>
+      <FileName>GeometriesGraph\EdgeIntersectionList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeList" Collapsed="true">
+    <Position X="47.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEIAgAAAAIQAABBACAAABAAAAAAAAAAAAAAAAAEBAAA=</HashCode>
+      <FileName>GeometriesGraph\EdgeList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeNodingValidator" Collapsed="true">
+    <Position X="49" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAA=</HashCode>
+      <FileName>GeometriesGraph\EdgeNodingValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.EdgeRing" Collapsed="true">
+    <Position X="1.75" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAGgEAAEooQFBCAAABABAAgAAAgAEIAIGAAAAhAABA=</HashCode>
+      <FileName>GeometriesGraph\EdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.GeometryGraph" Collapsed="true">
+    <Position X="25.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAigAAgQAwAEAQiEBMAAAAAEAAIAAEAABABIiAgAI=</HashCode>
+      <FileName>GeometriesGraph\GeometryGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.GraphComponent" Collapsed="true">
+    <Position X="21.75" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAUgAABBDAQgBAQEAAUAACAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>GeometriesGraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Label" Collapsed="true">
+    <Position X="35" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCAAAAgCAAAAAAQMBAEAAEEAAAAAAQAoAAAABAEQCAA=</HashCode>
+      <FileName>GeometriesGraph\Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Node" Collapsed="true">
+    <Position X="20.5" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAJAgAAAAIAEBACEAAAAAAAAAABBAAAAIAAAAAEAAAA=</HashCode>
+      <FileName>GeometriesGraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.NodeFactory" Collapsed="true">
+    <Position X="21.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometriesGraph\NodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.NodeMap" Collapsed="true">
+    <Position X="38.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAAAAAAAAAABAAAEAAgAAAAAAIAAAAAAAgAAEIAAA=</HashCode>
+      <FileName>GeometriesGraph\NodeMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.PlanarGraph" Collapsed="true">
+    <Position X="25.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgCIAAAMAhAABQAAAAAIAAEAAIBAAAAAAAACBIIAQ=</HashCode>
+      <FileName>GeometriesGraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Position" Collapsed="true">
+    <Position X="45.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>GeometriesGraph\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.QuadrantOp" Collapsed="true">
+    <Position X="52.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAEAAQAAAAAAAAACAAAAAAAAAAAABA=</HashCode>
+      <FileName>GeometriesGraph\QuadrantOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.TopologyLocation" Collapsed="true">
+    <Position X="38.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAgCAAAAAARMCAEAAEECAAAAAQAoAAACAAEAAAA=</HashCode>
+      <FileName>GeometriesGraph\TopologyLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.EdgeSetIntersector" Collapsed="true">
+    <Position X="15" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GeometriesGraph\Index\EdgeSetIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.MonotoneChain" Collapsed="true">
+    <Position X="49" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GeometriesGraph\Index\MonotoneChain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.MonotoneChainEdge" Collapsed="true">
+    <Position X="52.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAEAAAAAAAoABAAEACAACAAAAAgAE=</HashCode>
+      <FileName>GeometriesGraph\Index\MonotoneChainEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer" Collapsed="true">
+    <Position X="28" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometriesGraph\Index\MonotoneChainIndexer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SegmentIntersector" Collapsed="true">
+    <Position X="50.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACDAAAoAAAACEAAAAyAAAAAEAAAABAgAQIAAFE=</HashCode>
+      <FileName>GeometriesGraph\Index\SegmentIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SimpleEdgeSetIntersector" Collapsed="true">
+    <Position X="12.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAA=</HashCode>
+      <FileName>GeometriesGraph\Index\SimpleEdgeSetIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SimpleMCSweepLineIntersector" Collapsed="true">
+    <Position X="15" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAAAAAAAAAAAAAABAAAAIAAAAAAAAEAAI=</HashCode>
+      <FileName>GeometriesGraph\Index\SimpleMCSweepLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SimpleSweepLineIntersector" Collapsed="true">
+    <Position X="17.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAAAAAAAAAAAAAABAAAAIAAAAAAAAEAAI=</HashCode>
+      <FileName>GeometriesGraph\Index\SimpleSweepLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SweepLineEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAEAAAAAAIIwgAAwAAAAIAAEAAAAIAAAAAQAAgAA=</HashCode>
+      <FileName>GeometriesGraph\Index\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Index.SweepLineSegment" Collapsed="true">
+    <Position X="29.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAQAAAAAAAAAAAAAAAAAAAAAEAAABQAAAAEAAA=</HashCode>
+      <FileName>GeometriesGraph\Index\SweepLineSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.ArrayListVisitor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\ArrayListVisitor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.Bintree" Collapsed="true">
+    <Position X="43.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAkAAAAAAABAAAAAgAAQAAAABAEggAQAAAAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Bintree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.Interval" Collapsed="true">
+    <Position X="45.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAEBAAABAQAAAAEAAAAEAAAAAAAAAAAAACAAAQAAA=</HashCode>
+      <FileName>Index\Bintree\Interval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.Key" Collapsed="true">
+    <Position X="31.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAgAAAAgAAAAIgAAACAAAEAAEABAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.Node" Collapsed="true">
+    <Position X="15.5" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAQAAAAAAAAEIEAACCAEAEIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.NodeBase" Collapsed="true">
+    <Position X="16.75" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAAACBAAAAgAAAQAAAAEIAAgAAAABAAAAAE=</HashCode>
+      <FileName>Index\Bintree\NodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Bintree.Root" Collapsed="true">
+    <Position X="17.75" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Chain.MonotoneChain" Collapsed="true">
+    <Position X="47.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAgAAAACgAAAAAACAICAAAcIAAAAAQAAAAgA=</HashCode>
+      <FileName>Index\Chain\MonotoneChain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Chain.MonotoneChainBuilder" Collapsed="true">
+    <Position X="50.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Index\Chain\MonotoneChainBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Chain.MonotoneChainOverlapAction" Collapsed="true">
+    <Position X="29.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAACAAAAAAAAAgAQAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Index\Chain\MonotoneChainOverlapAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Chain.MonotoneChainSelectAction" Collapsed="true">
+    <Position X="31.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Index\Chain\MonotoneChainSelectAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.DoubleBits" Collapsed="true">
+    <Position X="36.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAgAAAAAEAEABABAAAAAAACAAAAEAFAAAAACAM=</HashCode>
+      <FileName>Index\Quadtree\DoubleBits.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.IntervalSize" Collapsed="true">
+    <Position X="49" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Quadtree\IntervalSize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.Key" Collapsed="true">
+    <Position X="33.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAAIACAAAAgACAAAAAAAAAAAEAAEABAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Quadtree\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.Node" Collapsed="true">
+    <Position X="22.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAASAAAAAACAEAEAACAAEAEIAAAAAAABBAAAAAA=</HashCode>
+      <FileName>Index\Quadtree\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.NodeBase" Collapsed="true">
+    <Position X="21.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AANAAAAAAAgACBQAAAgABAQABAEEIAAgAAAABAAAAIE=</HashCode>
+      <FileName>Index\Quadtree\NodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.Quadtree" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAkAAACAAAAAAAAAgBAQAAAAAAEggAQAAAAAAAAA=</HashCode>
+      <FileName>Index\Quadtree\Quadtree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Quadtree.Root" Collapsed="true">
+    <Position X="20.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Index\Quadtree\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.AbstractNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAASACAAAgA=</HashCode>
+      <FileName>Index\Strtree\AbstractNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.AbstractSTRtree" Collapsed="true">
+    <Position X="21.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEIBEgQAAAIACCgAAEgBAYAEAAAgAgkAQAAAIAAAAA=</HashCode>
+      <FileName>Index\Strtree\AbstractSTRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.Interval" Collapsed="true">
+    <Position X="47.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgAEAAAAAAQAAAAgAAAAAAAAAAAAIAAAAAAAAAAAIA=</HashCode>
+      <FileName>Index\Strtree\Interval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.ItemBoundable" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAACAAAAAgA=</HashCode>
+      <FileName>Index\Strtree\ItemBoundable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.SIRtree" Collapsed="true">
+    <Position X="20.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEABAAAAAAAAAAEAAAAAAAAAAAgAAQAAAAEAAAA=</HashCode>
+      <FileName>Index\Strtree\SIRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Strtree.STRtree" Collapsed="true">
+    <Position X="22.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABEBAAAACAAAAAAEABDAAAAAAAAgAAQAAIAAEAAA=</HashCode>
+      <FileName>Index\Strtree\STRtree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Sweepline.SweepLineEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAIKwAAIQAAAAAAAAAAAAIAAAAAQAAgAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Sweepline.SweepLineIndex" Collapsed="true">
+    <Position X="50.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAwAAAAAAAAAAAAACAABAAAAIAAAAAAAAACAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Index.Sweepline.SweepLineInterval" Collapsed="true">
+    <Position X="52.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABAQAAAAEAQAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineInterval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.BEBinaryReader" Collapsed="true">
+    <Position X="36.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAAAAAEAAAAAAgAAAAAACAQAAAEAREAAAAAA=</HashCode>
+      <FileName>IO\BEBinaryReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.BEBinaryWriter" Collapsed="true">
+    <Position X="38.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\BEBinaryWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.GDBReader" Collapsed="true">
+    <Position X="25.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GDBReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.GDBWriter" Collapsed="true">
+    <Position X="20.5" Y="25.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\GDBWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.BigEndianBinaryReader" Collapsed="true">
+    <Position X="40.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\BigEndianBinaryReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.BigEndianBinaryWriter" Collapsed="true">
+    <Position X="42" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\BigEndianBinaryWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ColumnStructure" Collapsed="true">
+    <Position X="38.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAJAAQAgAQQAAgAABAAAAAAAQAAAACAAAAEAA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\ColumnStructure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.DbaseFieldDescriptor" Collapsed="true">
+    <Position X="45.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAYAABAAAACBQAAAAAAARAAIAAAAAAJQAgAACAAAA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\DbaseFieldDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.DbaseFileHeader" Collapsed="true">
+    <Position X="47.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAABAAAIECAAYEAQAAAAAAgACAAABGAAAgBAgAgAA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\DbaseFileHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.DbaseFileReader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAFQAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\DbaseFileReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.DbaseFileWriter" Collapsed="true">
+    <Position X="50.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACBAQAAAAAAAAEAAAAAAAAAAAAAEAAAAAAAAAAGAAIA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\DbaseFileWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Shapefile" Collapsed="true">
+    <Position X="36.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4AAgAAAAAAAAAAAAAAAAAAAAQAAEAAAAAAQBAAACAAA=</HashCode>
+      <FileName>IO\GeoTools\Shapefile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileDataReader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAKQICQiMCgABBADCIEBBCYgQAJEAEQwIJQIAgCAtEA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileDataReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileDataWriter" Collapsed="true">
+    <Position X="40.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQABACQAEEAAAhAEAGIAAAggAAACAAQAAAAAAQEAAAA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileDataWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileException" Collapsed="true">
+    <Position X="42" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileHeader" Collapsed="true">
+    <Position X="43.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAIIACAAAAAAgAAAAgAAAAAAAAIAEAAgA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileReader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAACAAAQABQAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapefileWriter" Collapsed="true">
+    <Position X="47.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>IO\GeoTools\ShapefileWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.WktStreamTokenizer" Collapsed="true">
+    <Position X="0.5" Y="25.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\GeoTools\WktStreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.MsSqlSpatialReader" Collapsed="true">
+    <Position X="6.5" Y="25.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\MsSqlSpatialReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.MsSqlSpatialWriter" Collapsed="true">
+    <Position X="3.5" Y="25.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\MsSqlSpatialWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.MyShapeFileReader" Collapsed="true">
+    <Position X="33.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAEABAABgAAAAEAgAAAAABAAAAAA=</HashCode>
+      <FileName>IO\MyShapeFileReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.MyShapeFileWriter" Collapsed="true">
+    <Position X="35" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAARAAAAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAECAAA=</HashCode>
+      <FileName>IO\MyShapeFileWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ParseException" Collapsed="true">
+    <Position X="31.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\ParseException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.PostGisReader" Collapsed="true">
+    <Position X="47.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAEEAAAAAAoAAAAoCgAAAAgCAAAAAEAAAAIAAAAIAA=</HashCode>
+      <FileName>IO\PostGisReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.PostGisWriter" Collapsed="true">
+    <Position X="49" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIAAAAAAAAAAAAABAAAIAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>IO\PostGisWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapeReader" Collapsed="true">
+    <Position X="25.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAACAAoAAJAIAiAAAQACBAAADEAAAAIAARAAAA=</HashCode>
+      <FileName>IO\ShapeReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.ShapeWriter" Collapsed="true">
+    <Position X="20.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAIAAAAAgAAAAAAAAAAAAQAAEAAAAEAAEAAAA=</HashCode>
+      <FileName>IO\ShapeWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.WKBReader" Collapsed="true">
+    <Position X="6.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAFAAAQAAoAAAAIAgAAAAgCAAAAAEAAAAIAAAAIAA=</HashCode>
+      <FileName>IO\WKBReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.WKBWriter" Collapsed="true">
+    <Position X="3.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIAAIAAAAAAAAAABAAAAAAAAAAAAAAAAAAEACAA=</HashCode>
+      <FileName>IO\WKBWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.WKTReader" Collapsed="true">
+    <Position X="47.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAQCBEABAAAoAAAgAAEAwAAAAAACAgAkRAAABBAA=</HashCode>
+      <FileName>IO\WKTReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.WKTWriter" Collapsed="true">
+    <Position X="49" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAQEgQCEGIAQiAAAADAACAACBgAUAMAgAAAEIIAA=</HashCode>
+      <FileName>IO\WKTWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Handlers.MultiLineHandler" Collapsed="true">
+    <Position X="10.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAABAAAAAAgAAAAAAAAAAgAAAEAAAA=</HashCode>
+      <FileName>IO\GeoTools\Handlers\MultiLineHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Handlers.MultiPointHandler" Collapsed="true">
+    <Position X="13" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAABAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\GeoTools\Handlers\MultiPointHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Handlers.PointHandler" Collapsed="true">
+    <Position X="15.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAABAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\GeoTools\Handlers\PointHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Handlers.PolygonHandler" Collapsed="true">
+    <Position X="17.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAIAABAAAAAAgAAAAIAAAAAgAAAEAAAA=</HashCode>
+      <FileName>IO\GeoTools\Handlers\PolygonHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.Handlers.ShapeHandler" Collapsed="true">
+    <Position X="14" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEAAIAAAAAAAAIAABACIAAEgAAEBAAQABAADAAEAAgA=</HashCode>
+      <FileName>IO\GeoTools\Handlers\ShapeHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.Assert" Collapsed="true">
+    <Position X="31.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAACAgAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Assert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.AssertionFailedException" Collapsed="true">
+    <Position X="33.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\AssertionFailedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.BitConverter" Collapsed="true">
+    <Position X="45.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAQAAAAA=</HashCode>
+      <FileName>Utilities\BitConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.CollectionUtil" Collapsed="true">
+    <Position X="36.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Utilities\CollectionUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.CoordinateArrayFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIBAAAEAAEAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\CoordinateArrayFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.CoordinateCompare" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Utilities\CoordinateCompare.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.CoordinateCountFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAABAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\CoordinateCountFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.Degrees" Collapsed="true">
+    <Position X="29.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Degrees.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.GeometricShapeFactory" Collapsed="true">
+    <Position X="38.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAABCAABCAAgAAAAAAAAEAAAAAIAAAAIBAAAAAAQAA=</HashCode>
+      <FileName>Utilities\GeometricShapeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.GeoToolsStreamTokenizer" Collapsed="true">
+    <Position X="0.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAMAAAAAAAAgAACAAABIIAAAAgAAAAEAAIEAAIAAAAQ=</HashCode>
+      <FileName>Utilities\GeoToolsStreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.Global" Collapsed="true">
+    <Position X="50.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Global.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.HexConverter" Collapsed="true">
+    <Position X="33.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\HexConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.Radians" Collapsed="true">
+    <Position X="31.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Radians.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.ReverseOrder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Utilities\ReverseOrder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.Stopwatch" Collapsed="true">
+    <Position X="38.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAgAAIAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Utilities\Stopwatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Utilities.UniqueCoordinateArrayFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAABAAAAAAAAAIBAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\UniqueCoordinateArrayFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.GML2.GMLElements" Collapsed="true">
+    <Position X="52.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAIAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>IO\GML2\GMLElements.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.GML2.GMLReader" Collapsed="true">
+    <Position X="28" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAAAAoAAAAICgAQAAgCAAAAAEAAAAIAAAAIAA=</HashCode>
+      <FileName>IO\GML2\GMLReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.IO.GML2.GMLWriter" Collapsed="true">
+    <Position X="29.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAABAQAIAQAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IO\GML2\GMLWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.ExtractLineByLocation" Collapsed="true">
+    <Position X="33.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEgAAAAAAAAQAAgAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>LinearReferencing\ExtractLineByLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LengthIndexedLine" Collapsed="true">
+    <Position X="36.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAAAAAAAAQIgAAACgCAACAAAIAAAEAAAAAABAA=</HashCode>
+      <FileName>LinearReferencing\LengthIndexedLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LengthIndexOfPoint" Collapsed="true">
+    <Position X="38.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAgABAA=</HashCode>
+      <FileName>LinearReferencing\LengthIndexOfPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LengthLocationMap" Collapsed="true">
+    <Position X="40.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>LinearReferencing\LengthLocationMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LinearGeometryBuilder" Collapsed="true">
+    <Position X="43.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAhAAAAAAAAAEAkAABAAIAIAAAAAAAESAAAAA=</HashCode>
+      <FileName>LinearReferencing\LinearGeometryBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LinearIterator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAxAAACECAALBAAAADAAAAAgAAQAEMEoABAAAgBAAA=</HashCode>
+      <FileName>LinearReferencing\LinearIterator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LinearLocation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFACIBBAAAFAQIEAgAAAAAAAAAAQEAAAEAIAAAADA=</HashCode>
+      <FileName>LinearReferencing\LinearLocation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LocationIndexedLine" Collapsed="true">
+    <Position X="33.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAgAAACgCBACAAAIAAAEAAAAAABAA=</HashCode>
+      <FileName>LinearReferencing\LocationIndexedLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LocationIndexOfLine" Collapsed="true">
+    <Position X="35" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>LinearReferencing\LocationIndexOfLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.LinearReferencing.LocationIndexOfPoint" Collapsed="true">
+    <Position X="36.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAgABAA=</HashCode>
+      <FileName>LinearReferencing\LocationIndexOfPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.IntersectionAdder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgCAACAgACAACQAAAASDAAAAEAAAAAAgAQIAABE=</HashCode>
+      <FileName>Noding\IntersectionAdder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.IntersectionFinderAdder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAADAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\IntersectionFinderAdder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.IteratedNoder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAACAAAAAAgAAAIAgAAAAAAAAAAAAQACAAAAAEAAAA=</HashCode>
+      <FileName>Noding\IteratedNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.MCIndexNoder" Collapsed="true">
+    <Position X="12.75" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIEAAAIgAAAAAAIAAAAEAAQAAAAAAQAAAEAAAABAAA=</HashCode>
+      <FileName>Noding\MCIndexNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.NodingValidator" Collapsed="true">
+    <Position X="42" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAQAAAAgAAAAAAAAggAAAAgAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\NodingValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.Octant" Collapsed="true">
+    <Position X="47.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\Octant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.OrientedCoordinateArray" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAAAAQAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\OrientedCoordinateArray.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.ScaledNoder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAEAAAADMAAIAAAAAAAAAAAQAAAAEAAAAgAA=</HashCode>
+      <FileName>Noding\ScaledNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SegmentNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAQAAAABAAABAAAAAAAEAAgEAAAI=</HashCode>
+      <FileName>Noding\SegmentNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SegmentNodeList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAABAAAAAAgABAAAIABAgAAAQAIAEAgAA=</HashCode>
+      <FileName>Noding\SegmentNodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.NodeVertexIterator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAACABEQCAAAAAgAgIAQAAAAAAAA=</HashCode>
+      <FileName>Noding\SegmentNodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SegmentPointComparator" Collapsed="true">
+    <Position X="29.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABAAAACAAA=</HashCode>
+      <FileName>Noding\SegmentPointComparator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SegmentString" Collapsed="true">
+    <Position X="31.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABAQAAAIAAAQCIAAAAFQAAAAQAIAAAAA=</HashCode>
+      <FileName>Noding\SegmentString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SegmentStringDissolver" Collapsed="true">
+    <Position X="33.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAFAAAAAAAA=</HashCode>
+      <FileName>Noding\SegmentStringDissolver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SimpleNoder" Collapsed="true">
+    <Position X="10.5" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAIAAAAAAAAAAAAAAQCAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\SimpleNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.SinglePassNoder" Collapsed="true">
+    <Position X="11.75" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAACAAAIAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\SinglePassNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.Snapround.HotPixel" Collapsed="true">
+    <Position X="35" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MQAIAAAwAAAsBAAAQAJAAAAAAAAAAEiBAAAEIABAAIA=</HashCode>
+      <FileName>Noding\Snapround\HotPixel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.Snapround.MCIndexPointSnapper" Collapsed="true">
+    <Position X="40.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgIAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Noding\Snapround\MCIndexPointSnapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.Snapround.MCIndexSnapRounder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAgEAAMQAAAAAAAABAgAAQCAAAEAAAABAA=</HashCode>
+      <FileName>Noding\Snapround\MCIndexSnapRounder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Noding.Snapround.SimpleSnapRounder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAgEAAIQAAAAAAAAFAAAAQAAAAEAAAIBAA=</HashCode>
+      <FileName>Noding\Snapround\SimpleSnapRounder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.BufferBuilder" Collapsed="true">
+    <Position X="47.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABQAAAIAAIIAkAACABAAACAgAAABgAAEAAUAAQAQ=</HashCode>
+      <FileName>Operation\Buffer\BufferBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.BufferOp" Collapsed="true">
+    <Position X="50.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAwAQAAAAAEAAAgAAAAAAEAYEAAAAAiAAEIAAAAQAA=</HashCode>
+      <FileName>Operation\Buffer\BufferOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.BufferSubgraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIgQCIAAAAAgAQAAAAEQAAQAAAQAEAAAACAAAQAJAA=</HashCode>
+      <FileName>Operation\Buffer\BufferSubgraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.OffsetCurveBuilder" Collapsed="true">
+    <Position X="49" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAEICAAADggAghQIBCAAAAoucBAAAgQAACAAAACqg=</HashCode>
+      <FileName>Operation\Buffer\OffsetCurveBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder" Collapsed="true">
+    <Position X="50.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIACgAAEQAQAAAAAAAEAAAAgEQAAAAAAAAAYAAAAAA=</HashCode>
+      <FileName>Operation\Buffer\OffsetCurveSetBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.RightmostEdgeFinder" Collapsed="true">
+    <Position X="43.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAANAAAACQBQgQAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Buffer\RightmostEdgeFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Buffer.SubgraphDepthLocater" Collapsed="true">
+    <Position X="45.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAQAAAAAAAABAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Operation\Buffer\SubgraphDepthLocater.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Distance.ConnectedElementLocationFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAACABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Distance\ConnectedElementLocationFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Distance.ConnectedElementPointFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAABAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Distance\ConnectedElementPointFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Distance.DistanceOp" Collapsed="true">
+    <Position X="35" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAASAAAgAABAAAAAQAgCIAAAQAEBADAAAACAAEBAAA=</HashCode>
+      <FileName>Operation\Distance\DistanceOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Distance.GeometryLocation" Collapsed="true">
+    <Position X="45.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABAAAAAAAAAAFAAAAAEAAAAEAAAAAQAA=</HashCode>
+      <FileName>Operation\Distance\GeometryLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.GeometryGraphOperation" Collapsed="true">
+    <Position X="6.75" Y="18.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAggAAACAIAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\GeometryGraphOperation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.IsSimpleOp" Collapsed="true">
+    <Position X="50.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAACAAAAAAAAAIAAAAgAAAAAACA=</HashCode>
+      <FileName>Operation\IsSimpleOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.EdgeString" Collapsed="true">
+    <Position X="28" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAAAAAgAAAAAAAgAAAAIAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\EdgeString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.LineMergeDirectedEdge" Collapsed="true">
+    <Position X="0.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.LineMergeEdge" Collapsed="true">
+    <Position X="5.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.LineMergeGraph" Collapsed="true">
+    <Position X="0.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.LineMerger" Collapsed="true">
+    <Position X="50.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAQAAAAAgABAAAAAAAAgQqAAAAwQAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMerger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Linemerge.LineSequencer" Collapsed="true">
+    <Position X="29.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoCBAABAAAgACAIQAAEAEAAGAAEAAgAAAAGAACUAAg=</HashCode>
+      <FileName>Operation\Linemerge\LineSequencer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.EdgeSetNoder" Collapsed="true">
+    <Position X="52.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAQAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Operation\Overlay\EdgeSetNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.LineBuilder" Collapsed="true">
+    <Position X="49" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQEQAAAAgAAAAAAAAAAAAAwICCAAAMAAAAQAA=</HashCode>
+      <FileName>Operation\Overlay\LineBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.MaximalEdgeRing" Collapsed="true">
+    <Position X="0.5" Y="22.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAgAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MaximalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.MinimalEdgeRing" Collapsed="true">
+    <Position X="2.75" Y="22.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MinimalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.OverlayNodeFactory" Collapsed="true">
+    <Position X="22.75" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\OverlayNodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.OverlayOp" Collapsed="true">
+    <Position X="5.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABAACAACCICQAkAJAAAQIKAABBIiAAkFIQAAIAIA=</HashCode>
+      <FileName>Operation\Overlay\OverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.PointBuilder" Collapsed="true">
+    <Position X="35" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEEAAAAAAAAAAAAAAAAAAAgACAAAAMAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\PointBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.PolygonBuilder" Collapsed="true">
+    <Position X="40.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAEAAAAAEAAAAAAAABBICAKAgBAAAAAAAAABA=</HashCode>
+      <FileName>Operation\Overlay\PolygonBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap.GeometrySnapper" Collapsed="true">
+    <Position X="47.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAgBgABAAAAAAAAAAAAEAAAgAAAAAAAAAIIAAAA=</HashCode>
+      <FileName>Operation\Overlay\Snap\GeometrySnapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap.SnapTransformer" Collapsed="true">
+    <Position X="23.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAQAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\Snap\GeometrySnapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap.LineStringSnapper" Collapsed="true">
+    <Position X="31.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAQAAAAAVAAAACAQAAAAAAIAAAA=</HashCode>
+      <FileName>Operation\Overlay\Snap\LineStringSnapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap.SnapIfNeededOverlayOp" Collapsed="true">
+    <Position X="33.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEARAAAAAAAAAQAAAAAAKAAAAAAE=</HashCode>
+      <FileName>Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap.SnapOverlayOp" Collapsed="true">
+    <Position X="35" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAAoAAAAABgAAFAAAAABAQAAAAAAAAAAKEQAAAAA=</HashCode>
+      <FileName>Operation\Overlay\Snap\SnapOverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Polygonize.EdgeRing" Collapsed="true">
+    <Position X="50.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIIAQAgggEAEAiAgAAAAAoAAggAAAAAAAAAAAACA=</HashCode>
+      <FileName>Operation\Polygonize\EdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge" Collapsed="true">
+    <Position X="3" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAQEAAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAg=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Polygonize.PolygonizeEdge" Collapsed="true">
+    <Position X="7.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Polygonize.PolygonizeGraph" Collapsed="true">
+    <Position X="2.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiABBAIAMgAoAAAACAAAAAAAEAAAAAAAAAAgAQAAEAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Polygonize.Polygonizer" Collapsed="true">
+    <Position X="43.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAKAACAAAAAqgAIAAAAAAKCAAAIIABAAAAAAAQACA=</HashCode>
+      <FileName>Operation\Polygonize\Polygonizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.RectangleContains" Collapsed="true">
+    <Position X="33.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAABBAAEAAAAAAAACAAAAAAAAAAAAAQAAAQAAA=</HashCode>
+      <FileName>Operation\Predicate\RectangleContains.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.RectangleIntersects" Collapsed="true">
+    <Position X="35" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAMA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.EnvelopeIntersectsVisitor" Collapsed="true">
+    <Position X="17.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.ContainsPointVisitor" Collapsed="true">
+    <Position X="20" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAAAQAAAAAAAAAAAAAgAAAAAAAEAAAABA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.LineIntersectsVisitor" Collapsed="true">
+    <Position X="22.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAQAQAAAAAACAAAAAAgAAAAAAAgAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Predicate.SegmentIntersectionTester" Collapsed="true">
+    <Position X="49" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAACAAADgAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Predicate\SegmentIntersectionTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.EdgeEndBuilder" Collapsed="true">
+    <Position X="42" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.EdgeEndBundle" Collapsed="true">
+    <Position X="22.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAIBBAAAAAQQAAAEAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.EdgeEndBundleStar" Collapsed="true">
+    <Position X="5.5" Y="22.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundleStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateComputer" Collapsed="true">
+    <Position X="36.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAABAAAAIAgAACgAABAAAAA0AAQAACAAAgAEAAAIAA=</HashCode>
+      <FileName>Operation\Relate\RelateComputer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateNode" Collapsed="true">
+    <Position X="20.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateNodeFactory" Collapsed="true">
+    <Position X="20.5" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateNodeGraph" Collapsed="true">
+    <Position X="38.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAACAAAAAAAAAAgAAAAAAAAAAAQgAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Operation\Relate\RelateNodeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateOp" Collapsed="true">
+    <Position X="7.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAIAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.ConnectedInteriorTester" Collapsed="true">
+    <Position X="49" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAEAAABIAAAAAAAgAAAAAAAACGCACAAAAAQEA=</HashCode>
+      <FileName>Operation\Valid\ConnectedInteriorTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.ConsistentAreaTester" Collapsed="true">
+    <Position X="52.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIEAAgAAAAAAAAAAIAAAABAACAAAAAAAgAAAA=</HashCode>
+      <FileName>Operation\Valid\ConsistentAreaTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.IsValidOp" Collapsed="true">
+    <Position X="52.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEKAICAAgIAEAAEAAAgQgIAgAAgACAAIAAAACQAAAAQ=</HashCode>
+      <FileName>Operation\Valid\IsValidOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.QuadtreeNestedRingTester" Collapsed="true">
+    <Position X="29.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAAAABAAACAAAAAEAAAACAAAAAAAAEAAAAAABAQ=</HashCode>
+      <FileName>Operation\Valid\QuadtreeNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.RepeatedPointTester" Collapsed="true">
+    <Position X="40.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAACAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Operation\Valid\RepeatedPointTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.SimpleNestedRingTester" Collapsed="true">
+    <Position X="50.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAAAABAAACAAAAAAAAAACAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Operation\Valid\SimpleNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.SweeplineNestedRingTester" Collapsed="true">
+    <Position X="28" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAAAABAAACAAAAAEAEAACAAAAEAAAAAAAAAADAA=</HashCode>
+      <FileName>Operation\Valid\SweeplineNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Valid.TopologyValidationError" Collapsed="true">
+    <Position X="42" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAABAAEAAAAAAAAAAACAEAAAgAAIAAAAAA=</HashCode>
+      <FileName>Operation\Valid\TopologyValidationError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.Algorithm.ConnectedSubgraphFinder" Collapsed="true">
+    <Position X="50.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAACAAABAAAA=</HashCode>
+      <FileName>Planargraph\Algorithm\ConnectedSubgraphFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.DirectedEdge" Collapsed="true">
+    <Position X="2" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAEAIAAEAABBREAgAQBAgEAEYABAAAgEAgAAFAAAA=</HashCode>
+      <FileName>Planargraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.DirectedEdgeStar" Collapsed="true">
+    <Position X="33.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAAAAAJBAQAAIABAAQAAAAIAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Planargraph\DirectedEdgeStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.Edge" Collapsed="true">
+    <Position X="6.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAgAIAABAA=</HashCode>
+      <FileName>Planargraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.GraphComponent" Collapsed="true">
+    <Position X="5.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAQiEAAABBAAAAAQAAAAAAAAAAAAAgABAAAAA=</HashCode>
+      <FileName>Planargraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.Node" Collapsed="true">
+    <Position X="9.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAgAAAABAAUAAAABAAQAAAAAEAAAQAgAEAAAAA=</HashCode>
+      <FileName>Planargraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.NodeMap" Collapsed="true">
+    <Position X="36.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAAAAhAQAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Planargraph\NodeMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.PlanarGraph" Collapsed="true">
+    <Position X="1.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgiCABAIAgAAAAAAAAhBAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Planargraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Planargraph.Subgraph" Collapsed="true">
+    <Position X="43.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAABAIAgAAAAAACAgBAAAAAAAAAAAAAAAAQQAAA=</HashCode>
+      <FileName>Planargraph\Subgraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Precision.CommonBits" Collapsed="true">
+    <Position X="40.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAEAUAAAQAAAAAAAgAAAAAAAAQAAACAA=</HashCode>
+      <FileName>Precision\CommonBits.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Precision.CommonBitsOp" Collapsed="true">
+    <Position X="42" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABgAABAAAAgBAQAAAAAAAAAAAAQAAQAA=</HashCode>
+      <FileName>Precision\CommonBitsOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Precision.CommonBitsRemover" Collapsed="true">
+    <Position X="43.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAAAAABAAAAAAAACAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Precision\CommonBitsRemover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Precision.EnhancedPrecisionOp" Collapsed="true">
+    <Position X="29.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAQAAAAAAAAAAAAQAAQAA=</HashCode>
+      <FileName>Precision\EnhancedPrecisionOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Precision.SimpleGeometryPrecisionReducer" Collapsed="true">
+    <Position X="49" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIggAAAAAAAAAAAAAAgAAAAQAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Precision\SimpleGeometryPrecisionReducer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.DouglasPeuckerLineSimplifier" Collapsed="true">
+    <Position X="38.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAEAAAAQAAAAAAAAAAEABAAgAAAAAACA=</HashCode>
+      <FileName>Simplify\DouglasPeuckerLineSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.DouglasPeuckerSimplifier" Collapsed="true">
+    <Position X="40.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABEAAAAAAAAAAAAAAAAAAAAAABAAAIAAAAACA=</HashCode>
+      <FileName>Simplify\DouglasPeuckerSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.LineSegmentIndex" Collapsed="true">
+    <Position X="52.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAABAAA=</HashCode>
+      <FileName>Simplify\LineSegmentIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.LineSegmentVisitor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAgAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Simplify\LineSegmentIndex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.TaggedLineSegment" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAEAAAABAAA=</HashCode>
+      <FileName>Simplify\TaggedLineSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.TaggedLinesSimplifier" Collapsed="true">
+    <Position X="31.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAABAAAAAAAAAAAAAAAAAAAABAABAAAAAAAAACA=</HashCode>
+      <FileName>Simplify\TaggedLinesSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.TaggedLineString" Collapsed="true">
+    <Position X="33.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACIAAAAAABAAAAJAECAwAAAACAAAAAAAIACggABgAA=</HashCode>
+      <FileName>Simplify\TaggedLineString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.TaggedLineStringSimplifier" Collapsed="true">
+    <Position X="35" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEiAAABAAAiAAAAAAAABAAoQAIQBAARAAgAAAAAACA=</HashCode>
+      <FileName>Simplify\TaggedLineStringSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Simplify.TopologyPreservingSimplifier" Collapsed="true">
+    <Position X="40.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABEAAAAAAAAAAQAAAAAAAAAAEAAAAIAAAAACA=</HashCode>
+      <FileName>Simplify\TopologyPreservingSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.DictionarySet" Collapsed="true">
+    <Position X="4.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAUAAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.HashedSet" Collapsed="true">
+    <Position X="1" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.HybridSet" Collapsed="true">
+    <Position X="3.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.ImmutableSet" Collapsed="true">
+    <Position X="10" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJABAAAAAbAABAAAAAEFAQBAIAAAAEAIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ImmutableSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.ListSet" Collapsed="true">
+    <Position X="5.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ListSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Set" Collapsed="true">
+    <Position X="6.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAATAABAAAAEGFAQBAAIAAIEAIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.SortedSet" Collapsed="true">
+    <Position X="7.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.SynchronizedSet" Collapsed="true">
+    <Position X="12.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASACBAAAAAAFAQAAIAAAAEAIBAAAABQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\SynchronizedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.CollectionWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="17.75" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIAAAAAAAIAAAAQAAAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\CollectionWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.DictionarySet&lt;T&gt;" Collapsed="true">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAUAAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.EnumerableWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="16.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAwAAAAAAAAAAAAIAEAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.HashedSet&lt;T&gt;" Collapsed="true">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.HybridSet&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.ImmutableSet&lt;T&gt;" Collapsed="true">
+    <Position X="9.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJABAAQAAbAABAQAAAEFAQBAIAAAAEAIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ImmutableSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.ListSet&lt;T&gt;" Collapsed="true">
+    <Position X="0.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ListSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.ListWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="15.5" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAEAAAAAAAAAQCAAABAQAAAAAAAAACAAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ListWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.Set&lt;T&gt;" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAQAACITAQBCYACEGFAcBIBIAAIFEIDAAASFQIRA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.SetWrapper&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAARAABAYAAAEBAQBICAAAAkEIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\SetWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Iesi_NTS.Collections.Generic.SortedSet&lt;T&gt;" Collapsed="true">
+    <Position X="3" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.BufferedTextReader" Collapsed="true">
+    <Position X="49" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAABAACCQAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\BufferedTextReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.CharBuffer" Collapsed="true">
+    <Position X="35" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAABgAACAAAECAIABABCAAAAAQAAAAJAAABAAEI=</HashCode>
+      <FileName>Utilities\RToolsUtil\CharBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.Finder" Collapsed="true">
+    <Position X="36.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Finder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.Logger" Collapsed="true">
+    <Position X="38.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYAIAAAACAAAAAgEAAEAAkAAAEMAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Logger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.Opts" Collapsed="true">
+    <Position X="52.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkQgAAAAAAEACyAAAAAACQAAAABAAAAAAkAAAAJEAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Opts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.ParseUtil" Collapsed="true">
+    <Position X="33.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAYAAAACAAAAhCAEAAAACAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\ParseUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.SoftwarePackage" Collapsed="true">
+    <Position X="36.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAADAAEAIAQAAQAEAAEACAQAAAAAAAAIAI=</HashCode>
+      <FileName>Utilities\RToolsUtil\SoftwarePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StreamTokenizerUntermException" Collapsed="true">
+    <Position X="11.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StreamTokenizerUntermQuoteException" Collapsed="true">
+    <Position X="10.5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StreamTokenizerUntermCommentException" Collapsed="true">
+    <Position X="12.75" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StreamTokenizerSettings" Collapsed="true">
+    <Position X="42" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAQUQQEQQEAABEIABASAUCAChBEAAAAEAQAEAAQEBA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StreamTokenizer" Collapsed="true">
+    <Position X="40.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AANCAAABBAAAAQAAUAAICRAATICAABAAgsEAAAAAACA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.Token" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAEIAAwgAAIAAAACAAEAIAgAQAAgAAAAjA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.EolToken" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.EofToken" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.StringToken" Collapsed="true">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.WordToken" Collapsed="true">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.QuoteToken" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.CommentToken" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.WhitespaceToken" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.CharToken" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.FloatToken" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAACAAAAIAgAQAIAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RTools_NTS.Util.IntToken" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEgAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GisSharpBlog.NetTopologySuite.Geometries.CoordinateStruct" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEgAAAwAAAAAAAgIBAAABgAQAAYjE=</HashCode>
+      <FileName>Geometries\CoordinateStruct.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GisSharpBlog.NetTopologySuite.IO.RowStructure" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAAACAAAAAAgAAAAAAAAABAEIAAAAERAAAIAGAA=</HashCode>
+      <FileName>IO\GeoTools\Dbase\RowStructure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="Iesi_NTS.Collections.Generic.EnumeratorWrapper&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAADAAAAACAAAAAAAAAAAAAoAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\EnumeratorWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Algorithm.IPointInRing" Collapsed="true">
+    <Position X="36.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\IPointInRing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Features.IAttributesTable" Collapsed="true">
+    <Position X="28" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAACAAIAAQAAAAAAAEACABAAAEAAAA=</HashCode>
+      <FileName>Features\IAttributesTable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Index.IIndexVisitor" Collapsed="true">
+    <Position X="31.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\IIndexVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Index.IItemVisitor" Collapsed="true">
+    <Position X="33.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\IItemVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Index.ISpatialIndex" Collapsed="true">
+    <Position X="43.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\ISpatialIndex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Index.Strtree.IBoundable" Collapsed="true">
+    <Position X="29.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Index\Strtree\IBoundable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Index.Sweepline.ISweepLineOverlapAction" Collapsed="true">
+    <Position X="45.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\ISweepLineOverlapAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Noding.INoder" Collapsed="true">
+    <Position X="35" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\INoder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GisSharpBlog.NetTopologySuite.Noding.ISegmentIntersector" Collapsed="true">
+    <Position X="38.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\ISegmentIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Iesi_NTS.Collections.ISet" Collapsed="true">
+    <Position X="40.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAARAAAAAAAAEBAABAAAAAAEAIBAAAQBQAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ISet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Iesi_NTS.Collections.Generic.ISet&lt;T&gt;" Collapsed="true">
+    <Position X="42" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAARAAAAAAAAEBAABAAAAAAEAIBAAAQBQABA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ISet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Positions" Collapsed="true">
+    <Position X="33.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAACAAAIA=</HashCode>
+      <FileName>GeometriesGraph\Position.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.Index.Sweepline.SweepLineEvents" Collapsed="true">
+    <Position X="40.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.IO.PostGisGeometryType" Collapsed="true">
+    <Position X="35" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAgAAAgAQAAAAAAAAAAAAAAAABAAACACA=</HashCode>
+      <FileName>IO\PostGisGeometryType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.IO.ShapeGeometryType" Collapsed="true">
+    <Position X="36.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAEAEAAEhAAAoAAAAAABAAAACAAAAAAAAAACICA=</HashCode>
+      <FileName>IO\ShapeGeometryType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.IO.ByteOrder" Collapsed="true">
+    <Position X="28" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\WKBGeometryTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.IO.WKBGeometryTypes" Collapsed="true">
+    <Position X="47.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAIEAyEBAABAAAAgAAQAIAIgYQAJAAAQAAAACAIA=</HashCode>
+      <FileName>IO\WKBGeometryTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.Utilities.TokenType" Collapsed="true">
+    <Position X="42" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAEAAAAAABAAAAAAAAQAAAAAACAA=</HashCode>
+      <FileName>IO\GeoTools\TokenType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.Noding.Octants" Collapsed="true">
+    <Position X="31.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAEAIAAAQAEAAAAAAoAAAgAAIA=</HashCode>
+      <FileName>Noding\Octant.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.Operation.Overlay.SpatialFunction" Collapsed="true">
+    <Position X="38.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Operation\Overlay\OverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GisSharpBlog.NetTopologySuite.Operation.Valid.TopologyValidationErrors" Collapsed="true">
+    <Position X="43.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACCQAAAAIQAAAABAAAAACAAAAIAAEQEAAAAQAAA=</HashCode>
+      <FileName>Operation\Valid\TopologyValidationError.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RTools_NTS.Util.CharTypeBits" Collapsed="true">
+    <Position X="29.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAEAAAAAAAAAAAAAAEAhAAAAAAAAQAAAACAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\StreamTokenizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RTools_NTS.Util.VerbosityLevel" Collapsed="true">
+    <Position X="45.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYAAAAAAAAAAAAAAAAEAAAAAAEAAAAA=</HashCode>
+      <FileName>Utilities\RToolsUtil\VerbosityLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

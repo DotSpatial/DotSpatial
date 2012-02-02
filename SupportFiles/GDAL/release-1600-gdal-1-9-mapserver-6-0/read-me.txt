@@ -1,0 +1,9 @@
+Run SdkShell.bat to set up the environment for using the commandline tools
+
+The packages are maintained by Tamas Szekeres, if you require further help, send me a mail to the following address: szekerest@gmail.com 
+
+
+Licensing Information
+
+The provided files can be used according to the licensing terms of the individual libraries. Please refer to the license files of the libraries for more detailed information.
+

@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="_dbxX.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Top, Left, Right</value>
+	</data>
+	<assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="_dbxY.TabIndex" type="System.Int32, mscorlib">
+		<value>7</value>
+	</data>
+	<data name="_btnClose.ToolTip" xml:space="preserve">
+    <value>Close the form without making changes</value>
+  </data>
+	<assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<data name="_dbxZ.Size" type="System.Drawing.Size, System.Drawing">
+		<value>208, 27</value>
+	</data>
+	<data name="&gt;&gt;_dbxY.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+	<data name="_dbxY.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 36</value>
+	</data>
+	<data name="_dbxY.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Top, Left, Right</value>
+	</data>
+	<data name="_dbxX.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 3</value>
+	</data>
+	<data name="_btnOk.TabIndex" type="System.Int32, mscorlib">
+		<value>4</value>
+	</data>
+	<data name="_btnOk.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+	<data name="_btnOk.Location" type="System.Drawing.Point, System.Drawing">
+		<value>182, 139</value>
+	</data>
+	<data name="&gt;&gt;_dbxY.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;_ttHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;_ttHelp.Name" xml:space="preserve">
+    <value>_ttHelp</value>
+  </data>
+	<data name="_btnClose.Location" type="System.Drawing.Point, System.Drawing">
+		<value>131, 139</value>
+	</data>
+	<data name="_dbxZ.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 69</value>
+	</data>
+	<data name="_dbxZ.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Top, Left, Right</value>
+	</data>
+	<data name="&gt;&gt;_dbxZ.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Bottom, Right</value>
+	</data>
+	<data name="&gt;&gt;_dbxZ.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;_dbxM.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="$this.Text" xml:space="preserve">
+    <value>Coordinate Dialog</value>
+  </data>
+	<data name="_dbxM.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 102</value>
+	</data>
+	<data name="_dbxX.Size" type="System.Drawing.Size, System.Drawing">
+		<value>208, 27</value>
+	</data>
+	<data name="&gt;&gt;_btnClose.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+	<data name="&gt;&gt;_btnOk.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+	<data name="_btnOk.ToolTip" xml:space="preserve">
+    <value>Press this to accept the values listed on this dialog</value>
+  </data>
+	<data name="_dbxZ.TabIndex" type="System.Int32, mscorlib">
+		<value>8</value>
+	</data>
+	<data name="&gt;&gt;_btnOk.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="_btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+	<data name="_dbxM.Size" type="System.Drawing.Size, System.Drawing">
+		<value>208, 27</value>
+	</data>
+	<data name="_dbxY.Size" type="System.Drawing.Size, System.Drawing">
+		<value>208, 27</value>
+	</data>
+	<data name="&gt;&gt;_dbxM.Type" xml:space="preserve">
+    <value>MapWindow.Components.DoubleBox, MapWindow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ca60e6823c3a6ee5</value>
+  </data>
+	<data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+		<value>144, 215</value>
+	</data>
+	<data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+		<value>232, 181</value>
+	</data>
+	<data name="&gt;&gt;_dbxM.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="&gt;&gt;_dbxX.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+	<data name="_btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Bottom, Right</value>
+	</data>
+	<data name="&gt;&gt;_dbxX.Name" xml:space="preserve">
+    <value>_dbxX</value>
+  </data>
+	<data name="_dbxM.TabIndex" type="System.Int32, mscorlib">
+		<value>9</value>
+	</data>
+	<data name="&gt;&gt;_dbxX.Type" xml:space="preserve">
+    <value>MapWindow.Components.DoubleBox, MapWindow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ca60e6823c3a6ee5</value>
+  </data>
+	<data name="_dbxM.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Top, Left, Right</value>
+	</data>
+	<data name="&gt;&gt;_dbxY.Name" xml:space="preserve">
+    <value>_dbxY</value>
+  </data>
+	<data name="&gt;&gt;_dbxY.Type" xml:space="preserve">
+    <value>MapWindow.Components.DoubleBox, MapWindow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ca60e6823c3a6ee5</value>
+  </data>
+	<data name="_dbxX.TabIndex" type="System.Int32, mscorlib">
+		<value>6</value>
+	</data>
+	<data name="&gt;&gt;_dbxZ.Name" xml:space="preserve">
+    <value>_dbxZ</value>
+  </data>
+	<data name="&gt;&gt;_dbxZ.Type" xml:space="preserve">
+    <value>MapWindow.Components.DoubleBox, MapWindow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ca60e6823c3a6ee5</value>
+  </data>
+	<data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+		<value>CenterParent</value>
+	</data>
+	<data name="_btnClose.TabIndex" type="System.Int32, mscorlib">
+		<value>5</value>
+	</data>
+	<data name="_btnClose.Size" type="System.Drawing.Size, System.Drawing">
+		<value>45, 28</value>
+	</data>
+	<data name="_btnOk.Size" type="System.Drawing.Size, System.Drawing">
+		<value>38, 28</value>
+	</data>
+	<data name="&gt;&gt;_dbxX.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+		<value>6, 13</value>
+	</data>
+	<data name="&gt;&gt;_btnOk.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;_btnOk.Name" xml:space="preserve">
+    <value>_btnOk</value>
+  </data>
+	<data name="&gt;&gt;_btnClose.Name" xml:space="preserve">
+    <value>_btnClose</value>
+  </data>
+	<data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>CoordinateDialog</value>
+  </data>
+	<data name="&gt;&gt;_btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;_btnClose.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;_dbxM.Name" xml:space="preserve">
+    <value>_dbxM</value>
+  </data>
+	<metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>True</value>
+	</metadata>
+	<metadata name="_ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+		<value>17, 17</value>
+	</metadata>
+	<metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>zh-cn</value>
+	</metadata>
+</root>

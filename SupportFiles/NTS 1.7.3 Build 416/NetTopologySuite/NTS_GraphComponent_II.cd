@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Edge">
+    <Position X="23.5" Y="26.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAABAAKAAEQhACEgAAAGAQAMAgkAMAgIBAAIIEESjA=</HashCode>
+      <FileName>GeometriesGraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.GraphComponent">
+    <Position X="21.75" Y="20.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAUgAABBDAQgBAQEAAUAACAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>GeometriesGraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.Operation.Relate.RelateNode">
+    <Position X="20.75" Y="31.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GisSharpBlog.NetTopologySuite.GeometriesGraph.Node">
+    <Position X="20.5" Y="26.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAJAgAAAAIAEBACEAAAAAAAAAABBAAAAIAAAAAEAAAA=</HashCode>
+      <FileName>GeometriesGraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
