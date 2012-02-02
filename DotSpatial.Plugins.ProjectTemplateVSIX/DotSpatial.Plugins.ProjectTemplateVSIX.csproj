@@ -17,6 +17,10 @@
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,28 +47,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Controls.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Controls.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Data.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Data.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Extensions.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Extensions.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Projections.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Modeling.Forms.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Symbology.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Projections.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Topology.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Serialization.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Modeling.Forms.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Symbology.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Packages\DotSpatial.Serialization.0.12.1.12.nupkg">
+    <Content Include="Packages\DotSpatial.Topology.1.0.0.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="source.extension.vsixmanifest">
