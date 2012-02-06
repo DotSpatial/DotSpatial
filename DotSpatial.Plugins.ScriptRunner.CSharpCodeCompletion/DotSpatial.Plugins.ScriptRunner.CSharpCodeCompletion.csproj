@@ -68,25 +68,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\Bin\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Bin64\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>Full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>..\Bin64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>None</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <DocumentationFile>..\Bin64\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.xml</DocumentationFile>
+    <OutputPath>..\Release\bin\Plugins\ScriptRunner\</OutputPath>
+    <DocumentationFile>..\Release\bin\Plugins\ScriptRunner\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,13 +81,13 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\Release\bin\Plugins\</OutputPath>
+    <OutputPath>..\Release\bin\Plugins\ScriptRunner\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <FileAlignment>4096</FileAlignment>
     <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <DocumentationFile>..\Release\bin\Plugins\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.xml</DocumentationFile>
+    <DocumentationFile>..\Release\bin\Plugins\ScriptRunner\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
