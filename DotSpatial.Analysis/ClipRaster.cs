@@ -51,7 +51,8 @@ namespace DotSpatial.Analysis
         /// <param name="input">The input raster object</param>
         /// <param name="outputFileName">the output raster file name</param>
         /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation</param>
-        /// <remarks>We assume there is only one part in the polygon. Traverses the grid with a vertical scan line from left to right.</remarks>
+        /// <remarks>We assume there is only one part in the polygon. Traverses the raster with a vertical scan line from left to right.</remarks>
+        /// <remarks>This method doesn't complete when the polygon is not completely within the raster.</remarks>
         /// <returns></returns>
         public static IRaster ClipRasterWithPolygon(IFeature polygon, IRaster input, string outputFileName,
                                                     ICancelProgressHandler cancelProgressHandler = null)
