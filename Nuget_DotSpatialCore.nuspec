@@ -23,10 +23,9 @@
   </metadata>
   <files>
       <file src="Release\bin\DotSpatial*.*" target="lib" />
-      <file src="Release\bin\Ionic.Zip.dll" target="lib" />
-      <file src="Release\bin\zh-CN\**" target="lib\zh-CN" />
-      <file src="Release\bin\en-US\**" target="lib\en-US" />
-      <file src="Release\bin\cs\**" target="lib\cs" />
+      <!-- <file src="Release\bin\zh-CN\**" target="lib\zh-CN" /> -->
+      <!-- <file src="Release\bin\en-US\**" target="lib\en-US" /> -->
+      <!-- <file src="Release\bin\cs\**" target="lib\cs" /> -->
    <!--   <file src="Release\bin\apps\**" target="lib\apps" /> -->
     </files>
 </package>
