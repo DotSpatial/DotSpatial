@@ -35,13 +35,13 @@ namespace DotSpatial.Controls
     public class FeatureIdentifier : Form
     {
         private Extent _activeRegion;
-        private Dictionary<string, string> _featureIDFields;
+        private readonly Dictionary<string, string> _featureIDFields;
         private ListBoxDialog _lstBox = new ListBoxDialog();
-        private MenuItem _mnuAssignIdField;
-        private MenuItem _mnuSelectMenu;
+        private readonly MenuItem _mnuAssignIdField;
+        private readonly MenuItem _mnuSelectMenu;
         private string _previouslySelectedLayerName;
         private DataGridView dgvAttributes;
-        private ContextMenu mnuTreeContext;
+        private readonly ContextMenu mnuTreeContext;
         private SplitContainer splitContainer1;
         private TreeView treFeatures;
 
@@ -72,44 +72,44 @@ namespace DotSpatial.Controls
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // splitContainer1
-            //
+            // 
             resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.Name = "splitContainer1";
-            //
+            // 
             // splitContainer1.Panel1
-            //
+            // 
             this.splitContainer1.Panel1.Controls.Add(this.treFeatures);
-            //
+            // 
             // splitContainer1.Panel2
-            //
+            // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvAttributes);
-            //
+            // 
             // treFeatures
-            //
+            // 
             resources.ApplyResources(this.treFeatures, "treFeatures");
             this.treFeatures.Name = "treFeatures";
             this.treFeatures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treFeatures_AfterSelect);
-            //
+            // 
             // dgvAttributes
-            //
+            // 
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             resources.ApplyResources(this.dgvAttributes, "dgvAttributes");
             this.dgvAttributes.Name = "dgvAttributes";
-            //
+            // 
             // FeatureIdentifier
-            //
+            // 
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.splitContainer1);
             this.Name = "FeatureIdentifier";
-            this.TopMost = true;
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -126,9 +126,9 @@ namespace DotSpatial.Controls
             mnuTreeContext = new ContextMenu();
             _mnuSelectMenu = new MenuItem("Select Feature");
             _mnuSelectMenu.Click += selectMenu_Click;
+            // The "ID Field" seems more like a display caption.
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
-            //mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
 
             _featureIDFields = new Dictionary<string, string>();
         }
@@ -187,25 +187,30 @@ namespace DotSpatial.Controls
 
         private void treFeatures_MouseUp(object sender, MouseEventArgs e)
         {
+            // Create a customized context menu on right click in the tree.
             if (e.Button == MouseButtons.Right)
             {
                 TreeNode clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
-                IFeature f = clickedNode.Tag as IFeature;
-                if (f != null)
+                if (clickedNode != null)
                 {
-                    treFeatures.SelectedNode = clickedNode;
-                    mnuTreeContext.MenuItems.Clear();
-                    mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
-                    mnuTreeContext.Show(treFeatures, e.Location);
+                    IFeature f = clickedNode.Tag as IFeature;
+                    if (f != null)
+                    {
+                        treFeatures.SelectedNode = clickedNode;
+                        mnuTreeContext.MenuItems.Clear();
+                        mnuTreeContext.MenuItems.Add(_mnuSelectMenu);
+                        mnuTreeContext.Show(treFeatures, e.Location);
+                    }
+                    IFeatureLayer fl = clickedNode.Tag as IFeatureLayer;
+                    if (fl != null)
+                    {
+                        treFeatures.SelectedNode = clickedNode;
+                        mnuTreeContext.MenuItems.Clear();
+                        mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
+                        mnuTreeContext.Show(treFeatures, e.Location);
+                    }
                 }
-                IFeatureLayer fl = clickedNode.Tag as IFeatureLayer;
-                if (fl != null)
-                {
-                    treFeatures.SelectedNode = clickedNode;
-                    mnuTreeContext.MenuItems.Clear();
-                    mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
-                    mnuTreeContext.Show(treFeatures, e.Location);
-                }
+                
             }
         }
 
@@ -257,9 +262,11 @@ namespace DotSpatial.Controls
                     else
                         fid = feature.Fid;
 
-                    DataTable dt = layer.DataSet.GetAttributes(fid, 1);
-                    if ((dt != null) && (dt.Rows.Count > 0))
-                        dr = layer.DataSet.GetAttributes(fid, 1).Rows[0];
+                    using (DataTable dt = layer.DataSet.GetAttributes(fid, 1))
+                    {
+                        if ((dt != null) && (dt.Rows.Count > 0))
+                            dr = layer.DataSet.GetAttributes(fid, 1).Rows[0];
+                    }
 
                     feature.DataRow = dr;
                 }
@@ -275,6 +282,27 @@ namespace DotSpatial.Controls
                 TreeNode node = nodeLayer.Nodes.Add(name);
                 node.Tag = feature;
             }
+            treFeatures.ResumeLayout();
+        }
+
+        /// <summary>
+        /// Adds a new node to the tree view with the layer name
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        /// <param name="bounds">The bounds.</param>
+        internal void Add(IMapRasterLayer layer, Extent bounds)
+        {
+            treFeatures.SuspendLayout();
+
+            var index = layer.DataSet.ProjToCell(bounds.Center);
+            if (index == RcIndex.Empty) return;
+            var val = layer.DataSet.Value[index.Row, index.Column];
+
+            string text = String.Format("{0} = {1} ({2},{3})", layer.LegendText, val, index.Column, index.Row);
+            TreeNode nodeLayer = treFeatures.Nodes.Add(text);
+            nodeLayer.Tag = layer;
+            nodeLayer.Name = layer.LegendText;
+
             treFeatures.ResumeLayout();
         }
 
@@ -376,5 +404,6 @@ namespace DotSpatial.Controls
             e.Cancel = true;
             Hide();
         }
+
     }
 }

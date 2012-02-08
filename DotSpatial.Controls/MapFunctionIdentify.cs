@@ -90,7 +90,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    IMapFeatureLayer gfl = layer as IMapFeatureLayer;
+                    var gfl = layer as IMapFeatureLayer;
                     if (gfl != null)
                     {
                         if (gfl.DataSet.FeatureType == FeatureType.Polygon)
@@ -101,6 +101,12 @@ namespace DotSpatial.Controls
                         {
                             _frmFeatureIdentifier.Add(gfl, tolerant);
                         }
+                    }
+
+                    var rl = layer as IMapRasterLayer;
+                    if (rl != null)
+                    {
+                        _frmFeatureIdentifier.Add(rl, strict);
                     }
                 }
             }

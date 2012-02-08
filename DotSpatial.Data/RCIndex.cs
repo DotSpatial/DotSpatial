@@ -63,5 +63,39 @@ namespace DotSpatial.Data
         {
             return (Row == int.MinValue && Column == int.MinValue);
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(RcIndex a, RcIndex b)
+        {
+            // If both are null, or both are same instance, return true.
+            if (System.Object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // If one is null, but not both, return false.
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return a.Column == b.Column && a.Row == b.Row;
+        }
+
+        public static bool operator !=(RcIndex a, RcIndex b)
+        {
+            return !(a == b);
+        }
+
     }
 }
