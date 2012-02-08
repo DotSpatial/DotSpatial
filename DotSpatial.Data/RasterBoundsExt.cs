@@ -408,6 +408,12 @@ namespace DotSpatial.Data
             }
             int iRow = (int)Math.Round(rw);
             int iCol = (int)Math.Round(cl);
+
+            if (iRow < 0 || iCol < 0 || iRow >= bounds.NumRows || iCol >= bounds.NumColumns)
+            {
+                return RcIndex.Empty;
+            }
+
             return new RcIndex(iRow, iCol);
         }
 
