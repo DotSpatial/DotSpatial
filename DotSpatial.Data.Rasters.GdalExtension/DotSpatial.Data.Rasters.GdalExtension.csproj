@@ -70,8 +70,12 @@
     <Reference Include="gdal_csharp">
       <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="ogr_csharp, Version=1.0.4398.13656, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86" />
-    <Reference Include="osr_csharp, Version=1.0.4398.13656, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=x86" />
+    <Reference Include="ogr_csharp">
+      <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\ogr_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="osr_csharp">
+      <HintPath>..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\csharp\osr_csharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
