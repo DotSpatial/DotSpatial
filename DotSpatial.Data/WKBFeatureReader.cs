@@ -483,12 +483,14 @@ namespace DotSpatial.Data
                 if (iRing == 0)
                 {
                     // By shapefile standard, the shell should be clockwise
-                    if (IsCounterClockwise(coords)) ReverseCoords(coords);
+                    if (IsCounterClockwise(coords))
+                        coords = ReverseCoords(coords);
                 }
                 else
                 {
                     // By shapefile standard, the holes should be counter clockwise.
-                    if (!IsCounterClockwise(coords)) ReverseCoords(coords);
+                    if (!IsCounterClockwise(coords))
+                        coords = ReverseCoords(coords);
                 }
                 PartRange lPrt = new PartRange(FeatureType.Polygon);
                 lPrt.PartOffset = partOffset;
