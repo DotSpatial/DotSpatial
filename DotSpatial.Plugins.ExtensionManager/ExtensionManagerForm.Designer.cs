@@ -41,10 +41,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
             this.extensionDescription = new System.Windows.Forms.Label();
-            this.installButton = new System.Windows.Forms.Button();
+            this.uxInstall = new System.Windows.Forms.Button();
             this.uxPackages = new System.Windows.Forms.ListBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
+            this.uxUninstall = new System.Windows.Forms.Button();
+            this.uxUpdate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -55,14 +55,12 @@
             this.grpData.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabOnline.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabOnline);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -178,7 +176,9 @@
             // tabOnline
             // 
             this.tabOnline.Controls.Add(this.extensionDescription);
-            this.tabOnline.Controls.Add(this.installButton);
+            this.tabOnline.Controls.Add(this.uxUpdate);
+            this.tabOnline.Controls.Add(this.uxUninstall);
+            this.tabOnline.Controls.Add(this.uxInstall);
             this.tabOnline.Controls.Add(this.uxPackages);
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
             this.tabOnline.Name = "tabOnline";
@@ -195,16 +195,16 @@
             this.extensionDescription.Size = new System.Drawing.Size(245, 289);
             this.extensionDescription.TabIndex = 5;
             // 
-            // installButton
+            // uxInstall
             // 
-            this.installButton.Enabled = false;
-            this.installButton.Location = new System.Drawing.Point(331, 6);
-            this.installButton.Name = "installButton";
-            this.installButton.Size = new System.Drawing.Size(75, 23);
-            this.installButton.TabIndex = 3;
-            this.installButton.Text = "Install";
-            this.installButton.UseVisualStyleBackColor = true;
-            this.installButton.Click += new System.EventHandler(this.InstallButton_Click);
+            this.uxInstall.Enabled = false;
+            this.uxInstall.Location = new System.Drawing.Point(331, 6);
+            this.uxInstall.Name = "uxInstall";
+            this.uxInstall.Size = new System.Drawing.Size(75, 23);
+            this.uxInstall.TabIndex = 3;
+            this.uxInstall.Text = "Install";
+            this.uxInstall.UseVisualStyleBackColor = true;
+            this.uxInstall.Click += new System.EventHandler(this.InstallButton_Click);
             // 
             // uxPackages
             // 
@@ -216,24 +216,26 @@
             this.uxPackages.TabIndex = 2;
             this.uxPackages.SelectedValueChanged += new System.EventHandler(this.uxPackages_SelectedValueChanged);
             // 
-            // tabPage3
+            // uxUninstall
             // 
-            this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(576, 336);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Updates";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.uxUninstall.Enabled = false;
+            this.uxUninstall.Location = new System.Drawing.Point(412, 6);
+            this.uxUninstall.Name = "uxUninstall";
+            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
+            this.uxUninstall.TabIndex = 3;
+            this.uxUninstall.Text = "Uninstall";
+            this.uxUninstall.UseVisualStyleBackColor = true;
+            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
             // 
-            // label1
+            // uxUpdate
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(301, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "This planned feature will help keep your extensions up to date.";
+            this.uxUpdate.Enabled = false;
+            this.uxUpdate.Location = new System.Drawing.Point(493, 6);
+            this.uxUpdate.Name = "uxUpdate";
+            this.uxUpdate.Size = new System.Drawing.Size(75, 23);
+            this.uxUpdate.TabIndex = 3;
+            this.uxUpdate.Text = "Update";
+            this.uxUpdate.UseVisualStyleBackColor = true;
             // 
             // ExtensionManagerForm
             // 
@@ -255,8 +257,6 @@
             this.grpData.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -273,12 +273,12 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TabPage tabOnline;
-        private System.Windows.Forms.Button installButton;
+        private System.Windows.Forms.Button uxInstall;
         private System.Windows.Forms.ListBox uxPackages;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label extensionDescription;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button uxShowExtensionsFolder;
+        private System.Windows.Forms.Button uxUpdate;
+        private System.Windows.Forms.Button uxUninstall;
 
     }
 }

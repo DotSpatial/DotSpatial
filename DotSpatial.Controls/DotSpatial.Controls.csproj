@@ -60,6 +60,7 @@
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
     <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Extensions\PackageManager.cs" />
     <Compile Include="Extensions\ShowExtensionsDialog.cs" />
     <Compile Include="Extensions\AppManager.cs">
       <SubType>Component</SubType>
@@ -190,6 +191,11 @@
     <Compile Include="IMapRasterLayer.cs" />
     <Compile Include="MapRasterLayer.cs" />
     <Compile Include="ProjectChangeTracker.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializingEventArgs.cs" />
     <Compile Include="ShapefileLayerProvider.cs" />
@@ -352,8 +358,13 @@
     <EmbeddedResource Include="SpatialToolStrip.ico" />
     <EmbeddedResource Include="SpatialProgressBar.ico" />
     <EmbeddedResource Include="SpatialStatusStrip.ico" />
+    <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
     <None Include="package.nuspec" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\TextBox.ico" />
     <None Include="Resources\Separator.ico" />
     <None Include="Resources\Nud.ico" />

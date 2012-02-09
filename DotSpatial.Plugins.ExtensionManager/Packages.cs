@@ -15,11 +15,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         #region Constants and Fields
 
         private const string PackageSourceUrl = "http://www.myget.org/F/dotspatial/";
-
         private PackageManager packageManager;
-
         private IPackageRepository repo;
-
         private string repositoryLocation;
 
         #endregion
@@ -32,7 +29,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         public Packages()
         {
             repo = PackageRepositoryFactory.Default.CreateRepository(PackageSourceUrl);
-            repositoryLocation = Path.Combine(AppManager.AbsolutePathToExtensions, "Packages");
+            repositoryLocation = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
             packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(PackageSourceUrl), new PhysicalFileSystem(repositoryLocation));
         }
 

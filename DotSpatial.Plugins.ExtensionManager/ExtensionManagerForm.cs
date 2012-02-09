@@ -16,6 +16,7 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Extensions;
 using NuGet;
+using DotSpatial.Controls.Extensions;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -56,7 +57,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             if (uxPackages.SelectedItem != null)
             {
-                installButton.Enabled = false;
+                uxInstall.Enabled = false;
                 var pack = uxPackages.SelectedItem as IPackage;
 
                 // make a list of all the ext. that are deactivated, do the install, then activate everything,
@@ -95,6 +96,27 @@ namespace DotSpatial.Plugins.ExtensionManager
                                           UpdateDataProviders();
                                           App.ProgressHandler.Progress(null, 0, "Ready.");
                                       }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+
+        private void uxUninstall_Click(object sender, EventArgs e)
+        {
+            if (uxPackages.SelectedItem != null)
+            {
+                uxUninstall.Enabled = false;
+                var pack = uxPackages.SelectedItem as IPackage;
+
+                if (pack.Dependencies.Any())
+                {
+                    MessageBox.Show("This package has a dependency which should be uninstalled first: " + pack.Dependencies.First().Id);
+                    // todo: allow the user to uninstall all dependencies.
+                }
+                else
+                {
+                    App.MarkForUninstallation(pack.Id, GetPackageFolderName(pack));
+                    UpdateApps();
+                    UpdateDataProviders();
+                }
             }
         }
 
@@ -177,14 +199,31 @@ namespace DotSpatial.Plugins.ExtensionManager
                                   pack.Version,
                                   pack.Description);
 
+                // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
+                // this happens automatically for packages that are build with the packages.nuspec file.
                 if (App.Extensions.Where(t => t.Name == pack.Id).FirstOrDefault() == null)
-                    //todo: add an uninstall button.
-                    installButton.Enabled = true;
+                {
+                    uxInstall.Enabled = true;
+                    uxUninstall.Enabled = false;
+                }
                 else
-                    installButton.Enabled = false;
+                {
+                    uxInstall.Enabled = false;
+                    uxUninstall.Enabled = IsPackageUninstallable(pack);
+                }
             }
         }
 
+        private bool IsPackageUninstallable(IPackage pack)
+        {
+            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory, GetPackageFolderName(pack));
+            return Directory.Exists(path);
+        }
+
+        private static string GetPackageFolderName(IPackage pack)
+        {
+            return String.Format("{0}.{1}", pack.Id, pack.Version);
+        }
         /// <summary>
         /// STRs the cat.
         /// </summary>
@@ -208,5 +247,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         #endregion
+
     }
 }

@@ -40,6 +40,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Extensions;
 using DotSpatial.Extensions.SplashScreens;
+using DotSpatial.Controls.Extensions;
 
 namespace DotSpatial.Controls
 {
@@ -51,16 +52,14 @@ namespace DotSpatial.Controls
     public class AppManager : Component
     {
         #region Constants and Fields
-
         private const int SplashDirectoryMessageLimit = 50;
         private const string ExtensionsDirectory = "Extensions";
-        private static bool useBaseDirectoryForExtensionsDirectory;
+        public const string PackageDirectory = "Packages";
 
         private static ResourceManager resources;
 
         private AggregateCatalog _catalog;
         private IContainer _components;
-        private CompositionContainer _container;
         private ISplashScreenManager splashScreen;
 
         #endregion
@@ -134,16 +133,10 @@ namespace DotSpatial.Controls
         /// Gets or sets a value indicating whether extensions should be placed in AppDomain.CurrentDomain.BaseDirectory.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if extensions should be placed in AppDomain.CurrentDomain.BaseDirectory; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
+        /// <c>true</c> if extensions should be placed in AppDomain.CurrentDomain.BaseDirectory; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
+        /// This must be set before calling LoadExtensions();
         /// </value>
-        public static bool UseBaseDirectoryForExtensionsDirectory
-        {
-            get { return useBaseDirectoryForExtensionsDirectory; }
-            set
-            {
-                useBaseDirectoryForExtensionsDirectory = value;
-            }
-        }
+        public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
 
         /// <summary>
         /// Gets the catalog containing all off the know extensions. Add any additional extensions to Catalog.Catalogs.
@@ -162,17 +155,7 @@ namespace DotSpatial.Controls
         /// <value>
         /// The composition container.
         /// </value>
-        public CompositionContainer CompositionContainer
-        {
-            get
-            {
-                return _container;
-            }
-            set
-            {
-                _container = value;
-            }
-        }
+        public CompositionContainer CompositionContainer { get; set; }
 
         /// <summary>
         /// Gets or sets the list of string paths (relative to this one) to search for plugins.
@@ -314,12 +297,20 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Activates the extensions.
+        /// Activates the extensions. This should be called only once.
         /// </summary>
         public virtual void LoadExtensions()
         {
             if (DesignMode)
                 return;
+
+            if (Extensions.Any())
+            {
+                throw new InvalidOperationException("LoadExtensions() should only be called once. Subsequent calls should be made to RefreshExtensions(). ");
+            }
+
+            // We need to uninstall any outstanding extensions before loading ...
+            PackageManager.DeleteUninstalledPackages();
 
             splashScreen = SplashScreenHelper.GetSplashScreenManager();
 
@@ -328,12 +319,12 @@ namespace DotSpatial.Controls
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             _catalog = GetCatalog();
 
-            _container = new CompositionContainer(_catalog);
+            CompositionContainer = new CompositionContainer(_catalog);
 
             try
             {
                 IDataManager dataManager = DataManager.DefaultDataManager;
-                _container.ComposeParts(this, dataManager, this.SerializationManager);
+                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
             }
             catch (CompositionException compositionException)
             {
@@ -371,7 +362,7 @@ namespace DotSpatial.Controls
             var knownExtensions = new[] { "dll", "exe" };
 
             string assemblyName = args.Name.Split(',').First();
-            var packagesFolder = Path.Combine(AbsolutePathToExtensions, "Packages");
+            var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
             if (!Directory.Exists(packagesFolder))
                 return null;
 
@@ -526,11 +517,11 @@ namespace DotSpatial.Controls
 
         private T GetRequiredImport<T>() where T : class
         {
-            T import = _container.GetExportedValueOrDefault<T>();
+            T import = CompositionContainer.GetExportedValueOrDefault<T>();
 
             if (import == default(T))
             {
-                int importCount = _container.GetExportedValues<T>().Count();
+                int importCount = CompositionContainer.GetExportedValues<T>().Count();
                 string extensionTypeName = typeof(T).Name;
                 if (importCount > 1)
                     MessageBox.Show(String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount));
