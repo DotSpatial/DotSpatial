@@ -41,10 +41,10 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
             this.extensionDescription = new System.Windows.Forms.Label();
+            this.uxUpdate = new System.Windows.Forms.Button();
+            this.uxUninstall = new System.Windows.Forms.Button();
             this.uxInstall = new System.Windows.Forms.Button();
             this.uxPackages = new System.Windows.Forms.ListBox();
-            this.uxUninstall = new System.Windows.Forms.Button();
-            this.uxUpdate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -195,6 +195,28 @@
             this.extensionDescription.Size = new System.Drawing.Size(245, 289);
             this.extensionDescription.TabIndex = 5;
             // 
+            // uxUpdate
+            // 
+            this.uxUpdate.Enabled = false;
+            this.uxUpdate.Location = new System.Drawing.Point(493, 6);
+            this.uxUpdate.Name = "uxUpdate";
+            this.uxUpdate.Size = new System.Drawing.Size(75, 23);
+            this.uxUpdate.TabIndex = 3;
+            this.uxUpdate.Text = "Update";
+            this.uxUpdate.UseVisualStyleBackColor = true;
+            this.uxUpdate.Click += new System.EventHandler(this.uxUpdate_Click);
+            // 
+            // uxUninstall
+            // 
+            this.uxUninstall.Enabled = false;
+            this.uxUninstall.Location = new System.Drawing.Point(412, 6);
+            this.uxUninstall.Name = "uxUninstall";
+            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
+            this.uxUninstall.TabIndex = 3;
+            this.uxUninstall.Text = "Uninstall";
+            this.uxUninstall.UseVisualStyleBackColor = true;
+            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
+            // 
             // uxInstall
             // 
             this.uxInstall.Enabled = false;
@@ -215,27 +237,6 @@
             this.uxPackages.Size = new System.Drawing.Size(319, 330);
             this.uxPackages.TabIndex = 2;
             this.uxPackages.SelectedValueChanged += new System.EventHandler(this.uxPackages_SelectedValueChanged);
-            // 
-            // uxUninstall
-            // 
-            this.uxUninstall.Enabled = false;
-            this.uxUninstall.Location = new System.Drawing.Point(412, 6);
-            this.uxUninstall.Name = "uxUninstall";
-            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
-            this.uxUninstall.TabIndex = 3;
-            this.uxUninstall.Text = "Uninstall";
-            this.uxUninstall.UseVisualStyleBackColor = true;
-            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
-            // 
-            // uxUpdate
-            // 
-            this.uxUpdate.Enabled = false;
-            this.uxUpdate.Location = new System.Drawing.Point(493, 6);
-            this.uxUpdate.Name = "uxUpdate";
-            this.uxUpdate.Size = new System.Drawing.Size(75, 23);
-            this.uxUpdate.TabIndex = 3;
-            this.uxUpdate.Text = "Update";
-            this.uxUpdate.UseVisualStyleBackColor = true;
             // 
             // ExtensionManagerForm
             // 

@@ -17,6 +17,9 @@ using DotSpatial.Data;
 using DotSpatial.Extensions;
 using NuGet;
 using DotSpatial.Controls.Extensions;
+using System.Reflection;
+using System.Security.Permissions;
+using System.Security;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -113,7 +116,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 else
                 {
-                    App.MarkForUninstallation(pack.Id, GetPackageFolderName(pack));
+                    App.EnsureDeactivated(pack.Id);
+                    App.MarkPackageForRemoval(GetPackageFolderName(pack));
                     UpdateApps();
                     UpdateDataProviders();
                 }
@@ -205,19 +209,58 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     uxInstall.Enabled = true;
                     uxUninstall.Enabled = false;
+                    uxUpdate.Enabled = false;
                 }
                 else
                 {
                     uxInstall.Enabled = false;
-                    uxUninstall.Enabled = IsPackageUninstallable(pack);
+                    uxUninstall.Enabled = IsPackageInstalled(pack);
+                    uxUpdate.Enabled = IsPackageUpdateable(pack);
                 }
             }
         }
 
-        private bool IsPackageUninstallable(IPackage pack)
+        private bool IsPackageUpdateable(IPackage pack)
+        {
+            // will we be able to uninstall?
+            var ext = App.GetExtension(pack.Id);
+            if (ext == null) return false;
+
+            string assemblyLocation = GetExtensionPath(ext);
+
+            // The original file may be in a different location than the extensions directory. During an update, the 
+            // original file will be deleted and the new package will be placed in the packages folder in the extensions
+            // directory.
+            FileIOPermission deletePermission = new FileIOPermission(FileIOPermissionAccess.Write, assemblyLocation);
+
+            try
+            {
+                deletePermission.Demand();
+            }
+            catch (SecurityException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static string GetExtensionPath(IExtension ext)
+        {
+            var assembly = Assembly.GetAssembly(ext.GetType());
+            return assembly.Location;
+        }
+
+        private bool IsPackageInstalled(IPackage pack)
+        {
+            string path = GetPackagePath(pack);
+            return Directory.Exists(path);
+        }
+
+        private static string GetPackagePath(IPackage pack)
         {
             string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory, GetPackageFolderName(pack));
-            return Directory.Exists(path);
+            return path;
         }
 
         private static string GetPackageFolderName(IPackage pack)
@@ -235,8 +278,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             return source.Aggregate(new StringBuilder(),
                                     (sb, i) => sb
-                                                   .Append(i.ToString())
-                                                   .Append(separator),
+                                                .Append(i.ToString())
+                                                .Append(separator),
                                     s => s.ToString());
         }
 
@@ -246,7 +289,48 @@ namespace DotSpatial.Plugins.ExtensionManager
                 Process.Start(AppManager.AbsolutePathToExtensions);
         }
 
+        private void uxUpdate_Click(object sender, EventArgs e)
+        {
+            var pack = uxPackages.SelectedItem as IPackage;
+            if (pack != null)
+            {
+                // deactivate the old version and mark for uninstall
+                var extension = App.EnsureDeactivated(pack.Id);
+
+                if (IsPackageInstalled(pack))
+                {
+                    App.MarkPackageForRemoval(GetPackagePath(pack));
+                }
+                else
+                {
+                    // todo: consider removing unneeded dependencies.
+                    App.MarkExtensionForRemoval(GetExtensionPath(extension));
+                }
+
+                App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
+
+                // get new version  
+                packages.Update(pack);
+
+                App.RefreshExtensions();
+
+                // Activate the extension(s) that was installed.
+                // it is difficult to determine which version is newest, so we go and look at the when the file was 
+                // placed on disk.
+                var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
+                if (newExtension != null)
+                {
+                    newExtension.Activate();
+                }
+
+                UpdateApps();
+                UpdateDataProviders();
+
+                App.ProgressHandler.Progress(null, 0, "Ready.");
+            }
+        }
         #endregion
+
 
     }
 }

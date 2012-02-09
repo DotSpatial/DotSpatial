@@ -27,12 +27,25 @@ namespace DotSpatial.Controls.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
-        public global::System.Collections.Specialized.StringCollection UninstalledExtensions {
+        public global::System.Collections.Specialized.StringCollection PackagesToRemove {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UninstalledExtensions"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["PackagesToRemove"]));
             }
             set {
-                this["UninstalledExtensions"] = value;
+                this["PackagesToRemove"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
+        public global::System.Collections.Specialized.StringCollection ExtensionsToRemove {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["ExtensionsToRemove"]));
+            }
+            set {
+                this["ExtensionsToRemove"] = value;
             }
         }
     }

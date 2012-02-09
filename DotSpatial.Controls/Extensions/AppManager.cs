@@ -222,6 +222,25 @@ namespace DotSpatial.Controls
         #region Public Methods
 
         /// <summary>
+        /// Gets the extension.
+        /// </summary>
+        /// <param name="extensionName">Name of the extension.</param>
+        /// <returns>Null if the extension is not present.</returns>
+        public IExtension GetExtension(string extensionName)
+        {
+            return Extensions.Where(t => t.Name == extensionName).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the extension.
+        /// </summary>
+        /// <param name="extensionName">Name of the extension.</param>
+        /// <returns>Null if the extension is not present.</returns>
+        public IExtension GetExtension(string extensionName, string version)
+        {
+            return Extensions.Where(t => t.Name == extensionName && t.Version == version).FirstOrDefault();
+        }
+        /// <summary>
         /// Activates the extensions passed in and deactivates the rest.
         /// If null is passed in, all extensions are deactivated.
         /// Only affects extensions where DeactivationAllowed is true.
@@ -310,7 +329,7 @@ namespace DotSpatial.Controls
             }
 
             // We need to uninstall any outstanding extensions before loading ...
-            PackageManager.DeleteUninstalledPackages();
+            PackageManager.RemovePendingPackagesAndExtensions();
 
             splashScreen = SplashScreenHelper.GetSplashScreenManager();
 

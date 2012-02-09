@@ -63,6 +63,11 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #region Public Methods
 
+        /// <summary>
+        /// Installs the specified package.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IPackage Install(string name)
         {
             IPackage package = Repo.FindPackage(name);
@@ -78,6 +83,16 @@ namespace DotSpatial.Plugins.ExtensionManager
             return package;
         }
 
+
+        /// <summary>
+        /// Updates the specified package and dependencies.
+        /// </summary>
+        /// <param name="package">The package.</param>
+        public void Update(IPackage package)
+        {
+            packageManager.UpdatePackage(package, true);
+        }
         #endregion
+
     }
 }
