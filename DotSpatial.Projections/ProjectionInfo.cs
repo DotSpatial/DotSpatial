@@ -1217,7 +1217,16 @@ namespace DotSpatial.Projections
             int iStart = esriString.IndexOf(@""",");
             Name = esriString.Substring(8, iStart - 8);
             int iEnd = esriString.IndexOf("PARAMETER");
-            string gcs = esriString.Substring(iStart + 1, iEnd - (iStart + 2));
+            string gcs;
+            if (iEnd != -1)
+            {
+                gcs = esriString.Substring(iStart + 1, iEnd - (iStart + 2));
+            }
+            else
+            {
+                // an odd ESRI projection string that doesn't have PARAMETER
+                gcs = esriString.Substring(iStart + 1);
+            }
             GeographicInfo.ParseEsriString(gcs);
 
             FalseEasting = GetParameter("False_Easting", esriString);
