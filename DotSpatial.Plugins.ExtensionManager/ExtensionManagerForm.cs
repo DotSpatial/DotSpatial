@@ -205,7 +205,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
-                if (App.Extensions.Where(t => t.Name == pack.Id).FirstOrDefault() == null)
+                if (App.GetExtension(pack.Id) == null)
                 {
                     uxInstall.Enabled = true;
                     uxUninstall.Enabled = false;

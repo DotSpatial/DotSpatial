@@ -226,9 +226,9 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="extensionName">Name of the extension.</param>
         /// <returns>Null if the extension is not present.</returns>
-        public IExtension GetExtension(string extensionName)
+        public IExtension GetExtension(string assemblyTitle)
         {
-            return Extensions.Where(t => t.Name == extensionName).FirstOrDefault();
+            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",")).FirstOrDefault();
         }
 
         /// <summary>
@@ -236,9 +236,9 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="extensionName">Name of the extension.</param>
         /// <returns>Null if the extension is not present.</returns>
-        public IExtension GetExtension(string extensionName, string version)
+        public IExtension GetExtension(string assemblyTitle, string version)
         {
-            return Extensions.Where(t => t.Name == extensionName && t.Version == version).FirstOrDefault();
+            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version).FirstOrDefault();
         }
         /// <summary>
         /// Activates the extensions passed in and deactivates the rest.
