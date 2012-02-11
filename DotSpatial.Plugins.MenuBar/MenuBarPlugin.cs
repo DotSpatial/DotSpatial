@@ -24,12 +24,8 @@ namespace DotSpatial.Plugins.MenuBar
         private const string FileMenuKey = HeaderControl.ApplicationMenuKey;
         private const string HomeMenuKey = HeaderControl.HomeRootItemKey;
 
-        private readonly List<Extent> _previousExtents = new List<Extent>();
-
         private SimpleActionItem _ZoomNext;
         private SimpleActionItem _ZoomPrevious;
-        private int _currentExtentId;
-        private bool _manualExtentsChange;
 
         #endregion
 
@@ -122,28 +118,9 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
         {
-            IMapFrame mapFrame = sender as IMapFrame;
-
-            if (mapFrame == null)
-                return;
-            if (_previousExtents == null)
-                return;
-            if (mapFrame.Layers.Count == 0)
-                return;
-
-            if (_manualExtentsChange)
-            {
-                _manualExtentsChange = false; // reset the flag for the next extents change
-            }
-            else
-            {
-                // we're not flusing the forward history.
-                _previousExtents.Add(mapFrame.ViewExtents);
-                _currentExtentId = _previousExtents.Count - 1;
-            }
-
-            _ZoomNext.Enabled = _currentExtentId < (_previousExtents.Count - 1);
-            _ZoomPrevious.Enabled = (_previousExtents.Count > 0) && (_currentExtentId > 0);
+            var mapFrame = sender as MapFrame;
+            _ZoomNext.Enabled = mapFrame.CanZoomToNext();
+            _ZoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
         }
 
         private void NewProject_Click(object sender, EventArgs e)
@@ -310,16 +287,7 @@ namespace DotSpatial.Plugins.MenuBar
         /// </summary>
         private void ZoomNext_Click(object sender, EventArgs e)
         {
-            if (_currentExtentId < _previousExtents.Count - 1)
-            {
-                _currentExtentId += 1;
-                _manualExtentsChange = true;
-                App.Map.ViewExtents = _previousExtents[_currentExtentId];
-            }
-            else
-            {
-                _ZoomNext.Enabled = false;
-            }
+            App.Map.MapFrame.ZoomToNext();
         }
 
         /// <summary>
@@ -335,16 +303,7 @@ namespace DotSpatial.Plugins.MenuBar
         /// </summary>
         private void ZoomPrevious_Click(object sender, EventArgs e)
         {
-            if ((_previousExtents.Count > 0) && (_currentExtentId > 0))
-            {
-                _manualExtentsChange = true;
-                _currentExtentId -= 1;
-                App.Map.ViewExtents = _previousExtents[_currentExtentId];
-            }
-            else
-            {
-                _ZoomPrevious.Enabled = false;
-            }
+            App.Map.MapFrame.ZoomToPrevious();
         }
 
         /// <summary>

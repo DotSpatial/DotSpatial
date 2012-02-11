@@ -29,6 +29,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using DotSpatial.Controls.Core;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
@@ -89,6 +90,10 @@ namespace DotSpatial.Controls
         private Rectangle _view;
         private int _width;
 
+        private bool _isZoomingNextOrPrevious;
+        private readonly LimitedStack<Extent> _previousExtents = new LimitedStack<Extent>();
+        private LimitedStack<Extent> _nextExtents = new LimitedStack<Extent>();
+        private Extent _lastExtent;
         #endregion Private Variables
 
         #region Constructors
@@ -362,6 +367,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public override IList<ILayer> GetLayers()
         {
+            if (_layers == null) return null;
             return _layers.Cast<ILayer>().ToList();
         }
 
@@ -576,11 +582,69 @@ namespace DotSpatial.Controls
             ResetExtents();
         }
 
+        protected override void OnExtentsChanged(Extent ext)
+        {
+            if (_isZoomingNextOrPrevious)
+            {
+                // reset the flag for the next extents change
+                _isZoomingNextOrPrevious = false;
+            }
+            else
+            {
+                // Add the last extent to the stack
+                // We shouldn't really need to peek and compare, but found that the method
+                // Might be called too freqently in some case.
+                if (ViewExtents != _previousExtents.Peek())
+                {
+                    if (_lastExtent != null)
+                        _previousExtents.Push(_lastExtent);
+
+                    _lastExtent = ext;
+
+                    // clear the forward history.
+                    _nextExtents = new LimitedStack<Extent>();
+                }
+            }
+            base.OnExtentsChanged(ext);
+        }
+
+        /// <summary>
+        /// Determines whether this instance [can zoom to next]. Should not be called inside of
+        /// MapFrame_ViewExtentsChanged event.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance [can zoom to next]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool CanZoomToNext()
+        {
+            return _nextExtents.Count > 0;
+        }
+
+        /// <summary>
+        /// Determines whether this instance [can zoom to previous]. Should not be called inside of
+        /// MapFrame_ViewExtentsChanged event.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance [can zoom to previous]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool CanZoomToPrevious()
+        {
+            return _previousExtents.Count > 0;
+        }
+
         /// <summary>
         /// Zooms to the next extent
         /// </summary>
         public void ZoomToNext()
         {
+            if (_nextExtents.Count > 0)
+            {
+                _isZoomingNextOrPrevious = true;
+                Extent extent = _nextExtents.Pop();
+                _previousExtents.Push(ViewExtents);
+                base.ViewExtents = extent;
+                ResetBuffer();
+            }
         }
 
         /// <summary>
@@ -588,6 +652,14 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomToPrevious()
         {
+            if (_previousExtents.Count > 0)
+            {
+                _isZoomingNextOrPrevious = true;
+                Extent extent = _previousExtents.Pop();
+                _nextExtents.Push(ViewExtents);
+                base.ViewExtents = extent;
+                ResetBuffer();
+            }
         }
 
         #endregion Methods
@@ -1298,6 +1370,6 @@ namespace DotSpatial.Controls
         {
         }
 
-        #endregion
+        #endregion IMapFrame Members
     }
 }

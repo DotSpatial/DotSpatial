@@ -295,7 +295,11 @@ namespace DotSpatial.Symbology
             set
             {
                 _viewExtents = value;
-                OnExtentsChanged(_viewExtents);
+                _extentsChanged = true;
+                if (_extentChangedSuspensionCount == 0)
+                {
+                    OnExtentsChanged(_viewExtents);
+                }
             }
         }
 
@@ -341,7 +345,6 @@ namespace DotSpatial.Symbology
         {
             if (_extentChangedSuspensionCount > 0)
             {
-                _extentsChanged = true;
                 return;
             }
             if (ViewExtentsChanged != null) ViewExtentsChanged(this, new ExtentArgs(ext));
