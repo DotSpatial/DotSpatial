@@ -432,23 +432,27 @@ namespace DotSpatial.Projections
             if (_toWgs84.Length != 3 && _toWgs84.Length != 7)
                 throw new ArgumentOutOfRangeException("Unrecognized ToWgs84 array length. The number of elements in the array should be 3 or 7");
 
-            if (_toWgs84.Length < 7)
-                _datumtype = DatumType.Param3;
-            else
-                _datumtype = DatumType.Param7;
-
-            // checking to see if several blank values were included.
-            if (_toWgs84[3] == 0.0 && _toWgs84[4] == 0.0 &&
-               _toWgs84[5] == 0.0 && _toWgs84[6] == 0.0) _datumtype = DatumType.Param3;
-
-            if (_datumtype == DatumType.Param7)
+            if (_toWgs84.Length == 3)
             {
-                // Transform from arc seconds to radians
-                _toWgs84[3] *= SEC_TO_RAD;
-                _toWgs84[4] *= SEC_TO_RAD;
-                _toWgs84[5] *= SEC_TO_RAD;
-                // transform from parts per millon to scaling factor
-                _toWgs84[6] = (_toWgs84[6] / 1000000.0) + 1;
+                _datumtype = DatumType.Param3;
+            }
+            else
+            {
+                // checking to see if several blank values were included.
+                if (_toWgs84[3] == 0.0 && _toWgs84[4] == 0.0 && _toWgs84[5] == 0.0 && _toWgs84[6] == 0.0)
+                {
+                    _datumtype = DatumType.Param3;
+                }
+                else
+                {
+                    _datumtype = DatumType.Param7;
+                    // Transform from arc seconds to radians
+                    _toWgs84[3] *= SEC_TO_RAD;
+                    _toWgs84[4] *= SEC_TO_RAD;
+                    _toWgs84[5] *= SEC_TO_RAD;
+                    // transform from parts per millon to scaling factor
+                    _toWgs84[6] = (_toWgs84[6] / 1000000.0) + 1;
+                }
             }
         }
     }
