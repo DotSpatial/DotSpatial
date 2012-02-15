@@ -294,14 +294,21 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (_band != null)
             {
                 double min, max, mean, std;
-                _band.GetStatistics(0, 1, out min, out max, out mean, out std);
+                _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
+                CPLErr err = _band.GetStatistics(0, 1, out min, out max, out mean, out std);
                 Minimum = min;
                 Maximum = max;
                 Mean = mean;
                 StdDeviation = std;
+
+                // http://dotspatial.codeplex.com/workitem/22221
+                // GetStatistics didn't return anything, so try use the raster default method.
+                if (err != CPLErr.CE_None)
+                    base.GetStatistics();
             }
             else
             {
+                // ?? doesn't this mean the stats get overwritten several times.
                 foreach (IRaster raster in Bands)
                 {
                     raster.GetStatistics();
@@ -325,6 +332,47 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         #endregion
 
         #region Properties
+        public override double NoDataValue
+        {
+            get
+            {
+                return base.NoDataValue;
+            }
+            set
+            {
+                if (_band != null)
+                    _band.SetNoDataValue(value);
+            }
+        }
+        public override double Minimum
+        {
+            get
+            {
+                return base.Minimum;
+            }
+            set
+            {
+                base.Minimum = value;
+                if (_band != null)
+                    _band.SetStatistics(value, base.Maximum, base.Mean, base.StdDeviation);
+
+            }
+        }
+        public override double Maximum
+        {
+            get
+            {
+                return base.Maximum;
+            }
+            set
+            {
+                base.Maximum = value;
+                if (_band != null)
+                    _band.SetStatistics(base.Minimum, value, base.Mean, base.StdDeviation);
+
+            }
+        }
+
 
         #endregion
 
