@@ -1096,9 +1096,16 @@ namespace DotSpatial.Symbology
                         if (val != noData) resi.Add(val);
                     }
                 }
+                //int count = numRows * numCols; //this could failed if there's lot of noDataValues
+                long longcount = raster.NumValueCells;
                 int count = numRows * numCols;
+                if (count < int.MaxValue)
+                    count = (int)longcount;
+
                 for (int i = 0; i < sampleSize; i++)
                 {
+                    if (resi.Count == 0) break;
+                    
                     int indx = rnd.Next(count);
                     result.Add(resi[indx]);
                     resi.RemoveAt(indx);
