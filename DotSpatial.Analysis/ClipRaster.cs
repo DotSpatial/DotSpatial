@@ -87,8 +87,7 @@ namespace DotSpatial.Analysis
                 }
             }
 
-            // hack: the xCurrent plus one seems to do some magic
-            double xCurrent = GetXStart(polygon, input) + 1;
+            double xCurrent = GetXStart(polygon, input);
 
             ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Clipping Raster", polygon.Envelope.Maximum.X);
             pm.StepPercent = 5;
@@ -139,8 +138,7 @@ namespace DotSpatial.Analysis
                     // should be the intersection just below the topmost one.
                     yEnd = intersections[i];
 
-                    // hack: the yCurrent minus one seems to do some magic
-                    double yCurrent = FirstLineToProcess(yStart, output.Extent.MinY, output.Bounds.CellHeight, -1) - 1;
+                    double yCurrent = FirstLineToProcess(yStart, output.Extent.MinY, output.Bounds.CellHeight, -1);
                     do
                     {
                         var pixel = output.ProjToCell(xCurrent, yCurrent);
