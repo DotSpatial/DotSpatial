@@ -350,7 +350,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 return base.Minimum;
             }
-            set
+            protected set
             {
                 base.Minimum = value;
                 if (_band != null)
@@ -364,7 +364,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 return base.Maximum;
             }
-            set
+            protected set
             {
                 base.Maximum = value;
                 if (_band != null)
