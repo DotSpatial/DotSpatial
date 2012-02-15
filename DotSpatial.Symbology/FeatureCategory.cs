@@ -41,6 +41,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         public event EventHandler<ExpressionEventArgs> SelectFeatures;
 
+        /// <summary>
+        /// Occurs when the deselect features context menu is clicked.
+        /// </summary>
+        public event EventHandler<ExpressionEventArgs> DeselectFeatures;
+
         #endregion
 
         #region Private Variables
@@ -49,6 +54,7 @@ namespace DotSpatial.Symbology
         private string _filterExpression;
         private SymbologyMenuItem _mnuRemoveMe;
         private SymbologyMenuItem _mnuSelectFeatures;
+        private SymbologyMenuItem _mnuDeselectFeatures;
         private IFeatureSymbolizer _selectionSymbolizer;
 
         #endregion
@@ -156,6 +162,7 @@ namespace DotSpatial.Symbology
         /// <param name="copy"></param>
         protected override void OnCopy(Descriptor copy)
         {
+            //todo: do the same for DeselectFeatures event...
             FeatureCategory cat = copy as FeatureCategory;
             if (cat != null && cat.SelectFeatures != null)
             {
@@ -180,8 +187,10 @@ namespace DotSpatial.Symbology
             base.ContextMenuItems = new List<SymbologyMenuItem>();
             _mnuRemoveMe = new SymbologyMenuItem("Remove Category", RemoveCategoryClicked);
             _mnuSelectFeatures = new SymbologyMenuItem("Select Features", SelectFeaturesClicked);
+            _mnuDeselectFeatures = new SymbologyMenuItem("Deselect Features", DeselectFeaturesClicked);
             base.ContextMenuItems.Add(_mnuRemoveMe);
             base.ContextMenuItems.Add(_mnuSelectFeatures);
+            base.ContextMenuItems.Add(_mnuDeselectFeatures);
         }
 
         private void RemoveCategoryClicked(object sender, EventArgs e)
@@ -193,7 +202,10 @@ namespace DotSpatial.Symbology
         {
             OnSelectFeatures();
         }
-
+        private void DeselectFeaturesClicked(object sender, EventArgs e)
+        {
+            OnDeselectFeatures();
+        }
         /// <summary>
         /// Fires the SelectFeatures event
         /// </summary>
@@ -204,7 +216,16 @@ namespace DotSpatial.Symbology
                 SelectFeatures(this, new ExpressionEventArgs(_filterExpression));
             }
         }
-
+        #region OnDeselectFeatures
+        /// <summary>
+        /// Triggers the DeselectFeatures event.
+        /// </summary>
+        public virtual void OnDeselectFeatures()
+        {
+            if (DeselectFeatures != null)
+                DeselectFeatures(this, new ExpressionEventArgs(_filterExpression));
+        }
+        #endregion
         #endregion
 
         #region Properties

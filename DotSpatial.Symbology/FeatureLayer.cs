@@ -838,6 +838,11 @@ namespace DotSpatial.Symbology
             SelectByAttribute(filterExpression, ModifySelectionMode.Replace);
         }
 
+        public void UnselectByAttribute(string filterExpression)
+        {
+            SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
+        }
+
         /// <summary>
         /// Modifies the features with a new selection based on the modifyMode.
         /// </summary>
@@ -1622,6 +1627,7 @@ namespace DotSpatial.Symbology
             scheme.ItemChanged -= SchemeItemChanged;
             scheme.SetParentItem(null);
             scheme.SelectFeatures -= OnSelectFeatures;
+            scheme.DeselectFeatures -= OnDeselectFeatures;
         }
 
         /// <summary>
@@ -1674,6 +1680,7 @@ namespace DotSpatial.Symbology
             scheme.ItemChanged += SchemeItemChanged;
             scheme.SetParentItem(this);
             scheme.SelectFeatures += OnSelectFeatures;
+            scheme.DeselectFeatures += OnDeselectFeatures;
         }
 
         /// <summary>
@@ -1689,6 +1696,18 @@ namespace DotSpatial.Symbology
             SelectByAttribute(e.Expression);
         }
 
+        /// <summary>
+        /// Occurs when selecting features and fires the SelectByAttribute event with
+        /// the expression used as the filter expression
+        /// </summary>
+        /// <param name="sender">
+        /// </param>
+        /// <param name="e">
+        /// </param>
+        protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
+        {
+            UnselectByAttribute(e.Expression);
+        }
         /// <summary>
         /// The data set feature added.
         /// </summary>

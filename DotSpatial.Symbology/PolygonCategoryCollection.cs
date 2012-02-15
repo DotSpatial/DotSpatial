@@ -68,6 +68,11 @@ namespace DotSpatial.Symbology
         public event EventHandler<ExpressionEventArgs> SelectFeatures;
 
         /// <summary>
+        /// Occurs when the deselect features context menu is clicked.
+        /// </summary>
+        public event EventHandler<ExpressionEventArgs> DeselectFeatures;
+
+        /// <summary>
         /// Instructs the parent layer to select features matching the specified expression.
         /// </summary>
         /// <param name="sender">The object sender where features were selected.</param>
@@ -76,7 +81,15 @@ namespace DotSpatial.Symbology
         {
             if (SelectFeatures != null) SelectFeatures(sender, e);
         }
-
+        /// <summary>
+        /// Instructs the parent layer to select features matching the specified expression.
+        /// </summary>
+        /// <param name="sender">The object sender where features were selected.</param>
+        /// <param name="e">The event args describing which expression was used.</param>
+        protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
+        {
+            if (DeselectFeatures != null) DeselectFeatures(sender, e);
+        }
         /// <summary>
         /// Ensures that newly added categories can navigate to higher legend items.
         /// </summary>
@@ -86,6 +99,7 @@ namespace DotSpatial.Symbology
             if (item != null)
             {
                 item.SelectFeatures += OnSelectFeatures;
+                item.DeselectFeatures += OnDeselectFeatures;
                 if (_scheme != null) item.SetParentItem(_scheme.AppearsInLegend ? _scheme : _scheme.GetParentItem());
             }
 
@@ -117,6 +131,7 @@ namespace DotSpatial.Symbology
         {
             if (item == null) return;
             item.SelectFeatures -= OnSelectFeatures;
+            item.DeselectFeatures -= OnDeselectFeatures;
             item.SetParentItem(null);
             base.OnExclude(item);
         }

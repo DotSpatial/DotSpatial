@@ -33,6 +33,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         event EventHandler<ExpressionEventArgs> SelectFeatures;
 
+        /// <summary>
+        /// Occurs when the deselect features context menu is clicked.
+        /// </summary>
+        event EventHandler<ExpressionEventArgs> DeselectFeatures;
+
         #region Methods
 
         /// <summary>

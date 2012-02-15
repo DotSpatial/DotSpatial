@@ -45,6 +45,10 @@ namespace DotSpatial.Symbology
         /// </summary>
         public event EventHandler<ExpressionEventArgs> SelectFeatures;
 
+        /// <summary>
+        /// Occurs when the deselect features context menu is clicked.
+        /// </summary>
+        public event EventHandler<ExpressionEventArgs> DeselectFeatures;
         #endregion
 
         /// <summary>
@@ -782,6 +786,20 @@ namespace DotSpatial.Symbology
                 myE = new ExpressionEventArgs(myE.Expression + " AND NOT (" + EditorSettings.ExcludeExpression + ")");
             }
             if (SelectFeatures != null) SelectFeatures(sender, myE);
+        }
+        /// <summary>
+        /// Instructs the parent layer to select features matching the specified expression.
+        /// </summary>
+        /// <param name="sender">The object sender.</param>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnDeselectFeatures(object sender, ExpressionEventArgs e)
+        {
+            ExpressionEventArgs myE = e;
+            if (EditorSettings.ExcludeExpression != null)
+            {
+                myE = new ExpressionEventArgs(myE.Expression + " AND NOT (" + EditorSettings.ExcludeExpression + ")");
+            }
+            if (DeselectFeatures != null) DeselectFeatures(sender, myE);
         }
 
         /// <summary>

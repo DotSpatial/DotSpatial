@@ -361,6 +361,7 @@ namespace DotSpatial.Symbology
             categories.Scheme = null;
             categories.ItemChanged -= CategoriesItemChanged;
             categories.SelectFeatures -= OnSelectFeatures;
+            categories.DeselectFeatures -= OnDeselectFeatures;
         }
 
         /// <summary>
@@ -372,6 +373,7 @@ namespace DotSpatial.Symbology
             if (categories == null) return;
             categories.Scheme = this;
             categories.SelectFeatures += OnSelectFeatures;
+            categories.DeselectFeatures += OnDeselectFeatures;
             categories.ItemChanged += CategoriesItemChanged;
         }
 
