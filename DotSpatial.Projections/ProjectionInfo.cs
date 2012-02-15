@@ -1007,7 +1007,7 @@ namespace DotSpatial.Projections
                 if (set.Length != 2)
                 {
                     Trace.WriteLine(
-                        "ProjectionInfo.ParseProj4String: command '" + s + "' not understood in '" + proj4String + "'");
+                        String.Format("ProjectionInfo.ParseProj4String: command '{0}' not understood in '{1}'", s, proj4String));
                     continue;
                 }
 

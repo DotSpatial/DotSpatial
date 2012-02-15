@@ -209,8 +209,8 @@ namespace DotSpatial.Projections
             bool over = dest.Over;
             double x0 = 0;
             double y0 = 0;
-            if (dest.FalseEasting != null) x0 = dest.FalseEasting.Value;
-            if (dest.FalseNorthing != null) y0 = dest.FalseNorthing.Value;
+            if (dest.FalseEasting.HasValue) x0 = dest.FalseEasting.Value;
+            if (dest.FalseNorthing.HasValue) y0 = dest.FalseNorthing.Value;
             double a = dest.GeographicInfo.Datum.Spheroid.EquatorialRadius;
             for (int i = startIndex; i < numPoints; i++)
             {

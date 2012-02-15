@@ -365,8 +365,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             if (ct.GetPaletteInterpretation() != PaletteInterp.GPI_RGB)
             {
-                throw new GdalException("Only RGB palette interpretation is currently supported by this " +
-                                        " plug-in, " + ct.GetPaletteInterpretation() + " is not supported.");
+                throw new GdalException(String.Format("Only RGB palette interpretation is currently supported by this plug-in, {0} is not supported.", ct.GetPaletteInterpretation()));
             }
             int width = Width;
             int height = Height;
