@@ -294,7 +294,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (_band != null)
             {
                 double min, max, mean, std;
-                _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
+                // _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
                 CPLErr err = _band.GetStatistics(0, 1, out min, out max, out mean, out std);
                 Minimum = min;
                 Maximum = max;

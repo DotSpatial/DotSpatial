@@ -72,6 +72,7 @@ namespace DotSpatial.Analysis
             IRaster output = Raster.CreateRaster(outputFileName, input.DriverCode, input.NumColumns, input.NumRows, 1,
                                                  input.DataType, new[] { string.Empty });
             output.Bounds = input.Bounds;
+            output.NoDataValue = input.NoDataValue;
             if (input.CanReproject)
             {
                 output.Projection = input.Projection;
