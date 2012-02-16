@@ -346,6 +346,7 @@ namespace DotSpatial.Symbology
         /// <param name="e">LayerEventArgs</param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
+            // todo: only LayerAdded event is suspended, there are lots of other events that need to be suspended, too.
             if (EventsSuspended)
             {
                 _layerAddedFired = true;
