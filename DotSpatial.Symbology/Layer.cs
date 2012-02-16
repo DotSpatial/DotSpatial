@@ -390,6 +390,21 @@ namespace DotSpatial.Symbology
             }
         }
 
+        /// <inheritdoc />
+        [Serialize("IsVisible")]
+        [Category("Behavior"), Description("Gets or sets a boolean indicating whether this layer is visible in the map.")]
+        public override bool IsVisible
+        {
+            get
+            {
+                return base.IsVisible;
+            }
+            set
+            {
+                base.IsVisible = value;
+            }
+        }
+
         #endregion Properties
 
         #region Protected Methods
