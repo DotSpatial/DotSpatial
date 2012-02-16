@@ -80,15 +80,10 @@ namespace DotSpatial.Controls
             }
             else
             {
-                MemoryStream ms = new MemoryStream();
-                ms.Position = 0;
                 Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
-                bmp.Save(ms, ImageFormat.MemoryBmp);
                 symbolizer.Raster = DataSet;
 
                 DataSet.DrawToBitmap(symbolizer, bmp, null);
-                ms.Position = 0;
-                bmp.Save(ms, ImageFormat.MemoryBmp);
                 InRamImage id = new InRamImage(bmp);
                 id.Bounds = DataSet.Bounds;
                 BitmapGetter = id;
