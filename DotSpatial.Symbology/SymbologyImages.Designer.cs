@@ -74,6 +74,13 @@ namespace DotSpatial.Symbology {
             }
         }
         
+        internal static System.Drawing.Bitmap deselect_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("deselect_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Label {
             get {
                 object obj = ResourceManager.GetObject("Label", resourceCulture);

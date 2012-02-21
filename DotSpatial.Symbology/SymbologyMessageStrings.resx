@@ -208,4 +208,8 @@
     <value>Unselect All</value>
     <comment>Legend Context Menu: Selection - Unselect All</comment>
   </data>
+  <data name="FeatureLayer_SelectAll" xml:space="preserve">
+    <value>Select All</value>
+    <comment>Legend Context Menu: Selection - Select All</comment>
+  </data>
 </root>

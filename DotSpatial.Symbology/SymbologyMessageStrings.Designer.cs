@@ -133,6 +133,15 @@ namespace DotSpatial.Symbology {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        internal static string FeatureLayer_SelectAll {
+            get {
+                return ResourceManager.GetString("FeatureLayer_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection.
         /// </summary>
         internal static string FeatureLayer_Selection {

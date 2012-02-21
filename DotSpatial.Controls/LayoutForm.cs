@@ -109,39 +109,39 @@ namespace DotSpatial.Controls
             this._splitContainer2.Panel2.SuspendLayout();
             this._splitContainer2.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // _toolStripContainer1
-            //
-            //
+            // 
+            // 
             // _toolStripContainer1.ContentPanel
-            //
+            // 
             this._toolStripContainer1.ContentPanel.Controls.Add(this._splitContainer1);
             resources.ApplyResources(this._toolStripContainer1.ContentPanel, "_toolStripContainer1.ContentPanel");
             resources.ApplyResources(this._toolStripContainer1, "_toolStripContainer1");
             this._toolStripContainer1.Name = "_toolStripContainer1";
-            //
+            // 
             // _toolStripContainer1.TopToolStripPanel
-            //
+            // 
+            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
+            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutMapToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutDocToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutInsertToolStrip1);
-            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutMapToolStrip1);
-            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
-            //
+            // 
             // _splitContainer1
-            //
+            // 
             resources.ApplyResources(this._splitContainer1, "_splitContainer1");
             this._splitContainer1.Name = "_splitContainer1";
-            //
+            // 
             // _splitContainer1.Panel1
-            //
+            // 
             this._splitContainer1.Panel1.Controls.Add(this._layoutControl1);
-            //
+            // 
             // _splitContainer1.Panel2
-            //
+            // 
             this._splitContainer1.Panel2.Controls.Add(this._splitContainer2);
-            //
+            // 
             // _layoutControl1
-            //
+            // 
             this._layoutControl1.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this._layoutControl1, "_layoutControl1");
             this._layoutControl1.DrawingQuality = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
@@ -159,67 +159,67 @@ namespace DotSpatial.Controls
             this._layoutControl1.ShowMargin = false;
             this._layoutControl1.Zoom = 0.3541667F;
             this._layoutControl1.FilenameChanged += new System.EventHandler(this.layoutControl1_FilenameChanged);
-            //
+            // 
             // _layoutDocToolStrip1
-            //
+            // 
             resources.ApplyResources(this._layoutDocToolStrip1, "_layoutDocToolStrip1");
             this._layoutDocToolStrip1.LayoutControl = this._layoutControl1;
             this._layoutDocToolStrip1.Name = "_layoutDocToolStrip1";
-            //
+            // 
             // _layoutInsertToolStrip1
-            //
+            // 
             resources.ApplyResources(this._layoutInsertToolStrip1, "_layoutInsertToolStrip1");
             this._layoutInsertToolStrip1.LayoutControl = this._layoutControl1;
             this._layoutInsertToolStrip1.Name = "_layoutInsertToolStrip1";
-            //
+            // 
             // _layoutListBox1
-            //
+            // 
             this._layoutListBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this._layoutListBox1, "_layoutListBox1");
             this._layoutListBox1.LayoutControl = this._layoutControl1;
             this._layoutListBox1.Name = "_layoutListBox1";
-            //
+            // 
             // _layoutMapToolStrip1
-            //
+            // 
             resources.ApplyResources(this._layoutMapToolStrip1, "_layoutMapToolStrip1");
             this._layoutMapToolStrip1.LayoutControl = this._layoutControl1;
             this._layoutMapToolStrip1.Name = "_layoutMapToolStrip1";
-            //
+            // 
             // _layoutMenuStrip1
-            //
+            // 
             this._layoutMenuStrip1.LayoutControl = this._layoutControl1;
             resources.ApplyResources(this._layoutMenuStrip1, "_layoutMenuStrip1");
             this._layoutMenuStrip1.Name = "_layoutMenuStrip1";
             this._layoutMenuStrip1.CloseClicked += new System.EventHandler(this.layoutMenuStrip1_CloseClicked);
-            //
+            // 
             // _layoutPropertyGrid1
-            //
+            // 
             this._layoutPropertyGrid1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this._layoutPropertyGrid1, "_layoutPropertyGrid1");
             this._layoutPropertyGrid1.LayoutControl = this._layoutControl1;
             this._layoutPropertyGrid1.Name = "_layoutPropertyGrid1";
-            //
+            // 
             // _layoutZoomToolStrip1
-            //
+            // 
             resources.ApplyResources(this._layoutZoomToolStrip1, "_layoutZoomToolStrip1");
             this._layoutZoomToolStrip1.LayoutControl = this._layoutControl1;
             this._layoutZoomToolStrip1.Name = "_layoutZoomToolStrip1";
-            //
+            // 
             // _splitContainer2
-            //
+            // 
             resources.ApplyResources(this._splitContainer2, "_splitContainer2");
             this._splitContainer2.Name = "_splitContainer2";
-            //
+            // 
             // _splitContainer2.Panel1
-            //
+            // 
             this._splitContainer2.Panel1.Controls.Add(this._layoutListBox1);
-            //
+            // 
             // _splitContainer2.Panel2
-            //
+            // 
             this._splitContainer2.Panel2.Controls.Add(this._layoutPropertyGrid1);
-            //
+            // 
             // LayoutForm
-            //
+            // 
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this._toolStripContainer1);
             this.Controls.Add(this._layoutMenuStrip1);
@@ -241,6 +241,7 @@ namespace DotSpatial.Controls
             this._splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private void layoutMenuStrip1_CloseClicked(object sender, EventArgs e)

@@ -252,7 +252,8 @@ namespace DotSpatial.Symbology
                                                           SelectionZoomClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy,
                                                           SelectionToLayerClick));
-            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.select_all, UnselectAllClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
 
             ContextMenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Join_Excel_File, SymbologyImages.redbluearrows,
                                                        JoinExcel));
@@ -389,6 +390,11 @@ namespace DotSpatial.Symbology
         private void SelectionZoomClick(object sender, EventArgs e)
         {
             ZoomToSelectedFeatures();
+        }
+
+        private void SelectAllClick(object sender, EventArgs e)
+        {
+            this.SelectAll();
         }
 
         private void UnselectAllClick(object sender, EventArgs e)
