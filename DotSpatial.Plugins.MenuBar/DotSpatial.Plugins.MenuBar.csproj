@@ -123,6 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="credits.txt" />
+    <Content Include="Resources\deselect_16x16.png" />
+    <Content Include="Resources\deselect_32x32.png" />
     <Content Include="Resources\disk_16x16.png" />
     <Content Include="Resources\disk_32x32.png" />
     <Content Include="Resources\document_empty_16x16.png" />

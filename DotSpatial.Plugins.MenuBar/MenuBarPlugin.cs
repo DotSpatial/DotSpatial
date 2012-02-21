@@ -100,6 +100,8 @@ namespace DotSpatial.Plugins.MenuBar
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
 
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_16x16 });
+
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
         }
 
@@ -272,6 +274,21 @@ namespace DotSpatial.Plugins.MenuBar
         private void SelectionTool_Click(object sender, EventArgs e)
         {
             App.Map.FunctionMode = FunctionMode.Select;
+        }
+
+        /// <summary>
+        /// Deselect all features in all layers
+        /// </summary>
+        private void DeselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
+            {
+                IMapFeatureLayer mapFeatureLayer = layer as IMapFeatureLayer;
+                {
+                    if (mapFeatureLayer != null)
+                        mapFeatureLayer.UnSelectAll();
+                }
+            }
         }
 
         /// <summary>
