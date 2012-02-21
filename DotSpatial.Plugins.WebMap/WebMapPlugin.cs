@@ -73,6 +73,7 @@ namespace DotSpatial.Plugins.WebMap
             //Add handlers for saving/restoring settings
             App.SerializationManager.Serializing += SerializationManagerSerializing;
             App.SerializationManager.Deserializing += SerializationManagerDeserializing;
+            App.SerializationManager.NewProjectCreated += SerializationManagerNewProject;
 
             //EnsureMapProjectionIsWebMercator();
 
@@ -93,6 +94,12 @@ namespace DotSpatial.Plugins.WebMap
             App.HeaderControl.RemoveAll();
 
             DisableBasemapLayer();
+
+            //remove handlers for saving/restoring settings
+            App.SerializationManager.Serializing -= SerializationManagerSerializing;
+            App.SerializationManager.Deserializing -= SerializationManagerDeserializing;
+            App.SerializationManager.NewProjectCreated -= SerializationManagerNewProject;
+
 
             base.Deactivate();
         }
@@ -510,6 +517,17 @@ namespace DotSpatial.Plugins.WebMap
         {
             App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", _provider.Name);
             App.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString());
+        }
+
+        private void SerializationManagerNewProject(object sender, SerializingEventArgs e)
+        {
+            //deactivate the web map
+            if (_baseMapLayer != null)
+            {
+                DisableBasemapLayer();
+                _provider = _emptyProvider;
+                _serviceDropDown.SelectedItem = _provider;
+            }
         }
 
         private void ServiceSelected(object sender, SelectedValueChangedEventArgs e)
