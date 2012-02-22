@@ -29,7 +29,7 @@ namespace DotSpatial.Extensions
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(String.Format("Error: {0} {1}", extension.AssemblyQualifiedName, ex.Message));
+                Trace.WriteLine(String.Format("Error: {0} {1} {2}", extension.AssemblyQualifiedName, ex.Message, ex.StackTrace));
                 return false;
             }
         }
