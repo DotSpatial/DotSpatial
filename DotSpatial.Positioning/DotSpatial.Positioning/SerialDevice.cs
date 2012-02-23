@@ -406,9 +406,17 @@ namespace DotSpatial.Positioning
             {
                 Debug.WriteLine(Name + " could not be opened due to the following error: " + ex, Devices.DEBUG_CATEGORY);
 
-                // Security may have denied the connection
-                Devices.OnDeviceDetectionAttemptFailed(
+                if (Name.IndexOf("Bluetooth", StringComparison.OrdinalIgnoreCase) == -1)
+                    // UnauthorizedAccessException (can happen if multiple apps open the same port),
+                    // if the device is actually a USB-mapped-to-serial
+                    Devices.OnDeviceDetectionAttemptFailed(new DeviceDetectionException(this, ex));
+                else
+                {
+                    // Security may have denied the connection
+                    Devices.OnDeviceDetectionAttemptFailed(
                     new DeviceDetectionException(this, "A security PIN entered for " + Name + " was incorrect.  The device should be re-paired in the Bluetooth Manager.", ex));
+                }
+
                 return false;
             }
             catch (Exception ex)
