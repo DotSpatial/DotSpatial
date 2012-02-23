@@ -55,7 +55,8 @@ namespace DotSpatial.Data
             SetupDecimalCount();
             if (inColumn.DataType == typeof(string))
             {
-                _length = 255;
+                // Looks like this is 255 (0 based not 1 based) per http://dotspatial.codeplex.com/workitem/22193
+                _length = 254;
             }
             else if (inColumn.DataType == typeof(DateTime))
             {
