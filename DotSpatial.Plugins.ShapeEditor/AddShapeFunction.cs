@@ -167,6 +167,8 @@ namespace DotSpatial.Plugins.ShapeEditor
                 Map.MapFrame.Invalidate();
                 Map.Invalidate();
             }
+
+            base.Deactivate();
         }
 
         /// <summary>
