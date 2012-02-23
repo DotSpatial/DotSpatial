@@ -283,7 +283,12 @@ namespace DotSpatial.Projections.Transforms
         public static double[] Zpoly1(double[] z, double[][] c, int n)
         {
             double t;
-            double[] a = c[n];
+
+            // make a copy of the array that we are going to modify and return.
+            int size = c[n].Length;
+            double[] a = new double[size];
+            Array.Copy(c[n], a, size);
+
             while (n-- > 0)
             {
                 a[R] = c[n][R] + z[R] * (t = a[R]) - z[I] * a[I];
