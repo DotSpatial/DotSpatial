@@ -1533,7 +1533,7 @@ namespace DotSpatial.Data
         /// The relative file path.
         /// </value>
         /// <remarks>This property is used when saving source file information to a DSPX project.</remarks>
-        [Serialize("FilePath", ConstructorArgumentIndex = 0)]
+        [Serialize("FilePath")]
         public virtual string FilePath
         {
             get
