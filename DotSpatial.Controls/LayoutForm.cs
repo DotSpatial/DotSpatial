@@ -122,8 +122,8 @@ namespace DotSpatial.Controls
             // 
             // _toolStripContainer1.TopToolStripPanel
             // 
-            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutMapToolStrip1);
+            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutDocToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutInsertToolStrip1);
             // 
