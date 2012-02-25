@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
@@ -142,6 +143,14 @@ namespace DotSpatial.Data
                 _attributeTable = value;
                 _attributeTable.AttributesFilled += AttributeTableAttributesFilled;
             }
+        }
+
+        /// <inheritdoc />
+        [Serialize("FilePath", ConstructorArgumentIndex = 0)]
+        public override string FilePath
+        {
+            get { return base.FilePath; }
+            set { base.FilePath = value; }
         }
 
         /// <summary>
