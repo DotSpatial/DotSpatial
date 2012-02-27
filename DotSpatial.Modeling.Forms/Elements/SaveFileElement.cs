@@ -72,15 +72,28 @@ namespace DotSpatial.Modeling.Forms
 
         private void btnAddData_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.OverwritePrompt = true;
-            sfd.Filter = "CSV Files|*.csv";
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            TextFile addedTextFile = new TextFile(sfd.FileName);
+            FileParam p = Param as FileParam;
 
-            //This inserts the new featureset into the list
-            txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.FileName);
-            Param.Value = addedTextFile;
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.OverwritePrompt = true;
+
+                if (p != null)
+                {
+                    sfd.Filter = p.DialogFilter;
+                }
+                else
+                {
+                    sfd.Filter = "CSV Files|*.csv";
+                }
+
+                if (sfd.ShowDialog() != DialogResult.OK)
+                    return;
+                TextFile addedTextFile = new TextFile(sfd.FileName);
+                //This inserts the new featureset into the list
+                txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.FileName);
+                Param.Value = addedTextFile;
+            }
             base.Status = ToolStatus.Ok;
             LightTipText = ModelingMessageStrings.FeaturesetValid;
         }
