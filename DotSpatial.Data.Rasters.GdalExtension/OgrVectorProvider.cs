@@ -67,7 +67,7 @@ namespace DotSpatial.Data.OgrExtension
         /// </summary>
         public string DialogReadFilter
         {
-            get { return "OGR Vectors|*.shp;*.kml"; }
+            get { return "OGR Vectors|*.shp;*.kml;*.dxf"; }
         }
 
         /// <summary>
