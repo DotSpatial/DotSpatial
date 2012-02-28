@@ -23,15 +23,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using DotSpatial.Projections;
 using OSGeo.GDAL;
-using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     internal class GdalRaster<T> : Raster<T> where T : IEquatable<T>, IComparable<T>
     {
@@ -184,14 +184,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     }
 
                     result.Add(data[0]);
-
                 }
                 sw.Stop();
                 Debug.WriteLine("Time to read values from file:" + sw.ElapsedMilliseconds);
                 return result;
             }
-
-
         }
 
         /// <summary>
@@ -209,6 +206,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 Raster<T> ri = Bands[CurrentBand] as Raster<T>;
                 if (ri != null)
                 {
+                    ri.NoDataValue = NoDataValue;
+
                     ri.WriteRaster(buffer, xOff, yOff, xSize, ySize);
                 }
             }
@@ -226,6 +225,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     IntPtr ptr = handle.AddrOfPinnedObject();
                     // int stride = ((xSize * sizeof(T) + 7) / 8);
                     _band.WriteRaster(xOff, yOff, xSize, ySize, ptr, xSize, ySize, GdalDataType, PixelSpace, 0);
+                    _band.SetNoDataValue(base.NoDataValue);
+                    _band.SetMetadataItem("STATISTICS_MEAN", base.Mean.ToString(), String.Empty);
+                    _band.SetMetadataItem("STATISTICS_STDDEV", base.StdDeviation.ToString(), String.Empty);
+                    _band.SetMetadataItem("STATISTICS_MINIMUM", base.Minimum.ToString(), String.Empty);
+                    _band.SetMetadataItem("STATISTICS_MAXIMUM", base.Maximum.ToString(), String.Empty);
                     _band.FlushCache();
                     _dataset.FlushCache();
                 }
@@ -237,7 +241,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -332,6 +335,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         #endregion
 
         #region Properties
+
         public override double NoDataValue
         {
             get
@@ -344,6 +348,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     _band.SetNoDataValue(value);
             }
         }
+
         public override double Minimum
         {
             get
@@ -355,9 +360,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 base.Minimum = value;
                 if (_band != null)
                     _band.SetStatistics(value, base.Maximum, base.Mean, base.StdDeviation);
-
             }
         }
+
         public override double Maximum
         {
             get
@@ -369,10 +374,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 base.Maximum = value;
                 if (_band != null)
                     _band.SetStatistics(base.Minimum, value, base.Mean, base.StdDeviation);
-
             }
         }
-
 
         #endregion
 
