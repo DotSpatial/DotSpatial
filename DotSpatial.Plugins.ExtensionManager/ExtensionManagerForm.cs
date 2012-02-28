@@ -9,17 +9,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Extensions;
 using DotSpatial.Data;
 using DotSpatial.Extensions;
 using NuGet;
-using DotSpatial.Controls.Extensions;
-using System.Reflection;
-using System.Security.Permissions;
-using System.Security;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -228,7 +228,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             string assemblyLocation = GetExtensionPath(ext);
 
-            // The original file may be in a different location than the extensions directory. During an update, the 
+            // The original file may be in a different location than the extensions directory. During an update, the
             // original file will be deleted and the new package will be placed in the packages folder in the extensions
             // directory.
             FileIOPermission deletePermission = new FileIOPermission(FileIOPermissionAccess.Write, assemblyLocation);
@@ -267,6 +267,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             return String.Format("{0}.{1}", pack.Id, pack.Version);
         }
+
         /// <summary>
         /// STRs the cat.
         /// </summary>
@@ -285,8 +286,13 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxShowExtensionsFolder_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(AppManager.AbsolutePathToExtensions))
-                Process.Start(AppManager.AbsolutePathToExtensions);
+            string dir = AppManager.AbsolutePathToExtensions;
+            if (Directory.Exists(dir))
+                Process.Start(dir);
+            else
+            {
+                MessageBox.Show("The extensions folder does not exist. " + dir);
+            }
         }
 
         private void uxUpdate_Click(object sender, EventArgs e)
@@ -309,13 +315,13 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
 
-                // get new version  
+                // get new version
                 packages.Update(pack);
 
                 App.RefreshExtensions();
 
                 // Activate the extension(s) that was installed.
-                // it is difficult to determine which version is newest, so we go and look at the when the file was 
+                // it is difficult to determine which version is newest, so we go and look at the when the file was
                 // placed on disk.
                 var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
                 if (newExtension != null)
@@ -329,8 +335,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 App.ProgressHandler.Progress(null, 0, "Ready.");
             }
         }
+
         #endregion
-
-
     }
 }
