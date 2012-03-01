@@ -875,7 +875,10 @@ namespace DotSpatial.Data
             {
                 _numRecords = numRows;
                 _dataTable.BeginLoadData();
-                _dataTable.Columns.Add("FID", typeof(int));
+                if (!_dataTable.Columns.Contains("FID"))
+                {
+                    _dataTable.Columns.Add("FID", typeof(int));
+                }               
                 for (int row = 0; row < numRows; row++)
                 {
                     DataRow dr = _dataTable.NewRow();
