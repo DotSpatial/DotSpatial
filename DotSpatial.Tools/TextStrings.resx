@@ -915,4 +915,10 @@
   <data name="ToolFromLasToRaster" xml:space="preserve">
     <value>This tool will read in LAS point files and produce raster representations for an area</value>
   </data>
+  <data name="DepToBgd" xml:space="preserve">
+    <value>DepToBgd</value>
+  </data>
+  <data name="DepToBgdDescription" xml:space="preserve">
+    <value>This tool converts  raster file format from *.dep to *.bgd format</value>
+  </data>
 </root>
