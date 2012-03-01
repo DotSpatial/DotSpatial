@@ -18,16 +18,26 @@ namespace DotSpatial.Analysis
     {
         private static double GetXStart(IFeature polygon, IRaster input)
         {
-            double rasterMinX = input.Extent.MinX;
-            int sign;
+            //double rasterMinX = input.Extent.MinX;
+            double rasterMinXCenter = input.Xllcenter;
 
             // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
-            if (polygon.Envelope.Minimum.X < rasterMinX + (input.CellHeight / 2))
-                sign = -1;
+            if (polygon.Envelope.Minimum.X < rasterMinXCenter)
+                return rasterMinXCenter;
             else
-                sign = 1;
+                return FirstColumnToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, input.CellHeight, 1);
+        }
 
-            return FirstLineToProcess(polygon.Envelope.Minimum.X, rasterMinX, input.CellHeight, sign);
+        private static int GetStartColumn(IFeature polygon, IRaster input)
+        {
+            //double rasterMinX = input.Extent.MinX;
+            double rasterMinXCenter = input.Xllcenter;
+
+            // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
+            if (polygon.Envelope.Minimum.X < rasterMinXCenter)
+                return 0;
+            else
+                return FirstColumnIndexToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, input.CellHeight, 1);
         }
 
         /// <summary>
@@ -87,25 +97,33 @@ namespace DotSpatial.Analysis
                 }
             }
 
-            double xCurrent = GetXStart(polygon, input);
+            double xStart = GetXStart(polygon, output);
+            int columnStart = GetStartColumn(polygon, output); //get the index of first column
+            double xCurrent = xStart;
 
-            ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Clipping Raster", polygon.Envelope.Maximum.X);
+            ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Clipping Raster", output.NumColumns);
             pm.StepPercent = 5;
-            pm.StartValue = xCurrent;
-            do
+            pm.StartValue = columnStart;
+
+            int col = 0;
+            for (int columnCurrent = columnStart; columnCurrent < output.NumColumns; columnCurrent++)
             {
+                xCurrent = xStart + col * output.CellWidth;
+                
                 var intersections = GetYIntersections(borders, xCurrent);
                 intersections.Sort();
-                ParseIntersections(intersections, xCurrent, output, input);
-                xCurrent += input.Bounds.CellWidth;
+                ParseIntersections(intersections, xCurrent, columnCurrent, output, input);              
 
                 // update progess meter
                 pm.CurrentValue = xCurrent;
 
+                //update counter
+                col++;
+
                 // cancel if requested
                 if (cancelProgressHandler != null && cancelProgressHandler.Cancel)
                     return null;
-            } while (xCurrent <= polygon.Envelope.Maximum.X);
+            } 
 
             output.Save();
 
@@ -113,38 +131,51 @@ namespace DotSpatial.Analysis
         }
 
         /// <summary>
-        /// Parses the intersections. Moves from top bottom to mirror the index of rows in a raster.
+        /// Parses the intersections. Moves bottom to top.
         /// </summary>
         /// <param name="intersections">The intersections.</param>
         /// <param name="xCurrent">The x current.</param>
         /// <param name="output">The output.</param>
         /// <param name="input">The input.</param>
-        private static void ParseIntersections(List<double> intersections, double xCurrent, IRaster output,
+        private static void ParseIntersections(List<double> intersections, double xCurrent, int column, IRaster output,
                                                IRaster input)
         {
             double yStart = 0;
             double yEnd;
             bool nextIntersectionIsEndPoint = false;
-            for (int i = intersections.Count - 1; i >= 0; i--)
+            for (int i = 0; i < intersections.Count; i++)
             {
                 if (!nextIntersectionIsEndPoint)
                 {
-                    // should be the topmost intersection
+                    // should be the bottommost intersection
                     yStart = intersections[i];
                     nextIntersectionIsEndPoint = true;
                 }
                 else
                 {
-                    // should be the intersection just below the topmost one.
+                    // should be the intersection just above the bottommost one.
                     yEnd = intersections[i];
 
-                    double yCurrent = FirstLineToProcess(yStart, output.Extent.MinY, output.Bounds.CellHeight, -1);
-                    do
+                    //double yCurrent = FirstRowToProcess(yStart, output.Extent.MinY, output.Bounds.CellHeight, 1);
+                    //int rowCurrent = output.ProjToCell(xCurrent, yStart).Row; ; //bottom-most row        
+
+                    //double yEnd2 = FirstRowToProcess(yEnd, output.Extent.MinY, output.Bounds.CellHeight, 1);
+                    //int rowEnd = output.ProjToCell(xCurrent, yEnd2).Row; //find row corresponding to end intersection
+
+                    int rowCurrent = output.NumRows - RowIndexToProcess(yStart, output.Extent.MinY, output.CellHeight, 1);
+                    //int rowEnd = RowIndexToProcess(yEnd, output.Extent.MinY, output.CellHeight, 1);
+                    int rowEnd = rowCurrent - (int)(Math.Ceiling((yEnd - yStart) / output.CellHeight));
+
+                    while (rowCurrent > rowEnd)
                     {
-                        var pixel = output.ProjToCell(xCurrent, yCurrent);
-                        output.Value[pixel.Row, pixel.Column] = input.Value[pixel.Row, pixel.Column];
-                        yCurrent -= output.Bounds.CellHeight;
-                    } while (yCurrent >= yEnd);
+                        if (rowCurrent < 0 && rowEnd < 0) break;
+
+                        if (rowCurrent >= 0 && rowCurrent < output.NumRows)
+                        {
+                            output.Value[rowCurrent, column] = input.Value[rowCurrent, column]; 
+                        }
+                        rowCurrent--;
+                    }
                     nextIntersectionIsEndPoint = false;
                 }
             }
@@ -209,14 +240,34 @@ namespace DotSpatial.Analysis
         /// <param name="cellSize">Size of the cell.</param>
         /// <param name="sign">The factor.</param>
         /// <returns></returns>
-        private static double FirstLineToProcess(double xyMinPolygon, double xyMinRaster, double cellSize, int sign)
+        private static double FirstColumnToProcess(double xMinPolygon, double xMinRaster, double cellWidth, int sign)
         {
-            double columnIndex = Math.Ceiling((xyMinRaster - xyMinPolygon) / cellSize);
+            double columnIndex = Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
 
             // we address the issue where the polygon is to the right of the raster by using the sign parameter.
             // double columnIndexIfStartOfPolyToRightOfRaster = Math.Ceiling((xyMinPolygon - xyMinRaster ) / cellSize);
 
-            return xyMinRaster + (sign * columnIndex * cellSize);
+            return xMinRaster + (sign * columnIndex * cellWidth);
+        }
+
+        private static int FirstColumnIndexToProcess(double xMinPolygon, double xMinRaster, double cellWidth, int sign)
+        {
+            return (int)Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
+        }
+
+        private static int RowIndexToProcess(double yMinPolygon, double yMinRaster, double cellHeight, int sign)
+        {
+            return (int)Math.Ceiling((yMinPolygon - yMinRaster) / cellHeight);
+        }
+
+        private static double FirstRowToProcess(double yMinPolygon, double yMinRaster, double cellHeight, int sign)
+        {
+            double rowIndex = Math.Ceiling((yMinPolygon - yMinRaster) / cellHeight);
+
+            // we address the issue where the polygon is to the right of the raster by using the sign parameter.
+            // double columnIndexIfStartOfPolyToRightOfRaster = Math.Ceiling((xyMinPolygon - xyMinRaster ) / cellSize);
+
+            return yMinRaster + (sign * rowIndex * cellHeight);
         }
     }
 }
