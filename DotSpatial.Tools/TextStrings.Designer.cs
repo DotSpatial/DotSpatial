@@ -475,24 +475,6 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DepToBgd.
-        /// </summary>
-        internal static string DepToBgd {
-            get {
-                return ResourceManager.GetString("DepToBgd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This tool converts  raster file format from *.dep to *.bgd format.
-        /// </summary>
-        internal static string DepToBgdDescription {
-            get {
-                return ResourceManager.GetString("DepToBgdDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Desired Cell Size or 0 to automatically calculate cell size.
         /// </summary>
         internal static string DesiredCellSize {
