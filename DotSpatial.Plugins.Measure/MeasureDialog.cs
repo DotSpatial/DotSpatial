@@ -111,18 +111,18 @@ namespace DotSpatial.Plugins.Measure
             this.label4 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // toolStrip1
-            // 
+            //
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbDistance,
             this.tsbArea,
             this.tsbClear});
             resources.ApplyResources(this.toolStrip1, "toolStrip1");
             this.toolStrip1.Name = "toolStrip1";
-            // 
+            //
             // tsbDistance
-            // 
+            //
             this.tsbDistance.Checked = true;
             this.tsbDistance.CheckOnClick = true;
             this.tsbDistance.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -131,77 +131,77 @@ namespace DotSpatial.Plugins.Measure
             resources.ApplyResources(this.tsbDistance, "tsbDistance");
             this.tsbDistance.Name = "tsbDistance";
             this.tsbDistance.Click += new System.EventHandler(this.DistanceButton_Click);
-            // 
+            //
             // tsbArea
-            // 
+            //
             this.tsbArea.CheckOnClick = true;
             this.tsbArea.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbArea.Image = global::DotSpatial.Plugins.Measure.Properties.Resources.Area;
             resources.ApplyResources(this.tsbArea, "tsbArea");
             this.tsbArea.Name = "tsbArea";
             this.tsbArea.Click += new System.EventHandler(this.AreaButton_Click);
-            // 
+            //
             // tsbClear
-            // 
+            //
             this.tsbClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.tsbClear, "tsbClear");
             this.tsbClear.Name = "tsbClear";
             this.tsbClear.Click += new System.EventHandler(this.tsbClear_Click);
-            // 
+            //
             // lblPartialValue
-            // 
+            //
             resources.ApplyResources(this.lblPartialValue, "lblPartialValue");
             this.lblPartialValue.Name = "lblPartialValue";
             this.ttHelp.SetToolTip(this.lblPartialValue, resources.GetString("lblPartialValue.ToolTip"));
-            // 
+            //
             // lblTotalValue
-            // 
+            //
             resources.ApplyResources(this.lblTotalValue, "lblTotalValue");
             this.lblTotalValue.Name = "lblTotalValue";
             this.ttHelp.SetToolTip(this.lblTotalValue, resources.GetString("lblTotalValue.ToolTip"));
-            // 
+            //
             // cmbUnits
-            // 
+            //
             this.cmbUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbUnits.FormattingEnabled = true;
             resources.ApplyResources(this.cmbUnits, "cmbUnits");
             this.cmbUnits.Name = "cmbUnits";
             this.ttHelp.SetToolTip(this.cmbUnits, resources.GetString("cmbUnits.ToolTip"));
             this.cmbUnits.SelectedIndexChanged += new System.EventHandler(this.cmbUnits_SelectedIndexChanged);
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // lblMeasure
-            // 
+            //
             resources.ApplyResources(this.lblMeasure, "lblMeasure");
             this.lblMeasure.Name = "lblMeasure";
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // lblTotalUnits
-            // 
+            //
             this.lblTotalUnits.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.lblTotalUnits, "lblTotalUnits");
             this.lblTotalUnits.Name = "lblTotalUnits";
-            // 
+            //
             // label4
-            // 
+            //
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
+            //
             // MeasureDialog
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblTotalUnits);
@@ -223,7 +223,6 @@ namespace DotSpatial.Plugins.Measure
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -346,7 +345,6 @@ namespace DotSpatial.Plugins.Measure
                 Text = "Measure Area";
                 lblMeasure.Text = "Area";
                 tsbDistance.Checked = false;
-
             }
         }
 

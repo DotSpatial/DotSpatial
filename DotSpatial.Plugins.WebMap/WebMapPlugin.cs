@@ -100,7 +100,6 @@ namespace DotSpatial.Plugins.WebMap
             App.SerializationManager.Deserializing -= SerializationManagerDeserializing;
             App.SerializationManager.NewProjectCreated -= SerializationManagerNewProject;
 
-
             base.Deactivate();
         }
 

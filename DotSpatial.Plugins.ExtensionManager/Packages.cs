@@ -83,7 +83,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             return package;
         }
 
-
         /// <summary>
         /// Updates the specified package and dependencies.
         /// </summary>
@@ -92,7 +91,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             packageManager.UpdatePackage(package, true);
         }
-        #endregion
 
+        #endregion
     }
 }

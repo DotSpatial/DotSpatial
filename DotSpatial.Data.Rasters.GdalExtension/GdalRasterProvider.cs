@@ -177,6 +177,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             return null;
         }
+
         /// <summary>
         /// Opens the specified file
         /// </summary>
