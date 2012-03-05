@@ -16,28 +16,60 @@ namespace DotSpatial.Analysis
     /// </summary>
     public static class ClipRaster
     {
-        private static double GetXStart(IFeature polygon, IRaster input)
+        /// <summary>
+        /// Finds the X-coordinate of the first scanline
+        /// </summary>
+        /// <param name="polygon">The polygon</param>
+        /// <param name="inputRaster">The input raster</param>
+        /// <returns>the X-coordinate of the first scanline</returns>
+        private static double GetXStart(IFeature polygon, IRaster inputRaster)
         {
-            //double rasterMinX = input.Extent.MinX;
-            double rasterMinXCenter = input.Xllcenter;
+            double rasterMinXCenter = inputRaster.Xllcenter;
 
             // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
             if (polygon.Envelope.Minimum.X < rasterMinXCenter)
                 return rasterMinXCenter;
             else
-                return FirstColumnToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, input.CellHeight, 1);
+                return FirstColumnToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
         }
 
-        private static int GetStartColumn(IFeature polygon, IRaster input)
+        /// <summary>
+        /// Finds the first raster column corresponding to the left-most edge of the poly
+        /// </summary>
+        /// <param name="polygon">the polygon</param>
+        /// <param name="inputRaster">the input raster</param>
+        /// <returns>The raster column corresponding to the left-most edge of the poly 
+        /// (if raster starts before left edge of the poly)
+        /// or the first raster column (if raster starts after left edge of the poly)</returns>
+        /// <remarks>If the poly sits to the left of the raster then the first column of the raster is returned.</remarks>
+        private static int GetStartColumn(IFeature polygon, IRaster inputRaster)
         {
-            //double rasterMinX = input.Extent.MinX;
-            double rasterMinXCenter = input.Xllcenter;
+            double rasterMinXCenter = inputRaster.Xllcenter;
 
             // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
             if (polygon.Envelope.Minimum.X < rasterMinXCenter)
                 return 0;
             else
-                return FirstColumnIndexToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, input.CellHeight, 1);
+                return ColumnIndexToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
+        }
+
+        /// <summary>
+        /// Finds the last raster column corresponding to the right-most edge of the poly
+        /// </summary>
+        /// <param name="polygon">the polygon</param>
+        /// <param name="inputRaster">the input raster</param>
+        /// <returns>The raster column corresponding to the right-most edge of the poly 
+        /// (if raster ends after the right edge of the poly)
+        /// or the last raster column (if raster ends before right edge of the poly)</returns>
+        private static int GetEndColumn(IFeature polygon, IRaster inputRaster)
+        {
+            double rasterMaxXCenter = inputRaster.Extent.MaxX - inputRaster.CellWidth / 2;
+
+            // Does the poly sit to the right of the raster or does the raster end after the right edge of the poly
+            if (polygon.Envelope.Right() > rasterMaxXCenter)
+                return inputRaster.NumColumns - 1;
+            else
+                return ColumnIndexToProcess(polygon.Envelope.Right(), rasterMaxXCenter, inputRaster.CellWidth);
         }
 
         /// <summary>
@@ -61,12 +93,13 @@ namespace DotSpatial.Analysis
         /// <param name="input">The input raster object</param>
         /// <param name="outputFileName">the output raster file name</param>
         /// <param name="cancelProgressHandler">Progress handler for reporting progress status and cancelling the operation</param>
-        /// <remarks>We assume there is only one part in the polygon. Traverses the raster with a vertical scan line from left to right.</remarks>
-        /// <remarks>This method doesn't complete when the polygon is not completely within the raster.</remarks>
+        /// <remarks>We assume there is only one part in the polygon. 
+        /// Traverses the raster with a vertical scan line from left to right, bottom to top</remarks>
         /// <returns></returns>
         public static IRaster ClipRasterWithPolygon(IFeature polygon, IRaster input, string outputFileName,
                                                     ICancelProgressHandler cancelProgressHandler = null)
         {
+            //if the polygon is completely outside the raster
             if (!input.ContainsFeature(polygon))
                 return input;
 
@@ -81,7 +114,7 @@ namespace DotSpatial.Analysis
             //create output raster
             IRaster output = Raster.CreateRaster(outputFileName, input.DriverCode, input.NumColumns, input.NumRows, 1,
                                                  input.DataType, new[] { string.Empty });
-            output.Bounds = input.Bounds;
+            output.Bounds = input.Bounds.Copy();
             output.NoDataValue = input.NoDataValue;
             if (input.CanReproject)
             {
@@ -147,7 +180,7 @@ namespace DotSpatial.Analysis
             {
                 if (!nextIntersectionIsEndPoint)
                 {
-                    // should be the bottommost intersection
+                    // should be the bottom-most intersection
                     yStart = intersections[i];
                     nextIntersectionIsEndPoint = true;
                 }
@@ -156,16 +189,10 @@ namespace DotSpatial.Analysis
                     // should be the intersection just above the bottommost one.
                     yEnd = intersections[i];
 
-                    //double yCurrent = FirstRowToProcess(yStart, output.Extent.MinY, output.Bounds.CellHeight, 1);
-                    //int rowCurrent = output.ProjToCell(xCurrent, yStart).Row; ; //bottom-most row        
-
-                    //double yEnd2 = FirstRowToProcess(yEnd, output.Extent.MinY, output.Bounds.CellHeight, 1);
-                    //int rowEnd = output.ProjToCell(xCurrent, yEnd2).Row; //find row corresponding to end intersection
-
-                    int rowCurrent = output.NumRows - RowIndexToProcess(yStart, output.Extent.MinY, output.CellHeight, 1);
-                    //int rowEnd = RowIndexToProcess(yEnd, output.Extent.MinY, output.CellHeight, 1);
+                    int rowCurrent = output.NumRows - RowIndexToProcess(yStart, output.Extent.MinY, output.CellHeight);
                     int rowEnd = rowCurrent - (int)(Math.Ceiling((yEnd - yStart) / output.CellHeight));
 
+                    //traverse from bottom to top between the two intersections
                     while (rowCurrent > rowEnd)
                     {
                         if (rowCurrent < 0 && rowEnd < 0) break;
@@ -233,41 +260,49 @@ namespace DotSpatial.Analysis
         }
 
         /// <summary>
-        /// Assumes the cell is square.
+        /// Finds the x-coordinate of the first raster column to process
         /// </summary>
         /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
         /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
-        /// <param name="cellSize">Size of the cell.</param>
-        /// <param name="sign">The factor.</param>
-        /// <returns></returns>
-        private static double FirstColumnToProcess(double xMinPolygon, double xMinRaster, double cellWidth, int sign)
+        /// <param name="cellWidth">Size of the cell.</param>
+        private static double FirstColumnToProcess(double xMinPolygon, double xMinRaster, double cellWidth)
         {
             double columnIndex = Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
-
-            // we address the issue where the polygon is to the right of the raster by using the sign parameter.
-            // double columnIndexIfStartOfPolyToRightOfRaster = Math.Ceiling((xyMinPolygon - xyMinRaster ) / cellSize);
-
-            return xMinRaster + (sign * columnIndex * cellWidth);
+            return xMinRaster + (columnIndex * cellWidth);
         }
-
-        private static int FirstColumnIndexToProcess(double xMinPolygon, double xMinRaster, double cellWidth, int sign)
+        
+        /// <summary>
+        /// Finds the index of the first raster column to process
+        /// </summary>
+        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="cellWidth">Size of the cell.</param>
+        private static int ColumnIndexToProcess(double xMinPolygon, double xMinRaster, double cellWidth)
         {
             return (int)Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
         }
-
-        private static int RowIndexToProcess(double yMinPolygon, double yMinRaster, double cellHeight, int sign)
+        
+        /// <summary>
+        /// Finds the index of the first raster row to process
+        /// </summary>
+        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="cellHeight">Size of the cell.</param>
+        private static int RowIndexToProcess(double yMinPolygon, double yMinRaster, double cellHeight)
         {
             return (int)Math.Ceiling((yMinPolygon - yMinRaster) / cellHeight);
         }
-
-        private static double FirstRowToProcess(double yMinPolygon, double yMinRaster, double cellHeight, int sign)
+        
+        /// <summary>
+        /// Finds the y-coordinate of the first raster row to process
+        /// </summary>
+        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="cellHeight">Size of the cell.</param>
+        private static double FirstRowToProcess(double yMinPolygon, double yMinRaster, double cellHeight)
         {
             double rowIndex = Math.Ceiling((yMinPolygon - yMinRaster) / cellHeight);
-
-            // we address the issue where the polygon is to the right of the raster by using the sign parameter.
-            // double columnIndexIfStartOfPolyToRightOfRaster = Math.Ceiling((xyMinPolygon - xyMinRaster ) / cellSize);
-
-            return yMinRaster + (sign * rowIndex * cellHeight);
+            return yMinRaster + (rowIndex * cellHeight);
         }
     }
 }
