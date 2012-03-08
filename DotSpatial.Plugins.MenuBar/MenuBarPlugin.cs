@@ -14,6 +14,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Plugins.MenuBar.Properties;
 using Msg = DotSpatial.Plugins.MenuBar.MessageStrings;
+using DotSpatial.Topology;
 
 namespace DotSpatial.Plugins.MenuBar
 {
@@ -331,7 +332,9 @@ namespace DotSpatial.Plugins.MenuBar
         {
             var layer = App.Map.Layers.SelectedLayer;
             if (layer != null)
-                App.Map.ViewExtents = layer.DataSet.Extent;
+            {
+                ZoomToLayer(layer);
+            }
         }
 
         /// <summary>
@@ -342,6 +345,25 @@ namespace DotSpatial.Plugins.MenuBar
         private void ZoomToMaxExtents_Click(object sender, EventArgs e)
         {
             App.Map.ZoomToMaxExtent();
+        }
+
+        private void ZoomToLayer(IMapLayer layerToZoom)
+        {
+            const double eps = 1e-7;
+            IEnvelope layerEnvelope = layerToZoom.Extent.ToEnvelope();
+            if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
+            {
+                layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84
+            }
+            else
+            {
+                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double newExtentWidth = App.Map.ViewExtents.Width * zoomInFactor;
+                double newExtentHeight = App.Map.ViewExtents.Height * zoomInFactor;
+                layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
+            }
+
+            App.Map.ViewExtents = layerEnvelope.ToExtent();
         }
 
         #endregion

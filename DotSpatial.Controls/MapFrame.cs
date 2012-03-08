@@ -1157,24 +1157,30 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void Layers_ZoomToLayer(object sender, EnvelopeArgs e)
         {
+            ZoomToLayerEnvelope(e.Envelope);
+        }
+
+        private void ZoomToLayerEnvelope(IEnvelope layerEnvelope)
+        {
             if (_extendBuffer)
             {
-                e.Envelope.ExpandBy(e.Envelope.Width, e.Envelope.Height);
+                layerEnvelope.ExpandBy(layerEnvelope.Width, layerEnvelope.Height);
             }
 
-            e.Envelope.ExpandBy(e.Envelope.Width / 10, e.Envelope.Height / 10); // work item #84
-
-            // to prevent exception when zoom to a map frame with one layer with one single point
             const double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
+            if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
             {
-                Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                ViewExtents = newExtent;
+                layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84
             }
             else
             {
-                ViewExtents = e.Envelope.ToExtent();
+                double zoomInFactor = 0.05; //fixed zoom-in by 10% - 5% on each side
+                double newExtentWidth = ViewExtents.Width * zoomInFactor;
+                double newExtentHeight = ViewExtents.Height * zoomInFactor;
+                layerEnvelope.ExpandBy(newExtentWidth, newExtentHeight);
             }
+
+            ViewExtents = layerEnvelope.ToExtent();
         }
 
         private void LayerCollection_LayerVisibleChanged(object sender, EventArgs e)
