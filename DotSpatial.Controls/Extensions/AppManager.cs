@@ -54,6 +54,10 @@ namespace DotSpatial.Controls
         #region Constants and Fields
         private const int SplashDirectoryMessageLimit = 50;
         private const string ExtensionsDirectory = "Extensions";
+
+        /// <summary>
+        /// Name of the folder where packages reside.
+        /// </summary>
         public const string PackageDirectory = "Packages";
 
         private static ResourceManager resources;
@@ -224,8 +228,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the extension.
         /// </summary>
-        /// <param name="extensionName">Name of the extension.</param>
-        /// <returns>Null if the extension is not present.</returns>
+        /// <param name="assemblyTitle">The assembly title.</param>
+        /// <returns>
+        /// Null if the extension is not present.
+        /// </returns>
         public IExtension GetExtension(string assemblyTitle)
         {
             return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",")).FirstOrDefault();
@@ -234,12 +240,16 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the extension.
         /// </summary>
-        /// <param name="extensionName">Name of the extension.</param>
-        /// <returns>Null if the extension is not present.</returns>
+        /// <param name="assemblyTitle">The assembly title.</param>
+        /// <param name="version">The version.</param>
+        /// <returns>
+        /// Null if the extension is not present.
+        /// </returns>
         public IExtension GetExtension(string assemblyTitle, string version)
         {
             return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version).FirstOrDefault();
         }
+
         /// <summary>
         /// Activates the extensions passed in and deactivates the rest.
         /// If null is passed in, all extensions are deactivated.

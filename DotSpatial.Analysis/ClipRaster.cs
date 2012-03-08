@@ -142,10 +142,10 @@ namespace DotSpatial.Analysis
             for (int columnCurrent = columnStart; columnCurrent < output.NumColumns; columnCurrent++)
             {
                 xCurrent = xStart + col * output.CellWidth;
-                
+
                 var intersections = GetYIntersections(borders, xCurrent);
                 intersections.Sort();
-                ParseIntersections(intersections, xCurrent, columnCurrent, output, input);              
+                ParseIntersections(intersections, xCurrent, columnCurrent, output, input);
 
                 // update progess meter
                 pm.CurrentValue = xCurrent;
@@ -156,7 +156,7 @@ namespace DotSpatial.Analysis
                 // cancel if requested
                 if (cancelProgressHandler != null && cancelProgressHandler.Cancel)
                     return null;
-            } 
+            }
 
             output.Save();
 
@@ -168,6 +168,7 @@ namespace DotSpatial.Analysis
         /// </summary>
         /// <param name="intersections">The intersections.</param>
         /// <param name="xCurrent">The x current.</param>
+        /// <param name="column">The column.</param>
         /// <param name="output">The output.</param>
         /// <param name="input">The input.</param>
         private static void ParseIntersections(List<double> intersections, double xCurrent, int column, IRaster output,
@@ -199,7 +200,7 @@ namespace DotSpatial.Analysis
 
                         if (rowCurrent >= 0 && rowCurrent < output.NumRows)
                         {
-                            output.Value[rowCurrent, column] = input.Value[rowCurrent, column]; 
+                            output.Value[rowCurrent, column] = input.Value[rowCurrent, column];
                         }
                         rowCurrent--;
                     }
@@ -262,42 +263,42 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// Finds the x-coordinate of the first raster column to process
         /// </summary>
-        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
-        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="xMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="xMinRaster">The lowest left coordinate of the raster.</param>
         /// <param name="cellWidth">Size of the cell.</param>
         private static double FirstColumnToProcess(double xMinPolygon, double xMinRaster, double cellWidth)
         {
             double columnIndex = Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
             return xMinRaster + (columnIndex * cellWidth);
         }
-        
+
         /// <summary>
         /// Finds the index of the first raster column to process
         /// </summary>
-        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
-        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="xMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="xMinRaster">The lowest left coordinate of the raster.</param>
         /// <param name="cellWidth">Size of the cell.</param>
         private static int ColumnIndexToProcess(double xMinPolygon, double xMinRaster, double cellWidth)
         {
             return (int)Math.Ceiling((xMinPolygon - xMinRaster) / cellWidth);
         }
-        
+
         /// <summary>
         /// Finds the index of the first raster row to process
         /// </summary>
-        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
-        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="yMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="yMinRaster">The lowest left coordinate of the raster.</param>
         /// <param name="cellHeight">Size of the cell.</param>
         private static int RowIndexToProcess(double yMinPolygon, double yMinRaster, double cellHeight)
         {
             return (int)Math.Ceiling((yMinPolygon - yMinRaster) / cellHeight);
         }
-        
+
         /// <summary>
         /// Finds the y-coordinate of the first raster row to process
         /// </summary>
-        /// <param name="xyMinPolygon">The lowest left coordinate of the polygon.</param>
-        /// <param name="xyMinRaster">The lowest left coordinate of the raster.</param>
+        /// <param name="yMinPolygon">The lowest left coordinate of the polygon.</param>
+        /// <param name="yMinRaster">The lowest left coordinate of the raster.</param>
         /// <param name="cellHeight">Size of the cell.</param>
         private static double FirstRowToProcess(double yMinPolygon, double yMinRaster, double cellHeight)
         {

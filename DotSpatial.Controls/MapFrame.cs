@@ -582,6 +582,10 @@ namespace DotSpatial.Controls
             ResetExtents();
         }
 
+        /// <summary>
+        /// Fires the ExtentsChanged event
+        /// </summary>
+        /// <param name="ext"></param>
         protected override void OnExtentsChanged(Extent ext)
         {
             if (_isZoomingNextOrPrevious)
