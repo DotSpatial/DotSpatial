@@ -67,6 +67,9 @@ namespace DotSpatial.Data
         /// <param name="feature"></param>
         public Shape(IFeature feature)
         {
+            if (Equals(feature, null))
+                throw new ArgumentNullException("feature");
+
             _attributes = feature.DataRow.ItemArray;
             IList<Coordinate> coords = feature.Coordinates;
             _vertices = new double[feature.NumPoints * 2];
@@ -90,6 +93,9 @@ namespace DotSpatial.Data
         /// <param name="geometry">The geometry to create a shape from.</param>
         public Shape(IGeometry geometry)
         {
+            if (Equals(geometry, null))
+                throw new ArgumentNullException("geometry");
+
             IList<Coordinate> coords = geometry.Coordinates;
             _vertices = new double[geometry.NumPoints * 2];
             _z = new double[geometry.NumPoints];
@@ -111,6 +117,9 @@ namespace DotSpatial.Data
         /// <param name="coord"></param>
         public Shape(Coordinate coord)
         {
+            if (Equals(coord, null))
+                throw new ArgumentNullException("coord");
+
             _shapeRange = new ShapeRange(FeatureType.Point);
             _vertices = new double[2];
             _vertices[0] = coord.X;
@@ -155,6 +164,9 @@ namespace DotSpatial.Data
         /// <param name="extent"></param>
         public Shape(Extent extent)
         {
+            if (Equals(extent, null))
+                throw new ArgumentNullException("extent");
+
             _shapeRange = new ShapeRange(FeatureType.Polygon);
             _vertices = new double[8];
             double xMin = extent.MinX;
@@ -181,6 +193,9 @@ namespace DotSpatial.Data
         /// <param name="envelope"></param>
         public Shape(IEnvelope envelope)
         {
+            if (Equals(envelope, null))
+                throw new ArgumentNullException("envelope");
+
             _shapeRange = new ShapeRange(FeatureType.Polygon);
             _vertices = new double[8];
             double xMin = envelope.Minimum.X;
@@ -467,9 +482,9 @@ namespace DotSpatial.Data
                     foreach (var hole in bp.Holes)
                     {
                         PartRange holex = new PartRange(vertices, shapeStart, vIndex - shapeStart, featureType)
-                                              {
-                                                  NumVertices = hole.NumPoints
-                                              };
+                        {
+                            NumVertices = hole.NumPoints
+                        };
                         shx.Parts.Add(holex);
                         vIndex += hole.NumPoints;
                     }
