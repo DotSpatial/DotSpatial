@@ -184,7 +184,6 @@ namespace DotSpatial.Data
                     }
                 }
             }
-            // GC.Collect(); We already have one in EndGetShapesSession
             startIndex += shapesTested;
             fs.Close();
             return result;
@@ -246,7 +245,6 @@ namespace DotSpatial.Data
         public void EndGetShapesSession()
         {
             _shx = null;
-            //GC.Collect(); kellison: This was slow and usually bad practice.  Had been copied from pre-existing code.
         }
 
         #endregion

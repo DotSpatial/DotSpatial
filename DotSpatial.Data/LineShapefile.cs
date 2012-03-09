@@ -310,7 +310,7 @@ namespace DotSpatial.Data
                     shape.Parts.Add(partR);
                 }
             }
-            GC.Collect();
+
             bbReader.Dispose();
         }
 

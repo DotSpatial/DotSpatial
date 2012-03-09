@@ -1536,7 +1536,6 @@ namespace DotSpatial.Controls
             }
 
             stencil.Dispose();
-            if (CollectAfterDraw) GC.Collect();
         }
 
         /// <summary>

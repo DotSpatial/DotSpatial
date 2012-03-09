@@ -279,7 +279,7 @@ namespace DotSpatial.Data
                 PartRange partR = new PartRange(vert, shape.StartIndex, 0, FeatureType.MultiPoint) { NumVertices = count };
                 shape.Parts.Add(partR);
             }
-            GC.Collect();
+
             bbReader.Dispose();
         }
 

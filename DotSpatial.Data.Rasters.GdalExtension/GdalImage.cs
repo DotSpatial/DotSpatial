@@ -1072,7 +1072,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             _alpha = null;
             base.Dispose(disposeManagedResources);
-            GC.Collect();
         }
     }
 }

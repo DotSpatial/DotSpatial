@@ -2620,7 +2620,7 @@ namespace DotSpatial.Data
             }
             if (_dataTable != null)
                 _dataTable.Dispose();
-            GC.Collect();
+
             base.Dispose(disposeManagedResources);
         }
     }

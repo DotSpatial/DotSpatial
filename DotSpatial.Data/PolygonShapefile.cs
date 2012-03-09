@@ -299,7 +299,6 @@ namespace DotSpatial.Data
                 ProgressMeter.CurrentValue = shp;
             }
             ProgressMeter.Reset();
-            GC.Collect();
         }
 
         /// <summary>

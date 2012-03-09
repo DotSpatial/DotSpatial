@@ -228,7 +228,6 @@ namespace DotSpatial.Symbology
                     py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
                     Symbolizer.HillShade = null;
                 }
-                GC.Collect();
                 mem = proc.PrivateMemorySize64 / 1000000;
                 freeRAM = Convert.ToInt64(pcRemaining.NextValue()) / 1000000;
                 Debug.WriteLine("Memory after: " + mem + "Mb | " + freeRAM + " remaining Mb.");

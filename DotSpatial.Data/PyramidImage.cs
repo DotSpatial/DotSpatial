@@ -358,7 +358,6 @@ namespace DotSpatial.Data
                 }
                 vals = null;
                 bmp.Dispose();
-                GC.Collect();
             }
             pm.Reset();
         }
