@@ -62,7 +62,12 @@ namespace DotSpatial.Controls
                     if (Map.MapControl != null)
                     {
                         foreach (IMapLayer t in Map.MapControl.Layers)
-                            _layers.Add(t);
+                        {
+                            if (t.Checked)
+                            {
+                                _layers.Add(t);
+                            }
+                        }
                     }
 
                     base.UpdateThumbnail();
