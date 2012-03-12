@@ -69,6 +69,10 @@ namespace DotSpatial.Data
         /// <param name="offset"></param>
         public Extent(double[] values, int offset)
         {
+            if (values.Length < 4 + offset)
+                throw new IndexOutOfRangeException(
+                    "The length of the array of double values should be greater than or equal to 4 plus the value of the offset.");
+
             MinX = values[0 + offset];
             MinY = values[1 + offset];
             MaxX = values[2 + offset];
@@ -81,6 +85,9 @@ namespace DotSpatial.Data
         /// <param name="values"></param>
         public Extent(double[] values)
         {
+            if (values.Length < 4)
+                throw new IndexOutOfRangeException("The length of the array of double values should be greater than or equal to 4.");
+
             MinX = values[0];
             MinY = values[1];
             MaxX = values[2];
@@ -93,6 +100,9 @@ namespace DotSpatial.Data
         /// <param name="env"></param>
         public Extent(IEnvelope env)
         {
+            if (Equals(env, null))
+                throw new ArgumentNullException("env");
+
             MinX = env.Minimum.X;
             MinY = env.Minimum.Y;
             MaxX = env.Maximum.X;
@@ -254,7 +264,8 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Contains(IExtent ext)
         {
-            Contract.Requires(ext != null);
+            if (Equals(ext, null))
+                throw new ArgumentNullException("ext");
 
             if (MinX > ext.MinX)
             {
@@ -268,11 +279,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (MaxY < ext.MaxY)
-            {
-                return false;
-            }
-            return true;
+            return !(MaxY < ext.MaxY);
         }
 
         /// <summary>
@@ -282,7 +289,8 @@ namespace DotSpatial.Data
         /// <returns>Boolean</returns>
         public virtual bool Contains(Coordinate c)
         {
-            Contract.Requires(c != null, "c is null.");
+            if (Equals(c, null))
+                throw new ArgumentNullException("c");
 
             if (MinX > c.X)
             {
@@ -296,11 +304,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (MaxY < c.Y)
-            {
-                return false;
-            }
-            return true;
+            return !(MaxY < c.Y);
         }
 
         /// <summary>
@@ -310,7 +314,8 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Contains(IEnvelope env)
         {
-            Contract.Requires(env != null, "env is null.");
+            if (Equals(env, null))
+                throw new ArgumentNullException("env");
 
             if (MinX > env.Minimum.X)
             {
@@ -324,11 +329,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (MaxY < env.Maximum.Y)
-            {
-                return false;
-            }
-            return true;
+            return !(MaxY < env.Maximum.Y);
         }
 
         /// <summary>
@@ -337,7 +338,8 @@ namespace DotSpatial.Data
         /// <param name="extent">Any IExtent implementation.</param>
         public virtual void CopyFrom(IExtent extent)
         {
-            Contract.Requires(extent != null, "extent is null.");
+            if (Equals(extent, null))
+                throw new ArgumentNullException("extent");
 
             MinX = extent.MinX;
             MaxX = extent.MaxX;
@@ -414,24 +416,24 @@ namespace DotSpatial.Data
         /// <param name="ext">The extent to expand to include</param>
         public virtual void ExpandToInclude(IExtent ext)
         {
-            if (ext != null)
+            if (ext == null) //Simplify, avoiding nested if
+                return;
+
+            if (ext.MinX < MinX)
             {
-                if (ext.MinX < MinX)
-                {
-                    MinX = ext.MinX;
-                }
-                if (ext.MinY < MinY)
-                {
-                    MinY = ext.MinY;
-                }
-                if (ext.MaxX > MaxX)
-                {
-                    MaxX = ext.MaxX;
-                }
-                if (ext.MaxY > MaxY)
-                {
-                    MaxY = ext.MaxY;
-                }
+                MinX = ext.MinX;
+            }
+            if (ext.MinY < MinY)
+            {
+                MinY = ext.MinY;
+            }
+            if (ext.MaxX > MaxX)
+            {
+                MaxX = ext.MaxX;
+            }
+            if (ext.MaxY > MaxY)
+            {
+                MaxY = ext.MaxY;
             }
         }
 
@@ -483,13 +485,16 @@ namespace DotSpatial.Data
         /// <param name="other">The other extent to intersect with.</param>
         public virtual Extent Intersection(Extent other)
         {
+            if (Equals(other, null))
+                throw new ArgumentNullException("other");
+
             Extent result = new Extent
-                            {
-                                MinX = (MinX > other.MinX) ? MinX : other.MinX,
-                                MaxX = (MaxX < other.MaxX) ? MaxX : other.MaxX,
-                                MinY = (MinY > other.MinY) ? MinY : other.MinY,
-                                MaxY = (MaxY < other.MaxY) ? MaxY : other.MaxY
-                            };
+            {
+                MinX = (MinX > other.MinX) ? MinX : other.MinX,
+                MaxX = (MaxX < other.MaxX) ? MaxX : other.MaxX,
+                MinY = (MinY > other.MinY) ? MinY : other.MinY,
+                MaxY = (MaxY < other.MaxY) ? MaxY : other.MaxY
+            };
             return result;
         }
 
@@ -500,6 +505,9 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Intersects(Coordinate c)
         {
+            if (Equals(c, null))
+                throw new ArgumentNullException("c");
+
             if (double.IsNaN(c.X) || double.IsNaN(c.Y))
             {
                 return false;
@@ -542,11 +550,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (vert.Y > MaxY)
-            {
-                return false;
-            }
-            return true;
+            return !(vert.Y > MaxY);
         }
 
         /// <summary>
@@ -556,6 +560,9 @@ namespace DotSpatial.Data
         /// <returns>Boolean, true if they overlap anywhere, or even touch</returns>
         public virtual bool Intersects(IExtent ext)
         {
+            if (Equals(ext, null))
+                throw new ArgumentNullException("ext");
+
             if (ext.MaxX < MinX)
             {
                 return false;
@@ -568,11 +575,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (ext.MinY > MaxY)
-            {
-                return false;
-            }
-            return true;
+            return !(ext.MinY > MaxY);
         }
 
         /// <summary>
@@ -582,6 +585,9 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Intersects(IEnvelope env)
         {
+            if (Equals(env, null))
+                throw new ArgumentNullException("env");
+
             if (env.Maximum.X < MinX)
             {
                 return false;
@@ -594,11 +600,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (env.Minimum.Y > MaxY)
-            {
-                return false;
-            }
-            return true;
+            return !(env.Minimum.Y > MaxY);
         }
 
         /// <summary>
@@ -617,11 +619,7 @@ namespace DotSpatial.Data
             {
                 return true;
             }
-            if (MinX > MaxX || MinY > MaxY)
-            {
-                return true;
-            }
-            return false;
+            return (MinX > MaxX || MinY > MaxY); // Simplified
         }
 
         /// <summary>
@@ -649,10 +647,11 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool TryParse(string text, out Extent result, out string nameFailed)
         {
-            double xmin, xmax, ymin, ymax, zmin, zmax, mmin, mmax;
+            double xmin, xmax, ymin, ymax, mmin, mmax;
             result = null;
             if (text.Contains("Z"))
             {
+                double zmin, zmax;
                 nameFailed = "Z";
                 ExtentMZ mz = new ExtentMZ();
                 if (TryExtract(text, "Z", out zmin, out zmax) == false) return false;
@@ -719,6 +718,10 @@ namespace DotSpatial.Data
         /// </summary>
         public void SetCenter(Coordinate center)
         {
+            //prevents NullReferenceException when accessing center.X and center.Y
+            if (Equals(center, null))
+                throw new ArgumentNullException("center");
+
             SetCenter(center.X, center.Y, Width, Height);
         }
 
@@ -762,6 +765,9 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Within(IExtent ext)
         {
+            if (Equals(ext, null))
+                throw new ArgumentNullException("ext");
+
             if (MinX < ext.MinX)
             {
                 return false;
@@ -774,11 +780,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (MaxY > ext.MaxY)
-            {
-                return false;
-            }
-            return true;
+            return !(MaxY > ext.MaxY);
         }
 
         /// <summary>
@@ -788,6 +790,9 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public virtual bool Within(IEnvelope env)
         {
+            if (Equals(env, null))
+                throw new ArgumentNullException("env");
+
             if (MinX < env.Minimum.X)
             {
                 return false;
@@ -800,11 +805,7 @@ namespace DotSpatial.Data
             {
                 return false;
             }
-            if (MaxY > env.Maximum.Y)
-            {
-                return false;
-            }
-            return true;
+            return !(MaxY > env.Maximum.Y);
         }
 
         /// <summary>
