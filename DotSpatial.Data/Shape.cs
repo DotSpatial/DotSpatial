@@ -70,6 +70,9 @@ namespace DotSpatial.Data
             if (Equals(feature, null))
                 throw new ArgumentNullException("feature");
 
+            if (feature.NumPoints == 0)
+                throw new ArgumentOutOfRangeException("The IFeature.NumPoints of the parameter feature must be greater than 0.");
+
             _attributes = feature.DataRow.ItemArray;
             IList<Coordinate> coords = feature.Coordinates;
             _vertices = new double[feature.NumPoints * 2];
