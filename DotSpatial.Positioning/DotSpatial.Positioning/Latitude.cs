@@ -623,7 +623,7 @@ namespace DotSpatial.Positioning
 #if Framework20 && !PocketPC
                 return (int)Math.Truncate(_decimalDegrees);
 #else
-				return Truncate(_DecimalDegrees);
+                return Truncate(_DecimalDegrees);
 #endif
             }
         }
@@ -978,12 +978,12 @@ Math.Round(
         }
 
 #if !Framework20 || PocketPC
-		internal static int Truncate(double value)
-		{
-			return value > 0
-				? (int)(value - (value - Math.Floor(value)))
-				: (int)(value - (value - Math.Ceiling(value)));
-		}
+        internal static int Truncate(double value)
+        {
+            return value > 0
+                ? (int)(value - (value - Math.Floor(value)))
+                : (int)(value - (value - Math.Ceiling(value)));
+        }
 #endif
 
         /// <summary>
@@ -1012,7 +1012,7 @@ Math.Round(
             // Interval must be > 0
             if (interval == 0)
 #if PocketPC
-				throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
+                throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
 #else
                 throw new ArgumentOutOfRangeException("interval", interval, Properties.Resources.Angle_InvalidInterval);
 #endif
