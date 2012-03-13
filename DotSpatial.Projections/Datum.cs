@@ -113,7 +113,6 @@ namespace DotSpatial.Projections
                                             _toWgs84[3] / SEC_TO_RAD,
                                             _toWgs84[4] / SEC_TO_RAD,
                                             _toWgs84[5] / SEC_TO_RAD,
-                                            _toWgs84[5],
                                             (_toWgs84[6] - 1) * 1000000.0);
                         break;
 
