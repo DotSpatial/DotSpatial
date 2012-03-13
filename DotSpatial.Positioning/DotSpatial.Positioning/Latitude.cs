@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -52,32 +52,32 @@ namespace DotSpatial.Positioning
     ///
     /// <example>
     /// These examples create new instances of Latitude objects.
-    ///   <code lang="VB" description="Create an angle of 90�">
+    ///   <code lang="VB" description="Create an angle of 90°">
     /// Dim MyLatitude As New Latitude(90)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 90�">
+    ///   <code lang="CS" description="Create an angle of 90°">
     /// Latitude MyLatitude = new Latitude(90);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 90�">
+    ///   <code lang="C++" description="Create an angle of 90°">
     /// Latitude MyLatitude = new Latitude(90);
     ///   </code>
-    ///   <code lang="VB" description="Create an angle of 105�30'21.4">
+    ///   <code lang="VB" description="Create an angle of 105°30'21.4">
     /// Dim MyLatitude1 As New Latitude(105, 30, 21.4)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 105�30'21.4">
+    ///   <code lang="CS" description="Create an angle of 105°30'21.4">
     /// Latitude MyLatitude = new Latitude(105, 30, 21.4);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 105�30'21.4">
+    ///   <code lang="C++" description="Create an angle of 105°30'21.4">
     /// Latitude MyLatitude = new Latitude(105, 30, 21.4);
     ///   </code>
     ///   </example>
     /// <remarks><para>Latitudes measure a distance North or South away from the equator. Latitudes
-    /// can range from -90� (at the South pole) to 90� (the North pole), with 0�
+    /// can range from -90° (at the South pole) to 90° (the North pole), with 0°
     /// representing the equator. Latitudes are commonly paired with Longitudes to mark a
     /// specific location on Earth's surface.</para>
     ///   <para>Latitudes are expressed in either of two major formats. The first format uses
     /// only positive numbers and the letter "N" or "S" to indicate the hemisphere (i.e.
-    /// "45�N" or "60�S"). The second format allows negative numbers an omits the single
+    /// "45°N" or "60°S"). The second format allows negative numbers an omits the single
     /// character (i.e. 45 or -60).</para>
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed via constructors).</para></remarks>
@@ -102,35 +102,35 @@ namespace DotSpatial.Positioning
         #region Fields
 
         /// <summary>
-        /// Represents a latitude of 0�.
+        /// Represents a latitude of 0°.
         /// </summary>
         public static readonly Latitude Equator = new Latitude(0.0);
         /// <summary>
-        /// Represents a latitude of 0�.
+        /// Represents a latitude of 0°.
         /// </summary>
         public static readonly Latitude Empty = new Latitude(0.0);
         /// <summary>
-        /// Represents a latitude of 23.5�S.
+        /// Represents a latitude of 23.5°S.
         /// </summary>
         public static readonly Latitude TropicOfCapricorn = new Latitude(-23.5);
         /// <summary>
-        /// Represents a latitude of 23.5�N.
+        /// Represents a latitude of 23.5°N.
         /// </summary>
         public static readonly Latitude TropicOfCancer = new Latitude(23.5);
         /// <summary>
-        /// Represents a latitude of 90�N.
+        /// Represents a latitude of 90°N.
         /// </summary>
         public static readonly Latitude NorthPole = new Latitude(90.0);
         /// <summary>
-        /// Represents a latitude of 90�S.
+        /// Represents a latitude of 90°S.
         /// </summary>
         public static readonly Latitude SouthPole = new Latitude(-90.0);
         /// <summary>
-        /// Represents the minimum possible latitude -90�.
+        /// Represents the minimum possible latitude -90°.
         /// </summary>
         public static readonly Latitude Minimum = new Latitude(-90.0);
         /// <summary>
-        /// Represents the maximum possible latitude of 90�.
+        /// Represents the maximum possible latitude of 90°.
         /// </summary>
         public static readonly Latitude Maximum = new Latitude(90.0);
         /// <summary>
@@ -147,7 +147,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <example>
-        /// This example demonstrates how to create an angle with a measurement of 90�.
+        /// This example demonstrates how to create an angle with a measurement of 90°.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(90)
         ///   </code>
@@ -168,14 +168,14 @@ namespace DotSpatial.Positioning
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <param name="hemisphere">The hemisphere.</param>
         /// <example>
-        /// This example creates a new latitude of 39�30' north.
+        /// This example creates a new latitude of 39°30' north.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39.5, LatitudeHemisphere.North)
         ///   </code>
         ///   <code lang="C#">
         /// Latitude MyLatitude = new Latitude(39.5, LatitudeHemisphere.North);
         ///   </code>
-        /// This example creates a new latitude of 39�30 south.
+        /// This example creates a new latitude of 39°30 south.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39.5, LatitudeHemisphere.South)
         ///   </code>
@@ -206,7 +206,7 @@ namespace DotSpatial.Positioning
         /// <param name="minutes">The minutes.</param>
         /// <param name="seconds">The seconds.</param>
         /// <example>
-        /// This example demonstrates how to create an angular measurement of 34�12'29.2 in
+        /// This example demonstrates how to create an angular measurement of 34°12'29.2 in
         /// hours, minutes and seconds.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(34, 12, 29.2)
@@ -230,14 +230,14 @@ namespace DotSpatial.Positioning
         /// <param name="seconds">The seconds.</param>
         /// <param name="hemisphere">The hemisphere.</param>
         /// <example>
-        /// This example creates a new latitude of 39�12'10" north.
+        /// This example creates a new latitude of 39°12'10" north.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39, 12, 10, LatitudeHemisphere.North)
         ///   </code>
         ///   <code lang="C#">
         /// Latitude MyLatitude = new Latitude(39, 12, 10, LatitudeHemisphere.North);
         ///   </code>
-        /// This example creates a new latitude of 39�12'10" south.
+        /// This example creates a new latitude of 39°12'10" south.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39, 12, 10, LatitudeHemisphere.South)
         ///   </code>
@@ -257,7 +257,7 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <example>
         /// This example demonstrates how an angle can be created when only the hours and
-        /// minutes (in decimal form) are known. This creates a value of 12�42.345'.
+        /// minutes (in decimal form) are known. This creates a value of 12°42.345'.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(12, 42.345)
         ///   </code>
@@ -278,14 +278,14 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <param name="hemisphere">The hemisphere.</param>
         /// <example>
-        /// This example creates a new latitude of 39�12.34' north.
+        /// This example creates a new latitude of 39°12.34' north.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39, 12.34, LatitudeHemisphere.North)
         ///   </code>
         ///   <code lang="C#">
         /// Latitude MyLatitude = new Latitude(39, 12.34, LatitudeHemisphere.North);
         ///   </code>
-        /// This example creates a new latitude of 39�12.34 south.
+        /// This example creates a new latitude of 39°12.34 south.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(39, 12.34, LatitudeHemisphere.South)
         ///   </code>
@@ -306,10 +306,10 @@ namespace DotSpatial.Positioning
         /// This example creates a new instance by parsing a string. (notice The double-quote is
         /// doubled up to represent a single double-quote in the string.)
         ///   <code lang="VB">
-        /// Dim MyLatitude As New Latitude("23�45'67.8""N")
+        /// Dim MyLatitude As New Latitude("23°45'67.8""N")
         ///   </code>
         ///   <code lang="CS">
-        /// Latitude MyLatitude = new Latitude("23�45'67.8\"N");
+        /// Latitude MyLatitude = new Latitude("23°45'67.8\"N");
         ///   </code>
         ///   </example>
         ///
@@ -340,10 +340,10 @@ namespace DotSpatial.Positioning
         /// This example creates a new instance by parsing a string. (notice: The double-quote is
         /// doubled up to represent a single double-quote in the string.)
         ///   <code lang="VB">
-        /// Dim MyLatitude As New Latitude("23�45'67.8""N")
+        /// Dim MyLatitude As New Latitude("23°45'67.8""N")
         ///   </code>
         ///   <code lang="CS">
-        /// Latitude MyLatitude = new Latitude("23�45'67.8\"N");
+        /// Latitude MyLatitude = new Latitude("23°45'67.8\"N");
         ///   </code>
         ///   </example>
         ///
@@ -397,7 +397,7 @@ namespace DotSpatial.Positioning
             {
                 // Clean up the string
                 StringBuilder newValue = new StringBuilder(value);
-                newValue.Replace("�", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
+                newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');
                 // How many elements are in the array?
@@ -520,18 +520,18 @@ namespace DotSpatial.Positioning
         ///   <see cref="DecimalDegrees"><strong>DecimalDegrees</strong></see> property is
         /// calculated automatically when creating an angle using hours, minutes and seconds.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�30'
+        /// ' Create an angle of 20°30'
         /// Dim MyLatitude As New Latitude(20, 30)
         /// ' Setting the DecimalMinutes recalculated other properties
         /// Debug.WriteLine(MyLatitude.DecimalDegrees)
-        /// ' Output: "20.5"  the same as 20�30'
+        /// ' Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�30'
+        /// // Create an angle of 20°30'
         /// Latitude MyLatitude = New Latitude(20, 30);
         /// // Setting the DecimalMinutes recalculated other properties
         /// Console.WriteLine(MyLatitude.DecimalDegrees)
-        /// // Output: "20.5"  the same as 20�30'
+        /// // Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
@@ -555,14 +555,14 @@ namespace DotSpatial.Positioning
         /// This example demonstrates how the <strong>DecimalMinutes</strong> property is
         /// automatically calculated when creating a new angle.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�10'30"
+        /// ' Create an angle of 20°10'30"
         /// Dim MyLatitude As New Latitude(20, 10, 30)
         /// ' The DecimalMinutes property is automatically calculated
         /// Debug.WriteLine(MyLatitude.DecimalMinutes)
         /// ' Output: "10.5"
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�10'30"
+        /// // Create an angle of 20°10'30"
         /// Latitude MyLatitude = new Latitude(20, 10, 30);
         /// // The DecimalMinutes property is automatically calculated
         /// Console.WriteLine(MyLatitude.DecimalMinutes)
@@ -599,7 +599,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 60.5� then outputs the value of the
+        /// This example creates an angle of 60.5° then outputs the value of the
         ///   <strong>Hours</strong> property, 60.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(60.5)
@@ -637,7 +637,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45.5� then outputs the value of the
+        /// This example creates an angle of 45.5° then outputs the value of the
         ///   <strong>Minutes</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(45.5)
@@ -679,7 +679,7 @@ Math.Round(
         /// <seealso cref="Minutes">Minutes Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45�10.5' then outputs the value of the
+        /// This example creates an angle of 45°10.5' then outputs the value of the
         ///   <strong>Seconds</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(45, 10.5)
@@ -753,7 +753,7 @@ Math.Round(
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
-        /// allowed bounds of -90� and 90�.
+        /// allowed bounds of -90° and 90°.
         /// </summary>
         public bool IsNormalized
         {
@@ -803,8 +803,8 @@ Math.Round(
         /// </summary>
         /// <returns>An <strong>Latitude</strong> representing the mirrored value.</returns>
         /// <example>
-        /// This example creates a new <strong>Latitude</strong> of 45� then calculates its mirror
-        /// of 225�. (45 + 180)
+        /// This example creates a new <strong>Latitude</strong> of 45° then calculates its mirror
+        /// of 225°. (45 + 180)
         ///   <code lang="VB" title="[New Example]">
         /// Dim Latitude1 As New Latitude(45)
         /// Dim Latitude2 As Latitude = Latitude1.Mirror()
@@ -820,7 +820,7 @@ Math.Round(
         ///   </example>
         /// <remarks>This method returns the "opposite" of the current instance. The opposite is
         /// defined as the point on the other side of an imaginary circle. For example, if an angle
-        /// is 0�, at the top of a circle, this method returns 180�, at the bottom of the
+        /// is 0°, at the top of a circle, this method returns 180°, at the bottom of the
         /// circle.</remarks>
         public Latitude Mirror()
         {
@@ -836,7 +836,7 @@ Math.Round(
         /// <overloads>Converts an angular measurement into radians before further processing.</overloads>
         ///
         /// <example>
-        /// This example converts a measurement of 90� into radians.
+        /// This example converts a measurement of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(90)
         /// Dim MyRadians As Radian = MyLatitude.ToRadians()
@@ -936,22 +936,22 @@ Math.Round(
         /// <returns>A <strong>String</strong> in the specified format.</returns>
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(45, 16.772)
-        /// Debug.WriteLine(MyLatitude.ToString("h�m.mm"))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyLatitude.ToString("h°m.mm"))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyLatitude As New Latitude(45, 16.772);
-        /// Debug.WriteLine(MyLatitude.ToString("h�m.mm"));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyLatitude.ToString("h°m.mm"));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This method returns the current instance output in a specific format. If no
-        /// value for the format is specified, a default format of "d.dddd�" is used. Any
+        /// value for the format is specified, a default format of "d.dddd°" is used. Any
         /// string output by this method can be converted back into an Latitude object using the
         /// <strong>Parse</strong> method or <strong>Latitude(string)</strong> constructor.</remarks>
         public string ToString(string format)
@@ -1077,20 +1077,20 @@ Math.Round(
         /// </summary>
         /// <returns>A <strong>String</strong> created using the default format.</returns>
         /// <example>
-        /// This example outputs a value of 90 degrees in the default format of ###.#�.
+        /// This example outputs a value of 90 degrees in the default format of ###.#°.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(90)
         /// Debug.WriteLine(MyLatitude.ToString)
-        /// ' Output: "90�"
+        /// ' Output: "90°"
         ///   </code>
         ///   <code lang="CS">
         /// Latitude MyLatitude = new Latitude(90);
         /// Debug.WriteLine(MyLatitude.ToString());
-        /// // Output: "90�"
+        /// // Output: "90°"
         ///   </code>
         ///   </example>
         /// <remarks>This method formats the current instance using the default format of
-        /// "d.dddd�." Any string output by this method can be converted back into an Latitude
+        /// "d.dddd°." Any string output by this method can be converted back into an Latitude
         /// object using the <strong>Parse</strong> method or <strong>Latitude(string)</strong>
         /// constructor.</remarks>
         public override string ToString()
@@ -1168,7 +1168,7 @@ Math.Round(
         /// <seealso cref="Latitude.DecimalDegrees">DecimalDegrees Property</seealso>
         ///
         /// <example>
-        /// This example converts a value of 10�30'0" into decimal degrees (10.5).
+        /// This example converts a value of 10°30'0" into decimal degrees (10.5).
         ///   <code lang="VB" title="ToDecimalDegrees Example (VB)">
         /// Dim MyValue As Double = Latitude.ToDecimalDegrees(10, 30, 0)
         ///   </code>
@@ -1352,7 +1352,7 @@ Math.Round(
         /// <param name="value">The value.</param>
         /// <returns>A <see cref="Radian"><strong>Radian</strong></see> object.</returns>
         /// <example>
-        /// This example shows a quick way to convert an angle of 90� into radians.
+        /// This example shows a quick way to convert an angle of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyRadian As Radian = Latitude.ToRadians(90)
         ///   </code>
@@ -1378,20 +1378,20 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>FromRadians</strong> method to convert a value of one
-        /// radian into an <strong>Latitude</strong> of 57�.
+        /// radian into an <strong>Latitude</strong> of 57°.
         ///   <code lang="VB">
         /// ' Create a new angle equal to one radian
         /// Dim MyRadians As New Radian(1)
         /// Dim MyLatitude As Latitude = Latitude.FromRadians(MyRadians)
         /// Debug.WriteLine(MyLatitude.ToString())
-        /// ' Output: 57�
+        /// ' Output: 57°
         ///   </code>
         ///   <code lang="CS">
         /// // Create a new angle equal to one radian
         /// Radian MyRadians = new Radian(1);
         /// Latitude MyLatitude = Latitude.FromRadians(MyRadians);
         /// Console.WriteLine(MyLatitude.ToString());
-        /// // Output: 57�
+        /// // Output: 57°
         ///   </code>
         ///   </example>
         /// <remarks>This function is typically used in conjunction with the
@@ -1423,10 +1423,10 @@ Math.Round(
         /// This example creates a new angular measurement using the <strong>Parse</strong>
         /// method.
         ///   <code lang="VB">
-        /// Dim NewLatitude As Latitude = Latitude.Parse("123.45�")
+        /// Dim NewLatitude As Latitude = Latitude.Parse("123.45°")
         ///   </code>
         ///   <code lang="CS">
-        /// Latitude NewLatitude = Latitude.Parse("123.45�");
+        /// Latitude NewLatitude = Latitude.Parse("123.45°");
         ///   </code>
         ///   </example>
         ///
@@ -1701,7 +1701,7 @@ Math.Round(
         /// ' Incorrect use of Increment
         /// Dim Latitude1 = New Latitude(89)
         /// Latitude1.Increment()
-        /// ' notice: Latitude1 will still be 89�!
+        /// ' notice: Latitude1 will still be 89°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Increment
@@ -1710,7 +1710,7 @@ Math.Round(
         /// // Incorrect use of Increment
         /// Latitude Latitude1 = new Latitude(89);
         /// Latitude1.Increment();
-        /// // notice: Latitude1 will still be 89�!
+        /// // notice: Latitude1 will still be 89°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method increases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1728,7 +1728,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to add to the current instance.</param>
         /// <returns>A new <strong>Latitude</strong> containing the summed values.</returns>
         /// <example>
-        /// This example adds 45� to the current instance of 45�, returning 90�.
+        /// This example adds 45° to the current instance of 45°, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Latitude1 As New Latitude(45)
         /// Latitude1 = Latitude1.Add(45)
@@ -1768,7 +1768,7 @@ Math.Round(
         /// ' Incorrect use of Decrement
         /// Dim Latitude1 = New Latitude(91)
         /// Latitude1.Increment()
-        /// ' notice Latitude1 will still be 91�!
+        /// ' notice Latitude1 will still be 91°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Decrement
@@ -1777,7 +1777,7 @@ Math.Round(
         /// // Incorrect use of Decrement
         /// Latitude Latitude1 = new Latitude(91);
         /// Latitude1.Decrement();
-        /// // notice Latitude1 will still be 91�!
+        /// // notice Latitude1 will still be 91°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method decreases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1795,7 +1795,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to subtract from the current instance.</param>
         /// <returns>A new <strong>Latitude</strong> containing the new value.</returns>
         /// <example>
-        /// This example subtracts 30� from the current instance of 90�, returning 60�.
+        /// This example subtracts 30° from the current instance of 90°, returning 60°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Latitude1 As New Latitude(90)
         /// Latitude1 = Latitude1.Subtract(30)
@@ -1826,7 +1826,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to multiply with the current instance.</param>
         /// <returns>A new <strong>Latitude</strong> containing the product of the two numbers.</returns>
         /// <example>
-        /// This example multiplies 30� with three, returning 90�.
+        /// This example multiplies 30° with three, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Latitude1 As New Latitude(30)
         /// Latitude1 = Latitude1.Multiply(3)
@@ -1857,7 +1857,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> representing a denominator to divide by.</param>
         /// <returns>An <strong>Latitude</strong> containing the new value.</returns>
         /// <example>
-        /// This example divides 90� by three, returning 30�.
+        /// This example divides 90° by three, returning 30°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Latitude1 As New Latitude(90)
         /// Latitude1 = Latitude1.Divide(3)
@@ -2196,18 +2196,18 @@ Math.Round(
         /// <returns>A <strong>String</strong> in the specified format.</returns>
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyLatitude As New Latitude(45, 16.772)
-        /// Debug.WriteLine(MyLatitude.ToString("h�m.mm", CultureInfo.CurrentCulture))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyLatitude.ToString("h°m.mm", CultureInfo.CurrentCulture))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyLatitude As New Latitude(45, 16.772);
-        /// Debug.WriteLine(MyLatitude.ToString("h�m.mm", CultureInfo.CurrentCulture));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyLatitude.ToString("h°m.mm", CultureInfo.CurrentCulture));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This method returns the current instance output in a specific format. If no
@@ -2240,7 +2240,7 @@ Math.Round(
 
                 // IF the format is "G", use the default format
                 if (String.Compare(format, "g", true, culture) == 0)
-                    format = "HH�MM'SS.SSSS\"i";
+                    format = "HH°MM'SS.SSSS\"i";
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
@@ -2273,7 +2273,7 @@ Math.Round(
                         format = format.Replace(subFormat, format.IndexOf("I") > -1 ? Math.Abs((long)Hours).ToString(newFormat, culture) : Hours.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("M");
                 if (startChar > -1)
                 {
@@ -2298,7 +2298,7 @@ Math.Round(
                         format = format.Replace(subFormat, Minutes.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("S");
                 if (startChar > -1)
                 {
@@ -2324,7 +2324,7 @@ Math.Round(
                 }
 
                 // Now add on an indicator if specified
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("I");
                 if (startChar > -1)
                 {
@@ -2345,8 +2345,8 @@ Math.Round(
                 }
 
                 // If nothing then return zero
-                if (String.Compare(format, "�", true, culture) == 0)
-                    return "0�";
+                if (String.Compare(format, "°", true, culture) == 0)
+                    return "0°";
                 return format;
             }
             catch
@@ -2401,8 +2401,8 @@ Math.Round(
     /// both). For example, 39 degrees south of the equator can be expressed in either of these
     /// ways:</para>
     ///   <list type="bullet">
-    ///   <item>39�S</item>
-    ///   <item>-39�</item>
+    ///   <item>39°S</item>
+    ///   <item>-39°</item>
     ///   </list></remarks>
     public enum LatitudeHemisphere
     {

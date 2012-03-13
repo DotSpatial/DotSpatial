@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -38,22 +38,22 @@ namespace DotSpatial.Positioning
 {
 #if !PocketPC || DesignTime
     /// <summary>
-    /// Represents an angular measurement around the horizon between 0� and
-    /// 360�.
+    /// Represents an angular measurement around the horizon between 0° and
+    /// 360°.
     /// </summary>
     /// <example>
     /// These examples create new instances of an Azimuth object using different
     /// techniques.
-    ///   <code lang="VB" description="Create a new instance of 45� (northeast).">
+    ///   <code lang="VB" description="Create a new instance of 45° (northeast).">
     /// Dim MyAzimuth As New Azimuth(45)
     ///   </code>
-    ///   <code lang="CS" description="Create a new instance of 45� (northeast).">
+    ///   <code lang="CS" description="Create a new instance of 45° (northeast).">
     /// Azimuth MyAzimuth = new Azimuth(45);
     ///   </code>
-    ///   <code lang="VB" description="Create a new instance of 45�30'15.">
+    ///   <code lang="VB" description="Create a new instance of 45°30'15.">
     /// Dim MyAzimuth As New Azimuth(45, 30, 15)
     ///   </code>
-    ///   <code lang="CS" description="Create a new instance of 45�30'15.">
+    ///   <code lang="CS" description="Create a new instance of 45°30'15.">
     /// Azimuth MyAzimuth = new Azimuth(45, 30, 15);
     ///   </code>
     ///   <code lang="VB" description="Create a new instance equal to a known compass direction.">
@@ -92,7 +92,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <example>
-        /// This example demonstrates how to create an angle with a measurement of 90�.
+        /// This example demonstrates how to create an angle with a measurement of 90°.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(90)
         ///   </code>
@@ -126,7 +126,7 @@ namespace DotSpatial.Positioning
         /// <param name="minutes">The minutes.</param>
         /// <param name="seconds">The seconds.</param>
         /// <example>
-        /// This example demonstrates how to create an angular measurement of 34�12'29.2 in
+        /// This example demonstrates how to create an angular measurement of 34°12'29.2 in
         /// hours, minutes and seconds.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(34, 12, 29.2)
@@ -149,7 +149,7 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <example>
         /// This example demonstrates how an angle can be created when only the hours and
-        /// minutes (in decimal form) are known. This creates a value of 12�42.345'.
+        /// minutes (in decimal form) are known. This creates a value of 12°42.345'.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(12, 42.345)
         ///   </code>
@@ -173,16 +173,16 @@ namespace DotSpatial.Positioning
         /// This example creates a new instance by parsing a string. (Notice The double-quote is
         /// doubled up to represent a single double-quote in the string.)
         ///   <code lang="VB">
-        /// Dim MyAzimuth As New Azimuth("123�45'67.8""")
+        /// Dim MyAzimuth As New Azimuth("123°45'67.8""")
         ///   </code>
         ///   <code lang="CS">
-        /// Azimuth MyAzimuth = new Azimuth("123�45'67.8\"");
+        /// Azimuth MyAzimuth = new Azimuth("123°45'67.8\"");
         ///   </code>
         ///   </example>
         ///
         /// <example>
         /// This example creates a new <strong>Azimuth</strong> object by converting the string
-        /// "NW," short for Northwest. or 315�.
+        /// "NW," short for Northwest. or 315°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim NewAzimuth As New Azimuth("NW")
         ///   </code>
@@ -215,7 +215,7 @@ namespace DotSpatial.Positioning
         /// <param name="culture">The culture.</param>
         /// <example>
         /// This example creates a new <strong>Azimuth</strong> object by converting the string
-        /// "NW," short for Northwest. or 315�.
+        /// "NW," short for Northwest. or 315°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim NewAzimuth As New Azimuth("NW", CultureInfo.CurrentCulture)
         ///   </code>
@@ -338,7 +338,7 @@ namespace DotSpatial.Positioning
             {
                 // Clean up the string
                 StringBuilder newValue = new StringBuilder(value);
-                newValue.Replace("�", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
+                newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');
                 // How many elements are in the array?
@@ -449,12 +449,12 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         ///
-        /// <value>An Azimuth with a value of -359.999999�.</value>
+        /// <value>An Azimuth with a value of -359.999999°.</value>
         public static readonly Azimuth Minimum = new Azimuth(-359.99999999);
         /// <summary>
         /// Represents an angle with no value.
         /// </summary>
-        /// <value>An Azimuth containing a value of zero (0�).</value>
+        /// <value>An Azimuth containing a value of zero (0°).</value>
         ///
         /// <seealso cref="IsEmpty">IsEmpty Property</seealso>
         public static readonly Azimuth Empty = new Azimuth(0.0);
@@ -466,7 +466,7 @@ namespace DotSpatial.Positioning
         /// Represents the maximum value of an angle in one turn of a circle.
         /// </summary>
         /// <example>
-        /// This example creates an angle representing the maximum allowed value of 359.9999�.
+        /// This example creates an angle representing the maximum allowed value of 359.9999°.
         ///   <code lang="VB">
         /// Dim MyAzimuth As Azimuth = Azimuth.Maximum
         ///   </code>
@@ -477,7 +477,7 @@ namespace DotSpatial.Positioning
         public static readonly Azimuth Maximum = new Azimuth(359.99999999);
 
         /// <summary>
-        /// Represents a direction of travel of 0�.
+        /// Represents a direction of travel of 0°.
         /// </summary>
         /// <example>
         /// This example creates an Azimuth representing North.
@@ -490,7 +490,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth North = new Azimuth(0.0);
         /// <summary>
-        /// Represents a direction of travel of 22.5�, between north and northeast.
+        /// Represents a direction of travel of 22.5°, between north and northeast.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -502,7 +502,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth NorthNortheast = new Azimuth(22.5);
         /// <summary>
-        /// Represents a direction of travel of 45�.
+        /// Represents a direction of travel of 45°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -514,7 +514,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth Northeast = new Azimuth(45.0);
         /// <summary>
-        /// Represents a direction of travel of 67.5�.
+        /// Represents a direction of travel of 67.5°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -526,7 +526,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth EastNortheast = new Azimuth(67.5);
         /// <summary>
-        /// Represents a direction of travel of 90�.
+        /// Represents a direction of travel of 90°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -538,7 +538,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth East = new Azimuth(90.0);
         /// <summary>
-        /// Represents a direction of travel of 112.5�, between east and southeast.
+        /// Represents a direction of travel of 112.5°, between east and southeast.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -550,7 +550,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth EastSoutheast = new Azimuth(112.5);
         /// <summary>
-        /// Represents a direction of travel of 135�.
+        /// Represents a direction of travel of 135°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -562,7 +562,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth Southeast = new Azimuth(135.0);
         /// <summary>
-        /// Represents a direction of travel of 157.5�, between south and southeast.
+        /// Represents a direction of travel of 157.5°, between south and southeast.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -574,7 +574,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth SouthSoutheast = new Azimuth(157.5);
         /// <summary>
-        /// Represents a direction of travel of 180�.
+        /// Represents a direction of travel of 180°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -586,7 +586,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth South = new Azimuth(180.0);
         /// <summary>
-        /// Represents a direction of travel of 202.5�, between south and southwest.
+        /// Represents a direction of travel of 202.5°, between south and southwest.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -598,7 +598,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth SouthSouthwest = new Azimuth(202.5);
         /// <summary>
-        /// Represents a direction of travel of 225�.
+        /// Represents a direction of travel of 225°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -610,7 +610,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth Southwest = new Azimuth(225.0);
         /// <summary>
-        /// Represents a direction of travel of 247.5�, between west and southwest.
+        /// Represents a direction of travel of 247.5°, between west and southwest.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -622,7 +622,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth WestSouthwest = new Azimuth(247.5);
         /// <summary>
-        /// Represents a direction of travel of 270�.
+        /// Represents a direction of travel of 270°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -634,7 +634,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth West = new Azimuth(270.0);
         /// <summary>
-        /// Represents a direction of travel of 292.5�, between west and northwest.
+        /// Represents a direction of travel of 292.5°, between west and northwest.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -646,7 +646,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth WestNorthwest = new Azimuth(292.5);
         /// <summary>
-        /// Represents a direction of travel of 315�.
+        /// Represents a direction of travel of 315°.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -658,7 +658,7 @@ namespace DotSpatial.Positioning
         ///   </example>
         public static readonly Azimuth Northwest = new Azimuth(315.0);
         /// <summary>
-        /// Represents a direction of travel of 337.5�, between north and northwest.
+        /// Represents a direction of travel of 337.5°, between north and northwest.
         /// </summary>
         /// <example>
         ///   <code lang="VB">
@@ -693,18 +693,18 @@ namespace DotSpatial.Positioning
         ///   <see cref="DecimalDegrees"><strong>DecimalDegrees</strong></see> property is
         /// calculated automatically when creating an angle using hours, minutes and seconds.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�30'
+        /// ' Create an angle of 20°30'
         /// Dim MyAzimuth As New Azimuth(20, 30)
         /// ' Setting the DecimalMinutes recalculated other properties
         /// Debug.WriteLine(MyAzimuth.DecimalDegrees)
-        /// ' Output: "20.5"  the same as 20�30'
+        /// ' Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�30'
+        /// // Create an angle of 20°30'
         /// Azimuth MyAzimuth = New Azimuth(20, 30);
         /// // Setting the DecimalMinutes recalculated other properties
         /// Console.WriteLine(MyAzimuth.DecimalDegrees)
-        /// // Output: "20.5"  the same as 20�30'
+        /// // Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
@@ -728,14 +728,14 @@ namespace DotSpatial.Positioning
         /// This example demonstrates how the <strong>DecimalMinutes</strong> property is
         /// automatically calculated when creating a new angle.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�10'30"
+        /// ' Create an angle of 20°10'30"
         /// Dim MyAzimuth As New Azimuth(20, 10, 30)
         /// ' The DecimalMinutes property is automatically calculated
         /// Debug.WriteLine(MyAzimuth.DecimalMinutes)
         /// ' Output: "10.5"
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�10'30"
+        /// // Create an angle of 20°10'30"
         /// Azimuth MyAzimuth = new Azimuth(20, 10, 30);
         /// // The DecimalMinutes property is automatically calculated
         /// Console.WriteLine(MyAzimuth.DecimalMinutes)
@@ -772,7 +772,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 60.5� then outputs the value of the
+        /// This example creates an angle of 60.5° then outputs the value of the
         ///   <strong>Hours</strong> property, 60.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(60.5)
@@ -810,7 +810,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45.5� then outputs the value of the
+        /// This example creates an angle of 45.5° then outputs the value of the
         ///   <strong>Minutes</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(45.5)
@@ -852,7 +852,7 @@ Math.Round(
         /// <seealso cref="Minutes">Minutes Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45�10.5' then outputs the value of the
+        /// This example creates an angle of 45°10.5' then outputs the value of the
         ///   <strong>Seconds</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(45, 10.5)
@@ -884,7 +884,7 @@ Math.Round(
         /// </summary>
         /// <value>A <strong>Direction</strong> value.</value>
         /// <example>
-        /// This example outputs the direction associated 272�, which is <strong>West</strong>.
+        /// This example outputs the direction associated 272°, which is <strong>West</strong>.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(272)
         /// Debug.WriteLine(MyAzimuth.Direction.ToString())
@@ -897,7 +897,7 @@ Math.Round(
         ///   </code>
         ///   </example>
         /// <remarks>This property converts an azimuth to the nearest of sixteen compass directions.
-        /// For example, an azimuth of 89� points almost east, therefore a value of
+        /// For example, an azimuth of 89° points almost east, therefore a value of
         /// <strong>East</strong> would be returned. This property is typically used for user
         /// interfaces to express an azimuth in a form that is easy to understand.</remarks>
         public Direction Direction
@@ -975,7 +975,7 @@ Math.Round(
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
-        /// allowed bounds of 0� and 360�.
+        /// allowed bounds of 0° and 360°.
         /// </summary>
         public bool IsNormalized
         {
@@ -987,7 +987,7 @@ Math.Round(
         #region Public Methods
 
         /// <summary>
-        /// Modifies a value to its equivalent between 0� and 360�.
+        /// Modifies a value to its equivalent between 0° and 360°.
         /// </summary>
         /// <returns>An <strong>Azimuth</strong> representing the normalized angle.</returns>
         /// <seealso cref="Normalize()">Normalize(Azimuth) Method</seealso>
@@ -995,7 +995,7 @@ Math.Round(
         /// <example>
         /// This example demonstrates how normalization is used. The Stop statement is hit.
         /// This example demonstrates how the Normalize method can ensure that an angle fits
-        /// between 0� and 359.9999�. This example normalizes 725� into 5�.
+        /// between 0° and 359.9999°. This example normalizes 725° into 5°.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(720)
         /// MyAzimuth = MyAzimuth.Normalize()
@@ -1014,8 +1014,8 @@ Math.Round(
         ///   </code>
         ///   </example>
         /// <remarks>This function is used to ensure that an angular measurement is within the
-        /// allowed bounds of 0� and 360�. If a value of 360� or 720� is passed, a value of 0�
-        /// is returned since 360� and 720� represent the same point on a circle. For the Azimuth
+        /// allowed bounds of 0° and 360°. If a value of 360° or 720° is passed, a value of 0°
+        /// is returned since 360° and 720° represent the same point on a circle. For the Azimuth
         /// class, this function is the same as "value Mod 360".</remarks>
         public Azimuth Normalize()
         {
@@ -1243,8 +1243,8 @@ Math.Round(
         /// </summary>
         /// <returns>An <strong>Azimuth</strong> representing the mirrored value.</returns>
         /// <example>
-        /// This example creates a new <strong>Azimuth</strong> of 45� then calculates its mirror
-        /// of 225�. (45 + 180)
+        /// This example creates a new <strong>Azimuth</strong> of 45° then calculates its mirror
+        /// of 225°. (45 + 180)
         ///   <code lang="VB" title="[New Example]">
         /// Dim Azimuth1 As New Azimuth(45)
         /// Dim Azimuth2 As Azimuth = Azimuth1.Mirror()
@@ -1260,7 +1260,7 @@ Math.Round(
         ///   </example>
         /// <remarks>This method returns the "opposite" of the current instance. The opposite is
         /// defined as the point on the other side of an imaginary circle. For example, if an angle
-        /// is 0�, at the top of a circle, this method returns 180�, at the bottom of the
+        /// is 0°, at the top of a circle, this method returns 180°, at the bottom of the
         /// circle.</remarks>
         public Azimuth Mirror()
         {
@@ -1276,7 +1276,7 @@ Math.Round(
         /// <overloads>Converts an angular measurement into radians before further processing.</overloads>
         ///
         /// <example>
-        /// This example converts a measurement of 90� into radians.
+        /// This example converts a measurement of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(90)
         /// Dim MyRadians As Radian = MyAzimuth.ToRadians()
@@ -1334,16 +1334,16 @@ Math.Round(
         /// <seealso cref="Parse(string)">Parse Method</seealso>
         ///
         /// <example>
-        /// This example outputs a value of 90 degrees in the default format of ###.#�.
+        /// This example outputs a value of 90 degrees in the default format of ###.#°.
         ///   <code lang="VB">
         /// Dim MyAzimuth As New Azimuth(90)
         /// Debug.WriteLine(MyAzimuth.ToString)
-        /// ' Output: "90�"
+        /// ' Output: "90°"
         ///   </code>
         ///   <code lang="CS">
         /// Azimuth MyAzimuth = new Azimuth(90);
         /// Debug.WriteLine(MyAzimuth.ToString());
-        /// // Output: "90�"
+        /// // Output: "90°"
         ///   </code>
         ///   </example>
         /// <remarks>This method formats the current instance using the default format of "cc." Any
@@ -1359,11 +1359,11 @@ Math.Round(
         #region Static Methods
 
         /// <summary>
-        /// Converts the specified value to its equivalent between 0� and 360�.
+        /// Converts the specified value to its equivalent between 0° and 360°.
         /// </summary>
         /// <param name="decimalDegrees">A <strong>Double</strong> value to be normalized.</param>
-        /// <returns>An Azimuth containing a value equivalent to the value specified, but between 0� and
-        /// 360�.</returns>
+        /// <returns>An Azimuth containing a value equivalent to the value specified, but between 0° and
+        /// 360°.</returns>
         public static Azimuth Normalize(double decimalDegrees)
         {
             return new Azimuth(decimalDegrees).Normalize();
@@ -1417,7 +1417,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Returns a random angle between 0� and 360�.
+        /// Returns a random angle between 0° and 360°.
         /// </summary>
         /// <returns>An <strong>Azimuth</strong> containing a random value.</returns>
         public static Azimuth Random()
@@ -1426,7 +1426,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Returns a random Azimuth between 0� and 360� using the specified random number
+        /// Returns a random Azimuth between 0° and 360° using the specified random number
         /// seed.
         /// </summary>
         /// <param name="generator">A <strong>Random</strong> object used to generate random values.</param>
@@ -1449,7 +1449,7 @@ Math.Round(
         /// <seealso cref="Latitude.Normalize()">Normalize Method</seealso>
         ///
         /// <example>
-        /// This example converts a value of 10�30'0" into decimal degrees (10.5).
+        /// This example converts a value of 10°30'0" into decimal degrees (10.5).
         ///   <code lang="VB" title="ToDecimalDegrees Example (VB)">
         /// Dim MyValue As Double = Latitude.ToDecimalDegrees(10, 30, 0)
         ///   </code>
@@ -1537,10 +1537,10 @@ Math.Round(
         /// This example creates a new angular measurement using the <strong>Parse</strong>
         /// method.
         ///   <code lang="VB">
-        /// Dim NewAzimuth As Azimuth = Azimuth.Parse("123.45�")
+        /// Dim NewAzimuth As Azimuth = Azimuth.Parse("123.45°")
         ///   </code>
         ///   <code lang="CS">
-        /// Azimuth NewAzimuth = Azimuth.Parse("123.45�");
+        /// Azimuth NewAzimuth = Azimuth.Parse("123.45°");
         ///   </code>
         ///   </example>
         ///
@@ -1570,7 +1570,7 @@ Math.Round(
         /// <returns>A new <strong>Azimuth</strong> object equivalent to the specified string.</returns>
         /// <example>
         /// This example creates a new <strong>Azimuth</strong> object by converting the string
-        /// "NW," short for Northwest. or 315�.
+        /// "NW," short for Northwest. or 315°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim NewAzimuth As Azimuth = Azimuth.Parse("NW", CultureInfo.CurrentCulture)
         ///   </code>
@@ -1592,7 +1592,7 @@ Math.Round(
         /// <param name="value">The value.</param>
         /// <returns>A <see cref="Radian"><strong>Radian</strong></see> object.</returns>
         /// <example>
-        /// This example shows a quick way to convert an angle of 90� into radians.
+        /// This example shows a quick way to convert an angle of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyRadian As Radian = Azimuth.ToRadians(90)
         ///   </code>
@@ -1618,20 +1618,20 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>FromRadians</strong> method to convert a value of one
-        /// radian into an <strong>Azimuth</strong> of 57�.
+        /// radian into an <strong>Azimuth</strong> of 57°.
         ///   <code lang="VB">
         /// ' Create a new angle equal to one radian
         /// Dim MyRadians As New Radian(1)
         /// Dim MyAzimuth As Azimuth = Azimuth.FromRadians(MyRadians)
         /// Debug.WriteLine(MyAzimuth.ToString())
-        /// ' Output: 57�
+        /// ' Output: 57°
         ///   </code>
         ///   <code lang="CS">
         /// // Create a new angle equal to one radian
         /// Radian MyRadians = new Radian(1);
         /// Azimuth MyAzimuth = Azimuth.FromRadians(MyRadians);
         /// Console.WriteLine(MyAzimuth.ToString());
-        /// // Output: 57�
+        /// // Output: 57°
         ///   </code>
         ///   </example>
         /// <remarks>This function is typically used in conjunction with the
@@ -2039,7 +2039,7 @@ Math.Round(
         /// ' Incorrect use of Increment
         /// Dim Azimuth1 = New Azimuth(89)
         /// Azimuth1.Increment()
-        /// ' NOTE: Azimuth1 will still be 89�!
+        /// ' NOTE: Azimuth1 will still be 89°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Increment
@@ -2048,7 +2048,7 @@ Math.Round(
         /// // Incorrect use of Increment
         /// Azimuth Azimuth1 = new Azimuth(89);
         /// Azimuth1.Increment();
-        /// // NOTE: Azimuth1 will still be 89�!
+        /// // NOTE: Azimuth1 will still be 89°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method increases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -2066,7 +2066,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to add to the current instance.</param>
         /// <returns>A new <strong>Azimuth</strong> containing the summed values.</returns>
         /// <example>
-        /// This example adds 45� to the current instance of 45�, returning 90�.
+        /// This example adds 45° to the current instance of 45°, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Azimuth1 As New Azimuth(45)
         /// Azimuth1 = Azimuth1.Add(45)
@@ -2106,7 +2106,7 @@ Math.Round(
         /// ' Incorrect use of Decrement
         /// Dim Azimuth1 = New Azimuth(91)
         /// Azimuth1.Increment()
-        /// ' NOTE: Azimuth1 will still be 91�!
+        /// ' NOTE: Azimuth1 will still be 91°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Decrement
@@ -2115,7 +2115,7 @@ Math.Round(
         /// // Incorrect use of Decrement
         /// Azimuth Azimuth1 = new Azimuth(91);
         /// Azimuth1.Decrement();
-        /// // NOTE: Azimuth1 will still be 91�!
+        /// // NOTE: Azimuth1 will still be 91°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method decreases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -2133,7 +2133,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to subtract from the current instance.</param>
         /// <returns>A new <strong>Azimuth</strong> containing the new value.</returns>
         /// <example>
-        /// This example subtracts 30� from the current instance of 90�, returning 60�.
+        /// This example subtracts 30° from the current instance of 90°, returning 60°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Azimuth1 As New Azimuth(90)
         /// Azimuth1 = Azimuth1.Subtract(30)
@@ -2164,7 +2164,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to multiply with the current instance.</param>
         /// <returns>A new <strong>Azimuth</strong> containing the product of the two numbers.</returns>
         /// <example>
-        /// This example multiplies 30� with three, returning 90�.
+        /// This example multiplies 30° with three, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Azimuth1 As New Azimuth(30)
         /// Azimuth1 = Azimuth1.Multiply(3)
@@ -2195,7 +2195,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> representing a denominator to divide by.</param>
         /// <returns>An <strong>Azimuth</strong> containing the new value.</returns>
         /// <example>
-        /// This example divides 90� by three, returning 30�.
+        /// This example divides 90° by three, returning 30°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Azimuth1 As New Azimuth(90)
         /// Azimuth1 = Azimuth1.Divide(3)
@@ -2410,7 +2410,7 @@ Math.Round(
         /// <returns>A <strong>Boolean</strong>, <strong>True</strong> if the current instance's
         /// Direction property matches the specified value.</returns>
         /// <remarks>This method is typically used to approximate if two directions are equivalent.
-        /// For example, if two objects are traveling at a bearing of 41� and 46�, they both could
+        /// For example, if two objects are traveling at a bearing of 41° and 46°, they both could
         /// be considered to be traveling Northeast even though their bearings are not precisely
         /// the same.</remarks>
         public bool Equals(Direction value)
@@ -2520,7 +2520,7 @@ Math.Round(
                 // Use the default if "g" is passed
                 format = format.ToLower(culture);
                 if (format == "g")
-                    format = "d.dddd�";
+                    format = "d.dddd°";
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
                     // Convert the format to uppercase
@@ -2551,7 +2551,7 @@ Math.Round(
                         format = format.Replace(subFormat, Hours.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("M");
                 if (startChar > -1)
                 {
@@ -2576,7 +2576,7 @@ Math.Round(
                         format = format.Replace(subFormat, Minutes.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("S");
                 if (startChar > -1)
                 {
@@ -2601,8 +2601,8 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
-                if (String.Compare(format, "�", true, culture) == 0)
-                    return "0�";
+                if (String.Compare(format, "°", true, culture) == 0)
+                    return "0°";
 
                 // Is there an hours specifier?
                 startChar = format.IndexOf("C");
@@ -2773,7 +2773,7 @@ Math.Round(
     /// Represents an approximate direction of motion.
     /// </summary>
     /// <example>
-    /// This example outputs the direction associated 272°, which is <strong>West</strong>
+    /// This example outputs the direction associated 272Â°, which is <strong>West</strong>
     /// .
     ///   <code lang="VB" title="[New Example]">
     /// Dim MyAzimuth As New Azimuth(272)
@@ -2790,7 +2790,7 @@ Math.Round(
     /// converting a numeric angle measurement into a compass direction.</remarks>
     public enum Direction
     {
-        /// <summary>An azimuth of approximately 0�</summary>
+        /// <summary>An azimuth of approximately 0°</summary>
         North,
         /// <summary>Between north and northeast</summary>
         NorthNortheast,
@@ -2798,7 +2798,7 @@ Math.Round(
         Northeast,
         /// <summary>Between east and northeast</summary>
         EastNortheast,
-        /// <summary>An azimuth of approximately 90�</summary>
+        /// <summary>An azimuth of approximately 90°</summary>
         East,
         /// <summary>Between east and southeast</summary>
         EastSoutheast,
@@ -2806,7 +2806,7 @@ Math.Round(
         Southeast,
         /// <summary>Between south and southeast</summary>
         SouthSoutheast,
-        /// <summary>An azimuth of approximately 180�</summary>
+        /// <summary>An azimuth of approximately 180°</summary>
         South,
         /// <summary>Between south and southwest</summary>
         SouthSouthwest,
@@ -2814,7 +2814,7 @@ Math.Round(
         Southwest,
         /// <summary>Between west and southwest</summary>
         WestSouthwest,
-        /// <summary>An azimuth of approximately 270�</summary>
+        /// <summary>An azimuth of approximately 270°</summary>
         West,
         /// <summary>Between west and northwest</summary>
         WestNorthwest,

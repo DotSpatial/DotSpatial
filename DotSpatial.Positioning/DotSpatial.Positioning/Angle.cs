@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -44,22 +44,22 @@ namespace DotSpatial.Positioning
     ///
     /// <example>
     /// These examples create new instances of Angle objects.
-    ///   <code lang="VB" description="Create an angle of 90�">
+    ///   <code lang="VB" description="Create an angle of 90°">
     /// Dim MyAngle As New Angle(90)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 90�">
+    ///   <code lang="CS" description="Create an angle of 90°">
     /// Angle MyAngle = new Angle(90);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 90�">
+    ///   <code lang="C++" description="Create an angle of 90°">
     /// Angle MyAngle = new Angle(90);
     ///   </code>
-    ///   <code lang="VB" description="Create an angle of 105�30'21.4">
+    ///   <code lang="VB" description="Create an angle of 105°30'21.4">
     /// Dim MyAngle1 As New Angle(105, 30, 21.4)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 105�30'21.4">
+    ///   <code lang="CS" description="Create an angle of 105°30'21.4">
     /// Angle MyAngle = new Angle(105, 30, 21.4);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 105�30'21.4">
+    ///   <code lang="C++" description="Create an angle of 105°30'21.4">
     /// Angle MyAngle = new Angle(105, 30, 21.4);
     ///   </code>
     ///   </example>
@@ -67,7 +67,7 @@ namespace DotSpatial.Positioning
     /// the framework, such as the <strong>Azimuth</strong>, <strong>Elevation</strong>,
     ///   <strong>Latitude</strong> and <strong>Longitude</strong> classes. An "angular
     /// measurement" is a measurement around a circle. Typically, angular measurements are
-    /// between 0� and 360�.</para>
+    /// between 0° and 360°.</para>
     ///   <para>Angles can be represented in two forms: decimal and sexagesimal. In decimal
     /// form, angles are represented as a single number. In sexagesimal form, angles are
     /// represented in three components: hours, minutes, and seconds, very much like a
@@ -113,13 +113,13 @@ namespace DotSpatial.Positioning
         ///   </code>
         ///   </example>
         ///
-        /// <value>An Angle with a value of -359.999999�.</value>
+        /// <value>An Angle with a value of -359.999999°.</value>
         public static readonly Angle Minimum = new Angle(-359.99999999);
 
         /// <summary>
         /// Represents an angle with no value.
         /// </summary>
-        /// <value>An Angle containing a value of zero (0�).</value>
+        /// <value>An Angle containing a value of zero (0°).</value>
         ///
         /// <seealso cref="IsEmpty">IsEmpty Property</seealso>
         public static readonly Angle Empty = new Angle(0.0);
@@ -133,7 +133,7 @@ namespace DotSpatial.Positioning
         /// Represents the maximum value of an angle in one turn of a circle.
         /// </summary>
         /// <example>
-        /// This example creates an angle representing the maximum allowed value of 359.9999�.
+        /// This example creates an angle representing the maximum allowed value of 359.9999°.
         ///   <code lang="VB">
         /// Dim MyAngle As Angle = Angle.Maximum
         ///   </code>
@@ -157,7 +157,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <example>
-        /// This example demonstrates how to create an angle with a measurement of 90�.
+        /// This example demonstrates how to create an angle with a measurement of 90°.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(90)
         ///   </code>
@@ -191,7 +191,7 @@ namespace DotSpatial.Positioning
         /// <param name="minutes">The minutes.</param>
         /// <param name="seconds">The seconds.</param>
         /// <example>
-        /// This example demonstrates how to create an angular measurement of 34�12'29.2 in
+        /// This example demonstrates how to create an angular measurement of 34°12'29.2 in
         /// hours, minutes and seconds.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(34, 12, 29.2)
@@ -214,7 +214,7 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <example>
         /// This example demonstrates how an angle can be created when only the hours and
-        /// minutes (in decimal form) are known. This creates a value of 12�42.345'.
+        /// minutes (in decimal form) are known. This creates a value of 12°42.345'.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(12, 42.345)
         ///   </code>
@@ -238,10 +238,10 @@ namespace DotSpatial.Positioning
         /// This example creates a new instance by parsing a string. (Notice The double-quote is
         /// doubled up to represent a single double-quote in the string.)
         ///   <code lang="VB">
-        /// Dim MyAngle As New Angle("123�45'67.8""")
+        /// Dim MyAngle As New Angle("123°45'67.8""")
         ///   </code>
         ///   <code lang="CS">
-        /// Angle MyAngle = new Angle("123�45'67.8\"");
+        /// Angle MyAngle = new Angle("123°45'67.8\"");
         ///   </code>
         ///   </example>
         ///
@@ -296,7 +296,7 @@ namespace DotSpatial.Positioning
             {
                 // Clean up the string
                 StringBuilder newValue = new StringBuilder(value);
-                newValue.Replace("�", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
+                newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');
                 // How many elements are in the array?
@@ -407,18 +407,18 @@ namespace DotSpatial.Positioning
         ///   <see cref="DecimalDegrees"><strong>DecimalDegrees</strong></see> property is
         /// calculated automatically when creating an angle using hours, minutes and seconds.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�30'
+        /// ' Create an angle of 20°30'
         /// Dim MyAngle As New Angle(20, 30)
         /// ' Setting the DecimalMinutes recalculated other properties
         /// Debug.WriteLine(MyAngle.DecimalDegrees)
-        /// ' Output: "20.5"  the same as 20�30'
+        /// ' Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�30'
+        /// // Create an angle of 20°30'
         /// Angle MyAngle = New Angle(20, 30);
         /// // Setting the DecimalMinutes recalculated other properties
         /// Console.WriteLine(MyAngle.DecimalDegrees)
-        /// // Output: "20.5"  the same as 20�30'
+        /// // Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
@@ -442,14 +442,14 @@ namespace DotSpatial.Positioning
         /// This example demonstrates how the <strong>DecimalMinutes</strong> property is
         /// automatically calculated when creating a new angle.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�10'30"
+        /// ' Create an angle of 20°10'30"
         /// Dim MyAngle As New Angle(20, 10, 30)
         /// ' The DecimalMinutes property is automatically calculated
         /// Debug.WriteLine(MyAngle.DecimalMinutes)
         /// ' Output: "10.5"
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�10'30"
+        /// // Create an angle of 20°10'30"
         /// Angle MyAngle = new Angle(20, 10, 30);
         /// // The DecimalMinutes property is automatically calculated
         /// Console.WriteLine(MyAngle.DecimalMinutes)
@@ -486,7 +486,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 60.5� then outputs the value of the
+        /// This example creates an angle of 60.5° then outputs the value of the
         ///   <strong>Hours</strong> property, 60.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(60.5)
@@ -524,7 +524,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45.5� then outputs the value of the
+        /// This example creates an angle of 45.5° then outputs the value of the
         ///   <strong>Minutes</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(45.5)
@@ -566,7 +566,7 @@ Math.Round(
         /// <seealso cref="Minutes">Minutes Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45�10.5' then outputs the value of the
+        /// This example creates an angle of 45°10.5' then outputs the value of the
         ///   <strong>Seconds</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(45, 10.5)
@@ -628,7 +628,7 @@ Math.Round(
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
-        /// allowed bounds of 0� and 360�.
+        /// allowed bounds of 0° and 360°.
         /// </summary>
         public bool IsNormalized
         {
@@ -668,8 +668,8 @@ Math.Round(
         /// </summary>
         /// <returns>An <strong>Angle</strong> representing the mirrored value.</returns>
         /// <example>
-        /// This example creates a new <strong>Angle</strong> of 45� then calculates its mirror
-        /// of 225�. (45 + 180)
+        /// This example creates a new <strong>Angle</strong> of 45° then calculates its mirror
+        /// of 225°. (45 + 180)
         ///   <code lang="VB" title="[New Example]">
         /// Dim Angle1 As New Angle(45)
         /// Dim Angle2 As Angle = Angle1.Mirror()
@@ -685,7 +685,7 @@ Math.Round(
         ///   </example>
         /// <remarks>This method returns the "opposite" of the current instance. The opposite is
         /// defined as the point on the other side of an imaginary circle. For example, if an angle
-        /// is 0�, at the top of a circle, this method returns 180�, at the bottom of the
+        /// is 0°, at the top of a circle, this method returns 180°, at the bottom of the
         /// circle.</remarks>
         public Angle Mirror()
         {
@@ -693,7 +693,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Modifies a value to its equivalent between 0� and 360�.
+        /// Modifies a value to its equivalent between 0° and 360°.
         /// </summary>
         /// <returns>An <strong>Angle</strong> representing the normalized angle.</returns>
         /// <seealso cref="Normalize(double)">Normalize(Angle) Method</seealso>
@@ -701,7 +701,7 @@ Math.Round(
         /// <example>
         /// This example demonstrates how normalization is used. The Stop statement is hit.
         /// This example demonstrates how the Normalize method can ensure that an angle fits
-        /// between 0� and 359.9999�. This example normalizes 725� into 5�.
+        /// between 0° and 359.9999°. This example normalizes 725° into 5°.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(720)
         /// MyAngle = MyAngle.Normalize()
@@ -720,8 +720,8 @@ Math.Round(
         ///   </code>
         ///   </example>
         /// <remarks>This function is used to ensure that an angular measurement is within the
-        /// allowed bounds of 0� and 360�. If a value of 360� or 720� is passed, a value of 0�
-        /// is returned since 360� and 720� represent the same point on a circle. For the Angle
+        /// allowed bounds of 0° and 360°. If a value of 360° or 720° is passed, a value of 0°
+        /// is returned since 360° and 720° represent the same point on a circle. For the Angle
         /// class, this function is the same as "value Mod 360".</remarks>
         public Angle Normalize()
         {
@@ -742,7 +742,7 @@ Math.Round(
         /// <overloads>Converts an angular measurement into radians before further processing.</overloads>
         ///
         /// <example>
-        /// This example converts a measurement of 90� into radians.
+        /// This example converts a measurement of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(90)
         /// Dim MyRadians As Radian = MyAngle.ToRadians()
@@ -770,22 +770,22 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(45, 16.772)
-        /// Debug.WriteLine(MyAngle.ToString("h�m.mm"))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyAngle.ToString("h°m.mm"))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyAngle As New Angle(45, 16.772);
-        /// Debug.WriteLine(MyAngle.ToString("h�m.mm"));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyAngle.ToString("h°m.mm"));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This method returns the current instance output in a specific format. If no
-        /// value for the format is specified, a default format of "d.dddd�" is used. Any
+        /// value for the format is specified, a default format of "d.dddd°" is used. Any
         /// string output by this method can be converted back into an Angle object using the
         /// <strong>Parse</strong> method or <strong>Angle(string)</strong> constructor.</remarks>
         public string ToString(string format)
@@ -925,20 +925,20 @@ Math.Round(
         /// <seealso cref="Parse(string)">Parse Method</seealso>
         ///
         /// <example>
-        /// This example outputs a value of 90 degrees in the default format of ###.#�.
+        /// This example outputs a value of 90 degrees in the default format of ###.#°.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(90)
         /// Debug.WriteLine(MyAngle.ToString)
-        /// ' Output: "90�"
+        /// ' Output: "90°"
         ///   </code>
         ///   <code lang="CS">
         /// Angle MyAngle = new Angle(90);
         /// Debug.WriteLine(MyAngle.ToString());
-        /// // Output: "90�"
+        /// // Output: "90°"
         ///   </code>
         ///   </example>
         /// <remarks>This method formats the current instance using the default format of
-        /// "d.dddd�." Any string output by this method can be converted back into an Angle
+        /// "d.dddd°." Any string output by this method can be converted back into an Angle
         /// object using the <strong>Parse</strong> method or <strong>Angle(string)</strong>
         /// constructor.</remarks>
         public override string ToString()
@@ -951,11 +951,11 @@ Math.Round(
         #region Static Methods
 
         /// <summary>
-        /// Converts the specified value to its equivalent between 0� and 360�.
+        /// Converts the specified value to its equivalent between 0° and 360°.
         /// </summary>
         /// <param name="decimalDegrees">A <strong>Double</strong> value to be normalized.</param>
-        /// <returns>An Angle containing a value equivalent to the value specified, but between 0� and
-        /// 360�.</returns>
+        /// <returns>An Angle containing a value equivalent to the value specified, but between 0° and
+        /// 360°.</returns>
         public static Angle Normalize(double decimalDegrees)
         {
             return new Angle(decimalDegrees).Normalize();
@@ -967,7 +967,7 @@ Math.Round(
         /// <param name="value">The value.</param>
         /// <returns>A <see cref="Radian"><strong>Radian</strong></see> object.</returns>
         /// <example>
-        /// This example shows a quick way to convert an angle of 90� into radians.
+        /// This example shows a quick way to convert an angle of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyRadian As Radian = Angle.ToRadians(90)
         ///   </code>
@@ -993,20 +993,20 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>FromRadians</strong> method to convert a value of one
-        /// radian into an <strong>Angle</strong> of 57�.
+        /// radian into an <strong>Angle</strong> of 57°.
         ///   <code lang="VB">
         /// ' Create a new angle equal to one radian
         /// Dim MyRadians As New Radian(1)
         /// Dim MyAngle As Angle = Angle.FromRadians(MyRadians)
         /// Debug.WriteLine(MyAngle.ToString())
-        /// ' Output: 57�
+        /// ' Output: 57°
         ///   </code>
         ///   <code lang="CS">
         /// // Create a new angle equal to one radian
         /// Radian MyRadians = new Radian(1);
         /// Angle MyAngle = Angle.FromRadians(MyRadians);
         /// Console.WriteLine(MyAngle.ToString());
-        /// // Output: 57�
+        /// // Output: 57°
         ///   </code>
         ///   </example>
         /// <remarks>This function is typically used in conjunction with the
@@ -1073,7 +1073,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Returns a random angle between 0� and 360�.
+        /// Returns a random angle between 0° and 360°.
         /// </summary>
         /// <returns>An <strong>Angle</strong> containing a random value.</returns>
         public static Angle Random()
@@ -1082,7 +1082,7 @@ Math.Round(
         }
 
         /// <summary>
-        /// Returns a random Angle between 0� and 360�
+        /// Returns a random Angle between 0° and 360°
         /// </summary>
         /// <param name="generator">A <strong>Random</strong> object used to ogenerate random values.</param>
         /// <returns>An <strong>Angle</strong> containing a random value.</returns>
@@ -1455,7 +1455,7 @@ Math.Round(
         /// ' Incorrect use of Increment
         /// Dim Angle1 = New Angle(89)
         /// Angle1.Increment()
-        /// ' Notice: Angle1 will still be 89�!
+        /// ' Notice: Angle1 will still be 89°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Increment
@@ -1464,7 +1464,7 @@ Math.Round(
         /// // Incorrect use of Increment
         /// Angle Angle1 = new Angle(89);
         /// Angle1.Increment();
-        /// // Notice: Angle1 will still be 89�!
+        /// // Notice: Angle1 will still be 89°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method increases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1482,7 +1482,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to add to the current instance.</param>
         /// <returns>A new <strong>Angle</strong> containing the summed values.</returns>
         /// <example>
-        /// This example adds 45� to the current instance of 45�, returning 90�.
+        /// This example adds 45° to the current instance of 45°, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Angle1 As New Angle(45)
         /// Angle1 = Angle1.Add(45)
@@ -1522,7 +1522,7 @@ Math.Round(
         /// ' Incorrect use of Decrement
         /// Dim Angle1 = New Angle(91)
         /// Angle1.Increment()
-        /// ' NOTE: Angle1 will still be 91�!
+        /// ' NOTE: Angle1 will still be 91°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Decrement
@@ -1531,7 +1531,7 @@ Math.Round(
         /// // Incorrect use of Decrement
         /// Angle Angle1 = new Angle(91);
         /// Angle1.Decrement();
-        /// // NOTE: Angle1 will still be 91�!
+        /// // NOTE: Angle1 will still be 91°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method decreases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1549,7 +1549,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to subtract from the current instance.</param>
         /// <returns>A new <strong>Angle</strong> containing the new value.</returns>
         /// <example>
-        /// This example subtracts 30� from the current instance of 90�, returning 60�.
+        /// This example subtracts 30° from the current instance of 90°, returning 60°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Angle1 As New Angle(90)
         /// Angle1 = Angle1.Subtract(30)
@@ -1580,7 +1580,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to multiply with the current instance.</param>
         /// <returns>A new <strong>Angle</strong> containing the product of the two numbers.</returns>
         /// <example>
-        /// This example multiplies 30� with three, returning 90�.
+        /// This example multiplies 30° with three, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Angle1 As New Angle(30)
         /// Angle1 = Angle1.Multiply(3)
@@ -1611,7 +1611,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> representing a denominator to divide by.</param>
         /// <returns>An <strong>Angle</strong> containing the new value.</returns>
         /// <example>
-        /// This example divides 90� by three, returning 30�.
+        /// This example divides 90° by three, returning 30°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Angle1 As New Angle(90)
         /// Angle1 = Angle1.Divide(3)
@@ -1740,10 +1740,10 @@ Math.Round(
         /// This example creates a new angular measurement using the <strong>Parse</strong>
         /// method.
         ///   <code lang="VB">
-        /// Dim NewAngle As Angle = Angle.Parse("123.45�")
+        /// Dim NewAngle As Angle = Angle.Parse("123.45°")
         ///   </code>
         ///   <code lang="CS">
-        /// Angle NewAngle = Angle.Parse("123.45�");
+        /// Angle NewAngle = Angle.Parse("123.45°");
         ///   </code>
         ///   </example>
         ///
@@ -1792,7 +1792,7 @@ Math.Round(
         /// <seealso cref="Latitude.Normalize()">Normalize Method</seealso>
         ///
         /// <example>
-        /// This example converts a value of 10�30'0" into decimal degrees (10.5).
+        /// This example converts a value of 10°30'0" into decimal degrees (10.5).
         ///   <code lang="VB" title="ToDecimalDegrees Example (VB)">
         /// Dim MyValue As Double = Latitude.ToDecimalDegrees(10, 30, 0)
         ///   </code>
@@ -1993,18 +1993,18 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyAngle As New Angle(45, 16.772)
-        /// Debug.WriteLine(MyAngle.ToString("h�m.mm", CultureInfo.CurrentCulture))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyAngle.ToString("h°m.mm", CultureInfo.CurrentCulture))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyAngle As New Angle(45, 16.772);
-        /// Debug.WriteLine(MyAngle.ToString("h�m.mm", CultureInfo.CurrentCulture));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyAngle.ToString("h°m.mm", CultureInfo.CurrentCulture));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This method returns the current instance output in a specific format. If no
@@ -2034,7 +2034,7 @@ Math.Round(
 
                 // Use the default if "g" is passed
                 if (String.Compare(format, "g", StringComparison.OrdinalIgnoreCase) == 0)
-                    format = "d.dddd�";
+                    format = "d.dddd°";
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.ToUpper(CultureInfo.InvariantCulture).Replace("D", "H");
@@ -2066,7 +2066,7 @@ Math.Round(
                         format = format.Replace(subFormat, Hours.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("M");
                 if (startChar > -1)
                 {
@@ -2091,7 +2091,7 @@ Math.Round(
                         format = format.Replace(subFormat, Minutes.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("S");
                 if (startChar > -1)
                 {
@@ -2116,8 +2116,8 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
-                if (String.Compare(format, "�", true, culture) == 0)
-                    return "0�";
+                if (String.Compare(format, "°", true, culture) == 0)
+                    return "0°";
                 return format;
             }
             catch

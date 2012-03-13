@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -50,34 +50,34 @@ namespace DotSpatial.Positioning
     ///
     /// <example>
     /// These examples create new instances of Longitude objects.
-    ///   <code lang="VB" description="Create an angle of 90�">
+    ///   <code lang="VB" description="Create an angle of 90°">
     /// Dim MyLongitude As New Longitude(90)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 90�">
+    ///   <code lang="CS" description="Create an angle of 90°">
     /// Longitude MyLongitude = new Longitude(90);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 90�">
+    ///   <code lang="C++" description="Create an angle of 90°">
     /// Longitude MyLongitude = new Longitude(90);
     ///   </code>
-    ///   <code lang="VB" description="Create an angle of 105�30'21.4">
+    ///   <code lang="VB" description="Create an angle of 105°30'21.4">
     /// Dim MyLongitude1 As New Longitude(105, 30, 21.4)
     ///   </code>
-    ///   <code lang="CS" description="Create an angle of 105�30'21.4">
+    ///   <code lang="CS" description="Create an angle of 105°30'21.4">
     /// Longitude MyLongitude = new Longitude(105, 30, 21.4);
     ///   </code>
-    ///   <code lang="C++" description="Create an angle of 105�30'21.4">
+    ///   <code lang="C++" description="Create an angle of 105°30'21.4">
     /// Longitude MyLongitude = new Longitude(105, 30, 21.4);
     ///   </code>
     ///   </example>
     /// <remarks><para>Longitudes measure a distance either East or West from the Prime Meridian, an
     /// imaginary line which passes from the North Pole, through the
     ///   <see href="http://www.nmm.ac.uk/">Royal Observatory in Greenwich, England, and on
-    /// to the South Pole</see>. Longitudes can range from -180 to 180�, with the Prime
-    /// Meridian at 0�. Latitudes are commonly paired with Longitudes to mark a specific
+    /// to the South Pole</see>. Longitudes can range from -180 to 180°, with the Prime
+    /// Meridian at 0°. Latitudes are commonly paired with Longitudes to mark a specific
     /// location on Earth's surface.</para>
     ///   <para>Latitudes are expressed in either of two major formats. The first format uses
     /// only positive numbers and the letter "E" or "W" to indicate the hemisphere (i.e.
-    /// "94�E" or "32�W"). The second format allows negative numbers an omits the single
+    /// "94°E" or "32°W"). The second format allows negative numbers an omits the single
     /// character (i.e. 94 or -32).</para>
     ///   <para>Instances of this class are guaranteed to be thread-safe because the class is
     /// immutable (its properties can only be changed via constructors).</para></remarks>
@@ -102,23 +102,23 @@ namespace DotSpatial.Positioning
         #region Fields
 
         /// <summary>
-        /// Represents a longitude of 0�.
+        /// Represents a longitude of 0°.
         /// </summary>
         public static readonly Longitude PrimeMeridian = new Longitude(0.0);
         /// <summary>
-        /// Represents a longitude 180�.
+        /// Represents a longitude 180°.
         /// </summary>
         public static readonly Longitude InternationalDateline = new Longitude(180.0);
         /// <summary>
-        /// Represents a longitude of 0�.
+        /// Represents a longitude of 0°.
         /// </summary>
         public static readonly Longitude Empty = new Longitude(0.0);
         /// <summary>
-        /// Represents the minimum possible longitude of -180�.
+        /// Represents the minimum possible longitude of -180°.
         /// </summary>
         public static readonly Longitude Minimum = new Longitude(-180.0);
         /// <summary>
-        /// Represents the maximum possible longitude of 180�.
+        /// Represents the maximum possible longitude of 180°.
         /// </summary>
         public static readonly Longitude Maximum = new Longitude(180.0);
         /// <summary>
@@ -135,7 +135,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <example>
-        /// This example demonstrates how to create an angle with a measurement of 90�.
+        /// This example demonstrates how to create an angle with a measurement of 90°.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(90)
         ///   </code>
@@ -157,14 +157,14 @@ namespace DotSpatial.Positioning
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <param name="hemisphere">The hemisphere.</param>
         /// <example>
-        /// This example creates a new Longitude of 39�30' north.
+        /// This example creates a new Longitude of 39°30' north.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(39.5, LongitudeHemisphere.North)
         ///   </code>
         ///   <code lang="C#">
         /// Longitude MyLongitude = new Longitude(39.5, LongitudeHemisphere.North);
         ///   </code>
-        /// This example creates a new Longitude of 39�30 south.
+        /// This example creates a new Longitude of 39°30 south.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(39.5, LongitudeHemisphere.South)
         ///   </code>
@@ -195,7 +195,7 @@ namespace DotSpatial.Positioning
         /// <param name="minutes">The minutes.</param>
         /// <param name="seconds">The seconds.</param>
         /// <example>
-        /// This example demonstrates how to create an angular measurement of 34�12'29.2 in
+        /// This example demonstrates how to create an angular measurement of 34°12'29.2 in
         /// hours, minutes and seconds.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(34, 12, 29.2)
@@ -225,7 +225,7 @@ namespace DotSpatial.Positioning
         /// automatically to be positive for the eastern hemisphere and negative for the
         /// western hemisphere.</para>
         ///   <para>If the parameters conflict with each other, the <strong>Hemisphere</strong>
-        /// parameter takes precedence. Therefore, a value of "-19�E" will become "19�E"
+        /// parameter takes precedence. Therefore, a value of "-19°E" will become "19°E"
         /// (without the negative sign) with no exception being thrown.</para></remarks>
         public Longitude(int hours, int minutes, double seconds, LongitudeHemisphere hemisphere)
         {
@@ -239,7 +239,7 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <example>
         /// This example demonstrates how an angle can be created when only the hours and
-        /// minutes (in decimal form) are known. This creates a value of 12�42.345'.
+        /// minutes (in decimal form) are known. This creates a value of 12°42.345'.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(12, 42.345)
         ///   </code>
@@ -260,14 +260,14 @@ namespace DotSpatial.Positioning
         /// <param name="decimalMinutes">The decimal minutes.</param>
         /// <param name="hemisphere">The hemisphere.</param>
         /// <example>
-        /// This example creates a new Longitude of 39�12.34' north.
+        /// This example creates a new Longitude of 39°12.34' north.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(39, 12.34, LongitudeHemisphere.North)
         ///   </code>
         ///   <code lang="C#">
         /// Longitude MyLongitude = new Longitude(39, 12.34, LongitudeHemisphere.North);
         ///   </code>
-        /// This example creates a new Longitude of 39�12.34 south.
+        /// This example creates a new Longitude of 39°12.34 south.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(39, 12.34, LongitudeHemisphere.South)
         ///   </code>
@@ -290,10 +290,10 @@ namespace DotSpatial.Positioning
         /// This example creates a new instance by parsing a string. notice: The double-quote is
         /// doubled up to represent a single double-quote in the string.)
         ///   <code lang="VB">
-        /// Dim MyLongitude As New Longitude("123�45'67.8""")
+        /// Dim MyLongitude As New Longitude("123°45'67.8""")
         ///   </code>
         ///   <code lang="CS">
-        /// Longitude MyLongitude = new Longitude("123�45'67.8\"");
+        /// Longitude MyLongitude = new Longitude("123°45'67.8\"");
         ///   </code>
         ///   </example>
         ///
@@ -347,7 +347,7 @@ namespace DotSpatial.Positioning
         ///   <para>Where <strong>h</strong> represents hours, <strong>m</strong> represents
         /// minutes, <strong>s</strong> represents seconds, and <strong>i</strong> represents a
         /// one-letter hemisphere indicator of "E" or "W." Any non-numeric character between
-        /// numbers is considered a delimiter. Thus, a value of <strong>12�34'56.78"</strong>
+        /// numbers is considered a delimiter. Thus, a value of <strong>12°34'56.78"</strong>
         /// or even <strong>12A34B56.78C</strong> is treated the same as <strong>12 34
         /// 56.78</strong>.</para></remarks>
         public Longitude(string value)
@@ -407,7 +407,7 @@ namespace DotSpatial.Positioning
         ///   <para>Where <strong>h</strong> represents hours, <strong>m</strong> represents
         /// minutes, <strong>s</strong> represents seconds, and <strong>i</strong> represents a
         /// one-letter hemisphere indicator of "E" or "W." Any non-numeric character between
-        /// numbers is considered a delimiter. Thus, a value of <strong>12�34'56.78"</strong>
+        /// numbers is considered a delimiter. Thus, a value of <strong>12°34'56.78"</strong>
         /// or even <strong>12A34B56.78C</strong> is treated the same as <strong>12 34
         /// 56.78</strong>.</para></remarks>
         public Longitude(string value, CultureInfo culture)
@@ -462,7 +462,7 @@ namespace DotSpatial.Positioning
             try
             {
                 // Clean up the string
-                newValue.Replace("�", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
+                newValue.Replace("°", " ").Replace("'", " ").Replace("\"", " ").Replace("  ", " ");
                 // Now split the values into an array
                 string[] values = newValue.ToString().Trim().Split(' ');
                 // How many elements are in the array?
@@ -585,18 +585,18 @@ namespace DotSpatial.Positioning
         ///   <see cref="DecimalDegrees"><strong>DecimalDegrees</strong></see> property is
         /// calculated automatically when creating an angle using hours, minutes and seconds.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�30'
+        /// ' Create an angle of 20°30'
         /// Dim MyLongitude As New Longitude(20, 30)
         /// ' Setting the DecimalMinutes recalculated other properties
         /// Debug.WriteLine(MyLongitude.DecimalDegrees)
-        /// ' Output: "20.5"  the same as 20�30'
+        /// ' Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�30'
+        /// // Create an angle of 20°30'
         /// Longitude MyLongitude = New Longitude(20, 30);
         /// // Setting the DecimalMinutes recalculated other properties
         /// Console.WriteLine(MyLongitude.DecimalDegrees)
-        /// // Output: "20.5"  the same as 20�30'
+        /// // Output: "20.5"  the same as 20°30'
         ///   </code>
         ///   </example>
         /// <remarks>This property returns the value of the angle as a single number.</remarks>
@@ -620,14 +620,14 @@ namespace DotSpatial.Positioning
         /// This example demonstrates how the <strong>DecimalMinutes</strong> property is
         /// automatically calculated when creating a new angle.
         ///   <code lang="VB">
-        /// ' Create an angle of 20�10'30"
+        /// ' Create an angle of 20°10'30"
         /// Dim MyLongitude As New Longitude(20, 10, 30)
         /// ' The DecimalMinutes property is automatically calculated
         /// Debug.WriteLine(MyLongitude.DecimalMinutes)
         /// ' Output: "10.5"
         ///   </code>
         ///   <code lang="CS">
-        /// // Create an angle of 20�10'30"
+        /// // Create an angle of 20°10'30"
         /// Longitude MyLongitude = new Longitude(20, 10, 30);
         /// // The DecimalMinutes property is automatically calculated
         /// Console.WriteLine(MyLongitude.DecimalMinutes)
@@ -664,7 +664,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 60.5� then outputs the value of the
+        /// This example creates an angle of 60.5° then outputs the value of the
         ///   <strong>Hours</strong> property, 60.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(60.5)
@@ -702,7 +702,7 @@ namespace DotSpatial.Positioning
         /// <seealso cref="Seconds">Seconds Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45.5� then outputs the value of the
+        /// This example creates an angle of 45.5° then outputs the value of the
         ///   <strong>Minutes</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(45.5)
@@ -744,7 +744,7 @@ Math.Round(
         /// <seealso cref="Minutes">Minutes Property</seealso>
         ///
         /// <example>
-        /// This example creates an angle of 45�10.5' then outputs the value of the
+        /// This example creates an angle of 45°10.5' then outputs the value of the
         ///   <strong>Seconds</strong> property, 30.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(45, 10.5)
@@ -894,7 +894,7 @@ Math.Round(
 
         /// <summary>
         /// Indicates whether the value has been normalized and is within the
-        /// allowed bounds of -180� and 180�.
+        /// allowed bounds of -180° and 180°.
         /// </summary>
         public bool IsNormalized
         {
@@ -946,8 +946,8 @@ Math.Round(
         /// </summary>
         /// <returns>An <strong>Longitude</strong> representing the mirrored value.</returns>
         /// <example>
-        /// This example creates a new <strong>Longitude</strong> of 45� then calculates its mirror
-        /// of 225�. (45 + 180)
+        /// This example creates a new <strong>Longitude</strong> of 45° then calculates its mirror
+        /// of 225°. (45 + 180)
         ///   <code lang="VB" title="[New Example]">
         /// Dim Longitude1 As New Longitude(45)
         /// Dim Longitude2 As Longitude = Longitude1.Mirror()
@@ -963,7 +963,7 @@ Math.Round(
         ///   </example>
         /// <remarks>This method returns the "opposite" of the current instance. The opposite is
         /// defined as the point on the other side of an imaginary circle. For example, if an angle
-        /// is 0�, at the top of a circle, this method returns 180�, at the bottom of the
+        /// is 0°, at the top of a circle, this method returns 180°, at the bottom of the
         /// circle.</remarks>
         public Longitude Mirror()
         {
@@ -979,7 +979,7 @@ Math.Round(
         /// <overloads>Converts an angular measurement into radians before further processing.</overloads>
         ///
         /// <example>
-        /// This example converts a measurement of 90� into radians.
+        /// This example converts a measurement of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(90)
         /// Dim MyRadians As Radian = MyLongitude.ToRadians()
@@ -1027,14 +1027,14 @@ Math.Round(
         ///   <table cellspacing="0" cols="3" cellpadding="2" width="100%">
         ///   <tbody>
         ///   <tr>
-        ///   <td>HH�MM'SS.SS"</td>
-        ///   <td>HHH.H�</td>
+        ///   <td>HH°MM'SS.SS"</td>
+        ///   <td>HHH.H°</td>
         ///   <td>HH MM.MM</td>
         ///   <td>HHHMMSS</td>
         ///   </tr>
         ///   <tr>
-        ///   <td>HH�MM'SS.SS"I</td>
-        ///   <td>HHH.H�I</td>
+        ///   <td>HH°MM'SS.SS"I</td>
+        ///   <td>HHH.H°I</td>
         ///   <td>HH MM.MMI</td>
         ///   <td>HHHMMSSI</td>
         ///   </tr>
@@ -1048,23 +1048,23 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(45, 16.772)
-        /// Debug.WriteLine(MyLongitude.ToString("h�m.mm"))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyLongitude.ToString("h°m.mm"))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyLongitude As New Longitude(45, 16.772);
-        /// Debug.WriteLine(MyLongitude.ToString("h�m.mm"));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyLongitude.ToString("h°m.mm"));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This powerful method returns the current angular measurement in a specific
         /// format. If no value for the format is specified, a format of
-        /// <strong>hhh�mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
+        /// <strong>hhh°mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
         /// resulting <strong>String</strong> can be converted back into an
         /// <strong>Longitude</strong> via the
         /// <see href="Angle.Parse">Parse</see> method so long as a delimiter separates each individual
@@ -1170,8 +1170,8 @@ Math.Round(
         /// </summary>
         /// <returns>A <strong>Longitude</strong> containing the normalized value.</returns>
         /// <remarks>This function is used to ensure that an angular measurement is within the
-        /// allowed bounds of 0� and 180�. If a value of 360� or 720� is passed, a value of 0�
-        /// is returned since traveling around the Earth 360� or 720� brings you to the same
+        /// allowed bounds of 0° and 180°. If a value of 360° or 720° is passed, a value of 0°
+        /// is returned since traveling around the Earth 360° or 720° brings you to the same
         /// place you started.</remarks>
         public Longitude Normalize()
         {
@@ -1250,21 +1250,21 @@ Math.Round(
         /// <seealso cref="Parse(string)">Parse Method</seealso>
         ///
         /// <example>
-        /// This example outputs a value of 90 degrees in the default format of ###.#�.
+        /// This example outputs a value of 90 degrees in the default format of ###.#°.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(90)
         /// Debug.WriteLine(MyLongitude.ToString)
-        /// ' Output: "90�"
+        /// ' Output: "90°"
         ///   </code>
         ///   <code lang="CS">
         /// Longitude MyLongitude = new Longitude(90);
         /// Debug.WriteLine(MyLongitude.ToString());
-        /// // Output: "90�"
+        /// // Output: "90°"
         ///   </code>
         ///   </example>
         /// <remarks>This powerful method returns the current angular measurement in a specific
         /// format. If no value for the format is specified, a format of
-        /// <strong>hhh�mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
+        /// <strong>hhh°mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
         /// resulting <strong>String</strong> can be converted back into an
         /// <strong>Longitude</strong> via the
         /// <see href="Angle.Parse">Parse</see> method so long as a delimiter separates each individual
@@ -1284,8 +1284,8 @@ Math.Round(
         /// <param name="decimalDegrees">The decimal degrees.</param>
         /// <returns></returns>
         /// <remarks>This function is used to ensure that an angular measurement is within the
-        /// allowed bounds of -180� and 180�. If a value of 360� or 720� is passed, a value of 0�
-        /// is returned since traveling around the Earth 360� or 720� brings you to the same
+        /// allowed bounds of -180° and 180°. If a value of 360° or 720° is passed, a value of 0°
+        /// is returned since traveling around the Earth 360° or 720° brings you to the same
         /// place you started.</remarks>
         public static Longitude Normalize(double decimalDegrees)
         {
@@ -1320,7 +1320,7 @@ Math.Round(
         /// <param name="value">The value.</param>
         /// <returns>A <see cref="Radian"><strong>Radian</strong></see> object.</returns>
         /// <example>
-        /// This example shows a quick way to convert an angle of 90� into radians.
+        /// This example shows a quick way to convert an angle of 90° into radians.
         ///   <code lang="VB">
         /// Dim MyRadian As Radian = Longitude.ToRadians(90)
         ///   </code>
@@ -1346,20 +1346,20 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>FromRadians</strong> method to convert a value of one
-        /// radian into an <strong>Longitude</strong> of 57�.
+        /// radian into an <strong>Longitude</strong> of 57°.
         ///   <code lang="VB">
         /// ' Create a new angle equal to one radian
         /// Dim MyRadians As New Radian(1)
         /// Dim MyLongitude As Longitude = Longitude.FromRadians(MyRadians)
         /// Debug.WriteLine(MyLongitude.ToString())
-        /// ' Output: 57�
+        /// ' Output: 57°
         ///   </code>
         ///   <code lang="CS">
         /// // Create a new angle equal to one radian
         /// Radian MyRadians = new Radian(1);
         /// Longitude MyLongitude = Longitude.FromRadians(MyRadians);
         /// Console.WriteLine(MyLongitude.ToString());
-        /// // Output: 57�
+        /// // Output: 57°
         ///   </code>
         ///   </example>
         /// <remarks>This function is typically used in conjunction with the
@@ -1437,7 +1437,7 @@ Math.Round(
         /// <seealso cref="Latitude.Normalize()">Normalize Method</seealso>
         ///
         /// <example>
-        /// This example converts a value of 10�30'0" into decimal degrees (10.5).
+        /// This example converts a value of 10°30'0" into decimal degrees (10.5).
         ///   <code lang="VB" title="ToDecimalDegrees Example (VB)">
         /// Dim MyValue As Double = Latitude.ToDecimalDegrees(10, 30, 0)
         ///   </code>
@@ -1603,10 +1603,10 @@ Math.Round(
         /// This example creates a new angular measurement using the <strong>Parse</strong>
         /// method.
         ///   <code lang="VB">
-        /// Dim NewLongitude As Longitude = Longitude.Parse("123.45�")
+        /// Dim NewLongitude As Longitude = Longitude.Parse("123.45°")
         ///   </code>
         ///   <code lang="CS">
-        /// Longitude NewLongitude = Longitude.Parse("123.45�");
+        /// Longitude NewLongitude = Longitude.Parse("123.45°");
         ///   </code>
         ///   </example>
         ///
@@ -1881,7 +1881,7 @@ Math.Round(
         /// ' Incorrect use of Increment
         /// Dim Longitude1 = New Longitude(89)
         /// Longitude1.Increment()
-        /// ' notice: Longitude1 will still be 89�!
+        /// ' notice: Longitude1 will still be 89°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Increment
@@ -1890,7 +1890,7 @@ Math.Round(
         /// // Incorrect use of Increment
         /// Longitude Longitude1 = new Longitude(89);
         /// Longitude1.Increment();
-        /// // notice: Longitude1 will still be 89�!
+        /// // notice: Longitude1 will still be 89°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method increases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1908,7 +1908,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to add to the current instance.</param>
         /// <returns>A new <strong>Longitude</strong> containing the summed values.</returns>
         /// <example>
-        /// This example adds 45� to the current instance of 45�, returning 90�.
+        /// This example adds 45° to the current instance of 45°, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Longitude1 As New Longitude(45)
         /// Longitude1 = Longitude1.Add(45)
@@ -1948,7 +1948,7 @@ Math.Round(
         /// ' Incorrect use of Decrement
         /// Dim Longitude1 = New Longitude(91)
         /// Longitude1.Increment()
-        /// ' notice Longitude1 will still be 91�!
+        /// ' notice Longitude1 will still be 91°!
         ///   </code>
         ///   <code lang="CS" title="[New Example]">
         /// // Correct use of Decrement
@@ -1957,7 +1957,7 @@ Math.Round(
         /// // Incorrect use of Decrement
         /// Longitude Longitude1 = new Longitude(91);
         /// Longitude1.Decrement();
-        /// // notice: Longitude1 will still be 91�!
+        /// // notice: Longitude1 will still be 91°!
         ///   </code>
         ///   </example>
         /// <remarks><para>This method decreases the <strong>DecimalDegrees</strong> property by 1.0,
@@ -1975,7 +1975,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to subtract from the current instance.</param>
         /// <returns>A new <strong>Longitude</strong> containing the new value.</returns>
         /// <example>
-        /// This example subtracts 30� from the current instance of 90�, returning 60�.
+        /// This example subtracts 30° from the current instance of 90°, returning 60°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Longitude1 As New Longitude(90)
         /// Longitude1 = Longitude1.Subtract(30)
@@ -2006,7 +2006,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> to multiply with the current instance.</param>
         /// <returns>A new <strong>Longitude</strong> containing the product of the two numbers.</returns>
         /// <example>
-        /// This example multiplies 30� with three, returning 90�.
+        /// This example multiplies 30° with three, returning 90°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Longitude1 As New Longitude(30)
         /// Longitude1 = Longitude1.Multiply(3)
@@ -2037,7 +2037,7 @@ Math.Round(
         /// <param name="value">A <strong>Double</strong> representing a denominator to divide by.</param>
         /// <returns>An <strong>Longitude</strong> containing the new value.</returns>
         /// <example>
-        /// This example divides 90� by three, returning 30�.
+        /// This example divides 90° by three, returning 30°.
         ///   <code lang="VB" title="[New Example]">
         /// Dim Longitude1 As New Longitude(90)
         /// Longitude1 = Longitude1.Divide(3)
@@ -2387,14 +2387,14 @@ Math.Round(
         ///   <table cellspacing="0" cols="3" cellpadding="2" width="100%">
         ///   <tbody>
         ///   <tr>
-        ///   <td>HH�MM'SS.SS"</td>
-        ///   <td>HHH.H�</td>
+        ///   <td>HH°MM'SS.SS"</td>
+        ///   <td>HHH.H°</td>
         ///   <td>HH MM.MM</td>
         ///   <td>HHHMMSS</td>
         ///   </tr>
         ///   <tr>
-        ///   <td>HH�MM'SS.SS"I</td>
-        ///   <td>HHH.H�I</td>
+        ///   <td>HH°MM'SS.SS"I</td>
+        ///   <td>HHH.H°I</td>
         ///   <td>HH MM.MMI</td>
         ///   <td>HHHMMSSI</td>
         ///   </tr>
@@ -2409,23 +2409,23 @@ Math.Round(
         ///
         /// <example>
         /// This example uses the <strong>ToString</strong> method to output an angle in a
-        /// custom format. The " <strong>h�</strong> " code represents hours along with a
+        /// custom format. The " <strong>h°</strong> " code represents hours along with a
         /// degree symbol (Alt+0176 on the keypad), and " <strong>m.mm</strong> " represents
         /// the minutes out to two decimals. Mmm.
         ///   <code lang="VB">
         /// Dim MyLongitude As New Longitude(45, 16.772)
-        /// Debug.WriteLine(MyLongitude.ToString("h�m.mm", CultureInfo.CurrentCulture))
-        /// ' Output: 45�16.78
+        /// Debug.WriteLine(MyLongitude.ToString("h°m.mm", CultureInfo.CurrentCulture))
+        /// ' Output: 45°16.78
         ///   </code>
         ///   <code lang="CS">
         /// Dim MyLongitude As New Longitude(45, 16.772);
-        /// Debug.WriteLine(MyLongitude.ToString("h�m.mm", CultureInfo.CurrentCulture));
-        /// // Output: 45�16.78
+        /// Debug.WriteLine(MyLongitude.ToString("h°m.mm", CultureInfo.CurrentCulture));
+        /// // Output: 45°16.78
         ///   </code>
         ///   </example>
         /// <remarks>This powerful method returns the current angular measurement in a specific
         /// format. If no value for the format is specified, a format of
-        /// <strong>hhh�mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
+        /// <strong>hhh°mm'SS.SS"I</strong> (adjusted to the current culture) will be used. The
         /// resulting <strong>String</strong> can be converted back into an
         /// <strong>Longitude</strong> via the
         /// <see href="Angle.Parse">Parse</see> method so long as a delimiter separates each individual
@@ -2456,7 +2456,7 @@ Math.Round(
 
                 // IF the format is "G", use the default format
                 if (String.Compare(format, "g", true, culture) == 0)
-                    format = "HHH�MM'SS.SSSS\"i";
+                    format = "HHH°MM'SS.SSSS\"i";
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
@@ -2489,7 +2489,7 @@ Math.Round(
                         format = format.Replace(subFormat, format.IndexOf("I") > -1 ? Math.Abs(Hours).ToString(newFormat, culture) : Hours.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("M");
                 if (startChar > -1)
                 {
@@ -2514,7 +2514,7 @@ Math.Round(
                         format = format.Replace(subFormat, Minutes.ToString(newFormat, culture));
                     }
                 }
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("S");
                 if (startChar > -1)
                 {
@@ -2540,7 +2540,7 @@ Math.Round(
                 }
 
                 // Now add on an indicator if specified
-                // Is there an hours specifier�
+                // Is there an hours specifier°
                 startChar = format.IndexOf("I");
                 if (startChar > -1)
                 {
@@ -2561,8 +2561,8 @@ Math.Round(
                 }
 
                 // If nothing then return zero
-                if (String.Compare(format, "�", true, culture) == 0)
-                    return "0�";
+                if (String.Compare(format, "°", true, culture) == 0)
+                    return "0°";
                 return format;
             }
             catch
@@ -2617,8 +2617,8 @@ Math.Round(
     /// both). For example, 105 degrees west can be expressed in either of these
     /// ways:</para>
     ///   <list type="bullet">
-    ///   <item>105�W</item>
-    ///   <item>-105�</item>
+    ///   <item>105°W</item>
+    ///   <item>-105°</item>
     ///   </list></remarks>
     public enum LongitudeHemisphere
     {
