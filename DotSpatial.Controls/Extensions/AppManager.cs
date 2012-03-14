@@ -568,8 +568,12 @@ namespace DotSpatial.Controls
 
             // Add main exe
             Assembly mainExe = Assembly.GetEntryAssembly();
-            catalog.Catalogs.Add(new AssemblyCatalog(mainExe));
-            Trace.WriteLine("Cataloging: " + mainExe.FullName);
+            if (mainExe != null)
+            {
+                // if there is a managed entry assembly running, add it.
+                catalog.Catalogs.Add(new AssemblyCatalog(mainExe));
+                Trace.WriteLine("Cataloging: " + mainExe.FullName);
+            }
 
             // Add DotSpatial Data (Which includes data providers)
             Assembly dataDll = typeof(BinaryRasterProvider).Assembly;
