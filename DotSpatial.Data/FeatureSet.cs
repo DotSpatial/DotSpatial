@@ -1212,10 +1212,11 @@ namespace DotSpatial.Data
             {
                 geom = FeatureGeometryFactory.CreateMultiLineString(lines.ToArray());
             }
-            else
+            else if (shape.Parts.Count == 1)
             {
                 geom = FeatureGeometryFactory.CreateLineString(lines[0].Coordinates);
             }
+            else return null;
 
             Feature f = new Feature(geom)
                             {

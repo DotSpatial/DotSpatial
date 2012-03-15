@@ -557,6 +557,7 @@ namespace DotSpatial.Controls
         /// <param name="existingLabels"></param>
         public static void DrawLineFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
+            if (f == null) return;
             ILabelSymbolizer symb = category.Symbolizer;
             if (selected) symb = category.SelectionSymbolizer;
 
@@ -662,7 +663,7 @@ namespace DotSpatial.Controls
             //Sets up the brushes and such for the labeling
             Brush foreBrush = new SolidBrush(symb.FontColor);
             Font textFont = symb.GetFont();
-            StringFormat format = new StringFormat { Alignment = symb.Alignment,};
+            StringFormat format = new StringFormat { Alignment = symb.Alignment, };
             Pen borderPen = new Pen(symb.BorderColor);
             Brush backBrush = new SolidBrush(symb.BackColor);
             Brush haloBrush = new SolidBrush(symb.HaloColor);
@@ -670,7 +671,7 @@ namespace DotSpatial.Controls
             haloPen.Width = 2;
             haloPen.Alignment = PenAlignment.Outset;
             Brush shadowBrush = new SolidBrush(symb.DropShadowColor);
-            
+
             //Text graphics path
             GraphicsPath gp = new GraphicsPath();
             gp.AddString(labelText, textFont.FontFamily, (int)textFont.Style, textFont.SizeInPoints * 96F / 72F, labelBounds, format);
@@ -700,7 +701,7 @@ namespace DotSpatial.Controls
             //Draws the border if its enabled
             if (symb.BorderVisible && symb.BorderColor != Color.Transparent)
                 g.DrawRectangle(borderPen, labelBounds.X, labelBounds.Y, labelBounds.Width, labelBounds.Height);
-            
+
             //Draws the drop shadow
             if (symb.DropShadowEnabled && symb.DropShadowColor != Color.Transparent)
             {
@@ -752,7 +753,7 @@ namespace DotSpatial.Controls
                 var angleField = symb.LabelAngleField;
                 if (String.IsNullOrEmpty(angleField))
                     return 0;
-                
+
                 try
                 {
                     return Convert.ToSingle(feature.DataRow[angleField]);
@@ -766,18 +767,18 @@ namespace DotSpatial.Controls
             return 0;
         }
 
-         private static void RotateAt(Graphics gr, float cx, float cy, float angle)
-         {
-             gr.ResetTransform();
-             gr.TranslateTransform(-cx, -cy, MatrixOrder.Append);
-             gr.RotateTransform(angle, MatrixOrder.Append);
-             gr.TranslateTransform(cx, cy, MatrixOrder.Append);
-         }
+        private static void RotateAt(Graphics gr, float cx, float cy, float angle)
+        {
+            gr.ResetTransform();
+            gr.TranslateTransform(-cx, -cy, MatrixOrder.Append);
+            gr.RotateTransform(angle, MatrixOrder.Append);
+            gr.TranslateTransform(cx, cy, MatrixOrder.Append);
+        }
 
         private static string GetLabelText(IFeature feature, ILabelCategory category)
         {
             string result = category.Expression;
-            if (result != null)
+            if (result != null && feature != null)
             {
                 foreach (DataColumn dc in feature.DataRow.Table.Columns)
                 {
