@@ -298,10 +298,12 @@
     <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
       <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
       <Name>DotSpatial.Extensions</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
       <Name>DotSpatial.Projections.Forms</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>

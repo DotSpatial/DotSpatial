@@ -157,6 +157,7 @@
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
       <Name>DotSpatial.Projections.Forms</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
       <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
@@ -166,6 +167,7 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
       <Name>DotSpatial.Symbology</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
       <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
