@@ -844,6 +844,10 @@ namespace DotSpatial.Symbology
             SelectByAttribute(filterExpression, ModifySelectionMode.Replace);
         }
 
+        /// <summary>
+        /// Unselects the features by attribute.
+        /// </summary>
+        /// <param name="filterExpression">The filter expression.</param>
         public void UnselectByAttribute(string filterExpression)
         {
             SelectByAttribute(filterExpression, ModifySelectionMode.Subtract);
