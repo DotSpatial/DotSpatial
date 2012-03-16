@@ -586,7 +586,11 @@ namespace DotSpatial.Symbology.Forms
             //Need to prevent the change event from running James Rineer jrin@rti.org
             _ignoreTableSelectionChanged = true;
 
-            if (_fidField != null) _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+            if (_fidField != null)
+            {
+                if (_featureLayer.DataSet.DataTable.Columns.Contains(_fidField))
+                    _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+            }
         }
 
         private void DataGridView1CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
@@ -1215,7 +1219,8 @@ namespace DotSpatial.Symbology.Forms
 
                 //collect the field
 
-                foreach (DataColumn dc in _featureLayer.DataSet.GetColumns())
+                //foreach (DataColumn dc in _featureLayer.DataSet.GetColumns())
+                foreach (DataColumn dc in _featureLayer.DataSet.DataTable.Columns)
                 {
                     field.Add(dc.ToString());
                 }
@@ -1226,10 +1231,12 @@ namespace DotSpatial.Symbology.Forms
                         selectedField = del.SelectedFieldIdList;
                 }
                 dataGridView1.SuspendLayout();
+                dataGridView1.SelectionChanged -= DataGridView1SelectionChanged;
                 foreach (string fi in selectedField)
                 {
                     _featureLayer.DataSet.DataTable.Columns.Remove(fi);
                 }
+                dataGridView1.SelectionChanged += DataGridView1SelectionChanged;
                 dataGridView1.ResumeLayout();
                 SelectNone();
             }
