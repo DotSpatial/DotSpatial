@@ -92,8 +92,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.Loading
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.FindFeature", "DotSpatial.Plugins.FindFeature\DotSpatial.Plugins.FindFeature.csproj", "{C828727C-318C-4A8B-9B26-4C76E6CA88F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.RuntimeIntelligence", "DotSpatial.Plugins.RuntimeIntelligence\DotSpatial.Plugins.RuntimeIntelligence.csproj", "{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotSpatial.Plugins.ScriptRunner", "DotSpatial.Plugins.ScriptRunner\DotSpatial.Plugins.ScriptRunner.vbproj", "{858B3B4A-CF0A-4E64-94A1-B3751C93D1E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion", "DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.csproj", "{489CFE09-FDF7-4C89-BAB5-BD09CADD61AD}"
@@ -104,7 +102,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Measure"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 43
+		SccNumberOfProjects = 42
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -256,26 +254,22 @@ Global
 		SccProjectTopLevelParentUniqueName37 = DotSpatial.sln
 		SccProjectName37 = DotSpatial.Plugins.FindFeature
 		SccLocalPath37 = DotSpatial.Plugins.FindFeature
-		SccProjectUniqueName38 = DotSpatial.Plugins.RuntimeIntelligence\\DotSpatial.Plugins.RuntimeIntelligence.csproj
+		SccProjectUniqueName38 = DotSpatial.Plugins.ScriptRunner\\DotSpatial.Plugins.ScriptRunner.vbproj
 		SccProjectTopLevelParentUniqueName38 = DotSpatial.sln
-		SccProjectName38 = DotSpatial.Plugins.RuntimeIntelligence
-		SccLocalPath38 = DotSpatial.Plugins.RuntimeIntelligence
-		SccProjectUniqueName39 = DotSpatial.Plugins.ScriptRunner\\DotSpatial.Plugins.ScriptRunner.vbproj
+		SccProjectName38 = DotSpatial.Plugins.ScriptRunner
+		SccLocalPath38 = DotSpatial.Plugins.ScriptRunner
+		SccProjectUniqueName39 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion\\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.csproj
 		SccProjectTopLevelParentUniqueName39 = DotSpatial.sln
-		SccProjectName39 = DotSpatial.Plugins.ScriptRunner
-		SccLocalPath39 = DotSpatial.Plugins.ScriptRunner
-		SccProjectUniqueName40 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion\\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.csproj
+		SccProjectName39 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion
+		SccLocalPath39 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion
+		SccProjectUniqueName40 = DotSpatial.Plugins.MapWindowProjectFileCompatibility\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.csproj
 		SccProjectTopLevelParentUniqueName40 = DotSpatial.sln
-		SccProjectName40 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion
-		SccLocalPath40 = DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion
-		SccProjectUniqueName41 = DotSpatial.Plugins.MapWindowProjectFileCompatibility\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.csproj
+		SccProjectName40 = DotSpatial.Plugins.MapWindowProjectFileCompatibility
+		SccLocalPath40 = DotSpatial.Plugins.MapWindowProjectFileCompatibility
+		SccProjectUniqueName41 = DotSpatial.Plugins.Measure\\DotSpatial.Plugins.Measure.csproj
 		SccProjectTopLevelParentUniqueName41 = DotSpatial.sln
-		SccProjectName41 = DotSpatial.Plugins.MapWindowProjectFileCompatibility
-		SccLocalPath41 = DotSpatial.Plugins.MapWindowProjectFileCompatibility
-		SccProjectUniqueName42 = DotSpatial.Plugins.Measure\\DotSpatial.Plugins.Measure.csproj
-		SccProjectTopLevelParentUniqueName42 = DotSpatial.sln
-		SccProjectName42 = DotSpatial.Plugins.Measure
-		SccLocalPath42 = DotSpatial.Plugins.Measure
+		SccProjectName41 = DotSpatial.Plugins.Measure
+		SccLocalPath41 = DotSpatial.Plugins.Measure
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -563,14 +557,6 @@ Global
 		{C828727C-318C-4A8B-9B26-4C76E6CA88F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C828727C-318C-4A8B-9B26-4C76E6CA88F0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C828727C-318C-4A8B-9B26-4C76E6CA88F0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{858B3B4A-CF0A-4E64-94A1-B3751C93D1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{858B3B4A-CF0A-4E64-94A1-B3751C93D1E1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{858B3B4A-CF0A-4E64-94A1-B3751C93D1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -636,7 +622,6 @@ Global
 		{B2335CBA-5E66-4A2D-9F6E-1224E06F2E57} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{30B6615B-0275-494E-8686-2C72CD99DAB3} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{C828727C-318C-4A8B-9B26-4C76E6CA88F0} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{7EDA2E42-8AB0-48AC-84F2-E544402EC1EC} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{858B3B4A-CF0A-4E64-94A1-B3751C93D1E1} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{489CFE09-FDF7-4C89-BAB5-BD09CADD61AD} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{46A259E2-40C3-48D5-A23D-22104056CEDF} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
