@@ -7,6 +7,7 @@
 using System.IO;
 using DotSpatial.Controls;
 using NuGet;
+using System.Net;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -78,7 +79,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             // more at http://nuget.codeplex.com/discussions/259099
             // We include a custom nuget.core without SecurityTransparent to avoid the error.
             if (package != null)
-                packageManager.InstallPackage(package, false);
+            {
+                try
+                {
+                    packageManager.InstallPackage(package, false);
+                }
+                catch (WebException ex)
+                {
+                    // Timed out.
+                    return null;
+                }
+            }
 
             return package;
         }

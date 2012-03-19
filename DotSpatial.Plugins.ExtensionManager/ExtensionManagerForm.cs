@@ -73,7 +73,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 var task = Task.Factory.StartNew(() =>
                                                      {
                                                          // Download the extension.
-                                                         packages.Install(pack.Id);
+                                                         var pack = packages.Install(pack.Id);
 
                                                          // Load the extension.
                                                          App.RefreshExtensions();
