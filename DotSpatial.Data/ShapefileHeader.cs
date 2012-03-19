@@ -163,7 +163,10 @@ namespace DotSpatial.Data
 
             string shxFile = Path.ChangeExtension(Filename, ".shx");
             FileInfo fi = new FileInfo(shxFile);
-            _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
+            if (fi.Exists)
+            {
+                _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
+            }
         }
 
         /// <summary>
