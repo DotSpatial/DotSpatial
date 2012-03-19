@@ -84,7 +84,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     packageManager.InstallPackage(package, false);
                 }
-                catch (WebException ex)
+                catch (WebException)
                 {
                     // Timed out.
                     return null;
