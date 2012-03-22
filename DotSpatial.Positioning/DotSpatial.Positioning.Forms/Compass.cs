@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+ï»¿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.Forms.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -68,9 +68,9 @@ namespace DotSpatial.Positioning.Forms
         private Font _AngleLabelFont = new Font("Tahoma", 6.0f, FontStyle.Regular);
         private Angle _MinorTickInterval = new Angle(5);
 #if Framework20
-		        private Pen _DirectionTickPen = new Pen(Color.Black, 3.0f);
+                private Pen _DirectionTickPen = new Pen(Color.Black, 3.0f);
 #else
-		private Pen pDirectionTickPen = new Pen(Color.Black);
+        private Pen pDirectionTickPen = new Pen(Color.Black);
 #endif
 
 #else
@@ -89,90 +89,90 @@ namespace DotSpatial.Positioning.Forms
         private Pen _majorTickPen = new Pen(Color.Black);
         private SolidBrush _directionLabelBrush = new SolidBrush(Color.Black);
         private SolidBrush _angleLabelBrush = new SolidBrush(Color.Black);
-        private string _angleLabelFormat = "h°";
+        private string _angleLabelFormat = "hÂ°";
 
         private static readonly PolarCoordinate[] _needlePointsNorth = new[]
-			{
-				new PolarCoordinate(5, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(275), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(280), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(285), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(290), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(295), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(300), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(305), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(310), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(315), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(320), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(325), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(330), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(335), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(55, new Angle(0), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(25), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(30), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(35), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(40), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(45), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(50), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(55), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(60), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(65), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(70), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(75), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(80), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(85), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(90), Azimuth.North, PolarCoordinateOrientation.Clockwise)
-			};
+            {
+                new PolarCoordinate(5, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(275), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(280), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(285), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(290), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(295), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(300), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(305), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(310), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(315), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(320), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(325), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(330), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(335), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(55, new Angle(0), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(25), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(30), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(35), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(40), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(45), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(50), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(55), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(60), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(65), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(70), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(75), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(80), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(85), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(90), Azimuth.North, PolarCoordinateOrientation.Clockwise)
+            };
         private static PolarCoordinate[] _needlePointsSouth = new[]
-			{
-				new PolarCoordinate(5, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(275), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(280), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(285), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(290), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(295), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(300), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(305), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(310), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(315), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(320), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(325), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(330), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(335), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(55, new Angle(0), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(25), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(30), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(35), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(40), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(45), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(50), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(55), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(60), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(65), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(70), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(75), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(80), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(85), Azimuth.North, PolarCoordinateOrientation.Clockwise),
-				new PolarCoordinate(8, new Angle(90), Azimuth.North, PolarCoordinateOrientation.Clockwise)
-			};
+            {
+                new PolarCoordinate(5, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(270), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(275), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(280), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(285), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(290), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(295), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(300), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(305), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(310), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(315), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(320), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(325), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(330), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(335), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(355), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(55, new Angle(0), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(50, new Angle(5), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(25), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(30), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(35), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(40), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(45), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(50), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(55), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(60), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(65), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(70), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(75), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(80), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(85), Azimuth.North, PolarCoordinateOrientation.Clockwise),
+                new PolarCoordinate(8, new Angle(90), Azimuth.North, PolarCoordinateOrientation.Clockwise)
+            };
         private SolidBrush _pNorthNeedleBrush = new SolidBrush(Color.Red);
         private Pen _pNorthNeedlePen = new Pen(Color.Black);
         private SolidBrush _pSouthNeedleBrush = new SolidBrush(Color.White);
@@ -183,7 +183,7 @@ namespace DotSpatial.Positioning.Forms
         private Size _pNeedleShadowSize = new Size(5, 5);
 #endif
 #if (PocketPC && Framework20)
-		private const int MaximumGracefulShutdownTime = 2000;
+        private const int MaximumGracefulShutdownTime = 2000;
 #elif !PocketPC
         private const int MAXIMUM_GRACEFUL_SHUTDOWN_TIME = 500;
 #endif
@@ -485,7 +485,7 @@ namespace DotSpatial.Positioning.Forms
                         _valueInterpolator.Maximum = _bearing.DecimalDegrees;
                     }
 
-                    // If the difference is > 180°, adjust so that it moves the right direction
+                    // If the difference is > 180Â°, adjust so that it moves the right direction
                     if (_valueInterpolator.Maximum - _valueInterpolator.Minimum > 180)
                         _valueInterpolator.Minimum = _valueInterpolator.Minimum % 360.0 + 360.0;
                     else if (_valueInterpolator.Minimum - _valueInterpolator.Maximum > 180)
@@ -532,7 +532,7 @@ namespace DotSpatial.Positioning.Forms
 
 #if !PocketPC || DesignTime
 #if PocketPC
-		[DefaultValue(typeof(Angle), "0")]
+        [DefaultValue(typeof(Angle), "0")]
 #else
 
         /// <summary>
@@ -588,7 +588,7 @@ namespace DotSpatial.Positioning.Forms
 
 #if !PocketPC || DesignTime
 #if PocketPC
-		[DefaultValue(typeof(Font), "Tahoma, 6pt")]
+        [DefaultValue(typeof(Font), "Tahoma, 6pt")]
 #else
 
         /// <summary>
@@ -755,7 +755,7 @@ namespace DotSpatial.Positioning.Forms
 
 #if !PocketPC || DesignTime
 #if PocketPC
-		[DefaultValue(typeof(Font), "Tahoma, 8pt, style=Bold")]
+        [DefaultValue(typeof(Font), "Tahoma, 8pt, style=Bold")]
 #else
 
         /// <summary>
@@ -786,11 +786,11 @@ namespace DotSpatial.Positioning.Forms
 #if !PocketPC || DesignTime
 
         /// <summary>
-        /// Controls the output format of labels drawn around the control. (i.e.  h°m's\")"
+        /// Controls the output format of labels drawn around the control. (i.e.  hÂ°m's\")"
         /// </summary>
-        [DefaultValue(typeof(string), "h°")]
+        [DefaultValue(typeof(string), "hÂ°")]
         [Category("Angle Labels")]
-        [Description("Controls the output format of labels drawn around the control. (i.e.  h°m's\")")]
+        [Description("Controls the output format of labels drawn around the control. (i.e.  hÂ°m's\")")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -817,7 +817,7 @@ namespace DotSpatial.Positioning.Forms
         [Category("Tick Marks")]
         [Description("Controls the number of degrees in between each small tick mark around the control.")]
 #if PocketPC
-		[DefaultValue(typeof(Angle), "5")]
+        [DefaultValue(typeof(Angle), "5")]
 #else
         [DefaultValue(typeof(Angle), "2")]
 #endif
@@ -1125,7 +1125,7 @@ namespace DotSpatial.Positioning.Forms
                     // Get the coordinate of the line's start
                     PolarCoordinate start = new PolarCoordinate(60, angle, Azimuth.North, PolarCoordinateOrientation.Clockwise);
 #if PocketPC
-					f.DrawCenteredString(((Angle)angle).ToString(_AngleLabelFormat, CultureInfo.CurrentCulture), _AngleLabelFont, _AngleLabelBrush, start);
+                    f.DrawCenteredString(((Angle)angle).ToString(_AngleLabelFormat, CultureInfo.CurrentCulture), _AngleLabelFont, _AngleLabelBrush, start);
 #else
                     f.DrawRotatedString(((Angle)angle).ToString(_angleLabelFormat, CultureInfo.CurrentCulture), _angleLabelFont, _angleLabelBrush, start);
 #endif
