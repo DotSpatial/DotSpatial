@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+ï»¿// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -2085,25 +2085,25 @@ namespace DotSpatial.Positioning
                                     format = format.Replace("U", "A");
                                     break;
                                 case AreaUnit.SquareCentimeters:
-                                    format = format.Replace("U", "cm²");
+                                    format = format.Replace("U", "cmÂ²");
                                     break;
                                 case AreaUnit.SquareFeet:
-                                    format = format.Replace("U", "ft²");
+                                    format = format.Replace("U", "ftÂ²");
                                     break;
                                 case AreaUnit.SquareInches:
-                                    format = format.Replace("U", "in²");
+                                    format = format.Replace("U", "inÂ²");
                                     break;
                                 case AreaUnit.SquareKilometers:
-                                    format = format.Replace("U", "km²");
+                                    format = format.Replace("U", "kmÂ²");
                                     break;
                                 case AreaUnit.SquareMeters:
-                                    format = format.Replace("U", "m²");
+                                    format = format.Replace("U", "mÂ²");
                                     break;
                                 case AreaUnit.SquareStatuteMiles:
-                                    format = format.Replace("U", "mi²");
+                                    format = format.Replace("U", "miÂ²");
                                     break;
                                 case AreaUnit.SquareNauticalMiles:
-                                    format = format.Replace("U", "nm²");
+                                    format = format.Replace("U", "nmÂ²");
                                     break;
                             }
                             break;
