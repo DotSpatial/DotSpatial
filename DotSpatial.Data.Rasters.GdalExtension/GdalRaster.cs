@@ -388,7 +388,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             base.NumRows = base.NumRowsInFile;
             // Todo: look for prj file if GetProjection returns null.
             string projString = _dataset.GetProjection();
-            Projection = ProjectionInfo.FromProj4String(projString);
+            Projection = ProjectionInfo.FromEsriString(projString);
             if (_band != null)
             {
                 double val;
