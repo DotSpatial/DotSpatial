@@ -69,6 +69,15 @@
     <Compile Include="Tiling\TileCache.cs" />
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
+    <Compile Include="WMS\UnProjected.cs" />
+    <Compile Include="WMS\WMSServerParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WMS\WMSServerParameters.Designer.cs">
+      <DependentUpon>WMSServerParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WMS\WmsTileSource.cs" />
+    <Compile Include="WMS\WMS.cs" />
     <Compile Include="WebMapPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -114,6 +123,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\resources.resx" />
+    <EmbeddedResource Include="WMS\WMSServerParameters.resx">
+      <DependentUpon>WMSServerParameters.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
