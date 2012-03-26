@@ -3,13 +3,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using BruTile;
 using BruTile.Cache;
+using BruTile.PreDefined;
 using BruTile.Web;
 using DotSpatial.Plugins.WebMap.Resources;
+using DotSpatial.Plugins.WebMap.WMS;
+using DotSpatial.Projections;
 using DotSpatial.Topology;
+using Exception = System.Exception;
 using Point = DotSpatial.Topology.Point;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
@@ -41,6 +46,8 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 return _tileServerName;
             }
         }
+
+        public WmsServerInfo WmsServerInfo { get; set; }
 
         #endregion
 
@@ -108,26 +115,25 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var tileMatrix = new Tile[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
 
-            Parallel.For((int)topLeftTileXY.Y, (int)btmRightTileXY.Y + 1, y =>
-            {
-                Parallel.For((int)topLeftTileXY.X, (int)btmRightTileXY.X + 1,
-                x =>
-                {
-                    var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
-                    var currTopLeftCoord = TileCalculator.PixelXYToLatLong((int)currTopLeftPixXY.X, (int)currTopLeftPixXY.Y, zoom);
+            Parallel.For((int) topLeftTileXY.Y, (int) btmRightTileXY.Y + 1,
+                         y => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1,
+                                           x =>
+                                               {
+                                                   var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
+                                                   var currTopLeftCoord =TileCalculator.PixelXYToLatLong((int) currTopLeftPixXY.X,
+                                                                                       (int) currTopLeftPixXY.Y, zoom);
 
-                    var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x, y);
-                    var currBtmRightCoord = TileCalculator.PixelXYToLatLong((int)currBtmRightPixXY.X, (int)currBtmRightPixXY.Y, zoom);
+                                                   var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x,
+                                                                                                                     y);
+                                                   var currBtmRightCoord =TileCalculator.PixelXYToLatLong((int) currBtmRightPixXY.X,
+                                                                                       (int) currBtmRightPixXY.Y, zoom);
 
-                    var currEnv = new Envelope(currTopLeftCoord, currBtmRightCoord);
+                                                   var currEnv = new Envelope(currTopLeftCoord, currBtmRightCoord);
 
-                    Tile tile = GetTile(x, y, currEnv, zoom);
-
-                    tileMatrix[x - (int)topLeftTileXY.X, y - (int)topLeftTileXY.Y] = tile;
-                }
-                );
-            }
-            );
+                                                   var tile = GetTile(x, y, currEnv, zoom);
+                                                   tileMatrix[x - (int) topLeftTileXY.X, y - (int) topLeftTileXY.Y] =tile;
+                                               }
+                                  ));
 
             return tileMatrix;
         }
@@ -233,29 +239,21 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             return GetTile(tileXY, envelope, zoom);
         }
 
-        private Bitmap GetViaBrutile(int x, int y, int zoom, Envelope envelope)
+        private Bitmap GetViaBrutile(int x, int y, int zoom, IEnvelope envelope)
         {
             if (!InitializeBrutileProvider())
                 return null;
 
-            Extent extent = ToBrutileExtent(new Data.Extent(envelope));
-            //  double pixelSize = extent.Width / App.Map.ClientRectangle.Width;
-
-            // int level = Utilities.GetNearestLevel(TileSource.Schema.Resolutions, pixelSize);
-
-            var tiles = TileSource.Schema.GetTilesInView(extent, zoom);
-            Debug.Assert(tiles.Count == 1);
+            var extent = ToBrutileExtent(new Data.Extent(envelope));
+            var tiles = TileSource.Schema.GetTilesInView(extent, zoom).ToList();
+            //Debug.Assert(tiles.Count() == 1);
 
             var tileInfo = tiles[0];
             tileInfo.Index = new TileIndex(x, y, zoom);
-            //if (TileCache.Find(tileInfo.Index) != null)
-            //    return new Bitmap(new MemoryStream(TileCache.Find(tileInfo.Index)));
 
             try
             {
                 byte[] bytes = TileSource.Provider.GetTile(tileInfo);
-                //Bitmap bitmap = new Bitmap(new MemoryStream(bytes));
-                //TileCache.Add(tileInfo.Index, bytes);
                 return new Bitmap(new MemoryStream(bytes));
             }
             catch (WebException ex)
@@ -264,24 +262,21 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 {
                     //hack: an issue with this method is that one an error tile is in the memory cache it will stay even
                     //if the error is resolved. PDD.
-                    using (Bitmap bitmap = new Bitmap(TileSource.Schema.Width, TileSource.Schema.Height))
+                    using (var bitmap = new Bitmap(TileSource.Schema.Width, TileSource.Schema.Height))
                     {
-                        using (Graphics graphics = Graphics.FromImage(bitmap))
+                        using (var graphics = Graphics.FromImage(bitmap))
                         {
                             graphics.DrawString(ex.Message, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black), new RectangleF(0, 0, TileSource.Schema.Width, TileSource.Schema.Height));
                         }
 
-                        using (MemoryStream m = new MemoryStream())
+                        using (var m = new MemoryStream())
                         {
                             bitmap.Save(m, ImageFormat.Png);
                             return new Bitmap(m);
                         }
                     }
                 }
-                else
-                {
-                    Debug.WriteLine(ex.Message);
-                }
+                Debug.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
@@ -293,14 +288,6 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
         private bool InitializeBrutileProvider()
         {
-            //if (int.TryParse(TileSource.Schema.Srs.Substring(5), out epsgCode))
-            //{
-            //    _projection = new ProjectionInfo();
-            //    _projection.ReadEpsgCode(epsgCode);
-            //}
-            //else
-            //    _projection = KnownCoordinateSystems.Projected.World.WebMercator;
-
             if (this.TileServerName.Equals(Properties.Resources.BingHybrid, StringComparison.InvariantCultureIgnoreCase))
             {
                 string token = String.Empty;
@@ -332,24 +319,29 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             if (this.TileServerName.Equals(Properties.Resources.YahooMap, StringComparison.InvariantCultureIgnoreCase))
             {
+                /*
                 TileSource = new YahooTileSource(YahooMapType.YahooMap);
-                TileCache = new MemoryCache<byte[]>(100, 200);
-
+                TileCache = new MemoryCache<byte[]>(100, 200);                
                 return true;
+                 */ 
             }
 
             if (this.TileServerName.Equals(Properties.Resources.YahooSatellite, StringComparison.InvariantCultureIgnoreCase))
             {
+                /*
                 TileSource = new YahooTileSource(YahooMapType.YahooSatellite);
+                TileCache = new MemoryCache<byte[]>(100, 200);                
+                return true;
+                 */ 
+            }
+
+            if (this.TileServerName.Equals(Properties.Resources.WMSMap, StringComparison.InvariantCultureIgnoreCase))
+            {
+                TileSource = WmsTileSource.Create(WmsServerInfo);
                 TileCache = new MemoryCache<byte[]>(100, 200);
 
                 return true;
             }
-
-            //public static BruTileLayer CreateOpenStreetMapLayer()
-            //{
-            //    return new BruTileLayer(new OsmTileSource(), new MemoryCache<byte[]>(100, 200));
-            //}
 
             TileSource = null;
             TileCache = null;

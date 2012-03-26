@@ -9,11 +9,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Plugins.WebMap.Resources;
 using DotSpatial.Plugins.WebMap.Tiling;
+using DotSpatial.Plugins.WebMap.WMS;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Microsoft.VisualBasic;
@@ -384,6 +386,19 @@ namespace DotSpatial.Plugins.WebMap
                 App.ProgressHandler.Progress(String.Empty, 0, "Loading Basemap...");
             }
 
+            // Special case for WMS
+            if (tileServerName.Equals(Properties.Resources.WMSMap, StringComparison.InvariantCultureIgnoreCase))
+            {
+                using (var wmsDialog = new WMSServerParameters())
+                {
+                    if (wmsDialog.ShowDialog() != DialogResult.OK)
+                    {
+                        return;
+                    }
+                    _tileManager.WmsServerInfo = wmsDialog.WmsServerInfo;
+                }
+            }
+
             // Other is a custom service
             if (tileServerName.Equals(Other, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -491,8 +506,7 @@ namespace DotSpatial.Plugins.WebMap
             _opacityDropDown.SelectedItem = opacity;
             _opacity = Convert.ToInt16(opacity);
 
-            _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().Where(
-                layer => layer.LegendText == resources.Legend_Title).FirstOrDefault();
+            _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == resources.Legend_Title);
 
             if (basemapName == "None")
             {
@@ -506,7 +520,7 @@ namespace DotSpatial.Plugins.WebMap
             else
             {
                 //hack: need to set provider to original object, not a new one.
-                _provider = ServiceProvider.GetDefaultServiceProviders().Where(p => p.Name == basemapName).FirstOrDefault();
+                _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name == basemapName);
                 _serviceDropDown.SelectedItem = _provider;
                 EnableBasemapFetching(_provider.Name, _provider.Url);
             }

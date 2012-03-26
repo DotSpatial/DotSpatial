@@ -117,27 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BingHybrid" xml:space="preserve">
-    <value>Bing Hybrid</value>
-    <comment>BingHybrid description</comment>
-  </data>
-  <data name="GoogleSatellite" xml:space="preserve">
-    <value>Google Satellite</value>
-    <comment>GoogleSatellite description</comment>
-  </data>
-  <data name="GoogleMap" xml:space="preserve">
-    <value>Google Map</value>
-    <comment>GoogleMap description</comment>
-  </data>
-  <data name="YahooMap" xml:space="preserve">
-    <value>Yahoo Map</value>
-    <comment>YahooMap description</comment>
-  </data>
-  <data name="YahooSatellite" xml:space="preserve">
-    <value>Yahoo Satellite</value>
-    <comment>YahooSatellite description</comment>
-  </data>
-  <data name="WMSMap" xml:space="preserve">
-    <value>WMS</value>
-  </data>
 </root>
