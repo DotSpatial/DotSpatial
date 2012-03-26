@@ -461,7 +461,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets a boolean that is true if the geometry of this feature is disjoint with the geometry
-        /// of the specified feature
+        /// of the specified feature.
         /// </summary>
         /// <param name="self">This feature</param>
         /// <param name="other">The feature to compare this feature to</param>
@@ -472,12 +472,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a boolean that is true if the geometry of this feature is disjoint with the geometry
-        /// of the specified feature
+        /// Distance between features.
         /// </summary>
         /// <param name="self">This feature</param>
         /// <param name="other">The feature to compare this feature to</param>
-        /// <returns>Boolean, true if this feature is disjoint with the specified feature</returns>
+        /// <returns></returns>
         public static double Distance(this IFeature self, IFeature other)
         {
             return Geometry.FromBasicGeometry(self.BasicGeometry).Distance(Geometry.FromBasicGeometry(other));
