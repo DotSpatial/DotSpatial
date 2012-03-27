@@ -110,9 +110,6 @@ namespace DemoPlugin
             layer.Symbolizer.CreateHillShade();
 
             layer.WriteBitmap();
-
-            //Raster myRaster = new Raster();
-            //myRaster.Create(
         }
     }
 }
