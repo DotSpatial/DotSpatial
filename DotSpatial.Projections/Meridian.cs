@@ -343,6 +343,9 @@ namespace DotSpatial.Projections
         /// <param name="esriString"></param>
         public void ParseEsriString(string esriString)
         {
+            if (System.String.IsNullOrEmpty(esriString))
+                return;
+
             if (esriString.Contains("PRIMEM") == false) return;
             int iStart = esriString.IndexOf("PRIMEM") + 7;
             int iEnd = esriString.IndexOf("]", iStart);

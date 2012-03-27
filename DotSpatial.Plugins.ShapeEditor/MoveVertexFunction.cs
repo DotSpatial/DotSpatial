@@ -27,6 +27,7 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 using Point = System.Drawing.Point;
+using System;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -232,6 +233,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <returns>A value indicating whether the shape was successfully highlighted.</returns>
         private bool ShapeHighlight(GeoMouseArgs e)
         {
+            if (e == null)
+                throw new ArgumentNullException("e", "e is null.");
+
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             Extent ext = Map.PixelToProj(mouseRect);
             IPolygon env = ext.ToEnvelope().ToPolygon();

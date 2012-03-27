@@ -93,6 +93,9 @@ namespace DotSpatial.Projections
         /// <param name="esriString">The esri string to read</param>
         public void ParseEsriString(string esriString)
         {
+            if (System.String.IsNullOrEmpty(esriString))
+                return;
+
             if (esriString.Contains("UNIT") == false) return;
             int iStart = esriString.IndexOf("UNIT") + 5;
             int iEnd = esriString.IndexOf("]", iStart);

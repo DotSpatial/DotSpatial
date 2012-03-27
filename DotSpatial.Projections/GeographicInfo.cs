@@ -19,6 +19,7 @@
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // ********************************************************************************************************
+using System;
 
 namespace DotSpatial.Projections
 {
@@ -113,6 +114,9 @@ namespace DotSpatial.Projections
         /// <param name="esriString">The string to parse</param>
         public void ParseEsriString(string esriString)
         {
+            if (System.String.IsNullOrEmpty(esriString))
+                return;
+
             if (esriString.Contains("GEOGCS") == false) return;
             int iStart = esriString.IndexOf("GEOGCS") + 8;
             int iEnd = esriString.IndexOf(@""",", iStart) - 1;

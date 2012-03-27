@@ -126,6 +126,7 @@ namespace DotSpatial.Data
             //  Byte 84         Bounding Box    Mmin        Double      Little
             //  Byte 92         Bounding Box    Mmax        Double      Little
 
+            // This may throw an IOException if the file is already in use.
             BufferedBinaryReader bbReader = new BufferedBinaryReader(inFilename);
 
             bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
