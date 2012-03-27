@@ -627,6 +627,12 @@ namespace DotSpatial.Projections
         /// </param>
         public static ProjectionInfo FromEsriString(string esriString)
         {
+            if (String.IsNullOrWhiteSpace(esriString))
+            {
+                // Return a default 'empty' projection
+                return new ProjectionInfo();
+            }
+
             //special case for Krovak Projection
             //todo use a lookup table instead of hard coding the projection here
             if (esriString.Contains("Krovak"))
