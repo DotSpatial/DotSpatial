@@ -223,6 +223,9 @@ namespace DotSpatial.Controls
             {
                 lb.Item.IsSelected = false;
             }
+            
+            _selection.Clear();
+
             if (ParentMap != null)
             {
                 ParentMap.ResumeEvents();
