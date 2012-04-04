@@ -358,9 +358,15 @@ namespace DotSpatial.Projections
             int iEnd = esriString.IndexOf(@""",", iStart) - 1;
             if (iEnd < iStart) return;
             _name = esriString.Substring(iStart, iEnd - iStart + 1);
-            Assembly a = Assembly.GetExecutingAssembly();
-            string fileName = Path.GetDirectoryName(a.Location) + "\\datums.xml";
-            Stream datumStream = File.Exists(fileName) ? File.Open(fileName, FileMode.Open) : a.GetManifestResourceStream("DotSpatial.Projections.XML.datums.xml");
+
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
+            string fileName = null;
+            string currentAssemblyLocation = currentAssembly.Location;
+            if (!String.IsNullOrEmpty(currentAssemblyLocation))
+            {
+                fileName = Path.GetDirectoryName(currentAssemblyLocation) + "\\datums.xml";
+            }
+            Stream datumStream = File.Exists(fileName) ? File.Open(fileName, FileMode.Open) : currentAssembly.GetManifestResourceStream("DotSpatial.Projections.XML.datums.xml");
 
             if (datumStream != null)
             {
