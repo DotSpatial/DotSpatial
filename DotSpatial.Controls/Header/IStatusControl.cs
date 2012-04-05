@@ -13,7 +13,7 @@ namespace DotSpatial.Controls.Header
     /// Used to display status information.
     /// </summary>
     [InheritedExport]
-    public interface IStatusControl : IProgressHandler
+    public interface IStatusControl : ICancelProgressHandler
     {
         /// <summary>
         /// Adds the specified panel.
