@@ -56,59 +56,82 @@ namespace DotSpatial.Analysis
             temp.NoDataValue = raster.NoDataValue;
             temp.Bounds = raster.Bounds;
 
-            for (int i = 0; i < temp.NumRows; i++)
+            ProgressMeter progMeter = null;
+            try
             {
-                for (int j = 0; j < temp.NumColumns; j++)
+                if (cancelProgressHandler != null)
+                    progMeter = new ProgressMeter(cancelProgressHandler, "Calculating Slope", temp.NumRows);
+
+                for (int i = 0; i < temp.NumRows; i++)
                 {
-                    if (i > 0 && i < temp.NumRows - 1 && j > 0 && j < temp.NumColumns - 1)
+
+                    if (cancelProgressHandler != null)
                     {
-                        double z1 = raster.Value[i - 1, j - 1];
-                        double z2 = raster.Value[i - 1, j];
-                        double z3 = raster.Value[i - 1, j + 1];
-                        double z4 = raster.Value[i, j - 1];
-                        double z5 = raster.Value[i, j + 1];
-                        double z6 = raster.Value[i + 1, j - 1];
-                        double z7 = raster.Value[i + 1, j];
-                        double z8 = raster.Value[i + 1, j + 1];
-
-                        //3rd Order Finite Difference slope algorithm
-                        double dZdX = inZFactor * ((z3 - z1) + (2 * (z5 - z4)) + (z8 - z6)) / (8 * raster.CellWidth);
-                        double dZdY = inZFactor * ((z1 - z6) + (2 * (z2 - z7)) + (z3 - z8)) / (8 * raster.CellHeight);
-
-                        double slope = Math.Atan(Math.Sqrt((dZdX * dZdX) + (dZdY * dZdY))) * (180 / Math.PI);
-
-                        //change to radius and in percentage
-                        if (slopeInPercent)
+                        progMeter.Next();
+                        if ((i % 100) == 0)
                         {
-                            slope = (Math.Tan(slope * Math.PI / 180)) * 100;
+                            progMeter.SendProgress();
+                            System.Windows.Forms.Application.DoEvents();
                         }
 
-                        temp.Value[i, j] = slope;
+                    }
+                    for (int j = 0; j < temp.NumColumns; j++)
+                    {
+                        if (i > 0 && i < temp.NumRows - 1 && j > 0 && j < temp.NumColumns - 1)
+                        {
+                            double z1 = raster.Value[i - 1, j - 1];
+                            double z2 = raster.Value[i - 1, j];
+                            double z3 = raster.Value[i - 1, j + 1];
+                            double z4 = raster.Value[i, j - 1];
+                            double z5 = raster.Value[i, j + 1];
+                            double z6 = raster.Value[i + 1, j - 1];
+                            double z7 = raster.Value[i + 1, j];
+                            double z8 = raster.Value[i + 1, j + 1];
+
+                            //3rd Order Finite Difference slope algorithm
+                            double dZdX = inZFactor * ((z3 - z1) + (2 * (z5 - z4)) + (z8 - z6)) / (8 * raster.CellWidth);
+                            double dZdY = inZFactor * ((z1 - z6) + (2 * (z2 - z7)) + (z3 - z8)) / (8 * raster.CellHeight);
+
+                            double slope = Math.Atan(Math.Sqrt((dZdX * dZdX) + (dZdY * dZdY))) * (180 / Math.PI);
+
+                            //change to radius and in percentage
+                            if (slopeInPercent)
+                            {
+                                slope = (Math.Tan(slope * Math.PI / 180)) * 100;
+                            }
+
+                            temp.Value[i, j] = slope;
+
+                            if (cancelProgressHandler != null && cancelProgressHandler.Cancel)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            temp.Value[i, j] = temp.NoDataValue;
+                        }
 
                         if (cancelProgressHandler != null && cancelProgressHandler.Cancel)
                         {
                             return false;
                         }
                     }
-                    else
-                    {
-                        temp.Value[i, j] = temp.NoDataValue;
-                    }
-
-                    if (cancelProgressHandler != null && cancelProgressHandler.Cancel)
-                    {
-                        return false;
-                    }
                 }
-            }
 
-            result = temp;
-            if (result.IsFullyWindowed())
-            {
-                result.Save();
-                return true;
+                result = temp;
+                if (result.IsFullyWindowed())
+                {
+                    result.Save();
+                    return true;
+                }
+                return false;
             }
-            return false;
+            finally
+            {
+                if (progMeter != null)
+                    progMeter.Reset();
+            }
         }
     }
 }
