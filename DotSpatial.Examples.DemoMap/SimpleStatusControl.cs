@@ -72,6 +72,13 @@ namespace DemoMap
             }
         }
 
+        private bool _cancel;
+        public bool Cancel
+        {
+            set { _cancel = value; }
+            get { return _cancel; }
+        }
+
         public void Remove(StatusPanel panel)
         {
             statusStrip.Items.RemoveByKey(panel.Key);
