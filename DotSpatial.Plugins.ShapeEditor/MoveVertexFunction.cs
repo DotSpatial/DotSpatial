@@ -42,7 +42,7 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// A right click during drag should cancel the movement if dragging.
     /// A further right click will de-select the shape to edit.
     /// </summary>
-    public class MoveVertexFunction : MapFunction
+    public class MoveVertexFunction : SnappableMapFunction
     {
         #region Private Variables
 
@@ -139,15 +139,15 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
-        private void UpdateDragCoordiante(GeoMouseArgs e)
+        private void UpdateDragCoordiante(Coordinate loc)
         {
             // Cannot change selected feature at this time because we are dragging a vertex
-            _dragCoord.X = e.GeographicLocation.X;
-            _dragCoord.Y = e.GeographicLocation.Y;
+            _dragCoord.X = loc.X;
+            _dragCoord.Y = loc.Y;
             if (_closedCircleCoord != null)
             {
-                _closedCircleCoord.X = e.GeographicLocation.X;
-                _closedCircleCoord.Y = e.GeographicLocation.Y;
+                _closedCircleCoord.X = loc.X;
+                _closedCircleCoord.Y = loc.Y;
             }
             Map.Invalidate();
         }
@@ -312,7 +312,15 @@ namespace DotSpatial.Plugins.ShapeEditor
             _mousePosition = e.Location;
             if (_dragging)
             {
-                UpdateDragCoordiante(e);
+                // Begin snapping changes
+                Coordinate snappedCoord = e.GeographicLocation;
+                if (ComputeSnappedLoc(e, ref snappedCoord))
+                {
+                    _mousePosition = Map.ProjToPixel(snappedCoord);
+                }
+                // End snapping changes
+
+                UpdateDragCoordiante(snappedCoord); // Snapping changes
             }
             else
             {
@@ -606,6 +614,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 _layer = value;
                 _featureSet = _layer.DataSet;
+                InitializeSnapLayers();
             }
         }
 

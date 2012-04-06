@@ -107,5 +107,21 @@ namespace DotSpatial.Plugins.ShapeEditor {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snapping.
+        /// </summary>
+        internal static string Snapping {
+            get {
+                return ResourceManager.GetString("Snapping", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Icon SnappingIcon {
+            get {
+                object obj = ResourceManager.GetObject("SnappingIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

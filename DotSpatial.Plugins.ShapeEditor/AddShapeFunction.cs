@@ -35,7 +35,7 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// <summary>
     /// This function allows interacting with the map through mouse clicks to create a new shape.
     /// </summary>
-    public class AddShapeFunction : MapFunction, IDisposable
+    public class AddShapeFunction : SnappableMapFunction, IDisposable
     {
         #region private variables
 
@@ -178,6 +178,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected override void OnDraw(MapDrawArgs e)
         {
             if (_standBy) { return; }
+
+            // Begin snapping changes
+            DoSnapDrawing(e.Graphics, _mousePosition);
+            // End snapping changes
+
             if (_featureSet.FeatureType == FeatureType.Point) { return; }
 
             // Draw any completed parts first so that they are behind my active drawing content.
@@ -235,6 +240,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
             }
+
             bluePen.Dispose();
             redPen.Dispose();
             redBrush.Dispose();
@@ -248,8 +254,15 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_standBy) { return; }
-            _coordinateDialog.X = e.GeographicLocation.X;
-            _coordinateDialog.Y = e.GeographicLocation.Y;
+
+            // Begin snapping changes
+            Coordinate snappedCoord = e.GeographicLocation;
+            bool prevWasSnapped = this.isSnapped;
+            this.isSnapped = ComputeSnappedLoc(e, ref snappedCoord);
+            _coordinateDialog.X = snappedCoord.X;
+            _coordinateDialog.Y = snappedCoord.Y;
+            // End snapping changes
+
             if (_coordinates != null && _coordinates.Count > 0)
             {
                 List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
@@ -259,7 +272,12 @@ namespace DotSpatial.Plugins.ShapeEditor
                 invalid.Inflate(20, 20);
                 Map.Invalidate(invalid);
             }
-            _mousePosition = e.Location;
+            
+            // Begin snapping changes
+            _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
+            DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
+            // End snapping changes
+
             base.OnMouseMove(e);
         }
 
@@ -275,7 +293,12 @@ namespace DotSpatial.Plugins.ShapeEditor
             // Add the current point to the featureset
             if (_featureSet.FeatureType == FeatureType.Point)
             {
-                Topology.Point pt = new Topology.Point(_coordinateDialog.Coordinate);
+                // Begin snapping changes
+                Coordinate snappedCoord = _coordinateDialog.Coordinate;
+                ComputeSnappedLoc(e, ref snappedCoord);
+                // End snapping changes
+
+                Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
                 Feature f = new Feature(pt);
                 _featureSet.Features.Add(f);
                 _featureSet.UpdateExtent();
@@ -290,7 +313,13 @@ namespace DotSpatial.Plugins.ShapeEditor
             else
             {
                 if (_coordinates == null) { _coordinates = new List<Coordinate>(); }
-                _coordinates.Add(e.GeographicLocation);
+                
+                // Begin snapping changes
+                Coordinate snappedCoord = e.GeographicLocation;
+                ComputeSnappedLoc(e, ref snappedCoord);
+                // End snapping changes
+
+                _coordinates.Add(snappedCoord); // Snapping changes
                 if (_coordinates.Count > 1)
                 {
                     Point p1 = Map.ProjToPixel(_coordinates[_coordinates.Count - 1]);

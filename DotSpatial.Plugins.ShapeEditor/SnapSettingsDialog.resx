@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="move" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\move.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NewShape" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\NewShape.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NewShapefile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\NewShapefile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Move_Vertex" xml:space="preserve">
-    <value>Move Vertex</value>
-  </data>
-  <data name="Add_Shape" xml:space="preserve">
-    <value>Add Shape</value>
-  </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
-  </data>
-  <data name="Snapping" xml:space="preserve">
-    <value>Snapping</value>
-  </data>
-  <data name="SnappingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\SnappingIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

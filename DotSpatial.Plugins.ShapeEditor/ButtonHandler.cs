@@ -41,6 +41,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         private IMap _geoMap;
         private MoveVertexFunction _moveVertexFunction;
 
+        private bool _doSnapping = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonHandler"/> class.
         /// </summary>
@@ -73,6 +75,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 if (_geoMap != null && _geoMap.Layers != null)
                 {
                     _geoMap.Layers.LayerSelected += Layers_LayerSelected;
+                    _geoMap.MapFrame.LayerSelected += MapFrame_LayerSelected;
                 }
             }
         }
@@ -113,6 +116,15 @@ namespace DotSpatial.Plugins.ShapeEditor
             _addShape = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.NewShape.ToBitmap() };
             _Header.Add(_addShape);
             _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.move });
+            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap() });
+        }
+
+        private void SnappingButton_Click(object sender, EventArgs E)
+        {
+            SnapSettingsDialog dlg = new SnapSettingsDialog();
+            dlg.DoSnapping = this._doSnapping;
+            dlg.ShowDialog();
+            this._doSnapping = dlg.DoSnapping;
         }
 
         private void MoveVertexButton_Click(object sender, EventArgs e)
@@ -130,9 +142,23 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
             _geoMap.FunctionMode = FunctionMode.None;
             _geoMap.Cursor = Cursors.Cross;
-            _geoMap.MapFrame.LayerSelected += MapFrame_LayerSelected;
             _moveVertexFunction.Layer = _activeLayer;
+            UpdateMoveVertexFunctionLayer();
             _moveVertexFunction.Activate();
+        }
+
+        private void SetSnapLayers(SnappableMapFunction func)
+        {
+            func.DoSnapping = this._doSnapping;
+            if (!this._doSnapping)
+                return;
+
+            foreach (var layer in _geoMap.Layers)
+            {
+                IFeatureLayer fl = layer as IFeatureLayer;
+                if (fl != null && fl != _activeLayer && fl.DataSet.FeatureType != _activeLayer.DataSet.FeatureType)
+                    func.AddLayerToSnap(fl);
+            }
         }
 
         private void MapFrame_LayerSelected(object sender, LayerSelectedEventArgs e)
@@ -146,9 +172,28 @@ namespace DotSpatial.Plugins.ShapeEditor
             _activeLayer = null;
             if (fl == null) { return; }
             _activeLayer = fl;
-            if (_moveVertexFunction == null) { return; }
+
+            if (_moveVertexFunction != null)
+            {
+                UpdateMoveVertexFunctionLayer();
+            }
+            else if (_addShapeFunction != null)
+            {
+                UpdateAddShapeFunctionLayer();
+            }
+        }
+
+        private void UpdateMoveVertexFunctionLayer()
+        {
             _moveVertexFunction.DeselectFeature();
-            _moveVertexFunction.Layer = fl;
+            _moveVertexFunction.Layer = _activeLayer;
+            SetSnapLayers(_moveVertexFunction);
+        }
+
+        private void UpdateAddShapeFunctionLayer()
+        {
+            _addShapeFunction.FeatureSet = _activeLayer.DataSet;
+            SetSnapLayers(_addShapeFunction);
         }
 
         private void AddShapeButton_Click(object sender, EventArgs e)
@@ -171,7 +216,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
             _geoMap.FunctionMode = FunctionMode.None;
             _geoMap.Cursor = Cursors.Hand;
-            _addShapeFunction.FeatureSet = _activeLayer.DataSet;
+            UpdateAddShapeFunctionLayer();
             _addShapeFunction.Activate();
         }
 
