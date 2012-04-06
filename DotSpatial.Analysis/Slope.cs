@@ -130,7 +130,10 @@ namespace DotSpatial.Analysis
             finally
             {
                 if (progMeter != null)
+                {
                     progMeter.Reset();
+                    System.Windows.Forms.Application.DoEvents();
+                }
             }
         }
     }
