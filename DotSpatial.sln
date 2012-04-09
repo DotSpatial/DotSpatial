@@ -104,7 +104,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Contoure
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 42
+		SccNumberOfProjects = 43
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -272,6 +272,10 @@ Global
 		SccProjectTopLevelParentUniqueName41 = DotSpatial.sln
 		SccProjectName41 = DotSpatial.Plugins.Measure
 		SccLocalPath41 = DotSpatial.Plugins.Measure
+		SccProjectUniqueName42 = DotSpatial.Plugins.Contourer\\DotSpatial.Plugins.Contourer.csproj
+		SccProjectTopLevelParentUniqueName42 = DotSpatial.sln
+		SccProjectName42 = DotSpatial.Plugins.Contourer
+		SccLocalPath42 = DotSpatial.Plugins.Contourer
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
