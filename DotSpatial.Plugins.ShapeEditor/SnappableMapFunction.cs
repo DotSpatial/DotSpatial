@@ -87,12 +87,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e"></param>
         /// <param name="snappedCoord">set if a coordinate is found</param>
         /// <returns>true if snap found</returns>
-        protected bool ComputeSnappedLoc(GeoMouseArgs e, ref Coordinate snappedCoord)
+        protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
             if (this.snapLayers == null)
                 return false;
 
-            bool isSnapped = false;
             Rectangle mouseRect = new Rectangle(e.X - this.snapTol, e.Y - this.snapTol, this.snapTol * 2, this.snapTol * 2);
             IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
 
@@ -106,15 +105,13 @@ namespace DotSpatial.Plugins.ShapeEditor
                         // snap location.
                         if (env.Contains(c))
                         {
-                            isSnapped = true;
                             snappedCoord = c;
-                            break;
+                            return true;
                         }
                     }
                 }
             }
-
-            return isSnapped;
+            return false;
         }
 
         /// <summary>

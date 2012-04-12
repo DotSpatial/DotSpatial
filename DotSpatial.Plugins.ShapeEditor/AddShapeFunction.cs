@@ -258,7 +258,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             // Begin snapping changes
             Coordinate snappedCoord = e.GeographicLocation;
             bool prevWasSnapped = this.isSnapped;
-            this.isSnapped = ComputeSnappedLoc(e, ref snappedCoord);
+            this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
             _coordinateDialog.X = snappedCoord.X;
             _coordinateDialog.Y = snappedCoord.Y;
             // End snapping changes
@@ -295,7 +295,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 // Begin snapping changes
                 Coordinate snappedCoord = _coordinateDialog.Coordinate;
-                ComputeSnappedLoc(e, ref snappedCoord);
+                ComputeSnappedLocation(e, ref snappedCoord);
                 // End snapping changes
 
                 Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
@@ -316,7 +316,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 
                 // Begin snapping changes
                 Coordinate snappedCoord = e.GeographicLocation;
-                ComputeSnappedLoc(e, ref snappedCoord);
+                ComputeSnappedLocation(e, ref snappedCoord);
                 // End snapping changes
 
                 _coordinates.Add(snappedCoord); // Snapping changes

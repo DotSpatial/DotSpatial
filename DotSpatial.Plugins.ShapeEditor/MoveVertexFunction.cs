@@ -314,7 +314,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 // Begin snapping changes
                 Coordinate snappedCoord = e.GeographicLocation;
-                if (ComputeSnappedLoc(e, ref snappedCoord))
+                if (ComputeSnappedLocation(e, ref snappedCoord))
                 {
                     _mousePosition = Map.ProjToPixel(snappedCoord);
                 }
