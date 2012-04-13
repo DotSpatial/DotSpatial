@@ -89,11 +89,16 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <returns>true if snap found</returns>
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
-            if (this.snapLayers == null)
+            if (this.snapLayers == null || e == null || Map == null)
                 return false;
 
             Rectangle mouseRect = new Rectangle(e.X - this.snapTol, e.Y - this.snapTol, this.snapTol * 2, this.snapTol * 2);
-            IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+
+            Extent pix = Map.PixelToProj(mouseRect);
+            if (pix == null)
+                return false;
+
+            IEnvelope env = pix.ToEnvelope();
 
             foreach (IFeatureLayer layer in this.snapLayers)
             {
