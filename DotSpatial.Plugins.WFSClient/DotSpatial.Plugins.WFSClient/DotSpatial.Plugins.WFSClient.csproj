@@ -68,8 +68,8 @@
       <HintPath>..\..\Debug\bin\DotSpatial.Topology.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Renci.Data.Interop">
-      <HintPath>..\..\..\..\Users\caroso\Downloads\Renci.Data.Interop.dll</HintPath>
+    <Reference Include="Renci.Data.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3d62193ae6a45b09, processorArchitecture=MSIL">
+      <HintPath>SupportFiles\Renci.Data.Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -100,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SupportFiles\Renci.Data.Interop.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
