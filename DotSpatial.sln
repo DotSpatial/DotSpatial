@@ -102,7 +102,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Measure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Contourer", "DotSpatial.Plugins.Contourer\DotSpatial.Plugins.Contourer.csproj", "{735DEE23-1732-4D18-8341-E8E2482F3BB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.WFSClient", "DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient.csproj", "{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.WFSClient", "DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient.csproj", "{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -278,10 +278,10 @@ Global
 		SccProjectTopLevelParentUniqueName42 = DotSpatial.sln
 		SccProjectName42 = DotSpatial.Plugins.Contourer
 		SccLocalPath42 = DotSpatial.Plugins.Contourer
-		SccProjectUniqueName43 = DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient.csproj
+		SccProjectUniqueName43 = DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient.csproj
 		SccProjectTopLevelParentUniqueName43 = DotSpatial.sln
-		SccProjectName43 = DotSpatial.Plugins.WFSClient/DotSpatial.Plugins.WFSClient
-		SccLocalPath43 = DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient
+		SccProjectName43 = DotSpatial.Plugins.WFSClient
+		SccLocalPath43 = DotSpatial.Plugins.WFSClient
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -544,7 +544,6 @@ Global
 		{28D0059B-B140-454F-B6BC-0D107D76B4DD}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C73542E-24BC-46A6-B6BF-10D180872312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C73542E-24BC-46A6-B6BF-10D180872312}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5C73542E-24BC-46A6-B6BF-10D180872312}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{5C73542E-24BC-46A6-B6BF-10D180872312}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{5C73542E-24BC-46A6-B6BF-10D180872312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C73542E-24BC-46A6-B6BF-10D180872312}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -700,7 +699,6 @@ Global
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Any CPU.Build.0 = Release|Any CPU
