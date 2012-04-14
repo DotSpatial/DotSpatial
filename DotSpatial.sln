@@ -102,9 +102,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Measure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Contourer", "DotSpatial.Plugins.Contourer\DotSpatial.Plugins.Contourer.csproj", "{735DEE23-1732-4D18-8341-E8E2482F3BB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.WFSClient", "DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient\DotSpatial.Plugins.WFSClient.csproj", "{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 43
+		SccNumberOfProjects = 44
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -276,6 +278,10 @@ Global
 		SccProjectTopLevelParentUniqueName42 = DotSpatial.sln
 		SccProjectName42 = DotSpatial.Plugins.Contourer
 		SccLocalPath42 = DotSpatial.Plugins.Contourer
+		SccProjectUniqueName43 = DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient.csproj
+		SccProjectTopLevelParentUniqueName43 = DotSpatial.sln
+		SccProjectName43 = DotSpatial.Plugins.WFSClient/DotSpatial.Plugins.WFSClient
+		SccLocalPath43 = DotSpatial.Plugins.WFSClient\\DotSpatial.Plugins.WFSClient
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -691,6 +697,16 @@ Global
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4}.Release|x86.ActiveCfg = Release|x86
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4}.Release|x86.Build.0 = Release|x86
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -733,6 +749,7 @@ Global
 		{46A259E2-40C3-48D5-A23D-22104056CEDF} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{A0FD21C0-D7EE-485E-803D-2C59B37D5A72} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
