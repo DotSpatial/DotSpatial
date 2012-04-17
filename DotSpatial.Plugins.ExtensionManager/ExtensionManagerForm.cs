@@ -30,6 +30,7 @@ namespace DotSpatial.Plugins.ExtensionManager
     {
         #region Constants and Fields
 
+        private AppManager _App;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private readonly Packages packages = new Packages();
 
@@ -50,7 +51,20 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #region Public Properties
 
-        public AppManager App { get; set; }
+        public AppManager App
+        {
+            get
+            {
+                if (_App == null)
+                    throw new InvalidOperationException("App must be set to an instance of AppManager before showing ExtensionManagerForm");
+
+                return _App;
+            }
+            set
+            {
+                _App = value;
+            }
+        }
 
         #endregion
 
