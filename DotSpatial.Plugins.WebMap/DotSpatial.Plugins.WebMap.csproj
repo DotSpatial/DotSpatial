@@ -135,6 +135,7 @@
     <None Include="DotSpatial.Plugins.WebMap.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Resources\Services.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Services1.Designer.cs</LastGenOutput>
