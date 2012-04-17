@@ -169,7 +169,7 @@ namespace DotSpatial.Positioning
                 // If it's null, there was no data
                 throw new IOException("No data is available from the underlying stream.");
             }
-            catch (TimeoutException)
+            catch (TimeoutException tex)
             {
                 /* The Samsung Omina GPSID driver appears to ignore any sort of timeout value we specify.
                  * It *should* be about 6000ms, but I see timeouts immediately whenever there's no data
@@ -192,8 +192,7 @@ namespace DotSpatial.Positioning
                     }
                 }
 
-                // Fuck.
-                throw;
+                throw new ApplicationException("GPS Has probably been disconnected or shut off", tex);
             }
         }
 
