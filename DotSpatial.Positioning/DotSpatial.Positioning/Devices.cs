@@ -302,8 +302,10 @@ namespace DotSpatial.Positioning
                     #region Pass 1: Look for a device with an open connection
 
                     // Sort the devices, "best" device first
-                    _gpsDevices.Sort(Device.BestDeviceComparer);
-
+                    if ((_gpsDevices != null) && (_gpsDevices.Count > 0))
+                    {
+                        _gpsDevices.Sort(Device.BestDeviceComparer);
+                    }
                     // Examine each device
                     foreach (Device t in _gpsDevices)
                     {
@@ -876,11 +878,11 @@ namespace DotSpatial.Positioning
 
             // Start a thread for managing detection
             _detectionThread = new Thread(DetectionThreadProc)
-                                   {
-                                       Name = "GPS.NET Device Detector (http://dotspatial.codeplex.com)",
-                                       IsBackground = true,
-                                       Priority = ThreadPriority.Lowest
-                                   };
+            {
+                Name = "GPS.NET Device Detector (http://dotspatial.codeplex.com)",
+                IsBackground = true,
+                Priority = ThreadPriority.Lowest
+            };
 
 #if !PocketPC
             // Do detection in the background
@@ -1278,7 +1280,10 @@ namespace DotSpatial.Positioning
                     {
                         // Remove the colon suffix from the port name
                         string newName = device.Port.Substring(0, device.Port.Length - 1);
-                        RenameDevice(device, newName);
+                        if (!string.IsNullOrEmpty(newName))
+                        {
+                            RenameDevice(device, newName);
+                        }
                     }
 
                     device.BeginDetection();
