@@ -13,8 +13,8 @@
     <summary />
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
-  </metadata>
-  <files>
-    <file src="SupportFiles\BruTile\BruTile.dll" target="lib\net40-Client" />
-  </files>
+    <dependencies>
+      <dependency id="BruTile" version="0.6.0" />
+    </dependencies>
+  </metadata>  
 </package>
