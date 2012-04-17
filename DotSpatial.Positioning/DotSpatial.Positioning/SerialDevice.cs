@@ -1121,7 +1121,7 @@ namespace DotSpatial.Positioning
                                     }
                                     else if (dll.Equals("RILGSM.dll", StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        /* I have no idea what the fuck an RIL driver is, but it doesn't have anything to do with GPS.
+                                        /* I have no idea what the an RIL driver is, but it doesn't have anything to do with GPS.
                                          * Some COM ports actually cause problems if you open them.  So, this port will be excluded.
                                          */
                                         continue;

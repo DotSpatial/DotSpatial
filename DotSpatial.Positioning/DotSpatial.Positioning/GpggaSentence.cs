@@ -404,8 +404,15 @@ namespace DotSpatial.Positioning
             {
                 #region Horizontal Dilution of Precision
 
-                _horizontalDilutionOfPrecision =
-                    new DilutionOfPrecision(float.Parse(words[7], NmeaCultureInfo));
+                try
+                {
+                    _HorizontalDilutionOfPrecision =
+                        new DilutionOfPrecision(float.Parse(words[7], NmeaCultureInfo));
+                }
+                catch (ArgumentException)
+                {
+                    _HorizontalDilutionOfPrecision = DilutionOfPrecision.Invalid;
+                }
 
                 #endregion Horizontal Dilution of Precision
             }
