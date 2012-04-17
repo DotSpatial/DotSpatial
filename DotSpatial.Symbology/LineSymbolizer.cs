@@ -221,10 +221,15 @@ namespace DotSpatial.Symbology
         {
             if (_strokes == null) return;
             if (_strokes.Count == 0) return;
-            double rat = width / GetWidth();
+
+            double w = GetWidth();
+            if (w == 0) return;
+
+            double ratio = width / w;
+
             foreach (ISimpleStroke stroke in _strokes)
             {
-                stroke.Width *= rat;
+                stroke.Width *= ratio;
             }
         }
 
