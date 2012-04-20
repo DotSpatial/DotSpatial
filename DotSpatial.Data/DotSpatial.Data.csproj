@@ -360,6 +360,7 @@
     <Compile Include="IRasterProvider.cs" />
     <Compile Include="IVectorProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MockICancelProgressHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataStrings.resx">
