@@ -110,9 +110,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D2D76B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleLegend", "DotSpatial.Plugins.Legend\DotSpatial.Plugins.SimpleLegend.csproj", "{D85281B4-6012-42A0-A8F1-B29068A3F433}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 44
+		SccNumberOfProjects = 45
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -288,6 +290,10 @@ Global
 		SccProjectTopLevelParentUniqueName43 = DotSpatial.sln
 		SccProjectName43 = DotSpatial.Plugins.WFSClient
 		SccLocalPath43 = DotSpatial.Plugins.WFSClient
+		SccProjectUniqueName44 = DotSpatial.Plugins.Legend\\DotSpatial.Plugins.SimpleLegend.csproj
+		SccProjectTopLevelParentUniqueName44 = DotSpatial.sln
+		SccProjectName44 = DotSpatial.Plugins.Legend
+		SccLocalPath44 = DotSpatial.Plugins.Legend
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -588,7 +594,6 @@ Global
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7888B17F-915E-4648-9C49-8B4B42808B7B}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -711,6 +716,15 @@ Global
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6}.Release|x86.ActiveCfg = Release|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -754,6 +768,7 @@ Global
 		{A0FD21C0-D7EE-485E-803D-2C59B37D5A72} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{D85281B4-6012-42A0-A8F1-B29068A3F433} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
