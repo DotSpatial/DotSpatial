@@ -71,6 +71,8 @@ namespace DotSpatial.Analysis
                         if ((i % 100) == 0)
                         {
                             progMeter.SendProgress();
+
+                            // HACK: DoEvents messes up the normal flow of your application. 
                             System.Windows.Forms.Application.DoEvents();
                         }
 
