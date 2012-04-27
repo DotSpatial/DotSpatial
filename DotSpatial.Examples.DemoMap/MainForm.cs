@@ -34,21 +34,10 @@ namespace DemoMap
         public MainForm()
         {
             InitializeComponent();
-            map1.GeoMouseMove += Map_GeoMouseMove;
 
             Shell = this;
             appManager.LoadExtensions();
             appManager.CompositionContainer.ComposeParts(toolManager1);
-        }
-
-        private void Map_GeoMouseMove(object sender, GeoMouseArgs e)
-        {
-            // Generally this check for a null is never needed.
-            // We use it here to allow the DemoMap to continue working in rare cases
-            // such as when two Progresshandlers are specified.
-            // In your own *extension* it is recommened that you don't worry about checking ProgressHandler != null
-            if (appManager.ProgressHandler != null)
-                appManager.ProgressHandler.Progress(String.Empty, 0, String.Format("X: {0}, Y: {1}", e.GeographicLocation.X, e.GeographicLocation.Y));
         }
     }
 }

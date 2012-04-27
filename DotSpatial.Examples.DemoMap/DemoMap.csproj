@@ -96,6 +96,8 @@
     <Compile Include="SimpleStatusControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StatusBarCoordinates.cs" />
+    <Compile Include="StatusShowSelectionCount.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -128,6 +130,10 @@
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
       <Name>DotSpatial.Data</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Name>DotSpatial.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
