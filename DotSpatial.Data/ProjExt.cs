@@ -94,11 +94,18 @@ namespace DotSpatial.Symbology
         public static Point ProjToPixel(this IProj self, Coordinate location)
         {
             if (self.GeographicExtents.Width == 0 || self.GeographicExtents.Height == 0) return Point.Empty;
-            int x = Convert.ToInt32((location.X - self.GeographicExtents.MinX) *
-                                    (self.ImageRectangle.Width / self.GeographicExtents.Width));
-            int y = Convert.ToInt32((self.GeographicExtents.MaxY - location.Y) *
-                                    (self.ImageRectangle.Height / self.GeographicExtents.Height));
-            return new Point(x, y);
+            try
+            {
+                int x = Convert.ToInt32((location.X - self.GeographicExtents.MinX) *
+                                        (self.ImageRectangle.Width / self.GeographicExtents.Width));
+                int y = Convert.ToInt32((self.GeographicExtents.MaxY - location.Y) *
+                                        (self.ImageRectangle.Height / self.GeographicExtents.Height));
+                return new Point(x, y);
+            }
+            catch (System.OverflowException)
+            {
+                return Point.Empty;
+            }
         }
 
         /// <summary>
