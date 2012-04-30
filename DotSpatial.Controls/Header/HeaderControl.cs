@@ -67,9 +67,16 @@ namespace DotSpatial.Controls.Header
             string assemblyName = Assembly.GetCallingAssembly().FullName;
 
             if (_items.ContainsKey(item.Key))
+            {
                 throw new ArgumentException(String.Format("The key \"{0}\" was already added by {1}. The key may only be used by one HeaderItem.", item.Key, assemblyName));
+            }
 
-            RecordItemAdd(item.Key, assemblyName);
+            // We don't add the root items to this list. The HeaderControl implementation should remove a root
+            // automatically when all item in the root are removed.
+            if (item is RootItem == false)
+            {
+                RecordItemAdd(item.Key, assemblyName);
+            }
 
             // Bypass static type checking until runtime.
             dynamic test = item;
