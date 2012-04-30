@@ -27,6 +27,7 @@ namespace DotSpatial.Plugins.MenuBar
 
         private SimpleActionItem _ZoomNext;
         private SimpleActionItem _ZoomPrevious;
+        private SimpleActionItem _ZoomToLayer;
 
         #endregion
 
@@ -38,6 +39,8 @@ namespace DotSpatial.Plugins.MenuBar
             AddMenuItems();
 
             App.Map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
+            App.Map.Layers.LayerSelected += Layers_LayerSelected;
+
             base.Activate();
         }
 
@@ -98,13 +101,19 @@ namespace DotSpatial.Plugins.MenuBar
             header.Add(_ZoomPrevious);
             _ZoomNext = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Resources.zoom_to_next_16, LargeImage = Resources.zoom_to_next, Enabled = false };
             header.Add(_ZoomNext);
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32 });
+            _ZoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32, Enabled = false };
+            header.Add(_ZoomToLayer);
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+        }
+
+        void Layers_LayerSelected(object sender, Symbology.LayerSelectedEventArgs e)
+        {
+            _ZoomToLayer.Enabled = App.Map.Layers.SelectedLayer != null;
         }
 
         private void Exit_Click(object sender, EventArgs e)
