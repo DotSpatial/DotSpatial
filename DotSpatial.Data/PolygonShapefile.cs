@@ -280,8 +280,8 @@ namespace DotSpatial.Data
             //double[] bounds = new double[numShapes * 4];
             //Buffer.BlockCopy(allBounds, 0, bounds, 0, allBounds.Length);
             int[] parts = allParts.ToIntArray();
-            ProgressMeter = new ProgressMeter(ProgressHandler, "Testing Parts and Holes", numShapes);
-            for (int shp = 0; shp < numShapes; shp++)
+            ProgressMeter = new ProgressMeter(ProgressHandler, "Testing Parts and Holes", shapes.Count);
+            for (int shp = 0; shp < shapes.Count; shp++)
             {
                 ShapeRange shape = shapes[shp];
                 //shape.Extent = new Extent(bounds, shp * 4);
