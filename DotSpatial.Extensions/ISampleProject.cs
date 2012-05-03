@@ -19,16 +19,16 @@ namespace DotSpatial.Extensions
         /// <summary>
         /// Gets the absolute path to project file. This includes the directory, filename, and extension
         /// </summary>
-        public string AbsolutePathToProjectFile { get; }
+        string AbsolutePathToProjectFile { get; }
 
         /// <summary>
         /// Gets the name to display to the user when they are selecting a project.
         /// </summary>
-        public string Name { get; }
+        string Name { get; }
 
         /// <summary>
         /// Gets the description of the project
         /// </summary>
-        public string Description { get; }
+        string Description { get; }
     }
 }
