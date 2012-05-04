@@ -160,7 +160,7 @@ namespace DotSpatial.Data
             dbf.AddRow(feature.DataRow);
 
             int numFeatures = 0;
-            ShapefileHeader header = new ShapefileHeader();
+            var header = new ShapefileHeader();
             if (File.Exists(Filename))
             {
                 header.Open(Filename);
@@ -212,7 +212,7 @@ namespace DotSpatial.Data
             IFeatureSet ifs = Select(null, null, ref startIndex, 1);
             if (ifs.NumRows() > 0)
             {
-                ShapefileIndexFile shx = new ShapefileIndexFile();
+                var shx = new ShapefileIndexFile();
                 shx.Open(Filename);
                 shx.Shapes.RemoveAt(index);
                 shx.Save();
@@ -223,7 +223,7 @@ namespace DotSpatial.Data
                     _deletedRows = dbf.DeletedRows;
 
                 // Update extent in header if feature being deleted is NOT completely contained
-                ShapefileHeader hdr = new ShapefileHeader(Filename);
+                var hdr = new ShapefileHeader(Filename);
 
                 IEnvelope featureEnv = ifs.GetFeature(0).Envelope;
                 if (featureEnv.Left() <= hdr.Xmin || featureEnv.Right() >= hdr.Xmax || featureEnv.Top() >= hdr.Ymax || featureEnv.Bottom() <= hdr.Ymin)
@@ -242,10 +242,81 @@ namespace DotSpatial.Data
         /// <inheritdocs/>
         public void AddRange(IEnumerable<IFeature> features)
         {
+            // Make sure the Output Directory exists
+            string dir = Path.GetDirectoryName(Filename);
+            if (dir != null && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            // Get the Attribute Table
+            AttributeTable dbf = GetAttributeTable(Filename);
+
+            // Open the Header if the Filename exists
+            bool filenameExists = File.Exists(Filename);
+            var header = new ShapefileHeader();
+            if (filenameExists)
+            {
+                header.Open(Filename);
+            }
+
             foreach (var feature in features)
             {
-                Add(feature);
+                if (feature.FeatureType != FeatureType)
+                {
+                    throw new FeatureTypeMismatchException();
+                }
+
+                // We must add the dbf entry before changing the shx because if we already have one deleted record, the AttributeTable thinks we have none
+                dbf.AddRow(feature.DataRow);
+
+                int numFeatures = 0;
+                if (filenameExists)
+                {
+                    UpdateHeader(header, feature, false);
+                    numFeatures = (header.ShxLength - 50) / 4;
+                }
+                else
+                {
+                    header.Xmin = feature.Envelope.Minimum.X;
+                    header.Xmax = feature.Envelope.Maximum.X;
+                    header.Ymin = feature.Envelope.Minimum.Y;
+                    header.Ymax = feature.Envelope.Maximum.Y;
+                    if (double.IsNaN(feature.Coordinates[0].M))
+                    {
+                        header.ShapeType = ShapeType;
+                    }
+                    else
+                    {
+                        if (double.IsNaN(feature.Coordinates[0].Z))
+                        {
+                            header.ShapeType = ShapeTypeM;
+                        }
+                        else
+                        {
+                            header.Zmin = feature.Envelope.Minimum.Z;
+                            header.Zmax = feature.Envelope.Maximum.Z;
+                            header.ShapeType = ShapeTypeZ;
+                        }
+                        header.Mmin = feature.Envelope.Minimum.M;
+                        header.Mmax = feature.Envelope.Maximum.M;
+                    }
+                    header.ShxLength = 4 + 50;
+                    header.SaveAs(Filename);
+                    filenameExists = true;
+                }
+
+                AppendBasicGeometry(header, feature, numFeatures);
+
+                feature.RecordNumber = numFeatures;
+
+                if (null != Quadtree)
+                    Quadtree.Insert(feature.Envelope, numFeatures - 1);
             }
+
+            // Write the Updated Headers to the Files
+            WriteHeader(header, Filename);
+            WriteHeader(header, header.ShxFilename);
         }
 
         /// <inheritdocs/>
@@ -314,7 +385,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static ShapefileFeatureSource Open(string filename, bool useSpatialIndexing, bool trackDeletedRows)
         {
-            ShapefileHeader header = new ShapefileHeader(filename);
+            var header = new ShapefileHeader(filename);
 
             switch (header.ShapeType)
             {
@@ -344,6 +415,18 @@ namespace DotSpatial.Data
         /// <param name="feature"></param>
         protected void UpdateHeader(ShapefileHeader header, IBasicGeometry feature)
         {
+            UpdateHeader(header, feature, true);
+        }
+
+
+        /// <summary>
+        /// Update the header to include the feature extent
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="feature"></param>
+        /// <param name="writeHeaderFiles"> </param>
+        protected void UpdateHeader(ShapefileHeader header, IBasicGeometry feature, bool writeHeaderFiles)
+        {
             // Update the envelope
             IEnvelope newExt;
             // First, check to see if there are no features (ShxLength == 50)
@@ -365,8 +448,11 @@ namespace DotSpatial.Data
             header.Ymax = newExt.Maximum.Y;
             header.Zmax = newExt.Maximum.Z;
             header.ShxLength = header.ShxLength + 4;
-            WriteHeader(header, Filename);
-            WriteHeader(header, header.ShxFilename);
+            if (writeHeaderFiles)
+            {
+                WriteHeader(header, Filename);
+                WriteHeader(header, header.ShxFilename);
+            }
         }
 
         /// <summary>
@@ -375,7 +461,7 @@ namespace DotSpatial.Data
         /// <param name="src"></param>
         protected void UpdateExtents(IShapeSource src)
         {
-            ShapeReader sr = new ShapeReader(src);
+            var sr = new ShapeReader(src);
             Extent env = null;
 
             foreach (var page in sr)
@@ -398,7 +484,7 @@ namespace DotSpatial.Data
             if (null == env)
                 return;
 
-            ShapefileHeader sh = new ShapefileHeader(Filename);
+            var sh = new ShapefileHeader(Filename);
             sh.SetExtent(env);
             sh.Save();
         }
@@ -416,7 +502,7 @@ namespace DotSpatial.Data
         {
             var shapes = sr.GetShapes(ref startIndex, maxCount, envelope);
             AttributeTable at = GetAttributeTable(Filename);
-            FeatureSet result = new FeatureSet(FeatureType.Polygon);
+            var result = new FeatureSet(FeatureType.Polygon);
             bool schemaDefined = false;
             foreach (var pair in shapes)
             {
@@ -428,9 +514,7 @@ namespace DotSpatial.Data
                         schemaDefined = true;
                         result.CopyTableSchema(td);
                     }
-                    Feature f = new Feature(pair.Value);
-                    f.RecordNumber = pair.Key + 1;
-                    f.DataRow = td.Rows[0];
+                    var f = new Feature(pair.Value) {RecordNumber = pair.Key + 1, DataRow = td.Rows[0]};
                     result.Features.Add(f);
                     f.UpdateEnvelope();
                 }
@@ -475,11 +559,11 @@ namespace DotSpatial.Data
                 }
             }
 
-            FileStream bbWriter = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100);
+            var bbWriter = new FileStream(fileName, FileMode.Open, FileAccess.Write, FileShare.None, 100);
 
             bbWriter.WriteBe(header.FileCode);                     //  Byte 0          File Code       9994        Integer     Big
 
-            byte[] bt = new byte[20];
+            var bt = new byte[20];
             bbWriter.Write(bt, 0, 20);                                   //  Bytes 4 - 20 are unused
 
             // This is overwritten later
