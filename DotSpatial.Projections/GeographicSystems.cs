@@ -22,6 +22,7 @@
 
 #pragma warning disable 1591
 
+using System.Linq;
 using System.Reflection;
 using DotSpatial.Projections.GeographicCategories;
 
@@ -34,41 +35,102 @@ namespace DotSpatial.Projections
     {
         #region Private Variables
 
-        public readonly Africa Africa;
-        public readonly Antarctica Antarctica;
-        public readonly Asia Asia;
-        public readonly Australia Australia;
-        public readonly CountySystems CountySystems;
-        public readonly Europe Europe;
-        public readonly NorthAmerica NorthAmerica;
-        public readonly Oceans Oceans;
-        public readonly SolarSystem SolarSystem;
-        public readonly SouthAmerica SouthAmerica;
-        public readonly SpheroidBased SpheroidBased;
-        public readonly World World;
+        private Africa _africa;
+        private Antarctica _antarctica;
+        private Asia _asia;
+        private Australia _australia;
+        private CountySystems _countySystems;
+        private Europe _europe;
+        private NorthAmerica _northAmerica;
+        private Oceans _oceans;
+        private SolarSystem _solarSystem;
+        private SouthAmerica _southAmerica;
+        private SpheroidBased _spheroidBased;
+        private World _world;
         private string[] _names;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Creates a new instance of GeographicSystems
-        /// </summary>
-        public GeographicSystems()
+        public Africa Africa
         {
-            Africa = new Africa();
-            Antarctica = new Antarctica();
-            Asia = new Asia();
-            Australia = new Australia();
-            CountySystems = new CountySystems();
-            Europe = new Europe();
-            NorthAmerica = new NorthAmerica();
-            Oceans = new Oceans();
-            SolarSystem = new SolarSystem();
-            SouthAmerica = new SouthAmerica();
-            SpheroidBased = new SpheroidBased();
-            World = new World();
+            get { return _africa ?? (_africa = new Africa()); }
+        }
+        public Antarctica Antarctica
+        {
+            get { return _antarctica ?? (_antarctica = new Antarctica()); }
+        }
+
+        public Asia Asia
+        {
+            get { return _asia ?? (_asia = new Asia()); }
+        }
+
+        public Australia Australia
+        {
+            get { return _australia ?? (_australia = new Australia()); }
+        }
+
+        public CountySystems CountySystems
+        {
+            get { return _countySystems ?? (_countySystems = new CountySystems()); }
+        }
+
+        public Europe Europe
+        {
+            get { return _europe ?? (_europe = new Europe()); }
+        }
+
+        public NorthAmerica NorthAmerica
+        {
+            get { return _northAmerica ?? (_northAmerica = new NorthAmerica()); }
+        }
+
+        public Oceans Oceans
+        {
+            get { return _oceans ?? (_oceans = new Oceans()); }
+        }
+
+        public SolarSystem SolarSystem
+        {
+            get { return _solarSystem ?? (_solarSystem = new SolarSystem()); }
+        }
+
+        public SouthAmerica SouthAmerica
+        {
+            get { return _southAmerica ?? (_southAmerica = new SouthAmerica()); }
+        }
+
+        public SpheroidBased SpheroidBased
+        {
+            get { return _spheroidBased ?? (_spheroidBased = new SpheroidBased()); }
+        }
+
+        public World World
+        {
+            get { return _world ?? (_world = new World()); }
+        }
+
+        private void AddNames()
+        {
+            var properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            _names = (from property in properties where property.Name != "Names" select property.Name).ToArray();
+        }
+
+
+        #endregion
+        /// <summary>
+        /// Given the string name, this will return the specified coordinate category
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public CoordinateSystemCategory GetCategory(string name)
+        {
+            var property = GetType().GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            if (null == property)
+                return null;
+            return property.GetValue(this, null) as CoordinateSystemCategory;
         }
 
         /// <summary>
@@ -86,36 +148,6 @@ namespace DotSpatial.Projections
                 return _names;
             }
         }
-
-        private void AddNames()
-        {
-            FieldInfo[] flds = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-            _names = new string[flds.Length];
-            for (int i = 0; i < flds.Length; i++)
-            {
-                _names[i] = flds[i].Name;
-            }
-        }
-
-        /// <summary>
-        /// Given the string name, this will return the specified coordinate category
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public CoordinateSystemCategory GetCategory(string name)
-        {
-            FieldInfo[] flds = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-            for (int i = 0; i < flds.Length; i++)
-            {
-                if (flds[i].Name == name)
-                {
-                    return flds[i].GetValue(this) as CoordinateSystemCategory;
-                }
-            }
-            return null;
-        }
-
-        #endregion
     }
 }
 
