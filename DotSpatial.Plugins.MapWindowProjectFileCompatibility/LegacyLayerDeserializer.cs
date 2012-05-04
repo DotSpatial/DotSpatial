@@ -5,6 +5,7 @@ using System.IO;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using Microsoft.CSharp.RuntimeBinder;
+using System.Diagnostics;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {
@@ -57,20 +58,42 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
             string lblFile = Path.ChangeExtension(fileName, "lbl");
             if (File.Exists(lblFile) && layer is IFeatureLayer)
             {
-                dynamic parser = DynamicXMLNode.Load(lblFile);
-                DeserializeLabels(parser.Labels, map, layer as IFeatureLayer);
+                try
+                {
+                    dynamic parser = DynamicXMLNode.Load(lblFile);
+                    DeserializeLabels(parser.Labels, map, layer as IFeatureLayer);
+                }
+                catch (RuntimeBinderException ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                }
+
             }
             string mwsrFile = Path.ChangeExtension(fileName, "mwsr");
             if (File.Exists(mwsrFile))
             {
-                dynamic parser = DynamicXMLNode.Load(mwsrFile);
-                DeserializeLayer(parser.Layer, map, layer);
+                try
+                {
+                    dynamic parser = DynamicXMLNode.Load(mwsrFile);
+                    DeserializeLayer(parser.Layer, map, layer);
+                }
+                catch (RuntimeBinderException ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                }
             }
             string mwleg = Path.ChangeExtension(fileName, "mwleg");
             if (File.Exists(mwleg) && layer is MapImageLayer)
             {
-                dynamic parser = DynamicXMLNode.Load(mwleg);
-                DeserializeLegend(parser.GridColoringScheme, map, layer);
+                try
+                {
+                    dynamic parser = DynamicXMLNode.Load(mwleg);
+                    DeserializeLegend(parser.GridColoringScheme, map, layer);
+                }
+                catch (RuntimeBinderException ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                }
             }
         }
 
