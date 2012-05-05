@@ -14,7 +14,7 @@ namespace DemoMap
     /// <summary>
     ///
     /// </summary>
-    public class SimpleDocking : IDockManager
+    public class SimpleDocking // Add this interface to use this docking manager : IDockManager
     {
         private List<Form> forms = new List<Form>();
 

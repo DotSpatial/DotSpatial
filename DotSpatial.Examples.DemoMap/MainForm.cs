@@ -37,7 +37,6 @@ namespace DemoMap
 
             Shell = this;
             appManager.LoadExtensions();
-            appManager.CompositionContainer.ComposeParts(toolManager1);
         }
     }
 }
