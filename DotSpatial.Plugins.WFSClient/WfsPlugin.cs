@@ -7,7 +7,7 @@
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
     using WFSPlugin;
-    public class WfsPlugin1 : Extension
+    public class WfsPlugin : Extension
     {
         public override void Activate()
         {
