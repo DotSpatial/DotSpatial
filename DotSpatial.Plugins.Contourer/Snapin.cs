@@ -17,7 +17,7 @@ namespace Contourer
 
             AddMenuItems(App.HeaderControl);
             base.Activate();
-        }       
+        }
 
         private void AddMenuItems(IHeaderControl header)
         {
@@ -27,9 +27,9 @@ namespace Contourer
 
             header.Add(new RootItem(SampleMenuKey, "Contourer"));
 
-            SimpleActionItem contourerItem = new SimpleActionItem(SampleMenuKey, "Contour...", new EventHandler(menu_Click)  ) { Key = "kC" };
+            SimpleActionItem contourerItem = new SimpleActionItem(SampleMenuKey, "Contour...", new EventHandler(menu_Click)) { Key = "kC" };
             header.Add(contourerItem);
-           
+
         }
 
         private void menu_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace Contourer
 
             if (Frm.layers.GetLength(0) <= 0)
             {
-                MessageBox.Show("No raster layer fouded!");
+                MessageBox.Show("No raster layer found!");
                 return;
             }
 
@@ -95,10 +95,10 @@ namespace Contourer
                 }
 
 
-             }
+            }
         }
 
-        
+
 
     }
 }
