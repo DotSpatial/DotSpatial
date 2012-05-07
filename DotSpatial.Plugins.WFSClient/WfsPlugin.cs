@@ -7,17 +7,11 @@
     using DotSpatial.Controls;
     using DotSpatial.Controls.Header;
     using WFSPlugin;
-    public class MyPlugin1 : Extension
+    public class WfsPlugin : Extension
     {
-        private const string FileMenuKey = "WFS Client";
-        // private const string HomeMenuKey = HeaderControl.HomeRootItemKey;
-
         public override void Activate()
         {
-            App.HeaderControl.Add(new RootItem(FileMenuKey, "WFS Client") { SortOrder = -20 });
-            // App.HeaderControl.Add(new SimpleActionItem(HeaderControl.ApplicationMenuKey, "About", ButtonClick) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 500 });
-            IHeaderControl header = App.HeaderControl;
-            header.Add(new SimpleActionItem(FileMenuKey, "WFS", ButtonClick) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 5 });
+            App.HeaderControl.Add(new SimpleActionItem("WFS", ButtonClick));
 
             base.Activate();
         }
