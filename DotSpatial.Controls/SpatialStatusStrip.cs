@@ -29,7 +29,7 @@ namespace DotSpatial.Controls
     /// A pre-configured status strip with a thread safe Progress function
     /// </summary>
     [ToolboxBitmap(typeof(SpatialStatusStrip), "SpatialStatusStrip.ico")]
-    [Obsolete("Load the DotSpatial.Plugins.MenuBar into a form that implements IHeaderControl instead. Or, just use a regular .Net StatusStrip.")]
+    [Obsolete("Load the DotSpatial.Plugins.MenuBar into a form that implements IStatusControl or, just use a regular .Net StatusStrip. See http://tinyurl.com/obsolete1")]
     public partial class SpatialStatusStrip : StatusStrip, IProgressHandler
     {
         /// <summary>

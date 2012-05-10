@@ -39,7 +39,7 @@ namespace DotSpatial.Controls
     /// </summary>
     [ToolboxItem(true)]
     [ToolboxBitmap(typeof(SpatialToolStrip), "SpatialToolStrip.ico")]
-    [Obsolete("Load the DotSpatial.Plugins.MenuBar into a form that implements IHeaderControl instead.")]
+    [Obsolete("Load the DotSpatial.Plugins.MenuBar into a form that implements IHeaderControl instead. See http://tinyurl.com/obsolete1")]
     public class SpatialToolStrip : ToolStrip
     {
         #region Events
