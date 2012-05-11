@@ -33,7 +33,7 @@ namespace Contourer
         {
             Contour.ContourType ContType = new Contour.ContourType();
 
-            if (comboBoxType.SelectedIndex==0)
+            if (comboBoxType.SelectedIndex == 0)
                 ContType = Contour.ContourType.Line;
             else
                 ContType = Contour.ContourType.Polygon;
@@ -45,9 +45,9 @@ namespace Contourer
         {
             LayerName = comboBoxLayerList.Text;
 
-            max= (double) numericUpDownMax.Value;
-            min =(double) numericUpDownMin.Value;
-            eve =(double) numericUpDownEvery.Value;
+            max = (double)numericUpDownMax.Value;
+            min = (double)numericUpDownMin.Value;
+            eve = (double)numericUpDownEvery.Value;
 
             contourtype = GetSelectedType();
 
@@ -56,7 +56,7 @@ namespace Contourer
             Contours = Contour.Execute(layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster, contourtype, "Value", lev);
             Contours.Projection = layers[comboBoxLayerList.SelectedIndex].Projection;
 
-            int NumLev =lev.GetLength(0);
+            int NumLev = lev.GetLength(0);
 
             switch (contourtype)
             {
@@ -72,12 +72,12 @@ namespace Contourer
                 case (Contour.ContourType.Polygon):
                     {
                         color = new Color[NumLev - 1];
-                        for (int i = 0; i < NumLev-1; i++)
+                        for (int i = 0; i < NumLev - 1; i++)
                         {
                             color[i] = tomPaletteEditor1.GetColor(lev[i] + (eve / 2));
                         }
                     }
-                    break;            
+                    break;
             }
             this.DialogResult = DialogResult.OK;
 
@@ -98,24 +98,19 @@ namespace Contourer
                 comboBoxLayerList.Items.Add(l.LegendText);
             }
 
-
             comboBoxLayerList.SelectedIndex = 0;
 
             comboBoxType.Items.Add("Line");
             comboBoxType.Items.Add("Polygons");
 
             comboBoxType.SelectedIndex = 1;
-
-           
         }
-
 
         private void ComputeMinMaxEvery()
         {
             double min, max, every;
 
             DotSpatial.Data.Raster rst = layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster;
-
 
             Contour.ContourType ContType = new Contour.ContourType();
 
@@ -124,9 +119,7 @@ namespace Contourer
             else
                 ContType = Contour.ContourType.Polygon;
 
-
             Contour.CreateMinMaxEvery(rst, ContType, out min, out  max, out every); ;
-
 
             numericUpDownMin.Value = (decimal)min;
             numericUpDownMax.Value = (decimal)max;
@@ -177,9 +170,5 @@ namespace Contourer
                 tomPaletteEditor1.Items[tomPaletteEditor1.Items.Count - 1].Value = Convert.ToDouble(numericUpDownMax.Value);
             }
         }
-
-
-
-       
     }
 }

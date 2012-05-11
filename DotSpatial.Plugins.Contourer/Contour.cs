@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using DotSpatial.Controls;
+using GeoAPI.Geometries;
+
 //using DotSpatial.Data;
 using NetTopologySuite.Geometries;
-using GeoAPI.Geometries;
-using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Noding.Snapround;
-using System.Collections.ObjectModel;
-using DotSpatial.Controls;
-
+using NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Operation.Polygonize;
 
 // ********************************************************************************************************
 // Product Name: Conturer
@@ -42,10 +42,7 @@ namespace Contourer
         {
             double[] lev = levels;
 
-      
-
             DotSpatial.Data.Raster iRst = RasterCheck(rst, lev); ;
-
 
             string field;
 
@@ -57,7 +54,6 @@ namespace Contourer
             {
                 field = FieldName;
             }
-
 
             double[] x = new double[rst.NumColumns];
             double[] y = new double[rst.NumRows];
@@ -71,10 +67,9 @@ namespace Contourer
             {
                 y[i] = rst.Extent.MaxY - rst.CellHeight * i - rst.CellHeight / 2;
             }
-            
-            
+
             DotSpatial.Data.FeatureSet fs = null;
-            
+
             switch (type)
             {
                 case ContourType.Line:
@@ -92,7 +87,6 @@ namespace Contourer
                                 f.DataRow[field] = lev[z];
                             }
                         }
-
                     }
                     break;
 
@@ -138,8 +132,7 @@ namespace Contourer
 
                         foreach (Polygon p in polygonizer.GetPolygons())
                         {
-
-                            Point pnt=(Point)p.InteriorPoint;
+                            Point pnt = (Point)p.InteriorPoint;
 
                             int c = (int)((pnt.X - iRst.Extent.MinX) / iRst.CellWidth);
                             int r = (int)((iRst.Extent.MaxY - pnt.Y) / iRst.CellHeight);
@@ -147,37 +140,31 @@ namespace Contourer
                             double z = ((DotSpatial.Data.Raster)iRst).Value[r, c];
 
                             int Cls = GetLevel(z, lev);
-                            string label="Undefined";
-
+                            string label = "Undefined";
 
                             if (Cls == -1) label = "< " + lev[0].ToString();
                             if (Cls == lev.Count()) label = "> " + lev[lev.Count() - 1].ToString();
-                            if (Cls >= 0 & Cls < lev.Count()) label = lev[Cls].ToString() + " - " + lev[Cls+1].ToString();
+                            if (Cls >= 0 & Cls < lev.Count()) label = lev[Cls].ToString() + " - " + lev[Cls + 1].ToString();
 
                             DotSpatial.Topology.Polygon dsp = ToDotSpatialPolygon(p);
 
                             DotSpatial.Data.Feature f = (DotSpatial.Data.Feature)fs.AddFeature(dsp);
                             f.DataRow["Lev"] = Cls;
                             f.DataRow["Label"] = label;
-
                         }
-
                     }
                     break;
-
             }
 
             return fs;
-
-
         }
 
         public static int GetLevel(double z, double[] lev)
         {
             if (z < lev[0]) return -1;
-            if (z > lev[lev.Count()-1]) return lev.Count();
+            if (z > lev[lev.Count() - 1]) return lev.Count();
 
-            for (int i = 0; i < lev.Count()-1; i++)
+            for (int i = 0; i < lev.Count() - 1; i++)
             {
                 if (z >= lev[i] & z <= lev[i + 1])
                 {
@@ -190,7 +177,6 @@ namespace Contourer
 
         //public static int GetLevel(Polygon p, double[] lev)
         //{
-
         //    double zmin = double.MaxValue;
         //    double zmax = double.MinValue;
 
@@ -200,7 +186,6 @@ namespace Contourer
         //        if (c.Z > zmax) zmax = c.Z;
         //    }
 
-            
         //    foreach (LineString ls in p.InteriorRings)
         //    {
         //        foreach (Coordinate c in ls.Coordinates)
@@ -213,9 +198,8 @@ namespace Contourer
         //    if (zmin == zmax)
         //    {
         //        if (zmin == lev[0]) return -1;
-        //        if (zmin == lev[lev.Count() - 1]) return lev.Count();                
+        //        if (zmin == lev[lev.Count() - 1]) return lev.Count();
         //    }
-
 
         //    for (int i = 0; i < lev.Count(); i++)
         //    {
@@ -224,7 +208,7 @@ namespace Contourer
         //            return i;
         //        }
         //    }
-            
+
         //     return -100;
         //}
 
@@ -242,7 +226,6 @@ namespace Contourer
                     max += 1;
                 }
             }
-
 
             double dz = max - min;
 
@@ -269,7 +252,6 @@ namespace Contourer
                     MaxContour = MinContour + every;
                 }
             }
-
         }
 
         public static double[] CreateLevels(double MinContour, double MaxContour, double every)
@@ -292,7 +274,7 @@ namespace Contourer
             {
                 return ToDotSpatialLineString((ILineString)l);
             }
-            
+
             if (l.GeometryType == "Polygon")
             {
                 Polygon p = l as Polygon;
@@ -321,7 +303,6 @@ namespace Contourer
 
         internal static DotSpatial.Topology.LineString ToDotSpatialLineString(GeoAPI.Geometries.ILineString l)
         {
-            
             DotSpatial.Topology.Coordinate[] c = new DotSpatial.Topology.Coordinate[l.Coordinates.Count()];
 
             for (int i = 0; i < l.Coordinates.Count(); i++)
@@ -329,7 +310,6 @@ namespace Contourer
                 c[i] = new DotSpatial.Topology.Coordinate(l.Coordinates[i].X, l.Coordinates[i].Y);
             }
             return new DotSpatial.Topology.LineString(c);
-
         }
 
         internal static DotSpatial.Topology.LinearRing ToDotSpatialLinearRing(GeoAPI.Geometries.ILinearRing geom)
@@ -349,7 +329,7 @@ namespace Contourer
         {
             DotSpatial.Topology.LinearRing exteriorRing = ToDotSpatialLinearRing((GeoAPI.Geometries.ILinearRing)geom.ExteriorRing);
 
-            DotSpatial.Topology.LinearRing [] interiorRings = new DotSpatial.Topology.LinearRing[geom.InteriorRings.Count()];
+            DotSpatial.Topology.LinearRing[] interiorRings = new DotSpatial.Topology.LinearRing[geom.InteriorRings.Count()];
 
             //foreach (GeoAPI.Geometries.ILineString interiorRing in geom.InteriorRings)
             for (int i = 0; i < geom.InteriorRings.Count(); i++)
@@ -363,7 +343,7 @@ namespace Contourer
 
         public static DotSpatial.Data.Raster RasterCheck(DotSpatial.Data.Raster raster, double[] levels)
         {
-            double eps = (raster.Maximum-raster.Minimum) / 1000;
+            double eps = (raster.Maximum - raster.Minimum) / 1000;
             int n = levels.Count();
 
             DotSpatial.Data.Raster rst = raster;
@@ -386,12 +366,10 @@ namespace Contourer
             }
 
             return rst;
-
         }
 
         public static IList<IGeometry> GetContours(ref DotSpatial.Data.Raster rst, double[] x, double[] y, double zlev)
         {
-
             List<LineString> lsList = new List<LineString>();
 
             bool ipari, jpari;
@@ -401,7 +379,6 @@ namespace Contourer
 
             for (int j = 0; j < rst.NumColumns - 1; j++)
             {
-
                 if (((int)((double)j / 2.0)) * 2 == j)
                     jpari = true;
                 else
@@ -436,7 +413,6 @@ namespace Contourer
                             }
                         }
 
-
                         xx[0] = x[j + 1];
                         yy[0] = y[i];
                         zz[0] = rst.Value[i, j + 1];
@@ -456,7 +432,6 @@ namespace Contourer
                                 lsList.Add(new LineString(c));
                             }
                         }
-
                     }
 
                     if (jpari && !ipari || !jpari && ipari)
@@ -481,7 +456,6 @@ namespace Contourer
                             }
                         }
 
-
                         xx[0] = x[j];
                         yy[0] = y[i];
                         zz[0] = rst.Value[i, j];
@@ -501,17 +475,12 @@ namespace Contourer
                                 lsList.Add(new LineString(c));
                             }
                         }
-
                     }
-
-
                 }
-
-
             }
 
             LineMerger lm = new LineMerger();
-            
+
             lm.Add(lsList);
 
             IList<IGeometry> merged = (IList<IGeometry>)lm.GetMergedLineStrings();
@@ -521,8 +490,6 @@ namespace Contourer
 
         //static void Comapct(ref List<LineString> lsList)
         //{
-
-
         //    int n = lsList.Count();
         //    bool found = true;
 
@@ -548,12 +515,9 @@ namespace Contourer
 
         //    }
 
-
-
-
         //}
 
-        static LineString UnionLineStrings(LineString ls1, LineString ls2)
+        private static LineString UnionLineStrings(LineString ls1, LineString ls2)
         {
             LineString l = null;
 
@@ -562,13 +526,11 @@ namespace Contourer
                 return null;
             }
 
-            Coordinate [] c1 = null;
-            Coordinate [] c2 = null;
+            Coordinate[] c1 = null;
+            Coordinate[] c2 = null;
 
             if (ls1.StartPoint.Distance(ls2.StartPoint) < 0.001)
             {
-
-
                 c1 = Reverse(ls1.Coordinates);
                 //c.Add(ls2.Coordinates, false);
                 c2 = ls2.Coordinates;
@@ -595,20 +557,17 @@ namespace Contourer
                 c2 = ls2.Coordinates;
             }
 
-
             if (c1 != null && c2 != null)
             {
-                Coordinate [] xx = c1;
+                Coordinate[] xx = c1;
                 xx.Concat(c2);
                 l = new LineString(xx);
             }
             return l;
-
         }
 
-        static Coordinate [] Reverse( Coordinate [] l)
+        private static Coordinate[] Reverse(Coordinate[] l)
         {
-
             Coordinate[] x = l;
 
             Array.Reverse(x);
@@ -627,7 +586,7 @@ namespace Contourer
             //return l1;
         }
 
-        static Coordinate [] Intersect(double[] xx, double[] yy, double[] zz, double zlevel)
+        private static Coordinate[] Intersect(double[] xx, double[] yy, double[] zz, double zlevel)
         {
             List<Coordinate> coordinates = new List<Coordinate>();
 
@@ -640,7 +599,6 @@ namespace Contourer
 
             for (i = 0; i < 3; i++)
             {
-
                 i1 = i + 1;
                 if (i == 2) i1 = 0;
 
@@ -649,7 +607,6 @@ namespace Contourer
 
                 if (zlevel > zmin && zlevel <= zmax)
                 {
-
                     double dz = zz[i1] - zz[i];
                     {
                         double frac = (zlevel - zz[i]) / dz;
@@ -668,8 +625,6 @@ namespace Contourer
                             coordinates.Add(c);
                         }
                     }
-
-
                 }
             }
 
@@ -686,8 +641,6 @@ namespace Contourer
             //Debug.Print("(" + coordinates[0].X.ToString() + "," + coordinates[0].Y.ToString() + " " + coordinates[1].X.ToString() + "," + coordinates[1].Y.ToString() + ")");
 
             return coordinates.ToArray();
-
         }
-
     }
 }

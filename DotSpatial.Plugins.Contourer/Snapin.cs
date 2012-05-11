@@ -1,35 +1,26 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data.Properties;
 using DotSpatial.Symbology;
-using System.Drawing;
 
 namespace Contourer
 {
     public class Snapin : Extension
     {
-
         public override void Activate()
         {
-
             AddMenuItems(App.HeaderControl);
             base.Activate();
         }
 
         private void AddMenuItems(IHeaderControl header)
         {
-            if (header == null) return;
-
-            const string SampleMenuKey = "Contourer";
-
-            header.Add(new RootItem(SampleMenuKey, "Contourer"));
-
-            SimpleActionItem contourerItem = new SimpleActionItem(SampleMenuKey, "Contour...", new EventHandler(menu_Click)) { Key = "kC" };
+            SimpleActionItem contourerItem = new SimpleActionItem("Contour...", new EventHandler(menu_Click)) { Key = "kC" };
             header.Add(contourerItem);
-
         }
 
         private void menu_Click(object sender, EventArgs e)
@@ -86,19 +77,11 @@ namespace Contourer
                                 ps.AddCategory(pc);
                             }
 
-
                             fl.Symbology = ps;
-
                         }
                         break;
-
                 }
-
-
             }
         }
-
-
-
     }
 }

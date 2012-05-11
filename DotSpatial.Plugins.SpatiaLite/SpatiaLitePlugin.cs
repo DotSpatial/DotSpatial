@@ -16,11 +16,9 @@ namespace DotSpatial.Plugins.SpatiaLite
             //try setting environment variables..
             SpatiaLiteHelper.SetEnvironmentVars();
 
-            //string homeKey = DotSpatial.Controls.Header.HeaderControl.HomeRootItemKey;
-            string spatiaLiteKey = "kSpatiaLite";
             string spatiaLiteGroup = "SpatiaLite";
 
-            var bOpenLayer = new SimpleActionItem(spatiaLiteKey, "Open Layer", ButtonClick)
+            var bOpenLayer = new SimpleActionItem("Open Layer", ButtonClick)
             {
                 LargeImage = Resources.spatialite_open_32,
                 SmallImage = Resources.spatialite_open_16,
@@ -30,7 +28,7 @@ namespace DotSpatial.Plugins.SpatiaLite
             App.HeaderControl.Add(bOpenLayer);
 
             //query
-            var bQuery = new SimpleActionItem(spatiaLiteKey, "SpatiaLite Query", bQuery_Click)
+            var bQuery = new SimpleActionItem("SpatiaLite Query", bQuery_Click)
             {
                 LargeImage = Resources.spatialite_query_32,
                 SmallImage = Resources.spatialite_query_16,
