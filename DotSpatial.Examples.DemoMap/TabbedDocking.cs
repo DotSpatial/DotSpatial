@@ -85,5 +85,10 @@ namespace DemoMap
                 Trace.WriteLine("SplitContainer was expected.");
             }
         }
+
+        public void HidePanel(string key)
+        {
+
+        }
     }
 }

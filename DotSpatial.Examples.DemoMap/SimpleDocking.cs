@@ -151,5 +151,10 @@ namespace DemoMap
         {
             OnActivePanelChanged(new DockablePanelEventArgs((sender as Form).Name));
         }
+
+        public void HidePanel(string key)
+        {
+
+        }
     }
 }
