@@ -133,7 +133,6 @@
     <Compile Include="IRasterBoundDataSet.cs" />
     <Compile Include="IReproject.cs" />
     <Compile Include="IShapeSource.cs" />
-    <Compile Include="LazyStringFormat.cs" />
     <Compile Include="LineShape.cs" />
     <Compile Include="LineShapefileFeatureSource.cs" />
     <Compile Include="LineShapefileShapeSource.cs" />

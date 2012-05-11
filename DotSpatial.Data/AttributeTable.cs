@@ -878,7 +878,7 @@ namespace DotSpatial.Data
                 if (!_dataTable.Columns.Contains("FID"))
                 {
                     _dataTable.Columns.Add("FID", typeof(int));
-                }               
+                }
                 for (int row = 0; row < numRows; row++)
                 {
                     DataRow dr = _dataTable.NewRow();
@@ -1346,8 +1346,11 @@ namespace DotSpatial.Data
             string tempStr = new string(cBuffer);
             tempObject = DBNull.Value;
             Type t = field.DataType;
-            var errorMessage = new LazyStringFormat(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName,
-                                              _fileName, t);
+            Lazy<string> errorMessage = new Lazy<string>(() =>
+            {
+                return String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t);
+            });
+            
             if (t == typeof(byte))
             {
                 byte temp;
