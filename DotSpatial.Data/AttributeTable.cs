@@ -1346,7 +1346,8 @@ namespace DotSpatial.Data
             string tempStr = new string(cBuffer);
             tempObject = DBNull.Value;
             Type t = field.DataType;
-            string errorMessage = String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t);
+            var errorMessage = new LazyStringFormat(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName,
+                                              _fileName, t);
             if (t == typeof(byte))
             {
                 byte temp;
@@ -1358,7 +1359,7 @@ namespace DotSpatial.Data
                     // three characters.  Therefore, we may have to upgrade the
                     // numeric type for the entire field to short.
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     short upTest;
                     if (short.TryParse(tempStr.Trim(), out upTest))
                     {
@@ -1381,7 +1382,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     int upTest;
                     if (int.TryParse(tempStr.Trim(), out upTest))
                     {
@@ -1403,7 +1404,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     long upTest;
                     if (long.TryParse(tempStr.Trim(), out upTest))
                     {
@@ -1425,7 +1426,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     UpgradeColumn(field, typeof(string), currentRow, field.Ordinal, table);
                     tempObject = tempStr;
                 }
@@ -1438,7 +1439,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     double upTest;
                     if (double.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out upTest))
                     {
@@ -1462,7 +1463,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     decimal upTest;
                     if (decimal.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out upTest))
                     {
@@ -1484,7 +1485,7 @@ namespace DotSpatial.Data
                 else
                 {
                     if (null == table)
-                        throw new InvalidDataException(errorMessage);
+                        throw new InvalidDataException(errorMessage.Value);
                     UpgradeColumn(field, typeof(string), currentRow, field.Ordinal, table);
                     tempObject = tempStr;
                 }
