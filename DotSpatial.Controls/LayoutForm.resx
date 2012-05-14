@@ -141,13 +141,13 @@
     <value>Fill</value>
   </data>
   <metadata name="_layoutDocToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>176, 50</value>
+    <value>523, 12</value>
   </metadata>
   <data name="_layoutDocToolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="_layoutDocToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 50</value>
+    <value>3, 0</value>
   </data>
   <data name="_layoutDocToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 25</value>
@@ -169,16 +169,16 @@
     <value>_toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;_layoutDocToolStrip1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <metadata name="_layoutInsertToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>-7, 80</value>
+    <value>691, 12</value>
   </metadata>
   <data name="_layoutInsertToolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="_layoutInsertToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>294, 0</value>
   </data>
   <data name="_layoutInsertToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>173, 25</value>
@@ -196,7 +196,7 @@
     <value>_toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;_layoutInsertToolStrip1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="_layoutListBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -205,7 +205,7 @@
     <value>0, 0</value>
   </data>
   <data name="_layoutListBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 194</value>
+    <value>200, 215</value>
   </data>
   <data name="_layoutListBox1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -232,7 +232,7 @@
     <value>False</value>
   </data>
   <data name="_layoutMapToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 25</value>
+    <value>467, 0</value>
   </data>
   <data name="_layoutMapToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 25</value>
@@ -250,10 +250,10 @@
     <value>_toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;_layoutMapToolStrip1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <metadata name="_layoutMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>5, 29</value>
+    <value>369, 12</value>
   </metadata>
   <data name="_layoutMenuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -286,7 +286,7 @@
     <value>0, 0</value>
   </data>
   <data name="_layoutPropertyGrid1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 250</value>
+    <value>200, 279</value>
   </data>
   <data name="_layoutPropertyGrid1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -304,13 +304,13 @@
     <value>0</value>
   </data>
   <metadata name="_layoutZoomToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 0</value>
+    <value>17, 17</value>
   </metadata>
   <data name="_layoutZoomToolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="_layoutZoomToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>130, 25</value>
+    <value>136, 0</value>
   </data>
   <data name="_layoutZoomToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 25</value>
@@ -334,7 +334,7 @@
     <value>0, 0</value>
   </data>
   <data name="_layoutControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>540, 448</value>
+    <value>540, 498</value>
   </data>
   <data name="_layoutControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -406,10 +406,10 @@
     <value>100</value>
   </data>
   <data name="_splitContainer2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 448</value>
+    <value>200, 498</value>
   </data>
   <data name="_splitContainer2.SplitterDistance" type="System.Int32, mscorlib">
-    <value>194</value>
+    <value>215</value>
   </data>
   <data name="_splitContainer2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -442,7 +442,7 @@
     <value>100</value>
   </data>
   <data name="_splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>744, 448</value>
+    <value>744, 498</value>
   </data>
   <data name="_splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>540</value>
@@ -463,7 +463,7 @@
     <value>0</value>
   </data>
   <data name="_toolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>744, 448</value>
+    <value>744, 498</value>
   </data>
   <data name="&gt;&gt;_toolStripContainer1.ContentPanel.Name" xml:space="preserve">
     <value>_toolStripContainer1.ContentPanel</value>
@@ -544,7 +544,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>126</value>
+    <value>65</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>744, 547</value>
@@ -572,6 +572,9 @@
         /wD///8A4AcAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAMADAADgBwAA4AcAAOAH
         AADgDwAA8B8AAA==
 </value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>450, 350</value>

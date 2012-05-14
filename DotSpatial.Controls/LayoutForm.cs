@@ -88,6 +88,7 @@ namespace DotSpatial.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LayoutForm));
             this._toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this._splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this._splitContainer2 = new System.Windows.Forms.SplitContainer();
             this._layoutControl1 = new DotSpatial.Controls.LayoutControl();
             this._layoutDocToolStrip1 = new DotSpatial.Controls.LayoutDocToolStrip();
             this._layoutInsertToolStrip1 = new DotSpatial.Controls.LayoutInsertToolStrip();
@@ -96,7 +97,6 @@ namespace DotSpatial.Controls
             this._layoutMenuStrip1 = new DotSpatial.Controls.LayoutMenuStrip();
             this._layoutPropertyGrid1 = new DotSpatial.Controls.LayoutPropertyGrid();
             this._layoutZoomToolStrip1 = new DotSpatial.Controls.LayoutZoomToolStrip();
-            this._splitContainer2 = new System.Windows.Forms.SplitContainer();
             this._toolStripContainer1.ContentPanel.SuspendLayout();
             this._toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this._toolStripContainer1.SuspendLayout();
@@ -122,10 +122,10 @@ namespace DotSpatial.Controls
             // 
             // _toolStripContainer1.TopToolStripPanel
             // 
-            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutMapToolStrip1);
-            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutDocToolStrip1);
+            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutZoomToolStrip1);
             this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutInsertToolStrip1);
+            this._toolStripContainer1.TopToolStripPanel.Controls.Add(this._layoutMapToolStrip1);
             // 
             // _splitContainer1
             // 
@@ -139,6 +139,19 @@ namespace DotSpatial.Controls
             // _splitContainer1.Panel2
             // 
             this._splitContainer1.Panel2.Controls.Add(this._splitContainer2);
+            // 
+            // _splitContainer2
+            // 
+            resources.ApplyResources(this._splitContainer2, "_splitContainer2");
+            this._splitContainer2.Name = "_splitContainer2";
+            // 
+            // _splitContainer2.Panel1
+            // 
+            this._splitContainer2.Panel1.Controls.Add(this._layoutListBox1);
+            // 
+            // _splitContainer2.Panel2
+            // 
+            this._splitContainer2.Panel2.Controls.Add(this._layoutPropertyGrid1);
             // 
             // _layoutControl1
             // 
@@ -205,19 +218,6 @@ namespace DotSpatial.Controls
             this._layoutZoomToolStrip1.LayoutControl = this._layoutControl1;
             this._layoutZoomToolStrip1.Name = "_layoutZoomToolStrip1";
             // 
-            // _splitContainer2
-            // 
-            resources.ApplyResources(this._splitContainer2, "_splitContainer2");
-            this._splitContainer2.Name = "_splitContainer2";
-            // 
-            // _splitContainer2.Panel1
-            // 
-            this._splitContainer2.Panel1.Controls.Add(this._layoutListBox1);
-            // 
-            // _splitContainer2.Panel2
-            // 
-            this._splitContainer2.Panel2.Controls.Add(this._layoutPropertyGrid1);
-            // 
             // LayoutForm
             // 
             resources.ApplyResources(this, "$this");
@@ -226,6 +226,7 @@ namespace DotSpatial.Controls
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "LayoutForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LayoutForm_FormClosing);
+            this.Load += new System.EventHandler(this.LayoutForm_Load);
             this._toolStripContainer1.ContentPanel.ResumeLayout(false);
             this._toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this._toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -264,5 +265,11 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+        private void LayoutForm_Load(object sender, EventArgs e)
+        {
+            LayoutElement mapElement = _layoutControl1.CreateMapElement();
+            mapElement.Size = _layoutControl1.Size;
+            this._layoutControl1.AddToLayout(mapElement);
+        }
     }
 }
