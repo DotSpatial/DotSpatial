@@ -136,10 +136,10 @@
     <value>Open...</value>
   </data>
   <data name="File_Print" xml:space="preserve">
-    <value>Print</value>
+    <value>Print Layout...</value>
   </data>
   <data name="File_Reset_Layout" xml:space="preserve">
-    <value>Reset Layout</value>
+    <value>Reset Window Layout</value>
   </data>
   <data name="File_Save" xml:space="preserve">
     <value>Save</value>
@@ -220,6 +220,10 @@
   </data>
   <data name="FileSaveToolTip" xml:space="preserve">
     <value>Allows the user to name the file and location where the map is to be saved on their computer.</value>
+    <comment>FileSaveToolTip description</comment>
+  </data>
+  <data name="FileSaveAsToolTip" xml:space="preserve">
+    <value>Allows the user to save the project.</value>
     <comment>FileSaveToolTip description</comment>
   </data>
 </root>

@@ -37,7 +37,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             switch (App.ShowExtensionsDialog)
             {
                 case ShowExtensionsDialog.Default:
-                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager ...", ExtensionManager_Click);
+                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click);
                     simpleAction.SmallImage = Resources.plugin_16x16;
                     simpleAction.LargeImage = Resources.plugin_32x32;
                     simpleAction.GroupCaption = HeaderControl.ApplicationMenuKey;
