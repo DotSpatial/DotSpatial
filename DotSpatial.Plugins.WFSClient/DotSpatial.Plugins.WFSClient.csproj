@@ -114,10 +114,5 @@
   <Target Name="BeforeBuild">
   </Target>
    -->
-  <Target Name="AfterBuild">
-    <Message Text="Moving output file">
-    </Message>
-    <Move SourceFiles="$(OutputPath)$(MSBuildProjectName).dll" DestinationFolder="$(OutputPath)Plugins\" />
-  </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
