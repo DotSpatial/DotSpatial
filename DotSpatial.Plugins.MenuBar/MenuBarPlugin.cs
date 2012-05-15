@@ -292,14 +292,16 @@ namespace DotSpatial.Plugins.MenuBar
         /// </summary>
         private void DeselectAll_Click(object sender, EventArgs e)
         {
-            foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
-            {
-                IMapFeatureLayer mapFeatureLayer = layer as IMapFeatureLayer;
-                {
-                    if (mapFeatureLayer != null)
-                        mapFeatureLayer.UnSelectAll();
-                }
-            }
+            IEnvelope env = new Envelope();
+            App.Map.MapFrame.ClearSelection(out env);
+            
+            //foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
+            //{
+            //    IMapFeatureLayer mapFeatureLayer = layer as IMapFeatureLayer;
+            //    {
+            //        mapFeatureLayer.UnSelectAll();
+            //    }
+            //}
         }
 
         /// <summary>
