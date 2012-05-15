@@ -560,6 +560,8 @@ namespace DotSpatial.Symbology
             collection.LayerSelected += collection_LayerSelected;
             collection.LayerAdded += Layers_LayerAdded;
             collection.LayerRemoved += Layers_LayerRemoved;
+
+            collection.SelectionChanged += collection_SelectionChanged;
         }
 
         private void collection_LayerSelected(object sender, LayerSelectedEventArgs e)
@@ -568,6 +570,11 @@ namespace DotSpatial.Symbology
         }
 
         private void collection_SelectionChanging(object sender, FeatureLayerSelectionEventArgs e)
+        {
+            OnSelectionChanged();
+        }
+
+        private void collection_SelectionChanged(object sender, EventArgs e)
         {
             OnSelectionChanged();
         }
@@ -618,6 +625,8 @@ namespace DotSpatial.Symbology
             collection.LayerSelected -= collection_LayerSelected;
             collection.LayerAdded -= Layers_LayerAdded;
             collection.LayerRemoved -= Layers_LayerRemoved;
+
+            collection.SelectionChanged -= collection_SelectionChanged;
         }
 
         /// <summary>
