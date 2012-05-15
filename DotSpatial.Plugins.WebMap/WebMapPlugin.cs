@@ -191,7 +191,7 @@ namespace DotSpatial.Plugins.WebMap
                                        AllowEditingText = true,
                                        Caption = resources.Opacity_Box_Text,
                                        ToolTipText = resources.Opacity_Box_ToolTip,
-                                       Width = 40,
+                                       Width = 45,
                                        Key = STR_KeyOpacityDropDown
                                    };
 
