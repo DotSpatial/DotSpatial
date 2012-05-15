@@ -49,6 +49,8 @@ namespace DemoMap
             myLabel.Name = panel.Key;
             myLabel.Text = panel.Caption;
             myLabel.Width = panel.Width;
+            myLabel.Spring = (panel.Width == 0);
+            myLabel.TextAlign = ContentAlignment.MiddleLeft;
 
             panel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
                 {

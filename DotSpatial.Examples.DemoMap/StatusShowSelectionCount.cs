@@ -28,6 +28,7 @@ namespace DemoMap
             App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
 
             panel = new StatusPanel();
+            panel.Width = 180;
             App.ProgressHandler.Add(panel);
 
             base.Activate();

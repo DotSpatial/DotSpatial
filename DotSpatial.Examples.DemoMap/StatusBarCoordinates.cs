@@ -26,8 +26,8 @@ namespace DemoMap
             _Map = App.Map as Map;
             _Map.GeoMouseMove += Map_GeoMouseMove;
 
-            xPanel = new StatusPanel() { Width = 150 };
-            yPanel = new StatusPanel() { Width = 150 };
+            xPanel = new StatusPanel() { Width = 160 };
+            yPanel = new StatusPanel() { Width = 160 };
             App.ProgressHandler.Add(xPanel);
             App.ProgressHandler.Add(yPanel);
 
@@ -47,8 +47,8 @@ namespace DemoMap
 
         private void Map_GeoMouseMove(object sender, GeoMouseArgs e)
         {
-            xPanel.Caption = String.Format("X: {0:.######}", e.GeographicLocation.X);
-            yPanel.Caption = String.Format("Y: {0:.######}", e.GeographicLocation.Y);
+            xPanel.Caption = String.Format("X: {0:.#####}", e.GeographicLocation.X);
+            yPanel.Caption = String.Format("Y: {0:.#####}", e.GeographicLocation.Y);
         }
     }
 }
