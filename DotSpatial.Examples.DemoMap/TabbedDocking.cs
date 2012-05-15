@@ -38,6 +38,50 @@ namespace DemoMap
 
         public event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
+        #region OnActivePanelChanged
+        /// <summary>
+        /// Triggers the ActivePanelChanged event.
+        /// </summary>
+        public virtual void OnActivePanelChanged(DockablePanelEventArgs ea)
+        {
+            if (ActivePanelChanged != null)
+                ActivePanelChanged(null/*this*/, ea);
+        }
+        #endregion
+
+        #region OnPanelClosed
+        /// <summary>
+        /// Triggers the PanelClosed event.
+        /// </summary>
+        public virtual void OnPanelClosed(DockablePanelEventArgs ea)
+        {
+            if (PanelClosed != null)
+                PanelClosed(null/*this*/, ea);
+        }
+        #endregion
+
+        #region OnPanelAdded
+        /// <summary>
+        /// Triggers the PanelAdded event.
+        /// </summary>
+        public virtual void OnPanelAdded(DockablePanelEventArgs ea)
+        {
+            if (PanelAdded != null)
+                PanelAdded(null/*this*/, ea);
+        }
+        #endregion
+
+        #region OnPanelRemoved
+        /// <summary>
+        /// Triggers the PanelRemoved event.
+        /// </summary>
+        public virtual void OnPanelRemoved(DockablePanelEventArgs ea)
+        {
+            if (PanelRemoved != null)
+                PanelRemoved(null/*this*/, ea);
+        }
+        #endregion
+
         public void Add(DockablePanel panel)
         {
             System.Windows.Forms.TabPage tabPage = new TabPage();
