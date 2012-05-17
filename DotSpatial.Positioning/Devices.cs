@@ -841,18 +841,18 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Aborts the process of finding GPS devices and optionally blocks until the cancellation is complete.
         /// </summary>
-        /// <param name="async">If set to <see langword="true"/>, then the method will return immediately rather than waiting
+        /// <param name="isAsync">If set to <see langword="true"/>, then the method will return immediately rather than waiting
         /// for the cancellation to complete.</param>
-        public static void CancelDetection(bool async)
+        public static void CancelDetection(bool isAsync)
         {
             // If the detection thread is alive, abort it
             if (IsDetectionInProgress)
             {
                 // Abort the thread
                 Debug.WriteLine("Canceling device detection", DEBUG_CATEGORY);
-                _detectionThread.Abort(async);
+                _detectionThread.Abort(isAsync);
 
-                if (!async)
+                if (!isAsync)
                 {
                     // Wait for the abort to wrap up
                     _detectionCompleteWaitHandle.WaitOne();
@@ -1189,13 +1189,13 @@ namespace DotSpatial.Positioning
                 #endregion Abort detection for all devices
 
                 // Determine whether we should block until all detection threads have canceled
-                bool async = false;
+                bool isAsync = false;
                 if (ex.ExceptionState != null && ex.ExceptionState is bool)
                 {
-                    async = (bool)ex.ExceptionState;
+                    isAsync = (bool)ex.ExceptionState;
                 }
 
-                if (!async)
+                if (!isAsync)
                 {
                     // Wait for all the threads to die.  Just... sit and watch.  And wait.
                     Debug.WriteLine("Waiting for device detection threads to abort", DEBUG_CATEGORY);
