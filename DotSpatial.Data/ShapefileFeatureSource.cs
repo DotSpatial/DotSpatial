@@ -273,7 +273,7 @@ namespace DotSpatial.Data
                 int numFeatures = 0;
                 if (filenameExists)
                 {
-                    UpdateHeader(header, feature, false);
+                    UpdateHeader(header, feature, true);
                     numFeatures = (header.ShxLength - 50) / 4;
                 }
                 else
@@ -313,10 +313,6 @@ namespace DotSpatial.Data
                 if (null != Quadtree)
                     Quadtree.Insert(feature.Envelope, numFeatures - 1);
             }
-
-            // Write the Updated Headers to the Files
-            WriteHeader(header, Filename);
-            WriteHeader(header, header.ShxFilename);
         }
 
         /// <inheritdocs/>
