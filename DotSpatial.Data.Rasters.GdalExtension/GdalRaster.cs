@@ -314,6 +314,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 {
                     err = CPLErr.CE_Failure;
                     max = min = std = mean = 0;
+                    Trace.WriteLine(ex);
                 }
                 base.Value.Updated = false;
 
