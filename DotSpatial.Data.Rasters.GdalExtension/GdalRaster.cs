@@ -56,9 +56,14 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             base.Filename = name;
             ReadHeader();
             int numBands = _dataset.RasterCount;
-            for (int i = 1; i <= numBands; i++)
+            if (numBands == 1)
+                _band = _dataset.GetRasterBand(1);
+            else
             {
-                base.Bands.Add(new GdalRaster<T>(name, fromDataset, _dataset.GetRasterBand(i)));
+                for (int i = 1; i <= numBands; i++)
+                {
+                    base.Bands.Add(new GdalRaster<T>(name, fromDataset, _dataset.GetRasterBand(i)));
+                }
             }
         }
 
@@ -225,11 +230,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     IntPtr ptr = handle.AddrOfPinnedObject();
                     // int stride = ((xSize * sizeof(T) + 7) / 8);
                     _band.WriteRaster(xOff, yOff, xSize, ySize, ptr, xSize, ySize, GdalDataType, PixelSpace, 0);
-                    _band.SetNoDataValue(base.NoDataValue);
-                    _band.SetMetadataItem("STATISTICS_MEAN", base.Mean.ToString(), String.Empty);
-                    _band.SetMetadataItem("STATISTICS_STDDEV", base.StdDeviation.ToString(), String.Empty);
-                    _band.SetMetadataItem("STATISTICS_MINIMUM", base.Minimum.ToString(), String.Empty);
-                    _band.SetMetadataItem("STATISTICS_MAXIMUM", base.Maximum.ToString(), String.Empty);
                     _band.FlushCache();
                     _dataset.FlushCache();
                 }
@@ -297,16 +297,29 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (_band != null)
             {
                 double min, max, mean, std;
-                // _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
-                CPLErr err = _band.GetStatistics(0, 1, out min, out max, out mean, out std);
-                Minimum = min;
-                Maximum = max;
-                Mean = mean;
-                StdDeviation = std;
+                CPLErr err;
+                try
+                {
+                    if (base.Value.Updated)
+                        err = _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
+                    else
+                        err = _band.GetStatistics(0, 1, out min, out max, out mean, out std);
+                    base.Value.Updated = false;
+                    Minimum = min;
+                    Maximum = max;
+                    Mean = mean;
+                    StdDeviation = std;
+                }
+                catch (Exception ex)
+                {
+                    err = CPLErr.CE_Failure;
+                    max = min = std = mean = 0;
+                }
+                base.Value.Updated = false;
 
                 // http://dotspatial.codeplex.com/workitem/22221
                 // GetStatistics didn't return anything, so try use the raster default method.
-                if (err != CPLErr.CE_None)
+                if (err != CPLErr.CE_None || (max == 0 && min == 0 && std == 0 && mean == 0))
                     base.GetStatistics();
             }
             else
@@ -344,8 +357,63 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             set
             {
+                base.NoDataValue = value;
                 if (_band != null)
+                {
                     _band.SetNoDataValue(value);
+                }
+                else
+                {
+                    foreach (GdalRaster<T> raster in Bands)
+                    {
+                        raster.NoDataValue = value;
+                    }
+                }
+            }
+        }
+
+        public override double Mean
+        {
+            get
+            {
+                return base.Mean;
+            }
+            protected set
+            {
+                base.Mean = value;
+                if (_band != null)
+                {
+                    _band.SetStatistics(Minimum, Maximum, value, StdDeviation);
+                    _band.SetMetadataItem("STATISTICS_MEAN", Mean.ToString(), "");
+                }
+                else
+                {
+                    foreach (GdalRaster<T> raster in Bands)
+                    {
+                        raster.Mean = value;
+                    }
+                }
+            }
+        }
+
+        public override double StdDeviation
+        {
+            get { return base.StdDeviation; }
+            protected set
+            {
+                base.StdDeviation = value;
+                if (_band != null)
+                {
+                    _band.SetStatistics(Minimum, Maximum, Mean, value);
+                    _band.SetMetadataItem("STATISTICS_STDDEV", StdDeviation.ToString(), "");
+                }
+                else
+                {
+                    foreach (GdalRaster<T> raster in Bands)
+                    {
+                        raster.StdDeviation = value;
+                    }
+                }
             }
         }
 
@@ -359,7 +427,17 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 base.Minimum = value;
                 if (_band != null)
-                    _band.SetStatistics(value, base.Maximum, base.Mean, base.StdDeviation);
+                {
+                    _band.SetStatistics(value, Maximum, Mean, StdDeviation);
+                    _band.SetMetadataItem("STATISTICS_MINIMUM", Minimum.ToString(), "");
+                }
+                else
+                {
+                    foreach (GdalRaster<T> raster in Bands)
+                    {
+                        raster.Minimum = value;
+                    }
+                }
             }
         }
 
@@ -373,7 +451,17 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 base.Maximum = value;
                 if (_band != null)
-                    _band.SetStatistics(base.Minimum, value, base.Mean, base.StdDeviation);
+                {
+                    _band.SetStatistics(Minimum, value, Mean, StdDeviation);
+                    _band.SetMetadataItem("STATISTICS_MAXIMUM", Maximum.ToString(), "");
+                }
+                else
+                {
+                    foreach (GdalRaster<T> raster in Bands)
+                    {
+                        raster.Maximum = value;
+                    }
+                }
             }
         }
 
@@ -387,8 +475,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             base.NumRowsInFile = _dataset.RasterYSize;
             base.NumRows = base.NumRowsInFile;
             // Todo: look for prj file if GetProjection returns null.
+            // Do we need to read this as an Esri string if we don't get a proj4 string?
             string projString = _dataset.GetProjection();
-            Projection = ProjectionInfo.FromEsriString(projString);
+            Projection = ProjectionInfo.FromProj4String(projString);
             if (_band != null)
             {
                 double val;
