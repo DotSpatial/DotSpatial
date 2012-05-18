@@ -129,7 +129,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             // Assign the Gdal dataType.
             DataType dt;
             if (dataType == typeof(int)) dt = DataType.GDT_Int32;
-            else if (dataType == typeof(short)) dt = DataType.GDT_UInt16;
+            else if (dataType == typeof(short)) dt = DataType.GDT_Int16;
             else if (dataType == typeof(UInt32)) dt = DataType.GDT_UInt32;
             else if (dataType == typeof(UInt16)) dt = DataType.GDT_UInt16;
             else if (dataType == typeof(double)) dt = DataType.GDT_Float64;
