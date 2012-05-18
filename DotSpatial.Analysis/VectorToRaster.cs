@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -179,6 +180,23 @@ namespace DotSpatial.Analysis
             IRaster output;
             output = Raster.Create(outputFileName, driverCode, w, h, 1, tp, options);
             output.Bounds = new RasterBounds(h, w, env);
+
+            double dtMax = Convert.ToDouble(fs.DataTable.Compute("Max(" + fieldName + ")", ""));
+            double dtMin = Convert.ToDouble(fs.DataTable.Compute("Min(" + fieldName + ")", ""));
+            double noDataValue = output.NoDataValue;
+
+            if (dtMin <= noDataValue && dtMax >= noDataValue)
+            {
+                if (dtMax != GetFieldValue(tp, "MaxValue"))
+                {
+                    output.NoDataValue = noDataValue;
+                }
+                else if (dtMin != GetFieldValue(tp, "MinValue"))
+                {
+                    output.NoDataValue = noDataValue;
+                }
+            }
+
             List<RcIndex> locations = new List<RcIndex>();
             List<string> failureList = new List<string>();
             for (int row = 0; row < h; row++)
@@ -234,6 +252,18 @@ namespace DotSpatial.Analysis
 
             pm.Reset();
             return output;
+        }
+
+        private static double GetFieldValue(Type tp, string fieldstr)
+        {
+            FieldInfo field = tp.GetField(fieldstr, BindingFlags.Public | BindingFlags.Static);
+            if (field == null)
+            {
+                // There's no TypeArgumentException, unfortunately. You might want 
+                // to create one :) 
+                throw new InvalidOperationException("Invalid type argument for GetFieldValue: " + tp.Name);
+            }
+            return Convert.ToDouble(field.GetValue(null));
         }
 
         private static double GetDouble(object val, IList<string> failureList)
