@@ -254,7 +254,7 @@ namespace DotSpatial.Controls.Header
             strip.Dock = DockStyle.Top;
 
             // add the menu to the form so that it appears on top of all the toolbars.
-            container.ParentForm.Controls.Add(strip);
+            container.Parent.Controls.Add(strip);
 
             this._Strips = new List<ToolStrip>();
             this._Strips.Add(strip);
