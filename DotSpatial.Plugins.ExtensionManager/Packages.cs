@@ -74,7 +74,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             IPackage package = Repo.FindPackage(name);
 
             // important: the following line will throw an exception when debugging
-            // if using the official Nuget.Core dlss.
+            // if using the official Nuget.Core dll.
             // Run without debugging to avoid the exception and install the package
             // more at http://nuget.codeplex.com/discussions/259099
             // We include a custom nuget.core without SecurityTransparent to avoid the error.
@@ -82,7 +82,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 try
                 {
-                    packageManager.InstallPackage(package, false);
+                    packageManager.InstallPackage(package, false, false);
                 }
                 catch (WebException)
                 {
@@ -100,7 +100,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <param name="package">The package.</param>
         public void Update(IPackage package)
         {
-            packageManager.UpdatePackage(package, true);
+            packageManager.UpdatePackage(package, true, false);
         }
 
         #endregion

@@ -43,7 +43,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             InitializeComponent();
             // Databind the check list box to the Name property of extension.
             clbApps.DisplayMember = "Name";
-
+            
             UpdatePackageList();
         }
 
