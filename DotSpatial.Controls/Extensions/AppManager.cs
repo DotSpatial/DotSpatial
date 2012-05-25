@@ -636,16 +636,52 @@ namespace DotSpatial.Controls
 
         private void LocateExtensions(AggregateCatalog catalog, string absolutePathToExtensions)
         {
-            if (Directory.Exists(absolutePathToExtensions))
+            var directories = GetPackageExtensionPaths(AbsolutePathToExtensions);
+            foreach (var dir in directories)
             {
-                foreach (var dir in Directory.EnumerateDirectories(absolutePathToExtensions, "*", SearchOption.AllDirectories))
-                {
-                    Trace.WriteLine("Cataloging: " + dir);
-                    UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
+                Trace.WriteLine("Cataloging: " + dir);
+                UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
 
-                    // todo: consider using a file system watcher if it would provider better performance.
-                    if (!DirectoryCatalogExists(catalog, dir))
-                        TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
+                // todo: consider using a file system watcher if it would provider better performance.
+                if (!DirectoryCatalogExists(catalog, dir))
+                    TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
+            }
+        }
+
+        /// <summary>
+        /// Gets the paths of dlls for extensions that were downloaded as packages.
+        /// </summary>
+        /// <param name="absolutePathToExtensions">The absolute path to extensions.</param>
+        /// <returns></returns>
+        private static IEnumerable<string> GetPackageExtensionPaths(string absolutePathToExtensions)
+        {
+            if (!Directory.Exists(absolutePathToExtensions))
+                yield break;
+
+            var packagesFolder = Path.Combine(absolutePathToExtensions, PackageDirectory);
+            if (!Directory.Exists(packagesFolder))
+                yield break;
+
+            var packageFolders = Directory.EnumerateDirectories(packagesFolder, "*", SearchOption.TopDirectoryOnly);
+            foreach (var packageFolder in packageFolders)
+            {
+                var potentialFolder = Path.Combine(packageFolder, "lib");
+                if (Directory.Exists(potentialFolder))
+                {
+                    yield return potentialFolder;
+
+                    potentialFolder = Path.Combine(packageFolder, "lib", "net40");
+                    if (Directory.Exists(potentialFolder))
+                    {
+                        yield return potentialFolder;
+                    }
+
+                    // see if the client profile was targeted.
+                    potentialFolder = Path.Combine(packageFolder, "lib", "net40-Client");
+                    if (Directory.Exists(potentialFolder))
+                    {
+                        yield return potentialFolder;
+                    }
                 }
             }
         }
