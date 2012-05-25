@@ -200,7 +200,6 @@
             this.uxSearchText.Name = "uxSearchText";
             this.uxSearchText.Size = new System.Drawing.Size(156, 20);
             this.uxSearchText.TabIndex = 12;
-            this.uxSearchText.TextChanged += new System.EventHandler(this.uxSearchText_TextChanged);
             this.uxSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.uxSearchText_KeyDown);
             // 
             // uxClear
@@ -211,7 +210,7 @@
             this.uxClear.TabIndex = 11;
             this.uxClear.Text = "Clear";
             this.uxClear.UseVisualStyleBackColor = true;
-            this.uxClear.Click += new System.EventHandler(this.clear_Click);
+            this.uxClear.Click += new System.EventHandler(this.uxClear_Click);
             // 
             // uxSearch
             // 
@@ -221,7 +220,7 @@
             this.uxSearch.TabIndex = 7;
             this.uxSearch.Text = "Search";
             this.uxSearch.UseVisualStyleBackColor = true;
-            this.uxSearch.Click += new System.EventHandler(this.search_Click);
+            this.uxSearch.Click += new System.EventHandler(this.uxSearch_Click);
             // 
             // extensionDescription
             // 
