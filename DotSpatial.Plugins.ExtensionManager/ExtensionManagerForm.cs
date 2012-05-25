@@ -43,7 +43,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             InitializeComponent();
             // Databind the check list box to the Name property of extension.
             clbApps.DisplayMember = "Name";
-            
+
             UpdatePackageList();
         }
 
@@ -164,19 +164,23 @@ namespace DotSpatial.Plugins.ExtensionManager
                 clbData.Items.Add(provider.Name, true);
             }
         }
-
+        IPackage[] originalPackages;
         private void UpdatePackageList()
         {
             uxPackages.Items.Add("Loading...");
             var task = Task.Factory.StartNew(() =>
                                                  {
-                                                     var result = packages.Repo.GetPackages().Where(p => p.IsLatestVersion && (p.Tags == null || !p.Tags.Contains(HideReleaseFromEndUser))).ToArray();
-                                                     return result;
+                                                     var result = from item in packages.Repo.GetPackages()
+                                                                  where item.IsLatestVersion && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
+                                                                  select item;
+
+                                                     return result.ToArray();
                                                  });
 
             task.ContinueWith((t) =>
                                   {
                                       uxPackages.Items.Clear();
+                                      originalPackages = t.Result;
                                       if (t.Exception == null)
                                           uxPackages.Items.AddRange(t.Result);
                                       else
@@ -205,8 +209,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+
         private void uxPackages_SelectedValueChanged(object sender, EventArgs e)
         {
+
+
             var pack = uxPackages.SelectedItem as IPackage;
             if (pack != null)
             {
@@ -309,8 +316,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+
         private void uxUpdate_Click(object sender, EventArgs e)
         {
+
             var pack = uxPackages.SelectedItem as IPackage;
             if (pack != null)
             {
@@ -351,5 +360,68 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         #endregion
+
+
+        private void search_Click(object sender, EventArgs e)
+        {
+            string search = uxSearchText.Text;
+
+            IQueryable<IPackage> results = packages.Repo.Search(search, false);
+            uxPackages.Items.Clear();
+
+            var query = from item in results
+                        where item.IsLatestVersion == true
+                        select item;
+
+            uxPackages.Items.AddRange(query.ToArray());
+           if (uxPackages.Items.Count==0)
+            {
+                MessageBox.Show("Text not found");
+            }
+            
+        }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            uxSearchText.Clear();
+            uxPackages.Items.Clear();
+            uxPackages.Items.AddRange(originalPackages);
+        }
+
+     private void uxSearchText_TextChanged(object sender, EventArgs e)
+       {
+           string search = uxSearchText.Text;
+
+          //  IQueryable<IPackage> results = packages.Repo.Search(search, false);
+           // uxPackages.Items.Clear();
+
+           // var query = from item in results
+                      //  where item.IsLatestVersion == true
+                      //  select item;
+
+           // uxPackages.Items.AddRange(query.ToArray());
+            if (uxPackages.Items.Count == 0)
+           {
+                MessageBox.Show("Text not found");
+            }
+            if (search.Length == 0)
+           {
+                uxSearchText.Clear();
+               uxPackages.Items.Clear();
+                uxPackages.Items.AddRange(originalPackages);
+            }
+       // }
+        }
+
+        private void uxSearchText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                search_Click(sender, e);
+            }
+        }   
+    
     }
 }
+
+
