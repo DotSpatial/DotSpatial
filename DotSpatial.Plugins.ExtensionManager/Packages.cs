@@ -94,6 +94,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             return package;
         }
 
+        public IPackage GetLocalPackage(string id)
+        {
+            return packageManager.LocalRepository.FindPackage(id);
+        }
+
         /// <summary>
         /// Updates the specified package and dependencies.
         /// </summary>

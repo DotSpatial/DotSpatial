@@ -116,26 +116,76 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void uxUninstall_Click(object sender, EventArgs e)
+        private IPackage GetPackageFromExtension(IExtension extension)
         {
-            if (uxPackages.SelectedItem != null)
-            {
-                uxUninstall.Enabled = false;
-                var pack = uxPackages.SelectedItem as IPackage;
+            string id = extension.AssemblyQualifiedName.Substring(0, extension.AssemblyQualifiedName.IndexOf(',')); // Grab the part prior to the first comma
+            id = id.Substring(0, id.LastIndexOf('.')); // Grab the part prior to the last period
+            var pack = packages.GetLocalPackage(id);
+            return pack;
+        }
 
-                if (pack.Dependencies.Any())
+        private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
+        {
+            var dependentPackages = new List<IPackage>();
+            foreach (var extension in App.Extensions)
+            {
+                IPackage pack = GetPackageFromExtension(extension);
+                if (pack == null)
                 {
-                    MessageBox.Show("This package has a dependency which should be uninstalled first: " + pack.Dependencies.First().Id);
-                    // todo: allow the user to uninstall all dependencies.
+                    continue;
                 }
-                else
+                foreach (PackageDependency dependency in pack.Dependencies)
                 {
-                    App.EnsureDeactivated(pack.Id);
-                    App.MarkPackageForRemoval(GetPackageFolderName(pack));
-                    UpdateApps();
-                    UpdateDataProviders();
+                    if (dependency.Id == selectedPackage.Id)
+                    {
+                        dependentPackages.Add(pack);
+                    }
                 }
             }
+            return dependentPackages;
+        }
+        private void uxUninstall_Click(object sender, EventArgs e)
+        {
+            var selectedPackage = uxPackages.SelectedItem as IPackage;
+            if (selectedPackage == null)
+            {
+                return;
+            }
+            uxUninstall.Enabled = false;
+
+            IEnumerable<IPackage> dependentPackages = GetPackagesDependentOn(selectedPackage);
+            
+            if (dependentPackages.Any())
+            {
+                string message = "Removing this extension, will cause the following extensions to be removed as well: ";
+                foreach (IPackage dependentPackage in dependentPackages)
+                {
+                    message += dependentPackage.Id + ", ";
+                }
+
+                DialogResult result = MessageBox.Show(message, "Uninstall dependent extensions?", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                // Remove dependent packages
+                foreach (IPackage dependentPackage in dependentPackages)
+                {
+                    App.ProgressHandler.Progress(null, 0, "Uninstalling" + dependentPackage.Id);
+                    App.EnsureDeactivated(dependentPackage.Id);
+                    App.MarkPackageForRemoval(GetPackageFolderName(dependentPackage));
+                }
+            }
+
+            // Remove the selected package.
+            App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
+            App.EnsureDeactivated(selectedPackage.Id);
+            App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
+           
+            UpdateApps();
+            UpdateDataProviders();
+            App.ProgressHandler.Progress(null, 0, "Ready.");
         }
 
         private void PackageManagerForm_Load(object sender, EventArgs e)
@@ -376,7 +426,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             IQueryable<IPackage> results = packages.Repo.Search(search, false);
             uxPackages.Items.Clear();
-            
+
             var query = from item in results
                         where item.IsLatestVersion == true
                         select item;
