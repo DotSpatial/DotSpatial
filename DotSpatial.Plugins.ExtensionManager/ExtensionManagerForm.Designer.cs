@@ -33,6 +33,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.grpApps = new System.Windows.Forms.GroupBox();
+            this.uxUninstall = new System.Windows.Forms.Button();
             this.clbApps = new System.Windows.Forms.CheckedListBox();
             this.grpData = new System.Windows.Forms.GroupBox();
             this.clbData = new System.Windows.Forms.CheckedListBox();
@@ -45,7 +46,6 @@
             this.uxSearch = new System.Windows.Forms.Button();
             this.extensionDescription = new System.Windows.Forms.Label();
             this.uxUpdate = new System.Windows.Forms.Button();
-            this.uxUninstall = new System.Windows.Forms.Button();
             this.uxInstall = new System.Windows.Forms.Button();
             this.uxPackages = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
@@ -102,6 +102,7 @@
             // 
             // grpApps
             // 
+            this.grpApps.Controls.Add(this.uxUninstall);
             this.grpApps.Controls.Add(this.clbApps);
             this.grpApps.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpApps.Location = new System.Drawing.Point(0, 0);
@@ -111,16 +112,27 @@
             this.grpApps.TabStop = false;
             this.grpApps.Text = "Apps";
             // 
+            // uxUninstall
+            // 
+            this.uxUninstall.Location = new System.Drawing.Point(5, 16);
+            this.uxUninstall.Name = "uxUninstall";
+            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
+            this.uxUninstall.TabIndex = 1;
+            this.uxUninstall.Text = "Uninstall";
+            this.uxUninstall.UseVisualStyleBackColor = true;
+            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
+            // 
             // clbApps
             // 
+            this.clbApps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.clbApps.CheckOnClick = true;
-            this.clbApps.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbApps.FormattingEnabled = true;
-            this.clbApps.Location = new System.Drawing.Point(3, 16);
+            this.clbApps.Location = new System.Drawing.Point(3, 46);
             this.clbApps.Name = "clbApps";
-            this.clbApps.Size = new System.Drawing.Size(291, 275);
+            this.clbApps.Size = new System.Drawing.Size(291, 244);
             this.clbApps.TabIndex = 0;
             this.clbApps.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbApps_ItemCheck);
+            this.clbApps.SelectedValueChanged += new System.EventHandler(this.clbApps_SelectedValueChanged);
             // 
             // grpData
             // 
@@ -183,7 +195,6 @@
             this.tabOnline.Controls.Add(this.uxSearch);
             this.tabOnline.Controls.Add(this.extensionDescription);
             this.tabOnline.Controls.Add(this.uxUpdate);
-            this.tabOnline.Controls.Add(this.uxUninstall);
             this.tabOnline.Controls.Add(this.uxInstall);
             this.tabOnline.Controls.Add(this.uxPackages);
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
@@ -232,24 +243,13 @@
             // uxUpdate
             // 
             this.uxUpdate.Enabled = false;
-            this.uxUpdate.Location = new System.Drawing.Point(568, 6);
+            this.uxUpdate.Location = new System.Drawing.Point(503, 6);
             this.uxUpdate.Name = "uxUpdate";
             this.uxUpdate.Size = new System.Drawing.Size(75, 23);
             this.uxUpdate.TabIndex = 3;
             this.uxUpdate.Text = "Update";
             this.uxUpdate.UseVisualStyleBackColor = true;
             this.uxUpdate.Click += new System.EventHandler(this.uxUpdate_Click);
-            // 
-            // uxUninstall
-            // 
-            this.uxUninstall.Enabled = false;
-            this.uxUninstall.Location = new System.Drawing.Point(487, 6);
-            this.uxUninstall.Name = "uxUninstall";
-            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
-            this.uxUninstall.TabIndex = 3;
-            this.uxUninstall.Text = "Uninstall";
-            this.uxUninstall.UseVisualStyleBackColor = true;
-            this.uxUninstall.Click += new System.EventHandler(this.uxUninstall_Click);
             // 
             // uxInstall
             // 
@@ -264,8 +264,8 @@
             // 
             // uxPackages
             // 
-            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.uxPackages.FormattingEnabled = true;
             this.uxPackages.Location = new System.Drawing.Point(3, 42);
             this.uxPackages.Name = "uxPackages";
@@ -315,10 +315,10 @@
         private System.Windows.Forms.Label extensionDescription;
         private System.Windows.Forms.Button uxShowExtensionsFolder;
         private System.Windows.Forms.Button uxUpdate;
-        private System.Windows.Forms.Button uxUninstall;
         private System.Windows.Forms.Button uxSearch;
         private System.Windows.Forms.Button uxClear;
         private System.Windows.Forms.TextBox uxSearchText;
+        private System.Windows.Forms.Button uxUninstall;
 
     }
 }

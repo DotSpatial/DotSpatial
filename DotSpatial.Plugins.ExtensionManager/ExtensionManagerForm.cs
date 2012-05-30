@@ -101,7 +101,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                                           // Activate the extension(s) that was installed.
                                           var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
 
-                                          if (extensions.Any() && !App.EnsureRequiredImportsAreAvailable())
+                                          if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
                                               return;
 
                                           foreach (var item in extensions)
@@ -154,8 +154,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxUninstall.Enabled = false;
 
             IEnumerable<IPackage> dependentPackages = GetPackagesDependentOn(selectedPackage);
-            
-            if (dependentPackages.Any())
+
+            if (dependentPackages.Count() > 0)
             {
                 string message = "Removing this extension, will cause the following extensions to be removed as well: ";
                 foreach (IPackage dependentPackage in dependentPackages)
@@ -182,10 +182,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
             App.EnsureDeactivated(selectedPackage.Id);
             App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
-           
+
             UpdateApps();
             UpdateDataProviders();
             App.ProgressHandler.Progress(null, 0, "Ready.");
+
+            MessageBox.Show("The extension will finish uninstalling when you restart the application.");
         }
 
         private void PackageManagerForm_Load(object sender, EventArgs e)
@@ -278,13 +280,11 @@ namespace DotSpatial.Plugins.ExtensionManager
                 if (App.GetExtension(pack.Id) == null)
                 {
                     uxInstall.Enabled = true;
-                    uxUninstall.Enabled = false;
                     uxUpdate.Enabled = false;
                 }
                 else
                 {
                     uxInstall.Enabled = false;
-                    uxUninstall.Enabled = IsPackageInstalled(pack);
                     uxUpdate.Enabled = IsPackageUpdateable(pack);
                 }
             }
@@ -444,6 +444,21 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (e.KeyCode == Keys.Enter)
             {
                 Search();
+            }
+        }
+
+        private void clbApps_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var extension = clbApps.SelectedItem as IExtension;
+            var package = GetPackageFromExtension(extension);
+
+            if (package == null)
+            {
+                uxUninstall.Enabled = false;
+            }
+            else
+            {
+                uxUninstall.Enabled = IsPackageInstalled(package);
             }
         }
     }
