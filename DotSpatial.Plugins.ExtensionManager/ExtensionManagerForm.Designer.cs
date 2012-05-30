@@ -114,6 +114,7 @@
             // 
             // uxUninstall
             // 
+            this.uxUninstall.Enabled = false;
             this.uxUninstall.Location = new System.Drawing.Point(5, 16);
             this.uxUninstall.Name = "uxUninstall";
             this.uxUninstall.Size = new System.Drawing.Size(75, 23);

@@ -146,7 +146,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
         private void uxUninstall_Click(object sender, EventArgs e)
         {
-            var selectedPackage = uxPackages.SelectedItem as IPackage;
+            var selectedextension = clbApps.SelectedItem as IExtension;
+            IPackage selectedPackage = GetPackageFromExtension(selectedextension);
             if (selectedPackage == null)
             {
                 return;
