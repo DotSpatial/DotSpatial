@@ -45,11 +45,22 @@ namespace DotSpatial.Plugins.ExtensionManager
             clbApps.DisplayMember = "Name";
 
             UpdatePackageList();
+
+            var dataService = packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += new System.EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
         }
 
         #endregion
 
         #region Public Properties
+
+        public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
+        {
+            App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
+        }
 
         public AppManager App
         {
@@ -85,13 +96,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
 
                 var task = Task.Factory.StartNew(() =>
-                                                     {
-                                                         // Download the extension.
-                                                         packages.Install(pack.Id);
+                                                    {
+                                                        // Download the extension.
+                                                        packages.Install(pack.Id);
 
-                                                         // Load the extension.
-                                                         App.RefreshExtensions();
-                                                     });
+                                                        // Load the extension.
+                                                        App.RefreshExtensions();
+                                                    });
 
                 // UI related work.
                 task.ContinueWith((t) =>
@@ -144,6 +155,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             return dependentPackages;
         }
+
         private void uxUninstall_Click(object sender, EventArgs e)
         {
             var selectedextension = clbApps.SelectedItem as IExtension;
@@ -322,7 +334,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             return assembly.Location;
         }
 
-        private bool IsPackageInstalled(IPackage pack)
+        private static bool IsPackageInstalled(IPackage pack)
         {
             string path = GetPackagePath(pack);
             return Directory.Exists(path);
