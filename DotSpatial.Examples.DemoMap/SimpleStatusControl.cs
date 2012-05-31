@@ -65,7 +65,15 @@ namespace DemoMap
 
         public void Progress(string key, int percent, string message)
         {
-            defaultStatusPanel.Caption = message;
+            if (percent == 0)
+            {
+                defaultStatusPanel.Caption = message;
+            }
+            else
+            {
+                defaultStatusPanel.Caption = String.Format("{0}... {1}%", message, percent);
+            }
+
             if (!statusStrip.InvokeRequired)
             {
                 // most actions happen on one thread and the status bar never repaints itself until the end of a process unless
