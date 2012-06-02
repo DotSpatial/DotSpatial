@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,6 +20,7 @@ using DotSpatial.Controls;
 using DotSpatial.Controls.Extensions;
 using DotSpatial.Data;
 using DotSpatial.Extensions;
+using DotSpatial.Modeling.Forms;
 using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
@@ -33,7 +35,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private AppManager _App;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private readonly Packages packages = new Packages();
-
+        private IPackage[] originalPackages;
         #endregion
 
         #region Constructors and Destructors
@@ -42,7 +44,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
             // Databind the check list box to the Name property of extension.
-            clbApps.DisplayMember = "Name";
+            uxCategoryList.DisplayMember = "Name";
 
             UpdatePackageList();
 
@@ -120,8 +122,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                                               item.TryActivate();
                                           }
 
-                                          UpdateApps();
-                                          UpdateDataProviders();
+                                          // hack: we should really try to refresh the list, using what ever category the user
+                                          // has selected.
+                                          Installed.Items.Clear();
                                           App.ProgressHandler.Progress(null, 0, "Ready.");
                                       }, TaskScheduler.FromCurrentSynchronizationContext());
             }
@@ -158,7 +161,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxUninstall_Click(object sender, EventArgs e)
         {
-            var selectedextension = clbApps.SelectedItem as IExtension;
+            var selectedextension = Installed.SelectedItem as IExtension;
             IPackage selectedPackage = GetPackageFromExtension(selectedextension);
             if (selectedPackage == null)
             {
@@ -197,40 +200,24 @@ namespace DotSpatial.Plugins.ExtensionManager
             App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
 
             UpdateApps();
-            UpdateDataProviders();
             App.ProgressHandler.Progress(null, 0, "Ready.");
 
             MessageBox.Show("The extension will finish uninstalling when you restart the application.");
         }
 
+        private void AddCategory(IExtensionCategory category)
+        {
+            category.App = this.App;
+            uxCategoryList.Items.Add(category);
+        }
+
         private void PackageManagerForm_Load(object sender, EventArgs e)
         {
-            UpdateApps();
-            UpdateDataProviders();
+            AddCategory(new ExtensionCategory());
+            AddCategory(new ToolsCategory());
+            AddCategory(new DataProviderCategory());
+            AddCategory(new ApplicationExtensionCategory());
         }
-
-        /// <summary>
-        /// Sets up the checkboxes according to information in the manager
-        /// </summary>
-        private void UpdateApps()
-        {
-            clbApps.Items.Clear();
-            foreach (var extension in App.Extensions.Where(t => t.DeactivationAllowed))
-            {
-                clbApps.Items.Add(extension, extension.IsActive);
-            }
-        }
-
-        private void UpdateDataProviders()
-        {
-            clbData.Items.Clear();
-            foreach (IDataProvider provider in App.CompositionContainer.GetExportedValues<IDataProvider>())
-            {
-                clbData.Items.Add(provider.Name, true);
-            }
-        }
-
-        IPackage[] originalPackages;
 
         private void UpdatePackageList()
         {
@@ -255,16 +242,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                                   }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        // This method used to be used to apply all of the changes at once when the dialog was closed.
-
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            this.Close();
-        }
-
-        private void clbApps_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            var extension = clbApps.Items[e.Index] as IExtension;
+            IExtension extension = Installed.Items[e.Index] as IExtension;
+            if (extension == null)
+            {
+                return;
+            }
 
             if (e.NewValue == CheckState.Checked && !extension.IsActive)
             {
@@ -276,17 +260,57 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        private void Installed_SelectedValueChanged(object sender, EventArgs e)
+        {
+            IExtension extension = Installed.SelectedItem as IExtension;
+
+            if (extension == null)
+            {
+                uxUninstall.Enabled = false;
+            }
+            else
+            {
+                var package = GetPackageFromExtension(extension);
+
+                if (package == null)
+                {
+                    uxUninstall.Enabled = false;
+                }
+                else
+                {
+                    uxUninstall.Enabled = true;
+                }
+            }
+        }
+
         private void uxPackages_SelectedValueChanged(object sender, EventArgs e)
         {
             var pack = uxPackages.SelectedItem as IPackage;
             if (pack != null)
             {
-                extensionDescription.Text =
-                    String.Format("Created by: {0}\nId:{1}\nVersion:{2}\nDescription:{3}",
-                                  StrCat(pack.Authors, ","),
-                                  pack.Id,
-                                  pack.Version,
-                                  pack.Description);
+                System.Drawing.Font currentFont = richTextBox1.SelectionFont;
+                Font boldFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
+                Font regularFont = new Font(richTextBox1.SelectionFont.FontFamily, currentFont.Size, FontStyle.Regular);
+                richTextBox1.Clear();
+
+                richTextBox1.AppendText("Created by: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(StrCat(pack.Authors, ","));
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Id: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Id);
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Version: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Version.ToString());
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Description);
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
@@ -412,8 +436,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                     newExtension.Activate();
                 }
 
-                UpdateApps();
-                UpdateDataProviders();
+                // hack: we might need to refresh the installed list to show new version numbers
+                // or dependencies that were retrieved with the new version.
 
                 App.ProgressHandler.Progress(null, 0, "Ready.");
             }
@@ -460,18 +484,34 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void clbApps_SelectedValueChanged(object sender, EventArgs e)
+        private void uxCategoryList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var extension = clbApps.SelectedItem as IExtension;
-            var package = GetPackageFromExtension(extension);
-
-            if (package == null)
+            var category = uxCategoryList.SelectedItem as IExtensionCategory;
+            if (category != null)
             {
-                uxUninstall.Enabled = false;
+                Installed.Items.Clear();
+                foreach (var item in category.GetItems())
+                {
+                    Installed.Items.Add(item.Item1, item.Item2);
+                }
             }
             else
             {
-                uxUninstall.Enabled = IsPackageInstalled(package);
+                if ((String)uxCategoryList.SelectedItem == "All")
+                {
+                    Installed.Items.Clear();
+
+                    foreach (var item in uxCategoryList.Items)
+                    {
+                        var cat = item as IExtensionCategory;
+                        // The "All" string will not be a IExtensionCategory and needs to be skipped.
+                        if (cat == null) continue;
+                        foreach (var catItem in cat.GetItems())
+                        {
+                            Installed.Items.Add(catItem.Item1, catItem.Item2);
+                        }
+                    }
+                }
             }
         }
     }

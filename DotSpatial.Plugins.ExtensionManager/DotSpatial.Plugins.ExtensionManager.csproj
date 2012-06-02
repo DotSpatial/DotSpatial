@@ -54,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFunction.cs" />
+    <Compile Include="ApplicationExtensionCategory.cs" />
+    <Compile Include="DataProviderCategory.cs" />
+    <Compile Include="ExtensionCategory.cs" />
     <Compile Include="ExtensionManagerPlugin.cs" />
+    <Compile Include="IExtensionCategory.cs" />
     <Compile Include="Packages.cs" />
     <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>
@@ -69,6 +73,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SatisfyImportsOnStartupExtension.cs" />
+    <Compile Include="ToolsCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
@@ -85,6 +90,10 @@
       <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
       <Name>DotSpatial.Extensions</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
+      <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
+      <Name>DotSpatial.Modeling.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
