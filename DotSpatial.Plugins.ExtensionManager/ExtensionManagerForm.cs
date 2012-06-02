@@ -36,6 +36,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private readonly Packages packages = new Packages();
         private IPackage[] originalPackages;
+
         #endregion
 
         #region Constructors and Destructors
@@ -199,7 +200,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             App.EnsureDeactivated(selectedPackage.Id);
             App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
 
-            UpdateApps();
+            // hack: we should really try to refresh the list, using what ever category the user
+            // has selected.
             App.ProgressHandler.Progress(null, 0, "Ready.");
 
             MessageBox.Show("The extension will finish uninstalling when you restart the application.");
@@ -438,7 +440,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 // hack: we might need to refresh the installed list to show new version numbers
                 // or dependencies that were retrieved with the new version.
-
                 App.ProgressHandler.Progress(null, 0, "Ready.");
             }
         }
