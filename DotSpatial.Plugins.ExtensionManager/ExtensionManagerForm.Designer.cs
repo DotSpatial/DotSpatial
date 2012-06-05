@@ -36,11 +36,11 @@
             this.uxCategoryList = new System.Windows.Forms.ListBox();
             this.uxUninstall = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
+            this.uxSelectedFeed = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.uxSearchText = new System.Windows.Forms.TextBox();
             this.uxClear = new System.Windows.Forms.Button();
             this.uxSearch = new System.Windows.Forms.Button();
-            this.extensionDescription = new System.Windows.Forms.Label();
             this.uxUpdate = new System.Windows.Forms.Button();
             this.uxInstall = new System.Windows.Forms.Button();
             this.uxPackages = new System.Windows.Forms.ListBox();
@@ -119,11 +119,11 @@
             // 
             // tabOnline
             // 
+            this.tabOnline.Controls.Add(this.uxSelectedFeed);
             this.tabOnline.Controls.Add(this.richTextBox1);
             this.tabOnline.Controls.Add(this.uxSearchText);
             this.tabOnline.Controls.Add(this.uxClear);
             this.tabOnline.Controls.Add(this.uxSearch);
-            this.tabOnline.Controls.Add(this.extensionDescription);
             this.tabOnline.Controls.Add(this.uxUpdate);
             this.tabOnline.Controls.Add(this.uxInstall);
             this.tabOnline.Controls.Add(this.uxPackages);
@@ -135,6 +135,20 @@
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
             // 
+            // uxSelectedFeed
+            // 
+            this.uxSelectedFeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxSelectedFeed.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxSelectedFeed.FormattingEnabled = true;
+            this.uxSelectedFeed.Items.AddRange(new object[] {
+            "http://www.myget.org/F/dotspatial/",
+            "http://www.myget.org/F/dotspatialstaging/",
+            "http://www.myget.org/F/hydrodesktop/"});
+            this.uxSelectedFeed.Location = new System.Drawing.Point(8, 10);
+            this.uxSelectedFeed.Name = "uxSelectedFeed";
+            this.uxSelectedFeed.Size = new System.Drawing.Size(314, 23);
+            this.uxSelectedFeed.TabIndex = 15;
+            // 
             // richTextBox1
             // 
             this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -144,13 +158,13 @@
             this.richTextBox1.Location = new System.Drawing.Point(349, 42);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(293, 290);
+            this.richTextBox1.Size = new System.Drawing.Size(293, 294);
             this.richTextBox1.TabIndex = 14;
             this.richTextBox1.Text = "";
             // 
             // uxSearchText
             // 
-            this.uxSearchText.Location = new System.Drawing.Point(87, 9);
+            this.uxSearchText.Location = new System.Drawing.Point(89, 42);
             this.uxSearchText.Name = "uxSearchText";
             this.uxSearchText.Size = new System.Drawing.Size(156, 20);
             this.uxSearchText.TabIndex = 12;
@@ -158,7 +172,7 @@
             // 
             // uxClear
             // 
-            this.uxClear.Location = new System.Drawing.Point(250, 6);
+            this.uxClear.Location = new System.Drawing.Point(247, 40);
             this.uxClear.Name = "uxClear";
             this.uxClear.Size = new System.Drawing.Size(75, 23);
             this.uxClear.TabIndex = 11;
@@ -168,7 +182,7 @@
             // 
             // uxSearch
             // 
-            this.uxSearch.Location = new System.Drawing.Point(3, 7);
+            this.uxSearch.Location = new System.Drawing.Point(8, 39);
             this.uxSearch.Name = "uxSearch";
             this.uxSearch.Size = new System.Drawing.Size(75, 23);
             this.uxSearch.TabIndex = 7;
@@ -176,19 +190,10 @@
             this.uxSearch.UseVisualStyleBackColor = true;
             this.uxSearch.Click += new System.EventHandler(this.uxSearch_Click);
             // 
-            // extensionDescription
-            // 
-            this.extensionDescription.BackColor = System.Drawing.Color.White;
-            this.extensionDescription.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extensionDescription.Location = new System.Drawing.Point(353, 42);
-            this.extensionDescription.Name = "extensionDescription";
-            this.extensionDescription.Size = new System.Drawing.Size(282, 180);
-            this.extensionDescription.TabIndex = 13;
-            // 
             // uxUpdate
             // 
             this.uxUpdate.Enabled = false;
-            this.uxUpdate.Location = new System.Drawing.Point(567, 7);
+            this.uxUpdate.Location = new System.Drawing.Point(567, 10);
             this.uxUpdate.Name = "uxUpdate";
             this.uxUpdate.Size = new System.Drawing.Size(75, 23);
             this.uxUpdate.TabIndex = 3;
@@ -199,7 +204,7 @@
             // uxInstall
             // 
             this.uxInstall.Enabled = false;
-            this.uxInstall.Location = new System.Drawing.Point(435, 7);
+            this.uxInstall.Location = new System.Drawing.Point(377, 10);
             this.uxInstall.Name = "uxInstall";
             this.uxInstall.Size = new System.Drawing.Size(75, 23);
             this.uxInstall.TabIndex = 3;
@@ -212,9 +217,9 @@
             this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxPackages.FormattingEnabled = true;
-            this.uxPackages.Location = new System.Drawing.Point(3, 42);
+            this.uxPackages.Location = new System.Drawing.Point(3, 81);
             this.uxPackages.Name = "uxPackages";
-            this.uxPackages.Size = new System.Drawing.Size(319, 290);
+            this.uxPackages.Size = new System.Drawing.Size(319, 251);
             this.uxPackages.TabIndex = 2;
             this.uxPackages.SelectedValueChanged += new System.EventHandler(this.uxPackages_SelectedValueChanged);
             // 
@@ -243,7 +248,6 @@
         private System.Windows.Forms.TabPage tabOnline;
         private System.Windows.Forms.Button uxInstall;
         private System.Windows.Forms.ListBox uxPackages;
-        private System.Windows.Forms.Label extensionDescription;
         private System.Windows.Forms.Button uxUpdate;
         private System.Windows.Forms.Button uxSearch;
         private System.Windows.Forms.Button uxClear;
@@ -253,5 +257,6 @@
         private System.Windows.Forms.CheckedListBox Installed;
         private System.Windows.Forms.ListBox uxCategoryList;
         private System.Windows.Forms.Button uxUninstall;
+        private System.Windows.Forms.ComboBox uxSelectedFeed;
     }
 }

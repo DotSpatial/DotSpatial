@@ -108,6 +108,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             packageManager.UpdatePackage(package, true, false);
         }
 
+        public void SetNewSource(string source)
+        {
+            repo = PackageRepositoryFactory.Default.CreateRepository(source);
+            packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(source), new PhysicalFileSystem(repositoryLocation));
+        }
+
         #endregion
     }
 }

@@ -219,10 +219,13 @@ namespace DotSpatial.Plugins.ExtensionManager
             AddCategory(new ToolsCategory());
             AddCategory(new DataProviderCategory());
             AddCategory(new ApplicationExtensionCategory());
+            uxSelectedFeed.SelectedIndex = 0;
+            this.uxSelectedFeed.SelectedIndexChanged += new System.EventHandler(this.uxSelectedFeed_SelectedIndexChanged);
         }
 
         private void UpdatePackageList()
         {
+            uxPackages.Items.Clear();
             uxPackages.Items.Add("Loading...");
             var task = Task.Factory.StartNew(() =>
                                                  {
@@ -454,8 +457,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxClear_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
-            uxPackages.Items.Clear();
-            uxPackages.Items.AddRange(originalPackages);
+            UpdatePackageList();
         }
 
         private void Search()
@@ -514,6 +516,17 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
                 }
             }
+        }
+
+        public void uxSelectedFeed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayPackages();
+        }
+
+        private void DisplayPackages()
+        {
+            packages.SetNewSource(uxSelectedFeed.SelectedItem.ToString());
+            UpdatePackageList();
         }
     }
 }
