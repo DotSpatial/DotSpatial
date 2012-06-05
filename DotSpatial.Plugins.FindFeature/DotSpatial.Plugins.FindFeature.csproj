@@ -92,6 +92,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\page_white_find.png" />
   </ItemGroup>
   <ItemGroup>

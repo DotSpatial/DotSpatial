@@ -84,6 +84,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\table_16x16.png" />
   </ItemGroup>
   <ItemGroup>
