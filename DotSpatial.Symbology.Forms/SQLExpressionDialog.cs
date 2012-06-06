@@ -41,7 +41,7 @@ namespace DotSpatial.Symbology.Forms
 
         private Button btnApply;
         private Button btnCancel;
-        private Button cmdOk;
+        private Button btnOk;
         private Panel panel1;
         private SQLQueryControl sqlQueryControl1;
 
@@ -57,17 +57,17 @@ namespace DotSpatial.Symbology.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.cmdOk = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.sqlQueryControl1 = new DotSpatial.Symbology.Forms.SQLQueryControl();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             //
             // panel1
             //
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.btnApply);
             this.panel1.Controls.Add(this.btnCancel);
-            this.panel1.Controls.Add(this.cmdOk);
+            this.panel1.Controls.Add(this.btnOk);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             //
             // btnApply
@@ -85,26 +85,27 @@ namespace DotSpatial.Symbology.Forms
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             //
-            // cmdOk
+            // btnOk
             //
-            resources.ApplyResources(this.cmdOk, "cmdOk");
-            this.cmdOk.Name = "cmdOk";
-            this.cmdOk.UseVisualStyleBackColor = true;
-            this.cmdOk.Click += new System.EventHandler(this.cmdOk_Click);
+            resources.ApplyResources(this.btnOk, "btnOk");
+            this.btnOk.Name = "btnOk";
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             //
             // sqlQueryControl1
             //
-            resources.ApplyResources(this.sqlQueryControl1, "sqlQueryControl1");
             this.sqlQueryControl1.AttributeSource = null;
-            this.sqlQueryControl1.ExpressionText = string.Empty;
+            this.sqlQueryControl1.ExpressionText = "";
+            resources.ApplyResources(this.sqlQueryControl1, "sqlQueryControl1");
             this.sqlQueryControl1.Name = "sqlQueryControl1";
             this.sqlQueryControl1.Table = null;
             //
             // SQLExpressionDialog
             //
-            this.AcceptButton = this.cmdOk;
-            resources.ApplyResources(this, "$this");
+            this.AcceptButton = this.btnOk;
             this.CancelButton = this.btnCancel;
+            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.sqlQueryControl1);
             this.Controls.Add(this.panel1);
             this.HelpButton = true;
@@ -179,7 +180,7 @@ namespace DotSpatial.Symbology.Forms
             Close();
         }
 
-        private void cmdOk_Click(object sender, EventArgs e)
+        private void btnOk_Click(object sender, EventArgs e)
         {
             OnApplyChanges();
             Close();

@@ -69,7 +69,8 @@ namespace DotSpatial.Plugins.FindFeature
                 qd.AttributeSource = fl.DataSet;
 
             // Note: User must click ok button to see anything.
-            qd.ShowDialog();
+            if (qd.ShowDialog() == DialogResult.Cancel)
+                return;
 
             if (!String.IsNullOrWhiteSpace(qd.Expression))
             {
