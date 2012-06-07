@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
@@ -35,7 +36,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         private AppManager _App;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private readonly Packages packages = new Packages();
-        private IPackage[] originalPackages;
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             // Databind the check list box to the Name property of extension.
             uxCategoryList.DisplayMember = "Name";
 
-            UpdatePackageList();
+            RefreshPackageList();
 
             var dataService = packages.Repo as DataServicePackageRepository;
             if (dataService != null)
@@ -86,49 +86,53 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void InstallButton_Click(object sender, EventArgs e)
         {
-            if (uxPackages.SelectedItem != null)
+            if (uxPackages.SelectedItems.Count < 1)
             {
-                uxInstall.Enabled = false;
-                var pack = uxPackages.SelectedItem as IPackage;
-
-                // make a list of all the ext. that are deactivated, do the install, then activate everything,
-                // except the list of those that were deactivated.
-                // hack: Hope the user doesn't unload extensions while we install.
-                var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
-
-                App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-
-                var task = Task.Factory.StartNew(() =>
-                                                    {
-                                                        // Download the extension.
-                                                        packages.Install(pack.Id);
-
-                                                        // Load the extension.
-                                                        App.RefreshExtensions();
-                                                    });
-
-                // UI related work.
-                task.ContinueWith((t) =>
-                                      {
-                                          App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
-
-                                          // Activate the extension(s) that was installed.
-                                          var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
-
-                                          if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
-                                              return;
-
-                                          foreach (var item in extensions)
-                                          {
-                                              item.TryActivate();
-                                          }
-
-                                          // hack: we should really try to refresh the list, using what ever category the user
-                                          // has selected.
-                                          Installed.Items.Clear();
-                                          App.ProgressHandler.Progress(null, 0, "Ready.");
-                                      }, TaskScheduler.FromCurrentSynchronizationContext());
+                return;
             }
+            uxInstall.Enabled = false;
+            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
+            if (pack == null)
+            {
+                return;
+            }
+            // make a list of all the ext. that are deactivated, do the install, then activate everything,
+            // except the list of those that were deactivated.
+            // hack: Hope the user doesn't unload extensions while we install.
+            var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
+
+            App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+
+            var task = Task.Factory.StartNew(() =>
+                                                {
+                                                    // Download the extension.
+                                                    packages.Install(pack.Id);
+
+                                                    // Load the extension.
+                                                    App.RefreshExtensions();
+                                                });
+
+            // UI related work.
+            task.ContinueWith((t) =>
+                                  {
+                                      App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+
+                                      // Activate the extension(s) that was installed.
+                                      var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
+
+                                      if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
+                                          return;
+
+                                      foreach (var item in extensions)
+                                      {
+                                          item.TryActivate();
+                                      }
+
+                                      // hack: we should really try to refresh the list, using what ever category the user
+                                      // has selected.
+                                      Installed.Items.Clear();
+                                      App.ProgressHandler.Progress(null, 0, "Ready.");
+                                  }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private IPackage GetPackageFromExtension(IExtension extension)
@@ -219,32 +223,29 @@ namespace DotSpatial.Plugins.ExtensionManager
             AddCategory(new ToolsCategory());
             AddCategory(new DataProviderCategory());
             AddCategory(new ApplicationExtensionCategory());
-            uxSelectedFeed.SelectedIndex = 0;
-            this.uxSelectedFeed.SelectedIndexChanged += new System.EventHandler(this.uxSelectedFeed_SelectedIndexChanged);
+
+            // Select the first item in the drop down.
+            uxFeedSelection.SelectedIndex = 0;
+
+            // Then, wire ourselves up to listen to the selection changed event.
+            this.uxFeedSelection.SelectedIndexChanged += new System.EventHandler(this.uxFeedSelection_SelectedIndexChanged);
         }
 
-        private void UpdatePackageList()
+        private void RefreshPackageList()
         {
+            uxPackages.TileSize = new Size(uxPackages.Width - 25, 45);
             uxPackages.Items.Clear();
             uxPackages.Items.Add("Loading...");
             var task = Task.Factory.StartNew(() =>
-                                                 {
-                                                     var result = from item in packages.Repo.GetPackages()
-                                                                  where item.IsLatestVersion && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
-                                                                  select item;
+                                                  {
+                                                      var result = from item in packages.Repo.GetPackages()
+                                                                   where item.IsLatestVersion && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
+                                                                   select item;
 
-                                                     return result.ToArray();
-                                                 });
+                                                      return result.ToArray();
+                                                  });
 
-            task.ContinueWith((t) =>
-                                  {
-                                      uxPackages.Items.Clear();
-                                      originalPackages = t.Result;
-                                      if (t.Exception == null)
-                                          uxPackages.Items.AddRange(t.Result);
-                                      else
-                                          uxPackages.Items.Add(t.Exception.Message);
-                                  }, TaskScheduler.FromCurrentSynchronizationContext());
+            task.ContinueWith(t => AddItems(t.Result), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -288,47 +289,24 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void uxPackages_SelectedValueChanged(object sender, EventArgs e)
+        private Image LoadImage(string url)
         {
-            var pack = uxPackages.SelectedItem as IPackage;
-            if (pack != null)
+            System.Net.WebRequest request = System.Net.WebRequest.Create(url);
+
+            try
             {
-                System.Drawing.Font currentFont = richTextBox1.SelectionFont;
-                Font boldFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
-                Font regularFont = new Font(richTextBox1.SelectionFont.FontFamily, currentFont.Size, FontStyle.Regular);
-                richTextBox1.Clear();
+                System.Net.WebResponse response = request.GetResponse();
+                System.IO.Stream responseStream = response.GetResponseStream();
 
-                richTextBox1.AppendText("Created by: ");
-                richTextBox1.SelectionFont = boldFont;
-                richTextBox1.AppendText(StrCat(pack.Authors, ","));
-                richTextBox1.SelectionFont = regularFont;
+                Bitmap bmp = new Bitmap(responseStream);
 
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Id: ");
-                richTextBox1.SelectionFont = boldFont;
-                richTextBox1.AppendText(pack.Id);
-                richTextBox1.SelectionFont = regularFont;
+                responseStream.Dispose();
 
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Version: ");
-                richTextBox1.SelectionFont = boldFont;
-                richTextBox1.AppendText(pack.Version.ToString());
-                richTextBox1.SelectionFont = regularFont;
-
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
-                richTextBox1.SelectionFont = boldFont;
-                richTextBox1.AppendText(pack.Description);
-
-                // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
-                // this happens automatically for packages that are build with the packages.nuspec file.
-                if (App.GetExtension(pack.Id) == null)
-                {
-                    uxInstall.Enabled = true;
-                    uxUpdate.Enabled = false;
-                }
-                else
-                {
-                    uxInstall.Enabled = false;
-                    uxUpdate.Enabled = IsPackageUpdateable(pack);
-                }
+                return bmp;
+            }
+            catch (System.Net.WebException)
+            {
+                return null;
             }
         }
 
@@ -409,7 +387,12 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxUpdate_Click(object sender, EventArgs e)
         {
-            var pack = uxPackages.SelectedItem as IPackage;
+            if (uxPackages.SelectedItems.Count < 1)
+            {
+                return;
+            }
+
+            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
             if (pack != null)
             {
                 // deactivate the old version and mark for uninstall
@@ -457,7 +440,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxClear_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
-            UpdatePackageList();
+            DisplayPackages();
         }
 
         private void Search()
@@ -465,13 +448,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             string search = uxSearchText.Text;
 
             IQueryable<IPackage> results = packages.Repo.Search(search, false);
-            uxPackages.Items.Clear();
 
             var query = from item in results
                         where item.IsLatestVersion == true
                         select item;
 
-            uxPackages.Items.AddRange(query.ToArray());
+            AddItems(query);
 
             if (uxPackages.Items.Count == 0)
             {
@@ -518,15 +500,127 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        public void uxSelectedFeed_SelectedIndexChanged(object sender, EventArgs e)
+        public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayPackages();
         }
 
         private void DisplayPackages()
         {
-            packages.SetNewSource(uxSelectedFeed.SelectedItem.ToString());
-            UpdatePackageList();
+            packages.SetNewSource(uxFeedSelection.SelectedItem.ToString());
+            RefreshPackageList();
+        }
+
+        private void SelectedItemChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (uxPackages.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
+            if (pack != null)
+            {
+                System.Drawing.Font currentFont = richTextBox1.SelectionFont;
+                Font boldFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
+                Font regularFont = new Font(richTextBox1.SelectionFont.FontFamily, currentFont.Size, FontStyle.Regular);
+                richTextBox1.Clear();
+
+                richTextBox1.AppendText("Created by: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(StrCat(pack.Authors, ","));
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Id: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Id);
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Version: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Version.ToString());
+                richTextBox1.SelectionFont = regularFont;
+
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
+                richTextBox1.SelectionFont = boldFont;
+                richTextBox1.AppendText(pack.Description);
+
+                // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
+                // this happens automatically for packages that are build with the packages.nuspec file.
+                if (App.GetExtension(pack.Id) == null)
+                {
+                    uxInstall.Enabled = true;
+                    uxUpdate.Enabled = false;
+                }
+                else
+                {
+                    uxInstall.Enabled = false;
+                    uxUpdate.Enabled = IsPackageUpdateable(pack);
+                }
+            }
+        }
+
+        private void AddItems(IEnumerable<IPackage> list)
+        {
+            ImageList images = new ImageList();
+            images.ImageSize = new Size(32, 32);
+
+            var tasks = new List<Task<Image>>();
+
+            uxPackages.BeginUpdate();
+            uxPackages.Items.Clear();
+            foreach (var package in list)
+            {
+                ListViewItem item = new ListViewItem(package.Id);
+
+                string description = null;
+                if (package.Description.Length > 56)
+                {
+                    description = package.Description.Substring(0, 53) + "...";
+                }
+                else
+                {
+                    description = package.Description;
+                }
+                item.SubItems.Add(description);
+
+                uxPackages.Items.Add(item);
+                item.Tag = package;
+
+                var task = BeginGetImage(package.IconUrl.ToString());
+                tasks.Add(task);
+            }
+            uxPackages.EndUpdate();
+
+            Task<Image>[] taskArray = tasks.ToArray();
+            if (taskArray.Count() == 0) return;
+
+            Task.Factory.ContinueWhenAll(taskArray, t =>
+             {
+                 for (int i = 0; i < taskArray.Length; i++)
+                 {
+                     if (taskArray[i].Result != null)
+                     {
+                         images.Images.Add(taskArray[i].Result);
+                         uxPackages.Items[i].ImageIndex = images.Images.Count - 1;
+                     }
+                 }
+             }, new System.Threading.CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
+            uxPackages.LargeImageList = images;
+        }
+
+        private Task<Image> BeginGetImage(string iconUrl)
+        {
+            var task = Task.Factory.StartNew(() =>
+            {
+                Image image = LoadImage(iconUrl);
+                return image;
+
+                // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
+            }, new System.Threading.CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
+
+            return task;
         }
     }
 }
