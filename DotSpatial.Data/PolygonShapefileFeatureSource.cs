@@ -217,7 +217,7 @@ namespace DotSpatial.Data
             shpStream.Flush();
             shpStream.Close();
             offset += contentLength;
-            Shapefile.WriteFileLength(Filename, offset);
+            Shapefile.WriteFileLength(Filename, offset + 4); // Add 4 for the record header
             Shapefile.WriteFileLength(header.ShxFilename, 50 + numFeatures * 4);
         }
 

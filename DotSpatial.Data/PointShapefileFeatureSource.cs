@@ -83,14 +83,14 @@ namespace DotSpatial.Data
         /// <inheritdocs/>
         protected override void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures)
         {
-            FileInfo fi = new FileInfo(Filename);
+            var fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
 
-            FileStream shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 10000);
-            FileStream shxStream = new FileStream(header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 100);
+            var shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 10000);
+            var shxStream = new FileStream(header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 100);
 
             Coordinate point = feature.Coordinates[0];
-            int contentLength = 6;
+            int contentLength = 10;
             if (header.ShapeType == ShapeType.PointM)
             {
                 contentLength += 4; // one additional value (m)
@@ -135,7 +135,7 @@ namespace DotSpatial.Data
             shpStream.Flush();
             shpStream.Close();
             offset += contentLength;
-            Shapefile.WriteFileLength(Filename, offset);
+            Shapefile.WriteFileLength(Filename, offset + 4); // Add 4 for the record header
             Shapefile.WriteFileLength(header.ShxFilename, 50 + numFeatures * 4);
         }
 
