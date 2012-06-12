@@ -63,6 +63,14 @@ namespace DotSpatial.Plugins.ExtensionManager
         public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
         {
             App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
+            if (uxInstallProgress.InvokeRequired)
+            {
+                uxInstallProgress.Invoke((Action)(() => { uxInstallProgress.Value = e.PercentComplete; }));
+            }
+            else
+            {
+                uxInstallProgress.Value = e.PercentComplete;
+            }
         }
 
         public AppManager App
@@ -90,6 +98,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return;
             }
+
+            uxInstallProgress.Value = 0;
+            uxInstallProgress.Visible = true;
             uxInstall.Enabled = false;
             var pack = uxPackages.SelectedItems[0].Tag as IPackage;
             if (pack == null)
@@ -132,6 +143,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                                       // has selected.
                                       Installed.Items.Clear();
                                       App.ProgressHandler.Progress(null, 0, "Ready.");
+                                      uxInstallProgress.Visible = false;
                                   }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -231,9 +243,37 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxFeedSelection.SelectedIndexChanged += new System.EventHandler(this.uxFeedSelection_SelectedIndexChanged);
         }
 
+        private IEnumerable<IPackage> GetPackagesFromExtensions(IEnumerable<IExtension> extensions)
+        {
+            foreach (IExtension extension in extensions)
+            {
+                var package = GetPackageFromExtension(extension);
+                if (package != null)
+                {
+                    yield return package;
+                }
+            }
+        }
+
+        private void RefreshUpdateList()
+        {
+            IEnumerable<IPackage> localPackages = GetPackagesFromExtensions(App.Extensions);
+            IEnumerable<IPackage> list = packages.Repo.GetUpdates(localPackages, false, false);
+            if (uxUpdatePackages.InvokeRequired)
+            {
+                uxUpdatePackages.Invoke((Action)(() => { AddItems(list, uxUpdatePackages); }));
+            }
+            else
+            {
+                AddItems(list, uxUpdatePackages);
+            }
+        }
+
         private void RefreshPackageList()
         {
+            uxInstallProgress.Visible = false;
             uxPackages.TileSize = new Size(uxPackages.Width - 25, 45);
+            uxUpdatePackages.TileSize = new Size(uxUpdatePackages.Width - 25, 45);
             uxPackages.Items.Clear();
             uxPackages.Items.Add("Loading...");
             var task = Task.Factory.StartNew(() =>
@@ -242,10 +282,15 @@ namespace DotSpatial.Plugins.ExtensionManager
                                                                    where item.IsLatestVersion && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
                                                                    select item;
 
+                                                      RefreshUpdateList();
+
                                                       return result.ToArray();
                                                   });
 
-            task.ContinueWith(t => AddItems(t.Result), TaskScheduler.FromCurrentSynchronizationContext());
+            task.ContinueWith(t =>
+                {
+                    AddItems(t.Result, uxPackages);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -291,6 +336,10 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private Image LoadImage(string url)
         {
+            if (url.Substring(0, 4) != "http")
+            {
+                return null;
+            }
             System.Net.WebRequest request = System.Net.WebRequest.Create(url);
 
             try
@@ -385,51 +434,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void uxUpdate_Click(object sender, EventArgs e)
-        {
-            if (uxPackages.SelectedItems.Count < 1)
-            {
-                return;
-            }
-
-            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
-            if (pack != null)
-            {
-                // deactivate the old version and mark for uninstall
-                var extension = App.EnsureDeactivated(pack.Id);
-
-                if (IsPackageInstalled(pack))
-                {
-                    App.MarkPackageForRemoval(GetPackagePath(pack));
-                }
-                else
-                {
-                    // todo: consider removing unneeded dependencies.
-                    App.MarkExtensionForRemoval(GetExtensionPath(extension));
-                }
-
-                App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
-
-                // get new version
-                packages.Update(pack);
-
-                App.RefreshExtensions();
-
-                // Activate the extension(s) that was installed.
-                // it is difficult to determine which version is newest, so we go and look at the when the file was
-                // placed on disk.
-                var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
-                if (newExtension != null)
-                {
-                    newExtension.Activate();
-                }
-
-                // hack: we might need to refresh the installed list to show new version numbers
-                // or dependencies that were retrieved with the new version.
-                App.ProgressHandler.Progress(null, 0, "Ready.");
-            }
-        }
-
         #endregion
 
         private void uxSearch_Click(object sender, EventArgs e)
@@ -453,7 +457,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                         where item.IsLatestVersion == true
                         select item;
 
-            AddItems(query);
+            AddItems(query, uxPackages);
 
             if (uxPackages.Items.Count == 0)
             {
@@ -550,25 +554,28 @@ namespace DotSpatial.Plugins.ExtensionManager
                 if (App.GetExtension(pack.Id) == null)
                 {
                     uxInstall.Enabled = true;
-                    uxUpdate.Enabled = false;
+                    //    uxUpdate.Enabled = false;
                 }
                 else
                 {
                     uxInstall.Enabled = false;
-                    uxUpdate.Enabled = IsPackageUpdateable(pack);
+                    //  uxUpdate.Enabled = IsPackageUpdateable(pack);
                 }
             }
         }
 
-        private void AddItems(IEnumerable<IPackage> list)
+        private void AddItems(IEnumerable<IPackage> list, ListView listView)
         {
-            ImageList images = new ImageList();
-            images.ImageSize = new Size(32, 32);
+            ImageList imageList = new ImageList();
+            imageList.ImageSize = new Size(32, 32);
+            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            // Add a default image at position 0;
+            imageList.Images.Add(DotSpatial.Plugins.ExtensionManager.Properties.Resources.box_closed_32x32);
 
             var tasks = new List<Task<Image>>();
 
-            uxPackages.BeginUpdate();
-            uxPackages.Items.Clear();
+            listView.BeginUpdate();
+            listView.Items.Clear();
             foreach (var package in list)
             {
                 ListViewItem item = new ListViewItem(package.Id);
@@ -583,14 +590,15 @@ namespace DotSpatial.Plugins.ExtensionManager
                     description = package.Description;
                 }
                 item.SubItems.Add(description);
+                item.ImageIndex = 0;
 
-                uxPackages.Items.Add(item);
+                listView.Items.Add(item);
                 item.Tag = package;
 
                 var task = BeginGetImage(package.IconUrl.ToString());
                 tasks.Add(task);
             }
-            uxPackages.EndUpdate();
+            listView.EndUpdate();
 
             Task<Image>[] taskArray = tasks.ToArray();
             if (taskArray.Count() == 0) return;
@@ -601,13 +609,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                  {
                      if (taskArray[i].Result != null)
                      {
-                         images.Images.Add(taskArray[i].Result);
-                         uxPackages.Items[i].ImageIndex = images.Images.Count - 1;
+                         imageList.Images.Add(taskArray[i].Result);
+                         listView.Items[i].ImageIndex = imageList.Images.Count - 1;
                      }
                  }
              }, new System.Threading.CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
-            uxPackages.LargeImageList = images;
+            listView.LargeImageList = imageList;
         }
 
         private Task<Image> BeginGetImage(string iconUrl)
@@ -621,6 +629,52 @@ namespace DotSpatial.Plugins.ExtensionManager
             }, new System.Threading.CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
 
             return task;
+        }
+
+        private void uxUpdate_Click(object sender, EventArgs e)
+        {
+            if (uxUpdatePackages.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            uxUpdate.Enabled = false;
+            var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
+            if (pack != null)
+            {
+                // deactivate the old version and mark for uninstall
+                var extension = App.EnsureDeactivated(pack.Id);
+
+                if (IsPackageInstalled(pack))
+                {
+                    App.MarkPackageForRemoval(GetPackagePath(pack));
+                }
+                else
+
+                    // todo: consider removing unneeded dependencies.
+                    App.MarkExtensionForRemoval(GetExtensionPath(extension));
+            }
+
+            App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
+
+            // get new version
+            packages.Update(pack);
+
+            App.RefreshExtensions();
+
+            // Activate the extension(s) that was installed.
+            // it is difficult to determine which version is newest, so we go and look at the when the file was
+            // placed on disk.
+            var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
+            if (newExtension != null)
+            {
+                newExtension.Activate();
+            }
+
+            // hack: we might need to refresh the installed list to show new version numbers
+            // or dependencies that were retrieved with the new version.
+            App.ProgressHandler.Progress(null, 0, "Ready.");
+            RefreshPackageList();
+            uxUpdate.Enabled = true;
         }
     }
 }
