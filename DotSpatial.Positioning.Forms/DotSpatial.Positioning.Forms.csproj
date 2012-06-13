@@ -131,6 +131,7 @@
     <ProjectReference Include="..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
       <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
       <Name>DotSpatial.Positioning</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

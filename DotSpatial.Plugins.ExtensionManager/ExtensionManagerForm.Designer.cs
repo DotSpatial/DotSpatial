@@ -36,6 +36,7 @@
             this.uxCategoryList = new System.Windows.Forms.ListBox();
             this.uxUninstall = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
+            this.uxDownloadStatus = new System.Windows.Forms.RichTextBox();
             this.uxInstallProgress = new System.Windows.Forms.ProgressBar();
             this.uxPackages = new System.Windows.Forms.ListView();
             this.Pack = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -49,6 +50,7 @@
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uxUpdateAll = new System.Windows.Forms.Button();
             this.uxUpdate = new System.Windows.Forms.Button();
             this.uxUpdatePackages = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -68,7 +70,7 @@
             this.TabPage3.Location = new System.Drawing.Point(0, 0);
             this.TabPage3.Name = "TabPage3";
             this.TabPage3.SelectedIndex = 0;
-            this.TabPage3.Size = new System.Drawing.Size(659, 612);
+            this.TabPage3.Size = new System.Drawing.Size(737, 612);
             this.TabPage3.TabIndex = 2;
             // 
             // tabPage1
@@ -134,6 +136,7 @@
             // 
             // tabOnline
             // 
+            this.tabOnline.Controls.Add(this.uxDownloadStatus);
             this.tabOnline.Controls.Add(this.uxInstallProgress);
             this.tabOnline.Controls.Add(this.uxPackages);
             this.tabOnline.Controls.Add(this.uxFeedSelection);
@@ -146,17 +149,32 @@
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
             this.tabOnline.Name = "tabOnline";
             this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOnline.Size = new System.Drawing.Size(651, 586);
+            this.tabOnline.Size = new System.Drawing.Size(729, 586);
             this.tabOnline.TabIndex = 1;
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
             // 
+            // uxDownloadStatus
+            // 
+            this.uxDownloadStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxDownloadStatus.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.uxDownloadStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxDownloadStatus.Location = new System.Drawing.Point(349, 494);
+            this.uxDownloadStatus.Name = "uxDownloadStatus";
+            this.uxDownloadStatus.Size = new System.Drawing.Size(371, 66);
+            this.uxDownloadStatus.TabIndex = 20;
+            this.uxDownloadStatus.Text = "";
+            // 
             // uxInstallProgress
             // 
-            this.uxInstallProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.uxInstallProgress.Location = new System.Drawing.Point(89, 555);
+            this.uxInstallProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxInstallProgress.Location = new System.Drawing.Point(349, 557);
             this.uxInstallProgress.Name = "uxInstallProgress";
-            this.uxInstallProgress.Size = new System.Drawing.Size(240, 23);
+            this.uxInstallProgress.Size = new System.Drawing.Size(371, 23);
             this.uxInstallProgress.TabIndex = 18;
             this.uxInstallProgress.Value = 50;
             // 
@@ -200,17 +218,19 @@
             this.uxFeedSelection.Name = "uxFeedSelection";
             this.uxFeedSelection.Size = new System.Drawing.Size(314, 23);
             this.uxFeedSelection.TabIndex = 15;
+            this.uxFeedSelection.SelectedIndexChanged += new System.EventHandler(this.uxFeedSelection_SelectedIndexChanged);
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(349, 10);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(293, 568);
+            this.richTextBox1.Size = new System.Drawing.Size(371, 568);
             this.richTextBox1.TabIndex = 14;
             this.richTextBox1.Text = "";
             // 
@@ -261,7 +281,7 @@
             this.shapeContainer1.Name = "shapeContainer1";
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(645, 580);
+            this.shapeContainer1.Size = new System.Drawing.Size(723, 580);
             this.shapeContainer1.TabIndex = 19;
             this.shapeContainer1.TabStop = false;
             // 
@@ -278,6 +298,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.uxUpdateAll);
             this.tabPage2.Controls.Add(this.uxUpdate);
             this.tabPage2.Controls.Add(this.uxUpdatePackages);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -287,6 +308,16 @@
             this.tabPage2.TabIndex = 2;
             this.tabPage2.Text = "Update";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uxUpdateAll
+            // 
+            this.uxUpdateAll.Location = new System.Drawing.Point(227, 555);
+            this.uxUpdateAll.Name = "uxUpdateAll";
+            this.uxUpdateAll.Size = new System.Drawing.Size(75, 23);
+            this.uxUpdateAll.TabIndex = 3;
+            this.uxUpdateAll.Text = "Update All";
+            this.uxUpdateAll.UseVisualStyleBackColor = true;
+            this.uxUpdateAll.Click += new System.EventHandler(this.uxUpdateAll_Click);
             // 
             // uxUpdate
             // 
@@ -315,7 +346,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(659, 612);
+            this.ClientSize = new System.Drawing.Size(737, 612);
             this.Controls.Add(this.TabPage3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ExtensionManagerForm";
@@ -356,5 +387,7 @@
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.RichTextBox uxDownloadStatus;
+        private System.Windows.Forms.Button uxUpdateAll;
     }
 }

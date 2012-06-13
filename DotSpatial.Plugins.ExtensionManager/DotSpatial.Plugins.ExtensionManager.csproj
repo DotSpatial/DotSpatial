@@ -41,15 +41,19 @@
   <ItemGroup>
     <Reference Include="DotSpatial.Data.Forms">
       <HintPath>..\Debug\bin\DotSpatial.Data.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\Debug\bin\DotSpatial.Projections.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Serialization">
       <HintPath>..\Debug\bin\DotSpatial.Serialization.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Symbology.Forms">
       <HintPath>..\DotSpatial.Symbology.Forms\obj\Debug\DotSpatial.Symbology.Forms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -67,12 +71,14 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListViewHelper.cs" />
     <Compile Include="AppFunction.cs" />
     <Compile Include="ApplicationExtensionCategory.cs" />
     <Compile Include="DataProviderCategory.cs" />
     <Compile Include="ExtensionCategory.cs" />
     <Compile Include="ExtensionManagerPlugin.cs" />
     <Compile Include="IExtensionCategory.cs" />
+    <Compile Include="PackageList.cs" />
     <Compile Include="Packages.cs" />
     <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>
@@ -108,6 +114,7 @@
     <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>

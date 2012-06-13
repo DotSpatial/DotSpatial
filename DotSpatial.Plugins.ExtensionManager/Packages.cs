@@ -82,7 +82,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 try
                 {
-                    packageManager.InstallPackage(package, false, false);
+                    packageManager.InstallPackage(package, true, false);
                 }
                 catch (WebException)
                 {
