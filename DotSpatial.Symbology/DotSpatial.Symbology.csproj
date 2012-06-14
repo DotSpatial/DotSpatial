@@ -377,7 +377,7 @@
     <None Include="Resources\color_scheme.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\deselect_16x16.png" />
+    <None Include="Resources\deselect_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
