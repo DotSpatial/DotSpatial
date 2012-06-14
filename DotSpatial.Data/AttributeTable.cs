@@ -1510,7 +1510,16 @@ namespace DotSpatial.Data
             int year = reader.ReadByte();
             int month = reader.ReadByte();
             int day = reader.ReadByte();
-            _updateDate = new DateTime(year + 1900, month, day);
+
+            try
+            {
+                _updateDate = new DateTime(year + 1900, month, day);
+            }
+            catch
+            {
+                // If the Update Date in the header is not in correct format, just use the modify time of the file
+                _updateDate = new FileInfo(_fileName).LastWriteTime;
+            }
 
             // read the number of records.
             _numRecords = reader.ReadInt32();
