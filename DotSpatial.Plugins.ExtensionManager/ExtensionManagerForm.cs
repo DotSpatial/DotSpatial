@@ -296,17 +296,19 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void RefreshUpdateList()
         {
             IEnumerable<IPackage> localPackages = GetPackagesFromExtensions(App.Extensions);
-            IEnumerable<IPackage> list = packages.Repo.GetUpdates(localPackages, false, false);
-            if (uxUpdatePackages.InvokeRequired)
+            if (localPackages.Count() > 0)
             {
-                uxUpdatePackages.Invoke((Action)(() => { Add.AddPackages(list, uxUpdatePackages); }));
-            }
-            else
-            {
-                Add.AddPackages(list, uxUpdatePackages);
+                IEnumerable<IPackage> list = packages.Repo.GetUpdates(localPackages, false, false);
+                if (uxUpdatePackages.InvokeRequired)
+                {
+                    uxUpdatePackages.Invoke((Action)(() => { Add.AddPackages(list, uxUpdatePackages); }));
+                }
+                else
+                {
+                    Add.AddPackages(list, uxUpdatePackages);
+                }
             }
         }
-
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             IExtension extension = Installed.Items[e.Index] as IExtension;
