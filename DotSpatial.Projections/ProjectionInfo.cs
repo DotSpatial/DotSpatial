@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -40,13 +41,9 @@ namespace DotSpatial.Projections
     {
         #region Constants and Fields
 
-        private double? _azimuth;
-
         private double? _longitudeOf1st;
 
         private double? _longitudeOf2nd;
-
-        private double? _longitudeOfCenter;
 
         private bool _readLatOfCenterAsLatOfOrigin;
 
@@ -150,11 +147,7 @@ namespace DotSpatial.Projections
         /// <summary>
         /// The longitude of center for this coordinate system
         /// </summary>
-        public double? LongitudeOfCenter
-        {
-            get { return _longitudeOfCenter; }
-            set { _longitudeOfCenter = value; }
-        }
+        public double? LongitudeOfCenter { get; set; }
 
         /// <summary>
         ///   Gets or sets the M.
@@ -186,7 +179,7 @@ namespace DotSpatial.Projections
         {
             get
             {
-                return (_scaleFactor != null) ? _scaleFactor.Value : 1;
+                return _scaleFactor ?? 1;
             }
 
             set
@@ -229,23 +222,12 @@ namespace DotSpatial.Projections
         public int? Zone { get; set; }
 
         /// <summary>
-        ///   Gets or sets the alpha.
+        ///   Gets or sets the alpha/ azimuth.
         /// </summary>
         /// <value>
         ///   ? Used with Oblique Mercator and possibly a few others. For our purposes this is exactly the same as azimuth
         /// </value>
-        public double? alpha
-        {
-            get
-            {
-                return _azimuth;
-            }
-
-            set
-            {
-                _azimuth = value;
-            }
-        }
+        public double? alpha { get; set; }
 
         /// <summary>
         ///   Gets or sets the BNS.
@@ -509,7 +491,7 @@ namespace DotSpatial.Projections
             string result = string.Empty;
             if (!IsLatLon)
             {
-                result += @"PROJCS[""" + Name + @""",";
+                result += String.Format(@"PROJCS[""{0}"",", Name);
             }
 
             result += GeographicInfo.ToEsriString();
@@ -525,7 +507,7 @@ namespace DotSpatial.Projections
                 var name = Transform.Name.Contains(";")
                                ? Transform.Name.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)[0]
                                : Transform.Name;
-                result += @"PROJECTION[""" + name + @"""],";
+                result += String.Format(@"PROJECTION[""{0}""],", name);
             }
 
             if (FalseEasting != null)
@@ -558,14 +540,14 @@ namespace DotSpatial.Projections
                 result += @"PARAMETER[""Scale_Factor""," + Convert.ToString(_scaleFactor, CultureInfo.InvariantCulture) + "],";
             }
 
-            if (_azimuth != null)
+            if (alpha != null)
             {
-                result += @"PARAMETER[""Azimuth""," + Convert.ToString(_azimuth, CultureInfo.InvariantCulture) + "],";
+                result += @"PARAMETER[""Azimuth""," + Convert.ToString(alpha, CultureInfo.InvariantCulture) + "],";
             }
 
-            if (_longitudeOfCenter != null)
+            if (LongitudeOfCenter != null)
             {
-                result += @"PARAMETER[""Longitude_Of_Center""," + Convert.ToString(_longitudeOfCenter, CultureInfo.InvariantCulture) + "],";
+                result += @"PARAMETER[""Longitude_Of_Center""," + Convert.ToString(LongitudeOfCenter, CultureInfo.InvariantCulture) + "],";
             }
 
             if (_readLatOfCenterAsLatOfOrigin)
@@ -595,7 +577,6 @@ namespace DotSpatial.Projections
             }
 
             result += Unit.ToEsriString() + "]";
-
             // changed by JK to fix the web mercator auxiliary sphere ESRI string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
@@ -778,9 +759,10 @@ namespace DotSpatial.Projections
                 File.Delete(prjFilename);
             }
 
-            StreamWriter sw = File.CreateText(prjFilename);
-            sw.WriteLine(ToEsriString());
-            sw.Close();
+            using (StreamWriter sw = File.CreateText(prjFilename))
+            {
+                sw.WriteLine(ToEsriString());
+            }
         }
 
         /// <summary>
@@ -818,8 +800,8 @@ namespace DotSpatial.Projections
                 Append(result, "geoc", 1);
             }
 
-            Append(result, "alpha", _azimuth);
-            Append(result, "lonc", _longitudeOfCenter);
+            Append(result, "alpha", alpha);
+            Append(result, "lonc", LongitudeOfCenter);
             Append(result, "zone", Zone);
 
             if (IsLatLon)
@@ -913,18 +895,35 @@ namespace DotSpatial.Projections
 
         private static double? GetParameter(string name, string esriString)
         {
+            if (String.IsNullOrEmpty(name) || String.IsNullOrEmpty(esriString))
+                return null;
+
             double? result = null;
             int iStart = esriString.IndexOf(@"PARAMETER[""" + name, StringComparison.InvariantCultureIgnoreCase);
             if (iStart >= 0)
             {
                 iStart += 13 + name.Length;
                 int iEnd = esriString.IndexOf(']', iStart);
-
                 string tst = esriString.Substring(iStart, iEnd - iStart);
                 result = double.Parse(tst, CultureInfo.InvariantCulture);
             }
 
             return result;
+        }
+
+        private static double? GetParameter(IEnumerable<string> parameterNames, string esriString)
+        {
+            if (parameterNames == null || String.IsNullOrEmpty(esriString))
+                return null;
+
+            // Return the first result that returns a value
+            foreach (string parameterName in parameterNames)
+            {
+                var result = GetParameter(parameterName, esriString);
+                if (result != null)
+                    return result;
+            }
+            return null;
         }
 
         /// <summary>
@@ -940,7 +939,6 @@ namespace DotSpatial.Projections
         {
             ProjectionInfo pi =
                 AuthorityCodeHandler.Instance[string.Format("{0}:{1}", authority, epsgCode)];
-
             if (pi != null)
             {
                 // we need to copy the projection information because the Authority Codes implementation returns its one and only
@@ -1003,8 +1001,7 @@ namespace DotSpatial.Projections
                     // some "+to" parameters exist... e.g., DutchRD. but I'm not sure what to do with them.
                     // they seem to specify a second projection
                     Trace.WriteLine(
-                        "ProjectionInfo.ParseProj4String: command 'to' not supported and the portion of the string after 'to' will not be processed in '"
-                        + proj4String + "'");
+                        String.Format("ProjectionInfo.ParseProj4String: command 'to' not supported and the portion of the string after 'to' will not be processed in '{0}'", proj4String));
                     break;
                 }
 
@@ -1019,15 +1016,14 @@ namespace DotSpatial.Projections
 
                 string name = set[0].Trim();
                 string value = set[1].Trim();
-
                 switch (name)
                 {
                     case "lonc":
-                        _longitudeOfCenter = double.Parse(value, CultureInfo.InvariantCulture);
+                        LongitudeOfCenter = double.Parse(value, CultureInfo.InvariantCulture);
                         break;
 
                     case "alpha":
-                        _azimuth = double.Parse(value, CultureInfo.InvariantCulture);
+                        alpha = double.Parse(value, CultureInfo.InvariantCulture);
                         break;
 
                     case "x_0":
@@ -1079,7 +1075,7 @@ namespace DotSpatial.Projections
 
                         if (value == "longlat")
                         {
-                            this.IsLatLon = true;
+                            IsLatLon = true;
                         }
 
                         if (tmercIsUtm)
@@ -1238,11 +1234,11 @@ namespace DotSpatial.Projections
             FalseEasting = GetParameter("False_Easting", esriString);
             FalseNorthing = GetParameter("False_Northing", esriString);
             CentralMeridian = GetParameter("Central_Meridian", esriString);
-            _longitudeOfCenter = GetParameter("Longitude_Of_Center", esriString);
+            LongitudeOfCenter = GetParameter("Longitude_Of_Center", esriString);
             StandardParallel1 = GetParameter("Standard_Parallel_1", esriString);
             StandardParallel2 = GetParameter("Standard_Parallel_2", esriString);
             _scaleFactor = GetParameter("Scale_Factor", esriString);
-            _azimuth = GetParameter("Azimuth", esriString);
+            alpha = GetParameter("Azimuth", esriString);
             _longitudeOf1st = GetParameter("Longitude_Of_1st", esriString);
             _longitudeOf2nd = GetParameter("Longitude_Of_2nd", esriString);
             LatitudeOfOrigin = GetParameter("Latitude_Of_Origin", esriString);
