@@ -45,9 +45,16 @@ namespace DotSpatial.Projections
 
         private double? _longitudeOf2nd;
 
-        private bool _readLatOfCenterAsLatOfOrigin;
-
         private double? _scaleFactor;
+
+        private string LongitudeOfCenterAlias;
+
+        // stores the value of the actual parameter name that was used in the original (when the string came from WKT/ESRI)
+        private string LatitudeOfOriginAlias;
+
+        private string FalseEastingAlias;
+
+        private string FalseNorthingAlias;
 
         #endregion
 
@@ -503,7 +510,7 @@ namespace DotSpatial.Projections
             result += ", ";
             if (Transform != null)
             {
-                // Since we can have semi-colon delmited names for aliases, we have to output just one in the WKT. Issue #297
+                // Since we can have semi-colon delimited names for aliases, we have to output just one in the WKT. Issue #297
                 var name = Transform.Name.Contains(";")
                                ? Transform.Name.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)[0]
                                : Transform.Name;
@@ -512,12 +519,14 @@ namespace DotSpatial.Projections
 
             if (FalseEasting != null)
             {
-                result += @"PARAMETER[""False_Easting""," + Convert.ToString(FalseEasting / Unit.Meters, CultureInfo.InvariantCulture) + "],";
+                string alias = FalseEastingAlias ?? "False_Easting";
+                result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(FalseEasting / Unit.Meters, CultureInfo.InvariantCulture) + "],";
             }
 
             if (FalseNorthing != null)
             {
-                result += @"PARAMETER[""False_Northing""," + Convert.ToString(FalseNorthing / Unit.Meters, CultureInfo.InvariantCulture) + "],";
+                string alias = FalseNorthingAlias ?? "False_Northing";
+                result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(FalseNorthing / Unit.Meters, CultureInfo.InvariantCulture) + "],";
             }
 
             if (CentralMeridian != null && CentralMeridianValid())
@@ -547,12 +556,8 @@ namespace DotSpatial.Projections
 
             if (LongitudeOfCenter != null)
             {
-                result += @"PARAMETER[""Longitude_Of_Center""," + Convert.ToString(LongitudeOfCenter, CultureInfo.InvariantCulture) + "],";
-            }
-
-            if (_readLatOfCenterAsLatOfOrigin)
-            {
-                result += @"PARAMETER[""Latitude_Of_Center""," + Convert.ToString(LatitudeOfOrigin, CultureInfo.InvariantCulture) + "],";
+                string alias = LongitudeOfCenterAlias ?? "Longitude_Of_Center";
+                result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(LongitudeOfCenter, CultureInfo.InvariantCulture) + "],";
             }
 
             if (_longitudeOf1st != null)
@@ -565,9 +570,10 @@ namespace DotSpatial.Projections
                 result += @"PARAMETER[""Longitude_Of_2nd""," + Convert.ToString(_longitudeOf2nd, CultureInfo.InvariantCulture) + "],";
             }
 
-            if (LatitudeOfOrigin != null && !_readLatOfCenterAsLatOfOrigin)
+            if (LatitudeOfOrigin != null)
             {
-                result += @"PARAMETER[""Latitude_Of_Origin""," + Convert.ToString(LatitudeOfOrigin, CultureInfo.InvariantCulture) + "],";
+                string alias = LatitudeOfOriginAlias ?? "Latitude_Of_Origin";
+                result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(LatitudeOfOrigin, CultureInfo.InvariantCulture) + "],";
             }
 
             // changed by JK to fix the web mercator auxiliary sphere ESRI string
@@ -911,7 +917,7 @@ namespace DotSpatial.Projections
             return result;
         }
 
-        private static double? GetParameter(IEnumerable<string> parameterNames, string esriString)
+        private static double? GetParameter(IEnumerable<string> parameterNames, ref string alias, string esriString)
         {
             if (parameterNames == null || String.IsNullOrEmpty(esriString))
                 return null;
@@ -921,7 +927,10 @@ namespace DotSpatial.Projections
             {
                 var result = GetParameter(parameterName, esriString);
                 if (result != null)
+                {
+                    alias = parameterName;
                     return result;
+                }
             }
             return null;
         }
@@ -1231,9 +1240,11 @@ namespace DotSpatial.Projections
             }
             GeographicInfo.ParseEsriString(gcs);
 
-            FalseEasting = GetParameter("False_Easting", esriString);
-            FalseNorthing = GetParameter("False_Northing", esriString);
+            FalseEasting = GetParameter(new string[] { "False_Easting", "Easting_At_False_Origin" }, ref FalseEastingAlias, esriString);
+            FalseNorthing = GetParameter(new string[] { "False_Northing", "Northing_At_False_Origin" }, ref FalseNorthingAlias, esriString);
             CentralMeridian = GetParameter("Central_Meridian", esriString);
+            // Esri seems to indicate that these should be treated the same, but they aren't here... http://support.esri.com/en/knowledgebase/techarticles/detail/39992
+            // CentralMeridian = GetParameter(new string[] { "Longitude_Of_Center", "Central_Meridian", "Longitude_Of_Origin" }, ref LongitudeOfCenterAlias, esriString);
             LongitudeOfCenter = GetParameter("Longitude_Of_Center", esriString);
             StandardParallel1 = GetParameter("Standard_Parallel_1", esriString);
             StandardParallel2 = GetParameter("Standard_Parallel_2", esriString);
@@ -1241,12 +1252,7 @@ namespace DotSpatial.Projections
             alpha = GetParameter("Azimuth", esriString);
             _longitudeOf1st = GetParameter("Longitude_Of_1st", esriString);
             _longitudeOf2nd = GetParameter("Longitude_Of_2nd", esriString);
-            LatitudeOfOrigin = GetParameter("Latitude_Of_Origin", esriString);
-            if (LatitudeOfOrigin == null)
-            {
-                LatitudeOfOrigin = GetParameter("Latitude_Of_Center", esriString);
-                if (LatitudeOfOrigin != null) _readLatOfCenterAsLatOfOrigin = true;
-            }
+            LatitudeOfOrigin = GetParameter(new string[] { "Latitude_Of_Origin", "Latitude_Of_Center", "Central_Parallel" }, ref LatitudeOfOriginAlias, esriString);
             iStart = esriString.LastIndexOf("UNIT");
             string unit = esriString.Substring(iStart, esriString.Length - iStart);
             Unit.ParseEsriString(unit);
