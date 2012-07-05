@@ -5,9 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.IO;
+using System.Net;
 using DotSpatial.Controls;
 using NuGet;
-using System.Net;
+using System;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -72,7 +73,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         public IPackage Install(string name)
         {
             IPackage package = Repo.FindPackage(name);
-
             // important: the following line will throw an exception when debugging
             // if using the official Nuget.Core dll.
             // Run without debugging to avoid the exception and install the package
@@ -113,7 +113,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             repo = PackageRepositoryFactory.Default.CreateRepository(source);
             packageManager = new PackageManager(Repo, new DefaultPackagePathResolver(source), new PhysicalFileSystem(repositoryLocation));
         }
+    }
 
         #endregion
-    }
 }

@@ -18,7 +18,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             foreach (IDataProvider provider in App.CompositionContainer.GetExportedValues<IDataProvider>())
             {
-                yield return new Tuple<object, bool>(provider.Name, true);
+                yield return new Tuple<object, bool>(provider, true);
             }
         }
     }

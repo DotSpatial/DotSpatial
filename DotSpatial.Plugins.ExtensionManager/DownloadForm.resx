@@ -117,36 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="lineShape1.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>507, -1, 0, 553</value>
-  </metadata>
-  <metadata name="lineShape1.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>507, -1</value>
-  </metadata>
-  <metadata name="lineShape1.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 553</value>
-  </metadata>
-  <metadata name="tabPage4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABWq11Sp1lP
-        pFVLoFFOnlEAAAAAAABAk0Q9kEFCkEJKkkcAAAAAAAAAAAAAAAAAAABar2GGzY6EzIyDyolMoVIAAAAA
-        AABClkd6xoF2w3w5jT0AAAAAAAAAAAAAAAAAAABetGWIz5FWuWGFzY1ltWxMoVJJnk9drWN8x4N7xoE8
-        kEEAAAAAAAAAAAAAAAAAAABiuGqLz5WKz5JpwXKGzY6EzIyDy4qByohdu2Z+yIRAlEUAAAAAAAAAAAAA
-        AAAAAABlvG5iuGpywHqLz5NYu2RWumFTuF9RtltPtVmAyodcrGJElkg9kUI6jj8AAAAAAAAAAAAAAABj
-        uWuN0ZZdvGlau2ZYumNVuWBSt11ivWuByoh+yIV+yIQ+kkIAAAAAAAAAAAAAAABmvW+Q0plgv21evWpb
-        vGhZu2RWumFlv2+DzIuCyomAyohBlkYAAAAAAABwx3ptxHd8yYWT1JxlwXJiwG9fvmxdvWlau2aIz5Bm
-        tW1MoVJInU5FmUoAAAAAAABzy32Z2KOX16F5y4dpw3dlwnNkwXFnwnNmwHGLz5RTqVoAAAAAAAAAAAAA
-        AAAAAAB2zoCb2aaZ2KSY16KW16GV1Z6T1JyP0ZiM0JWKz5RXrV4AAAAAAAAAAAAAAAAAAAB50IN2zoF0
-        y35xyXtwxnmX16GT1Z1uvnRtu3FpuG1ltGkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4yn+X2KKN
-        0pePyIcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4zYKc2aeY2KJ4xnwAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACP0o11zYB0yn6azpAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAgw8AAIMP
-        AACADwAAgA8AAIABAADgAQAA4AEAAIABAACADwAAgA8AAIAPAAD4fwAA+H8AAPh/AAD//wAA
-</value>
-  </data>
 </root>

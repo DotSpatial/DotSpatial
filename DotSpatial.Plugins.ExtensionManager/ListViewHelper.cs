@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using System.Drawing;
-
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NuGet;
@@ -12,19 +11,32 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public class ListViewHelper
     {
-        public void AddPackages(IEnumerable<IPackage> list, ListView listView)
+        public event EventHandler<PageSelectedEventArgs> PageChanged;
+
+        private const int PageSize = 9;
+
+        public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
         {
+            if (list == null)
+            {
+                return;
+            }
+
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(32, 32);
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             // Add a default image at position 0;
             imageList.Images.Add(DotSpatial.Plugins.ExtensionManager.Properties.Resources.box_closed_32x32);
+            listView.LargeImageList = imageList;
+            listView.SmallImageList = imageList;
 
             var tasks = new List<Task<Image>>();
 
             listView.BeginUpdate();
             listView.Items.Clear();
-            foreach (var package in list)
+
+            var pagelist = list.Skip(pagenumber * PageSize).Take(PageSize).ToArray();
+            foreach (var package in pagelist)
             {
                 ListViewItem item = new ListViewItem(package.Id);
 
@@ -55,18 +67,26 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 for (int i = 0; i < taskArray.Length; i++)
                 {
-                    if (taskArray[i].Result != null)
+                    var image = taskArray[i].Result;
+                    if (image != null)
                     {
-                        imageList.Images.Add(taskArray[i].Result);
-                        listView.Items[i].ImageIndex = imageList.Images.Count - 1;
+                        imageList.Images.Add(image);
+                        int imageCount = imageList.Images.Count;
+
+                        //hack: for some reason i can be greater than the number of items in the listview.
+                        // This is probably because we don't cancel the existing thread when the feed changes.
+                        // todo: use CancellationToken
+                        // this can also happen when the form closes.
+
+                        var l = listView.Items[i];
+                        l.ImageIndex = imageCount - 1;
                     }
                 }
-            }, new System.Threading.CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
-
-            listView.LargeImageList = imageList;
+            },
+         new System.Threading.CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private Task<Image> BeginGetImage(string iconUrl)
+        private static Task<Image> BeginGetImage(string iconUrl)
         {
             var task = Task.Factory.StartNew(() =>
             {
@@ -74,12 +94,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return image;
 
                 // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
-            }, new System.Threading.CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
+            },
+            new System.Threading.CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
 
             return task;
         }
 
-        private Image LoadImage(string url)
+        private static Image LoadImage(string url)
         {
             if (url.Substring(0, 4) != "http")
             {
@@ -102,6 +123,67 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return null;
             }
+        }
+
+        private List<Button> listOfButtons = new List<Button>();
+
+        public void CreateButtons(IEnumerable<IPackage> packages)
+        {
+            if (packages == null)
+            {
+                return;
+            }
+
+            int buttonsToShow = HowManyPagesAreNeeded(packages.Count());
+            // hack: we only show the first 5 pages.
+            buttonsToShow = Math.Min(5, buttonsToShow);
+
+            for (int i = 1; i <= buttonsToShow; i++)
+            {
+                Button button = new Button();
+                button.Text = i.ToString();
+                button.Location = new Point(50 * i, 510);
+                button.Size = new Size(41, 23);
+                listOfButtons.Add(button);
+                button.Click += new EventHandler(this.button_Click);
+            }
+        }
+
+        private int HowManyPagesAreNeeded(int itemsToDisplay)
+        {
+            return (int)Math.Ceiling(itemsToDisplay / (double)PageSize);
+        }
+
+        public void AddButtons(TabPage tab)
+        {
+            foreach (var button in listOfButtons)
+            {
+                tab.Controls.Add(button);
+            }
+        }
+
+        public void button_Click(object sender, EventArgs e)
+        {
+            if (PageChanged != null)
+            {
+                Button button = sender as Button;
+                int page = Convert.ToInt32(button.Text);
+
+                var eventArgs = new PageSelectedEventArgs();
+                eventArgs.SelectedPage = page;
+
+                if (PageChanged != null)
+                { PageChanged(this, eventArgs); }
+            }
+        }
+
+        public void ResetButtons(TabPage tab)
+        {
+            foreach (var button in listOfButtons)
+            {
+                tab.Controls.Remove(button);
+            }
+            listOfButtons.Clear();
         }
     }
 }

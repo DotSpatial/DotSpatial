@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using NuGet;
+
+namespace DotSpatial.Plugins.ExtensionManager
+{
+    public partial class DownloadForm : Form
+    {
+        private readonly Packages packages = new Packages();
+
+        public DownloadForm()
+        {
+            InitializeComponent();
+            uxDownloadStatus.Clear();
+            progressBar.Value = 0;
+        }
+
+        public void ShowDownloadStatus(PackageDependency dependentPackage)
+        {
+            if (uxDownloadStatus.InvokeRequired)
+            {
+                uxDownloadStatus.Invoke((Action)(() =>
+                {
+                    uxDownloadStatus.Text = "Downloading the dependencies";
+                    uxDownloadStatus.Text = "Downloading " + dependentPackage.Id;
+                }));
+            }
+            else
+            {
+                uxDownloadStatus.Text = "Downloading the dependencies";
+                uxDownloadStatus.Text = "Downloading " + dependentPackage.Id;
+            }
+        }
+
+        public void ShowDownloadStatus(IPackage pack)
+        {
+            uxDownloadStatus.Text = "Downloading" + pack.Id;
+        }
+
+        public void SetProgressBarPercent(int percent)
+        {
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.Invoke((Action)(() =>
+                {
+                    progressBar.Value = percent;
+                }));
+            }
+            else
+            {
+                progressBar.Value = percent;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
+}

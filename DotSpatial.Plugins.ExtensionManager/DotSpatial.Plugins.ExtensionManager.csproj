@@ -71,6 +71,12 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DownloadForm.designer.cs">
+      <DependentUpon>DownloadForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListViewHelper.cs" />
     <Compile Include="AppFunction.cs" />
     <Compile Include="ApplicationExtensionCategory.cs" />
@@ -78,7 +84,7 @@
     <Compile Include="ExtensionCategory.cs" />
     <Compile Include="ExtensionManagerPlugin.cs" />
     <Compile Include="IExtensionCategory.cs" />
-    <Compile Include="PackageList.cs" />
+    <Compile Include="PackageListHelper.cs" />
     <Compile Include="Packages.cs" />
     <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>
@@ -86,11 +92,17 @@
     <Compile Include="ExtensionManagerForm.Designer.cs">
       <DependentUpon>ExtensionManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PageSelectedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="SatisfyImportsOnStartupExtension.cs" />
     <Compile Include="ToolsCategory.cs" />
@@ -128,6 +140,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DownloadForm.resx">
+      <DependentUpon>DownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExtensionManagerForm.resx">
       <DependentUpon>ExtensionManagerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -137,10 +152,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="DotSpatial.Plugins.ExtensionManager.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\plugin_disabled_16x16.png" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\plugin_32x32.png" />

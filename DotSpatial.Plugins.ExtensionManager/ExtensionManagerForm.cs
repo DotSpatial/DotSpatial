@@ -14,15 +14,15 @@ using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Extensions;
-using DotSpatial.Data;
-using DotSpatial.Extensions;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Extensions;
 using NuGet;
+using System.Net;
+using DotSpatial.Data;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -39,6 +39,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly PackageListHelper packs;
         private readonly ListViewHelper Add = new ListViewHelper();
         private const int ScrollBarMargin = 25;
+        private readonly DownloadForm downloadDialog = new DownloadForm();
+
+        private int currentPageNumber;
 
         #endregion
 
@@ -48,22 +51,20 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
 
-            packs = new PackageListHelper(packages);
+            packs = new PackageListHelper(packages, Add);
 
             // Databind the check list box to the Name property of extension.
             uxCategoryList.DisplayMember = "Name";
+            uxPackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
+            uxUpdatePackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
+
+            Add.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
 
             var dataService = packages.Repo as DataServicePackageRepository;
             if (dataService != null)
             {
-                dataService.ProgressAvailable += new System.EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
             }
-
-            uxPackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
-            uxUpdatePackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
-
-            // Select the first item in the drop down, kicking off a package list update.
-            uxFeedSelection.SelectedIndex = 0;
         }
 
         #endregion
@@ -73,14 +74,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
         {
             App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
-            if (uxInstallProgress.InvokeRequired)
-            {
-                uxInstallProgress.Invoke((Action)(() => { uxInstallProgress.Value = e.PercentComplete; }));
-            }
-            else
-            {
-                uxInstallProgress.Value = e.PercentComplete;
-            }
+            downloadDialog.SetProgressBarPercent(e.PercentComplete);
+        }
+
+        private void Add_PageChanged(object sender, PageSelectedEventArgs e)
+        {
+            currentPageNumber = e.SelectedPage - 1;
+            DisplayPackagesAndUpdates();
         }
 
         public AppManager App
@@ -108,12 +108,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return;
             }
-            uxDownloadStatus.Clear();
-            uxInstallProgress.Value = 0;
-            uxInstallProgress.Visible = true;
-            uxDownloadStatus.Visible = true;
+            downloadDialog.Show();
             uxInstall.Enabled = false;
-
             var pack = uxPackages.SelectedItems[0].Tag as IPackage;
             if (pack == null)
             {
@@ -125,67 +121,59 @@ namespace DotSpatial.Plugins.ExtensionManager
             var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
 
             App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-            uxDownloadStatus.Text = "Downloading " + pack.Id;
+            downloadDialog.ShowDownloadStatus(pack);
 
             var task = Task.Factory.StartNew(() =>
-                                                {
-                                                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                                                    if (dependency.Count() > 0)
-                                                    {
-                                                        MessageBox.Show("Downloading the dependencies", "Downloading", MessageBoxButtons.OK);
-
-                                                        foreach (PackageDependency dependentPackage in dependency)
-                                                        {
-                                                            packages.Install(dependentPackage.Id);
-                                                            App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
-
-                                                            if (uxDownloadStatus.InvokeRequired)
-                                                            {
-                                                                uxDownloadStatus.Invoke((Action)(() => { uxDownloadStatus.Text = "Downloading" + dependentPackage.Id; }));
-                                                            }
-                                                            else
-                                                            {
-                                                                uxDownloadStatus.Text = "Downloading" + dependentPackage.Id;
-                                                            }
-                                                        }
-                                                    }
-                                                    // Download the extension.
-                                                    packages.Install(pack.Id);
-
-                                                    // Load the extension.
-                                                    App.RefreshExtensions();
-                                                });
+            {
+                IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                if (dependency.Count() > 0)
+                {
+                    foreach (PackageDependency dependentPackage in dependency)
+                    {
+                        packages.Install(dependentPackage.Id);
+                        App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
+                        downloadDialog.ShowDownloadStatus(dependentPackage);
+                    }
+                }
+                // Download the extension.
+                packages.Install(pack.Id);
+                // Load the extension.
+                App.RefreshExtensions();
+            });
 
             // UI related work.
             task.ContinueWith((t) =>
-                                  {
-                                      IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                                      App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+            {
+                IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
 
-                                      // Activate the extension(s) that was installed.
-                                      var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
+                // Activate the extension(s) that was installed.
+                var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
 
-                                      if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
-                                          return;
+                if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
+                    return;
 
-                                      foreach (var item in extensions)
-                                      {
-                                          item.TryActivate();
-                                      }
+                foreach (var item in extensions)
+                {
+                    item.TryActivate();
+                }
 
-                                      // hack: we should really try to refresh the list, using what ever category the user
-                                      // has selected.
-                                      Installed.Items.Clear();
-                                      App.ProgressHandler.Progress(null, 0, "Ready.");
-                                      uxInstallProgress.Visible = false;
-                                      string message = "The following packages are installed: " + pack.Title;
+                Installed.Items.Clear();
+                App.ProgressHandler.Progress(null, 0, "Ready.");
 
-                                      foreach (PackageDependency dependentPackage in dependency)
-                                      {
-                                          message += dependentPackage.Id + " , ";
-                                      }
-                                      uxDownloadStatus.Text = message;
-                                  }, TaskScheduler.FromCurrentSynchronizationContext());
+                string message = "The following packages are installed: " + pack.Title;
+
+                foreach (PackageDependency dependentPackage in dependency)
+                {
+                    message += dependentPackage.Id + " , ";
+                }
+
+                downloadDialog.Visible = false;
+
+                // hack: we should really try to refresh the list, using what ever category the user
+                // has selected.
+            },
+            TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private IPackage GetPackageFromExtension(IExtension extension)
@@ -277,8 +265,20 @@ namespace DotSpatial.Plugins.ExtensionManager
             AddCategory(new DataProviderCategory());
             AddCategory(new ApplicationExtensionCategory());
 
-            uxDownloadStatus.Visible = false;
-            uxInstallProgress.Visible = false;
+            uxFeedSources.TileSize = new Size(uxFeedSources.Width - 25, 45);
+
+            for (int j = 0; j < Properties.Settings.Default.SourceUrls.Count; j++)
+            {
+                ListViewItem source = new ListViewItem();
+                source.Text = Properties.Settings.Default.SourceName[j];
+                source.SubItems.Add(Properties.Settings.Default.SourceUrls[j]);
+                uxFeedSources.Items.Add(source);
+                uxFeedSelection.Items.Add(Properties.Settings.Default.SourceUrls[j]);
+            }
+            // Select the first item in the drop down, kicking off a package list update.
+            uxFeedSelection.SelectedIndex = 0;
+            uxCategoryList.SelectedIndex = 1;
+            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
         }
 
         private IEnumerable<IPackage> GetPackagesFromExtensions(IEnumerable<IExtension> extensions)
@@ -298,17 +298,39 @@ namespace DotSpatial.Plugins.ExtensionManager
             IEnumerable<IPackage> localPackages = GetPackagesFromExtensions(App.Extensions);
             if (localPackages.Count() > 0)
             {
-                IEnumerable<IPackage> list = packages.Repo.GetUpdates(localPackages, false, false);
+                IEnumerable<IPackage> list = null;
+                try
+                {
+                    list = packages.Repo.GetUpdates(localPackages, false, false);
+                }
+                catch (WebException)
+                {
+                    uxUpdatePackages.Clear();
+                    uxUpdatePackages.Items.Add("Updates could not be retrieved for the selected feed.");
+                    uxUpdatePackages.Items.Add("Try again later or change the feed.");
+                }
                 if (uxUpdatePackages.InvokeRequired)
                 {
-                    uxUpdatePackages.Invoke((Action)(() => { Add.AddPackages(list, uxUpdatePackages); }));
+                    uxUpdatePackages.Invoke((Action)(() =>
+                    {
+                        Add.AddPackages(list, uxUpdatePackages, 0);
+                        if (uxUpdatePackages.Items.Count == 0)
+                        {
+                            uxUpdatePackages.Items.Add("No updates available for the selected feed.");
+                        }
+                    }));
                 }
                 else
                 {
-                    Add.AddPackages(list, uxUpdatePackages);
+                    Add.AddPackages(list, uxUpdatePackages, 0);
+                    if (uxUpdatePackages.Items.Count == 0)
+                    {
+                        uxUpdatePackages.Items.Add("No updates available for the selected feed.");
+                    }
                 }
             }
         }
+
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             IExtension extension = Installed.Items[e.Index] as IExtension;
@@ -327,25 +349,51 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        private void AppendInstalledItemDescription(string description)
+        {
+            richTextBox2.SelectionColor = Color.Gray;
+            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
+            richTextBox2.SelectionColor = Color.Black;
+            richTextBox2.AppendText(description);
+        }
+
         private void Installed_SelectedValueChanged(object sender, EventArgs e)
         {
-            IExtension extension = Installed.SelectedItem as IExtension;
+            richTextBox2.Clear();
+            uxUninstall.Enabled = false;
 
-            if (extension == null)
+            if (Installed.SelectedItem == null)
             {
-                uxUninstall.Enabled = false;
+                return;
             }
-            else
+
+            ITool tool = Installed.SelectedItem as ITool;
+            if (tool != null)
+            {
+                AppendInstalledItemDescription(tool.Description);
+                return;
+            }
+
+            IDataProvider dataProvider = Installed.SelectedItem as IDataProvider;
+            if (dataProvider != null)
+            {
+                AppendInstalledItemDescription(dataProvider.Description);
+                return;
+            }
+
+            IExtension extension = Installed.SelectedItem as IExtension;
+            if (extension != null)
             {
                 var package = GetPackageFromExtension(extension);
-
+                System.Drawing.Font currentFont = richTextBox2.SelectionFont;
                 if (package == null)
                 {
-                    uxUninstall.Enabled = false;
+                    AppendInstalledItemDescription(extension.Description);
                 }
                 else
                 {
                     uxUninstall.Enabled = true;
+                    AppendInstalledItemDescription(package.Description);
                 }
             }
         }
@@ -435,7 +483,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxClear_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
-            packs.DisplayPackages(uxPackages);
+            packs.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
         }
 
         private void Search()
@@ -448,7 +496,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                         where item.IsLatestVersion == true
                         select item;
 
-            Add.AddPackages(query, uxPackages);
+            Add.AddPackages(query, uxPackages, currentPageNumber);
 
             if (uxPackages.Items.Count == 0)
             {
@@ -497,9 +545,16 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void OnFeedChanged()
         {
+            Add.ResetButtons(tabOnline);
             string feedUrl = uxFeedSelection.SelectedItem.ToString();
             packages.SetNewSource(feedUrl);
-            packs.DisplayPackages(uxPackages);
+            currentPageNumber = 0;
+            DisplayPackagesAndUpdates();
+        }
+
+        private void DisplayPackagesAndUpdates()
+        {
+            packs.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
             Task.Factory.StartNew(() =>
             {
                 RefreshUpdateList();
@@ -617,6 +672,49 @@ namespace DotSpatial.Plugins.ExtensionManager
             // or dependencies that were retrieved with the new version.
             App.ProgressHandler.Progress(null, 0, "Ready.");
             uxUpdate.Enabled = true;
+        }
+
+        private void uxAdd_Click(object sender, EventArgs e)
+        {
+            ListViewItem source = new ListViewItem();
+            source.Text = uxSourceName.Text;
+            string url = uxSourceUrl.Text;
+
+            try
+            {
+                PackageRepositoryFactory.Default.CreateRepository(url);
+            }
+            catch (UriFormatException)
+            {
+                MessageBox.Show("Enter a valid package feed Url.");
+                return;
+            }
+
+            source.SubItems.Add(uxSourceUrl.Text);
+            uxFeedSources.Items.Add(source);
+            Properties.Settings.Default.SourceName.Add(uxSourceName.Text);
+            Properties.Settings.Default.SourceUrls.Add(uxSourceUrl.Text);
+            Properties.Settings.Default.Save();
+
+            uxFeedSelection.Items.Add(url);
+            uxSourceName.Clear();
+            uxSourceUrl.Clear();
+        }
+
+        private void uxRemove_Click(object sender, EventArgs e)
+        {
+            string name = uxFeedSources.SelectedItems[0].Text;
+            string url = uxFeedSources.SelectedItems[0].SubItems[1].Text;
+            uxFeedSources.SelectedItems[0].Remove();
+            Properties.Settings.Default.SourceName.Remove(name);
+            Properties.Settings.Default.SourceUrls.Remove(url);
+            Properties.Settings.Default.Save();
+            uxFeedSelection.Items.Remove(url);
+        }
+
+        private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            downloadDialog.Close();
         }
     }
 }

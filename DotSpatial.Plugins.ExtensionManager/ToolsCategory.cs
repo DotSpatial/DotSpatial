@@ -17,7 +17,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             foreach (ITool tool in App.CompositionContainer.GetExportedValues<ITool>())
             {
-                yield return new Tuple<object, bool>(tool.Name, true);
+                yield return new Tuple<object, bool>(tool, true);
             }
         }
     }
