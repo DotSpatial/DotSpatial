@@ -116,7 +116,7 @@
             this.uxShowExtensionsFolder.Name = "uxShowExtensionsFolder";
             this.uxShowExtensionsFolder.Size = new System.Drawing.Size(136, 23);
             this.uxShowExtensionsFolder.TabIndex = 9;
-            this.uxShowExtensionsFolder.Text = "Open Extensions Folder";
+            this.uxShowExtensionsFolder.Text = "Show Extensions Folder";
             this.uxShowExtensionsFolder.UseVisualStyleBackColor = true;
             this.uxShowExtensionsFolder.Click += new System.EventHandler(this.uxShowExtensionsFolder_Click);
             // 
@@ -196,7 +196,7 @@
             this.uxPackages.Location = new System.Drawing.Point(3, 68);
             this.uxPackages.Name = "uxPackages";
             this.uxPackages.ShowGroups = false;
-            this.uxPackages.Size = new System.Drawing.Size(503, 401);
+            this.uxPackages.Size = new System.Drawing.Size(503, 431);
             this.uxPackages.TabIndex = 17;
             this.uxPackages.UseCompatibleStateImageBehavior = false;
             this.uxPackages.View = System.Windows.Forms.View.Tile;

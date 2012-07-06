@@ -40,6 +40,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly ListViewHelper Add = new ListViewHelper();
         private const int ScrollBarMargin = 25;
         private readonly DownloadForm downloadDialog = new DownloadForm();
+        private readonly Paging paging = new Paging();
 
         private int currentPageNumber;
 
@@ -51,14 +52,14 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
 
-            packs = new PackageListHelper(packages, Add);
+            packs = new PackageListHelper(packages, Add,paging);
 
             // Databind the check list box to the Name property of extension.
             uxCategoryList.DisplayMember = "Name";
             uxPackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
             uxUpdatePackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
 
-            Add.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
+            paging.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
 
             var dataService = packages.Repo as DataServicePackageRepository;
             if (dataService != null)
@@ -545,7 +546,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void OnFeedChanged()
         {
-            Add.ResetButtons(tabOnline);
+          
             string feedUrl = uxFeedSelection.SelectedItem.ToString();
             packages.SetNewSource(feedUrl);
             currentPageNumber = 0;
@@ -598,6 +599,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                 richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
                 richTextBox1.SelectionColor = Color.Black;
                 richTextBox1.AppendText(pack.Description);
+
+                richTextBox1.SelectionColor = Color.Gray;
+                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Downloads: ");
+                richTextBox1.SelectionColor = Color.Black;
+                int Count = pack.DownloadCount;
+                richTextBox1.AppendText("" + Count);
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
@@ -677,12 +684,31 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxAdd_Click(object sender, EventArgs e)
         {
             ListViewItem source = new ListViewItem();
+            foreach (var name in Properties.Settings.Default.SourceName)
+            {
+                if (name == uxSourceName.Text)
+                {
+                    MessageBox.Show(" Source name "+ name +" already exists.");
+                    uxSourceName.Clear();
+                    uxSourceUrl.Clear();
+                    return;
+                }
+            }
+            foreach (var url in Properties.Settings.Default.SourceUrls)
+            {
+                if (url == uxSourceUrl.Text)
+                {
+                    MessageBox.Show(" Source url " + url + " already exists.");
+                    uxSourceName.Clear();
+                    uxSourceUrl.Clear();
+                    return;
+                }
+            }
             source.Text = uxSourceName.Text;
-            string url = uxSourceUrl.Text;
-
+            string Url = uxSourceUrl.Text;
             try
             {
-                PackageRepositoryFactory.Default.CreateRepository(url);
+                PackageRepositoryFactory.Default.CreateRepository(Url);
             }
             catch (UriFormatException)
             {
@@ -696,7 +722,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             Properties.Settings.Default.SourceUrls.Add(uxSourceUrl.Text);
             Properties.Settings.Default.Save();
 
-            uxFeedSelection.Items.Add(url);
+            uxFeedSelection.Items.Add(Url);
             uxSourceName.Clear();
             uxSourceUrl.Clear();
         }
