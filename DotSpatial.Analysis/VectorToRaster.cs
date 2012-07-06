@@ -168,7 +168,6 @@ namespace DotSpatial.Analysis
                     break;
             }
             Type tp = fieldName == "FID" ? typeof(int) : fs.DataTable.Columns[fieldName].DataType;
-
             // We will try to convert to double if it is a string
             if (tp == typeof(string))
             {
@@ -181,19 +180,24 @@ namespace DotSpatial.Analysis
             output = Raster.Create(outputFileName, driverCode, w, h, 1, tp, options);
             output.Bounds = new RasterBounds(h, w, env);
 
-            double dtMax = Convert.ToDouble(fs.DataTable.Compute("Max(" + fieldName + ")", ""));
-            double dtMin = Convert.ToDouble(fs.DataTable.Compute("Min(" + fieldName + ")", ""));
             double noDataValue = output.NoDataValue;
 
-            if (dtMin <= noDataValue && dtMax >= noDataValue)
+            if (fieldName != "FID")
             {
-                if (dtMax != GetFieldValue(tp, "MaxValue"))
+                // We can't use this method to calculate Max on a non-existent FID field.
+                double dtMax = Convert.ToDouble(fs.DataTable.Compute("Max(" + fieldName + ")", ""));
+                double dtMin = Convert.ToDouble(fs.DataTable.Compute("Min(" + fieldName + ")", ""));
+
+                if (dtMin <= noDataValue && dtMax >= noDataValue)
                 {
-                    output.NoDataValue = noDataValue;
-                }
-                else if (dtMin != GetFieldValue(tp, "MinValue"))
-                {
-                    output.NoDataValue = noDataValue;
+                    if (dtMax != GetFieldValue(tp, "MaxValue"))
+                    {
+                        output.NoDataValue = noDataValue;
+                    }
+                    else if (dtMin != GetFieldValue(tp, "MinValue"))
+                    {
+                        output.NoDataValue = noDataValue;
+                    }
                 }
             }
 
@@ -259,8 +263,8 @@ namespace DotSpatial.Analysis
             FieldInfo field = tp.GetField(fieldstr, BindingFlags.Public | BindingFlags.Static);
             if (field == null)
             {
-                // There's no TypeArgumentException, unfortunately. You might want 
-                // to create one :) 
+                // There's no TypeArgumentException, unfortunately. You might want
+                // to create one :)
                 throw new InvalidOperationException("Invalid type argument for GetFieldValue: " + tp.Name);
             }
             return Convert.ToDouble(field.GetValue(null));
