@@ -8,10 +8,11 @@ using System.Drawing;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
-   public  class Paging
+    public class Paging
     {
         public event EventHandler<PageSelectedEventArgs> PageChanged;
-        private const int PageSize = 9;
+
+        public const int PageSize = 9;
         private List<Button> listOfButtons = new List<Button>();
 
         public void CreateButtons(int packageCount)

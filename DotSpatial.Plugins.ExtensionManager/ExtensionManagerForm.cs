@@ -52,7 +52,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
 
-            packs = new PackageListHelper(packages, Add,paging);
+            packs = new PackageListHelper(packages, Add, paging);
 
             // Databind the check list box to the Name property of extension.
             uxCategoryList.DisplayMember = "Name";
@@ -546,7 +546,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void OnFeedChanged()
         {
-          
             string feedUrl = uxFeedSelection.SelectedItem.ToString();
             packages.SetNewSource(feedUrl);
             currentPageNumber = 0;
@@ -567,6 +566,14 @@ namespace DotSpatial.Plugins.ExtensionManager
             OnFeedChanged();
         }
 
+        private void AppendToOnlineTab(string label, string text)
+        {
+            richTextBox1.SelectionColor = Color.Gray;
+            richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
+            richTextBox1.SelectionColor = Color.Black;
+            richTextBox1.AppendText(text);
+        }
+
         private void SelectedItemChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (uxPackages.SelectedItems.Count == 0)
@@ -577,34 +584,13 @@ namespace DotSpatial.Plugins.ExtensionManager
             var pack = uxPackages.SelectedItems[0].Tag as IPackage;
             if (pack != null)
             {
-                System.Drawing.Font currentFont = richTextBox1.SelectionFont;
-
                 richTextBox1.Clear();
-                richTextBox1.SelectionColor = Color.Gray;
-                richTextBox1.AppendText("Created by: ");
-                richTextBox1.SelectionColor = Color.Black;
-                richTextBox1.AppendText(StrCat(pack.Authors, ","));
 
-                richTextBox1.SelectionColor = Color.Gray;
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Id: ");
-                richTextBox1.SelectionColor = Color.Black;
-                richTextBox1.AppendText(pack.Id);
-
-                richTextBox1.SelectionColor = Color.Gray;
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Version: ");
-                richTextBox1.SelectionColor = Color.Black;
-                richTextBox1.AppendText(pack.Version.ToString());
-
-                richTextBox1.SelectionColor = Color.Gray;
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
-                richTextBox1.SelectionColor = Color.Black;
-                richTextBox1.AppendText(pack.Description);
-
-                richTextBox1.SelectionColor = Color.Gray;
-                richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Downloads: ");
-                richTextBox1.SelectionColor = Color.Black;
-                int Count = pack.DownloadCount;
-                richTextBox1.AppendText("" + Count);
+                AppendToOnlineTab("Created by", StrCat(pack.Authors, ","));
+                AppendToOnlineTab("Id", pack.Id);
+                AppendToOnlineTab("Version", pack.Version.ToString());
+                AppendToOnlineTab("Description", pack.Description);
+                AppendToOnlineTab("Downloads", pack.DownloadCount.ToString());
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
@@ -684,26 +670,23 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxAdd_Click(object sender, EventArgs e)
         {
             ListViewItem source = new ListViewItem();
-            foreach (var name in Properties.Settings.Default.SourceName)
+
+            if (Properties.Settings.Default.SourceName.Contains(uxSourceName.Text))
             {
-                if (name == uxSourceName.Text)
-                {
-                    MessageBox.Show(" Source name "+ name +" already exists.");
-                    uxSourceName.Clear();
-                    uxSourceUrl.Clear();
-                    return;
-                }
+                MessageBox.Show(String.Format("Source name '{0}' already exists.", uxSourceName.Text));
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+                return;
             }
-            foreach (var url in Properties.Settings.Default.SourceUrls)
+
+            if (Properties.Settings.Default.SourceUrls.Contains(uxSourceUrl.Text))
             {
-                if (url == uxSourceUrl.Text)
-                {
-                    MessageBox.Show(" Source url " + url + " already exists.");
-                    uxSourceName.Clear();
-                    uxSourceUrl.Clear();
-                    return;
-                }
+                MessageBox.Show(String.Format("Source url '{0}' already exists.", uxSourceUrl.Text));
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+                return;
             }
+
             source.Text = uxSourceName.Text;
             string Url = uxSourceUrl.Text;
             try

@@ -10,10 +10,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public class ListViewHelper
     {
-     //   public event EventHandler<PageSelectedEventArgs> PageChanged;
-
-      private const int PageSize = 9;
-
         public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
         {
             if (list == null)
@@ -35,7 +31,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             listView.Items.Clear();
 
             var pagelist = list.ToArray();
-          foreach (var package in pagelist)
+            foreach (var package in pagelist)
             {
                 ListViewItem item = new ListViewItem(package.Id);
                 string description = null;
