@@ -116,7 +116,7 @@
             this.uxShowExtensionsFolder.Name = "uxShowExtensionsFolder";
             this.uxShowExtensionsFolder.Size = new System.Drawing.Size(136, 23);
             this.uxShowExtensionsFolder.TabIndex = 9;
-            this.uxShowExtensionsFolder.Text = "Show Extensions Folder";
+            this.uxShowExtensionsFolder.Text = "Open Extensions Folder";
             this.uxShowExtensionsFolder.UseVisualStyleBackColor = true;
             this.uxShowExtensionsFolder.Click += new System.EventHandler(this.uxShowExtensionsFolder_Click);
             // 
