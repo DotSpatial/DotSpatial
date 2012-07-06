@@ -905,7 +905,7 @@ namespace DotSpatial.Projections
                 return null;
 
             double? result = null;
-            int iStart = esriString.IndexOf(@"PARAMETER[""" + name, StringComparison.InvariantCultureIgnoreCase);
+            int iStart = esriString.IndexOf(@"PARAMETER[""" + name + "\"", StringComparison.InvariantCultureIgnoreCase);
             if (iStart >= 0)
             {
                 iStart += 13 + name.Length;
