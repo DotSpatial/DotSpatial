@@ -85,7 +85,6 @@
     <Compile Include="ExtensionManagerPlugin.cs" />
     <Compile Include="IExtensionCategory.cs" />
     <Compile Include="PackageList.cs" />
-    <Compile Include="PackageListHelper.cs" />
     <Compile Include="Packages.cs" />
     <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>

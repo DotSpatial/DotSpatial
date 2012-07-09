@@ -36,11 +36,10 @@ namespace DotSpatial.Plugins.ExtensionManager
         private AppManager _App;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private readonly Packages packages = new Packages();
-        private readonly PackageListHelper packs;
         private readonly ListViewHelper Add = new ListViewHelper();
         private const int ScrollBarMargin = 25;
         private readonly DownloadForm downloadDialog = new DownloadForm();
-        private readonly Paging paging = new Paging();
+        private readonly Paging paging;
 
         private int currentPageNumber;
 
@@ -52,7 +51,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
 
-            packs = new PackageListHelper(packages, Add, paging);
+      
+            paging = new Paging(packages, Add);
 
             // Databind the check list box to the Name property of extension.
             uxCategoryList.DisplayMember = "Name";
@@ -131,13 +131,21 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     foreach (PackageDependency dependentPackage in dependency)
                     {
-                        packages.Install(dependentPackage.Id);
+                      var dependentpack =  packages.Install(dependentPackage.Id);
+                      if (dependentpack == null)
+                        {
+                            MessageBox.Show(" We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet");
+                        }
                         App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
                         downloadDialog.ShowDownloadStatus(dependentPackage);
                     }
                 }
                 // Download the extension.
-                packages.Install(pack.Id);
+              var package =  packages.Install(pack.Id);
+              if (package == null)
+              {
+                  MessageBox.Show(" We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
+              }
                 // Load the extension.
                 App.RefreshExtensions();
             });
@@ -262,7 +270,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void PackageManagerForm_Load(object sender, EventArgs e)
         {
             tabControl.SelectedTab = tabOnline;
-
             AddCategory(new ExtensionCategory());
             AddCategory(new ToolsCategory());
             AddCategory(new DataProviderCategory());
@@ -499,7 +506,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxClear_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
-            packs.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
         }
 
         private void Search()
@@ -569,7 +576,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void DisplayPackagesAndUpdates()
         {
-            packs.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
             Task.Factory.StartNew(() =>
             {
                 RefreshUpdateList();
@@ -606,6 +613,18 @@ namespace DotSpatial.Plugins.ExtensionManager
                 AppendToOnlineTab("Version", pack.Version.ToString());
                 AppendToOnlineTab("Description", pack.Description);
                 AppendToOnlineTab("Downloads", pack.DownloadCount.ToString());
+                IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                if (dependency.Count() > 0)
+                {
+                    richTextBox1.SelectionColor = Color.Gray;
+                    richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Dependencies " + ": ");
+                    richTextBox1.SelectionColor = Color.Black;
+                    foreach (PackageDependency dependentPackage in dependency)
+                    {
+                        richTextBox1.AppendText(dependentPackage.Id+",");
+                    }
+                }
+                
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
