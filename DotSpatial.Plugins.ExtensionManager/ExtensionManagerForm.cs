@@ -304,6 +304,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 IEnumerable<IPackage> list = null;
                 try
                 {
+                    uxUpdatePackages.Items.Add("Checking for updates...");
                     list = packages.Repo.GetUpdates(localPackages, false, false);
                 }
                 catch (WebException)
@@ -316,6 +317,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     uxUpdatePackages.Invoke((Action)(() =>
                     {
+                        // copied code.
+                        uxUpdatePackages.Clear();
                         Add.AddPackages(list, uxUpdatePackages, 0);
                         if (uxUpdatePackages.Items.Count == 0)
                         {
@@ -325,12 +328,22 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 else
                 {
+                    // copied code.
+                    uxUpdatePackages.Clear();
                     Add.AddPackages(list, uxUpdatePackages, 0);
                     if (uxUpdatePackages.Items.Count == 0)
                     {
                         uxUpdatePackages.Items.Add("No updates available for the selected feed.");
                     }
                 }
+            }
+            else
+            {
+                uxUpdatePackages.Invoke((Action)(() =>
+                {
+                    uxUpdatePackages.Clear();
+                    uxUpdatePackages.Items.Add("No packages are installed.");
+                }));
             }
         }
 

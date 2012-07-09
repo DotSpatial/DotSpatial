@@ -340,7 +340,7 @@
             this.uxUpdatePackages.Location = new System.Drawing.Point(6, 43);
             this.uxUpdatePackages.Name = "uxUpdatePackages";
             this.uxUpdatePackages.ShowGroups = false;
-            this.uxUpdatePackages.Size = new System.Drawing.Size(326, 473);
+            this.uxUpdatePackages.Size = new System.Drawing.Size(732, 473);
             this.uxUpdatePackages.TabIndex = 2;
             this.uxUpdatePackages.UseCompatibleStateImageBehavior = false;
             this.uxUpdatePackages.View = System.Windows.Forms.View.Tile;
