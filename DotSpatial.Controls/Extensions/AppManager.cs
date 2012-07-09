@@ -52,6 +52,7 @@ namespace DotSpatial.Controls
     public class AppManager : Component
     {
         #region Constants and Fields
+
         private const int SplashDirectoryMessageLimit = 50;
         private const string ExtensionsDirectory = "Extensions";
 
@@ -389,7 +390,6 @@ namespace DotSpatial.Controls
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var knownExtensions = new[] { "dll", "exe" };
-
             string assemblyName = args.Name.Split(',').First();
             var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
             if (!Directory.Exists(packagesFolder))
@@ -556,7 +556,7 @@ namespace DotSpatial.Controls
                     MessageBox.Show(String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount));
                 else
                 {
-                    MessageBox.Show(String.Format("A {0} Extension must be included.", extensionTypeName));
+                    MessageBox.Show(String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
                 }
             }
             return import;
