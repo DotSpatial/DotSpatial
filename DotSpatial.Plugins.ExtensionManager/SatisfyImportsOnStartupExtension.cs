@@ -38,17 +38,24 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (isDockManagerNeeded && isHeaderControlNeeded && isStatusControlNeeded)
             {
                 App.UpdateProgress("Downloading a Ribbon extension...");
-                packages.Install("DotSpatial.Plugins.Ribbon");
+                var package = packages.Install("DotSpatial.Plugins.Ribbon");
+                if (package == null)
+                {
+                    System.Windows.Forms.MessageBox.Show("No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.");
+                }
+                else
+                {
+                    // Download the other extensions.
+                    App.UpdateProgress("Downloading a DockManager extension...");
+                    packages.Install("DotSpatial.Plugins.DockManager");
 
-                App.UpdateProgress("Downloading a DockManager extension...");
-                packages.Install("DotSpatial.Plugins.DockManager");
+                    App.UpdateProgress("Downloading a MenuBar extension...");
+                    packages.Install("DotSpatial.Plugins.MenuBar");
+                    packages.Install("DotSpatial.Plugins.Measure");
+                    packages.Install("DotSpatial.Plugins.TableEditor");
 
-                App.UpdateProgress("Downloading a MenuBar extension...");
-                packages.Install("DotSpatial.Plugins.MenuBar");
-                packages.Install("DotSpatial.Plugins.Measure");
-                packages.Install("DotSpatial.Plugins.TableEditor");
-
-                App.RefreshExtensions();
+                    App.RefreshExtensions();
+                }
             }
         }
 

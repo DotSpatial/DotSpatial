@@ -72,26 +72,27 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <returns></returns>
         public IPackage Install(string name)
         {
-            IPackage package = Repo.FindPackage(name);
-            // important: the following line will throw an exception when debugging
-            // if using the official Nuget.Core dll.
-            // Run without debugging to avoid the exception and install the package
-            // more at http://nuget.codeplex.com/discussions/259099
-            // We include a custom nuget.core without SecurityTransparent to avoid the error.
-            if (package != null)
+            try
             {
-                try
+                IPackage package = Repo.FindPackage(name);
+                // important: the following line will throw an exception when debugging
+                // if using the official Nuget.Core dll.
+                // Run without debugging to avoid the exception and install the package
+                // more at http://nuget.codeplex.com/discussions/259099
+                // We include a custom nuget.core without SecurityTransparent to avoid the error.
+                if (package != null)
                 {
                     packageManager.InstallPackage(package, true, false);
-                }
-                catch (WebException)
-                {
-                    // Timed out.
-                    return null;
+                    return package;
                 }
             }
+            catch (WebException ex)
+            {
+                // Timed out.
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
 
-            return package;
+            return null;
         }
 
         public IPackage GetLocalPackage(string id)
