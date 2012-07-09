@@ -261,6 +261,8 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void PackageManagerForm_Load(object sender, EventArgs e)
         {
+            tabControl.SelectedTab = tabOnline;
+
             AddCategory(new ExtensionCategory());
             AddCategory(new ToolsCategory());
             AddCategory(new DataProviderCategory());
@@ -501,7 +503,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             if (uxPackages.Items.Count == 0)
             {
-                MessageBox.Show("Text not found");
+                uxPackages.Items.Add("No packages matching your search terms were found.");
             }
         }
 
@@ -669,41 +671,41 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxAdd_Click(object sender, EventArgs e)
         {
-            ListViewItem source = new ListViewItem();
-            string Source = uxSourceName.Text.Trim();
-            string Url = uxSourceUrl.Text.Trim();
-            if (Properties.Settings.Default.SourceName.Contains(Source))
+            ListViewItem listViewItem = new ListViewItem();
+            string sourceName = uxSourceName.Text.Trim();
+            string url = uxSourceUrl.Text.Trim();
+            if (Properties.Settings.Default.SourceName.Contains(sourceName))
             {
-                MessageBox.Show(String.Format("Source name '{0}' already exists.", Source));
+                MessageBox.Show(String.Format("Source name '{0}' already exists.", sourceName));
                 uxSourceName.Clear();
                 uxSourceUrl.Clear();
                 return;
             }
-            if (Properties.Settings.Default.SourceUrls.Contains(Url))
+            if (Properties.Settings.Default.SourceUrls.Contains(url))
             {
-                MessageBox.Show(String.Format("Source url '{0}' already exists.", Url));
+                MessageBox.Show(String.Format("Source URL '{0}' already exists.", url));
                 uxSourceName.Clear();
                 uxSourceUrl.Clear();
                 return;
             }
-            source.Text = Source; 
+            listViewItem.Text = sourceName;
             try
             {
-                PackageRepositoryFactory.Default.CreateRepository(Url);
+                PackageRepositoryFactory.Default.CreateRepository(url);
             }
             catch (UriFormatException)
             {
-                MessageBox.Show("Enter a valid package feed Url.");
+                MessageBox.Show("Enter a valid package feed URL.");
                 return;
             }
 
-            source.SubItems.Add(Url);
-            uxFeedSources.Items.Add(source);
-            Properties.Settings.Default.SourceName.Add(Source);
-            Properties.Settings.Default.SourceUrls.Add(Url);
+            listViewItem.SubItems.Add(url);
+            uxFeedSources.Items.Add(listViewItem);
+            Properties.Settings.Default.SourceName.Add(sourceName);
+            Properties.Settings.Default.SourceUrls.Add(url);
             Properties.Settings.Default.Save();
 
-            uxFeedSelection.Items.Add(Url);
+            uxFeedSelection.Items.Add(url);
             uxSourceName.Clear();
             uxSourceUrl.Clear();
         }

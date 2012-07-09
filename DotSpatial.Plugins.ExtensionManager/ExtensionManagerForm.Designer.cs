@@ -31,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManagerForm));
-            this.uxUpdates = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.uxShowExtensionsFolder = new System.Windows.Forms.Button();
@@ -68,7 +68,7 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.uxRemove = new System.Windows.Forms.Button();
-            this.uxUpdates.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabOnline.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -76,18 +76,18 @@
             this.uxFeedGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // uxUpdates
+            // tabControl
             // 
-            this.uxUpdates.Controls.Add(this.tabPage1);
-            this.uxUpdates.Controls.Add(this.tabOnline);
-            this.uxUpdates.Controls.Add(this.tabPage2);
-            this.uxUpdates.Controls.Add(this.tabPage4);
-            this.uxUpdates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uxUpdates.Location = new System.Drawing.Point(0, 0);
-            this.uxUpdates.Name = "uxUpdates";
-            this.uxUpdates.SelectedIndex = 0;
-            this.uxUpdates.Size = new System.Drawing.Size(754, 582);
-            this.uxUpdates.TabIndex = 2;
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabOnline);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage4);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(754, 582);
+            this.tabControl.TabIndex = 2;
             // 
             // tabPage1
             // 
@@ -455,7 +455,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(754, 582);
-            this.Controls.Add(this.uxUpdates);
+            this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -465,7 +465,7 @@
             this.Text = "Extension Manager";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExtensionManagerForm_FormClosed);
             this.Load += new System.EventHandler(this.PackageManagerForm_Load);
-            this.uxUpdates.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
             this.tabOnline.PerformLayout();
@@ -479,7 +479,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl uxUpdates;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabOnline;
         private System.Windows.Forms.Button uxInstall;
