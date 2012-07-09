@@ -58,20 +58,22 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.uxSourceUrl = new System.Windows.Forms.TextBox();
+            this.uxFeedGroupBox = new System.Windows.Forms.GroupBox();
+            this.uxAdd = new System.Windows.Forms.Button();
             this.uxSourceName = new System.Windows.Forms.TextBox();
             this.uxSource = new System.Windows.Forms.Label();
+            this.uxSourceUrl = new System.Windows.Forms.TextBox();
             this.uxName = new System.Windows.Forms.Label();
             this.uxFeedSources = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.uxAdd = new System.Windows.Forms.Button();
             this.uxRemove = new System.Windows.Forms.Button();
             this.uxUpdates.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabOnline.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.uxFeedGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // uxUpdates
@@ -345,12 +347,8 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.uxSourceUrl);
-            this.tabPage4.Controls.Add(this.uxSourceName);
-            this.tabPage4.Controls.Add(this.uxSource);
-            this.tabPage4.Controls.Add(this.uxName);
+            this.tabPage4.Controls.Add(this.uxFeedGroupBox);
             this.tabPage4.Controls.Add(this.uxFeedSources);
-            this.tabPage4.Controls.Add(this.uxAdd);
             this.tabPage4.Controls.Add(this.uxRemove);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -360,24 +358,39 @@
             this.tabPage4.Text = "Feeds";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // uxSourceUrl
+            // uxFeedGroupBox
             // 
-            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.uxFeedGroupBox.Controls.Add(this.uxAdd);
+            this.uxFeedGroupBox.Controls.Add(this.uxSourceName);
+            this.uxFeedGroupBox.Controls.Add(this.uxSource);
+            this.uxFeedGroupBox.Controls.Add(this.uxSourceUrl);
+            this.uxFeedGroupBox.Controls.Add(this.uxName);
+            this.uxFeedGroupBox.Location = new System.Drawing.Point(8, 466);
+            this.uxFeedGroupBox.Name = "uxFeedGroupBox";
+            this.uxFeedGroupBox.Size = new System.Drawing.Size(732, 82);
+            this.uxFeedGroupBox.TabIndex = 13;
+            this.uxFeedGroupBox.TabStop = false;
+            // 
+            // uxAdd
+            // 
+            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxSourceUrl.Location = new System.Drawing.Point(107, 526);
-            this.uxSourceUrl.Name = "uxSourceUrl";
-            this.uxSourceUrl.Size = new System.Drawing.Size(457, 20);
-            this.uxSourceUrl.TabIndex = 11;
+            this.uxAdd.Location = new System.Drawing.Point(613, 41);
+            this.uxAdd.Name = "uxAdd";
+            this.uxAdd.Size = new System.Drawing.Size(70, 23);
+            this.uxAdd.TabIndex = 2;
+            this.uxAdd.Text = "Add";
+            this.uxAdd.UseVisualStyleBackColor = true;
+            this.uxAdd.Click += new System.EventHandler(this.uxAdd_Click);
             // 
             // uxSourceName
             // 
             this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxSourceName.Location = new System.Drawing.Point(107, 487);
+            this.uxSourceName.Location = new System.Drawing.Point(84, 12);
             this.uxSourceName.Name = "uxSourceName";
-            this.uxSourceName.Size = new System.Drawing.Size(457, 20);
+            this.uxSourceName.Size = new System.Drawing.Size(500, 20);
             this.uxSourceName.TabIndex = 10;
             // 
             // uxSource
@@ -386,17 +399,27 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxSource.AutoSize = true;
             this.uxSource.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxSource.Location = new System.Drawing.Point(50, 530);
+            this.uxSource.Location = new System.Drawing.Point(27, 45);
             this.uxSource.Name = "uxSource";
             this.uxSource.Size = new System.Drawing.Size(51, 16);
             this.uxSource.TabIndex = 9;
             this.uxSource.Text = "Source";
             // 
+            // uxSourceUrl
+            // 
+            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxSourceUrl.Location = new System.Drawing.Point(84, 44);
+            this.uxSourceUrl.Name = "uxSourceUrl";
+            this.uxSourceUrl.Size = new System.Drawing.Size(500, 20);
+            this.uxSourceUrl.TabIndex = 11;
+            // 
             // uxName
             // 
             this.uxName.AutoSize = true;
             this.uxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxName.Location = new System.Drawing.Point(56, 491);
+            this.uxName.Location = new System.Drawing.Point(27, 16);
             this.uxName.Name = "uxName";
             this.uxName.Size = new System.Drawing.Size(45, 16);
             this.uxName.TabIndex = 8;
@@ -413,18 +436,6 @@
             this.uxFeedSources.TabIndex = 3;
             this.uxFeedSources.UseCompatibleStateImageBehavior = false;
             this.uxFeedSources.View = System.Windows.Forms.View.Tile;
-            // 
-            // uxAdd
-            // 
-            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxAdd.Location = new System.Drawing.Point(594, 524);
-            this.uxAdd.Name = "uxAdd";
-            this.uxAdd.Size = new System.Drawing.Size(75, 23);
-            this.uxAdd.TabIndex = 2;
-            this.uxAdd.Text = "Add";
-            this.uxAdd.UseVisualStyleBackColor = true;
-            this.uxAdd.Click += new System.EventHandler(this.uxAdd_Click);
             // 
             // uxRemove
             // 
@@ -460,7 +471,8 @@
             this.tabOnline.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.uxFeedGroupBox.ResumeLayout(false);
+            this.uxFeedGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -503,5 +515,6 @@
         private System.Windows.Forms.Label uxName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.GroupBox uxFeedGroupBox;
     }
 }

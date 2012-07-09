@@ -40,7 +40,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public void ShowDownloadStatus(IPackage pack)
         {
-            uxDownloadStatus.Text = "Downloading" + pack.Id;
+            uxDownloadStatus.Text = "Downloading " + pack.Id;
         }
 
         public void SetProgressBarPercent(int percent)

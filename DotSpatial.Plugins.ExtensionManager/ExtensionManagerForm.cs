@@ -670,25 +670,23 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxAdd_Click(object sender, EventArgs e)
         {
             ListViewItem source = new ListViewItem();
-
-            if (Properties.Settings.Default.SourceName.Contains(uxSourceName.Text))
+            string Source = uxSourceName.Text.Trim();
+            string Url = uxSourceUrl.Text.Trim();
+            if (Properties.Settings.Default.SourceName.Contains(Source))
             {
-                MessageBox.Show(String.Format("Source name '{0}' already exists.", uxSourceName.Text));
+                MessageBox.Show(String.Format("Source name '{0}' already exists.", Source));
                 uxSourceName.Clear();
                 uxSourceUrl.Clear();
                 return;
             }
-
-            if (Properties.Settings.Default.SourceUrls.Contains(uxSourceUrl.Text))
+            if (Properties.Settings.Default.SourceUrls.Contains(Url))
             {
-                MessageBox.Show(String.Format("Source url '{0}' already exists.", uxSourceUrl.Text));
+                MessageBox.Show(String.Format("Source url '{0}' already exists.", Url));
                 uxSourceName.Clear();
                 uxSourceUrl.Clear();
                 return;
             }
-
-            source.Text = uxSourceName.Text;
-            string Url = uxSourceUrl.Text;
+            source.Text = Source; 
             try
             {
                 PackageRepositoryFactory.Default.CreateRepository(Url);
@@ -699,10 +697,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return;
             }
 
-            source.SubItems.Add(uxSourceUrl.Text);
+            source.SubItems.Add(Url);
             uxFeedSources.Items.Add(source);
-            Properties.Settings.Default.SourceName.Add(uxSourceName.Text);
-            Properties.Settings.Default.SourceUrls.Add(uxSourceUrl.Text);
+            Properties.Settings.Default.SourceName.Add(Source);
+            Properties.Settings.Default.SourceUrls.Add(Url);
             Properties.Settings.Default.Save();
 
             uxFeedSelection.Items.Add(Url);
