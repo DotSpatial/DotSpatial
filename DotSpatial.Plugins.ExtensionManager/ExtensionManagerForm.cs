@@ -40,6 +40,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private const int ScrollBarMargin = 25;
         private readonly DownloadForm downloadDialog = new DownloadForm();
         private readonly Paging paging;
+        private GetPackage getpack;
 
         private int currentPageNumber;
 
@@ -51,7 +52,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             InitializeComponent();
 
-      
+            getpack = new GetPackage(packages);
             paging = new Paging(packages, Add);
 
             // Databind the check list box to the Name property of extension.
@@ -185,20 +186,13 @@ namespace DotSpatial.Plugins.ExtensionManager
             TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private IPackage GetPackageFromExtension(IExtension extension)
-        {
-            string id = extension.AssemblyQualifiedName.Substring(0, extension.AssemblyQualifiedName.IndexOf(',')); // Grab the part prior to the first comma
-            id = id.Substring(0, id.LastIndexOf('.')); // Grab the part prior to the last period
-            var pack = packages.GetLocalPackage(id);
-            return pack;
-        }
 
         private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
         {
             var dependentPackages = new List<IPackage>();
             foreach (var extension in App.Extensions)
             {
-                IPackage pack = GetPackageFromExtension(extension);
+                IPackage pack = getpack.GetPackageFromExtension(extension);
                 if (pack == null)
                 {
                     continue;
@@ -217,7 +211,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxUninstall_Click(object sender, EventArgs e)
         {
             var selectedextension = Installed.SelectedItem as IExtension;
-            IPackage selectedPackage = GetPackageFromExtension(selectedextension);
+            IPackage selectedPackage = getpack.GetPackageFromExtension(selectedextension);
             if (selectedPackage == null)
             {
                 return;
@@ -291,68 +285,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
         }
 
-        private IEnumerable<IPackage> GetPackagesFromExtensions(IEnumerable<IExtension> extensions)
-        {
-            foreach (IExtension extension in extensions)
-            {
-                var package = GetPackageFromExtension(extension);
-                if (package != null)
-                {
-                    yield return package;
-                }
-            }
-        }
-
-        private void RefreshUpdateList()
-        {
-            IEnumerable<IPackage> localPackages = GetPackagesFromExtensions(App.Extensions);
-            if (localPackages.Count() > 0)
-            {
-                IEnumerable<IPackage> list = null;
-                try
-                {
-                    uxUpdatePackages.Items.Add("Checking for updates...");
-                    list = packages.Repo.GetUpdates(localPackages, false, false);
-                }
-                catch (WebException)
-                {
-                    uxUpdatePackages.Clear();
-                    uxUpdatePackages.Items.Add("Updates could not be retrieved for the selected feed.");
-                    uxUpdatePackages.Items.Add("Try again later or change the feed.");
-                }
-                if (uxUpdatePackages.InvokeRequired)
-                {
-                    uxUpdatePackages.Invoke((Action)(() =>
-                    {
-                        // copied code.
-                        uxUpdatePackages.Clear();
-                        Add.AddPackages(list, uxUpdatePackages, 0);
-                        if (uxUpdatePackages.Items.Count == 0)
-                        {
-                            uxUpdatePackages.Items.Add("No updates available for the selected feed.");
-                        }
-                    }));
-                }
-                else
-                {
-                    // copied code.
-                    uxUpdatePackages.Clear();
-                    Add.AddPackages(list, uxUpdatePackages, 0);
-                    if (uxUpdatePackages.Items.Count == 0)
-                    {
-                        uxUpdatePackages.Items.Add("No updates available for the selected feed.");
-                    }
-                }
-            }
-            else
-            {
-                uxUpdatePackages.Invoke((Action)(() =>
-                {
-                    uxUpdatePackages.Clear();
-                    uxUpdatePackages.Items.Add("No packages are installed.");
-                }));
-            }
-        }
+       
 
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -407,7 +340,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             IExtension extension = Installed.SelectedItem as IExtension;
             if (extension != null)
             {
-                var package = GetPackageFromExtension(extension);
+                var package = getpack.GetPackageFromExtension(extension);
                 System.Drawing.Font currentFont = richTextBox2.SelectionFont;
                 if (package == null)
                 {
@@ -573,13 +506,15 @@ namespace DotSpatial.Plugins.ExtensionManager
             currentPageNumber = 0;
             DisplayPackagesAndUpdates();
         }
+        private  Update Updates;
 
         private void DisplayPackagesAndUpdates()
         {
+            Updates = new Update(packages, Add, App);
             paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
             Task.Factory.StartNew(() =>
             {
-                RefreshUpdateList();
+                Updates.RefreshUpdate(uxUpdatePackages);
             });
         }
 
@@ -703,57 +638,29 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxAdd_Click(object sender, EventArgs e)
         {
-            ListViewItem listViewItem = new ListViewItem();
-            string sourceName = uxSourceName.Text.Trim();
-            string url = uxSourceUrl.Text.Trim();
-            if (Properties.Settings.Default.SourceName.Contains(sourceName))
+            Feed feed = new Feed();
+            feed.Name = uxSourceName.Text.Trim();
+            feed.Url = uxSourceUrl.Text.Trim();
+            FeedManager.Add(feed,uxFeedSources);
+            if (uxFeedSelection.Items.Contains(feed.Url))
             {
-                MessageBox.Show(String.Format("Source name '{0}' already exists.", sourceName));
-                uxSourceName.Clear();
-                uxSourceUrl.Clear();
-                return;
+              uxSourceName.Clear();
+              uxSourceUrl.Clear();
+              return;
             }
-            if (Properties.Settings.Default.SourceUrls.Contains(url))
-            {
-                MessageBox.Show(String.Format("Source URL '{0}' already exists.", url));
-                uxSourceName.Clear();
-                uxSourceUrl.Clear();
-                return;
-            }
-            listViewItem.Text = sourceName;
-            try
-            {
-                PackageRepositoryFactory.Default.CreateRepository(url);
-            }
-            catch (UriFormatException)
-            {
-                MessageBox.Show("Enter a valid package feed URL.");
-                return;
-            }
-
-            listViewItem.SubItems.Add(url);
-            uxFeedSources.Items.Add(listViewItem);
-            Properties.Settings.Default.SourceName.Add(sourceName);
-            Properties.Settings.Default.SourceUrls.Add(url);
-            Properties.Settings.Default.Save();
-
-            uxFeedSelection.Items.Add(url);
+            uxFeedSelection.Items.Add(feed.Url);
             uxSourceName.Clear();
             uxSourceUrl.Clear();
         }
 
         private void uxRemove_Click(object sender, EventArgs e)
         {
-            string name = uxFeedSources.SelectedItems[0].Text;
-            string url = uxFeedSources.SelectedItems[0].SubItems[1].Text;
-            uxFeedSources.SelectedItems[0].Remove();
-            Properties.Settings.Default.SourceName.Remove(name);
-            Properties.Settings.Default.SourceUrls.Remove(url);
-            Properties.Settings.Default.Save();
-            uxFeedSelection.Items.Remove(url);
+             Feed feed = new Feed();
+             feed.Name  = uxFeedSources.SelectedItems[0].Text;
+             feed.Url = uxFeedSources.SelectedItems[0].SubItems[1].Text;
+             uxFeedSelection.Items.Remove(feed.Url);
         }
-
-        private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
+         private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             downloadDialog.Close();
         }

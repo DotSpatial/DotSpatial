@@ -12,6 +12,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         public string Url { get; set; }
 
         public bool IsValid()
-        { return true; }
+        {
+           return true; }
+
+      
     }
 }
