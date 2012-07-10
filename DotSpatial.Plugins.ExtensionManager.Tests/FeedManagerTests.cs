@@ -17,6 +17,8 @@ namespace DotSpatial.Plugins.ExtensionManager.Tests
         [TestMethod]
         public void AddedFeedAppearsinGetFeeds()
         {
+            FeedManager.ClearFeeds();
+
             Feed feed = new Feed();
             feed.Name = "sample feed";
             feed.Url = "https://example.com";
@@ -37,6 +39,8 @@ namespace DotSpatial.Plugins.ExtensionManager.Tests
         [TestMethod]
         public void RemoveFeedThatIsNotInTheListDoesNothing()
         {
+            FeedManager.ClearFeeds();
+
             Feed feed = new Feed();
             feed.Name = "sample feed";
             feed.Url = "https://example.com";
@@ -51,12 +55,13 @@ namespace DotSpatial.Plugins.ExtensionManager.Tests
         }
 
         [TestMethod]
-        public void InValidFeedReturnsNotValid()
+        public void InvalidUrlReturnsNotValid()
         {
+            FeedManager.ClearFeeds();
+
             Feed feed = new Feed();
             feed.Name = "sample feed";
             feed.Url = "htt://example.com";
-            FeedManager.Add(feed);
 
             Assert.IsFalse(feed.IsValid());
         }

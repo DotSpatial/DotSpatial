@@ -9,12 +9,19 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public static class FeedManager
     {
-        public static IEnumerable<Feed> GetFeeds() { return null; }
-
-        public static void Add(Feed feed, ListView listview)
+        public static IEnumerable<Feed> GetFeeds()
         {
-            // Save settings...
-            ListViewItem listViewItem = new ListViewItem();
+            for (int j = 0; j < Properties.Settings.Default.SourceUrls.Count; j++)
+            {
+                Feed feed = new Feed();
+                feed.Name = Properties.Settings.Default.SourceName[j];
+                feed.Url = Properties.Settings.Default.SourceUrls[j];
+                yield return feed;
+            }
+        }
+
+        public static void Add(Feed feed)
+        {
             if (Properties.Settings.Default.SourceName.Contains(feed.Name))
             {
                 MessageBox.Show(String.Format("Source name '{0}' already exists.", feed.Name));
@@ -25,28 +32,29 @@ namespace DotSpatial.Plugins.ExtensionManager
                 MessageBox.Show(String.Format("Source URL '{0}' already exists.", feed.Url));
                 return;
             }
-            listViewItem.Text = feed.Name;
-            try
-            {
-                PackageRepositoryFactory.Default.CreateRepository(feed.Url);
-            }
-            catch (UriFormatException)
+
+            if (!feed.IsValid())
             {
                 MessageBox.Show("Enter a valid package feed URL.");
                 return;
             }
-            listViewItem.SubItems.Add(feed.Url);
-            listview.Items.Add(listViewItem);
+
             Properties.Settings.Default.SourceName.Add(feed.Name);
             Properties.Settings.Default.SourceUrls.Add(feed.Url);
             Properties.Settings.Default.Save();
         }
 
-        public static void Remove(Feed feed, ListView listview)
+        public static void Remove(Feed feed)
         {
-            listview.SelectedItems[0].Remove();
             Properties.Settings.Default.SourceName.Remove(feed.Name);
             Properties.Settings.Default.SourceUrls.Remove(feed.Url);
+            Properties.Settings.Default.Save();
+        }
+
+        public static void ClearFeeds()
+        {
+            Properties.Settings.Default.SourceName.Clear();
+            Properties.Settings.Default.SourceUrls.Clear();
             Properties.Settings.Default.Save();
         }
     }

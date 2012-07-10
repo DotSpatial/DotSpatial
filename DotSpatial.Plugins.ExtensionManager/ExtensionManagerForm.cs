@@ -132,8 +132,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     foreach (PackageDependency dependentPackage in dependency)
                     {
-                      var dependentpack =  packages.Install(dependentPackage.Id);
-                      if (dependentpack == null)
+                        var dependentpack = packages.Install(dependentPackage.Id);
+                        if (dependentpack == null)
                         {
                             MessageBox.Show(" We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet");
                         }
@@ -142,11 +142,11 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
                 }
                 // Download the extension.
-              var package =  packages.Install(pack.Id);
-              if (package == null)
-              {
-                  MessageBox.Show(" We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
-              }
+                var package = packages.Install(pack.Id);
+                if (package == null)
+                {
+                    MessageBox.Show(" We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
+                }
                 // Load the extension.
                 App.RefreshExtensions();
             });
@@ -185,7 +185,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             },
             TaskScheduler.FromCurrentSynchronizationContext());
         }
-
 
         private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
         {
@@ -261,7 +260,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxCategoryList.Items.Add(category);
         }
 
-        private void PackageManagerForm_Load(object sender, EventArgs e)
+        private void ExtensionManagerForm_Load(object sender, EventArgs e)
         {
             tabControl.SelectedTab = tabOnline;
             AddCategory(new ExtensionCategory());
@@ -271,21 +270,19 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             uxFeedSources.TileSize = new Size(uxFeedSources.Width - 25, 45);
 
-            for (int j = 0; j < Properties.Settings.Default.SourceUrls.Count; j++)
+            foreach (Feed feed in FeedManager.GetFeeds())
             {
                 ListViewItem source = new ListViewItem();
-                source.Text = Properties.Settings.Default.SourceName[j];
-                source.SubItems.Add(Properties.Settings.Default.SourceUrls[j]);
+                source.Text = feed.Name;
+                source.SubItems.Add(feed.Url);
                 uxFeedSources.Items.Add(source);
-                uxFeedSelection.Items.Add(Properties.Settings.Default.SourceUrls[j]);
+                uxFeedSelection.Items.Add(feed.Url);
             }
             // Select the first item in the drop down, kicking off a package list update.
             uxFeedSelection.SelectedIndex = 0;
             uxCategoryList.SelectedIndex = 1;
             string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
         }
-
-       
 
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -506,7 +503,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             currentPageNumber = 0;
             DisplayPackagesAndUpdates();
         }
-        private  Update Updates;
+
+        private Update Updates;
 
         private void DisplayPackagesAndUpdates()
         {
@@ -556,10 +554,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                     richTextBox1.SelectionColor = Color.Black;
                     foreach (PackageDependency dependentPackage in dependency)
                     {
-                        richTextBox1.AppendText(dependentPackage.Id+",");
+                        richTextBox1.AppendText(dependentPackage.Id + ",");
                     }
                 }
-                
 
                 // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
                 // this happens automatically for packages that are build with the packages.nuspec file.
@@ -641,12 +638,18 @@ namespace DotSpatial.Plugins.ExtensionManager
             Feed feed = new Feed();
             feed.Name = uxSourceName.Text.Trim();
             feed.Url = uxSourceUrl.Text.Trim();
-            FeedManager.Add(feed,uxFeedSources);
+            FeedManager.Add(feed);
+
+            ListViewItem listViewItem = new ListViewItem();
+            listViewItem.Text = feed.Name;
+            listViewItem.SubItems.Add(feed.Url);
+            uxFeedSources.Items.Add(listViewItem);
+
             if (uxFeedSelection.Items.Contains(feed.Url))
             {
-              uxSourceName.Clear();
-              uxSourceUrl.Clear();
-              return;
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+                return;
             }
             uxFeedSelection.Items.Add(feed.Url);
             uxSourceName.Clear();
@@ -655,12 +658,16 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxRemove_Click(object sender, EventArgs e)
         {
-             Feed feed = new Feed();
-             feed.Name  = uxFeedSources.SelectedItems[0].Text;
-             feed.Url = uxFeedSources.SelectedItems[0].SubItems[1].Text;
-             uxFeedSelection.Items.Remove(feed.Url);
+            ListViewItem selectedItem = uxFeedSources.SelectedItems[0];
+            Feed feed = new Feed();
+            feed.Name = selectedItem.Text;
+            feed.Url = selectedItem.SubItems[1].Text;
+            uxFeedSelection.Items.Remove(feed.Url);
+            selectedItem.Remove();
+            FeedManager.Remove(feed);
         }
-         private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
+
+        private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             downloadDialog.Close();
         }

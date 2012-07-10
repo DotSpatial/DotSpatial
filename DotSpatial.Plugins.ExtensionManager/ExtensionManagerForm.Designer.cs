@@ -464,7 +464,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Extension Manager";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExtensionManagerForm_FormClosed);
-            this.Load += new System.EventHandler(this.PackageManagerForm_Load);
+            this.Load += new System.EventHandler(this.ExtensionManagerForm_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
