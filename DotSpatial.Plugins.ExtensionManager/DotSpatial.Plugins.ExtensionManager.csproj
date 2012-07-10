@@ -77,6 +77,8 @@
     <Compile Include="DownloadForm.designer.cs">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedManager.cs" />
     <Compile Include="ListViewHelper.cs" />
     <Compile Include="AppFunction.cs" />
     <Compile Include="ApplicationExtensionCategory.cs" />

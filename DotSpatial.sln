@@ -112,6 +112,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D2D76B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleLegend", "DotSpatial.Plugins.Legend\DotSpatial.Plugins.SimpleLegend.csproj", "{D85281B4-6012-42A0-A8F1-B29068A3F433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ExtensionManager.Tests", "DotSpatial.Plugins.ExtensionManager.Tests\DotSpatial.Plugins.ExtensionManager.Tests.csproj", "{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
@@ -155,12 +157,13 @@ Global
 		SccLocalPath42 = DotSpatial.Positioning.Forms
 		SccLocalPath43 = DotSpatial.Positioning
 		SccLocalPath44 = DotSpatial.Positioning.Design
+		SccLocalPath45 = DotSpatial.Plugins.ExtensionManager.Tests
 		SccLocalPath5 = DotSpatial.Symbology
 		SccLocalPath6 = DotSpatial.Controls
 		SccLocalPath7 = DotSpatial.Compatibility
 		SccLocalPath8 = DotSpatial.Analysis
 		SccLocalPath9 = DotSpatial.Tools
-		SccNumberOfProjects = 45
+		SccNumberOfProjects = 46
 		SccProjectName1 = DotSpatial.Serialization
 		SccProjectName10 = DotSpatial.Data.Rasters.GdalExtension
 		SccProjectName11 = DotSpatial.Examples.DemoMap
@@ -200,6 +203,7 @@ Global
 		SccProjectName42 = DotSpatial.Positioning.Forms
 		SccProjectName43 = DotSpatial.Positioning
 		SccProjectName44 = DotSpatial.Positioning.Design
+		SccProjectName45 = DotSpatial.Plugins.ExtensionManager.Tests
 		SccProjectName5 = DotSpatial.Symbology
 		SccProjectName6 = DotSpatial.Controls
 		SccProjectName7 = DotSpatial.Compatibility
@@ -244,6 +248,7 @@ Global
 		SccProjectTopLevelParentUniqueName42 = DotSpatial.sln
 		SccProjectTopLevelParentUniqueName43 = DotSpatial.sln
 		SccProjectTopLevelParentUniqueName44 = DotSpatial.sln
+		SccProjectTopLevelParentUniqueName45 = DotSpatial.sln
 		SccProjectTopLevelParentUniqueName5 = DotSpatial.sln
 		SccProjectTopLevelParentUniqueName6 = DotSpatial.sln
 		SccProjectTopLevelParentUniqueName7 = DotSpatial.sln
@@ -288,6 +293,7 @@ Global
 		SccProjectUniqueName42 = DotSpatial.Positioning.Forms\\DotSpatial.Positioning.Forms.csproj
 		SccProjectUniqueName43 = DotSpatial.Positioning\\DotSpatial.Positioning.csproj
 		SccProjectUniqueName44 = DotSpatial.Positioning.Design\\DotSpatial.Positioning.Design.csproj
+		SccProjectUniqueName45 = DotSpatial.Plugins.ExtensionManager.Tests\\DotSpatial.Plugins.ExtensionManager.Tests.csproj
 		SccProjectUniqueName5 = DotSpatial.Symbology\\DotSpatial.Symbology.csproj
 		SccProjectUniqueName6 = DotSpatial.Controls\\DotSpatial.Controls.csproj
 		SccProjectUniqueName7 = DotSpatial.Compatibility\\DotSpatial.Compatibility.csproj
@@ -379,6 +385,14 @@ Global
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -653,6 +667,7 @@ Global
 		{28D0059B-B140-454F-B6BC-0D107D76B4DD} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{30B6615B-0275-494E-8686-2C72CD99DAB3} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{46A259E2-40C3-48D5-A23D-22104056CEDF} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{489CFE09-FDF7-4C89-BAB5-BD09CADD61AD} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
