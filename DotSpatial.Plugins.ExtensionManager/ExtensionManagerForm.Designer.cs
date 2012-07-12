@@ -30,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManagerForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -39,6 +40,8 @@
             this.uxCategoryList = new System.Windows.Forms.ListBox();
             this.uxUninstall = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
+            this.uxClear = new System.Windows.Forms.PictureBox();
+            this.uxSearch = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.uxPackages = new System.Windows.Forms.ListView();
             this.Pack = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,8 +49,6 @@
             this.uxFeedSelection = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.uxSearchText = new System.Windows.Forms.TextBox();
-            this.uxClear = new System.Windows.Forms.Button();
-            this.uxSearch = new System.Windows.Forms.Button();
             this.uxInstall = new System.Windows.Forms.Button();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
@@ -68,9 +69,12 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.uxRemove = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabOnline.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxClear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uxSearch)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.uxFeedGroupBox.SuspendLayout();
@@ -161,13 +165,13 @@
             // 
             // tabOnline
             // 
+            this.tabOnline.Controls.Add(this.uxClear);
+            this.tabOnline.Controls.Add(this.uxSearch);
             this.tabOnline.Controls.Add(this.label1);
             this.tabOnline.Controls.Add(this.uxPackages);
             this.tabOnline.Controls.Add(this.uxFeedSelection);
             this.tabOnline.Controls.Add(this.richTextBox1);
             this.tabOnline.Controls.Add(this.uxSearchText);
-            this.tabOnline.Controls.Add(this.uxClear);
-            this.tabOnline.Controls.Add(this.uxSearch);
             this.tabOnline.Controls.Add(this.uxInstall);
             this.tabOnline.Controls.Add(this.shapeContainer1);
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
@@ -177,6 +181,26 @@
             this.tabOnline.TabIndex = 1;
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
+            // 
+            // uxClear
+            // 
+            this.uxClear.Location = new System.Drawing.Point(366, 42);
+            this.uxClear.Name = "uxClear";
+            this.uxClear.Size = new System.Drawing.Size(25, 25);
+            this.uxClear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.uxClear.TabIndex = 27;
+            this.uxClear.TabStop = false;
+            this.toolTip1.SetToolTip(this.uxClear, "Clear Search");
+            // 
+            // uxSearch
+            // 
+            this.uxSearch.Location = new System.Drawing.Point(288, 42);
+            this.uxSearch.Name = "uxSearch";
+            this.uxSearch.Size = new System.Drawing.Size(25, 25);
+            this.uxSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.uxSearch.TabIndex = 26;
+            this.uxSearch.TabStop = false;
+            this.toolTip1.SetToolTip(this.uxSearch, "Start Search");
             // 
             // label1
             // 
@@ -235,31 +259,13 @@
             // 
             // uxSearchText
             // 
-            this.uxSearchText.Location = new System.Drawing.Point(89, 42);
+            this.uxSearchText.Location = new System.Drawing.Point(8, 42);
             this.uxSearchText.Name = "uxSearchText";
-            this.uxSearchText.Size = new System.Drawing.Size(156, 20);
+            this.uxSearchText.Size = new System.Drawing.Size(274, 20);
             this.uxSearchText.TabIndex = 12;
+            this.uxSearchText.Text = "Search";
+            this.uxSearchText.Click += new System.EventHandler(this.uxSearchText_Click);
             this.uxSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.uxSearchText_KeyDown);
-            // 
-            // uxClear
-            // 
-            this.uxClear.Location = new System.Drawing.Point(247, 40);
-            this.uxClear.Name = "uxClear";
-            this.uxClear.Size = new System.Drawing.Size(75, 23);
-            this.uxClear.TabIndex = 11;
-            this.uxClear.Text = "Clear";
-            this.uxClear.UseVisualStyleBackColor = true;
-            this.uxClear.Click += new System.EventHandler(this.uxClear_Click);
-            // 
-            // uxSearch
-            // 
-            this.uxSearch.Location = new System.Drawing.Point(8, 39);
-            this.uxSearch.Name = "uxSearch";
-            this.uxSearch.Size = new System.Drawing.Size(75, 23);
-            this.uxSearch.TabIndex = 7;
-            this.uxSearch.Text = "Search";
-            this.uxSearch.UseVisualStyleBackColor = true;
-            this.uxSearch.Click += new System.EventHandler(this.uxSearch_Click);
             // 
             // uxInstall
             // 
@@ -469,6 +475,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
             this.tabOnline.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxClear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uxSearch)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.uxFeedGroupBox.ResumeLayout(false);
@@ -483,8 +491,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabOnline;
         private System.Windows.Forms.Button uxInstall;
-        private System.Windows.Forms.Button uxSearch;
-        private System.Windows.Forms.Button uxClear;
         private System.Windows.Forms.TextBox uxSearchText;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button uxShowExtensionsFolder;
@@ -516,5 +522,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.GroupBox uxFeedGroupBox;
+        private System.Windows.Forms.PictureBox uxSearch;
+        private System.Windows.Forms.PictureBox uxClear;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

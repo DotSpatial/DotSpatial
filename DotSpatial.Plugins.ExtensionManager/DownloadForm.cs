@@ -45,16 +45,26 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public void SetProgressBarPercent(int percent)
         {
-            if (progressBar.InvokeRequired)
+            try
             {
-                progressBar.Invoke((Action)(() =>
+                if (progressBar.InvokeRequired)
                 {
-                    progressBar.Value = percent;
-                }));
+                    progressBar.Invoke((Action)(() =>
+                    {
+
+                        progressBar.Value = percent;
+
+
+                    }));
+                }
+                else
+                {
+                        progressBar.Value = percent;       
+                }
             }
-            else
+            catch (ObjectDisposedException)
             {
-                progressBar.Value = percent;
+                return;
             }
         }
 

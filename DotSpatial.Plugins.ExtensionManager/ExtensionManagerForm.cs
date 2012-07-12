@@ -62,11 +62,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             paging.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
 
-            var dataService = packages.Repo as DataServicePackageRepository;
-            if (dataService != null)
-            {
-                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
-            }
         }
 
         #endregion
@@ -82,6 +77,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void Add_PageChanged(object sender, PageSelectedEventArgs e)
         {
             currentPageNumber = e.SelectedPage - 1;
+            richTextBox1.Clear();
             DisplayPackagesAndUpdates();
         }
 
@@ -106,6 +102,12 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void InstallButton_Click(object sender, EventArgs e)
         {
+
+            var dataService = packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
             if (uxPackages.SelectedItems.Count < 1)
             {
                 return;
@@ -135,17 +137,23 @@ namespace DotSpatial.Plugins.ExtensionManager
                         var dependentpack = packages.Install(dependentPackage.Id);
                         if (dependentpack == null)
                         {
-                            MessageBox.Show(" We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet");
+                            string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
+                            MessageBox.Show(message);
+                            return;
                         }
-                        App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
-                        downloadDialog.ShowDownloadStatus(dependentPackage);
+                        else
+                        {
+                            App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
+                            downloadDialog.ShowDownloadStatus(dependentPackage);
+                        }
+
                     }
                 }
                 // Download the extension.
                 var package = packages.Install(pack.Id);
                 if (package == null)
                 {
-                    MessageBox.Show(" We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
+                    MessageBox.Show("We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
                 }
                 // Load the extension.
                 App.RefreshExtensions();
@@ -180,13 +188,12 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 downloadDialog.Visible = false;
 
-                // hack: we should really try to refresh the list, using what ever category the user
-                // has selected.
+                ShowInstalledItemsBasedOnSelectedCategory();
             },
             TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
+             private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
         {
             var dependentPackages = new List<IPackage>();
             foreach (var extension in App.Extensions)
@@ -281,7 +288,39 @@ namespace DotSpatial.Plugins.ExtensionManager
             // Select the first item in the drop down, kicking off a package list update.
             uxFeedSelection.SelectedIndex = 0;
             uxCategoryList.SelectedIndex = 1;
-            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
+            SearchAndClearIcons();
+            uxClear.Visible = false;
+
+        }
+        public void uxSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+            uxSearch.Visible = false;
+            uxClear.Location = new Point(291, 42);
+            uxClear.Visible = true;
+        }
+        public void uxClear_Click(object sender, EventArgs e)
+        {
+            uxSearchText.Clear();
+            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            uxSearchText.Text = "Search";
+            uxClear.Visible = false;
+            uxSearch.Visible = true;
+
+        }
+        private void SearchAndClearIcons()
+        {
+
+            Image SearchIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.google_custom_search;
+            Image ClearIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.draw_eraser;
+            ImageList image = new ImageList();
+            image.Images.Add(SearchIcon);
+            image.Images.Add(ClearIcon);
+            image.ImageSize = new Size(28, 20);
+            uxSearch.Image = image.Images[0];
+            uxClear.Image = image.Images[1];
+            uxSearch.Click += new EventHandler(this.uxSearch_Click);
+            uxClear.Click += new EventHandler(this.uxClear_Click);
         }
 
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -341,6 +380,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                 System.Drawing.Font currentFont = richTextBox2.SelectionFont;
                 if (package == null)
                 {
+                    if (Installed.CheckedItems.Contains(Installed.SelectedItem) == false)
+                    {
+                        AppendInstalledItemDescription("It is removed from DemoMap");
+                    }
                     AppendInstalledItemDescription(extension.Description);
                 }
                 else
@@ -428,33 +471,42 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #endregion
 
-        private void uxSearch_Click(object sender, EventArgs e)
-        {
-            Search();
-        }
-
-        private void uxClear_Click(object sender, EventArgs e)
-        {
-            uxSearchText.Clear();
-            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
-        }
-
         private void Search()
         {
-            string search = uxSearchText.Text;
-
-            IQueryable<IPackage> results = packages.Repo.Search(search, false);
-
-            var query = from item in results
-                        where item.IsLatestVersion == true
-                        select item;
-
-            Add.AddPackages(query, uxPackages, currentPageNumber);
-
-            if (uxPackages.Items.Count == 0)
+            var task = Task.Factory.StartNew(() =>
             {
-                uxPackages.Items.Add("No packages matching your search terms were found.");
-            }
+                if (uxPackages.InvokeRequired)
+                {
+                    uxPackages.Invoke((Action)(() =>
+                        {
+                            uxPackages.Items.Clear();
+                            uxPackages.Items.Add("Searching...");
+                        }));
+                }
+                else
+                {
+                    uxPackages.Items.Clear();
+                    uxPackages.Items.Add("Searching...");
+                }
+            });
+            task.ContinueWith(t =>
+            {
+                string search = uxSearchText.Text;
+
+                IQueryable<IPackage> results = packages.Repo.Search(search, false);
+
+                var query = from item in results
+                            where item.IsLatestVersion == true
+                            select item;
+
+                Add.AddPackages(query, uxPackages, currentPageNumber);
+
+                if (uxPackages.Items.Count == 0)
+                {
+                    uxPackages.Items.Add("No packages matching your search terms were found.");
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
         }
 
         private void uxSearchText_KeyDown(object sender, KeyEventArgs e)
@@ -462,10 +514,18 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (e.KeyCode == Keys.Enter)
             {
                 Search();
+                uxSearch.Visible = false;
+                uxClear.Location = new Point(291, 42);
+                uxClear.Visible = true;
             }
         }
 
         private void uxCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowInstalledItemsBasedOnSelectedCategory();
+        }
+
+        private void ShowInstalledItemsBasedOnSelectedCategory()
         {
             var category = uxCategoryList.SelectedItem as IExtensionCategory;
             if (category != null)
@@ -512,7 +572,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
             Task.Factory.StartNew(() =>
             {
-                Updates.RefreshUpdate(uxUpdatePackages);
+                Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
             });
         }
 
@@ -670,6 +730,10 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             downloadDialog.Close();
+        }
+        private void uxSearchText_Click(object sender, EventArgs e)
+        {
+            uxSearchText.Clear();
         }
     }
 }

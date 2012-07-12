@@ -22,7 +22,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly ListViewHelper Add;
         private AppManager App;
        
-        public void RefreshUpdate(ListView listview)
+        public void RefreshUpdate(ListView listview,TabPage tab)
         {
             getpack = new GetPackage(packages);
             IEnumerable<IPackage> localPackages = getpack.GetPackagesFromExtensions(App.Extensions);
@@ -30,7 +30,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 IEnumerable<IPackage> list = null;
                 try
-                {
+                { 
                     if (listview.InvokeRequired)
                     {
                         listview.Invoke((Action)(() =>
@@ -59,6 +59,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                     {
                         // copied code.
                         listview.Clear();
+                        int Count = list.Count();
+                        tab.Text = "Updates (" + Count + ")";
                         Add.AddPackages(list, listview, 0);
                         if (listview.Items.Count == 0)
                         {

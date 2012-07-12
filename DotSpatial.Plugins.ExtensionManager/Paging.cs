@@ -49,13 +49,10 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public void AddButtons(TabPage tab)
         {
-           
                 foreach (var button in listOfButtons)
                 {
                     tab.Controls.Add(button);
-                }
-            
-            
+                }   
         }
 
         public void button_Click(object sender, EventArgs e)

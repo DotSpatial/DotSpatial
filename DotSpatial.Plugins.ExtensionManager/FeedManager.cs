@@ -13,6 +13,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             for (int j = 0; j < Properties.Settings.Default.SourceUrls.Count; j++)
             {
+                string i = "1";
+                Convert.ToInt32(i);
                 Feed feed = new Feed();
                 feed.Name = Properties.Settings.Default.SourceName[j];
                 feed.Url = Properties.Settings.Default.SourceUrls[j];

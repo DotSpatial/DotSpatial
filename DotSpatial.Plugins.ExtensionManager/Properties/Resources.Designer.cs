@@ -73,6 +73,26 @@ namespace DotSpatial.Plugins.ExtensionManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap draw_eraser {
+            get {
+                object obj = ResourceManager.GetObject("draw_eraser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap google_custom_search {
+            get {
+                object obj = ResourceManager.GetObject("google_custom_search", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap plugin_16x16 {
             get {
                 object obj = ResourceManager.GetObject("plugin_16x16", resourceCulture);
