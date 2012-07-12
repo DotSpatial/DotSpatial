@@ -71,6 +71,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                         // This is probably because we don't cancel the existing thread when the feed changes.
                         // todo: use CancellationToken
                         // this can also happen when the form closes.
+                        if (listView.Items.Count < i + 1)
+                            return;
 
                         var l = listView.Items[i];
                         l.ImageIndex = imageCount - 1;

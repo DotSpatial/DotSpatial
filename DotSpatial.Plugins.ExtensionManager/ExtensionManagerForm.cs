@@ -61,7 +61,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxUpdatePackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
 
             paging.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
-
         }
 
         #endregion
@@ -70,8 +69,11 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
         {
-            App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
-            downloadDialog.SetProgressBarPercent(e.PercentComplete);
+            if (e.PercentComplete > 0)
+            {
+                App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
+                downloadDialog.SetProgressBarPercent(e.PercentComplete);
+            }
         }
 
         private void Add_PageChanged(object sender, PageSelectedEventArgs e)
@@ -102,12 +104,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void InstallButton_Click(object sender, EventArgs e)
         {
-
-            var dataService = packages.Repo as DataServicePackageRepository;
-            if (dataService != null)
-            {
-                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
-            }
             if (uxPackages.SelectedItems.Count < 1)
             {
                 return;
@@ -146,7 +142,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                             App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
                             downloadDialog.ShowDownloadStatus(dependentPackage);
                         }
-
                     }
                 }
                 // Download the extension.
@@ -193,7 +188,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-             private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
+        private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
         {
             var dependentPackages = new List<IPackage>();
             foreach (var extension in App.Extensions)
@@ -290,8 +285,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxCategoryList.SelectedIndex = 1;
             SearchAndClearIcons();
             uxClear.Visible = false;
-
         }
+
         public void uxSearch_Click(object sender, EventArgs e)
         {
             Search();
@@ -299,6 +294,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxClear.Location = new Point(291, 42);
             uxClear.Visible = true;
         }
+
         public void uxClear_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
@@ -306,11 +302,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxSearchText.Text = "Search";
             uxClear.Visible = false;
             uxSearch.Visible = true;
-
         }
+
         private void SearchAndClearIcons()
         {
-
             Image SearchIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.google_custom_search;
             Image ClearIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.draw_eraser;
             ImageList image = new ImageList();
@@ -473,23 +468,10 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void Search()
         {
+            uxPackages.Items.Clear();
+            uxPackages.Items.Add("Searching...");
+
             var task = Task.Factory.StartNew(() =>
-            {
-                if (uxPackages.InvokeRequired)
-                {
-                    uxPackages.Invoke((Action)(() =>
-                        {
-                            uxPackages.Items.Clear();
-                            uxPackages.Items.Add("Searching...");
-                        }));
-                }
-                else
-                {
-                    uxPackages.Items.Clear();
-                    uxPackages.Items.Add("Searching...");
-                }
-            });
-            task.ContinueWith(t =>
             {
                 string search = uxSearchText.Text;
 
@@ -499,14 +481,18 @@ namespace DotSpatial.Plugins.ExtensionManager
                             where item.IsLatestVersion == true
                             select item;
 
-                Add.AddPackages(query, uxPackages, currentPageNumber);
+                return query.ToList();
+            });
+
+            task.ContinueWith(t =>
+            {
+                Add.AddPackages(t.Result, uxPackages, currentPageNumber);
 
                 if (uxPackages.Items.Count == 0)
                 {
                     uxPackages.Items.Add("No packages matching your search terms were found.");
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
-
         }
 
         private void uxSearchText_KeyDown(object sender, KeyEventArgs e)
@@ -562,6 +548,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             packages.SetNewSource(feedUrl);
             currentPageNumber = 0;
             DisplayPackagesAndUpdates();
+            var dataService = packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
         }
 
         private Update Updates;
@@ -570,10 +561,11 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             Updates = new Update(packages, Add, App);
             paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            uxUpdatePackages.Items.Add("Checking for updates...");
             Task.Factory.StartNew(() =>
-            {
-                Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
-            });
+             {
+                 Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
+             });
         }
 
         public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -731,6 +723,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             downloadDialog.Close();
         }
+
         private void uxSearchText_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
