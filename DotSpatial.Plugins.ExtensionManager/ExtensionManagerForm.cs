@@ -372,13 +372,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (extension != null)
             {
                 var package = getpack.GetPackageFromExtension(extension);
-                System.Drawing.Font currentFont = richTextBox2.SelectionFont;
+
                 if (package == null)
                 {
-                    if (Installed.CheckedItems.Contains(Installed.SelectedItem) == false)
-                    {
-                        AppendInstalledItemDescription("It is removed from DemoMap");
-                    }
                     AppendInstalledItemDescription(extension.Description);
                 }
                 else
