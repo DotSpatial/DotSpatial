@@ -34,6 +34,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManagerForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.uxDeactivate = new System.Windows.Forms.Button();
+            this.uxActivate = new System.Windows.Forms.Button();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.uxShowExtensionsFolder = new System.Windows.Forms.Button();
             this.Installed = new System.Windows.Forms.CheckedListBox();
@@ -95,6 +97,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.uxDeactivate);
+            this.tabPage1.Controls.Add(this.uxActivate);
             this.tabPage1.Controls.Add(this.richTextBox2);
             this.tabPage1.Controls.Add(this.uxShowExtensionsFolder);
             this.tabPage1.Controls.Add(this.Installed);
@@ -107,6 +111,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Installed Extensions";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // uxDeactivate
+            // 
+            this.uxDeactivate.Location = new System.Drawing.Point(370, 6);
+            this.uxDeactivate.Name = "uxDeactivate";
+            this.uxDeactivate.Size = new System.Drawing.Size(75, 23);
+            this.uxDeactivate.TabIndex = 12;
+            this.uxDeactivate.Text = "Deactivate";
+            this.uxDeactivate.UseVisualStyleBackColor = true;
+            this.uxDeactivate.Click += new System.EventHandler(this.uxDeactivate_Click);
+            // 
+            // uxActivate
+            // 
+            this.uxActivate.Location = new System.Drawing.Point(451, 6);
+            this.uxActivate.Name = "uxActivate";
+            this.uxActivate.Size = new System.Drawing.Size(75, 23);
+            this.uxActivate.TabIndex = 11;
+            this.uxActivate.Text = "Activate";
+            this.uxActivate.UseVisualStyleBackColor = true;
+            this.uxActivate.Click += new System.EventHandler(this.uxActivate_Click);
             // 
             // richTextBox2
             // 
@@ -130,7 +154,6 @@
             // 
             this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.Installed.CheckOnClick = true;
             this.Installed.FormattingEnabled = true;
             this.Installed.Location = new System.Drawing.Point(150, 45);
             this.Installed.Name = "Installed";
@@ -525,5 +548,7 @@
         private System.Windows.Forms.PictureBox uxSearch;
         private System.Windows.Forms.PictureBox uxClear;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button uxDeactivate;
+        private System.Windows.Forms.Button uxActivate;
     }
 }
