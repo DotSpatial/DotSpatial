@@ -21,9 +21,9 @@ namespace DotSpatial.Controls
 
             foreach (IMapLayer layer in mapFrame.GetAllLayers())
             {
-                if (layer.DataSet.CanReproject)
+                if (layer.CanReproject)
                 {
-                    layer.DataSet.Reproject(newProjection);
+                    layer.Reproject(newProjection);
                 }
             }
             foreach (IMapGroup grp in mapFrame.GetAllGroups())
