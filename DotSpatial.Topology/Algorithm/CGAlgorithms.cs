@@ -399,7 +399,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Returns the signed area for a ring.  The area is positive if the ring is oriented CW.
         /// </summary>
         /// <param name="ring"></param>
-        /// <returns></returns>
+        /// <returns>Area in Meters (by default) when using projected coordinates.</returns>
         public static double SignedArea(IList<Coordinate> ring)
         {
             if (ring.Count < 3)

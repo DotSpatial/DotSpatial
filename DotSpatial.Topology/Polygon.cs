@@ -360,7 +360,7 @@ namespace DotSpatial.Topology
         /// <summary>
         /// Returns the area of this <c>Polygon</c>
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Area in Meters (by default) when using projected coordinates.</returns>
         public override double Area
         {
             get
