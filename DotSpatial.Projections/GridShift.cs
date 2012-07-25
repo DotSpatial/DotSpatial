@@ -314,7 +314,7 @@ namespace DotSpatial.Projections
         /// </summary>
         /// <param name="gridsFolder"></param>
         /// <param name="recursive"></param>
-        public static void IntializeExternalGrids(string gridsFolder, bool recursive)
+        public static void InitializeExternalGrids(string gridsFolder, bool recursive)
         {
             _shift.InitializeExternalGrids(gridsFolder, recursive);
         }
