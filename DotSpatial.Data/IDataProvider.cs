@@ -47,8 +47,8 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimeted
-        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
+        /// Gets a dialog read filter that lists each of the file type descriptions and file extensions, delimited
+        /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceded by the name provided
         /// on this object.
         /// </summary>
         string DialogReadFilter
@@ -58,7 +58,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
-        /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
+        /// Each will appear in DotSpatial's open file dialog filter, preceded by the name provided on this object.
         /// In addition, the same extension mapping will be used in order to pair a string driver code to the
         /// extension.
         /// </summary>
@@ -68,7 +68,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
+        /// Gets a preferably short name that identifies this data provider.  Example might be GDAL.
         /// This will be prepended to each of the DialogReadFilter members from this plugin.
         /// </summary>
         string Name
@@ -77,7 +77,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the progess handler to use.
+        /// Gets or sets the progress handler to use.
         /// </summary>
         IProgressHandler ProgressHandler
         {
