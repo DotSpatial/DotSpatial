@@ -404,8 +404,20 @@ namespace DotSpatial.Controls
             {
                 // see if the client profile was targeted.
                 potentialFolder = Path.Combine(potentialPackage, "lib", "net40-Client");
+              
                 if (!Directory.Exists(potentialFolder))
-                    return null;
+                {
+                    // see if the net35 framework was targeted.
+                    potentialFolder = Path.Combine(potentialPackage, "lib", "net35");
+                    
+                    if (!Directory.Exists(potentialFolder))
+                    {
+                        // see if the net20 framework was targeted.
+                        potentialFolder = Path.Combine(potentialPackage, "lib", "net20");
+                        if (!Directory.Exists(potentialFolder))
+                            return null;
+                    }
+                }
             }
 
             foreach (string extension in knownExtensions)
