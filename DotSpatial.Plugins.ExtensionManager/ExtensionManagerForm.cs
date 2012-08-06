@@ -264,13 +264,12 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void ExtensionManagerForm_Load(object sender, EventArgs e)
         {
-            ignoreCheck = false;
             tabControl.SelectedTab = tabOnline;
             AddCategory(new ExtensionCategory());
             AddCategory(new ToolsCategory());
             AddCategory(new DataProviderCategory());
             AddCategory(new ApplicationExtensionCategory());
-        
+
             uxFeedSources.TileSize = new Size(uxFeedSources.Width - 25, 45);
 
             foreach (Feed feed in FeedManager.GetFeeds())
@@ -286,10 +285,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxCategoryList.SelectedIndex = 1;
             SearchAndClearIcons();
             uxClear.Visible = false;
-            uxActivate.Visible = false;
-            uxDeactivate.Location = new Point(451, 6);
-            uxDeactivate.Enabled = false;
-            ignoreCheck = true;
         }
 
         public void uxSearch_Click(object sender, EventArgs e)
@@ -323,23 +318,23 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxClear.Click += new EventHandler(this.uxClear_Click);
         }
 
-        //private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
-        //{
-        //    IExtension extension = Installed.Items[e.Index] as IExtension;
-        //    if (extension == null)
-        //    {
-        //        return;
-        //    }
+        private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            IExtension extension = Installed.Items[e.Index] as IExtension;
+            if (extension == null)
+            {
+                return;
+            }
 
-        //    if (e.NewValue == CheckState.Checked && !extension.IsActive)
-        //    {
-        //        extension.TryActivate();
-        //    }
-        //    if (e.NewValue == CheckState.Unchecked && extension.IsActive)
-        //    {
-        //        extension.Deactivate();
-        //    }
-        //}
+            if (e.NewValue == CheckState.Checked && !extension.IsActive)
+            {
+                extension.TryActivate();
+            }
+            if (e.NewValue == CheckState.Unchecked && extension.IsActive)
+            {
+                extension.Deactivate();
+            }
+        }
 
         private void AppendInstalledItemDescription(string description)
         {
@@ -377,17 +372,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (extension != null)
             {
                 var package = getpack.GetPackageFromExtension(extension);
-                if (extension.IsActive)
-                {
-                    uxActivate.Visible = false;
-                    uxDeactivate.Visible = true;
-                    uxDeactivate.Enabled = true;
-                }
-                else
-                {
-                    uxDeactivate.Visible = false;
-                    uxActivate.Visible = true;
-                }
 
                 if (package == null)
                 {
@@ -575,9 +559,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
             uxUpdatePackages.Items.Add("Checking for updates...");
             Task.Factory.StartNew(() =>
-             {
-                 Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
-             });
+            {
+                Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
+            });
         }
 
         public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -739,50 +723,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxSearchText_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
-        }
-
-        private void uxDeactivate_Click(object sender, EventArgs e)
-        {
-            IExtension extension = Installed.SelectedItem as IExtension;
-            if (extension == null)
-            {
-                return;
-            }
-            extension.Deactivate();
-            uxDeactivate.Visible = false;
-            uxActivate.Visible = true;
-            CheckBoxForExtensions(extension);
-        }
-      
-
-        private void uxActivate_Click(object sender, EventArgs e)
-        {
-            IExtension extension = Installed.SelectedItem as IExtension;
-            if (extension == null)
-            {
-                return;
-            }
-            extension.TryActivate();
-            uxActivate.Visible = false;
-            uxDeactivate.Visible = true;
-            CheckBoxForExtensions(extension);
-        }
-
-        private void CheckBoxForExtensions(IExtension extension)
-        {
-            ignoreCheck = false;
-            Installed.SetItemChecked(Installed.SelectedIndex, extension.IsActive);
-            ignoreCheck = true;
-        }
-        bool ignoreCheck = true;
-        private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (ignoreCheck)
-            {
-                 // prevent clicks from actually checking the box.
-            e.NewValue = e.CurrentValue;
-            }
-           
         }
     }
 }

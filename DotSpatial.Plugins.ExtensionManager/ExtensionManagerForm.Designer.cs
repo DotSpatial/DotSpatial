@@ -6,8 +6,8 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-      
-        
+
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -20,7 +20,7 @@
             }
             base.Dispose(disposing);
         }
-        
+
 
         #region Windows Form Designer generated code
 
@@ -34,8 +34,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManagerForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.uxDeactivate = new System.Windows.Forms.Button();
-            this.uxActivate = new System.Windows.Forms.Button();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.uxShowExtensionsFolder = new System.Windows.Forms.Button();
             this.Installed = new System.Windows.Forms.CheckedListBox();
@@ -97,8 +95,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.uxDeactivate);
-            this.tabPage1.Controls.Add(this.uxActivate);
             this.tabPage1.Controls.Add(this.richTextBox2);
             this.tabPage1.Controls.Add(this.uxShowExtensionsFolder);
             this.tabPage1.Controls.Add(this.Installed);
@@ -111,26 +107,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Installed Extensions";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // uxDeactivate
-            // 
-            this.uxDeactivate.Location = new System.Drawing.Point(370, 6);
-            this.uxDeactivate.Name = "uxDeactivate";
-            this.uxDeactivate.Size = new System.Drawing.Size(75, 23);
-            this.uxDeactivate.TabIndex = 12;
-            this.uxDeactivate.Text = "Deactivate";
-            this.uxDeactivate.UseVisualStyleBackColor = true;
-            this.uxDeactivate.Click += new System.EventHandler(this.uxDeactivate_Click);
-            // 
-            // uxActivate
-            // 
-            this.uxActivate.Location = new System.Drawing.Point(451, 6);
-            this.uxActivate.Name = "uxActivate";
-            this.uxActivate.Size = new System.Drawing.Size(75, 23);
-            this.uxActivate.TabIndex = 11;
-            this.uxActivate.Text = "Activate";
-            this.uxActivate.UseVisualStyleBackColor = true;
-            this.uxActivate.Click += new System.EventHandler(this.uxActivate_Click);
             // 
             // richTextBox2
             // 
@@ -152,8 +128,9 @@
             // 
             // Installed
             // 
-            this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.Installed.CheckOnClick = true;
             this.Installed.FormattingEnabled = true;
             this.Installed.Location = new System.Drawing.Point(150, 45);
             this.Installed.Name = "Installed";
@@ -164,7 +141,7 @@
             // 
             // uxCategoryList
             // 
-            this.uxCategoryList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uxCategoryList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxCategoryList.FormattingEnabled = true;
             this.uxCategoryList.Items.AddRange(new object[] {
@@ -236,7 +213,7 @@
             // 
             // uxPackages
             // 
-            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxPackages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Pack,
@@ -315,7 +292,7 @@
             // 
             // lineShape1
             // 
-            this.lineShape1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lineShape1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lineShape1.BorderWidth = 2;
             this.lineShape1.Name = "lineShape1";
@@ -339,7 +316,7 @@
             // 
             // uxUpdateAll
             // 
-            this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxUpdateAll.Location = new System.Drawing.Point(227, 525);
             this.uxUpdateAll.Name = "uxUpdateAll";
@@ -351,7 +328,7 @@
             // 
             // uxUpdate
             // 
-            this.uxUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uxUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxUpdate.Location = new System.Drawing.Point(24, 525);
             this.uxUpdate.Name = "uxUpdate";
@@ -402,7 +379,7 @@
             // 
             // uxAdd
             // 
-            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxAdd.Location = new System.Drawing.Point(613, 41);
             this.uxAdd.Name = "uxAdd";
@@ -414,8 +391,8 @@
             // 
             // uxSourceName
             // 
-            this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxSourceName.Location = new System.Drawing.Point(84, 12);
             this.uxSourceName.Name = "uxSourceName";
@@ -424,7 +401,7 @@
             // 
             // uxSource
             // 
-            this.uxSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uxSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxSource.AutoSize = true;
             this.uxSource.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -436,8 +413,8 @@
             // 
             // uxSourceUrl
             // 
-            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxSourceUrl.Location = new System.Drawing.Point(84, 44);
             this.uxSourceUrl.Name = "uxSourceUrl";
@@ -468,7 +445,7 @@
             // 
             // uxRemove
             // 
-            this.uxRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.uxRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxRemove.Location = new System.Drawing.Point(428, 6);
             this.uxRemove.Name = "uxRemove";
@@ -548,7 +525,5 @@
         private System.Windows.Forms.PictureBox uxSearch;
         private System.Windows.Forms.PictureBox uxClear;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button uxDeactivate;
-        private System.Windows.Forms.Button uxActivate;
     }
 }
