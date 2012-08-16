@@ -297,6 +297,9 @@ namespace DotSpatial.Controls
                 }
                 foreach (int fid in catFeatures)
                 {
+                    if (!this.FeatureLayer.DrawnStates[fid].Visible)
+                        continue;
+                   
                     IFeature feature = FeatureSet.GetFeature(fid);
                     switch (type)
                     {
@@ -373,18 +376,21 @@ namespace DotSpatial.Controls
                         }
                     }
                 }
-                foreach (IFeature feature in catFeatures)
+                for (int i = 0; i < catFeatures.Count; i++)
                 {
+                    if (!this.FeatureLayer.DrawnStates[i].Visible)
+                        continue;
+
                     switch (type)
                     {
                         case FeatureType.Polygon:
-                            DrawPolygonFeature(e, g, feature, drawStates[feature].Category, drawStates[feature].Selected, ExistingLabels);
+                            DrawPolygonFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
                             break;
                         case FeatureType.Line:
-                            DrawLineFeature(e, g, feature, drawStates[feature].Category, drawStates[feature].Selected, ExistingLabels);
+                            DrawLineFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
                             break;
                         case FeatureType.Point:
-                            DrawPointFeature(e, g, feature, drawStates[feature].Category, drawStates[feature].Selected, ExistingLabels);
+                            DrawPointFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
                             break;
                     }
                 }
