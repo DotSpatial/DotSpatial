@@ -682,7 +682,7 @@ namespace DotSpatial.Data
         // Constant for the size of a record
         private const int FILE_DESCRIPTOR_SIZE = 32;
         private bool _attributesPopulated;
-        private char[] _characterContent;
+        private byte[] _byteContent; // // Modifed on 20 Aug. 2012 by Andy
         private List<Field> _columns;
         private Stopwatch _dataRowWatch;
         private DataTable _dataTable;
@@ -825,10 +825,8 @@ namespace DotSpatial.Data
                     return;
                 }
                 int length = (int)(fi.Length - _headerLength - 1);
-                byte[] byteContent = myReader.ReadBytes(length);
+                _byteContent = myReader.ReadBytes(length); // Modified on 20 Aug. by Andy
                 myReader.Close();
-                _characterContent = new char[length];
-                Encoding.Default.GetChars(byteContent, 0, length, _characterContent, 0);
                 if (_hasDeletedRecords)
                 {
                     int recordCount = length / _recordLength;
@@ -836,7 +834,7 @@ namespace DotSpatial.Data
                     int j = 0; // undeleted index
                     for (int i = 0; i <= recordCount; i++)
                     {
-                        if (_characterContent[i * _recordLength] != '*')
+                        if (_byteContent[i * _recordLength] != '*')
                             _offsets[j] = i * _recordLength;
                         j++;
                         if (j == _numRecords) break;
@@ -1259,10 +1257,11 @@ namespace DotSpatial.Data
                 Field currentField = _columns[col];
 
                 // read the data.
-                char[] cBuffer = new char[currentField.Length];
-                Array.Copy(_characterContent, start, cBuffer, 0, currentField.Length);
+                byte[] byteBuffer = new byte[currentField.Length]; // Modified on Aug.20th by Andy
+                Array.Copy(_byteContent, start, byteBuffer, 0, currentField.Length); // Modified on 20 Aug. by Andy
                 start += currentField.Length;
 
+                char[] cBuffer = Encoding.Default.GetChars(byteBuffer);// Modified on 20 Aug. by Andy
                 if (IsNull(cBuffer)) continue;
 
                 result[currentField.ColumnName] = ParseColumn(currentField, currentRow, cBuffer, _dataTable);
@@ -1350,7 +1349,7 @@ namespace DotSpatial.Data
             {
                 return String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t);
             });
-            
+
             if (t == typeof(byte))
             {
                 byte temp;
