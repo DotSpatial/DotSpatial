@@ -365,7 +365,7 @@ namespace DotSpatial.Projections
         protected Stream GetStream()
         {
             Assembly a = Assembly.GetExecutingAssembly();
-            Stream str = FileIsEmbedded ? a.GetManifestResourceStream(_manifestResourceString) : File.Open(_gridFilePath, FileMode.Open, FileAccess.Read);
+            Stream str = FileIsEmbedded ? a.GetManifestResourceStream(_manifestResourceString) : File.Open(_gridFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             return str;
         }
 
