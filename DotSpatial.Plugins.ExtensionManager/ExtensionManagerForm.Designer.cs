@@ -50,8 +50,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.uxSearchText = new System.Windows.Forms.TextBox();
             this.uxInstall = new System.Windows.Forms.Button();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.uxUpdateAll = new System.Windows.Forms.Button();
             this.uxUpdate = new System.Windows.Forms.Button();
@@ -128,7 +126,7 @@
             // 
             // Installed
             // 
-            this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Installed.CheckOnClick = true;
             this.Installed.FormattingEnabled = true;
@@ -141,7 +139,7 @@
             // 
             // uxCategoryList
             // 
-            this.uxCategoryList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.uxCategoryList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxCategoryList.FormattingEnabled = true;
             this.uxCategoryList.Items.AddRange(new object[] {
@@ -173,7 +171,6 @@
             this.tabOnline.Controls.Add(this.richTextBox1);
             this.tabOnline.Controls.Add(this.uxSearchText);
             this.tabOnline.Controls.Add(this.uxInstall);
-            this.tabOnline.Controls.Add(this.shapeContainer1);
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
             this.tabOnline.Name = "tabOnline";
             this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
@@ -213,7 +210,7 @@
             // 
             // uxPackages
             // 
-            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxPackages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Pack,
@@ -279,28 +276,6 @@
             this.uxInstall.UseVisualStyleBackColor = true;
             this.uxInstall.Click += new System.EventHandler(this.InstallButton_Click);
             // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(3, 3);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(740, 550);
-            this.shapeContainer1.TabIndex = 19;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // lineShape1
-            // 
-            this.lineShape1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lineShape1.BorderWidth = 2;
-            this.lineShape1.Name = "lineShape1";
-            this.lineShape1.X1 = 507;
-            this.lineShape1.X2 = 507;
-            this.lineShape1.Y1 = -1;
-            this.lineShape1.Y2 = 552;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.uxUpdateAll);
@@ -316,7 +291,7 @@
             // 
             // uxUpdateAll
             // 
-            this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxUpdateAll.Location = new System.Drawing.Point(227, 525);
             this.uxUpdateAll.Name = "uxUpdateAll";
@@ -328,7 +303,7 @@
             // 
             // uxUpdate
             // 
-            this.uxUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.uxUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxUpdate.Location = new System.Drawing.Point(24, 525);
             this.uxUpdate.Name = "uxUpdate";
@@ -379,7 +354,7 @@
             // 
             // uxAdd
             // 
-            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxAdd.Location = new System.Drawing.Point(613, 41);
             this.uxAdd.Name = "uxAdd";
@@ -391,8 +366,8 @@
             // 
             // uxSourceName
             // 
-            this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxSourceName.Location = new System.Drawing.Point(84, 12);
             this.uxSourceName.Name = "uxSourceName";
@@ -401,7 +376,7 @@
             // 
             // uxSource
             // 
-            this.uxSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.uxSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxSource.AutoSize = true;
             this.uxSource.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -413,8 +388,8 @@
             // 
             // uxSourceUrl
             // 
-            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxSourceUrl.Location = new System.Drawing.Point(84, 44);
             this.uxSourceUrl.Name = "uxSourceUrl";
@@ -445,7 +420,7 @@
             // 
             // uxRemove
             // 
-            this.uxRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.uxRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxRemove.Location = new System.Drawing.Point(428, 6);
             this.uxRemove.Name = "uxRemove";
@@ -504,8 +479,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView uxUpdatePackages;
         private System.Windows.Forms.Button uxUpdate;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button uxUpdateAll;
