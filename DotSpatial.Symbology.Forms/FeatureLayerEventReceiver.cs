@@ -32,8 +32,6 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class FeatureLayerEventReceiver
     {
-        static AttributeDialog attributeDialog;
-        static LabelSetup lableSetupDialog;
         private readonly FeatureLayerEventSender _featureLayerEventSender = FeatureLayerEventSender.Instance;
 
         /// <summary>
@@ -87,16 +85,16 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private static void FeatureLayerLabelSetupClicked(object sender, LabelLayerEventArgs e)
+        private void FeatureLayerLabelSetupClicked(object sender, LabelLayerEventArgs e)
         {
-            lableSetupDialog = new LabelSetup { Layer = e.LabelLayer };
-            lableSetupDialog.Show();
+            var lableSetupDialog = new LabelSetup { Layer = e.LabelLayer};
+            lableSetupDialog.Show(Owner);
         }
 
-        private static void FeatureLayerShowAttributesClicked(object sender, FeatureLayerEventArgs e)
+        private void FeatureLayerShowAttributesClicked(object sender, FeatureLayerEventArgs e)
         {
-            attributeDialog = new AttributeDialog(e.FeatureLayer);
-            attributeDialog.Show();
+            var attributeDialog = new AttributeDialog(e.FeatureLayer);
+            attributeDialog.Show(Owner);
         }
 
         private static void LoadFeatureSetAsLayer(FeatureLayerEventArgs e, FeatureSet fs, string newLayerName)
