@@ -824,10 +824,10 @@ namespace DotSpatial.Data
             }
 
             // This connection string will not likely work on 64 bit machines.
-            OleDbConnection con = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source="
+            var con = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source="
                                                       + xlsFilePath + "; Extended Properties=Excel 8.0");
-            OleDbDataAdapter da = new OleDbDataAdapter("select * from [Data$]", con);
-            DataTable dt = new DataTable();
+            var da = new OleDbDataAdapter("select * from [Data$]", con);
+            var dt = new DataTable();
             da.Fill(dt);
 
             if (!dt.Columns.Contains(xlsJoinField))
@@ -835,7 +835,7 @@ namespace DotSpatial.Data
                 throw new Exception("The foreign join field specified is not in the xls data source specified.");
             }
 
-            List<DataColumn> copyColumns = new List<DataColumn>();
+            var copyColumns = new List<DataColumn>();
             foreach (DataColumn column in dt.Columns)
             {
                 if (res.DataTable.Columns.Contains(column.ColumnName))
@@ -853,21 +853,27 @@ namespace DotSpatial.Data
                 string query;
                 if (dt.Columns[xlsJoinField].DataType == typeof(string))
                 {
-                    query = "[" + xlsJoinField + "] = '" + row[localJoinField] + "'";
+                    // Replcase quote with double quote, if need
+                    var localJoinStr = (string)row[localJoinField];
+                    if (localJoinStr != null)
+                    {
+                        localJoinStr = localJoinStr.Replace("'", "''");
+                    }
+                    query = "[" + xlsJoinField + "] = '" + localJoinStr + "'";
                 }
                 else
                 {
                     query = "[" + xlsJoinField + "] = " + row[localJoinField];
                 }
 
-                DataRow[] result = dt.Select(query);
+                var result = dt.Select(query);
 
                 if (result.Length == 0)
                 {
                     continue;
                 }
 
-                foreach (DataColumn column in copyColumns)
+                foreach (var column in copyColumns)
                 {
                     row[column.ColumnName] = result[0][column.ColumnName];
                 }
