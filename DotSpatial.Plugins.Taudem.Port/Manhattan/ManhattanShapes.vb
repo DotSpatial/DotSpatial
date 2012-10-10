@@ -262,9 +262,9 @@ Public Class ManhattanShapes
         Dim NoDataValue As Double = grid.NoDataValue
         Dim numRows As Integer = grid.EndRow
         Dim numCols As Integer = grid.EndColumn - 1
+        Dim MaxValue As Integer = grid.GetMaximum()
 
-
-        For ii = 0 To grid.GetMaximum()
+        For ii = 0 To MaxValue
             For iRow As Integer = 0 To numRows - 1
                 addMyGridRow(iRow, numCols, NoDataValue, ii)
             Next iRow

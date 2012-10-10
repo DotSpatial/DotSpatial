@@ -55,6 +55,7 @@ namespace DotSpatial.Analysis
                                                new[] { string.Empty });
             temp.NoDataValue = raster.NoDataValue;
             temp.Bounds = raster.Bounds;
+            temp.Projection = raster.Projection;
 
             ProgressMeter progMeter = null;
             try
