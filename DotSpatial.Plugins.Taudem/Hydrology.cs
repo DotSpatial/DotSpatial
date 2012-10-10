@@ -4874,17 +4874,17 @@ namespace MapWinGeoProc
                 //    break;
                 //}
 
-                var tmpID = (short)streamShape.get_CellValue(IDField, sindx);
+                var tmpID = Convert.ToInt16(streamShape.get_CellValue(IDField, sindx));
                 tmpID++;
                 streamShape.EditCellValue(IDField, sindx, tmpID);
-                tmpID = (short)streamShape.get_CellValue(DsField, sindx);
+                tmpID = Convert.ToInt16(streamShape.get_CellValue(DsField, sindx));
                 if (tmpID > -1)
                 {
                     tmpID++;
                 }
 
                 streamShape.EditCellValue(DsField, sindx, tmpID);
-                tmpID = (short)streamShape.get_CellValue(Us1Field, sindx);
+                tmpID = Convert.ToInt16(streamShape.get_CellValue(Us1Field, sindx));
                 if (tmpID > 0)
                 {
                     tmpID++;
@@ -4895,7 +4895,7 @@ namespace MapWinGeoProc
                 }
 
                 streamShape.EditCellValue(Us1Field, sindx, tmpID);
-                tmpID = (short)streamShape.get_CellValue(Us2Field, sindx);
+                tmpID = Convert.ToInt16(streamShape.get_CellValue(Us2Field, sindx));
                 if (tmpID > 0)
                 {
                     tmpID++;
