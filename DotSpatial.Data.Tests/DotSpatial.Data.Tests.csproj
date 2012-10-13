@@ -14,6 +14,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,7 +60,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SupportFiles\NUnit\nunit.framework.dll</HintPath>
+      <HintPath>..\SupportFiles\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -85,17 +89,13 @@
     <Compile Include="RasterTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension32\DotSpatial.Data.Rasters.GdalExtension32.csproj">
-      <Project>{67FA6D4E-E221-482C-B242-1E5A59F7244A}</Project>
-      <Name>DotSpatial.Data.Rasters.GdalExtension32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
-      <Project>{51C6E16E-920E-4D36-B41E-D48ABEF837E7}</Project>
-      <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
+      <Project>{51c6e16e-920e-4d36-b41e-d48abef837e7}</Project>
+      <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>

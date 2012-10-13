@@ -14,6 +14,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,10 +89,6 @@
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
       <Name>DotSpatial.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension32\DotSpatial.Data.Rasters.GdalExtension32.csproj">
-      <Project>{67FA6D4E-E221-482C-B242-1E5A59F7244A}</Project>
-      <Name>DotSpatial.Data.Rasters.GdalExtension32</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
       <Project>{51C6E16E-920E-4D36-B41E-D48ABEF837E7}</Project>
