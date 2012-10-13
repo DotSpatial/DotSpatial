@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -38,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Debug\x86\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -90,13 +90,13 @@
       <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
       <Name>DotSpatial.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
-      <Project>{51C6E16E-920E-4D36-B41E-D48ABEF837E7}</Project>
-      <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
+      <Project>{51c6e16e-920e-4d36-b41e-d48abef837e7}</Project>
+      <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
