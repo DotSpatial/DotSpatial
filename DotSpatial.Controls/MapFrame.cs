@@ -926,12 +926,10 @@ namespace DotSpatial.Controls
                 newEnv.SetCenter(center, newEnv.Width, newEnv.Width / controlAspect);
             }
             _resizing = false;
-
-            return;
         }
 
         #endregion Properties
-
+         
         #region Protected Methods
 
         /// <summary>

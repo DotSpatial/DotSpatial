@@ -101,13 +101,11 @@ namespace DotSpatial.Controls
         private FunctionMode _functionMode;
         private IMapFrame _geoMapFrame;
         private int _isBusyIndex;
-        private bool _isResizing;
         private ILegend _legend;
-        private Size _oldParentSize;
-        private bool _parentFormSizeChanging;
         private IProgressHandler _progressHandler;
         private bool isPanningTemporarily;
         private FunctionMode previousFunction = FunctionMode.None;
+        private Size _oldSize;
 
         #endregion
 
@@ -132,22 +130,17 @@ namespace DotSpatial.Controls
             KeyUp += Map_KeyUp;
             KeyDown += Map_KeyDown;
 
+            SizeChanged += OnSizeChanged;
+            _oldSize = Size;
+
             if (ParentForm != null)
             {
-                ParentForm.ResizeEnd += ParentFormResizeEnd;
                 ParentForm.KeyDown += ParentFormKeyDown;
                 ParentForm.KeyUp += ParentFormKeyUp;
-                //ParentForm.Resize += ParentResize;
-                ParentForm.ResizeBegin += ParentForm_ResizeBegin;
-                _oldParentSize = ParentForm.Size;
             }
         }
 
-        private void ParentForm_ResizeBegin(object sender, EventArgs e)
-        {
-            _parentFormSizeChanging = true;
-            _isResizing = true;
-        }
+        
 
         private void Map_KeyUp(object sender, KeyEventArgs e)
         {
@@ -179,35 +172,7 @@ namespace DotSpatial.Controls
                 if (tool.Enabled) tool.DoKeyDown(e);
             }
         }
-
-        private void ParentFormResizeEnd(object sender, EventArgs e)
-        {
-            _parentFormSizeChanging = false;
-            _isResizing = false;
-            //_resizeEndTimer.Stop();  // parent form resize end is good, but fails on splitters.
-            // The splitter doesn't require a timer, but if some other control setup exists that
-            // has a progressive resize, the timer helps prevent jerky behavior.
-            if (MapFrame != null)
-            {
-                if (ParentForm != null)
-                {
-                    if (ParentForm.Size == _oldParentSize) return;
-                    _oldParentSize = ParentForm.Size;
-                }
-                ResetExtents();
-            }
-            OnResized();
-        }
-
-        private void ResetExtents()
-        {
-            if (MapFrame != null)
-            {
-                _geoMapFrame.ResetExtents();
-                Invalidate();
-            }
-        }
-
+       
         private void Configure()
         {
             MapFrame = new MapFrame(this, new Extent(-180, -90, 180, 90));
@@ -643,7 +608,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ResetBuffer()
         {
-            _geoMapFrame.ResetBuffer();
+            if (_geoMapFrame != null)
+            {
+                _geoMapFrame.ResetBuffer();
+            }
         }
 
         /// <summary>
@@ -1459,7 +1427,7 @@ namespace DotSpatial.Controls
             if (_geoMapFrame.IsPanning) return;
 
             Rectangle clip = e.ClipRectangle;
-            if (clip.IsEmpty || _isResizing) clip = ClientRectangle;
+            if (clip.IsEmpty) clip = ClientRectangle;
 
             // if the area to paint is too small, there's nothing to paint.
             // Added to fix http://dotspatial.codeplex.com/workitem/320
@@ -1486,55 +1454,7 @@ namespace DotSpatial.Controls
             base.OnPaint(pe);
 
             g.Dispose();
-
-            if (_isResizing)
-            {
-                Rectangle v = _geoMapFrame.View;
-                Extent target = ViewExtents.Copy();
-                GetResizeExtent(target);
-                Rectangle nV = _geoMapFrame.ProjToPixel(target);
-                const int sourceX = 0;
-                const int sourceY = 0;
-                int sourceHeight = Height;
-                int sourceWidth = Width;
-                int destX = 0;
-                int destY = 0;
-                int destWidth = Width;
-                int destHeight = Height;
-                if (nV.Height > v.Height)
-                {
-                    double yRat = nV.Height / (double)v.Height;
-                    destHeight = Convert.ToInt32(Height / yRat);
-                    destY = (Height - destHeight) / 2;
-                }
-                else
-                {
-                    double xRat = nV.Width / (double)v.Width;
-                    destWidth = Convert.ToInt32(Width / xRat);
-                    destX = (Width - destWidth) / 2;
-                }
-                using (Bitmap bmp = new Bitmap(Width, Height))
-                {
-                    using (Graphics gg = Graphics.FromImage(bmp))
-                    {
-                        using (Brush bb = new SolidBrush(BackColor))
-                        {
-                            gg.FillRectangle(bb, 0, 0, Width, Height);
-                        }
-
-                        Rectangle source = new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight);
-                        Rectangle dest = new Rectangle(destX, destY, destWidth, destHeight);
-                        gg.DrawImage(stencil, dest, source, GraphicsUnit.Pixel);
-                    }
-
-                    e.Graphics.DrawImageUnscaled(bmp, 0, 0);
-                }
-            }
-            else
-            {
-                e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
-            }
-
+            e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
             stencil.Dispose();
         }
 
@@ -1714,33 +1634,22 @@ namespace DotSpatial.Controls
             if (FunctionModeChanged != null) FunctionModeChanged(this, e);
         }
 
-        /// <summary>
-        /// Handles resize of the form.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnResize(EventArgs e)
+        private void OnSizeChanged(object sender, EventArgs eventArgs)
         {
-            if (RedrawLayersWhileResizing)
+            if (_geoMapFrame != null)
             {
-                // Redraw everything any time the size changes.
-                if (_geoMapFrame != null)
-                {
-                    _geoMapFrame.ResetExtents();
-                }
+                var diff = new Point { X = Size.Width - _oldSize.Width, Y = Size.Height - _oldSize.Height };
+                var newView = new Rectangle(_geoMapFrame.View.X,
+                                            _geoMapFrame.View.Y,
+                                            _geoMapFrame.View.Width + diff.X,
+                                            _geoMapFrame.View.Height + diff.Y);
+             
+                _geoMapFrame.View = newView;
+                _geoMapFrame.ResetExtents();
+                Invalidate();
             }
-            else
-            {
-                if (!_parentFormSizeChanging)
-                {
-                    // This is called after a splitter drop, or after maximize minimize changes.
-                    if (_geoMapFrame != null)
-                    {
-                        _geoMapFrame.ResetExtents();
-                    }
-                }
-            }
-            Invalidate();
-            base.OnResize(e);
+            _oldSize = Size;
+            OnResized();
         }
 
         /// <summary>
@@ -1748,7 +1657,11 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnResized()
         {
-            if (Resized != null) Resized(this, EventArgs.Empty);
+            var handler = Resized;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
 
         #endregion
