@@ -1385,39 +1385,6 @@ namespace DotSpatial.Controls
             //base.OnPaintBackground(e);
         }
 
-        private void GetResizeExtent(Extent newEnv)
-        {
-            // ---------- Aspect Ratio Handling
-            if (newEnv == null) return;
-            double h = Height;
-            double w = Width;
-            // It isn't exactly an exception, but rather just an indication not to do anything here.
-            if (h == 0 || w == 0) return;
-
-            double controlAspect = w / h;
-            double envelopeAspect = newEnv.Width / newEnv.Height;
-            Coordinate center = newEnv.ToEnvelope().Center();
-
-            if (controlAspect > envelopeAspect)
-            {
-                // The Control is proportionally wider than the envelope to display.
-                // If the envelope is proportionately wider than the control, "reveal" more width without
-                // changing height If the envelope is proportionately taller than the control,
-                // "hide" width without changing height
-                newEnv.SetCenter(center, newEnv.Height * controlAspect, newEnv.Height);
-            }
-            else
-            {
-                // The control is proportionally taller than the content is
-                // If the envelope is proportionately wider than the control,
-                // "hide" the extra height without changing width
-                // If the envelope is proportionately taller than the control, "reveal" more height without changing width
-                newEnv.SetCenter(center, newEnv.Width, newEnv.Width / controlAspect);
-            }
-
-            return;
-        }
-
         /// <summary>
         /// Perform custom drawing
         /// </summary>
@@ -1643,6 +1610,9 @@ namespace DotSpatial.Controls
                                             _geoMapFrame.View.Y,
                                             _geoMapFrame.View.Width + diff.X,
                                             _geoMapFrame.View.Height + diff.Y);
+                // Check for minimal size of view.
+                if (newView.Width < 5) newView.Width = 5;
+                if (newView.Height < 5) newView.Height = 5;
              
                 _geoMapFrame.View = newView;
                 _geoMapFrame.ResetExtents();
