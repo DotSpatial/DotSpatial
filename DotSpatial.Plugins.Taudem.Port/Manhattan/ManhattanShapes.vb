@@ -27,25 +27,13 @@ Imports DotSpatial.Topology
 ''' <para>4. Convert the polygons into lists of points, the format for a shape in a shapefile</para>
 ''' </summary>
 Public Class ManhattanShapes
-    Dim grid As IRaster
+    Private gridFilePath As String
     Private ShapesTable As Dictionary(Of Integer, manhattanCustomData)
-    Private MainOffset As manhattanCustomOffSet
     ' ''' <summary>
-    ' ''' Constructor, making an empty dictionary, and setting offset
-    ' ''' from header.
+    ' ''' Constructor, making an empty dictionary
     ' ''' </summary>
     Public Sub New(ByVal GridFileName As String)
-        grid = Raster.OpenFile(GridFileName)
-        Dim startC As New Coordinate()
-        '// origin (taken as column zero and row zero) is at the top left of the grid
-        startC = grid.CellToProj(0, 0)
-        Dim cw As Double = grid.CellWidth
-        Dim ch As Double = grid.CellHeight
-        startC.X = startC.X - (cw / 2)
-        startC.Y = startC.Y + (ch / 2)
-        'startC.X = grid.Xllcenter - (grid.CellWidth / 2)
-        'startC.Y = grid.Yllcenter - (grid.CellHeight / 2) + grid.CellHeight * (grid.NumRows)
-        MainOffset = New manhattanCustomOffSet(startC, cw, ch)
+        gridFilePath = GridFileName
         ShapesTable = New Dictionary(Of Integer, manhattanCustomData)()
     End Sub
 
@@ -183,103 +171,161 @@ Public Class ManhattanShapes
         Return res
     End Function
 
-    Private Delegate Function Row(ByVal index As Integer) As Integer
+    'Private Delegate Function Row(ByVal index As Integer) As Integer
 
-    Private Class ArrayRow
-        Private row_Renamed() As Integer
+    'Private Class ArrayRow
+    '    Private row_Renamed() As Integer
 
-        Public Sub New(ByVal row() As Integer)
-            Me.row_Renamed = row
-        End Sub
+    '    Public Sub New(ByVal row() As Integer)
+    '        Me.row_Renamed = row
+    '    End Sub
 
-        Public Function Row(ByVal index As Integer) As Integer
-            Return row_Renamed(index)
-        End Function
-    End Class
+    '    Public Function Row(ByVal index As Integer) As Integer
+    '        Return row_Renamed(index)
+    '    End Function
+    'End Class
+
+
+    ' ''' <summary>
+    ' ''' Adds boxes from array row number rowNum
+    ' ''' </summary>
+    ' ''' <param name="row"></param>
+    ' ''' <param name="rowNum"></param>
+    ' ''' <param name="noData"></param>
+    'Public Sub addArrayRow(ByVal row() As Integer, ByVal rowNum As Integer, ByVal noData As Double, ByVal valueToUse As Double)
+    '    Dim ar As New ArrayRow(row)
+    '    addRow(New Row(AddressOf ar.Row), rowNum, row.Length, noData, valueToUse)
+    'End Sub
+
+    ' ''' <summary>
+    ' ''' Adds boxes from grid row number rowNum of length length
+    ' ''' </summary>
+    ' ''' <param name="rowNum"></param>
+    ' ''' <param name="length"></param>
+    'Public Sub addMyGridRow(ByVal rowNum As Integer, ByVal length As Integer, ByVal NoDataValue As Double, ByVal valueToUse As Double)
+    '    Dim gr As New manhattanCustomGridRow(grid, rowNum)
+    '    addRow(New Row(AddressOf gr.Row), rowNum, length, NoDataValue, valueToUse)
+    'End Sub
+
+    ' ''' <summary>
+    ' ''' row behaves like an array, indexed from 0 to length - 1
+    ' ''' This creates boxes, where boxes are made from adjacent cells
+    ' ''' of the array with the same values, and adds them as parts.
+    ' ''' Nodata values are ignored.
+    ' ''' </summary>
+    ' ''' <param name="row"></param>
+    ' ''' <param name="rowNum"></param>
+    ' ''' <param name="length"></param>
+    ' ''' <param name="noData"></param>
+    'Private Sub addRow(ByVal row As Row, ByVal rowNum As Integer, ByVal length As Integer, ByVal noData As Double, ByVal valueToUse As Double)
+    '    Dim col As Integer = 0
+    '    Dim width As Integer = 1
+    '    Dim last As Integer = row(0)
+    '    Dim bound As Integer = length - 1
+    '    Do While col < bound
+    '        Dim [next] As Integer = row(col + 1)
+    '        If [next] = last Then
+    '            width += 1
+    '        Else
+    '            If last <> noData AndAlso last = valueToUse Then
+    '                Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
+    '            End If
+    '            last = [next]
+    '            width = 1
+    '        End If
+    '        col += 1
+    '    Loop
+    '    If last <> noData AndAlso last = valueToUse Then
+    '        Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
+    '    End If
+    'End Sub
+
+    'Private Sub addRow(ByVal row As Row, ByVal rowNum As Integer, ByVal length As Integer, ByVal noData As Double)
+    '    Dim width As Integer = 1
+    '    Dim last As Integer = row(0)
+    '    Dim bound As Integer = length - 1
+    '    Dim col As Integer
+    '    For col = 0 To bound
+    '        Dim NextValue As Integer = row(col + 1)
+    '        If NextValue = last Then
+    '            width += 1
+    '        Else
+    '            If last <> noData Then
+    '                Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
+    '            End If
+    '            last = NextValue
+    '            width = 1
+    '        End If
+    '        col += 1
+    '    Next
+    '    If last <> noData Then
+    '        Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
+    '    End If
+    'End Sub
 
 
     ''' <summary>
-    ''' Adds boxes from array row number rowNum
-    ''' </summary>
-    ''' <param name="row"></param>
-    ''' <param name="rowNum"></param>
-    ''' <param name="noData"></param>
-    Public Sub addArrayRow(ByVal row() As Integer, ByVal rowNum As Integer, ByVal noData As Double, ByVal valueToUse As Double)
-        Dim ar As New ArrayRow(row)
-        addRow(New Row(AddressOf ar.Row), rowNum, row.Length, noData, valueToUse)
-    End Sub
-
-    ''' <summary>
-    ''' Adds boxes from grid row number rowNum of length length
-    ''' </summary>
-    ''' <param name="rowNum"></param>
-    ''' <param name="length"></param>
-    Public Sub addMyGridRow(ByVal rowNum As Integer, ByVal length As Integer, ByVal NoDataValue As Double, ByVal valueToUse As Double)
-        Dim gr As New manhattanCustomGridRow(grid, rowNum)
-        addRow(New Row(AddressOf gr.Row), rowNum, length, NoDataValue, valueToUse)
-    End Sub
-
-    ''' <summary>
-    ''' row behaves like an array, indexed from 0 to length - 1
-    ''' This creates boxes, where boxes are made from adjacent cells
-    ''' of the array with the same values, and adds them as parts.
-    ''' Nodata values are ignored.
-    ''' </summary>
-    ''' <param name="row"></param>
-    ''' <param name="rowNum"></param>
-    ''' <param name="length"></param>
-    ''' <param name="noData"></param>
-    Private Sub addRow(ByVal row As Row, ByVal rowNum As Integer, ByVal length As Integer, ByVal noData As Double, ByVal valueToUse As Double)
-        Dim col As Integer = 0
-        Dim width As Integer = 1
-        Dim last As Integer = row(0)
-        Dim bound As Integer = length - 1
-        Do While col < bound
-            Dim [next] As Integer = row(col + 1)
-            If [next] = last Then
-                width += 1
-            Else
-                If last <> noData AndAlso last = valueToUse Then
-                    Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
-                End If
-                last = [next]
-                width = 1
-            End If
-            col += 1
-        Loop
-        If last <> noData AndAlso last = valueToUse Then
-            Me.addShape(last, manhattanPolygon.box(col + 1 - width, rowNum, width), width)
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' Converts grid to a shapefile, removing any existing shapefile.
-    ''' Assumed to be an integer grid.  Adds attribute headed id with the grid values, and
-    ''' attribute headed "Area" with the area for each polygon.
+    ''' Converts grid to a shapefile, replacing any existing shapefile.
+    ''' Assumed to be an integer grid.
+    ''' Attribute "BasinID" is populated with the grid values
+    ''' Attribute "AREA" is populated with the area of each polygon.
     ''' </summary>
     ''' <returns>null if any errors, else FeatureSet</returns>
     Public Function GridToShapeManhattan() As FeatureSet
+        Return GridToShapeManhattan("BasinID", "AREA")
+    End Function
+
+    ''' <summary>
+    ''' Converts grid to a shapefile, replacing any existing shapefile.
+    ''' Assumed to be an integer grid.
+    ''' Attribute GridValueFieldName is populated with the grid values
+    ''' Attribute "AREA" is populated with the area of each polygon.
+    ''' </summary>
+    ''' <returns>null if any errors, else FeatureSet</returns>
+    Public Function GridToShapeManhattan(ByVal GridValueFieldName As String, ByVal AreaFieldName As String) As FeatureSet
+        Dim grid As IRaster = Raster.OpenFile(gridFilePath)
+
+        '// origin (taken as column zero and row zero) is at the top left of the grid
+        Dim startC As Coordinate = grid.CellToProj(0, 0)
+        startC.X = startC.X - (grid.CellWidth / 2)
+        startC.Y = startC.Y + (grid.CellHeight / 2)
+        Dim MainOffset As New manhattanCustomOffSet(startC, grid.CellWidth, grid.CellHeight)
+
         Dim NoDataValue As Double = grid.NoDataValue
         Dim numRows As Integer = grid.EndRow
         Dim numCols As Integer = grid.EndColumn - 1
-        Dim MaxValue As Integer = grid.GetMaximum()
 
-        For ii = 0 To MaxValue
-            For iRow As Integer = 0 To numRows - 1
-                addMyGridRow(iRow, numCols, NoDataValue, ii)
-            Next iRow
-        Next
-
+        Dim width As Integer
+        Dim GridValue As Integer
+        Dim Col As Integer
+        For Row As Integer = 0 To numRows - 1
+            GridValue = System.Convert.ToInt32(grid.Value(Row, 0), CultureInfo.InvariantCulture)
+            width = 1
+            For Col = 1 To numCols
+                Dim NextGridValue As Integer = System.Convert.ToInt32(grid.Value(Row, Col), CultureInfo.InvariantCulture)
+                If NextGridValue = GridValue Then
+                    width += 1
+                Else
+                    If GridValue <> NoDataValue Then
+                        Me.addShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
+                    End If
+                    GridValue = NextGridValue
+                    width = 1
+                End If
+            Next Col
+            If GridValue <> NoDataValue Then
+                Me.addShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
+            End If
+        Next Row
         grid.Close()
-        Me.FinishShapes()
-        Dim PolygonFeatureSet As FeatureSet
-        PolygonFeatureSet = New FeatureSet(FeatureType.Polygon)
-        addFieldToFS(PolygonFeatureSet, "FID", GetType(Integer))
-        addFieldToFS(PolygonFeatureSet, "AREA", GetType(Double))
-        Dim idIndex As Integer = 0
 
-        For Each k As Integer In Me.ShapesTable.Keys
-            Dim simplePolygon As Dictionary(Of Integer, manhattanPolygonParts) = MainOffset.makeShape(ShapesTable(k).polygons)
+        Me.FinishShapes()
+        Dim PolygonFeatureSet As New FeatureSet(FeatureType.Polygon)
+        addFieldToFS(PolygonFeatureSet, GridValueFieldName, GetType(Integer))
+        addFieldToFS(PolygonFeatureSet, AreaFieldName, GetType(Double))
+
+        For Each GridValue In Me.ShapesTable.Keys
+            Dim simplePolygon As Dictionary(Of Integer, manhattanPolygonParts) = MainOffset.makeShape(ShapesTable(GridValue).polygons)
             If simplePolygon Is Nothing Then
                 Continue For
             Else
@@ -289,18 +335,16 @@ Public Class ManhattanShapes
                         COORDS.Add(S1.Value)
                     Next
                     If COORDS.Count > 0 Then
-                        Dim LR As New LinearRing(COORDS)
-                        Dim L2 As New Polygon(LR)
-                        Dim polygFeat As New Feature(L2)
-                        Dim addedFEAT As IFeature = PolygonFeatureSet.AddFeature(polygFeat)
-                        addedFEAT.DataRow("FID") = idIndex
-                        addedFEAT.DataRow("AREA") = polygFeat.Area
+                        Dim newPolygon As New Polygon(New LinearRing(COORDS))
+                        Dim newFeature As New Feature(newPolygon)
+                        Dim addedFEAT As IFeature = PolygonFeatureSet.AddFeature(newFeature)
+                        addedFEAT.DataRow(0) = GridValue
+                        addedFEAT.DataRow(1) = newFeature.Area
                         addedFEAT.DataRow.AcceptChanges()
-                        idIndex += 1
                     End If
                 Next
             End If
-        Next k
+        Next GridValue
         Return PolygonFeatureSet
     End Function
 
