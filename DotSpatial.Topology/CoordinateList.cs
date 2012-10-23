@@ -61,11 +61,11 @@ namespace DotSpatial.Topology
         /// <param name="allowRepeated">If <c>false</c>, repeated points are removed.</param>
         public CoordinateList(IEnumerable<Coordinate> coords, bool allowRepeated)
         {
-            var newList = new List<Coordinate>();
-            Coordinate last = null;
             if (!allowRepeated)
             {
-                foreach(var coord in coords)
+                var newList = new List<Coordinate>();
+                Coordinate last = null;
+                foreach (var coord in coords)
                 {
                     if(null != last)
                     {
