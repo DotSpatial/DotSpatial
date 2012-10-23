@@ -50,7 +50,7 @@ namespace DotSpatial.Topology
         /// <param name="coords">Initial coordinates</param>
         public CoordinateList(IEnumerable<Coordinate> coords)
         {
-            DoAddRange(coords, true);
+            InnerList = coords.ToList();
         }
 
         /// <summary>
@@ -61,7 +61,26 @@ namespace DotSpatial.Topology
         /// <param name="allowRepeated">If <c>false</c>, repeated points are removed.</param>
         public CoordinateList(IEnumerable<Coordinate> coords, bool allowRepeated)
         {
-            DoAddRange(coords, allowRepeated);
+            var newList = new List<Coordinate>();
+            Coordinate last = null;
+            if (!allowRepeated)
+            {
+                foreach(var coord in coords)
+                {
+                    if(null != last)
+                    {
+                        if (last.Equals2D(coord))
+                            continue;
+                    }
+                    newList.Add(coord);
+                    last = coord;
+                }
+                InnerList = newList;
+            }
+            else
+            {
+                InnerList = coords.ToList();
+            }
         }
 
         #region ICloneable Members
