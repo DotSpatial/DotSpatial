@@ -406,8 +406,8 @@ namespace DotSpatial.Data
                 rw = (c[3] + c[4] * location.X / c[1] - c[4] * c[0] / c[1] - location.Y) / div;
                 cl = (location.X - c[2] * rw - c[0]) / c[1];
             }
-            int iRow = (int)Math.Round(rw);
-            int iCol = (int)Math.Round(cl);
+            int iRow = (int)Math.Floor(rw);
+            int iCol = (int)Math.Floor(cl);
 
             if (iRow < 0 || iCol < 0 || iRow >= bounds.NumRows || iCol >= bounds.NumColumns)
             {
@@ -420,29 +420,37 @@ namespace DotSpatial.Data
         /// <summary>
         /// The affine transform can make figuring out what rows and columns are needed from the original image
         /// in order to correctly fill a geographic extent challenging.  This attempts to handle that back projection
-        /// problem.  It returns a System.Drawing.Rectangle in pixel (cell) coordinates that is completely contains
-        /// the geographic extents, but is not larger than the bounds of the underlying image.  It back projects
-        /// all four corners of the extent and returns the bounding rectangle clipped by the image rectangle.
+        /// problem. It returns a System.Drawing.Rectangle in pixel (cell) coordinates that is completely contains
+        /// the geographic extents, but is not larger than the bounds of the underlying image.
+        /// If geographic extent fully contains extent of IRasterBounds, than returns rectangle which contains full raster image.
+        /// If geographic extent partially contains extent of IRasterBounds, than returns rectangle which contains needed edges of full raster image.
+        /// It back projects all four corners of the extent and returns the bounding rectangle clipped by the image rectangle.
         /// </summary>
-        /// <param name="self"></param>
-        /// <param name="extent"></param>
-        /// <returns></returns>
+        /// <param name="self">Instance of <see cref="IRasterBounds"/></param>
+        /// <param name="extent">Extent to test.</param>
+        /// <returns>Rectangle in pixel (cell) coordinates.</returns>
         public static Rectangle CellsContainingExtent(this IRasterBounds self, Extent extent)
         {
-            List<Coordinate> coords = new List<Coordinate>
+            var se = self.Extent;
+            var exMinX = Math.Max(extent.MinX, se.MinX);
+            var exMaxY = Math.Min(extent.MaxY, se.MaxY);
+            var exMaxX = Math.Min(extent.MaxX, se.MaxX);
+            var exMinY = Math.Max(extent.MinY, se.MinY);
+
+            var coords = new List<Coordinate>
                                           {
-                                              new Coordinate(extent.MinX, extent.MaxY),
-                                              new Coordinate(extent.MaxX, extent.MaxY),
-                                              new Coordinate(extent.MinX, extent.MinY),
-                                              new Coordinate(extent.MaxX, extent.MinY)
+                                              new Coordinate(exMinX, exMaxY),
+                                              new Coordinate(exMaxX, exMaxY),
+                                              new Coordinate(exMinX, exMinY),
+                                              new Coordinate(exMaxX, exMinY)
                                           };
             int minX = self.NumColumns;
             int minY = self.NumRows;
             int maxX = 0;
             int maxY = 0;
-            foreach (Coordinate c in coords)
+            foreach (var c in coords)
             {
-                RcIndex rowCol = self.ProjToCell(c);
+                var rowCol = self.ProjToCell(c);
                 if (rowCol.Row < minY) minY = rowCol.Row;
                 if (rowCol.Column < minX) minX = rowCol.Column;
                 if (rowCol.Row > maxY) maxY = rowCol.Row;
