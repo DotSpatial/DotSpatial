@@ -637,9 +637,15 @@ namespace DotSpatial.Data
             {
                 if (File.Exists(Attributes.Filename))
                 {
-                    if (File.Exists(newFile)) File.Delete(newFile);
-                    File.Copy(Attributes.Filename, newFile);
-                    Attributes.Filename = newFile;
+                    if (newFile.Equals(Attributes.Filename))
+                    {   // Already using existing file
+                    }
+                    else
+                    {
+                        if (File.Exists(newFile)) File.Delete(newFile);
+                        File.Copy(Attributes.Filename, newFile);
+                        Attributes.Filename = newFile;
+                    }
                     return;
                 }
             }
