@@ -127,13 +127,40 @@ namespace DotSpatial.Symbology
 
         private void Configure()
         {
-            _elevationFactor = 1 / 3640000f;
-            _isElevation = true;
-            _extrusion = 1;
             _shadedRelief = new ShadedRelief();
             _noDataColor = Color.Transparent;
             Scheme = new ColorScheme();
-            if (_raster != null) _scheme.ApplyScheme(ColorSchemeType.FallLeaves, _raster);
+            if (_raster != null)
+            {
+                var Colors = _raster.CategoryColors();
+                if (Colors != null && Colors.Length > 0)
+                {   // Use colors that are built into the raster, e.g. GeoTIFF with palette
+                    var Names = _raster.CategoryNames();
+                    bool overMaxCount = false;
+                    var UniqueValues = _raster.GetUniqueValues(Colors.Length, out overMaxCount);
+                    _isElevation = false;
+                    for (int i = 0; i < Colors.Length; i++)
+                    {   //Only add colors to the legend if they appear in the layer
+                        //NLCD CategoryColors include 256 colors, but only 16 are valid
+                        if (UniqueValues.Contains(Convert.ToDouble(i)))
+                        {   // It seems buggy that using value i - 1 below works
+                            ICategory newCat = new ColorCategory(i - 1, Colors[i]);
+                            if (Names != null && Names.Length > i)
+                                newCat.LegendText = Names[i];
+                            else
+                                newCat.LegendText = i.ToString();
+                            Scheme.AddCategory(newCat);
+                        }
+                    }
+                }
+                else // Assume grid is elevation
+                {
+                    _elevationFactor = 1 / 3640000f;
+                    _isElevation = true;
+                    _extrusion = 1;
+                    _scheme.ApplyScheme(ColorSchemeType.FallLeaves, _raster);
+                }
+            }
         }
 
         #endregion

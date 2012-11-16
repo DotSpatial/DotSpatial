@@ -268,6 +268,7 @@ namespace DotSpatial.Data
 
             // Save the in-memory values.
             newRaster.Save();
+            newRaster.Close();
         }
 
         #endregion
@@ -765,6 +766,26 @@ namespace DotSpatial.Data
                 }
                 affine[3] = value - affine[4] * .5 - affine[5] * (_numRows - .5);
             }
+        }
+
+        /// <summary>
+        /// By default, Raster does not have any CategoryNames, but this can be overridden
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual String[] CategoryNames()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// By default, Raster does not have any CategoryColors, but this can be overridden
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual System.Drawing.Color[] CategoryColors()
+        {
+            return null;
         }
 
         #endregion

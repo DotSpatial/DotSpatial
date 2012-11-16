@@ -425,6 +425,18 @@ namespace DotSpatial.Data
         /// </summary>
         IEnumerable<double> Sample { get; set; }
 
+        /// <summary>
+        /// A raster can contain predefined names for its categories
+        /// </summary>
+        /// <returns>null if raster has no category names</returns>
+        String[] CategoryNames();
+
+        /// <summary>
+        /// A raster can contain predefined colors for its categories, for example NLCD GeoTIFF has a palette
+        /// </summary>
+        /// <returns>null if raster has no category colors</returns>
+        System.Drawing.Color[] CategoryColors();
+
         #endregion
 
         #region Events

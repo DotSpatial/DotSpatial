@@ -243,6 +243,25 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
         }
 
+        public override void Close()
+        {
+            base.Close();
+            if (_band != null)
+                _band.Dispose();
+            else
+                foreach (IRaster raster in Bands)
+                {
+                    raster.Close();
+                    raster.Dispose();
+                }
+
+            if (_dataset != null)
+            {
+                _dataset.FlushCache();
+                _dataset.Dispose();
+            }
+        }
+
         /// <summary>
         /// Copies the fileName
         /// </summary>
@@ -466,7 +485,68 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
         }
 
+        public override String[] CategoryNames()
+        {
+            if (_band != null)
+            {
+                return _band.GetCategoryNames();
+            }
+            else
+            {
+                foreach (GdalRaster<T> raster in Bands)
+                {
+                    return raster._band.GetCategoryNames();
+                }
+            }
+            return null;
+        }
+
+        public override System.Drawing.Color[] CategoryColors()
+        {
+            System.Drawing.Color[] Colors = null;
+            ColorTable table = GetColorTable();
+            if (table != null)
+            {
+                int ColorCount = table.GetCount();
+                if (ColorCount > 0)
+                {
+                    Colors = new System.Drawing.Color[ColorCount];
+                    for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex += 1)
+                    {
+                        Colors[ColorIndex] = System.Drawing.Color.DimGray;
+                        ColorEntry entry = table.GetColorEntry(ColorIndex);
+                        switch (table.GetPaletteInterpretation())
+                        {
+                            case PaletteInterp.GPI_RGB: Colors[ColorIndex] = System.Drawing.Color.FromArgb(entry.c4, entry.c1, entry.c2, entry.c3); break;
+                            case PaletteInterp.GPI_Gray: Colors[ColorIndex] = System.Drawing.Color.FromArgb(255, entry.c1, entry.c1, entry.c1); break;
+                            //TODO: do any files use these types?
+                            //case PaletteInterp.GPI_HLS
+                            //case PaletteInterp.GPI_CMYK
+                        }
+                        
+                    }
+                }
+            }
+            return Colors;
+        }
+
         #endregion
+
+        private ColorTable GetColorTable()
+        {
+            if (_band != null)
+            {
+                return _band.GetColorTable();
+            }
+            else
+            {
+                foreach (GdalRaster<T> raster in Bands)
+                {
+                    return raster._band.GetColorTable();
+                }
+            }
+            return null;
+        }
 
         private void ReadHeader()
         {

@@ -111,8 +111,6 @@ namespace DotSpatial.Controls
             base.LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
             // string imageFile = Path.ChangeExtension(raster.Filename, ".png");
             // if (File.Exists(imageFile)) File.Delete(imageFile);
-
-            IRasterSymbolizer rs = new RasterSymbolizer { Raster = raster };
             if (raster.NumRows * raster.NumColumns > 8000 * 8000)
             {
                 // For huge images, assume that GDAL or something was needed anyway,
@@ -130,11 +128,10 @@ namespace DotSpatial.Controls
                 }
             }
             else
-            {
+            {                
                 // Ensure smaller images match the scheme.
-                rs.Scheme.ApplyScheme(ColorSchemeType.FallLeaves, raster);
                 Bitmap bmp = new Bitmap(raster.NumColumns, raster.NumRows);
-                raster.PaintColorSchemeToBitmap(rs, bmp, raster.ProgressHandler);
+                raster.PaintColorSchemeToBitmap(base.Symbolizer, bmp, raster.ProgressHandler);
 
                 InRamImage id = new InRamImage(bmp);
                 id.Bounds.AffineCoefficients = raster.Bounds.AffineCoefficients;
