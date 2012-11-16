@@ -4777,7 +4777,7 @@ namespace MapWinGeoProc
             IProgressHandler callback)
         {
             int sindx;
-            var oldperc = 0;
+            int oldperc = 0;
             const int IDField = 0;
             const int DsField = 1;
             const int Us1Field = 2;
@@ -4785,7 +4785,6 @@ namespace MapWinGeoProc
             const int DsAreaField = 8;
             const int SlopeField = 10;
             const int UsAreaField = 12;
-            //const int WShedIDField = 13;
 
             if (callback != null)
             {
@@ -4798,44 +4797,41 @@ namespace MapWinGeoProc
                 return false;
             }
 
-            var streamShape = FeatureSet.Open(streamNetworkShapePath);
+            IFeatureSet streamShape = FeatureSet.Open(streamNetworkShapePath);
             if (streamShape == null)
             {
-                throw new ApplicationException(
-                    String.Format("Error in opening {0}", streamNetworkShapePath)
-                    );
+                throw new ApplicationException(String.Format("Error in opening {0}", streamNetworkShapePath));
             }
+            int streamShapeNumShapes = streamShape.NumRows();
 
             // Add some fields:
-            var lowFieldNum = AddField(streamShape, "ElevLow", typeof(double));
-            var highFieldNum = AddField(streamShape, "Elevhigh", typeof(double));
-            var mwidthFieldNum = AddField(streamShape, "MeanWidth", typeof(double));
-            var mdepthFieldNum = AddField(streamShape, "MeanDepth", typeof(double));
-            var dsareaAcreFieldNum = AddField(streamShape, "DSAreaAcre", typeof(double));
-            var dsareaSqMiFieldNum = AddField(streamShape, "USAreaAcre", typeof(double));
-            var usareaAcreFieldNum = AddField(streamShape, "DSAreaSqMi", typeof(double));
-            var usareaSqMiFieldNum = AddField(streamShape, "USAreaSqMi", typeof(double));
+            int lowFieldNum = AddField(streamShape, "ElevLow", typeof(double));
+            int highFieldNum = AddField(streamShape, "Elevhigh", typeof(double));
+            int mwidthFieldNum = AddField(streamShape, "MeanWidth", typeof(double));
+            int mdepthFieldNum = AddField(streamShape, "MeanDepth", typeof(double));
+            int dsareaAcreFieldNum = AddField(streamShape, "DSAreaAcre", typeof(double));
+            int dsareaSqMiFieldNum = AddField(streamShape, "USAreaAcre", typeof(double));
+            int usareaAcreFieldNum = AddField(streamShape, "DSAreaSqMi", typeof(double));
+            int usareaSqMiFieldNum = AddField(streamShape, "USAreaSqMi", typeof(double));
 
-            var projStr = streamShape.Projection;
-            var demGrid = Raster.Open(demPath);
-            var shedShape = FeatureSet.Open(subBasinShapePath);
-            var shedShapeNumShapes = shedShape.NumRows();
+            DotSpatial.Projections.ProjectionInfo projStr = streamShape.Projection;
+            IRaster demGrid = Raster.Open(demPath);
+            IFeatureSet shedShape = FeatureSet.Open(subBasinShapePath);
+            int shedShapeNumShapes = shedShape.NumRows();
 
-            for (sindx = 0; sindx < streamShape.NumRows(); sindx++)
+            for (sindx = 0; sindx < streamShapeNumShapes; sindx++)
             {
-                if (streamShape.NumRows() > 1)
+                if (callback != null && streamShapeNumShapes > 1)
                 {
-                    var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShapeNumShapes)) * 100);
+                    int newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShapeNumShapes)) * 100);
                     if (newperc > oldperc)
                     {
-                        if (callback != null)
-                        {
-                            callback.Progress("Status", newperc, "Calculating Stream Parameters");
-                        }
-
+                        callback.Progress("Status", newperc, "Calculating Stream Parameters");
                         oldperc = newperc;
                     }
                 }
+
+                int OriginalStreamID = Convert.ToInt32(streamShape.get_CellValue(IDField, sindx));
 
                 double elevlow;
                 double elevhigh;
@@ -4844,47 +4840,46 @@ namespace MapWinGeoProc
                 switch (elevUnits)
                 {
                     case ElevationUnits.centimeters:
-                        elevlow = elevlow / 100;
-                        elevhigh = elevhigh / 100;
+                        elevlow /= 100;
+                        elevhigh /= 100;
                         break;
                     case ElevationUnits.feet:
-                        elevlow = elevlow / 3.280839895;
-                        elevhigh = elevhigh / 3.280839895;
+                        elevlow /= 3.280839895;
+                        elevhigh /= 3.280839895;
                         break;
                 }
 
                 streamShape.EditCellValue(lowFieldNum, sindx, elevlow);
                 streamShape.EditCellValue(highFieldNum, sindx, elevhigh);
-                // This code seems to rely on some attribute WShedIDField that would be added by the old Util.GetShapeFileFromGrid or similar method
 
-                //for (int shdindx = 0; shdindx < shedShapeNumShapes; shdindx++)
-                //{
-                //if ((int)shedShape.get_CellValue(IDField, shdindx)
-                //    != (int)streamShape.get_CellValue(WShedIDField, sindx))
-                //{
-                //    continue;
-                //}
+                // Assume the first field in the watershed shape file is an ID field that corresponds to the IDs in streamShape IDField
+                // GridToShapeManhattan creates this field for watershed shapes
+                const int WShedIDField = 0;
+                for (int shdindx = 0; shdindx < shedShapeNumShapes; shdindx++)
+                {
+                    if (Convert.ToInt32(shedShape.get_CellValue(WShedIDField, shdindx)) == OriginalStreamID)
+                    {
+                        var currShp = shedShape.get_Shape(shdindx);
+                        double currArea = Utils.AreaOfPart(currShp, 0);
+                        double meanWidth = 1.29 * Math.Pow(currArea / 1000000, 0.6);
+                        double meanDepth = 0.13 * Math.Pow(currArea / 1000000, 0.4);
+                        streamShape.EditCellValue(mwidthFieldNum, sindx, meanWidth);
+                        streamShape.EditCellValue(mdepthFieldNum, sindx, meanDepth);
+                        break;
+                    }
+                }
 
-                //    var currShp = shedShape.get_Shape(shdindx);
-                //    var currArea = Utils.AreaOfPart(currShp, 0);
-                //    var meanWidth = 1.29 * Math.Pow(currArea / 1000000, 0.6);
-                //    var meanDepth = 0.13 * Math.Pow(currArea / 1000000, 0.4);
-                //    streamShape.EditCellValue(mwidthFieldNum, sindx, meanWidth);
-                //    streamShape.EditCellValue(mdepthFieldNum, sindx, meanDepth);
-                //    break;
-                //}
+                // Change shape ID (and down/upstream IDs) from zero-based to one-based
+                streamShape.EditCellValue(IDField, sindx, OriginalStreamID+1);
 
-                var tmpID = Convert.ToInt16(streamShape.get_CellValue(IDField, sindx));
-                tmpID++;
-                streamShape.EditCellValue(IDField, sindx, tmpID);
-                tmpID = Convert.ToInt16(streamShape.get_CellValue(DsField, sindx));
+                int tmpID = Convert.ToInt32(streamShape.get_CellValue(DsField, sindx));
                 if (tmpID > -1)
                 {
                     tmpID++;
                 }
-
                 streamShape.EditCellValue(DsField, sindx, tmpID);
-                tmpID = Convert.ToInt16(streamShape.get_CellValue(Us1Field, sindx));
+
+                tmpID = Convert.ToInt32(streamShape.get_CellValue(Us1Field, sindx));
                 if (tmpID > 0)
                 {
                     tmpID++;
@@ -4893,9 +4888,9 @@ namespace MapWinGeoProc
                 {
                     tmpID = -1;
                 }
-
                 streamShape.EditCellValue(Us1Field, sindx, tmpID);
-                tmpID = Convert.ToInt16(streamShape.get_CellValue(Us2Field, sindx));
+
+                tmpID = Convert.ToInt32(streamShape.get_CellValue(Us2Field, sindx));
                 if (tmpID > 0)
                 {
                     tmpID++;
@@ -4904,20 +4899,20 @@ namespace MapWinGeoProc
                 {
                     tmpID = -1;
                 }
-
                 streamShape.EditCellValue(Us2Field, sindx, tmpID);
-                var tmpSlope = (double)streamShape.get_CellValue(SlopeField, sindx);
-                var tmpDsArea = (double)streamShape.get_CellValue(DsAreaField, sindx);
-                var tmpUsArea = (double)streamShape.get_CellValue(UsAreaField, sindx);
+
+                double tmpSlope = Convert.ToDouble(streamShape.get_CellValue(SlopeField, sindx));
+                double tmpDsArea = Convert.ToDouble(streamShape.get_CellValue(DsAreaField, sindx));
+                double tmpUsArea = Convert.ToDouble(streamShape.get_CellValue(UsAreaField, sindx));
 
                 if (projStr != null)
                 {
                     if (projStr.Unit.Name == "Meter")
                     {
-                        var dsAreaAcre = tmpDsArea * 0.000247105;
-                        var dsAreaSqMi = dsAreaAcre * 0.0015625;
-                        var usAreaAcre = tmpUsArea * 0.000247105;
-                        var usAreaSqMi = usAreaAcre * 0.0015625;
+                        double dsAreaAcre = tmpDsArea * 0.000247105;
+                        double dsAreaSqMi = dsAreaAcre * 0.0015625;
+                        double usAreaAcre = tmpUsArea * 0.000247105;
+                        double usAreaSqMi = usAreaAcre * 0.0015625;
                         streamShape.EditCellValue(dsareaAcreFieldNum, sindx, dsAreaAcre);
                         streamShape.EditCellValue(dsareaSqMiFieldNum, sindx, dsAreaSqMi);
                         streamShape.EditCellValue(usareaAcreFieldNum, sindx, usAreaAcre);
@@ -4938,10 +4933,10 @@ namespace MapWinGeoProc
                     }
                     else if (projStr.Unit.Name == "Foot")
                     {
-                        var dsAreaAcre = tmpDsArea * 2.2957E-05;
-                        var dsAreaSqMi = dsAreaAcre * 0.0015625;
-                        var usAreaAcre = tmpUsArea * 2.2957E-05;
-                        var usAreaSqMi = usAreaAcre * 0.0015625;
+                        double dsAreaAcre = tmpDsArea * 2.2957E-05;
+                        double dsAreaSqMi = dsAreaAcre * 0.0015625;
+                        double usAreaAcre = tmpUsArea * 2.2957E-05;
+                        double usAreaSqMi = usAreaAcre * 0.0015625;
                         streamShape.EditCellValue(dsareaAcreFieldNum, sindx, dsAreaAcre);
                         streamShape.EditCellValue(dsareaSqMiFieldNum, sindx, dsAreaSqMi);
                         streamShape.EditCellValue(usareaAcreFieldNum, sindx, usAreaAcre);
@@ -4964,10 +4959,10 @@ namespace MapWinGeoProc
                 }
                 else
                 {
-                    var dSAreaAcre = tmpDsArea * 0.000247105;
-                    var dsAreaSqMi = dSAreaAcre * 0.0015625;
-                    var uSAreaAcre = tmpUsArea * 0.000247105;
-                    var uSAreaSqMi = uSAreaAcre * 0.0015625;
+                    double dSAreaAcre = tmpDsArea * 0.000247105;
+                    double dsAreaSqMi = dSAreaAcre * 0.0015625;
+                    double uSAreaAcre = tmpUsArea * 0.000247105;
+                    double uSAreaSqMi = uSAreaAcre * 0.0015625;
                     streamShape.EditCellValue(dsareaAcreFieldNum, sindx, dSAreaAcre);
                     streamShape.EditCellValue(dsareaSqMiFieldNum, sindx, dsAreaSqMi);
                     streamShape.EditCellValue(usareaAcreFieldNum, sindx, uSAreaAcre);
@@ -6175,21 +6170,21 @@ namespace MapWinGeoProc
             }
         }
 
-        private static int GetWshedFromStreamLink(int streamLink, IFeatureSet streamShape, IFeatureSet shedShape)
-        {
-            int streamindx;
-            const int LinkIDField = 0;
-            const int WaterShedIDField = 13;
-            for (streamindx = 0; streamindx <= streamShape.NumRows() - 1; streamindx++)
-            {
-                if (int.Parse(streamShape.get_CellValue(LinkIDField, streamindx).ToString()) == streamLink)
-                {
-                    return int.Parse(streamShape.get_CellValue(WaterShedIDField, streamindx).ToString());
-                }
-            }
+        //private static int GetWshedFromStreamLink(int streamLink, IFeatureSet streamShape, IFeatureSet shedShape)
+        //{
+        //    int streamindx;
+        //    const int LinkIDField = 0;
+        //    const int WaterShedIDField = 13;
+        //    for (streamindx = 0; streamindx <= streamShape.NumRows() - 1; streamindx++)
+        //    {
+        //        if (int.Parse(streamShape.get_CellValue(LinkIDField, streamindx).ToString()) == streamLink)
+        //        {
+        //            return int.Parse(streamShape.get_CellValue(WaterShedIDField, streamindx).ToString());
+        //        }
+        //    }
 
-            return -1;
-        }
+        //    return -1;
+        //}
 
         //        private static bool ShapefileToArrays(string shpfileName, double[] X, double[] Y, int PntCount)
         //        {
@@ -6651,110 +6646,104 @@ namespace MapWinGeoProc
         public static int ApplyWatershedLinkAttributes(
             string subBasinShapePath, string streamNetworkShapePath, IProgressHandler callback)
         {
-            int sindx;
+            int shedIndex;
 
-            if (callback != null)
-            {
-                callback.Progress("Status", 0, "Assigning WS Link");
-            }
+            if (callback != null) callback.Progress("Status", 0, "Assigning WS Link");
 
-            //const int IDField = 0;
+            //Stream fields
+            const int IDField = 0;
             const int DsidField = 1;
             const int Us1IDField = 2;
             const int Us2IDField = 3;
-            //const int DsNodeIDField = 4;
-            //const int StreamLenID = 6;
-            //const int WaterShedIDField = 13;
+            const int DsNodeIDField = 4;
+            const int StreamLenID = 6;
 
-            var shedShape = FeatureSet.Open(subBasinShapePath);
+            IFeatureSet streamShape = FeatureSet.Open(streamNetworkShapePath);
+            if (streamShape == null)
+            {
+                throw new ApplicationException(String.Format("Error in opening {0}", streamNetworkShapePath));
+            }
+            int streamShapeNumShapes = streamShape.NumRows();
 
-            var streamShape = FeatureSet.Open(streamNetworkShapePath);
+            IFeatureSet shedShape = FeatureSet.Open(subBasinShapePath);
+            if (shedShape == null)
+            {
+                throw new ApplicationException(String.Format("Error in opening {0}", subBasinShapePath));
+            }
+            int shedShapeNumShapes = shedShape.NumRows();
 
-            var streamLinkFieldNum = AddField(shedShape, "StreamLinkNo", typeof(int));
-            var streamLenFieldNum = AddField(shedShape, "StreamLen", typeof(int));
-            var dsnodeidFieldNum = AddField(shedShape, "DSNodeID", typeof(int));
-            var dslinkFieldNum = AddField(shedShape, "DSWSID", typeof(int));
-            var us1LinkFieldNum = AddField(shedShape, "US1WSID", typeof(int));
-            var us2LinkFieldNum = AddField(shedShape, "US2WSID", typeof(int));
+            const int WShedIDField = 0;
+            int streamLinkFieldNum = AddField(shedShape, "StreamLinkNo", typeof(int));
+            int streamLenFieldNum = AddField(shedShape, "StreamLen", typeof(int));
+            int dsnodeidFieldNum = AddField(shedShape, "DSNodeID", typeof(int));
+            int dslinkFieldNum = AddField(shedShape, "DSWSID", typeof(int));
+            int us1LinkFieldNum = AddField(shedShape, "US1WSID", typeof(int));
+            int us2LinkFieldNum = AddField(shedShape, "US2WSID", typeof(int));
 
-            var oldperc = 0;
+            int oldperc = 0;
             int uS1WSID;
             int dSWSID;
             int us2Wsid;
 
-            for (sindx = 0; sindx < shedShape.NumRows(); sindx++)
+            for (shedIndex = 0; shedIndex < shedShapeNumShapes; shedIndex++)
             {
-                if (shedShape.NumRows() > 1)
+                if (callback != null && shedShapeNumShapes > 1)
                 {
-                    var newperc = Convert.ToInt32((Convert.ToDouble(sindx) / Convert.ToDouble(shedShape.NumRows())) * 100);
+                    var newperc = Convert.ToInt32((Convert.ToDouble(shedIndex) / Convert.ToDouble(shedShapeNumShapes)) * 100);
                     if (newperc > oldperc)
                     {
-                        if (callback != null)
-                        {
-                            callback.Progress("Status", newperc, "Assigning WS Link");
-                        }
-
+                        callback.Progress("Status", newperc, "Assigning WS Link");
                         oldperc = newperc;
                     }
                 }
 
-                var currStreamIndx = -1;
-                //int streamindx;
-                //for (streamindx = 0; streamindx < streamShape.NumRows(); streamindx++)
-                //{
-                //    if ((int)streamShape.get_CellValue(WaterShedIDField, streamindx)
-                //        != (int)shedShape.get_CellValue(IDField, sindx))
-                //    {
-                //        continue;
-                //    }
+                // Change watershed ID from zero-based to one-based to match change to stream ID in ApplyStreamAttributes
+                int WatershedID = Convert.ToInt32(shedShape.get_CellValue(WShedIDField, shedIndex)) + 1; 
+                shedShape.EditCellValue(WShedIDField, shedIndex, WatershedID);
+                for (int streamIndex = 0; streamIndex < streamShapeNumShapes; streamIndex++)
+                {   //Stream IDs have already been incremented to start at 1 in ApplyStreamAttributes, so match with incremented Watershed ID
+                    if (Convert.ToInt32(streamShape.get_CellValue(IDField, streamIndex)) == WatershedID)
+                    {
+                        shedShape.EditCellValue(dsnodeidFieldNum, shedIndex, streamShape.get_CellValue(DsNodeIDField, streamIndex));
+                        shedShape.EditCellValue(streamLinkFieldNum, shedIndex, streamShape.get_CellValue(IDField, streamIndex));
+                        shedShape.EditCellValue(streamLenFieldNum, shedIndex, streamShape.get_CellValue(StreamLenID, streamIndex));
+                        int currDsStreamLink = Convert.ToInt32(streamShape.get_CellValue(DsidField, streamIndex));
+                        int currUs1StreamLink = Convert.ToInt32(streamShape.get_CellValue(Us1IDField, streamIndex));
+                        int currUs2StreamLink = Convert.ToInt32(streamShape.get_CellValue(Us2IDField, streamIndex));
 
-                //    currStreamIndx = streamindx;
+                        if (currDsStreamLink == -1)
+                        {
+                            dSWSID = -1;
+                        }
+                        else
+                        {
+                            dSWSID = currDsStreamLink; // GetWshedFromStreamLink(currDsStreamLink, streamShape, shedShape);
+                        }
 
-                //    shedShape.EditCellValue(dsnodeidFieldNum, sindx, streamShape.get_CellValue(DsNodeIDField, streamindx));
-                //    shedShape.EditCellValue(streamLinkFieldNum, sindx, streamShape.get_CellValue(IDField, streamindx));
-                //    shedShape.EditCellValue(streamLenFieldNum, sindx, streamShape.get_CellValue(StreamLenID, streamindx));
-                //    break;
-                //}
+                        if (currUs1StreamLink <= 0)
+                        {
+                            uS1WSID = -1;
+                        }
+                        else
+                        {
+                            uS1WSID = currUs1StreamLink; // GetWshedFromStreamLink(currUs1StreamLink, streamShape, shedShape);
+                        }
 
-                if (currStreamIndx <= -1)
-                {
-                    continue;
+                        if (currUs2StreamLink <= 0)
+                        {
+                            us2Wsid = -1;
+                        }
+                        else
+                        {
+                            us2Wsid = currUs2StreamLink; // GetWshedFromStreamLink(currUs2StreamLink, streamShape, shedShape);
+                        }
+
+                        shedShape.EditCellValue(dslinkFieldNum, shedIndex, dSWSID);
+                        shedShape.EditCellValue(us1LinkFieldNum, shedIndex, uS1WSID);
+                        shedShape.EditCellValue(us2LinkFieldNum, shedIndex, us2Wsid);
+                        break;
+                    }
                 }
-
-                var currDsStreamLink = (int)streamShape.get_CellValue(DsidField, currStreamIndx);
-                var currUs1StreamLink = (int)streamShape.get_CellValue(Us1IDField, currStreamIndx);
-                var currUs2StreamLink = (int)streamShape.get_CellValue(Us2IDField, currStreamIndx);
-
-                if (currDsStreamLink == -1)
-                {
-                    dSWSID = -1;
-                }
-                else
-                {
-                    dSWSID = GetWshedFromStreamLink(currDsStreamLink, streamShape, shedShape);
-                }
-
-                if (currUs1StreamLink == 0 | currUs1StreamLink == -1)
-                {
-                    uS1WSID = -1;
-                }
-                else
-                {
-                    uS1WSID = GetWshedFromStreamLink(currUs1StreamLink, streamShape, shedShape);
-                }
-
-                if (currUs2StreamLink == 0 | currUs2StreamLink == -1)
-                {
-                    us2Wsid = -1;
-                }
-                else
-                {
-                    us2Wsid = GetWshedFromStreamLink(currUs2StreamLink, streamShape, shedShape);
-                }
-
-                shedShape.EditCellValue(dslinkFieldNum, sindx, dSWSID);
-                shedShape.EditCellValue(us1LinkFieldNum, sindx, uS1WSID);
-                shedShape.EditCellValue(us2LinkFieldNum, sindx, us2Wsid);
             }
 
             shedShape.Save();

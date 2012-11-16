@@ -317,10 +317,12 @@ Public Class ManhattanShapes
                 Me.addShape(GridValue, manhattanPolygon.box(Col - width, Row, width), width)
             End If
         Next Row
-        grid.Close()
 
         Me.FinishShapes()
         Dim PolygonFeatureSet As New FeatureSet(FeatureType.Polygon)
+        PolygonFeatureSet.Projection = grid.Projection
+        grid.Close()
+
         addFieldToFS(PolygonFeatureSet, GridValueFieldName, GetType(Integer))
         addFieldToFS(PolygonFeatureSet, AreaFieldName, GetType(Double))
 
