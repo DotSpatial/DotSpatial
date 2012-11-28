@@ -75,7 +75,10 @@ namespace DotSpatial.Controls
             Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
             _frmFeatureIdentifier.ReSelect();
             _frmFeatureIdentifier.ResumeLayout();
-            _frmFeatureIdentifier.Show(Map.MapFrame != null? Map.MapFrame.Parent : null);
+            if (_frmFeatureIdentifier.Visible == false)
+            {
+                _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
+            }
             base.OnMouseUp(e);
         }
 
