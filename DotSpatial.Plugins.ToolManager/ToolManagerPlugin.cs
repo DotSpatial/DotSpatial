@@ -55,6 +55,7 @@ namespace DotSpatial.Plugins.ToolManager
         {
             App.HeaderControl.RemoveAll();
             this.App.DockManager.Remove("kTools");
+            this.toolManager = null;
             base.Deactivate();
         }
 
