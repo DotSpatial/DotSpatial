@@ -210,8 +210,9 @@ namespace DotSpatial.Serialization
                     }
                     catch(Exception e)
                     {
-                        //throw e.InnerException;
-                       result = null;                                            
+                        //If a project file (such as a layer) is missing, this exception is thrown. 
+                        //We still want to be able to open the project; setting result to null seems to make this work.
+                        result = null;                                            
                     }
                 else
                     result = parent;
