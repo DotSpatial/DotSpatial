@@ -204,11 +204,20 @@ namespace DotSpatial.Serialization
             else
             {
                 if (parent == null)
-                    result = ConstructObject(type, element);
+                    try
+                    {
+                        result = ConstructObject(type, element);
+                    }
+                    catch(Exception e)
+                    {
+                        //throw e.InnerException;
+                       result = null;                                            
+                    }
                 else
                     result = parent;
 
-                FillObject(element, result, false);
+                if(result != null)
+                    FillObject(element, result, false);
             }
 
             return result;
