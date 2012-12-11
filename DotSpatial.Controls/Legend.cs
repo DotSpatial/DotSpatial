@@ -386,7 +386,7 @@ namespace DotSpatial.Controls
             Point loc = new Point(e.X + ControlRectangle.X, e.Location.Y + ControlRectangle.Top);
             foreach (LegendBox lb in _legendBoxes)
             {
-                if (!lb.Bounds.Contains(loc)) continue;
+                if (!lb.Bounds.Contains(loc) || lb.CheckBox.Contains(loc)) continue;
                 ILineCategory lc = lb.Item as ILineCategory;
                 if (lc != null)
                 {
