@@ -133,8 +133,9 @@ namespace DotSpatial.Data
                 // For shapes with only one part, we don't need to test part-containment.
                 if (polygonShape.NumParts == 1 && totalCrosses % 2 == 1) return true;
 
-                // Regardless of number of parts or holiness, 1 crossing can only be inside.
-                if (totalCrosses == 1) return true;
+                // This used to check to see if totalCrosses == 1, but now checks to see if totalCrosses is an odd number.
+                // This change was made to solve the issue described in HD Issue 8593 (http://hydrodesktop.codeplex.com/workitem/8593).
+                if (totalCrosses % 2 == 1) return true;
 
                 totalCrosses = 0;
                 for (iPart = 0; iPart < numCrosses.Length; iPart++)
