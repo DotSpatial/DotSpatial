@@ -81,6 +81,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ZoomToCoordinatesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ZoomToCoordinatesDialog.Designer.cs">
+      <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MessageStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageStrings.Designer.cs</LastGenOutput>
@@ -95,6 +101,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ZoomToCoordinatesDialog.resx">
+      <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
@@ -111,6 +120,10 @@
       <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
       <Name>DotSpatial.Extensions</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
@@ -163,6 +176,8 @@
     <Content Include="Resources\table_32x32.png" />
     <Content Include="Resources\zoom_16x16.png" />
     <Content Include="Resources\zoom_32x32.png" />
+    <Content Include="Resources\zoom_coordinate_16x16.png" />
+    <Content Include="Resources\zoom_coordinate_32x32.png" />
     <Content Include="Resources\zoom_extend_16x16.png" />
     <Content Include="Resources\zoom_extend_32x32.png" />
     <Content Include="Resources\zoom_in_16x16.png" />

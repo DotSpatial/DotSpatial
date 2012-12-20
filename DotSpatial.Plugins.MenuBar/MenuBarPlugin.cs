@@ -15,6 +15,7 @@ using DotSpatial.Data;
 using DotSpatial.Plugins.MenuBar.Properties;
 using Msg = DotSpatial.Plugins.MenuBar.MessageStrings;
 using DotSpatial.Topology;
+using DotSpatial.Projections;
 
 namespace DotSpatial.Plugins.MenuBar
 {
@@ -103,6 +104,8 @@ namespace DotSpatial.Plugins.MenuBar
             header.Add(_ZoomNext);
             _ZoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32, Enabled = false };
             header.Add(_ZoomToLayer);
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, Coordinates_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_coordinate_16x16, LargeImage = Resources.zoom_coordinate_32x32 });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
 
@@ -375,6 +378,105 @@ namespace DotSpatial.Plugins.MenuBar
             }
 
             App.Map.ViewExtents = layerEnvelope.ToExtent();
+        }
+
+        private void Coordinates_Click(object sender, EventArgs e)
+        {
+            ZoomToCoordinates();
+        }
+
+        private void ZoomToCoordinates()
+        {
+            //Show dialog prompting user for Lat-Long coordinates.
+            ZoomToCoordinatesDialog CoordinateDialog = new ZoomToCoordinatesDialog();
+            CoordinateDialog.ShowDialog();
+
+            //If user pressed OK, then calculate and move to coordinates.
+            if (CoordinateDialog.DialogResult == DialogResult.OK)
+            {
+                //Get from dialog all parameters necessary to convert from Lat-Long to x,y coordinates.
+                double [] lon = new double[3];
+                double [] lat = new double[3];
+                String [] dir = new String[2];
+                lat[0] = CoordinateDialog.D1;
+                lat[1] = CoordinateDialog.M1;
+                lat[2] = CoordinateDialog.S1;
+                lon[0] = CoordinateDialog.D2;
+                lon[1] = CoordinateDialog.M2;
+                lon[2] = CoordinateDialog.S2;
+                dir[0] = CoordinateDialog.Dir1;
+                dir[1] = CoordinateDialog.Dir2;
+
+                double [] xy = new double[2];
+                
+                //Now convert from Lat-Long to x,y coordinates that App.Map.ViewExtents can use to pan to the correct location.
+                xy = LatLonToCoordinates(lat, lon, dir);
+
+                //Get extent where center is desired X,Y coordinate.
+                Double width = App.Map.ViewExtents.Width;
+                Double height = App.Map.ViewExtents.Height;
+                App.Map.ViewExtents.X = (xy[0] - (width / 2));
+                App.Map.ViewExtents.Y = (xy[1] + (height / 2));
+                Extent e = App.Map.ViewExtents;
+
+                //Set App.Map.ViewExtents to new extent that centers on desired LatLong.
+                App.Map.ViewExtents = e;
+            }
+            CoordinateDialog.Dispose();
+        }
+
+        private double[] LatLonToCoordinates(double[] lat, double[] lon, String [] dir)
+        {
+            bool isSouth;
+            isSouth = dir[0].Equals("S", StringComparison.OrdinalIgnoreCase);
+
+            bool isWest;
+            isWest = dir[1].Equals("W", StringComparison.OrdinalIgnoreCase);
+
+            double x;
+            double y;
+
+            //Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
+            y = lat[2] / 60;
+            y += lat[1];
+            y = y / 60;
+            y += lat[0];
+
+            x = lon[2] / 60;
+            x += lon[1];
+            x = x / 60;
+            x += lon[0];
+
+            //Change signs according to direction. Default is N and E.
+            if (isWest) x *= -1;
+            if (isSouth) y *= -1;
+
+            //If y is greater than 90, set just below 90. If not, the user will lose the map completely for some reason.
+            if (y >= 90) y = 89.9;
+
+            //Load coordinates into array to return to caller.
+            double[] xy = new double[2];
+            xy[0] = x;
+            xy[1] = y;
+
+            //Need to convert points to proper projection. Currently describe WGS84 points which may or may not be accurate.
+            bool isWgs84;
+
+            String wgs84String = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+            String mapProjEsriString = App.Map.Projection.ToEsriString();
+            isWgs84 = (mapProjEsriString.Equals(wgs84String));
+
+            //If the projection is not WGS84, then convert points to properly describe desired location.
+            if (!isWgs84)
+            {
+                double[] z = new double[1];
+                ProjectionInfo wgs84Projection = ProjectionInfo.FromEsriString(wgs84String);
+                ProjectionInfo currentMapProjection = ProjectionInfo.FromEsriString(mapProjEsriString);
+                Reproject.ReprojectPoints(xy, z, wgs84Projection, currentMapProjection, 0, 1);
+            }
+
+            //Return array with 1 x and 1 y value.
+            return xy;
         }
 
         #endregion
