@@ -6,25 +6,25 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace DotSpatial.Plugins.MenuBar
 {
     public partial class ZoomToCoordinatesDialog : Form
     {
+        String regExpression = "(-?\\d*)[\\.\\,°]\\s*(\\d\\d)[\\.\\,\']*\\s*(\\d*)\\s*([NSnsEeWw]?)";
 
-        public double D1 { get { return Double.Parse(d1.Text.ToString()); } }
-        public double M1 { get { return Double.Parse(m1.Text.ToString()); } }
-        public double S1 { get { return Double.Parse(s1.Text.ToString()); } }
-        public String Dir1 { get { return dir1.Text.ToString(); } }
+        public double[] lat{ get; set; }
 
-        public double D2 { get { return Double.Parse(d2.Text.ToString()); } }
-        public double M2 { get { return Double.Parse(m2.Text.ToString()); } }
-        public double S2 { get { return Double.Parse(s2.Text.ToString()); } }
-        public String Dir2 { get { return dir2.Text.ToString(); } }
+        public double[] lon { get; set; }
 
         public ZoomToCoordinatesDialog()
         {
             InitializeComponent();
+            lonStatus.Text = "";
+            latStatus.Text = "";
+            lat = new double[3];
+            lon = new double[3];
         }
 
         private void ZoomToCoordinatesDialog_Load(object sender, EventArgs e)
@@ -34,139 +34,50 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void AcceptButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void enableAccept()
-        {
-            if ((d1.TextLength > 0)
-                && (m1.TextLength > 0)
-                && (s1.TextLength > 0)
-                && (dir1.TextLength > 0)
-                && (d2.TextLength > 0)
-                && (m2.TextLength > 0)
-                && (s2.TextLength > 0)
-                && (dir2.TextLength > 0))
+            if (checkCoordinates())
             {
-                AcceptButton.Enabled = true;
-            }
-            else
-            {
-                AcceptButton.Enabled = false;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
 
-        private void d1_TextChanged(object sender, EventArgs e)
+        private bool checkCoordinates()
         {
-            enableAccept();
+            bool latCheck = parseCoordinates(lat, d1.Text.ToString());
+            bool lonCheck = parseCoordinates(lon, d2.Text.ToString());
+
+            if (!latCheck) { latStatus.Text = "Invalid Latitude (Valid example: \"41.1939 N\")"; }
+            if (!lonCheck) { lonStatus.Text = "Invalid Longitude (Valid example: \"19.4908 E\")"; }
+
+            return latCheck && lonCheck;
         }
 
-        private void m1_TextChanged(object sender, EventArgs e)
+        private bool parseCoordinates(double[] values, String text)
         {
-            enableAccept();
-        }
+            Match match;
+            GroupCollection groups;
 
-        private void s1_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void dir1_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void d2_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void m2_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void s2_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void dir2_TextChanged(object sender, EventArgs e)
-        {
-            enableAccept();
-        }
-
-        private void d1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            match = Regex.Match(text, regExpression);
+            groups = match.Groups;
+            try
             {
-                e.Handled = true;
+                values[0] = Double.Parse(groups[1].ToString());
+                values[1] = Double.Parse(groups[2].ToString());
+                values[2] = Double.Parse(groups[3].ToString());
             }
-        }
+            catch
+            {
+                return false;
+            }
 
-        private void m1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            if ((groups[4].ToString().Equals("S", StringComparison.OrdinalIgnoreCase)
+                || groups[4].ToString().Equals("W", StringComparison.OrdinalIgnoreCase))
+                && values[0] > 0)
             {
-                e.Handled = true;
+                values[0] *= -1;
             }
-        }
 
-        private void s1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void dir1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-            else
-            {
-                dir1.Text = "";
-            }
-        }
-
-        private void d2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void m2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void s2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void dir2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-            else
-            {
-                dir2.Text = "";
-            }
+            return true;
         }
     }
 }

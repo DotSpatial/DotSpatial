@@ -394,23 +394,10 @@ namespace DotSpatial.Plugins.MenuBar
             //If user pressed OK, then calculate and move to coordinates.
             if (CoordinateDialog.DialogResult == DialogResult.OK)
             {
-                //Get from dialog all parameters necessary to convert from Lat-Long to x,y coordinates.
-                double [] lon = new double[3];
-                double [] lat = new double[3];
-                String [] dir = new String[2];
-                lat[0] = CoordinateDialog.D1;
-                lat[1] = CoordinateDialog.M1;
-                lat[2] = CoordinateDialog.S1;
-                lon[0] = CoordinateDialog.D2;
-                lon[1] = CoordinateDialog.M2;
-                lon[2] = CoordinateDialog.S2;
-                dir[0] = CoordinateDialog.Dir1;
-                dir[1] = CoordinateDialog.Dir2;
-
                 double [] xy = new double[2];
                 
                 //Now convert from Lat-Long to x,y coordinates that App.Map.ViewExtents can use to pan to the correct location.
-                xy = LatLonToCoordinates(lat, lon, dir);
+                xy = LatLonToCoordinates(CoordinateDialog.lat, CoordinateDialog.lon);
 
                 //Get extent where center is desired X,Y coordinate.
                 Double width = App.Map.ViewExtents.Width;
@@ -425,34 +412,28 @@ namespace DotSpatial.Plugins.MenuBar
             CoordinateDialog.Dispose();
         }
 
-        private double[] LatLonToCoordinates(double[] lat, double[] lon, String [] dir)
+        private double[] LatLonToCoordinates(double[] lat, double[] lon)
         {
-            bool isSouth;
-            isSouth = dir[0].Equals("S", StringComparison.OrdinalIgnoreCase);
-
-            bool isWest;
-            isWest = dir[1].Equals("W", StringComparison.OrdinalIgnoreCase);
-
             double x;
             double y;
 
             //Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
-            y = lat[2] / 60;
+            y = lat[2] / 100;
             y += lat[1];
-            y = y / 60;
-            y += lat[0];
+            y = y / 100;
+            y += Math.Abs(lat[0]);
 
-            x = lon[2] / 60;
+            x = lon[2] / 100;
             x += lon[1];
-            x = x / 60;
-            x += lon[0];
-
-            //Change signs according to direction. Default is N and E.
-            if (isWest) x *= -1;
-            if (isSouth) y *= -1;
+            x = x / 100;
+            x += Math.Abs(lon[0]);
 
             //If y is greater than 90, set just below 90. If not, the user will lose the map completely for some reason.
-            if (y >= 90) y = 89.9;
+            if (y >= 90) { y = 89.9; }
+
+            //Change signs to get to the right quadrant.
+            if (lat[0] < 0) { y *= -1; }
+            if (lon[0] < 0) { x *= -1; }
 
             //Load coordinates into array to return to caller.
             double[] xy = new double[2];
