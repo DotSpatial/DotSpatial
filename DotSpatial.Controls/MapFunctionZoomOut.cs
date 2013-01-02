@@ -20,6 +20,7 @@
 
 using System.Drawing;
 using System.Windows.Forms;
+using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -47,31 +48,38 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            Map.Invalidate();
+            Extent MaxExtent = e.Map.GetMaxExtent();
 
-            Rectangle r = e.Map.MapFrame.View;
-            int w = r.Width;
-            int h = r.Height;
-
-            if (e.Button == MouseButtons.Left)
-            {
-                r.Inflate(r.Width / 2, r.Height / 2);
-                r.X += w / 2 - e.X;
-                r.Y += h / 2 - e.Y;
-                e.Map.MapFrame.View = r;
-                e.Map.MapFrame.ResetExtents();
-            }
+            if ((e.Map.ViewExtents.Width == MaxExtent.Width) || (e.Map.ViewExtents.Height == MaxExtent.Height))
+            {}
             else
             {
-                r.Inflate(-r.Width / 4, -r.Height / 4);
-                // The mouse cursor should anchor the geographic location during zoom.
-                r.X += (e.X / 2) - w / 4;
-                r.Y += (e.Y / 2) - h / 4;
-                e.Map.MapFrame.View = r;
-                e.Map.MapFrame.ResetExtents();
-            }
+                Map.Invalidate();
 
-            base.OnMouseUp(e);
+                Rectangle r = e.Map.MapFrame.View;
+                int w = r.Width;
+                int h = r.Height;
+
+                if (e.Button == MouseButtons.Left)
+                {
+                    r.Inflate(r.Width / 2, r.Height / 2);
+                    r.X += w / 2 - e.X;
+                    r.Y += h / 2 - e.Y;
+                    e.Map.MapFrame.View = r;
+                    e.Map.MapFrame.ResetExtents();
+                }
+                else
+                {
+                    r.Inflate(-r.Width / 4, -r.Height / 4);
+                    // The mouse cursor should anchor the geographic location during zoom.
+                    r.X += (e.X / 2) - w / 4;
+                    r.Y += (e.Y / 2) - h / 4;
+                    e.Map.MapFrame.View = r;
+                    e.Map.MapFrame.ResetExtents();
+                }
+
+                base.OnMouseUp(e);
+            }
         }
     }
 }

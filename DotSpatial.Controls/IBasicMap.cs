@@ -78,6 +78,13 @@ namespace DotSpatial.Controls
         /// </summary>
         void ZoomToMaxExtent();
 
+        /// <summary> 
+        /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
+        /// Gets the MaxExtents of current Map.
+        /// </summary>
+        Extent GetMaxExtent();
+
+
         #endregion
 
         #region Properties

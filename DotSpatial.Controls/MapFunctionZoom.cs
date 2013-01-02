@@ -21,6 +21,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -37,6 +38,7 @@ namespace DotSpatial.Controls
         private double _sensitivity;
         private int _timerInterval;
         private Timer _zoomTimer;
+      
 
         #endregion
 
@@ -58,7 +60,7 @@ namespace DotSpatial.Controls
             _zoomTimer = new Timer { Interval = _timerInterval };
             _zoomTimer.Tick += ZoomTimerTick;
             _client = Rectangle.Empty;
-            Sensitivity = 0.5;
+            Sensitivity = .30;
             ForwardZoomsIn = true;
             Name = "ScrollZoom";
         }
@@ -125,46 +127,62 @@ namespace DotSpatial.Controls
         /// Mouse Wheel
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(GeoMouseArgs e)
+        protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
-            Rectangle r = e.Map.MapFrame.View;
 
-            // For multiple zoom steps before redrawing, we actually
-            // want the x coordinate relative to the screen, not
-            // the x coordinate relative to the previously modified view.
-            if (_client == Rectangle.Empty)
-            {
-                _client = r;
-            }
-            int cw = _client.Width;
-            int ch = _client.Height;
-
-            double w = r.Width;
-            double h = r.Height;
-
-            if (_direction * e.Delta > 0)
-            {
-                double inFactor = 2.0 * _sensitivity;
-                r.Inflate(Convert.ToInt32(-w / inFactor), Convert.ToInt32(-h / inFactor));
-                // try to keep the mouse cursor in the same geographic position
-                r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - w / inFactor);
-                r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - h / inFactor);
-            }
+            Extent MaxExtent = e.Map.GetMaxExtent();
+           
+            if ((e.Map.ViewExtents.Width == MaxExtent.Width) || (e.Map.ViewExtents.Height == MaxExtent.Height) && _direction * e.Delta < 0)
+            {}
             else
             {
-                double outFactor = 0.5 * _sensitivity;
-                r.Inflate(Convert.ToInt32(w / _sensitivity), Convert.ToInt32(h / _sensitivity));
-                r.X += Convert.ToInt32(w / _sensitivity - (e.X * w / (outFactor * cw)));
-                r.Y += Convert.ToInt32(h / _sensitivity - (e.Y * h / (outFactor * ch)));
+
+                Rectangle r = e.Map.MapFrame.View;
+
+                // For multiple zoom steps before redrawing, we actually
+                // want the x coordinate relative to the screen, not
+                // the x coordinate relative to the previously modified view.
+                if (_client == Rectangle.Empty)
+                {
+                    _client = r;
+                }
+                int cw = _client.Width;
+                int ch = _client.Height;
+
+                double w = r.Width;
+                double h = r.Height;
+
+                if (_direction * e.Delta > 0)
+                {
+
+                    double inFactor = 2.0 * _sensitivity;
+                    r.Inflate(Convert.ToInt32(-w / inFactor), Convert.ToInt32(-h / inFactor));
+                    // try to keep the mouse cursor in the same geographic position
+                    r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - w / inFactor);
+                    r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - h / inFactor);
+
+                }
+                else
+                {
+                    double outFactor = 0.5 * _sensitivity;
+                    r.Inflate(Convert.ToInt32(w / _sensitivity), Convert.ToInt32(h / _sensitivity));
+                    r.X += Convert.ToInt32(w / _sensitivity - (e.X * w / (outFactor * cw)));
+                    r.Y += Convert.ToInt32(h / _sensitivity - (e.Y * h / (outFactor * ch)));
+                }
+                int mapHeight = e.Map.MapFrame.View.Height;
+                int mapWidth = e.Map.MapFrame.View.Width;
+
+
+                e.Map.MapFrame.View = r;
+                e.Map.Invalidate();
+                _zoomTimer.Start();
+                _mapFrame = e.Map.MapFrame;
+                Map.IsBusy = true;
+                base.OnMouseWheel(e);
+
             }
 
-            e.Map.MapFrame.View = r;
-            e.Map.Invalidate();
-            _zoomTimer.Start();
-            _mapFrame = e.Map.MapFrame;
-            Map.IsBusy = true;
-            base.OnMouseWheel(e);
         }
 
         #endregion

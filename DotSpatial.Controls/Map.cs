@@ -20,6 +20,7 @@
 //--------------------|--------------------|--------------------------------------------------------
 // Jiri Kadlec        |  2/18/2010         |  Added zoom out button and custom mouse cursors
 // Kyle Ellison       | 12/15/2010         |  Fixed Issue #190 (Deactivated MapFunctions still involved)
+// Eric Hullinger     | 12/28/2012         |  Resolved Issue (Unrestricted Zoom Out)
 // ********************************************************************************************************
 
 using System;
@@ -665,7 +666,29 @@ namespace DotSpatial.Controls
             {
                 ViewExtents = Extent;
             }
+
         }
+
+        //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
+        /// <summary> 
+        /// Gets the MaxExtent Window of the current Map
+        /// </summary>
+        public Extent GetMaxExtent()
+        {
+            Extent MaxExtent;
+            // to prevent exception when zoom to map with one layer with one point
+            const double eps = 1e-7;
+            if (this.Extent.Width < eps || this.Extent.Height < eps)
+            {
+                MaxExtent = new Extent(this.Extent.MinX - eps, this.Extent.MinY - eps, this.Extent.MaxX + eps, this.Extent.MaxY + eps);
+            }
+            else
+            {
+                MaxExtent = this.Extent;
+            }
+            return MaxExtent;
+        }
+
 
         /// <summary>
         /// This activates the labels for the specified feature layer that will be the specified expression
@@ -971,7 +994,7 @@ namespace DotSpatial.Controls
                     IMapFunction newMode = _functionLookup[_functionMode];
                     ActivateMapFunction(newMode);
                     // Except for function mode "none" allow scrolling
-                    IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
+                   IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
                     ActivateMapFunction(scroll);
                 }
 
@@ -1253,6 +1276,7 @@ namespace DotSpatial.Controls
                     Invalidate(mapClip);
                 }
             }
+          
         }
 
         /// <summary>
@@ -1348,6 +1372,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomIn()
         {
+           
             MapFrame.ZoomIn();
         }
 
@@ -1356,7 +1381,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomOut()
         {
-            MapFrame.ZoomOut();
+            MapFrame.ZoomOut();  
         }
 
         /// <summary>
@@ -1546,18 +1571,19 @@ namespace DotSpatial.Controls
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(MouseEventArgs e)
+        protected override void OnMouseWheel(MouseEventArgs e) 
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
-            {
-                if (tool.Enabled)
+                GeoMouseArgs args = new GeoMouseArgs(e, this);
+                foreach (IMapFunction tool in MapFunctions)
                 {
-                    tool.DoMouseWheel(args);
-                    if (args.Handled) break;
+                    if (tool.Enabled)
+                    {
+                        tool.DoMouseWheel(args);
+                        if (args.Handled) break;
+                    }
                 }
-            }
-            base.OnMouseWheel(e);
+           
+                base.OnMouseWheel(e);        
         }
 
         /// <summary>
@@ -1589,6 +1615,13 @@ namespace DotSpatial.Controls
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
             if (ViewExtentsChanged != null) ViewExtentsChanged(sender, args);
+
+            Extent MaxExtent = GetMaxExtent();
+
+            if (((this.ViewExtents.Width > MaxExtent.Width) && (this.ViewExtents.Height > MaxExtent.Height)))
+            {
+                this.ZoomToMaxExtent();
+            }
         }
 
         /// <summary>
@@ -1613,13 +1646,14 @@ namespace DotSpatial.Controls
                 // Check for minimal size of view.
                 if (newView.Width < 5) newView.Width = 5;
                 if (newView.Height < 5) newView.Height = 5;
-             
+
                 _geoMapFrame.View = newView;
                 _geoMapFrame.ResetExtents();
                 Invalidate();
             }
             _oldSize = Size;
             OnResized();
+
         }
 
         /// <summary>
