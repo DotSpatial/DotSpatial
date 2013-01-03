@@ -133,7 +133,7 @@ namespace DotSpatial.Controls
 
             Extent MaxExtent = e.Map.GetMaxExtent();
            
-            if ((e.Map.ViewExtents.Width == MaxExtent.Width) || (e.Map.ViewExtents.Height == MaxExtent.Height) && _direction * e.Delta < 0)
+            if (((e.Map.ViewExtents.Width >= MaxExtent.Width) || (e.Map.ViewExtents.Height >= MaxExtent.Height)) && _direction * e.Delta < 0)
             {}
             else
             {
