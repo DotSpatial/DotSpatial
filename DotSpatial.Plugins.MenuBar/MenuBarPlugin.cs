@@ -230,7 +230,12 @@ namespace DotSpatial.Plugins.MenuBar
         /// </summary>
         private void RemoveLayer_Click(object sender, EventArgs e)
         {
-            App.Map.Layers.Remove(App.Map.Layers.SelectedLayer);
+            try
+            {
+                IMapGroup selectedLayerParent = (IMapGroup)App.Map.Layers.SelectedLayer.GetParentItem();
+                selectedLayerParent.Remove(App.Map.Layers.SelectedLayer);
+            }
+            catch { }
         }
 
         private void ResetLayout_Click(object sender, EventArgs e)
