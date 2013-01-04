@@ -1624,12 +1624,13 @@ namespace DotSpatial.Controls
         {
             if (ViewExtentsChanged != null) ViewExtentsChanged(sender, args);
 
-            Extent MaxExtent = GetMaxExtent();
+                Extent MaxExtent = GetMaxExtent();
 
-            if ((this.ViewExtents.Width > MaxExtent.Width) && (this.ViewExtents.Height > MaxExtent.Height))
-            {
-                this.ZoomToMaxExtent();
-            }
+                if ((this.ViewExtents.Width > (MaxExtent.Width+1)) && (this.ViewExtents.Height > (MaxExtent.Height+1)))
+                {
+                    this.ZoomToMaxExtent();
+                }      
+            
         }
 
         /// <summary>
