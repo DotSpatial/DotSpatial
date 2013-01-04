@@ -403,7 +403,7 @@ namespace DotSpatial.Plugins.MenuBar
                 double [] xy = new double[2];
                 
                 //Now convert from Lat-Long to x,y coordinates that App.Map.ViewExtents can use to pan to the correct location.
-                xy = LatLonToCoordinates(CoordinateDialog.lat, CoordinateDialog.lon);
+                xy = LatLonReproject(CoordinateDialog.lonCoor, CoordinateDialog.latCoor);
 
                 //Get extent where center is desired X,Y coordinate.
                 Double width = App.Map.ViewExtents.Width;
@@ -418,33 +418,13 @@ namespace DotSpatial.Plugins.MenuBar
             CoordinateDialog.Dispose();
         }
 
-        private double[] LatLonToCoordinates(double[] lat, double[] lon)
+        private double[] LatLonReproject(double x, double y)
         {
-            double x;
-            double y;
+            double[] xy = new double[2] { x, y };
 
-            //Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
-            y = lat[2] / 100;
-            y += lat[1];
-            y = y / 100;
-            y += Math.Abs(lat[0]);
-
-            x = lon[2] / 100;
-            x += lon[1];
-            x = x / 100;
-            x += Math.Abs(lon[0]);
-
-            //If y is greater than 90, set just below 90. If not, the user will lose the map completely for some reason.
-            if (y >= 90) { y = 89.9; }
-
-            //Change signs to get to the right quadrant.
-            if (lat[0] < 0) { y *= -1; }
-            if (lon[0] < 0) { x *= -1; }
-
-            //Load coordinates into array to return to caller.
-            double[] xy = new double[2];
-            xy[0] = x;
-            xy[1] = y;
+            //Change y coordinate to be less than 90 degrees to prevent a bug.
+            if (xy[1] >= 90) xy[1] = 89.9;
+            if (xy[1] <= -90) xy[1] = -89.9;
 
             //Need to convert points to proper projection. Currently describe WGS84 points which may or may not be accurate.
             bool isWgs84;

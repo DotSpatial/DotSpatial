@@ -12,11 +12,13 @@ namespace DotSpatial.Plugins.MenuBar
 {
     public partial class ZoomToCoordinatesDialog : Form
     {
-        String regExpression = "(-?\\d*)[\\.\\,°]\\s*(\\d\\d)[\\.\\,\']*\\s*(\\d*)\\s*([NSnsEeWw]?)";
+        String regExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
 
-        public double[] lat{ get; set; }
+        private double[] lat;
+        private double[] lon;
 
-        public double[] lon { get; set; }
+        public double latCoor { get; set; }
+        public double lonCoor { get; set; }
 
         public ZoomToCoordinatesDialog()
         {
@@ -36,6 +38,8 @@ namespace DotSpatial.Plugins.MenuBar
         {
             if (checkCoordinates())
             {
+                latCoor = loadCoordinates(lat);
+                lonCoor = loadCoordinates(lon);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -47,11 +51,16 @@ namespace DotSpatial.Plugins.MenuBar
             bool lonCheck = parseCoordinates(lon, d2.Text.ToString());
 
             if (!latCheck) { latStatus.Text = "Invalid Latitude (Valid example: \"41.1939 N\")"; }
+            else { latStatus.Text = ""; }
             if (!lonCheck) { lonStatus.Text = "Invalid Longitude (Valid example: \"19.4908 E\")"; }
+            else { latStatus.Text = "";}
 
             return latCheck && lonCheck;
         }
 
+        // Parse Coordinates will understand lat-lon coordinates in a variety of formats and separate them into Degrees, Minutes, and Seconds.
+        // We could just accept a simple decimal value for the coordinates, but since users might be copying and pasting from a variety of sources
+        // it makes it user friendly to be able to accept a number of different formats.
         private bool parseCoordinates(double[] values, String text)
         {
             Match match;
@@ -60,10 +69,18 @@ namespace DotSpatial.Plugins.MenuBar
             match = Regex.Match(text, regExpression);
             groups = match.Groups;
             try
-            {
+            {  
                 values[0] = Double.Parse(groups[1].ToString());
-                values[1] = Double.Parse(groups[2].ToString());
-                values[2] = Double.Parse(groups[3].ToString());
+                if (groups[2].Length > 0)
+                {
+                    values[1] = Double.Parse(groups[2].ToString());
+                    if (groups[2].Length == 1) values[1] *= 10;
+                }
+                if (groups[3].Length > 0)
+                {
+                    values[2] = Double.Parse(groups[3].ToString());
+                    if (groups[3].Length == 1) values[2] *= 10;
+                }
             }
             catch
             {
@@ -78,6 +95,23 @@ namespace DotSpatial.Plugins.MenuBar
             }
 
             return true;
+        }
+
+        // Take Degrees-Minutes-Seconds from ParseCoordinates and turn them into doubles.
+        private double loadCoordinates(double[] values)
+        {
+            double coor;
+
+            //Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
+            coor = values[2] / 100;
+            coor += values[1];
+            coor = coor / 100;
+            coor += Math.Abs(values[0]);
+
+            //Change signs to get to the right quadrant.
+            if (values[0] < 0) { coor *= -1; }
+
+            return coor;
         }
     }
 }
