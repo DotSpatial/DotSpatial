@@ -50,10 +50,11 @@ namespace DotSpatial.Controls
         {
             Extent MaxExtent = e.Map.GetMaxExtent();
 
-            if ((e.Map.ViewExtents.Width == MaxExtent.Width) || (e.Map.ViewExtents.Height == MaxExtent.Height))
+            if ((e.Map.IsZoomedToMaxExtent == true))
             {}
             else
             {
+                e.Map.IsZoomedToMaxExtent = false;
                 Map.Invalidate();
 
                 Rectangle r = e.Map.MapFrame.View;

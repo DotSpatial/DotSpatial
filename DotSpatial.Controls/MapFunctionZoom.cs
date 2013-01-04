@@ -38,7 +38,6 @@ namespace DotSpatial.Controls
         private double _sensitivity;
         private int _timerInterval;
         private Timer _zoomTimer;
-      
 
         #endregion
 
@@ -132,12 +131,12 @@ namespace DotSpatial.Controls
             _zoomTimer.Stop(); // if the timer was already started, stop it.
 
             Extent MaxExtent = e.Map.GetMaxExtent();
-           
-            if (((e.Map.ViewExtents.Width >= MaxExtent.Width) || (e.Map.ViewExtents.Height >= MaxExtent.Height)) && _direction * e.Delta < 0)
+         
+            if ((e.Map.IsZoomedToMaxExtent == true) && (_direction * e.Delta < 0))
             {}
             else
             {
-
+                e.Map.IsZoomedToMaxExtent = false;
                 Rectangle r = e.Map.MapFrame.View;
 
                 // For multiple zoom steps before redrawing, we actually

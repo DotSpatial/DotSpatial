@@ -154,6 +154,16 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Indicates whether the Map is Zoomed out to full extent or not.
+        /// Added 1/3/2013 by Eric Hullinger
+        /// </summary>
+        bool IsZoomedToMaxExtent
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the screen coordinates of the
         /// </summary>
         int Left

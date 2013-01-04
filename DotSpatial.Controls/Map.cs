@@ -667,6 +667,7 @@ namespace DotSpatial.Controls
                 ViewExtents = Extent;
             }
 
+            this.IsZoomedToMaxExtent = true;
         }
 
         //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
@@ -678,13 +679,13 @@ namespace DotSpatial.Controls
             Extent MaxExtent;
             // to prevent exception when zoom to map with one layer with one point
             const double eps = 1e-7;
-            if (this.Extent.Width < eps || this.Extent.Height < eps)
+            if (Extent.Width < eps || Extent.Height < eps)
             {
-                MaxExtent = new Extent(this.Extent.MinX - eps, this.Extent.MinY - eps, this.Extent.MaxX + eps, this.Extent.MaxY + eps);
+                MaxExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
             }
             else
             {
-                MaxExtent = this.Extent;
+                MaxExtent = Extent;
             }
             return MaxExtent;
         }
@@ -1042,6 +1043,13 @@ namespace DotSpatial.Controls
                 else _isBusyIndex--;
             }
         }
+
+        /// <summary>
+        /// If true then the map is zoomed to its full extents
+        /// Added by Eric Hullinger 1/3/2013
+        /// </summary>
+        public bool IsZoomedToMaxExtent
+        { get; set; }
 
         /// <summary>
         /// Gets or sets the back buffer.  The back buffer should be in Format32bbpArgb bitmap.
@@ -1618,7 +1626,7 @@ namespace DotSpatial.Controls
 
             Extent MaxExtent = GetMaxExtent();
 
-            if (((this.ViewExtents.Width > MaxExtent.Width) && (this.ViewExtents.Height > MaxExtent.Height)))
+            if ((this.ViewExtents.Width > MaxExtent.Width) && (this.ViewExtents.Height > MaxExtent.Height))
             {
                 this.ZoomToMaxExtent();
             }
@@ -1653,7 +1661,6 @@ namespace DotSpatial.Controls
             }
             _oldSize = Size;
             OnResized();
-
         }
 
         /// <summary>
