@@ -293,7 +293,7 @@
             // 
             this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.uxUpdateAll.Location = new System.Drawing.Point(227, 525);
+            this.uxUpdateAll.Location = new System.Drawing.Point(105, 525);
             this.uxUpdateAll.Name = "uxUpdateAll";
             this.uxUpdateAll.Size = new System.Drawing.Size(75, 23);
             this.uxUpdateAll.TabIndex = 3;

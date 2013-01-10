@@ -410,7 +410,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             return true;
         }
 
-        private static string GetExtensionPath(IExtension ext)
+        internal static string GetExtensionPath(IExtension ext)
         {
             var assembly = Assembly.GetAssembly(ext.GetType());
             return assembly.Location;
@@ -557,11 +557,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             Updates = new Update(packages, Add, App);
             paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            uxUpdatePackages.Clear();
             uxUpdatePackages.Items.Add("Checking for updates...");
             Task.Factory.StartNew(() =>
             {
                 Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
             });
+            
         }
 
         public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -616,7 +618,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 else
                 {
                     uxInstall.Enabled = false;
-                    //  uxUpdate.Enabled = IsPackageUpdateable(pack);
+                    //uxUpdate.Enabled = IsPackageUpdateable(pack);
                 }
             }
         }
@@ -679,6 +681,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             // or dependencies that were retrieved with the new version.
             App.ProgressHandler.Progress(null, 0, "Ready.");
             uxUpdate.Enabled = true;
+            DisplayPackagesAndUpdates();
         }
 
         private void uxAdd_Click(object sender, EventArgs e)
