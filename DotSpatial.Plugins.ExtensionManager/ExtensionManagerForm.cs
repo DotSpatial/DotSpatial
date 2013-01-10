@@ -311,7 +311,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             ImageList image = new ImageList();
             image.Images.Add(SearchIcon);
             image.Images.Add(ClearIcon);
-            image.ImageSize = new Size(28, 20);
+            image.ImageSize = new Size(20, 20);
             uxSearch.Image = image.Images[0];
             uxClear.Image = image.Images[1];
             uxSearch.Click += new EventHandler(this.uxSearch_Click);
