@@ -30,12 +30,14 @@ namespace DotSpatial.Plugins.ExtensionManager
         private IEnumerable<IPackage> list = null;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
 
+        //Function that refreshes the listview in the updates tab.
         public void RefreshUpdate(ListView lv, TabPage tp)
         {
             listview = lv;
             tab = tp;;
             list = null;
 
+            //Look for packages to be updated in the folder where Extension Manager downloads new packages.
             getpack = new GetPackage(packages);
             IEnumerable<IPackage> localPackages = getpack.GetPackagesFromExtensions(App.Extensions);
             List<String> packageNames = null;
@@ -45,11 +47,14 @@ namespace DotSpatial.Plugins.ExtensionManager
                 packageNames = getPackageNames(localPackages);
             }
             
+            //Find other packages that may need updating by looking at the current feed and comparing to installed packages.
             getUpdatesFromOnline(packageNames);
 
+            //Refresh the list view with the updates found.
             setListView();
         }
 
+        //Using the class variable 'list' to refresh the packages that are eligble for update.
         private void setListView()
         {
             int Count = list.Count();
@@ -67,6 +72,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }));
         }
 
+        //Looks in the folder where extensions are saved (when downloaded through the Ext Manager) and determines in updates are needed.
         private void getUpdatesFromLocal(IEnumerable<IPackage> localPackages)
         {
             try
@@ -84,12 +90,15 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        //Looks at all packages from the current feed, finds local version of it (if any), compares versions.
+        //packageNames are all packages found and checked by getUpdatesFromLocal.
         private void getUpdatesFromOnline(List<String> packageNames)
         {
             IEnumerable<IPackage> onlinePacks = null;
             List<IPackage> updatePacks = new List<IPackage>();
             Task<PackageList> task = getPackagesFromOnline();
 
+            //Get list of packages from current feed.
             task.ContinueWith(t =>
             {
                 if (t.Result != null)
@@ -102,11 +111,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 if (IsPackageUpdateable(pack))
                 {
+                    //If packageNames has no names, just add all packages that are updateable.
                     if (packageNames == null)
                     {
                         updatePacks.Add(pack);
                     }
-                    else if (!packageNames.Contains(pack.Id))
+                    else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
                     {
                         updatePacks.Add(pack);
                     }
@@ -122,6 +132,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        //Return list of all packages from currently selected feed.
         private Task<PackageList> getPackagesFromOnline()
         {
             var task = Task.Factory.StartNew(() =>
@@ -146,9 +157,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             return task;
         }
 
+        //Determines if a package has a local version that can be deleted and is out of date.
         private bool IsPackageUpdateable(IPackage pack)
         {
-            // will we be able to uninstall?
+            // Is there a local version?
             var ext = App.GetExtension(pack.Id);
             if (ext == null) return false;
 
@@ -175,7 +187,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             return true;
         }
-
+        
         private List<String> getPackageNames(IEnumerable<IPackage> packs)
         {
             List<String> packNames = new List<String>();
