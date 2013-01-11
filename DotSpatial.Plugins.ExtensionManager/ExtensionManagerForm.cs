@@ -632,6 +632,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxUpdate.Enabled = false;
             var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
             Update(pack);
+            showUpdateComplete();
         }
 
         private void uxUpdateAll_Click(object sender, EventArgs e)
@@ -642,6 +643,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                 var pack = uxUpdatePackages.Items[i].Tag as IPackage;
                 Update(pack);
             }
+            showUpdateComplete();
+        }
+
+        private void showUpdateComplete()
+        {
+            MessageBox.Show(this, "Download successful. Update will complete when HydroDesktop is restarted.");
         }
 
         private void Update(IPackage pack)
@@ -666,8 +673,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             // get new version
             packages.Update(pack);
 
-            App.RefreshExtensions();
-
             // Activate the extension(s) that was installed.
             // it is difficult to determine which version is newest, so we go and look at the when the file was
             // placed on disk.
@@ -681,7 +686,16 @@ namespace DotSpatial.Plugins.ExtensionManager
             // or dependencies that were retrieved with the new version.
             App.ProgressHandler.Progress(null, 0, "Ready.");
             uxUpdate.Enabled = true;
-            DisplayPackagesAndUpdates();
+
+            try
+            {
+                App.RefreshExtensions();
+            }
+            catch { }
+            finally
+            {
+                DisplayPackagesAndUpdates();
+            }
         }
 
         private void uxAdd_Click(object sender, EventArgs e)

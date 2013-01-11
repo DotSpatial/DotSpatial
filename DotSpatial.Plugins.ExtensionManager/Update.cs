@@ -51,7 +51,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             getUpdatesFromOnline(packageNames);
 
             //Refresh the list view with the updates found.
-            setListView();
+            if (list != null) { setListView(); }
         }
 
         //Using the class variable 'list' to refresh the packages that are eligble for update.
@@ -84,6 +84,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 listview.Invoke((Action)(() =>
                 {
                     listview.Clear();
+                    tab.Text = "Update";
                     listview.Items.Add("Updates could not be retrieved for the selected feed.");
                     listview.Items.Add("Try again later or change the feed.");
                 }));
@@ -106,30 +107,33 @@ namespace DotSpatial.Plugins.ExtensionManager
                     onlinePacks = t.Result.packages;
                 }
             }).Wait();
-
-            foreach (IPackage pack in onlinePacks)
+            try
             {
-                if (IsPackageUpdateable(pack))
+                foreach (IPackage pack in onlinePacks)
                 {
-                    //If packageNames has no names, just add all packages that are updateable.
-                    if (packageNames == null)
+                    if (IsPackageUpdateable(pack))
                     {
-                        updatePacks.Add(pack);
-                    }
-                    else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
-                    {
-                        updatePacks.Add(pack);
+                        //If packageNames has no names, just add all packages that are updateable.
+                        if (packageNames == null)
+                        {
+                            updatePacks.Add(pack);
+                        }
+                        else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
+                        {
+                            updatePacks.Add(pack);
+                        }
                     }
                 }
+                if (list == null)
+                {
+                    list = updatePacks;
+                }
+                else
+                {
+                    list = list.Concat(updatePacks);
+                }
             }
-            if (list == null)
-            {
-                list = updatePacks;
-            }
-            else
-            {
-                list = list.Concat(updatePacks);
-            }
+            catch { }
         }
 
         //Return list of all packages from currently selected feed.
