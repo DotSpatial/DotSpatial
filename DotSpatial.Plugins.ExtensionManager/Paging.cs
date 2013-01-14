@@ -113,9 +113,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                                  select item;
 
                     var info = new PackageList();
-                    info.TotalPackageCount = result.Count();
-                    info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
-                    //info.packages = result.ToArray(); Uncomment this to disable the "paging" feature.
+                    //info.TotalPackageCount = result.Count();
+                    //info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
+                    info.packages = result.ToArray(); //Toggle comments here to reenable paging.
 
                     return info;
                 }

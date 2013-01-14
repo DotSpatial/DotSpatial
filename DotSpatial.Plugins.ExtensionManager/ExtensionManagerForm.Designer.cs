@@ -207,6 +207,7 @@
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 24;
             this.label1.Text = "Page";
+            this.label1.Visible = false;
             // 
             // uxPackages
             // 
