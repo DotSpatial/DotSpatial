@@ -673,20 +673,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             // get new version
             packages.Update(pack);
 
-            // Activate the extension(s) that was installed.
-            // it is difficult to determine which version is newest, so we go and look at the when the file was
-            // placed on disk.
-            var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
-            if (newExtension != null)
-            {
-                newExtension.Activate();
-            }
-
-            // hack: we might need to refresh the installed list to show new version numbers
-            // or dependencies that were retrieved with the new version.
-            App.ProgressHandler.Progress(null, 0, "Ready.");
-            uxUpdate.Enabled = true;
-
             try
             {
                 App.RefreshExtensions();
@@ -694,6 +680,20 @@ namespace DotSpatial.Plugins.ExtensionManager
             catch { }
             finally
             {
+                // Activate the extension(s) that was installed.
+                // it is difficult to determine which version is newest, so we go and look at the when the file was
+                // placed on disk.
+                var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
+                if (newExtension != null)
+                {
+                    newExtension.Activate();
+                }
+
+                // hack: we might need to refresh the installed list to show new version numbers
+                // or dependencies that were retrieved with the new version.
+                App.ProgressHandler.Progress(null, 0, "Ready.");
+                uxUpdate.Enabled = true;
+
                 DisplayPackagesAndUpdates();
             }
         }
