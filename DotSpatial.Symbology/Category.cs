@@ -63,7 +63,7 @@ namespace DotSpatial.Symbology
         /// <param name="value">The value to use</param>
         public Category(double value)
         {
-            _range = new Range(value, value);
+            _range = new Range(value);
         }
 
         #endregion

@@ -513,10 +513,13 @@ namespace DotSpatial.Symbology
                     if (c.Range.Maximum < testMin)
                     {
                         cs.Max = cs.Min;
+                        cs.Maximum = Convert.ToDouble(cs.Max);
                     }
                     else
                     {
                         cs.Max = (T)Convert.ChangeType(c.Range.Maximum.Value, typeof(T));
+                        cs.Maximum = Convert.ToDouble(c.Range.Maximum.Value);
+
                     }
                 }
                 if (c.Range.Minimum != null && c.Range.Minimum > testMin)
@@ -524,14 +527,14 @@ namespace DotSpatial.Symbology
                     if (c.Range.Minimum > testMax)
                     {
                         cs.Min = Global.MaximumValue<T>();
+                        cs.Minimum = Convert.ToDouble(cs.Min);
                     }
                     else
                     {
                         cs.Min = (T)Convert.ChangeType(c.Range.Minimum.Value, typeof(T));
+                        cs.Minimum = Convert.ToDouble(c.Range.Minimum.Value);
                     }
                 }
-                cs.Maximum = Convert.ToDouble(cs.Max);
-                cs.Minimum = Convert.ToDouble(cs.Min);
                 cs.MinInclusive = c.Range.MinIsInclusive;
                 cs.MaxInclusive = c.Range.MaxIsInclusive;
                 result.Add(cs);
@@ -986,13 +989,29 @@ namespace DotSpatial.Symbology
 
             public bool Contains(T value)
             {
-                int cMax = value.CompareTo(Max);
-                if (cMax > 1) return false;
-                if (!MaxInclusive && cMax == 0) return false;
-                int cMin = value.CompareTo(Min);
-                if (cMin < 1) return false;
-                if (cMin == 0 && !MinInclusive) return false;
-                return true;
+                //Try to convert value to double for a more precise comparison with Maximum and Minimum.
+                //If fail, compare cMax and cMin with value of same type.
+                try
+                {
+                    double doublevalue = Convert.ToDouble(value);
+                    double cMax = doublevalue - Maximum;
+                    if (cMax > 0) return false;
+                    if (!MaxInclusive && cMax == 0) return false;
+                    double cMin = doublevalue - Minimum;
+                    if (cMin < 0) return false;
+                    if (cMin == 0 && !MinInclusive) return false;
+                    return true;
+                }
+                catch
+                {
+                    double cMax = value.CompareTo(Max);
+                    if (cMax > 1) return false;
+                    if (!MaxInclusive && cMax == 0) return false;
+                    double cMin = value.CompareTo(Min);
+                    if (cMin < 1) return false;
+                    if (cMin == 0 && !MinInclusive) return false;
+                    return true;
+                }
             }
         }
 
