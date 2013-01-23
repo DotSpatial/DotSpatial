@@ -240,14 +240,14 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     App.ProgressHandler.Progress(null, 0, "Uninstalling" + dependentPackage.Id);
                     App.EnsureDeactivated(dependentPackage.Id);
-                    App.MarkPackageForRemoval(GetPackageFolderName(dependentPackage));
+                    App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(dependentPackage));
                 }
             }
 
             // Remove the selected package.
             App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
             App.EnsureDeactivated(selectedPackage.Id);
-            App.MarkPackageForRemoval(GetPackageFolderName(selectedPackage));
+            App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
 
             // hack: we should really try to refresh the list, using what ever category the user
             // has selected.
@@ -383,54 +383,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                     AppendInstalledItemDescription(package.Description);
                 }
             }
-        }
-
-        private bool IsPackageUpdateable(IPackage pack)
-        {
-            // will we be able to uninstall?
-            var ext = App.GetExtension(pack.Id);
-            if (ext == null) return false;
-
-            string assemblyLocation = GetExtensionPath(ext);
-
-            // The original file may be in a different location than the extensions directory. During an update, the
-            // original file will be deleted and the new package will be placed in the packages folder in the extensions
-            // directory.
-            FileIOPermission deletePermission = new FileIOPermission(FileIOPermissionAccess.Write, assemblyLocation);
-
-            try
-            {
-                deletePermission.Demand();
-            }
-            catch (SecurityException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static string GetExtensionPath(IExtension ext)
-        {
-            var assembly = Assembly.GetAssembly(ext.GetType());
-            return assembly.Location;
-        }
-
-        private static bool IsPackageInstalled(IPackage pack)
-        {
-            string path = GetPackagePath(pack);
-            return Directory.Exists(path);
-        }
-
-        private static string GetPackagePath(IPackage pack)
-        {
-            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory, GetPackageFolderName(pack));
-            return path;
-        }
-
-        private static string GetPackageFolderName(IPackage pack)
-        {
-            return String.Format("{0}.{1}", pack.Id, pack.Version);
         }
 
         /// <summary>
@@ -631,7 +583,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             uxUpdate.Enabled = false;
             var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
-            Update(pack);
+            UpdatePack(pack);
             showUpdateComplete();
         }
 
@@ -641,7 +593,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             for (i = 0; i < uxUpdatePackages.Items.Count; i++)
             {
                 var pack = uxUpdatePackages.Items[i].Tag as IPackage;
-                Update(pack);
+                UpdatePack(pack);
             }
             showUpdateComplete();
         }
@@ -651,51 +603,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             MessageBox.Show(this, "Download successful. Update will complete when HydroDesktop is restarted.");
         }
 
-        private void Update(IPackage pack)
+        private void UpdatePack(IPackage pack)
         {
-            if (pack != null)
-            {
-                // deactivate the old version and mark for uninstall
-                var extension = App.EnsureDeactivated(pack.Id);
+            Updates.UpdatePack(pack);
+            uxUpdate.Enabled = true;
 
-                if (IsPackageInstalled(pack))
-                {
-                    App.MarkPackageForRemoval(GetPackagePath(pack));
-                }
-                else
-
-                    // todo: consider removing unneeded dependencies.
-                    App.MarkExtensionForRemoval(GetExtensionPath(extension));
-            }
-
-            App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
-
-            // get new version
-            packages.Update(pack);
-
-            try
-            {
-                App.RefreshExtensions();
-            }
-            catch { }
-            finally
-            {
-                // Activate the extension(s) that was installed.
-                // it is difficult to determine which version is newest, so we go and look at the when the file was
-                // placed on disk.
-                var newExtension = App.Extensions.Where(a => a.Name == pack.Id).OrderBy(b => File.GetCreationTime(GetExtensionPath(b))).FirstOrDefault();
-                if (newExtension != null)
-                {
-                    newExtension.Activate();
-                }
-
-                // hack: we might need to refresh the installed list to show new version numbers
-                // or dependencies that were retrieved with the new version.
-                App.ProgressHandler.Progress(null, 0, "Ready.");
-                uxUpdate.Enabled = true;
-
-                DisplayPackagesAndUpdates();
-            }
+            DisplayPackagesAndUpdates();
         }
 
         private void uxAdd_Click(object sender, EventArgs e)

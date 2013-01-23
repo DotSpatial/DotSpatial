@@ -534,8 +534,11 @@ namespace DotSpatial.Controls
 
         private static void Activate(IExtension extension)
         {
-            if (!extension.TryActivate())
-                MessageBox.Show(String.Format(resources.GetString("ErrorWhileWhileActivating"), extension.AssemblyQualifiedName));
+            if (!extension.IsActive)
+            {
+                if (!extension.TryActivate())
+                    MessageBox.Show(String.Format(resources.GetString("ErrorWhileWhileActivating"), extension.AssemblyQualifiedName));
+            }
         }
 
         /// <summary>

@@ -20,6 +20,19 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             AddButtons();
             base.Activate();
+            //doUpdate();
+        }
+
+        public void doUpdate()
+        {
+            Packages packages = new Packages();
+            String[] feeds = new String[2] { "http://www.myget.org/F/dotspatial/", "http://www.myget.org/F/hydrodesktop/" };
+            foreach(String feed in feeds)
+            {
+                packages.SetNewSource(feed);
+                Update update = new Update(packages, null, App);
+                update.autoUpdate();
+            }
         }
 
         public override void Deactivate()
