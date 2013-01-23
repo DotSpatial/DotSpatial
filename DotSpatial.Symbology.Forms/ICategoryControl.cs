@@ -15,5 +15,7 @@
         /// Applies the changes.
         /// </summary>
         void ApplyChanges();
+
+        void Cancel();
     }
 }
