@@ -69,17 +69,23 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             int Count = list.Count();
 
-            listview.Invoke((Action)(() =>
+            try
             {
-                listview.Clear();
-                Add.AddPackages(list, listview, 0);
-                tab.Text = String.Format("Updates ({0})", Count);
-                if (Count == 0)
+                listview.Invoke((Action)(() =>
                 {
                     listview.Clear();
-                    listview.Items.Add("No updates available for the selected feed.");
-                }
-            }));
+                    Add.AddPackages(list, listview, 0);
+                    tab.Text = String.Format("Updates ({0})", Count);
+                    if (Count == 0)
+                    {
+                        listview.Clear();
+                        listview.Items.Add("No updates available for the selected feed.");
+                    }
+                }));
+            }
+            catch (Exception e)
+            {               
+            }
         }
 
         //Looks in the folder where extensions are saved (when downloaded through the Ext Manager) and determines in updates are needed.
