@@ -127,10 +127,11 @@ namespace DotSpatial.Tools
             int noOfCol = input.NumColumns;
             int noOfRow = input.NumRows;
             int previous = 0;
+            Type dataType = input.DataType;
 
             // create output raster
             output = Raster.CreateRaster(
-                output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
+                output.Filename, string.Empty, noOfCol, noOfRow, 1, dataType, new[] { string.Empty });
             RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
