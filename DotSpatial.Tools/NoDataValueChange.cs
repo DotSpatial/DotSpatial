@@ -134,7 +134,7 @@ namespace DotSpatial.Tools
             RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
 
-            output.NoDataValue = input.NoDataValue;
+            output.NoDataValue = newValue;
 
             // Loop throug every cell
             int max = output.Bounds.NumRows + 1;
