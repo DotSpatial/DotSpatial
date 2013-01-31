@@ -41,6 +41,7 @@ namespace Contourer
         public static DotSpatial.Data.FeatureSet Execute(DotSpatial.Data.Raster rst, ContourType type, string FieldName = "Value", double[] levels = null)
         {
             double[] lev = levels;
+            noData = rst.NoDataValue;
 
             DotSpatial.Data.Raster iRst = RasterCheck(rst, lev); ;
 
@@ -116,7 +117,7 @@ namespace Contourer
                         Boundary[2] = new Coordinate(x[rst.NumColumns - 1], y[rst.NumRows - 1]);
                         Boundary[3] = new Coordinate(x[rst.NumColumns - 1], y[0]);
                         Boundary[4] = new Coordinate(x[0], y[0]);
-
+                        
                         Contours.Add(new LineString(Boundary));
 
                         Collection<IGeometry> NodedContours = new Collection<IGeometry>();
@@ -132,6 +133,7 @@ namespace Contourer
 
                         foreach (Polygon p in polygonizer.GetPolygons())
                         {
+
                             Point pnt = (Point)p.InteriorPoint;
 
                             int c = (int)((pnt.X - iRst.Extent.MinX) / iRst.CellWidth);
@@ -586,6 +588,8 @@ namespace Contourer
             //return l1;
         }
 
+        private static double noData;
+
         private static Coordinate[] Intersect(double[] xx, double[] yy, double[] zz, double zlevel)
         {
             List<Coordinate> coordinates = new List<Coordinate>();
@@ -594,6 +598,10 @@ namespace Contourer
             double zmax = Math.Max(zz[0], Math.Max(zz[1], zz[2]));
 
             if (zlevel < zmin || zlevel > zmax) return null;
+            if (zz.Count(x => x == noData) >= 1)
+            {
+                return null;
+            }
 
             int i, i1;
 
