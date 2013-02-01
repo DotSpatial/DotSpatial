@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryReaderWriterExtensions.cs" />
+    <Compile Include="DbaseLocaleRegistry.cs" />
     <Compile Include="DisposeBase.cs" />
     <Compile Include="ExtentArgs.cs" />
     <Compile Include="ExtentM.cs" />

@@ -21,6 +21,7 @@
 // Kyle Ellison     |11/03/2010 | Added method to retrieve a page of data for a single column and consolidated parsing code
 // Kyle Ellison     |12/08/2010 | Added ability to edit multiple rows in one call for performance
 // Kyle Ellison     |12/10/2010 | Added method to retrieve multiple disparate rows in one call for performance
+// Arnold Engelmann | 1/18/2013 | Added support for LDID code in DBF file.
 // ********************************************************************************************************
 
 using System;
@@ -82,10 +83,8 @@ namespace DotSpatial.Data
                 {
                     length = byteContent.Length;
                 }
-                char[] characterContent = new char[length];
-                Encoding.Default.GetChars(byteContent, 0, length, characterContent, 0);
-                DataTable result = new DataTable();
 
+                DataTable result = new DataTable();
                 foreach (Field field in _columns)
                 {
                     result.Columns.Add(new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount));
@@ -95,7 +94,7 @@ namespace DotSpatial.Data
                 for (int row = lowerPageBoundary; row < lowerPageBoundary + rowsPerPage; row++)
                 {
                     if (row > maxRawRow) break;
-                    result.Rows.Add(ReadTableRow(GetFileIndex(row) - strt, start, characterContent, result));
+                    result.Rows.Add(ReadTableRow(GetFileIndex(row) - strt, start, byteContent, result));
                     start += _recordLength;
                 }
                 return result;
@@ -145,7 +144,7 @@ namespace DotSpatial.Data
                     long offset = _headerLength + 1 + _recordLength * GetFileIndex(row) + columnOffset;
                     myStream.Seek(offset, SeekOrigin.Begin);
                     myStream.Read(byteContent, 0, fieldLength);
-                    Encoding.Default.GetChars(byteContent, 0, fieldLength, characterContent, 0);
+                    _encoding.GetChars(byteContent, 0, fieldLength, characterContent, 0);
                     result[outRow++] = ParseColumn(field, row, characterContent, null);
                 }
                 return result;
@@ -171,7 +170,6 @@ namespace DotSpatial.Data
             {
                 var fi = new FileInfo(_fileName);
 
-                // Encoding appears to be ASCII, not Unicode
                 if ((int)fi.Length == _headerLength)
                 {
                     // The file is empty, so we are done here
@@ -220,9 +218,8 @@ namespace DotSpatial.Data
                         myStream.Seek(offset, SeekOrigin.Begin);
                         var field = fields[fieldNumber];
                         myStream.Read(byteContent[fieldNumber], 0, field.Length);
-                        Encoding.Default.GetChars(byteContent[fieldNumber], 0, field.Length, characterContent[fieldNumber], 0);
-                        result[outRow, fieldNumber] = ParseColumn(field, row,
-                                                                  characterContent[fieldNumber], null);
+                        _encoding.GetChars(byteContent[fieldNumber], 0, field.Length, characterContent[fieldNumber], 0);
+                        result[outRow, fieldNumber] = ParseColumn(field, row, characterContent[fieldNumber], null);
                     }
                     outRow++;
                 }
@@ -296,9 +293,7 @@ namespace DotSpatial.Data
 
                     myStream.Seek(_headerLength + 1 + rawRow * _recordLength, SeekOrigin.Begin);
                     byte[] byteContent = myReader.ReadBytes(_recordLength);
-                    char[] characterContent = new char[byteContent.Length];
-                    Encoding.Default.GetChars(byteContent, 0, byteContent.Length, characterContent, 0);
-                    result.Rows.Add(ReadTableRow(rawRow, 0, characterContent, result));
+                    result.Rows.Add(ReadTableRow(rawRow, 0, byteContent, result));
                 }
 
                 return result;
@@ -635,7 +630,7 @@ namespace DotSpatial.Data
         /// Read a single dbase record
         /// </summary>
         /// <returns>Returns an IFeature with information appropriate for the current row in the Table</returns>
-        private DataRow ReadTableRow(int currentRow, long start, char[] characterContent, DataTable table)
+        private DataRow ReadTableRow(int currentRow, int start, byte[] byteContent, DataTable table)
         {
             DataRow result = table.NewRow();
             for (int col = 0; col < table.Columns.Count; col++)
@@ -649,18 +644,14 @@ namespace DotSpatial.Data
                 }
 
                 // read the data.
-                char[] cBuffer = new char[currentField.Length];
-                long len;
-                if (start + currentField.Length > characterContent.Length)
+                int len = currentField.Length;
+                if (start + currentField.Length > byteContent.Length)
                 {
-                    len = characterContent.Length - start;
-                }
-                else
-                {
-                    len = currentField.Length;
+                    len = byteContent.Length - start;
                 }
                 if (len < 0) return result;
-                Array.Copy(characterContent, start, cBuffer, 0, len);
+                char[] cBuffer = _encoding.GetChars(byteContent, start, len);
+
                 start += currentField.Length;
 
                 if (IsNull(cBuffer)) continue;
@@ -698,6 +689,8 @@ namespace DotSpatial.Data
         private IProgressHandler _progressHandler;
         private ProgressMeter _progressMeter;
         private int _recordLength;
+        private byte _ldid;
+        private Encoding _encoding;
         private DateTime _updateDate;
         private BinaryWriter _writer;
 
@@ -712,6 +705,8 @@ namespace DotSpatial.Data
         {
             _deletedRows = new List<int>();
             _fileType = 0x03;
+            _encoding = Encoding.Default;
+            _ldid = DbaseLocaleRegistry.GetLanguageDriverId(_encoding);
             _progressHandler = DataManager.DefaultDataManager.ProgressHandler;
             _progressMeter = new ProgressMeter(_progressHandler);
             _dataTable = new DataTable();
@@ -1139,13 +1134,31 @@ namespace DotSpatial.Data
         /// <param name="length"></param>
         public void Write(string text, int length)
         {
-            // Current fix to use substring adapted from a suggestion from Aerosol.
-            // http://www.mapwindow.org/phorum/read.php?13, 16820
-            // I don't see a reason to write the bytes one at a time in a loop though.
-            text = text.PadRight(length, ' ');
-            string dbaseString = text.Substring(0, length);
-            byte[] bytes = Encoding.Default.GetBytes(dbaseString.ToCharArray());
-            _writer.Write(bytes);
+            // Some encodings (multi-byte encodings) for languages such as Chinese, can result in variable number of bytes per character
+            // so we convert character by character until we reach the length, and pad remaining bytes with spaces.
+            // Note this replaces padding suggested at http://www.mapwindow.org/phorum/read.php?13,16820
+
+            char[] characters = text.ToCharArray();
+           
+            int totalBytes = 0;
+            for (int i = 0; i < characters.Length; i++)
+            {
+                byte[] charBytes = _encoding.GetBytes(characters, i, 1);
+                if (totalBytes + charBytes.Length <= length)
+                {
+                    _writer.Write(charBytes);
+                    totalBytes += charBytes.Length;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if(totalBytes < length)
+            {
+                WriteSpaces(length - totalBytes);
+            }
         }
 
         /// <summary>
@@ -1193,19 +1206,40 @@ namespace DotSpatial.Data
             // write the length of a record
             writer.Write((short)_recordLength);
 
-            // write the reserved bytes in the header
-            for (int i = 0; i < 20; i++)
+            // write reserved/unused bytes in the header
+            for (int i = 0; i < 17; i++)
+                writer.Write((byte)0);
+
+            // write Language Driver ID (LDID)
+            writer.Write(_ldid);
+
+            // write remaining reserved/unused bytes in the header
+            for (int i = 0; i < 2; i++)
                 writer.Write((byte)0);
 
             // write all of the header records
             foreach (Field currentField in _columns)
             {
-                // write the field name
-                for (int j = 0; j < 11; j++)
+                // write the field name (can't be more than 11 bytes)
+                char[] characters = currentField.ColumnName.ToCharArray();
+                int totalBytes = 0;
+                for (int j = 0; j < characters.Length; j++)
                 {
-                    if (currentField.ColumnName.Length > j)
-                        writer.Write((byte)currentField.ColumnName[j]);
-                    else writer.Write((byte)0);
+                    byte[] charBytes = _encoding.GetBytes(characters, j, 1);
+                    if (totalBytes + charBytes.Length <= 11)
+                    {
+                        writer.Write(charBytes);
+                        totalBytes += charBytes.Length;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                while (totalBytes < 11)
+                {
+                    writer.Write((byte)0);
+                    totalBytes++;
                 }
 
                 // write the field type
@@ -1261,7 +1295,7 @@ namespace DotSpatial.Data
                 Array.Copy(_byteContent, start, byteBuffer, 0, currentField.Length); // Modified on 20 Aug. by Andy
                 start += currentField.Length;
 
-                char[] cBuffer = Encoding.Default.GetChars(byteBuffer);// Modified on 20 Aug. by Andy
+                char[] cBuffer = _encoding.GetChars(byteBuffer);// Modified on 20 Aug. by Andy
                 if (IsNull(cBuffer)) continue;
 
                 result[currentField.ColumnName] = ParseColumn(currentField, currentRow, cBuffer, _dataTable);
@@ -1300,18 +1334,14 @@ namespace DotSpatial.Data
 
                 case 'C': // character record.
 
-                    tempObject = new string(cBuffer).Trim().Replace("\0", string.Empty); //.ToCharArray();
+                    tempObject = new string(cBuffer).Replace("\0", string.Empty).Trim();
                     break;
+
                 case 'T':
                     throw new NotSupportedException();
 
                 case 'D': // date data type.
 
-                    //char[] ebuffer = new char[8];
-                    //ebuffer = _reader.ReadChars(8);
-
-                    //else
-                    //{
                     string tempString = new string(cBuffer, 0, 4);
                     int year;
                     if (int.TryParse(tempString, out year) == false) break;
@@ -1323,9 +1353,8 @@ namespace DotSpatial.Data
                     if (int.TryParse(tempString, out day) == false) break;
 
                     tempObject = new DateTime(year, month, day);
-
-                    // }
                     break;
+
                 case 'F':
                 case 'B':
                 case 'N': // number - ESRI uses N for doubles and floats
@@ -1529,8 +1558,14 @@ namespace DotSpatial.Data
             // read the length of a record
             _recordLength = reader.ReadInt16();
 
-            // skip the reserved bytes in the header.
-            reader.ReadBytes(20);
+            // skip reserved/unused bytes in the header.
+            reader.ReadBytes(17);
+
+            // read Language Driver ID (LDID)
+            LanguageDriverId = reader.ReadByte();
+
+            // skip remaining reserved/unused bytes in header
+            reader.ReadBytes(2);
 
             // calculate the number of Fields in the header
             _numFields = (_headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
@@ -1540,8 +1575,7 @@ namespace DotSpatial.Data
             for (int i = 0; i < _numFields; i++)
             {
                 // read the field name
-                char[] buffer = reader.ReadChars(11);
-                string name = new string(buffer);
+                string name = _encoding.GetString(reader.ReadBytes(11));
                 int nullPoint = name.IndexOf((char)0);
                 if (nullPoint != -1)
                     name = name.Substring(0, nullPoint);
@@ -1577,6 +1611,20 @@ namespace DotSpatial.Data
 
             // Last byte is a marker for the end of the field definitions.
             reader.ReadBytes(1);
+        }
+
+        private void SetTextEncoding()
+        {
+            // Unless specifically configured otherwise, ArcGIS will read shapefiles with 0x57 using the encoding returned by
+            // Encoding.Default. Since this is the behavior most people will expect, we match it here.
+            if (_ldid == 0x57)
+            {
+                _encoding = Encoding.Default;
+            }
+            else
+            {
+                _encoding = DbaseLocaleRegistry.GetEncoding(_ldid);
+            }
         }
 
         /// <summary>
@@ -1719,6 +1767,30 @@ namespace DotSpatial.Data
         public int RecordLength
         {
             get { return _recordLength; }
+        }
+
+        /// <summary>
+        /// Gets the language driver ID (LDID) for this file
+        /// </summary>
+        public byte LanguageDriverId
+        {
+            get 
+            {
+                return _ldid;
+            }
+            private set
+            {
+                _ldid = value;
+                SetTextEncoding();
+            }
+        }
+
+        /// <summary>
+        /// Gets the encoding used for text-based data and column names (based on LDID)
+        /// </summary>
+        public Encoding Encoding
+        {
+            get { return _encoding; }
         }
 
         /// <summary>
