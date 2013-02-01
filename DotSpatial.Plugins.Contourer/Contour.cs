@@ -38,11 +38,12 @@ namespace Contourer
             Polygon
         }
 
-        public static DotSpatial.Data.FeatureSet Execute(DotSpatial.Data.Raster rst, ContourType type, string FieldName = "Value", double[] levels = null)
+        private static ContourType type;
+        public static DotSpatial.Data.FeatureSet Execute(DotSpatial.Data.Raster rst, ContourType contourType, string FieldName = "Value", double[] levels = null)
         {
             double[] lev = levels;
             noData = rst.NoDataValue;
-
+            type = contourType;
             DotSpatial.Data.Raster iRst = RasterCheck(rst, lev); ;
 
             string field;
@@ -598,7 +599,7 @@ namespace Contourer
             double zmax = Math.Max(zz[0], Math.Max(zz[1], zz[2]));
 
             if (zlevel < zmin || zlevel > zmax) return null;
-            if (zz.Count(x => x == noData) >= 1)
+            if ((zz.Count(x => x == noData) >= 1) && type == ContourType.Line)
             {
                 return null;
             }
