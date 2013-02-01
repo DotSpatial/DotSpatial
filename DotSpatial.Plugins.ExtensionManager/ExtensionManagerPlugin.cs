@@ -20,7 +20,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             AddButtons();
             base.Activate();
-            //doUpdate();
+            doUpdate();
         }
 
         public void doUpdate()

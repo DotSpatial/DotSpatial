@@ -522,7 +522,16 @@ namespace DotSpatial.Controls
                 // need to be created before other plugins are loaded.
                 foreach (IExtension extension in Extensions.Where(t => t.DeactivationAllowed == false))
                 {
-                    Activate(extension);
+                    if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
+                    {
+                        UpdateSplashScreen("Checking for Updates...");
+                        Activate(extension);
+                        UpdateSplashScreen("Activating Extensions...");
+                    }
+                    else
+                    {
+                        Activate(extension);
+                    }
                 }
 
                 foreach (IExtension extension in Extensions.Where(t => t.DeactivationAllowed))
