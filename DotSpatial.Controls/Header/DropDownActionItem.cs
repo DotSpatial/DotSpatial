@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -14,6 +15,9 @@ namespace DotSpatial.Controls.Header
         private string nullValuePrompt;
         private object selectedItem;
         private int width;
+        private Color fontColor;
+        private bool multiSelect;
+        private string displayText;
 
         /// <summary>
         /// Initializes a new instance of the DropDownActionItem class.
@@ -59,6 +63,61 @@ namespace DotSpatial.Controls.Header
             get
             {
                 return _Items;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user is selecting multiple elements from the dropdownlist or not.
+        /// </summary>
+        public bool MultiSelect
+        {
+            get
+            {
+                return multiSelect;
+            }
+            set
+            {
+                if (multiSelect == value)
+                    return;
+                multiSelect = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("MultiSelect"));
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating the color of the text in the dropdownbox
+        /// </summary>
+        public Color FontColor
+        {
+            get
+            {
+                return fontColor;
+            }
+            set
+            {
+                if (fontColor == value)
+                    return;
+                fontColor = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("FontColor"));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the display text in the dropdownbox
+        /// </summary>
+        public string DisplayText
+        {
+            get
+            {
+                return displayText;
+            }
+            set
+            {
+                if (displayText == value)
+                    return;
+                displayText = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("DisplayText"));
             }
         }
 
