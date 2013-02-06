@@ -317,24 +317,6 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 return true;
             }
 
-            if (this.TileServerName.Equals(Properties.Resources.YahooMap, StringComparison.InvariantCultureIgnoreCase))
-            {
-                /*
-                TileSource = new YahooTileSource(YahooMapType.YahooMap);
-                TileCache = new MemoryCache<byte[]>(100, 200);                
-                return true;
-                 */ 
-            }
-
-            if (this.TileServerName.Equals(Properties.Resources.YahooSatellite, StringComparison.InvariantCultureIgnoreCase))
-            {
-                /*
-                TileSource = new YahooTileSource(YahooMapType.YahooSatellite);
-                TileCache = new MemoryCache<byte[]>(100, 200);                
-                return true;
-                 */ 
-            }
-
             if (this.TileServerName.Equals(Properties.Resources.WMSMap, StringComparison.InvariantCultureIgnoreCase))
             {
                 TileSource = WmsTileSource.Create(WmsServerInfo);

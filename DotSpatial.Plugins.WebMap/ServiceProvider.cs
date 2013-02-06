@@ -55,8 +55,6 @@ namespace DotSpatial.Plugins.WebMap
             yield return new ServiceProvider(Properties.Resources.BingHybrid, null);
             yield return new ServiceProvider(Properties.Resources.GoogleSatellite, null);
             yield return new ServiceProvider(Properties.Resources.GoogleMap, null);
-            yield return new ServiceProvider(Properties.Resources.YahooSatellite, null);
-            yield return new ServiceProvider(Properties.Resources.YahooMap, null);
             yield return new ServiceProvider(Properties.Resources.WMSMap, null);
         }
 

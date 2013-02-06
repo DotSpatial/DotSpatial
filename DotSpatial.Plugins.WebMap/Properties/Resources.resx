@@ -129,14 +129,6 @@
     <value>Google Map</value>
     <comment>GoogleMap description</comment>
   </data>
-  <data name="YahooMap" xml:space="preserve">
-    <value>Yahoo Map</value>
-    <comment>YahooMap description</comment>
-  </data>
-  <data name="YahooSatellite" xml:space="preserve">
-    <value>Yahoo Satellite</value>
-    <comment>YahooSatellite description</comment>
-  </data>
   <data name="WMSMap" xml:space="preserve">
     <value>WMS</value>
   </data>

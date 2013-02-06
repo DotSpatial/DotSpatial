@@ -7,12 +7,12 @@
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;Bing Street Map,http://tiles.virtualearth.net/tiles/r{key}.png?g=461&amp;amp;mkt=en-us,19&lt;/string&gt;
   &lt;string&gt;Bing Aerial Map,http://tiles.virtualearth.net/tiles/h{key}.jpeg?g=461&amp;amp;mkt=en-us&amp;amp;n=z,19&lt;/string&gt;
+  &lt;string&gt;ESRI World Hydro Overlay,http://184.72.212.114:6080/arcgis/rest/services/WorldHydroReferenceOverlay/MapServer/tile/{zoom}/{y}/{x}&lt;/string&gt;
   &lt;string&gt;ESRI Hydro Base Map,http://bmproto.esri.com/ArcGIS/rest/services/Hydro/HydroBase2009/MapServer/tile/{zoom}/{y}/{x},11&lt;/string&gt;
   &lt;string&gt;ESRI World Street Map,http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{zoom}/{y}/{x},17&lt;/string&gt;
   &lt;string&gt;ESRI World Imagery,http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x},15&lt;/string&gt;
   &lt;string&gt;ESRI World Topo,http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x},19&lt;/string&gt;
   &lt;string&gt;OpenStreetMap,http://tile.openstreetmap.org/{zoom}/{x}/{y}.png,18&lt;/string&gt;
-  &lt;string&gt;ESRI World Hydro Overlay,http://184.72.212.114:6080/arcgis/rest/services/WorldHydroReferenceOverlay/MapServer/tile/{zoom}/{y}/{x}&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
