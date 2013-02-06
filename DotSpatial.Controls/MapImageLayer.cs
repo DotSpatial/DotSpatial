@@ -50,6 +50,7 @@ namespace DotSpatial.Controls
         private Rectangle _bufferRectangle;
         private bool _isInitialized;
         private Image _stencil; // draw features to the stencil
+        private Color transparent;
 
         #endregion
 
@@ -80,6 +81,18 @@ namespace DotSpatial.Controls
             : base(baseImage, container)
         {
             Configure(baseImage);
+        }
+
+        /// <summary>
+        /// Creates a new instance of a GeoImageLayer
+        /// </summary>
+        /// <param name="baseImage">The image to draw as a layer</param>
+        /// <param name="transparent">The color to make transparent when drawing the image.</param>
+        public MapImageLayer(IImageData baseImage, Color transparent)
+            : base(baseImage)
+        {
+            Configure(baseImage);
+            this.transparent = transparent;
         }
 
         private void Configure(IImageData baseImage)
@@ -234,6 +247,7 @@ namespace DotSpatial.Controls
                 try
                 {
                     bmp = DataSet.GetBitmap(env, r);
+                    if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
                 }
                 catch
                 {

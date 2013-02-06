@@ -12,6 +12,7 @@
   &lt;string&gt;ESRI World Imagery,http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x},15&lt;/string&gt;
   &lt;string&gt;ESRI World Topo,http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{zoom}/{y}/{x},19&lt;/string&gt;
   &lt;string&gt;OpenStreetMap,http://tile.openstreetmap.org/{zoom}/{x}/{y}.png,18&lt;/string&gt;
+  &lt;string&gt;ESRI World Hydro Overlay,http://184.72.212.114:6080/arcgis/rest/services/WorldHydroReferenceOverlay/MapServer/tile/{zoom}/{y}/{x}&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
