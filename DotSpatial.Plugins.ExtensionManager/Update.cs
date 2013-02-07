@@ -13,6 +13,7 @@ using DotSpatial.Controls.Extensions;
 using System.IO;
 using System.Reflection;
 using DotSpatial.Extensions;
+using System.Collections.Specialized;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -39,7 +40,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         public void RefreshUpdate(ListView lv, TabPage tp)
         {
             listview = lv;
-            tab = tp;;
+            tab = tp;
             getAvailableUpdates();
 
             //Refresh the list view with the updates found.
@@ -181,18 +182,42 @@ namespace DotSpatial.Plugins.ExtensionManager
             return task;
         }
 
-        //autoUpdate any packages found.
-        internal void autoUpdate()
+        public static void doUpdate(AppManager app)
         {
+            bool updateOccurred = false;
+            Packages packages = new Packages();
+            System.Collections.Specialized.StringCollection feeds = app.getAutoUpdateFeeds();
+            foreach (String feed in feeds)
+            {
+                packages.SetNewSource(feed);
+                Update update = new Update(packages, null, app);
+                if (update.autoUpdate()) { updateOccurred = true; }
+            }
+
+            if (updateOccurred)
+            {
+                MessageBox.Show("Extensions have been updated.\nUpdate will be complete when HydroDesktop is restarted.");
+            }
+        }
+
+        //autoUpdate any packages found.
+        internal bool autoUpdate()
+        {
+            bool updateOccurred = false;
             getAvailableUpdates();
 
             if (list != null)
             {
                 foreach (IPackage p in list)
                 {
-                    if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) { UpdatePack(p); }
+                    if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) 
+                    { 
+                        UpdatePack(p);
+                        updateOccurred = true;
+                    }
                 }
             }
+            return updateOccurred;
         }
 
         internal void UpdatePack(IPackage pack)
@@ -230,7 +255,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             //Assumes that version numbers in assembly files are accurate (not currently true).
             SemanticVersion extVersion = SemanticVersion.Parse(ext.Version);
             if (extVersion >= pack.Version) return false;
-
             string assemblyLocation = GetExtensionPath(ext);
 
             // The original file may be in a different location than the extensions directory. During an update, the

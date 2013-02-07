@@ -9,6 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Plugins.ExtensionManager.Properties;
+using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -20,19 +21,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             AddButtons();
             base.Activate();
-            doUpdate();
-        }
-
-        public void doUpdate()
-        {
-            Packages packages = new Packages();
-            String[] feeds = new String[2] { "http://www.myget.org/F/dotspatial/", "http://www.myget.org/F/hydrodesktop/" };
-            foreach(String feed in feeds)
-            {
-                packages.SetNewSource(feed);
-                Update update = new Update(packages, null, App);
-                update.autoUpdate();
-            }
+            Update.doUpdate(App);
         }
 
         public override void Deactivate()

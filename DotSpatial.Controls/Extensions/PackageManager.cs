@@ -21,6 +21,43 @@ namespace DotSpatial.Controls.Extensions
     {
 
         /// <summary>
+        /// Add or remove feeds to be autoupdated when app starts.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        /// <param name="path">URL of feed.</param>
+        public static void ToggleAutoUpdate(this AppManager appManager, string feed, Boolean toAdd)
+        {
+            if(toAdd && !Settings.Default.FeedsToAutoUpdate.Contains(feed))
+            {
+                Settings.Default.FeedsToAutoUpdate.Add(feed);
+            }
+            else if(!toAdd && Settings.Default.FeedsToAutoUpdate.Contains(feed))
+            {
+                Settings.Default.FeedsToAutoUpdate.Remove(feed);
+            }
+            Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Return a list of feeds to autoupdate when app starts.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        public static System.Collections.Specialized.StringCollection getAutoUpdateFeeds(this AppManager appManager)
+        {
+            return Settings.Default.FeedsToAutoUpdate;
+        }
+
+        /// <summary>
+        /// Check if a specific URL is in the autoupdate list.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        /// <param name="feed">The feed to check.</param>
+        public static bool isAutoUpdateFeed(this AppManager appManager, string feed)
+        {
+            return Settings.Default.FeedsToAutoUpdate.Contains(feed);
+        }
+
+        /// <summary>
         /// Marks the package for removal.
         /// </summary>
         /// <param name="appManager">The app manager.</param>

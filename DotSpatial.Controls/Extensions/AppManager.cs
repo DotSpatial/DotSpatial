@@ -41,6 +41,7 @@ using DotSpatial.Data;
 using DotSpatial.Extensions;
 using DotSpatial.Extensions.SplashScreens;
 using DotSpatial.Controls.Extensions;
+using System.Threading;
 
 namespace DotSpatial.Controls
 {
@@ -524,9 +525,15 @@ namespace DotSpatial.Controls
                 {
                     if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
                     {
-                        UpdateSplashScreen("Checking for Updates...");
-                        Activate(extension);
-                        UpdateSplashScreen("Activating Extensions...");
+                        em = extension;
+                        Thread updateThread = new Thread(new ThreadStart(AppManager.ActivateExtensionManager));
+                        updateThread.Start();
+                        while (updateThread.IsAlive)
+                        {
+                            UpdateSplashScreen("Looking for updates");
+                        }
+                        updateThread.Join();
+                        UpdateSplashScreen("Finished.");
                     }
                     else
                     {
@@ -539,6 +546,13 @@ namespace DotSpatial.Controls
                     Activate(extension);
                 }
             }
+        }
+
+        private static IExtension em;
+        private static void ActivateExtensionManager()
+        {
+            Activate(em);
+            em = null;
         }
 
         private static void Activate(IExtension extension)

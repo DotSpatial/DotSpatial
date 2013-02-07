@@ -279,6 +279,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 source.SubItems.Add(feed.Url);
                 uxFeedSources.Items.Add(source);
                 uxFeedSelection.Items.Add(feed.Url);
+                source.Checked = App.isAutoUpdateFeed(feed.Url);
             }
             // Select the first item in the drop down, kicking off a package list update.
             uxFeedSelection.SelectedIndex = 0;
@@ -653,6 +654,16 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void uxSearchText_Click(object sender, EventArgs e)
         {
             uxSearchText.Clear();
+        }
+
+        private void sourceFeedChecked(object sender, ItemCheckedEventArgs e)
+        {
+            changeAutoUpdateSetting(e.Item);
+        }
+
+        private void changeAutoUpdateSetting(ListViewItem item)
+        {
+            App.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
         }
     }
 }
