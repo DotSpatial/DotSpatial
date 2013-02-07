@@ -428,7 +428,7 @@
             this.uxFeedSources.FullRowSelect = true;
             this.uxFeedSources.Location = new System.Drawing.Point(8, 6);
             this.uxFeedSources.Name = "uxFeedSources";
-            this.uxFeedSources.Size = new System.Drawing.Size(414, 393);
+            this.uxFeedSources.Size = new System.Drawing.Size(545, 393);
             this.uxFeedSources.TabIndex = 3;
             this.uxFeedSources.UseCompatibleStateImageBehavior = false;
             this.uxFeedSources.View = System.Windows.Forms.View.Details;
@@ -437,18 +437,18 @@
             // columnHeader4
             // 
             this.columnHeader4.Text = "Name";
-            this.columnHeader4.Width = 184;
+            this.columnHeader4.Width = 223;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "URL";
-            this.columnHeader5.Width = 174;
+            this.columnHeader5.Width = 318;
             // 
             // uxRemove
             // 
             this.uxRemove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxRemove.Location = new System.Drawing.Point(428, 6);
+            this.uxRemove.Location = new System.Drawing.Point(559, 6);
             this.uxRemove.Name = "uxRemove";
             this.uxRemove.Size = new System.Drawing.Size(75, 23);
             this.uxRemove.TabIndex = 1;
