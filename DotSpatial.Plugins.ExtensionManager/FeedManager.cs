@@ -57,5 +57,48 @@ namespace DotSpatial.Plugins.ExtensionManager
             Properties.Settings.Default.SourceUrls.Clear();
             Properties.Settings.Default.Save();
         }
+
+        /// <summary>
+        /// Add or remove feeds to be autoupdated when app starts.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        /// <param name="path">URL of feed.</param>
+        public static void ToggleAutoUpdate(string feed, Boolean toAdd)
+        {
+            {
+                if (toAdd && !Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed))
+                {
+                    Properties.Settings.Default.FeedsToAutoUpdate.Add(feed);
+                }
+                else if (!toAdd && Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed))
+                {
+                    Properties.Settings.Default.FeedsToAutoUpdate.Remove(feed);
+                }
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        /// <summary>
+        /// Return a list of feeds to autoupdate when app starts.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        public static System.Collections.Specialized.StringCollection getAutoUpdateFeeds()
+        {
+            if (Properties.Settings.Default.FeedsToAutoUpdate == null)
+            {
+                Properties.Settings.Default.FeedsToAutoUpdate = new System.Collections.Specialized.StringCollection();
+            }
+            return Properties.Settings.Default.FeedsToAutoUpdate;
+        }
+
+        /// <summary>
+        /// Check if a specific URL is in the autoupdate list.
+        /// </summary>
+        /// <param name="appManager">The app manager.</param>
+        /// <param name="feed">The feed to check.</param>
+        public static bool isAutoUpdateFeed(string feed)
+        {
+            return Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed);
+        }
     }
 }

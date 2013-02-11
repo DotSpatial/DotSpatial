@@ -18,5 +18,8 @@
   &lt;string&gt; http://www.myget.org/F/hydrodesktop/&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="FeedsToAutoUpdate" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

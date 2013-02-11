@@ -279,7 +279,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 source.SubItems.Add(feed.Url);
                 uxFeedSources.Items.Add(source);
                 uxFeedSelection.Items.Add(feed.Url);
-                source.Checked = App.isAutoUpdateFeed(feed.Url);
+                source.Checked = FeedManager.isAutoUpdateFeed(feed.Url);
             }
             // Select the first item in the drop down, kicking off a package list update.
             uxFeedSelection.SelectedIndex = 0;
@@ -584,8 +584,15 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             uxUpdate.Enabled = false;
             var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
-            UpdatePack(pack);
-            showUpdateComplete();
+            try
+            {
+                UpdatePack(pack);
+                showUpdateComplete();
+            }
+            catch
+            {
+                MessageBox.Show("Error updating " + pack.GetFullName());
+            }
         }
 
         private void uxUpdateAll_Click(object sender, EventArgs e)
@@ -594,14 +601,21 @@ namespace DotSpatial.Plugins.ExtensionManager
             for (i = 0; i < uxUpdatePackages.Items.Count; i++)
             {
                 var pack = uxUpdatePackages.Items[i].Tag as IPackage;
-                UpdatePack(pack);
+                try
+                {
+                    UpdatePack(pack);
+                }
+                catch
+                {
+                    MessageBox.Show("Error updating " + pack.GetFullName());
+                }
             }
             showUpdateComplete();
         }
 
         private void showUpdateComplete()
         {
-            MessageBox.Show(this, "Download successful. Update will complete when HydroDesktop is restarted.");
+            MessageBox.Show(this, "Download finished. Update will complete when HydroDesktop is restarted.");
         }
 
         private void UpdatePack(IPackage pack)
@@ -663,7 +677,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void changeAutoUpdateSetting(ListViewItem item)
         {
-            App.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
+            FeedManager.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
         }
     }
 }

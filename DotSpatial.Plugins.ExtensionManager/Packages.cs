@@ -17,6 +17,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         #region Constants and Fields
 
         private const string PackageSourceUrl = "http://www.myget.org/F/dotspatial/";
+        private const string coreRepoUrl = "https://nuget.org/api/v2/";
         private PackageManager packageManager;
         private IPackageRepository repo;
         private string repositoryLocation;
@@ -80,9 +81,21 @@ namespace DotSpatial.Plugins.ExtensionManager
                 // Run without debugging to avoid the exception and install the package
                 // more at http://nuget.codeplex.com/discussions/259099
                 // We include a custom nuget.core without SecurityTransparent to avoid the error.
+
                 if (package != null)
                 {
                     packageManager.InstallPackage(package, true, false);
+                    return package;
+                }
+                else
+                {
+                    //Check Core repository for Dlls we might not have. TODO
+                    IPackageRepository coreRepo = new PackageRepositoryFactory().CreateRepository(coreRepoUrl);
+                    String coreLocation = "C:\\Users\\shieldst\\Documents\\Visual Studio 2010\\Projects\\DotSpatial2\\Debug\\bin\\";
+                    if(File.Exists(coreLocation + name +".dll")) { return null; }
+                    PackageManager corePackageManager = new PackageManager(coreRepo, new DefaultPackagePathResolver(coreRepoUrl), new PhysicalFileSystem(coreLocation));
+                    package = coreRepo.FindPackage(name);
+                    corePackageManager.InstallPackage(package, true, false);
                     return package;
                 }
             }

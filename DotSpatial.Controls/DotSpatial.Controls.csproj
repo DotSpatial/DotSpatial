@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializingEventArgs.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="ShapefileLayerProvider.cs" />
     <Compile Include="MapTileLayer.cs" />
     <Compile Include="ClipArgs.cs" />
