@@ -225,30 +225,25 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (pack == null) return;
 
             // deactivate the old version and mark for uninstall
-            //var extension = App.EnsureDeactivated(pack.Id);
-            var extension = App.GetExtension(pack.Id);
-                    
-            App.MarkExtensionForRemoval(GetExtensionPath(extension));           
+            var extension = App.EnsureDeactivated(pack.Id);
+
+            if (IsPackageInstalled(pack))
+            {
+                App.MarkPackageForRemoval(GetPackagePath(pack));
+            }
+            else
+            {
+                // todo: consider removing unneeded dependencies.
+            }
+
+            App.MarkExtensionForRemoval(GetExtensionPath(extension));
 
             App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
 
             // get new version
-            try
-            {
-                packages.Update(pack);
-                if (IsPackageInstalled(pack))
-                {
-                    App.MarkPackageForRemoval(GetPackagePath(pack));
-                }
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                App.ProgressHandler.Progress(null, 0, "");
-            }
+            packages.Update(pack);
+
+            App.ProgressHandler.Progress(null, 0, "");
         }
 
         //Determines if a package has a local version that can be deleted and is out of date.
