@@ -182,7 +182,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             return task;
         }
 
-        public static void doUpdate(AppManager app)
+        //Cycle through feeds from settings and call autoupdate function. If any updates occur, show message box.
+        public static void autoUpdateController(AppManager app)
         {
             bool updateOccurred = false;
             Packages packages = new Packages();
@@ -200,7 +201,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        //autoUpdate any packages found.
+        //autoUpdate any packages found in current feed.
         internal bool autoUpdate()
         {
             bool updateOccurred = false;
@@ -220,20 +221,23 @@ namespace DotSpatial.Plugins.ExtensionManager
             return updateOccurred;
         }
 
+        //Mark old package for removal and download updated package.
         internal void UpdatePack(IPackage pack)
         {
             if (pack == null) return;
 
-            // deactivate the old version and mark for uninstall
-            var extension = App.EnsureDeactivated(pack.Id);
+        
+            //We used to deactivate the package here so that the new package would be usable immediately.
+            //This causes some issues, so now we just mark it for removal. It will be removed next time application is started
+            //and the new package will be activated instead.
+            var extension = App.GetExtension(pack.Id);
 
             if (IsPackageInstalled(pack))
             {
                 App.MarkPackageForRemoval(GetPackagePath(pack));
             }
             else
-            {
-                // todo: consider removing unneeded dependencies.
+            {              
             }
 
             App.MarkExtensionForRemoval(GetExtensionPath(extension));

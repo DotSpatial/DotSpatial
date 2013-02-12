@@ -21,7 +21,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             AddButtons();
             base.Activate();
-            Update.doUpdate(App);
+            Update.autoUpdateController(App);
         }
 
         public override void Deactivate()
