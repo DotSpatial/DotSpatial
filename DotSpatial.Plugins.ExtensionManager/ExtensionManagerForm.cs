@@ -670,14 +670,23 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxSearchText.Clear();
         }
 
-        private void sourceFeedChecked(object sender, ItemCheckedEventArgs e)
+        private void uxApply_Click(object sender, EventArgs e)
         {
-            changeAutoUpdateSetting(e.Item);
+            for (int i=0; i<uxFeedSources.Items.Count; i++)
+            {
+                changeAutoUpdateSetting(uxFeedSources.Items[i]);
+            }
+            uxApply.Enabled = false;
         }
 
         private void changeAutoUpdateSetting(ListViewItem item)
         {
             FeedManager.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
+        }
+
+        private void uxSourceFeed_Checked(object sender, ItemCheckedEventArgs e)
+        {
+            uxApply.Enabled = true;
         }
     }
 }

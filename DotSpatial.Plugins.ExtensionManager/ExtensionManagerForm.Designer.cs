@@ -57,6 +57,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.uxApply = new System.Windows.Forms.Button();
             this.autoUpdateExplanation = new System.Windows.Forms.Label();
             this.uxFeedGroupBox = new System.Windows.Forms.GroupBox();
             this.uxAdd = new System.Windows.Forms.Button();
@@ -330,6 +331,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.uxApply);
             this.tabPage4.Controls.Add(this.autoUpdateExplanation);
             this.tabPage4.Controls.Add(this.uxFeedGroupBox);
             this.tabPage4.Controls.Add(this.uxFeedSources);
@@ -341,6 +343,17 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Feeds";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // uxApply
+            // 
+            this.uxApply.Enabled = false;
+            this.uxApply.Location = new System.Drawing.Point(478, 402);
+            this.uxApply.Name = "uxApply";
+            this.uxApply.Size = new System.Drawing.Size(75, 23);
+            this.uxApply.TabIndex = 15;
+            this.uxApply.Text = "Apply";
+            this.uxApply.UseVisualStyleBackColor = true;
+            this.uxApply.Click += new System.EventHandler(this.uxApply_Click);
             // 
             // autoUpdateExplanation
             // 
@@ -432,7 +445,7 @@
             this.uxFeedSources.TabIndex = 3;
             this.uxFeedSources.UseCompatibleStateImageBehavior = false;
             this.uxFeedSources.View = System.Windows.Forms.View.Details;
-            this.uxFeedSources.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.sourceFeedChecked);
+            this.uxFeedSources.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.uxSourceFeed_Checked);
             // 
             // columnHeader4
             // 
@@ -526,5 +539,6 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Label autoUpdateExplanation;
+        private System.Windows.Forms.Button uxApply;
     }
 }
