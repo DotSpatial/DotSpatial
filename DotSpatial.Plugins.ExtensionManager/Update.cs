@@ -185,26 +185,41 @@ namespace DotSpatial.Plugins.ExtensionManager
         //Cycle through feeds from settings and call autoupdate function. If any updates occur, show message box.
         public static void autoUpdateController(AppManager app)
         {
-            bool updateOccurred = false;
+            List<String> updatesOccurred = new List<String>();
             Packages packages = new Packages();
             System.Collections.Specialized.StringCollection feeds = FeedManager.getAutoUpdateFeeds();
             foreach (String feed in feeds)
             {
                 packages.SetNewSource(feed);
                 Update update = new Update(packages, null, app);
-                if (update.autoUpdate()) { updateOccurred = true; }
+                updatesOccurred.AddRange(update.autoUpdate());
             }
 
-            if (updateOccurred)
+            if (updatesOccurred.Count > 0)
             {
-                MessageBox.Show("Extensions have been updated.\nUpdate will be complete when HydroDesktop is restarted.");
+                String begin;
+                if (updatesOccurred.Count == 1){ begin = "The following extension has been updated:"; }
+                else{ begin = "The following extensions have been updated:"; }
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(begin);
+                sb.AppendLine();
+                for (int i = 0; i < updatesOccurred.Count && i<25; i++)
+                {
+                    sb.AppendLine(updatesOccurred.ElementAt(i));
+                }
+                if (updatesOccurred.Count > 25) { sb.AppendLine("..."); }
+                sb.AppendLine();
+                sb.Append("Updates will finish when HydroDesktop is restarted.");
+
+                MessageBox.Show(sb.ToString());
             }
         }
 
         //autoUpdate any packages found in current feed.
-        internal bool autoUpdate()
+        internal List<String> autoUpdate()
         {
-            bool updateOccurred = false;
+            List<String> updatesOccurred = new List<String>();
             getAvailableUpdates();
 
             if (list != null)
@@ -214,11 +229,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                     if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) 
                     { 
                         UpdatePack(p);
-                        updateOccurred = true;
                     }
                 }
             }
-            return updateOccurred;
+            return updatesOccurred;
         }
 
         //Mark old package for removal and download updated package.
