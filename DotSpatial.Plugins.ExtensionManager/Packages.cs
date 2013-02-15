@@ -91,9 +91,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     //Check Core repository for Dlls we might not have. TODO
                     IPackageRepository coreRepo = new PackageRepositoryFactory().CreateRepository(coreRepoUrl);
-                    String coreLocation = "C:\\Users\\shieldst\\Documents\\Visual Studio 2010\\Projects\\DotSpatial2\\Debug\\bin\\";
-                    if(File.Exists(coreLocation + name +".dll")) { return null; }
-                    PackageManager corePackageManager = new PackageManager(coreRepo, new DefaultPackagePathResolver(coreRepoUrl), new PhysicalFileSystem(coreLocation));
+                    PackageManager corePackageManager = new PackageManager(coreRepo, new DefaultPackagePathResolver(coreRepoUrl), new PhysicalFileSystem(repositoryLocation));
                     package = coreRepo.FindPackage(name);
                     corePackageManager.InstallPackage(package, true, false);
                     return package;
