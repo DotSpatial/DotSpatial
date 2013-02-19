@@ -277,7 +277,14 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void SaveProject_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
+            String fullPath = App.SerializationManager.CurrentProjectFile;
+            String file = Path.GetFileNameWithoutExtension(fullPath);
+
+            //Hardcoded names of sample projects into Save button so that if user tries to save over project file they will have to pick a new filename.
+            if (String.IsNullOrEmpty(fullPath)
+                || file.Contains("SampleProjects")
+                || file.Equals("elbe")
+                || file.Equals("Jacob's Well Spring"))
             {
                 SaveProjectAs();
             }
