@@ -233,25 +233,28 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 }
             }
 
-            Band red = dataset.GetRasterBand(1);
-            ColorInterp bandType = red.GetRasterColorInterpretation();
-            if (bandType != ColorInterp.GCI_PaletteIndex &&
-                bandType != ColorInterp.GCI_GrayIndex &&
-                bandType != ColorInterp.GCI_RedBand &&
-                bandType != ColorInterp.GCI_AlphaBand)
+            bool hasOverviews;
+            using (var red = dataset.GetRasterBand(1))
             {
-                // This is an image, not a raster, so return null.
-                dataset.Dispose();
-                dataset = null;
-                return null;
+                ColorInterp bandType = red.GetRasterColorInterpretation();
+                if (bandType != ColorInterp.GCI_PaletteIndex &&
+                    bandType != ColorInterp.GCI_GrayIndex &&
+                    bandType != ColorInterp.GCI_RedBand &&
+                    bandType != ColorInterp.GCI_AlphaBand)
+                {
+                    // This is an image, not a raster, so return null.
+                    dataset.Dispose();
+                    dataset = null;
+                    return null;
+                }
+                hasOverviews = red.GetOverviewCount() > 0;
             }
 
             GdalImage result = new GdalImage(fileName);
-            if (result.Width > 8000 || result.Height > 8000)
+            // Firstly, if there are pyramids inside of the GDAL file itself, we can just work with this directly,
+            // without creating our own pyramid image.
+            if ((result.Width > 8000 || result.Height > 8000) && !hasOverviews)
             {
-                // Firstly, if there are pyramids inside of the GDAL file itself, we can just work with this directly,
-                // without creating our own pyramid image.
-
                 // For now, we can't get fast, low-res versions without some kind of pyramiding happening.
                 // since that can take a while for huge images, I'd rather do this once, and create a kind of
                 // standardized file-based pyramid system.  Maybe in future pyramid tiffs could be used instead?
@@ -298,6 +301,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 py.ProgressHandler = ProgressHandler;
                 py.CreatePyramids();
                 py.WriteHeader(pyrFile);
+                result.Dispose();
+
                 return py;
             }
             result.Open();
