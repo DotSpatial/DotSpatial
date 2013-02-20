@@ -436,7 +436,14 @@ namespace DotSpatial.Controls.Header
                     guiItem.SelectedItem = item.SelectedItem;
                     break;
 
+                case "FontColor":
+                    guiItem.ForeColor = item.FontColor;
+                    break;
+
                 case "ToggleGroupKey":
+                    break;
+
+                case "MultiSelect":
                     break;
 
                 default:
@@ -539,6 +546,10 @@ namespace DotSpatial.Controls.Header
 
                 case "Text":
                     guiItem.Text = item.Text;
+                    break;
+
+                case "FontColor":
+                    guiItem.TextBox.ForeColor = item.FontColor;
                     break;
 
                 default:
