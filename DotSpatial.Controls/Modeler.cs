@@ -1265,9 +1265,9 @@ namespace DotSpatial.Controls
                             progForm.Progress(string.Empty, 0, "Executing Tool: " + te.Name);
                             progForm.Progress(string.Empty, 0, "==================");
                             te.Tool.Execute(progForm);
-                            progForm.Progress(string.Empty, 0, "==================");
-                            progForm.Progress(string.Empty, 0, "Done Executing Tool: " + te.Name);
-                            progForm.Progress(string.Empty, 0, "==================");
+                            progForm.Progress(string.Empty, 100, "==================");
+                            progForm.Progress(string.Empty, 100, "Done Executing Tool: " + te.Name);
+                            progForm.Progress(string.Empty, 100, "==================");
                         }
                         te.ExecutionStatus = ToolExecuteStatus.Done;
                         i++;

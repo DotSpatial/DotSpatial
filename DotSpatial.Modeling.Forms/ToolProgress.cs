@@ -40,9 +40,7 @@ namespace DotSpatial.Modeling.Forms
         private bool _cancelPressed;
         private bool _executionComplete;
         private Label _lblTool;
-        private Label _lblTotal;
         private ProgressBar _progressBarTool;
-        private ProgressBar _progressBarTotal;
         private int _toolProgressCount;
         private TextBox _txtBoxStatus;
 
@@ -57,8 +55,6 @@ namespace DotSpatial.Modeling.Forms
         public ToolProgress(int numTools)
         {
             InitializeComponent();
-            _progressBarTotal.Maximum = numTools * 100;
-            _progressBarTotal.Minimum = 0;
             _progressBarTool.Maximum = 100;
             _progressBarTool.Minimum = 0;
             _executionComplete = false;
@@ -114,7 +110,6 @@ namespace DotSpatial.Modeling.Forms
             if (percent < 0) percent = 0;
             if (percent > 100) percent = 100;
             _progressBarTool.Value = percent;
-            _progressBarTotal.Value = (_toolProgressCount) * 100 + percent;
             _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
         }
 
@@ -190,87 +185,66 @@ namespace DotSpatial.Modeling.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            _progressBarTool = new ProgressBar();
-            _progressBarTotal = new ProgressBar();
-            _lblTotal = new Label();
-            _lblTool = new Label();
-            _txtBoxStatus = new TextBox();
-            _btnCancel = new Button();
-            SuspendLayout();
-            //
-            // progressBarTool
-            //
-            _progressBarTool.Anchor = (AnchorStyles.Top | AnchorStyles.Left)
-                                      | AnchorStyles.Right;
-            _progressBarTool.Location = new Point(13, 77);
-            _progressBarTool.Name = "_progressBarTool";
-            _progressBarTool.Size = new Size(494, 23);
-            _progressBarTool.TabIndex = 0;
-            //
-            // _progressBarTotal
-            //
-            _progressBarTotal.Anchor = (AnchorStyles.Top | AnchorStyles.Left)
-                                       | AnchorStyles.Right;
-            _progressBarTotal.Location = new Point(13, 33);
-            _progressBarTotal.Name = "_progressBarTotal";
-            _progressBarTotal.Size = new Size(494, 23);
-            _progressBarTotal.TabIndex = 1;
-            //
-            // _lblTotal
-            //
-            _lblTotal.AutoSize = true;
-            _lblTotal.Location = new Point(12, 15);
-            _lblTotal.Name = "_lblTotal";
-            _lblTotal.Size = new Size(75, 13);
-            _lblTotal.TabIndex = 2;
-            _lblTotal.Text = "Total Progress";
-            //
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolProgress));
+            this._progressBarTool = new System.Windows.Forms.ProgressBar();
+            this._lblTool = new System.Windows.Forms.Label();
+            this._txtBoxStatus = new System.Windows.Forms.TextBox();
+            this._btnCancel = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // _progressBarTool
+            // 
+            this._progressBarTool.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._progressBarTool.Location = new System.Drawing.Point(12, 25);
+            this._progressBarTool.Name = "_progressBarTool";
+            this._progressBarTool.Size = new System.Drawing.Size(494, 23);
+            this._progressBarTool.TabIndex = 0;
+            // 
             // _lblTool
-            //
-            _lblTool.AutoSize = true;
-            _lblTool.Location = new Point(12, 59);
-            _lblTool.Name = "_lblTool";
-            _lblTool.Size = new Size(72, 13);
-            _lblTool.TabIndex = 3;
-            _lblTool.Text = "Tool Progress";
-            //
+            // 
+            this._lblTool.AutoSize = true;
+            this._lblTool.Location = new System.Drawing.Point(12, 9);
+            this._lblTool.Name = "_lblTool";
+            this._lblTool.Size = new System.Drawing.Size(72, 13);
+            this._lblTool.TabIndex = 3;
+            this._lblTool.Text = "Tool Progress";
+            // 
             // _txtBoxStatus
-            //
-            _txtBoxStatus.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom)
-                                    | AnchorStyles.Left)
-                                   | AnchorStyles.Right;
-            _txtBoxStatus.Location = new Point(13, 130);
-            _txtBoxStatus.Multiline = true;
-            _txtBoxStatus.Name = "_txtBoxStatus";
-            _txtBoxStatus.ScrollBars = ScrollBars.Vertical;
-            _txtBoxStatus.Size = new Size(494, 247);
-            _txtBoxStatus.TabIndex = 4;
-            //
+            // 
+            this._txtBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtBoxStatus.Location = new System.Drawing.Point(13, 54);
+            this._txtBoxStatus.Multiline = true;
+            this._txtBoxStatus.Name = "_txtBoxStatus";
+            this._txtBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this._txtBoxStatus.Size = new System.Drawing.Size(494, 323);
+            this._txtBoxStatus.TabIndex = 4;
+            // 
             // _btnCancel
-            //
-            _btnCancel.Location = new Point(431, 383);
-            _btnCancel.Name = "_btnCancel";
-            _btnCancel.Size = new Size(75, 23);
-            _btnCancel.TabIndex = 5;
-            _btnCancel.Text = "Cancel";
-            _btnCancel.UseVisualStyleBackColor = true;
-            _btnCancel.Click += btnCancel_Click;
-            //
+            // 
+            this._btnCancel.Location = new System.Drawing.Point(431, 383);
+            this._btnCancel.Name = "_btnCancel";
+            this._btnCancel.Size = new System.Drawing.Size(75, 23);
+            this._btnCancel.TabIndex = 5;
+            this._btnCancel.Text = "Cancel";
+            this._btnCancel.UseVisualStyleBackColor = true;
+            this._btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // ToolProgress
-            //
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(519, 418);
-            Controls.Add(_btnCancel);
-            Controls.Add(_txtBoxStatus);
-            Controls.Add(_lblTool);
-            Controls.Add(_lblTotal);
-            Controls.Add(_progressBarTotal);
-            Controls.Add(_progressBarTool);
-            Name = "ToolProgress";
-            Text = "ToolProgress";
-            ResumeLayout(false);
-            PerformLayout();
+            // 
+            this.ClientSize = new System.Drawing.Size(519, 418);
+            this.Controls.Add(this._btnCancel);
+            this.Controls.Add(this._txtBoxStatus);
+            this.Controls.Add(this._lblTool);
+            this.Controls.Add(this._progressBarTool);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "ToolProgress";
+            this.Text = "Tool Progress";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion

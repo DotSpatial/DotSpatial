@@ -104,12 +104,12 @@ namespace DotSpatial.Analysis
                 return input;
 
             if (cancelProgressHandler != null)
-                cancelProgressHandler.Progress(null, 0, "Retrieving the borders.");
+                cancelProgressHandler.Progress(null, 16, "Retrieving the borders.");
 
             List<Border> borders = GetBorders(polygon);
 
             if (cancelProgressHandler != null)
-                cancelProgressHandler.Progress(null, 0, "Copying raster.");
+                cancelProgressHandler.Progress(null, 33, "Copying raster.");
 
             //create output raster
             IRaster output = Raster.CreateRaster(outputFileName, input.DriverCode, input.NumColumns, input.NumRows, 1,
@@ -136,7 +136,7 @@ namespace DotSpatial.Analysis
 
             ProgressMeter pm = new ProgressMeter(cancelProgressHandler, "Clipping Raster", output.NumColumns);
             pm.StepPercent = 5;
-            pm.StartValue = columnStart;
+            pm.StartValue = 33;
 
             int col = 0;
             for (int columnCurrent = columnStart; columnCurrent < output.NumColumns; columnCurrent++)

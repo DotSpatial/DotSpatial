@@ -330,9 +330,9 @@ namespace DotSpatial.Controls
             progForm.Progress(String.Empty, 0, "==================");
             toolToExecute.Execute(progForm);
             progForm.ExecutionComplete();
-            progForm.Progress(String.Empty, 0, "==================");
-            progForm.Progress(String.Empty, 0, String.Format("Done Executing Tool: {0}", toolToExecute.Name));
-            progForm.Progress(String.Empty, 0, "==================");
+            progForm.Progress(String.Empty, 100, "==================");
+            progForm.Progress(String.Empty, 100, String.Format("Done Executing Tool: {0}", toolToExecute.Name));
+            progForm.Progress(String.Empty, 100, "==================");
         }
 
         private void DoDoubleClick(TreeNode theNode)
