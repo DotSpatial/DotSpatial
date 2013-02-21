@@ -75,8 +75,16 @@ namespace DotSpatial.Plugins.TableEditor
             // add context menu item.
             var menuItem = new SymbologyMenuItem(contextMenuItemName, delegate { ShowAttributes(addedLayer as IFeatureLayer); });
             menuItem.Image = Resources.table_16x16;
-            addedLayer.ContextMenuItems.Insert(2, menuItem);
-        }
+            var cmi = addedLayer.ContextMenuItems;
+            if (cmi.Count > 2)
+            {
+                addedLayer.ContextMenuItems.Insert(2, menuItem);
+            }
+            else
+            {
+                addedLayer.ContextMenuItems.Add(menuItem);
+            }
+       }
 
         public override void Deactivate()
         {
