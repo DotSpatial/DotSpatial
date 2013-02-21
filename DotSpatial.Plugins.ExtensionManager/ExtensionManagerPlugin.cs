@@ -46,6 +46,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                     simpleAction.SortOrder = 100;
                     App.HeaderControl.Add(simpleAction);
 
+                    //sample projects menu
+                    SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click);
+			        simpleActionItem.GroupCaption = "kApplicationMenu";
+			        simpleActionItem.LargeImage = Resources.plugin_32x32;
+			        simpleActionItem.SmallImage = Resources.plugin_16x16;
+			        base.App.HeaderControl.Add(simpleActionItem);
+
                     break;
 
                 case ShowExtensionsDialog.MapGlyph:
@@ -66,6 +73,13 @@ namespace DotSpatial.Plugins.ExtensionManager
             var form = new ExtensionManagerForm();
             form.App = App;
             form.Show();
+        }
+
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose is called when a non-modal form is closed.")]
+        private void OpenSampleProjects_Click(object sender, EventArgs e) {
+            var form = new ExtensionManagerForm();
+            SampleProjectsForm sampleProjForm = new SampleProjectsForm(App);
+            sampleProjForm.Show();
         }
 
         #endregion
