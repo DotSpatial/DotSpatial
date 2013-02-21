@@ -81,8 +81,6 @@
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="ExtentTest.cs" />
     <Compile Include="FeatureListTests.cs" />
-    <Compile Include="FeatureSetTest.cs" />
-    <Compile Include="FeatureSourceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterBoundTests.cs" />
@@ -115,141 +113,221 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_Clip2.aux" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\dblbnd.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\hdr.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\prj.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\sta.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\vat.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001x.adf" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc.dir" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002r.001" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005r.001" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008r.001" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.dat" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.nit" />
-    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011r.001" />
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_Clip2.aux">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\dblbnd.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\hdr.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\prj.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\sta.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\vat.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\w001001x.adf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc.dir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0000.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0001.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0002r.001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0003.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0004.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0005r.001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0006.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0007.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0008r.001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0009.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0010.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011.nit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Grids\elev_cm_ESRI\info\arc0011r.001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Shapefiles\cities.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\cities.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\cities.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\cities.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\counties.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\counties.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\counties.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\counties.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\lakes.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\lakes.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\lakes.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\lakes.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\rivers.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\rivers.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\rivers.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\rivers.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\roads.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\roads.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\roads.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\roads.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\states.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\states.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\states.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\states.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.sbn">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.sbx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\Topology_Test.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\metadata.xml" />
+    <Content Include="Data\Grids\elev_cm_ESRI\elev_cm_clip2\metadata.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Shapefiles\Topology_Test.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" $(TargetDir) /Y
+xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" $(TargetDir)gdalplugins\ /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

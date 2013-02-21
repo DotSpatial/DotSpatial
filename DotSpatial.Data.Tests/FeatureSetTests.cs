@@ -1,28 +1,21 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotSpatial.Data;
 using NUnit.Framework;
-
 
 namespace DotSpatial.Data.Tests
 {
-
-
     [TestFixture]
     public class FeatureSetTests
     {
-        private readonly string _up = ".." + Path.DirectorySeparatorChar;
-        private readonly string _shapefiles = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Data\Shapefiles\";
-        //_up + _up + _up + "Data" + Path.DirectorySeparatorChar + "Shapefiles" + Path.DirectorySeparatorChar;
-
-
+        private readonly string _shapefiles = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,  @"Data\Shapefiles\");
 
         [Test]
         public void IndexModeToFeaturesClear()
         {
-            IFeatureSet fs = FeatureSet.Open(_shapefiles + @"Topology_Test.shp");
+            var file = Path.Combine(_shapefiles, @"Topology_Test.shp");
+            IFeatureSet fs = FeatureSet.Open(file);
             fs.FillAttributes();
             fs.Features.Clear();
             Assert.AreEqual(fs.Features.Count, 0);
@@ -32,7 +25,8 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void UnionFeatureSetTest()
         {
-            IFeatureSet fs = FeatureSet.Open(_shapefiles + @"Topology_Test.shp");
+            var file = Path.Combine(_shapefiles, @"Topology_Test.shp");
+            IFeatureSet fs = FeatureSet.Open(file);
             FeatureSet fsunion = new FeatureSet();
 
             // This is needed or else the table won't have the columns for copying attributes.
@@ -130,6 +124,70 @@ namespace DotSpatial.Data.Tests
             }
         }
 
+        /// <summary>
+        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        ///</summary>
+        [Test]
+        public void FilePathTestWithSpaces()
+        {
+            FeatureSet target = new FeatureSet();
+            // this path must exist.
+            Directory.SetCurrentDirectory("C:\\Windows\\system32");
+            // this path does need to actually exist.
+            string expectedFullPath = @"C:\Windows\system32\folder name\states.shp";
+            string relativeFilePath = @"folder name\states.shp";
 
+            string actualFilePath;
+            target.FilePath = relativeFilePath;
+            actualFilePath = target.FilePath;
+            Assert.AreEqual(relativeFilePath, actualFilePath);
+
+            string actualFileName = target.Filename;
+            Assert.AreEqual(expectedFullPath, actualFileName);
+        }
+
+        /// <summary>
+        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        ///</summary>
+        [Test]
+        public void FilePathTest1()
+        {
+            FeatureSet target = new FeatureSet();
+            // this path must exist.
+            Directory.SetCurrentDirectory("C:\\Windows\\system32");
+            // this path does need to actually exist.
+            string expectedFullPath = @"C:\Windows\system32\inner\states.shp";
+            string relativeFilePath = @"inner\states.shp";
+
+            string actualFilePath;
+            target.FilePath = relativeFilePath;
+            actualFilePath = target.FilePath;
+            Assert.AreEqual(relativeFilePath, actualFilePath);
+
+            string actualFileName = target.Filename;
+            Assert.AreEqual(expectedFullPath, actualFileName);
+        }
+
+        /// <summary>
+        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
+        ///</summary>
+        [Test]
+        public void FilePathTest2()
+        {
+            FeatureSet target = new FeatureSet();
+            // this path must exist.
+            Directory.SetCurrentDirectory("C:\\Windows\\system32");
+            // this path does need to actually exist.
+            string expectedFullPath = @"C:\states.shp";
+            string relativeFilePath = @"..\..\states.shp";
+
+            string actualFilePath;
+            target.FilePath = relativeFilePath;
+            actualFilePath = target.FilePath;
+            Assert.AreEqual(relativeFilePath, actualFilePath);
+
+            string actualFileName = target.Filename;
+            Assert.AreEqual(expectedFullPath, actualFileName);
+        }
     }
 }
