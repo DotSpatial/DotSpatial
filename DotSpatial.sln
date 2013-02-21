@@ -132,9 +132,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Tests", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tests", "DotSpatial.Tests\DotSpatial.Tests.csproj", "{3802D978-30CE-4756-82A4-428D6E1A6AF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools.Tests", "DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 54
+		SccNumberOfProjects = 55
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -350,6 +352,10 @@ Global
 		SccProjectTopLevelParentUniqueName53 = DotSpatial.sln
 		SccProjectName53 = DotSpatial.Tests
 		SccLocalPath53 = DotSpatial.Tests
+		SccProjectUniqueName54 = DotSpatial.Tools.Tests\\DotSpatial.Tools.Tests.csproj
+		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
+		SccProjectName54 = DotSpatial.Tools.Tests
+		SccLocalPath54 = DotSpatial.Tools.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -909,6 +915,16 @@ Global
 		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|x86.ActiveCfg = Release|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -967,5 +983,6 @@ Global
 		{768274C4-15C5-46CA-91FB-D600B828071D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{4997615E-8C0C-498B-AB73-076454481964} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3802D978-30CE-4756-82A4-428D6E1A6AF2} = {12970967-D98D-4777-A5F8-11A9F037CC28}
+		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 	EndGlobalSection
 EndGlobal
