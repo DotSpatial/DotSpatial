@@ -138,7 +138,17 @@ namespace DotSpatial.Serialization
 
         private void FindSerializableFields(Type type, BindingFlags bindingFlags)
         {
-            AddSerializableMembers(type.GetFields(bindingFlags).Where(fi => !fi.IsInitOnly).Cast<MemberInfo>());
+            AddSerializableMembers(type.GetFields(bindingFlags).Where(fi => (!fi.IsInitOnly || FieldIsConstructorArgument(fi))).Cast<MemberInfo>());
+        }
+
+        private static bool FieldIsConstructorArgument(FieldInfo fi)
+        {
+            foreach (var fieldAttribute in fi.GetCustomAttributes(typeof(SerializeAttribute), true))
+            {
+                var sa = (SerializeAttribute) fieldAttribute;
+                return sa.ConstructorArgumentIndex >= 0;
+            }
+            return false;
         }
 
         private void AddSerializableMembers(IEnumerable<MemberInfo> members)
