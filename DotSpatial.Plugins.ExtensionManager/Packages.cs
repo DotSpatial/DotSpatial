@@ -86,8 +86,8 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     packageManager.InstallPackage(package, true, false);
                     return package;
-                }
-                else
+                }          
+                /*else
                 {
                     //Check Core repository for Dlls we might not have. TODO
                     IPackageRepository coreRepo = new PackageRepositoryFactory().CreateRepository(coreRepoUrl);
@@ -95,7 +95,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     package = coreRepo.FindPackage(name);
                     corePackageManager.InstallPackage(package, true, false);
                     return package;
-                }
+                }*/
             }
             catch (WebException ex)
             {
