@@ -286,31 +286,30 @@ namespace DotSpatial.Data
                 // Intersection is symmetric, so only consider I X J where J <= I
                 if (!self.AttributesPopulated) self.FillAttributes();
                 if (!other.AttributesPopulated) other.FillAttributes();
-                int i = 0;
-                foreach (IFeature selfFeature in self.Features)
+                
+                for (int i = 0; i < self.Features.Count; i++)
                 {
+                    IFeature selfFeature = self.Features[i];
                     List<IFeature> potentialOthers = other.Select(selfFeature.Envelope.ToExtent());
                     foreach (IFeature otherFeature in potentialOthers)
                     {
                         selfFeature.Intersection(otherFeature, result, joinType);
                     }
                     pm.CurrentValue = i;
-                    i++;
                 }
                 pm.Reset();
             }
-            if (joinType == FieldJoinType.LocalOnly)
+            else if (joinType == FieldJoinType.LocalOnly)
             {
                 if (!self.AttributesPopulated) self.FillAttributes();
 
                 result = new FeatureSet();
                 result.CopyTableSchema(self);
                 result.FeatureType = self.FeatureType;
-                IFeature union;
                 pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
                 if (other.Features != null && other.Features.Count > 0)
                 {
-                    union = other.Features[0];
+                    IFeature union = other.Features[0];
                     for (int i = 1; i < other.Features.Count; i++)
                     {
                         union = union.Union(other.Features[i]);
@@ -329,16 +328,15 @@ namespace DotSpatial.Data
                     pm.Reset();
                 }
             }
-            if (joinType == FieldJoinType.ForeignOnly)
+            else if (joinType == FieldJoinType.ForeignOnly)
             {
                 if (!other.AttributesPopulated) other.FillAttributes();
                 result = new FeatureSet();
                 result.CopyTableSchema(other);
-                IFeature union;
                 if (self.Features != null && self.Features.Count > 0)
                 {
                     pm = new ProgressMeter(progHandler, "Calculating Union", self.Features.Count);
-                    union = self.Features[0];
+                    IFeature union = self.Features[0];
                     for (int i = 1; i < self.Features.Count; i++)
                     {
                         union = union.Union(self.Features[i]);
@@ -348,16 +346,14 @@ namespace DotSpatial.Data
                     if (other.Features != null)
                     {
                         pm = new ProgressMeter(progHandler, "Calculating Intersection", other.Features.Count);
-                        int j = 0;
-                        foreach (IFeature otherFeature in other.Features)
+                        for (int i = 0; i < other.Features.Count; i++)
                         {
-                            IFeature test = otherFeature.Intersection(union, result, joinType);
+                            IFeature test = other.Features[i].Intersection(union, result, joinType);
                             if (test.BasicGeometry != null)
                             {
                                 result.Features.Add(test);
                             }
-                            pm.CurrentValue = j;
-                            j++;
+                            pm.CurrentValue = i;
                         }
                     }
                     pm.Reset();
