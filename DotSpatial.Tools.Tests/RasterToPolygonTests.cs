@@ -4,30 +4,29 @@ using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Topology;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
 {
-    [TestClass]
-    public class RasterToPolygonTests
+    [TestFixture]
+    class RasterToPolygonTests
     {
-        [TestMethod]
-        public void CanCreateMultiPartPolygons()
+        [Test]
+        [TestCase(@"Data\DEM_w.tif")]
+        [TestCase(@"Data\DanSite1w.tif")]
+        [TestCase(@"Data\DanSite2w.tif")]
+        public void CanCreateMultiPartPolygons(string path)
         {
             var target = new RasterToPolygon();
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\DEM_w.tif");
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
             
             var p = new GdalRasterProvider();
             var raster = p.Open(file);
             var outShape = new PolygonShapefile {Filename = Path.ChangeExtension(file, ".shp")};
             target.Execute(raster, outShape, new MockProgressHandler());
 
-            var mpvalues = new[] {93, 61, 39, 95, 60, 75};
-            foreach (var i in mpvalues)
-            {
-                var feature = outShape.Features.First(f => (double)f.DataRow["Value"] == i);
-                Assert.IsTrue(feature.BasicGeometry is MultiPolygon);
-            }
+            var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
+            Assert.That(mpCount > 0);
         }
 
         class MockProgressHandler : ICancelProgressHandler
