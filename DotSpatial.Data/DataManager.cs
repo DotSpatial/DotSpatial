@@ -126,8 +126,12 @@ namespace DotSpatial.Data
         /// <param name="featureType">Specifies the type of feature for this vector file</param>
         /// <param name="progHandler">Overrides the default progress handler with the specified progress handler</param>
         /// <returns>An IFeatureSet that allows working with the dataset.</returns>
+        /// <exception cref="ArgumentNullException">Raised when fileName is null.</exception>
+        /// <exception cref="IOException">Raised when suitable DataProvider not found.</exception>
         public IFeatureSet CreateVector(string fileName, FeatureType featureType, IProgressHandler progHandler)
         {
+            if (fileName == null) throw new ArgumentNullException("fileName", "fileName should be not null");
+
             // To Do: Add Customization that allows users to specify which plugins to use in priority order.
 
             // First check for the extension in the preferred plugins list
