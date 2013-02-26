@@ -313,11 +313,14 @@ namespace DotSpatial.Data
             }
 
             double test = Global.ToDouble(min);
-            base.Minimum = test;
-            base.Maximum = Global.ToDouble(max);
-            base.Mean = total / count;
-            base.NumValueCells = count;
-            base.StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
+
+            Value.Updated = false;
+            Minimum = test;
+            Maximum = Global.ToDouble(max);
+            Mean = total / count;
+            NumValueCells = count;
+            StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
+
             pm.Reset();
         }
 
@@ -429,11 +432,12 @@ namespace DotSpatial.Data
                 }
                 pm.CurrentValue = row;
             }
+
+            Value.Updated = false;
             Minimum = Global.ToDouble(min);
             Maximum = Global.ToDouble(max);
             NumValueCells = count;
             StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
-            Value.Updated = false;
         }
 
         /// <summary>

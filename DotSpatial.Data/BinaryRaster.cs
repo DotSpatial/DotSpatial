@@ -265,10 +265,14 @@ namespace DotSpatial.Data
                 }
                 pm.CurrentValue = row;
             }
+
+            Value.Updated = false;
             Minimum = Convert.ToDouble(min);
             Maximum = Convert.ToDouble(max);
+            Mean = total / count;
             NumValueCells = count;
             StdDeviation = (float)Math.Sqrt((sqrTotal / NumValueCells) - (total / NumValueCells) * (total / NumValueCells));
+
             br.Close();
         }
 

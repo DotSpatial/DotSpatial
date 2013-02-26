@@ -313,6 +313,12 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public override void GetStatistics()
         {
+            if (IsInRam && this.IsFullyWindowed())
+            {
+                base.GetStatistics();
+                return;
+            }
+
             if (_band != null)
             {
                 double min, max, mean, std;
@@ -323,7 +329,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                         err = _band.ComputeStatistics(false, out min, out max, out mean, out std, null, null);
                     else
                         err = _band.GetStatistics(0, 1, out min, out max, out mean, out std);
-                    base.Value.Updated = false;
+
+                    Value.Updated = false;
                     Minimum = min;
                     Maximum = max;
                     Mean = mean;
