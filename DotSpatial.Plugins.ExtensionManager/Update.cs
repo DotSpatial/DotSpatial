@@ -89,7 +89,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        //Looks in the folder where extensions are saved (when downloaded through the Ext Manager) and determines in updates are needed.
+        //Looks in the folder where extensions are saved (when downloaded through the Ext Manager) and determines if updates are needed.
         private void getAvailableUpdatesFromLocal(IEnumerable<IPackage> localPackages)
         {
             try
@@ -239,7 +239,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         internal void UpdatePack(IPackage pack)
         {
             if (pack == null) return;
-
         
             //We used to deactivate the package here so that the new package would be usable immediately.
             //This causes some issues, so now we just mark it for removal. It will be removed next time application is started
