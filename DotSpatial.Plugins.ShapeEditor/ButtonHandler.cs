@@ -111,12 +111,12 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             const string ShapeEditorMenuKey = "kShapeEditor";
 
-            _Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap() });
-            _addShape = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.NewShape.ToBitmap() };
+            //_Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
+            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
+            _addShape = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShape.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey };
             _Header.Add(_addShape);
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.move });
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Tools", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap() });
+            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.move, RootKey = HeaderControl.HomeRootItemKey });
+            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
         }
 
         private void SnappingButton_Click(object sender, EventArgs E)

@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Border.cs" />
+    <Compile Include="RandomGeometry.cs" />
     <Compile Include="ClipRaster.cs" />
     <Compile Include="FileLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
