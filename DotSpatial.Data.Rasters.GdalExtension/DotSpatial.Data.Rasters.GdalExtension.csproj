@@ -161,19 +161,12 @@
   </Target>
   -->
   <ItemGroup>
-    <GdalFiles Include="$(MSBuildProjectDirectory)\..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <GdalPluginFiles Include="$(MSBuildProjectDirectory)\..\SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="!HowTo-64bit.txt" />
   </ItemGroup>
-  <Target Name="AfterBuild">
-    <Message Text="Copying GDAL files">
-    </Message>
-    <Copy SourceFiles="@(GdalFiles)" DestinationFolder="$(OutputPath)" />
-    <Copy SourceFiles="@(GdalPluginFiles)" DestinationFolder="$(OutputPath)gdalplugins" />
-  </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" $(TargetDir) /Y
+xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" $(TargetDir)gdalplugins\ /Y
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
