@@ -525,8 +525,7 @@ namespace DotSpatial.Controls
                 {
                     if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
                     {
-                        em = extension;
-                        Thread updateThread = new Thread(new ThreadStart(AppManager.ActivateExtensionManager));
+                        Thread updateThread = new Thread(()=>Activate(extension));
                         updateThread.Start();
                         while (updateThread.IsAlive)
                         {
@@ -546,13 +545,6 @@ namespace DotSpatial.Controls
                     Activate(extension);
                 }
             }
-        }
-
-        private static IExtension em;
-        private static void ActivateExtensionManager()
-        {
-            Activate(em);
-            em = null;
         }
 
         private static void Activate(IExtension extension)
