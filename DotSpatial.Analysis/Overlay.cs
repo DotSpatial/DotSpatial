@@ -1,5 +1,7 @@
 ﻿// *************************************************
 // DotSpatial.Analysis class for overlay functions
+// This class can hold other overlay functions such as 
+// intersect, union, etc.
 // Dan Ames, 2/27/2013
 // **************************************************
 
