@@ -141,33 +141,24 @@ namespace DotSpatial.Plugins.ExtensionManager
                     onlinePacks = t.Result.packages;
                 }
             }).Wait();
-            try
+
+            foreach (IPackage pack in onlinePacks)
             {
-                foreach (IPackage pack in onlinePacks)
+                if (IsPackageUpdateable(pack))
                 {
-                    if (IsPackageUpdateable(pack))
+                    //If packageNames has no names, just add all packages that are updateable.
+                    if (packageNames == null)
                     {
-                        //If packageNames has no names, just add all packages that are updateable.
-                        if (packageNames == null)
-                        {
-                            updatePacks.Add(pack);
-                        }
-                        else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
-                        {
-                            updatePacks.Add(pack);
-                        }
+                        updatePacks.Add(pack);
+                    }
+                    else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
+                    {
+                        updatePacks.Add(pack);
                     }
                 }
-                if (list == null)
-                {
-                    list = updatePacks;
-                }
-                else
-                {
-                    list = list.Concat(updatePacks);
-                }
             }
-            catch { }
+            //If list is not null, add the new packages to it.
+            list = list != null ? list.Concat(updatePacks) : updatePacks;
         }
 
         //Return list of all packages from currently selected feed.
