@@ -198,7 +198,7 @@ namespace DotSpatial.Modeling.Forms
             Text = tool.Name;
 
             // Sets up the help link
-            if (tool.HelpUrl == string.Empty)
+            if (string.IsNullOrEmpty(tool.HelpUrl))
             {
                 helpHyperlink.Visible = false;
             }

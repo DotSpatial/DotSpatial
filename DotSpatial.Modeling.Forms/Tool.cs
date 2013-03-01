@@ -73,13 +73,12 @@ namespace DotSpatial.Modeling.Forms
         public virtual Bitmap HelpImage { get; set; }
 
         /// <summary>
-        /// Returns the address of the tools help web page in HTTP://... format. Return a empty string to hide the help hyperlink.
+        /// Returns the address of the tools help web page in HTTP://... format. Returns null if no URL has been specified.
         /// </summary>
         public virtual string HelpUrl
         {
             get
             {
-                if (helpUrl == null) return "http://www.mapwindow.org/";
                 return helpUrl;
             }
             set

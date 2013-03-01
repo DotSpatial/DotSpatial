@@ -72,7 +72,21 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             try
             {
-                listview.Invoke((Action)(() =>
+                if (listview.InvokeRequired)
+                {
+                    listview.Invoke((Action)(() =>
+                    {
+                        listview.Clear();
+                        Add.AddPackages(list, listview, 0);
+                        tab.Text = String.Format("Updates ({0})", Count);
+                        if (Count == 0)
+                        {
+                            listview.Clear();
+                            listview.Items.Add("No updates available for the selected feed.");
+                        }
+                    }));
+                }
+                else
                 {
                     listview.Clear();
                     Add.AddPackages(list, listview, 0);
@@ -82,7 +96,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                         listview.Clear();
                         listview.Items.Add("No updates available for the selected feed.");
                     }
-                }));
+                }
             }
             catch (Exception e)
             {               
