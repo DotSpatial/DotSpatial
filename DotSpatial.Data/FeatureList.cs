@@ -299,7 +299,7 @@ namespace DotSpatial.Data
                     for (int col = 0; col < _parent.DataTable.Columns.Count; col++)
                     {
                         string name = _parent.DataTable.Columns[col].ColumnName;
-                        if (item.ParentFeatureSet.DataTable.Columns.Contains(name))
+                        if (item.DataRow.Table.Columns.Contains(name)) //if the item happens to have a field with the same name, include the attribute.
                         {
                             row[col] = item.DataRow[name];
                         }

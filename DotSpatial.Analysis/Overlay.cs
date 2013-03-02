@@ -26,32 +26,35 @@ namespace DotSpatial.Analysis
         {
             //Erase features from one feature set where they are intersected by another feature set
             //Note: we use the ShapeIndices here rather than for each feature in featureset.features as a memory management technique.
+            //The current version does not preserve any attribute info. 
             //Dan Ames 2/27/2013
-            FeatureSet ResultFeatures = new FeatureSet();                  //the resulting featureset
-            IFeature FR, SF;                                                //a single output feature
+            FeatureSet ResultFeatures = new FeatureSet();                   //the resulting featureset
+            IFeature TF, SF;                                                //a single output feature
+            ResultFeatures.CopyTableSchema(TargetFeatures);                 //set up the data table in the new feature set
 
             for (Int16 i = 0; i <= TargetFeatures.ShapeIndices.Count - 1; i++)
             {
-                FR = TargetFeatures.GetFeature(i);               //get the full undifferenced feature
+                TF = TargetFeatures.GetFeature(i);                          //get the full undifferenced feature
                 for (Int16 j = 0; j <= SourceFeatures.ShapeIndices.Count - 1; j++)
                 {
                     SF = SourceFeatures.GetFeature(j);
-                    if (SF.Envelope.Intersects(FR.Envelope))
+                    if (SF.Envelope.Intersects(TF.Envelope))
                     {
-                        FR = FR.Difference(SF);                  //clip off any pieces of SF that overlap FR
+                        TF = TF.Difference(SF);                             //clip off any pieces of SF that overlap FR
                     }
-                    if (FR == null)
-                    {                       //sometimes difference leaves nothing left of a feature
+                    if (TF == null)
+                    {                                                       //sometimes difference leaves nothing left of a feature
                         break;
                     }
                 }
-                if (FR != null)
+                if (TF != null)
                 {
-                    ResultFeatures.Features.Add(FR);             //add the fully clipped feature to the results
+                    ResultFeatures.AddFeature(TF).CopyAttributes(TargetFeatures.GetFeature(i));  //add the fully clipped feature to the results
                 }
             }
             return ResultFeatures;
         }
+
         /// <summary>
         /// Add the features from SourceFeatures to the TargetFeatures feature set. 
         /// </summary>
@@ -67,7 +70,7 @@ namespace DotSpatial.Analysis
             for (Int16 j = 0; j <= SourceFeatures.ShapeIndices.Count - 1; j++)
             {
                 SF = SourceFeatures.GetFeature(j);
-                TargetFeatures.Features.Add(SF);
+                TargetFeatures.AddFeature(SF).CopyAttributes(SourceFeatures.GetFeature(j));   //by default this will try to copy attributes over that have the same name.
             }
             return TargetFeatures;
         }
