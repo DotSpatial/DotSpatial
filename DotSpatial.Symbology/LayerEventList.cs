@@ -3,7 +3,7 @@
 // Description:  The core libraries for the DotSpatial project.
 //
 // ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
+// The contents of this file are subject to the Lesser GPL
 // you may not use this file except in compliance with the License. You may obtain a copy of the License at
 // http://dotspatial.codeplex.com/license
 //
