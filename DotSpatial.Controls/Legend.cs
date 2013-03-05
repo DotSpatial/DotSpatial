@@ -250,8 +250,8 @@ namespace DotSpatial.Controls
         /// <param name="mapFrame"></param>
         protected virtual void OnExcludeMapFrame(IFrame mapFrame)
         {
-            mapFrame.ItemChanged += MapFrameItemChanged;
-            mapFrame.LayerSelected += LayersLayerSelected;
+            mapFrame.ItemChanged -= MapFrameItemChanged;
+            mapFrame.LayerSelected -= LayersLayerSelected;
         }
 
         private void LayersLayerSelected(object sender, LayerSelectedEventArgs e)
