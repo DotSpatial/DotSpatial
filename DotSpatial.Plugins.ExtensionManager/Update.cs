@@ -254,9 +254,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 App.MarkPackageForRemoval(GetPackagePath(pack));
             }
-            else
-            {              
-            }
 
             App.MarkExtensionForRemoval(GetExtensionPath(extension));
 

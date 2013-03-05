@@ -527,11 +527,18 @@ namespace DotSpatial.Controls
                     {
                         Thread updateThread = new Thread(()=>Activate(extension));
                         updateThread.Start();
-                        while (updateThread.IsAlive)
+                        DateTime timeStarted = DateTime.UtcNow;
+
+                        //Update splash screen's progress bar while thread is active or 10 seconds have past.
+                        TimeSpan span = TimeSpan.FromMilliseconds(0);
+                        while (updateThread.IsAlive && span.TotalMilliseconds < 10000)
                         {
                             UpdateSplashScreen("Looking for updates");
+                            span = DateTime.UtcNow - timeStarted;
                         }
-                        updateThread.Join();
+
+                        //Join the threads. If the thread is still active, wait a full second before giving up.
+                        updateThread.Join(1000);
                         UpdateSplashScreen("Finished.");
                     }
                     else
