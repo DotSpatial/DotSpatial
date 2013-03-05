@@ -39,7 +39,11 @@ namespace DotSpatial.Plugins.MenuBar
             AddHeaderRootItems();
             AddMenuItems();
 
-            App.Map.MapFrame.ViewExtentsChanged += MapFrame_ViewExtentsChanged;
+            Map map = App.Map as Map;
+            if (map != null)
+            {
+                map.ViewExtentsChanged += new EventHandler<ExtentArgs>(MapFrame_ViewExtentsChanged);
+            }
             App.Map.Layers.LayerSelected += Layers_LayerSelected;
 
             base.Activate();
@@ -112,6 +116,7 @@ namespace DotSpatial.Plugins.MenuBar
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAll_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+          
         }
 
         void Layers_LayerSelected(object sender, Symbology.LayerSelectedEventArgs e)
