@@ -162,11 +162,11 @@ namespace DotSpatial.Controls
         /// <returns>The IMapLayer to add</returns>
         public virtual IMapLayer Add(IDataSet dataSet)
         {
-            IFeatureSet fs = dataSet as IFeatureSet;
+            var fs = dataSet as IFeatureSet;
             if (fs != null) return Add(fs);
-            IRaster r = dataSet as IRaster;
+            var r = dataSet as IRaster;
             if (r != null) return Add(r);
-            IImageData id = dataSet as IImageData;
+            var id = dataSet as IImageData;
             if (id != null) return Add(id);
             ILiDARData ld = dataSet as ILiDARData;
             if (ld != null) return Add(ld);
@@ -185,31 +185,30 @@ namespace DotSpatial.Controls
         public virtual IMapFeatureLayer Add(IFeatureSet featureSet)
         {
             if (featureSet == null) return null;
+
             featureSet.ProgressHandler = ProgressHandler;
+            IMapFeatureLayer res = null;
             if (featureSet.FeatureType == FeatureType.Point || featureSet.FeatureType == FeatureType.MultiPoint)
             {
-                IMapPointLayer pl = new MapPointLayer(featureSet);
-                base.Add(pl);
-                pl.ProgressHandler = ProgressHandler;
-                return pl;
+                res = new MapPointLayer(featureSet);
             }
-            if (featureSet.FeatureType == FeatureType.Line)
+            else if (featureSet.FeatureType == FeatureType.Line)
             {
-                IMapLineLayer ll = new MapLineLayer(featureSet);
-                base.Add(ll);
-                ll.ProgressHandler = ProgressHandler;
-                return ll;
+                res = new MapLineLayer(featureSet);
             }
-            if (featureSet.FeatureType == FeatureType.Polygon)
+            else if (featureSet.FeatureType == FeatureType.Polygon)
             {
-                IMapPolygonLayer pl = new MapPolygonLayer(featureSet);
-                base.Add(pl);
-                pl.ProgressHandler = ProgressHandler;
-                return pl;
+                res = new MapPolygonLayer(featureSet);
             }
-            return null;
-            //throw new NotImplementedException("Right now only point types are supported.");
+            if (res != null)
+            {
+                base.Add(res);
+                res.ProgressHandler = ProgressHandler;
+            }
+
+            return res;
         }
+      
 
         /// <summary>
         /// Adds the raster to layer collection

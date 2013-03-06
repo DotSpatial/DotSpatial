@@ -157,12 +157,31 @@ namespace DotSpatial.Symbology
         #endregion
 
         /// <summary>
+        /// Gets or sets custom actions for ImageLayer
+        /// </summary>
+        [Browsable(false)]
+        public IImageLayerActions ImageLayerActions { get; set; }
+
+        /// <summary>
         /// Handles when this layer should show its properties by firing the event on the shared event sender
         /// </summary>
         /// <param name="e"></param>
         protected override void OnShowProperties(HandledEventArgs e)
         {
-            ImageLayerEventSender.Instance.Raise_ShowProperties(this, new ImageLayerEventArgs(this));
+            var ila = ImageLayerActions;
+            if (ila != null)
+            {
+                ila.ShowProperties(this);
+            }
+        }
+
+        protected override void OnExportData()
+        {
+            var ila = ImageLayerActions;
+            if (ila != null)
+            {
+                ila.ExportData(Image);
+            }
         }
 
         /// <summary>

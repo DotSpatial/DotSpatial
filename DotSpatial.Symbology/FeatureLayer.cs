@@ -200,6 +200,7 @@ namespace DotSpatial.Symbology
                 _drawnStatesNeeded = value;
             }
         }
+        
 
         /// <summary>
         /// Zooms to the envelope of the selected features.
@@ -241,12 +242,12 @@ namespace DotSpatial.Symbology
             DataSet = featureSet;
             LegendText = featureSet.Name;
             _name = featureSet.Name;
-            SymbologyMenuItem label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
+            var label = new SymbologyMenuItem(Msg.FeatureLayer_Labeling);
             label.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Label_Setup, SymbologyImages.Label, LabelSetupClick));
             label.MenuItems.Add(new SymbologyMenuItem(Msg.SetDynamicVisibilityScale, SymbologyImages.ZoomScale,
                                                       LabelExtentsClick));
             ContextMenuItems.Insert(4, label);
-            SymbologyMenuItem selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
+            var selection = new SymbologyMenuItem(Msg.FeatureLayer_Selection, SymbologyImages.select, null);
             ContextMenuItems.Insert(5, selection);
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Zoom_To_Selected, SymbologyImages.ZoomInMap,
                                                           SelectionZoomClick));
@@ -280,68 +281,34 @@ namespace DotSpatial.Symbology
             _drawnStatesNeeded = false;
         }
 
-        /// <summary>
-        /// The data set vertices invalidated.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void DataSetVerticesInvalidated(object sender, EventArgs e)
         {
             OnApplyScheme(Symbology);
             Invalidate();
         }
-
-        /// <summary>
-        /// The join excel.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        
         private void JoinExcel(object sender, EventArgs e)
         {
-            // This one works slightly differently.  A new result featureset
-            // is created, but only some of the time.  If the new result is
-            // different from the original "EditCopy" then we should add the
-            // result to the layer.  Otherwise, do nothing.
-            FeatureSetEventArgs args = new FeatureSetEventArgs(DataSet);
-            FeatureLayerEventSender.Instance.Raise_ExcelJoin(this, args);
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.ExcelJoin(DataSet);
+            }
         }
-
-        /// <summary>
-        /// The label extents click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+       
         private void LabelExtentsClick(object sender, EventArgs e)
         {
             if (_labelLayer == null)
                 return;
 
-            var args = new DynamicVisibilityEventArgs(_labelLayer);
-            args.Item.DynamicVisibilityWidth = _labelLayer.FeatureLayer.MapFrame.ViewExtents.Width;
-            FeatureLayerEventSender.Instance.Raise_LabelExtents(this, args);
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                _labelLayer.DynamicVisibilityWidth = _labelLayer.FeatureLayer.MapFrame.ViewExtents.Width;
+                fla.LabelExtents(_labelLayer);
+            }
         }
 
-        /// <summary>
-        /// The selected features changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectedFeaturesChanged(object sender, EventArgs e)
         {
             if (!_drawnStatesNeeded && !_editMode)
@@ -352,16 +319,7 @@ namespace DotSpatial.Symbology
             OnItemChanged();
             OnSelectionChanged();
         }
-
-        /// <summary>
-        /// The selection to layer click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        
         private void SelectionToLayerClick(object sender, EventArgs e)
         {
             IFeatureLayer newLayer;
@@ -1056,14 +1014,18 @@ namespace DotSpatial.Symbology
         public void ShowAttributes()
         {
             // Allow derived classes to prevent this
-            HandledEventArgs result = new HandledEventArgs(false);
+            var result = new HandledEventArgs(false);
             OnViewAttributes(result);
             if (result.Handled)
             {
                 return;
             }
 
-            FeatureLayerEventSender.Instance.Raise_ShowAttributes(this, new FeatureLayerEventArgs(this));
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.ShowAttributes(this);
+            }
         }
 
         /// <summary>
@@ -1297,14 +1259,23 @@ namespace DotSpatial.Symbology
         /// </param>
         protected override void OnShowProperties(HandledEventArgs e)
         {
-            FeatureLayerEventArgs args = new FeatureLayerEventArgs(this);
-            FeatureLayerEventSender.Instance.Raise_ShowProperties(this, args);
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.ShowProperties(this);
+            }
             e.Handled = true;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets custom actions for FeatureLayer
+        /// </summary>
+        [Browsable(false)]
+        public IFeatureLayerActions FeatureLayerActions { get; set; }
 
         /// <summary>
         /// Gets the dictionary of extents that is calculated from the categories.  This is calculated one time,
@@ -2124,11 +2095,14 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected override void OnExportData()
         {
-            // In this case the feature layer won't be edited, but rather,
-            // it needs to be passed so the process can work with the selection
-            // and possibly add the finished content back into the map.
-            FeatureLayerEventArgs args = new FeatureLayerEventArgs(this);
-            FeatureLayerEventSender.Instance.Raise_ExportData(this, args);
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                // In this case the feature layer won't be edited, but rather,
+                // it needs to be passed so the process can work with the selection
+                // and possibly add the finished content back into the map.
+                fla.ExportData(this);
+            }
         }
 
         /// <summary>
@@ -2232,19 +2206,10 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region EventHandlers
-
-        /// <summary>
-        /// The label setup click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+       
         private void LabelSetupClick(object sender, EventArgs e)
         {
-            HandledEventArgs result = new HandledEventArgs(false);
+            var result = new HandledEventArgs(false);
             OnLabelSetup(result);
             if (result.Handled)
             {
@@ -2257,8 +2222,11 @@ namespace DotSpatial.Symbology
                 ShowLabels = true;
             }
 
-            var args = new LabelLayerEventArgs(_labelLayer);
-            FeatureLayerEventSender.Instance.Raise_LabelSetup(this, args);
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.LabelSetup(_labelLayer);
+            }
         }
 
         #endregion

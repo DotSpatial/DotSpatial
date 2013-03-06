@@ -62,9 +62,12 @@
     <Compile Include="DynamicVisibilityEventArgs.cs" />
     <Compile Include="ExtentExtcs.cs" />
     <Compile Include="FeatureSetApplyEditArgs.cs" />
+    <Compile Include="IColorCategoryActions.cs" />
     <Compile Include="IDynamicVisibility.cs" />
+    <Compile Include="IFeatureLayerActions.cs" />
+    <Compile Include="IImageLayerActions.cs" />
+    <Compile Include="ILayerActions.cs" />
     <Compile Include="ImageLayerEventArgs.cs" />
-    <Compile Include="ImageLayerEventSender.cs" />
     <Compile Include="FileCantBeDeletedException.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Changeable.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="ColorExt.cs" />
     <Compile Include="ColorSchemeType.cs" />
     <Compile Include="ILabel.cs" />
+    <Compile Include="IRasterLayerActions.cs" />
     <Compile Include="ITextSymbolGroup.cs" />
     <Compile Include="ItemEventArgs.cs" />
     <Compile Include="LabelLayerEventArgs.cs" />
@@ -79,8 +83,6 @@
     <Compile Include="RasterLayerEventArgs.cs" />
     <Compile Include="Size2DConverter.cs" />
     <Compile Include="DesktopRasterExt.cs" />
-    <Compile Include="RasterLayerEventSender.cs" />
-    <Compile Include="FeatureLayerEventSender.cs" />
     <Compile Include="CopyBasea.cs" />
     <Compile Include="Descriptor.cs" />
     <Compile Include="DrawArgs.cs" />
@@ -205,7 +207,6 @@
     <Compile Include="Size2D.cs" />
     <Compile Include="SnapShotEventArgs.cs" />
     <Compile Include="SymbolMode.cs" />
-    <Compile Include="LayerEventSender.cs" />
     <Compile Include="SymbologyRectangleExt.cs" />
     <Compile Include="SymbologyGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

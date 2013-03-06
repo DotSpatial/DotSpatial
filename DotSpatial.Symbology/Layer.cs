@@ -255,13 +255,23 @@ namespace DotSpatial.Symbology
         {
             UseDynamicVisibility = true;
             DynamicVisibilityWidth = MapFrame.ViewExtents.Width;
-            DynamicVisibilityEventArgs args = new DynamicVisibilityEventArgs(this);
-            LayerEventSender.Instance.Raise_DynamicVisibilityClicked(this, args);
+
+            var la = LayerActions;
+            if (la != null)
+            {
+                la.DynamicVisibility(this);
+            }
         }
 
         #endregion Methods
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets custom actions for Layer
+        /// </summary>
+        [Browsable(false)]
+        public ILayerActions LayerActions { get; set; }
 
         /// <summary>
         /// Gets or sets the internal data set.  This can be null, as in the cases of groups or map-frames.

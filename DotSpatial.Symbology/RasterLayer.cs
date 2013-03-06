@@ -306,13 +306,22 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected override void OnExportData()
         {
-            var args = new RasterEventArgs(DataSet);
-            RasterLayerEventSender.Instance.Raise_ExportData(this, args);
+            var rla = RasterLayerActions;
+            if (rla != null)
+            {
+                rla.ExportData(DataSet);
+            }
         }
 
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Gets or sets custom actions for RasterLayer
+        /// </summary>
+        [Browsable(false)]
+        public IRasterLayerActions RasterLayerActions { get; set; }
 
         /// <summary>
         /// Gets or sets the boundaries of the raster.
@@ -745,9 +754,11 @@ namespace DotSpatial.Symbology
         /// <param name="e"></param>
         protected override void OnShowProperties(HandledEventArgs e)
         {
-            RasterLayer copy = new RasterLayer(DataSet);
-            copy.CopyProperties(this);
-            RasterLayerEventSender.Instance.Raise_ShowProperties(this, new RasterLayerEventArgs(this));
+            var rla = RasterLayerActions;
+            if (rla != null)
+            {
+                rla.ShowProperties(this);
+            }
             e.Handled = true;
         }
 

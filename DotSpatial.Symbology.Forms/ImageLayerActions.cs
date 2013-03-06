@@ -20,41 +20,34 @@
 // ********************************************************************************************************
 
 using System.Windows.Forms;
+using DotSpatial.Data;
 
 namespace DotSpatial.Symbology.Forms
 {
-    /// <summary>
-    /// This member is virtual to allow custom event handlers to be used instead.
-    /// </summary>
-    public class LayerEventReceiver
+    public class ImageLayerActions : LegendItemActionsBase, IImageLayerActions
     {
-        private readonly LayerEventSender _layerEventSender = LayerEventSender.Instance;
-
-        /// <summary>
-        /// Creates a new instance of the LayerEventHandler
-        /// </summary>
-        public LayerEventReceiver()
+        public void ShowProperties(IImageLayer e)
         {
-            _layerEventSender.EditColorBreakClicked += ColorCategory_EditClicked;
-            _layerEventSender.EditDynamicVisibilityClicked += DynamicVisibility;
+            using (var dlg = new PropertyDialog())
+            {
+                dlg.PropertyGrid.SelectedObject = e.Copy();
+                dlg.OriginalObject = e;
+                ShowDialog(dlg);
+            }
         }
 
-        /// <summary>
-        /// Allows setting the owner for any dialogs that need to be launched.
-        /// </summary>
-        public IWin32Window Owner { get; set; }
-
-        private void ColorCategory_EditClicked(object sender, ColorCategoryEventArgs e)
+        public void ExportData(IImageData e)
         {
-            ColorPicker frm = new ColorPicker(e.ColorCategory);
-            frm.ShowDialog(Owner);
-        }
-
-        private void DynamicVisibility(object sender, DynamicVisibilityEventArgs e)
-        {
-            DynamicVisibilityModeDialog dvg = new DynamicVisibilityModeDialog();
-            dvg.ShowDialog(Owner);
-            e.Item.DynamicVisibilityMode = dvg.DynamicVisibilityMode;
+            using (var sfd = new SaveFileDialog
+                {
+                    Filter = DataManager.DefaultDataManager.RasterWriteFilter
+                })
+            {
+                if (ShowDialog(sfd) == DialogResult.OK)
+                {
+                    e.SaveAs(sfd.FileName);
+                }
+            }
         }
     }
 }

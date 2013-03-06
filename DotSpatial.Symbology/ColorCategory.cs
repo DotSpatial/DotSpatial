@@ -60,9 +60,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         public ColorCategory()
         {
-            _contextMenuItems = new List<SymbologyMenuItem>();
-            _contextMenuItems.Add(new SymbologyMenuItem("Remove Break", Remove_Break));
-            _contextMenuItems.Add(new SymbologyMenuItem("Edit Break", Edit_Break));
+            _contextMenuItems = new List<SymbologyMenuItem>
+                {
+                    new SymbologyMenuItem("Remove Break", Remove_Break),
+                    new SymbologyMenuItem("Edit Break", Edit_Break)
+                };
         }
 
         /// <summary>
@@ -129,16 +131,22 @@ namespace DotSpatial.Symbology
         private void Edit_Break(object sender, EventArgs e)
         {
             // Allow this action to be overridden by the event
-            HandledEventArgs result = new HandledEventArgs(false);
+            var result = new HandledEventArgs(false);
             OnEditItem(result);
             if (result.Handled) return;
-
-            // This part requires launching a dialog, which we can't do here, so use
-            // a singleton event manager instead.  For the symbology system this is
-            // ok because we previously did this for everything of the same class here anyway.
-            ColorCategoryEventArgs args = new ColorCategoryEventArgs(this);
-            LayerEventSender.Instance.Raise_EditColorBreakClicked(this, args);
+            
+            var cca = ColorCategoryActions;
+            if (cca != null)
+            {
+                cca.ShowEdit(this);
+            }
         }
+
+        /// <summary>
+        /// Gets or sets custom actions for ColorCategory
+        /// </summary>
+        [Browsable(false)]
+        public IColorCategoryActions ColorCategoryActions { get; set; }
 
         /// <inheritdocs/>
         protected override void OnCopyProperties(object source)

@@ -91,11 +91,13 @@
     <Compile Include="CalculatorUserGuide.Designer.cs">
       <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorCategoryActions.cs" />
     <Compile Include="FilterEventArgs.cs" />
     <Compile Include="ICategoryControl.cs" />
-    <Compile Include="ImageLayerEventReceiver.cs" />
-    <Compile Include="LayerEventReceiver.cs" />
-    <Compile Include="FeatureLayerEventReceiver.cs" />
+    <Compile Include="IIWin32WindowOwner.cs" />
+    <Compile Include="ImageLayerActions.cs" />
+    <Compile Include="LayerActions.cs" />
+    <Compile Include="FeatureLayerActions.cs" />
     <Compile Include="DeleteFieldsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,7 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RasterLayerEventReceiver.cs" />
+    <Compile Include="RasterLayerActions.cs" />
     <Compile Include="RenameFieldDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +129,7 @@
     <Compile Include="SelectField.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LegendItemActionsBase.cs" />
     <Compile Include="TableEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

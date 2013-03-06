@@ -28,65 +28,112 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class SymbologyEventManager
     {
-        private FeatureLayerEventReceiver _featureLayerEventReceiver = new FeatureLayerEventReceiver();
-        private ImageLayerEventReceiver _imageLayerEventReceiver = new ImageLayerEventReceiver();
-        private LayerEventReceiver _layerEventReceiver = new LayerEventReceiver();
-        private RasterLayerEventReceiver _rasterLayerEventReceiver = new RasterLayerEventReceiver();
+        #region Fields
+
+        private FeatureLayerActions _featureLayerActions;
+        private ImageLayerActions _imageLayerActions;
+        private LayerActions _layerActions;
+        private RasterLayerActions _rasterLayerActions;
+        private ColorCategoryActions _colorCategoryActions;
+
+        private IWin32Window _owner;
+
+        #endregion
+
+        public SymbologyEventManager()
+        {
+            ColorCategoryActions = new ColorCategoryActions();
+            FeatureLayerActions = new FeatureLayerActions();
+            ImageLayerActions = new ImageLayerActions();
+            LayerActions = new LayerActions();
+            RasterLayerActions = new RasterLayerActions();
+        }
+
+        private void UpdateOwner(IIWin32WindowOwner owner)
+        {
+            if (owner == null) return;
+            owner.Owner = Owner;
+        }
 
         /// <summary>
         /// Allows setting the owner for any dialogs that need to be launched.
         /// </summary>
-        public IWin32Window Owner { get; set; }
-
-        /// <summary>
-        /// Gets or sets the custom handler to use for FeatureLayer events
-        /// </summary>
-        public FeatureLayerEventReceiver FeatureLayerEventReceiver
+        public IWin32Window Owner
         {
-            get { return _featureLayerEventReceiver; }
+            get { return _owner; }
             set
             {
-                _featureLayerEventReceiver = value;
-                _featureLayerEventReceiver.Owner = Owner;
+                _owner = value;
+                UpdateOwner(ColorCategoryActions);
+                UpdateOwner(FeatureLayerActions);
+                UpdateOwner(RasterLayerActions);
+                UpdateOwner(ImageLayerActions);
+                UpdateOwner(LayerActions);
             }
         }
 
         /// <summary>
-        /// Gets or sets the custom handler to use for FeatureLayer events
+        /// Gets or sets the custom actions for ColorCategory
         /// </summary>
-        public RasterLayerEventReceiver RasterLayerEventReceiver
+        public ColorCategoryActions ColorCategoryActions
         {
-            get { return _rasterLayerEventReceiver; }
+            get { return _colorCategoryActions; }
             set
             {
-                _rasterLayerEventReceiver = value;
-                _rasterLayerEventReceiver.Owner = Owner;
+                _colorCategoryActions = value;
+                UpdateOwner(value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the custom handler to use for FeatureLayer events
+        /// Gets or sets the custom actions for FeatureLayer
         /// </summary>
-        public ImageLayerEventReceiver ImageLayerEventReceiver
+        public FeatureLayerActions FeatureLayerActions
         {
-            get { return _imageLayerEventReceiver; }
+            get { return _featureLayerActions; }
             set
             {
-                _imageLayerEventReceiver = value;
-                _imageLayerEventReceiver.Owner = Owner;
+                _featureLayerActions = value;
+                UpdateOwner(value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the custom handler to use for FeatureLayer events
+        /// Gets or sets the custom actions for RasterLayer
         /// </summary>
-        public LayerEventReceiver LayerEventReceiver
+        public RasterLayerActions RasterLayerActions
         {
-            get { return _layerEventReceiver; }
+            get { return _rasterLayerActions; }
             set
             {
-                _layerEventReceiver = value;
-                _layerEventReceiver.Owner = Owner;
+                _rasterLayerActions = value;
+                UpdateOwner(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the actions for ImageLayers
+        /// </summary>
+        public ImageLayerActions ImageLayerActions
+        {
+            get { return _imageLayerActions; }
+            set
+            {
+                _imageLayerActions = value;
+                UpdateOwner(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the custom actions for Layer
+        /// </summary>
+        public LayerActions LayerActions
+        {
+            get { return _layerActions; }
+            set
+            {
+                _layerActions = value;
+                UpdateOwner(value);
             }
         }
     }

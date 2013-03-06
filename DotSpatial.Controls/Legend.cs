@@ -492,6 +492,43 @@ namespace DotSpatial.Controls
             }
         }
 
+
+        private void UpdateActions(ILegendItem mapLayer)
+        {
+            var manager = SharedEventHandlers;
+            
+            var layer = mapLayer as Layer;
+            if (layer != null)
+            {
+                layer.LayerActions = manager == null ? null : manager.LayerActions;
+            }
+
+            var cc = mapLayer as ColorCategory;
+            if (cc != null)
+            {
+                cc.ColorCategoryActions = manager == null ? null : manager.ColorCategoryActions;
+            }
+
+            var fl = mapLayer as FeatureLayer;
+            if (fl != null)
+            {
+                fl.FeatureLayerActions = manager == null? null : manager.FeatureLayerActions;
+            }
+
+            var il = mapLayer as ImageLayer;
+            if (il != null)
+            {
+                il.ImageLayerActions = manager == null ? null : manager.ImageLayerActions;
+            }
+
+            var rl = mapLayer as RasterLayer;
+            if (rl != null)
+            {
+                rl.RasterLayerActions = manager == null ? null : manager.RasterLayerActions;
+            }
+        }
+        
+
         /// <summary>
         ///
         /// </summary>
@@ -499,6 +536,9 @@ namespace DotSpatial.Controls
         protected virtual PointF OnInitializeItem(DrawLegendItemArgs e)
         {
             if (e.Item.LegendItemVisible == false) return e.TopLeft;
+
+            UpdateActions(e.Item);
+
             PointF topLeft = e.TopLeft;
             PointF tempTopLeft = topLeft;
             if (topLeft.Y > ControlRectangle.Bottom)
