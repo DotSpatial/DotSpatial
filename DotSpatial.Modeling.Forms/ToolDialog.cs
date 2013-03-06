@@ -62,7 +62,7 @@ namespace DotSpatial.Modeling.Forms
         {
             // Required by the designer
             InitializeComponent();
-            _dataSets = dataSets;
+            DataSets = dataSets;
             _extent = mapExtent;
             Initialize(tool);
         }

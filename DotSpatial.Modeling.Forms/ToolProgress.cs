@@ -103,6 +103,7 @@ namespace DotSpatial.Modeling.Forms
         {
             _btnCancel.Text = "Close";
             _executionComplete = true;
+            
         }
 
         private void UpdateProgress(string key, int percent, string message)

@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Symbology;
+using System.Diagnostics;
 
 namespace DotSpatial.Controls
 {
@@ -41,6 +42,7 @@ namespace DotSpatial.Controls
 
         private readonly ToolTip _toolTipTree;
         private ILegend _legend;
+        private ITool toolToExecute;
 
         #endregion
 
@@ -78,19 +80,32 @@ namespace DotSpatial.Controls
                 {
                     for (int i = 0; i < _legend.RootNodes.Count; i++)
                     {
-                        IFrame mf = _legend.RootNodes[i] as IFrame;
-                        if (mf != null)
-                        {
-                            foreach (ILayer ml in mf)
-                            {
-                                if (ml.DataSet != null)
-                                    dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
-                            }
-                        }
+                        dataSets.AddRange(populateDataSets(_legend.RootNodes[i] as IGroup));
                     }
                 }
                 return dataSets;
             }
+        }
+
+        //Recursive function to add all datasets.
+        private List<DataSetArray> populateDataSets(IGroup root)
+        {
+            List<DataSetArray> dataSets = new List<DataSetArray>();
+            if (root != null)
+            {
+                foreach (ILayer ml in root)
+                {
+                    if (ml.DataSet != null)
+                    {
+                        dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
+                    }
+                    if(ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
+                    {
+                        dataSets.AddRange(populateDataSets(ml as IGroup));
+                    }
+                }
+            }
+            return dataSets;
         }
 
         /// <summary>
@@ -105,6 +120,8 @@ namespace DotSpatial.Controls
                 _legend = value;
             }
         }
+
+        public AppManager App { get; set; }
 
         /// <summary>
         /// Gets the list tools available.
@@ -335,6 +352,14 @@ namespace DotSpatial.Controls
             progForm.Progress(String.Empty, 100, "==================");
         }
 
+        private void executionComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            if (toolToExecute.OutputFile != null)
+            {
+                App.Map.AddLayer(toolToExecute.OutputFile);
+            }
+        }
+
         private void DoDoubleClick(TreeNode theNode)
         {
             // Checks if the user double clicked a node and not a white spot
@@ -344,7 +369,7 @@ namespace DotSpatial.Controls
             // checks if the user clicked a tool or a category
 
             // Get an instance of the tool and dialog box to go with it
-            ITool toolToExecute = GetTool(theNode.Name);
+            toolToExecute = GetTool(theNode.Name);
             if (toolToExecute != null)
             {
                 Extent ex = new Extent(-180, -90, 180, 90);
@@ -372,6 +397,7 @@ namespace DotSpatial.Controls
                     //We create a background worker thread to execute the tool
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += BwDoWork;
+                    bw.RunWorkerCompleted += executionComplete;
 
                     object[] threadParamerter = new object[2];
                     threadParamerter[0] = toolToExecute;

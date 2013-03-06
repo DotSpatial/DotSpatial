@@ -71,6 +71,7 @@ namespace DotSpatial.Plugins.ToolManager
                 if (this.toolManager == null)
                 {
                     this.toolManager = new Controls.ToolManager();
+                    this.toolManager.App = App;
                     this.toolManager.Legend = App.Legend;
                     this.toolManager.Location = new Point(208, 12);
                     this.toolManager.Name = "toolManager";

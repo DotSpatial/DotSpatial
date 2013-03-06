@@ -78,7 +78,7 @@ namespace DotSpatial.Tools
             }
         }
 
-         /// <summary>
+        /// <summary>
         /// Once the parameters have been configured, the Execute command can be called, it returns true if succesful
         /// </summary>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
@@ -113,6 +113,8 @@ namespace DotSpatial.Tools
                 int progress = Convert.ToInt32(i * 100 / numFeatures);
                 cancelProgressHandler.Progress("buffer_tool", progress, "Buffering features.");
             }
+            outputFeatures.Save();
+            OutputFile = outputFeatures.Filename;
             return true;
         }
     }
