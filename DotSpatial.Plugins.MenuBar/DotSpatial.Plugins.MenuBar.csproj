@@ -138,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="credits.txt" />
+    <Content Include="Resources\cursor_arrow_16x16.png" />
+    <Content Include="Resources\cursor_arrow_32x32.png" />
     <Content Include="Resources\deselect_16x16.png" />
     <Content Include="Resources\deselect_32x32.png" />
     <Content Include="Resources\disk_16x16.png" />

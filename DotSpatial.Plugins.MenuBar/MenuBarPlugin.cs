@@ -1,14 +1,20 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MenuBarPlugin.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Plugins.MenuBar
+// Description: Menubar for use with DotSpatial applications. Plugins can add functions to this.
+// Copyright & License: See www.DotSpatial.org.
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Dan Ames           |  3/2013            |  Cleaning up this file header. Adding pointer "untoggle" button. 
+// *******************************************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using System.Xml;
+using System.Windows.Forms;
+using System.Collections.Generic;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
@@ -97,6 +103,7 @@ namespace DotSpatial.Plugins.MenuBar
 
             //header.Add(new SimpleActionItem(HomeMenuKey, Msg.Save_Layer, null) { GroupCaption = Msg.Layers_Group, SmallImage = Resources.layer_save_16x16, LargeImage = Resources.layer_save_32x32, Enabled = false });
 
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pointer, PointerTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.cursor_arrow_16x16, LargeImage = Resources.cursor_arrow_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pan, PanTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomIn_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
@@ -207,8 +214,18 @@ namespace DotSpatial.Plugins.MenuBar
             }
         }
 
+        ///<summary>
+        ///This is a dummy tool who's main purpose is to unclick the other tools in the toggle group
+        ///If the toggle buttons could unclick themselves that would be a better solution and this 
+        ///arrow would be unnecessary. 
+        ///</summary>
+        private void PointerTool_Click(object sender, EventArgs e)
+        {
+            App.Map.FunctionMode = FunctionMode.None;
+        }
+
         /// <summary>
-        /// Move (Pan) the map
+        /// Set the function mode to pan so user can move it with a mouse. 
         /// </summary>
         private void PanTool_Click(object sender, EventArgs e)
         {

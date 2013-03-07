@@ -211,11 +211,11 @@
     <value>Zoom To Layer</value>
   </data>
   <data name="FileNewToolTip" xml:space="preserve">
-    <value>Clears the current map and opens a fresh screen. The user is prompted to save any changes to the current map project.</value>
+    <value>Clears the current map. The user is prompted to save any changes to the current map project.</value>
     <comment>FileNewToolTip description</comment>
   </data>
   <data name="FileOpenToolTip" xml:space="preserve">
-    <value>Clears the current map and brings up an ‘Open’ window that allows the user to navigate to a previously saved map.</value>
+    <value>Clears the current map and shows an ‘Open’ window that allows the user to navigate to a previously saved map.</value>
     <comment>FileOpenToolTip description</comment>
   </data>
   <data name="FileSaveToolTip" xml:space="preserve">
@@ -228,5 +228,8 @@
   </data>
   <data name="Zoom_To_Coordinates" xml:space="preserve">
     <value>Zoom To Coordinates</value>
+  </data>
+  <data name="Pointer" xml:space="preserve">
+    <value>Pointer</value>
   </data>
 </root>
