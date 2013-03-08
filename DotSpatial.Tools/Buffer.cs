@@ -114,7 +114,6 @@ namespace DotSpatial.Tools
                 cancelProgressHandler.Progress("buffer_tool", progress, "Buffering features.");
             }
             outputFeatures.Save();
-            OutputFile = outputFeatures.Filename;
             return true;
         }
     }

@@ -115,8 +115,6 @@ namespace DotSpatial.Modeling.Forms
             }
         }
 
-        public string OutputFile { get; set; }
-
         /// <summary>
         /// Gets or Sets the output paramater array
         /// </summary>

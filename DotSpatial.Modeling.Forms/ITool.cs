@@ -40,14 +40,6 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// Returns the filename of the tool's results
-        /// </summary>
-        string OutputFile
-        {
-            get;
-        }
-
-        /// <summary>
         /// A UniqueName Identifying this Tool, if another tool with the same UniqueName exists this tool will not be loaded. The is persisted by the model builder in saved files.
         /// </summary>
         string AssemblyQualifiedName
