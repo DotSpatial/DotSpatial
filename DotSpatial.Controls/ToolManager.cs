@@ -354,9 +354,35 @@ namespace DotSpatial.Controls
 
         private void executionComplete(object sender, AsyncCompletedEventArgs e)
         {
-            if (toolToExecute.OutputFile != null)
+            if (toolToExecute.OutputParameters != null)
             {
-                App.Map.AddLayer(toolToExecute.OutputFile);
+                foreach (Parameter p in toolToExecute.OutputParameters)
+                {
+                    IFeatureSet featureset = p.Value as IFeatureSet;
+                    IRaster rasterset = p.Value as IRaster;
+                    if (featureset != null)
+                    {
+                        try
+                        {
+                            App.Map.AddLayer(featureset.Filename);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Error opening layer file.");
+                        }
+                    }
+                    else if (rasterset != null)
+                    {
+                        try
+                        {
+                            App.Map.AddLayer(rasterset.Filename);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Error opening layer file.");
+                        }
+                    }
+                }
             }
         }
 
