@@ -588,6 +588,7 @@ namespace DotSpatial.Controls
         /// <param name="ext"></param>
         protected override void OnExtentsChanged(Extent ext)
         {
+            if (ext.X == -180 && ext.Y == 90) { return; }
             if (_isZoomingNextOrPrevious)
             {
                 // reset the flag for the next extents change
