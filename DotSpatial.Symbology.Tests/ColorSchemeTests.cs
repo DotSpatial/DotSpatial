@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DotSpatial.Symbology.Tests
 {
-    [TestClass]
-    public class ColorSchemeTests
+    [TestFixture]
+    class ColorSchemeTests
     {
-        [TestMethod]
+        [Test]
         public void ApplyScheme_Produce2CategoriesForNonEqualValues()
         {
             var target = new ColorScheme();
@@ -13,7 +13,7 @@ namespace DotSpatial.Symbology.Tests
             Assert.AreEqual(2, target.Categories.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyScheme_Produce1CategoryForEqualValues()
         {
             var target = new ColorScheme();

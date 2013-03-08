@@ -481,12 +481,12 @@ namespace DotSpatial.Symbology
             Debug.WriteLine("SymbologyRasterExt_DrawToBitmap: " + sw.ElapsedMilliseconds + "milliseconds");
         }
 
-        private static List<ColorSet<T>> GetColorSets<T>(IEnumerable<IColorCategory> categories) where T : IComparable<T>
+        private static List<ColorSet<T>> GetColorSets<T>(IEnumerable<IColorCategory> categories) where T : struct, IComparable<T>
         {
-            List<ColorSet<T>> result = new List<ColorSet<T>>();
+            var result = new List<ColorSet<T>>();
             foreach (IColorCategory c in categories)
             {
-                ColorSet<T> cs = new ColorSet<T>();
+                var cs = new ColorSet<T>();
                 Color high = c.HighColor;
                 Color low = c.LowColor;
                 cs.Color = low;
@@ -505,9 +505,10 @@ namespace DotSpatial.Symbology
                 }
 
                 cs.Max = Global.MaximumValue<T>();
-                double testMax = Convert.ToDouble(cs.Max);
+                var testMax = Convert.ToDouble(cs.Max);
                 cs.Min = Global.MinimumValue<T>();
-                double testMin = Convert.ToDouble(cs.Min);
+                var testMin = Convert.ToDouble(cs.Min);
+
                 if (c.Range.Maximum != null && c.Range.Maximum < testMax)
                 {
                     if (c.Range.Maximum < testMin)
@@ -517,11 +518,11 @@ namespace DotSpatial.Symbology
                     }
                     else
                     {
-                        cs.Max = (T)Convert.ChangeType(c.Range.Maximum.Value, typeof(T));
+                        cs.Max = (T) Convert.ChangeType(c.Range.Maximum.Value, typeof (T));
                         cs.Maximum = Convert.ToDouble(c.Range.Maximum.Value);
-
                     }
                 }
+
                 if (c.Range.Minimum != null && c.Range.Minimum > testMin)
                 {
                     if (c.Range.Minimum > testMax)
@@ -548,15 +549,17 @@ namespace DotSpatial.Symbology
             return result;
         }
 
-        private static Color GetColor<T>(IEnumerable<ColorSet<T>> sets, T value) where T : IComparable<T>, IEquatable<T>
+        private static Color GetColor<T>(IEnumerable<ColorSet<T>> sets, T value) where T : struct, IComparable<T>, IEquatable<T>
         {
-            foreach (ColorSet<T> set in sets)
+            foreach (var set in sets)
             {
                 if (set.Contains(value))
                 {
                     if (!set.Gradient) return set.Color;
-                    double lowVal = set.Minimum;
-                    double range = Math.Abs(set.Maximum - lowVal);
+                    if (set.Minimum == null || set.Maximum == null) return set.Color;
+
+                    double lowVal = set.Minimum.Value;
+                    double range = Math.Abs(set.Maximum.Value - lowVal);
                     double p = 0; // the portion of the range, where 0 is LowValue & 1 is HighValue
                     double ht;
                     double dVal = Convert.ToDouble(value);
@@ -623,7 +626,8 @@ namespace DotSpatial.Symbology
         /// <param name="stride">The stride</param>
         /// <param name="pm">The progress meter to use.</param>
         /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null</exception>
-        private static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm) where T : IEquatable<T>, IComparable<T>
+        private static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm) 
+            where T : struct, IEquatable<T>, IComparable<T>
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -881,7 +885,8 @@ namespace DotSpatial.Symbology
         /// <param name="bitmap">The bitmap to edit.  Ensure that this has been created and saved at least once.</param>
         /// <param name="progressHandler">An IProgressHandler implementation to receive progress updates.</param>
         /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null.</exception>
-        public static void PaintColorSchemeToBitmapT<T>(this Raster<T> raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler) where T : IEquatable<T>, IComparable<T>
+        public static void PaintColorSchemeToBitmapT<T>(this Raster<T> raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler) 
+            where T : struct, IEquatable<T>, IComparable<T>
         {
             BitmapData bmpData;
             int numRows = raster.NumRows;
@@ -967,21 +972,22 @@ namespace DotSpatial.Symbology
             return;
         }
 
-        private class ColorSet<T> where T : IComparable<T>
+        private class ColorSet<T> 
+            where T : struct, IComparable<T>
         {
             public Color Color; //  for non bivalue case.
             public bool Gradient;
             public GradientModel GradientModel;
-            public T Max;
+            public T? Max;
             public bool MaxInclusive;
-            public double Maximum;
-            public T Min;
+            public double? Maximum;
+            public T? Min;
             public int MinA;
             public int MinB;
             public int MinG;
             public bool MinInclusive;
             public int MinR;
-            public double Minimum;
+            public double? Minimum;
             public int RangeA;
             public int RangeB;
             public int RangeG;
@@ -994,20 +1000,45 @@ namespace DotSpatial.Symbology
                 try
                 {
                     double doublevalue = Convert.ToDouble(value);
-                    double cMax = doublevalue - Maximum;
+
+                    // Checking for nulls
+                    if (Maximum == null && Minimum == null) return true;
+                    if (Minimum == null)
+                    {
+                        return MaxInclusive ? (doublevalue <= Maximum) : (doublevalue < Maximum);
+                    }
+                    if (Maximum == null)
+                    {
+                        return MinInclusive ? (doublevalue >= Minimum) : (doublevalue > Minimum);
+                    }
+
+                    // Normal checking
+                    var cMax = doublevalue - Maximum.Value;
                     if (cMax > 0) return false;
                     if (!MaxInclusive && cMax == 0) return false;
-                    double cMin = doublevalue - Minimum;
+                    var cMin = doublevalue - Minimum.Value;
                     if (cMin < 0) return false;
                     if (cMin == 0 && !MinInclusive) return false;
                     return true;
                 }
                 catch
                 {
-                    double cMax = value.CompareTo(Max);
+                    // Checking for nulls
+                    if (Max == null && Min == null) return true;
+                    if (Min == null)
+                    {
+                        return MaxInclusive ? value.CompareTo(Max.Value) <= 0 : value.CompareTo(Max.Value) < 0;
+                    }
+                    if (Max == null)
+                    {
+                        return MinInclusive ? value.CompareTo(Min.Value) >= 0 : value.CompareTo(Min.Value) > 0;
+                    }
+
+                    // Normal checking
+                    double cMax = value.CompareTo(Max.Value);
                     if (cMax > 1) return false;
                     if (!MaxInclusive && cMax == 0) return false;
-                    double cMin = value.CompareTo(Min);
+                    double cMin = value.CompareTo(Min.Value);
                     if (cMin < 1) return false;
                     if (cMin == 0 && !MinInclusive) return false;
                     return true;
