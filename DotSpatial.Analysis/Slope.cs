@@ -1,24 +1,19 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Analysis.dll
-// Description:  The analysis libraries provide a programming API for the processes wrapped by tools.
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 5/25/2010 4:20:33 PM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |      Name            |    Date     |                                Comments
-// |----------------------|-------------|-----------------------------------------------------------------
-// |   Ted Dunsford       |  6/30/2010  |  Moved to DotSpatial
-// ********************************************************************************************************
+// *******************************************************************************************************
+// Product: DotSpatial.Analysis.Slope.cs
+// Description: Class for computing slope on a raster terrain dataset (e.g. DEM)
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Ted Dunsford       |  5/25/2010         |  Initially written.  
+//--------------------|--------------------|--------------------------------------------------------------
+// Ted Dunsford       |  6/30/2010         |  Moved to DotSpatial.  
+//--------------------|--------------------|--------------------------------------------------------------
+// Dan Ames           |  3/2013            |  Updated and standarded licence and header info.  
+// *******************************************************************************************************
 
 using System;
 using DotSpatial.Data;

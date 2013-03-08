@@ -1,8 +1,15 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ClipRaster.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Analysis.ClipRaster.cs
+// Description:  Class for clipping rasters with polygons
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Dan Ames           |  3/2013            |  Adding this header.  
+// *******************************************************************************************************
 
 using System;
 using System.Collections.Generic;

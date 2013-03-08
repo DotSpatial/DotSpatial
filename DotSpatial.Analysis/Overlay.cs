@@ -1,9 +1,15 @@
-﻿// *************************************************
-// DotSpatial.Analysis class for overlay functions
-// This class can hold other overlay functions such as 
-// intersect, union, etc.
-// Dan Ames, 2/27/2013
-// **************************************************
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Analysis.Overlay.cs
+// Description: Class for overlay functions. Put other overlay functions here such as intersect, union.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Dan Ames           |  2/27/2013         |  Initially written.  
+// *******************************************************************************************************
 
 using System;
 using DotSpatial.Data;
