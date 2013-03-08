@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 
@@ -92,13 +94,17 @@ namespace DotSpatial.Symbology
         /// <param name="raster"></param>
         public void ApplyScheme(ColorSchemeType schemeType, IRaster raster)
         {
-            double min = raster.Minimum;
-            double max = raster.Maximum;
+            double min, max;
             if (!raster.IsInRam)
             {
                 GetValues(raster);
                 min = Statistics.Minimum;
                 max = Statistics.Maximum;
+            }
+            else
+            {
+                min = raster.Minimum;
+                max = raster.Maximum;   
             }
 
             ApplyScheme(schemeType, min, max);
@@ -136,14 +142,7 @@ namespace DotSpatial.Symbology
         public void GetValues(IRaster raster)
         {
             Values = raster.GetRandomValues(EditorSettings.MaxSampleCount);
-            List<double> keepers = new List<double>();
-            foreach (double val in Values)
-            {
-                if (val != raster.NoDataValue)
-                {
-                    keepers.Add(val);
-                }
-            }
+            var keepers = Values.Where(val => val != raster.NoDataValue).ToList();
             Values = keepers;
             Statistics.Calculate(Values, raster.Minimum, raster.Maximum);
         }
@@ -152,7 +151,7 @@ namespace DotSpatial.Symbology
         /// Applies the specified color scheme and uses the specified raster to define the
         /// minimum and maximum to use for the scheme.
         /// </summary>
-        /// <param name="schemeType"></param>
+        /// <param name="schemeType">ColorSchemeType</param>
         /// <param name="min">THe minimum value to use for the scheme</param>
         /// <param name="max">THe maximum value to use for the scheme</param>
         public void ApplyScheme(ColorSchemeType schemeType, double min, double max)
@@ -161,70 +160,92 @@ namespace DotSpatial.Symbology
             {
                 Categories = new ColorCategoryCollection(this);
             }
-            int alpha = ByteRange(Convert.ToInt32(_opacity * 255F));
-            // this part should be overridden in the type specific version
+            else
+            {
+                Categories.Clear();    
+            }
 
-            Categories.Clear();
-            IColorCategory low = new ColorCategory(min, (min + max) / 2);
-            low.Range.MaxIsInclusive = true;
-            IColorCategory high = new ColorCategory((min + max) / 2, max);
-            high.Range.MaxIsInclusive = true;
-            low.ApplyMinMax(EditorSettings);
-            high.ApplyMinMax(EditorSettings);
-            Categories.Add(low);
-            Categories.Add(high);
+            IColorCategory eqCat = null, low = null, high = null;
+            if (min == max)
+            {
+                // Create one category
+                eqCat = new ColorCategory(min, max) {Range = {MaxIsInclusive = true, MinIsInclusive = true}};
+                eqCat.ApplyMinMax(EditorSettings);
+                Categories.Add(eqCat);
+            }
+            else
+            {
+                // Create two categories
+                low = new ColorCategory(min, (min + max) / 2) {Range = {MaxIsInclusive = true}};
+                high = new ColorCategory((min + max) / 2, max) {Range = {MaxIsInclusive = true}};
+                low.ApplyMinMax(EditorSettings);
+                high.ApplyMinMax(EditorSettings);
+                Categories.Add(low);
+                Categories.Add(high);    
+            }
+
+            Color lowColor, midColor, highColor;
+            int alpha = ByteRange(Convert.ToInt32(_opacity * 255F));
             switch (schemeType)
             {
                 case ColorSchemeType.Summer_Mountains:
-                    low.LowColor = Color.FromArgb(alpha, 10, 100, 10);
-                    low.HighColor = Color.FromArgb(alpha, 153, 125, 25);
-                    high.LowColor = Color.FromArgb(alpha, 153, 125, 25);
-                    high.HighColor = Color.FromArgb(alpha, 255, 255, 255);
+                    lowColor = Color.FromArgb(alpha, 10, 100, 10);
+                    midColor = Color.FromArgb(alpha, 153, 125, 25);
+                    highColor = Color.FromArgb(alpha, 255, 255, 255);
                     break;
                 case ColorSchemeType.FallLeaves:
-                    low.LowColor = Color.FromArgb(alpha, 10, 100, 10);
-                    low.HighColor = Color.FromArgb(alpha, 199, 130, 61);
-                    high.LowColor = Color.FromArgb(alpha, 199, 130, 61);
-                    high.HighColor = Color.FromArgb(alpha, 241, 220, 133);
+                    lowColor = Color.FromArgb(alpha, 10, 100, 10);
+                    midColor = Color.FromArgb(alpha, 199, 130, 61);
+                    highColor = Color.FromArgb(alpha, 241, 220, 133);
                     break;
                 case ColorSchemeType.Desert:
-                    low.LowColor = Color.FromArgb(alpha, 211, 206, 97);
-                    low.HighColor = Color.FromArgb(alpha, 139, 120, 112);
-                    high.LowColor = Color.FromArgb(alpha, 139, 120, 112);
-                    high.HighColor = Color.FromArgb(alpha, 255, 255, 255);
+                    lowColor = Color.FromArgb(alpha, 211, 206, 97);
+                    midColor = Color.FromArgb(alpha, 139, 120, 112);
+                    highColor = Color.FromArgb(alpha, 255, 255, 255);
                     break;
                 case ColorSchemeType.Glaciers:
-                    low.LowColor = Color.FromArgb(alpha, 105, 171, 224);
-                    low.HighColor = Color.FromArgb(alpha, 162, 234, 240);
-                    high.LowColor = Color.FromArgb(alpha, 162, 234, 240);
-                    high.HighColor = Color.FromArgb(alpha, 255, 255, 255);
+                    lowColor = Color.FromArgb(alpha, 105, 171, 224);
+                    midColor = Color.FromArgb(alpha, 162, 234, 240);
+                    highColor = Color.FromArgb(alpha, 255, 255, 255);
                     break;
                 case ColorSchemeType.Meadow:
-                    low.LowColor = Color.FromArgb(alpha, 68, 128, 71);
-                    low.HighColor = Color.FromArgb(alpha, 43, 91, 30);
-                    high.LowColor = Color.FromArgb(alpha, 43, 91, 30);
-                    high.HighColor = Color.FromArgb(alpha, 167, 220, 168);
+                    lowColor = Color.FromArgb(alpha, 68, 128, 71);
+                    midColor = Color.FromArgb(alpha, 43, 91, 30);
+                    highColor = Color.FromArgb(alpha, 167, 220, 168);
                     break;
                 case ColorSchemeType.Valley_Fires:
-                    low.LowColor = Color.FromArgb(alpha, 164, 0, 0);
-                    low.HighColor = Color.FromArgb(alpha, 255, 128, 64);
-                    high.LowColor = Color.FromArgb(alpha, 255, 128, 64);
-                    high.HighColor = Color.FromArgb(alpha, 255, 255, 191);
+                    lowColor = Color.FromArgb(alpha, 164, 0, 0);
+                    midColor = Color.FromArgb(alpha, 255, 128, 64);
+                    highColor = Color.FromArgb(alpha, 255, 255, 191);
                     break;
                 case ColorSchemeType.DeadSea:
-                    low.LowColor = Color.FromArgb(alpha, 51, 137, 208);
-                    low.HighColor = Color.FromArgb(alpha, 226, 227, 166);
-                    high.LowColor = Color.FromArgb(alpha, 226, 227, 166);
-                    high.HighColor = Color.FromArgb(alpha, 151, 146, 117);
+                    lowColor = Color.FromArgb(alpha, 51, 137, 208);
+                    midColor = Color.FromArgb(alpha, 226, 227, 166);
+                    highColor = Color.FromArgb(alpha, 151, 146, 117);
                     break;
                 case ColorSchemeType.Highway:
-                    low.LowColor = Color.FromArgb(alpha, 51, 137, 208);
-                    low.HighColor = Color.FromArgb(alpha, 214, 207, 124);
-                    high.LowColor = Color.FromArgb(alpha, 214, 207, 124);
-                    high.HighColor = Color.FromArgb(alpha, 54, 152, 69);
+                    lowColor = Color.FromArgb(alpha, 51, 137, 208);
+                    midColor = Color.FromArgb(alpha, 214, 207, 124);
+                    highColor = Color.FromArgb(alpha, 54, 152, 69);
                     break;
                 default:
+                    lowColor = midColor = highColor = Color.Transparent;
                     break;
+            }
+
+            if (eqCat != null)
+            {
+                eqCat.LowColor = eqCat.HighColor = lowColor;
+            }
+            else
+            {
+                Debug.Assert(low != null);
+                Debug.Assert(high != null);
+
+                low.LowColor = lowColor;
+                low.HighColor = midColor;
+                high.LowColor = midColor;
+                high.HighColor = highColor;
             }
 
             OnItemChanged(this);
