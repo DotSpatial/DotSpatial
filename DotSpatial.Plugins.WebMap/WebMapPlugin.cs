@@ -526,7 +526,7 @@ namespace DotSpatial.Plugins.WebMap
 
             _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == resources.Legend_Title);
 
-            if (basemapName == "None")
+            if (basemapName.Equals("None"))
             {
                 if (_baseMapLayer != null)
                 {
@@ -538,7 +538,7 @@ namespace DotSpatial.Plugins.WebMap
             else
             {
                 //hack: need to set provider to original object, not a new one.
-                _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name == basemapName);
+                _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name.Equals(basemapName, StringComparison.InvariantCultureIgnoreCase));
                 _serviceDropDown.SelectedItem = _provider;
                 EnableBasemapFetching(_provider.Name, _provider.Url);
             }
@@ -564,8 +564,7 @@ namespace DotSpatial.Plugins.WebMap
         private void ServiceSelected(object sender, SelectedValueChangedEventArgs e)
         {
             _provider = e.SelectedItem as ServiceProvider;
-
-            if (_provider.Name == resources.None)
+            if (_provider==null ||_provider.Name == resources.None)
                 DisableBasemapLayer();
             else
                 EnableBasemapFetching(_provider.Name, _provider.Url);
