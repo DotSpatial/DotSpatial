@@ -321,7 +321,7 @@ namespace DotSpatial.Projections.Transforms
 
         /// <summary>
         /// Gets or sets the string name of this projection as it appears in .prj files and
-        /// ESRI wkt.  This can also be several names separated by a semicolon.
+        /// Esri wkt.  This can also be several names separated by a semicolon.
         /// </summary>
         public string Name
         {

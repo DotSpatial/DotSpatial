@@ -75,7 +75,7 @@ namespace DotSpatial.Projections
         #region IEsriString Members
 
         /// <summary>
-        /// Generates the part of the ESRI well known text for this linear unit
+        /// Generates the part of the Esri well known text for this linear unit
         /// </summary>
         /// <returns>A string that contains the name and conversion factor to meters </returns>
         public string ToEsriString()
@@ -84,7 +84,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Parses the UNIT member of ESRI well known text into a linear unit
+        /// Parses the UNIT member of Esri well known text into a linear unit
         /// </summary>
         /// <param name="esriString"></param>
         public void ParseEsriString(string esriString)

@@ -35,7 +35,7 @@ namespace DotSpatial.Data
     /// dBase language driver id (LDID) encoding specifiers.
     /// </summary>
     /// <remarks>
-    /// Lookup values are taken from ESRI's 
+    /// Lookup values are taken from Esri's 
     /// <a href="http://downloads.esri.com/support/documentation/pad_/ArcPad_RefGuide_1105.pdf">
     /// ArcPad Reference Guide</a>
     /// </remarks>
@@ -232,7 +232,7 @@ namespace DotSpatial.Data
         /// </param>
         /// <returns>
         /// An <see cref="Encoding"/> which corresponds to the the
-        /// <paramref name="dBaseEncoding"/> code established by ESRI.
+        /// <paramref name="dBaseEncoding"/> code established by Esri.
         /// </returns>
         public static Encoding GetEncoding(Byte dBaseEncoding)
         {

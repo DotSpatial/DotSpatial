@@ -41,7 +41,7 @@ namespace DotSpatial.Topology.Operation.Valid
         private readonly Geometry _parentGeometry;  // the base Geometry to be validated
 
         /**
-         * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
+         * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the Esri SDE model).
          */
         private bool _isSelfTouchingRingFormingHoleValid;
         private TopologyValidationError _validErr;
@@ -383,7 +383,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         /// Check that there is no ring which self-intersects (except of course at its endpoints).
         /// This is required by OGC topology rules (but not by other models
-        /// such as ESRI SDE, which allow inverted shells and exverted holes).
+        /// such as Esri SDE, which allow inverted shells and exverted holes).
         /// </summary>
         /// <param name="graph"></param>
         private void CheckNoSelfIntersectingRings(GeometryGraph graph)

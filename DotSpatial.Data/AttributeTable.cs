@@ -1357,7 +1357,7 @@ namespace DotSpatial.Data
 
                 case 'F':
                 case 'B':
-                case 'N': // number - ESRI uses N for doubles and floats
+                case 'N': // number - Esri uses N for doubles and floats
 
                     tempObject = ParseNumericColumn(field, currentRow, cBuffer, table, parseErrString);
                     break;

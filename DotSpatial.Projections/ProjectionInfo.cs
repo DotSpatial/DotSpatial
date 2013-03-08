@@ -18,7 +18,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
-// Jiri Kadlec         | 11/20/2010 |  Updated the ESRI string of Web Mercator Auxiliary sphere projection
+// Jiri Kadlec         | 11/20/2010 |  Updated the Esri string of Web Mercator Auxiliary sphere projection
 // Matthew K           | 01/10/2010 |  Removed Parameters dictionary
 // ********************************************************************************************************
 
@@ -49,7 +49,7 @@ namespace DotSpatial.Projections
 
         private string LongitudeOfCenterAlias;
 
-        // stores the value of the actual parameter name that was used in the original (when the string came from WKT/ESRI)
+        // stores the value of the actual parameter name that was used in the original (when the string came from WKT/Esri)
         private string LatitudeOfOriginAlias;
 
         private string FalseEastingAlias;
@@ -474,7 +474,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Expresses the entire projection as the ESRI well known text format that can be found in .prj files
+        /// Expresses the entire projection as the Esri well known text format that can be found in .prj files
         /// </summary>
         /// <returns>
         /// The generated string
@@ -483,7 +483,7 @@ namespace DotSpatial.Projections
         {
             Spheroid tempSpheroid = new Spheroid(Proj4Ellipsoid.WGS_1984);
 
-            // changed by JK to fix the web mercator auxiliary sphere ESRI string
+            // changed by JK to fix the web mercator auxiliary sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 tempSpheroid = GeographicInfo.Datum.Spheroid;
@@ -576,14 +576,14 @@ namespace DotSpatial.Projections
                 result += @"PARAMETER[""" + alias + @"""," + Convert.ToString(LatitudeOfOrigin, CultureInfo.InvariantCulture) + "],";
             }
 
-            // changed by JK to fix the web mercator auxiliary sphere ESRI string
+            // changed by JK to fix the web mercator auxiliary sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 result += @"PARAMETER[""Auxiliary_Sphere_Type""," + ((int)AuxiliarySphereType) + ".0],";
             }
 
             result += Unit.ToEsriString() + "]";
-            // changed by JK to fix the web mercator auxiliary sphere ESRI string
+            // changed by JK to fix the web mercator auxiliary sphere Esri string
             if (Name == "WGS_1984_Web_Mercator_Auxiliary_Sphere")
             {
                 GeographicInfo.Datum.Spheroid = new Spheroid(Proj4Ellipsoid.WGS_1984);
@@ -606,11 +606,11 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Parses the entire projection from an ESRI string.  In some cases, this will have
+        /// Parses the entire projection from an Esri string.  In some cases, this will have
         ///   default projection information since only geographic information is obtained.
         /// </summary>
         /// <param name="esriString">
-        /// The ESRI string to parse
+        /// The Esri string to parse
         /// </param>
         public static ProjectionInfo FromEsriString(string esriString)
         {
@@ -663,8 +663,8 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Gets a boolean that is true if the ESRI WKT string created by the projections matches.
-        ///   There are multiple ways to write the same projection, but the output ESRI WKT string
+        /// Gets a boolean that is true if the Esri WKT string created by the projections matches.
+        ///   There are multiple ways to write the same projection, but the output Esri WKT string
         ///   should be a good indicator of whether or not they are the same.
         /// </summary>
         /// <param name="other">
@@ -848,7 +848,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// This overrides ToString to get the ESRI name of the projection.
+        /// This overrides ToString to get the Esri name of the projection.
         /// </summary>
         /// <returns>
         /// The to string.
@@ -884,7 +884,7 @@ namespace DotSpatial.Projections
 
         private bool CentralMeridianValid()
         {
-            // CentralMeridian (lam0) is calculated for these coordinate system, but IS NOT part of their ESRI WKTs
+            // CentralMeridian (lam0) is calculated for these coordinate system, but IS NOT part of their Esri WKTs
             return Transform.Name.ToLower() != "hotine_oblique_mercator_azimuth_natural_origin" &&
                    Transform.Name.ToLower() != "hotine_oblique_mercator_azimuth_center";
         }
@@ -1235,7 +1235,7 @@ namespace DotSpatial.Projections
             }
             else
             {
-                // an odd ESRI projection string that doesn't have PARAMETER
+                // an odd Esri projection string that doesn't have PARAMETER
                 gcs = esriString.Substring(iStart + 1);
             }
             GeographicInfo.ParseEsriString(gcs);
@@ -1270,7 +1270,7 @@ namespace DotSpatial.Projections
             double? auxType = GetParameter("Auxiliary_Sphere_Type", esriString);
             if (auxType != null)
             {
-                // While the ESRI implementation sort of tip-toes around the datum transform,
+                // While the Esri implementation sort of tip-toes around the datum transform,
                 // we simply ensure that the spheroid becomes properly spherical based on the
                 // parameters we have here.  (The sphereoid will be read as WGS84).
                 AuxiliarySphereType = (AuxiliarySphereType)auxType;
@@ -1320,7 +1320,7 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Re-sets the parameters of this projection info by parsing the esri projection string
         /// </summary>
-        /// <param name="esriString">The projection information string in ESRI WKT format</param>
+        /// <param name="esriString">The projection information string in Esri WKT format</param>
         public void ParseEsriString(string esriString)
         {
             TryParseEsriString(esriString);

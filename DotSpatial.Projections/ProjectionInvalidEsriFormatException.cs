@@ -21,7 +21,7 @@ using System;
 namespace DotSpatial.Projections
 {
     /// <summary>
-    /// Validation exception for ESRI string.
+    /// Validation exception for Esri string.
     /// </summary>
     public class InvalidEsriFormatException : ArgumentException
     {
@@ -34,7 +34,7 @@ namespace DotSpatial.Projections
         public InvalidEsriFormatException(string projectionString)
             : base(
                 "The expression " + projectionString +
-                " could not be parsed as a valid ESRI string.  ESRI strings are denoted by characteristics like the GEOGCS[ tag."
+                " could not be parsed as a valid Esri string.  Esri strings are denoted by characteristics like the GEOGCS[ tag."
                 )
         {
             _projectionString = projectionString;

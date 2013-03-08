@@ -63,7 +63,7 @@ namespace DotSpatial.Data
         /// </summary>
         INVALID = -1,
         /// <summary>
-        /// The ESRI Shapefile format (*.shp)
+        /// The Esri Shapefile format (*.shp)
         /// </summary>
         Shapefile = 0,
         /// <summary>

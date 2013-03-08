@@ -10,10 +10,10 @@ namespace DotSpatial.Controls
     {
         /// <summary>
         /// Reprojects all layers in the map frame so that they use the new
-        /// projection ESRI string
+        /// projection Esri string
         /// </summary>
         /// <param name="mapFrame">The map frame that contains all layers that should be reprojected</param>
-        /// <param name="newProjEsriString">The ESRI WKT string of the new projection</param>
+        /// <param name="newProjEsriString">The Esri WKT string of the new projection</param>
         public static void ReprojectMapFrame(IMapFrame mapFrame, string newProjEsriString)
         {
             //parse the projection

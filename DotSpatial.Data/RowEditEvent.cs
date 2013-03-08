@@ -127,7 +127,7 @@ namespace DotSpatial.Data
                     break;
                 case 'F':
                 case 'B':
-                case 'N': // number - ESRI uses N for doubles and floats
+                case 'N': // number - Esri uses N for doubles and floats
 
                     string tempStr = new string(cBuffer).Trim(new[] { '\0' }).Trim();
                     tempObject = DBNull.Value;

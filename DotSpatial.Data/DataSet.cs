@@ -115,7 +115,7 @@ namespace DotSpatial.Data
         /// DotSpatial.Projections library.  This is not format restricted, but should match
         /// the original data source as closely as possible.  Setting this will also set
         ///  the Projection if the Projection library is available and the format successfully
-        /// defines a transform by either treating it as an ESRI string or a proj4 string.
+        /// defines a transform by either treating it as an Esri string or a proj4 string.
         /// </summary>
         public string ProjectionString
         {

@@ -318,7 +318,7 @@ Public Class tdbFileTypes_v3
             '	End If
             '      End If
 
-            'Try ' CWG ChangeGridFormat can fail with a memory violation on ESRI grids
+            'Try ' CWG ChangeGridFormat can fail with a memory violation on Esri grids
             '	If Not MapWinGeoProc.DataManagement.ChangeGridFormat( _
             '		gridpath, tifFilePath, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.FloatDataType, 1.0F) Then
             '		MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")

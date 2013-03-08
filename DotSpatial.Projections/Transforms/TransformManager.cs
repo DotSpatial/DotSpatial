@@ -135,10 +135,10 @@ namespace DotSpatial.Projections.Transforms
         }
 
         /// <summary>
-        /// Given the .prj name (ESRI wkt), returns the matching transform
+        /// Given the .prj name (Esri wkt), returns the matching transform
         /// </summary>
         /// <param name="name">The string name for the trnasform eg. Transverse_Mercator</param>
-        /// <returns>The ITransform that has the matching ESRI wkt name</returns>
+        /// <returns>The ITransform that has the matching Esri wkt name</returns>
         public ITransform GetProjection(string name)
         {
             foreach (ITransform transform in _transforms)

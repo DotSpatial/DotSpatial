@@ -425,8 +425,8 @@ namespace DotSpatial.Plugins.WebMap
         /// </summary>
         private void EnableBasemapLayer()
         {
-            //New ESRI Hydro basemap is a special case. We need to remove the old basemaplayer if exists so that the black background will be drawn transparently.
-            if (_provider.Name.Equals("ESRI World Hydro Overlay") && _baseMapLayer != null) 
+            //New Esri Hydro basemap is a special case. We need to remove the old basemaplayer if exists so that the black background will be drawn transparently.
+            if (_provider.Name.Equals("Esri World Hydro Overlay") && _baseMapLayer != null) 
             { 
                 RemoveBasemapLayer(_baseMapLayer);
                 _baseMapLayer = null;
@@ -440,7 +440,7 @@ namespace DotSpatial.Plugins.WebMap
                 //First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
                 var tempImageData = new InRamImageData(resources.NoDataTile, new Extent(1, 1, 2, 2));
 
-                if (_provider.Name.Equals("ESRI World Hydro Overlay")) //Special case for new ESRI Hydro basemap. Makes black background transparent.
+                if (_provider.Name.Equals("Esri World Hydro Overlay")) //Special case for new Esri Hydro basemap. Makes black background transparent.
                 {
                     
                     _baseMapLayer = new MapImageLayer(tempImageData, Color.Black)

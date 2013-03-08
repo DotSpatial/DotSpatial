@@ -21,7 +21,7 @@
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
-// Steve Riddell       |  11/7/2011 |  Added to support ESRI's "Hotine_Oblique_Mercator_Natural_Origin"
+// Steve Riddell       |  11/7/2011 |  Added to support Esri's "Hotine_Oblique_Mercator_Natural_Origin"
 //                     |            |  Matches EPSG's Hotine Variant A, code 9812
 // ********************************************************************************************************
 

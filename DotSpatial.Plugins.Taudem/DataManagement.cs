@@ -146,7 +146,7 @@ namespace MapWinGeoProc
         //    /// <param name="oldGridPath">The original path to the grid (including extension).</param>
         //    /// <param name="newGridPath">The path to where the grid copy should be (including extension).</param>
         //    /// <returns>False if an error was encountered, true otherwise.</returns>
-        //    /// <remarks>Won't work for Grid formats that are directory names like an ESRI grid format yet</remarks>
+        //    /// <remarks>Won't work for Grid formats that are directory names like an Esri grid format yet</remarks>
         //    public static bool CopyGrid(string oldGridPath, string newGridPath)
         //    {
         //        Debug.WriteLine("CopyGrid(oldGridPath" + oldGridPath + ",\n" +
@@ -169,9 +169,9 @@ namespace MapWinGeoProc
         //            {
         //                if (Directory.Exists(oldGridPath))
         //                {
-        //                    // TODO: ESRI GRID format handling.
+        //                    // TODO: Esri GRID format handling.
         //                    Trace.WriteLine(
-        //                        "Argument Exception: ESRI grids that are directories are not currently supported.");
+        //                        "Argument Exception: Esri grids that are directories are not currently supported.");
         //                    return false;
         //                }
         //            }

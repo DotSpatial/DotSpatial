@@ -226,7 +226,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This is the single character dBase code.  Only some of these are supported with ESRI.
+        /// This is the single character dBase code.  Only some of these are supported with Esri.
         /// C - Character (Chars, Strings, objects - as ToString(), and structs - as  )
         /// D - Date (DateTime)
         /// T - Time (DateTime)

@@ -483,7 +483,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Calculates the inverse of the flattening factor, commonly saved to ESRI projections,
+        /// Calculates the inverse of the flattening factor, commonly saved to Esri projections,
         /// or else provided as the "rf" parameter for Proj4 strings.  This is simply calculated
         /// as a / (a - b) where a is the semi-major axis and b is the semi-minor axis.
         /// </summary>
@@ -641,7 +641,7 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Reads the ESRI string to define the spheroid, which controls how flattened the earth's radius is
+        /// Reads the Esri string to define the spheroid, which controls how flattened the earth's radius is
         /// </summary>
         /// <param name="esriString"></param>
         public void ParseEsriString(string esriString)

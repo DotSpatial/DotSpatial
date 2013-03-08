@@ -587,7 +587,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// If the geometry for this shape was loaded from a file, this contains the size
-        /// of this shape in 16-bit words as per the ESRI Shapefile specification.
+        /// of this shape in 16-bit words as per the Esri Shapefile specification.
         /// </summary>
         public int ContentLength
         {
