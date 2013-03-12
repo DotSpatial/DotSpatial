@@ -116,15 +116,18 @@ namespace DotSpatial.Tools
             output.DataTable.Columns.Add("Value", typeof(double));
 
             var featureHash = new Dictionary<double,  List<LineSegment>>();
-            double previous = 0.0;
-            double height = input.CellHeight;
-            double width = input.CellWidth;
-            int numRows = input.NumRows;
-            int numColumns = input.NumColumns;
-            double xMin = input.Xllcenter - (input.CellWidth / 2.0);
-            double yMin = input.Yllcenter - (input.CellHeight / 2.0);
-            double xMax = xMin + (height * input.NumColumns);
-            double yMax = yMin + (width * input.NumRows);
+            var previous = 0.0;
+
+            var height = input.CellHeight;
+            var width = input.CellWidth;
+
+            var xMin = input.Xllcenter - width/2.0;
+            var yMin = input.Yllcenter - height/2.0;
+            var xMax = xMin + width*input.NumColumns;
+            var yMax = yMin + height*input.NumRows;
+
+            var numRows = input.NumRows;
+            var numColumns = input.NumColumns;
             for (int y = 0; y < numRows; y++)
             {
                 int current = Convert.ToInt32((y * 100.0) / input.NumRows);
@@ -216,8 +219,7 @@ namespace DotSpatial.Tools
             var sw = new Stopwatch();
             foreach (var pair in featureHash)
             {
-                sw.Reset();
-                sw.Start();
+                sw.Restart();
 
                 var key = pair.Key;
                 var lineSegList = pair.Value;
@@ -253,7 +255,7 @@ namespace DotSpatial.Tools
                 sw.Stop();
                 Debug.WriteLine(sw.ElapsedMilliseconds);
             }
-
+            
             output.AttributesPopulated = true;
             output.Save();
             return true;
