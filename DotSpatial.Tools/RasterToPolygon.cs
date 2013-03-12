@@ -115,7 +115,7 @@ namespace DotSpatial.Tools
 
             output.DataTable.Columns.Add("Value", typeof(double));
 
-            var featureHash = new Dictionary<double,  List<LineSegment>>();
+            var featureHash = new Dictionary<double, LineSegmentList>();
             var previous = 0.0;
 
             var height = input.CellHeight;
@@ -146,66 +146,66 @@ namespace DotSpatial.Tools
                         continue;
                     }
 
-                    List<LineSegment> lineList;
+                    LineSegmentList lineList;
                     if (!featureHash.TryGetValue(value, out lineList))
                     {
-                        lineList = new List<LineSegment>();
+                        lineList = new LineSegmentList();
                         featureHash.Add(value, lineList);
                     }
 
                     if (y == 0)
                     {
-                        AddSegment(lineList, x*width + xMin, yMax, (x + 1)*width + xMin, yMax);
+                        lineList.AddSegment(xMin + x*width, yMax, xMin + (x + 1)*width, yMax);
                         if (input.Value[y + 1, x] != value)
                         {
-                            AddSegment(lineList, x*width + xMin, yMax - height, (x + 1)*width + xMin, yMax - height);
+                            lineList.AddSegment(xMin + x*width, yMax - height, xMin + (x + 1)*width, yMax - height);
                         }
                     }
                     else if (y == (numRows - 1))
                     {
-                        AddSegment(lineList, x*width + xMin, yMin, (x + 1)*width + xMin, yMin);
+                        lineList.AddSegment(xMin + x*width, yMin, xMin + (x + 1)*width, yMin);
                         if (input.Value[y - 1, x] != value)
                         {
-                            AddSegment(lineList, x*width + xMin, yMin + height, (x + 1)*width + xMin, yMin + height);
+                            lineList.AddSegment(xMin + x*width, yMin + height, xMin + (x + 1)*width, yMin + height);
                         }
                     }
                     else
                     {
                         if (input.Value[y + 1, x] != value)
                         {
-                            AddSegment(lineList, x*width + xMin, yMax - (y + 1)*height, (x + 1)*width + xMin, yMax - (y + 1)*height);
+                            lineList.AddSegment(xMin + x * width, yMax - (y + 1) * height, xMin + (x + 1) * width, yMax - (y + 1) * height);
                         }
                         if (input.Value[y - 1, x] != value)
                         {
-                            AddSegment(lineList, x*width + xMin, yMax - y*height, (x + 1)*width + xMin, yMax - y*height);
+                            lineList.AddSegment(xMin + x * width, yMax - y * height, xMin + (x + 1) * width, yMax - y * height);
                         }
                     }
 
                     if (x == 0)
                     {
-                        AddSegment(lineList, xMin, yMax - y * height, xMin, yMax - (y + 1) * height);
+                        lineList.AddSegment(xMin, yMax - y*height, xMin, yMax - (y + 1)*height);
                         if (input.Value[y, x + 1] != value)
                         {
-                            AddSegment(lineList, xMin + width, yMax - y*height, xMin + width, yMax - (y + 1)*height);
+                            lineList.AddSegment(xMin + width, yMax - y*height, xMin + width, yMax - (y + 1)*height);
                         }
                     }
                     else if (x == (numColumns - 1))
                     {
-                        AddSegment(lineList, xMax, yMax - y * height, xMax, yMax - (y + 1) * height);
+                        lineList.AddSegment(xMax, yMax - y*height, xMax, yMax - (y + 1)*height);
                         if (input.Value[y, x - 1] != value)
                         {
-                            AddSegment(lineList, xMax - width, yMax - y*height, xMax - width, yMax - (y + 1)*height);
+                            lineList.AddSegment(xMax - width, yMax - y*height, xMax - width, yMax - (y + 1)*height);
                         }
                     }
                     else
                     {
                         if (input.Value[y, x + 1] != value)
                         {
-                            AddSegment(lineList, xMin + (x + 1) * width, yMax - (y * height), xMin + (x + 1) * width, yMax - (y + 1) * height);
+                            lineList.AddSegment(xMin + (x + 1)*width, yMax - y*height, xMin + (x + 1)*width, yMax - (y + 1)*height);
                         }
                         if (input.Value[y, x - 1] != value)
                         {
-                            AddSegment(lineList, xMin + x * width, yMax - (y * height), xMin + x*width, yMax - (y + 1)*height);
+                            lineList.AddSegment(xMin + x*width, yMax - y*height, xMin + x*width, yMax - (y + 1)*height);
                         }
                     }
 
@@ -222,24 +222,22 @@ namespace DotSpatial.Tools
                 sw.Restart();
 
                 var key = pair.Key;
-                var lineSegList = pair.Value;
+                var lineSegList = pair.Value.List;
 
                 var polyList = new List<Polygon>();
                 while (lineSegList.Count != 0)
                 {
                     var polyShell = new List<Coordinate>();
-                    LineSegment start = lineSegList[0];
+                    var start = lineSegList[0];
                     polyShell.Add(start.P0);
                     polyShell.Add(start.P1);
                     lineSegList.Remove(start);
+
                     while (!polyShell[0].Equals2D(polyShell[polyShell.Count - 1]))
                     {
-                        LineSegment segment =
-                            lineSegList.Find(
-                                o =>
-                                o.P0.Equals2D(polyShell[polyShell.Count - 1])
-                                || o.P1.Equals2D(polyShell[polyShell.Count - 1]));
-                        polyShell.Add(segment.P0.Equals2D(polyShell[polyShell.Count - 1]) ? segment.P1 : segment.P0);
+                        var last = polyShell[polyShell.Count - 1];
+                        var segment = lineSegList.Find(o => o.P0.Equals2D(last) || o.P1.Equals2D(last));
+                        polyShell.Add(segment.P0.Equals2D(last) ? segment.P1 : segment.P0);
                         lineSegList.Remove(segment);
                     }
 
@@ -261,10 +259,18 @@ namespace DotSpatial.Tools
             return true;
         }
 
-        private static void AddSegment(ICollection<LineSegment> list, double x1, double y1, double x2, double y2)
+        private class LineSegmentList
         {
-            list.Add(new LineSegment(new Coordinate(x1, y1), new Coordinate(x2, y2)));
+            private readonly List<LineSegment> _list = new List<LineSegment>();
+
+            public void AddSegment(double x1, double y1, double x2, double y2)
+            {
+                _list.Add(new LineSegment(new Coordinate(x1, y1), new Coordinate(x2, y2)));
+            }
+
+            public List<LineSegment> List { get { return _list; } }
         }
+      
 
         /// <summary>
         /// The Parameter array should be populated with default values here
