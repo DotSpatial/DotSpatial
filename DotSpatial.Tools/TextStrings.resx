@@ -915,4 +915,16 @@
   <data name="ToolFromLasToRaster" xml:space="preserve">
     <value>This tool will read in LAS point files and produce raster representations for an area</value>
   </data>
+  <data name="RandomGeometry" xml:space="preserve">
+    <value>Random Points</value>
+  </data>
+  <data name="RandomGeometryDescription" xml:space="preserve">
+    <value>Generate random points in an area.</value>
+  </data>
+  <data name="RandomGeometryNumPoint" xml:space="preserve">
+    <value>The number of points to generate.</value>
+  </data>
+  <data name="RandomGeometryToolTip" xml:space="preserve">
+    <value>Select an area and the number of points to generate inside of it.</value>
+  </data>
 </root>

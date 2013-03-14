@@ -29,7 +29,7 @@ namespace DotSpatial.Analysis
         /// <param name="ConstrainingFeatures">Random points will be generated inside all features in this feature set.</param>
         /// <param name="NumberOfPoints">The number of points to be randomly generated.</param>
         /// <returns>A point feature set with the randomly created features.</returns>
-        public static FeatureSet RandomPoints(FeatureSet ConstrainingFeatures, long NumberOfPoints)
+        public static FeatureSet RandomPoints(IFeatureSet ConstrainingFeatures, long NumberOfPoints, ICancelProgressHandler cancelProgressHandler = null)
         {
             //This function generates random points within the boundaries of all polygon features in a feature set
             FeatureSet fsOut = new FeatureSet();
@@ -54,6 +54,12 @@ namespace DotSpatial.Analysis
                         fsOut.AddFeature(new Feature(c));
                         i++;
                     }
+                }
+                if (cancelProgressHandler != null)
+                {
+                    if (cancelProgressHandler.Cancel) { return null; }
+                    int progress = Convert.ToInt32(i * 100 / NumberOfPoints);
+                    cancelProgressHandler.Progress(String.Empty, progress, String.Empty);
                 }
             }
             return fsOut;

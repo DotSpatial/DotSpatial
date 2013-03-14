@@ -98,6 +98,16 @@ namespace DotSpatial.Controls
                     if (ml.DataSet != null)
                     {
                         dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
+
+
+                        IFeatureLayer fl = ml as IFeatureLayer;
+                        if (fl != null)
+                        {
+                            if (fl.Selection.Count > 0)
+                            {
+                                dataSets.Add(new DataSetArray(fl.LegendText + " Selection", fl.Selection.ToFeatureSet()));
+                            }
+                        }
                     }
                     if(ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
                     {
@@ -341,7 +351,6 @@ namespace DotSpatial.Controls
 
             if (progForm == null) return;
             if (toolToExecute == null) return;
-
             progForm.Progress(String.Empty, 0, "==================");
             progForm.Progress(String.Empty, 0, String.Format("Executing Tool: {0}", toolToExecute.Name));
             progForm.Progress(String.Empty, 0, "==================");

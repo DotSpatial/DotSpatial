@@ -111,7 +111,10 @@ namespace DotSpatial.Modeling.Forms
             if (percent < 0) percent = 0;
             if (percent > 100) percent = 100;
             _progressBarTool.Value = percent;
-            _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
+            if (!String.IsNullOrEmpty(message))
+            {
+                _txtBoxStatus.AppendText("\r\n" + DateTime.Now + ": " + message);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

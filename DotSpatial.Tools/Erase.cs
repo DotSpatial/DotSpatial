@@ -1,26 +1,16 @@
-﻿// ********************************************************************************************************
-// Product Name: MapWindow.Tools.Erase
-// Description:  Eliminate Second featureset from first featureset
-//
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is Toolbox.dll for the MapWindow 4.6/6 ToolManager project
-//
-// The Initializeializeial Developer of this Original Code is Kandasamy Prasanna. Created in 2009.
-//
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Tools.Erase
+// Description:  Erase a portion of a data set.
+// Copyright & License: See www.DotSpatial.org.
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
 // Name               |   Date             |         Comments
 //--------------------|--------------------|--------------------------------------------------------
 // Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
 // KP                 |  9/2009            |  Used IDW as model for Erase
 // Ping  Yang         |  12/2009           |  Cleaning code and fixing bugs.
+// Troy Shields       |  03/2013           |  Updated License and cleaned up code.
 // ********************************************************************************************************
 
 using System;
