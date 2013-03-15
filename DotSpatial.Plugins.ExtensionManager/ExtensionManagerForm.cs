@@ -597,8 +597,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void uxUpdateAll_Click(object sender, EventArgs e)
         {
-            int i;
-            for (i = 0; i < uxUpdatePackages.Items.Count; i++)
+            for (int i = 0; i < uxUpdatePackages.Items.Count; i++)
             {
                 var pack = uxUpdatePackages.Items[i].Tag as IPackage;
                 try
@@ -620,7 +619,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void UpdatePack(IPackage pack)
         {
-            Updates.UpdatePack(pack);
+            Updates.UpdatePackage(pack);
             uxUpdate.Enabled = true;
 
             DisplayPackagesAndUpdates();

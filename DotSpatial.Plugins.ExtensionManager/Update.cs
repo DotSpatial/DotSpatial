@@ -41,13 +41,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             listview = lv;
             tab = tp;
-            getAvailableUpdates();
+            getAllAvailableUpdates();
 
             //Refresh the list view with the updates found.
             if (list != null) { setListView(); }
         }
 
-        private void getAvailableUpdates()
+        private void getAllAvailableUpdates()
         {
             list = null;
 
@@ -225,7 +225,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         internal List<String> autoUpdate()
         {
             List<String> updatesOccurred = new List<String>();
-            getAvailableUpdates();
+            getAllAvailableUpdates();
 
             if (list != null)
             {
@@ -233,7 +233,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) 
                     { 
-                        UpdatePack(p);
+                        UpdatePackage(p);
                     }
                 }
             }
@@ -241,7 +241,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         //Mark old package for removal and download updated package.
-        internal void UpdatePack(IPackage pack)
+        internal void UpdatePackage(IPackage pack)
         {
             if (pack == null) return;
         
