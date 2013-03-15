@@ -142,6 +142,10 @@ namespace DotSpatial.Tools
             Func<int, int, double, bool> same = (y, x, value) => y >= 0 && y < numRows &&
                                                                  x >= 0 && x < numColumns &&
                                                                  input.Value[y, x] == value;
+            Func<int, int, double> get = (y, x) => y >= 0 && y < numRows && x >= 0 && x < numColumns
+                                                       ? input.Value[y, x]
+                                                       : input.NoDataValue;
+            Func<int, int, int, int, bool> eqValues = (y1, x1, y2, x2) => get(y1, x1) == get(y2, x2);
 
             var enableCon = connectionGrid != null;
             Func<int, int, int> connection = (y, x) => enableCon ? (int) connectionGrid.Value[y, x] : 0;
@@ -185,17 +189,32 @@ namespace DotSpatial.Tools
                     var con_3 = same(y - 1, x, value);
                     var con_1 = same(y, x + 1, value);
 
-                    var con_8 = enableCon &&
-                                same(y + 1, x + 1, value) && !con_7 && !con_1 &&
+                    var con_8l = enableCon &&
+                                same(y + 1, x + 1, value) && !con_7 &&
+                                (curCon == 8 || connection(y + 1, x + 1) == 4);   
+                    var con_8r = enableCon &&
+                                same(y + 1, x + 1, value) && !con_1 &&
                                 (curCon == 8 || connection(y + 1, x + 1) == 4);
-                    var con_6 = enableCon &&
-                                same(y + 1, x - 1, value) && !con_7 && !con_5 &&
+
+                    var con_6l = enableCon &&
+                                same(y + 1, x - 1, value) && !con_5 &&
                                 (curCon == 6 || connection(y + 1, x - 1) == 2);
-                    var con_4 = enableCon &&
-                                same(y - 1, x - 1, value) && !con_3 && !con_5 &&
+                    var con_6r = enableCon &&
+                                same(y + 1, x - 1, value) && !con_7 &&
+                                (curCon == 6 || connection(y + 1, x - 1) == 2);
+
+                    var con_4l = enableCon &&
+                                same(y - 1, x - 1, value) && !con_5 &&
                                 (curCon == 4 || connection(y - 1, x - 1) == 8);
-                    var con_2 = enableCon &&
-                                same(y - 1, x + 1, value) && !con_3 && !con_1 &&
+                    var con_4r = enableCon &&
+                                same(y - 1, x - 1, value) && !con_3 &&
+                                (curCon == 4 || connection(y - 1, x - 1) == 8);
+
+                    var con_2l = enableCon &&
+                                same(y - 1, x + 1, value) && !con_3 &&
+                                (curCon == 2 || connection(y - 1, x + 1) == 6);
+                    var con_2r = enableCon &&
+                                same(y - 1, x + 1, value) && !con_1 &&
                                 (curCon == 2 || connection(y - 1, x + 1) == 6);
 
                     /* Cell points:
@@ -212,37 +231,52 @@ namespace DotSpatial.Tools
                     var bc = new Coordinate(xMin + (x + 0.5)*width, yMax - y*height);
                     var br = new Coordinate(xMin + (x + 1)*width, yMax - y*height);
 
-                    bool topFull = false, rightFull = false, leftFull = false, bottomFull = false;
+                    /*
+                     Cell edges:
+                    e_tl   e_tr
+                     ----|----
+               e_lt  |       | e_rt
+                     -       -
+               e_lb  |       | e_rb 
+                     ----|---- 
+                    e_bl   e_br
+                     */
+
+                    bool e_tr = false,
+                         e_tl = false,
+                         e_lt = false,
+                         e_lb = false,
+                         e_rt = false,
+                         e_rb = false,
+                         e_br = false,
+                         e_bl = false;
 
                     if (!con_7)
                     {
                         #region Check Cell 7
 
-                        if (con_8 && con_5)
+                        // top: right half
+                        if (!con_8l)
                         {
-                            lineList.AddSegment(tl, tc); // top: left half
-                        }
-                        if (con_6 && con_1)
-                        {
-                            lineList.AddSegment(tc, tr); // top: right half
-                        }
-
-                        if (!con_8 && !con_6)
-                        {
-                            if (con_4 && !con_2)
-                            {
-                                lineList.AddSegment(tc, tr); // top: right half
-                            }
-                            else if (!con_4 && con_2)
-                            {
-                                lineList.AddSegment(tl, tc); // top: left half
-                            }
-                            else if (!con_4 && !con_2)
-                            {
-                                topFull = true; // add later
-                            }
+                            var a1 = con_6r && con_1;
+                            var a2 = !con_8r && !con_6l && con_4l && !con_2r;
+                            e_tr = a1 || a2;
                         }
 
+                        // top: left half
+                        if (!con_6r)
+                        {
+                            var a1 = con_8l && con_5;
+                            var a2 = !con_8r && !con_6l && !con_4l && con_2r;
+                            e_tl = a1 || a2;
+                        }
+
+                        // top: full
+                        if (!con_8l && !con_6r && !con_4l && !con_2r)
+                        {
+                            e_tr = e_tl = true;
+                        }
+                       
                         #endregion
                     }
 
@@ -250,30 +284,26 @@ namespace DotSpatial.Tools
                     {
                         #region Check Cell 3
 
-                        if (con_2 && con_5)
+                        // bottom: left half
+                        if (!con_4r)
                         {
-                            lineList.AddSegment(bl, bc); // bottom: left half
+                            var a1 = con_2l && con_5;
+                            var a2 = !con_2r && !con_4l && !con_6l && con_8r;
+                            e_bl = a1 || a2;
                         }
 
-                        if (con_4 && con_1)
+                        // bottom: right half
+                        if (!con_2l)
                         {
-                            lineList.AddSegment(bc, br); // bottom: right half
+                            var a1 = con_4r && con_1;
+                            var a2 = !con_2r && !con_4l && !con_8r && con_6l;
+                            e_br = a1 || a2;
                         }
 
-                        if (!con_2 && !con_4)
+                        // bottom: full
+                        if (!con_4r && !con_2l && !con_8r && !con_6l)
                         {
-                            if (con_6 && !con_8)
-                            {
-                                lineList.AddSegment(bc, br); // bottom: right half
-                            }
-                            else if (!con_6 && con_8)
-                            {
-                                lineList.AddSegment(bl, bc); // bottom: left half
-                            }
-                            else if (!con_6 && !con_8)
-                            {
-                                bottomFull = true; // add later
-                            }
+                            e_bl = e_br = true;
                         }
 
                         #endregion
@@ -283,32 +313,28 @@ namespace DotSpatial.Tools
                     {
                         #region Check Cell 1
 
-                        if (con_8 && con_3)
+                        // right: bottom half
+                        if (!con_2r)
                         {
-                            lineList.AddSegment(cr, br); //right: bottom half
+                            var a1 = con_8r && con_3;
+                            var a2 = !con_2l && !con_8l && !con_4r && con_6r;
+                            e_rb = a1 || a2;
                         }
 
-                        if (con_2 && con_7)
+                        // right: top half
+                        if (!con_8r)
                         {
-                            lineList.AddSegment(tr, cr); // right: top half
+                            var a1 = con_2r && con_7;
+                            var a2 = !con_2l && !con_8l && !con_6r && con_4r;
+                            e_rt = a1 || a2;
                         }
 
-                        if (!con_2 && !con_8)
+                        // right: full
+                        if (!con_2r && !con_8r && !con_4r && !con_6r)
                         {
-                            if (con_4 && !con_6)
-                            {
-                                lineList.AddSegment(tr, cr); // right: top half
-                            }
-                            else if (!con_4 && con_6)
-                            {
-                                lineList.AddSegment(cr, br); //right: bottom half
-                            }
-                            else if (!con_4 && !con_6)
-                            {
-                                rightFull = true; // add later
-                            }
+                            e_rb = e_rt = true;
                         }
-
+                        
                         #endregion
                     }
 
@@ -316,140 +342,227 @@ namespace DotSpatial.Tools
                     {
                         #region Check Cell 5
 
-                        if (con_6 && con_3)
+                        // left: bottom half
+                        if (!con_4l)
                         {
-                            lineList.AddSegment(cl, bl); // left: bottom half
+                            var a1 = con_3 && con_6l;
+                            var a2 = !con_6r && !con_4r && con_8l && !con_2l;
+                            e_lb = a1 || a2;
                         }
-                        if (con_4 && con_7)
+
+                        // left: top half
+                        if (!con_6l)
                         {
-                            lineList.AddSegment(tl, cl); //left: top half
+                            var a1 = con_4l && con_7;
+                            var a2 = !con_6r && !con_4r && !con_8l && con_2l;
+                            e_lt = a1 || a2;
                         }
-                        if (!con_6 && !con_4)
+
+                        // left: full
+                        if (!con_4l && !con_6l && !con_8l && !con_2l)
                         {
-                            if (con_8 && !con_2)
-                            {
-                                lineList.AddSegment(cl, bl); // left: bottom half
-                            }
-                            else if (!con_8 && con_2)
-                            {
-                                lineList.AddSegment(tl, cl); //left: top half
-                            }
-                            else if (!con_8 && !con_2)
-                            {
-                                leftFull = true; // add later
-                            }
+                            e_lb = e_lt = true;
                         }
 
                         #endregion
                     }
 
-                    // Smooth borders
+                    // Smooth boundaries regarding to outer cells
+                    // Right top corner
+                    if (e_tr && e_rt)
+                    {
+                        if (eqValues(y + 1, x, y, x + 1))
+                        {
+                            var a1 = connection(y + 1, x);
+                            var a2 = connection(y, x + 1);
+                            if ((a1 == 6 || a1 == 2 || a2 == 6 || a2 == 2) && !(a1 == 6 && a2 == 2))
+                            {
+                                lineList.AddSegment(tc, cr);
+                                e_tr = e_rt = false;
+                            }
+                        }
+                    }
+
+                    // Left top corner
+                    if (e_tl && e_lt)
+                    {
+                        if (eqValues(y, x - 1, y + 1, x))
+                        {
+                            var a1 = connection(y, x - 1);
+                            var a2 = connection(y + 1, x);
+                            if ((a1 == 8 || a1 == 4 || a2 == 8 || a2 == 4) && !(a1 == 8 && a2 == 4))
+                            {
+                                lineList.AddSegment(tc, cl);
+                                e_tl = e_lt = false;
+                            }
+                        }
+                    }
+
+                    // Left bottom corner
+                    if (e_bl && e_lb)
+                    {
+                        if (eqValues(y - 1, x, y, x - 1))
+                        {
+                            var a1 = connection(y - 1, x);
+                            var a2 = connection(y, x - 1);
+                            if ((a1 == 6 || a1 == 2 || a2 == 6 || a2 == 2) && !(a1 == 6 && a2 == 2))
+                            {
+                                lineList.AddSegment(cl, bc);
+                                e_bl = e_lb = false;
+                            }
+                        }
+                    }
+
+                    // Right bottom corner
+                    if (e_br && e_rb)
+                    {
+                        if (eqValues(y, x + 1, y - 1, x))
+                        {
+                            var a1 = connection(y, x + 1);
+                            var a2 = connection(y - 1, x);
+                            if ((a1 == 8 || a1 == 4 || a2 == 8 || a2 == 4) && !(a1 == 8 && a2 == 4))
+                            {
+                                lineList.AddSegment(bc, cr);
+                                e_br = e_rb = false;
+                            }
+                        }
+                    }
+
+                    // Smooth boundaries regarding direction of current cell
                     switch (curCon)
                     {
-                   /*
-                   tl tc tr
-                   cl    cr 
-                   bl bc br 
-                   */
                         case 2:
                         case 6:
-                            goto default; // todo: test this
-                            if (topFull && rightFull && leftFull && bottomFull)
+                            if (e_tr && e_rt)
                             {
-                                lineList.AddSegment(tl, tc);
                                 lineList.AddSegment(tc, cr);
-                                lineList.AddSegment(cr, br);
-                                lineList.AddSegment(br, bc);
-                                lineList.AddSegment(bc, cl);
-                                lineList.AddSegment(cl, tl);
-                                topFull = rightFull = leftFull = bottomFull = false;
+                                e_tr = e_rt = false;
                             }
-                            else if (topFull && rightFull)
+                            if (e_bl && e_lb)
                             {
-                                lineList.AddSegment(tl, tc);
-                                lineList.AddSegment(tc, cr);
-                                lineList.AddSegment(cr, br);
-                                topFull = rightFull = false;
-                            }
-                            else if (bottomFull && leftFull)
-                            {
-                                lineList.AddSegment(br, bc);
                                 lineList.AddSegment(bc, cl);
-                                lineList.AddSegment(cl, tl);
-                                bottomFull = leftFull = false;
+                                e_bl = e_lb = false;
                             }
-                            goto default;
+                            break;
                         case 4:
                         case 8:
-                            goto default; // todo: test this
-                            if (topFull && rightFull && leftFull && bottomFull)
+                            if (e_tl && e_lt)
                             {
-                                lineList.AddSegment(tr, cr);
-                                lineList.AddSegment(cr, bc);
-                                lineList.AddSegment(bc, bl);
-                                lineList.AddSegment(bl, cl);
                                 lineList.AddSegment(cl, tc);
-                                lineList.AddSegment(tc, tr);
-                                topFull = rightFull = leftFull = bottomFull = false;
+                                e_tl = e_lt = false;
                             }
-                            else if (topFull && leftFull)
+                            if (e_br && e_rb)
                             {
-                                lineList.AddSegment(bl, cl);
-                                lineList.AddSegment(cl, tc);
-                                lineList.AddSegment(tc, tr);
-                                topFull = leftFull = false;
-                            }
-                            else if (bottomFull && rightFull)
-                            {
-                                lineList.AddSegment(tr, cr);
                                 lineList.AddSegment(cr, bc);
-                                lineList.AddSegment(bc, bl);
-                                bottomFull = rightFull = false;
+                                e_br = e_rb = false;
                             }
-                            goto default;
-                        default:
-                            if (topFull) lineList.AddSegment(tl, tr);
-                            if (bottomFull) lineList.AddSegment(bl, br);
-                            if (rightFull) lineList.AddSegment(tr, br);
-                            if (leftFull) lineList.AddSegment(tl, bl);
                             break;
                     }
-                    
+
+                    // Add remaining edges
+                    // Top
+                    if (e_tl && e_tr)
+                    {
+                        lineList.AddSegment(tl, tr);
+                    }
+                    else if (e_tl)
+                    {
+                        lineList.AddSegment(tl, tc);
+                    }
+                    else if(e_tr)
+                    {
+                        lineList.AddSegment(tc, tr);
+                    }
+
+                    //Left
+                    if (e_lt && e_lb)
+                    {
+                        lineList.AddSegment(tl, bl);
+                    }
+                    else if (e_lt)
+                    {
+                        lineList.AddSegment(tl, cl);
+                    }
+                    else if (e_lb)
+                    {
+                        lineList.AddSegment(cl, bl);
+                    }
+
+                    // Bottom
+                    if (e_bl && e_br)
+                    {
+                        lineList.AddSegment(bl, br);
+                    }
+                    else if (e_bl)
+                    {
+                        lineList.AddSegment(bl, bc);
+                    }
+                    else if (e_br)
+                    {
+                        lineList.AddSegment(bc, br);
+                    }
+
+                    // Right
+                    if (e_rt && e_rb)
+                    {
+                        lineList.AddSegment(tr, br);
+                    }
+                    else if (e_rt)
+                    {
+                        lineList.AddSegment(tr, cr);
+                    }
+                    else if (e_rb)
+                    {
+                        lineList.AddSegment(cr, br);
+                    }
+
                     // Right top out diagonals
-                    if (con_8)
+                    if (con_8l)
                     {
                         lineList.AddSegment(tc, new Coordinate(xMin + (x + 1)*width, yMax - (y + 1 + 0.5)*height));
-                        lineList.AddSegment(cr, new Coordinate(xMin + (x + 1 + 0.5)*width, yMax - (y + 1)*height));
+                    }
+                    if (con_8r)
+                    {
+                        lineList.AddSegment(cr, new Coordinate(xMin + (x + 1 + 0.5) * width, yMax - (y + 1) * height));
                     }
 
                     // Right in diagonals
-                    if (con_8 || con_4)
+                    if (con_4l || con_8l)
                     {
-                        if (!con_6 && !con_7 && !con_5)
+                        if (!con_6r && !con_6l && !con_7 && !con_5)
                         {
                             lineList.AddSegment(tc, cl);
                         }
-                        if (!con_2 && !con_1 && !con_3)
+                    }
+                    if (con_4r || con_8r)
+                    {
+                        if (!con_2r && !con_2l && !con_1 && !con_3)
                         {
                             lineList.AddSegment(cr, bc);
                         }
                     }
 
                     // Left Top out diagonals
-                    if (con_6)
+                    if (con_6r)
                     {
                         lineList.AddSegment(tc, new Coordinate(xMin + x*width, yMax - (y + 1 + 0.5)*height));
-                        lineList.AddSegment(cl, new Coordinate(xMin + (x - 0.5)*width, yMax - (y + 1)*height));
+                    }
+                    if (con_6l)
+                    {
+                        lineList.AddSegment(cl, new Coordinate(xMin + (x - 0.5) * width, yMax - (y + 1) * height));
                     }
 
                     // Left In diagonals
-                    if (con_6 || con_2)
+                    if (con_6r || con_2r)
                     {
-                        if (!con_8 && !con_7 && !con_1)
+                        if (!con_8r && !con_8l && !con_7 && !con_1)
                         {
                             lineList.AddSegment(tc, cr);
                         }
-                        if (!con_4 && !con_5 && !con_3)
+                    }
+                    if (con_6l || con_2l)
+                    {
+                        if (!con_4r && !con_4l && !con_5 && !con_3)
                         {
                             lineList.AddSegment(cl, bc);
                         }
