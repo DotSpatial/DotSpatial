@@ -228,4 +228,19 @@
   <data name="TableEditorControl_RowPlural" xml:space="preserve">
     <value>rows</value>
   </data>
+  <data name="LabelSetup_Help1" xml:space="preserve">
+    <value>Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression.</value>
+  </data>
+  <data name="LabelSetup_Help2" xml:space="preserve">
+    <value>Use the Members tab to design a filter expression that restricts which features will be assigned to a specific label.</value>
+  </data>
+  <data name="LabelSetup_Help3" xml:space="preserve">
+    <value>Use the Expression Tab to design the text that should appear in a label.  Fields indicated with brackets will be substituted with real values.</value>
+  </data>
+  <data name="LabelSetup_Help4" xml:space="preserve">
+    <value>Each group can specify its own basic design characteristics.</value>
+  </data>
+  <data name="LabelSetup_Help5" xml:space="preserve">
+    <value>Each group can specify its advanced characteristics.</value>
+  </data>
 </root>
