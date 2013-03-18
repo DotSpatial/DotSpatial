@@ -781,25 +781,56 @@ namespace DotSpatial.Controls
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Title = MessageStrings.LayoutSaveDialogTitle;
-                sfd.Filter = "DotSpatial Layout File (*.mwl)|*.mwl";
+                sfd.Filter = "DotSpatial Layout File (*.mwl)|*.mwl|Bitmap File (*.bmp)|*.bmp"; 
                 sfd.AddExtension = true;
                 sfd.OverwritePrompt = true;
                 if (sfd.ShowDialog(this) == DialogResult.OK)
                 {
                     tempFilename = sfd.FileName;
+                    switch (sfd.FilterIndex)
+                    {
+                        case 1:
+                            try
+                            {
+                                SaveLayout(tempFilename);
+                                Filename = tempFilename;
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(MessageStrings.LayoutErrorSave + e.Message, "DotSpatial Print Layout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            break;
+                        case 2:
+
+                            // This sets up our dimensions
+                            //   int widthInch = PaperWidth * 100;
+                            //   int heightInch = PaperHeight * 100;
+                            //   int PPI = 300; // Set this to what you'd like 300 is good for paper printing, 72 is usually monitors, 96 is apple cuz they have to be different etc....
+
+                            //    Bitmap outputBitmap = new Bitmap(widthInch * PPI, heightInch * PPI);
+                            //     outputBitmap.SetResolution(PPI, PPI);
+                            //     outputBitmap.graphicsUnit = graphicsUnits.Display;
+
+                            Bitmap outputBitmap = new Bitmap(PaperWidth, PaperHeight);
+                            Graphics g = Graphics.FromImage(outputBitmap);
+                            RectangleF paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
+                            g.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
+                            g.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width-1, paperRect.Height-1);
+                            DrawPage(g);
+                            outputBitmap.Save(sfd.FileName);
+
+                            // When working with drawing objects its important to dispose of them because they are unmanaged and won't be cleaned up by the garbage collector unless they are disposed
+                            g.Dispose(); 
+                            outputBitmap.Dispose();
+                           
+                            break;
+                    }
+                   
                 }
                 else
                     return;
             }
-            try
-            {
-                SaveLayout(tempFilename);
-                Filename = tempFilename;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(MessageStrings.LayoutErrorSave + e.Message, "DotSpatial Print Layout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+           
         }
 
         /// <summary>
@@ -994,6 +1025,14 @@ namespace DotSpatial.Controls
         /// </summary>
         private void PrintPage(object sender, PrintPageEventArgs e)
         {
+            DrawPage(e.Graphics);
+        }
+
+        /// <summary>
+        /// Draws page to layout
+        /// </summary>
+        private void DrawPage(Graphics g)
+        {
             for (int i = LayoutElements.Count - 1; i >= 0; i--)
             {
                 LayoutElement le = LayoutElements[i];
@@ -1002,18 +1041,19 @@ namespace DotSpatial.Controls
                 {
                     // Text was incorrectly losing final letters.
                     RectangleF r = le.Rectangle;
-                    SizeF lettersize = e.Graphics.MeasureString("0", lt.Font);
+                    SizeF lettersize = g.MeasureString("0", lt.Font);
                     r.Width += lettersize.Width;
-                    e.Graphics.Clip = new Region(r);
+                    g.Clip = new Region(r);
                 }
                 else
                 {
-                    e.Graphics.Clip = new Region(le.Rectangle);
+                    g.Clip = new Region(le.Rectangle);
                 }
-                le.DrawBackground(e.Graphics, true);
-                le.Draw(e.Graphics, true);
-                le.DrawOutline(e.Graphics, true);
+                le.DrawBackground(g, true);
+                le.Draw(g, true);
+                le.DrawOutline(g, true);
             }
+
         }
 
         /// <summary>
@@ -1264,6 +1304,7 @@ namespace DotSpatial.Controls
                 if (sfd.ShowDialog(this) == DialogResult.Cancel)
                     return;
                 ConvertElementToBitmap(le, sfd.FileName);
+
             }
         }
 
