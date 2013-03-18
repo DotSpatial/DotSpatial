@@ -781,7 +781,7 @@ namespace DotSpatial.Controls
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Title = MessageStrings.LayoutSaveDialogTitle;
-                sfd.Filter = "DotSpatial Layout File (*.mwl)|*.mwl|Bitmap File (*.bmp)|*.bmp"; 
+                sfd.Filter = "DotSpatial Layout File (*.mwl)|*.mwl|Portable Network Graphics (*.png)|*.png"; 
                 sfd.AddExtension = true;
                 sfd.OverwritePrompt = true;
                 if (sfd.ShowDialog(this) == DialogResult.OK)
