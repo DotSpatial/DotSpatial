@@ -150,13 +150,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     MessageBox.Show("We cannot download " + pack.Id + " Please make sure you are connected to the Internet");
                 }
-                // Load the extension.
-                App.RefreshExtensions();
             });
 
             // UI related work.
             task.ContinueWith((t) =>
             {
+                // Load the extension.
+                App.RefreshExtensions();
                 IEnumerable<PackageDependency> dependency = pack.Dependencies;
                 App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
 
