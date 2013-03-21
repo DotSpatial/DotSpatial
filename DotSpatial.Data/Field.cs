@@ -43,6 +43,15 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
+        /// Creates a new default field empty field - needed for datatable copy and clone methods.
+        /// </summary>
+        public Field()
+            :base()
+        {
+
+        }
+
+        /// <summary>
         /// Creates a new default field given the specified DataColumn.  Numeric types
         /// default to a size of 255, but will be shortened during the save opperation.
         /// The default decimal count for double and long is 0, for Currency is 2, for float is
