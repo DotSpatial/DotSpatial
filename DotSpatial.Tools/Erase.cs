@@ -92,7 +92,7 @@ namespace DotSpatial.Tools
             }
 
             IFeatureSet result = Overlay.EraseFeatures(self, other, cancelProgressHandler);
-            if (result == null)
+            if (cancelProgressHandler.Cancel)
             {
                 _outputParam = null;
                 return false;

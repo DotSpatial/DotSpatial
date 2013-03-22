@@ -93,10 +93,9 @@ namespace DotSpatial.Tools
             int numPoints = 1;
             if (intInput != null){ numPoints = intInput.Value; }
 
-            //Random points will return null if it is cancelled
             RandomGeometry.RandomPoints(inputFeatures, numPoints, outputFeatures, cancelProgressHandler);
             
-            if (outputFeatures == null)
+            if (cancelProgressHandler.Cancel)
             {
                 //Set output param to null so that ToolManager does not attempt to open file.
                 _outputParam = null;
