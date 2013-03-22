@@ -105,7 +105,7 @@ namespace DotSpatial.Controls
                         {
                             if (fl.Selection.Count > 0)
                             {
-                                dataSets.Add(new DataSetArray(fl.LegendText + " Selection", fl.Selection.ToFeatureSet()));
+                                dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
                             }
                         }
                     }

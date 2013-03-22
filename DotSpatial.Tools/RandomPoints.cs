@@ -87,13 +87,16 @@ namespace DotSpatial.Tools
         {
             //Get the needed input and output parameters
             IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;          
+            IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
             IntParam intInput = _inputParam[1] as IntParam;
+
             int numPoints = 1;
             if (intInput != null){ numPoints = intInput.Value; }
 
             //Random points will return null if it is cancelled
-            IFeatureSet randomPoints = RandomGeometry.RandomPoints(inputFeatures, numPoints, cancelProgressHandler);
-            if (randomPoints == null)
+            RandomGeometry.RandomPoints(inputFeatures, numPoints, outputFeatures, cancelProgressHandler);
+            
+            if (outputFeatures == null)
             {
                 //Set output param to null so that ToolManager does not attempt to open file.
                 _outputParam = null;
@@ -101,9 +104,7 @@ namespace DotSpatial.Tools
             }
             else
             {
-                randomPoints.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
-                randomPoints.Save();
-                _outputParam[0].Value = randomPoints;
+                outputFeatures.Save();
                 return true;
             }
         }
