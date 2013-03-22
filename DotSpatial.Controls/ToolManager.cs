@@ -344,6 +344,7 @@ namespace DotSpatial.Controls
 
         private static void BwDoWork(object sender, DoWorkEventArgs e)
         {
+            BackgroundWorker bw = sender as BackgroundWorker;
             object[] threadParameter = e.Argument as object[];
             if (threadParameter == null) return;
             ITool toolToExecute = threadParameter[0] as ITool;
@@ -369,27 +370,20 @@ namespace DotSpatial.Controls
                 {
                     IFeatureSet featureset = p.Value as IFeatureSet;
                     IRaster rasterset = p.Value as IRaster;
-                    if (featureset != null)
+                    try
                     {
-                        try
+                        if (featureset != null)
                         {
                             App.Map.AddLayer(featureset.Filename);
                         }
-                        catch
-                        {
-                            MessageBox.Show("Error opening layer file.");
-                        }
-                    }
-                    else if (rasterset != null)
-                    {
-                        try
+                        else if (rasterset != null)
                         {
                             App.Map.AddLayer(rasterset.Filename);
                         }
-                        catch
-                        {
-                            MessageBox.Show("Error opening layer file.");
-                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Error opening layer file.");
                     }
                 }
             }
@@ -434,13 +428,13 @@ namespace DotSpatial.Controls
                     bw.DoWork += BwDoWork;
                     bw.RunWorkerCompleted += executionComplete;
 
-                    object[] threadParamerter = new object[2];
-                    threadParamerter[0] = toolToExecute;
-                    threadParamerter[1] = progForm;
+                    object[] threadParameter = new object[2];
+                    threadParameter[0] = toolToExecute;
+                    threadParameter[1] = progForm;
 
                     // Show the progress dialog and kick off the Async thread
                     progForm.Show(this);
-                    bw.RunWorkerAsync(threadParamerter);
+                    bw.RunWorkerAsync(threadParameter);
                 }
             }
         }

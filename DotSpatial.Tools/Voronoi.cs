@@ -1,23 +1,12 @@
-﻿// ********************************************************************************************************
-// Product Name: MapWindow.Tools.mwVoronoi
-// Description:  computes voronoi polygons around each of the points,
-//               defining the regions that are closer to that point than any other points
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is Toolbox.dll for the MapWindow 4.6/6 ToolManager project
-//
-// The Initializeializeial Developer of this Original Code is Ted Dunsford. Created in 8/26/2009
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// Name                   |   Date                 |   Comments
-//------------------------|------------------------|---------------------------------
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Tools.Voronoi.cs
+// Description:  Create thiessen polygons within a raster layer.
+// Copyright & License: See www.DotSpatial.org.
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//---------------------------------------------------------------------------------------------------------
+// Name                   |   Date                 |         Comments
+//------------------------|------------------------|-------------------------------------------------------
 // KP                     |  9/2009                |  Used IDW as model for Voronoi
 // Ping  Yang             |  12/2009               |  Cleaning code and fixing bugs.
 // ********************************************************************************************************
@@ -96,20 +85,6 @@ namespace DotSpatial.Tools
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
-            return Execute(input, output, cancelProgressHandler);
-        }
-
-        /// <summary>
-        /// computes voronoi polygons around each of the points,
-        /// defining the regions that are closer to that point than any other points
-        /// Ping deleted static for external testing 01/2010
-        /// </summary>
-        /// <param name="input">The input polygon feature set</param>
-        /// <param name="output">The output polygon feature set</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns></returns>
-        public bool Execute(IFeatureSet input, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
-        {
             Analysis.Voronoi.VoronoiPolygons(input, output, true);
             output.Save();
             return true;

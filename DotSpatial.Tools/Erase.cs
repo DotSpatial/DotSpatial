@@ -5,8 +5,9 @@
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
+//--------------------------------------------------------------------------------------------------------
 // Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------
+//--------------------|--------------------|--------------------------------------------------------------
 // Ted Dunsford       |  8/24/2009         |  Cleaned up some unnecessary references using re-sharper
 // KP                 |  9/2009            |  Used IDW as model for Erase
 // Ping  Yang         |  12/2009           |  Cleaning code and fixing bugs.
@@ -16,6 +17,7 @@
 using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Analysis;
 
 namespace DotSpatial.Tools
 {
@@ -76,119 +78,32 @@ namespace DotSpatial.Tools
         #region Public Methods
 
         /// <summary>
-        /// Executes the Erase Opaeration tool programaticaly
-        /// </summary>
-        /// <param name="self">The input feature that is to be erased</param>
-        /// <param name="other">The other feature defining the area to remove</param>
-        /// <param name="output">The resulting erased content</param>
-        /// <param name="cancelProgressHandler">The progress handler</param>
-        /// <returns>Boolean, true if the operation was a success</returns>
-        public static bool Execute(
-            IFeatureSet self, IFeatureSet other, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
-        {
-            // Validates the input and output data
-            if (self == null || other == null || output == null)
-            {
-                return false;
-            }
-
-            int previous;
-            int max = self.Features.Count * other.Features.Count;
-
-            output.CopyTableSchema(self); // Fill the 1st Featureset fields
-            IFeatureSet tempSet = self.CombinedFields(other);
-
-            // go through every feature in 1st featureSet
-            for (int i = 0; i < self.Features.Count; i++)
-            {
-                // go through every feature in 2nd featureSet
-                for (int j = 0; j < other.Features.Count; j++)
-                {
-                    self.Features[i].Difference(other.Features[j], tempSet, FieldJoinType.All);
-                    previous = Convert.ToInt32(Math.Round(i * j * 50D / max));
-                    if (cancelProgressHandler.Cancel)
-                    {
-                        return false;
-                    }
-
-                    cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
-                }
-            }
-
-            // Add to the Output Feature Set
-            for (int a = 0; a < tempSet.Features.Count; a++)
-            {
-                output.Features.Add(tempSet.Features[a]);
-                previous = Convert.ToInt32(Math.Round((a * 50D / tempSet.Features.Count) + 50D));
-                if (cancelProgressHandler.Cancel)
-                {
-                    return false;
-                }
-
-                cancelProgressHandler.Progress(string.Empty, previous, previous + TextStrings.progresscompleted);
-            }
-
-            output.SaveAs(output.Filename, true);
-
-            // add to map?
-            return true;
-        }
-
-        /// <summary>
         /// Once the Parameter have been configured the Execute command can be called, it returns true if succesful
         /// </summary>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             IFeatureSet self = _inputParam[0].Value as IFeatureSet;
-            if (self != null)
+            IFeatureSet other = _inputParam[1].Value as IFeatureSet;
+
+            if (self != null && other != null)
             {
                 self.FillAttributes();
-            }
-
-            IFeatureSet other = _inputParam[1].Value as IFeatureSet;
-            if (other != null)
-            {
                 other.FillAttributes();
             }
 
-            IFeatureSet output = _outputParam[0].Value as IFeatureSet;
-
-            return Execute(self, other, output, cancelProgressHandler);
-        }
-
-        /// <summary>
-        /// Ping Yang Overwrite the function for Executes the Erase Opaeration tool for external testing
-        /// </summary>
-        public bool Execute(IFeatureSet self, IFeatureSet other, IFeatureSet output)
-        {
-            if (self == null || other == null || output == null)
+            IFeatureSet result = Overlay.EraseFeatures(self, other, cancelProgressHandler);
+            if (result == null)
             {
+                _outputParam = null;
                 return false;
             }
-
-            output.CopyTableSchema(self); // Fill the 1st Featureset fields
-            IFeatureSet tempSet = self.CombinedFields(other);
-
-            // go through every feature in 1st featureSet
-            foreach (IFeature t in self.Features)
+            else
             {
-                // go through every feature in 2nd featureSet
-                foreach (IFeature t1 in other.Features)
-                {
-                    t.Difference(t1, tempSet, FieldJoinType.All);
-                }
+                result.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
+                result.Save();
+                _outputParam[0].Value = result;
+                return true;
             }
-
-            // Add to the Output Feature Set
-            for (int a = 0; a < tempSet.Features.Count; a++)
-            {
-                output.Features.Add(tempSet.Features[a]);
-            }
-
-            output.SaveAs(output.Filename, true);
-
-            // add to map?
-            return true;
         }
 
         /// <summary>

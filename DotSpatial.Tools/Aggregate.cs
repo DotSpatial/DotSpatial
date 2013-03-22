@@ -1,22 +1,13 @@
-﻿// ********************************************************************************************************
-// Product Name: MapWindow.Tools.mwAggregate
-// Description:  Tool for aggregating all polygons into a single polygon.
-//
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is Toolbox.dll for the MapWindow 4.6/6 ToolManager project
-//
-// The Initializeializeial Developer of this Original Code is Brian Marchionni. Created in Jan, 2009.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// -----------------------|------------------------|--------------------------------------------
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Tools.Aggregate.cs
+// Description:  A tool for aggregating multiple polygons into a single polygon.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name                   |   Date                 |         Comments
+//------------------------|------------------------|------------------------------------------------------
 // Ted Dunsford           |  8/24/2009             |  Cleaned up some formatting issues using re-sharper
 // KP                     |  9/2009                |  Used IDW as model for Aggregate
 // Ping                   |  12/2009               |  Cleaning code and fixing bugs.

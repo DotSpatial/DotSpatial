@@ -1,5 +1,5 @@
 ﻿// *******************************************************************************************************
-// Product: DotSpatial.Tools.RandomGeometry
+// Product: DotSpatial.Tools.RandomPoints.cs
 // Description:  Wraps DotSpatial.Analysis.RandomGeometry in a tool wrapper for use through the DotSptial toolbox.
 // Copyright & License: See www.DotSpatial.org.
 // Contributor(s): Open source contributors may list themselves and their modifications here.
@@ -19,7 +19,6 @@ using DotSpatial.Analysis;
 
 namespace DotSpatial.Tools
 {
-
     /// <summary>
     /// This tool provides access to the random geometry functionality in DotSpatial.Analysis.RandomGeometry.
     /// DotSpatial tools are intended to be used through the DotSpatial toolbox or modeler.
@@ -27,10 +26,15 @@ namespace DotSpatial.Tools
     /// </summary>
     class RandomGeometryTool : Tool
     {
+        #region Constants and Fields
+
         // Declare input and output parameter arrays
         private Parameter[] _inputParam;
         private Parameter[] _outputParam;
 
+        #endregion
+
+        #region Constructor
         /// <summary>
         /// Create a new instance of the RandomGeometry tool
         /// </summary>
@@ -42,17 +46,9 @@ namespace DotSpatial.Tools
             this.ToolTip = TextStrings.RandomGeometryToolTip;
         }
 
-        /// <summary>
-        /// Inititalize input and output arrays with parameter types and default values.
-        /// </summary>
-        public override void Initialize()
-        {
-            _inputParam = new Parameter[2];
-            _inputParam[0] = new FeatureSetParam(TextStrings.InputFeatureSet);
-            _inputParam[1] = new IntParam(TextStrings.RandomGeometryNumPoint, 10);
-            _outputParam = new Parameter[1];
-            _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet);
-        }
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets or Sets the input paramater array. 
@@ -78,9 +74,15 @@ namespace DotSpatial.Tools
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Once the parameters have been configured, the Execute command can be called, it returns true if successful
+        /// Executes the random geometry tool, returning true when it has completed.
         /// </summary>
+        /// <param name="cancelProgressHandler"></param>
+        /// <returns></returns>
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             //Get the needed input and output parameters
@@ -99,11 +101,26 @@ namespace DotSpatial.Tools
             }
             else
             {
-                randomPoints.Filename = (_outputParam[0].Value as IFeatureSet).Filename;
-                _outputParam[0].Value = randomPoints;
+                randomPoints.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
                 randomPoints.Save();
+                _outputParam[0].Value = randomPoints;
                 return true;
             }
         }
+
+
+        /// <summary>
+        /// Inititalize input and output arrays with parameter types and default values.
+        /// </summary>
+        public override void Initialize()
+        {
+            _inputParam = new Parameter[2];
+            _inputParam[0] = new FeatureSetParam(TextStrings.InputFeatureSet);
+            _inputParam[1] = new IntParam(TextStrings.RandomGeometryNumPoint, 10);
+            _outputParam = new Parameter[1];
+            _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet);
+        }
+
+        #endregion
     }
 }

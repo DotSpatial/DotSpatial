@@ -1,21 +1,13 @@
-﻿// ********************************************************************************************************
-// Product Name: MapWindow.Tools.RasterFromLAS
-// Description:  Add Two Raster Layer cell by cell
-//
-// ********************************************************************************************************
-// The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License");
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://www.mozilla.org/MPL/
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is DotSpatial.Tools.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford 11/14/2010 with the hope that it will
-// serve as an example template for Ping.
-//
+﻿// *******************************************************************************************************
+// Product: DotSpatial.Tools.RasterFromLAS.cs
+// Description:  Converts the point elevations in a LAS file to a Raster.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
 // ********************************************************************************************************
 
 using DotSpatial.Data;

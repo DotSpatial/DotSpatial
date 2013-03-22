@@ -952,7 +952,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to input2 Raster.
+        ///   Looks up a localized string similar to Second Raster.
         /// </summary>
         internal static string input2Raster {
             get {
@@ -1924,7 +1924,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generate random points in an area..
+        ///   Looks up a localized string similar to Generate any number of randomly placed points within a specified area of the map..
         /// </summary>
         internal static string RandomGeometryDescription {
             get {
@@ -1942,7 +1942,7 @@ namespace DotSpatial.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select an area and the number of points to generate inside of it..
+        ///   Looks up a localized string similar to Select an area from the map and specify the number of points to generate inside of it..
         /// </summary>
         internal static string RandomGeometryToolTip {
             get {

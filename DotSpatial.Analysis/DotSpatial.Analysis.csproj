@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Border.cs" />
+    <Compile Include="Buffer.cs" />
     <Compile Include="Overlay.cs" />
     <Compile Include="RandomGeometry.cs" />
     <Compile Include="ClipRaster.cs" />

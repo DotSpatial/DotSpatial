@@ -82,13 +82,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BitmapResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Buffer.cs">
+    <Compile Include="BufferTool.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClipRasterWithPolygon.cs" />
-    <Compile Include="RandomGeometry.cs" />
+    <Compile Include="RandomPoints.cs" />
     <Compile Include="RasterBinTool.cs" />
-    <Compile Include="RasterFromLAScs.cs" />
+    <Compile Include="RasterFromLAS.cs" />
     <Compile Include="RasterMagic.cs" />
     <Compile Include="Voronoi.cs" />
     <Compile Include="RasterToPolygon.cs" />

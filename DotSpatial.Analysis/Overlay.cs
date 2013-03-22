@@ -27,9 +27,14 @@ namespace DotSpatial.Analysis
         /// </summary>
         /// <param name="TargetFeatures">Features which will be erased in part or whole.</param>
         /// <param name="SourceFeatures">Features which represent areas to erase.</param>
+        /// <param name="cancelProgressHandler">Optional parameter to report progress and cancel entire process if needed.</param>
         /// <returns>A point feature set with the randomly created features.</returns>
-        public static FeatureSet EraseFeatures(FeatureSet TargetFeatures, FeatureSet SourceFeatures)
+        public static FeatureSet EraseFeatures(IFeatureSet TargetFeatures, IFeatureSet SourceFeatures, ICancelProgressHandler cancelProgressHandler = null)
         {
+            if (TargetFeatures == null || SourceFeatures == null)
+            {
+                return null;
+            }
             //Erase features from one feature set where they are intersected by another feature set
             //Note: we use the ShapeIndices here rather than for each feature in featureset.features as a memory management technique.
             //The current version does not preserve any attribute info. 
@@ -56,6 +61,12 @@ namespace DotSpatial.Analysis
                 if (TF != null)
                 {
                     ResultFeatures.AddFeature(TF).CopyAttributes(TargetFeatures.GetFeature(i));  //add the fully clipped feature to the results
+                }
+                if (cancelProgressHandler != null)
+                {
+                    if (cancelProgressHandler.Cancel) { return null; }
+                    int progress = Convert.ToInt32(i * 100 / TargetFeatures.ShapeIndices.Count);
+                    cancelProgressHandler.Progress(String.Empty, progress, String.Empty);
                 }
             }
             return ResultFeatures;

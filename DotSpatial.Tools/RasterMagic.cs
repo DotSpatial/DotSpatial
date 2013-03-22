@@ -1,8 +1,15 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="RasterMagic.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+// *******************************************************************************************************
+// Product: DotSpatial.Tools.RasterMagic.cs
+// Description:  Used to consolidate duplicate code across multiple tools.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// ********************************************************************************************************
 
 using System;
 using DotSpatial.Data;

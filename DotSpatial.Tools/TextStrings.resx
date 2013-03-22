@@ -286,7 +286,7 @@
     <value>Erased Result Feature Set</value>
   </data>
   <data name="input2Raster" xml:space="preserve">
-    <value>input2 Raster</value>
+    <value>Second Raster</value>
   </data>
   <data name="InputSecondRasterforMerging" xml:space="preserve">
     <value>Input Second Raster for Merging</value>
@@ -919,12 +919,12 @@
     <value>Random Points</value>
   </data>
   <data name="RandomGeometryDescription" xml:space="preserve">
-    <value>Generate random points in an area.</value>
+    <value>Generate any number of randomly placed points within a specified area of the map.</value>
   </data>
   <data name="RandomGeometryNumPoint" xml:space="preserve">
     <value>The number of points to generate.</value>
   </data>
   <data name="RandomGeometryToolTip" xml:space="preserve">
-    <value>Select an area and the number of points to generate inside of it.</value>
+    <value>Select an area from the map and specify the number of points to generate inside of it.</value>
   </data>
 </root>

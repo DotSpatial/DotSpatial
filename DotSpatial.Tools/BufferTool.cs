@@ -26,16 +26,22 @@ namespace DotSpatial.Tools
     /// DotSpatial tools are intended to be used through the DotSpatial toolbox or modeler.
     /// To perform buffer analysis through code, consider using DotSpatial.Feature.Buffer directly.
     /// </summary>
-    public class Buffer : Tool
+    public class BufferTool : Tool
     {
+        #region Constants and Fields
+
         // Declare input and output parameter arrays
         private Parameter[] _inputParam;
         private Parameter[] _outputParam;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Create a new instance of the buffer tool
         /// </summary>
-        public Buffer()
+        public BufferTool()
         {
             this.Name = TextStrings.Buffer;
             this.Category = TextStrings.Analysis;
@@ -43,17 +49,9 @@ namespace DotSpatial.Tools
             this.ToolTip = TextStrings.Bufferwithdistance;
         }
 
-        /// <summary>
-        /// Inititalize input and output arrays with parameter types and default values.
-        /// </summary>
-        public override void Initialize()
-        {
-            _inputParam = new Parameter[2];
-            _inputParam[0] = new FeatureSetParam(TextStrings.InputFeatureSet);
-            _inputParam[1] = new DoubleParam(TextStrings.BufferDistance, 10.0);
-            _outputParam = new Parameter[1];
-            _outputParam[0] = new PolygonFeatureSetParam(TextStrings.OutputPolygonFeatureSet);
-        }
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets or Sets the input paramater array. 
@@ -79,6 +77,10 @@ namespace DotSpatial.Tools
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Once the parameters have been configured, the Execute command can be called, it returns true if succesful
         /// </summary>
@@ -93,29 +95,32 @@ namespace DotSpatial.Tools
                 bufferDistance = dp.Value;
             }
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
-            return GetBuffer(inputFeatures, bufferDistance, outputFeatures, cancelProgressHandler);
+            
+            if (Analysis.Buffer.AddBuffer(inputFeatures, bufferDistance, outputFeatures, cancelProgressHandler))
+            {
+                outputFeatures.Save();
+                return true;
+            }
+            else
+            {
+                _outputParam = null;
+                return false;
+            }
         }
 
-        
+
         /// <summary>
-        /// Private function to compute the buffer and return the result to the Execute function.
+        /// Inititalize input and output arrays with parameter types and default values.
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="bufferDistance"></param>
-        /// <param name="outputFeatures"></param>
-        /// <returns></returns>
-        private bool GetBuffer(IFeatureSet inputFeatures, double bufferDistance, IFeatureSet outputFeatures, ICancelProgressHandler cancelProgressHandler)
+        public override void Initialize()
         {
-            int numFeatures = inputFeatures.Features.Count;
-            for (int i = 0; i < numFeatures; i++)
-            {
-                inputFeatures.Features[i].Buffer(bufferDistance, outputFeatures);
-                // Here we update the progress
-                int progress = Convert.ToInt32(i * 100 / numFeatures);
-                cancelProgressHandler.Progress("buffer_tool", progress, "Buffering features.");
-            }
-            outputFeatures.Save();
-            return true;
+            _inputParam = new Parameter[2];
+            _inputParam[0] = new FeatureSetParam(TextStrings.InputFeatureSet);
+            _inputParam[1] = new DoubleParam(TextStrings.BufferDistance, 10.0);
+            _outputParam = new Parameter[1];
+            _outputParam[0] = new PolygonFeatureSetParam(TextStrings.OutputPolygonFeatureSet);
         }
+
+        #endregion
     }
 }
