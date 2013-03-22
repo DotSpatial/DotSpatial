@@ -102,7 +102,7 @@ namespace DotSpatial.Tools
         {
             _inputParam = new Parameter[2];
             _inputParam[0] = new RasterParam(TextStrings.input1Raster) { HelpText = TextStrings.InputRasterforCliping };
-            _inputParam[1] = new FeatureSetParam(TextStrings.input2PolygonforCliping)
+            _inputParam[1] = new PolygonFeatureSetParam(TextStrings.input2PolygonforCliping)
                                  {
                                      HelpText = TextStrings.InputPolygonforclipingtoRaster
                                  };
