@@ -165,7 +165,6 @@ namespace DotSpatial.Data
             _dbaseToEncoding[0x67] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(861)); // Icelandic MS–DOS
             //_dbaseToEncoding[0x68] = Encoding.GetEncoding(895); // Kamenicky (Czech) MS-DOS 
             //_dbaseToEncoding[0x69] = Encoding.GetEncoding(620); // Mazovia (Polish) MS-DOS 
-            _dbaseToEncoding[0x6A] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Oem); // Greek MS–DOS (437G)
             _dbaseToEncoding[0x6B] = new CultureWithEncoding(CultureInfo.GetCultureInfo(31), CodePageChoice.Oem); // Turkish MS–DOS
             _dbaseToEncoding[0x6C] = new CultureWithEncoding(CultureInfo.GetCultureInfo(3084), Encoding.GetEncoding(863)); // French–Canadian MS–DOS
             _dbaseToEncoding[0x78] = new CultureWithEncoding(CultureInfo.GetCultureInfo(1028), CodePageChoice.Oem); // Taiwan Big 5
@@ -178,14 +177,25 @@ namespace DotSpatial.Data
             _dbaseToEncoding[0x86] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Oem); // Greek OEM
             _dbaseToEncoding[0x87] = new CultureWithEncoding(CultureInfo.GetCultureInfo(27), CodePageChoice.Oem); // Slovenian OEM
             _dbaseToEncoding[0x88] = new CultureWithEncoding(CultureInfo.GetCultureInfo(31), CodePageChoice.Oem); // Turkish OEM
-            _dbaseToEncoding[0x96] = new CultureWithEncoding(CultureInfo.GetCultureInfo(25), CodePageChoice.Mac); // Russian Macintosh 
-            _dbaseToEncoding[0x97] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(10029)); // Eastern European Macintosh 
-            _dbaseToEncoding[0x98] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Mac); // Greek Macintosh 
             _dbaseToEncoding[0xC8] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(1250)); // Eastern European Windows
             _dbaseToEncoding[0xC9] = new CultureWithEncoding(CultureInfo.GetCultureInfo(25), CodePageChoice.Ansi); // Russian Windows
             _dbaseToEncoding[0xCA] = new CultureWithEncoding(CultureInfo.GetCultureInfo(31), CodePageChoice.Ansi); // Turkish Windows
             _dbaseToEncoding[0xCB] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Ansi); // Greek Windows
             _dbaseToEncoding[0xCC] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(1257)); // Baltic Windows
+
+            if (IsntRunningOnMono())
+            {
+                _dbaseToEncoding[0x6A] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Oem); // Greek MS–DOS (437G) -m
+                _dbaseToEncoding[0x96] = new CultureWithEncoding(CultureInfo.GetCultureInfo(25), CodePageChoice.Mac); // Russian Macintosh -m
+                _dbaseToEncoding[0x97] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(10029)); // Eastern European Macintosh -m
+                _dbaseToEncoding[0x98] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Mac); // Greek Macintosh -m
+            }
+        }
+
+        private static bool IsntRunningOnMono()
+        {
+            Type t = Type.GetType("Mono.Runtime");
+            return (t == null);
         }
 
         private static void setupEncodingToDbaseMap()
