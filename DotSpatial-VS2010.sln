@@ -112,9 +112,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D2D76B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleLegend", "DotSpatial.Plugins.Legend\DotSpatial.Plugins.SimpleLegend.csproj", "{D85281B4-6012-42A0-A8F1-B29068A3F433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Mono", "Mono\DotSpatial.Mono.csproj", "{F99687B4-4E4C-4737-B1E1-29C01E6C1576}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nunit Tests", "Nunit Tests", "{D6E75E17-934D-4AAE-BCF2-982E68A9AD1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTests", "NunitTests\NunitTests.csproj", "{100E368B-27C8-41B5-8565-8326A8AA1D7D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 45
+		SccNumberOfProjects = 47
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -294,6 +300,14 @@ Global
 		SccProjectTopLevelParentUniqueName44 = DotSpatial-VS2010.sln
 		SccProjectName44 = DotSpatial.Positioning.Design
 		SccLocalPath44 = DotSpatial.Positioning.Design
+		SccProjectUniqueName45 = Mono\\DotSpatial.Mono.csproj
+		SccProjectTopLevelParentUniqueName45 = DotSpatial-VS2010.sln
+		SccProjectName45 = Mono
+		SccLocalPath45 = Mono
+		SccProjectUniqueName46 = NunitTests\\NunitTests.csproj
+		SccProjectTopLevelParentUniqueName46 = DotSpatial-VS2010.sln
+		SccProjectName46 = NunitTests
+		SccLocalPath46 = NunitTests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -737,6 +751,26 @@ Global
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|x86.ActiveCfg = Release|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576}.Release|x86.ActiveCfg = Release|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -759,6 +793,7 @@ Global
 		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{9B692E11-0273-4331-9B15-1670093EDDBF} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{9108B04D-A3DE-4981-B66F-496078D462FE} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{F99687B4-4E4C-4737-B1E1-29C01E6C1576} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{F5956768-54E1-4EEE-9199-35F1A12C8FFC} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{51C6E16E-920E-4D36-B41E-D48ABEF837E7} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
@@ -786,5 +821,6 @@ Global
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5520B6CB-3124-4B1A-A15C-DC4637F618C3} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5E5D5BF6-E7F1-4E10-9CD3-0A3CA902AD21} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D} = {D6E75E17-934D-4AAE-BCF2-982E68A9AD1C}
 	EndGlobalSection
 EndGlobal
