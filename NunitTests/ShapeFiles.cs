@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using DotSpatial.Data;
 using DotSpatial.Topology;
-using DotSpatial.Mono;
 using System.IO;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -21,23 +20,20 @@ namespace ReadWriteTest
             String folder = Path.Combine(new String[] { "..", "..", "..", "DotSpatial.Data.Tests", "Data", "Shapefiles" });
             
             String testFile = Path.Combine(new String[] { folder, filename });
-            String monoFile = Path.Combine(new String[] { folder, "monoTests", filename });
+            String newFile = Path.Combine(new String[] { folder, "testSaves", filename });
 
             IFeatureSet original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile);;
 
-            if (Mono.IsRunningOnMono())
-            {
-                original.Filename = monoFile;
-                original.Save();
-            }
+            original.Filename = newFile;
+            original.Save();
 
-            IFeatureSet monoSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(monoFile);
+            IFeatureSet newSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(newFile);
 
-            Assert.AreEqual(original.Features.Count, monoSave.Features.Count);
+            Assert.AreEqual(original.Features.Count, newSave.Features.Count);
 
             for (int j = 0; j < original.Features.Count; j+=100)
             {
-                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, monoSave.Features.ElementAt(j).Coordinates);
+                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, newSave.Features.ElementAt(j).Coordinates);
             }
         }
 
@@ -48,23 +44,20 @@ namespace ReadWriteTest
             String folder = Path.Combine(new String[] { "..", "..", "..", "DotSpatial.Data.Tests", "Data", "Shapefiles" });
 
             String testFile = Path.Combine(new String[] { folder, filename });
-            String monoFile = Path.Combine(new String[] { folder, "monoTests", filename });
+            String newFile = Path.Combine(new String[] { folder, "monoTests", filename });
 
             IFeatureSet original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile); ;
 
-            if (Mono.IsRunningOnMono())
-            {
-                original.Filename = monoFile;
-                original.Save();
-            }
+            original.Filename = newFile;
+            original.Save();
 
-            IFeatureSet monoSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(monoFile);
+            IFeatureSet newSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(newFile);
 
-            Assert.AreEqual(original.Features.Count, monoSave.Features.Count);
+            Assert.AreEqual(original.Features.Count, newSave.Features.Count);
 
             for (int j = 0; j < original.Features.Count; j+=100)
             {
-                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, monoSave.Features.ElementAt(j).Coordinates);
+                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, newSave.Features.ElementAt(j).Coordinates);
             }
         }
 
@@ -75,23 +68,20 @@ namespace ReadWriteTest
             String folder = Path.Combine(new String[] { "..", "..", "..", "DotSpatial.Data.Tests", "Data", "Shapefiles" });
 
             String testFile = Path.Combine(new String[] { folder, filename });
-            String monoFile = Path.Combine(new String[] { folder, "monoTests", filename });
+            String newFile = Path.Combine(new String[] { folder, "monoTests", filename });
 
             IFeatureSet original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile); ;
 
-            if (Mono.IsRunningOnMono())
-            {
-                original.Filename = monoFile;
-                original.Save();
-            }
+            original.Filename = newFile;
+            original.Save();
 
-            IFeatureSet monoSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(monoFile);
+            IFeatureSet newSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(newFile);
 
-            Assert.AreEqual(original.Features.Count, monoSave.Features.Count);
+            Assert.AreEqual(original.Features.Count, newSave.Features.Count);
 
             for (int j = 0; j < original.Features.Count; j+=100)
             {
-                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, monoSave.Features.ElementAt(j).Coordinates);
+                Assert.AreEqual(original.Features.ElementAt(j).Coordinates, newSave.Features.ElementAt(j).Coordinates);
             }
         }
     }

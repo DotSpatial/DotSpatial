@@ -58,10 +58,6 @@
       <Name>DotSpatial.Data</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
-      <Project>{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}</Project>
-      <Name>DotSpatial.Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
       <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
       <Name>DotSpatial.Topology</Name>
