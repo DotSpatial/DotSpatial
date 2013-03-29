@@ -98,7 +98,7 @@ namespace DotSpatial.Modeling.Forms
             this.helpHyperlink.Name = "helpHyperlink";
             this.helpHyperlink.Size = new System.Drawing.Size(53, 13);
             this.helpHyperlink.TabIndex = 2;
-            this.helpHyperlink.TabStop = true;
+            // this.helpHyperlink.TabStop = true;
             this.helpHyperlink.Text = "Tool Help";
             this.helpHyperlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.helpHyperlink_LinkClicked);
             // 
