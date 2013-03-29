@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
+using DotSpatial.Mono;
 
 namespace DotSpatial.Data
 {
@@ -183,19 +184,13 @@ namespace DotSpatial.Data
             _dbaseToEncoding[0xCB] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Ansi); // Greek Windows
             _dbaseToEncoding[0xCC] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(1257)); // Baltic Windows
 
-            if (IsntRunningOnMono())
+            if (!Mono.Mono.IsRunningOnMono())
             {
                 _dbaseToEncoding[0x6A] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Oem); // Greek MS–DOS (437G) -m
                 _dbaseToEncoding[0x96] = new CultureWithEncoding(CultureInfo.GetCultureInfo(25), CodePageChoice.Mac); // Russian Macintosh -m
                 _dbaseToEncoding[0x97] = new CultureWithEncoding(CultureInfo.InvariantCulture, Encoding.GetEncoding(10029)); // Eastern European Macintosh -m
                 _dbaseToEncoding[0x98] = new CultureWithEncoding(CultureInfo.GetCultureInfo(8), CodePageChoice.Mac); // Greek Macintosh -m
             }
-        }
-
-        private static bool IsntRunningOnMono()
-        {
-            Type t = Type.GetType("Mono.Runtime");
-            return (t == null);
         }
 
         private static void setupEncodingToDbaseMap()

@@ -401,6 +401,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
+      <Project>{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}</Project>
+      <Name>DotSpatial.Mono</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
       <Name>DotSpatial.Projections</Name>
