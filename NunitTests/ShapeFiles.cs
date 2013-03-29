@@ -44,7 +44,7 @@ namespace ReadWriteTest
             String folder = Path.Combine(new String[] { "..", "..", "..", "DotSpatial.Data.Tests", "Data", "Shapefiles" });
 
             String testFile = Path.Combine(new String[] { folder, filename });
-            String newFile = Path.Combine(new String[] { folder, "monoTests", filename });
+            String newFile = Path.Combine(new String[] { folder, "testSaves", filename });
 
             IFeatureSet original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile); ;
 
@@ -68,7 +68,7 @@ namespace ReadWriteTest
             String folder = Path.Combine(new String[] { "..", "..", "..", "DotSpatial.Data.Tests", "Data", "Shapefiles" });
 
             String testFile = Path.Combine(new String[] { folder, filename });
-            String newFile = Path.Combine(new String[] { folder, "monoTests", filename });
+            String newFile = Path.Combine(new String[] { folder, "testSaves", filename });
 
             IFeatureSet original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile); ;
 
