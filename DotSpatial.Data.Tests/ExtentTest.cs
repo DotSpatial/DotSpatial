@@ -4,7 +4,13 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
+using Assert = NUnit.Framework.Assert;
 
 namespace DotSpatial.Data.Tests
 {

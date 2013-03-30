@@ -1,8 +1,15 @@
 ﻿using System;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
+using NUnitAssert = NUnit.Framework.Assert;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using System.IO;

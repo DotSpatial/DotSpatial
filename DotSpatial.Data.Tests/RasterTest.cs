@@ -2,7 +2,13 @@
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
+using Assert = NUnit.Framework.Assert;
 
 namespace DotSpatial.Data.Tests
 {
@@ -16,7 +22,7 @@ namespace DotSpatial.Data.Tests
         /// <summary>
         ///A test for GetNoDataCellCount
         ///</summary>
-        [TestMethod()]
+        /*[TestMethod()]
         [Ignore] // Test data not exists
         public void GetNoDataCellCountTest()
         {
@@ -57,7 +63,7 @@ namespace DotSpatial.Data.Tests
             Assert.AreEqual(expected, actual);
 
             System.IO.File.Delete(path);
-        }
+        }*/
 
         /// <summary>
         ///A test for SaveAs

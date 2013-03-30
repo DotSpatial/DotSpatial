@@ -1,7 +1,12 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
+using Assert = NUnit.Framework.Assert;
 namespace DotSpatial.Controls.Tests
 {
 
@@ -15,23 +20,7 @@ namespace DotSpatial.Controls.Tests
     {
 
 
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+    
 
         #region Additional test attributes
         // 

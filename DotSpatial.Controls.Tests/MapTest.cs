@@ -1,7 +1,13 @@
 ﻿using System;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
+using Assert = NUnit.Framework.Assert;
 using System.IO;
 using DotSpatial.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotSpatial.Projections;
 using System.Collections.Generic;
 using DotSpatial.Symbology;
@@ -15,24 +21,6 @@ namespace DotSpatial.Controls.Tests
     [TestClass()]
     public class MapTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         #region Additional test attributes
 
         //

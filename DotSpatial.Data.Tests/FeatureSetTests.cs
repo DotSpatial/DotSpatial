@@ -9,7 +9,7 @@ namespace DotSpatial.Data.Tests
     [TestFixture]
     public class FeatureSetTests
     {
-        private readonly string _shapefiles = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,  @"Data\Shapefiles\");
+        private readonly string _shapefiles = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data",@"Shapefiles");
 
         [Test]
         public void IndexModeToFeaturesClear()
@@ -131,12 +131,11 @@ namespace DotSpatial.Data.Tests
         public void FilePathTestWithSpaces()
         {
             FeatureSet target = new FeatureSet();
-            // this path must exist.
-            Directory.SetCurrentDirectory("C:\\Windows\\system32");
-            // this path does need to actually exist.
-            string expectedFullPath = @"C:\Windows\system32\folder name\states.shp";
-            string relativeFilePath = @"folder name\states.shp";
-
+            string relPath1 = @"folder";
+            string relPath2 = @"name\states.shp";
+            string relativeFilePath = relPath1 + " " +  relPath2;
+            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relPath1) +
+                                      " " + relPath2;
             string actualFilePath;
             target.FilePath = relativeFilePath;
             actualFilePath = target.FilePath;
@@ -153,11 +152,8 @@ namespace DotSpatial.Data.Tests
         public void FilePathTest1()
         {
             FeatureSet target = new FeatureSet();
-            // this path must exist.
-            Directory.SetCurrentDirectory("C:\\Windows\\system32");
-            // this path does need to actually exist.
-            string expectedFullPath = @"C:\Windows\system32\inner\states.shp";
             string relativeFilePath = @"inner\states.shp";
+            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(),relativeFilePath);
 
             string actualFilePath;
             target.FilePath = relativeFilePath;
@@ -175,11 +171,8 @@ namespace DotSpatial.Data.Tests
         public void FilePathTest2()
         {
             FeatureSet target = new FeatureSet();
-            // this path must exist.
-            Directory.SetCurrentDirectory("C:\\Windows\\system32");
-            // this path does need to actually exist.
-            string expectedFullPath = @"C:\states.shp";
             string relativeFilePath = @"..\..\states.shp";
+            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relativeFilePath);
 
             string actualFilePath;
             target.FilePath = relativeFilePath;
