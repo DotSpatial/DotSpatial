@@ -58,54 +58,43 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(AttributeCalculator));
-            this.lblFieldTitle = new Label();
-            this.lstViewFields = new ListView();
-            this.lstBoxFunctions = new ListBox();
-            this.lblFunctions = new Label();
-            this.btnClaculate = new Button();
-            this.btnClose = new Button();
-            this.btnPlus = new Button();
-            this.btnDivide = new Button();
-            this.btnMultiply = new Button();
-            this.btnMinus = new Button();
-            this.lblDestinationFieldTitle = new Label();
-            this.comDestFieldComboBox = new ComboBox();
-            this.lblAssignment = new Label();
-            this.rtxtComputaion = new RichTextBox();
-            this.linkLabel1 = new LinkLabel();
-            this.lblComputaion = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AttributeCalculator));
+            this.lblFieldTitle = new System.Windows.Forms.Label();
+            this.lstViewFields = new System.Windows.Forms.ListView();
+            this.lstBoxFunctions = new System.Windows.Forms.ListBox();
+            this.lblFunctions = new System.Windows.Forms.Label();
+            this.btnClaculate = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnPlus = new System.Windows.Forms.Button();
+            this.btnDivide = new System.Windows.Forms.Button();
+            this.btnMultiply = new System.Windows.Forms.Button();
+            this.btnMinus = new System.Windows.Forms.Button();
+            this.lblDestinationFieldTitle = new System.Windows.Forms.Label();
+            this.comDestFieldComboBox = new System.Windows.Forms.ComboBox();
+            this.lblAssignment = new System.Windows.Forms.Label();
+            this.rtxtComputaion = new System.Windows.Forms.RichTextBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.lblComputaion = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            //
+            // 
             // lblFieldTitle
-            //
-            this.lblFieldTitle.AccessibleDescription = null;
-            this.lblFieldTitle.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblFieldTitle, "lblFieldTitle");
-            this.lblFieldTitle.Font = null;
             this.lblFieldTitle.Name = "lblFieldTitle";
-            //
+            // 
             // lstViewFields
-            //
-            this.lstViewFields.AccessibleDescription = null;
-            this.lstViewFields.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lstViewFields, "lstViewFields");
-            this.lstViewFields.BackgroundImage = null;
             this.lstViewFields.FullRowSelect = true;
             this.lstViewFields.Name = "lstViewFields";
             this.lstViewFields.ShowItemToolTips = true;
-            this.lstViewFields.TileSize = new Size(247, 30);
+            this.lstViewFields.TileSize = new System.Drawing.Size(247, 30);
             this.lstViewFields.UseCompatibleStateImageBehavior = false;
-            this.lstViewFields.View = View.SmallIcon;
-            this.lstViewFields.DoubleClick += new EventHandler(this.lstViewFields_DoubleClick);
-            //
+            this.lstViewFields.View = System.Windows.Forms.View.SmallIcon;
+            this.lstViewFields.DoubleClick += new System.EventHandler(this.lstViewFields_DoubleClick);
+            // 
             // lstBoxFunctions
-            //
-            this.lstBoxFunctions.AccessibleDescription = null;
-            this.lstBoxFunctions.AccessibleName = null;
-            resources.ApplyResources(this.lstBoxFunctions, "lstBoxFunctions");
-            this.lstBoxFunctions.BackgroundImage = null;
-            this.lstBoxFunctions.Font = null;
+            // 
             this.lstBoxFunctions.FormattingEnabled = true;
             this.lstBoxFunctions.Items.AddRange(new object[] {
             resources.GetString("lstBoxFunctions.Items"),
@@ -183,141 +172,94 @@ namespace DotSpatial.Symbology.Forms
             resources.GetString("lstBoxFunctions.Items72"),
             resources.GetString("lstBoxFunctions.Items73"),
             resources.GetString("lstBoxFunctions.Items74")});
+            resources.ApplyResources(this.lstBoxFunctions, "lstBoxFunctions");
             this.lstBoxFunctions.Name = "lstBoxFunctions";
-            this.lstBoxFunctions.DoubleClick += new EventHandler(this.lstBoxFunctions_DoubleClick);
-            //
+            this.lstBoxFunctions.DoubleClick += new System.EventHandler(this.lstBoxFunctions_DoubleClick);
+            // 
             // lblFunctions
-            //
-            this.lblFunctions.AccessibleDescription = null;
-            this.lblFunctions.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblFunctions, "lblFunctions");
-            this.lblFunctions.Font = null;
             this.lblFunctions.Name = "lblFunctions";
-            //
+            // 
             // btnClaculate
-            //
-            this.btnClaculate.AccessibleDescription = null;
-            this.btnClaculate.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnClaculate, "btnClaculate");
-            this.btnClaculate.BackgroundImage = null;
-            this.btnClaculate.Font = null;
             this.btnClaculate.Name = "btnClaculate";
             this.btnClaculate.UseVisualStyleBackColor = true;
-            this.btnClaculate.Click += new EventHandler(this.btnClaculate_Click);
-            //
+            this.btnClaculate.Click += new System.EventHandler(this.btnClaculate_Click);
+            // 
             // btnClose
-            //
-            this.btnClose.AccessibleDescription = null;
-            this.btnClose.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.BackgroundImage = null;
-            this.btnClose.Font = null;
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new EventHandler(this.btnClose_Click);
-            //
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // btnPlus
-            //
-            this.btnPlus.AccessibleDescription = null;
-            this.btnPlus.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnPlus, "btnPlus");
-            this.btnPlus.BackgroundImage = null;
-            this.btnPlus.Font = null;
             this.btnPlus.Name = "btnPlus";
             this.btnPlus.UseVisualStyleBackColor = true;
-            this.btnPlus.Click += new EventHandler(this.btnPlus_Click);
-            //
+            this.btnPlus.Click += new System.EventHandler(this.btnPlus_Click);
+            // 
             // btnDivide
-            //
-            this.btnDivide.AccessibleDescription = null;
-            this.btnDivide.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnDivide, "btnDivide");
-            this.btnDivide.BackgroundImage = null;
-            this.btnDivide.Font = null;
             this.btnDivide.Name = "btnDivide";
             this.btnDivide.UseVisualStyleBackColor = true;
-            this.btnDivide.Click += new EventHandler(this.btnDivide_Click);
-            //
+            this.btnDivide.Click += new System.EventHandler(this.btnDivide_Click);
+            // 
             // btnMultiply
-            //
-            this.btnMultiply.AccessibleDescription = null;
-            this.btnMultiply.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnMultiply, "btnMultiply");
-            this.btnMultiply.BackgroundImage = null;
             this.btnMultiply.Name = "btnMultiply";
             this.btnMultiply.UseVisualStyleBackColor = true;
-            this.btnMultiply.Click += new EventHandler(this.btnMultiply_Click);
-            //
+            this.btnMultiply.Click += new System.EventHandler(this.btnMultiply_Click);
+            // 
             // btnMinus
-            //
-            this.btnMinus.AccessibleDescription = null;
-            this.btnMinus.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnMinus, "btnMinus");
-            this.btnMinus.BackgroundImage = null;
-            this.btnMinus.Font = null;
             this.btnMinus.Name = "btnMinus";
             this.btnMinus.UseVisualStyleBackColor = true;
-            this.btnMinus.Click += new EventHandler(this.btnMinus_Click);
-            //
+            this.btnMinus.Click += new System.EventHandler(this.btnMinus_Click);
+            // 
             // lblDestinationFieldTitle
-            //
-            this.lblDestinationFieldTitle.AccessibleDescription = null;
-            this.lblDestinationFieldTitle.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblDestinationFieldTitle, "lblDestinationFieldTitle");
-            this.lblDestinationFieldTitle.Font = null;
             this.lblDestinationFieldTitle.Name = "lblDestinationFieldTitle";
-            //
+            // 
             // comDestFieldComboBox
-            //
-            this.comDestFieldComboBox.AccessibleDescription = null;
-            this.comDestFieldComboBox.AccessibleName = null;
-            resources.ApplyResources(this.comDestFieldComboBox, "comDestFieldComboBox");
-            this.comDestFieldComboBox.BackgroundImage = null;
-            this.comDestFieldComboBox.Font = null;
+            // 
             this.comDestFieldComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.comDestFieldComboBox, "comDestFieldComboBox");
             this.comDestFieldComboBox.Name = "comDestFieldComboBox";
-            //
+            // 
             // lblAssignment
-            //
-            this.lblAssignment.AccessibleDescription = null;
-            this.lblAssignment.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblAssignment, "lblAssignment");
             this.lblAssignment.Name = "lblAssignment";
-            //
+            // 
             // rtxtComputaion
-            //
-            this.rtxtComputaion.AccessibleDescription = null;
-            this.rtxtComputaion.AccessibleName = null;
+            // 
             resources.ApplyResources(this.rtxtComputaion, "rtxtComputaion");
-            this.rtxtComputaion.BackgroundImage = null;
-            this.rtxtComputaion.ForeColor = SystemColors.Highlight;
+            this.rtxtComputaion.ForeColor = System.Drawing.SystemColors.Highlight;
             this.rtxtComputaion.Name = "rtxtComputaion";
-            //
+            // 
             // linkLabel1
-            //
-            this.linkLabel1.AccessibleDescription = null;
-            this.linkLabel1.AccessibleName = null;
+            // 
             resources.ApplyResources(this.linkLabel1, "linkLabel1");
-            this.linkLabel1.Font = null;
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.LinkClicked += new LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            //
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // lblComputaion
-            //
-            this.lblComputaion.AccessibleDescription = null;
-            this.lblComputaion.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblComputaion, "lblComputaion");
-            this.lblComputaion.Font = null;
             this.lblComputaion.Name = "lblComputaion";
-            //
+            // 
             // AttributeCalculator
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
+            // 
+            this.AutoScaleMode = this.AutoScaleMode;
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = ((ContainerControl)this).AutoScaleMode;
-            this.BackgroundImage = null;
             this.Controls.Add(this.lblComputaion);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.rtxtComputaion);
@@ -334,10 +276,10 @@ namespace DotSpatial.Symbology.Forms
             this.Controls.Add(this.lstBoxFunctions);
             this.Controls.Add(this.lstViewFields);
             this.Controls.Add(this.lblFieldTitle);
-            this.Font = null;
             this.Name = "AttributeCalculator";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         void lstBoxFunctions_DoubleClick(object sender, EventArgs e)

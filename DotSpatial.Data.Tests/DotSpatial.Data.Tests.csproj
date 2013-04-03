@@ -325,8 +325,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" $(TargetDir) /Y
-xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" $(TargetDir)gdalplugins\ /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" "$(TargetDir)" /Y
+xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" "$(TargetDir)gdalplugins\" /Y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

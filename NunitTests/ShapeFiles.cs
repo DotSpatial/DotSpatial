@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace ReadWriteTest
 {
     [TestFixture]
-    public class ReadWriteTest
+    public class ShapeFiles
     {
         [Test]
         public void PolygonShapeFile()
