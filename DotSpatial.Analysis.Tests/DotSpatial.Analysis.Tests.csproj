@@ -136,6 +136,7 @@
   <ItemGroup>
     <None Include="Data\elbe_watershed1.dbf" />
     <None Include="Data\elbe_watershed1.prj" />
+    <None Include="Data\elbe_watershed1.shp" />
     <None Include="Data\elbe_watershed1.shx" />
     <None Include="Data\kriging.bgd" />
     <None Include="Data\VoronoiTest.dbf">
