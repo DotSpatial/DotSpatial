@@ -64,10 +64,10 @@ namespace DotSpatial.Analysis.Tests
                 DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider lGdalRasterProvider = new DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider();
             }
 
-            String path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            String shapeFilePath = System.IO.Path.Combine(new String[]{path, "Data", "elbe_watershed1.shp"});
-            String rasterFilePath = System.IO.Path.Combine(new String[] { path, "Data", "kriging.bgd" });
-            String resultFilePath = System.IO.Path.Combine(new String[] { path, "Data", "clipResult.bgd" });
+            String path = AppDomain.CurrentDomain.BaseDirectory;
+            String shapeFilePath = System.IO.Path.Combine(path, "Data", "elbe_watershed1.shp");
+            String rasterFilePath = System.IO.Path.Combine(path, "Data", "kriging.bgd" );
+            String resultFilePath = System.IO.Path.Combine(path, "Data", "clipResult.bgd" );
 
             DotSpatial.Data.Shapefile lClipPolygon = DotSpatial.Data.Shapefile.OpenFile(shapeFilePath);
             DotSpatial.Data.IRaster lGridToClip = DotSpatial.Data.Raster.OpenFile(rasterFilePath, false);

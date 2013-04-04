@@ -24,7 +24,7 @@ namespace DotSpatial.Analysis.Test
         [TestMethod()]
         public void VoronoiPolygonsTest()
         {
-            string path = System.IO.Path.Combine(new String[]{System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Data", "VoronoiTest.shp"});
+            string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "VoronoiTest.shp");
             IFeatureSet points = FeatureSet.Open(path);
             IFeatureSet actual = Voronoi.VoronoiPolygons(points, cropToExtent: true);
 

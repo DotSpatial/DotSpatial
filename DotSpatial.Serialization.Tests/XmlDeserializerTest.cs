@@ -57,7 +57,7 @@ namespace DotSpatial.Serialization.Tests
         {
             XmlDeserializer target = new XmlDeserializer();
             DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "DeserializeTest.map.xml");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
 
@@ -71,7 +71,7 @@ namespace DotSpatial.Serialization.Tests
 
             XmlDeserializer target = new XmlDeserializer();
             DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "DeserializeTest.map.xml");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
 

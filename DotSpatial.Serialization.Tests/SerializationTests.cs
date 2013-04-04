@@ -124,7 +124,7 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapPointLayer()
         {
-            const string filename = @".\TestFiles\test-RandomPts.shp";
+            string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "test-RandomPts.shp");
 
             IFeatureSet fs = FeatureSet.Open(filename);
             MapPointLayer l = new MapPointLayer(fs);
@@ -135,7 +135,7 @@ namespace MapWindow.Tests.XML
             MapPointLayer newPointLayer = d.Deserialize<MapPointLayer>(result);
 
             Assert.IsNotNull(newPointLayer);
-            Assert.AreEqual(filename, newPointLayer.DataSet.Filename);
+            Assert.True(filename.Contains(newPointLayer.DataSet.Filename));
         }
 
         /// <summary>
@@ -144,9 +144,9 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapFrameIsNotNull()
         {
-            const string filename = @".\TestFiles\test-RandomPts.shp";
-            const string projectFileName = @".\testmapframeisnotnull.dspx";
-            //string projPath = Path.Combine(Path.GetTempPath(), projectFileName);
+            string filePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
+            string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
 
             AppManager manager = new AppManager();
             Map map = new Map();
@@ -178,8 +178,9 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapFrameIsNotNull_Group()
         {
-            const string filename = @".\TestFiles\test-RandomPts.shp";
-            const string projectFileName = @".\testmapframeisnotnull.dspx";
+            string filePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
+            string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
             
             AppManager manager = new AppManager();
             Map map = new Map();
