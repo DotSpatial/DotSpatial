@@ -64,17 +64,22 @@ namespace DotSpatial.Analysis.Tests
                 DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider lGdalRasterProvider = new DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider();
             }
 
-            DotSpatial.Data.Shapefile lClipPolygon = DotSpatial.Data.Shapefile.OpenFile(@"C:\Users\Jiri\Desktop\berounka.shp");
-            DotSpatial.Data.IRaster lGridToClip = DotSpatial.Data.Raster.OpenFile(@"C:\Users\Jiri\Desktop\kriging2.bgd", false);
+            String path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            String shapeFilePath = System.IO.Path.Combine(new String[]{path, "Data", "elbe_watershed1.shp"});
+            String rasterFilePath = System.IO.Path.Combine(new String[] { path, "Data", "kriging.bgd" });
+            String resultFilePath = System.IO.Path.Combine(new String[] { path, "Data", "clipResult.bgd" });
+
+            DotSpatial.Data.Shapefile lClipPolygon = DotSpatial.Data.Shapefile.OpenFile(shapeFilePath);
+            DotSpatial.Data.IRaster lGridToClip = DotSpatial.Data.Raster.OpenFile(rasterFilePath, false);
 
             DotSpatial.Data.Raster lGridAfterClip = new DotSpatial.Data.Raster();
-            lGridAfterClip.Filename = @"C:\Users\Jiri\Desktop\kriging2.bgd";
+            lGridAfterClip.Filename = resultFilePath;
 
             DotSpatial.Analysis.ClipRaster.ClipRasterWithPolygon(lClipPolygon.Features[0], lGridToClip, lGridAfterClip.Filename);
 
             IRaster ras2 = Raster.Open(lGridAfterClip.Filename);
 
-            Assert.AreEqual(lGridAfterClip.NoDataValue, ras2.NoDataValue);
+            Assert.AreEqual(lGridToClip.NoDataValue, ras2.NoDataValue);
         }
     }
 }
