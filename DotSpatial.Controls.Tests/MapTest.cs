@@ -108,8 +108,6 @@ namespace DotSpatial.Controls.Tests
             target.Deserialize(map, File.ReadAllText(path));
 
             map.ZoomToMaxExtent();
-
-            File.Delete(path);
         }
 
         /// <summary>
