@@ -481,8 +481,7 @@ namespace DotSpatial.Data
         public virtual IRaster CreateRaster(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             // First check for the extension in the preferred plugins list
-            name = name.ToLower();
-            string ext = Path.GetExtension(name);
+            string ext = Path.GetExtension(name).ToLower();
             if (ext != null)
             {
                 IRaster result;

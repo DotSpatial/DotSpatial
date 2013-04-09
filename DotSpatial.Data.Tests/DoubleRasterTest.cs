@@ -12,7 +12,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void SmallRasterTest()
         {
-            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\doubletest.BGD";
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "doubletest.BGD");
 
             const double xllcorner = 3267132.224761;
             const double yllcorner = 5326939.203029;
