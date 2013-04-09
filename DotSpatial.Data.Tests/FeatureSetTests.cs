@@ -172,7 +172,7 @@ namespace DotSpatial.Data.Tests
         {
             FeatureSet target = new FeatureSet();
             string relativeFilePath = @"..\..\states.shp";
-            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relativeFilePath);
+            string expectedFullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeFilePath));
 
             string actualFilePath;
             target.FilePath = relativeFilePath;
