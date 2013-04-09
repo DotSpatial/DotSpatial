@@ -105,7 +105,7 @@ namespace DotSpatial.Controls.Tests
             var actual = target.SerializationManager.GetCustomSetting<DateTime>(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "SerializeTestWithCustomSettings.map.xml");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "SerializeTestWithCustomSettings.map.xml.dspx");
 
             target.SerializationManager.SaveProject(path);
 
