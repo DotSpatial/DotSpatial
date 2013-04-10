@@ -243,16 +243,16 @@ namespace DotSpatial.Projections
                 switch (Name)
                 {
                     case "D_WGS_1984":
-                        return "wgs84";
+                        return "WGS84";
 
                     case "D_Greek":
-                        return "ggrs87";
+                        return "GGRS87";
 
                     case "D_North_American_1983":
-                        return "nad83";
+                        return "NAD83";
 
                     case "D_North_American_1927":
-                        return "nad27";
+                        return "NAD27";
 
                     default:
                         // not sure where to lookup the remaining, missing values.
