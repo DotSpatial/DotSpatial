@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using NUnit.Framework;
 public class Proj4
 {
     //Because Proj.4 is not a COM component, we must declare each function
@@ -53,12 +54,12 @@ public class Proj4
     private static void InitializeGlobalVariables(ref string sourceProj, ref string destProj)
     {
         _destPrj = pj_init_plus(destProj);
-        Contract.Assert(_destPrj != IntPtr.Zero, "Could not initialize proj.dll for output: At least one parameter in the destination projection is incorrect.");
+        Assert.True(_destPrj != IntPtr.Zero, "Could not initialize proj.dll for output: At least one parameter in the destination projection is incorrect. Projection: " + destProj);
 
         _convertToDegrees = pj_is_latlong(_destPrj) != 0;
 
         _srcPrj = pj_init_plus(sourceProj);
-        Contract.Assert(_srcPrj != IntPtr.Zero, "Could not initialize proj.dll for output: At least one parameter in the destination projection is incorrect.");
+        Assert.True(_srcPrj != IntPtr.Zero, "Could not initialize proj.dll for output: At least one parameter in the source projection is incorrect. Projection: " + sourceProj);
 
         _convertToRadians = pj_is_latlong(_srcPrj) != 0;
     }
