@@ -34,7 +34,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\Debug\bin\Plugins\ScriptRunner\</OutputPath>
+    <OutputPath>..\Debug\bin\WindowsExtensions\ScriptRunner\</OutputPath>
     <DocumentationFile>DotSpatial.Plugins.ScriptRunner.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

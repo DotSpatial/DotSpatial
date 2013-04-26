@@ -639,6 +639,14 @@ namespace DotSpatial.Controls
         public IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
+            if (DotSpatial.Mono.Mono.IsRunningOnMono())
+            {
+                Directories.Add("MonoExtensions");
+            }
+            else
+            {
+                Directories.Add("WindowsExtensions");
+            }
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);

@@ -452,6 +452,11 @@
       <Name>DotSpatial.Modeling.Forms</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
+      <Project>{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}</Project>
+      <Name>DotSpatial.Mono</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
       <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
       <Name>DotSpatial.Projections.Forms</Name>
