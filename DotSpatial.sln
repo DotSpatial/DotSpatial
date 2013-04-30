@@ -134,13 +134,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Topology.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Tests", "DotSpatial.Data.Tests\DotSpatial.Data.Tests.csproj", "{4997615E-8C0C-498B-AB73-076454481964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tests", "DotSpatial.Tests\DotSpatial.Tests.csproj", "{3802D978-30CE-4756-82A4-428D6E1A6AF2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools.Tests", "DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 57
+		SccNumberOfProjects = 56
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -352,22 +350,18 @@ Global
 		SccProjectTopLevelParentUniqueName52 = DotSpatial.sln
 		SccProjectName52 = DotSpatial.Data.Tests
 		SccLocalPath52 = DotSpatial.Data.Tests
-		SccProjectUniqueName53 = DotSpatial.Tests\\DotSpatial.Tests.csproj
+		SccProjectUniqueName53 = DotSpatial.Tools.Tests\\DotSpatial.Tools.Tests.csproj
 		SccProjectTopLevelParentUniqueName53 = DotSpatial.sln
-		SccProjectName53 = DotSpatial.Tests
-		SccLocalPath53 = DotSpatial.Tests
-		SccProjectUniqueName54 = DotSpatial.Tools.Tests\\DotSpatial.Tools.Tests.csproj
+		SccProjectName53 = DotSpatial.Tools.Tests
+		SccLocalPath53 = DotSpatial.Tools.Tests
+		SccProjectUniqueName54 = DotSpatial.Mono\\DotSpatial.Mono.csproj
 		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
-		SccProjectName54 = DotSpatial.Tools.Tests
-		SccLocalPath54 = DotSpatial.Tools.Tests
-		SccProjectUniqueName55 = DotSpatial.Mono\\DotSpatial.Mono.csproj
+		SccProjectName54 = DotSpatial.Mono
+		SccLocalPath54 = DotSpatial.Mono
+		SccProjectUniqueName55 = NunitTests\\NunitTests.csproj
 		SccProjectTopLevelParentUniqueName55 = DotSpatial.sln
-		SccProjectName55 = DotSpatial.Mono
-		SccLocalPath55 = DotSpatial.Mono
-		SccProjectUniqueName56 = NunitTests\\NunitTests.csproj
-		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
-		SccProjectName56 = NunitTests
-		SccLocalPath56 = NunitTests
+		SccProjectName55 = NunitTests
+		SccLocalPath55 = NunitTests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -937,16 +931,6 @@ Global
 		{4997615E-8C0C-498B-AB73-076454481964}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4997615E-8C0C-498B-AB73-076454481964}.Release|x86.ActiveCfg = Release|x86
 		{4997615E-8C0C-498B-AB73-076454481964}.Release|x86.Build.0 = Release|x86
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2}.Release|x86.ActiveCfg = Release|Any CPU
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1007,6 +991,7 @@ Global
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5520B6CB-3124-4B1A-A15C-DC4637F618C3} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5E5D5BF6-E7F1-4E10-9CD3-0A3CA902AD21} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{100E368B-27C8-41B5-8565-8326A8AA1D7D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{11DF9872-A74C-4FE8-A139-DB9EC60C1E6E} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}
@@ -1015,8 +1000,6 @@ Global
 		{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{768274C4-15C5-46CA-91FB-D600B828071D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{4997615E-8C0C-498B-AB73-076454481964} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{3802D978-30CE-4756-82A4-428D6E1A6AF2} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 	EndGlobalSection
 EndGlobal
