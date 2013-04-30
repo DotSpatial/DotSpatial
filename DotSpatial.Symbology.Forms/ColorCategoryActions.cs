@@ -17,6 +17,10 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class ColorCategoryActions : LegendItemActionsBase, IColorCategoryActions
     {
+        /// <summary>
+        /// Show the color category editor form.
+        /// </summary>
+        /// <param name="e"></param>
         public void ShowEdit(IColorCategory e)
         {
             using (var frm = new ColorPicker(e))

@@ -16,6 +16,9 @@
         /// </summary>
         void ApplyChanges();
 
+        /// <summary>
+        /// Cancels changes.
+        /// </summary>
         void Cancel();
     }
 }

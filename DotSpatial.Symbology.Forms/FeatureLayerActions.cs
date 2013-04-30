@@ -31,6 +31,10 @@ namespace DotSpatial.Symbology.Forms
     /// </summary>
     public class FeatureLayerActions : LegendItemActionsBase, IFeatureLayerActions
     {
+        /// <summary>
+        /// Show the properties of a feature layer in the legend.
+        /// </summary>
+        /// <param name="e"></param>
         public void ShowProperties(IFeatureLayer e)
         {
             using (var dlg = new LayerDialog(e, new FeatureCategoryControl()))
@@ -38,7 +42,10 @@ namespace DotSpatial.Symbology.Forms
                 ShowDialog(dlg);
             }
         }
-
+        /// <summary>
+        /// Show the dialog to join an Excel table with a feature set.
+        /// </summary>
+        /// <param name="e"></param>
         public void ExcelJoin(IFeatureSet e)
         {
             using (var jd = new JoinDialog(e))
@@ -47,6 +54,10 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Show the dialog to set label extents.
+        /// </summary>
+        /// <param name="e"></param>
         public void LabelExtents(IDynamicVisibility e)
         {
             using (var dvg = new DynamicVisibilityModeDialog())
@@ -59,6 +70,10 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Show the dialog to set up labels.
+        /// </summary>
+        /// <param name="e"></param>
         public void LabelSetup(ILabelLayer e)
         {
             using (var dlg = new LabelSetup {Layer = e})
@@ -67,6 +82,10 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Show the attribute table editor.
+        /// </summary>
+        /// <param name="e"></param>
         public void ShowAttributes(IFeatureLayer e)
         {
             using (var attributeDialog = new AttributeDialog(e))
@@ -75,6 +94,10 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        /// <summary>
+        /// Show the dialog for exporting data from a feature layer.
+        /// </summary>
+        /// <param name="e"></param>
         public void ExportData(IFeatureLayer e)
         {
             using (var frmExport = new ExportFeature())

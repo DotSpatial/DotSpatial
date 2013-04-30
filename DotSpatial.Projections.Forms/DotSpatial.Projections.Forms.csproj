@@ -178,13 +178,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
-      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
-      <Name>DotSpatial.Projections</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Reference Include="DotSpatial.Projections, Version=1.5.4868.21965, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Debug\bin\DotSpatial.Projections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />

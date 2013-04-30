@@ -82,7 +82,9 @@ namespace DotSpatial.Projection.Tests
             myZ[0] = 0;
 
             ProjectionInfo projWGS84 = KnownCoordinateSystems.Geographic.World.WGS1984;
-            string projJTSK2 = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=0 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 +units=m +no_defs";
+
+            //this was declared but never used so I commented it out. dpa 4/30/2013
+            //string projJTSK2 = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=0 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 +units=m +no_defs";
             DotSpatial.Projections.ProjectionInfo myJTSKPI = DotSpatial.Projections.KnownCoordinateSystems.Projected.NationalGrids.SJTSKKrovakEastNorth;
 
             DotSpatial.Projections.Reproject.ReprojectPoints(myOut, myZ, myJTSKPI, projWGS84, 0, myZ.Length);

@@ -40,6 +40,9 @@ namespace DotSpatial.Symbology.Forms
 
         #endregion
 
+        /// <summary>
+        /// The symbology event manager.
+        /// </summary>
         public SymbologyEventManager()
         {
             ColorCategoryActions = new ColorCategoryActions();

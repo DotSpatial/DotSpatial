@@ -174,7 +174,9 @@ namespace DotSpatial.Symbology
                 ila.ShowProperties(this);
             }
         }
-
+        /// <summary>
+        /// Handles export data from this layer.
+        /// </summary>
         protected override void OnExportData()
         {
             var ila = ImageLayerActions;

@@ -288,44 +288,36 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
-      <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
+      <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
-      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
-      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
       <Name>DotSpatial.Extensions</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
-      <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
+      <Project>{1da244ce-5862-4dfb-8943-244a80b7e3ee}</Project>
       <Name>DotSpatial.Projections.Forms</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
-      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
-      <Project>{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}</Project>
+      <Project>{97ede2ad-90d0-44b6-adb6-ad20052c0b6f}</Project>
       <Name>DotSpatial.Symbology.Forms</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
-      <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
+      <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
       <Name>DotSpatial.Topology</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

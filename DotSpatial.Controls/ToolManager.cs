@@ -131,6 +131,9 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// App is the current AppManager handle.
+        /// </summary>
         public AppManager App { get; set; }
 
         /// <summary>

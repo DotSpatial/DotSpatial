@@ -98,8 +98,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
                 }
             }
-            catch (Exception e)
-            {               
+            catch 
+            {     
+                //do nothing
             }
         }
 

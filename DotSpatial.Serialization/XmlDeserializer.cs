@@ -208,7 +208,7 @@ namespace DotSpatial.Serialization
                     {
                         result = ConstructObject(type, element);
                     }
-                    catch(Exception e)
+                    catch
                     {
                         //If a project file (such as a layer) is missing, this exception is thrown. 
                         //We still want to be able to open the project; setting result to null seems to make this work.

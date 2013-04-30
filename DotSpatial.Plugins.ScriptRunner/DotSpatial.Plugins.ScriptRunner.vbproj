@@ -162,17 +162,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
-      <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
+      <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
-      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
       <Name>DotSpatial.Extensions</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.csproj">
-      <Project>{489CFE09-FDF7-4C89-BAB5-BD09CADD61AD}</Project>
+      <Project>{489cfe09-fdf7-4c89-bab5-bd09cadd61ad}</Project>
       <Name>DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion</Name>
     </ProjectReference>
   </ItemGroup>

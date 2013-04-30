@@ -492,9 +492,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
-      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
       <Name>DotSpatial.Serialization</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
