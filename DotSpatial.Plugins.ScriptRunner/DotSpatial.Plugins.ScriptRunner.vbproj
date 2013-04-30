@@ -164,10 +164,12 @@
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
       <Name>DotSpatial.Controls</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
       <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
       <Name>DotSpatial.Extensions</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.csproj">
       <Project>{489cfe09-fdf7-4c89-bab5-bd09cadd61ad}</Project>
