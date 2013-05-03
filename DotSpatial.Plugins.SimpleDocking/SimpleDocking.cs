@@ -8,14 +8,19 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
+using System.ComponentModel.Composition;
+using System.Drawing;
 
 namespace DemoMap
 {
     /// <summary>
     ///
     /// </summary>
-    public class SimpleDocking // Add this interface to use this docking manager : IDockManager
+    public class SimpleDocking : IDockManager
     {
+
+        [Import("Shell")]
+        private ContainerControl Shell { get; set; }
         private List<Form> forms = new List<Form>();
 
         #region IDockManager Members
@@ -135,13 +140,28 @@ namespace DemoMap
         /// <param name="dockStyle">The dock location.</param>
         public void Add(string key, string caption, Control panel, DockStyle dockStyle)
         {
+            Form owner = Shell as Form;
+
+            if (panel == null) return;
             panel.Dock = DockStyle.Fill;
 
             var form = new Form();
             form.Controls.Add(panel);
             form.Name = key;
+            form.Text = panel.Name;
             form.Width = panel.Width;
             form.Height = panel.Height;
+            if (panel.Name.Equals("Map"))
+            {
+                form.Width = 700;
+                form.Height = 400;
+            }
+            if (owner != null)
+            {
+                form.Owner = owner;
+                form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            }
+            form.ControlBox = false;
             form.Show();
             form.Activated += form_Activated;
             forms.Add(form);

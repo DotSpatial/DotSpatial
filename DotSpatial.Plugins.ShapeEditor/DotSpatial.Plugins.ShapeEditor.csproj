@@ -45,7 +45,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\bin\WindowsExtensions\</OutputPath>
+    <OutputPath>..\Debug\bin\Windows Extensions\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

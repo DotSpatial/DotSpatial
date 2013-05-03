@@ -140,9 +140,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MonoHeaderControl", "DotSpatial.Plugins.MonoHeaderControl\DotSpatial.Plugins.MonoHeaderControl.csproj", "{3180E70F-F12B-469A-B8B9-1FCAB08A8797}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleHeaderControl", "DotSpatial.Plugins.SimpleHeaderControl\DotSpatial.Plugins.SimpleHeaderControl.csproj", "{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.TabbedDocking", "DotSpatial.Plugins.TabbedDocking\DotSpatial.Plugins.TabbedDocking.csproj", "{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleDocking", "DotSpatial.Plugins.SimpleDocking\DotSpatial.Plugins.SimpleDocking.csproj", "{39B1A581-0145-4398-8DB2-89288F33F358}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform Specific Control Plugins", "Platform Specific Control Plugins", "{F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 57
+		SccNumberOfProjects = 60
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -370,6 +378,18 @@ Global
 		SccProjectTopLevelParentUniqueName56 = DotSpatial-VS2010.sln
 		SccProjectName56 = DotSpatial.Plugins.MonoHeaderControl
 		SccLocalPath56 = DotSpatial.Plugins.MonoHeaderControl
+		SccProjectUniqueName57 = DotSpatial.Plugins.SimpleHeaderControl\\DotSpatial.Plugins.SimpleHeaderControl.csproj
+		SccProjectTopLevelParentUniqueName57 = DotSpatial-VS2010.sln
+		SccProjectName57 = DotSpatial.Plugins.SimpleHeaderControl
+		SccLocalPath57 = DotSpatial.Plugins.SimpleHeaderControl
+		SccProjectUniqueName58 = DotSpatial.Plugins.TabbedDocking\\DotSpatial.Plugins.TabbedDocking.csproj
+		SccProjectTopLevelParentUniqueName58 = DotSpatial-VS2010.sln
+		SccProjectName58 = DotSpatial.Plugins.TabbedDocking
+		SccLocalPath58 = DotSpatial.Plugins.TabbedDocking
+		SccProjectUniqueName59 = DotSpatial.Plugins.SimpleDocking\\DotSpatial.Plugins.SimpleDocking.csproj
+		SccProjectTopLevelParentUniqueName59 = DotSpatial-VS2010.sln
+		SccProjectName59 = DotSpatial.Plugins.SimpleDocking
+		SccLocalPath59 = DotSpatial.Plugins.SimpleDocking
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -943,6 +963,36 @@ Global
 		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Release|x86.ActiveCfg = Release|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{39B1A581-0145-4398-8DB2-89288F33F358}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -988,7 +1038,6 @@ Global
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{D85281B4-6012-42A0-A8F1-B29068A3F433} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
@@ -1005,5 +1054,9 @@ Global
 		{4997615E-8C0C-498B-AB73-076454481964} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3802D978-30CE-4756-82A4-428D6E1A6AF2} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A} = {12970967-D98D-4777-A5F8-11A9F037CC28}
+		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42} = {F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}
+		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC} = {F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}
+		{39B1A581-0145-4398-8DB2-89288F33F358} = {F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}
+		{3180E70F-F12B-469A-B8B9-1FCAB08A8797} = {F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}
 	EndGlobalSection
 EndGlobal

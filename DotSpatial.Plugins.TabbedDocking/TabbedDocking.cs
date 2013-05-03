@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace DemoMap
+namespace DotSpatial.Plugins.TabbedDocking
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace DemoMap
     using System.Text;
     using DotSpatial.Controls.Docking;
     using System.Windows.Forms;
+    using System.Drawing;
     using System.ComponentModel.Composition;
     using System.Diagnostics;
 

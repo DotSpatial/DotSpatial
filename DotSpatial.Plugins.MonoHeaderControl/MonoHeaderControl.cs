@@ -106,11 +106,11 @@ namespace DemoMap
 
             combo.Items.AddRange(item.Items.ToArray());
             combo.SelectedIndexChanged += delegate
-                                            {
-                                                item.PropertyChanged -= DropDownActionItem_PropertyChanged;
-                                                item.SelectedItem = combo.SelectedItem;
-                                                item.PropertyChanged += DropDownActionItem_PropertyChanged;
-                                            };
+            {
+                item.PropertyChanged -= DropDownActionItem_PropertyChanged;
+                item.SelectedItem = combo.SelectedItem;
+                item.PropertyChanged += DropDownActionItem_PropertyChanged;
+            };
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
 
             //addLabel(item.ToolTipText);
@@ -139,11 +139,11 @@ namespace DemoMap
                 textBox.Width = item.Width;
             }
             textBox.TextChanged += delegate
-                                        {
-                                            item.PropertyChanged -= TextEntryActionItem_PropertyChanged;
-                                            item.Text = textBox.Text;
-                                            item.PropertyChanged += TextEntryActionItem_PropertyChanged;
-                                        };
+            {
+                item.PropertyChanged -= TextEntryActionItem_PropertyChanged;
+                item.Text = textBox.Text;
+                item.PropertyChanged += TextEntryActionItem_PropertyChanged;
+            };
             //addLabel(item.ToolTipText);
             container.Controls.Add(textBox);
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;

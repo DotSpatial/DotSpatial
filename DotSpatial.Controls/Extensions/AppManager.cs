@@ -641,11 +641,11 @@ namespace DotSpatial.Controls
             // Visit each directory in Directories Property (usually set by application)
             if (DotSpatial.Mono.Mono.IsRunningOnMono())
             {
-                Directories.Add("MonoExtensions");
+                Directories.Add("Mono Extensions");
             }
             else
             {
-                Directories.Add("WindowsExtensions");
+                Directories.Add("Windows Extensions");
             }
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
