@@ -21,9 +21,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+
+
 
 namespace DotSpatial.Controls
 {
@@ -84,8 +87,13 @@ namespace DotSpatial.Controls
 
         private void Identify(IEnumerable<ILayer> layers, Extent strict, Extent tolerant)
         {
+            
+            List<ILayer> layers2 = layers.ToList();
+            if (layers is IGroup) layers2.Reverse();
+
             foreach (IMapLayer layer in layers)
             {
+               
                 IGroup grp = layer as IGroup;
                 if (grp != null)
                 {
