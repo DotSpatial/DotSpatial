@@ -91,7 +91,7 @@ namespace DotSpatial.Controls
             List<ILayer> layers2 = layers.ToList();
             if (layers is IGroup) layers2.Reverse();
 
-            foreach (IMapLayer layer in layers)
+            foreach (IMapLayer layer in layers2)
             {
                
                 IGroup grp = layer as IGroup;
