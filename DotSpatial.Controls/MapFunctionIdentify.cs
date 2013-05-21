@@ -25,6 +25,7 @@ using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using System.Diagnostics;
 
 
 
@@ -38,7 +39,10 @@ namespace DotSpatial.Controls
         #region Private Variables
 
         FeatureIdentifier _frmFeatureIdentifier;
-
+        IFeature feature;
+        IFeature formerFeature;
+        IFeatureLayer layer;
+        IFeatureLayer formerLayer;
         #endregion
 
         #region Constructors
@@ -71,18 +75,58 @@ namespace DotSpatial.Controls
 
             if (_frmFeatureIdentifier == null)
             {
-                _frmFeatureIdentifier = new FeatureIdentifier();
+                _frmFeatureIdentifier = new FeatureIdentifier(Map);
             }
+
+           
             _frmFeatureIdentifier.SuspendLayout();
             _frmFeatureIdentifier.Clear();
             Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
+
+            //Synchronizes the legend with the identify tool
+            Legend legend = Map.Legend as Legend;
+            if (legend != null)
+            {
+                foreach (LegendBox item in legend._legendBoxes)
+                {
+
+                    if (item.Item.IsSelected)
+                    {
+                        _frmFeatureIdentifier._previouslySelectedLayerName = item.Item.LegendText;
+                    }
+                }
+                legend.AddFeatureIdentifier(_frmFeatureIdentifier);
+            }
+
             _frmFeatureIdentifier.ReSelect();
             _frmFeatureIdentifier.ResumeLayout();
+
             if (_frmFeatureIdentifier.Visible == false)
             {
                 _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
             }
             base.OnMouseUp(e);
+            //Code for making the Identify Tool actually highlight what is being clicked.  
+            //However, it needs more adjusting to work properly and will be shelved for now
+            /*
+            if (_frmFeatureIdentifier.treFeatures.SelectedNode.Tag != null && _frmFeatureIdentifier.treFeatures.SelectedNode.Parent.Tag != null)
+            {
+                formerFeature = feature;
+                formerLayer = layer;
+               
+                feature = _frmFeatureIdentifier.treFeatures.SelectedNode.Tag as IFeature;
+                layer = _frmFeatureIdentifier.treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
+
+                if (feature != null && layer != null)
+                {
+                    layer.Select(feature);
+                    if (formerFeature != null && formerLayer != null)
+                    {
+                        formerLayer.UnSelect(formerFeature);
+                    }
+                }
+            }
+            */
         }
 
         private void Identify(IEnumerable<ILayer> layers, Extent strict, Extent tolerant)

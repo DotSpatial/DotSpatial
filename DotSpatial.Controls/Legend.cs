@@ -86,7 +86,7 @@ namespace DotSpatial.Controls
         private bool _ignoreHide;
         private int _indentation;
         private bool _isDragging;
-        private List<LegendBox> _legendBoxes; // for hit-testing
+        public List<LegendBox> _legendBoxes; // for hit-testing
         private SymbologyEventManager _manager;
         private Rectangle _previousLine;
         private LegendBox _previousMouseDown;
@@ -97,7 +97,7 @@ namespace DotSpatial.Controls
         private Color _selectionHighlight;
         private TabColorDialog _tabColorDialog;
         private bool _wasDoubleClick;
-
+        private FeatureIdentifier _identify;
         #endregion
 
         #region Constructors
@@ -161,6 +161,11 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Methods
+
+        public void AddFeatureIdentifier(FeatureIdentifier fi)
+        {
+            _identify = fi;
+        }
 
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update
@@ -271,6 +276,7 @@ namespace DotSpatial.Controls
         // a good selectionHighlight color: 215, 238, 252
         private Brush HighlightBrush(Rectangle box)
         {
+            
             float med = _selectionHighlight.GetBrightness();
             float bright = med + 0.05f;
             if (bright > 1f) bright = 1f;
@@ -587,6 +593,7 @@ namespace DotSpatial.Controls
                 itemBox.Textbox = new Rectangle((int)tempTopLeft.X, (int)topLeft.Y + dY, width, ItemHeight);
                 if (itemBox.Item.IsSelected)
                 {
+                   
                     if (_selection.Contains(itemBox) == false) _selection.Add(itemBox);
                     Rectangle innerBox = itemBox.Textbox;
                     innerBox.Inflate(-1, -1);
@@ -600,6 +607,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
+          
                     e.Graphics.DrawString(e.Item.LegendText, Font, Brushes.Black, tempTopLeft);
                 }
             }
@@ -993,6 +1001,12 @@ namespace DotSpatial.Controls
                         ClearSelection();
                     }
                     e.ItemBox.Item.IsSelected = true;
+                    //Synchronizes what is selected in the legend with what is selected in the identify tool
+                    if (_identify != null)
+                    {
+                        _identify._previouslySelectedLayerName = e.ItemBox.Item.LegendText;
+                        _identify.ReSelect();
+                    }
                     //_selection.Add(e.ItemBox);
                     //IsInitialized = false;
                     //Invalidate();

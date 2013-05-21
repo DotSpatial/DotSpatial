@@ -39,11 +39,11 @@ namespace DotSpatial.Controls
         private ListBoxDialog _lstBox = new ListBoxDialog();
         private readonly MenuItem _mnuAssignIdField;
         private readonly MenuItem _mnuSelectMenu;
-        private string _previouslySelectedLayerName;
+        internal string _previouslySelectedLayerName;
         private DataGridView dgvAttributes;
         private readonly ContextMenu mnuTreeContext;
         private SplitContainer splitContainer1;
-        private TreeView treFeatures;
+        internal TreeView treFeatures;
 
         #region Private Variables
 
@@ -51,6 +51,7 @@ namespace DotSpatial.Controls
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
+        private IMap Map;
 
         #endregion
 
@@ -129,8 +130,21 @@ namespace DotSpatial.Controls
             // The "ID Field" seems more like a display caption.
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
-
             _featureIDFields = new Dictionary<string, string>();
+        }
+
+        public FeatureIdentifier(IMap Map)
+        {
+            InitializeComponent();
+            treFeatures.MouseUp += treFeatures_MouseUp;
+            mnuTreeContext = new ContextMenu();
+            _mnuSelectMenu = new MenuItem("Select Feature");
+            _mnuSelectMenu.Click += selectMenu_Click;
+            // The "ID Field" seems more like a display caption.
+            _mnuAssignIdField = new MenuItem("Assign ID Field");
+            _mnuAssignIdField.Click += _mnuAssignIdField_Click;
+            _featureIDFields = new Dictionary<string, string>();
+            this.Map = Map;
         }
 
         private void _mnuAssignIdField_Click(object sender, EventArgs e)
@@ -209,8 +223,33 @@ namespace DotSpatial.Controls
                         mnuTreeContext.MenuItems.Add(_mnuAssignIdField);
                         mnuTreeContext.Show(treFeatures, e.Location);
                     }
+                }  
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                TreeNode clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
+                Legend legend = Map.Legend as Legend;
+
+                if (legend != null)
+                {
+                    foreach (LegendBox item in legend._legendBoxes)
+                    {
+                        item.Item.IsSelected = false;
+                        if (clickedNode.Text == item.Item.LegendText)
+                        {
+                            item.Item.IsSelected = true;
+                            legend.Invalidate();
+                        }
+                        else if (clickedNode.Parent != null)
+                        {
+                            if (clickedNode.Parent.Text == item.Item.LegendText)
+                            {
+                                item.Item.IsSelected = true;
+                                legend.Invalidate();
+                            }
+                        }
+                    }
                 }
-                
             }
         }
 
@@ -229,6 +268,10 @@ namespace DotSpatial.Controls
                 if (node.Parent != null)
                 {
                     _previouslySelectedLayerName = node.Parent.Text;
+                }
+                else
+                {
+                    _previouslySelectedLayerName = node.Text;
                 }
             }
             treFeatures.SuspendLayout();
@@ -316,9 +359,16 @@ namespace DotSpatial.Controls
                 TreeNode parent = treFeatures.Nodes[_previouslySelectedLayerName];
                 if (parent != null)
                 {
-                    parent.Expand();
-                    TreeNode child = parent.FirstNode;
-                    treFeatures.SelectedNode = child;
+                    if (parent.FirstNode == null)
+                    {
+                        treFeatures.SelectedNode = parent;
+                    }
+                    else
+                    {
+                        parent.Expand();
+                        TreeNode child = parent.FirstNode;
+                        treFeatures.SelectedNode = child;
+                    }
                 }
                 else
                 {
@@ -327,6 +377,7 @@ namespace DotSpatial.Controls
                         treFeatures.Nodes[0].Expand();
                         treFeatures.SelectedNode = treFeatures.Nodes[0].FirstNode;
                     }
+
                 }
             }
             else
@@ -337,6 +388,10 @@ namespace DotSpatial.Controls
                     treFeatures.SelectedNode = treFeatures.Nodes[0].FirstNode;
                 }
             }
+
+            treFeatures.ExpandAll();
+            treFeatures.HideSelection = false;
+           // treFeatures.Focus();
         }
 
         #endregion
@@ -373,7 +428,11 @@ namespace DotSpatial.Controls
         private void treFeatures_AfterSelect(object sender, TreeViewEventArgs e)
         {
             IFeature f = e.Node.Tag as IFeature;
-            if (f == null) return;
+            if (f == null)
+            {
+                dgvAttributes.DataSource = null;
+                return;
+            }
             DataTable dt = new DataTable();
             dt.Columns.Add("Field Name");
             dt.Columns.Add("Value");
