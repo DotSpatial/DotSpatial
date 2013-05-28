@@ -86,21 +86,17 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     packageManager.InstallPackage(package, true, false);
                     return package;
-                }          
-                /*else
-                {
-                    //Check Core repository for Dlls we might not have. TODO
-                    IPackageRepository coreRepo = new PackageRepositoryFactory().CreateRepository(coreRepoUrl);
-                    PackageManager corePackageManager = new PackageManager(coreRepo, new DefaultPackagePathResolver(coreRepoUrl), new PhysicalFileSystem(repositoryLocation));
-                    package = coreRepo.FindPackage(name);
-                    corePackageManager.InstallPackage(package, true, false);
-                    return package;
-                }*/
+                }
             }
             catch (WebException ex)
             {
                 // Timed out.
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
             }
 
             return null;
