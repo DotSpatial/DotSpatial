@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -38,11 +39,10 @@ namespace DotSpatial.Controls
     {
         #region Private Variables
 
-        FeatureIdentifier _frmFeatureIdentifier;
-        IFeature feature;
-        IFeature formerFeature;
-        IFeatureLayer layer;
-        IFeatureLayer formerLayer;
+        private FeatureIdentifier _frmFeatureIdentifier;
+        private IFeature feature;
+        private IFeatureLayer layer;
+
         #endregion
 
         #region Constructors
@@ -67,6 +67,7 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
+            
             if (e.Button != MouseButtons.Left) return;
             Rectangle rtol = new Rectangle(e.X - 8, e.Y - 8, 16, 16);
             Rectangle rstr = new Rectangle(e.X - 1, e.Y - 1, 2, 2);
@@ -78,55 +79,83 @@ namespace DotSpatial.Controls
                 _frmFeatureIdentifier = new FeatureIdentifier(Map);
             }
 
-           
+            _frmFeatureIdentifier.treFeatures.BeginUpdate();
             _frmFeatureIdentifier.SuspendLayout();
             _frmFeatureIdentifier.Clear();
+
+          
+          
             Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
+ 
+                //Synchronizes the legend with the identify tool
+             Legend legend = Map.Legend as Legend;
+             if (legend != null)
+             {
+                 foreach (LegendBox item in legend._legendBoxes)
+                 {
 
-            //Synchronizes the legend with the identify tool
-            Legend legend = Map.Legend as Legend;
-            if (legend != null)
+                     if (item.Item.IsSelected)
+                     {
+                         _frmFeatureIdentifier._previouslySelectedLayerName = item.Item.LegendText;
+                     }
+                 }
+                 legend.AddFeatureIdentifier(_frmFeatureIdentifier);
+             }
+
+             _frmFeatureIdentifier.ReSelect();
+             _frmFeatureIdentifier.ResumeLayout();
+
+             if (_frmFeatureIdentifier.Visible == false)
+             {
+                 _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
+             }
+             base.OnMouseUp(e);
+
+                //Code for making the Identify Tool actually highlight what is being clicked.  
+                //However, it needs more adjusting to work properly and will be shelved for now
+            try
             {
-                foreach (LegendBox item in legend._legendBoxes)
-                {
-
-                    if (item.Item.IsSelected)
-                    {
-                        _frmFeatureIdentifier._previouslySelectedLayerName = item.Item.LegendText;
-                    }
-                }
-                legend.AddFeatureIdentifier(_frmFeatureIdentifier);
-            }
-
-            _frmFeatureIdentifier.ReSelect();
-            _frmFeatureIdentifier.ResumeLayout();
-
-            if (_frmFeatureIdentifier.Visible == false)
-            {
-                _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
-            }
-            base.OnMouseUp(e);
-            //Code for making the Identify Tool actually highlight what is being clicked.  
-            //However, it needs more adjusting to work properly and will be shelved for now
-            /*
-            if (_frmFeatureIdentifier.treFeatures.SelectedNode.Tag != null && _frmFeatureIdentifier.treFeatures.SelectedNode.Parent.Tag != null)
-            {
-                formerFeature = feature;
-                formerLayer = layer;
-               
+                
                 feature = _frmFeatureIdentifier.treFeatures.SelectedNode.Tag as IFeature;
                 layer = _frmFeatureIdentifier.treFeatures.SelectedNode.Parent.Tag as IFeatureLayer;
+
+                /* This logic is used to clear all selections on the entire map and only select a single feature when using the identify tool
+                 To get it exactly as desired, I had to get the top layer, which is the mapframe, and perform a ClearSelection from there and then return
+                 to the original layer selected in the legend. */
+                var layers = e.Map.MapFrame.GetAllLayers();
+                ILayer tempLayer = null;
+                foreach (var mapLayer in layers)
+                {
+                    if (mapLayer.IsSelected)
+                    {
+                        tempLayer = mapLayer;
+                        mapLayer.IsSelected = false;
+                    }
+                }
+                if (tempLayer == null)
+                {
+                    tempLayer = e.Map.MapFrame;
+                }
+                e.Map.MapFrame.IsSelected = true;
+                IEnvelope env = new Envelope();
+                e.Map.MapFrame.ClearSelection(out env);
+                e.Map.MapFrame.IsSelected = false;
+                tempLayer.IsSelected = true;
+              
 
                 if (feature != null && layer != null)
                 {
                     layer.Select(feature);
-                    if (formerFeature != null && formerLayer != null)
-                    {
-                        formerLayer.UnSelect(formerFeature);
-                    }
                 }
             }
-            */
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("Clicked area has a null reference");
+            }
+            finally
+            {
+                _frmFeatureIdentifier.treFeatures.EndUpdate();
+            }
         }
 
         private void Identify(IEnumerable<ILayer> layers, Extent strict, Extent tolerant)

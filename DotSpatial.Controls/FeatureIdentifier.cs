@@ -39,11 +39,16 @@ namespace DotSpatial.Controls
         private ListBoxDialog _lstBox = new ListBoxDialog();
         private readonly MenuItem _mnuAssignIdField;
         private readonly MenuItem _mnuSelectMenu;
-        internal string _previouslySelectedLayerName;
         private DataGridView dgvAttributes;
         private readonly ContextMenu mnuTreeContext;
         private SplitContainer splitContainer1;
+        private IFeature feature;
+        private IFeature formerFeature;
+        private IFeatureLayer layer;
+        private IFeatureLayer formerLayer;
+
         internal TreeView treFeatures;
+        internal string _previouslySelectedLayerName;
 
         #region Private Variables
 
@@ -120,7 +125,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a new instance of FeatureIdentifier
         /// </summary>
-        public FeatureIdentifier()
+     /*   public FeatureIdentifier()
         {
             InitializeComponent();
             treFeatures.MouseUp += treFeatures_MouseUp;
@@ -131,7 +136,7 @@ namespace DotSpatial.Controls
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
             _featureIDFields = new Dictionary<string, string>();
-        }
+        }*/
 
         public FeatureIdentifier(IMap Map)
         {
