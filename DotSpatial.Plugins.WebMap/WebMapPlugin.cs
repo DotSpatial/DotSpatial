@@ -19,6 +19,7 @@ using DotSpatial.Plugins.WebMap.WMS;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Microsoft.VisualBasic;
+using System.Diagnostics;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -518,29 +519,36 @@ namespace DotSpatial.Plugins.WebMap
 
         private void SerializationManagerDeserializing(object sender, SerializingEventArgs e)
         {
-            var opacity = App.SerializationManager.GetCustomSetting(PluginName + "_Opacity", "100");
-            var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", resources.None);
-            //Set opacity
-            _opacityDropDown.SelectedItem = opacity;
-            _opacity = Convert.ToInt16(opacity);
-
-            _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == resources.Legend_Title);
-            
-            if (basemapName.Equals("None"))
+            try
             {
-                if (_baseMapLayer != null)
+                var opacity = App.SerializationManager.GetCustomSetting(PluginName + "_Opacity", "100");
+                var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", resources.None);
+                //Set opacity
+                _opacityDropDown.SelectedItem = opacity;
+                _opacity = Convert.ToInt16(opacity);
+
+                _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == resources.Legend_Title);
+
+                if (basemapName.Equals("None"))
                 {
-                    DisableBasemapLayer();
-                    _provider = _emptyProvider;
+                    if (_baseMapLayer != null)
+                    {
+                        DisableBasemapLayer();
+                        _provider = _emptyProvider;
+                        _serviceDropDown.SelectedItem = _provider;
+                    }
+                }
+                else
+                {
+                    //hack: need to set provider to original object, not a new one.
+                    _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name.Equals(basemapName, StringComparison.InvariantCultureIgnoreCase));
                     _serviceDropDown.SelectedItem = _provider;
+                    EnableBasemapFetching(_provider.Name, _provider.Url);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //hack: need to set provider to original object, not a new one.
-                _provider = ServiceProvider.GetDefaultServiceProviders().FirstOrDefault(p => p.Name.Equals(basemapName, StringComparison.InvariantCultureIgnoreCase));
-                _serviceDropDown.SelectedItem = _provider;
-                EnableBasemapFetching(_provider.Name, _provider.Url);
+                Debug.Print(ex.StackTrace);
             }
         }
 
