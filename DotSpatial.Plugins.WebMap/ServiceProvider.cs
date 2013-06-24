@@ -42,6 +42,12 @@ namespace DotSpatial.Plugins.WebMap
 
         public static IEnumerable<ServiceProvider> GetDefaultServiceProviders()
         {
+            List<string> extraServices = new List<string>(){
+            Properties.Resources.BingHybrid,
+            Properties.Resources.GoogleSatellite,
+            Properties.Resources.GoogleMap,
+            Properties.Resources.WMSMap};
+
             foreach (var item in Services.Default.List)
             {
                 var serviceDescArr = item.Split(',');
@@ -49,13 +55,19 @@ namespace DotSpatial.Plugins.WebMap
                 var serviceName = serviceDescArr[0];
                 var serviceUrl = serviceDescArr[1];
 
+                while (extraServices[0].ToUpper()[0] < serviceName.ToUpper()[0])
+                {
+                    yield return new ServiceProvider(extraServices[0], null);
+                    extraServices.Remove(extraServices[0]);
+                }
+
                 yield return new ServiceProvider(serviceName, serviceUrl);
             }
 
-            yield return new ServiceProvider(Properties.Resources.BingHybrid, null);
-            yield return new ServiceProvider(Properties.Resources.GoogleSatellite, null);
-            yield return new ServiceProvider(Properties.Resources.GoogleMap, null);
-            yield return new ServiceProvider(Properties.Resources.WMSMap, null);
+            foreach (var item in extraServices)
+            {
+                yield return new ServiceProvider(item, null);
+            }
         }
 
         public override string ToString()
