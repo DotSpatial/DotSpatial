@@ -39,6 +39,8 @@ namespace DotSpatial.Plugins.TabbedDocking
 
         public event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
+        public event EventHandler<DockablePanelEventArgs> PanelHidden;
+
         #region OnActivePanelChanged
         /// <summary>
         /// Triggers the ActivePanelChanged event.
@@ -80,6 +82,17 @@ namespace DotSpatial.Plugins.TabbedDocking
         {
             if (PanelRemoved != null)
                 PanelRemoved(null/*this*/, ea);
+        }
+        #endregion
+
+        #region OnPanelHidden
+        /// <summary>
+        /// Triggers the PanelRemoved event.
+        /// </summary>
+        public virtual void OnPanelHidden(DockablePanelEventArgs ea)
+        {
+            if (PanelHidden != null)
+                PanelHidden(null/*this*/, ea);
         }
         #endregion
 

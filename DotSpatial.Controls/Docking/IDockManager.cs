@@ -36,6 +36,11 @@ namespace DotSpatial.Controls.Docking
         /// </summary>
         event EventHandler<DockablePanelEventArgs> PanelRemoved;
 
+        /// <summary>
+        /// Occurs when a panel is hidden.
+        /// </summary>
+        event EventHandler<DockablePanelEventArgs> PanelHidden;
+
         #endregion
 
         #region Public Methods
