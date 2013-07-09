@@ -80,6 +80,12 @@ namespace DotSpatial.Controls.Docking
         /// <param name="key">The key.</param>
         void HidePanel(string key);
 
+        /// <summary>
+        /// Shows the panel but does not select it. 
+        /// </summary>
+        /// <param name="key">The key.</param>
+        void ShowPanel(string key);
+
         #endregion
     }
 }

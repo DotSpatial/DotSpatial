@@ -148,5 +148,10 @@ namespace DotSpatial.Plugins.TabbedDocking
         {
 
         }
+
+        public void ShowPanel(string key)
+        {
+
+        }
     }
 }
