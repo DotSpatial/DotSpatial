@@ -289,7 +289,7 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Calculates the vector distance.  (This is a 2D opperation)
+        /// Calculates the vector distance.  (This is a 2D operation)
         /// </summary>
         /// <param name="coord">Any valid implementation of the ICoordinate Interface</param>
         /// <returns>The Euclidean distance between two points {Sqrt((X2 - X1)^2 + (Y2 - Y1)^2)</returns>
@@ -297,7 +297,7 @@ namespace DotSpatial.Topology
         {
             double dX = X - coord.X;
             double dY = Y - coord.Y;
-            return Math.Sqrt(dX * dX - dY * dY);
+            return Math.Sqrt(dX * dX + dY * dY);
         }
 
         /// <summary>
