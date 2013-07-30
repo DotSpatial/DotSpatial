@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DotSpatial.Extensions;
+
 namespace DotSpatial.Plugins.ExtensionManager
 {
     public class SampleProjectsForm : Form
@@ -221,14 +223,51 @@ namespace DotSpatial.Plugins.ExtensionManager
                 this.btnInstall.Enabled = false;
                 IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
                 this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+
+                var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
+
                 Task task = Task.Factory.StartNew(delegate
                 {
+                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                    if (dependency.Count() > 0)
+                    {
+                        foreach (PackageDependency dependentPackage in dependency)
+                        {
+                            var dependentpack = packages.Install(dependentPackage.Id);
+                            if (dependentpack == null)
+                            {
+                                string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
+                                MessageBox.Show(message);
+                                return;
+                            }
+                            else
+                            {
+                                App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
+                            }
+                        }
+                    }
+
                     this.packages.Install(pack.Id);
                 });
                 task.ContinueWith(delegate(Task t)
                 {
                     this.App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
                     this.UpdateInstalledProjectsList();
+                    // Load the extension.
+                    App.RefreshExtensions();
+                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                    App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+
+                    // Activate the extension(s) that was installed.
+                    var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
+
+                    if (extensions.Count() > 0 && !App.EnsureRequiredImportsAreAvailable())
+                        return;
+
+                    foreach (var item in extensions)
+                    {
+                        item.TryActivate();
+                    }
                     this.App.ProgressHandler.Progress(null, 0, "Ready.");
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }

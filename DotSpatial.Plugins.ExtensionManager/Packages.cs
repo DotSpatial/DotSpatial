@@ -16,7 +16,7 @@ namespace DotSpatial.Plugins.ExtensionManager
     {
         #region Constants and Fields
 
-        private const string PackageSourceUrl = "http://www.myget.org/F/dotspatial/";
+        private const string PackageSourceUrl = "http://www.myget.org/F/cuahsi/";
         private const string coreRepoUrl = "https://nuget.org/api/v2/";
         private PackageManager packageManager;
         private IPackageRepository repo;

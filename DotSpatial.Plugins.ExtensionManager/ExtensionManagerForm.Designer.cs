@@ -130,7 +130,7 @@
             // 
             this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.Installed.CheckOnClick = true;
+            this.Installed.CheckOnClick = false;
             this.Installed.FormattingEnabled = true;
             this.Installed.Location = new System.Drawing.Point(150, 45);
             this.Installed.Name = "Installed";
