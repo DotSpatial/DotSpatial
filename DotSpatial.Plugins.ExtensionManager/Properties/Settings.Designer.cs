@@ -27,7 +27,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>QUAHSI</string>
+  <string>CUAHSI</string>
   <string>Dotspatial</string>
   <string>Dotspatial Staging</string>
   <string>Hyrdodesktop</string>
@@ -45,7 +45,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string> http://www.myget.org/F/quahsi/</string>
+  <string> http://www.myget.org/F/cuahsi/</string>
   <string> http://www.myget.org/F/dotspatial/</string>
   <string> http://www.myget.org/F/dotspatialstaging/</string>
   <string> http://www.myget.org/F/hydrodesktop/</string>

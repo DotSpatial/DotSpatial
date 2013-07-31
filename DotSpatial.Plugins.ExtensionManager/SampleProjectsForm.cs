@@ -29,6 +29,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private ListBox uxOnlineProjects;
         private Label label2;
         private Button btnUninstall;
+        private readonly DownloadForm downloadDialog = new DownloadForm();
         public IEnumerable<SampleProjectInfo> SampleProjects {
             get;
             set;
@@ -65,6 +66,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.SampleProjects = new List<SampleProjectInfo>();
             this.listBoxTemplates.SelectedIndexChanged += new EventHandler(this.listBoxTemplates_SelectedIndexChanged);
             this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
+            var dataService = packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
         }
         private void TemplateForm_Load(object sender, EventArgs e) {
             this.UpdateInstalledProjectsList();
@@ -105,6 +111,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void btnOK_Click(object sender, EventArgs e) {
             SampleProjectInfo sample = this.listBoxTemplates.SelectedItem as SampleProjectInfo;
             this.OpenSampleProject(sample);
+            this.Close();
         }
         private void listBoxTemplates_SelectedIndexChanged(object sender, EventArgs e) {
             if (this.listBoxTemplates.SelectedIndex >= 0 && this.listBoxTemplates.SelectedItem.ToString() != "No project templates were found. Please install the templates.")
@@ -221,8 +228,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (this.uxOnlineProjects.SelectedItem != null)
             {
                 this.btnInstall.Enabled = false;
+                downloadDialog.Show();
                 IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
                 this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+                downloadDialog.ShowDownloadStatus(pack);
 
                 var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
 
@@ -243,6 +252,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                             else
                             {
                                 App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
+                                downloadDialog.ShowDownloadStatus(dependentPackage);
                             }
                         }
                     }
@@ -256,7 +266,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     // Load the extension.
                     App.RefreshExtensions();
                     IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    App.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+                    App.ProgressHandler.Progress(null, 50, "Installing " + pack.Title);
 
                     // Activate the extension(s) that was installed.
                     var extensions = App.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
@@ -269,7 +279,16 @@ namespace DotSpatial.Plugins.ExtensionManager
                         item.TryActivate();
                     }
                     this.App.ProgressHandler.Progress(null, 0, "Ready.");
+                    downloadDialog.Visible = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+        public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
+        {
+            if (e.PercentComplete > 0)
+            {
+                App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
+                downloadDialog.SetProgressBarPercent(e.PercentComplete);
             }
         }
         private void ListBoxTemplates_DoubleClick(object sender, EventArgs e) {
