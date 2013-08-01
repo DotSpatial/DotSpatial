@@ -230,8 +230,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                 this.btnInstall.Enabled = false;
                 downloadDialog.Show();
                 IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
-                this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-                downloadDialog.ShowDownloadStatus(pack);
 
                 var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
 
@@ -242,6 +240,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                     {
                         foreach (PackageDependency dependentPackage in dependency)
                         {
+                            App.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
+                            downloadDialog.ShowDownloadStatus(dependentPackage);
+                            downloadDialog.SetProgressBarPercent(100);
+
                             var dependentpack = packages.Install(dependentPackage.Id);
                             if (dependentpack == null)
                             {
@@ -249,13 +251,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                                 MessageBox.Show(message);
                                 return;
                             }
-                            else
-                            {
-                                App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
-                                downloadDialog.ShowDownloadStatus(dependentPackage);
-                            }
                         }
                     }
+
+                    this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+                    downloadDialog.ShowDownloadStatus(pack);
+                    downloadDialog.SetProgressBarPercent(100);
 
                     this.packages.Install(pack.Id);
                 });
@@ -287,7 +288,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             if (e.PercentComplete > 0)
             {
-                App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
                 downloadDialog.SetProgressBarPercent(e.PercentComplete);
             }
         }

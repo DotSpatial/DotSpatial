@@ -27,20 +27,28 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 uxDownloadStatus.Invoke((Action)(() =>
                 {
-                    uxDownloadStatus.Text = "Downloading the dependencies";
-                    uxDownloadStatus.Text = "Downloading " + dependentPackage.Id;
+                    uxDownloadStatus.Text = "Downloading the dependencies\n" + "Downloading " + dependentPackage.Id;
                 }));
             }
             else
             {
-                uxDownloadStatus.Text = "Downloading the dependencies";
-                uxDownloadStatus.Text = "Downloading " + dependentPackage.Id;
+                uxDownloadStatus.Text = "Downloading the dependencies\n" + "Downloading " + dependentPackage.Id;
             }
         }
 
         public void ShowDownloadStatus(IPackage pack)
         {
-            uxDownloadStatus.Text = "Downloading " + pack.Id;
+            if (uxDownloadStatus.InvokeRequired)
+            {
+                uxDownloadStatus.Invoke((Action)(() =>
+                {
+                    uxDownloadStatus.Text = "Downloading " + pack.Id;
+                }));
+            }
+            else
+            {
+                uxDownloadStatus.Text = "Downloading " + pack.Id;
+            }
         }
 
         public void SetProgressBarPercent(int percent)

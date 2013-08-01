@@ -71,7 +71,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             if (e.PercentComplete > 0)
             {
-                App.ProgressHandler.Progress(null, e.PercentComplete, "Downloading");
                 downloadDialog.SetProgressBarPercent(e.PercentComplete);
             }
         }
@@ -120,9 +119,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             // hack: Hope the user doesn't unload extensions while we install.
             var inactiveExtensions = App.Extensions.Where(a => a.IsActive == false).ToArray();
 
-            App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-            downloadDialog.ShowDownloadStatus(pack);
-
             var task = Task.Factory.StartNew(() =>
             {
                 IEnumerable<PackageDependency> dependency = pack.Dependencies;
@@ -130,6 +126,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     foreach (PackageDependency dependentPackage in dependency)
                     {
+                        App.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
+                        downloadDialog.ShowDownloadStatus(dependentPackage);
+                        downloadDialog.SetProgressBarPercent(100);
+
                         var dependentpack = packages.Install(dependentPackage.Id);
                         if (dependentpack == null)
                         {
@@ -137,14 +137,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                             MessageBox.Show(message);
                             return;
                         }
-                        else
-                        {
-                            App.ProgressHandler.Progress(null, 0, "Downloading " + dependentPackage.Id);
-                            downloadDialog.ShowDownloadStatus(dependentPackage);
-                        }
                     }
                 }
                 // Download the extension.
+                App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+                downloadDialog.ShowDownloadStatus(pack);
+                downloadDialog.SetProgressBarPercent(100);
+
                 var package = packages.Install(pack.Id);
                 if (package == null)
                 {
