@@ -51,6 +51,21 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        public void Show(String message)
+        {
+            if (uxDownloadStatus.InvokeRequired)
+            {
+                uxDownloadStatus.Invoke((Action)(() =>
+                {
+                    uxDownloadStatus.Text = message;
+                }));
+            }
+            else
+            {
+                uxDownloadStatus.Text = message;
+            }
+        }
+
         public void SetProgressBarPercent(int percent)
         {
             try

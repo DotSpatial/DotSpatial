@@ -75,6 +75,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        public void Package_Installing(object sender, PackageOperationEventArgs e)
+        {
+            downloadDialog.SetProgressBarPercent(100);
+            downloadDialog.Show("Installing " + e.Package);
+        }
+
         private void Add_PageChanged(object sender, PageSelectedEventArgs e)
         {
             currentPageNumber = e.SelectedPage - 1;
@@ -128,7 +134,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     {
                         App.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
                         downloadDialog.ShowDownloadStatus(dependentPackage);
-                        downloadDialog.SetProgressBarPercent(100);
+                        downloadDialog.SetProgressBarPercent(0);
 
                         var dependentpack = packages.Install(dependentPackage.Id);
                         if (dependentpack == null)
@@ -142,7 +148,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 // Download the extension.
                 App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
                 downloadDialog.ShowDownloadStatus(pack);
-                downloadDialog.SetProgressBarPercent(100);
+                downloadDialog.SetProgressBarPercent(0);
 
                 var package = packages.Install(pack.Id);
                 if (package == null)
@@ -500,6 +506,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (dataService != null)
             {
                 dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
+            var packageManager = packages.Manager;
+            if (packageManager != null)
+            {
+                packageManager.PackageInstalling += new EventHandler<PackageOperationEventArgs>(Package_Installing);
             }
         }
 

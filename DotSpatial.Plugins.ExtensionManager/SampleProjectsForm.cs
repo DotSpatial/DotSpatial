@@ -71,6 +71,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
             }
+            var packageManager = packages.Manager;
+            if (packageManager != null)
+            {
+                packageManager.PackageInstalling += new EventHandler<PackageOperationEventArgs>(Package_Installing);
+            }
         }
         private void TemplateForm_Load(object sender, EventArgs e) {
             this.UpdateInstalledProjectsList();
@@ -242,7 +247,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                         {
                             App.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
                             downloadDialog.ShowDownloadStatus(dependentPackage);
-                            downloadDialog.SetProgressBarPercent(100);
+                            downloadDialog.SetProgressBarPercent(0);
 
                             var dependentpack = packages.Install(dependentPackage.Id);
                             if (dependentpack == null)
@@ -256,7 +261,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                     this.App.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
                     downloadDialog.ShowDownloadStatus(pack);
-                    downloadDialog.SetProgressBarPercent(100);
+                    downloadDialog.SetProgressBarPercent(0);
 
                     this.packages.Install(pack.Id);
                 });
@@ -283,6 +288,11 @@ namespace DotSpatial.Plugins.ExtensionManager
                     downloadDialog.Visible = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+        }
+        public void Package_Installing(object sender, PackageOperationEventArgs e)
+        {
+            downloadDialog.SetProgressBarPercent(100);
+            downloadDialog.Show("Installing " + e.Package);
         }
         public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
         {

@@ -62,6 +62,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
+        /// <summary>
+        /// Gets the package manger.
+        /// </summary>
+        public IPackageManager Manager
+        {
+            get
+            {
+                return packageManager;
+            }
+        }
+
         #endregion
 
         #region Public Methods
