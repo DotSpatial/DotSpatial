@@ -47,7 +47,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// The Map Control for 2D applications.
     /// </summary>
-    public partial class Map : UserControl, IMap
+    public partial class Map : UserControl, IMap, IMessageFilter
     {
         #region Events
 
@@ -119,6 +119,7 @@ namespace DotSpatial.Controls
         {
             InitializeComponent();
             Configure();
+            Application.AddMessageFilter(this);
         }
 
         /// <summary>
@@ -133,15 +134,22 @@ namespace DotSpatial.Controls
 
             SizeChanged += OnSizeChanged;
             _oldSize = Size;
-
-            if (ParentForm != null)
-            {
-                ParentForm.KeyDown += ParentFormKeyDown;
-                ParentForm.KeyUp += ParentFormKeyUp;
-            }
         }
 
-        
+        public bool PreFilterMessage(ref Message m) 
+        {
+            if (m.Msg == (int)0x0100)
+            {
+                if(this.ContainsFocus)
+                    OnKeyDown(new KeyEventArgs((Keys)m.WParam.ToInt32()));
+            }
+            else if (m.Msg == (int)0x0101)
+            {
+                if (this.ContainsFocus)
+                    OnKeyUp(new KeyEventArgs((Keys)m.WParam.ToInt32()));
+            }
+            return false;
+        }
 
         private void Map_KeyUp(object sender, KeyEventArgs e)
         {
