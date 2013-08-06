@@ -103,7 +103,7 @@ namespace DotSpatial.Plugins.MenuBar
 
             //header.Add(new SimpleActionItem(HomeMenuKey, Msg.Save_Layer, null) { GroupCaption = Msg.Layers_Group, SmallImage = Resources.layer_save_16x16, LargeImage = Resources.layer_save_32x32, Enabled = false });
 
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pointer, PointerTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.cursor_arrow_16x16, LargeImage = Resources.cursor_arrow_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            //header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pointer, PointerTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.cursor_arrow_16x16, LargeImage = Resources.cursor_arrow_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pan, PanTool_Click) {Key = Msg.Pan, GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomIn_Click) {Key = Msg.Zoom_In, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });

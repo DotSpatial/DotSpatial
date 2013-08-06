@@ -159,7 +159,7 @@
             this.Name = "ZoomToCoordinatesDialog";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Fly to Coordinates";
+            this.Text = "Zoom to Coordinates";
             this.Load += new System.EventHandler(this.ZoomToCoordinatesDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

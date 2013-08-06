@@ -202,10 +202,10 @@
     <value>Zoom Previous</value>
   </data>
   <data name="Zoom_To_Extents" xml:space="preserve">
-    <value>To Extents</value>
+    <value>Full Extent</value>
   </data>
   <data name="Zoom_To_Extents_Tooltip" xml:space="preserve">
-    <value>Zoom to Extents</value>
+    <value>Zoom to Full Extent</value>
   </data>
   <data name="Zoom_To_Layer" xml:space="preserve">
     <value>Zoom To Layer</value>
