@@ -166,6 +166,7 @@
     <Compile Include="ActionMode.cs" />
     <Compile Include="MapFrameExt.cs" />
     <Compile Include="MapFrameProjectionHelper.cs" />
+    <Compile Include="MapFunctionKeyNavigation.cs" />
     <Compile Include="MapLayerEnumerator.cs" />
     <Compile Include="MapLiDARLayer.cs" />
     <Compile Include="MessageStrings1.Designer.cs">

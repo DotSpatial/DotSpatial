@@ -104,8 +104,6 @@ namespace DotSpatial.Controls
         private int _isBusyIndex;
         private ILegend _legend;
         private IProgressHandler _progressHandler;
-        private bool isPanningTemporarily;
-        private FunctionMode previousFunction = FunctionMode.None;
         private Size _oldSize;
 
         #endregion
@@ -153,12 +151,6 @@ namespace DotSpatial.Controls
 
         private void Map_KeyUp(object sender, KeyEventArgs e)
         {
-            // Allow panning if the space is pressed.
-            if (e.KeyCode == Keys.Space && isPanningTemporarily)
-            {
-                this.FunctionMode = previousFunction;
-                isPanningTemporarily = false;
-            }
 
             foreach (IMapFunction tool in MapFunctions)
             {
@@ -168,13 +160,6 @@ namespace DotSpatial.Controls
 
         private void Map_KeyDown(object sender, KeyEventArgs e)
         {
-            // Allow panning if the space is pressed.
-            if (e.KeyCode == Keys.Space && !isPanningTemporarily)
-            {
-                previousFunction = this.FunctionMode;
-                this.FunctionMode = FunctionMode.Pan;
-                isPanningTemporarily = true;
-            }
 
             foreach (IMapFunction tool in MapFunctions)
             {
@@ -184,7 +169,8 @@ namespace DotSpatial.Controls
        
         private void Configure()
         {
-            MapFrame = new MapFrame(this, new Extent(-180, -90, 180, 90));
+            MapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
+
             //_resizeEndTimer = new Timer {Interval = 100};
             //_resizeEndTimer.Tick += _resizeEndTimer_Tick;
 
@@ -197,6 +183,7 @@ namespace DotSpatial.Controls
             MapFunctions = new List<IMapFunction>
                                {
                                    new MapFunctionZoom(this),
+                                   new MapFunctionKeyNavigation(this),
                                    pan,
                                    select,
                                    zoomIn,
@@ -216,24 +203,10 @@ namespace DotSpatial.Controls
 
             CollisionDetection = false;
 
+            IMapFunction KeyNavigation = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionKeyNavigation));
+            ActivateMapFunction(KeyNavigation);
             //changed by Jiri Kadlec - default function mode is none
             FunctionMode = FunctionMode.None;
-        }
-
-        private void ParentFormKeyUp(object sender, KeyEventArgs e)
-        {
-            foreach (IMapFunction tool in MapFunctions)
-            {
-                if (tool.Enabled) tool.DoKeyUp(e);
-            }
-        }
-
-        private void ParentFormKeyDown(object sender, KeyEventArgs e)
-        {
-            foreach (IMapFunction tool in MapFunctions)
-            {
-                if (tool.Enabled) tool.DoKeyDown(e);
-            }
         }
 
         private void MapFrameItemChanged(object sender, EventArgs e)
@@ -1632,12 +1605,15 @@ namespace DotSpatial.Controls
         {
             if (ViewExtentsChanged != null) ViewExtentsChanged(sender, args);
 
-                Extent MaxExtent = GetMaxExtent();
+            Extent MaxExtent = GetMaxExtent();
 
-                if ((this.ViewExtents.Width > (MaxExtent.Width+1)) && (this.ViewExtents.Height > (MaxExtent.Height+1)))
+            if (MaxExtent.Width != 0 && MaxExtent.Height != 0)
+            {
+                if ((this.ViewExtents.Width > (MaxExtent.Width + 1)) && (this.ViewExtents.Height > (MaxExtent.Height + 1)))
                 {
                     this.ZoomToMaxExtent();
-                }      
+                }
+            }
             
         }
 

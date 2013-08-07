@@ -77,10 +77,8 @@ namespace DotSpatial.Controls
             if (e.Button == MouseButtons.Left && _preventDrag == false)
             {
                 //PreventBackBuffer = true;
-                _isDragging = true;
                 _dragStart = e.Location;
                 _source = e.Map.MapFrame.View;
-                Map.IsBusy = true;
             }
             base.OnMouseDown(e);
         }
@@ -92,8 +90,10 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
-            if (_isDragging)
+            if (_dragStart != Point.Empty)
             {
+                _isDragging = true;
+                Map.IsBusy = true;
                 Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
                 e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width,
                                                     _source.Height);
@@ -117,6 +117,7 @@ namespace DotSpatial.Controls
                 _preventDrag = false;
                 Map.IsBusy = false;
             }
+            _dragStart = Point.Empty;
 
             //Map.Invalidate();
             base.OnMouseUp(e);
