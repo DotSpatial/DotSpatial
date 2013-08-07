@@ -199,13 +199,24 @@ namespace DotSpatial.Symbology
             if (!_selectionEnabled) return false;
             bool somethingChanged = false;
             MapFrame.SuspendEvents();
-            foreach (ILayer s in GetLayers())
+
+            List<ILayer> layers = (List<ILayer>)GetLayers();
+            layers.Reverse();
+
+            foreach (ILayer s in layers)
             {
                 if (s.SelectionEnabled == false) continue;
                 if (s.IsVisible == false) continue;
                 IEnvelope layerArea;
                 if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
                 affectedArea.ExpandToInclude(layerArea);
+                if (somethingChanged == true)
+                {
+                    MapFrame.ResumeEvents();
+                    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
+                    return somethingChanged;
+                }
+                
             }
             MapFrame.ResumeEvents();
             OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
