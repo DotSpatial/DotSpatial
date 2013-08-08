@@ -89,6 +89,7 @@ namespace DotSpatial.Controls
         private bool _resizing;
         private Rectangle _view;
         private int _width;
+        private ILayer former;
 
         private bool _isZoomingNextOrPrevious;
         private readonly LimitedStack<Extent> _previousExtents = new LimitedStack<Extent>();
@@ -110,6 +111,7 @@ namespace DotSpatial.Controls
             }
             _backBuffer = CreateBuffer();
             Layers = new MapLayerCollection(this);
+           
             base.IsSelected = true;  // by default allow the map frame to be selected
 
             //add properties context menu item
@@ -236,6 +238,31 @@ namespace DotSpatial.Controls
         public override bool EventsSuspended
         {
             get { return _layers.EventsSuspended; }
+        }
+
+        public override bool ClearSelection(out IEnvelope affectedAreas)
+        {
+            former = null;
+            foreach (Layer l in this.GetAllLayers())
+            {
+                if (l.IsSelected == true)
+                {
+                    former = l;
+                    l.IsSelected = false;
+                }
+           } 
+            if (former == null && this.IsSelected == true)
+            {
+                former = this;
+            }
+            this.IsSelected = true;
+            bool cleared = base.ClearSelection(out affectedAreas);
+            this.IsSelected = false;
+            if (former != null)
+            {
+                former.IsSelected = true;
+            }
+            return cleared;
         }
 
         /// <summary>
