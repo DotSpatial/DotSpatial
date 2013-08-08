@@ -284,6 +284,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 source.SubItems.Add(feed.Url);
                 uxFeedSources.Items.Add(source);
                 uxFeedSelection.Items.Add(feed.Url);
+                uxFeedSelection2.Items.Add(feed.Url);
                 source.Checked = FeedManager.isAutoUpdateFeed(feed.Url);
             }
             // Select the first item in the drop down, kicking off a package list update.
@@ -392,19 +393,17 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         /// <summary>
-        /// STRs the cat.
+        /// Gives you an array of strings.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
-        /// <param name="separator">The separator.</param>
         /// <returns></returns>
-        private static string StrCat<T>(IEnumerable<T> source, string separator)
+        private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)
         {
-            return source.Aggregate(new StringBuilder(),
-                                    (sb, i) => sb
-                                                .Append(i.ToString())
-                                                .Append(separator),
-                                    s => s.ToString());
+            string[] array = new string[source.Count()];
+            for (int i = 0; i < source.Count(); i++)
+                array[i] = source.ElementAt(i).ToString();
+            return array;
         }
 
         private void uxShowExtensionsFolder_Click(object sender, EventArgs e)
@@ -496,9 +495,31 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void OnFeedChanged()
+        private void OnFeedChanged(string source)
         {
-            string feedUrl = uxFeedSelection.SelectedItem.ToString();
+            string feedUrl;
+
+            if (source == uxFeedSelection.Name)
+            {
+                if (uxFeedSelection.SelectedIndex != uxFeedSelection2.SelectedIndex)
+                {
+                    uxFeedSelection2.SelectedIndex = uxFeedSelection.SelectedIndex;
+                    return;
+                }
+
+                feedUrl = uxFeedSelection.SelectedItem.ToString();
+            }
+            else
+            {
+                if (uxFeedSelection.SelectedIndex != uxFeedSelection2.SelectedIndex)
+                {
+                    uxFeedSelection.SelectedIndex = uxFeedSelection2.SelectedIndex;
+                    return;
+                }
+
+                feedUrl = uxFeedSelection2.SelectedItem.ToString();
+            }
+
             packages.SetNewSource(feedUrl);
             currentPageNumber = 0;
             DisplayPackagesAndUpdates();
@@ -531,7 +552,12 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OnFeedChanged();
+            OnFeedChanged(uxFeedSelection.Name);
+        }
+
+        public void uxFeedSelection2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnFeedChanged(uxFeedSelection2.Name);
         }
 
         private void AppendToOnlineTab(string label, string text)
@@ -539,7 +565,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             richTextBox1.SelectionColor = Color.Gray;
             richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
             richTextBox1.SelectionColor = Color.Black;
-            richTextBox1.AppendText(text);
+            if (text != null)
+                richTextBox1.AppendText(text);
+        }
+
+        private void AppendToUpdateTab(string label, string text)
+        {
+            richTextBox3.SelectionColor = Color.Gray;
+            richTextBox3.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
+            richTextBox3.SelectionColor = Color.Black;
+            if(text != null)
+                richTextBox3.AppendText(text);
         }
 
         private void SelectedItemChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -554,20 +590,26 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 richTextBox1.Clear();
 
-                AppendToOnlineTab("Created by", StrCat(pack.Authors, ","));
+                AppendToOnlineTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
                 AppendToOnlineTab("Id", pack.Id);
                 AppendToOnlineTab("Version", pack.Version.ToString());
                 AppendToOnlineTab("Description", pack.Description);
                 AppendToOnlineTab("Downloads", pack.DownloadCount.ToString());
+
                 IEnumerable<PackageDependency> dependency = pack.Dependencies;
                 if (dependency.Count() > 0)
                 {
                     richTextBox1.SelectionColor = Color.Gray;
                     richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Dependencies " + ": ");
                     richTextBox1.SelectionColor = Color.Black;
+
+                    var lastitem = dependency.Last().Id;
                     foreach (PackageDependency dependentPackage in dependency)
                     {
-                        richTextBox1.AppendText(dependentPackage.Id + ",");
+                        if(dependentPackage.Id != lastitem)
+                            richTextBox1.AppendText(dependentPackage.Id + ", ");
+                        else
+                            richTextBox1.AppendText(dependentPackage.Id);
                     }
                 }
 
@@ -583,6 +625,22 @@ namespace DotSpatial.Plugins.ExtensionManager
                     uxInstall.Enabled = false;
                     //uxUpdate.Enabled = IsPackageUpdateable(pack);
                 }
+            }
+        }
+
+        private void uxUpdate_SelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            var pack = e.Item.Tag as IPackage;
+
+            if (pack != null)
+            {
+                richTextBox3.Clear();
+
+                AppendToUpdateTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
+                AppendToUpdateTab("Id", pack.Id);
+                AppendToUpdateTab("Version", pack.Version.ToString());
+                AppendToUpdateTab("Description", pack.Description);
+                AppendToUpdateTab("What's New", Environment.NewLine + pack.ReleaseNotes);
             }
         }
 
@@ -651,11 +709,14 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 uxSourceName.Clear();
                 uxSourceUrl.Clear();
-                return;
             }
-            uxFeedSelection.Items.Add(feed.Url);
-            uxSourceName.Clear();
-            uxSourceUrl.Clear();
+            else
+            {
+                uxFeedSelection.Items.Add(feed.Url);
+                uxFeedSelection2.Items.Add(feed.Url);
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+            }
         }
 
         private void uxRemove_Click(object sender, EventArgs e)
@@ -665,6 +726,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             feed.Name = selectedItem.Text;
             feed.Url = selectedItem.SubItems[1].Text;
             uxFeedSelection.Items.Remove(feed.Url);
+            uxFeedSelection2.Items.Remove(feed.Url);
             selectedItem.Remove();
             FeedManager.Remove(feed);
         }

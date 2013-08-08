@@ -51,6 +51,7 @@
             this.uxSearchText = new System.Windows.Forms.TextBox();
             this.uxInstall = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uxFeedSelection2 = new System.Windows.Forms.ComboBox();
             this.uxUpdateAll = new System.Windows.Forms.Button();
             this.uxUpdate = new System.Windows.Forms.Button();
             this.uxUpdatePackages = new System.Windows.Forms.ListView();
@@ -70,6 +71,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.uxRemove = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabOnline.SuspendLayout();
@@ -130,7 +132,6 @@
             // 
             this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.Installed.CheckOnClick = false;
             this.Installed.FormattingEnabled = true;
             this.Installed.Location = new System.Drawing.Point(150, 45);
             this.Installed.Name = "Installed";
@@ -219,7 +220,7 @@
             this.Pack,
             this.Description});
             this.uxPackages.FullRowSelect = true;
-            this.uxPackages.Location = new System.Drawing.Point(3, 68);
+            this.uxPackages.Location = new System.Drawing.Point(6, 68);
             this.uxPackages.Name = "uxPackages";
             this.uxPackages.ShowGroups = false;
             this.uxPackages.Size = new System.Drawing.Size(503, 431);
@@ -281,6 +282,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.richTextBox3);
+            this.tabPage2.Controls.Add(this.uxFeedSelection2);
             this.tabPage2.Controls.Add(this.uxUpdateAll);
             this.tabPage2.Controls.Add(this.uxUpdate);
             this.tabPage2.Controls.Add(this.uxUpdatePackages);
@@ -291,6 +294,17 @@
             this.tabPage2.TabIndex = 2;
             this.tabPage2.Text = "Update";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uxFeedSelection2
+            // 
+            this.uxFeedSelection2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxFeedSelection2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxFeedSelection2.FormattingEnabled = true;
+            this.uxFeedSelection2.Location = new System.Drawing.Point(8, 10);
+            this.uxFeedSelection2.Name = "uxFeedSelection2";
+            this.uxFeedSelection2.Size = new System.Drawing.Size(314, 23);
+            this.uxFeedSelection2.TabIndex = 15;
+            this.uxFeedSelection2.SelectedIndexChanged += new System.EventHandler(this.uxFeedSelection2_SelectedIndexChanged);
             // 
             // uxUpdateAll
             // 
@@ -324,10 +338,11 @@
             this.uxUpdatePackages.Location = new System.Drawing.Point(6, 43);
             this.uxUpdatePackages.Name = "uxUpdatePackages";
             this.uxUpdatePackages.ShowGroups = false;
-            this.uxUpdatePackages.Size = new System.Drawing.Size(732, 473);
+            this.uxUpdatePackages.Size = new System.Drawing.Size(503, 473);
             this.uxUpdatePackages.TabIndex = 2;
             this.uxUpdatePackages.UseCompatibleStateImageBehavior = false;
             this.uxUpdatePackages.View = System.Windows.Forms.View.Tile;
+            this.uxUpdatePackages.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.uxUpdate_SelectionChanged);
             // 
             // tabPage4
             // 
@@ -469,6 +484,14 @@
             this.uxRemove.UseVisualStyleBackColor = true;
             this.uxRemove.Click += new System.EventHandler(this.uxRemove_Click);
             // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(516, 10);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(230, 506);
+            this.richTextBox3.TabIndex = 26;
+            this.richTextBox3.Text = "";
+            // 
             // ExtensionManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -540,5 +563,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Label autoUpdateExplanation;
         private System.Windows.Forms.Button uxApply;
+        private System.Windows.Forms.ComboBox uxFeedSelection2;
+        private System.Windows.Forms.RichTextBox richTextBox3;
     }
 }
