@@ -76,34 +76,17 @@ namespace DotSpatial.Controls
 
             if (_frmFeatureIdentifier == null)
             {
-                _frmFeatureIdentifier = new FeatureIdentifier(Map);
+                _frmFeatureIdentifier = new FeatureIdentifier();
             }
 
             _frmFeatureIdentifier.treFeatures.BeginUpdate();
             _frmFeatureIdentifier.SuspendLayout();
             _frmFeatureIdentifier.Clear();
 
-          
-          
             Identify(e.Map.MapFrame.GetLayers(), strict, tolerant);
  
-                //Synchronizes the legend with the identify tool
-             Legend legend = Map.Legend as Legend;
-             if (legend != null)
-             {
-                 foreach (LegendBox item in legend._legendBoxes)
-                 {
-
-                     if (item.Item.IsSelected)
-                     {
-                         _frmFeatureIdentifier._previouslySelectedLayerName = item.Item.LegendText;
-                     }
-                 }
-                 legend.AddFeatureIdentifier(_frmFeatureIdentifier);
-             }
-
-             _frmFeatureIdentifier.ReSelect();
-             _frmFeatureIdentifier.ResumeLayout();
+            _frmFeatureIdentifier.ReSelect();
+            _frmFeatureIdentifier.ResumeLayout();
 
              if (_frmFeatureIdentifier.Visible == false)
              {
@@ -143,7 +126,7 @@ namespace DotSpatial.Controls
                 tempLayer.IsSelected = true;
               
 
-                if (feature != null && layer != null)
+                if (feature != null && layer != null && layer.IsVisible == true)
                 {
                     layer.Select(feature);
                 }
@@ -175,16 +158,19 @@ namespace DotSpatial.Controls
                 else
                 {
                     var gfl = layer as IMapFeatureLayer;
-                    if (gfl != null)
+                    if (gfl != null && gfl.IsVisible)
                     {
                         if (gfl.DataSet.FeatureType == FeatureType.Polygon)
                         {
-                            _frmFeatureIdentifier.Add(gfl, strict);
+                            if (true == _frmFeatureIdentifier.Add(gfl, strict))
+                                return;
                         }
                         else
                         {
-                            _frmFeatureIdentifier.Add(gfl, tolerant);
+                            if (true == _frmFeatureIdentifier.Add(gfl, tolerant))
+                                return;
                         }
+                       
                     }
 
                     var rl = layer as IMapRasterLayer;

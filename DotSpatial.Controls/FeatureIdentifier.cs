@@ -42,11 +42,7 @@ namespace DotSpatial.Controls
         private DataGridView dgvAttributes;
         private readonly ContextMenu mnuTreeContext;
         private SplitContainer splitContainer1;
-        private IFeature feature;
-        private IFeature formerFeature;
-        private IFeatureLayer layer;
-        private IFeatureLayer formerLayer;
-
+      
         internal TreeView treFeatures;
         internal string _previouslySelectedLayerName;
 
@@ -56,7 +52,6 @@ namespace DotSpatial.Controls
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
-        private IMap Map;
 
         #endregion
 
@@ -100,6 +95,7 @@ namespace DotSpatial.Controls
             // 
             // dgvAttributes
             // 
+            this.dgvAttributes.AllowUserToAddRows = false;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             resources.ApplyResources(this.dgvAttributes, "dgvAttributes");
             this.dgvAttributes.Name = "dgvAttributes";
@@ -125,7 +121,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a new instance of FeatureIdentifier
         /// </summary>
-     /*   public FeatureIdentifier()
+        public FeatureIdentifier()
         {
             InitializeComponent();
             treFeatures.MouseUp += treFeatures_MouseUp;
@@ -136,21 +132,9 @@ namespace DotSpatial.Controls
             _mnuAssignIdField = new MenuItem("Assign ID Field");
             _mnuAssignIdField.Click += _mnuAssignIdField_Click;
             _featureIDFields = new Dictionary<string, string>();
-        }*/
-
-        public FeatureIdentifier(IMap Map)
-        {
-            InitializeComponent();
-            treFeatures.MouseUp += treFeatures_MouseUp;
-            mnuTreeContext = new ContextMenu();
-            _mnuSelectMenu = new MenuItem("Select Feature");
-            _mnuSelectMenu.Click += selectMenu_Click;
-            // The "ID Field" seems more like a display caption.
-            _mnuAssignIdField = new MenuItem("Assign ID Field");
-            _mnuAssignIdField.Click += _mnuAssignIdField_Click;
-            _featureIDFields = new Dictionary<string, string>();
-            this.Map = Map;
         }
+
+      
 
         private void _mnuAssignIdField_Click(object sender, EventArgs e)
         {
@@ -233,28 +217,6 @@ namespace DotSpatial.Controls
             else if (e.Button == MouseButtons.Left)
             {
                 TreeNode clickedNode = treFeatures.GetNodeAt(e.X, e.Y);
-                Legend legend = Map.Legend as Legend;
-
-                if (legend != null)
-                {
-                    foreach (LegendBox item in legend._legendBoxes)
-                    {
-                        item.Item.IsSelected = false;
-                        if (clickedNode.Text == item.Item.LegendText)
-                        {
-                            item.Item.IsSelected = true;
-                            legend.Invalidate();
-                        }
-                        else if (clickedNode.Parent != null)
-                        {
-                            if (clickedNode.Parent.Text == item.Item.LegendText)
-                            {
-                                item.Item.IsSelected = true;
-                                legend.Invalidate();
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -289,8 +251,13 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="layer"></param>
         /// <param name="bounds"></param>
-        public virtual void Add(IFeatureLayer layer, Extent bounds)
+        public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
+            List<IFeature> result = layer.DataSet.Select(bounds);
+            if (result.Count == 0)
+            {
+                return false;
+            }
             _activeRegion = bounds;
             treFeatures.SuspendLayout();
 
@@ -298,7 +265,6 @@ namespace DotSpatial.Controls
             nodeLayer.Tag = layer;
             nodeLayer.Name = layer.LegendText;
 
-            List<IFeature> result = layer.DataSet.Select(bounds);
             foreach (IFeature feature in result)
             {
                 DataRow dr = null;
@@ -331,6 +297,7 @@ namespace DotSpatial.Controls
                 node.Tag = feature;
             }
             treFeatures.ResumeLayout();
+            return true;
         }
 
         /// <summary>

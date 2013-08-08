@@ -97,7 +97,6 @@ namespace DotSpatial.Controls
         private Color _selectionHighlight;
         private TabColorDialog _tabColorDialog;
         private bool _wasDoubleClick;
-        private FeatureIdentifier _identify;
         #endregion
 
         #region Constructors
@@ -162,11 +161,7 @@ namespace DotSpatial.Controls
 
         #region Methods
 
-        public void AddFeatureIdentifier(FeatureIdentifier fi)
-        {
-            _identify = fi;
-        }
-
+        
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
@@ -1001,12 +996,7 @@ namespace DotSpatial.Controls
                         ClearSelection();
                     }
                     e.ItemBox.Item.IsSelected = true;
-                    //Synchronizes what is selected in the legend with what is selected in the identify tool
-                    if (_identify != null)
-                    {
-                        _identify._previouslySelectedLayerName = e.ItemBox.Item.LegendText;
-                        _identify.ReSelect();
-                    }
+              
                     //_selection.Add(e.ItemBox);
                     //IsInitialized = false;
                     //Invalidate();

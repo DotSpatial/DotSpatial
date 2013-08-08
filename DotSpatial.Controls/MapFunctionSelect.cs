@@ -42,6 +42,7 @@ namespace DotSpatial.Controls
         private Coordinate _geoStartPoint;
         private bool _isDragging;
         private Point _startPoint;
+        private ILayer former;
 
         #endregion
 
@@ -175,8 +176,27 @@ namespace DotSpatial.Controls
                 tolerant = new Envelope(c1, c2);
             }
 
+            former = null;
+            foreach (Layer l in Map.MapFrame.GetAllLayers())
+            {
+                if (l.IsSelected == true)
+                {
+                    former = l;
+                    l.IsSelected = false;
+                }
+            }
+            if (former == null && Map.MapFrame.IsSelected == true)
+            {
+                former = Map.MapFrame;
+            }
+            Map.MapFrame.IsSelected = true;
             Map.MapFrame.SuspendEvents();
             HandleSelection(tolerant, env);
+            Map.MapFrame.IsSelected = false;
+            if (former != null)
+            {
+                former.IsSelected = true;
+            }
             Map.MapFrame.ResumeEvents();
             // Force an invalidate to clear the dotted lines, even if we haven't changed anything.
             e.Map.Invalidate();
