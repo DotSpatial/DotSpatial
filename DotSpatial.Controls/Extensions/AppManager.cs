@@ -392,11 +392,13 @@ namespace DotSpatial.Controls
         {
             var knownExtensions = new[] { "dll", "exe" };
             string assemblyName = args.Name.Split(',').First();
+            var tempAssemblyName = assemblyName.Remove(assemblyName.LastIndexOf("."));
+
             var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
             if (!Directory.Exists(packagesFolder))
                 return null;
 
-            var potentialPackage = Directory.EnumerateDirectories(packagesFolder, assemblyName + "*").FirstOrDefault();
+            var potentialPackage = Directory.EnumerateDirectories(packagesFolder, tempAssemblyName + "*").FirstOrDefault();
             if (potentialPackage == null)
                 return null;
 
@@ -517,7 +519,7 @@ namespace DotSpatial.Controls
                 if (!EnsureRequiredImportsAreAvailable())
                     return;
                 else
-                    OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
+                    OnSatisfyImportsExtensionsActivated(EventArgs.Empty);             
 
                 // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
                 // need to be created before other plugins are loaded.
@@ -626,7 +628,8 @@ namespace DotSpatial.Controls
                 // Add files in the current directory as well.
                 Trace.WriteLine("Cataloging: " + dir);
                 UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
-                TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
+                if (!DirectoryCatalogExists(catalog, dir))
+                    TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
             }
 
             return catalog;

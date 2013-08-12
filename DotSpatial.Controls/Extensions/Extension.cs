@@ -62,6 +62,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public bool IsActive { get; set; }
 
+        private bool deactivationAllowed = true;
         /// <summary>
         /// Gets a value indicating whether [deactivation is allowed].
         /// </summary>
@@ -74,7 +75,13 @@ namespace DotSpatial.Controls
             {
                 // Assemblies in the Application Extensions folder cannot be deactivated.
                 const string STR_ApplicationExtensionsDirectoryName = @"\Application Extensions\";
-                return ReferenceAssembly.Location.IndexOf(STR_ApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) < 0;
+                if(!(ReferenceAssembly.Location.IndexOf(STR_ApplicationExtensionsDirectoryName, StringComparison.OrdinalIgnoreCase) < 0))
+                    deactivationAllowed = false;
+                return deactivationAllowed;
+            }
+            set
+            {
+                deactivationAllowed = value;
             }
         }
 
