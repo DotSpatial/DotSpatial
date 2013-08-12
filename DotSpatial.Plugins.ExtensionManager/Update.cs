@@ -252,11 +252,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             var extension = App.GetExtension(pack.Id);
 
             if (IsPackageInstalled(pack))
-            {
                 App.MarkPackageForRemoval(GetPackagePath(pack));
-            }
-
-            App.MarkExtensionForRemoval(GetExtensionPath(extension));
+            else
+                App.MarkExtensionForRemoval(GetExtensionPath(extension));
 
             App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
 
@@ -310,8 +308,20 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         internal static string GetPackagePath(IPackage pack)
         {
-            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory, GetPackageFolderName(pack));
-            return path;
+            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
+            return FindPackageFolder(path, pack);
+        }
+
+        internal static string FindPackageFolder(string path, IPackage pack)
+        {
+            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"^^(?!p_|t_).*");
+            var folder = Directory.GetDirectories(path, pack.Id + ".*")
+                                      .Where(directory => reg.IsMatch(directory))
+                                      .ToList();
+            if (folder.Count > 0)
+                return folder.First().ToString();
+            else
+                return "NotFound";
         }
 
         internal static string GetPackageFolderName(IPackage pack)

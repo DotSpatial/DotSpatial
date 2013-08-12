@@ -332,6 +332,20 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return;
             }
+            
+            if (extension.DeactivationAllowed == false && !AllowProtectedCheck)
+            {        
+                if (e.NewValue == CheckState.Checked)
+                {
+                    e.NewValue = CheckState.Unchecked;
+                }
+                else if (e.NewValue == CheckState.Unchecked)
+                {
+                    e.NewValue = CheckState.Checked;
+                }
+
+                return;
+            }
 
             if (e.NewValue == CheckState.Checked && !extension.IsActive)
             {
@@ -343,12 +357,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void AppendInstalledItemDescription(string description)
+        private void AppendInstalledItem(string label, string text)
         {
             richTextBox2.SelectionColor = Color.Gray;
-            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + "Description: ");
+            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
             richTextBox2.SelectionColor = Color.Black;
-            richTextBox2.AppendText(description);
+            richTextBox2.AppendText(text);
         }
 
         private void Installed_SelectedValueChanged(object sender, EventArgs e)
@@ -364,14 +378,14 @@ namespace DotSpatial.Plugins.ExtensionManager
             ITool tool = Installed.SelectedItem as ITool;
             if (tool != null)
             {
-                AppendInstalledItemDescription(tool.Description);
+                AppendInstalledItem("Description", tool.Description);
                 return;
             }
 
             IDataProvider dataProvider = Installed.SelectedItem as IDataProvider;
             if (dataProvider != null)
             {
-                AppendInstalledItemDescription(dataProvider.Description);
+                AppendInstalledItem("Description", dataProvider.Description);
                 return;
             }
 
@@ -382,12 +396,18 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 if (package == null)
                 {
-                    AppendInstalledItemDescription(extension.Description);
+                    AppendInstalledItem("Created by", extension.Author);
+                    AppendInstalledItem("Id", extension.Name);
+                    AppendInstalledItem("Version", extension.Version);
+                    AppendInstalledItem("Description", extension.Description);
                 }
                 else
                 {
                     uxUninstall.Enabled = true;
-                    AppendInstalledItemDescription(package.Description);
+                    AppendInstalledItem("Created by", string.Join(",", ToArrayOfStrings(package.Authors)));
+                    AppendInstalledItem("Id", package.Id);
+                    AppendInstalledItem("Version", package.Version.ToString());
+                    AppendInstalledItem("Description", package.Description);
                 }
             }
         }
@@ -467,6 +487,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void ShowInstalledItemsBasedOnSelectedCategory()
         {
             var category = uxCategoryList.SelectedItem as IExtensionCategory;
+            AllowProtectedCheck = true;
+
             if (category != null)
             {
                 Installed.Items.Clear();
@@ -493,6 +515,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
                 }
             }
+            AllowProtectedCheck = false;
         }
 
         private void OnFeedChanged(string source)
@@ -661,22 +684,29 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 MessageBox.Show("Error updating " + pack.GetFullName());
             }
+            uxUpdate.Enabled = true;
         }
 
         private void uxUpdateAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < uxUpdatePackages.Items.Count; i++)
+            ListViewItem[] Items = new ListViewItem[uxUpdatePackages.Items.Count];
+            uxUpdatePackages.Items.CopyTo(Items, 0);
+
+            for (int i = 0; i < Items.Length; i++)
             {
-                var pack = uxUpdatePackages.Items[i].Tag as IPackage;
+                var pack = Items[i].Tag as IPackage;
                 try
                 {
-                    UpdatePack(pack);
+                    Updates.UpdatePackage(pack);
                 }
                 catch
                 {
                     MessageBox.Show("Error updating " + pack.GetFullName());
                 }
             }
+
+            uxUpdate.Enabled = true;
+            DisplayPackagesAndUpdates();
             showUpdateComplete();
         }
 
@@ -759,5 +789,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             uxApply.Enabled = true;
         }
+
+        private bool AllowProtectedCheck { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             foreach (var extension in App.Extensions.Where(t => !t.DeactivationAllowed))
             {
-                yield return new Tuple<object, bool>(extension.Name, extension.IsActive);
+                yield return new Tuple<object, bool>(extension, extension.IsActive);
             }
         }
     }

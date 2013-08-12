@@ -124,7 +124,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <param name="package">The package.</param>
         public void Update(IPackage package)
         {
-            packageManager.UpdatePackage(package, true, false);
+            packageManager.InstallPackage(package, true, false);
         }
 
         public void SetNewSource(string source)

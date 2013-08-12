@@ -51,6 +51,7 @@
             this.uxSearchText = new System.Windows.Forms.TextBox();
             this.uxInstall = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.uxFeedSelection2 = new System.Windows.Forms.ComboBox();
             this.uxUpdateAll = new System.Windows.Forms.Button();
             this.uxUpdate = new System.Windows.Forms.Button();
@@ -71,7 +72,6 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.uxRemove = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabOnline.SuspendLayout();
@@ -92,7 +92,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(754, 582);
+            this.tabControl.Size = new System.Drawing.Size(722, 562);
             this.tabControl.TabIndex = 2;
             // 
             // tabPage1
@@ -105,7 +105,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(746, 556);
+            this.tabPage1.Size = new System.Drawing.Size(714, 536);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Installed Extensions";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -120,7 +120,7 @@
             // 
             // uxShowExtensionsFolder
             // 
-            this.uxShowExtensionsFolder.Location = new System.Drawing.Point(150, 6);
+            this.uxShowExtensionsFolder.Location = new System.Drawing.Point(151, 11);
             this.uxShowExtensionsFolder.Name = "uxShowExtensionsFolder";
             this.uxShowExtensionsFolder.Size = new System.Drawing.Size(136, 23);
             this.uxShowExtensionsFolder.TabIndex = 9;
@@ -147,7 +147,7 @@
             this.uxCategoryList.FormattingEnabled = true;
             this.uxCategoryList.Items.AddRange(new object[] {
             "All"});
-            this.uxCategoryList.Location = new System.Drawing.Point(8, 12);
+            this.uxCategoryList.Location = new System.Drawing.Point(8, 18);
             this.uxCategoryList.Name = "uxCategoryList";
             this.uxCategoryList.Size = new System.Drawing.Size(136, 511);
             this.uxCategoryList.TabIndex = 8;
@@ -156,9 +156,9 @@
             // uxUninstall
             // 
             this.uxUninstall.Enabled = false;
-            this.uxUninstall.Location = new System.Drawing.Point(567, 6);
+            this.uxUninstall.Location = new System.Drawing.Point(583, 11);
             this.uxUninstall.Name = "uxUninstall";
-            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
+            this.uxUninstall.Size = new System.Drawing.Size(74, 23);
             this.uxUninstall.TabIndex = 7;
             this.uxUninstall.Text = "Uninstall";
             this.uxUninstall.UseVisualStyleBackColor = true;
@@ -177,7 +177,7 @@
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
             this.tabOnline.Name = "tabOnline";
             this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOnline.Size = new System.Drawing.Size(746, 556);
+            this.tabOnline.Size = new System.Drawing.Size(714, 536);
             this.tabOnline.TabIndex = 1;
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
@@ -205,7 +205,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 515);
+            this.label1.Location = new System.Drawing.Point(8, 510);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 24;
@@ -223,7 +223,7 @@
             this.uxPackages.Location = new System.Drawing.Point(6, 68);
             this.uxPackages.Name = "uxPackages";
             this.uxPackages.ShowGroups = false;
-            this.uxPackages.Size = new System.Drawing.Size(503, 431);
+            this.uxPackages.Size = new System.Drawing.Size(471, 431);
             this.uxPackages.TabIndex = 17;
             this.uxPackages.UseCompatibleStateImageBehavior = false;
             this.uxPackages.View = System.Windows.Forms.View.Tile;
@@ -252,7 +252,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(516, 10);
+            this.richTextBox1.Location = new System.Drawing.Point(484, 10);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(230, 489);
             this.richTextBox1.TabIndex = 25;
@@ -272,7 +272,7 @@
             // 
             this.uxInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.uxInstall.Enabled = false;
-            this.uxInstall.Location = new System.Drawing.Point(411, 510);
+            this.uxInstall.Location = new System.Drawing.Point(402, 505);
             this.uxInstall.Name = "uxInstall";
             this.uxInstall.Size = new System.Drawing.Size(75, 23);
             this.uxInstall.TabIndex = 3;
@@ -290,10 +290,18 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(746, 556);
+            this.tabPage2.Size = new System.Drawing.Size(714, 536);
             this.tabPage2.TabIndex = 2;
             this.tabPage2.Text = "Update";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(484, 10);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(230, 489);
+            this.richTextBox3.TabIndex = 26;
+            this.richTextBox3.Text = "";
             // 
             // uxFeedSelection2
             // 
@@ -310,7 +318,7 @@
             // 
             this.uxUpdateAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.uxUpdateAll.Location = new System.Drawing.Point(105, 525);
+            this.uxUpdateAll.Location = new System.Drawing.Point(109, 505);
             this.uxUpdateAll.Name = "uxUpdateAll";
             this.uxUpdateAll.Size = new System.Drawing.Size(75, 23);
             this.uxUpdateAll.TabIndex = 3;
@@ -322,7 +330,7 @@
             // 
             this.uxUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.uxUpdate.Location = new System.Drawing.Point(24, 525);
+            this.uxUpdate.Location = new System.Drawing.Point(28, 505);
             this.uxUpdate.Name = "uxUpdate";
             this.uxUpdate.Size = new System.Drawing.Size(75, 23);
             this.uxUpdate.TabIndex = 1;
@@ -338,7 +346,7 @@
             this.uxUpdatePackages.Location = new System.Drawing.Point(6, 43);
             this.uxUpdatePackages.Name = "uxUpdatePackages";
             this.uxUpdatePackages.ShowGroups = false;
-            this.uxUpdatePackages.Size = new System.Drawing.Size(503, 473);
+            this.uxUpdatePackages.Size = new System.Drawing.Size(471, 456);
             this.uxUpdatePackages.TabIndex = 2;
             this.uxUpdatePackages.UseCompatibleStateImageBehavior = false;
             this.uxUpdatePackages.View = System.Windows.Forms.View.Tile;
@@ -354,7 +362,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(746, 556);
+            this.tabPage4.Size = new System.Drawing.Size(714, 556);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Feeds";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -387,9 +395,9 @@
             this.uxFeedGroupBox.Controls.Add(this.uxSource);
             this.uxFeedGroupBox.Controls.Add(this.uxSourceUrl);
             this.uxFeedGroupBox.Controls.Add(this.uxName);
-            this.uxFeedGroupBox.Location = new System.Drawing.Point(8, 466);
+            this.uxFeedGroupBox.Location = new System.Drawing.Point(7, 440);
             this.uxFeedGroupBox.Name = "uxFeedGroupBox";
-            this.uxFeedGroupBox.Size = new System.Drawing.Size(732, 82);
+            this.uxFeedGroupBox.Size = new System.Drawing.Size(700, 82);
             this.uxFeedGroupBox.TabIndex = 13;
             this.uxFeedGroupBox.TabStop = false;
             // 
@@ -397,7 +405,7 @@
             // 
             this.uxAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxAdd.Location = new System.Drawing.Point(613, 41);
+            this.uxAdd.Location = new System.Drawing.Point(608, 41);
             this.uxAdd.Name = "uxAdd";
             this.uxAdd.Size = new System.Drawing.Size(70, 23);
             this.uxAdd.TabIndex = 2;
@@ -410,7 +418,7 @@
             this.uxSourceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxSourceName.Location = new System.Drawing.Point(84, 12);
+            this.uxSourceName.Location = new System.Drawing.Point(79, 12);
             this.uxSourceName.Name = "uxSourceName";
             this.uxSourceName.Size = new System.Drawing.Size(500, 20);
             this.uxSourceName.TabIndex = 10;
@@ -421,7 +429,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.uxSource.AutoSize = true;
             this.uxSource.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxSource.Location = new System.Drawing.Point(27, 45);
+            this.uxSource.Location = new System.Drawing.Point(22, 45);
             this.uxSource.Name = "uxSource";
             this.uxSource.Size = new System.Drawing.Size(51, 16);
             this.uxSource.TabIndex = 9;
@@ -432,7 +440,7 @@
             this.uxSourceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxSourceUrl.Location = new System.Drawing.Point(84, 44);
+            this.uxSourceUrl.Location = new System.Drawing.Point(79, 44);
             this.uxSourceUrl.Name = "uxSourceUrl";
             this.uxSourceUrl.Size = new System.Drawing.Size(500, 20);
             this.uxSourceUrl.TabIndex = 11;
@@ -441,7 +449,7 @@
             // 
             this.uxName.AutoSize = true;
             this.uxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxName.Location = new System.Drawing.Point(27, 16);
+            this.uxName.Location = new System.Drawing.Point(22, 16);
             this.uxName.Name = "uxName";
             this.uxName.Size = new System.Drawing.Size(45, 16);
             this.uxName.TabIndex = 8;
@@ -484,20 +492,12 @@
             this.uxRemove.UseVisualStyleBackColor = true;
             this.uxRemove.Click += new System.EventHandler(this.uxRemove_Click);
             // 
-            // richTextBox3
-            // 
-            this.richTextBox3.Location = new System.Drawing.Point(516, 10);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(230, 506);
-            this.richTextBox3.TabIndex = 26;
-            this.richTextBox3.Text = "";
-            // 
             // ExtensionManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(754, 582);
+            this.ClientSize = new System.Drawing.Size(722, 562);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
