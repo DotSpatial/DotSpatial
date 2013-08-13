@@ -60,6 +60,11 @@ namespace DotSpatial.Plugins.WebMap
 
         #endregion
 
+        public WebMapPlugin()
+        {
+            //DeactivationAllowed = false;
+        }
+
         #region Public Methods
 
         /// <summary>

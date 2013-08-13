@@ -38,6 +38,11 @@ namespace DotSpatial.Plugins.MenuBar
 
         #endregion
 
+        public MenuBarPlugin()
+        {
+            //DeactivationAllowed = false;
+        }
+
         #region Public Methods
 
         public override void Activate()

@@ -15,6 +15,11 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public class ExtensionManagerPlugin : Extension
     {
+        public ExtensionManagerPlugin()
+        {
+            //DeactivationAllowed = false;
+        }
+
         #region Public Methods
 
         public override void Activate()
