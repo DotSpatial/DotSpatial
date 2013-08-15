@@ -102,10 +102,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return null;
             }
-            System.Net.WebRequest request = System.Net.WebRequest.Create(url);
 
             try
             {
+                System.Net.WebRequest request = System.Net.WebRequest.Create(url);
                 System.Net.WebResponse response = request.GetResponse();
                 System.IO.Stream responseStream = response.GetResponseStream();
 
@@ -115,7 +115,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 return bmp;
             }
-            catch (System.Net.WebException)
+            catch (Exception)
             {
                 return null;
             }

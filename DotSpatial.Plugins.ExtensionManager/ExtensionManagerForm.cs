@@ -683,8 +683,9 @@ namespace DotSpatial.Plugins.ExtensionManager
             catch
             {
                 MessageBox.Show("Error updating " + pack.GetFullName());
+                DisplayPackagesAndUpdates();
+                uxUpdate.Enabled = true;
             }
-            uxUpdate.Enabled = true;
         }
 
         private void uxUpdateAll_Click(object sender, EventArgs e)
@@ -697,6 +698,12 @@ namespace DotSpatial.Plugins.ExtensionManager
                 var pack = Items[i].Tag as IPackage;
                 try
                 {
+                    foreach (PackageDependency dependency in pack.Dependencies)
+                    {
+                        if (packages.GetLocalPackage(dependency.Id) == null)
+                            packages.Update(packages.Repo.FindPackage(dependency.Id));
+                    }
+
                     Updates.UpdatePackage(pack);
                 }
                 catch
@@ -717,6 +724,21 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void UpdatePack(IPackage pack)
         {
+            foreach (PackageDependency dependency in pack.Dependencies)
+            {
+                foreach (ListViewItem item in uxUpdatePackages.Items)
+                {
+                    var update = item.Tag as IPackage;
+                    if (dependency.Id == update.Id)
+                    {
+                        Updates.UpdatePackage(update);
+                    }
+                }
+
+                if (packages.GetLocalPackage(dependency.Id) == null)
+                    packages.Update(packages.Repo.FindPackage(dependency.Id));
+            }
+
             Updates.UpdatePackage(pack);
             uxUpdate.Enabled = true;
 
