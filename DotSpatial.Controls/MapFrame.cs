@@ -349,7 +349,14 @@ namespace DotSpatial.Controls
         public virtual void Initialize()
         {
             if (ClientRectangle.Width == 0 || ClientRectangle.Height == 0) return;
-            Initialize(new List<Extent> { ViewExtents });
+            try
+            {
+                Initialize(new List<Extent> { ViewExtents });
+            }
+            catch (InvalidOperationException e)
+            {
+                return;
+            }
         }
 
         /// <summary>

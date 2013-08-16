@@ -90,7 +90,7 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
-            if (_dragStart != Point.Empty)
+            if (_dragStart != Point.Empty && _preventDrag == false)
             {
                 _isDragging = true;
                 Map.IsBusy = true;

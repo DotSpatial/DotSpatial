@@ -2499,6 +2499,9 @@ namespace DotSpatial.Data
         /// </summary>
         protected virtual void OnInitializeVertices()
         {
+            if (_features == null)
+                return;
+
             int count = _features.Sum(f => f.NumPoints);
             _vertices = new double[count * 2];
             int i = 0;
