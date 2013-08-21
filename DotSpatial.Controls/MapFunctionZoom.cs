@@ -50,6 +50,7 @@ namespace DotSpatial.Controls
             : base(inMap)
         {
             Configure();
+            BusySet = false;
         }
 
         private void Configure()
@@ -74,6 +75,7 @@ namespace DotSpatial.Controls
             _client = Rectangle.Empty;
             _mapFrame.ResetExtents();
             Map.IsBusy = false;
+            BusySet = false;
         }
 
         #endregion
@@ -177,7 +179,11 @@ namespace DotSpatial.Controls
                 e.Map.Invalidate();
                 _zoomTimer.Start();
                 _mapFrame = e.Map.MapFrame;
-                Map.IsBusy = true;
+                if (!BusySet)
+                {
+                    Map.IsBusy = true;
+                    BusySet = true;
+                }
                 base.OnMouseWheel(e);
 
             }
@@ -185,5 +191,7 @@ namespace DotSpatial.Controls
         }
 
         #endregion
+
+        public bool BusySet { get; set; }
     }
 }

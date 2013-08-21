@@ -46,6 +46,7 @@ namespace DotSpatial.Controls
             : base(inMap)
         {
             YieldStyle = YieldStyles.LeftButton;
+            BusySet = false;
         }
 
         #endregion
@@ -92,8 +93,13 @@ namespace DotSpatial.Controls
         {
             if (_dragStart != Point.Empty && _preventDrag == false)
             {
+                if (!BusySet)
+                {
+                    Map.IsBusy = true;
+                    BusySet = true;
+                }
+
                 _isDragging = true;
-                Map.IsBusy = true;
                 Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
                 e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width,
                                                     _source.Height);
@@ -116,13 +122,15 @@ namespace DotSpatial.Controls
                 e.Map.MapFrame.ResetExtents();
                 _preventDrag = false;
                 Map.IsBusy = false;
+                BusySet = false;
             }
             _dragStart = Point.Empty;
 
-            //Map.Invalidate();
             base.OnMouseUp(e);
         }
 
         #endregion
+
+        public bool BusySet { get; set; }
     }
 }

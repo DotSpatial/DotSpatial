@@ -46,6 +46,7 @@ namespace DotSpatial.Controls
             : base(inMap)
         {
             YieldStyle = YieldStyles.AlwaysOn;
+            BusySet = false;
         }
 
         #endregion
@@ -70,6 +71,7 @@ namespace DotSpatial.Controls
             {
                 Map.MapFrame.ResetExtents();
                 Map.IsBusy = false;
+                BusySet = false;
                 KeyPanCount = 0;
             }
 
@@ -117,7 +119,12 @@ namespace DotSpatial.Controls
             // Arrow-Key Panning
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
             {
-                Map.IsBusy = true;
+                if (!BusySet)
+                {
+                    Map.IsBusy = true;
+                    BusySet = true;
+                }
+
                 var _source = Map.MapFrame.View;
 
                 switch (e.KeyCode)
@@ -152,22 +159,26 @@ namespace DotSpatial.Controls
             if (e.KeyCode == (Keys.LButton | Keys.MButton | Keys.Back | Keys.ShiftKey | Keys.Space | Keys.F17) || e.KeyCode == Keys.Subtract)
             {
                 Extent MaxExtent = Map.GetMaxExtent();
-
+                int bla;
                 if ((Map.IsZoomedToMaxExtent == true))
-                { }
+                {
+                }
                 else
                 {
+                    Map.IsBusy = true;
                     Rectangle r = Map.MapFrame.View;
 
                     r.Inflate(r.Width / 2, r.Height / 2);
                     Map.MapFrame.View = r;
                     Map.MapFrame.ResetExtents();
+                    Map.IsBusy = false;
                 }
             }
 
             // Zoom In
             if (e.KeyCode == (Keys.LButton | Keys.RButton | Keys.Back | Keys.ShiftKey | Keys.Space | Keys.F17) || e.KeyCode == Keys.Add)
             {
+                Map.IsBusy = true;
                 Map.IsZoomedToMaxExtent = false;
                 Rectangle r = Map.MapFrame.View;
 
@@ -175,9 +186,12 @@ namespace DotSpatial.Controls
 
                 Map.MapFrame.View = r;
                 Map.MapFrame.ResetExtents();
+                Map.IsBusy = false;
             }
         }
 
         #endregion
+
+        public bool BusySet { get; set; }
     }
 }

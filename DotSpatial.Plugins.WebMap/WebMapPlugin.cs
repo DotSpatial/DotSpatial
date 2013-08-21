@@ -272,6 +272,7 @@ namespace DotSpatial.Plugins.WebMap
         private void BwDoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
+            if (App.Map != null) App.Map.IsBusy = true;
 
             if (worker != null && _baseMapLayer != null)
                 if (worker.CancellationPending)
@@ -280,8 +281,8 @@ namespace DotSpatial.Plugins.WebMap
                 }
                 else
                 {
-                    worker.ReportProgress(50);
-                    UpdateStichedBasemap();
+                    worker.ReportProgress(10);
+                    UpdateStichedBasemap(e);
                 }
         }
 
@@ -289,7 +290,7 @@ namespace DotSpatial.Plugins.WebMap
         {
             // Do we know what what our progress completion percent is (instead of 50)?
             // TODO: make this localizable
-            App.ProgressHandler.Progress("Loading Basemap ...", 50, "Loading Basemap ...");
+            App.ProgressHandler.Progress("Loading Basemap ...", e.ProgressPercentage, "Loading Basemap ...");
         }
 
         /// <summary>
@@ -300,8 +301,14 @@ namespace DotSpatial.Plugins.WebMap
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var map = App.Map as Map;
-            if (map != null) map.MapFrame.Invalidate();
+            if (map != null) map.IsBusy = false;
             App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
+
+            if (e.Cancelled)
+            {
+                _bw.RunWorkerAsync();
+                return;
+            }
         }
 
         /// <summary>
@@ -487,9 +494,9 @@ namespace DotSpatial.Plugins.WebMap
         private void MapFrameExtentsChanged(object sender, ExtentArgs e)
         {
             if (_bw.IsBusy != true)
-            {
                 _bw.RunWorkerAsync();
-            }
+            else
+                _bw.CancelAsync();
         }
 
         private void OpacitySelected(object sender, SelectedValueChangedEventArgs e)
@@ -586,7 +593,7 @@ namespace DotSpatial.Plugins.WebMap
         /// <summary>
         /// Main method of this plugin: gets the tiles from the TileManager, stitches them together, and adds the layer to the map.
         /// </summary>
-        private void UpdateStichedBasemap()
+        private void UpdateStichedBasemap(DoWorkEventArgs e)
         {
             var map = App.Map as Map;
             if (map != null)
@@ -601,6 +608,14 @@ namespace DotSpatial.Plugins.WebMap
                 var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
                 var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
 
+                //report progress and check for cancel
+                _bw.ReportProgress(25);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 //Get the web mercator vertices of the current map view
                 var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
 
@@ -610,8 +625,24 @@ namespace DotSpatial.Plugins.WebMap
                 Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
                 var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
 
+                //report progress and check for cancel
+                _bw.ReportProgress(40);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 //Grab the tiles
                 var tiles = _tileManager.GetTiles(geogEnv, rectangle);
+
+                //report progress and check for cancel
+                _bw.ReportProgress(60);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
 
                 //Stitch them into a single image
                 var stitchedBasemap = TileCalculator.StitchTiles(tiles);
@@ -621,6 +652,14 @@ namespace DotSpatial.Plugins.WebMap
                 stitchedBasemap = GetTransparentBasemapImage(stitchedBasemap, _opacity);
 
                 var tileImage = new InRamImageData(stitchedBasemap);
+
+                //report progress and check for cancel
+                _bw.ReportProgress(70);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
 
                 //Tiles will have often slightly different bounds from what we are displaying on screen
                 // so we need to get the top left and bottom right tiles' bounds to get the proper extent
@@ -641,7 +680,23 @@ namespace DotSpatial.Plugins.WebMap
                 tileImage.Bounds = new RasterBounds(stitchedBasemap.Height, stitchedBasemap.Width,
                                                     new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
 
+                //report progress and check for cancel
+                _bw.ReportProgress(90);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 _baseMapLayer.Image = tileImage;
+
+                //report progress and check for cancel
+                _bw.ReportProgress(99);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
             }
         }
 
