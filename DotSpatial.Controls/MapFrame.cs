@@ -295,12 +295,13 @@ namespace DotSpatial.Controls
         /// <param name="regions">The regions to initialize.</param>
         public virtual void Initialize(List<Extent> regions)
         {
+            bool setView = false;
             if (_backBuffer == null)
             {
                 _backBuffer = CreateBuffer();
 
                 //set the view
-                _view =_backView;
+                setView = true;
             }
 
             Graphics bufferDevice = Graphics.FromImage(_backBuffer);
@@ -339,7 +340,8 @@ namespace DotSpatial.Controls
 
             if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
             _buffer = _backBuffer;
-
+            if(setView)
+                _view = _backView;
             bufferDevice.Clip = new Region(ImageRectangle);
             gp.Dispose();
             List<Rectangle> rects = args.ProjToPixel(regions);
