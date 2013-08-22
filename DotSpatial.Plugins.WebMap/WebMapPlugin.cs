@@ -63,6 +63,7 @@ namespace DotSpatial.Plugins.WebMap
         public WebMapPlugin()
         {
             //DeactivationAllowed = false;
+            BusySet = false;
         }
 
         #region Public Methods
@@ -272,7 +273,11 @@ namespace DotSpatial.Plugins.WebMap
         private void BwDoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            if (App.Map != null) App.Map.IsBusy = true;
+            if (App.Map != null && !BusySet)
+            {
+                BusySet = true;
+                App.Map.IsBusy = true;
+            }
 
             if (worker != null && _baseMapLayer != null)
                 if (worker.CancellationPending)
@@ -300,14 +305,18 @@ namespace DotSpatial.Plugins.WebMap
         /// <param name="e"></param>
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var map = App.Map as Map;
-            if (map != null) map.IsBusy = false;
-            App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
-
-            if (e.Cancelled)
+            if (e.Cancelled && !_bw.IsBusy)
             {
                 _bw.RunWorkerAsync();
                 return;
+            }
+
+            if (App.Map != null)
+            {
+                App.Map.IsBusy = false;
+                BusySet = false;
+                App.Map.MapFrame.Invalidate();
+                App.ProgressHandler.Progress(String.Empty, 0, String.Empty);
             }
         }
 
@@ -701,5 +710,7 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         #endregion
+
+        public bool BusySet { get; set; }
     }
 }

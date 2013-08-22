@@ -1025,7 +1025,6 @@ namespace DotSpatial.Controls
                 if (_isBusyIndex <= 0)
                 {
                     _isBusyIndex = 0;
-                    MapFrame.Invalidate();
                 }
             }
         }

@@ -282,7 +282,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ResetBuffer()
         {
-            _backBuffer = CreateBuffer();
+            _backBuffer = null;
             // reset the view rectangle to represent the same region
             //_view = _extendBuffer ? new Rectangle(_width / 3, _height / 3, _width / 3, _height / 3) : new Rectangle(0, 0, _width, _height);
 
@@ -298,7 +298,11 @@ namespace DotSpatial.Controls
             if (_backBuffer == null)
             {
                 _backBuffer = CreateBuffer();
+
+                //set the view
+                _view =_backView;
             }
+
             Graphics bufferDevice = Graphics.FromImage(_backBuffer);
             MapArgs args = new MapArgs(ClientRectangle, ViewExtents, bufferDevice);
             GraphicsPath gp = new GraphicsPath();
@@ -335,7 +339,7 @@ namespace DotSpatial.Controls
 
             if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
             _buffer = _backBuffer;
-            _view = _backView;
+
             bufferDevice.Clip = new Region(ImageRectangle);
             gp.Dispose();
             List<Rectangle> rects = args.ProjToPixel(regions);
