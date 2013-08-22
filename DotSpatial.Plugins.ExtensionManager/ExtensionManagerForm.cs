@@ -41,6 +41,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly DownloadForm downloadDialog = new DownloadForm();
         private readonly Paging paging;
         private GetPackage getpack;
+        private bool restartNeccesary = false;
 
         private int currentPageNumber;
 
@@ -61,11 +62,25 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxUpdatePackages.TileSize = new Size(uxPackages.Width - ScrollBarMargin, 45);
 
             paging.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
+            FormClosing += ExtensionManager_FormClosing;
+            tabControl.Deselecting += tab_deselecting;
         }
 
         #endregion
 
         #region Public Properties
+
+        private void tab_deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (restartNeccesary)
+            {
+                if (tabControl.SelectedIndex == 0)
+                    MessageBox.Show("Please restart HydroDesktop before attempting to download or update any plugins.");
+                if (tabControl.SelectedIndex == 2)
+                    MessageBox.Show("Please restart HydroDesktop before attempting to download or uninstall any plugins.");
+                e.Cancel = true;
+            }
+        }
 
         public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
         {
@@ -106,6 +121,12 @@ namespace DotSpatial.Plugins.ExtensionManager
         #endregion
 
         #region Methods
+
+        public void AutoUpdateRestartNeccesary()
+        {
+            restartNeccesary = true;
+            tabControl.SelectedIndex = 2;
+        }
 
         private void InstallButton_Click(object sender, EventArgs e)
         {
@@ -193,27 +214,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private IEnumerable<IPackage> GetPackagesDependentOn(IPackage selectedPackage)
-        {
-            var dependentPackages = new List<IPackage>();
-            foreach (var extension in App.Extensions)
-            {
-                IPackage pack = getpack.GetPackageFromExtension(extension);
-                if (pack == null)
-                {
-                    continue;
-                }
-                foreach (PackageDependency dependency in pack.Dependencies)
-                {
-                    if (dependency.Id == selectedPackage.Id)
-                    {
-                        dependentPackages.Add(pack);
-                    }
-                }
-            }
-            return dependentPackages;
-        }
-
         private void uxUninstall_Click(object sender, EventArgs e)
         {
             var selectedextension = Installed.SelectedItem as IExtension;
@@ -224,41 +224,46 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             uxUninstall.Enabled = false;
 
-            IEnumerable<IPackage> dependentPackages = GetPackagesDependentOn(selectedPackage);
-
-            if (dependentPackages.Count() > 0)
-            {
-                string message = "Removing this extension, will cause the following extensions to be removed as well: ";
-                foreach (IPackage dependentPackage in dependentPackages)
-                {
-                    message += dependentPackage.Id + ", ";
-                }
-
-                DialogResult result = MessageBox.Show(message, "Uninstall dependent extensions?", MessageBoxButtons.OKCancel);
-                if (result == DialogResult.Cancel)
-                {
-                    return;
-                }
-
-                // Remove dependent packages
-                foreach (IPackage dependentPackage in dependentPackages)
-                {
-                    App.ProgressHandler.Progress(null, 0, "Uninstalling" + dependentPackage.Id);
-                    App.EnsureDeactivated(dependentPackage.Id);
-                    App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(dependentPackage));
-                }
-            }
-
             // Remove the selected package.
             App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
-            App.EnsureDeactivated(selectedPackage.Id);
+
+            if(!selectedextension.DeactivationAllowed)
+                App.EnsureDeactivated(selectedPackage.Id);
             App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
+
+            //Check for backupfile
+            var assembly = Assembly.GetAssembly(selectedextension.GetType());
+            string path = assembly.Location;
+            string backupFile = App.SerializationManager.CurrentProjectDirectory + "\\backup\\" + Path.GetFileName(path);
+
+            if(File.Exists(backupFile))
+            {
+                try
+                {
+                    if (selectedextension.DeactivationAllowed)
+                        File.Move(backupFile, App.SerializationManager.CurrentProjectDirectory + "\\Plugins\\" + Path.GetFileName(path));
+                    else
+                        File.Move(backupFile, App.SerializationManager.CurrentProjectDirectory + "\\Application Extensions\\" + Path.GetFileName(path));
+                }
+                catch (Exception) { }
+            }
 
             // hack: we should really try to refresh the list, using what ever category the user
             // has selected.
             App.ProgressHandler.Progress(null, 0, "Ready.");
 
             MessageBox.Show("The extension will finish uninstalling when you restart the application.");
+            restartNeccesary = true;
+        }
+
+        private void ExtensionManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //hide the extension manager when closed by the user
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         private void AddCategory(IExtensionCategory category)
@@ -720,6 +725,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void showUpdateComplete()
         {
             MessageBox.Show(this, "Download finished. Update will complete when HydroDesktop is restarted.");
+            restartNeccesary = true;
         }
 
         private void UpdatePack(IPackage pack)

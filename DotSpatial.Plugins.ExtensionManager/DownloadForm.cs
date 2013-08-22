@@ -19,6 +19,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             InitializeComponent();
             uxDownloadStatus.Clear();
             progressBar.Value = 0;
+            FormClosing += Download_FormClosing;
         }
 
         public void ShowDownloadStatus(PackageDependency dependentPackage)
@@ -88,6 +89,16 @@ namespace DotSpatial.Plugins.ExtensionManager
             catch (ObjectDisposedException)
             {
                 return;
+            }
+        }
+
+        private void Download_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Hide form when closed by user
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
             }
         }
 

@@ -189,7 +189,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         //Cycle through feeds from settings and call autoupdate function. If any updates occur, show message box.
-        public static void autoUpdateController(AppManager app)
+        public static void autoUpdateController(AppManager app, ExtensionManagerForm form)
         {
             List<String> updatesOccurred = new List<String>();
             Packages packages = new Packages();
@@ -219,6 +219,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 sb.Append("Updates will finish when HydroDesktop is restarted.");
 
                 MessageBox.Show(sb.ToString());
+                form.AutoUpdateRestartNeccesary();
             }
         }
 
@@ -233,7 +234,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 foreach (IPackage p in list)
                 {
                     if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) 
-                    { 
+                    {
+                        foreach (PackageDependency dependency in p.Dependencies)
+                        {
+                            if (packages.GetLocalPackage(dependency.Id) == null)
+                                packages.Update(packages.Repo.FindPackage(dependency.Id));
+                        }
+
                         UpdatePackage(p);
                     }
                 }
@@ -254,7 +261,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (IsPackageInstalled(pack))
                 App.MarkPackageForRemoval(GetPackagePath(pack));
             else
-                App.MarkExtensionForRemoval(GetExtensionPath(extension));
+            {
+                string path = GetExtensionPath(extension);
+                App.MarkExtensionForRemoval(path);
+
+                //Make a backup of the extension
+                try
+                {
+                    File.Copy(path, App.SerializationManager.CurrentProjectDirectory + "\\backup\\" + Path.GetFileName(path));
+                }
+                catch (Exception) { }
+            }
 
             App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
 
