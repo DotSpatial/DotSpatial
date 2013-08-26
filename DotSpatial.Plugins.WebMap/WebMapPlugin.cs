@@ -20,6 +20,8 @@ using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
+using System.Collections.Generic;
+using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -154,7 +156,9 @@ namespace DotSpatial.Plugins.WebMap
             //check all top-level map point layers, line layers
             int groupOrLayerIndex = FindPointOrLineLayerIndex(App.Map.MapFrame);
             if (groupOrLayerIndex >= 0)
-                App.Map.Layers.Insert(groupOrLayerIndex, _baseMapLayer);
+            {
+                //App.Map.Layers.Insert(groupOrLayerIndex, _baseMapLayer);
+            }
             else
                 App.Map.Layers.Add(_baseMapLayer);
         }
@@ -162,8 +166,8 @@ namespace DotSpatial.Plugins.WebMap
         private int FindPointOrLineLayerIndex(IMapGroup group)
         {
             int index = -1;
-
-            foreach (IMapLayer layer in group.Layers)
+          
+            foreach (IMapLayer layer in group)
             {
                 index++;
 
@@ -176,6 +180,20 @@ namespace DotSpatial.Plugins.WebMap
 
                 if (layer is IMapPointLayer || layer is IMapLineLayer)
                 {
+                    
+                    if (layer != null)
+                        {
+                            IGroup grp = layer.GetParentItem() as IGroup;
+                        
+                            if (grp != null)
+                            {
+                                grp.Insert(index, _baseMapLayer);
+                                //when the target is a group, assign the parent item.
+                                layer.SetParentItem(grp);
+                            }
+                          
+                        }
+                      
                     return index;
                 }
             }
