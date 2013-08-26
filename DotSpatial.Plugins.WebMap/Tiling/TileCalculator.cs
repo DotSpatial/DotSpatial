@@ -316,7 +316,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             using (Graphics g = Graphics.FromImage(finalImage))
             {
                 //set background color
-                g.Clear(Color.Black);
+                g.Clear(Color.Transparent);
 
                 //go through each image and "draw" it on the final image
 
