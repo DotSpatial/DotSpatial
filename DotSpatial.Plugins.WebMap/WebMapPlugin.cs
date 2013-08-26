@@ -478,23 +478,12 @@ namespace DotSpatial.Plugins.WebMap
                 //First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
                 var tempImageData = new InRamImageData(resources.NoDataTile, new Extent(1, 1, 2, 2));
 
-                if (_provider.Name.Equals("Esri World Hydro Overlay", StringComparison.InvariantCultureIgnoreCase)) //Special case for new Esri Hydro basemap. Makes black background transparent.
-                {
-                    
-                    _baseMapLayer = new MapImageLayer(tempImageData, Color.Black)
-                    {
-                        Projection = App.Map.Projection,
-                        LegendText = resources.Legend_Title
-                    };
-                }
-                else
-                {
-                    _baseMapLayer = new MapImageLayer(tempImageData)
-                                   {
-                                       Projection = App.Map.Projection,
-                                       LegendText = resources.Legend_Title
-                                   };
-                }
+                _baseMapLayer = new MapImageLayer(tempImageData)
+                                {
+                                    Projection = App.Map.Projection,
+                                    LegendText = resources.Legend_Title
+                                };
+
                 _baseMapLayer.RemoveItem += BaseMapLayerRemoveItem;
 
                 AddBasemapLayerToMap();
