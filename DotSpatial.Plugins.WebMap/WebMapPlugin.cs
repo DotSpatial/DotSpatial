@@ -167,7 +167,7 @@ namespace DotSpatial.Plugins.WebMap
         {
             int index = -1;
           
-            foreach (IMapLayer layer in group)
+            foreach (IMapLayer layer in group.Layers)
             {
                 index++;
 
@@ -188,8 +188,6 @@ namespace DotSpatial.Plugins.WebMap
                             if (grp != null)
                             {
                                 grp.Insert(index, _baseMapLayer);
-                                //when the target is a group, assign the parent item.
-                                layer.SetParentItem(grp);
                             }
                           
                         }
