@@ -29,6 +29,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private ListBox uxOnlineProjects;
         private Label label2;
         private Button btnUninstall;
+        private ComboBox uxFeedSelection;
         private readonly DownloadForm downloadDialog = new DownloadForm();
         public IEnumerable<SampleProjectInfo> SampleProjects {
             get;
@@ -62,7 +63,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         public SampleProjectsForm(AppManager app) {
             this.InitializeComponent();
             this.App = app;
-            this.UpdatePackageList();
+            uxFeedSelection.SelectedIndexChanged += uxFeedSelection_SelectedIndexChanged;
+            this.uxFeedSelection.SelectedIndex = 0;
             this.SampleProjects = new List<SampleProjectInfo>();
             this.listBoxTemplates.SelectedIndexChanged += new EventHandler(this.listBoxTemplates_SelectedIndexChanged);
             this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
@@ -99,7 +101,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return (
                     from p in this.packages.Repo.GetPackages()
-                    where p.IsLatestVersion && p.Tags.Contains("SampleProject")
+                    where p.IsLatestVersion && (p.Tags.Contains("DotSpatialSampleProject") || p.Tags.Contains("SampleProject"))
                     select p).ToArray<IPackage>();
             });
             task.ContinueWith(delegate(Task<IPackage[]> t)
@@ -319,113 +321,177 @@ namespace DotSpatial.Plugins.ExtensionManager
             base.Dispose(disposing);
         }
         private void InitializeComponent() {
-            this.tabControl1 = new TabControl();
-            this.tabPage1 = new TabPage();
-            this.btnOK = new Button();
-            this.listBoxTemplates = new ListBox();
-            this.label1 = new Label();
-            this.tabPage2 = new TabPage();
-            this.btnInstall = new Button();
-            this.uxOnlineProjects = new ListBox();
-            this.label2 = new Label();
-            this.btnUninstall = new Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnUninstall = new System.Windows.Forms.Button();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.listBoxTemplates = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uxFeedSelection = new System.Windows.Forms.ComboBox();
+            this.btnInstall = new System.Windows.Forms.Button();
+            this.uxOnlineProjects = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            base.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // tabControl1
+            // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = DockStyle.Fill;
-            this.tabControl1.Location = new Point(0, 0);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new Size(439, 262);
+            this.tabControl1.Size = new System.Drawing.Size(439, 262);
             this.tabControl1.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
             this.tabPage1.Controls.Add(this.btnUninstall);
             this.tabPage1.Controls.Add(this.btnOK);
             this.tabPage1.Controls.Add(this.listBoxTemplates);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new Padding(3);
-            this.tabPage1.Size = new Size(431, 236);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(431, 236);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Installed Sample Projects";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.btnOK.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
-            this.btnOK.Location = new Point(356, 210);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new Size(72, 23);
-            this.btnOK.TabIndex = 5;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new EventHandler(this.btnOK_Click);
-            this.listBoxTemplates.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right);
-            this.listBoxTemplates.FormattingEnabled = true;
-            this.listBoxTemplates.Location = new Point(3, 32);
-            this.listBoxTemplates.Name = "listBoxTemplates";
-            this.listBoxTemplates.Size = new Size(422, 173);
-            this.listBoxTemplates.TabIndex = 3;
-            this.listBoxTemplates.DoubleClick += new EventHandler(this.ListBoxTemplates_DoubleClick);
-            this.label1.AutoSize = true;
-            this.label1.Location = new Point(6, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new Size(192, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Please select a sample project to open:";
-            this.tabPage2.Controls.Add(this.btnInstall);
-            this.tabPage2.Controls.Add(this.uxOnlineProjects);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Location = new Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new Padding(3);
-            this.tabPage2.Size = new Size(431, 236);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Online";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            this.btnInstall.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
-            this.btnInstall.Enabled = false;
-            this.btnInstall.Location = new Point(351, 14);
-            this.btnInstall.Name = "btnInstall";
-            this.btnInstall.Size = new Size(72, 23);
-            this.btnInstall.TabIndex = 7;
-            this.btnInstall.Text = "Install";
-            this.btnInstall.UseVisualStyleBackColor = true;
-            this.btnInstall.Click += new EventHandler(this.btnOKOnline_Click);
-            this.uxOnlineProjects.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right);
-            this.uxOnlineProjects.FormattingEnabled = true;
-            this.uxOnlineProjects.Location = new Point(3, 45);
-            this.uxOnlineProjects.Name = "uxOnlineProjects";
-            this.uxOnlineProjects.Size = new Size(425, 160);
-            this.uxOnlineProjects.TabIndex = 5;
-            this.label2.AutoSize = true;
-            this.label2.Location = new Point(6, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new Size(234, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Please select an online sample project  to install:";
-            this.btnUninstall.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
+            // 
+            // btnUninstall
+            // 
+            this.btnUninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUninstall.Enabled = false;
-            this.btnUninstall.Location = new Point(351, 6);
+            this.btnUninstall.Location = new System.Drawing.Point(351, 6);
             this.btnUninstall.Name = "btnUninstall";
-            this.btnUninstall.Size = new Size(72, 23);
+            this.btnUninstall.Size = new System.Drawing.Size(72, 23);
             this.btnUninstall.TabIndex = 6;
             this.btnUninstall.Text = "Uninstall";
             this.btnUninstall.UseVisualStyleBackColor = true;
-            this.btnUninstall.Click += new EventHandler(this.btnUninstall_Click);
-            base.AcceptButton = this.btnOK;
-            base.AutoScaleDimensions = new SizeF(6f, 13f);
-            base.ClientSize = new Size(439, 262);
-            base.Controls.Add(this.tabControl1);
-            base.Name = "TemplateForm";
+            this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
+            // 
+            // btnOK
+            // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Location = new System.Drawing.Point(356, 210);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(72, 23);
+            this.btnOK.TabIndex = 5;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // listBoxTemplates
+            // 
+            this.listBoxTemplates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxTemplates.FormattingEnabled = true;
+            this.listBoxTemplates.Location = new System.Drawing.Point(3, 32);
+            this.listBoxTemplates.Name = "listBoxTemplates";
+            this.listBoxTemplates.Size = new System.Drawing.Size(422, 173);
+            this.listBoxTemplates.TabIndex = 3;
+            this.listBoxTemplates.DoubleClick += new System.EventHandler(this.ListBoxTemplates_DoubleClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(192, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Please select a sample project to open:";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.uxFeedSelection);
+            this.tabPage2.Controls.Add(this.btnInstall);
+            this.tabPage2.Controls.Add(this.uxOnlineProjects);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(431, 236);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Online";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uxFeedSelection
+            // 
+            this.uxFeedSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxFeedSelection.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxFeedSelection.FormattingEnabled = true;
+            this.uxFeedSelection.Items.AddRange(new object[] {
+            "Official Sample Projects",
+            "User Uploaded Sample Projects"});
+            this.uxFeedSelection.Location = new System.Drawing.Point(246, 6);
+            this.uxFeedSelection.Name = "uxFeedSelection";
+            this.uxFeedSelection.Size = new System.Drawing.Size(179, 23);
+            this.uxFeedSelection.TabIndex = 16;
+            // 
+            // btnInstall
+            // 
+            this.btnInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInstall.Enabled = false;
+            this.btnInstall.Location = new System.Drawing.Point(356, 210);
+            this.btnInstall.Name = "btnInstall";
+            this.btnInstall.Size = new System.Drawing.Size(72, 23);
+            this.btnInstall.TabIndex = 7;
+            this.btnInstall.Text = "Install";
+            this.btnInstall.UseVisualStyleBackColor = true;
+            this.btnInstall.Click += new System.EventHandler(this.btnOKOnline_Click);
+            // 
+            // uxOnlineProjects
+            // 
+            this.uxOnlineProjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxOnlineProjects.FormattingEnabled = true;
+            this.uxOnlineProjects.Location = new System.Drawing.Point(3, 32);
+            this.uxOnlineProjects.Name = "uxOnlineProjects";
+            this.uxOnlineProjects.Size = new System.Drawing.Size(422, 173);
+            this.uxOnlineProjects.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(234, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Please select an online sample project  to install:";
+            // 
+            // SampleProjectsForm
+            // 
+            this.AcceptButton = this.btnOK;
+            this.ClientSize = new System.Drawing.Size(439, 262);
+            this.Controls.Add(this.tabControl1);
+            this.Name = "SampleProjectsForm";
             this.Text = "Open Sample Project";
-            base.Load += new EventHandler(this.TemplateForm_Load);
+            this.Load += new System.EventHandler(this.TemplateForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            base.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string feedUrl;
+            if (uxFeedSelection.SelectedIndex == 1)
+                feedUrl = "https://nuget.org/api/v2/";
+            else
+                feedUrl = "https://www.myget.org/F/cuahsi/";
+
+            packages.SetNewSource(feedUrl);
+            this.UpdatePackageList();
         }
     }
 }

@@ -227,33 +227,48 @@ namespace DotSpatial.Plugins.ExtensionManager
             // Remove the selected package.
             App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
 
-            if(!selectedextension.DeactivationAllowed)
-                App.EnsureDeactivated(selectedPackage.Id);
-            App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
-
             //Check for backupfile
+            bool abort = false;
             var assembly = Assembly.GetAssembly(selectedextension.GetType());
             string path = assembly.Location;
-            string backupFile = App.SerializationManager.CurrentProjectDirectory + "\\backup\\" + Path.GetFileName(path);
+            string backupFile = Application.StartupPath + "\\backup\\" + Path.GetFileName(path);
 
             if(File.Exists(backupFile))
             {
                 try
                 {
                     if (selectedextension.DeactivationAllowed)
-                        File.Move(backupFile, App.SerializationManager.CurrentProjectDirectory + "\\Plugins\\" + Path.GetFileName(path));
+                        File.Move(backupFile, Application.StartupPath + "\\Plugins\\" + Path.GetFileName(path));
                     else
-                        File.Move(backupFile, App.SerializationManager.CurrentProjectDirectory + "\\Application Extensions\\" + Path.GetFileName(path));
+                        File.Move(backupFile, Application.StartupPath + "\\Application Extensions\\" + Path.GetFileName(path));
                 }
-                catch (Exception) { }
+                catch (Exception) 
+                {
+                    DialogResult dialogResult = MessageBox.Show("Unable to restore the backup of the extension." +
+                    "\n\nDo you want to Uninstal without restoring the backing?", "Backup Error", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        abort = true;
+                    }
+                }
+            }
+
+            if (!abort)
+            {
+                if (!selectedextension.DeactivationAllowed)
+                    App.EnsureDeactivated(selectedPackage.Id);
+                App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
             }
 
             // hack: we should really try to refresh the list, using what ever category the user
             // has selected.
             App.ProgressHandler.Progress(null, 0, "Ready.");
 
-            MessageBox.Show("The extension will finish uninstalling when you restart the application.");
-            restartNeccesary = true;
+            if (!abort)
+            {
+                MessageBox.Show("The extension will finish uninstalling when you restart the application.");
+                restartNeccesary = true;
+            }
         }
 
         private void ExtensionManager_FormClosing(object sender, FormClosingEventArgs e)
@@ -736,9 +751,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 {
                     var update = item.Tag as IPackage;
                     if (dependency.Id == update.Id)
-                    {
                         Updates.UpdatePackage(update);
-                    }
                 }
 
                 if (packages.GetLocalPackage(dependency.Id) == null)
