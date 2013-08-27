@@ -296,6 +296,7 @@ namespace DotSpatial.Plugins.WebMap
             }
 
             if (worker != null && _baseMapLayer != null)
+            {
                 if (worker.CancellationPending)
                 {
                     e.Cancel = true;
@@ -305,6 +306,7 @@ namespace DotSpatial.Plugins.WebMap
                     worker.ReportProgress(10);
                     UpdateStichedBasemap(e);
                 }
+            }
         }
 
         private void BwProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -463,13 +465,6 @@ namespace DotSpatial.Plugins.WebMap
         /// </summary>
         private void EnableBasemapLayer()
         {
-            //New Esri Hydro basemap is a special case. We need to remove the old basemaplayer if exists so that the black background will be drawn transparently.
-            if (_provider.Name.Equals("Esri World Hydro Overlay", StringComparison.InvariantCultureIgnoreCase) && _baseMapLayer != null) 
-            { 
-                RemoveBasemapLayer(_baseMapLayer);
-                _baseMapLayer = null;
-            }
-
             if (_baseMapLayer == null)
             {
                 //Need to first initialize and add the basemap layer synchronously (it will fail if done in
