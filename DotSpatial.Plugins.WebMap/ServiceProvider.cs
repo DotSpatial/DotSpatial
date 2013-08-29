@@ -45,8 +45,9 @@ namespace DotSpatial.Plugins.WebMap
             List<string> extraServices = new List<string>(){
             Properties.Resources.BingHybrid,
             Properties.Resources.GoogleSatellite,
-            Properties.Resources.GoogleMap,
-            Properties.Resources.WMSMap};
+            Properties.Resources.GoogleMap/*,
+            Properties.Resources.WMSMap Commented out for 1.6 HydroDesktop release. See https://hydrodesktop.codeplex.com/workitem/8731 */
+            };
 
             foreach (var item in Services.Default.List)
             {
@@ -55,7 +56,7 @@ namespace DotSpatial.Plugins.WebMap
                 var serviceName = serviceDescArr[0];
                 var serviceUrl = serviceDescArr[1];
 
-                while (extraServices[0].ToUpper()[0] < serviceName.ToUpper()[0])
+                while (extraServices.Count > 0 && extraServices[0].ToUpper()[0] < serviceName.ToUpper()[0])
                 {
                     yield return new ServiceProvider(extraServices[0], null);
                     extraServices.Remove(extraServices[0]);
