@@ -34,9 +34,10 @@ namespace DotSpatial.Plugins.WebMap.WMS
                                  serverInfo.Layer
                              };
 
-            var schema = 
+            var schema =
                 //new GlobalMercator("image/png");
-                new UnProjected();
+                //new UnProjected();
+                new WmsTileSchema("schema", new Extent(-180, -90, 180, 90), "CRS:84", "image/png", 256, 4.291534423828125e-10, AxisDirection.Normal); 
             var request = new WmscRequest(new Uri(href), schema, layers,
                                           new List<string>(),               // styles
                                           new Dictionary<string, string>(), // custom parameters

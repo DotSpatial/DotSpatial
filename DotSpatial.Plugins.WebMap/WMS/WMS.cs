@@ -380,6 +380,8 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 _getMapOutputFormats.Add(xnlFormats[i].InnerText);
         }
 
+        private string[] defaultCRS = null;
+
         /// <summary>
         /// Iterates through the layer nodes recursively
         /// </summary>
@@ -413,7 +415,17 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 {
                     layer.Crs = new string[xnlCrs.Count];
                     for (int i = 0; i < xnlCrs.Count; i++)
+                    {
                         layer.Crs[i] = xnlCrs[i].InnerText;
+                    }
+                    if (defaultCRS == null)
+                    {
+                        defaultCRS = layer.Crs;
+                    }
+                    else if (layer.Crs.Count() == 0)
+                    {
+                        layer.Crs = defaultCRS;
+                    }
                 }
             }
             else
@@ -440,7 +452,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
                     layer.Style[i].Title = (node != null ? node.InnerText : null);
                     node = xnlStyle[i].SelectSingleNode("sm:Abstract", _nsmgr);
                     layer.Style[i].Abstract = (node != null ? node.InnerText : null);
-                    node = xnlStyle[i].SelectSingleNode("sm:LegendUrl", _nsmgr);
+                    node = xnlStyle[i].SelectSingleNode("sm:LegendURL", _nsmgr);
                     if (node != null)
                     {
                         layer.Style[i].LegendUrl = new WmsStyleLegend();
@@ -530,7 +542,9 @@ namespace DotSpatial.Plugins.WebMap.WMS
                             !double.TryParse(nd.Attributes["miny"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out miny) &
                             !double.TryParse(nd.Attributes["maxx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxx) &
                             !double.TryParse(nd.Attributes["maxy"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxy))
+                        {
                             throw new ArgumentException("Invalid BoundingBox on CRS on layer '" + layer.Name + "'");
+                        }
 
                         layer.CrsExtent[i] = new Extent(minx, miny, maxx, maxy);
                     }

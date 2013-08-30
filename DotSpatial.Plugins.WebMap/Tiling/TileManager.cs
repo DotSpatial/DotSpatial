@@ -158,9 +158,16 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 var tile = new Tile(x, y, zoom, envelope, bitmap);
                 return tile;
             }
+
             try
             {
                 string url = _tileServerUrl;
+
+                if (url == null)
+                {
+                    var noDataTile = new Tile(x, y, zoom, envelope, resources.NoDataTile);
+                    return noDataTile;
+                }
 
                 if (url.Contains("{key}"))
                 {
@@ -246,17 +253,57 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var extent = ToBrutileExtent(new Data.Extent(envelope));
             var tiles = TileSource.Schema.GetTilesInView(extent, zoom).ToList();
+            
             //Debug.Assert(tiles.Count() == 1);
 
             var tileInfo = tiles[0];
-            tileInfo.Index = new TileIndex(x, y, zoom);
+            //tileInfo.Index = new TileIndex(x, y, zoom);
 
             try
             {
                 byte[] bytes = TileSource.Provider.GetTile(tileInfo);
-                return new Bitmap(new MemoryStream(bytes));
+                return new Bitmap(new MemoryStream(bytes));/**/
+
+                /*WebTileProvider prov = TileSource.Provider as WebTileProvider;
+                WmscRequest req = (WmscRequest)prov.Request;
+                string url = req.GetUri(tileInfo).ToString();
+                using (var bitmap = new Bitmap(TileSource.Schema.Width, TileSource.Schema.Height))
+                {
+                    using (var graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.DrawString(url, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black), new RectangleF(0, 0, TileSource.Schema.Width, TileSource.Schema.Height));
+                    }
+
+                    using (var m = new MemoryStream())
+                    {
+                        bitmap.Save(m, ImageFormat.Png);
+                        return new Bitmap(m);
+                    }
+                }/**/
             }
             catch (WebException ex)
+            {
+                if (ShowErrorInTile)
+                {
+                    //hack: an issue with this method is that one an error tile is in the memory cache it will stay even
+                    //if the error is resolved. PDD.
+                    using (var bitmap = new Bitmap(TileSource.Schema.Width, TileSource.Schema.Height))
+                    {
+                        using (var graphics = Graphics.FromImage(bitmap))
+                        {
+                            graphics.DrawString(ex.Message, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black), new RectangleF(0, 0, TileSource.Schema.Width, TileSource.Schema.Height));
+                        }
+
+                        using (var m = new MemoryStream())
+                        {
+                            bitmap.Save(m, ImageFormat.Png);
+                            return new Bitmap(m);
+                        }
+                    }
+                }
+                Debug.WriteLine(ex.Message);
+            }
+            catch (TimeoutException ex)
             {
                 if (ShowErrorInTile)
                 {

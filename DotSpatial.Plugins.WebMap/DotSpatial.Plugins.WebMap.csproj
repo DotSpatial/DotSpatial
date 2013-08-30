@@ -88,6 +88,7 @@
     <Compile Include="WMS\WMSServerParameters.Designer.cs">
       <DependentUpon>WMSServerParameters.cs</DependentUpon>
     </Compile>
+    <Compile Include="WMS\WmsTileSchema.cs" />
     <Compile Include="WMS\WmsTileSource.cs" />
     <Compile Include="WMS\WMS.cs" />
     <Compile Include="WebMapPlugin.cs" />

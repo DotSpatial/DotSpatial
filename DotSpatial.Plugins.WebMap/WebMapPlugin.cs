@@ -160,7 +160,9 @@ namespace DotSpatial.Plugins.WebMap
                 //App.Map.Layers.Insert(groupOrLayerIndex, _baseMapLayer);
             }
             else
+            {
                 App.Map.Layers.Add(_baseMapLayer);
+            }
         }
 
         private int FindPointOrLineLayerIndex(IMapGroup group)
