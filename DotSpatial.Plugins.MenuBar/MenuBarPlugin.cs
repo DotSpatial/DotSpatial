@@ -310,8 +310,11 @@ namespace DotSpatial.Plugins.MenuBar
             //Hardcoded names of sample projects into Save button so that if user tries to save over project file they will have to pick a new filename.
             if (String.IsNullOrEmpty(fullPath)
                 || file.Contains("SampleProjects")
-                || file.Equals("elbe")
-                || file.Equals("Jacob's Well Spring"))
+                || file.ToLower().Contains("elbe")
+                || file.Contains("Jacob's Well Spring")
+                || file.Contains("World Map")
+                || file.Contains("North America Map")
+                )
             {
                 SaveProjectAs();
             }
