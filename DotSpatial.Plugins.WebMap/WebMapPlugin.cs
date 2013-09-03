@@ -64,7 +64,7 @@ namespace DotSpatial.Plugins.WebMap
 
         public WebMapPlugin()
         {
-            //DeactivationAllowed = false;
+            DeactivationAllowed = false;
             BusySet = false;
         }
 

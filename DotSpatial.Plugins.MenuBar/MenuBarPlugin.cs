@@ -40,7 +40,7 @@ namespace DotSpatial.Plugins.MenuBar
 
         public MenuBarPlugin()
         {
-            //DeactivationAllowed = false;
+            DeactivationAllowed = false;
         }
 
         #region Public Methods

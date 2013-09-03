@@ -19,7 +19,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public ExtensionManagerPlugin()
         {
-            //DeactivationAllowed = false;
+            DeactivationAllowed = false;
         }
 
         #region Public Methods
