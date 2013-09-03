@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary />
     <language>en-US</language>
-    <tags>Spatial GIS DotSpatial Topology</tags>
+    <tags>Spatial GIS DotSpatial Topology HideReleaseFromEndUser</tags>
     <dependencies>
       <dependency id="DotSpatial.Serialization" />
     </dependencies>

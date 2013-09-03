@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary />
     <language>en-US</language>
-    <tags>Spatial GIS DotSpatial</tags>
+    <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
     <dependencies>
       <dependency id="DotSpatial.Data" />
       <dependency id="DotSpatial.Projections" />
