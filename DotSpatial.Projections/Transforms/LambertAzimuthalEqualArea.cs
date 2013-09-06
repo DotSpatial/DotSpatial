@@ -242,7 +242,7 @@ namespace DotSpatial.Projections.Transforms
                 double cosz = 0, sinz = 0;
                 double cx = xy[x];
                 double cy = xy[y];
-                double rh = Proj.Hypot(x, y);
+                double rh = Proj.Hypot(cx, cy);
                 if ((lp[phi] = rh * .5) > 1)
                 {
                     lp[lam] = double.NaN;
@@ -264,7 +264,7 @@ namespace DotSpatial.Projections.Transforms
                         cy = cosz * rh;
                         break;
                     case Modes.Oblique:
-                        lp[phi] = Math.Abs(rh) <= EPS10 ? Phi0 : Math.Asin(cosz * _sinb1 + y * sinz * _sinb1 / rh);
+                        lp[phi] = Math.Abs(rh) <= EPS10 ? Phi0 : Math.Asin(cosz * _sinb1 + cy * sinz * _sinb1 / rh);
                         cx *= sinz * _cosb1;
                         cy = (cosz - Math.Sin(lp[phi]) * _sinb1) * rh;
                         break;
@@ -276,7 +276,7 @@ namespace DotSpatial.Projections.Transforms
                         lp[phi] -= HALF_PI;
                         break;
                 }
-                lp[lam] = (y == 0 && (_mode == Modes.Equitorial || _mode == Modes.Oblique)) ? 0 : Math.Atan2(cx, cy);
+                lp[lam] = (cy == 0 && (_mode == Modes.Equitorial || _mode == Modes.Oblique)) ? 0 : Math.Atan2(cx, cy);
             }
         }
 
