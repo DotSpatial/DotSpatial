@@ -275,9 +275,19 @@ namespace DotSpatial.Controls
                 if (!layer.IsVisible) continue;
                 if (layer.UseDynamicVisibility)
                 {
-                    if (MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth)
+                    if (layer.DynamicVisibilityMode == DynamicVisibilityMode.ZoomedIn)
                     {
-                        continue;  // skip the geoLayer if we are zoomed out too far.
+                        if (MapFrame.ViewExtents.Width > layer.DynamicVisibilityWidth)
+                        {
+                            continue;  // skip the geoLayer if we are zoomed out too far.
+                        }
+                    }
+                    else
+                    {
+                        if (MapFrame.ViewExtents.Width < layer.DynamicVisibilityWidth)
+                        {
+                            continue;  // skip the geoLayer if we are zoomed in too far.
+                        }
                     }
                 }
                 layer.DrawRegions(args, regions);

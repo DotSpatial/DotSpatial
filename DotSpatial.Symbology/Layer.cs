@@ -181,7 +181,7 @@ namespace DotSpatial.Symbology
                 {
                     if (geographicExtent.Width < DynamicVisibilityWidth)
                     {
-                        return false;  // skip the geoLayer if we are zoomed out too far.
+                        return false;  // skip the geoLayer if we are zoomed in too far.
                     }
                 }
             }
@@ -253,13 +253,10 @@ namespace DotSpatial.Symbology
 
         private void SetDynamicVisibility(object sender, EventArgs e)
         {
-            UseDynamicVisibility = true;
-            DynamicVisibilityWidth = MapFrame.ViewExtents.Width;
-
             var la = LayerActions;
             if (la != null)
             {
-                la.DynamicVisibility(this);
+                la.DynamicVisibility(this, MapFrame);
             }
         }
 

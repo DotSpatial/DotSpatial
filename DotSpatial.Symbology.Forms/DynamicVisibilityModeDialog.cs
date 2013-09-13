@@ -35,6 +35,7 @@ namespace DotSpatial.Symbology.Forms
         private Label imgZoomedIn;
         private Label imgZoomedOut;
         private Label label1;
+        private Button btnAlways;
 
         #region Private Variables
 
@@ -59,40 +60,49 @@ namespace DotSpatial.Symbology.Forms
             this.btnZoomedOut = new System.Windows.Forms.Button();
             this.imgZoomedOut = new System.Windows.Forms.Label();
             this.imgZoomedIn = new System.Windows.Forms.Label();
+            this.btnAlways = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            //
+            // 
             // label1
-            //
+            // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            //
+            // 
             // btnZoomedIn
-            //
+            // 
             resources.ApplyResources(this.btnZoomedIn, "btnZoomedIn");
             this.btnZoomedIn.Name = "btnZoomedIn";
             this.btnZoomedIn.UseVisualStyleBackColor = true;
             this.btnZoomedIn.Click += new System.EventHandler(this.btnZoomedIn_Click);
-            //
+            // 
             // btnZoomedOut
-            //
+            // 
             resources.ApplyResources(this.btnZoomedOut, "btnZoomedOut");
             this.btnZoomedOut.Name = "btnZoomedOut";
             this.btnZoomedOut.UseVisualStyleBackColor = true;
             this.btnZoomedOut.Click += new System.EventHandler(this.btnZoomedOut_Click);
-            //
+            // 
             // imgZoomedOut
-            //
+            // 
             resources.ApplyResources(this.imgZoomedOut, "imgZoomedOut");
             this.imgZoomedOut.Name = "imgZoomedOut";
-            //
+            // 
             // imgZoomedIn
-            //
+            // 
             resources.ApplyResources(this.imgZoomedIn, "imgZoomedIn");
             this.imgZoomedIn.Name = "imgZoomedIn";
-            //
+            // 
+            // btnAlways
+            // 
+            resources.ApplyResources(this.btnAlways, "btnAlways");
+            this.btnAlways.Name = "btnAlways";
+            this.btnAlways.UseVisualStyleBackColor = true;
+            this.btnAlways.Click += new System.EventHandler(this.btnAlways_Click);
+            // 
             // DynamicVisibilityModeDialog
-            //
+            // 
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.btnAlways);
             this.Controls.Add(this.imgZoomedIn);
             this.Controls.Add(this.imgZoomedOut);
             this.Controls.Add(this.btnZoomedOut);
@@ -101,6 +111,7 @@ namespace DotSpatial.Symbology.Forms
             this.Name = "DynamicVisibilityModeDialog";
             this.ShowIcon = false;
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -172,6 +183,12 @@ namespace DotSpatial.Symbology.Forms
         {
             _dynamicVisiblityMode = DynamicVisibilityMode.ZoomedIn;
             this.DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btnAlways_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.No;
             Close();
         }
     }
