@@ -1031,7 +1031,7 @@ namespace DotSpatial.Data
             }
 
             DataRow[] rows = dt.Select(filterExpression);
-            if (FeatureLookup != null)
+            if (FeatureLookup != null && FeatureLookup.Any())
             {
                 result.AddRange(rows.Select(dr => FeatureLookup[dr]));
             }
