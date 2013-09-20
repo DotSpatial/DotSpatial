@@ -1357,7 +1357,7 @@ namespace DotSpatial.Data
 
                 case 'F':
                 case 'B':
-                case 'N': // number - Esri uses N for doubles and floats
+                case 'N': // number - ESRI uses N for doubles and floats
 
                     tempObject = ParseNumericColumn(field, currentRow, cBuffer, table, parseErrString);
                     break;
@@ -1465,14 +1465,14 @@ namespace DotSpatial.Data
             else if (t == typeof(float))
             {
                 float temp;
-                if (float.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out temp))
+                if (float.TryParse(tempStr, NumberStyles.Number | NumberStyles.AllowExponent, NumberConverter.NumberConversionFormatProvider, out temp))
                     tempObject = temp;
                 else
                 {
                     if (null == table)
                         throw new InvalidDataException(errorMessage.Value);
                     double upTest;
-                    if (double.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out upTest))
+                    if (double.TryParse(tempStr, NumberStyles.Number | NumberStyles.AllowExponent, NumberConverter.NumberConversionFormatProvider, out upTest))
                     {
                         UpgradeColumn(field, typeof(double), currentRow, field.Ordinal, table);
                         tempObject = upTest;
@@ -1487,7 +1487,7 @@ namespace DotSpatial.Data
             else if (t == typeof(double))
             {
                 double temp;
-                if (double.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out temp))
+                if (double.TryParse(tempStr, NumberStyles.Number | NumberStyles.AllowExponent, NumberConverter.NumberConversionFormatProvider, out temp))
                     tempObject = temp;
                 else if (String.IsNullOrWhiteSpace(tempStr)) //handle case when value is NULL
                     tempObject = DBNull.Value;
@@ -1496,7 +1496,7 @@ namespace DotSpatial.Data
                     if (null == table)
                         throw new InvalidDataException(errorMessage.Value);
                     decimal upTest;
-                    if (decimal.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out upTest))
+                    if (decimal.TryParse(tempStr, NumberStyles.Number | NumberStyles.AllowExponent, NumberConverter.NumberConversionFormatProvider, out upTest))
                     {
                         UpgradeColumn(field, typeof(decimal), currentRow, field.Ordinal, table);
                         tempObject = upTest;
@@ -1511,7 +1511,7 @@ namespace DotSpatial.Data
             else if (t == typeof(decimal))
             {
                 decimal temp;
-                if (decimal.TryParse(tempStr, NumberStyles.Number, NumberConverter.NumberConversionFormatProvider, out temp))
+                if (decimal.TryParse(tempStr, NumberStyles.Number | NumberStyles.AllowExponent, NumberConverter.NumberConversionFormatProvider, out temp))
                     tempObject = temp;
                 else
                 {
