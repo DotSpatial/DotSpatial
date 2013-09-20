@@ -1615,15 +1615,52 @@ namespace DotSpatial.Data
 
         private void SetTextEncoding()
         {
-            // Unless specifically configured otherwise, ArcGIS will read shapefiles with 0x57 using the encoding returned by
-            // Encoding.Default. Since this is the behavior most people will expect, we match it here.
-            if (_ldid == 0x57)
+            // A .cpg file will override any language specification in the DBF header.
+            bool cpgSet = false;
+            if (!string.IsNullOrEmpty(_fileName))
             {
-                _encoding = Encoding.Default;
+                try
+                {
+                    string cpgFileName = Path.ChangeExtension(_fileName, ".cpg");
+                    if (File.Exists(cpgFileName))
+                    {
+                        using (StreamReader reader = new StreamReader(cpgFileName))
+                        {
+                            string codePageText = reader.ReadLine();
+                            int codePage;
+                            if (int.TryParse(codePageText, NumberStyles.Integer, CultureInfo.InvariantCulture, out codePage))
+                            {
+                                _encoding = Encoding.GetEncoding(codePage);
+                                cpgSet = true;
+                            }
+                            else if (string.Compare(codePageText, "UTF-8", true, CultureInfo.InvariantCulture) == 0)
+                            {
+                                _encoding = Encoding.UTF8;
+                                cpgSet = true;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    cpgSet = false;
+                }
             }
-            else
+
+            // If .cpg file does not exist or cannot be read, then we revert to LDID in DBF header.
+            // (This is the normal behavior, .cpg files are rare.)
+            if (!cpgSet)
             {
-                _encoding = DbaseLocaleRegistry.GetEncoding(_ldid);
+                // Unless specifically configured otherwise, ArcGIS will read shapefiles with 0x57 using the encoding returned by
+                // Encoding.Default. Since this is the behavior most people will expect, we match it here.
+                if (_ldid == 0x57)
+                {
+                    _encoding = Encoding.Default;
+                }
+                else
+                {
+                    _encoding = DbaseLocaleRegistry.GetEncoding(_ldid);
+                }
             }
         }
 
