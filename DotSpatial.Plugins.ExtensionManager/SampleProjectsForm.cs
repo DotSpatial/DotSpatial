@@ -432,6 +432,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.uxFeedSelection.Name = "uxFeedSelection";
             this.uxFeedSelection.Size = new System.Drawing.Size(179, 23);
             this.uxFeedSelection.TabIndex = 16;
+            this.uxFeedSelection.Visible = false;
             // 
             // btnInstall
             // 

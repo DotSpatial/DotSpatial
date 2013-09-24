@@ -231,24 +231,32 @@ namespace DotSpatial.Plugins.ExtensionManager
             bool abort = false;
             var assembly = Assembly.GetAssembly(selectedextension.GetType());
             string path = assembly.Location;
-            string backupFile = Application.StartupPath + "\\backup\\" + Path.GetFileName(path);
+            string backupPath = Application.StartupPath + "\\backup\\";
 
-            if(File.Exists(backupFile))
+            if (Directory.Exists(backupPath))
             {
-                try
+                string[] directories = Directory.GetDirectories(backupPath);
+
+                for (int i = 0; i < directories.Length; i++)
                 {
-                    if (selectedextension.DeactivationAllowed)
-                        File.Move(backupFile, Application.StartupPath + "\\Plugins\\" + Path.GetFileName(path));
-                    else
-                        File.Move(backupFile, Application.StartupPath + "\\Application Extensions\\" + Path.GetFileName(path));
-                }
-                catch (Exception) 
-                {
-                    DialogResult dialogResult = MessageBox.Show("Unable to restore the backup of the extension." +
-                    "\n\nDo you want to Uninstal without restoring the backing?", "Backup Error", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.No)
+                    string backupFile = directories[i] + "\\" + Path.GetFileName(path);
+
+                    if (File.Exists(backupFile))
                     {
-                        abort = true;
+                        try
+                        {
+                            File.Move(backupFile, Application.StartupPath + "\\" + 
+                                Path.GetFileName(Path.GetDirectoryName(backupFile)) + "\\" + Path.GetFileName(path));
+                        }
+                        catch (Exception)
+                        {
+                            DialogResult dialogResult = MessageBox.Show("Unable to restore the backup of the extension." +
+                            "\n\nDo you want to Uninstal without restoring the backup?", "Backup Error", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No)
+                            {
+                                abort = true;
+                            }
+                        }
                     }
                 }
             }
@@ -702,7 +710,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             catch
             {
-                MessageBox.Show("Error updating " + pack.GetFullName());
+                MessageBox.Show("Failed to update " + pack.GetFullName());
                 DisplayPackagesAndUpdates();
                 uxUpdate.Enabled = true;
             }
@@ -728,7 +736,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 catch
                 {
-                    MessageBox.Show("Error updating " + pack.GetFullName());
+                    MessageBox.Show("Failed to update " + pack.GetFullName());
                 }
             }
 

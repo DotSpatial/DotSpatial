@@ -265,21 +265,25 @@ namespace DotSpatial.Plugins.ExtensionManager
             //This causes some issues, so now we just mark it for removal. It will be removed next time application is started
             //and the new package will be activated instead.
             var extension = App.GetExtension(pack.Id);
-            bool abort = false;
 
             if (IsPackageInstalled(pack))
                 App.MarkPackageForRemoval(GetPackagePath(pack));
             else
             {
                 string path = GetExtensionPath(extension);
-                App.MarkExtensionForRemoval(path);
+                string directory = "\\" + Path.GetFileName(Path.GetDirectoryName(path)) + "\\";
 
                 //Make a backup of the extension
                 try
                 {
                     if (!Directory.Exists(Application.StartupPath + "\\backup\\"))
                         Directory.CreateDirectory(Application.StartupPath + "\\backup\\");
-                    File.Copy(path, Application.StartupPath + "\\backup\\" + Path.GetFileName(path));
+
+                    if (!Directory.Exists(Application.StartupPath + "\\backup" + directory))
+                        Directory.CreateDirectory(Application.StartupPath + "\\backup\\" + directory);
+
+                    File.Copy(path, Application.StartupPath + "\\backup" + directory + Path.GetFileName(path));
+                    App.MarkExtensionForRemoval(path);
                 }
                 catch (Exception)
                 {
@@ -287,20 +291,17 @@ namespace DotSpatial.Plugins.ExtensionManager
                     "\n\nDo you want to Update without backing up?", "Backup Error", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
-                        abort = true;
+                        throw new Exception();
                     }
                 }
             }
 
-            if (!abort)
-            {
-                App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
+            App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
 
-                // get new version
-                packages.Update(pack);
+            // get new version
+            packages.Update(pack);
 
-                App.ProgressHandler.Progress(null, 0, "");
-            }
+            App.ProgressHandler.Progress(null, 0, "");
         }
 
         //Determines if a package has a local version that can be deleted and is out of date.
