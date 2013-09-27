@@ -325,7 +325,7 @@ namespace DotSpatial.Plugins.WebMap
         /// <param name="e"></param>
         private void BwRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Cancelled && !_bw.IsBusy)
+            if (e.Cancelled)
             {
                 _bw.RunWorkerAsync();
                 return;
@@ -460,6 +460,8 @@ namespace DotSpatial.Plugins.WebMap
             {
                 _bw.RunWorkerAsync();
             }
+            else
+                _bw.CancelAsync();
         }
 
         /// <summary>
