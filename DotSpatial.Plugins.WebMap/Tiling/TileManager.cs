@@ -257,7 +257,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             //Debug.Assert(tiles.Count() == 1);
 
             var tileInfo = tiles[0];
-            //tileInfo.Index = new TileIndex(x, y, zoom);
+            tileInfo.Index = new TileIndex(x, y, zoom);
 
             try
             {
