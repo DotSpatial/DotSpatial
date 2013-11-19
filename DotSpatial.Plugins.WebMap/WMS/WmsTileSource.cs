@@ -26,6 +26,11 @@ namespace DotSpatial.Plugins.WebMap.WMS
             get { return _schema; }
         }
 
+        public string Title
+        {
+            get { return "WmsTileSource"; }
+        }
+
         public static WmsTileSource Create(WmsServerInfo serverInfo)
         {
             var href = serverInfo.OnlineResource;

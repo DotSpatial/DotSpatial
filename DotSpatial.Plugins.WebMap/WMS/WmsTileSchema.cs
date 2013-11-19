@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using BruTile;
@@ -33,7 +34,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             double unitsPerPixel = size / tileSize;
             do
             {
-                Resolutions.Add(new Resolution { Id = count.ToString(), UnitsPerPixel = unitsPerPixel });
+                Resolutions[count.ToString(CultureInfo.InvariantCulture)] = new Resolution {Id = count.ToString(CultureInfo.InvariantCulture), UnitsPerPixel = unitsPerPixel};
                 count++;
                 //Resolutions.Add(unitsPerPixel);
                 unitsPerPixel /= 2;

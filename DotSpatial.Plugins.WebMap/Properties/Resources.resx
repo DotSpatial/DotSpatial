@@ -118,18 +118,76 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BingHybrid" xml:space="preserve">
-    <value>Bing Hybrid</value>
-    <comment>BingHybrid description</comment>
+    <value>Bing Hybrid Map</value>
   </data>
   <data name="GoogleSatellite" xml:space="preserve">
     <value>Google Satellite</value>
-    <comment>GoogleSatellite description</comment>
   </data>
   <data name="GoogleMap" xml:space="preserve">
     <value>Google Map</value>
-    <comment>GoogleMap description</comment>
   </data>
   <data name="WMSMap" xml:space="preserve">
     <value>WMS</value>
+  </data>
+  <data name="GoogleLabels" xml:space="preserve">
+    <value>Google Labels</value>
+  </data>
+  <data name="GoogleTerrain" xml:space="preserve">
+    <value>Google Terrain</value>
+  </data>
+  <data name="YahooNormal" xml:space="preserve">
+    <value>Yahoo Map</value>
+  </data>
+  <data name="YahooHybrid" xml:space="preserve">
+    <value>Yahoo Hybrid</value>
+  </data>
+  <data name="YahooSatellite" xml:space="preserve">
+    <value>Yahoo Satellite</value>
+  </data>
+  <data name="BingAerial" xml:space="preserve">
+    <value>Bing Aerial Map</value>
+  </data>
+  <data name="BingRoads" xml:space="preserve">
+    <value>Bing Street Map</value>
+  </data>
+  <data name="Legend_Title" xml:space="preserve">
+    <value>Online Basemap</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Opacity_Box_Text" xml:space="preserve">
+    <value>Opacity: </value>
+  </data>
+  <data name="Opacity_Box_ToolTip" xml:space="preserve">
+    <value>Change opacity of the basemap layer.</value>
+  </data>
+  <data name="Panel_Name" xml:space="preserve">
+    <value>Online Basemap</value>
+  </data>
+  <data name="Service_Box_ToolTip" xml:space="preserve">
+    <value>Change online basemap service.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="nodata" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nodata.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EsriHydroBaseMap" xml:space="preserve">
+    <value>Esri Hydro Base Map</value>
+  </data>
+  <data name="EsriWorldHydroBasemap" xml:space="preserve">
+    <value>Esri World Hydro Overlay</value>
+  </data>
+  <data name="EsriWorldImagery" xml:space="preserve">
+    <value>Esri World Imagery</value>
+  </data>
+  <data name="EsriWorldStreetMap" xml:space="preserve">
+    <value>Esri World Street Map</value>
+  </data>
+  <data name="EsriWorldTopo" xml:space="preserve">
+    <value>Esri World Topo</value>
+  </data>
+  <data name="OpenStreetMap" xml:space="preserve">
+    <value>Open Street Map</value>
   </data>
 </root>

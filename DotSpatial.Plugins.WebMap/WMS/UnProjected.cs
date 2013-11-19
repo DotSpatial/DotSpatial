@@ -17,7 +17,11 @@ namespace DotSpatial.Plugins.WebMap.WMS
             var count = 0;
             foreach (var resolution in resolutions)
             {
-                Resolutions.Add(new Resolution { Id = count.ToString(CultureInfo.InvariantCulture), UnitsPerPixel = resolution });
+                Resolutions[count.ToString(CultureInfo.InvariantCulture)] = new Resolution
+                {
+                    Id = count.ToString(CultureInfo.InvariantCulture),
+                    UnitsPerPixel = resolution
+                };
                 count++;
             }
             Height = 256;

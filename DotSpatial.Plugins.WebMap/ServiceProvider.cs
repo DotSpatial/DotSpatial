@@ -1,11 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceProvider.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿using System;
 using System.Collections.Generic;
-using DotSpatial.Plugins.WebMap.Resources;
+using System.Configuration;
+using System.Diagnostics;
+using System.Reflection;
+using DotSpatial.Plugins.WebMap.Configuration;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -18,23 +16,19 @@ namespace DotSpatial.Plugins.WebMap
         /// </summary>
         /// <param name="name"></param>
         /// <param name="url"></param>
-        public ServiceProvider(string name, string url)
+        public ServiceProvider(string name, string url = null)
         {
             Url = url;
             Name = name;
-        }
-
-        public ServiceProvider()
-        {
         }
 
         #endregion
 
         #region Public Properties
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public string Url { get; set; }
+        public string Url { get; private set; }
 
         #endregion
 
@@ -42,32 +36,47 @@ namespace DotSpatial.Plugins.WebMap
 
         public static IEnumerable<ServiceProvider> GetDefaultServiceProviders()
         {
-            List<string> extraServices = new List<string>(){
-            Properties.Resources.BingHybrid,
-            Properties.Resources.GoogleSatellite,
-            Properties.Resources.GoogleMap/*,
-            Properties.Resources.WMSMap Commented out for 1.6 HydroDesktop release. See https://hydrodesktop.codeplex.com/workitem/8731 */
-            };
 
-            foreach (var item in Services.Default.List)
+            WebMapConfigurationSection section = null;
+            try
             {
-                var serviceDescArr = item.Split(',');
-
-                var serviceName = serviceDescArr[0];
-                var serviceUrl = serviceDescArr[1];
-
-                while (extraServices.Count > 0 && extraServices[0].ToUpper()[0] < serviceName.ToUpper()[0])
-                {
-                    yield return new ServiceProvider(extraServices[0], null);
-                    extraServices.Remove(extraServices[0]);
-                }
-
-                yield return new ServiceProvider(serviceName, serviceUrl);
+                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                section = (WebMapConfigurationSection)config.GetSection("webMapConfigurationSection");
+            }
+            catch (Exception e)
+            {
+                Debug.Write("Section webMapConfigurationSection not found: " + e);
             }
 
-            foreach (var item in extraServices)
+            if (section != null)
             {
-                yield return new ServiceProvider(item, null);
+                foreach (ServiceProviderElement service in section.Services)
+                {
+                    if (service.Ignore) continue;
+                    var name = Properties.Resources.ResourceManager.GetString(service.Key) ?? service.Key;
+                    yield return new ServiceProvider(name, service.Url);
+                }
+
+            }
+            else
+            {
+                // Default services which used when config section not found
+                yield return new ServiceProvider(Properties.Resources.EsriWorldHydroBasemap);
+                yield return new ServiceProvider(Properties.Resources.EsriHydroBaseMap);
+                yield return new ServiceProvider(Properties.Resources.EsriWorldStreetMap);
+                yield return new ServiceProvider(Properties.Resources.EsriWorldImagery);
+                yield return new ServiceProvider(Properties.Resources.EsriWorldTopo);
+                yield return new ServiceProvider(Properties.Resources.BingRoads);
+                yield return new ServiceProvider(Properties.Resources.BingAerial);
+                yield return new ServiceProvider(Properties.Resources.BingHybrid);
+                yield return new ServiceProvider(Properties.Resources.GoogleMap);
+                yield return new ServiceProvider(Properties.Resources.GoogleSatellite);
+                yield return new ServiceProvider(Properties.Resources.GoogleLabels);
+                yield return new ServiceProvider(Properties.Resources.GoogleTerrain);
+                yield return new ServiceProvider(Properties.Resources.YahooNormal);
+                yield return new ServiceProvider(Properties.Resources.YahooSatellite);
+                yield return new ServiceProvider(Properties.Resources.YahooHybrid);
+                yield return new ServiceProvider(Properties.Resources.OpenStreetMap);
             }
         }
 
