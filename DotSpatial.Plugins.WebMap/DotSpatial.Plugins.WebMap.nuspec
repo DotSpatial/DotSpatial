@@ -17,11 +17,15 @@
     <dependencies>
       <dependency id="BruTile" version="0.8.2" />
     </dependencies>-->
+    <references>
+      <reference file="DotSpatial.Plugins.WebMap.dll" />
+      <reference file="Brutile.dll" />
+      <reference file="Brutile.Desktop.dll" />
+    </references>
   </metadata>
-  
   <files>
-    <file src="Lib\Brutile.dll"/>
-    <file src="Lib\Brutile.Desktop.dll" />
-    <file src="app.config" target="DotSpatial.Plugins.WebMap.dll.config" />
+    <file src="Lib\Brutile.dll" target="lib\net403-Client"/>
+    <file src="Lib\Brutile.Desktop.dll" target="lib\net403-Client"/>
+    <file src="app.config" target="lib\net403-Client\DotSpatial.Plugins.WebMap.dll.config" />
   </files>
 </package>
