@@ -8,10 +8,45 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
 {
     public partial class WMSServerParameters : Form
     {
-        public WMSServerParameters()
+        private WmsCapabilities _wmsCapabilities;
+
+        public WMSServerParameters(WmsInfo data)
         {
-            WmsInfo = new WmsInfo();
+            WmsInfo = data;
             InitializeComponent();
+
+            if (WmsInfo != null)
+            {
+                _wmsCapabilities = WmsInfo.WmsCapabilities;
+                tbServerUrl.Text = WmsInfo.ServerUrl;
+                InitLayers(WmsInfo.WmsCapabilities);
+                tvLayers.SelectedNode = FindNodeByLayer(tvLayers.Nodes, WmsInfo.Layer);
+                if (tvLayers.SelectedNode != null) tvLayers.SelectedNode.EnsureVisible();
+
+                var toFind = new BoundingBoxWrapper(WmsInfo.BoundingBox).ToString();
+                foreach (BoundingBoxWrapper bbw in lbBoundingBox.Items)
+                {
+                    if (bbw.ToString() == toFind)
+                    {
+                        lbBoundingBox.SelectedItem = bbw;
+                        break;
+                    }
+                }
+
+                tvLayers.Select();
+                tvLayers.Focus();
+            }
+        }
+
+        private static TreeNode FindNodeByLayer(TreeNodeCollection nodes, Layer layer)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Tag == layer) return node;
+                var ch = FindNodeByLayer(node.Nodes, layer);
+                if (ch != null) return ch;
+            }
+            return null;
         }
 
         public WmsInfo WmsInfo { get; private set; }
@@ -39,11 +74,16 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                 MessageBox.Show("Unable to read capabilities: " + ex.Message);
                 return;
             }
-            WmsInfo.WmsCapabilities = capabilities;
+            WmsInfo = null;
+            _wmsCapabilities = capabilities;
+            InitLayers(capabilities);
+        }
 
+        private void InitLayers(WmsCapabilities capabilities)
+        {
             tvLayers.Nodes.Clear();
             FillTree(tvLayers.Nodes, capabilities.Capability.Layer);
-            tvLayers.ExpandAll();
+            tvLayers.ExpandAll();   
         }
 
         private static void FillTree(TreeNodeCollection collection, Layer root)
@@ -58,8 +98,29 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            WmsInfo.BoundingBox = ((BoundingBoxWrapper) lbBoundingBox.SelectedItem).Box;
-            WmsInfo.Layer = (Layer) tvLayers.SelectedNode.Tag;
+            if (_wmsCapabilities == null)
+            {
+                MessageBox.Show("Select server to view.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (tvLayers.SelectedNode == null)
+            {
+                MessageBox.Show("Select layer to view.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (lbBoundingBox.SelectedItem == null)
+            {
+                MessageBox.Show("Select BoundingBox to view.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            WmsInfo = new WmsInfo(tbServerUrl.Text, _wmsCapabilities,
+                (Layer) tvLayers.SelectedNode.Tag,
+                ((BoundingBoxWrapper) lbBoundingBox.SelectedItem).Box
+                );
             DialogResult = DialogResult.OK;
         }
 

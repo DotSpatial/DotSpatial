@@ -247,6 +247,7 @@
             // tvLayers
             // 
             this.tvLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvLayers.HideSelection = false;
             this.tvLayers.Location = new System.Drawing.Point(3, 3);
             this.tvLayers.Name = "tvLayers";
             this.tvLayers.Size = new System.Drawing.Size(241, 470);
@@ -296,7 +297,6 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(524, 565);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
@@ -337,6 +337,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 500);
             this.Name = "WMSServerParameters";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WMS Server Parameters";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

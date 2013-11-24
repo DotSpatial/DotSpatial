@@ -62,18 +62,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrutileServiceProvider.cs" />
     <Compile Include="Configuration\ServiceProviderElement.cs" />
     <Compile Include="Configuration\ServiceProviderElementCollection.cs" />
     <Compile Include="Configuration\WebMapConfigurationSection.cs" />
+    <Compile Include="OtherServiceProvider.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ServiceProvider.cs" />
+    <Compile Include="ServiceProviderFactory.cs" />
     <Compile Include="Tiling\Tile.cs" />
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
+    <Compile Include="WMS_New\WmsServiceProvider.cs" />
     <Compile Include="WMS\UnProjected.cs" />
     <Compile Include="WMS\WMSServerParameters.cs">
       <SubType>Form</SubType>
