@@ -14,6 +14,7 @@ using BruTile.Web;
 using DotSpatial.Data;
 using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.WMS;
+using DotSpatial.Plugins.WebMap.WMS_New;
 using DotSpatial.Plugins.WebMap.Yahoo;
 using DotSpatial.Topology;
 using Exception = System.Exception;
@@ -27,18 +28,22 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         #region Private
         
         private readonly string _tileServerName;
+        private readonly bool _isCustom;
         private readonly string _tileServerUrl;
+        private readonly WmsInfo _wmsInfo;
         private WmsServerInfo WmsServerInfo { get; set; }
         private readonly ITileSource _tileSource;
         private FileCache TileCache { get; set; }
 
         #endregion
 
-        public TileManager(string tileServerName, string tileServerUrl, WmsServerInfo wmsServerInfo)
+        public TileManager(bool isCustom, string tileServerName, string tileServerUrl, WmsServerInfo wmsServerInfo, WmsInfo wmsInfo)
         {
             if (tileServerName == null) throw new ArgumentNullException("tileServerName");
 
+            _isCustom = isCustom;
             _tileServerUrl = tileServerUrl;
+            _wmsInfo = wmsInfo;
             _tileServerName = tileServerName;
             WmsServerInfo = wmsServerInfo;
             TileCache = new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -96,13 +101,17 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 return new Tile(x, y, zoom, envelope, bitmap);
             }
 
+            if (!_isCustom)
+            {
+                return new Tile(x, y, zoom, envelope, Resources.nodata);
+            }
+
             try
             {
                 var url = _tileServerUrl;
                 if (url == null)
                 {
-                    var noDataTile = new Tile(x, y, zoom, envelope, Resources.nodata);
-                    return noDataTile;
+                    return new Tile(x, y, zoom, envelope, Resources.nodata);
                 }
 
                 if (url.Contains("{key}"))
@@ -258,7 +267,8 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             }
             if (servEq(Resources.WMSMap))
             {
-                return WmsTileSource.Create(WmsServerInfo);
+                return WMS_New.WmsTileSource.Create(_wmsInfo);
+                //return WmsTileSource.Create(WmsServerInfo);
             }
 
             // No Match

@@ -15,6 +15,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Plugins.WebMap.WMS;
+using DotSpatial.Plugins.WebMap.WMS_New;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using Microsoft.VisualBasic;
@@ -248,7 +249,7 @@ namespace DotSpatial.Plugins.WebMap
             _serviceDropDown.RootKey = HeaderControl.HomeRootItemKey;
 
             //Create "Other" Option
-            var otherProvider = new ServiceProvider(Other, null);
+            var otherProvider = new ServiceProvider(Other);
             _serviceDropDown.Items.Add(otherProvider);
 
             //Add it to the Header
@@ -415,18 +416,20 @@ namespace DotSpatial.Plugins.WebMap
 
             // Special case for WMS
             WmsServerInfo wmsServerInfo = null;
+            WmsInfo wmsInfo = null;
             if (tileServerName.Equals(Properties.Resources.WMSMap, StringComparison.InvariantCultureIgnoreCase))
             {
-                using (var wmsDialog = new WMSServerParameters())
+                using (var wmsDialog = new WMS_New.WMSServerParameters())
                 {
                     if (wmsDialog.ShowDialog() != DialogResult.OK)
                     {
                         return;
                     }
-                    wmsServerInfo = wmsDialog.WmsServerInfo;
+                    wmsInfo = wmsDialog.WmsInfo;
                 }
             }
 
+            var isCustom = false;
             // Other is a custom service
             if (tileServerName.Equals(Other, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -436,11 +439,12 @@ namespace DotSpatial.Plugins.WebMap
                 // Let the user cancel...
                 if (String.IsNullOrWhiteSpace(tileServerUrl))
                     return;
+                isCustom = true;
             }
 
             EnableBasemapLayer();
 
-            _tileManager = new TileManager(tileServerName, tileServerUrl, wmsServerInfo);
+            _tileManager = new TileManager(isCustom, tileServerName, tileServerUrl, wmsServerInfo, wmsInfo);
 
             if (_bw.IsBusy != true)
             {
