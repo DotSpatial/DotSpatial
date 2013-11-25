@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using BruTile;
+using BruTile.Cache;
 using BruTile.Predefined;
 using BruTile.Web;
 using DotSpatial.Plugins.WebMap.Configuration;
@@ -65,74 +67,79 @@ namespace DotSpatial.Plugins.WebMap
             var servEq = (Func<string, bool>)
                 (s => name.Equals(s, StringComparison.InvariantCultureIgnoreCase));
 
+            var fileCache =
+                (Func<ITileCache<byte[]>>)
+                    (() => new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                            "TileCache", name), "", new TimeSpan(30, 0, 0, 0)));
+
             if (servEq(Resources.EsriWorldHydroBasemap))
             {
-                return new BrutileServiceProvider(name, TileSource.Create(KnownTileServers.EsriWorldHydroBasemap));
+                return new BrutileServiceProvider(name, TileSource.Create(KnownTileServers.EsriWorldHydroBasemap), fileCache());
             }
             if (servEq(Resources.EsriHydroBaseMap))
             {
                 return new BrutileServiceProvider(name,
                     new ArcGisTileSource("http://bmproto.esri.com/ArcGIS/rest/services/Hydro/HydroBase2009/MapServer/",
-                        new GlobalMercator()));
+                        new GlobalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldStreetMap))
             {
                 return new BrutileServiceProvider(name,  new ArcGisTileSource("http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/",
-                    new GlobalMercator()));
+                    new GlobalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldImagery))
             {
                 return new BrutileServiceProvider(name, 
                     new ArcGisTileSource("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/",
-                        new GlobalMercator()));
+                        new GlobalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldTopo))
             {
-                return new BrutileServiceProvider(name,  TileSource.Create(KnownTileServers.EsriWorldTopo));
+                return new BrutileServiceProvider(name, TileSource.Create(KnownTileServers.EsriWorldTopo), fileCache());
             }
             if (servEq(Resources.BingHybrid))
             {
-                return new BrutileServiceProvider(name,  new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Hybrid)));
+                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Hybrid)), fileCache());
             }
             if (servEq(Resources.BingAerial))
             {
-                return new BrutileServiceProvider(name,  new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Aerial)));
+                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Aerial)), fileCache());
             }
             if (servEq(Resources.BingRoads))
             {
-                return new BrutileServiceProvider(name,  new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Roads)));
+                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Roads)), fileCache());
             }
             if (servEq(Resources.GoogleSatellite))
             {
-                return new BrutileServiceProvider(name,  new GoogleTileSource(GoogleMapType.GoogleSatellite));
+                return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleSatellite), fileCache());
             }
             if (servEq(Resources.GoogleMap))
             {
-                return new BrutileServiceProvider(name,  new GoogleTileSource(GoogleMapType.GoogleMap));
+                return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleMap), fileCache());
             }
             if (servEq(Resources.GoogleLabels))
             {
-                return new BrutileServiceProvider(name,  new GoogleTileSource(GoogleMapType.GoogleLabels));
+                return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleLabels), fileCache());
             }
             if (servEq(Resources.GoogleTerrain))
             {
-                return new BrutileServiceProvider(name,  new GoogleTileSource(GoogleMapType.GoogleTerrain));
+                return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleTerrain), fileCache());
             }
             if (servEq(Resources.YahooNormal))
             {
-                return new BrutileServiceProvider(name,  new YahooTileSource(YahooMapType.Normal));
+                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Normal), fileCache());
             }
             if (servEq(Resources.YahooSatellite))
             {
-                return new BrutileServiceProvider(name,  new YahooTileSource(YahooMapType.Satellite));
+                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Satellite), fileCache());
             }
             if (servEq(Resources.YahooHybrid))
             {
-                return new BrutileServiceProvider(name,  new YahooTileSource(YahooMapType.Hybrid));
+                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Hybrid), fileCache());
             }
             if (servEq(Resources.OpenStreetMap))
             {
-                return new BrutileServiceProvider(name,  TileSource.Create());
+                return new BrutileServiceProvider(name, TileSource.Create(), fileCache());
             }
             if (servEq(Resources.WMSMap))
             {

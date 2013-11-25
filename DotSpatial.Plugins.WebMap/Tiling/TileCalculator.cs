@@ -6,7 +6,7 @@ using MWPoint = DotSpatial.Topology.Point;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
-    internal class TileCalculator
+    internal static class TileCalculator
     {
         /* Adapted from methods at http://msdn.microsoft.com/en-us/library/bb259689.aspx */
 
@@ -41,16 +41,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
                 if (metersAcrossPerPixel > groundRes)
                 {
-                    //System.Diagnostics.Debug.WriteLine("metersPerPixel: " + metersAcrossPerPixel);
-                    //System.Diagnostics.Debug.WriteLine("groundRes:      " + groundRes);
-                    //double ratio = metersAcrossPerPixel / groundRes;
-                    //System.Diagnostics.Debug.WriteLine("ratio: " + ratio);
-
                     //fix zoom level..
                     //changed to a slightly lower zoom level to increase readability
                     if (i > 2 && i < 18) return i - 1;
-
-                    ////MessageBox.Show("MAPP: "+metersAcrossPerPixel+" , zoom: "+(i-1));
                     return i;
                 }
             }
@@ -327,9 +320,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                         if (tiles[x, y] != null)
                         {
                             var tile = tiles[x, y].Bitmap;
-
-                            g.DrawImage(tile,
-                            new Rectangle(x * 256, y * 256, tile.Width, tile.Height));
+                            g.DrawImage(tile, new Rectangle(x * 256, y * 256, tile.Width, tile.Height));
                         }
                     }
                 }

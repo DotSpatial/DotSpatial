@@ -14,35 +14,39 @@ namespace DotSpatial.Plugins.WebMap
     public class BrutileServiceProvider : ServiceProvider
     {
         protected ITileSource TileSource { get; set; }
-        private readonly FileCache _tileCache;
+        protected ITileCache<byte[]> TileCache { get; set; }
 
-        public BrutileServiceProvider(string name, ITileSource tileSource, bool useCache = true) : base(name)
+        public BrutileServiceProvider(string name, ITileSource tileSource, ITileCache<byte[]> tileCache) : base(name)
         {
-            if (useCache)
-            {
-                _tileCache = new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "TileCache", name), "", new TimeSpan(30, 0, 0, 0));
-            }
+            TileCache = tileCache;
             TileSource = tileSource;
         }
 
         public override Bitmap GetBitmap(int x, int y, Envelope envelope, int zoom)
         {
-            if (TileSource == null) return null;
+            var ts = TileSource;
+            if (ts == null) return null;
             try
             {
                 var index = new TileIndex(x, y, zoom.ToString(CultureInfo.InvariantCulture));
-                var bytes = _tileCache != null? _tileCache.Find(index) : null;
+                var tc = TileCache;
+                var bytes = tc != null ? tc.Find(index) : null;
                 if (bytes == null)
                 {
                     var extent = ToBrutileExtent(envelope);
-                    var tileInfo = TileSource.Schema.GetTilesInView(extent, zoom).First();
-                    tileInfo.Index = index;
-                    bytes = TileSource.Provider.GetTile(tileInfo);
-                    if (_tileCache != null)
+                    var tileInfo = ts.Schema.GetTilesInView(extent, zoom).FirstOrDefault();
+                    if (tileInfo == null)
                     {
-                        _tileCache.Add(index, bytes);
+                        return null;
                     }
+                    tileInfo.Index = index;
+                    bytes = ts.Provider.GetTile(tileInfo);
+                    var bm = new Bitmap(new MemoryStream(bytes));
+                    if (tc != null)
+                    {
+                        tc.Add(index, bytes);
+                    }
+                    return bm;
                 }
                 return new Bitmap(new MemoryStream(bytes));
             }

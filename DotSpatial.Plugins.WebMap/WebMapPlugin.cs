@@ -64,7 +64,11 @@ namespace DotSpatial.Plugins.WebMap
                 var cf = p.Configure;
                 if (cf != null)
                 {
-                    if (cf()) EnableBasemapFetching(p);
+                    if (cf())
+                    {
+                        // Update map if configuration changed
+                        EnableBasemapFetching(p);
+                    }
                 }
             })
             {
@@ -508,8 +512,14 @@ namespace DotSpatial.Plugins.WebMap
             else
             {
                 _optionsAction.Enabled = p.Configure != null;
-                 if (p.NeedConfigure) _optionsAction.OnClick(EventArgs.Empty);
-                 EnableBasemapFetching(p);
+                if (p.NeedConfigure)
+                {
+                    if (p.Configure != null)
+                    {
+                        p.Configure();
+                    }
+                }
+                EnableBasemapFetching(p);
             }
         }
 
@@ -558,19 +568,9 @@ namespace DotSpatial.Plugins.WebMap
 
                 //Grab the tiles
                 var tiles = _tileManager.GetTiles(geogEnv, rectangle);
-
-                //report progress and check for cancel
-                _bw.ReportProgress(60);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
                 //Stitch them into a single image
                 var stitchedBasemap = TileCalculator.StitchTiles(tiles);
                 stitchedBasemap = GetTransparentBasemapImage(stitchedBasemap, _opacity);
-
                 var tileImage = new InRamImageData(stitchedBasemap);
 
                 //report progress and check for cancel
@@ -584,14 +584,14 @@ namespace DotSpatial.Plugins.WebMap
                 //Tiles will have often slightly different bounds from what we are displaying on screen
                 // so we need to get the top left and bottom right tiles' bounds to get the proper extent
                 // of the tiled image
-                var topLeftTile = tiles[0, 0];
-                var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1];
+                var topLeftTile = tiles[0, 0].Envelope;
+                var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1].Envelope;
 
                 var tileVertices = new[]
                                        {
-                                           topLeftTile.Envelope.TopLeft().X, topLeftTile.Envelope.TopLeft().Y,
-                                           bottomRightTile.Envelope.BottomRight().X,
-                                           bottomRightTile.Envelope.BottomRight().Y
+                                           topLeftTile.TopLeft().X, topLeftTile.TopLeft().Y,
+                                           bottomRightTile.BottomRight().X,
+                                           bottomRightTile.BottomRight().Y
                                        };
 
                 //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map

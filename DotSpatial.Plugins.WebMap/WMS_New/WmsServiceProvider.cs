@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using BruTile.Cache;
 
 namespace DotSpatial.Plugins.WebMap.WMS_New
 {
@@ -6,7 +7,8 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
     {
         private WmsInfo _data;
 
-        public WmsServiceProvider(string name) : base(name, null, false)
+        public WmsServiceProvider(string name) : 
+            base(name, null, new MemoryCache<byte[]>())
         {
             Configure = delegate
             {
@@ -17,7 +19,9 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                     _data = wmsDialog.WmsInfo;
                     if (_data != null)
                     {
+
                         TileSource = WmsTileSource.Create(_data);
+                        TileCache = new MemoryCache<byte[]>();
                         return true;
                     }
                     return false;
