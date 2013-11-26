@@ -122,36 +122,6 @@ namespace DotSpatial.Plugins.WebMap
         {
             get { return (ServiceProvider) _serviceDropDown.SelectedItem; }
         }
-
-        /// <summary>
-        /// Returns the input bitmap after making it transparent
-        /// </summary>
-        /// <returns>Opacity-modified bitmap of the basemap image</returns>
-        private static Bitmap GetTransparentBasemapImage(Bitmap originalImage, int opacity)
-        {
-            if (originalImage == null)
-                return null;
-
-            try
-            {
-                var newImage = new Bitmap(originalImage.Width, originalImage.Height);
-                using (var gfxPic = Graphics.FromImage(newImage))
-                {
-                    using (var iaPic = new ImageAttributes())
-                    {
-                        var cmxPic = new ColorMatrix { Matrix33 = opacity / 100f };
-                        iaPic.SetColorMatrix(cmxPic, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                        gfxPic.DrawImage(originalImage, new Rectangle(0, 0, originalImage.Width, originalImage.Height), 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, iaPic);
-                    }
-                }
-
-                return newImage;
-            }
-            catch
-            {
-                return originalImage;
-            }
-        }
         
         private void AddBasemapLayerToMap()
         {
@@ -325,10 +295,8 @@ namespace DotSpatial.Plugins.WebMap
 
         private void ForceMaxExtentZoom()
         {
-            var webMerc = KnownCoordinateSystems.Projected.World.WebMercator;
-
             //special case when there are no other layers in the map. Set map projection to WebMercator and zoom to max ext.
-            MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, webMerc.ToEsriString());
+            MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
 
             // modifying the view extents didn't get the job done, so we are creating a new featureset.
             // App.Map.ViewExtents = new Extent(TileCalculator.MinWebMercX, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercX, TileCalculator.MaxWebMercY);
@@ -347,15 +315,13 @@ namespace DotSpatial.Plugins.WebMap
 
         private void EnableBasemapFetching(ServiceProvider provider)
         {
-            var webMerc = KnownCoordinateSystems.Projected.World.WebMercator;
-
             // Zoom out as much as possible if there are no other layers.
             // reproject any existing layer in non-webMercator projection.
             if (App.Map.Layers.Count == 0)
             {
                 ForceMaxExtentZoom();
             }
-            else if (!App.Map.Projection.Equals(webMerc))
+            else if (!App.Map.Projection.Equals(WebMercProj))
             {
                 //get original view extents
                 App.ProgressHandler.Progress(String.Empty, 0, "Reprojecting Map Layers...");
@@ -363,13 +329,13 @@ namespace DotSpatial.Plugins.WebMap
                 double[] viewExtentZ = { 0.0, 0.0 };
 
                 //reproject view extents
-                Reproject.ReprojectPoints(viewExtentXY, viewExtentZ, App.Map.Projection, webMerc, 0, 2);
+                Reproject.ReprojectPoints(viewExtentXY, viewExtentZ, App.Map.Projection, WebMercProj, 0, 2);
 
                 //set the new map extents
                 App.Map.ViewExtents = new Extent(viewExtentXY);
 
                 //if projection is not WebMercator - reproject all layers:
-                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, webMerc.ToEsriString());
+                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
 
                 App.ProgressHandler.Progress(String.Empty, 0, "Loading Basemap...");
             }
@@ -529,93 +495,90 @@ namespace DotSpatial.Plugins.WebMap
         private void UpdateStichedBasemap(DoWorkEventArgs e)
         {
             var map = App.Map as Map;
-            if (map != null)
+            if (map == null) return;
+            var rectangle = map.Bounds;
+            var webMercExtent = map.ViewExtents;
+
+            //Clip the reported Web Merc Envelope to be within possible Web Merc extents
+            //  This fixes an issue with Reproject returning bad results for very large (impossible) web merc extents reported from the Map
+            var webMercTopLeftX = TileCalculator.Clip(webMercExtent.MinX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
+            var webMercTopLeftY = TileCalculator.Clip(webMercExtent.MaxY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
+            var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
+            var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
+
+            //report progress and check for cancel
+            _bw.ReportProgress(25);
+            if (_bw.CancellationPending)
             {
-                var rectangle = map.Bounds;
-                var webMercExtent = map.ViewExtents;
+                e.Cancel = true;
+                return;
+            }
 
-                //Clip the reported Web Merc Envelope to be within possible Web Merc extents
-                //  This fixes an issue with Reproject returning bad results for very large (impossible) web merc extents reported from the Map
-                var webMercTopLeftX = TileCalculator.Clip(webMercExtent.MinX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
-                var webMercTopLeftY = TileCalculator.Clip(webMercExtent.MaxY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
-                var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
-                var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
+            //Get the web mercator vertices of the current map view
+            var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
 
-                //report progress and check for cancel
-                _bw.ReportProgress(25);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            double[] z = { 0, 0 };
 
-                //Get the web mercator vertices of the current map view
-                var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
+            //Reproject from web mercator to WGS1984 geographic
+            Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
+            var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
 
-                double[] z = { 0, 0 };
+            //report progress and check for cancel
+            _bw.ReportProgress(40);
+            if (_bw.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
 
-                //Reproject from web mercator to WGS1984 geographic
-                Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
-                var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
+            //Grab the tiles
+            var tiles = _tileManager.GetTiles(geogEnv, rectangle);
+            //Stitch them into a single image
+            var stitchedBasemap = TileCalculator.StitchTiles(tiles, _opacity);
+            var tileImage = new InRamImageData(stitchedBasemap);
 
-                //report progress and check for cancel
-                _bw.ReportProgress(40);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            //report progress and check for cancel
+            _bw.ReportProgress(70);
+            if (_bw.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
 
-                //Grab the tiles
-                var tiles = _tileManager.GetTiles(geogEnv, rectangle);
-                //Stitch them into a single image
-                var stitchedBasemap = TileCalculator.StitchTiles(tiles);
-                stitchedBasemap = GetTransparentBasemapImage(stitchedBasemap, _opacity);
-                var tileImage = new InRamImageData(stitchedBasemap);
+            //Tiles will have often slightly different bounds from what we are displaying on screen
+            // so we need to get the top left and bottom right tiles' bounds to get the proper extent
+            // of the tiled image
+            var topLeftTile = tiles[0, 0].Envelope;
+            var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1].Envelope;
 
-                //report progress and check for cancel
-                _bw.ReportProgress(70);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+            var tileVertices = new[]
+            {
+                topLeftTile.TopLeft().X, topLeftTile.TopLeft().Y,
+                bottomRightTile.BottomRight().X,
+                bottomRightTile.BottomRight().Y
+            };
 
-                //Tiles will have often slightly different bounds from what we are displaying on screen
-                // so we need to get the top left and bottom right tiles' bounds to get the proper extent
-                // of the tiled image
-                var topLeftTile = tiles[0, 0].Envelope;
-                var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1].Envelope;
+            //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map
+            Reproject.ReprojectPoints(tileVertices, z, Wgs84Proj, WebMercProj, 0, tileVertices.Length / 2);
 
-                var tileVertices = new[]
-                                       {
-                                           topLeftTile.TopLeft().X, topLeftTile.TopLeft().Y,
-                                           bottomRightTile.BottomRight().X,
-                                           bottomRightTile.BottomRight().Y
-                                       };
+            tileImage.Bounds = new RasterBounds(stitchedBasemap.Height, stitchedBasemap.Width,
+                new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
 
-                //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map
-                Reproject.ReprojectPoints(tileVertices, z, Wgs84Proj, WebMercProj, 0, tileVertices.Length / 2);
+            //report progress and check for cancel
+            _bw.ReportProgress(90);
+            if (_bw.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
 
-                tileImage.Bounds = new RasterBounds(stitchedBasemap.Height, stitchedBasemap.Width,
-                                                    new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
+            _baseMapLayer.Image = tileImage;
 
-                //report progress and check for cancel
-                _bw.ReportProgress(90);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                _baseMapLayer.Image = tileImage;
-
-                //report progress and check for cancel
-                _bw.ReportProgress(99);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                }
+            //report progress and check for cancel
+            _bw.ReportProgress(99);
+            if (_bw.CancellationPending)
+            {
+                e.Cancel = true;
             }
         }
 

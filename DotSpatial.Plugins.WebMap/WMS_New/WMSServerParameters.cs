@@ -187,14 +187,19 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                         styles.Add(style);
                     }
                 }
-                foreach (var crs in lr.CRS)
+                
+                foreach (var list in new []{lr.CRS, lr.SRS})
                 {
-                    if (!crss.Contains(crs)) crss.Add(crs);
+                    foreach (var crs in list)
+                    {
+                        // Some services returns several CRS in one field, split them
+                        foreach (var cr in crs.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            if (!crss.Contains(cr)) crss.Add(cr);
+                        }
+                    }    
                 }
-                foreach (var crs in lr.SRS)
-                {
-                    if (!crss.Contains(crs)) crss.Add(crs);
-                }
+                
                 node = node.Parent;
             }
             lbStyles.DataSource = styles;
