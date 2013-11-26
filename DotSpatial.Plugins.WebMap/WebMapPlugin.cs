@@ -496,6 +496,18 @@ namespace DotSpatial.Plugins.WebMap
         {
             var map = App.Map as Map;
             if (map == null) return;
+            
+            var bwProgress = (Func<int, bool>) (delegate(int p)
+            {
+                _bw.ReportProgress(p);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return false;
+                }
+                return true;
+            });
+
             var rectangle = map.Bounds;
             var webMercExtent = map.ViewExtents;
 
@@ -505,57 +517,37 @@ namespace DotSpatial.Plugins.WebMap
             var webMercTopLeftY = TileCalculator.Clip(webMercExtent.MaxY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
             var webMercBtmRightX = TileCalculator.Clip(webMercExtent.MaxX, TileCalculator.MinWebMercX, TileCalculator.MaxWebMercX);
             var webMercBtmRightY = TileCalculator.Clip(webMercExtent.MinY, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercY);
-
-            //report progress and check for cancel
-            _bw.ReportProgress(25);
-            if (_bw.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
+            
+            if (!bwProgress(25)) return;
 
             //Get the web mercator vertices of the current map view
             var mapVertices = new[] { webMercTopLeftX, webMercTopLeftY, webMercBtmRightX, webMercBtmRightY };
-
             double[] z = { 0, 0 };
 
             //Reproject from web mercator to WGS1984 geographic
             Reproject.ReprojectPoints(mapVertices, z, WebMercProj, Wgs84Proj, 0, mapVertices.Length / 2);
             var geogEnv = new Envelope(mapVertices[0], mapVertices[2], mapVertices[1], mapVertices[3]);
-
-            //report progress and check for cancel
-            _bw.ReportProgress(40);
-            if (_bw.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
+            
+            if (!bwProgress(40)) return;
 
             //Grab the tiles
-            var tiles = _tileManager.GetTiles(geogEnv, rectangle);
+            var tiles = _tileManager.GetTiles(geogEnv, rectangle, _bw);
+            if (!bwProgress(50)) return;
+
             //Stitch them into a single image
-            var stitchedBasemap = TileCalculator.StitchTiles(tiles, _opacity);
+            var stitchedBasemap = TileCalculator.StitchTiles(tiles.Bitmaps, _opacity);
             var tileImage = new InRamImageData(stitchedBasemap);
 
             //report progress and check for cancel
-            _bw.ReportProgress(70);
-            if (_bw.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
+            if (!bwProgress(70)) return;
 
-            //Tiles will have often slightly different bounds from what we are displaying on screen
+            // Tiles will have often slightly different bounds from what we are displaying on screen
             // so we need to get the top left and bottom right tiles' bounds to get the proper extent
             // of the tiled image
-            var topLeftTile = tiles[0, 0].Envelope;
-            var bottomRightTile = tiles[tiles.GetLength(0) - 1, tiles.GetLength(1) - 1].Envelope;
-
             var tileVertices = new[]
             {
-                topLeftTile.TopLeft().X, topLeftTile.TopLeft().Y,
-                bottomRightTile.BottomRight().X,
-                bottomRightTile.BottomRight().Y
+                tiles.TopLeftTile.TopLeft().X, tiles.TopLeftTile.TopLeft().Y,
+                tiles.BottomRightTile.BottomRight().X, tiles.BottomRightTile.BottomRight().Y
             };
 
             //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map
@@ -565,21 +557,14 @@ namespace DotSpatial.Plugins.WebMap
                 new Extent(tileVertices[0], tileVertices[3], tileVertices[2], tileVertices[1]));
 
             //report progress and check for cancel
-            _bw.ReportProgress(90);
-            if (_bw.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
+            if (!bwProgress(90)) return;
 
             _baseMapLayer.Image = tileImage;
-
+            
+// ReSharper disable RedundantJumpStatement
             //report progress and check for cancel
-            _bw.ReportProgress(99);
-            if (_bw.CancellationPending)
-            {
-                e.Cancel = true;
-            }
+            if (!bwProgress(99)) return;
+// ReSharper restore RedundantJumpStatement
         }
 
         #endregion

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Topology;
@@ -19,8 +21,8 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         {
             _serviceProvider = serviceProvider;
         }
-        
-        public Tile[,] GetTiles(Envelope envelope, Rectangle bounds)
+
+        public Tiles GetTiles(Envelope envelope, Rectangle bounds, BackgroundWorker bw)
         {
             var mapTopLeft = envelope.TopLeft();
             var mapBottomRight = envelope.BottomRight();
@@ -37,30 +39,49 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             var topLeftTileXY = TileCalculator.LatLongToTileXY(mapTopLeft, zoom);
             var btmRightTileXY = TileCalculator.LatLongToTileXY(mapBottomRight, zoom);
 
-            var tileMatrix = new Tile[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
-
+            var tileMatrix = new Bitmap[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
             Parallel.For((int) topLeftTileXY.Y, (int) btmRightTileXY.Y + 1,
-                         y => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1,
-                                           x =>
+                         (y, loopState) => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1,
+                                           (x, loopState2) =>
                                                {
-                                                   var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
-                                                   var currTopLeftCoord =TileCalculator.PixelXYToLatLong((int) currTopLeftPixXY.X,
-                                                                                       (int) currTopLeftPixXY.Y, zoom);
-
-                                                   var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x,
-                                                                                                                     y);
-                                                   var currBtmRightCoord =TileCalculator.PixelXYToLatLong((int) currBtmRightPixXY.X,
-                                                                                       (int) currBtmRightPixXY.Y, zoom);
-
-                                                   var currEnv = new Envelope(currTopLeftCoord, currBtmRightCoord);
+                                                   if (bw.CancellationPending)
+                                                   {
+                                                       loopState.Stop();
+                                                       loopState2.Stop();
+                                                       return;
+                                                   }
+                                                   var currEnv = GetTileEnvelope(x, y, zoom);
                                                    tileMatrix[x - (int)topLeftTileXY.X, y - (int)topLeftTileXY.Y] = GetTile(x, y, currEnv, zoom);
                                                }
                                   ));
 
-            return tileMatrix;
+            return new Tiles(tileMatrix,
+                GetTileEnvelope((int)topLeftTileXY.X, (int)topLeftTileXY.Y, zoom),  // top left tile = tileMatrix[0,0]
+                GetTileEnvelope((int)btmRightTileXY.X, (int)btmRightTileXY.Y, zoom) // bottom right tile = tileMatrix[last, last]
+                );
         }
 
-        private Tile GetTile(int x, int y, Envelope envelope, int zoom)
+        /// <summary>
+        /// Get tile envelope in  WGS-84 coordinates
+        /// </summary>
+        /// <param name="x">x index</param>
+        /// <param name="y">y index</param>
+        /// <param name="zoom">zoom</param>
+        /// <returns>Envelope in WGS-84</returns>
+        private static Envelope GetTileEnvelope(int x, int y, int zoom)
+        {
+            var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
+            var currTopLeftCoord = TileCalculator.PixelXYToLatLong((int)currTopLeftPixXY.X,
+                                                (int)currTopLeftPixXY.Y, zoom);
+
+            var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x,
+                                                                              y);
+            var currBtmRightCoord = TileCalculator.PixelXYToLatLong((int)currBtmRightPixXY.X,
+                                                (int)currBtmRightPixXY.Y, zoom);
+            return new Envelope(currTopLeftCoord, currBtmRightCoord);
+        }
+
+        private Bitmap GetTile(int x, int y, Envelope envelope, int zoom)
         {
             Bitmap bm;
             try
@@ -72,7 +93,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                 Debug.WriteLine(ex.Message);
                 bm = Resources.nodata;
             }
-            return new Tile(x, y, zoom, envelope, bm);
+            return bm;
         }
     }
 }

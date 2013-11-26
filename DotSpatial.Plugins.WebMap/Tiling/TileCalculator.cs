@@ -261,7 +261,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         /// <param name="tiles">2-dimensional array of tiles, [x by y]</param>
         /// <param name="opacity">Opacity of final image</param>
         /// <returns>Bitmap of the tiles stitched together</returns>
-        public static Bitmap StitchTiles(Tile[,] tiles, short opacity)
+        public static Bitmap StitchTiles(Bitmap[,] tiles, short opacity)
         {
             var width = tiles.GetLength(0) * 256;
             var height = tiles.GetLength(1) * 256;
@@ -287,7 +287,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
                         {
                             if (tiles[x, y] != null)
                             {
-                                var tile = tiles[x, y].Bitmap;
+                                var tile = tiles[x, y];
                                 g.DrawImage(tile, new Rectangle(x*256, y*256, tile.Width, tile.Height),
                                     0, 0, tile.Width, tile.Height, GraphicsUnit.Pixel, iaPic);
                             }

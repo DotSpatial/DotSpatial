@@ -74,9 +74,9 @@
     </Compile>
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="ServiceProviderFactory.cs" />
-    <Compile Include="Tiling\Tile.cs" />
     <Compile Include="Tiling\TileCalculator.cs" />
     <Compile Include="Tiling\TileManager.cs" />
+    <Compile Include="Tiling\Tiles.cs" />
     <Compile Include="WMS_New\WmsServiceProvider.cs" />
     <Compile Include="WebMapPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
