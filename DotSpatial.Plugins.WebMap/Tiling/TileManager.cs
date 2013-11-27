@@ -40,8 +40,9 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             var btmRightTileXY = TileCalculator.LatLongToTileXY(mapBottomRight, zoom);
 
             var tileMatrix = new Bitmap[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
-            Parallel.For((int) topLeftTileXY.Y, (int) btmRightTileXY.Y + 1,
-                         (y, loopState) => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1,
+            var po = new ParallelOptions {MaxDegreeOfParallelism = -1};
+            Parallel.For((int) topLeftTileXY.Y, (int) btmRightTileXY.Y + 1, po,
+                         (y, loopState) => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1, po,
                                            (x, loopState2) =>
                                                {
                                                    if (bw.CancellationPending)

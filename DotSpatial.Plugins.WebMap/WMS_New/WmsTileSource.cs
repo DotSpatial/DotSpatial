@@ -24,13 +24,22 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
             else if (info.CRS == "EPSG:4326")
             {
                 // not working
-                schema = new WGS84();
+                schema = new WGS84Schema();
             }
             else
             {
                 // todo: another CRS
                 schema = null;
             }
+
+
+            //schema = new TileSchema
+            //{
+            //    Format = "image/png",
+            //    Srs = info.CRS,
+            //    Height = 256,
+            //    Width = 256,
+            //};
 
             var onlineResource = info.WmsCapabilities.Capability.Request.GetCapabilities.DCPType[0].Http.Get.OnlineResource;
             return new WmsTileSource(new WebTileProvider(new WmsRequest(new Uri(onlineResource.Href), schema,
@@ -41,9 +50,9 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
         }
     }
 
-    public class WGS84 : TileSchema
+    public class WGS84Schema : TileSchema
     {
-        public WGS84()
+        public WGS84Schema()
         {
             var resolutions = new[]
             {
@@ -71,10 +80,10 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
             Width = 256;
             Extent = new Extent(-180, -90, 180, 90);
             OriginX = -180;
-            OriginY = -90;
+            OriginY = 90;
             Name = "WGS 84";
             Format = "image/png";
-            Axis = AxisDirection.Normal;
+            Axis = AxisDirection.InvertedY;
             Srs = "EPSG:4326";
         }
     }
@@ -112,6 +121,7 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
             if (!string.IsNullOrEmpty(_version)) url.AppendFormat("&VERSION={0}", _version);
             url.Append("&REQUEST=GetMap");
             url.AppendFormat("&BBOX={0}", TileTransform.TileToWorld(new TileRange(info.Index.Col, info.Index.Row), info.Index.Level, _schema));
+            //url.AppendFormat("&BBOX={0}", info.Extent);
             url.AppendFormat("&FORMAT={0}", _schema.Format);
             url.AppendFormat("&WIDTH={0}", _schema.Width);
             url.AppendFormat("&HEIGHT={0}", _schema.Height);

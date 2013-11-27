@@ -28,13 +28,14 @@ namespace DotSpatial.Plugins.WebMap
             if (ts == null) return null;
             try
             {
-                var index = new TileIndex(x, y, zoom.ToString(CultureInfo.InvariantCulture));
+                var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
+                var index = new TileIndex(x, y, zoomS);
                 var tc = TileCache;
                 var bytes = tc != null ? tc.Find(index) : null;
                 if (bytes == null)
                 {
                     var extent = ToBrutileExtent(envelope);
-                    var tileInfo = ts.Schema.GetTilesInView(extent, zoom).FirstOrDefault();
+                    var tileInfo = ts.Schema.GetTilesInView(extent, zoomS).FirstOrDefault();
                     if (tileInfo == null)
                     {
                         return null;
@@ -62,7 +63,7 @@ namespace DotSpatial.Plugins.WebMap
             return null;
         }
 
-        private static Extent ToBrutileExtent(IEnvelope extent)
+        protected static Extent ToBrutileExtent(IEnvelope extent)
         {
             return new Extent(extent.Minimum.X, extent.Minimum.Y, extent.Maximum.X, extent.Maximum.Y);
         }
