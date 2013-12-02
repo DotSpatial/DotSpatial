@@ -18,7 +18,9 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
-// ********************************************************************************************************
+// Bart Adriaanse      | 30/11/2013 |  Added Amersfoort definition, the proper name for dutch datum
+//                     |            |  Note: please look for DutchRD in Pojected.NationalGrids
+// ************************************************************************************************* 
 
 #pragma warning disable 1591
 
@@ -32,6 +34,7 @@ namespace DotSpatial.Projections.GeographicCategories
         #region Private Variables
 
         public readonly ProjectionInfo ATFParis;
+        public readonly ProjectionInfo Amersfoort;
         public readonly ProjectionInfo Albanian1987;
         public readonly ProjectionInfo Belge1950Brussels;
         public readonly ProjectionInfo Belge1972;
@@ -115,6 +118,7 @@ namespace DotSpatial.Projections.GeographicCategories
         public Europe()
         {
             Albanian1987 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
+            Amersfoort = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs "); 
             ATFParis = ProjectionInfo.FromProj4String("+proj=longlat +a=6376523 +b=6355862.933255573 +pm=2.337229166666667 +no_defs ");
             Belge1950Brussels = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +pm=4.367975 +no_defs ");
             Belge1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
@@ -128,8 +132,7 @@ namespace DotSpatial.Projections.GeographicCategories
             DealulPiscului1933Romania = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             DealulPiscului1970Romania = ProjectionInfo.FromProj4String("+proj=longlat +ellps=krass +no_defs ");
             DeutscheHauptdreiecksnetz = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055999986 +lon_0=5.387638888999871 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
+            DutchRD = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs "); 
             Estonia1937 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=bessel +no_defs ");
             Estonia1992 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
             Estonia1997 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=GRS80 +no_defs ");
@@ -203,7 +206,6 @@ namespace DotSpatial.Projections.GeographicCategories
             DealulPiscului1933Romania.IsLatLon = true;
             DealulPiscului1970Romania.IsLatLon = true;
             DeutscheHauptdreiecksnetz.IsLatLon = true;
-            DutchRD.IsLatLon = true;
             DutchRD.IsLatLon = true;
             Estonia1937.IsLatLon = true;
             Estonia1992.IsLatLon = true;

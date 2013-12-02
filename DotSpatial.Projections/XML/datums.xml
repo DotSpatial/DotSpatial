@@ -114,7 +114,7 @@
 <Datum Name="D_Alaskan_Islands" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
 <Datum Name="D_Albanian_1987" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
 <Datum Name="D_Amalthea_2000" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
-<Datum Name="D_Amersfoort" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
+<Datum Name="D_Amersfoort" Type="Param7" P1="565.2369" P2="50.0087" P3="465.658" P4="-0.406857330322398" P5="0.350732676542563" P6="-1.8703473836068" P7="4.0812" Shift="" />
 <Datum Name="D_Ammassalik_1958" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
 <Datum Name="D_Ananke_2000" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />
 <Datum Name="D_Anguilla_1957" Type="WGS84" P1="" P2="" P3="" P4="" P5="" P6="" P7="" Shift="" />

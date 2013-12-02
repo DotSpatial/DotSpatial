@@ -18,6 +18,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Bart Adriaanse      | 30/11/2013 |  Added DutchRD definitions
 // ********************************************************************************************************
 
 #pragma warning disable 1591
@@ -366,7 +367,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             DHDN3DegreeGaussZone5 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=1.000000 +x_0=5500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             Dominica1945BritishWestIndiesGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs ");
             Douala1948AOFWest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=10.5 +k=0.999000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
-            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs +to +proj=latlong +datum=WGS84 ");
+            DutchRD = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs");
             ED1950FranceEuroLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=2.337229166666667 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +ellps=intl +units=m +no_defs ");
             ED1950TM0N = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=0 +k=0.999600 +x_0=500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             ED1950TM27 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=27 +k=1.000000 +x_0=500000 +y_0=0 +ellps=intl +units=m +no_defs ");

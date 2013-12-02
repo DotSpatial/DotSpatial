@@ -18,6 +18,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Bart Adriaanse      | 30/11/2013 |  Added DutchRD definitions, DoubleStereographic
 // ********************************************************************************************************
 
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace DotSpatial.Projections.Transforms
             _transforms.Add(new Cassini());
             _transforms.Add(new CylindricalEqualArea());
             _transforms.Add(new CrasterParabolic());
+            _transforms.Add(new DoubleStereographic());
             _transforms.Add(new Eckert1());
             _transforms.Add(new Eckert2());
             _transforms.Add(new Eckert3());
