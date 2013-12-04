@@ -145,10 +145,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\BruTile.Desktop.dll" />
-    <Content Include="Lib\BruTile.Desktop.pdb" />
-    <Content Include="Lib\BruTile.dll" />
-    <Content Include="Lib\BruTile.pdb" />
+    <None Include="Lib\BruTile.Desktop.dll" />
+    <None Include="Lib\BruTile.Desktop.pdb" />
+    <None Include="Lib\BruTile.dll" />
+    <None Include="Lib\BruTile.pdb" />
     <None Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
