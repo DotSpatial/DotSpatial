@@ -13,9 +13,9 @@
     <summary />
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial</tags>
-    <!-- At the moment there is no BruTile 0.8.2 at nuget, so use explicit references
+    <!--
     <dependencies>
-      <dependency id="BruTile" version="0.8.2" />
+      <dependency id="BruTile" version="0.8.4" />
     </dependencies>-->
     <references>
       <reference file="DotSpatial.Plugins.WebMap.dll" />

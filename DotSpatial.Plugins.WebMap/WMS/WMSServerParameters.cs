@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using BruTile.Web.Wms;
+using DotSpatial.Projections;
 using Exception = System.Exception;
 
-namespace DotSpatial.Plugins.WebMap.WMS_New
+namespace DotSpatial.Plugins.WebMap.WMS
 {
     public partial class WMSServerParameters : Form
     {
@@ -38,8 +40,8 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
             // Select Style
             for (int i = 0; i < lbStyles.Items.Count; i++)
             {
-                var style = (Style) lbStyles.Items[i];
-                if (style.Name == WmsInfo.Style)
+                var style = (StyleWrapper) lbStyles.Items[i];
+                if (style.Style.Name == WmsInfo.Style)
                 {
                     lbStyles.SelectedIndex = i;
                     break;
@@ -54,7 +56,7 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
             }
         }
 
-        private static TreeNode FindNodeByLayer(TreeNodeCollection nodes, Layer layer)
+        private static TreeNode FindNodeByLayer(IEnumerable nodes, Layer layer)
         {
             foreach (TreeNode node in nodes)
             {
@@ -145,6 +147,34 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                 return;
             }
 
+            ProjectionInfo projectionInfo;
+            try
+            {
+                var crs = (string) lbCRS.SelectedItem;
+                if (string.Equals(crs, "CRS:84", StringComparison.OrdinalIgnoreCase))
+                {
+                    crs = "EPSG:4326";
+                }
+                var epsgCode = Convert.ToInt32(crs.Replace("EPSG:", ""));
+                switch (epsgCode)
+                {
+                   case 3857:
+                        projectionInfo = KnownCoordinateSystems.Projected.World.WebMercator;
+                        break;
+                    case 4326:
+                        projectionInfo = KnownCoordinateSystems.Geographic.World.WGS1984;
+                        break;
+                    default:
+                        projectionInfo = ProjectionInfo.FromEpsgCode(epsgCode);
+                        break;
+                }
+                
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unsupported CRS. Select another CRS.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             // Parse custom parameters
             var cs = string.IsNullOrWhiteSpace(tbCustomParameters.Text)
@@ -152,10 +182,11 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                 : tbCustomParameters.Text.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                     .Select(d => d.Split('=')).ToDictionary(d => d[0], d => d[1]);
 
-            WmsInfo = new WmsInfo(tbServerUrl.Text, _wmsCapabilities,
-                (Layer) tvLayers.SelectedNode.Tag, cs, (string) lbCRS.SelectedItem,
+            WmsInfo = new WmsInfo(tbServerUrl.Text, 
+                _wmsCapabilities,
+                (Layer) tvLayers.SelectedNode.Tag, cs, (string) lbCRS.SelectedItem, projectionInfo,
                 lbStyles.SelectedItem == null? null :
-                ((Style) lbStyles.SelectedItem).Name);
+                ((StyleWrapper)lbStyles.SelectedItem).Style.Name);
             DialogResult = DialogResult.OK;
         }
 
@@ -182,7 +213,7 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                 var lr = (Layer)node.Tag;
                 foreach (var style in lr.Style)
                 {
-                    if (styles.All(d => d.Title != style.Title))
+                    if (styles.All(d => d.Name != style.Name))
                     {
                         styles.Add(style);
                     }
@@ -202,8 +233,25 @@ namespace DotSpatial.Plugins.WebMap.WMS_New
                 
                 node = node.Parent;
             }
-            lbStyles.DataSource = styles;
+            lbStyles.DataSource = styles.Select(d => new StyleWrapper(d)).ToList();
             lbCRS.DataSource = crss;
+        }
+
+        private class StyleWrapper
+        {
+            private readonly Style _style;
+
+            public StyleWrapper(Style style)
+            {
+                _style = style;
+            }
+
+            public Style Style {get { return _style; }}
+
+            public override string ToString()
+            {
+                return string.IsNullOrEmpty(_style.Title) ? _style.Name : _style.Title;
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ using BruTile.Predefined;
 using BruTile.Web;
 using DotSpatial.Plugins.WebMap.Configuration;
 using DotSpatial.Plugins.WebMap.Properties;
-using DotSpatial.Plugins.WebMap.WMS_New;
+using DotSpatial.Plugins.WebMap.WMS;
 using DotSpatial.Plugins.WebMap.Yahoo;
 
 namespace DotSpatial.Plugins.WebMap
@@ -59,6 +59,7 @@ namespace DotSpatial.Plugins.WebMap
                 yield return Create(Resources.YahooSatellite);
                 yield return Create(Resources.YahooHybrid);
                 yield return Create(Resources.OpenStreetMap);
+                yield return Create(Resources.WMSMap);
             }
         }
 

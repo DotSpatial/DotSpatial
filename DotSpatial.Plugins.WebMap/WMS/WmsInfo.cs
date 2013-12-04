@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BruTile.Web.Wms;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Plugins.WebMap.WMS_New
+namespace DotSpatial.Plugins.WebMap.WMS
 {
     public class WmsInfo
     {
         public WmsInfo(string serverUrl, WmsCapabilities wmsCapabilities, Layer layer, Dictionary<string, string> customParameters,
-            string crs, string style)
+            string crs, ProjectionInfo projectionInfo, string style)
         {
             CustomParameters = customParameters;
             CRS = crs;
-            CrsProjectionInfo = ProjectionInfo.FromEpsgCode(Convert.ToInt32(crs.Replace("EPSG:", "")));
+            CrsProjectionInfo = projectionInfo;
             Style = style;
             Layer = layer;
             WmsCapabilities = wmsCapabilities;
