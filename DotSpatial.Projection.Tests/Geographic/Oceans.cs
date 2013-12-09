@@ -16,7 +16,7 @@ namespace DotSpatial.Projection.Tests.Geographic
         [TestFixtureSetUp]
         public void Initialize()
         {
-            TestSetupHelper.CopyProj4();
+            
         }
 
         [Test]

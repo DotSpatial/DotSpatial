@@ -112,8 +112,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D2D76B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleLegend", "DotSpatial.Plugins.Legend\DotSpatial.Plugins.SimpleLegend.csproj", "{D85281B4-6012-42A0-A8F1-B29068A3F433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTests", "NunitTests\NunitTests.csproj", "{100E368B-27C8-41B5-8565-8326A8AA1D7D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Mono", "DotSpatial.Mono\DotSpatial.Mono.csproj", "{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{12970967-D98D-4777-A5F8-11A9F037CC28}"
@@ -148,7 +146,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin Controls", "Plugin C
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 60
+		SccNumberOfProjects = 59
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -368,26 +366,22 @@ Global
 		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
 		SccProjectName54 = DotSpatial.Mono
 		SccLocalPath54 = DotSpatial.Mono
-		SccProjectUniqueName55 = NunitTests\\NunitTests.csproj
+		SccProjectUniqueName55 = DotSpatial.Plugins.MonoHeaderControl\\DotSpatial.Plugins.MonoHeaderControl.csproj
 		SccProjectTopLevelParentUniqueName55 = DotSpatial.sln
-		SccProjectName55 = NunitTests
-		SccLocalPath55 = NunitTests
-		SccProjectUniqueName56 = DotSpatial.Plugins.MonoHeaderControl\\DotSpatial.Plugins.MonoHeaderControl.csproj
+		SccProjectName55 = DotSpatial.Plugins.MonoHeaderControl
+		SccLocalPath55 = DotSpatial.Plugins.MonoHeaderControl
+		SccProjectUniqueName56 = DotSpatial.Plugins.SimpleHeaderControl\\DotSpatial.Plugins.SimpleHeaderControl.csproj
 		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
-		SccProjectName56 = DotSpatial.Plugins.MonoHeaderControl
-		SccLocalPath56 = DotSpatial.Plugins.MonoHeaderControl
-		SccProjectUniqueName57 = DotSpatial.Plugins.SimpleHeaderControl\\DotSpatial.Plugins.SimpleHeaderControl.csproj
+		SccProjectName56 = DotSpatial.Plugins.SimpleHeaderControl
+		SccLocalPath56 = DotSpatial.Plugins.SimpleHeaderControl
+		SccProjectUniqueName57 = DotSpatial.Plugins.SimpleDocking\\DotSpatial.Plugins.SimpleDocking.csproj
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
-		SccProjectName57 = DotSpatial.Plugins.SimpleHeaderControl
-		SccLocalPath57 = DotSpatial.Plugins.SimpleHeaderControl
-		SccProjectUniqueName58 = DotSpatial.Plugins.SimpleDocking\\DotSpatial.Plugins.SimpleDocking.csproj
+		SccProjectName57 = DotSpatial.Plugins.SimpleDocking
+		SccLocalPath57 = DotSpatial.Plugins.SimpleDocking
+		SccProjectUniqueName58 = DotSpatial.Plugins.TabbedDocking\\DotSpatial.Plugins.TabbedDocking.csproj
 		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
-		SccProjectName58 = DotSpatial.Plugins.SimpleDocking
-		SccLocalPath58 = DotSpatial.Plugins.SimpleDocking
-		SccProjectUniqueName59 = DotSpatial.Plugins.TabbedDocking\\DotSpatial.Plugins.TabbedDocking.csproj
-		SccProjectTopLevelParentUniqueName59 = DotSpatial.sln
-		SccProjectName59 = DotSpatial.Plugins.TabbedDocking
-		SccLocalPath59 = DotSpatial.Plugins.TabbedDocking
+		SccProjectName58 = DotSpatial.Plugins.TabbedDocking
+		SccLocalPath58 = DotSpatial.Plugins.TabbedDocking
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -847,16 +841,6 @@ Global
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D85281B4-6012-42A0-A8F1-B29068A3F433}.Release|x86.ActiveCfg = Release|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D}.Release|x86.ActiveCfg = Release|Any CPU
 		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1057,7 +1041,6 @@ Global
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5520B6CB-3124-4B1A-A15C-DC4637F618C3} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{5E5D5BF6-E7F1-4E10-9CD3-0A3CA902AD21} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{100E368B-27C8-41B5-8565-8326A8AA1D7D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{11DF9872-A74C-4FE8-A139-DB9EC60C1E6E} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}

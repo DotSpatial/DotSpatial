@@ -21,8 +21,8 @@ namespace DotSpatial.Symbology.Tests
         [Test]
         public void ExportSelectionTest()
         {
-            string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "soils.shp");
-            string fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "soilsExport.shp");
+            string filename = Path.Combine("TestFiles", "soils.shp");
+            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -44,8 +44,8 @@ namespace DotSpatial.Symbology.Tests
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("cs-CZ");
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("cs-CZ");
 
-            string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "soils.shp");
-            string fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "soilsExport.shp");
+            string filename = Path.Combine("TestFiles", "soils.shp");
+            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
 
             ShapefileLayerProvider provider = new ShapefileLayerProvider();
             var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
@@ -57,29 +57,5 @@ namespace DotSpatial.Symbology.Tests
 
             File.Delete(fileOut);
         }
-
-
-
-        /// <summary>
-        /// Attempts reading DBF with OLEDB.
-        /// </summary>
-        [Test]
-        [Ignore]
-        public void AttemptReadingDBFWithOLEDB()
-        {
-            //FeatureLayer target = new MapPolygonLayer();
-            string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "soils.shp");
-            string dBaseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles");
-
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;" + "Data Source = " + dBaseFile + ";Extended Properties =dBase IV;";
-            System.Data.OleDb.OleDbConnection dBaseConnection;
-            dBaseConnection = new System.Data.OleDb.OleDbConnection(connectionString);
-            dBaseConnection.Open();
-            System.Data.OleDb.OleDbCommand dBaseCommand;
-            dBaseCommand = new System.Data.OleDb.OleDbCommand("SELECT * FROM [soils]", dBaseConnection);
-            System.Data.OleDb.OleDbDataReader dBaseDataReader;
-            dBaseDataReader = dBaseCommand.ExecuteReader(CommandBehavior.SequentialAccess);
-        }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using DotSpatial.Data;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
@@ -18,49 +19,17 @@ namespace DotSpatial.Controls.Tests
     ///This is a test class for MapTest and is intended
     ///to contain all MapTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class MapTest
     {
-        #region Additional test attributes
-
-        //
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion
-
         /// <summary>
         /// Tests whether the MapFrame_ExtentsChanged event fires
         /// after re-opening a project
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void MapExtentsChangedEvent_OpeningProjectTest()
         {
-            string shapeFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "50mil_us_states.shp");
+            string shapeFilePath = Path.Combine("TestFiles", "50mil_us_states.shp");
             
             Map myMap = new Map();
             AppManager manager = new AppManager();
@@ -69,8 +38,7 @@ namespace DotSpatial.Controls.Tests
             bool eventIsFired = false;
 
             //setup the event handler
-            myMap.ViewExtentsChanged += delegate(object sender, DotSpatial.Data.ExtentArgs e)
-            {
+            myMap.ViewExtentsChanged += delegate {
                 eventIsFired = true;
             };
 
@@ -84,13 +52,12 @@ namespace DotSpatial.Controls.Tests
             eventIsFired = false;
 
             //open a project
-            string dspxPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "testproject1.dspx");
-
+            string dspxPath = Path.GetFullPath(Path.Combine("TestFiles", "testproject1.dspx"));
             manager.SerializationManager.OpenProject(dspxPath);
 
             //change the extent again after opening the project
             Assert.IsTrue((myMap.Layers.Count > 0), "The map should have 1 or more layers after opening the deserializeTest project.");
-            myMap.ViewExtents = new DotSpatial.Data.Extent(15, 48, 20, 52);
+            myMap.ViewExtents = new Extent(15, 48, 20, 52);
 
             Assert.IsTrue(eventIsFired, "ViewExtentsChanged event doesn't fire after opening the project.");
         }
@@ -98,12 +65,12 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         ///A test for ZoomToMaxExtent
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void ZoomToMaxExtentTest()
         {
             XmlDeserializer target = new XmlDeserializer();
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "testproject1.dspx");
+            Map map = new Map();
+            string path = Path.Combine("TestFiles", "testproject1.dspx");
 
             target.Deserialize(map, File.ReadAllText(path));
 
@@ -113,26 +80,25 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         /// A test to find out whether the default projection of a new map is WGS84.
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void DefaultProjectionIsWgs84Test()
         {
             Map map = new Map();
             Assert.IsNotNull(map.Projection);
-            Assert.AreEqual(map.Projection, DotSpatial.Projections.KnownCoordinateSystems.Geographic.World.WGS1984);
+            Assert.AreEqual(map.Projection, KnownCoordinateSystems.Geographic.World.WGS1984);
         }
 
         /// <summary>
         /// A test to find out if the ProjectionChanged() event fires when the ProjectionEsriString
         /// property of the map is changed.
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void ProjectionChangedEventFireTest()
         {
             bool eventIsFired = false;
             
             Map map = new Map();
-            map.ProjectionChanged += delegate(object sender, EventArgs e)
-            {
+            map.ProjectionChanged += delegate {
                 eventIsFired = true;
             };
 
@@ -145,7 +111,7 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetAllLayersTest()
         {
             var map = new Map();
@@ -169,7 +135,7 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         /// Test if the new GetAllLayers() method returns the correct number of layers if the map has groups
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetAllGroupsTest()
         {
             var map = new Map();

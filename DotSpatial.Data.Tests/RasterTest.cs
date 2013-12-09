@@ -22,12 +22,10 @@ namespace DotSpatial.Data.Tests
         /// <summary>
         ///A test for GetNoDataCellCount
         ///</summary>
-        /*[TestMethod()]
-        [Ignore] // Test data not exists
+        [TestMethod]
         public void GetNoDataCellCountTest()
         {
-            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\..\..\..\Data\GetNoDataCellCountTest.BGD";
-
+            var path = Path.ChangeExtension(Path.GetTempFileName(), "bgd");
             const double xllcorner = 3267132.224761;
             const double yllcorner = 5326939.203029;
             const int ncols = 512;
@@ -35,19 +33,18 @@ namespace DotSpatial.Data.Tests
             const int frequencyOfNoValue = 5;
 
             const double cellsize = 500;
-            double x2 = xllcorner + (cellsize * ncols);
-            double y2 = yllcorner + (cellsize * nrows);
-            Extent myExtent = new Extent(xllcorner, yllcorner, x2, y2);
-            Raster target;
-            target = Raster.Create(path, String.Empty, ncols, nrows, 1, typeof(double), new[] { String.Empty }) as Raster;
+            var x2 = xllcorner + (cellsize * ncols);
+            var y2 = yllcorner + (cellsize * nrows);
+            var myExtent = new Extent(xllcorner, yllcorner, x2, y2);
+            var target = (Raster)Raster.Create(path, String.Empty, ncols, nrows, 1, typeof(double), new[] { String.Empty });
             target.Bounds = new RasterBounds(nrows, ncols, myExtent);
             target.NoDataValue = -9999;
-            int mRow = target.Bounds.NumRows;
-            int mCol = target.Bounds.NumColumns;
+            var mRow = target.Bounds.NumRows;
+            var mCol = target.Bounds.NumColumns;
 
-            for (int row = 0; row < mRow; row++)
+            for (var row = 0; row < mRow; row++)
             {
-                for (int col = 0; col < mCol; col++)
+                for (var col = 0; col < mCol; col++)
                 {
                     if (row % frequencyOfNoValue == 0)
                         target.Value[row, col] = -9999d;
@@ -57,26 +54,31 @@ namespace DotSpatial.Data.Tests
             }
             target.Save();
 
-            long expected = (nrows / frequencyOfNoValue) * ncols + ncols;
-            long actual;
-            actual = target.GetNoDataCellCount();
+            const long expected = (nrows / frequencyOfNoValue) * ncols + ncols;
+            var actual = target.GetNoDataCellCount();
             Assert.AreEqual(expected, actual);
 
-            System.IO.File.Delete(path);
-        }*/
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception)
+            {
+            }
+        }
 
         /// <summary>
         ///A test for SaveAs
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void SaveAsTest()
         {
-            var GridDataFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Grids\");
+            const string GridDataFolder = @"Data\Grids\";
             var p = new GdalRasterProvider();
             var sourceGrid = p.Open(GridDataFolder + @"elev_cm_ESRI\elev_cm_clip2\hdr.adf");
             var sourceGridMaximum = sourceGrid.Maximum;
 
-            var savedGridName = GridDataFolder + @"elev_cm.tif";
+            const string savedGridName = GridDataFolder + @"elev_cm.tif";
             sourceGrid.SaveAs(savedGridName);
 
             Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using DotSpatial.Projections;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
-
-namespace NunitTests
+namespace DotSpatial.Projection.Tests
 {
     [TestFixture]
     public class Projections

@@ -19,39 +19,6 @@ namespace DotSpatial.Controls.Tests
     [TestClass()]
     public class MapLayerCollectionTest
     {
-
-        #region Additional test attributes
-
-        //
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion
-
         /// <summary>
         ///A test for SelectedLayer.
         ///After the selected layer is removed, Layers.SelectedLayer should be null
@@ -59,9 +26,9 @@ namespace DotSpatial.Controls.Tests
         [TestMethod()]
         public void SelectedLayerNullIfLayerRemoved()
         {
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "test-randomPts.shp");
-            IMapLayer myLayer = map.AddLayer(path);
+            var map = new Map();
+            var path = Path.Combine("TestFiles", "test-randomPts.shp");
+            var myLayer = map.AddLayer(path);
 
             Assert.IsNotNull(myLayer, "the added map layer should not be null.");
 
@@ -82,13 +49,13 @@ namespace DotSpatial.Controls.Tests
         [TestMethod()]
         public void MapFrameIsNotNull_Group()
         {
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "test-randomPts.shp");
+            var map = new Map();
+            var path = Path.Combine("TestFiles", "test-randomPts.shp");
 
-            IFeatureSet fs = FeatureSet.Open(path);
-            MapPointLayer myLayer = new MapPointLayer(fs);
+            var fs = FeatureSet.Open(path);
+            var myLayer = new MapPointLayer(fs);
 
-            MapGroup grp = new MapGroup(map, "group1");
+            var grp = new MapGroup(map, "group1");
             map.Layers.Add(grp);
             grp.Layers.Add(myLayer);
 

@@ -21,38 +21,6 @@ namespace DotSpatial.Controls.Tests
     [TestClass()]
     public class MapFrameTest
     {
-       
-        #region Additional test attributes
-
-        //
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion
 
         /// <summary>
         /// Tests whether the MapFrame_ExtentsChanged event fires
@@ -61,7 +29,7 @@ namespace DotSpatial.Controls.Tests
         [TestMethod()]
         public void MapFrameExtentsChangedEvent_OpeningProjectTest()
         {
-            string shapeFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "50mil_us_states.shp");
+            string shapeFilePath = Path.Combine("TestFiles", "50mil_us_states.shp");
             
             Map myMap = new Map();
             AppManager manager = new AppManager();
@@ -85,8 +53,7 @@ namespace DotSpatial.Controls.Tests
             eventIsFired = false;
 
             //open a project
-            string dspxPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", "testproject1.dspx");
-
+            string dspxPath = Path.GetFullPath(Path.Combine("TestFiles", "testproject1.dspx"));
             manager.SerializationManager.OpenProject(dspxPath);
 
             //change the extent again after opening the project

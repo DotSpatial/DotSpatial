@@ -124,7 +124,7 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapPointLayer()
         {
-            string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "test-RandomPts.shp");
+            string filename = Path.Combine("Data", "test-RandomPts.shp");
 
             IFeatureSet fs = FeatureSet.Open(filename);
             MapPointLayer l = new MapPointLayer(fs);
@@ -144,7 +144,7 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapFrameIsNotNull()
         {
-            string filePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = "";
             string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
             string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
 
@@ -178,7 +178,7 @@ namespace MapWindow.Tests.XML
         [Test]
         public void TestMapFrameIsNotNull_Group()
         {
-            string filePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = "";
             string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
             string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
             

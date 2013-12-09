@@ -9,7 +9,7 @@ namespace DotSpatial.Data.Tests
     [TestFixture]
     public class FeatureSetTests
     {
-        private readonly string _shapefiles = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data",@"Shapefiles");
+        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
 
         [Test]
         public void IndexModeToFeaturesClear()
@@ -172,7 +172,7 @@ namespace DotSpatial.Data.Tests
         {
             FeatureSet target = new FeatureSet();
             string relativeFilePath = @"..\..\states.shp";
-            string expectedFullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeFilePath));
+            string expectedFullPath = Path.GetFullPath(relativeFilePath);
 
             string actualFilePath;
             target.FilePath = relativeFilePath;
