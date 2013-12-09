@@ -173,12 +173,18 @@ namespace DotSpatial.Symbology
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            // Grid is
-
             if (disposing)
             {
                 _symbolizer = null;
+
+                if (BitmapGetter != null)
+                {
+                    BitmapGetter.Dispose();
+                    BitmapGetter = null;
+                }
+                RasterLayerActions = null;
             }
+            base.Dispose(disposing);
         }
 
         /// <summary>

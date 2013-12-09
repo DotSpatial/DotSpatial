@@ -313,6 +313,28 @@ namespace DotSpatial.Controls
         {
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_stencil != _backBuffer && _stencil != null)
+                {
+                    _stencil.Dispose();
+                    _stencil = null;
+                }
+                if (_backBuffer != null)
+                {
+                    _backBuffer.Dispose();
+                    _backBuffer = null;
+                }
+
+                _bufferExtent = null;
+                _bufferRectangle = Rectangle.Empty;
+                _isInitialized = false;
+            }
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         #region Private Methods

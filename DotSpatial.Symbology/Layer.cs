@@ -933,8 +933,13 @@ namespace DotSpatial.Symbology
                 {
                     _dataSet.Dispose();
                 }
+                _dataSet = null;
             }
-            if (_editCopy != null) _editCopy.Dispose();
+            if (_editCopy != null)
+            {
+                _editCopy.Dispose();
+                _editCopy = null;
+            }
             _isDisposed = true;
         }
     }
