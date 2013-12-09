@@ -27,7 +27,6 @@ using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.GeometriesGraph;
-using Iesi.Collections;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
@@ -403,7 +402,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
-            ISet nodeSet = new ListSet();
+            var nodeSet = new HashSet<Coordinate>();
             bool isFirst = true;
             foreach (EdgeIntersection ei in eiList)
             {

@@ -23,7 +23,8 @@
 // ********************************************************************************************************
 
 using System.Collections;
-using Iesi.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -116,11 +117,14 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns></returns>
         public static IList GetEdgesBetween(Node node0, Node node1)
         {
-            IList edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            ISet commonEdges = new HashedSet(edges0);
-            IList edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-            commonEdges.RetainAll(edges1);
-            return new ArrayList(commonEdges);
+            var edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
+            var edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
+            var toRemove = edges1.Cast<Edge>().Where(edges0.Contains).ToList();
+            foreach (var edge in toRemove)
+            {
+                edges0.Remove(edge);
+            }
+            return edges0;
         }
 
         /// <summary>

@@ -132,7 +132,7 @@ namespace DotSpatial.Topology.Algorithm
                 return pts;
 
             // add points defining polygon
-            Iesi.Collections.Generic.SortedSet<Coordinate> reducedSet = new Iesi.Collections.Generic.SortedSet<Coordinate>();
+            var reducedSet = new SortedSet<Coordinate>();
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
 
