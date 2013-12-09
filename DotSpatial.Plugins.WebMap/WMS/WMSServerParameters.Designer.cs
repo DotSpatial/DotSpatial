@@ -67,6 +67,10 @@
             this.tbServerAbstract = new System.Windows.Forms.TextBox();
             this.tbServerTitle = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbLogin = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tbPassword = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -102,8 +106,8 @@
             this.lbCRS.FormattingEnabled = true;
             this.lbCRS.Location = new System.Drawing.Point(9, 19);
             this.lbCRS.Name = "lbCRS";
-            this.lbCRS.Size = new System.Drawing.Size(209, 121);
-            this.lbCRS.TabIndex = 11;
+            this.lbCRS.Size = new System.Drawing.Size(209, 108);
+            this.lbCRS.TabIndex = 13;
             // 
             // label1
             // 
@@ -122,8 +126,8 @@
             this.lbStyles.FormattingEnabled = true;
             this.lbStyles.Location = new System.Drawing.Point(9, 24);
             this.lbStyles.Name = "lbStyles";
-            this.lbStyles.Size = new System.Drawing.Size(209, 43);
-            this.lbStyles.TabIndex = 10;
+            this.lbStyles.Size = new System.Drawing.Size(209, 30);
+            this.lbStyles.TabIndex = 12;
             // 
             // lblStyles
             // 
@@ -149,7 +153,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(231, 75);
+            this.panel1.Size = new System.Drawing.Size(231, 69);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -159,7 +163,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(231, 75);
+            this.panel2.Size = new System.Drawing.Size(231, 69);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -167,9 +171,9 @@
             this.panel3.Controls.Add(this.lbCRS);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 84);
+            this.panel3.Location = new System.Drawing.Point(3, 78);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(231, 146);
+            this.panel3.Size = new System.Drawing.Size(231, 135);
             this.panel3.TabIndex = 2;
             // 
             // tbAbstract
@@ -180,8 +184,8 @@
             this.tbAbstract.Multiline = true;
             this.tbAbstract.Name = "tbAbstract";
             this.tbAbstract.ReadOnly = true;
-            this.tbAbstract.Size = new System.Drawing.Size(159, 93);
-            this.tbAbstract.TabIndex = 9;
+            this.tbAbstract.Size = new System.Drawing.Size(145, 93);
+            this.tbAbstract.TabIndex = 11;
             // 
             // gbSelectedLayer
             // 
@@ -201,9 +205,9 @@
             this.gbSelectedLayer.Controls.Add(this.lblOpaque);
             this.gbSelectedLayer.Controls.Add(this.tableLayoutPanel1);
             this.gbSelectedLayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbSelectedLayer.Location = new System.Drawing.Point(256, 3);
+            this.gbSelectedLayer.Location = new System.Drawing.Point(248, 3);
             this.gbSelectedLayer.Name = "gbSelectedLayer";
-            this.gbSelectedLayer.Size = new System.Drawing.Size(417, 384);
+            this.gbSelectedLayer.Size = new System.Drawing.Size(403, 367);
             this.gbSelectedLayer.TabIndex = 25;
             this.gbSelectedLayer.TabStop = false;
             this.gbSelectedLayer.Text = "Layer Details";
@@ -216,8 +220,8 @@
             this.tbCustomParameters.Location = new System.Drawing.Point(258, 171);
             this.tbCustomParameters.Multiline = true;
             this.tbCustomParameters.Name = "tbCustomParameters";
-            this.tbCustomParameters.Size = new System.Drawing.Size(153, 203);
-            this.tbCustomParameters.TabIndex = 12;
+            this.tbCustomParameters.Size = new System.Drawing.Size(139, 186);
+            this.tbCustomParameters.TabIndex = 14;
             // 
             // label2
             // 
@@ -270,7 +274,7 @@
             this.tbName.Name = "tbName";
             this.tbName.ReadOnly = true;
             this.tbName.Size = new System.Drawing.Size(185, 20);
-            this.tbName.TabIndex = 8;
+            this.tbName.TabIndex = 10;
             // 
             // label4
             // 
@@ -287,7 +291,7 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.ReadOnly = true;
             this.tbTitle.Size = new System.Drawing.Size(185, 20);
-            this.tbTitle.TabIndex = 7;
+            this.tbTitle.TabIndex = 9;
             // 
             // label3
             // 
@@ -311,7 +315,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(237, 233);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(237, 216);
             this.tableLayoutPanel1.TabIndex = 30;
             // 
             // tvLayers
@@ -320,8 +324,8 @@
             this.tvLayers.HideSelection = false;
             this.tvLayers.Location = new System.Drawing.Point(3, 3);
             this.tvLayers.Name = "tvLayers";
-            this.tvLayers.Size = new System.Drawing.Size(247, 384);
-            this.tvLayers.TabIndex = 6;
+            this.tvLayers.Size = new System.Drawing.Size(239, 367);
+            this.tvLayers.TabIndex = 8;
             this.tvLayers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvLayers_AfterSelect);
             // 
             // lblServerURL
@@ -329,14 +333,14 @@
             this.lblServerURL.AutoSize = true;
             this.lblServerURL.Location = new System.Drawing.Point(15, 29);
             this.lblServerURL.Name = "lblServerURL";
-            this.lblServerURL.Size = new System.Drawing.Size(38, 13);
+            this.lblServerURL.Size = new System.Drawing.Size(41, 13);
             this.lblServerURL.TabIndex = 22;
-            this.lblServerURL.Text = "Server";
+            this.lblServerURL.Text = "Server:";
             // 
             // btnGetCapabilities
             // 
             this.btnGetCapabilities.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetCapabilities.Location = new System.Drawing.Point(586, 24);
+            this.btnGetCapabilities.Location = new System.Drawing.Point(564, 24);
             this.btnGetCapabilities.Name = "btnGetCapabilities";
             this.btnGetCapabilities.Size = new System.Drawing.Size(110, 23);
             this.btnGetCapabilities.TabIndex = 1;
@@ -350,27 +354,27 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbServerUrl.Location = new System.Drawing.Point(58, 26);
             this.tbServerUrl.Name = "tbServerUrl";
-            this.tbServerUrl.Size = new System.Drawing.Size(510, 20);
+            this.tbServerUrl.Size = new System.Drawing.Size(488, 20);
             this.tbServerUrl.TabIndex = 0;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(621, 612);
+            this.btnCancel.Location = new System.Drawing.Point(599, 610);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 14;
+            this.btnCancel.TabIndex = 100;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(539, 612);
+            this.btnOK.Location = new System.Drawing.Point(517, 610);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 13;
+            this.btnOK.TabIndex = 99;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -385,12 +389,12 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.5F));
             this.tableLayoutPanel2.Controls.Add(this.tvLayers, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.gbSelectedLayer, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 198);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 213);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(676, 390);
-            this.tableLayoutPanel2.TabIndex = 3;
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(654, 373);
+            this.tableLayoutPanel2.TabIndex = 10;
             // 
             // gbServerInfo
             // 
@@ -404,28 +408,28 @@
             this.gbServerInfo.Controls.Add(this.tbServerAbstract);
             this.gbServerInfo.Controls.Add(this.tbServerTitle);
             this.gbServerInfo.Controls.Add(this.label7);
-            this.gbServerInfo.Location = new System.Drawing.Point(18, 63);
+            this.gbServerInfo.Location = new System.Drawing.Point(21, 78);
             this.gbServerInfo.Name = "gbServerInfo";
-            this.gbServerInfo.Size = new System.Drawing.Size(676, 129);
-            this.gbServerInfo.TabIndex = 2;
+            this.gbServerInfo.Size = new System.Drawing.Size(654, 129);
+            this.gbServerInfo.TabIndex = 5;
             this.gbServerInfo.TabStop = false;
             this.gbServerInfo.Text = "Server Details";
             // 
             // tbServerAccessConstraints
             // 
             this.tbServerAccessConstraints.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbServerAccessConstraints.Location = new System.Drawing.Point(484, 73);
+            this.tbServerAccessConstraints.Location = new System.Drawing.Point(462, 73);
             this.tbServerAccessConstraints.Multiline = true;
             this.tbServerAccessConstraints.Name = "tbServerAccessConstraints";
             this.tbServerAccessConstraints.ReadOnly = true;
             this.tbServerAccessConstraints.Size = new System.Drawing.Size(186, 43);
-            this.tbServerAccessConstraints.TabIndex = 5;
+            this.tbServerAccessConstraints.TabIndex = 7;
             // 
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(378, 76);
+            this.label10.Location = new System.Drawing.Point(356, 76);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(100, 13);
             this.label10.TabIndex = 49;
@@ -438,8 +442,8 @@
             this.tbServerOnlineResource.Location = new System.Drawing.Point(107, 46);
             this.tbServerOnlineResource.Name = "tbServerOnlineResource";
             this.tbServerOnlineResource.ReadOnly = true;
-            this.tbServerOnlineResource.Size = new System.Drawing.Size(563, 20);
-            this.tbServerOnlineResource.TabIndex = 3;
+            this.tbServerOnlineResource.Size = new System.Drawing.Size(541, 20);
+            this.tbServerOnlineResource.TabIndex = 5;
             // 
             // label9
             // 
@@ -467,8 +471,8 @@
             this.tbServerAbstract.Multiline = true;
             this.tbServerAbstract.Name = "tbServerAbstract";
             this.tbServerAbstract.ReadOnly = true;
-            this.tbServerAbstract.Size = new System.Drawing.Size(265, 46);
-            this.tbServerAbstract.TabIndex = 4;
+            this.tbServerAbstract.Size = new System.Drawing.Size(243, 46);
+            this.tbServerAbstract.TabIndex = 6;
             // 
             // tbServerTitle
             // 
@@ -477,8 +481,8 @@
             this.tbServerTitle.Location = new System.Drawing.Point(107, 19);
             this.tbServerTitle.Name = "tbServerTitle";
             this.tbServerTitle.ReadOnly = true;
-            this.tbServerTitle.Size = new System.Drawing.Size(563, 20);
-            this.tbServerTitle.TabIndex = 2;
+            this.tbServerTitle.Size = new System.Drawing.Size(541, 20);
+            this.tbServerTitle.TabIndex = 4;
             // 
             // label7
             // 
@@ -489,11 +493,50 @@
             this.label7.TabIndex = 43;
             this.label7.Text = "Title:";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 55);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(36, 13);
+            this.label6.TabIndex = 24;
+            this.label6.Text = "Login:";
+            // 
+            // tbLogin
+            // 
+            this.tbLogin.Location = new System.Drawing.Point(58, 52);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(194, 20);
+            this.tbLogin.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(263, 55);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 13);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "Password:";
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPassword.Location = new System.Drawing.Point(325, 52);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '*';
+            this.tbPassword.Size = new System.Drawing.Size(221, 20);
+            this.tbPassword.TabIndex = 3;
+            // 
             // WMSServerParameters
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(706, 653);
+            this.ClientSize = new System.Drawing.Size(684, 651);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.tbPassword);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.tbLogin);
             this.Controls.Add(this.gbServerInfo);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.lblServerURL);
@@ -564,5 +607,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbCustomParameters;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbLogin;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbPassword;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using BruTile;
 using BruTile.Web;
 
@@ -26,8 +27,20 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 schema,
                 new List<string>{info.Layer.Name},
                 info.Style == null? null : new List<string>{info.Style},
-                info.CustomParameters, info.WmsCapabilities.Version.VersionString)),
+                info.CustomParameters, info.WmsCapabilities.Version.VersionString),
+                fetchTile: d => RequestHelper.FetchImage(d, info.Credentials)
+                ),
                 schema);
+        }
+    }
+
+    public static class RequestHelper
+    {
+        public static byte[] FetchImage(Uri uri, ICredentials credentials)
+        {
+            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+            webRequest.Credentials = credentials;
+            return BruTile.Web.RequestHelper.FetchImage(webRequest);
         }
     }
 }

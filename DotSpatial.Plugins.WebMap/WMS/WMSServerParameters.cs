@@ -24,6 +24,11 @@ namespace DotSpatial.Plugins.WebMap.WMS
 
             _wmsCapabilities = WmsInfo.WmsCapabilities;
             tbServerUrl.Text = WmsInfo.ServerUrl;
+            if (WmsInfo.Credentials != null)
+            {
+                tbLogin.Text = WmsInfo.Credentials.UserName;
+                tbPassword.Text = WmsInfo.Credentials.Password;
+            }
 
             ShowServerDetails(_wmsCapabilities);
             InitLayers(_wmsCapabilities);
@@ -85,6 +90,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
             try
             {
                 var myRequest = WebRequest.Create(serverUrl);
+                myRequest.Credentials = GetUserCredentials();
                 using (var myResponse = myRequest.GetResponse())
                 using (var stream = myResponse.GetResponseStream())
                     capabilities = new WmsCapabilities(stream);
@@ -100,6 +106,13 @@ namespace DotSpatial.Plugins.WebMap.WMS
 
             ShowServerDetails(capabilities);
             InitLayers(capabilities);
+        }
+
+        private NetworkCredential GetUserCredentials()
+        {
+            if (String.IsNullOrEmpty(tbLogin.Text) && String.IsNullOrEmpty(tbPassword.Text))
+                return null;
+            return new NetworkCredential(tbLogin.Text, tbPassword.Text);
         }
 
         private void ShowServerDetails(WmsCapabilities capabilities)
@@ -186,7 +199,7 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 _wmsCapabilities,
                 (Layer) tvLayers.SelectedNode.Tag, cs, (string) lbCRS.SelectedItem, projectionInfo,
                 lbStyles.SelectedItem == null? null :
-                ((StyleWrapper)lbStyles.SelectedItem).Style.Name);
+                ((StyleWrapper)lbStyles.SelectedItem).Style.Name, GetUserCredentials());
             DialogResult = DialogResult.OK;
         }
 
