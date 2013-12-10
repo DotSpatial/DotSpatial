@@ -209,6 +209,7 @@
     <Compile Include="Transforms\BipolarObliqueConformalConic.cs" />
     <Compile Include="Transforms\Bonne.cs" />
     <Compile Include="Transforms\Cassini.cs" />
+    <Compile Include="Transforms\DoubleStereographic.cs" />
     <Compile Include="Transforms\Extensions.cs" />
     <Compile Include="Transforms\GaussKruger.cs" />
     <Compile Include="Transforms\HotineObliqueMercatorAzimuthNaturalOrigin.cs" />
