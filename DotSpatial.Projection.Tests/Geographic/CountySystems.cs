@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Projection.Tests.Geographic
+namespace DotSpatial.Projections.Tests.Geographic
 {
     /// <summary>
     /// This class contains all the tests for the CountySystems category of Geographic coordinate systems

@@ -11,7 +11,7 @@
 
 
 
-//namespace DotSpatial.Projection.Tests
+//namespace DotSpatial.Projections.Tests
 //{
 //    /// <summary>
 //    /// Summary description for ReadingESRIString

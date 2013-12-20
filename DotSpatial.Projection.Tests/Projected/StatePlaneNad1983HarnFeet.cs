@@ -2,7 +2,7 @@ using System.IO;
 using NUnit.Framework;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Projection.Tests.Projected
+namespace DotSpatial.Projections.Tests.Projected
 {
     /// <summary>
     /// This class contains all the tests for the StatePlaneNad1983HarnFeet category of Projected coordinate systems

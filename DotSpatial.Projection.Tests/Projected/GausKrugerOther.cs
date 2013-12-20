@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Projection.Tests.Projected
+namespace DotSpatial.Projections.Tests.Projected
 {
     /// <summary>
     /// This class contains all the tests for the GausKrugerOther category of Projected coordinate systems

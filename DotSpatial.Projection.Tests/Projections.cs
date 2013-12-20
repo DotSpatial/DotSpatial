@@ -1,7 +1,7 @@
 ﻿using DotSpatial.Projections;
 using NUnit.Framework;
 
-namespace DotSpatial.Projection.Tests
+namespace DotSpatial.Projections.Tests
 {
     [TestFixture]
     public class Projections

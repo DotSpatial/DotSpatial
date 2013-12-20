@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Projection.Tests.Projected
+namespace DotSpatial.Projections.Tests.Projected
 {
     /// <summary>
     /// This class contains all the tests for the StatePlaneNad1983 category of Projected coordinate systems
@@ -77,6 +77,7 @@ namespace DotSpatial.Projection.Tests.Projected
 
 
         [Test]
+        [Ignore("Verify this test")]
         public void NAD1983StatePlaneAlaska1FIPS5001()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1983.NAD1983StatePlaneAlaska1FIPS5001;

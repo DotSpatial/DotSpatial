@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DotSpatial.Projection.Tests")]
+[assembly: AssemblyTitle("DotSpatial.Projections.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DotSpatial.Projection.Tests")]
+[assembly: AssemblyProduct("DotSpatial.Projections.Tests")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
