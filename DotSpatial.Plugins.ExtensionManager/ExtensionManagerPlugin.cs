@@ -82,8 +82,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose is called when a non-modal form is closed.")]
-        private void OpenSampleProjects_Click(object sender, EventArgs e) {
-            var form = new ExtensionManagerForm();
+        private void OpenSampleProjects_Click(object sender, EventArgs e)
+        {
             SampleProjectsForm sampleProjForm = new SampleProjectsForm(App);
             sampleProjForm.Show();
         }

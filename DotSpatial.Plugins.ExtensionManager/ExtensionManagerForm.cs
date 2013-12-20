@@ -33,17 +33,20 @@ namespace DotSpatial.Plugins.ExtensionManager
     {
         #region Constants and Fields
 
-        private AppManager _App;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
-        private readonly Packages packages = new Packages();
-        private readonly ListViewHelper Add = new ListViewHelper();
         private const int ScrollBarMargin = 25;
-        private readonly DownloadForm downloadDialog = new DownloadForm();
-        private readonly Paging paging;
-        private GetPackage getpack;
-        private bool restartNeccesary = false;
 
+        private readonly DownloadForm downloadDialog = new DownloadForm();
+        private readonly ListViewHelper Add = new ListViewHelper();
+        private readonly Packages packages = new Packages();
+        private readonly Paging paging;
+
+        private bool AllowProtectedCheck { get; set; }
+        private bool restartNeccesary = false;
         private int currentPageNumber;
+        private GetPackage getpack;
+        private AppManager _App;
+        public Update Updates;
 
         #endregion
 
@@ -70,39 +73,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #region Public Properties
 
-        private void tab_deselecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (restartNeccesary)
-            {
-                if (tabControl.SelectedIndex == 0)
-                    MessageBox.Show("Please restart HydroDesktop before attempting to download or update any plugins.");
-                if (tabControl.SelectedIndex == 2)
-                    MessageBox.Show("Please restart HydroDesktop before attempting to download or uninstall any plugins.");
-                e.Cancel = true;
-            }
-        }
-
-        public void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
-        {
-            if (e.PercentComplete > 0)
-            {
-                downloadDialog.SetProgressBarPercent(e.PercentComplete);
-            }
-        }
-
-        public void Package_Installing(object sender, PackageOperationEventArgs e)
-        {
-            downloadDialog.SetProgressBarPercent(100);
-            downloadDialog.Show("Installing " + e.Package);
-        }
-
-        private void Add_PageChanged(object sender, PageSelectedEventArgs e)
-        {
-            currentPageNumber = e.SelectedPage - 1;
-            richTextBox1.Clear();
-            DisplayPackagesAndUpdates();
-        }
-
         public AppManager App
         {
             get
@@ -120,12 +90,63 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         #endregion
 
-        #region Methods
+        #region Events
 
-        public void AutoUpdateRestartNeccesary()
+        private void Add_PageChanged(object sender, PageSelectedEventArgs e)
         {
-            restartNeccesary = true;
-            tabControl.SelectedIndex = 2;
+            currentPageNumber = e.SelectedPage - 1;
+            richTextBox1.Clear();
+            DisplayPackagesAndUpdates();
+        }
+
+        private void dataService_ProgressAvailable(object sender, ProgressEventArgs e)
+        {
+            if (e.PercentComplete > 0)
+            {
+                downloadDialog.SetProgressBarPercent(e.PercentComplete);
+            }
+        }
+
+        private void ExtensionManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //hide the extension manager when closed by the user
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+        }
+
+        private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            downloadDialog.Close();
+        }
+
+        private void ExtensionManagerForm_Load(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabOnline;
+            AddCategory(new ExtensionCategory());
+            AddCategory(new ToolsCategory());
+            AddCategory(new DataProviderCategory());
+            AddCategory(new ApplicationExtensionCategory());
+
+            uxFeedSources.TileSize = new Size(uxFeedSources.Width - 25, 45);
+
+            foreach (Feed feed in FeedManager.GetFeeds())
+            {
+                ListViewItem source = new ListViewItem();
+                source.Text = feed.Name;
+                source.SubItems.Add(feed.Url);
+                uxFeedSources.Items.Add(source);
+                uxFeedSelection.Items.Add(feed.Url);
+                uxFeedSelection2.Items.Add(feed.Url);
+                source.Checked = FeedManager.isAutoUpdateFeed(feed.Url);
+            }
+            // Select the first item in the drop down, kicking off a package list update.
+            uxFeedSelection.SelectedIndex = 0;
+            uxCategoryList.SelectedIndex = 1;
+            SearchAndClearIcons();
+            uxClear.Visible = false;
         }
 
         private void InstallButton_Click(object sender, EventArgs e)
@@ -214,145 +235,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void uxUninstall_Click(object sender, EventArgs e)
-        {
-            var selectedextension = Installed.SelectedItem as IExtension;
-            IPackage selectedPackage = getpack.GetPackageFromExtension(selectedextension);
-            if (selectedPackage == null)
-            {
-                return;
-            }
-            uxUninstall.Enabled = false;
-
-            // Remove the selected package.
-            App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
-
-            //Check for backupfile
-            bool abort = false;
-            var assembly = Assembly.GetAssembly(selectedextension.GetType());
-            string path = assembly.Location;
-            string backupPath = Application.StartupPath + "\\backup\\";
-
-            if (Directory.Exists(backupPath))
-            {
-                string[] directories = Directory.GetDirectories(backupPath);
-
-                for (int i = 0; i < directories.Length; i++)
-                {
-                    string backupFile = directories[i] + "\\" + Path.GetFileName(path);
-
-                    if (File.Exists(backupFile))
-                    {
-                        try
-                        {
-                            File.Move(backupFile, Application.StartupPath + "\\" + 
-                                Path.GetFileName(Path.GetDirectoryName(backupFile)) + "\\" + Path.GetFileName(path));
-                        }
-                        catch (Exception)
-                        {
-                            DialogResult dialogResult = MessageBox.Show("Unable to restore the backup of the extension." +
-                            "\n\nDo you want to Uninstal without restoring the backup?", "Backup Error", MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.No)
-                            {
-                                abort = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!abort)
-            {
-                if (!selectedextension.DeactivationAllowed)
-                    App.EnsureDeactivated(selectedPackage.Id);
-                App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
-            }
-
-            // hack: we should really try to refresh the list, using what ever category the user
-            // has selected.
-            App.ProgressHandler.Progress(null, 0, "Ready.");
-
-            if (!abort)
-            {
-                MessageBox.Show("The extension will finish uninstalling when you restart the application.");
-                restartNeccesary = true;
-            }
-        }
-
-        private void ExtensionManager_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //hide the extension manager when closed by the user
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                Hide();
-            }
-        }
-
-        private void AddCategory(IExtensionCategory category)
-        {
-            category.App = this.App;
-            uxCategoryList.Items.Add(category);
-        }
-
-        private void ExtensionManagerForm_Load(object sender, EventArgs e)
-        {
-            tabControl.SelectedTab = tabOnline;
-            AddCategory(new ExtensionCategory());
-            AddCategory(new ToolsCategory());
-            AddCategory(new DataProviderCategory());
-            AddCategory(new ApplicationExtensionCategory());
-
-            uxFeedSources.TileSize = new Size(uxFeedSources.Width - 25, 45);
-
-            foreach (Feed feed in FeedManager.GetFeeds())
-            {
-                ListViewItem source = new ListViewItem();
-                source.Text = feed.Name;
-                source.SubItems.Add(feed.Url);
-                uxFeedSources.Items.Add(source);
-                uxFeedSelection.Items.Add(feed.Url);
-                uxFeedSelection2.Items.Add(feed.Url);
-                source.Checked = FeedManager.isAutoUpdateFeed(feed.Url);
-            }
-            // Select the first item in the drop down, kicking off a package list update.
-            uxFeedSelection.SelectedIndex = 0;
-            uxCategoryList.SelectedIndex = 1;
-            SearchAndClearIcons();
-            uxClear.Visible = false;
-        }
-
-        public void uxSearch_Click(object sender, EventArgs e)
-        {
-            Search();
-            uxSearch.Visible = false;
-            uxClear.Location = new Point(291, 42);
-            uxClear.Visible = true;
-        }
-
-        public void uxClear_Click(object sender, EventArgs e)
-        {
-            uxSearchText.Clear();
-            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
-            uxSearchText.Text = "Search";
-            uxClear.Visible = false;
-            uxSearch.Visible = true;
-        }
-
-        private void SearchAndClearIcons()
-        {
-            Image SearchIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.google_custom_search;
-            Image ClearIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.draw_eraser;
-            ImageList image = new ImageList();
-            image.Images.Add(SearchIcon);
-            image.Images.Add(ClearIcon);
-            image.ImageSize = new Size(20, 20);
-            uxSearch.Image = image.Images[0];
-            uxClear.Image = image.Images[1];
-            uxSearch.Click += new EventHandler(this.uxSearch_Click);
-            uxClear.Click += new EventHandler(this.uxClear_Click);
-        }
-
         private void Installed_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             IExtension extension = Installed.Items[e.Index] as IExtension;
@@ -360,9 +242,10 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 return;
             }
-            
+
+            //cancel check if deactivation not allowed
             if (extension.DeactivationAllowed == false && !AllowProtectedCheck)
-            {        
+            {
                 if (e.NewValue == CheckState.Checked)
                 {
                     e.NewValue = CheckState.Unchecked;
@@ -375,6 +258,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return;
             }
 
+            //activate plugin if checked, deactivate if unchecked
             if (e.NewValue == CheckState.Checked && !extension.IsActive)
             {
                 extension.TryActivate();
@@ -383,14 +267,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 extension.Deactivate();
             }
-        }
-
-        private void AppendInstalledItem(string label, string text)
-        {
-            richTextBox2.SelectionColor = Color.Gray;
-            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
-            richTextBox2.SelectionColor = Color.Black;
-            richTextBox2.AppendText(text);
         }
 
         private void Installed_SelectedValueChanged(object sender, EventArgs e)
@@ -440,60 +316,156 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        /// <summary>
-        /// Gives you an array of strings.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source">The source.</param>
-        /// <returns></returns>
-        private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)
+        private void Package_Installing(object sender, PackageOperationEventArgs e)
         {
-            string[] array = new string[source.Count()];
-            for (int i = 0; i < source.Count(); i++)
-                array[i] = source.ElementAt(i).ToString();
-            return array;
+            downloadDialog.SetProgressBarPercent(100);
+            downloadDialog.Show("Installing " + e.Package);
         }
 
-        private void uxShowExtensionsFolder_Click(object sender, EventArgs e)
+        private void SelectedItemChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            string dir = AppManager.AbsolutePathToExtensions;
-            if (Directory.Exists(dir))
-                Process.Start(dir);
-            else
+            if (uxPackages.SelectedItems.Count == 0)
             {
-                MessageBox.Show("The extensions folder does not exist. " + dir);
+                return;
+            }
+
+            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
+            if (pack != null)
+            {
+                richTextBox1.Clear();
+
+                AppendToOnlineTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
+                AppendToOnlineTab("Id", pack.Id);
+                AppendToOnlineTab("Version", pack.Version.ToString());
+                AppendToOnlineTab("Description", pack.Description);
+                AppendToOnlineTab("Downloads", pack.DownloadCount.ToString());
+
+                IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                if (dependency.Count() > 0)
+                {
+                    richTextBox1.SelectionColor = Color.Gray;
+                    richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Dependencies " + ": ");
+                    richTextBox1.SelectionColor = Color.Black;
+
+                    var lastitem = dependency.Last().Id;
+                    foreach (PackageDependency dependentPackage in dependency)
+                    {
+                        if (dependentPackage.Id != lastitem)
+                            richTextBox1.AppendText(dependentPackage.Id + ", ");
+                        else
+                            richTextBox1.AppendText(dependentPackage.Id);
+                    }
+                }
+
+                // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
+                // this happens automatically for packages that are build with the packages.nuspec file.
+                if (App.GetExtension(pack.Id) == null)
+                {
+                    uxInstall.Enabled = true;
+                    //    uxUpdate.Enabled = false;
+                }
+                else
+                {
+                    uxInstall.Enabled = false;
+                    //uxUpdate.Enabled = IsPackageUpdateable(pack);
+                }
             }
         }
 
-        #endregion
-
-        private void Search()
+        private void tab_deselecting(object sender, TabControlCancelEventArgs e)
         {
-            uxPackages.Items.Clear();
-            uxPackages.Items.Add("Searching...");
-
-            var task = Task.Factory.StartNew(() =>
+            if (restartNeccesary)
             {
-                string search = uxSearchText.Text;
+                if (tabControl.SelectedIndex == 0)
+                    MessageBox.Show("Please restart HydroDesktop before attempting to download or update any plugins.");
+                if (tabControl.SelectedIndex == 2)
+                    MessageBox.Show("Please restart HydroDesktop before attempting to download or uninstall any plugins.");
+                e.Cancel = true;
+            }
+        }
 
-                IQueryable<IPackage> results = packages.Repo.Search(search, false);
+        private void uxAdd_Click(object sender, EventArgs e)
+        {
+            Feed feed = new Feed();
+            feed.Name = uxSourceName.Text.Trim();
+            feed.Url = uxSourceUrl.Text.Trim();
+            FeedManager.Add(feed);
 
-                var query = from item in results
-                            where item.IsLatestVersion == true
-                            select item;
+            ListViewItem listViewItem = new ListViewItem();
+            listViewItem.Text = feed.Name;
+            listViewItem.SubItems.Add(feed.Url);
+            uxFeedSources.Items.Add(listViewItem);
 
-                return query.ToList();
-            });
-
-            task.ContinueWith(t =>
+            if (uxFeedSelection.Items.Contains(feed.Url))
             {
-                Add.AddPackages(t.Result, uxPackages, currentPageNumber);
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+            }
+            else
+            {
+                uxFeedSelection.Items.Add(feed.Url);
+                uxFeedSelection2.Items.Add(feed.Url);
+                uxSourceName.Clear();
+                uxSourceUrl.Clear();
+            }
+        }
 
-                if (uxPackages.Items.Count == 0)
-                {
-                    uxPackages.Items.Add("No packages matching your search terms were found.");
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+        private void uxApply_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < uxFeedSources.Items.Count; i++)
+            {
+                changeAutoUpdateSetting(uxFeedSources.Items[i]);
+            }
+            uxApply.Enabled = false;
+        }
+
+        private void uxCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowInstalledItemsBasedOnSelectedCategory();
+        }
+
+        private void uxClear_Click(object sender, EventArgs e)
+        {
+            uxSearchText.Clear();
+            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            uxSearchText.Text = "Search";
+            uxClear.Visible = false;
+            uxSearch.Visible = true;
+        }
+
+        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnFeedChanged(uxFeedSelection.Name);
+        }
+
+        private void uxFeedSelection2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnFeedChanged(uxFeedSelection2.Name);
+        }
+
+        private void uxRemove_Click(object sender, EventArgs e)
+        {
+            ListViewItem selectedItem = uxFeedSources.SelectedItems[0];
+            Feed feed = new Feed();
+            feed.Name = selectedItem.Text;
+            feed.Url = selectedItem.SubItems[1].Text;
+            uxFeedSelection.Items.Remove(feed.Url);
+            uxFeedSelection2.Items.Remove(feed.Url);
+            selectedItem.Remove();
+            FeedManager.Remove(feed);
+        }
+
+        private void uxSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+            uxSearch.Visible = false;
+            uxClear.Location = new Point(291, 42);
+            uxClear.Visible = true;
+        }
+
+        private void uxSearchText_Click(object sender, EventArgs e)
+        {
+            uxSearchText.Clear();
         }
 
         private void uxSearchText_KeyDown(object sender, KeyEventArgs e)
@@ -507,45 +479,273 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private void uxCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        private void uxShowExtensionsFolder_Click(object sender, EventArgs e)
         {
-            ShowInstalledItemsBasedOnSelectedCategory();
-        }
-
-        private void ShowInstalledItemsBasedOnSelectedCategory()
-        {
-            var category = uxCategoryList.SelectedItem as IExtensionCategory;
-            AllowProtectedCheck = true;
-
-            if (category != null)
-            {
-                Installed.Items.Clear();
-                foreach (var item in category.GetItems())
-                {
-                    Installed.Items.Add(item.Item1, item.Item2);
-                }
-            }
+            string dir = AppManager.AbsolutePathToExtensions;
+            if (Directory.Exists(dir))
+                Process.Start(dir);
             else
             {
-                if ((String)uxCategoryList.SelectedItem == "All")
-                {
-                    Installed.Items.Clear();
+                MessageBox.Show("The extensions folder does not exist. " + dir);
+            }
+        }
 
-                    foreach (var item in uxCategoryList.Items)
+        private void uxSourceFeed_Checked(object sender, ItemCheckedEventArgs e)
+        {
+            uxApply.Enabled = true;
+        }
+
+        private void uxUninstall_Click(object sender, EventArgs e)
+        {
+            var selectedextension = Installed.SelectedItem as IExtension;
+            IPackage selectedPackage = getpack.GetPackageFromExtension(selectedextension);
+            if (selectedPackage == null)
+            {
+                return;
+            }
+            uxUninstall.Enabled = false;
+
+            // Remove the selected package.
+            App.ProgressHandler.Progress(null, 0, "Uninstalling" + selectedPackage.Id);
+
+            //Check for backupfile
+            bool abort = false;
+            var assembly = Assembly.GetAssembly(selectedextension.GetType());
+            string path = assembly.Location;
+            string backupPath = Application.StartupPath + "\\backup\\";
+
+            if (Directory.Exists(backupPath))
+            {
+                string[] directories = Directory.GetDirectories(backupPath);
+
+                for (int i = 0; i < directories.Length; i++)
+                {
+                    string backupFile = directories[i] + "\\" + Path.GetFileName(path);
+
+                    if (File.Exists(backupFile))
                     {
-                        var cat = item as IExtensionCategory;
-                        // The "All" string will not be a IExtensionCategory and needs to be skipped.
-                        if (cat == null) continue;
-                        foreach (var catItem in cat.GetItems())
+                        try
                         {
-                            Installed.Items.Add(catItem.Item1, catItem.Item2);
+                            File.Move(backupFile, Application.StartupPath + "\\" +
+                                Path.GetFileName(Path.GetDirectoryName(backupFile)) + "\\" + Path.GetFileName(path));
+                        }
+                        catch (Exception)
+                        {
+                            DialogResult dialogResult = MessageBox.Show("Unable to restore the backup of the extension." +
+                            "\n\nDo you want to Uninstal without restoring the backup?", "Backup Error", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No)
+                            {
+                                abort = true;
+                            }
                         }
                     }
                 }
             }
-            AllowProtectedCheck = false;
+
+            if (!abort)
+            {
+                if (!selectedextension.DeactivationAllowed)
+                    App.EnsureDeactivated(selectedPackage.Id);
+                App.MarkPackageForRemoval(ExtensionManager.Update.GetPackageFolderName(selectedPackage));
+            }
+
+            // hack: we should really try to refresh the list, using what ever category the user
+            // has selected.
+            App.ProgressHandler.Progress(null, 0, "Ready.");
+
+            if (!abort)
+            {
+                MessageBox.Show("The extension will finish uninstalling when you restart the application.");
+                restartNeccesary = true;
+            }
         }
 
+        private void uxUpdate_Click(object sender, EventArgs e)
+        {
+            if (uxUpdatePackages.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            uxUpdate.Enabled = false;
+            var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
+            try
+            {
+                UpdatePack(pack);
+                showUpdateComplete();
+            }
+            catch
+            {
+                MessageBox.Show("Failed to update " + pack.GetFullName());
+                DisplayPackagesAndUpdates();
+                uxUpdate.Enabled = true;
+            }
+        }
+
+        private void uxUpdate_SelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            var pack = e.Item.Tag as IPackage;
+
+            if (pack != null)
+            {
+                richTextBox3.Clear();
+
+                AppendToUpdateTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
+                AppendToUpdateTab("Id", pack.Id);
+                AppendToUpdateTab("Version", pack.Version.ToString());
+                AppendToUpdateTab("Description", pack.Description);
+                AppendToUpdateTab("What's New", Environment.NewLine + pack.ReleaseNotes);
+            }
+        }
+
+        private void uxUpdateAll_Click(object sender, EventArgs e)
+        {
+            ListViewItem[] Items = new ListViewItem[uxUpdatePackages.Items.Count];
+            uxUpdatePackages.Items.CopyTo(Items, 0);
+
+            for (int i = 0; i < Items.Length; i++)
+            {
+                var pack = Items[i].Tag as IPackage;
+                try
+                {
+                    foreach (PackageDependency dependency in pack.Dependencies)
+                    {
+                        if (packages.GetLocalPackage(dependency.Id) == null)
+                            packages.Update(packages.Repo.FindPackage(dependency.Id));
+                    }
+
+                    Updates.UpdatePackage(pack);
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to update " + pack.GetFullName());
+                }
+            }
+
+            uxUpdate.Enabled = true;
+            DisplayPackagesAndUpdates();
+            showUpdateComplete();
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Sets the Extension-Manager to suggest a restart after
+        /// an auto update.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
+        public void AutoUpdateRestartNeccesary()
+        {
+            restartNeccesary = true;
+            tabControl.SelectedIndex = 2;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Adds a category to Installed Extensions tab.
+        /// </summary>
+        /// <typeparam name="IExtensionCategory"></typeparam>
+        /// <param name="category">Extension Category</param>
+        /// <returns></returns>
+        private void AddCategory(IExtensionCategory category)
+        {
+            category.App = this.App;
+            uxCategoryList.Items.Add(category);
+        }
+
+        /// <summary>
+        /// Appends a label and some text to the text box on the
+        /// Installed Extensions tab.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="label">The label for your text.  eg. "Label":</param>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="text">The text to be diplayed.</param>
+        /// <returns></returns>
+        private void AppendInstalledItem(string label, string text)
+        {
+            richTextBox2.SelectionColor = Color.Gray;
+            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
+            richTextBox2.SelectionColor = Color.Black;
+            richTextBox2.AppendText(text);
+        }
+
+        /// <summary>
+        /// Appends a label and some text to the text box on the online tab.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="label">The label for your text.  eg. "Label":</param>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="text">The text to be diplayed.</param>
+        /// <returns></returns>
+        private void AppendToOnlineTab(string label, string text)
+        {
+            richTextBox1.SelectionColor = Color.Gray;
+            richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
+            richTextBox1.SelectionColor = Color.Black;
+            if (text != null)
+                richTextBox1.AppendText(text);
+        }
+
+        /// <summary>
+        /// Appends a label and some text to the text box on the updates tab.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="label">The label for your text.  eg. "Label":</param>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="text">The text to be diplayed.</param>
+        /// <returns></returns>
+        private void AppendToUpdateTab(string label, string text)
+        {
+            richTextBox3.SelectionColor = Color.Gray;
+            richTextBox3.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
+            richTextBox3.SelectionColor = Color.Black;
+            if (text != null)
+                richTextBox3.AppendText(text);
+        }
+
+        /// <summary>
+        /// Sets a feed to be used with auto-updating.
+        /// </summary>
+        /// <typeparam name="ListViewItem"></typeparam>
+        /// <param name="item">The feed that should be used for auto updates</param>
+        /// <returns></returns>
+        private void changeAutoUpdateSetting(ListViewItem item)
+        {
+            FeedManager.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
+        }
+
+        /// <summary>
+        /// Refreashes and displays the online packages and Updates.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
+        private void DisplayPackagesAndUpdates()
+        {
+            Updates = new Update(packages, Add, App);
+            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
+            uxUpdatePackages.Clear();
+            uxUpdatePackages.Items.Add("Checking for updates...");
+            Task.Factory.StartNew(() =>
+            {
+                Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
+            });
+
+        }
+
+        /// <summary>
+        /// Syncs the lists of feeds to the one changed.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="source">The source of the feed change.</param>
+        /// <returns></returns>
         private void OnFeedChanged(string source)
         {
             string feedUrl;
@@ -586,171 +786,134 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        private Update Updates;
-
-        private void DisplayPackagesAndUpdates()
+        /// <summary>
+        /// Searches the online feed selected for the specified search term
+        /// in uxSearchText.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
+        private void Search()
         {
-            Updates = new Update(packages, Add, App);
-            paging.DisplayPackages(uxPackages, currentPageNumber, tabOnline);
-            uxUpdatePackages.Clear();
-            uxUpdatePackages.Items.Add("Checking for updates...");
-            Task.Factory.StartNew(() =>
+            uxPackages.Items.Clear();
+            uxPackages.Items.Add("Searching...");
+
+            var task = Task.Factory.StartNew(() =>
             {
-                Updates.RefreshUpdate(uxUpdatePackages, tabPage2);
+                string search = uxSearchText.Text;
+
+                IQueryable<IPackage> results = packages.Repo.Search(search, false);
+
+                var query = from item in results
+                            where item.IsLatestVersion == true
+                            select item;
+
+                return query.ToList();
             });
-            
-        }
 
-        public void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnFeedChanged(uxFeedSelection.Name);
-        }
-
-        public void uxFeedSelection2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnFeedChanged(uxFeedSelection2.Name);
-        }
-
-        private void AppendToOnlineTab(string label, string text)
-        {
-            richTextBox1.SelectionColor = Color.Gray;
-            richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
-            richTextBox1.SelectionColor = Color.Black;
-            if (text != null)
-                richTextBox1.AppendText(text);
-        }
-
-        private void AppendToUpdateTab(string label, string text)
-        {
-            richTextBox3.SelectionColor = Color.Gray;
-            richTextBox3.AppendText(Environment.NewLine + Environment.NewLine + label + ": ");
-            richTextBox3.SelectionColor = Color.Black;
-            if(text != null)
-                richTextBox3.AppendText(text);
-        }
-
-        private void SelectedItemChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            if (uxPackages.SelectedItems.Count == 0)
+            task.ContinueWith(t =>
             {
-                return;
-            }
+                Add.AddPackages(t.Result, uxPackages, currentPageNumber);
 
-            var pack = uxPackages.SelectedItems[0].Tag as IPackage;
-            if (pack != null)
-            {
-                richTextBox1.Clear();
-
-                AppendToOnlineTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
-                AppendToOnlineTab("Id", pack.Id);
-                AppendToOnlineTab("Version", pack.Version.ToString());
-                AppendToOnlineTab("Description", pack.Description);
-                AppendToOnlineTab("Downloads", pack.DownloadCount.ToString());
-
-                IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                if (dependency.Count() > 0)
+                if (uxPackages.Items.Count == 0)
                 {
-                    richTextBox1.SelectionColor = Color.Gray;
-                    richTextBox1.AppendText(Environment.NewLine + Environment.NewLine + "Dependencies " + ": ");
-                    richTextBox1.SelectionColor = Color.Black;
+                    uxPackages.Items.Add("No packages matching your search terms were found.");
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
-                    var lastitem = dependency.Last().Id;
-                    foreach (PackageDependency dependentPackage in dependency)
+        /// <summary>
+        /// Initialized icons and their event handlers.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
+        private void SearchAndClearIcons()
+        {
+            Image SearchIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.google_custom_search;
+            Image ClearIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.draw_eraser;
+            ImageList image = new ImageList();
+            image.Images.Add(SearchIcon);
+            image.Images.Add(ClearIcon);
+            image.ImageSize = new Size(20, 20);
+            uxSearch.Image = image.Images[0];
+            uxClear.Image = image.Images[1];
+            uxSearch.Click += new EventHandler(this.uxSearch_Click);
+            uxClear.Click += new EventHandler(this.uxClear_Click);
+        }
+
+        /// <summary>
+        /// Populates the installed extensions list based on the selected category.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
+        private void ShowInstalledItemsBasedOnSelectedCategory()
+        {
+            var category = uxCategoryList.SelectedItem as IExtensionCategory;
+            AllowProtectedCheck = true;
+
+            if (category != null)
+            {
+                Installed.Items.Clear();
+                foreach (var item in category.GetItems())
+                {
+                    Installed.Items.Add(item.Item1, item.Item2);
+                }
+            }
+            else
+            {
+                if ((String)uxCategoryList.SelectedItem == "All")
+                {
+                    Installed.Items.Clear();
+
+                    foreach (var item in uxCategoryList.Items)
                     {
-                        if(dependentPackage.Id != lastitem)
-                            richTextBox1.AppendText(dependentPackage.Id + ", ");
-                        else
-                            richTextBox1.AppendText(dependentPackage.Id);
+                        var cat = item as IExtensionCategory;
+                        // The "All" string will not be a IExtensionCategory and needs to be skipped.
+                        if (cat == null) continue;
+                        foreach (var catItem in cat.GetItems())
+                        {
+                            Installed.Items.Add(catItem.Item1, catItem.Item2);
+                        }
                     }
                 }
-
-                // For extensions that derive from Extension AssemblyProduct MUST match the Nuspec ID
-                // this happens automatically for packages that are build with the packages.nuspec file.
-                if (App.GetExtension(pack.Id) == null)
-                {
-                    uxInstall.Enabled = true;
-                    //    uxUpdate.Enabled = false;
-                }
-                else
-                {
-                    uxInstall.Enabled = false;
-                    //uxUpdate.Enabled = IsPackageUpdateable(pack);
-                }
             }
+            AllowProtectedCheck = false;
         }
 
-        private void uxUpdate_SelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            var pack = e.Item.Tag as IPackage;
-
-            if (pack != null)
-            {
-                richTextBox3.Clear();
-
-                AppendToUpdateTab("Created by", string.Join(",", ToArrayOfStrings(pack.Authors)));
-                AppendToUpdateTab("Id", pack.Id);
-                AppendToUpdateTab("Version", pack.Version.ToString());
-                AppendToUpdateTab("Description", pack.Description);
-                AppendToUpdateTab("What's New", Environment.NewLine + pack.ReleaseNotes);
-            }
-        }
-
-        private void uxUpdate_Click(object sender, EventArgs e)
-        {
-            if (uxUpdatePackages.SelectedItems.Count < 1)
-            {
-                return;
-            }
-            uxUpdate.Enabled = false;
-            var pack = uxUpdatePackages.SelectedItems[0].Tag as IPackage;
-            try
-            {
-                UpdatePack(pack);
-                showUpdateComplete();
-            }
-            catch
-            {
-                MessageBox.Show("Failed to update " + pack.GetFullName());
-                DisplayPackagesAndUpdates();
-                uxUpdate.Enabled = true;
-            }
-        }
-
-        private void uxUpdateAll_Click(object sender, EventArgs e)
-        {
-            ListViewItem[] Items = new ListViewItem[uxUpdatePackages.Items.Count];
-            uxUpdatePackages.Items.CopyTo(Items, 0);
-
-            for (int i = 0; i < Items.Length; i++)
-            {
-                var pack = Items[i].Tag as IPackage;
-                try
-                {
-                    foreach (PackageDependency dependency in pack.Dependencies)
-                    {
-                        if (packages.GetLocalPackage(dependency.Id) == null)
-                            packages.Update(packages.Repo.FindPackage(dependency.Id));
-                    }
-
-                    Updates.UpdatePackage(pack);
-                }
-                catch
-                {
-                    MessageBox.Show("Failed to update " + pack.GetFullName());
-                }
-            }
-
-            uxUpdate.Enabled = true;
-            DisplayPackagesAndUpdates();
-            showUpdateComplete();
-        }
-
+        /// <summary>
+        /// Shows a message indicating an update is complete and enforces a restart.
+        /// </summary>
+        /// <typeparam></typeparam>
+        /// <param></param>
+        /// <returns></returns>
         private void showUpdateComplete()
         {
             MessageBox.Show(this, "Download finished. Update will complete when HydroDesktop is restarted.");
             restartNeccesary = true;
         }
 
+        /// <summary>
+        /// Gives you an array of strings.
+        /// </summary>
+        /// <typeparam name="IEnumerable\<T\>"></typeparam>
+        /// <param name="source">Enumerable source object</param>
+        /// <returns>List of strings from the enumerable source object</returns>
+        private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)
+        {
+            string[] array = new string[source.Count()];
+            for (int i = 0; i < source.Count(); i++)
+                array[i] = source.ElementAt(i).ToString();
+            return array;
+        }
+
+        /// <summary>
+        /// Updates the package specified.
+        /// </summary>
+        /// <typeparam name="IPackage"></typeparam>
+        /// <param name="pack">The package to update.</param>
+        /// <returns></returns>
         private void UpdatePack(IPackage pack)
         {
             foreach (PackageDependency dependency in pack.Dependencies)
@@ -772,73 +935,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             DisplayPackagesAndUpdates();
         }
 
-        private void uxAdd_Click(object sender, EventArgs e)
-        {
-            Feed feed = new Feed();
-            feed.Name = uxSourceName.Text.Trim();
-            feed.Url = uxSourceUrl.Text.Trim();
-            FeedManager.Add(feed);
-
-            ListViewItem listViewItem = new ListViewItem();
-            listViewItem.Text = feed.Name;
-            listViewItem.SubItems.Add(feed.Url);
-            uxFeedSources.Items.Add(listViewItem);
-
-            if (uxFeedSelection.Items.Contains(feed.Url))
-            {
-                uxSourceName.Clear();
-                uxSourceUrl.Clear();
-            }
-            else
-            {
-                uxFeedSelection.Items.Add(feed.Url);
-                uxFeedSelection2.Items.Add(feed.Url);
-                uxSourceName.Clear();
-                uxSourceUrl.Clear();
-            }
-        }
-
-        private void uxRemove_Click(object sender, EventArgs e)
-        {
-            ListViewItem selectedItem = uxFeedSources.SelectedItems[0];
-            Feed feed = new Feed();
-            feed.Name = selectedItem.Text;
-            feed.Url = selectedItem.SubItems[1].Text;
-            uxFeedSelection.Items.Remove(feed.Url);
-            uxFeedSelection2.Items.Remove(feed.Url);
-            selectedItem.Remove();
-            FeedManager.Remove(feed);
-        }
-
-        private void ExtensionManagerForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            downloadDialog.Close();
-        }
-
-        private void uxSearchText_Click(object sender, EventArgs e)
-        {
-            uxSearchText.Clear();
-        }
-
-        private void uxApply_Click(object sender, EventArgs e)
-        {
-            for (int i=0; i<uxFeedSources.Items.Count; i++)
-            {
-                changeAutoUpdateSetting(uxFeedSources.Items[i]);
-            }
-            uxApply.Enabled = false;
-        }
-
-        private void changeAutoUpdateSetting(ListViewItem item)
-        {
-            FeedManager.ToggleAutoUpdate(item.SubItems[1].Text, item.Checked);
-        }
-
-        private void uxSourceFeed_Checked(object sender, ItemCheckedEventArgs e)
-        {
-            uxApply.Enabled = true;
-        }
-
-        private bool AllowProtectedCheck { get; set; }
+        #endregion
     }
 }

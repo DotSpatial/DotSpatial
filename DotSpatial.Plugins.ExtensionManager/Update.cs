@@ -14,6 +14,9 @@ using System.IO;
 using System.Reflection;
 using DotSpatial.Extensions;
 using System.Collections.Specialized;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -35,6 +38,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private IEnumerable<IPackage> list = null;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private const string HideFromAutoUpdate = "HideFromAutoUpdate";
+        private const string minVersion = "minVersion:";
 
         //Function that refreshes the listview in the updates tab.
         public void RefreshUpdate(ListView lv, TabPage tp)
@@ -169,11 +173,25 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 try
                 {
-                    var result = from item in packages.Repo.GetPackages()
-                                 where item.IsLatestVersion && (item.Tags == null 
-                                 || (!item.Tags.Contains(HideReleaseFromEndUser)))
+                    List<IPackage> result = new List<IPackage>();
+                    var allPackages = from item in packages.Repo.GetPackages() where
+                                 (item.Tags == null || (!item.Tags.Contains(HideReleaseFromEndUser)))
                                  select item;
 
+                    var sortedPackages = allPackages.OrderBy(item => item.Id)
+                                    .ThenByDescending(item => item.Version);
+
+                    String id = "";
+
+                    foreach(var package in sortedPackages)
+                    {
+                        if (id != package.Id && MinVersionCheck(package))
+                        {
+                            result.Add(package);
+                            id = package.Id;
+                        }
+                    }
+                    
                     var info = new PackageList();
                     info.TotalPackageCount = result.Count();
                     info.packages = result.ToArray();
@@ -188,17 +206,60 @@ namespace DotSpatial.Plugins.ExtensionManager
             return task;
         }
 
+        private bool MinVersionCheck(IPackage item)
+        {
+            bool versionCorrect = true;
+
+            if (item.Tags != null && item.Tags.Contains(minVersion))
+            {
+                var tags = item.Tags.Split(' ');
+
+                foreach (var tag in tags)
+                {
+                    if (tag.Contains(minVersion))
+                    {
+                        var version = SemanticVersion.Parse(tag.Substring(minVersion.Length - 1));
+                        var programVersion = 
+                            SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
+                        if (programVersion < version)
+                            versionCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            return versionCorrect;
+        }
+
+        private bool IsOnline()
+        {
+            try
+            {
+                IPHostEntry dummy = Dns.GetHostEntry("www.google.com");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         //Cycle through feeds from settings and call autoupdate function. If any updates occur, show message box.
         public static void autoUpdateController(AppManager app, ExtensionManagerForm form)
         {
             List<String> updatesOccurred = new List<String>();
             Packages packages = new Packages();
             System.Collections.Specialized.StringCollection feeds = FeedManager.getAutoUpdateFeeds();
-            foreach (String feed in feeds)
+            Update update = new Update(packages, null, app);
+
+            if (update.IsOnline() == true)
             {
-                packages.SetNewSource(feed);
-                Update update = new Update(packages, null, app);
-                updatesOccurred.AddRange(update.autoUpdate());
+                foreach (String feed in feeds)
+                {
+                    packages.SetNewSource(feed);
+                    update = new Update(packages, null, app);
+                    updatesOccurred.AddRange(update.autoUpdate());
+                }
             }
 
             if (updatesOccurred.Count > 0)
@@ -212,13 +273,19 @@ namespace DotSpatial.Plugins.ExtensionManager
                 sb.AppendLine();
                 for (int i = 0; i < updatesOccurred.Count && i<25; i++)
                 {
-                    sb.AppendLine(updatesOccurred.ElementAt(i));
+                    sb.AppendLine("-" + updatesOccurred.ElementAt(i));
                 }
                 if (updatesOccurred.Count > 25) { sb.AppendLine("..."); }
                 sb.AppendLine();
                 sb.Append("Updates will finish when HydroDesktop is restarted.");
+                sb.AppendLine("\n\n      Do you want to restart HydroDesktop now?");
 
-                MessageBox.Show(sb.ToString());
+                DialogResult dialogResult = MessageBox.Show(sb.ToString(), "Update Complete", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                    Environment.Exit(-1);
+                }
                 form.AutoUpdateRestartNeccesary();
             }
         }
@@ -229,26 +296,32 @@ namespace DotSpatial.Plugins.ExtensionManager
             List<String> updatesOccurred = new List<String>();
             getAllAvailableUpdates();
 
-            if (list != null)
+            if (list != null && list.Count() > 0)
             {
-                foreach (IPackage p in list)
-                {
-                    if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate))) 
-                    {
-                        foreach (PackageDependency dependency in p.Dependencies)
-                        {
-                            if (packages.GetLocalPackage(dependency.Id) == null)
-                                packages.Update(packages.Repo.FindPackage(dependency.Id));
-                        }
+                DialogResult dialogResult = MessageBox.Show("       "+list.Count()+" Updates available.\n\n"+
+                    "Do you want to install them now?", "Updates available", MessageBoxButtons.YesNo);
 
-                        try
+                if (dialogResult == DialogResult.Yes)
+                {
+                    foreach (IPackage p in list)
+                    {
+                        if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate)))
                         {
-                            UpdatePackage(p);
-                            updatesOccurred.Add(p.GetFullName());
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Error updating " + p.GetFullName());
+                            foreach (PackageDependency dependency in p.Dependencies)
+                            {
+                                if (packages.GetLocalPackage(dependency.Id) == null)
+                                    packages.Update(packages.Repo.FindPackage(dependency.Id));
+                            }
+
+                            try
+                            {
+                                UpdatePackage(p);
+                                updatesOccurred.Add(p.GetFullName());
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Error updating " + p.GetFullName());
+                            }
                         }
                     }
                 }
@@ -270,20 +343,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                 App.MarkPackageForRemoval(GetPackagePath(pack));
             else
             {
-                string path = GetExtensionPath(extension);
-                string directory = "\\" + Path.GetFileName(Path.GetDirectoryName(path)) + "\\";
-
                 //Make a backup of the extension
                 try
                 {
-                    if (!Directory.Exists(Application.StartupPath + "\\backup\\"))
-                        Directory.CreateDirectory(Application.StartupPath + "\\backup\\");
-
-                    if (!Directory.Exists(Application.StartupPath + "\\backup" + directory))
-                        Directory.CreateDirectory(Application.StartupPath + "\\backup\\" + directory);
-
-                    File.Copy(path, Application.StartupPath + "\\backup" + directory + Path.GetFileName(path));
-                    App.MarkExtensionForRemoval(path);
+                    BackupExtension(extension);
                 }
                 catch (Exception)
                 {
@@ -302,6 +365,44 @@ namespace DotSpatial.Plugins.ExtensionManager
             packages.Update(pack);
 
             App.ProgressHandler.Progress(null, 0, "");
+        }
+
+        private void BackupExtension(IExtension extension)
+        {
+            string path = GetExtensionPath(extension);
+            string directory = "\\" + Path.GetFileName(Path.GetDirectoryName(path)) + "\\";
+
+            //create the backup directory and set the permissions
+            string destinationDirectory = Application.StartupPath + "\\backup\\";
+            DirectoryInfo di = new DirectoryInfo(destinationDirectory);
+            FileSystemAccessRule fsar = new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl,
+                InheritanceFlags.ContainerInherit, PropagationFlags.InheritOnly, AccessControlType.Allow);
+            DirectorySecurity ds = null;
+
+            if (!di.Exists)
+            {
+                Directory.CreateDirectory(destinationDirectory);
+            }
+
+            ds = di.GetAccessControl();
+            ds.AddAccessRule(fsar);
+
+            //create the directory of the extension
+            destinationDirectory += directory;
+            di = new DirectoryInfo(destinationDirectory);
+            ds = null;
+
+            if (!di.Exists)
+            {
+                Directory.CreateDirectory(destinationDirectory);
+            }
+
+            ds = di.GetAccessControl();
+            ds.AddAccessRule(fsar);
+
+            File.Copy(path, destinationDirectory + Path.GetFileName(path));
+            App.MarkExtensionForRemoval(path);
         }
 
         //Determines if a package has a local version that can be deleted and is out of date.
