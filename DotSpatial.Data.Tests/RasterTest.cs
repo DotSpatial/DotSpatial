@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
+using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
@@ -71,6 +71,7 @@ namespace DotSpatial.Data.Tests
         ///A test for SaveAs
         ///</summary>
         [TestMethod]
+        [Category("PlatformDependent")]
         public void SaveAsTest()
         {
             const string GridDataFolder = @"Data\Grids\";

@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using DotSpatial.Controls;
-using DotSpatial.Serialization;
+using DotSpatial.Data;
 using DotSpatial.Symbology;
 using MapWindow.Tests.XML.TestData;
 using NUnit.Framework;
-using DotSpatial.Data;
-using System.IO;
 
-namespace MapWindow.Tests.XML
+namespace DotSpatial.Serialization.Tests
 {
     public enum TestEnum
     {
