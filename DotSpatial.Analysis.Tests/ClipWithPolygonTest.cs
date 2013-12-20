@@ -1,6 +1,7 @@
 ﻿using System;
 using DotSpatial.Data;
 using System.IO;
+using DotSpatial.Data.Rasters.GdalExtension;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
@@ -19,39 +20,6 @@ namespace DotSpatial.Analysis.Tests
     [TestClass()]
     public class ClipWithPolygonTest
     {
-
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
         /// <summary>
         ///A test for ClipRasterWithPolygon
         ///</summary>
@@ -59,23 +27,23 @@ namespace DotSpatial.Analysis.Tests
         public void ClipRasterWithPolygonTest()
         {
 
-            if (DotSpatial.Data.DataManager.DefaultDataManager.PreferredProviders.Count == 0)
+            if (DataManager.DefaultDataManager.PreferredProviders.Count == 0)
             {
-                DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider lGdalRasterProvider = new DotSpatial.Data.Rasters.GdalExtension.GdalRasterProvider();
+                //GdalRasterProvider lGdalRasterProvider = new GdalRasterProvider();
             }
 
-            String path = AppDomain.CurrentDomain.BaseDirectory;
-            String shapeFilePath = System.IO.Path.Combine(path, "Data", "elbe_watershed1.shp");
-            String rasterFilePath = System.IO.Path.Combine(path, "Data", "kriging.bgd" );
-            String resultFilePath = System.IO.Path.Combine(path, "Data", "clipResult.bgd" );
+            String path = ".";
+            String shapeFilePath = Path.Combine(path, "Data", "elbe_watershed1.shp");
+            String rasterFilePath = Path.Combine(path, "Data", "kriging.bgd" );
+            String resultFilePath = Path.Combine(path, "Data", "clipResult.bgd" );
 
-            DotSpatial.Data.Shapefile lClipPolygon = DotSpatial.Data.Shapefile.OpenFile(shapeFilePath);
-            DotSpatial.Data.IRaster lGridToClip = DotSpatial.Data.Raster.OpenFile(rasterFilePath, false);
+            Shapefile lClipPolygon = Shapefile.OpenFile(shapeFilePath);
+            IRaster lGridToClip = Raster.OpenFile(rasterFilePath, false);
 
-            DotSpatial.Data.Raster lGridAfterClip = new DotSpatial.Data.Raster();
+            Raster lGridAfterClip = new Raster();
             lGridAfterClip.Filename = resultFilePath;
 
-            DotSpatial.Analysis.ClipRaster.ClipRasterWithPolygon(lClipPolygon.Features[0], lGridToClip, lGridAfterClip.Filename);
+            ClipRaster.ClipRasterWithPolygon(lClipPolygon.Features[0], lGridToClip, lGridAfterClip.Filename);
 
             IRaster ras2 = Raster.Open(lGridAfterClip.Filename);
 
