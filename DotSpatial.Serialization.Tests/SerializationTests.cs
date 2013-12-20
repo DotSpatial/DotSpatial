@@ -21,6 +21,24 @@ namespace DotSpatial.Serialization.Tests
     [TestFixture]
     public class SerializationTests
     {
+        private readonly List<string> _filesToRemove = new List<string>();
+
+        [TestFixtureTearDown]
+        public void Clear()
+        {
+            foreach (var tempFile in _filesToRemove)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch (Exception)
+                {
+                    // ignore exceptions
+                }
+            }
+        }
+
         [Test]
         public void TestSimpleGraph()
         {
@@ -143,9 +161,10 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestMapFrameIsNotNull()
         {
-            string filePath = "";
-            string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
-            string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
+            string filename = Path.Combine("Data", "test-RandomPts.shp");
+            string projectFileName = Path.GetTempFileName();
+            projectFileName = Path.ChangeExtension(projectFileName, ".dspx");
+            _filesToRemove.Add(projectFileName);
 
             AppManager manager = new AppManager();
             Map map = new Map();
@@ -166,9 +185,6 @@ namespace DotSpatial.Serialization.Tests
             manager.SerializationManager.OpenProject(projectFileName);
             Assert.Greater(map.Layers.Count, 0);
             Assert.IsNotNull(map.Layers[0].MapFrame);
-
-            //delete file
-            System.IO.File.Delete(projectFileName);
         }
 
         /// <summary>
@@ -177,9 +193,10 @@ namespace DotSpatial.Serialization.Tests
         [Test]
         public void TestMapFrameIsNotNull_Group()
         {
-            string filePath = "";
-            string filename = Path.Combine(filePath, "Data", "test-RandomPts.shp");
-            string projectFileName = Path.Combine(filePath, "testmapframeisnotnull.dspx");
+            string filename = Path.Combine("Data", "test-RandomPts.shp");
+            string projectFileName = Path.GetTempFileName();
+            projectFileName = Path.ChangeExtension(projectFileName, ".dspx");
+            _filesToRemove.Add(projectFileName);
             
             AppManager manager = new AppManager();
             Map map = new Map();
@@ -209,9 +226,6 @@ namespace DotSpatial.Serialization.Tests
 
             List<ILayer> layers = map.GetAllLayers();
             Assert.IsNotNull(layers[0].MapFrame);
-
-            //delete file
-            System.IO.File.Delete(projectFileName);
         }
 
         [Test]
@@ -289,7 +303,5 @@ namespace DotSpatial.Serialization.Tests
             Serialize(width, "Width").AsConstructorArgument(2);
             Serialize(height, "Height").AsConstructorArgument(3);
         }
-
-
     }
 }

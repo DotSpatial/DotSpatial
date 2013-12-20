@@ -9,6 +9,8 @@ public class Proj4
     //that we will be using from the external library.
     //proj.dll must be included in the bin directory of the calling program
     //the nad initialization folder should also be present on the computer.
+
+    // todo: proj.dll is x86 dll
     [DllImport("proj.dll", CharSet = CharSet.Ansi)]
     private static extern IntPtr pj_init_plus(string init);
     [DllImport("proj.dll")]
