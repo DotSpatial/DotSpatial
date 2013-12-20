@@ -124,8 +124,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Extensio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Tests", "DotSpatial.Symbology.Tests\DotSpatial.Symbology.Tests.csproj", "{AB54D5FB-C908-4A26-85CC-DEA227D4914C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Tests", "DotSpatial.Projection.Tests\DotSpatial.Projections.Tests.csproj", "{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization.Tests", "DotSpatial.Serialization.Tests\DotSpatial.Serialization.Tests.csproj", "{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Topology.Tests", "DotSpatial.Topology.Tests\DotSpatial.Topology.Tests.csproj", "{768274C4-15C5-46CA-91FB-D600B828071D}"
@@ -143,6 +141,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.TabbedDocking", "DotSpatial.Plugins.TabbedDocking\DotSpatial.Plugins.TabbedDocking.csproj", "{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin Controls", "Plugin Controls", "{F1B7916C-F0B9-4F69-A168-52825FC8487B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Tests", "DotSpatial.Projections.Tests\DotSpatial.Projections.Tests.csproj", "{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -378,10 +378,10 @@ Global
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
 		SccProjectName57 = DotSpatial.Plugins.TabbedDocking
 		SccLocalPath57 = DotSpatial.Plugins.TabbedDocking
-		SccProjectUniqueName58 = DotSpatial.Projection.Tests\\DotSpatial.Projections.Tests.csproj
+		SccProjectUniqueName58 = DotSpatial.Projections.Tests\\DotSpatial.Projections.Tests.csproj
 		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
-		SccProjectName58 = DotSpatial.Projection.Tests
-		SccLocalPath58 = DotSpatial.Projection.Tests
+		SccProjectName58 = DotSpatial.Projections.Tests
+		SccLocalPath58 = DotSpatial.Projections.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotSpatial.vsmdi
@@ -895,18 +895,6 @@ Global
 		{AB54D5FB-C908-4A26-85CC-DEA227D4914C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AB54D5FB-C908-4A26-85CC-DEA227D4914C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AB54D5FB-C908-4A26-85CC-DEA227D4914C}.Release|x86.ActiveCfg = Release|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|x86.ActiveCfg = Debug|x86
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|x86.Build.0 = Debug|x86
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|x86.ActiveCfg = Release|x86
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|x86.Build.0 = Release|x86
 		{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -991,6 +979,18 @@ Global
 		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|x86.ActiveCfg = Debug|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|x86.Build.0 = Debug|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Mixed Platforms.Build.0 = Release|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|x86.ActiveCfg = Release|x86
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1045,11 +1045,11 @@ Global
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{AB54D5FB-C908-4A26-85CC-DEA227D4914C} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{9A4A2CBC-0BEB-4C3E-99D0-E141B7BAE0F7} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{768274C4-15C5-46CA-91FB-D600B828071D} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{4997615E-8C0C-498B-AB73-076454481964} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A} = {12970967-D98D-4777-A5F8-11A9F037CC28}
+		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42} = {F1B7916C-F0B9-4F69-A168-52825FC8487B}
 		{39B1A581-0145-4398-8DB2-89288F33F358} = {F1B7916C-F0B9-4F69-A168-52825FC8487B}
 		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC} = {F1B7916C-F0B9-4F69-A168-52825FC8487B}
