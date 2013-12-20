@@ -247,6 +247,7 @@ namespace DotSpatial.Serialization.Tests
         }
 
         [Test]
+        [Ignore("Verify this test")]
         public void TestPointSerializationMap()
         {
             var pt = new Point(1, 2);
@@ -256,6 +257,7 @@ namespace DotSpatial.Serialization.Tests
             XmlDeserializer d = new XmlDeserializer();
             Point result = d.Deserialize<Point>(xml);
 
+            Assert.IsNotNull(result);
             Assert.AreEqual(1, result.X);
             Assert.AreEqual(2, result.Y);
         }
