@@ -16,11 +16,9 @@ namespace DotSpatial.Tools.Tests
         [TestCase(@"Data\DanSite1w.tif")]
         [TestCase(@"Data\DanSite2w.tif")]
         [TestCase(@"Data\c1w.tif")]
-        public void CanCreateMultiPartPolygons(string path)
+        public void CanCreateMultiPartPolygons(string file)
         {
             var target = new RasterToPolygon();
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-            
             var p = new GdalRasterProvider();
             var raster = p.Open(file);
             var outShape = new PolygonShapefile {Filename = Path.ChangeExtension(file, ".shp")};
@@ -35,9 +33,6 @@ namespace DotSpatial.Tools.Tests
         [TestCase(@"Data\c1w.tif", @"Data\c1p.tif")]
         public void NoMultiPartPolygonsWithConnectionGrid(string rasterFile, string flowDirectionGridFile)
         {
-            rasterFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rasterFile);
-            flowDirectionGridFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, flowDirectionGridFile);
-
             var p = new GdalRasterProvider();
             var raster = p.Open(rasterFile);
             var flowDirectionGrid = p.Open(flowDirectionGridFile);

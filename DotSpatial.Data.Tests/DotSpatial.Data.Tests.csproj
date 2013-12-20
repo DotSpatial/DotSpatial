@@ -33,7 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -84,7 +84,6 @@
     <Compile Include="FeatureListTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
-    <Compile Include="RasterBoundTests.cs" />
     <Compile Include="RasterTest.cs" />
     <Compile Include="ReadWriteTests.cs" />
   </ItemGroup>

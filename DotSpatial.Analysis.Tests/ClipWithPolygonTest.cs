@@ -26,12 +26,6 @@ namespace DotSpatial.Analysis.Tests
         [TestMethod()]
         public void ClipRasterWithPolygonTest()
         {
-
-            if (DataManager.DefaultDataManager.PreferredProviders.Count == 0)
-            {
-                //GdalRasterProvider lGdalRasterProvider = new GdalRasterProvider();
-            }
-
             String path = ".";
             String shapeFilePath = Path.Combine(path, "Data", "elbe_watershed1.shp");
             String rasterFilePath = Path.Combine(path, "Data", "kriging.bgd" );

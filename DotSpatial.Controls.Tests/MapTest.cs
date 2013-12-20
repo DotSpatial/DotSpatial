@@ -23,46 +23,6 @@ namespace DotSpatial.Controls.Tests
     public class MapTest
     {
         /// <summary>
-        /// Tests whether the MapFrame_ExtentsChanged event fires
-        /// after re-opening a project
-        /// </summary>
-        [TestMethod]
-        public void MapExtentsChangedEvent_OpeningProjectTest()
-        {
-            string shapeFilePath = Path.Combine("TestFiles", "50mil_us_states.shp");
-            
-            Map myMap = new Map();
-            AppManager manager = new AppManager();
-            manager.Map = myMap;
-
-            bool eventIsFired = false;
-
-            //setup the event handler
-            myMap.ViewExtentsChanged += delegate {
-                eventIsFired = true;
-            };
-
-            //add a layer to map
-            IMapLayer myLayer = myMap.Layers.Add(shapeFilePath);
-
-            //test event fired first time
-            ((IMapPolygonLayer)myLayer).SelectByAttribute("NAME = 'California'");
-            ((IMapPolygonLayer)myLayer).ZoomToSelectedFeatures();
-            Assert.IsTrue(eventIsFired, "ViewExtentsChanged event doesn't fire after layer is added.");
-            eventIsFired = false;
-
-            //open a project
-            string dspxPath = Path.GetFullPath(Path.Combine("TestFiles", "testproject1.dspx"));
-            manager.SerializationManager.OpenProject(dspxPath);
-
-            //change the extent again after opening the project
-            Assert.IsTrue((myMap.Layers.Count > 0), "The map should have 1 or more layers after opening the deserializeTest project.");
-            myMap.ViewExtents = new Extent(15, 48, 20, 52);
-
-            Assert.IsTrue(eventIsFired, "ViewExtentsChanged event doesn't fire after opening the project.");
-        }
-
-        /// <summary>
         ///A test for ZoomToMaxExtent
         ///</summary>
         [TestMethod]
