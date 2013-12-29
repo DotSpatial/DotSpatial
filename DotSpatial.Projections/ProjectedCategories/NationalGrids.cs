@@ -545,7 +545,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             RassadiranNakhleTaqi = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=27.56882880555555 +lonc=52.60353916666667 +alpha=0.5716611944444444 +k=0.999895934 +x_0=658377.437 +y_0=3044969.194 +ellps=intl +units=m +no_defs ");
             RGF1993Lambert93 = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=44 +lat_2=49 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +units=m +no_defs ");
             RGNC1991LambertNewCaledonia = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=-20.66666666666667 +lat_2=-22.33333333333333 +lat_0=-21.5 +lon_0=166 +x_0=400000 +y_0=300000 +ellps=intl +units=m +no_defs ");
-            Rijksdriehoekstelsel = ProjectionInfo.FromProj4String("+ellps=bessel +units=m +no_defs ");
+            Rijksdriehoekstelsel = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369, 50.0087, 465.658, -0.406857330322398, 0.350732676542563, -1.8703473836068, 4.0812 +no_defs ");
             Roma1940GaussBoagaEst = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=0.999600 +x_0=2520000 +y_0=0 +ellps=intl +units=m +no_defs ");
             Roma1940GaussBoagaOvest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=9 +k=0.999600 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             RT9025gonWest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
