@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
 using System.ComponentModel.Composition;
-using System.Drawing;
 
 namespace DemoMap
 {
@@ -54,6 +53,8 @@ namespace DemoMap
         public void SelectPanel(string key)
         {
         }
+
+        public event EventHandler<DockablePanelEventArgs> PanelHidden;
 
         /// <summary>
         /// Adds the specified panel.
@@ -175,6 +176,11 @@ namespace DemoMap
         public void HidePanel(string key)
         {
 
+        }
+
+        public void ShowPanel(string key)
+        {
+            
         }
     }
 }
