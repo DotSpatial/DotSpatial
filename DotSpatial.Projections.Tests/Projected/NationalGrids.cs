@@ -1,4 +1,5 @@
 
+using System;
 using NUnit.Framework;
 using DotSpatial.Projections;
 
@@ -432,12 +433,38 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
-        [Test]
-        public void DutchRD()
+        [Test] 
+        public void DutchRD() 
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DutchRD;
             Tester.TestProjection(pStart);
+
+            // specific coordinates (source: PCTrans; ministerie van defensie)
+            ProjectionInfo pEnd = KnownCoordinateSystems.Geographic.World.WGS1984;
+            double[] xy = new double[2];
+            double[] z = new double[1];
+
+            // projection center, amersfoort
+            xy[0] = 155000;
+            xy[1] = 463000;
+            Reproject.ReprojectPoints(xy, z, pStart, pEnd, 0, 1);
+            Assert.Less(Math.Abs(5.387203658 - xy[0]), 0.000001);
+            Assert.Less(Math.Abs(52.155172894 - xy[1]), 0.000001);
+
+            // 100 km north, 100 east of amersfoort
+            xy[0] = 255000;
+            xy[1] = 563000;
+            Reproject.ReprojectPoints(xy, z, pStart, pEnd, 0, 1);
+            Assert.Less(Math.Abs(6.878349136 - xy[0]), 0.00001);
+            Assert.Less(Math.Abs(53.044587289 - xy[1]), 0.00001);
+
+            // 100 km south, 100 west of amersfoort
+            xy[0] = 55000;
+            xy[1] = 363000;
+            Reproject.ReprojectPoints(xy, z, pStart, pEnd, 0, 1);
+            Assert.Less(Math.Abs(3.954917189 - xy[0]), 0.00001);
+            Assert.Less(Math.Abs(51.247513569 - xy[1]), 0.00001);
+            
         }
 
         //private static void PjGeocentricToWgs84(ProjectionInfo source, double[] xy, double[] zArr, int startIndex, int numPoints)
@@ -1925,7 +1952,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void Rijksdriehoekstelsel()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Rijksdriehoekstelsel;
