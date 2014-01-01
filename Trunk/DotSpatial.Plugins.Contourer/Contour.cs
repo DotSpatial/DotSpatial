@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using DotSpatial.Controls;
 using GeoAPI.Geometries;
 
-//using DotSpatial.Data;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Linemerge;
@@ -79,13 +76,13 @@ namespace Contourer
                         fs = new DotSpatial.Data.FeatureSet(DotSpatial.Topology.FeatureType.Line);
                         fs.DataTable.Columns.Add(field, typeof(double));
 
-                        for (int z = 0; z < levels.Count(); z++)
+                        for (int z = 0; z < levels.Length; z++)
                         {
                             IList<IGeometry> cont = GetContours(ref iRst, x, y, lev[z]);
 
-                            foreach (Geometry g in cont)
+                            foreach (var g in cont)
                             {
-                                DotSpatial.Data.Feature f = (DotSpatial.Data.Feature)fs.AddFeature(ToDotSpatialLineString((ILineString)g));
+                                var f = (DotSpatial.Data.Feature)fs.AddFeature(ToDotSpatialLineString((ILineString)g));
                                 f.DataRow[field] = lev[z];
                             }
                         }
@@ -105,7 +102,7 @@ namespace Contourer
                         {
                             IList<IGeometry> cont = GetContours(ref iRst, x, y, lev[z]);
 
-                            foreach (Geometry g in cont)
+                            foreach (var g in cont)
                             {
                                 Contours.Add(new LineString(g.Coordinates));
                             }
@@ -124,7 +121,7 @@ namespace Contourer
                         Collection<IGeometry> NodedContours = new Collection<IGeometry>();
                         GeometryNoder geomNoder = new GeometryNoder(new PrecisionModel(1000d));
 
-                        foreach (LineString c in geomNoder.Node(Contours))
+                        foreach (var c in geomNoder.Node(Contours))
                         {
                             NodedContours.Add(c);
                         }
@@ -132,7 +129,7 @@ namespace Contourer
                         Polygonizer polygonizer = new Polygonizer();
                         polygonizer.Add(NodedContours);
 
-                        foreach (Polygon p in polygonizer.GetPolygons())
+                        foreach (IPolygon p in polygonizer.GetPolygons())
                         {
 
                             Point pnt = (Point)p.InteriorPoint;
