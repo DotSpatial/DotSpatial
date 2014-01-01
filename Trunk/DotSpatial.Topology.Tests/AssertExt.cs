@@ -14,8 +14,8 @@ namespace DotSpatial.Topology.Tests
         /// <param name="b">The value to compare to.</param>
         public static void AreEqual15(double a, double b)
         {
-            double tolerance = Math.Abs(a * 1E-14);
-            double test = Math.Abs(a - b);
+            var tolerance = Math.Abs(a * 1E-14);
+            var test = Math.Abs(a - b);
             if (test > tolerance)
             {
                 Assert.Fail("Double values " + a + " and " + b + " were not equal.");

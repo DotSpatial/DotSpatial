@@ -57,14 +57,19 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
-      <HintPath>..\SupportFiles\GeoAPI.dll</HintPath>
+    <Reference Include="GeoAPI, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GeoAPI.1.7.1.1\lib\net40-client\GeoAPI.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite">
-      <HintPath>..\SupportFiles\NetTopologySuite.dll</HintPath>
+    <Reference Include="NetTopologySuite, Version=1.13.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NetTopologySuite.1.13.1\lib\net40-client\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections">
+      <HintPath>..\packages\NetTopologySuite.1.13.1\lib\net40-client\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -81,7 +86,7 @@
     <Compile Include="DataTypesTransfromations.cs" />
     <Compile Include="EnvelopeUnitTests.cs" />
     <Compile Include="MultiShape.cs" />
-    <Compile Include="OverLay UnitTests.cs" />
+    <Compile Include="OverLayUnitTests.cs" />
     <Compile Include="PointsLinesPolygons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

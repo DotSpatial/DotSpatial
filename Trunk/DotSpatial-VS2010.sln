@@ -40,9 +40,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DB6E371-0643-46F2-8EAD-B7D92AD133D5}"
 	ProjectSection(SolutionItems) = preProject
 		CustomDictionary.xml = CustomDictionary.xml
-		DotSpatial.FxCop = DotSpatial.FxCop
-		DotSpatial.vsmdi = DotSpatial.vsmdi
-		Local.testsettings = Local.testsettings
 		Nuget_DotSpatialCore.nuspec = Nuget_DotSpatialCore.nuspec
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
@@ -138,14 +135,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.TabbedDo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleDocking", "DotSpatial.Plugins.SimpleDocking\DotSpatial.Plugins.SimpleDocking.csproj", "{39B1A581-0145-4398-8DB2-89288F33F358}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform Specific Control Plugins", "Platform Specific Control Plugins", "{F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin Controls", "Plugin Controls", "{F29AE9AA-E8B6-4FE7-BC99-A2B3F3AB9894}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Tests", "DotSpatial.Projections.Tests\DotSpatial.Projections.Tests.csproj", "{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = DotSpatial.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
