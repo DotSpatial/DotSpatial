@@ -20,6 +20,7 @@
 //--------------------|--------------------|--------------------------------------------------------
 // Jiri Kadlec        | 03/08/2010         |  Added the PanelManager to work with tabs and panels
 // Yang Cao           | 05/16/2011         |  Added the IHeaderControl to work with standard toolbar and ribbon control
+// Eric Hullinger     | 01/02/2014         |  Made changes so that the progress bar on the splash screen will update properly
 // ********************************************************************************************************
 
 using System;
@@ -67,7 +68,7 @@ namespace DotSpatial.Controls
         private AggregateCatalog _catalog;
         private IContainer _components;
         private ISplashScreenManager splashScreen;
-
+        private string message = "";
         #endregion
 
         #region Constructors and Destructors
@@ -307,7 +308,7 @@ namespace DotSpatial.Controls
 
         private void UpdateSplashScreen(string text)
         {
-            if (splashScreen != null)
+            if (splashScreen != null && text != null)
                 splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
         }
 
@@ -327,9 +328,6 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <summary>
-        /// Activates the extensions. This should be called only once.
-        /// </summary>
         public virtual void LoadExtensions()
         {
             if (DesignMode)
@@ -340,35 +338,20 @@ namespace DotSpatial.Controls
                 throw new InvalidOperationException("LoadExtensions() should only be called once. Subsequent calls should be made to RefreshExtensions(). ");
             }
 
-            // We need to uninstall any outstanding extensions before loading ...
             PackageManager.RemovePendingPackagesAndExtensions();
-
             splashScreen = SplashScreenHelper.GetSplashScreenManager();
 
-            UpdateSplashScreen("Discovering Extensions...");
+            Thread updateThread = new Thread(() => AppLoadExtensions());
+            updateThread.Start();
 
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            _catalog = GetCatalog();
-
-            CompositionContainer = new CompositionContainer(_catalog);
-
-            try
+            //Update splash screen's progress bar while thread is active.
+            while (updateThread.IsAlive)
             {
-                IDataManager dataManager = DataManager.DefaultDataManager;
-                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
+                UpdateSplashScreen(message);
             }
-            catch (CompositionException compositionException)
-            {
-                Trace.WriteLine(compositionException.Message);
-                throw;
-            }
-
-            UpdateSplashScreen("Loading Extensions...");
-
-            OnExtensionsActivating(EventArgs.Empty);
+            updateThread.Join(100);
 
             ActivateAllExtensions();
-
             OnExtensionsActivated(EventArgs.Empty);
 
             if (splashScreen != null)
@@ -385,6 +368,31 @@ namespace DotSpatial.Controls
             //    [Export(typeof(DotSpatial.Data.IProgressHandler))]
             // To get that working.
             DataManager.DefaultDataManager.ProgressHandler = this.ProgressHandler;
+        }
+        /// <summary>
+        /// Activates the extensions. This should be called only once.
+        /// </summary>
+        public void AppLoadExtensions()
+        {
+            message = "Discovering Extensions...";
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            _catalog = GetCatalog();
+
+            CompositionContainer = new CompositionContainer(_catalog);
+
+            try
+            {
+                IDataManager dataManager = DataManager.DefaultDataManager;
+                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
+            }
+            catch (CompositionException compositionException)
+            {
+                Trace.WriteLine(compositionException.Message);
+                throw;
+            }
+
+            message = "Loading Extensions...";
+            OnExtensionsActivating(EventArgs.Empty);
         }
 
         // Looks for the assembly in a path like Extensions\Packages\PackageName.Here-1.3.190\lib\net40
@@ -407,12 +415,12 @@ namespace DotSpatial.Controls
             {
                 // see if the client profile was targeted.
                 potentialFolder = Path.Combine(potentialPackage, "lib", "net40-Client");
-              
+
                 if (!Directory.Exists(potentialFolder))
                 {
                     // see if the net35 framework was targeted.
                     potentialFolder = Path.Combine(potentialPackage, "lib", "net35");
-                    
+
                     if (!Directory.Exists(potentialFolder))
                     {
                         // see if the net20 framework was targeted.
@@ -519,7 +527,7 @@ namespace DotSpatial.Controls
                 if (!EnsureRequiredImportsAreAvailable())
                     return;
                 else
-                    OnSatisfyImportsExtensionsActivated(EventArgs.Empty);             
+                    OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
 
                 // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
                 // need to be created before other plugins are loaded.
@@ -527,18 +535,23 @@ namespace DotSpatial.Controls
                 {
                     if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
                     {
-                        Thread updateThread = new Thread(()=>Activate(extension));
+                        Thread updateThread = new Thread(() => Activate(extension));
                         updateThread.Start();
+                        DateTime timeStarted = DateTime.UtcNow;
 
-                        //Update splash screen's progress bar while thread is active.
-                        while (updateThread.IsAlive)
+                        //Update splash screen's progress bar while thread is active or 10 seconds have past.
+                        TimeSpan span = TimeSpan.FromMilliseconds(0);
+                        while (updateThread.IsAlive && span.TotalMilliseconds < 10000)
                         {
                             UpdateSplashScreen("Looking for updates");
+                            //message = "Looking for updates";
+                            span = DateTime.UtcNow - timeStarted;
                         }
 
                         //Join the threads. If the thread is still active, wait a full second before giving up.
                         updateThread.Join(1000);
                         UpdateSplashScreen("Finished.");
+                        // message = "Finished.";
                     }
                     else
                     {
@@ -624,7 +637,8 @@ namespace DotSpatial.Controls
             {
                 // Add files in the current directory as well.
                 Trace.WriteLine("Cataloging: " + dir);
-                UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
+                // UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
+                message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
                 if (!DirectoryCatalogExists(catalog, dir))
                     TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
             }
@@ -685,8 +699,8 @@ namespace DotSpatial.Controls
             foreach (var dir in directories)
             {
                 Trace.WriteLine("Cataloging: " + dir);
-                UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
-
+                //UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
+                message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
                 // todo: consider using a file system watcher if it would provider better performance.
                 if (!DirectoryCatalogExists(catalog, dir))
                     TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
