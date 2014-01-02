@@ -39,22 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Data.Forms">
-      <HintPath>..\Debug\bin\DotSpatial.Data.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Projections">
-      <HintPath>..\Debug\bin\DotSpatial.Projections.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Serialization">
-      <HintPath>..\Debug\bin\DotSpatial.Serialization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DotSpatial.Symbology.Forms">
-      <HintPath>..\DotSpatial.Symbology.Forms\obj\Debug\DotSpatial.Symbology.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>SupportFiles\NuGet.Core.dll</HintPath>
@@ -121,6 +105,11 @@
       <Name>DotSpatial.Controls</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
       <Name>DotSpatial.Data</Name>
@@ -134,6 +123,21 @@
     <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
+      <Name>DotSpatial.Projections</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
+      <Project>{97ede2ad-90d0-44b6-adb6-ad20052c0b6f}</Project>
+      <Name>DotSpatial.Symbology.Forms</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
@@ -185,10 +189,10 @@
     <Content Include="Resources\plugin_delete_32x32.png" />
     <Content Include="Resources\plugin_disabled_16x16.png" />
     <Content Include="Resources\plugin_disabled_32x32.png" />
+    <None Include="SupportFiles\NuGet.Core.dll" />
+    <None Include="SupportFiles\NuGet.Core.pdb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SupportFiles\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

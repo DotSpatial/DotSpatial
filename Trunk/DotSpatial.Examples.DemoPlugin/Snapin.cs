@@ -79,15 +79,13 @@ namespace DemoPlugin
 
         private void manager_Deserializing(object sender, SerializingEventArgs e)
         {
-            var manager = sender as SerializationManager;
-
+            var manager = (SerializationManager)sender;
             _storedValue = manager.GetCustomSetting(UniqueKeyPluginStoredValueDate, DateTime.Now);
         }
 
         private void manager_Serializing(object sender, SerializingEventArgs e)
         {
-            var manager = sender as SerializationManager;
-
+            var manager = (SerializationManager)sender;
             manager.SetCustomSetting(UniqueKeyPluginStoredValueDate, _storedValue);
         }
 
