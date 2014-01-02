@@ -76,6 +76,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SpatiaLiteFeatureSet.cs" />
     <Compile Include="SpatiaLiteHelper.cs" />
     <Compile Include="SpatiaLitePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
