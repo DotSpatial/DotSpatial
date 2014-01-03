@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.5")]
 [assembly: AssemblyInformationalVersion("1.5 Experimental Release")]
-[assembly: AssemblyFileVersion("1.5.1.0")]
+[assembly: AssemblyFileVersion("1.5.19")]

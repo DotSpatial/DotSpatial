@@ -943,6 +943,43 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
+        public List<IFeature> IdentifySelect(Extent region)
+        {
+            Extent ignoreMe;
+            return IdentifySelect(region, out ignoreMe);
+        }
+
+        /// <inheritdoc/>
+        public List<IFeature> IdentifySelect(Extent region, out Extent affectedRegion)
+        {
+
+            List<IFeature> result = new List<IFeature>();
+            affectedRegion = new Extent();
+
+            bool useProgress = (Features.Count > 10000);
+            //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting Features", Features.Count);
+            foreach (IFeature feature in Features)
+            {
+                //if (useProgress)
+                //    ProgressMeter.Next();
+                if (!region.Intersects(feature.Envelope))
+                {
+                    continue;
+                }
+                if (!feature.Intersects(region.ToEnvelope()))
+                {
+                    continue;
+                }
+                result.Add(feature);
+                affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+            }
+            //if (useProgress)
+            //    ProgressMeter.Reset();
+
+            return result;
+        }
+
+        /// <inheritdoc/>
         public virtual List<IFeature> Select(Extent region)
         {
             Extent ignoreMe;
@@ -952,6 +989,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual List<IFeature> Select(Extent region, out Extent affectedRegion)
         {
+       
             List<IFeature> result = new List<IFeature>();
             if (IndexMode)
             {
@@ -979,7 +1017,7 @@ namespace DotSpatial.Data
                 affectedRegion = affected;
                 return result;
             }
-
+            
             affectedRegion = new Extent();
 
             bool useProgress = (Features.Count > 10000);

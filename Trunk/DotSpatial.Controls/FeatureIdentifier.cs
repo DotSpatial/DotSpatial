@@ -253,7 +253,8 @@ namespace DotSpatial.Controls
         /// <param name="bounds"></param>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
-            List<IFeature> result = layer.DataSet.Select(bounds);
+          
+            List<IFeature> result = (layer.DataSet as FeatureSet).IdentifySelect(bounds);
             if (result.Count == 0)
             {
                 return false;
