@@ -66,8 +66,7 @@ namespace DotSpatial.Symbology.Forms
         #endregion
 
         #region Private Variables
-
-        private readonly SQLExpressionDialog _queryDialog = new SQLExpressionDialog();
+        
         private IFeatureLayer _featureLayer;
         private string _fidField;
         private bool _ignoreSelectionChanged;
@@ -552,7 +551,6 @@ namespace DotSpatial.Symbology.Forms
             _selectedRows = new List<int>();
             Load += TableEditorControlLoad;
             enableEditingToolStripMenuItem.CheckedChanged += EnableEditingToolStripMenuItemCheckedChanged;
-            _queryDialog.ChangesApplied += QueryDialog_ChangesApplied;
 
             RemoveUnusedButtonsFromToolstrip();
             if (FeatureLayer != null)
@@ -1599,21 +1597,24 @@ namespace DotSpatial.Symbology.Forms
         //Executes a query
         private void QueryExe()
         {
+            var queryDialog = new SQLExpressionDialog();
+            queryDialog.ChangesApplied += QueryDialog_ChangesApplied;
             if (_featureLayer.DataSet.AttributesPopulated)
             {
-                _queryDialog.Table = _featureLayer.DataSet.DataTable;
+                queryDialog.Table = _featureLayer.DataSet.DataTable;
             }
             else
             {
-                _queryDialog.AttributeSource = _featureLayer.DataSet;
+                queryDialog.AttributeSource = _featureLayer.DataSet;
             }
 
-            _queryDialog.ShowDialog(this);
+            queryDialog.ShowDialog(this);
+            queryDialog.ChangesApplied -= QueryDialog_ChangesApplied;
         }
 
         private void QueryDialog_ChangesApplied(object sender, EventArgs e)
         {
-            string resultExpresion = _queryDialog.Expression;
+            string resultExpresion = ((SQLExpressionDialog)sender).Expression;
             if (resultExpresion != null)
             {
                 Cursor.Current = Cursors.WaitCursor;
