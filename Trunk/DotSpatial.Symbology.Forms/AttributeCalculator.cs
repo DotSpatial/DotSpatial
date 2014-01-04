@@ -808,13 +808,14 @@ namespace DotSpatial.Symbology.Forms
 
         private bool CreateNewColumn()
         {
-            AddNewColum addCol = new AddNewColum();
-            if (addCol.ShowDialog() == DialogResult.OK)
+            var addCol = new AddNewColum();
+            if (addCol.ShowDialog(this) == DialogResult.OK)
             {
                 _fs.DataTable.Columns.Add(addCol.Name, addCol.Type);
                 OnNewFieldAdded();
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>

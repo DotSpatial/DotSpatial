@@ -1651,12 +1651,13 @@ namespace DotSpatial.Symbology.Forms
                 return;
             }
 
-            AddNewColum addCol = new AddNewColum();
-
-            if (addCol.ShowDialog() != DialogResult.OK)
+            var addCol = new AddNewColum();
+            if (addCol.ShowDialog(this) != DialogResult.OK)
             {
                 MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_NewFieldFail);
+                return;
             }
+
             _featureLayer.DataSet.DataTable.Columns.Add(addCol.Name, addCol.Type);
             dataGridView1.ClearSelection();
         }
