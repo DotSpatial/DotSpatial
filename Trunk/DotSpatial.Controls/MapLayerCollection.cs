@@ -217,6 +217,8 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public virtual IMapRasterLayer Add(IRaster raster)
         {
+            if (raster == null) return null;
+
             raster.ProgressHandler = ProgressHandler;
             MapRasterLayer gr = new MapRasterLayer(raster);
             Add(gr);
@@ -230,6 +232,8 @@ namespace DotSpatial.Controls
         /// <returns>the IMapImageLayer interface for the layer that was added to the map.</returns>
         public IMapImageLayer Add(IImageData image)
         {
+            if (image == null) return null;
+
             if (image.Height == 0 || image.Width == 0) return null;
             MapImageLayer il = new MapImageLayer(image);
             base.Add(il);

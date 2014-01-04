@@ -529,6 +529,7 @@ namespace DotSpatial.Controls
         public virtual List<IMapRasterLayer> AddRasterLayers()
         {
             List<IRaster> sets = DataManager.DefaultDataManager.OpenRasters();
+            if (sets == null) return new List<IMapRasterLayer>();
             return sets.Select(raster => Layers.Add(raster)).ToList();
         }
 
@@ -536,10 +537,11 @@ namespace DotSpatial.Controls
         /// Allows an open file dialog without multi-select enabled to add a single
         /// raster to the map as a layer, and returns the added layer.
         /// </summary>
-        /// <returns>The IMapRasterLayer that was added</returns>
+        /// <returns>The IMapRasterLayer that was added, or null.</returns>
         public virtual IMapRasterLayer AddRasterLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenRaster());
+            var raster = DataManager.DefaultDataManager.OpenRaster();
+            return raster == null ? null : Layers.Add(raster);
         }
 
         /// <summary>
@@ -550,6 +552,7 @@ namespace DotSpatial.Controls
         public virtual List<IMapFeatureLayer> AddFeatureLayers()
         {
             List<IFeatureSet> sets = DataManager.DefaultDataManager.OpenVectors();
+            if (sets == null) return new List<IMapFeatureLayer>();
             return sets.Select(featureSet => Layers.Add(featureSet)).ToList();
         }
 
@@ -557,10 +560,11 @@ namespace DotSpatial.Controls
         /// Allows an open file dialog without multi-select enabled to add a single
         /// raster tot he map as a layer, and returns the added layer.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The IMapFeatureLayer that was added, or null.</returns>
         public virtual IMapFeatureLayer AddFeatureLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenVector());
+            var vector = DataManager.DefaultDataManager.OpenVector();
+            return vector == null? null: Layers.Add(vector);
         }
 
         /// <summary>
@@ -571,6 +575,7 @@ namespace DotSpatial.Controls
         public virtual List<IMapImageLayer> AddImageLayers()
         {
             List<IImageData> sets = DataManager.DefaultDataManager.OpenImages();
+            if (sets == null) return new List<IMapImageLayer>();
             return sets.Select(imageData => Layers.Add(imageData)).ToList();
         }
 
@@ -578,10 +583,11 @@ namespace DotSpatial.Controls
         /// Allows an open dialog without multi-select to specify a single fileName
         /// to be added to the map as a new layer and returns the newly added layer.
         /// </summary>
-        /// <returns>The layer that was added to the map.</returns>
+        /// <returns>The layer that was added to the map, or null.</returns>
         public virtual IMapImageLayer AddImageLayer()
         {
-            return Layers.Add(DataManager.DefaultDataManager.OpenImage());
+            var image = DataManager.DefaultDataManager.OpenImage();
+            return image == null? null : Layers.Add(image);
         }
 
         /// <summary>
