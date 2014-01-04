@@ -71,7 +71,6 @@ namespace DotSpatial.Data.Tests
         ///A test for SaveAs
         ///</summary>
         [TestMethod]
-        [Category("PlatformDependent")]
         public void SaveAsTest()
         {
             const string GridDataFolder = @"Data\Grids\";

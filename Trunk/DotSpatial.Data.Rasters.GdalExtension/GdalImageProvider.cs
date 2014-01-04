@@ -34,6 +34,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
     {
         private IProgressHandler _prog;
 
+        static GdalImageProvider ()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
+
         #region IImageDataProvider Members
 
         /// <summary>
@@ -48,7 +53,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <returns></returns>
         public IImageData Create(string fileName, int width, int height, bool inRam, IProgressHandler progHandler, ImageBandType bandType)
         {
-            Gdal.AllRegister();
             Driver d = GetDriverByExtension(fileName);
             if (d == null) return null;
             Dataset ds;

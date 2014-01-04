@@ -44,14 +44,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         #region Constructors
 
+        static GdalTiledImage()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
+
         /// <summary>
         /// Creates a new instance of gdalImage
         /// </summary>
         public GdalTiledImage(string fileName)
             : base(fileName)
         {
-            WorldFile = new WorldFile { Affine = new double[6] };
-            GdalHelper.Configure();
+            WorldFile = new WorldFile {Affine = new double[6]};
             ReadHeader();
         }
 

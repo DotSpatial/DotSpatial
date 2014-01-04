@@ -23,9 +23,9 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Utilities;
-using OSGeo.OGR;
 
 namespace DotSpatial.Data.OgrExtension
 {
@@ -42,12 +42,9 @@ namespace DotSpatial.Data.OgrExtension
 
         #region Constructors
 
-        /// <summary>
-        /// Creates a new instance of OgrVectorProvider
-        /// </summary>
-        public OgrVectorProvider()
+        static OgrVectorProvider()
         {
-            Ogr.RegisterAll();
+            GdalConfiguration.ConfigureOgr();
         }
 
         #endregion

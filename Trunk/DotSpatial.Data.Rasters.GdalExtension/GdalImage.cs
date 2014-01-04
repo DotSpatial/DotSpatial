@@ -46,7 +46,13 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private byte[] b;
         private byte[] vals;
         private int _overview;
+
         #region Constructors
+
+        static GdalImage()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
 
         /// <summary>
         ///
@@ -108,7 +114,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             Filename = filename;
             WorldFile = new WorldFile { Affine = new double[6] };
-            Gdal.AllRegister();
         }
 
         /// <summary>
@@ -119,7 +124,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             Filename = fileName;
             WorldFile = new WorldFile { Affine = new double[6] };
-            GdalHelper.Configure();
             ReadHeader();
         }
 
@@ -128,7 +132,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public GdalImage()
         {
-            GdalHelper.Configure();
+
         }
 
         #endregion

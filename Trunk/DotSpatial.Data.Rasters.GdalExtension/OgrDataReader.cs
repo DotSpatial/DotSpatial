@@ -22,6 +22,7 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
+using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using OSGeo.OGR;
@@ -57,8 +58,9 @@ namespace DotSpatial.Data
 
         #region constructors
 
-        private OgrDataReader()
+        static OgrDataReader()
         {
+            GdalConfiguration.ConfigureOgr();
         }
 
         public OgrDataReader(string sDataSource)

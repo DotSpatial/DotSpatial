@@ -39,8 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -97,13 +98,13 @@
     <None Include="Data\test-RandomPts.prj" />
     <None Include="Data\test-RandomPts.shp" />
     <None Include="Data\test-RandomPts.shx" />
-    <None Include="packages.config" />
     <None Include="Data\States\states.dbf" />
     <None Include="Data\States\states.prj" />
     <None Include="Data\States\states.sbn" />
     <None Include="Data\States\states.sbx" />
     <None Include="Data\States\states.shp" />
     <None Include="Data\States\states.shx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Rivers\" />

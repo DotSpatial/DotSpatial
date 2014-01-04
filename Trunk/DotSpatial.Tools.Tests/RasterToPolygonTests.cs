@@ -9,7 +9,6 @@ using NUnit.Framework;
 namespace DotSpatial.Tools.Tests
 {
     [TestFixture]
-    [Category("PlatformDependent")]
     class RasterToPolygonTests
     {
         [Test]

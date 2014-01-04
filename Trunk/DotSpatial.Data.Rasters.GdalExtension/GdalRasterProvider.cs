@@ -38,13 +38,16 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         #region Constructors
 
+        static GdalRasterProvider()
+        {
+            GdalConfiguration.ConfigureGdal();
+        }
+
         /// <summary>
         /// Creates a new instance of GdalRasterProvider
         /// </summary>
         public GdalRasterProvider()
         {
-            GdalHelper.Configure();
-
             // Add ourself in for these extensions, unless another provider is registered for them.
             string[] extensions = { ".tif", ".tiff", ".adf" };
             foreach (string extension in extensions)

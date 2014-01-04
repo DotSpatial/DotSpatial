@@ -42,8 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -84,9 +85,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
       <Project>{51c6e16e-920e-4d36-b41e-d48abef837e7}</Project>
       <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
@@ -112,6 +110,9 @@
       <Name>DotSpatial.Topology</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -133,8 +134,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\*.dll" "$(TargetDir)" /Y
-xcopy "$(SolutionDir)SupportFiles\GDAL\release-1600-gdal-1-9-mapserver-6-0\bin\gdal\plugins\*.dll" "$(TargetDir)gdalplugins\" /Y
+    <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
