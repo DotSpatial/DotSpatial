@@ -39,7 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Forms"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DB6E371-0643-46F2-8EAD-B7D92AD133D5}"
 	ProjectSection(SolutionItems) = preProject
-		CustomDictionary.xml = CustomDictionary.xml
 		Nuget_DotSpatialCore.nuspec = Nuget_DotSpatialCore.nuspec
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
