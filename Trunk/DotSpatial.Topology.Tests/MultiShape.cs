@@ -270,12 +270,7 @@ namespace DotSpatial.Topology.Tests
             var mps = new MultiPoint(c);
             var area = mps.Buffer(500).Area;
             var areacheck = mpsCheck.Buffer(500).Area;
-            if (Math.Abs(area - areacheck) > 0.000000001)
-            {
-                Assert.AreEqual(mps.Buffer(500).Area, mpsCheck.Buffer(500).Area);
-            }
-
-
+            Assert.IsTrue(Math.Abs(area - areacheck) < 1e-6 );
         }
 
         [Test]
