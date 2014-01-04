@@ -101,9 +101,6 @@
     <Reference Include="ICSharpCode.TextEditor">
       <HintPath>.\SupportFiles\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
-    <Reference Include="MapWinUtility">
-      <HintPath>..\SupportFiles\MapWinUtility.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>.\SupportFiles\Mono.Cecil.dll</HintPath>
     </Reference>

@@ -53,8 +53,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MapWinUtility">
-      <HintPath>..\SupportFiles\MapWinUtility.dll</HintPath>
+    <Reference Include="MapWinUtility, Version=4.8.2.19363, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\MapWinUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -183,6 +184,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\script_code_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lib\MapWinUtility.dll" />
+    <None Include="Lib\MapWinUtility.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
