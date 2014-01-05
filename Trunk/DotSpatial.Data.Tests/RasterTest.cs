@@ -91,5 +91,24 @@ namespace DotSpatial.Data.Tests
             savedSourceGrid.Close();
             File.Delete(savedGridName);
         }
+
+        [Test]
+        public void CanOpenRasterAfterClose()
+        {
+            var rasterFileName = Path.ChangeExtension(Path.GetTempFileName(), ".tif");
+            var p = new GdalRasterProvider();
+            var raster = p.Create(rasterFileName, null, 20, 20, 1, typeof(float), new[] { "" });
+            raster.Close();
+
+            try
+            {
+                using (var openTif = File.Open(rasterFileName, FileMode.Open))
+                    Assert.IsNotNull(openTif);
+            }
+            finally
+            {
+                File.Delete(rasterFileName);
+            }
+        }
     }
 }
