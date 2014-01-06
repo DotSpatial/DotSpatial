@@ -425,7 +425,10 @@ namespace DotSpatial.Projections
             {
                 double lam0 = source.Lam0;
                 xy[i * 2] += lam0;
-                xy[i * 2] = Adjlon(xy[i * 2]);
+                if (!source.Over)
+                {
+                    xy[i*2] = Adjlon(xy[i*2]);
+                }
                 if (source.Geoc && Math.Abs(Math.Abs(xy[i * 2 + 1]) - Math.PI / 2) > EPS)
                 {
                     xy[i * 2 + 1] = Math.Atan(oneEs * Math.Tan(xy[i * 2 + 1]));

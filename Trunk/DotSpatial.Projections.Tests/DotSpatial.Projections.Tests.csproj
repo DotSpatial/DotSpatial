@@ -149,6 +149,7 @@
     <Compile Include="Projections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadingESRIString.cs" />
+    <Compile Include="ReprojectTests.cs" />
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
