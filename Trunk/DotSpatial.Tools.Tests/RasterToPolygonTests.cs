@@ -44,15 +44,15 @@ namespace DotSpatial.Tools.Tests
             var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
             Assert.That(mpCount == 0);
         }
+    }
 
-        class MockProgressHandler : ICancelProgressHandler
+    class MockProgressHandler : ICancelProgressHandler
+    {
+        public void Progress(string key, int percent, string message)
         {
-            public void Progress(string key, int percent, string message)
-            {
-                //nothing
-            }
-
-            public bool Cancel { get { return false; } }
+            //nothing
         }
+
+        public bool Cancel { get { return false; } }
     }
 }

@@ -18,7 +18,7 @@ using DotSpatial.Topology;
 namespace DotSpatial.Tools
 {
     /// <summary>
-    /// TODO: Update summary. Used to consolidate duplicate code across multiple tools.
+    /// Used to consolidate duplicate code across multiple tools.
     /// </summary>
     internal class RasterMagic
     {
@@ -71,10 +71,13 @@ namespace DotSpatial.Tools
                 return false;
             }
 
-            Extent envelope = UnionEnvelope(input1, input2);
-
             // Figures out which raster has smaller cells
-            IRaster smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
+            var smallestCellRaster = input1.CellWidth < input2.CellWidth ? input1 : input2;
+            var envelope = UnionEnvelope(input1, input2);
+            envelope.MinX = envelope.MinX + smallestCellRaster.CellWidth/2;
+            envelope.MinY = envelope.MinY - smallestCellRaster.CellHeight/2;
+            envelope.MaxX = envelope.MaxX + smallestCellRaster.CellWidth/2;
+            envelope.MaxY = envelope.MaxY - smallestCellRaster.CellHeight/2;
 
             // Given the envelope of the two rasters we calculate the number of columns / rows
             int noOfCol = Convert.ToInt32(Math.Abs(envelope.Width / smallestCellRaster.CellWidth));
@@ -83,13 +86,9 @@ namespace DotSpatial.Tools
             // create output raster
             output = Raster.CreateRaster(
                 output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(int), new[] { string.Empty });
-            RasterBounds bound = new RasterBounds(noOfRow, noOfCol, envelope);
+            var bound = new RasterBounds(noOfRow, noOfCol, envelope);
             output.Bounds = bound;
-
             output.NoDataValue = input1.NoDataValue;
-
-            RcIndex v1;
-            RcIndex v2;
 
             int previous = 0;
             int max = output.Bounds.NumRows + 1;
@@ -98,7 +97,7 @@ namespace DotSpatial.Tools
                 for (int j = 0; j < output.Bounds.NumColumns; j++)
                 {
                     Coordinate cellCenter = output.CellToProj(i, j);
-                    v1 = input1.ProjToCell(cellCenter);
+                    var v1 = input1.ProjToCell(cellCenter);
                     double val1;
                     if (v1.Row <= input1.EndRow && v1.Column <= input1.EndColumn && v1.Row > -1 && v1.Column > -1)
                     {
@@ -109,7 +108,7 @@ namespace DotSpatial.Tools
                         val1 = input1.NoDataValue;
                     }
 
-                    v2 = input2.ProjToCell(cellCenter);
+                    var v2 = input2.ProjToCell(cellCenter);
                     double val2;
                     if (v2.Row <= input2.EndRow && v2.Column <= input2.EndColumn && v2.Row > -1 && v2.Column > -1)
                     {
@@ -120,15 +119,7 @@ namespace DotSpatial.Tools
                         val2 = input2.NoDataValue;
                     }
 
-                    if (val1 == input1.NoDataValue && val2 == input2.NoDataValue)
-                    {
-                        output.Value[i, j] = output.NoDataValue;
-                    }
-                    else if (val1 != input1.NoDataValue && val2 == input2.NoDataValue)
-                    {
-                        output.Value[i, j] = output.NoDataValue;
-                    }
-                    else if (val1 == input1.NoDataValue && val2 != input2.NoDataValue)
+                    if (val1 == input1.NoDataValue || val2 == input2.NoDataValue)
                     {
                         output.Value[i, j] = output.NoDataValue;
                     }
