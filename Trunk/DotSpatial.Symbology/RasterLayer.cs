@@ -687,6 +687,7 @@ namespace DotSpatial.Symbology
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Description("This gives access to more comprehensive information about the underlying data.")]
         [ShallowCopy]
+        [Browsable(false)]
         public new IRaster DataSet
         {
             get { return base.DataSet as IRaster; }
@@ -700,6 +701,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Category("Symbology")]
         [DisplayName(@"Color Scheme")]
+        [Browsable(false)]
         [ShallowCopy]
         public IRasterSymbolizer Symbolizer
         {

@@ -276,6 +276,7 @@ namespace DotSpatial.Symbology
         /// </remarks>
         [Description("Gets the list of categories.")]
         [Serialize("Categories")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LineCategoryCollection Categories
         {
             get { return _categories; }
@@ -290,6 +291,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override int NumCategories
         {
             get

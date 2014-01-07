@@ -327,6 +327,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets a boolean, that if false will prevent this item, or any of its child items
         /// from appearing in the legend when the legend is drawn.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool LegendItemVisible
         {
             get { return _legendItemVisible; }

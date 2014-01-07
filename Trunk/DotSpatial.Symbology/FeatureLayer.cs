@@ -187,6 +187,7 @@ namespace DotSpatial.Symbology
         /// Gets or sets the Boolean flag that controls whether the DrawnStates are needed.  If nothing is selected,
         /// and there is only one category, and there is no filter expression on that category, then this should be false.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DrawnStatesNeeded
         {
             get { return _drawnStatesNeeded; }
@@ -1355,9 +1356,23 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets underlying dataset for this layer
+        /// </summary>
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("FeatureSet Properties")]
+        public IFeatureSet FeatureSet
+        {
+            get
+            {
+                return DataSet;
+            }
+        }
+
+        /// <summary>
         /// Controls the drawn states according to a feature index.  This is used if the EditMode is
         /// false.  When EditMode is true, then drawn states are tied to the features instead.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FastDrawnState[] DrawnStates
         {
             get
@@ -1378,6 +1393,7 @@ namespace DotSpatial.Symbology
         /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
         /// is used instead and features are not assumed to be loaded into ram.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool EditMode
         {
             get { return _editMode; }

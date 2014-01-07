@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -87,6 +88,7 @@ namespace DotSpatial.Data
         /// Reading and writing from the disk is faster when done all at once.  The larger this number the more effective
         /// the disk management, but the more ram will be required (and the more likely to trip an out of memory error).
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int BufferSize
         {
             get { return _bufferSize; }
@@ -96,6 +98,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets whether or not the attributes have all been loaded into the data table.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override bool AttributesPopulated
         {
             get
@@ -126,6 +129,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// A general header structure that stores some basic information about the shapefile.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ShapefileHeader Header
         {
             get { return _header; }
@@ -135,6 +139,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the attribute Table used by this shapefile.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AttributeTable Attributes
         {
             get { return _attributeTable; }

@@ -14,6 +14,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace DotSpatial.Data
@@ -30,6 +31,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets a value indicating whether this instance has already had the Dispose method called on it.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDisposed
         {
             get { return _isDisposed; }
@@ -75,6 +77,7 @@ namespace DotSpatial.Data
         /// Gets a value indicating whether there are outstanding references that may be using the item
         /// that would prefer it if you did not dispose of the item while they are still using it.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDisposeLocked
         {
             get { return (_disposeCount > 0); }

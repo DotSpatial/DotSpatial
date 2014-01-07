@@ -149,6 +149,7 @@ namespace DotSpatial.Data
         /// Gets a value indicating whether the DotSpatial.Projections assembly is loaded
         /// </summary>
         /// <returns>Boolean, true if the value can reproject.</returns>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanReproject
         {
             get { return ProjectionSupported() && Projection != null && Projection.IsValid; }
@@ -198,11 +199,13 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets an enumeration specifying if this data supports time, space, both or neither.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SpaceTimeSupport SpaceTimeSupport { get; set; }
 
         /// <summary>
         /// Gets or sets the string type name that identifies this dataset
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string TypeName { get; set; }
 
         /// <summary>

@@ -116,6 +116,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog settings
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new FeatureEditorSettings EditorSettings
         {
             get { return base.EditorSettings as FeatureEditorSettings; }
@@ -125,6 +126,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the UITypeEditor to use for editing this FeatureScheme
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UITypeEditor PropertyEditor
         {
             get { return _propertyEditor; }
@@ -134,6 +136,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the number of categories in this scheme
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int NumCategories
         {
             get { return 0; }

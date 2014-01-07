@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -1579,6 +1580,7 @@ namespace DotSpatial.Data
         /// </value>
         /// <remarks>This property is used when saving source file information to a DSPX project.</remarks>
         [Serialize("FilePath")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual string FilePath
         {
             get
@@ -1614,12 +1616,14 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the coordinate type across the entire featureset.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CoordinateType CoordinateType { get; set; }
 
         /// <summary>
         /// DataTable is the System.Data.DataTable for all the attributes of this FeatureSet.
         /// This will call FillAttributes if it is accessed and that has not yet been called.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual DataTable DataTable
         {
             get
@@ -1658,11 +1662,13 @@ namespace DotSpatial.Data
         /// This is an optional GeometryFactory that can be set to control how the geometries on features are
         /// created.  The "Feature" prefix allows us to access the static Default instance on GeometryFactory.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGeometryFactory FeatureGeometryFactory { get; set; }
 
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Dictionary<DataRow, IFeature> FeatureLookup
         {
             get
@@ -1676,11 +1682,13 @@ namespace DotSpatial.Data
         /// featureset contains Lines, Points, Polygons or an
         /// unspecified type.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FeatureType FeatureType { get; set; }
 
         /// <summary>
         /// A list of the features in this layer
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IFeatureList Features
         {
             get
@@ -1715,9 +1723,11 @@ namespace DotSpatial.Data
         /// and features are created on demand.  Otherwise the list of Features
         /// is used directly.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IndexMode { get; set; }
 
         /// <inheritdoc/>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double[] M
         {
             get
@@ -2002,6 +2012,7 @@ namespace DotSpatial.Data
         /// fast acting sealed classes and are not meant to be overridden or support clever
         /// new implementations.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<ShapeRange> ShapeIndices
         {
             get
@@ -2089,6 +2100,7 @@ namespace DotSpatial.Data
         /// Gets a Boolean that indicates whether or not the InvalidateVertices has been called
         /// more recently than the cached vertex array has been built.
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VerticesAreValid
         {
             get
@@ -2098,6 +2110,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double[] Z
         {
             get
