@@ -848,6 +848,8 @@ namespace DotSpatial.Topology
                 if (borderPoints[count] != null)
                 {
                     count++;
+                    if (count > 1)
+                        break;
                 }
             }
 
