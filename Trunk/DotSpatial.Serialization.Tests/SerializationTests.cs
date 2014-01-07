@@ -247,19 +247,16 @@ namespace DotSpatial.Serialization.Tests
         }
 
         [Test]
-        [Ignore("Verify this test")]
         public void TestPointSerializationMap()
         {
             var pt = new Point(1, 2);
-            XmlSerializer s = new XmlSerializer();
-            string xml = s.Serialize(pt);
+            var s = new XmlSerializer();
+            var xml = s.Serialize(pt);
 
-            XmlDeserializer d = new XmlDeserializer();
-            Point result = d.Deserialize<Point>(xml);
+            var d = new XmlDeserializer();
+            var result = d.Deserialize<Point>(xml);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.X);
-            Assert.AreEqual(2, result.Y);
+            Assert.AreEqual(pt, result);
         }
 
         [Test]
@@ -279,16 +276,29 @@ namespace DotSpatial.Serialization.Tests
         }
     }
 
-    //public class PointSerializationMap : SerializationMap<Point>
-    //{
-    //    public PointSerializationMap()
-    //    {
-    //        Serialize(pt => pt.X, "X").AsConstructorArgument(0);
-    //        Serialize(pt => pt.Y, "Y").AsConstructorArgument(1);
-    //    }
-    //}
 
+    #region SerializationMap classes
+
+    // ReSharper disable UnusedMember.Global
+    public class PointSerializationMap : SerializationMap
+// ReSharper restore UnusedMember.Global
+    {
+        public PointSerializationMap()
+            :base(typeof(Point))
+        {
+            var t = typeof(Point);
+
+            var x = t.GetField("x", BindingFlags.Instance | BindingFlags.NonPublic);
+            var y = t.GetField("y", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            Serialize(x, "X").AsConstructorArgument(0);
+            Serialize(y, "Y").AsConstructorArgument(1);
+        }
+    }
+
+// ReSharper disable UnusedMember.Global
     public class RectangleSerializationMap : SerializationMap
+// ReSharper restore UnusedMember.Global
     {
         public RectangleSerializationMap()
             : base(typeof(Rectangle))
@@ -306,4 +316,6 @@ namespace DotSpatial.Serialization.Tests
             Serialize(height, "Height").AsConstructorArgument(3);
         }
     }
+
+    #endregion
 }
