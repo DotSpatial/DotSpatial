@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="FeatureListTests.cs" />
+    <Compile Include="PointShapefileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterTest.cs" />
@@ -256,6 +257,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\roads.shx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\states.dbf">

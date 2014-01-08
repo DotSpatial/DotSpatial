@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using DotSpatial.Topology;
 
@@ -83,7 +84,7 @@ namespace DotSpatial.Data
             MyExtent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
-            FillPoints(fileName, progressHandler);
+            FillPoints(fileName);
             ReadProjection();
         }
 
@@ -91,8 +92,7 @@ namespace DotSpatial.Data
         /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
         /// </summary>
         /// <param name="fileName">A string fileName</param>
-        /// <param name="progressHandler">A progress indicator</param>
-        private void FillPoints(string fileName, IProgressHandler progressHandler)
+        private void FillPoints(string fileName)
         {
             // Check to ensure the fileName is not null
             if (fileName == null)
@@ -118,88 +118,96 @@ namespace DotSpatial.Data
                 throw new ApplicationException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
             }
 
-            // This will set up a reader so that we can read values in huge chunks, which is much
-            // faster than one value at a time.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(fileName, progressHandler);
-
-            if (bbReader.FileLength == 100)
+            if (new FileInfo(fileName).Length == 100)
             {
-                bbReader.Close();
                 // the file is empty so we are done reading
                 return;
             }
 
-            // Skip the shapefile header by skipping the first 100 bytes in the shapefile
-            bbReader.Seek(100, SeekOrigin.Begin);
-            int numShapes = shapeHeaders.Count;
-            byte[] bigEndian = new byte[numShapes * 8];
-            byte[] allCoords = new byte[numShapes * 16];
-            bool isM = false;
-            bool isZ = false;
+            var numShapes = shapeHeaders.Count;
+            double[] m = null;
+            double[] z = null;
+            var vert = new double[2 * numShapes]; // X,Y
+
             if (header.ShapeType == ShapeType.PointM || header.ShapeType == ShapeType.PointZ)
             {
-                isM = true;
+                m = new double[numShapes];
             }
             if (header.ShapeType == ShapeType.PointZ)
             {
-                isZ = true;
-            }
-            byte[] allM = new byte[8];
-            if (isM) allM = new byte[numShapes * 8];
-            byte[] allZ = new byte[8];
-            if (isZ) allZ = new byte[numShapes * 8];
-            for (int shp = 0; shp < numShapes; shp++)
-            {
-                // Read from the index file because some deleted records
-                // might still exist in the .shp file.
-                long offset = (shapeHeaders[shp].ByteOffset);
-                bbReader.Seek(offset, SeekOrigin.Begin);
-                bbReader.Read(bigEndian, shp * 8, 8);
-                bbReader.ReadInt32(); // Skip ShapeType.  Null shapes may break this.
-                //bbReader.Seek(4, SeekOrigin.Current);
-                bbReader.Read(allCoords, shp * 16, 16);
-                if (isZ)
-                {
-                    bbReader.Read(allZ, shp * 8, 8);
-                }
-                if (isM)
-                {
-                    bbReader.Read(allM, shp * 8, 8);
-                }
-                ShapeRange shape = new ShapeRange(FeatureType.Point)
-                                   {
-                                       StartIndex = shp,
-                                       ContentLength = 8,
-                                       NumPoints = 1,
-                                       NumParts = 1
-                                   };
-                ShapeIndices.Add(shape);
-            }
-            double[] vert = new double[2 * numShapes];
-            Buffer.BlockCopy(allCoords, 0, vert, 0, numShapes * 16);
-            Vertex = vert;
-            if (isM)
-            {
-                double[] m = new double[numShapes];
-                Buffer.BlockCopy(allM, 0, m, 0, numShapes * 8);
-                M = m;
-            }
-            if (isZ)
-            {
-                double[] z = new double[numShapes];
-                Buffer.BlockCopy(allZ, 0, z, 0, numShapes * 8);
-                Z = z;
-            }
-            for (int shp = 0; shp < numShapes; shp++)
-            {
-                PartRange part = new PartRange(vert, shp, 0, FeatureType.Point);
-                part.NumVertices = 1;
-                ShapeRange shape = ShapeIndices[shp];
-                shape.Parts.Add(part);
-                shape.Extent = new Extent(new[] { vert[shp * 2], vert[shp * 2 + 1], vert[shp * 2], vert[shp * 2 + 1] });
+                z = new double[numShapes];
             }
 
-            bbReader.Dispose();
+            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                for (var shp = 0; shp < numShapes; shp++)
+                {
+                    reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
+
+                    var recordNumber = reader.ReadInt32(Endian.BigEndian);
+                    Debug.Assert(recordNumber == shp + 1);
+                    var contentLen = reader.ReadInt32(Endian.BigEndian);
+                    Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
+
+                    var shapeType = (ShapeType) reader.ReadInt32(Endian.LittleEndian);
+                    if (shapeType == ShapeType.NullShape)
+                    {
+                        if (m != null)
+                        {
+                            m[shp] = double.MinValue;
+                        }
+                        goto fin;
+                    }
+
+                    // Read X
+                    var ind = 4;
+                    vert[shp*2] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                    ind += 8;
+
+                    // Read Y
+                    vert[shp*2 + 1] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                    ind += 8;
+
+                    // Read Z
+                    if (z != null)
+                    {
+                        z[shp] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                        ind += 8;
+                    }
+
+                    // Read M
+                    if (m != null)
+                    {
+                        if (shapeHeaders[shp].ByteLength <= ind)
+                        {
+                            m[shp] = double.MinValue;
+                        }
+                        else
+                        {
+                            m[shp] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                            ind += 8;
+                        }
+                    }
+
+               fin:
+                    var shape = new ShapeRange(FeatureType.Point)
+                    {
+                        StartIndex = shp,
+                        ContentLength = shapeHeaders[shp].ContentLength,
+                        NumPoints = 1,
+                        NumParts = 1
+                    };
+                    ShapeIndices.Add(shape);
+                    var part = new PartRange(vert, shp, 0, FeatureType.Point) {NumVertices = 1};
+                    shape.Parts.Add(part);
+                    shape.Extent = new Extent(new[] {vert[shp*2], vert[shp*2 + 1], vert[shp*2], vert[shp*2 + 1]});
+
+                }
+            }
+
+            Vertex = vert;
+            M = m;
+            Z = z;
         }
 
         /// <inheritdoc />
