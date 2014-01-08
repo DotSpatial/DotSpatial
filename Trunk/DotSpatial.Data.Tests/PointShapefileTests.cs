@@ -16,5 +16,13 @@ namespace DotSpatial.Data.Tests
             Assert.IsNotNull(target.M);
             Assert.IsTrue(target.M.All(d => d < -1e38));
         }
+
+        [Test]
+        public void CanLoadShapePointWithNullShapes()
+        {
+            const string path = @"Data\Shapefiles\Yield\Yield 2012.shp";
+            var target = new PointShapefile(path);
+            Assert.IsNotNull(target);
+        }
     }
 }
