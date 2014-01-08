@@ -148,7 +148,7 @@ namespace DotSpatial.Projections.Transforms
                 string[] esriNames = transform.Name.Split(';');
                 foreach (string esriName in esriNames)
                 {
-                    if (name == esriName)
+                    if (name.Replace("_", " ") == esriName.Replace("_", " ")) // allow alternative names with spaces instead underscores i.e. "Transverse_Mercator" == "Transverse Mercator"
                     {
                         ITransform copy = transform.Copy();
                         // kellison: The Name property in the copy can have multiples separated by semi-colons at this point.
