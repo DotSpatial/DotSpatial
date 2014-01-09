@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
+using DotSpatial.Topology;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
