@@ -82,6 +82,7 @@
     <Compile Include="AttributeTableTests.cs" />
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="FeatureListTests.cs" />
+    <Compile Include="LineShapefileTests.cs" />
     <Compile Include="PointShapefileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
@@ -198,6 +199,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Grids\elev_cm_ESRI\info\arc0011r.001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Archi\ARCHI_13-01-01.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Archi\ARCHI_13-01-01.shp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\Archi\ARCHI_13-01-01.shx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\cities.dbf">

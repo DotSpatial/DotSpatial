@@ -160,7 +160,7 @@ namespace DotSpatial.Data
             // Check to ensure the fileName is not null
             if (fileName == null)
             {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
+                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
             }
 
             if (File.Exists(fileName) == false)
@@ -223,8 +223,7 @@ namespace DotSpatial.Data
                 // might still exist in the .shp file.
                 long offset = (shapeHeaders[shp].ByteOffset);
                 bbReader.Seek(offset, SeekOrigin.Begin);
-
-                // time: 200 ms
+                
                 ShapeRange shape = new ShapeRange(FeatureType.Line)
                                    {
                                        RecordNumber = bbReader.ReadInt32(false),
@@ -235,7 +234,7 @@ namespace DotSpatial.Data
 
                 if (shape.ShapeType == ShapeType.NullShape)
                 {
-                    continue;
+                    goto fin;
                 }
                 bbReader.Read(allBounds, shp * 32, 32);
                 shape.NumParts = bbReader.ReadInt32();   // Byte 44      NumParts    Integer     1      Little
@@ -284,8 +283,10 @@ namespace DotSpatial.Data
                 }
 
                 // Now that we have read all the values, create the geometries from the points and parts arrays.
+            fin:
                 ShapeIndices.Add(shape);
             }
+
             double[] vert = allCoords.ToDoubleArray();
             Vertex = vert;
             if (isM) M = allM.ToDoubleArray();
@@ -386,6 +387,7 @@ namespace DotSpatial.Data
                     }
                 }
                 contentLength += 2 * parts.Count;
+                
                 if (Header.ShapeType == ShapeType.PolyLine)
                 {
                     contentLength += points.Count * 8; // x, y
@@ -544,22 +546,26 @@ namespace DotSpatial.Data
             foreach (ShapeRange shape in ShapeIndices)
             {
                 offset += contentLength; // adding the previous content length from each loop calculates the word offset
-
+                
                 contentLength = 22;
                 contentLength += 2 * shape.Parts.Count;
-                if (Header.ShapeType == ShapeType.PolyLine)
+
+                switch (shape.ShapeType)
                 {
-                    contentLength += shape.NumPoints * 8; // x, y
-                }
-                if (Header.ShapeType == ShapeType.PolyLineM)
-                {
-                    contentLength += 8; // mmin mmax
-                    contentLength += shape.NumPoints * 12; // x, y, m
-                }
-                if (Header.ShapeType == ShapeType.PolyLineZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += shape.NumPoints * 16; // x, y, z, m
+                    case ShapeType.PolyLine:
+                        contentLength += shape.NumPoints * 8; // x, y
+                        break;
+                    case ShapeType.PolyLineM:
+                        contentLength += 8; // mmin mmax
+                        contentLength += shape.NumPoints * 12; // x, y, m
+                        break;
+                    case ShapeType.PolyLineZ:
+                        contentLength += 16; // mmin, mmax, zmin, zmax
+                        contentLength += shape.NumPoints * 16; // x, y, z, m
+                        break;
+                    case ShapeType.NullShape:
+                        contentLength = 2;
+                        break;
                 }
 
                 //                                              Index File
@@ -575,11 +581,12 @@ namespace DotSpatial.Data
                 //                                              ---------------------------------------------------------
                 shpStream.WriteBe(fid + 1);                     // Byte 0       Record Number       Integer     1           Big
                 shpStream.WriteBe(contentLength);               // Byte 4       Content Length      Integer     1           Big
-                shpStream.WriteLe((int)Header.ShapeType);       // Byte 8       Shape Type 3        Integer     1           Little
-                if (Header.ShapeType == ShapeType.NullShape)
+                shpStream.WriteLe((int)shape.ShapeType);        // Byte 8       Shape Type 3        Integer     1           Little
+                if (shape.ShapeType == ShapeType.NullShape)
                 {
-                    continue;
+                    goto fin;
                 }
+
                 shpStream.WriteLe(shape.Extent.MinX);             // Byte 12      Xmin                Double      1           Little
                 shpStream.WriteLe(shape.Extent.MinY);             // Byte 20      Ymin                Double      1           Little
                 shpStream.WriteLe(shape.Extent.MaxX);             // Byte 28      Xmax                Double      1           Little
@@ -615,6 +622,8 @@ namespace DotSpatial.Data
                         shpStream.WriteLe(M, start, count);
                     }
                 }
+
+            fin:
 
                 fid++;
                 offset += 4; // header bytes

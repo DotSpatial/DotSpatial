@@ -1261,7 +1261,10 @@ namespace DotSpatial.Data
             {
                 geom = FeatureGeometryFactory.CreateLineString(lines[0].Coordinates);
             }
-            else return null;
+            else
+            {
+                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[]{});
+            }
 
             Feature f = new Feature(geom)
                             {
@@ -2264,7 +2267,8 @@ namespace DotSpatial.Data
             _features.SuspendEvents();
             for (int shp = 0; shp < ShapeIndices.Count; shp++)
             {
-                _features.Add(GetFeature(shp));
+                var f = GetFeature(shp);
+                _features.Add(f);
                 if (AttributesPopulated)
                 {
                     // Don't force population if we haven't populated yet, but
