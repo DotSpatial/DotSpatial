@@ -61,8 +61,7 @@ namespace DotSpatial.Data
         public ByteBlock(int blockSize)
         {
             BlockSize = blockSize;
-            Blocks = new List<byte[]>();
-            Blocks.Add(new byte[BlockSize]);
+            Blocks = new List<byte[]> {new byte[BlockSize]};
         }
 
         #endregion
@@ -77,23 +76,7 @@ namespace DotSpatial.Data
         /// <param name="stream">The file or data stream to read from.</param>
         public void Read(int numBytes, Stream stream)
         {
-            if (Offset + numBytes < BlockSize)
-            {
-                if (numBytes > 0)
-                {
-                    stream.Read(Blocks[CurrentBlock], Offset, numBytes);
-                    Offset += numBytes;
-                }
-                return;
-            }
-            int firstLen = BlockSize - Offset;
-            int secondLen = numBytes - firstLen;
-            stream.Read(Blocks[CurrentBlock], Offset, firstLen);
-            Offset = 0;
-            CurrentBlock += 1;
-            if (Blocks.Count <= CurrentBlock) Blocks.Add(new byte[BlockSize]);
-            stream.Read(Blocks[CurrentBlock], Offset, secondLen);
-            Offset += secondLen;
+            DoRead(numBytes, (bytes, ind, count) => stream.Read(bytes, ind, count));
         }
 
         /// <summary>
@@ -104,23 +87,32 @@ namespace DotSpatial.Data
         /// <param name="reader"></param>
         public void Read(int numBytes, BufferedBinaryReader reader)
         {
-            if (Offset + numBytes < BlockSize)
+            DoRead(numBytes, reader.Read);
+        }
+
+        private void DoRead(int numBytes, Action<byte[], int, int> reader)
+        {
+            while (true)
             {
-                if (numBytes > 0)
+                if (Offset + numBytes < BlockSize)
                 {
-                    reader.Read(Blocks[CurrentBlock], Offset, numBytes);
-                    Offset += numBytes;
+                    if (numBytes > 0)
+                    {
+                        reader(Blocks[CurrentBlock], Offset, numBytes);
+                        Offset += numBytes;
+                    }
+                    return;
                 }
-                return;
+                var firstLen = BlockSize - Offset;
+                var secondLen = numBytes - firstLen;
+                reader(Blocks[CurrentBlock], Offset, firstLen);
+                Offset = 0;
+                CurrentBlock += 1;
+                if (Blocks.Count <= CurrentBlock) Blocks.Add(new byte[BlockSize]);
+
+                // Read remaining parts
+                numBytes = secondLen;
             }
-            int firstLen = BlockSize - Offset;
-            int secondLen = numBytes - firstLen;
-            reader.Read(Blocks[CurrentBlock], Offset, firstLen);
-            Offset = 0;
-            CurrentBlock += 1;
-            if (Blocks.Count <= CurrentBlock) Blocks.Add(new byte[BlockSize]);
-            reader.Read(Blocks[CurrentBlock], Offset, secondLen);
-            Offset += secondLen;
         }
 
         /// <summary>
@@ -158,12 +150,8 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public int[] ToIntArray()
         {
-            int[] result = new int[IntOffset()];
-            for (int iblock = 0; iblock < CurrentBlock; iblock++)
-            {
-                Buffer.BlockCopy(Blocks[iblock], 0, result, (BlockSize * iblock), BlockSize);
-            }
-            Buffer.BlockCopy(Blocks[CurrentBlock], 0, result, (BlockSize * CurrentBlock), Offset);
+            var result = new int[IntOffset()];
+            CopyBlocksToArray(result);
             return result;
         }
 
@@ -173,18 +161,19 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public double[] ToDoubleArray()
         {
-            double[] result = new double[DoubleOffset()];
-            for (int iblock = 0; iblock < CurrentBlock; iblock++)
-            {
-                Buffer.BlockCopy(Blocks[iblock], 0, result, (BlockSize * iblock), BlockSize);
-            }
-            Buffer.BlockCopy(Blocks[CurrentBlock], 0, result, (BlockSize * CurrentBlock), Offset);
+            var result = new double[DoubleOffset()];
+            CopyBlocksToArray(result);
             return result;
         }
 
-        #endregion
-
-        #region Properties
+        private void CopyBlocksToArray(Array dest)
+        {
+            for (var iblock = 0; iblock < CurrentBlock; iblock++)
+            {
+                Buffer.BlockCopy(Blocks[iblock], 0, dest, (BlockSize * iblock), BlockSize);
+            }
+            Buffer.BlockCopy(Blocks[CurrentBlock], 0, dest, (BlockSize * CurrentBlock), Offset);   
+        }
 
         #endregion
     }

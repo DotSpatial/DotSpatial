@@ -84,6 +84,7 @@
     <Compile Include="FeatureListTests.cs" />
     <Compile Include="LineShapefileTests.cs" />
     <Compile Include="PointShapefileTests.cs" />
+    <Compile Include="PolygonShapefileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterTest.cs" />
@@ -244,6 +245,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\lakes.shx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\nos80k\nos80k.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\nos80k\nos80k.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\nos80k\nos80k.shp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\nos80k\nos80k.shx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shapefiles\rivers.dbf">
