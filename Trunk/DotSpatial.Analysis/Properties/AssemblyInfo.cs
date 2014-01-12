@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Analysis")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2013")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2013-14")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -31,6 +31,5 @@ using System.Runtime.InteropServices;
 
 
 [assembly: Guid("f2aa48df-b877-40a9-853d-e0fd5b38f0c7")]
-[assembly: AssemblyVersion("1.5")]
-[assembly: AssemblyInformationalVersion("1.5 Experimental Release")]
-[assembly: AssemblyFileVersion("1.5.1.0")]
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]

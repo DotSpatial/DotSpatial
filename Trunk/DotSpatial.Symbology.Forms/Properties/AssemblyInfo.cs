@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Symbology.Forms")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2010-2012")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2010-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -39,5 +39,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d73f1a25-3f64-4174-a480-93926db72fbf")]
 
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]

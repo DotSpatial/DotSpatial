@@ -100,16 +100,17 @@ namespace DotSpatial.Examples.DemoCustomLayer
         /// <param name="regions">The geographic regions to draw</param>
         public virtual void DrawRegions(MapArgs args, List<Extent> regions)
         {
+            double minX = args.MinX;
+            double maxY = args.MaxY;
+            double dx = args.Dx;
+            double dy = args.Dy;
+            if (Double.IsInfinity(dx) || Double.IsInfinity(dy)) return;
+
             foreach (Extent boundingBox in regions)
             {
                 Graphics g = args.Device ?? Graphics.FromImage(_backBuffer);
                 Matrix origTransform = g.Transform;
                 FeatureType featureType = FeatureType.Point;
-
-                double minX = args.MinX;
-                double maxY = args.MaxY;
-                double dx = args.Dx;
-                double dy = args.Dy;
 
                 //reads the point array from the data source
                 //DataSet implements or uses IShapeSource to read the points that are within the bounding box
@@ -335,6 +336,11 @@ namespace DotSpatial.Examples.DemoCustomLayer
         {
             get { return _bufferRectangle; }
             set { _bufferRectangle = value; }
+        }
+
+        public override Extent Extent
+        {
+            get { return DataSet.Extent; }
         }
 
         #endregion

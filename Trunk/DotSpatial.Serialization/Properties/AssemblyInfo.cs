@@ -9,8 +9,6 @@
 
  
 
- 
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -20,7 +18,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Serialization")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2013")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2013-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -29,6 +27,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("f5b25381-8f89-4abb-8172-a3eff691719c")]
 
-[assembly: AssemblyVersion("1.5")]
-[assembly: AssemblyInformationalVersion("1.5 Experimental Release")]
-[assembly: AssemblyFileVersion("1.5.1.0")]
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]

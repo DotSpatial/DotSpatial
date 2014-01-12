@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.WebMap")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011-2013")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

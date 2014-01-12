@@ -34,6 +34,9 @@ using System.Runtime.ConstrainedExecution;
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning")]
 
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]
+
 #if PocketPC
     [assembly: AssemblyTitle("DotSpatial.Positioning.PocketPC")]
 #else
@@ -46,8 +49,7 @@ using System.Runtime.ConstrainedExecution;
 
 #if Framework40
 // .NET Framework 4.0
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+
 [assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2010")]
 #elif Framework30
 		// .NET Framework 3.5

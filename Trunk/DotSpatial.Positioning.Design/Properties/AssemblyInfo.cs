@@ -35,8 +35,8 @@ using System.Runtime.ConstrainedExecution;
 [assembly: AssemblyProduct("DotSpatial.Positioning.Design")]
 [assembly: AssemblyTitle("DotSpatial.Positioning.Design")]
 
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]
 
 /* The version of the assembly depends on the framework version.  Design-Time assemblies
  * have no revision number because that would require much code change for each release.

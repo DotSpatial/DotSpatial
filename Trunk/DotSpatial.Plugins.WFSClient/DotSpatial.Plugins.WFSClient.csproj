@@ -103,9 +103,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SupportFiles\Renci.Data.Interop.dll" />
   </ItemGroup>
   <ItemGroup>

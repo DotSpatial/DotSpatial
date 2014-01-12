@@ -1,4 +1,4 @@
-﻿namespace DotSpatial.Examples.BasicDesktopMapping
+﻿namespace DotSpatial.Examples.LoadingExtensions
 {
     public partial class Form1
     {

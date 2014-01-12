@@ -34,8 +34,8 @@ using System.Runtime.ConstrainedExecution;
 [assembly: AssemblyProduct("DotSpatial.Positioning.Forms")]
 
 /* The version will crank up depending on how much the code has changed. */
-[assembly: AssemblyVersion("0.11.9.6")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.6")]
+[assembly: AssemblyFileVersion("1.6")]
 
 /* The title of the assembly varies depending on whether the assembly is for design-time use,
  * and whether the assembly targets a desktop or mobile device.

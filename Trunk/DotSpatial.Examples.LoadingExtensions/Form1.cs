@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 
-namespace DotSpatial.Examples.BasicDesktopMapping
+namespace DotSpatial.Examples.LoadingExtensions
 {
     public partial class Form1 : Form
     {

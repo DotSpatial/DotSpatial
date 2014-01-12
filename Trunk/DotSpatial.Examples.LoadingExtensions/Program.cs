@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DotSpatial.Examples.BasicDesktopMapping
+namespace DotSpatial.Examples.LoadingExtensions
 {
     internal static class Program
     {
