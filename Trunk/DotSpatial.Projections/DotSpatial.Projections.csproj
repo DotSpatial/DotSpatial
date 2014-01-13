@@ -41,7 +41,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -368,15 +368,13 @@
   <ItemGroup>
     <None Include="AuthorityCodes\AuthorityCodeToProj4.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\Readme.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>cd $(ProjectDir)
-if not exist DeflateStreamUtility.exe csc DeflateStreamUtility.cs
-deflatestreamutility AuthorityCodes\AuthorityCodeToProj4.txt
-rem cd $(ProjectDir)AuthorityCodes
-rem zip &lt; AuthorityCodeToProj4.txt &gt; AuthorityCodeToProj4.zip
-cd ..
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

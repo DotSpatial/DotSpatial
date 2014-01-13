@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DotSpatial.Analysis")]
+[assembly: AssemblyTitle("DotSpatial.Mono")]
 [assembly:
     AssemblyDescription(
-        "Allows DotSpatial to check if it is being run on Mono or not.")]
+        "DotSpatial Mono tools.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Mono")]

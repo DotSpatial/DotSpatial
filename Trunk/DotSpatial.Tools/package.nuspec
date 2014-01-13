@@ -13,16 +13,13 @@
     <summary />
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
-    <!--<dependencies>
+    <dependencies>
       <dependency id="DotSpatial.Analysis" />
       <dependency id="DotSpatial.Data" />
       <dependency id="DotSpatial.Extensions" />
       <dependency id="DotSpatial.Modeling.Forms" />
       <dependency id="DotSpatial.Projections" />
       <dependency id="DotSpatial.Topology" />
-    </dependencies>-->
-    <dependencies>
-      <dependency id="DotSpatial.Plugins.ToolManager"/>
     </dependencies>
   </metadata>
 </package>

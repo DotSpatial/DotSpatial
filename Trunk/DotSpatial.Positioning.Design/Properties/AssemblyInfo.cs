@@ -14,20 +14,15 @@
 // ********************************************************************************************************
 using System;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Security;
 
-#if !PocketPC && Framework20
-
-using System.Runtime.ConstrainedExecution;
-
-#endif
-
 /* These assembly attributes will be the same regardless of the product. */
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyCompany("DotSpatial")]
+[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyCopyright("This source code has been released to the public domain.")]
 [assembly: AssemblyTrademark("")]
 

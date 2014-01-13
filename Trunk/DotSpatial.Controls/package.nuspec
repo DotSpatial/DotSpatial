@@ -18,6 +18,7 @@
       <dependency id="DotSpatial.Data.Forms" />
       <dependency id="DotSpatial.Extensions" />
       <dependency id="DotSpatial.Modeling.Forms" />
+      <dependency id="DotSpatial.Mono" />
       <dependency id="DotSpatial.Projections" />
       <dependency id="DotSpatial.Projections.Forms" />
       <dependency id="DotSpatial.Serialization" />
