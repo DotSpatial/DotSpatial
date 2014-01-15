@@ -235,6 +235,21 @@
     <None Include="Data\Shapefiles\counties.shx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Shapefiles\DateShapefile\DateShapefile.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\DateShapefile\DateShapefile.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\DateShapefile\DateShapefile.qpj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\DateShapefile\DateShapefile.shp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shapefiles\DateShapefile\DateShapefile.shx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Shapefiles\lakes.dbf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

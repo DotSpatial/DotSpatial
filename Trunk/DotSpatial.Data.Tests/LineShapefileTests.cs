@@ -19,7 +19,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         [TestCase(false)]
         [TestCase(true)]
-        public void CaExportLineShapeWithNullShapes(bool indexMode)
+        public void CanExportLineShapeWithNullShapes(bool indexMode)
         {
             const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
             var target = new LineShapefile(path);

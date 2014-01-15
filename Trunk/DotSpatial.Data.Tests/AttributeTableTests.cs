@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -33,6 +34,17 @@ namespace DotSpatial.Data.Tests
             {
                 File.Delete(fileName);
             }
+        }
+
+        [Test]
+        public void CanReadDataRowWithZeroDates()
+        {
+            const string path = @"Data\Shapefiles\DateShapefile\DateShapefile.dbf";
+            var at = new AttributeTable(path);
+            var dt = at.SupplyPageOfData(0, 1);
+            Assert.IsNotNull(dt);
+            Assert.IsNotNull(dt.Rows[0]);
+            Assert.AreEqual(DBNull.Value, dt.Rows[0]["datefiled"]);
         }
     }
 }

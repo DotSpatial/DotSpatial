@@ -79,11 +79,6 @@ namespace DotSpatial.Data
 
                 myStream.Seek(offset, SeekOrigin.Current);
                 byte[] byteContent = myReader.ReadBytes(length);
-                if (byteContent.Length < length)
-                {
-                    length = byteContent.Length;
-                }
-
                 DataTable result = new DataTable();
                 foreach (Field field in _columns)
                 {
@@ -1319,10 +1314,8 @@ namespace DotSpatial.Data
                 "Cannot parse {0} at row {1:D}, column {2:D} ({3}) in file {4} using field type {5}, and no DataTable to upgrade column";
 
             // find the field type
-            char tempFieldType = field.TypeCharacter;
-
             object tempObject = DBNull.Value;
-            switch (tempFieldType)
+            switch (field.TypeCharacter)
             {
                 case 'L': // logical data type, one character (T, t, F, f, Y, y, N, n)
 
@@ -1352,7 +1345,16 @@ namespace DotSpatial.Data
                     tempString = new string(cBuffer, 6, 2);
                     if (int.TryParse(tempString, out day) == false) break;
 
-                    tempObject = new DateTime(year, month, day);
+                    try
+                    {
+                        tempObject = new DateTime(year, month, day);
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        // Ignore invalid or out of range dates
+                        tempObject = DBNull.Value;
+                    }
+                    
                     break;
 
                 case 'F':
@@ -1363,7 +1365,7 @@ namespace DotSpatial.Data
                     break;
 
                 default:
-                    throw new NotSupportedException("Do not know how to parse Field type " + tempFieldType);
+                    throw new NotSupportedException("Do not know how to parse Field type " + field.TypeCharacter);
             }
             return tempObject;
         }
