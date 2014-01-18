@@ -26,6 +26,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
@@ -856,6 +857,70 @@ namespace DotSpatial.Symbology
                     result.Add(size);
                 }
             }
+            return result;
+        }
+
+
+        /// <summary>
+        /// Calculates the unique colors as a scheme
+        /// </summary>
+        /// <param name="fs">The featureset with the data Table definition</param>
+        /// <param name="uniqueField">The unique field</param>
+        /// <param name="categoryFunc">Func for creating category</param>
+        protected Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField, Func<Color, IFeatureCategory> categoryFunc)
+        {
+            if (categoryFunc == null) throw new ArgumentNullException("categoryFunc");
+
+            var result = new Hashtable(); // a hashtable of colors
+            var dt = fs.DataTable;
+            var vals = new ArrayList();
+            var i = 0;
+            var rnd = new Random();
+            foreach (DataRow row in dt.Rows)
+            {
+                var ind = -1;
+                if (uniqueField != "FID")
+                {
+                    if (vals.Contains(row[uniqueField]) == false)
+                    {
+                        ind = vals.Add(row[uniqueField]);
+                    }
+                }
+                else
+                {
+                    ind = vals.Add(i);
+                    i++;
+                }
+                if (ind == -1) continue;
+
+                var item = vals[ind];
+                var c = rnd.NextColor();
+                while (result.ContainsKey(c))
+                {
+                    c = rnd.NextColor();
+                }
+                var cat = categoryFunc(c);
+                string flt = "[" + uniqueField + "] = ";
+                if (uniqueField == "FID")
+                {
+                    flt += item;
+                }
+                else
+                {
+                    if (dt.Columns[uniqueField].DataType == typeof(string))
+                    {
+                        flt += "'" + item + "'";
+                    }
+                    else
+                    {
+                        flt += Convert.ToString(item, CultureInfo.InvariantCulture);
+                    }
+                }
+                cat.FilterExpression = flt;
+                AddCategory(cat);
+                result.Add(c, item);
+            }
+       
             return result;
         }
 

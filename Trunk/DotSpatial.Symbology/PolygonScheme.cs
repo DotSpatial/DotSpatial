@@ -22,7 +22,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Data;
@@ -70,56 +69,7 @@ namespace DotSpatial.Symbology
         /// <param name="uniqueField">The unique field.</param>
         public Hashtable GenerateUniqueColors(IFeatureSet fs, string uniqueField)
         {
-            Hashtable result = new Hashtable(); // a hashtable of colors
-            DataTable dt = fs.DataTable;
-            ArrayList vals = new ArrayList();
-            int i = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                if (uniqueField != "FID")
-                {
-                    if (vals.Contains(row[uniqueField]) == false)
-                    {
-                        vals.Add(row[uniqueField]);
-                    }
-                }
-                else
-                {
-                    vals.Add(i);
-                    i++;
-                }
-            }
-
-            Random rnd = new Random();
-            foreach (object item in vals)
-            {
-                Color c = rnd.NextColor();
-                while (result.ContainsKey(c))
-                {
-                    c = rnd.NextColor();
-                }
-                PolygonCategory cat = new PolygonCategory(c, c, 1);
-                string flt = "[" + uniqueField + "] = ";
-                if (uniqueField == "FID")
-                {
-                    flt += item;
-                }
-                else
-                {
-                    if (dt.Columns[uniqueField].DataType == typeof(string))
-                    {
-                        flt += "'" + item + "'";
-                    }
-                    else
-                    {
-                        flt += item.ToString();
-                    }
-                }
-                cat.FilterExpression = flt;
-                Categories.Add(cat);
-                result.Add(c, item);
-            }
-            return result;
+            return GenerateUniqueColors(fs, uniqueField, color => new PolygonCategory(color, color, 1));
         }
 
         private void Configure()
