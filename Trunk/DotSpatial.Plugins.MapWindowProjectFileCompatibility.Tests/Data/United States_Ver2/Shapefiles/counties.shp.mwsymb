@@ -1,0 +1,10 @@
+<MapWinGIS OcxVersion="4.8" FileType="LayerFile" FileVersion="0" Description="">
+  <Layer LayerType="Shapefile" LayerName="County Boundaries" LayerVisible="1" LayerKey="" DynamicVisibility="1" MinVisibleScale="1.000000" MaxVisibleScale="4901750.000000" Filename="">
+    <ShapefileClass>
+      <DefaultDrawingOptions FillBgColor="0" FillColor="2928376" FillVisible="0" LineColor="4224439" LineWidth="2.000000" PointShapeRatio="1.000000" />
+      <ShapefileCategoriesClass />
+      <LabelsClass FrameBackColor="16777215" FrameOutlineColor="1971946" FrameType="1" FrameVisible="-1" Generated="1" MaxVisibleScale="4901750.000000" MinVisibleScale="1.000000" AutoOffset="0" DynamicVisibility="-1" AvoidCollisions="0" Positioning="1" Expression="[NAME] " />
+      <ChartsClass ValuesFontName="" Visible="-1" />
+    </ShapefileClass>
+  </Layer>
+</MapWinGIS>

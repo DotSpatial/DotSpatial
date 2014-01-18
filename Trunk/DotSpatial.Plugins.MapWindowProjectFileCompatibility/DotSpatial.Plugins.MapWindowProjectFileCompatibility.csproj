@@ -67,6 +67,8 @@
     <Compile Include="OpenProjectMwa.cs" />
     <Compile Include="OpenProjectMwprj.cs" />
     <Compile Include="OpenProjectZip.cs" />
+    <Compile Include="ProjectFileVer1Deserializer.cs" />
+    <Compile Include="ProjectFileVer2Deserializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RetrieveLegacySymbolizationPlugin.cs" />
     <Compile Include="SaveProjectAsZip.cs" />
