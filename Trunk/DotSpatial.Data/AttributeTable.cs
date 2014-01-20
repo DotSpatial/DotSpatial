@@ -563,9 +563,9 @@ namespace DotSpatial.Data
         {
             // We allow passing in either DataRow values or Dictionary, so figure out which
             Dictionary<string, object> dataDictionary = null;
-            DataRow dataRow = values as DataRow;
+            var dataRow = values as DataRow;
             if (null == dataRow)
-                dataDictionary = values as Dictionary<string, object>;
+                dataDictionary = (Dictionary<string, object>)values;
 
             int rawRow = GetFileIndex(index);
             _writer.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
@@ -574,51 +574,54 @@ namespace DotSpatial.Data
             for (int fld = 0; fld < _columns.Count; fld++)
             {
                 string name = _columns[fld].ColumnName;
-                // ReSharper disable PossibleNullReferenceException
-                object columnValue = dataRow != null ? dataRow[name] : dataDictionary[name];
-                // ReSharper restore PossibleNullReferenceException
-                if (columnValue == null || columnValue is DBNull)
-                    WriteSpaces(_columns[fld].Length);
-                else if (columnValue is decimal)
-                    _writer.Write(ncs[fld].ToChar((decimal)columnValue));
-                else if (columnValue is double)
-                {
-                    //Write((double)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
-                    char[] test = ncs[fld].ToChar((double)columnValue);
-                    _writer.Write(test);
-                }
-                else if (columnValue is float)
-                {
-                    //Write((float)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
-                    Field currentField = _columns[fld];
-                    if (currentField.TypeCharacter == 'F')
-                    {
-                        string val = ((float)columnValue).ToString();
-                        Write(val, currentField.Length);
-                    }
-                    else
-                    {
-                        char[] test = ncs[fld].ToChar((float)columnValue);
-                        _writer.Write(test);
-                    }
-                }
-                else if (columnValue is int || columnValue is short || columnValue is long || columnValue is byte)
-                    Write(Convert.ToInt64(columnValue), _columns[fld].Length, _columns[fld].DecimalCount);
-                else if (columnValue is bool)
-                    Write((bool)columnValue);
-                else if (columnValue is string)
-                {
-                    int length = _columns[fld].Length;
-                    Write((string)columnValue, length);
-                }
-                else if (columnValue is DateTime)
-                    WriteDate((DateTime)columnValue);
-                else
-                    Write(columnValue.ToString(), _columns[fld].Length);
+                var columnValue = dataRow != null ? dataRow[name] : dataDictionary[name];
+                WriteColumnValue(columnValue, fld, ncs);
                 len -= _columns[fld].Length;
             }
             // If, for some reason the column lengths don't add up to the total record length, fill with spaces.
             if (len > 0) WriteSpaces(len);
+        }
+
+        private void WriteColumnValue(object columnValue, int fld, NumberConverter[] ncs)
+        {
+            if (columnValue == null || columnValue is DBNull)
+                WriteSpaces(_columns[fld].Length);
+            else if (columnValue is decimal)
+                _writer.Write(ncs[fld].ToChar((decimal) columnValue));
+            else if (columnValue is double)
+            {
+                //Write((double)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
+                char[] test = ncs[fld].ToChar((double) columnValue);
+                _writer.Write(test);
+            }
+            else if (columnValue is float)
+            {
+                //Write((float)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
+                Field currentField = _columns[fld];
+                if (currentField.TypeCharacter == 'F')
+                {
+                    string val = ((float) columnValue).ToString();
+                    Write(val, currentField.Length);
+                }
+                else
+                {
+                    char[] test = ncs[fld].ToChar((float) columnValue);
+                    _writer.Write(test);
+                }
+            }
+            else if (columnValue is int || columnValue is short || columnValue is long || columnValue is byte)
+                Write(Convert.ToInt64(columnValue), _columns[fld].Length, _columns[fld].DecimalCount);
+            else if (columnValue is bool)
+                Write((bool) columnValue);
+            else if (columnValue is string)
+            {
+                int length = _columns[fld].Length;
+                Write((string) columnValue, length);
+            }
+            else if (columnValue is DateTime)
+                WriteDate((DateTime) columnValue);
+            else
+                Write(columnValue.ToString(), _columns[fld].Length);
         }
 
         /// <summary>
@@ -757,7 +760,7 @@ namespace DotSpatial.Data
                 if (null != deletedRows)
                 {
                     _deletedRows = deletedRows;
-                    _hasDeletedRecords = _deletedRows.Count > 0 ? true : false;
+                    _hasDeletedRecords = _deletedRows.Count > 0;
                     return;
                 }
                 FileInfo fi = new FileInfo(_fileName);
@@ -1010,7 +1013,7 @@ namespace DotSpatial.Data
             if (_dataTable == null) return;
 
             // _writer.Write((byte)0x20); // the deleted flag
-            NumberConverter[] ncs = new NumberConverter[_columns.Count];
+            var ncs = new NumberConverter[_columns.Count];
             for (int i = 0; i < _columns.Count; i++)
             {
                 Field fld = _columns[i];
@@ -1024,44 +1027,7 @@ namespace DotSpatial.Data
                 {
                     string name = _columns[fld].ColumnName;
                     object columnValue = _dataTable.Rows[row][name];
-                    if (columnValue == null || columnValue is DBNull)
-                        WriteSpaces(_columns[fld].Length);
-                    else if (columnValue is decimal)
-                        _writer.Write(ncs[fld].ToChar((decimal)columnValue));
-                    else if (columnValue is double)
-                    {
-                        //Write((double)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
-                        char[] test = ncs[fld].ToChar((double)columnValue);
-                        _writer.Write(test);
-                    }
-                    else if (columnValue is float)
-                    {
-                        //Write((float)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
-                        Field currentField = _columns[fld];
-                        if (currentField.TypeCharacter == 'F')
-                        {
-                            string val = ((float)columnValue).ToString();
-                            Write(val, currentField.Length);
-                        }
-                        else
-                        {
-                            char[] test = ncs[fld].ToChar((float)columnValue);
-                            _writer.Write(test);
-                        }
-                    }
-                    else if (columnValue is int || columnValue is short || columnValue is long || columnValue is byte)
-                        Write(Convert.ToInt64(columnValue), _columns[fld].Length, _columns[fld].DecimalCount);
-                    else if (columnValue is bool)
-                        Write((bool)columnValue);
-                    else if (columnValue is string)
-                    {
-                        int length = _columns[fld].Length;
-                        Write((string)columnValue, length);
-                    }
-                    else if (columnValue is DateTime)
-                        WriteDate((DateTime)columnValue);
-                    else
-                        Write(columnValue.ToString(), _columns[fld].Length);
+                    WriteColumnValue(columnValue, fld, ncs);
                     len -= _columns[fld].Length;
                 }
                 // If, for some reason the column lengths don't add up to the total record length, fill with spaces.

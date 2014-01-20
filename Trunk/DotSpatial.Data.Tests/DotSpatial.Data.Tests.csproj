@@ -89,6 +89,7 @@
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterTest.cs" />
     <Compile Include="ReadWriteTests.cs" />
+    <Compile Include="ShapeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Grids\elev_cm_ESRI\elev_cm_Clip2.aux">

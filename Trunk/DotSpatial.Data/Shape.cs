@@ -66,27 +66,13 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="feature"></param>
         public Shape(IFeature feature)
+            : this((IBasicGeometry)feature)
         {
             if (Equals(feature, null))
                 throw new ArgumentNullException("feature");
-
             if (feature.NumPoints == 0)
-                throw new ArgumentOutOfRangeException("The IFeature.NumPoints of the parameter feature must be greater than 0.");
-
+                throw new ArgumentOutOfRangeException("feature", "The IFeature.NumPoints of the parameter feature must be greater than 0.");
             _attributes = feature.DataRow.ItemArray;
-            IList<Coordinate> coords = feature.Coordinates;
-            _vertices = new double[feature.NumPoints * 2];
-            _z = new double[feature.NumPoints];
-            _m = new double[feature.NumPoints];
-            for (int i = 0; i < coords.Count; i++)
-            {
-                Coordinate c = coords[i];
-                _vertices[i * 2] = c.X;
-                _vertices[i * 2 + 1] = c.Y;
-                _z[i] = c.Z;
-                _m[i] = c.M;
-            }
-            _shapeRange = ShapeRangeFromFeature(feature, _vertices);
         }
 
         /// <summary>
@@ -94,18 +80,18 @@ namespace DotSpatial.Data
         /// all by itself.  The attributes will be null.
         /// </summary>
         /// <param name="geometry">The geometry to create a shape from.</param>
-        public Shape(IGeometry geometry)
+        public Shape(IBasicGeometry geometry)
         {
             if (Equals(geometry, null))
                 throw new ArgumentNullException("geometry");
 
-            IList<Coordinate> coords = geometry.Coordinates;
+            var coords = geometry.Coordinates;
             _vertices = new double[geometry.NumPoints * 2];
             _z = new double[geometry.NumPoints];
             _m = new double[geometry.NumPoints];
-            for (int i = 0; i < coords.Count; i++)
+            for (var i = 0; i < coords.Count; i++)
             {
-                Coordinate c = coords[i];
+                var c = coords[i];
                 _vertices[i * 2] = c.X;
                 _vertices[i * 2 + 1] = c.Y;
                 _z[i] = c.Z;
@@ -122,25 +108,19 @@ namespace DotSpatial.Data
         {
             if (Equals(coord, null))
                 throw new ArgumentNullException("coord");
-
-            _shapeRange = new ShapeRange(FeatureType.Point);
-            _vertices = new double[2];
-            _vertices[0] = coord.X;
-            _vertices[1] = coord.Y;
+            
             if (!double.IsNaN(coord.Z))
             {
-                _z = new double[1];
-                _z[0] = coord.Z;
+                _z = new[] {coord.Z};
             }
             if (!double.IsNaN(coord.M))
             {
-                _z = new double[1];
-                _m[0] = coord.M;
+                _m = new[] {coord.M};
             }
-            const int offset = 0;
-            PartRange part = new PartRange(_vertices, 0, offset, FeatureType.Point);
-            part.NumVertices = 1;
-            _shapeRange.Parts.Add(part);
+
+            _shapeRange = new ShapeRange(FeatureType.Point);
+            _vertices = new [] {coord.X, coord.Y};
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) {NumVertices = 1});
             _shapeRange.Extent = new Extent(coord.X, coord.Y, coord.X, coord.Y);
         }
 
@@ -151,13 +131,8 @@ namespace DotSpatial.Data
         public Shape(Vertex coord)
         {
             _shapeRange = new ShapeRange(FeatureType.Point);
-            _vertices = new double[2];
-            _vertices[0] = coord.X;
-            _vertices[1] = coord.Y;
-            const int offset = 0;
-            PartRange part = new PartRange(_vertices, 0, offset, FeatureType.Point);
-            part.NumVertices = 1;
-            _shapeRange.Parts.Add(part);
+            _vertices = new [] { coord.X, coord.Y };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) {NumVertices = 1});
             _shapeRange.Extent = new Extent(coord.X, coord.Y, coord.X, coord.Y);
         }
 
@@ -165,29 +140,18 @@ namespace DotSpatial.Data
         /// Creates a clockwise polygon shape from an extent
         /// </summary>
         /// <param name="extent"></param>
-        public Shape(Extent extent)
+        public Shape(IExtent extent)
         {
             if (Equals(extent, null))
                 throw new ArgumentNullException("extent");
-
+            
             _shapeRange = new ShapeRange(FeatureType.Polygon);
-            _vertices = new double[8];
             double xMin = extent.MinX;
             double yMin = extent.MinY;
             double xMax = extent.MaxX;
             double yMax = extent.MaxY;
-            _vertices[0] = xMin;
-            _vertices[1] = yMax;
-            _vertices[2] = xMax;
-            _vertices[3] = yMax;
-            _vertices[4] = xMax;
-            _vertices[5] = yMin;
-            _vertices[6] = xMin;
-            _vertices[7] = yMin;
-            const int offset = 0;
-            PartRange part = new PartRange(_vertices, 0, offset, FeatureType.Polygon);
-            part.NumVertices = 4;
-            _shapeRange.Parts.Add(part);
+            _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
         }
 
         /// <summary>
@@ -200,23 +164,12 @@ namespace DotSpatial.Data
                 throw new ArgumentNullException("envelope");
 
             _shapeRange = new ShapeRange(FeatureType.Polygon);
-            _vertices = new double[8];
             double xMin = envelope.Minimum.X;
             double yMin = envelope.Minimum.Y;
             double xMax = envelope.Maximum.X;
             double yMax = envelope.Maximum.Y;
-            _vertices[0] = xMin;
-            _vertices[1] = yMax;
-            _vertices[2] = xMax;
-            _vertices[3] = yMax;
-            _vertices[4] = xMax;
-            _vertices[5] = yMin;
-            _vertices[6] = xMin;
-            _vertices[7] = yMin;
-            const int offset = 0;
-            PartRange part = new PartRange(_vertices, 0, offset, FeatureType.Polygon);
-            part.NumVertices = 4;
-            _shapeRange.Parts.Add(part);
+            _vertices = new[] {xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin};
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
         }
 
         #endregion
@@ -269,7 +222,7 @@ namespace DotSpatial.Data
             {
                 foreach (Vertex vertex in part)
                 {
-                    Coordinate c = new Coordinate(vertex.X, vertex.Y);
+                    var c = new Coordinate(vertex.X, vertex.Y);
                     return factory.CreatePoint(c);
                 }
             }
@@ -284,18 +237,10 @@ namespace DotSpatial.Data
         protected IGeometry FromMultiPoint(IGeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            List<Coordinate> coords = new List<Coordinate>();
-            foreach (PartRange part in _shapeRange.Parts)
+            var coords = new List<Coordinate>();
+            foreach (var part in _shapeRange.Parts)
             {
-                int i = part.StartIndex;
-                foreach (Vertex vertex in part)
-                {
-                    Coordinate c = new Coordinate(vertex.X, vertex.Y);
-                    coords.Add(c);
-                    if (M != null && M.Length != 0) c.M = M[i];
-                    if (Z != null && Z.Length != 0) c.Z = Z[i];
-                    i++;
-                }
+                GetCoordinates(part, coords);
             }
             return factory.CreateMultiPoint(coords);
         }
@@ -307,23 +252,32 @@ namespace DotSpatial.Data
         protected IGeometry FromLine(IGeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            List<IBasicLineString> lines = new List<IBasicLineString>();
-            foreach (PartRange part in _shapeRange.Parts)
+            var lines = new List<IBasicLineString>();
+            foreach (var part in _shapeRange.Parts)
             {
-                int i = part.StartIndex;
-                List<Coordinate> coords = new List<Coordinate>();
-                foreach (Vertex d in part)
-                {
-                    Coordinate c = new Coordinate(d.X, d.Y);
-                    coords.Add(c);
-                    if (M != null && M.Length > 0) c.M = M[i];
-                    if (Z != null && Z.Length > 0) c.Z = Z[i];
-                    i++;
-                }
+                var coords = GetCoordinates(part);
                 lines.Add(factory.CreateLineString(coords));
             }
             if (lines.Count == 1) return (IGeometry)lines[0];
             return factory.CreateMultiLineString(lines.ToArray());
+        }
+
+        private List<Coordinate> GetCoordinates(VertexRange part,  List<Coordinate> coords = null)
+        {
+            if (coords == null)
+            {
+                coords = new List<Coordinate>();
+            }
+            int i = part.StartIndex;
+            foreach (var d in part)
+            {
+                var c = new Coordinate(d.X, d.Y);
+                if (M != null && M.Length > 0) c.M = M[i];
+                if (Z != null && Z.Length > 0) c.Z = Z[i];
+                i++;
+                coords.Add(c);
+            }
+            return coords;
         }
 
         /// <summary>
@@ -336,19 +290,10 @@ namespace DotSpatial.Data
             if (factory == null) factory = Geometry.DefaultFactory;
             List<ILinearRing> shells = new List<ILinearRing>();
             List<ILinearRing> holes = new List<ILinearRing>();
-            foreach (PartRange part in _shapeRange.Parts)
+            foreach (var part in _shapeRange.Parts)
             {
-                List<Coordinate> coords = new List<Coordinate>();
-                int i = part.StartIndex;
-                foreach (Vertex d in part)
-                {
-                    Coordinate c = new Coordinate(d.X, d.Y);
-                    if (M != null && M.Length > 0) c.M = M[i];
-                    if (Z != null && Z.Length > 0) c.Z = Z[i];
-                    i++;
-                    coords.Add(c);
-                }
-                ILinearRing ring = factory.CreateLinearRing(coords);
+                var coords = GetCoordinates(part);
+                var ring = factory.CreateLinearRing(coords);
                 if (_shapeRange.Parts.Count == 1)
                 {
                     shells.Add(ring);
@@ -380,21 +325,15 @@ namespace DotSpatial.Data
                 IEnvelope minEnv = null;
                 IEnvelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
-                ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    tryRing = shells[j];
+                    ILinearRing tryRing = shells[j];
                     IEnvelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
-                    bool isContained = false;
-
-                    if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                            || (PointInList(testPt, tryRing.Coordinates))))
-                    {
-                        isContained = true;
-                    }
+                    var isContained = tryEnv.Contains(testEnv)
+                                       && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                                           || (PointInList(testPt, tryRing.Coordinates)));
 
                     // Check if this new containing ring is smaller than the current minimum ring
                     if (isContained)
@@ -408,7 +347,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            IPolygon[] polygons = new Polygon[shells.Count];
+            var polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = factory.CreatePolygon(shells[i], holesForShells[i].ToArray());
@@ -444,16 +383,6 @@ namespace DotSpatial.Data
             object[] dr = feature.DataRow.ItemArray;
             _attributes = new object[dr.Length];
             Array.Copy(dr, _attributes, dr.Length);
-        }
-
-        /// <summary>
-        /// In cases where the attributes are not in ram yet, this can obtain only the attributes for the
-        /// specified shape.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="index"></param>
-        public void CopyAttributes(IFeatureSet source, int index)
-        {
         }
 
         /// <summary>
