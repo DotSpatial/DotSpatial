@@ -550,7 +550,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected void OnFinishedLoading()
         {
-            if (FinishedLoading != null) FinishedLoading(this, new EventArgs());
+            if (FinishedLoading != null) FinishedLoading(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -514,7 +514,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnColorChanged()
         {
-            if (ColorChanged != null) ColorChanged(this, new EventArgs());
+            if (ColorChanged != null) ColorChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -522,7 +522,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnColorChanging()
         {
-            if (ColorChanging != null) ColorChanging(this, new EventArgs());
+            if (ColorChanging != null) ColorChanging(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnOpacityChanging()
         {
-            if (OpacityChanging != null) OpacityChanging(this, new EventArgs());
+            if (OpacityChanging != null) OpacityChanging(this, EventArgs.Empty);
         }
 
         #endregion

@@ -259,7 +259,7 @@ namespace DotSpatial.Symbology
         {
             if (ExtentsChanged != null)
             {
-                ExtentsChanged(this, new EventArgs());
+                ExtentsChanged(this, EventArgs.Empty);
             }
         }
 

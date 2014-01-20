@@ -1137,7 +1137,7 @@ namespace DotSpatial.Symbology.Forms
 
             if (SelectionChanged != null)
             {
-                SelectionChanged(this, new EventArgs());
+                SelectionChanged(this, EventArgs.Empty);
             }
             _ignoreSelectionChanged = false;
         }
@@ -1151,7 +1151,7 @@ namespace DotSpatial.Symbology.Forms
 
             _ignoreSelectionChanged = true;
             //if (tsbtnZoomToSelected.Click != null)
-            SelectionZoom(this, new EventArgs());
+            SelectionZoom(this, EventArgs.Empty);
             _ignoreSelectionChanged = false;
         }
 
@@ -1164,7 +1164,7 @@ namespace DotSpatial.Symbology.Forms
             _ignoreSelectionChanged = true;
 
             //Call the event Handler
-            MapRefreshed(this, new EventArgs());
+            MapRefreshed(this, EventArgs.Empty);
             _ignoreSelectionChanged = false;
         }
 
@@ -1178,7 +1178,7 @@ namespace DotSpatial.Symbology.Forms
 
             //Call the event Handeler
 
-            ZoomToShapeBeingEdited(this, new EventArgs());
+            ZoomToShapeBeingEdited(this, EventArgs.Empty);
             _ignoreSelectionChanged = false;
         }
 

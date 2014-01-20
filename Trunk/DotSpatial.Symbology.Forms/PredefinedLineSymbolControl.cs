@@ -433,7 +433,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _editorService.CloseDropDown();
             }
-            if (SymbolSelected != null) SymbolSelected(this, new EventArgs());
+            if (SymbolSelected != null) SymbolSelected(this, EventArgs.Empty);
         }
 
         /// <summary>

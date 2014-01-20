@@ -511,7 +511,7 @@ namespace DotSpatial.Symbology
                 return;
             }
             if (ItemChanged == null) return;
-            ItemChanged(sender, new EventArgs());
+            ItemChanged(sender, EventArgs.Empty);
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnRemoveItem()
         {
-            if (RemoveItem != null) RemoveItem(this, new EventArgs());
+            if (RemoveItem != null) RemoveItem(this, EventArgs.Empty);
             // Maybe we don't need RemoveItem event.  We could just invoke a method on the parent.
             // One less thing to wire.  But we currently need to wire parents.
         }

@@ -355,7 +355,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnUpdateMap()
         {
-            if (UpdateMap != null) UpdateMap(this, new EventArgs());
+            if (UpdateMap != null) UpdateMap(this, EventArgs.Empty);
         }
 
         /// <summary>

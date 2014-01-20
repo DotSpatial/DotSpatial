@@ -1874,7 +1874,7 @@ namespace DotSpatial.Data
         /// </summary>
         protected virtual void OnAttributesFilled()
         {
-            if (AttributesFilled != null) AttributesFilled(this, new EventArgs());
+            if (AttributesFilled != null) AttributesFilled(this, EventArgs.Empty);
         }
 
         #endregion

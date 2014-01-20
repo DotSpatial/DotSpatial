@@ -823,7 +823,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnNewFieldAdded()
         {
-            NewFieldAdded(this, new EventArgs());
+            NewFieldAdded(this, EventArgs.Empty);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

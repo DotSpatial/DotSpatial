@@ -350,7 +350,7 @@ namespace DotSpatial.Plugins.Measure
 
         private void OnMeasureModeChanged()
         {
-            if (MeasureModeChanged != null) MeasureModeChanged(this, new EventArgs());
+            if (MeasureModeChanged != null) MeasureModeChanged(this, EventArgs.Empty);
         }
 
         private void DistanceButton_Click(object sender, EventArgs e)

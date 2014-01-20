@@ -810,7 +810,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 _colorButton.Color = _colorButton.Color.ToOpaque().ToTransparent((float)Value);
             }
-            if (ValueChanged != null) ValueChanged(this, new EventArgs());
+            if (ValueChanged != null) ValueChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -67,7 +67,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void cddColor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, new EventArgs());
+            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
         }
 
         #endregion

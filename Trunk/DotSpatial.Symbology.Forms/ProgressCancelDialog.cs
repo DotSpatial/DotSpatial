@@ -177,7 +177,7 @@ namespace DotSpatial.Symbology.Forms
         private void button1_Click(object sender, EventArgs e)
         {
             _cancelled = true;
-            if (Cancelled != null) Cancelled(this, new EventArgs());
+            if (Cancelled != null) Cancelled(this, EventArgs.Empty);
             Hide();
         }
 

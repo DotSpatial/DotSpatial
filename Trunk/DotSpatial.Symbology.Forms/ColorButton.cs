@@ -137,7 +137,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnColorChanged()
         {
-            if (ColorChanged != null) ColorChanged(this, new EventArgs());
+            if (ColorChanged != null) ColorChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -323,7 +323,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void rtbFilterText_TextChanged(object sender, EventArgs e)
         {
-            if (ExpressionTextChanged != null) ExpressionTextChanged(this, new EventArgs());
+            if (ExpressionTextChanged != null) ExpressionTextChanged(this, EventArgs.Empty);
         }
 
         private void lbxUniqueValues_DoubleClick(object sender, EventArgs e)

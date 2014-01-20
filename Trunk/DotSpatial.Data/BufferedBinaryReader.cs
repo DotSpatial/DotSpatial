@@ -650,7 +650,7 @@ namespace DotSpatial.Data
             _progressMeter.Reset();
             _buffer = null;
             if (FinishedReading == null) return;
-            FinishedReading(this, new EventArgs());
+            FinishedReading(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -667,7 +667,7 @@ namespace DotSpatial.Data
             _isFinishedBuffering = true;
 
             if (FinishedBuffering == null) return;
-            FinishedBuffering(this, new EventArgs());
+            FinishedBuffering(this, EventArgs.Empty);
         }
 
         #endregion

@@ -124,7 +124,7 @@ namespace DotSpatial.Symbology
                 return;
             }
             _ignoreChanges = true;
-            if (Changed != null) Changed(this, new EventArgs());
+            if (Changed != null) Changed(this, EventArgs.Empty);
             _ignoreChanges = false;
         }
 

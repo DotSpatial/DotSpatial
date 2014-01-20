@@ -241,7 +241,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnSelectedItemChanged()
         {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, new EventArgs());
+            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
         }
 
         #endregion
@@ -451,7 +451,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnAdd()
         {
-            if (AddClicked != null) AddClicked(this, new EventArgs());
+            if (AddClicked != null) AddClicked(this, EventArgs.Empty);
             OnListChanged();
         }
 
@@ -460,7 +460,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnListChanged()
         {
-            if (ListChanged != null) ListChanged(this, new EventArgs());
+            if (ListChanged != null) ListChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -468,7 +468,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnRemoveClick()
         {
-            if (RemoveClicked != null) RemoveClicked(this, new EventArgs());
+            if (RemoveClicked != null) RemoveClicked(this, EventArgs.Empty);
             OnListChanged();
         }
 
@@ -477,7 +477,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnOrderChanged()
         {
-            if (OrderChanged != null) OrderChanged(this, new EventArgs());
+            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
             OnListChanged();
         }
 

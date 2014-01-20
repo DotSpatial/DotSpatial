@@ -178,7 +178,7 @@ namespace DotSpatial.Symbology.Forms
         {
             _detailedPolygonSymbolControl1.ApplyChanges();
 
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         #endregion

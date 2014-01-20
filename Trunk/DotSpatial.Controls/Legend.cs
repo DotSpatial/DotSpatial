@@ -842,7 +842,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnOrderChanged()
         {
-            if (OrderChanged != null) OrderChanged(this, new EventArgs());
+            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
         }
 
         #endregion

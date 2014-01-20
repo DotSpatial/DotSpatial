@@ -358,7 +358,7 @@ namespace DotSpatial.Symbology.Forms
         {
             UpdatePreview();
             _original.CopyProperties(_symbolizer);
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -1162,7 +1162,7 @@ namespace DotSpatial.Controls
         protected virtual void OnScreenUpdated()
         {
             if (ScreenUpdated == null) return;
-            ScreenUpdated(this, new EventArgs());
+            ScreenUpdated(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1172,7 +1172,7 @@ namespace DotSpatial.Controls
         {
             if (FinishedRefresh != null)
             {
-                FinishedRefresh(this, new EventArgs());
+                FinishedRefresh(this, EventArgs.Empty);
             }
         }
 

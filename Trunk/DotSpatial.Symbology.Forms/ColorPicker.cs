@@ -344,7 +344,7 @@ namespace DotSpatial.Symbology.Forms
             _original.CopyProperties(_rasterCategory);
             if (ChangesApplied != null)
             {
-                ChangesApplied(this, new EventArgs());
+                ChangesApplied(this, EventArgs.Empty);
             }
         }
     }

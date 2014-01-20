@@ -79,7 +79,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnSelectedItemChanged()
         {
-            if (SelectedItemChanged != null) SelectedItemChanged(this, new EventArgs());
+            if (SelectedItemChanged != null) SelectedItemChanged(this, EventArgs.Empty);
         }
     }
 }

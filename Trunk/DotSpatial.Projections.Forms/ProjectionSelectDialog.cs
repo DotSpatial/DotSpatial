@@ -305,7 +305,7 @@ namespace DotSpatial.Projections.Forms
         /// </summary>
         protected virtual void OnApplyChanges()
         {
-            if (ChangesApplied != null) ChangesApplied(this, new EventArgs());
+            if (ChangesApplied != null) ChangesApplied(this, EventArgs.Empty);
         }
 
         #endregion

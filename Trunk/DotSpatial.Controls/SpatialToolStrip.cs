@@ -550,7 +550,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnPrintClicked()
         {
-            if (PrintClicked != null) PrintClicked(this, new EventArgs());
+            if (PrintClicked != null) PrintClicked(this, EventArgs.Empty);
         }
 
         /// <summary>

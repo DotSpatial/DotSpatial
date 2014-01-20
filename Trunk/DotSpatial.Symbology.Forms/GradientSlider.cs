@@ -332,7 +332,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnPositionChanging()
         {
-            if (PositionChanging != null) PositionChanging(this, new EventArgs());
+            if (PositionChanging != null) PositionChanging(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnPositionChanged()
         {
-            if (PositionChanged != null) PositionChanged(this, new EventArgs());
+            if (PositionChanged != null) PositionChanged(this, EventArgs.Empty);
         }
 
         #endregion

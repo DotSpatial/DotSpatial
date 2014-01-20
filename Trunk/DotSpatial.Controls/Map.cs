@@ -1261,7 +1261,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            if (SelectionChanged != null) SelectionChanged(this, EventArgs.Empty);
         }
 
         private void MapFrame_BufferChanged(object sender, ClipArgs e)

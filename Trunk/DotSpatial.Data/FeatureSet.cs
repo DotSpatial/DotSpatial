@@ -2637,7 +2637,7 @@ namespace DotSpatial.Data
         {
             if (VerticesInvalidated != null)
             {
-                VerticesInvalidated(this, new EventArgs());
+                VerticesInvalidated(this, EventArgs.Empty);
             }
         }
 

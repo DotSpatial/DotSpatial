@@ -390,7 +390,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            if (CoordinateAdded != null) { CoordinateAdded(this, new EventArgs()); }
+            if (CoordinateAdded != null) { CoordinateAdded(this, EventArgs.Empty); }
             Hide();
         }
 

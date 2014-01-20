@@ -2143,7 +2143,7 @@ namespace DotSpatial.Symbology
         {
             if (SchemeApplied != null)
             {
-                SchemeApplied(this, new EventArgs());
+                SchemeApplied(this, EventArgs.Empty);
             }
         }
 

@@ -567,7 +567,7 @@ namespace DotSpatial.Symbology
             _colorSchemeHasUpdated = true;
             if (ColorSchemeUpdated != null)
             {
-                ColorSchemeUpdated(this, new EventArgs());
+                ColorSchemeUpdated(this, EventArgs.Empty);
             }
         }
 
@@ -579,7 +579,7 @@ namespace DotSpatial.Symbology
             _colorSchemeHasChanged = true;
             if (ColorSchemeChanged != null)
             {
-                ColorSchemeChanged(this, new EventArgs());
+                ColorSchemeChanged(this, EventArgs.Empty);
             }
         }
 
@@ -590,7 +590,7 @@ namespace DotSpatial.Symbology
         {
             if (SymbologyChanged != null)
             {
-                SymbologyChanged(this, new EventArgs());
+                SymbologyChanged(this, EventArgs.Empty);
             }
         }
 

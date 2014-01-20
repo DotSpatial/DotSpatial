@@ -263,7 +263,7 @@ namespace DotSpatial.Projections.Forms
         /// </summary>
         protected virtual void OnTextChanged()
         {
-            if (TextChanged != null) TextChanged(this, new EventArgs());
+            if (TextChanged != null) TextChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace DotSpatial.Projections.Forms
         /// </summary>
         protected virtual void OnValidChanged()
         {
-            if (ValidChanged != null) ValidChanged(this, new EventArgs());
+            if (ValidChanged != null) ValidChanged(this, EventArgs.Empty);
         }
 
         #endregion

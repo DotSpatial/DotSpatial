@@ -223,7 +223,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            if (SelectionChanged != null) SelectionChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

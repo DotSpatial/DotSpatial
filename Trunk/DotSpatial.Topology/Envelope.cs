@@ -597,7 +597,7 @@ namespace DotSpatial.Topology
         protected void OnEnvelopeChanged()
         {
             if (EnvelopeChanged == null) return;
-            EnvelopeChanged(this, new EventArgs());
+            EnvelopeChanged(this, EventArgs.Empty);
         }
 
         #endregion

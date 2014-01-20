@@ -246,7 +246,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnItemChanged()
         {
-            if (ItemChanged != null) ItemChanged(this, new EventArgs());
+            if (ItemChanged != null) ItemChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnRemoveItem()
         {
-            if (RemoveItem != null) RemoveItem(this, new EventArgs());
+            if (RemoveItem != null) RemoveItem(this, EventArgs.Empty);
         }
 
         #endregion

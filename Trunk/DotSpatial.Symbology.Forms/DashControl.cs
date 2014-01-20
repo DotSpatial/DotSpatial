@@ -573,7 +573,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         protected virtual void OnPatternChanged()
         {
-            if (PatternChanged != null) PatternChanged(this, new EventArgs());
+            if (PatternChanged != null) PatternChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

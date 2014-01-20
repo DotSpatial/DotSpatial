@@ -504,7 +504,7 @@ namespace DotSpatial.Symbology
         protected virtual void OnInitialize()
         {
             _isInitialized = true;
-            if (Initialized != null) Initialized(this, new EventArgs());
+            if (Initialized != null) Initialized(this, EventArgs.Empty);
         }
 
         #endregion
