@@ -888,7 +888,8 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, new EventArgs());
+            var h = SelectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -924,22 +925,23 @@ namespace DotSpatial.Symbology
                 _invalidatedRegion = null;
                 _mapFrame = null;
                 _propertyDialogProvider = null;
-            }
-            // Since the InnerDataset likely contains unmanaged memory constructs, dispose of it here.
-            if (_dataSet != null)
-            {
-                _dataSet.UnlockDispose();
-                if (!_dataSet.IsDisposeLocked)
+                // Since the InnerDataset likely contains unmanaged memory constructs, dispose of it here.
+                if (_dataSet != null)
                 {
-                    _dataSet.Dispose();
+                    _dataSet.UnlockDispose();
+                    if (!_dataSet.IsDisposeLocked)
+                    {
+                        _dataSet.Dispose();
+                    }
+                    _dataSet = null;
                 }
-                _dataSet = null;
+                if (_editCopy != null)
+                {
+                    _editCopy.Dispose();
+                    _editCopy = null;
+                }
             }
-            if (_editCopy != null)
-            {
-                _editCopy.Dispose();
-                _editCopy = null;
-            }
+           
             _isDisposed = true;
         }
     }

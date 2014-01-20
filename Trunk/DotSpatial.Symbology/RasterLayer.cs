@@ -55,13 +55,8 @@ namespace DotSpatial.Symbology
         /// <param name="symbolizer"></param>
         public RasterLayer(string fileName, IRasterSymbolizer symbolizer)
         {
-            IRaster r = DataManager.DefaultDataManager.OpenRaster(fileName);
-            DataSet = r;
-            _symbolizer = symbolizer;
-            _symbolizer.ParentLayer = this;
-            _symbolizer.Scheme.SetParentItem(this);
-
-            symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;
+            DataSet = DataManager.DefaultDataManager.OpenRaster(fileName);
+            Symbolizer = symbolizer;
         }
 
         /// <summary>
@@ -70,10 +65,10 @@ namespace DotSpatial.Symbology
         /// <param name="fileName">The string fileName to use in order to open the file</param>
         /// <param name="inProgressHandler">The progress handler to show progress messages</param>
         public RasterLayer(string fileName, IProgressHandler inProgressHandler)
+            : base(inProgressHandler)
         {
-            base.ProgressHandler = inProgressHandler;
-            IRaster r = DataManager.DefaultDataManager.OpenRaster(fileName, true, inProgressHandler);
-            Configure(r);
+            DataSet = DataManager.DefaultDataManager.OpenRaster(fileName, true, inProgressHandler);
+            Symbolizer = new RasterSymbolizer(this);
         }
 
         /// <summary>
@@ -82,7 +77,8 @@ namespace DotSpatial.Symbology
         /// <param name="raster">The raster to create this layer for</param>
         public RasterLayer(IRaster raster)
         {
-            Configure(raster);
+            DataSet = raster;
+            Symbolizer = new RasterSymbolizer(this);
         }
 
         /// <summary>
@@ -91,17 +87,12 @@ namespace DotSpatial.Symbology
         /// <param name="raster">The Raster</param>
         /// <param name="inProgressHandler">The Progress handler for any status updates</param>
         public RasterLayer(IRaster raster, IProgressHandler inProgressHandler)
-        {
-            base.ProgressHandler = inProgressHandler;
-            Configure(raster);
-        }
-
-        private void Configure(IRaster raster)
+            : base(inProgressHandler)
         {
             DataSet = raster;
-            _symbolizer = new RasterSymbolizer(this);
-            _symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;
+            Symbolizer = new RasterSymbolizer(this);
         }
+      
 
         #endregion
 
@@ -175,14 +166,13 @@ namespace DotSpatial.Symbology
         {
             if (disposing)
             {
-                _symbolizer = null;
-
                 if (BitmapGetter != null)
                 {
                     BitmapGetter.Dispose();
                     BitmapGetter = null;
                 }
                 RasterLayerActions = null;
+                Symbolizer = null;
             }
             base.Dispose(disposing);
         }
@@ -303,7 +293,7 @@ namespace DotSpatial.Symbology
             image.Bounds = DataSet.Bounds.Copy();
             BitmapGetter = image;
             Symbolizer.Validate();
-            OnInvalidate(this, new EventArgs());
+            OnInvalidate(this, EventArgs.Empty);
             OnItemChanged();
         }
 
@@ -537,8 +527,9 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                if (_symbolizer == null) return;
                 _symbolizer.IsVisible = value;
-                OnVisibleChanged(this, new EventArgs());
+                OnVisibleChanged(this, EventArgs.Empty);
             }
         }
 
@@ -709,7 +700,9 @@ namespace DotSpatial.Symbology
             set
             {
                 if (_symbolizer == value) return;
+                if (_symbolizer != null) _symbolizer.ColorSchemeUpdated -= _symbolizer_SymbologyUpdated;
                 _symbolizer = value;
+                if (_symbolizer == null) return;
                 _symbolizer.ParentLayer = this;
                 _symbolizer.Scheme.SetParentItem(this);
                 _symbolizer.ColorSchemeUpdated += _symbolizer_SymbologyUpdated;

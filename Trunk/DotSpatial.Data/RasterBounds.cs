@@ -154,7 +154,6 @@ namespace DotSpatial.Data
             set
             {
                 _affine = value;
-                OnBoundsChanged();
             }
         }
 
@@ -374,17 +373,6 @@ namespace DotSpatial.Data
                 double dy = value - Y;
                 _affine[3] += dy; // resets the dY
             }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Fires the Bounds Changed event
-        /// </summary>
-        protected void OnBoundsChanged()
-        {
         }
 
         #endregion

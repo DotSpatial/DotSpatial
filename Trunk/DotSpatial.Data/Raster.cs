@@ -814,29 +814,22 @@ namespace DotSpatial.Data
             {
                 if (Bands != null)
                 {
-                    foreach (IRaster r in Bands)
+                    foreach (var r in Bands)
                     {
                         r.Dispose();
                     }
                     Bands = null;
-                    Bounds = null;
-                    CustomFileType = null;
-                    DriverCode = null;
-                    Filename = null;
-                    Notes = null;
-                    Options = null;
-                    _rows = null;
-                    _tag = null;
-                    _values = null;
                 }
-            }
-            if (Bands != null)
-            {
-                foreach (IRaster r in Bands)
-                {
-                    if (!r.IsDisposeLocked) r.Dispose();
-                }
-                Bands = null;
+                
+                Bounds = null;
+                CustomFileType = null;
+                DriverCode = null;
+                Filename = null;
+                Notes = null;
+                Options = null;
+                _rows = null;
+                _tag = null;
+                _values = null;
             }
             base.Dispose(disposeManagedResources);
         }
