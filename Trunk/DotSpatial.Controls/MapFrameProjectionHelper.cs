@@ -19,7 +19,7 @@ namespace DotSpatial.Controls
             //parse the projection
             ProjectionInfo newProjection = ProjectionInfo.FromEsriString(newProjEsriString);
 
-            foreach (IMapLayer layer in mapFrame.GetAllLayers())
+            foreach (var layer in mapFrame.GetAllLayers())
             {
                 if (layer.CanReproject)
                 {

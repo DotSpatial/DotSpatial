@@ -91,7 +91,7 @@ namespace DotSpatial.Controls
         /// A mathematical calculation using the map
         /// </summary>
         [Browsable(true), Category("Map")]
-        public virtual int Scale
+        public virtual long Scale
         {
             get
             {
@@ -99,8 +99,7 @@ namespace DotSpatial.Controls
                     return (100000);
                 if (Resizing)
                     return (100000);
-                else
-                    return Convert.ToInt32((UnitMeterConversion() * _envelope.Width * 39.3700787 * 100D) / Size.Width);
+                return Convert.ToInt64((UnitMeterConversion() * _envelope.Width * 39.3700787 * 100D) / Size.Width);
             }
             set
             {

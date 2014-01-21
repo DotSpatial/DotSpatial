@@ -177,15 +177,15 @@ namespace DotSpatial.Controls
             }
 
             former = null;
-            foreach (Layer l in Map.MapFrame.GetAllLayers())
+            foreach (var l in Map.MapFrame.GetAllLayers())
             {
-                if (l.IsSelected == true)
+                if (l.IsSelected)
                 {
                     former = l;
                     l.IsSelected = false;
                 }
             }
-            if (former == null && Map.MapFrame.IsSelected == true)
+            if (former == null && Map.MapFrame.IsSelected)
             {
                 former = Map.MapFrame;
             }

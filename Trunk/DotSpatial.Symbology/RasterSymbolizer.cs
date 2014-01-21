@@ -207,7 +207,7 @@ namespace DotSpatial.Symbology
         public virtual Color GetColor(double value)
         {
             if (value == Raster.NoDataValue) return NoDataColor;
-            foreach (ColorCategory cb in _scheme.Categories)
+            foreach (var cb in _scheme.Categories)
             {
                 if (cb.Contains(value))
                 {

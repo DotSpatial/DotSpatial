@@ -972,7 +972,7 @@ namespace DotSpatial.Controls
                 // Turn off functions that are not "Always on"
                 if (_functionMode == FunctionMode.None)
                 {
-                    foreach (MapFunction f in MapFunctions)
+                    foreach (var f in MapFunctions)
                     {
                         if ((f.YieldStyle & YieldStyles.AlwaysOn) != YieldStyles.AlwaysOn) f.Deactivate();
                     }
@@ -1006,7 +1006,7 @@ namespace DotSpatial.Controls
             {
                 MapFunctions.Add(function);
             }
-            foreach (MapFunction f in MapFunctions)
+            foreach (var f in MapFunctions)
             {
                 if ((f.YieldStyle & YieldStyles.AlwaysOn) == YieldStyles.AlwaysOn) continue; // ignore "Always On" functions
                 int test = (int)(f.YieldStyle & function.YieldStyle);

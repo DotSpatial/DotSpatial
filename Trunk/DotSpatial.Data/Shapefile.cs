@@ -282,7 +282,8 @@ namespace DotSpatial.Data
         /// <returns>A correct shapefile object which is exclusively for reading the .shp data</returns>
         public static new Shapefile OpenFile(string fileName, IProgressHandler progressHandler)
         {
-            string ext = Path.GetExtension(fileName).ToLower();
+            var ext = Path.GetExtension(fileName);
+            if (ext != null) ext = ext.ToLower();
             if (ext != ".shp" && ext != ".shx" && ext != ".dbf")
                 throw new ArgumentException(String.Format("The file extension {0} is not supported by Shapefile data provider.", ext));
             string name = Path.ChangeExtension(fileName, ".shp");

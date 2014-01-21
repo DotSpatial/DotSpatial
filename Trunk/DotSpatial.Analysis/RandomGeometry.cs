@@ -38,12 +38,11 @@ namespace DotSpatial.Analysis
                 fsOut = new FeatureSet();
             }
             fsOut.FeatureType = FeatureType.Point;
-            Coordinate c = new Coordinate();
             Random r = new Random();
             int i = 0;
             while (i < NumberOfPoints)
             {
-                c = new Coordinate();
+                var c = new Coordinate();
                 //make a random point somewhere in the rectangular extents of the feature set
                 double rndx = r.Next(0, 100000) / 100000.0;
                 double rndy = r.Next(0, 100000) / 100000.0;
@@ -51,7 +50,7 @@ namespace DotSpatial.Analysis
                 c.Y = rndy * (ConstrainingFeatures.Extent.MaxY - ConstrainingFeatures.Extent.MinY) + ConstrainingFeatures.Extent.MinY;
 
                 //check if the point falls within the polygon featureset
-                foreach (Feature f in ConstrainingFeatures.Features)
+                foreach (var f in ConstrainingFeatures.Features)
                 {
                     if (f.Intersects(c))
                     {

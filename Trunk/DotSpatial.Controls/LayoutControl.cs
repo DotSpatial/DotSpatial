@@ -29,6 +29,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Serialization;
@@ -1100,7 +1101,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomInMap()
         {
-            foreach (LayoutMap mapCtrl in _layoutElements.FindAll((LayoutElement p) => p as LayoutMap != null))
+            foreach (var mapCtrl in _layoutElements.OfType<LayoutMap>())
                 mapCtrl.ZoomInMap();
         }
 
@@ -1117,7 +1118,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomOutMap()
         {
-            foreach (LayoutMap mapCtrl in _layoutElements.FindAll((LayoutElement p) => p as LayoutMap != null))
+            foreach (var mapCtrl in _layoutElements.OfType<LayoutMap>())
                 mapCtrl.ZoomOutMap();
         }
 
@@ -1134,7 +1135,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomFullExtentMap()
         {
-            foreach (LayoutMap mapCtrl in _layoutElements.FindAll((LayoutElement p) => p as LayoutMap != null))
+            foreach (var mapCtrl in _layoutElements.OfType<LayoutMap>())
                 mapCtrl.ZoomToFullExtent();
         }
 
@@ -1151,7 +1152,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomFullViewExtentMap()
         {
-            foreach (LayoutMap mapCtrl in _layoutElements.FindAll((LayoutElement p) => p as LayoutMap != null))
+            foreach (var mapCtrl in _layoutElements.OfType<LayoutMap>())
                 mapCtrl.ZoomViewExtent();
         }
 

@@ -243,9 +243,9 @@ namespace DotSpatial.Controls
         public override bool ClearSelection(out IEnvelope affectedAreas)
         {
             former = null;
-            foreach (Layer l in this.GetAllLayers())
+            foreach (var l in this.GetAllLayers())
             {
-                if (l.IsSelected == true)
+                if (l.IsSelected)
                 {
                     former = l;
                     l.IsSelected = false;
