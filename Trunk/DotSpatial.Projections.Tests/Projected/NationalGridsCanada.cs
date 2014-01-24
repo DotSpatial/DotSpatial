@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
@@ -156,7 +155,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         [Test]
         public void NAD1927CGQ77QuebecLambert()
         {
@@ -366,7 +364,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927QuebecLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927QuebecLambert;
