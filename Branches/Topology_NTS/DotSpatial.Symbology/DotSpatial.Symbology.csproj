@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Symbology</RootNamespace>
+    <AssemblyName>DotSpatial.Symbology</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.Symbology.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DotSpatial.Symbology.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackBuffer.cs" />
+    <Compile Include="BitmapFormatException.cs" />
+    <Compile Include="ColorCategoryEventArgs.cs" />
+    <Compile Include="DynamicVisibilityEventArgs.cs" />
+    <Compile Include="ExtentExtcs.cs" />
+    <Compile Include="FeatureSetApplyEditArgs.cs" />
+    <Compile Include="IColorCategoryActions.cs" />
+    <Compile Include="IDynamicVisibility.cs" />
+    <Compile Include="IFeatureLayerActions.cs" />
+    <Compile Include="IImageLayerActions.cs" />
+    <Compile Include="ILayerActions.cs" />
+    <Compile Include="ImageLayerEventArgs.cs" />
+    <Compile Include="FileCantBeDeletedException.cs" />
+    <Compile Include="Category.cs" />
+    <Compile Include="Changeable.cs" />
+    <Compile Include="ChangedObjectEventArgs.cs" />
+    <Compile Include="ColorExt.cs" />
+    <Compile Include="ColorSchemeType.cs" />
+    <Compile Include="ILabel.cs" />
+    <Compile Include="IRasterLayerActions.cs" />
+    <Compile Include="ITextSymbolGroup.cs" />
+    <Compile Include="ItemEventArgs.cs" />
+    <Compile Include="LabelLayerEventArgs.cs" />
+    <Compile Include="Position2DConverter.cs" />
+    <Compile Include="RasterLayerEventArgs.cs" />
+    <Compile Include="Size2DConverter.cs" />
+    <Compile Include="DesktopRasterExt.cs" />
+    <Compile Include="CopyBasea.cs" />
+    <Compile Include="Descriptor.cs" />
+    <Compile Include="DrawArgs.cs" />
+    <Compile Include="DrawCompletedArgs.cs" />
+    <Compile Include="DrawVerifyArgs.cs" />
+    <Compile Include="DrawWindow.cs" />
+    <Compile Include="DrawWindowArgs.cs" />
+    <Compile Include="DynamicVisibilityMode.cs" />
+    <Compile Include="EditorSettings.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="EnvelopeArgs.cs" />
+    <Compile Include="FeatureChangeArgs.cs" />
+    <Compile Include="FeatureChangeEnvelopeArgs.cs" />
+    <Compile Include="FieldInfoEm.cs" />
+    <Compile Include="FilterCollectionEM.cs" />
+    <Compile Include="GradientModel.cs" />
+    <Compile Include="GraphicsPathExt.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="ICategory.cs" />
+    <Compile Include="IChangeable.cs" />
+    <Compile Include="IDescriptora.cs" />
+    <Compile Include="IFrame.cs" />
+    <Compile Include="IGroup.cs" />
+    <Compile Include="ILabelContainer.cs" />
+    <Compile Include="ILayer.cs" />
+    <Compile Include="ILayerCollection.cs" />
+    <Compile Include="ILayerEventList.cs" />
+    <Compile Include="ILayerEvents.cs" />
+    <Compile Include="ILayerManager.cs" />
+    <Compile Include="ILegendItem.cs" />
+    <Compile Include="ImageProjection.cs" />
+    <Compile Include="SymbologyImages.Designer.cs">
+      <DependentUpon>SymbologyImages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="IImageLayer.cs" />
+    <Compile Include="IImageSymbolizer.cs" />
+    <Compile Include="ImageLayer.cs" />
+    <Compile Include="ImageSymbolizer.cs" />
+    <Compile Include="ITiledImageLayer.cs" />
+    <Compile Include="TiledImageLayer.cs" />
+    <Compile Include="IMatchablea.cs" />
+    <Compile Include="IParentItem.cs" />
+    <Compile Include="IPropertyDialogProvider.cs" />
+    <Compile Include="IRandomizablea.cs" />
+    <Compile Include="IRenderable.cs" />
+    <Compile Include="IRenderableLegendItem.cs" />
+    <Compile Include="IScheme.cs" />
+    <Compile Include="ISelectable.cs" />
+    <Compile Include="ISymbolRange.cs" />
+    <Compile Include="IView.cs" />
+    <Compile Include="FastLabelDrawnState.cs" />
+    <Compile Include="ILabelCategory.cs" />
+    <Compile Include="ILabelLayer.cs" />
+    <Compile Include="ILabelScheme.cs" />
+    <Compile Include="ILabelSymbolizer.cs" />
+    <Compile Include="LabelCategory.cs" />
+    <Compile Include="LabelDrawState.cs" />
+    <Compile Include="LabelLayer.cs" />
+    <Compile Include="LabelMethodEnumerations.cs" />
+    <Compile Include="LabelScheme.cs" />
+    <Compile Include="LabelSymbolizer.cs" />
+    <Compile Include="Layer.cs" />
+    <Compile Include="LayerCollection.cs" />
+    <Compile Include="LayerEnumerator.cs" />
+    <Compile Include="LayerEventArgs.cs" />
+    <Compile Include="LayerEventList.cs" />
+    <Compile Include="LayerFrame.cs" />
+    <Compile Include="LayerManager.cs" />
+    <Compile Include="LayerProviders.cs" />
+    <Compile Include="LayerSelectedEventArgs.cs" />
+    <Compile Include="LegendIcon.cs" />
+    <Compile Include="LegendItem.cs" />
+    <Compile Include="LegendItemExt.cs" />
+    <Compile Include="LegendType.cs" />
+    <Compile Include="MatchableEMa.cs" />
+    <Compile Include="SymbologyMenuItem.cs" />
+    <Compile Include="SymbologyMessageStrings.Designer.cs">
+      <DependentUpon>SymbologyMessageStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Opp.cs" />
+    <Compile Include="ILayerProvider.cs" />
+    <Compile Include="IRasterLayerProvider.cs" />
+    <Compile Include="IVectorLayerProvider.cs" />
+    <Compile Include="Position2D.cs" />
+    <Compile Include="CustomLineSymbolizer.cs" />
+    <Compile Include="CustomLineSymbolProvider.cs" />
+    <Compile Include="CustomPointSymbolizer.cs" />
+    <Compile Include="CustomPolygonSymbolizer.cs" />
+    <Compile Include="CustomSymbolizer.cs" />
+    <Compile Include="CustomSymbolizerCollectionExt.cs" />
+    <Compile Include="CustomSymbolProvider.cs" />
+    <Compile Include="ICustomLineSymbolProvider.cs" />
+    <Compile Include="ICustomSymbolizer.cs" />
+    <Compile Include="SymbolizerType.cs" />
+    <Compile Include="PropertyInfoExt.cs" />
+    <Compile Include="RandomExt.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="BinaryLayerProvider.cs" />
+    <Compile Include="ColorCategory.cs" />
+    <Compile Include="ColorCategoryCollection.cs" />
+    <Compile Include="ColorScheme.cs" />
+    <Compile Include="ElevationScenario.cs" />
+    <Compile Include="IColorCategory.cs" />
+    <Compile Include="IColorScheme.cs" />
+    <Compile Include="IRasterLayer.cs" />
+    <Compile Include="IRasterSymbolizer.cs" />
+    <Compile Include="IShadedRelief.cs" />
+    <Compile Include="RasterEditorSettings.cs" />
+    <Compile Include="RasterLayer.cs" />
+    <Compile Include="RasterSymbolizer.cs" />
+    <Compile Include="ShadedRelief.cs" />
+    <Compile Include="RenderableLegendItem.cs" />
+    <Compile Include="ScaleMode.cs" />
+    <Compile Include="Scheme.cs" />
+    <Compile Include="SelectableExt.cs" />
+    <Compile Include="ShallowCopya.cs" />
+    <Compile Include="SimpleLayerEventArgs.cs" />
+    <Compile Include="Size2D.cs" />
+    <Compile Include="SnapShotEventArgs.cs" />
+    <Compile Include="SymbolMode.cs" />
+    <Compile Include="SymbologyRectangleExt.cs" />
+    <Compile Include="SymbologyGlobal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextSymbolChangedEventArgs.cs" />
+    <Compile Include="ClassificationType.cs" />
+    <Compile Include="DrawingFilter.cs" />
+    <Compile Include="DrawnState.cs" />
+    <Compile Include="ExpressionEventArgs.cs" />
+    <Compile Include="FastDrawnState.cs" />
+    <Compile Include="FeatureCategory.cs" />
+    <Compile Include="FeatureCategoryCollection.cs" />
+    <Compile Include="FeatureEditorSettings.cs" />
+    <Compile Include="FeatureLayer.cs" />
+    <Compile Include="FeatureLayerExt.cs" />
+    <Compile Include="FeatureLayerEventArgs.cs" />
+    <Compile Include="FeatureLayerSelectionEventArgs.cs" />
+    <Compile Include="FeatureScheme.cs" />
+    <Compile Include="FeatureSelection.cs" />
+    <Compile Include="FeatureSymbolizer.cs" />
+    <Compile Include="FeatureSymbolizerEventArgs.cs" />
+    <Compile Include="FeatureSymbolizerOld.cs" />
+    <Compile Include="FilterType.cs" />
+    <Compile Include="IDrawingFilter.cs" />
+    <Compile Include="IDrawnState.cs" />
+    <Compile Include="IFeatureCategory.cs" />
+    <Compile Include="IFeatureLayer.cs" />
+    <Compile Include="IFeatureScheme.cs" />
+    <Compile Include="IFeatureSelection.cs" />
+    <Compile Include="IFeatureSymbolizer.cs" />
+    <Compile Include="IFeatureSymbolizerOld.cs" />
+    <Compile Include="IIndexSelection.cs" />
+    <Compile Include="IndexSelection.cs" />
+    <Compile Include="IntervalMethod.cs" />
+    <Compile Include="IntervalSnapMethod.cs" />
+    <Compile Include="ISelection.cs" />
+    <Compile Include="ILineCategory.cs" />
+    <Compile Include="ILineLayer.cs" />
+    <Compile Include="ILineScheme.cs" />
+    <Compile Include="ILineSymbolizer.cs" />
+    <Compile Include="LineCategory.cs" />
+    <Compile Include="LineCategoryCollection.cs" />
+    <Compile Include="LineFeatureTypeException.cs" />
+    <Compile Include="LineLayer.cs" />
+    <Compile Include="LineScheme.cs" />
+    <Compile Include="LineSymbolizer.cs" />
+    <Compile Include="LineSymbolizerEventArgs.cs" />
+    <Compile Include="CartographicStroke.cs" />
+    <Compile Include="ICartographicStroke.cs" />
+    <Compile Include="ILineDecoration.cs" />
+    <Compile Include="ISimpleStroke.cs" />
+    <Compile Include="IStroke.cs" />
+    <Compile Include="LineDecoration.cs" />
+    <Compile Include="SimpleStroke.cs" />
+    <Compile Include="Stroke.cs" />
+    <Compile Include="StrokeStyle.cs" />
+    <Compile Include="ModifySelectionMode.cs" />
+    <Compile Include="IPointCategory.cs" />
+    <Compile Include="IPointLayer.cs" />
+    <Compile Include="IPointScheme.cs" />
+    <Compile Include="IPointSymbolizer.cs" />
+    <Compile Include="PointCategory.cs" />
+    <Compile Include="PointCategoryCollection.cs" />
+    <Compile Include="PointFeatureTypeException.cs" />
+    <Compile Include="PointLayer.cs" />
+    <Compile Include="PointScheme.cs" />
+    <Compile Include="PointSchemeFactory.cs" />
+    <Compile Include="PointSymbolizer.cs" />
+    <Compile Include="PointSymbolizerEventArgs.cs" />
+    <Compile Include="CharacterSubset.cs" />
+    <Compile Include="CharacterSymbol.cs" />
+    <Compile Include="ICharacterSymbol.cs" />
+    <Compile Include="IColorable.cs" />
+    <Compile Include="IOutlined.cs" />
+    <Compile Include="IOutlinedSymbol.cs" />
+    <Compile Include="IPictureSymbol.cs" />
+    <Compile Include="ISimpleSymbol.cs" />
+    <Compile Include="ISymbol.cs" />
+    <Compile Include="OutlinedSymbol.cs" />
+    <Compile Include="PictureMode.cs" />
+    <Compile Include="PictureSymbol.cs" />
+    <Compile Include="PointTypes.cs" />
+    <Compile Include="SimpleSymbol.cs" />
+    <Compile Include="Symbol.cs" />
+    <Compile Include="SymbolListEM.cs" />
+    <Compile Include="SymbolType.cs" />
+    <Compile Include="IPolygonCategory.cs" />
+    <Compile Include="IPolygonLayer.cs" />
+    <Compile Include="IPolygonScheme.cs" />
+    <Compile Include="IPolygonSymbolizer.cs" />
+    <Compile Include="IPolygonSymbolizerOld.cs" />
+    <Compile Include="GradientPattern.cs" />
+    <Compile Include="GradientType.cs" />
+    <Compile Include="HatchPattern.cs" />
+    <Compile Include="IGradientPattern.cs" />
+    <Compile Include="IHatchPattern.cs" />
+    <Compile Include="IPattern.cs" />
+    <Compile Include="IPicturePattern.cs" />
+    <Compile Include="ISimplePattern.cs" />
+    <Compile Include="Pattern.cs" />
+    <Compile Include="PatternType.cs" />
+    <Compile Include="PicturePattern.cs" />
+    <Compile Include="SimplePattern.cs" />
+    <Compile Include="PolygonCategory.cs" />
+    <Compile Include="PolygonCategoryCollection.cs" />
+    <Compile Include="PolygonFeatureTypeException.cs" />
+    <Compile Include="PolygonLayer.cs" />
+    <Compile Include="PolygonScheme.cs" />
+    <Compile Include="PolygonSymbolizer.cs" />
+    <Compile Include="PolygonSymbolizerEventArgs.cs" />
+    <Compile Include="PolygonSymbolizerOld.cs" />
+    <Compile Include="QuickSchemeType.cs" />
+    <Compile Include="Selection.cs" />
+    <Compile Include="SelectionEM.cs" />
+    <Compile Include="SelectionMode.cs" />
+    <Compile Include="Statistics.cs" />
+    <Compile Include="WorldFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotSpatial.Symbology.snk" />
+    <None Include="package.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SymbologyImages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SymbologyImages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyMessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SymbologyMessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomScale.png" />
+    <None Include="Resources\Layers.ico" />
+    <None Include="Resources\select_all.png" />
+    <None Include="Resources\select.ico" />
+    <None Include="Resources\save.ico" />
+    <None Include="Resources\redbluearrows.png" />
+    <None Include="Resources\mnuLayerClear.png" />
+    <None Include="Resources\Label.png" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\color_scheme.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\deselect_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

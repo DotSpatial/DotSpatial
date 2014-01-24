@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnAddToCustom.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnAddToCustom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>372, 364</value>
+  </data>
+  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnAddToCustom.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnAddToCustom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 23</value>
+  </data>
+  <data name="btnAddToCustom.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="btnAddToCustom.Text" xml:space="preserve">
+    <value>Add To Custom Patterns</value>
+  </data>
+  <data name="&gt;&gt;btnAddToCustom.Name" xml:space="preserve">
+    <value>btnAddToCustom</value>
+  </data>
+  <data name="&gt;&gt;btnAddToCustom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnAddToCustom.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnAddToCustom.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="cmbUnits.Items" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="cmbUnits.Items1" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="cmbUnits.Items2" xml:space="preserve">
+    <value>Inch</value>
+  </data>
+  <data name="cmbUnits.Items3" xml:space="preserve">
+    <value>Millimeter</value>
+  </data>
+  <data name="cmbUnits.Items4" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
+  <data name="cmbUnits.Items5" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="cmbUnits.Items6" xml:space="preserve">
+    <value>World</value>
+  </data>
+  <data name="cmbUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 53</value>
+  </data>
+  <data name="cmbUnits.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 21</value>
+  </data>
+  <data name="cmbUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;cmbUnits.Name" xml:space="preserve">
+    <value>cmbUnits</value>
+  </data>
+  <data name="&gt;&gt;cmbUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbUnits.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;cmbUnits.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lblUnits.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>113, 56</value>
+  </data>
+  <data name="lblUnits.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 13</value>
+  </data>
+  <data name="lblUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="lblUnits.Text" xml:space="preserve">
+    <value>&amp;Units:</value>
+  </data>
+  <data name="&gt;&gt;lblUnits.Name" xml:space="preserve">
+    <value>lblUnits</value>
+  </data>
+  <data name="&gt;&gt;lblUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblUnits.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;lblUnits.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, 16</value>
+  </data>
+  <data name="label3.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 13</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Preview:</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblPreview.Location" type="System.Drawing.Point, System.Drawing">
+    <value>312, 16</value>
+  </data>
+  <data name="lblPreview.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblPreview.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 54</value>
+  </data>
+  <data name="lblPreview.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblPreview.Name" xml:space="preserve">
+    <value>lblPreview</value>
+  </data>
+  <data name="&gt;&gt;lblPreview.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblPreview.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;lblPreview.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lblScaleMode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblScaleMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 28</value>
+  </data>
+  <data name="lblScaleMode.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblScaleMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 13</value>
+  </data>
+  <data name="lblScaleMode.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="lblScaleMode.Text" xml:space="preserve">
+    <value>&amp;Scale Mode:</value>
+  </data>
+  <data name="&gt;&gt;lblScaleMode.Name" xml:space="preserve">
+    <value>lblScaleMode</value>
+  </data>
+  <data name="&gt;&gt;lblScaleMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblScaleMode.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;lblScaleMode.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="cmbScaleMode.Items" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="cmbScaleMode.Items1" xml:space="preserve">
+    <value>Symbolic</value>
+  </data>
+  <data name="cmbScaleMode.Items2" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="cmbScaleMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 24</value>
+  </data>
+  <data name="cmbScaleMode.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbScaleMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 21</value>
+  </data>
+  <data name="cmbScaleMode.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;cmbScaleMode.Name" xml:space="preserve">
+    <value>cmbScaleMode</value>
+  </data>
+  <data name="&gt;&gt;cmbScaleMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbScaleMode.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;cmbScaleMode.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="chkSmoothing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkSmoothing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 55</value>
+  </data>
+  <data name="chkSmoothing.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkSmoothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="chkSmoothing.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="chkSmoothing.Text" xml:space="preserve">
+    <value>Smoothing</value>
+  </data>
+  <data name="&gt;&gt;chkSmoothing.Name" xml:space="preserve">
+    <value>chkSmoothing</value>
+  </data>
+  <data name="&gt;&gt;chkSmoothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkSmoothing.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;chkSmoothing.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 6</value>
+  </data>
+  <data name="groupBox1.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>469, 81</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Symbolizer Characteristics</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lblPatternType.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblPatternType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>113, 100</value>
+  </data>
+  <data name="lblPatternType.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblPatternType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
+  <data name="lblPatternType.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="lblPatternType.Text" xml:space="preserve">
+    <value>&amp;Pattern Type:</value>
+  </data>
+  <data name="&gt;&gt;lblPatternType.Name" xml:space="preserve">
+    <value>lblPatternType</value>
+  </data>
+  <data name="&gt;&gt;lblPatternType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblPatternType.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblPatternType.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="cmbPatternType.Items" xml:space="preserve">
+    <value>Gradient</value>
+  </data>
+  <data name="cmbPatternType.Items1" xml:space="preserve">
+    <value>Picture</value>
+  </data>
+  <data name="cmbPatternType.Items2" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="cmbPatternType.Items3" xml:space="preserve">
+    <value>Hatch</value>
+  </data>
+  <data name="cmbPatternType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>186, 97</value>
+  </data>
+  <data name="cmbPatternType.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbPatternType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 21</value>
+  </data>
+  <data name="cmbPatternType.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;cmbPatternType.Name" xml:space="preserve">
+    <value>cmbPatternType</value>
+  </data>
+  <data name="&gt;&gt;cmbPatternType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbPatternType.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmbPatternType.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tabPatternProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="lblColorSimple.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblColorSimple.Location" type="System.Drawing.Point, System.Drawing">
+    <value>40, 17</value>
+  </data>
+  <data name="lblColorSimple.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblColorSimple.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 13</value>
+  </data>
+  <data name="lblColorSimple.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lblColorSimple.Text" xml:space="preserve">
+    <value>Fill Color:</value>
+  </data>
+  <data name="&gt;&gt;lblColorSimple.Name" xml:space="preserve">
+    <value>lblColorSimple</value>
+  </data>
+  <data name="&gt;&gt;lblColorSimple.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblColorSimple.Parent" xml:space="preserve">
+    <value>tabSimple</value>
+  </data>
+  <data name="&gt;&gt;lblColorSimple.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cbColorSimple.Location" type="System.Drawing.Point, System.Drawing">
+    <value>52, 48</value>
+  </data>
+  <data name="cbColorSimple.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbColorSimple.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 36</value>
+  </data>
+  <data name="cbColorSimple.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="cbColorSimple.Text" xml:space="preserve">
+    <value>colorButton1</value>
+  </data>
+  <data name="&gt;&gt;cbColorSimple.Name" xml:space="preserve">
+    <value>cbColorSimple</value>
+  </data>
+  <data name="&gt;&gt;cbColorSimple.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;cbColorSimple.Parent" xml:space="preserve">
+    <value>tabSimple</value>
+  </data>
+  <data name="&gt;&gt;cbColorSimple.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="sldOpacitySimple.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 48</value>
+  </data>
+  <data name="sldOpacitySimple.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="sldOpacitySimple.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 42</value>
+  </data>
+  <data name="sldOpacitySimple.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="sldOpacitySimple.Text" xml:space="preserve">
+    <value>rampSlider1</value>
+  </data>
+  <data name="&gt;&gt;sldOpacitySimple.Name" xml:space="preserve">
+    <value>sldOpacitySimple</value>
+  </data>
+  <data name="&gt;&gt;sldOpacitySimple.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;sldOpacitySimple.Parent" xml:space="preserve">
+    <value>tabSimple</value>
+  </data>
+  <data name="&gt;&gt;sldOpacitySimple.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabSimple.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabSimple.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabSimple.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabSimple.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 232</value>
+  </data>
+  <data name="tabSimple.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabSimple.Text" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="&gt;&gt;tabSimple.Name" xml:space="preserve">
+    <value>tabSimple</value>
+  </data>
+  <data name="&gt;&gt;tabSimple.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabSimple.Parent" xml:space="preserve">
+    <value>tabPatternProperties</value>
+  </data>
+  <data name="&gt;&gt;tabSimple.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="dbxScaleY.Caption" xml:space="preserve">
+    <value>Y Ratio:</value>
+  </data>
+  <data name="dbxScaleY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 181</value>
+  </data>
+  <data name="dbxScaleY.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="dbxScaleY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 27</value>
+  </data>
+  <data name="dbxScaleY.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleY.Name" xml:space="preserve">
+    <value>dbxScaleY</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleY.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleY.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleY.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="dbxScaleX.Caption" xml:space="preserve">
+    <value>X Ratio:</value>
+  </data>
+  <data name="dbxScaleX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 150</value>
+  </data>
+  <data name="dbxScaleX.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="dbxScaleX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 28</value>
+  </data>
+  <data name="dbxScaleX.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleX.Name" xml:space="preserve">
+    <value>dbxScaleX</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleX.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleX.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;dbxScaleX.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="angTileAngle.Caption" xml:space="preserve">
+    <value>&amp;Angle:</value>
+  </data>
+  <data name="angTileAngle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 80</value>
+  </data>
+  <data name="angTileAngle.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="angTileAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 61</value>
+  </data>
+  <data name="angTileAngle.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;angTileAngle.Name" xml:space="preserve">
+    <value>angTileAngle</value>
+  </data>
+  <data name="&gt;&gt;angTileAngle.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;angTileAngle.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;angTileAngle.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblTileMode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTileMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>34, 56</value>
+  </data>
+  <data name="lblTileMode.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTileMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="lblTileMode.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="lblTileMode.Text" xml:space="preserve">
+    <value>&amp;Tile mode:</value>
+  </data>
+  <data name="&gt;&gt;lblTileMode.Name" xml:space="preserve">
+    <value>lblTileMode</value>
+  </data>
+  <data name="&gt;&gt;lblTileMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTileMode.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;lblTileMode.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cmbTileMode.Items" xml:space="preserve">
+    <value>Clamp</value>
+  </data>
+  <data name="cmbTileMode.Items1" xml:space="preserve">
+    <value>Tile</value>
+  </data>
+  <data name="cmbTileMode.Items2" xml:space="preserve">
+    <value>TileFlipX</value>
+  </data>
+  <data name="cmbTileMode.Items3" xml:space="preserve">
+    <value>TileFlipXY</value>
+  </data>
+  <data name="cmbTileMode.Items4" xml:space="preserve">
+    <value>TileFlipY</value>
+  </data>
+  <data name="cmbTileMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 53</value>
+  </data>
+  <data name="cmbTileMode.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbTileMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 21</value>
+  </data>
+  <data name="cmbTileMode.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;cmbTileMode.Name" xml:space="preserve">
+    <value>cmbTileMode</value>
+  </data>
+  <data name="&gt;&gt;cmbTileMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbTileMode.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;cmbTileMode.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnLoadImage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>183, 27</value>
+  </data>
+  <data name="btnLoadImage.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnLoadImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 20</value>
+  </data>
+  <data name="btnLoadImage.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btnLoadImage.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="&gt;&gt;btnLoadImage.Name" xml:space="preserve">
+    <value>btnLoadImage</value>
+  </data>
+  <data name="&gt;&gt;btnLoadImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLoadImage.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;btnLoadImage.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="txtImage.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="txtImage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 27</value>
+  </data>
+  <data name="txtImage.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txtImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 20</value>
+  </data>
+  <data name="txtImage.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;txtImage.Name" xml:space="preserve">
+    <value>txtImage</value>
+  </data>
+  <data name="&gt;&gt;txtImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtImage.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;txtImage.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 11</value>
+  </data>
+  <data name="label4.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>&amp;Image:</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tabPicture.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPicture.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabPicture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 232</value>
+  </data>
+  <data name="tabPicture.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPicture.Text" xml:space="preserve">
+    <value>Picture</value>
+  </data>
+  <data name="&gt;&gt;tabPicture.Name" xml:space="preserve">
+    <value>tabPicture</value>
+  </data>
+  <data name="&gt;&gt;tabPicture.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPicture.Parent" xml:space="preserve">
+    <value>tabPatternProperties</value>
+  </data>
+  <data name="&gt;&gt;tabPicture.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="sliderGradient.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 52</value>
+  </data>
+  <data name="sliderGradient.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="sliderGradient.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 103</value>
+  </data>
+  <data name="sliderGradient.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;sliderGradient.Name" xml:space="preserve">
+    <value>sliderGradient</value>
+  </data>
+  <data name="&gt;&gt;sliderGradient.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.GradientControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;sliderGradient.Parent" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;sliderGradient.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmbGradientType.Items" xml:space="preserve">
+    <value>Circular</value>
+  </data>
+  <data name="cmbGradientType.Items1" xml:space="preserve">
+    <value>Linear</value>
+  </data>
+  <data name="cmbGradientType.Items2" xml:space="preserve">
+    <value>Rectangular</value>
+  </data>
+  <data name="cmbGradientType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
+  </data>
+  <data name="cmbGradientType.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbGradientType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 21</value>
+  </data>
+  <data name="cmbGradientType.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cmbGradientType.Name" xml:space="preserve">
+    <value>cmbGradientType</value>
+  </data>
+  <data name="&gt;&gt;cmbGradientType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbGradientType.Parent" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;cmbGradientType.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblEndColor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblEndColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 36</value>
+  </data>
+  <data name="lblEndColor.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblEndColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="lblEndColor.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="lblEndColor.Text" xml:space="preserve">
+    <value>End Color:</value>
+  </data>
+  <data name="&gt;&gt;lblEndColor.Name" xml:space="preserve">
+    <value>lblEndColor</value>
+  </data>
+  <data name="&gt;&gt;lblEndColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEndColor.Parent" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;lblEndColor.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblStartColor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblStartColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 36</value>
+  </data>
+  <data name="lblStartColor.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblStartColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
+  </data>
+  <data name="lblStartColor.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="lblStartColor.Text" xml:space="preserve">
+    <value>Start Color:</value>
+  </data>
+  <data name="&gt;&gt;lblStartColor.Name" xml:space="preserve">
+    <value>lblStartColor</value>
+  </data>
+  <data name="&gt;&gt;lblStartColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblStartColor.Parent" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;lblStartColor.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="angGradientAngle.Caption" xml:space="preserve">
+    <value>&amp;Angle:</value>
+  </data>
+  <data name="angGradientAngle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>26, 161</value>
+  </data>
+  <data name="angGradientAngle.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="angGradientAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 68</value>
+  </data>
+  <data name="angGradientAngle.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;angGradientAngle.Name" xml:space="preserve">
+    <value>angGradientAngle</value>
+  </data>
+  <data name="&gt;&gt;angGradientAngle.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;angGradientAngle.Parent" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;angGradientAngle.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tabGradient.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabGradient.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabGradient.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 232</value>
+  </data>
+  <data name="tabGradient.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tabGradient.Text" xml:space="preserve">
+    <value>Gradient </value>
+  </data>
+  <data name="&gt;&gt;tabGradient.Name" xml:space="preserve">
+    <value>tabGradient</value>
+  </data>
+  <data name="&gt;&gt;tabGradient.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabGradient.Parent" xml:space="preserve">
+    <value>tabPatternProperties</value>
+  </data>
+  <data name="&gt;&gt;tabGradient.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblHatchStyle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblHatchStyle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 27</value>
+  </data>
+  <data name="lblHatchStyle.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblHatchStyle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 13</value>
+  </data>
+  <data name="lblHatchStyle.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lblHatchStyle.Text" xml:space="preserve">
+    <value>&amp;Hatch Style:</value>
+  </data>
+  <data name="&gt;&gt;lblHatchStyle.Name" xml:space="preserve">
+    <value>lblHatchStyle</value>
+  </data>
+  <data name="&gt;&gt;lblHatchStyle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblHatchStyle.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;lblHatchStyle.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmbHatchStyle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 24</value>
+  </data>
+  <data name="cmbHatchStyle.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbHatchStyle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 21</value>
+  </data>
+  <data name="cmbHatchStyle.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cmbHatchStyle.Name" xml:space="preserve">
+    <value>cmbHatchStyle</value>
+  </data>
+  <data name="&gt;&gt;cmbHatchStyle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbHatchStyle.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;cmbHatchStyle.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 138</value>
+  </data>
+  <data name="label2.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 13</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>&amp;Background color:</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="hatchBackOpacity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 163</value>
+  </data>
+  <data name="hatchBackOpacity.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="hatchBackOpacity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 42</value>
+  </data>
+  <data name="hatchBackOpacity.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="hatchBackOpacity.Text" xml:space="preserve">
+    <value>rampSlider2</value>
+  </data>
+  <data name="&gt;&gt;hatchBackOpacity.Name" xml:space="preserve">
+    <value>hatchBackOpacity</value>
+  </data>
+  <data name="&gt;&gt;hatchBackOpacity.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;hatchBackOpacity.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;hatchBackOpacity.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="hatchBackColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 163</value>
+  </data>
+  <data name="hatchBackColor.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="hatchBackColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 36</value>
+  </data>
+  <data name="hatchBackColor.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="hatchBackColor.Text" xml:space="preserve">
+    <value>colorButton1</value>
+  </data>
+  <data name="&gt;&gt;hatchBackColor.Name" xml:space="preserve">
+    <value>hatchBackColor</value>
+  </data>
+  <data name="&gt;&gt;hatchBackColor.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;hatchBackColor.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;hatchBackColor.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 66</value>
+  </data>
+  <data name="label1.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>&amp;Foreground color:</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="hatchForeOpacity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 91</value>
+  </data>
+  <data name="hatchForeOpacity.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="hatchForeOpacity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 42</value>
+  </data>
+  <data name="hatchForeOpacity.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="hatchForeOpacity.Text" xml:space="preserve">
+    <value>rampSlider1</value>
+  </data>
+  <data name="&gt;&gt;hatchForeOpacity.Name" xml:space="preserve">
+    <value>hatchForeOpacity</value>
+  </data>
+  <data name="&gt;&gt;hatchForeOpacity.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;hatchForeOpacity.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;hatchForeOpacity.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="hatchForeColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 91</value>
+  </data>
+  <data name="hatchForeColor.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="hatchForeColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 36</value>
+  </data>
+  <data name="hatchForeColor.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;hatchForeColor.Name" xml:space="preserve">
+    <value>hatchForeColor</value>
+  </data>
+  <data name="&gt;&gt;hatchForeColor.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;hatchForeColor.Parent" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;hatchForeColor.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tabHatch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabHatch.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabHatch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 232</value>
+  </data>
+  <data name="tabHatch.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tabHatch.Text" xml:space="preserve">
+    <value>Hatch</value>
+  </data>
+  <data name="&gt;&gt;tabHatch.Name" xml:space="preserve">
+    <value>tabHatch</value>
+  </data>
+  <data name="&gt;&gt;tabHatch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabHatch.Parent" xml:space="preserve">
+    <value>tabPatternProperties</value>
+  </data>
+  <data name="&gt;&gt;tabHatch.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tabPatternProperties.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 133</value>
+  </data>
+  <data name="tabPatternProperties.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabPatternProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 258</value>
+  </data>
+  <data name="tabPatternProperties.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tabPatternProperties.Name" xml:space="preserve">
+    <value>tabPatternProperties</value>
+  </data>
+  <data name="&gt;&gt;tabPatternProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPatternProperties.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabPatternProperties.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="ocOutline.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="ocOutline.Location" type="System.Drawing.Point, System.Drawing">
+    <value>372, 123</value>
+  </data>
+  <data name="ocOutline.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ocOutline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 235</value>
+  </data>
+  <data name="ocOutline.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;ocOutline.Name" xml:space="preserve">
+    <value>ocOutline</value>
+  </data>
+  <data name="&gt;&gt;ocOutline.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.OutlineControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;ocOutline.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ocOutline.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ccPatterns.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="ccPatterns.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="ccPatterns.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ccPatterns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 391</value>
+  </data>
+  <data name="ccPatterns.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;ccPatterns.Name" xml:space="preserve">
+    <value>ccPatterns</value>
+  </data>
+  <data name="&gt;&gt;ccPatterns.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.PatternCollectionControl, DotSpatial.Symbology.Forms, Version=1.0.0.1901, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;ccPatterns.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ccPatterns.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.ShowHelp" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 394</value>
+  </data>
+  <data name="&gt;&gt;helpProvider1.Name" xml:space="preserve">
+    <value>helpProvider1</value>
+  </data>
+  <data name="&gt;&gt;helpProvider1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.HelpProvider, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>DetailedPolygonSymbolControl</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

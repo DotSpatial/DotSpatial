@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Operation.GeometryGraphOperation">
+    <Position X="6.5" Y="19.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AEAAAACAAAAAAAAACAAAAAAAAAAAAAICAAACAAAAAAA=</HashCode>
+      <FileName>Operation\GeometryGraphOperation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.OverlayOp">
+    <Position X="5.5" Y="23" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAABAAACAACCACUAkABAAEQIIAABBCgAAkFIAAQIBEA=</HashCode>
+      <FileName>Operation\Overlay\OverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateOp">
+    <Position X="8.5" Y="23" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAABAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

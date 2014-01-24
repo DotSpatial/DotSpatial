@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Iesi.Collections.Generic.CollectionWrapper&lt;T&gt;">
+    <Position X="23.5" Y="12.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAAAAQAAAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\CollectionWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.EnumerableWrapper&lt;T&gt;">
+    <Position X="23.5" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAgAAAAAABAAAAAIAEAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

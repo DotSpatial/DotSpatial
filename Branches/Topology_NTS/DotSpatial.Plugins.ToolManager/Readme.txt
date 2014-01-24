@@ -1,0 +1,1 @@
+﻿Allow to use DotSpatial ToolManager.

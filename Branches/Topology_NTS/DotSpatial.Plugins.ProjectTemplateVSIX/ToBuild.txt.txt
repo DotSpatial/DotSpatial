@@ -1,0 +1,7 @@
+Download
+Visual Studio 2010 SDK
+http://www.microsoft.com/download/en/details.aspx?id=2680
+
+or
+Visual Studio 2010 SP1 SDK
+http://visualstudiogallery.msdn.microsoft.com/25622469-19d8-4959-8e5c-4025d1c9183d

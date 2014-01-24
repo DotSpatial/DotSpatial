@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="progresscompleted" xml:space="preserve">
+    <value>% progress completed</value>
+  </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="Buffer" xml:space="preserve">
+    <value>Buffer</value>
+  </data>
+  <data name="BufferDistance" xml:space="preserve">
+    <value>Buffer Distance</value>
+  </data>
+  <data name="Calculatesproximitydistance" xml:space="preserve">
+    <value>Calculates the distance (proximity) from each cell to the nearest target cell. By default, all</value>
+  </data>
+  <data name="Calculateseuclideandistance" xml:space="preserve">
+    <value>Calculates the euclidean distance from each raster cell to the nearest target cell</value>
+  </data>
+  <data name="ClipRasterLayer" xml:space="preserve">
+    <value>Clip Raster Layer</value>
+  </data>
+  <data name="ClipRasterLayerwithPolygon" xml:space="preserve">
+    <value>Clip Raster Layer with Polygon</value>
+  </data>
+  <data name="Conversion" xml:space="preserve">
+    <value>Conversion</value>
+  </data>
+  <data name="Generalization" xml:space="preserve">
+    <value>Generalization</value>
+  </data>
+  <data name="InputFirstRaster" xml:space="preserve">
+    <value>Input First Raster</value>
+  </data>
+  <data name="InputPolygonforclipingtoRaster" xml:space="preserve">
+    <value>Input Polygon for cliping to Raste</value>
+  </data>
+  <data name="inputRaster" xml:space="preserve">
+    <value>input Raster</value>
+  </data>
+  <data name="InputRastercontainingtargetcells" xml:space="preserve">
+    <value>Input Raster containing the target cells</value>
+  </data>
+  <data name="input1Raster" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="input2PolygonforCliping" xml:space="preserve">
+    <value>Polygon for Clipping</value>
+  </data>
+  <data name="InputFeatureSet" xml:space="preserve">
+    <value>Input Feature Set</value>
+  </data>
+  <data name="Interpolation" xml:space="preserve">
+    <value>Interpolation</value>
+  </data>
+  <data name="MapWindowBuffer" xml:space="preserve">
+    <value>MapWindow Buffer</value>
+  </data>
+  <data name="MapWindowRasterClip" xml:space="preserve">
+    <value>MapWindow Raster Clip</value>
+  </data>
+  <data name="OutputPolygonFeatureSet" xml:space="preserve">
+    <value>Output Polygon Feature Set</value>
+  </data>
+  <data name="Pass1" xml:space="preserve">
+    <value>Pass 1:</value>
+  </data>
+  <data name="Pass2" xml:space="preserve">
+    <value>Pass 2:</value>
+  </data>
+  <data name="RasterOverlay" xml:space="preserve">
+    <value>Raster Overlay</value>
+  </data>
+  <data name="ResultRasterDirectory" xml:space="preserve">
+    <value>Select the Result Raster Directory and Name</value>
+  </data>
+  <data name="SpatialReference" xml:space="preserve">
+    <value>Spatial Reference</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="TerrainAnalysis" xml:space="preserve">
+    <value>Terrain Analysis</value>
+  </data>
+  <data name="ReSampleGridDescription" xml:space="preserve">
+    <value>This will Change the cell size</value>
+  </data>
+  <data name="ClipGridswithPolygon" xml:space="preserve">
+    <value>This will Clip Grids with Polygon Shape File</value>
+  </data>
+  <data name="RasterSubractDescription" xml:space="preserve">
+    <value>This will Subtract second raster from first raster cell by cell</value>
+  </data>
+  <data name="VectorOverlay" xml:space="preserve">
+    <value>Vector Overlay</value>
+  </data>
+  <data name="BufferDescription" xml:space="preserve">
+    <value>This will add the buffer Polygon FeatureSet with Specified Distance</value>
+  </data>
+  <data name="Bufferwithdistance" xml:space="preserve">
+    <value>Buffer with distance around input.</value>
+  </data>
+  <data name="newrasteronspecifiedfeatureset" xml:space="preserve">
+    <value>Creates a new raster based on the specified featureset using the specified field to determine distinct polygons and assign the raster values</value>
+  </data>
+  <data name="DesiredCellSize" xml:space="preserve">
+    <value>Desired Cell Size or 0 to automatically calculate cell size</value>
+  </data>
+  <data name="InputPolygontochange" xml:space="preserve">
+    <value>Input Polygon to change to Raster featureset</value>
+  </data>
+  <data name="input1polygontoRaster" xml:space="preserve">
+    <value>input1 polygon to Raster.</value>
+  </data>
+  <data name="ISU" xml:space="preserve">
+    <value>ISU</value>
+  </data>
+  <data name="MapWindowFeatureToRaster" xml:space="preserve">
+    <value>MapWindow FeatureToRaster</value>
+  </data>
+  <data name="DotSpatialDevelopmentTeam" xml:space="preserve">
+    <value>DotSpatial Development Team</value>
+  </data>
+  <data name="MapWindow.Tools" xml:space="preserve">
+    <value>MapWindow.Tools</value>
+  </data>
+  <data name="OutputRaster" xml:space="preserve">
+    <value>Output Raster.</value>
+  </data>
+  <data name="Resultofaverageslope" xml:space="preserve">
+    <value>Select the Result of Output feature set with average slope in the attribute.</value>
+  </data>
+  <data name="Themaximumnumber" xml:space="preserve">
+    <value>The maximum number of rows/columns is 8000, so a cell size that is too small will be adjusted.  A zero value calculates the values so that the shorter dimension between width and height will measure 256 cells.</value>
+  </data>
+  <data name="stringnameoffield" xml:space="preserve">
+    <value>The string name of the field to use in the data table</value>
+  </data>
+  <data name="Thevalueofeachcell" xml:space="preserve">
+    <value>The value of each cell will either be assigned the value from this field or will attept to parse the string field member as a number</value>
+  </data>
+  <data name="InputRasterforCliping" xml:space="preserve">
+    <value>Input Raster for Cliping</value>
+  </data>
+  <data name="BaseFeatureSet" xml:space="preserve">
+    <value>Base Feature Set</value>
+  </data>
+  <data name="VoronoiDescription" xml:space="preserve">
+    <value>This tool computes voronoi polygons around each of the points, defining the regions that are closer to that point than any other points.</value>
+  </data>
+  <data name="computethevoronoidiagram" xml:space="preserve">
+    <value>This too uses the Fortune algorithm to compute the voronoi diagram for a given set of points.  In this diagram, every polygon represents the region where any point inside that polygon is closer to the original point in that polygon than it is to any other point.</value>
+  </data>
+  <data name="CreateVoronoiPolygons" xml:space="preserve">
+    <value>Create Voronoi Polygons</value>
+  </data>
+  <data name="EliminateSecondFeatureset" xml:space="preserve">
+    <value>This will eliminate Second featureset from first featureset</value>
+  </data>
+  <data name="Erase" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="Erase2ndinput" xml:space="preserve">
+    <value>Erase 2nd input from 1st input</value>
+  </data>
+  <data name="ErasedResultFeatureSet" xml:space="preserve">
+    <value>Erased Result Feature Set</value>
+  </data>
+  <data name="input2Raster" xml:space="preserve">
+    <value>Second Raster</value>
+  </data>
+  <data name="InputSecondRasterforMerging" xml:space="preserve">
+    <value>Input Second Raster for Merging</value>
+  </data>
+  <data name="MapWindowErase" xml:space="preserve">
+    <value>MapWindow Erase</value>
+  </data>
+  <data name="MapWindowRasterMerge" xml:space="preserve">
+    <value>MapWindow Raster Merge</value>
+  </data>
+  <data name="MapWindowTheissenPolygons" xml:space="preserve">
+    <value>MapWindow Theissen Polygons</value>
+  </data>
+  <data name="MergeRasterLayers" xml:space="preserve">
+    <value>Merge Raster Layers</value>
+  </data>
+  <data name="MergeGridsDescription" xml:space="preserve">
+    <value>This will Merge Two Raster  Layer cell by cell</value>
+  </data>
+  <data name="MergetwoRasterLayers" xml:space="preserve">
+    <value>Merge two Raster Layers</value>
+  </data>
+  <data name="PointFeatureSet" xml:space="preserve">
+    <value>Point Feature Set</value>
+  </data>
+  <data name="PolygonFeatureSet" xml:space="preserve">
+    <value>Polygon Feature Set</value>
+  </data>
+  <data name="RemoveFeatureSet" xml:space="preserve">
+    <value>Remove Feature Set</value>
+  </data>
+  <data name="ThiessenPolygons" xml:space="preserve">
+    <value>Thiessen Polygons</value>
+  </data>
+  <data name="addallfeatures" xml:space="preserve">
+    <value>This will add all features of input with attributes.</value>
+  </data>
+  <data name="AddFeature" xml:space="preserve">
+    <value>Add Feature</value>
+  </data>
+  <data name="AddFeatureDescription" xml:space="preserve">
+    <value>This will add Feature in the Feature Set.</value>
+  </data>
+  <data name="AddFeatureintheFeatureSet" xml:space="preserve">
+    <value>Add Feature in the FeatureSet</value>
+  </data>
+  <data name="AddRasterLayers" xml:space="preserve">
+    <value>Add Raster Layers</value>
+  </data>
+  <data name="AddTwoRasteLayer" xml:space="preserve">
+    <value>This will Add Two Raster  Layer cell by cell</value>
+  </data>
+  <data name="AddtwoRasterLayers" xml:space="preserve">
+    <value>Add two Raster Layers</value>
+  </data>
+  <data name="Aggregate" xml:space="preserve">
+    <value>Aggregate</value>
+  </data>
+  <data name="AggregateToollip" xml:space="preserve">
+    <value>Aggregate features combines all the features in the featureset to form a single feature.</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="averageslopeinarribute" xml:space="preserve">
+    <value>The average slope will calculate and add in every polygon in its arribute</value>
+  </data>
+  <data name="AveSlope" xml:space="preserve">
+    <value>Ave_Slope</value>
+  </data>
+  <data name="boxSlopeInPercentage" xml:space="preserve">
+    <value>box Slope In Percentage</value>
+  </data>
+  <data name="CalculateAreas" xml:space="preserve">
+    <value>Calculate Areas</value>
+  </data>
+  <data name="CalculateSlopegivenpolygons" xml:space="preserve">
+    <value>Calculate Average Slope for given polygons.</value>
+  </data>
+  <data name="FindAverageSlopeExtentedDescription" xml:space="preserve">
+    <value>Calculate Average Slope for given polygons with more user preference</value>
+  </data>
+  <data name="AreaToolTip" xml:space="preserve">
+    <value>Calculates the area of polygons</value>
+  </data>
+  <data name="CellSize" xml:space="preserve">
+    <value>Cel lSize</value>
+  </data>
+  <data name="ChangeCellSize" xml:space="preserve">
+    <value>Change Cell Size</value>
+  </data>
+  <data name="NoDataValueChangeDescription" xml:space="preserve">
+    <value>This will Change the No Data Values</value>
+  </data>
+  <data name="ChildFeatureSet" xml:space="preserve">
+    <value>Child Feature Set</value>
+  </data>
+  <data name="Clipbounds" xml:space="preserve">
+    <value>Clip bounds</value>
+  </data>
+  <data name="ClipFeatureSetWithPolygon" xml:space="preserve">
+    <value>Clip Feature Set With Polygon</value>
+  </data>
+  <data name="Clippedfeatureset" xml:space="preserve">
+    <value>Clipped feature set</value>
+  </data>
+  <data name="ClipPolygonwithLine" xml:space="preserve">
+    <value>Clip Polygon with Line</value>
+  </data>
+  <data name="Clipslayerwithlayer" xml:space="preserve">
+    <value>Clips a layer with another layer</value>
+  </data>
+  <data name="Convertedfeatureset" xml:space="preserve">
+    <value>Converted feature set</value>
+  </data>
+  <data name="DeleteFeatures" xml:space="preserve">
+    <value>Delete Features</value>
+  </data>
+  <data name="DeleteFeaturesfromFeatureSet" xml:space="preserve">
+    <value>Delete Features from FeatureSet</value>
+  </data>
+  <data name="deleteuserselectedFeatures" xml:space="preserve">
+    <value>This will delete user selected Features from FeatureSet</value>
+  </data>
+  <data name="DesiredOutputProjection" xml:space="preserve">
+    <value>Desired Output Projection</value>
+  </data>
+  <data name="DisplayingistheOldCellHight" xml:space="preserve">
+    <value>Displaying is the Old Cell Hight. input New value for 'change' or leave that for 'no change'</value>
+  </data>
+  <data name="DouglasPeuckerlinesimplification" xml:space="preserve">
+    <value>This tool reduces the number of points on polylines using the Douglas-Peucker line simplification algorithm</value>
+  </data>
+  <data name="DPlinesimplification" xml:space="preserve">
+    <value>DP line simplification</value>
+  </data>
+  <data name="Exceptioninclipin" xml:space="preserve">
+    <value>Exception in Executer the polygon cliping with line</value>
+  </data>
+  <data name="ExpressionSelectFeatures" xml:space="preserve">
+    <value>Expression to Select the Features from Featureset</value>
+  </data>
+  <data name="featuresetcontainareainterest" xml:space="preserve">
+    <value>This feature set contain the area of interest where the average slope want to calculate.</value>
+  </data>
+  <data name="featuresetcreated" xml:space="preserve">
+    <value>The feature set created from converting the raster</value>
+  </data>
+  <data name="Featuresettoclip" xml:space="preserve">
+    <value>Feature set to clip</value>
+  </data>
+  <data name="FeatureToRaster" xml:space="preserve">
+    <value>Feature To Raster</value>
+  </data>
+  <data name="Fieldnamecolomavrageslope" xml:space="preserve">
+    <value>Field name for average slope which will add new colom in the attribute</value>
+  </data>
+  <data name="Fieldnameforavrageslope" xml:space="preserve">
+    <value>Field name for average slope.</value>
+  </data>
+  <data name="FindAverageSlope" xml:space="preserve">
+    <value>Find Average Slope</value>
+  </data>
+  <data name="FindAvrageSlopeExtented" xml:space="preserve">
+    <value>Find Average Slope Extented..</value>
+  </data>
+  <data name="FixedCount" xml:space="preserve">
+    <value>Fixed Count</value>
+  </data>
+  <data name="FixedDistance" xml:space="preserve">
+    <value>Fixed Distance</value>
+  </data>
+  <data name="FixedDistanceHelpText" xml:space="preserve">
+    <value>Fixed Distance: When using fixed distance if the minimum number of points is not found within the search radius it is increased until the minimum is found. Enter 0 for no minimum count.\n\nFixedCount: When using fixed count the maximum number of points will be used as long as they fall within the maximum search radius.</value>
+  </data>
+  <data name="FindAverageSlopeDescription" xml:space="preserve">
+    <value>This will Generate the average slope in the given polygons.</value>
+  </data>
+  <data name="GenerateCentroid" xml:space="preserve">
+    <value>Generate Centroid</value>
+  </data>
+  <data name="generatecentroidFeatureSet" xml:space="preserve">
+    <value>This will generate centroid FeatureSet from input FeatureSet.</value>
+  </data>
+  <data name="GenerateCentroidfrominputFeatureSet" xml:space="preserve">
+    <value>Generate Centroid from input FeatureSet</value>
+  </data>
+  <data name="FeatureToRasterDescription" xml:space="preserve">
+    <value>This will generate a new raster from given Polygon.</value>
+  </data>
+  <data name="RasterToPolygonDescription" xml:space="preserve">
+    <value>This will generate a polygon featureset from a raster</value>
+  </data>
+  <data name="RasterSlopeDescription" xml:space="preserve">
+    <value>This will Generate slope raster from given altitude raster.</value>
+  </data>
+  <data name="GenerateslopeRasterLayer" xml:space="preserve">
+    <value>Generate slope Raster Layer</value>
+  </data>
+  <data name="Givenafeatureset" xml:space="preserve">
+    <value>Given a feature set, this will combine all of the features into a single shape.  Polygons that touch will lose the separation boundaries.</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="IndexNotoOverwrite" xml:space="preserve">
+    <value>Index No to Overwrite Feature</value>
+  </data>
+  <data name="Indexofareaofinterestfeature" xml:space="preserve">
+    <value>Index of area of interest feature</value>
+  </data>
+  <data name="indexspecificarea" xml:space="preserve">
+    <value>This is the index which give the specific area of interest feature</value>
+  </data>
+  <data name="input1altitudeRaster" xml:space="preserve">
+    <value>input1 altitude Raster</value>
+  </data>
+  <data name="input1FeatureSet" xml:space="preserve">
+    <value>input1 Feature Set</value>
+  </data>
+  <data name="input1polygonfeatureset" xml:space="preserve">
+    <value>input1 polygon feature set</value>
+  </data>
+  <data name="input1PolygonShapefile" xml:space="preserve">
+    <value>input1 Polygon Shape file.</value>
+  </data>
+  <data name="input2FeatureSettoAdd" xml:space="preserve">
+    <value>Feature Set to Add</value>
+  </data>
+  <data name="input2FeatureSettoOverwrite" xml:space="preserve">
+    <value>Feature Set to Overwrite</value>
+  </data>
+  <data name="input2LineforCliping" xml:space="preserve">
+    <value>Line for Clipping</value>
+  </data>
+  <data name="InputFeatureSetaddnewfeatures" xml:space="preserve">
+    <value>Input FeatureSet which has new features to add</value>
+  </data>
+  <data name="InputFeatureSettobeoverwrite" xml:space="preserve">
+    <value>Input FeatureSet which has new feature to be overwrite</value>
+  </data>
+  <data name="InputFeatureSettodelete" xml:space="preserve">
+    <value>Input FeatureSet to delete features</value>
+  </data>
+  <data name="InputFeatureSettogenerate" xml:space="preserve">
+    <value>Input FeatureSet to generate Centroid features</value>
+  </data>
+  <data name="InputFeatureSettoreproject" xml:space="preserve">
+    <value>Input FeatureSet to reproject</value>
+  </data>
+  <data name="Inputlineforcliping" xml:space="preserve">
+    <value>Input line for cliping</value>
+  </data>
+  <data name="InputnewcellHight" xml:space="preserve">
+    <value>Input new cell Hight</value>
+  </data>
+  <data name="InputnewcellWidth" xml:space="preserve">
+    <value>Input new cell Width</value>
+  </data>
+  <data name="InputPolygonforCliping" xml:space="preserve">
+    <value>Input Polygon for Cliping</value>
+  </data>
+  <data name="InputRasterforaverageslopecalculation" xml:space="preserve">
+    <value>Input Raster for average slope calculation</value>
+  </data>
+  <data name="InputRasternoValue" xml:space="preserve">
+    <value>Input the Raster for No Data Value Change</value>
+  </data>
+  <data name="inputrastetoconvert" xml:space="preserve">
+    <value>The input raster to convert into a polygon featureset</value>
+  </data>
+  <data name="InputSecondRasterforAdding" xml:space="preserve">
+    <value>Input Second Raster for Adding</value>
+  </data>
+  <data name="InputSecondRasterforMultiply" xml:space="preserve">
+    <value>Input Second Raster for Multiply</value>
+  </data>
+  <data name="InputSecondRasterforSubtract" xml:space="preserve">
+    <value>Input Second Raster for Subtract</value>
+  </data>
+  <data name="inputtheareaofinterest" xml:space="preserve">
+    <value>input the area of interest</value>
+  </data>
+  <data name="InputtheRasterforCellsizeChange" xml:space="preserve">
+    <value>Input the Raster for Cell size Change</value>
+  </data>
+  <data name="inputZfactor" xml:space="preserve">
+    <value>input Z factor</value>
+  </data>
+  <data name="InputZfactorforslopedisplay" xml:space="preserve">
+    <value>Input Z factor for slope display</value>
+  </data>
+  <data name="InverseDistanceWeighting" xml:space="preserve">
+    <value>Inverse Distance Weighting</value>
+  </data>
+  <data name="layercontainsvalues" xml:space="preserve">
+    <value>The field in the input point feature set layer that contains the values to interpolate.</value>
+  </data>
+  <data name="LineFeatureSet" xml:space="preserve">
+    <value>Line Feature Set</value>
+  </data>
+  <data name="MainFeatureset" xml:space="preserve">
+    <value>Main Feature set</value>
+  </data>
+  <data name="MapWindowAddFeature" xml:space="preserve">
+    <value>MapWindow Add Feature</value>
+  </data>
+  <data name="MapWindowAggregate" xml:space="preserve">
+    <value>MapWindow Aggregate</value>
+  </data>
+  <data name="MapWindowCalculateAreas" xml:space="preserve">
+    <value>MapWindow Calculate Areas</value>
+  </data>
+  <data name="MapWindowChangeCellSize" xml:space="preserve">
+    <value>MapWindow Change Cell Size</value>
+  </data>
+  <data name="MapWindowChangeNoDataValues" xml:space="preserve">
+    <value>MapWindow Change No Data Values</value>
+  </data>
+  <data name="MapWindowClip" xml:space="preserve">
+    <value>MapWindow Clip</value>
+  </data>
+  <data name="MapWindowDeleteFeatures" xml:space="preserve">
+    <value>MapWindow Delete Features</value>
+  </data>
+  <data name="MapWindowFindAverageSlope" xml:space="preserve">
+    <value>MapWindow FindAverageSlope</value>
+  </data>
+  <data name="MapWindowFindAverageSlopeExtented" xml:space="preserve">
+    <value>MapWindow FindAverageSlope Extented..</value>
+  </data>
+  <data name="MapWindowGenerateCentroid" xml:space="preserve">
+    <value>MapWindow Generate Centroid</value>
+  </data>
+  <data name="MapWindowInverseDistance" xml:space="preserve">
+    <value>MapWindow Inverse Distance Weighting</value>
+  </data>
+  <data name="MapWindowLineSimplification" xml:space="preserve">
+    <value>MapWindow Line Simplification</value>
+  </data>
+  <data name="MapWindowOverWriteFeature" xml:space="preserve">
+    <value>MapWindow OverWrite Feature</value>
+  </data>
+  <data name="MapWindowPolygonClipWithLine" xml:space="preserve">
+    <value>MapWindow Polygon Clip With Line</value>
+  </data>
+  <data name="MapWindowRasterAdd" xml:space="preserve">
+    <value>MapWindow Raster Add</value>
+  </data>
+  <data name="MapWindowRasterEuclideanDistance" xml:space="preserve">
+    <value>MapWindow Raster Euclidean Distance</value>
+  </data>
+  <data name="MapWindowRasterMultiply" xml:space="preserve">
+    <value>MapWindow Raster Multiply</value>
+  </data>
+  <data name="MapWindowRasterSlope" xml:space="preserve">
+    <value>MapWindow Raster Slope</value>
+  </data>
+  <data name="MapWindowRasterSubtraction" xml:space="preserve">
+    <value>MapWindow Raster Subtraction</value>
+  </data>
+  <data name="MapWindowReprojectFeatures" xml:space="preserve">
+    <value>MapWindow Reproject Features</value>
+  </data>
+  <data name="MapWindowSimpeRasterToPolygon" xml:space="preserve">
+    <value>MapWindow SimpeRasterToPolygon</value>
+  </data>
+  <data name="MapWindowUnion" xml:space="preserve">
+    <value>MapWindow Union</value>
+  </data>
+  <data name="Maximumdistance" xml:space="preserve">
+    <value>Maximum distance</value>
+  </data>
+  <data name="Maximumdistancetobecalculated" xml:space="preserve">
+    <value>Maximum distance to be calculated. Cells with a distance to nearest target greater than 'Maximum distance' will be assigned a 'no data' value.";</value>
+  </data>
+  <data name="MinMaxdistance" xml:space="preserve">
+    <value>Min / Max distance</value>
+  </data>
+  <data name="MinMaxnumberofpoints" xml:space="preserve">
+    <value>Min / Max number of points</value>
+  </data>
+  <data name="MultiplyRasterLayers" xml:space="preserve">
+    <value>Multiply Raster Layers</value>
+  </data>
+  <data name="NeighborhoodType" xml:space="preserve">
+    <value>Neighborhood Type</value>
+  </data>
+  <data name="Newnumberofpoints" xml:space="preserve">
+    <value>New number of points:</value>
+  </data>
+  <data name="newrastername" xml:space="preserve">
+    <value>The new raster will put on the Output raster name</value>
+  </data>
+  <data name="Oneparameterinnull" xml:space="preserve">
+    <value>One of the parameter layers in null</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional - leave default for NoDataValue or input Exsisting Value</value>
+  </data>
+  <data name="Optionaltochange" xml:space="preserve">
+    <value>This is Optional where User want to change the Value to other Value. Defalt will be No Data Value change</value>
+  </data>
+  <data name="Originalnumberofpoints" xml:space="preserve">
+    <value>Original number of points:</value>
+  </data>
+  <data name="OutputFeatureSet" xml:space="preserve">
+    <value>Output FeatureSet</value>
+  </data>
+  <data name="Outputfeaturesetwithaverageslope" xml:space="preserve">
+    <value>Output feature set with average slope.</value>
+  </data>
+  <data name="OutputShapefile" xml:space="preserve">
+    <value>Output Shapefile</value>
+  </data>
+  <data name="OutputslopeRaster" xml:space="preserve">
+    <value>Output slope Raster</value>
+  </data>
+  <data name="Outputwithaverageslope" xml:space="preserve">
+    <value>Output feature set with average slope.</value>
+  </data>
+  <data name="OverWriteFeature" xml:space="preserve">
+    <value>OverWrite Feature</value>
+  </data>
+  <data name="OverWriteFeaturebyindex" xml:space="preserve">
+    <value>This will OverWrite Feature in the FeatureSet reference by index</value>
+  </data>
+  <data name="OverWriteFeatureDescription" xml:space="preserve">
+    <value>This will OverWrite Feature in the FeatureSet.</value>
+  </data>
+  <data name="OverWriteFeatureintheFeatureSet" xml:space="preserve">
+    <value>OverWrite Feature in the FeatureSet</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Power</value>
+  </data>
+  <data name="Raster" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="RasterDistance" xml:space="preserve">
+    <value>Raster Distance</value>
+  </data>
+  <data name="RasterDistanceproximity" xml:space="preserve">
+    <value>Raster Distance (proximity)</value>
+  </data>
+  <data name="IDWDescription" xml:space="preserve">
+    <value>This tool creates a raster from a point feature set using Inverse Distance Weighting.</value>
+  </data>
+  <data name="RasterToPolygon" xml:space="preserve">
+    <value>Raster To Polygon</value>
+  </data>
+  <data name="ReprojectFeatures" xml:space="preserve">
+    <value>Reproject Features</value>
+  </data>
+  <data name="Reprojectsallcoordinates" xml:space="preserve">
+    <value>Reprojects all the coordinates in the featureset to the specified coordinate system</value>
+  </data>
+  <data name="ReprojectFeatureSetDescription" xml:space="preserve">
+    <value>This will reproject the specified featureset to a new coordinate system</value>
+  </data>
+  <data name="ResultShapefile" xml:space="preserve">
+    <value>Result Shapefile</value>
+  </data>
+  <data name="SecondFeatureset" xml:space="preserve">
+    <value>Second Feature set</value>
+  </data>
+  <data name="secondinputlayer" xml:space="preserve">
+    <value>The second input layer must be a polygon feature set</value>
+  </data>
+  <data name="SelectFeaturestoDelete" xml:space="preserve">
+    <value>Select Features to Delete</value>
+  </data>
+  <data name="SelectResultFeatureSetDirectory" xml:space="preserve">
+    <value>Select the Result FeatureSet Directory and Name</value>
+  </data>
+  <data name="SelectresultrasterfileName" xml:space="preserve">
+    <value>Select the result raster file name</value>
+  </data>
+  <data name="SelectResultShapefileDirectory" xml:space="preserve">
+    <value>Select the Result Shapefile Directory and Name</value>
+  </data>
+  <data name="SelecttheResultofOutput" xml:space="preserve">
+    <value>Select the Result of Output feature set with average slope in the attribute.</value>
+  </data>
+  <data name="Selectthetypeofneighborhood" xml:space="preserve">
+    <value>Select the type of neighborhood to use when searching for point. \n\nFixed Distance: Searches a set distance from a cell for points and uses all of the points that are found to compute a cells value. If there are less points collected then the minimum specified the search radius is expanded until there are suffcient points found. \n\nFixed Count: Searches for the closest points to the cell until the max number of points specified is reached or the maximum distance is reached.</value>
+  </data>
+  <data name="SimplifyLines" xml:space="preserve">
+    <value>Simplify Lines</value>
+  </data>
+  <data name="Slopegridfileisnull" xml:space="preserve">
+    <value>Slope grid file is null.</value>
+  </data>
+  <data name="slopeinpercentage" xml:space="preserve">
+    <value>slope in percentage</value>
+  </data>
+  <data name="slopeinpercentageindegree" xml:space="preserve">
+    <value>slope in percentage true otherwise it will be in Degree</value>
+  </data>
+  <data name="SlopeRasterLayer" xml:space="preserve">
+    <value>Slope Raster Layer</value>
+  </data>
+  <data name="SourceProjection" xml:space="preserve">
+    <value>Source Projection</value>
+  </data>
+  <data name="sourceprojectiondifferent" xml:space="preserve">
+    <value>If the source projection should be different from what is already on the feature set</value>
+  </data>
+  <data name="SubtractRasterLayer" xml:space="preserve">
+    <value>Subtract Raster Layer</value>
+  </data>
+  <data name="Thecellsizeingeographicunits" xml:space="preserve">
+    <value>The cellsize in the geographic units of the input layer. If 0 the width is calculate as the extent of the input layer divided by 255</value>
+  </data>
+  <data name="Thedestinationprojection" xml:space="preserve">
+    <value>The destination projection.</value>
+  </data>
+  <data name="Theinfluenceofdistance" xml:space="preserve">
+    <value>The influence of distance points. A higher power reduces the influences of distant points, a lower value increases it.</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerance</value>
+  </data>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>This tool calculates the area of each polygon in a polygon feature set and appends the results to the Output feature sets attribute table.</value>
+  </data>
+  <data name="toolcombinespolygons" xml:space="preserve">
+    <value>This tool combines many different polygons into a single, all encompassing shape, though the shape may have mutliple parts.</value>
+  </data>
+  <data name="tooltakesafeatureset" xml:space="preserve">
+    <value>This tool takes a feature set and a polygon feature set and clips the first feature set to the are defined by the polygon feature set.</value>
+  </data>
+  <data name="Union" xml:space="preserve">
+    <value>Union</value>
+  </data>
+  <data name="UnionFeatureSet" xml:space="preserve">
+    <value>Union Feature Set</value>
+  </data>
+  <data name="UnioningShapes" xml:space="preserve">
+    <value>Unioning Shapes</value>
+  </data>
+  <data name="Unionofinputs" xml:space="preserve">
+    <value>Union of inputs</value>
+  </data>
+  <data name="UserinputNewValue" xml:space="preserve">
+    <value>User Can input New Value to replace Old Value</value>
+  </data>
+  <data name="UserNewValues" xml:space="preserve">
+    <value>User New Values</value>
+  </data>
+  <data name="Zvalue" xml:space="preserve">
+    <value>Z-value</value>
+  </data>
+  <data name="Generateaverageslopewithpreferences" xml:space="preserve">
+    <value>This will Generate the average slope in the given polygons with more user preferences.</value>
+  </data>
+  <data name="GenerateRasterfromPolygon" xml:space="preserve">
+    <value>This will Generate Raster from given Polygon.</value>
+  </data>
+  <data name="Multiplytworasters" xml:space="preserve">
+    <value>This will Multiply two rasters values cell by cell</value>
+  </data>
+  <data name="MapWindowVoronoi" xml:space="preserve">
+    <value>Voronoi</value>
+  </data>
+  <data name="RraseDescription" xml:space="preserve">
+    <value>This will eliminate Second featureset from first featureset</value>
+  </data>
+  <data name="RasterMultiplyDescription" xml:space="preserve">
+    <value>This will Multiply two rasters values cell by cell</value>
+  </data>
+  <data name="DeleteFeaturesDescription" xml:space="preserve">
+    <value>This will delete Features from FeatureSet.</value>
+  </data>
+  <data name="GenerateCentroidDescription" xml:space="preserve">
+    <value>This will generate centroid FeatureSet from input FeatureSet.</value>
+  </data>
+  <data name="UnionDescription" xml:space="preserve">
+    <value>This will add all features of input with attributes.</value>
+  </data>
+  <data name="BinToolDescription" xml:space="preserve">
+    <value>This bins the values of a raster so that there will be large regions of equal values.</value>
+  </data>
+  <data name="ConvertingLAS" xml:space="preserve">
+    <value>Converting LAS points from</value>
+  </data>
+  <data name="DotSpatialRasterFromLAS" xml:space="preserve">
+    <value>DotSpatial RasterFromLAS</value>
+  </data>
+  <data name="GeographicExtent" xml:space="preserve">
+    <value>The geographic extent for the output raster.</value>
+  </data>
+  <data name="HelpLASTool" xml:space="preserve">
+    <value>Converts the point elevations in a LAS file to a Raster.</value>
+  </data>
+  <data name="lasFilename" xml:space="preserve">
+    <value>lasFilename</value>
+  </data>
+  <data name="LasFullpath" xml:space="preserve">
+    <value>Enter the full path value of the LAS filename.</value>
+  </data>
+  <data name="NoDataValueChange" xml:space="preserve">
+    <value>No Data Value Change </value>
+  </data>
+  <data name="numberofcolums" xml:space="preserve">
+    <value>The number of columns to create in the output raster.</value>
+  </data>
+  <data name="numberofrows" xml:space="preserve">
+    <value>The number of rows to create in the output image.</value>
+  </data>
+  <data name="NumColumns" xml:space="preserve">
+    <value>NumColumns</value>
+  </data>
+  <data name="NumRows" xml:space="preserve">
+    <value>NumRows</value>
+  </data>
+  <data name="Progresstoraster" xml:space="preserve">
+    <value>toraster</value>
+  </data>
+  <data name="RasterExtent" xml:space="preserve">
+    <value>Raster Extent</value>
+  </data>
+  <data name="RasterFromLAS" xml:space="preserve">
+    <value>Raster From LAS</value>
+  </data>
+  <data name="ToolFromLasToRaster" xml:space="preserve">
+    <value>This tool will read in LAS point files and produce raster representations for an area</value>
+  </data>
+  <data name="RandomGeometry" xml:space="preserve">
+    <value>Random Points</value>
+  </data>
+  <data name="RandomGeometryDescription" xml:space="preserve">
+    <value>Generate any number of randomly placed points within a specified area of the map.</value>
+  </data>
+  <data name="RandomGeometryNumPoint" xml:space="preserve">
+    <value>The number of points to generate.</value>
+  </data>
+  <data name="RandomGeometryToolTip" xml:space="preserve">
+    <value>Select an area from the map and specify the number of points to generate inside of it.</value>
+  </data>
+</root>

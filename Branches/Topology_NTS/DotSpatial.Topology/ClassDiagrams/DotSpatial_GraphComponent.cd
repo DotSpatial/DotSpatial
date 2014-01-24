@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeDirectedEdge">
+    <Position X="27.75" Y="25.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeEdge">
+    <Position X="32.75" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeDirectedEdge">
+    <Position X="25" Y="25.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAQEAAAAAAAABAAAAAIAAAAAAAgAAAAAAAAAAg=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeEdge">
+    <Position X="30.5" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.DirectedEdge">
+    <Position X="26.5" Y="17.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAABECAAAEgARDQEAAAABIAEAgYABAAAAEAgACEAAAg=</HashCode>
+      <FileName>Planargraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Edge">
+    <Position X="31.25" Y="17.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAgAAAABAAAAAAAAAAAAAAwAIAABAA=</HashCode>
+      <FileName>Planargraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.GraphComponent">
+    <Position X="29.5" Y="14" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiEAAABAAAAAABAAAAAAAAAAAAAgABAEAAA=</HashCode>
+      <FileName>Planargraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Node">
+    <Position X="35" Y="17.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAACAAgABAABAAUAAAABAAQAAABAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Planargraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

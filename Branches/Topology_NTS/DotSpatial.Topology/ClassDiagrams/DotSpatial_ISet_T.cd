@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Iesi.Collections.Generic.DictionarySet&lt;T&gt;">
+    <Position X="8" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAQQAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.HashedSet&lt;T&gt;">
+    <Position X="5.25" Y="17.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.HybridSet&lt;T&gt;">
+    <Position X="8" Y="17.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.Set&lt;T&gt;">
+    <Position X="7.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAJAAQAACITAQBCYACEGFAcBIBIAAIFEIDAAASFQIRA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.SortedSet&lt;T&gt;">
+    <Position X="10.75" Y="17.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

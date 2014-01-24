@@ -1,0 +1,1 @@
+﻿ Allows to view online DotSpatial help.
