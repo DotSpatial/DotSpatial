@@ -27,7 +27,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void NewZealandMapGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsNewZealand.NewZealandMapGrid;

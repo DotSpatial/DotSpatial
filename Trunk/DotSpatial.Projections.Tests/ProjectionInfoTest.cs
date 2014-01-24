@@ -1,57 +1,18 @@
-﻿using DotSpatial.Projections;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
+﻿using NUnit.Framework;
 
-namespace DotSpatial.Projection
+namespace DotSpatial.Projections.Tests
 {
     /// <summary>
     ///This is a test class for ProjectionInfoTest and is intended
     ///to contain all ProjectionInfoTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture()]
     public class ProjectionInfoTest
     {
-        #region Additional test attributes
-
-        //
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion Additional test attributes
-
         /// <summary>
         /// Proj4 string esri comparison test.
         /// </summary>
-        [TestMethod()]
+        [Test()]
         public void Proj4EsriComparisonTest()
         {
             ProjectionInfo infoBuiltIn = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -68,7 +29,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for ToProj4String
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ToProj4StringTestDoesReadMatchToString()
         {
             string proj4String = "+proj=longlat +ellps=WGS84 +no_defs ";
@@ -81,7 +42,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for http://dotspatial.codeplex.com/workitem/188 WGS1984
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ToEsriStringWGS1984Test()
         {
             ProjectionInfo p1 = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -100,7 +61,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ProjectionInfoConstructorTest()
         {
             string proj4String = string.Empty;
@@ -113,7 +74,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ProjectionInfoConstructorTest2()
         {
             string proj4String = null;
@@ -126,7 +87,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for ProjectionInfo Constructor
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ProjectionInfoConstructorTest1()
         {
             string proj4String = "+proj=longlat +ellps=WGS84 +no_defs ";
@@ -143,7 +104,7 @@ namespace DotSpatial.Projection
         /// <summary>
         ///A test for ToEsriString NorthAmericanDatum1983
         ///</summary>
-        [TestMethod()]
+        [Test()]
         public void ToEsriStringNorthAmericanDatum1983Test()
         {
             ProjectionInfo p1 = KnownCoordinateSystems.Geographic.NorthAmerica.NorthAmericanDatum1983;

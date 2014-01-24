@@ -1362,7 +1362,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927BLMZone14N()
         {
@@ -1370,7 +1369,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927BLMZone15N()
         {
@@ -1378,7 +1376,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927BLMZone16N()
         {
@@ -1386,7 +1383,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927BLMZone17N()
         {

@@ -30,9 +30,6 @@ using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    /// <summary>
-    /// gdalImage
-    /// </summary>
     public class GdalImage : ImageData
     {
         private Band _alpha;
@@ -53,63 +50,37 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             GdalConfiguration.ConfigureGdal();
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="ds"></param>
-        /// <param name="band"></param>
+      
         internal GdalImage(string filename, Dataset ds, ImageBandType band)
         {
+            var setRsColor = (Action<int, ColorInterp>)(delegate(int i, ColorInterp ci)
+            {
+                using (var bnd = ds.GetRasterBand(i))
+                {
+                    bnd.SetRasterColorInterpretation(ci);
+                }
+            });
+
             _dataset = ds;
-            if (band == ImageBandType.ARGB)
+            switch (band)
             {
-                using (Band bnd = ds.GetRasterBand(1))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_AlphaBand);
-                }
-                using (Band bnd = ds.GetRasterBand(2))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_RedBand);
-                }
-                using (Band bnd = ds.GetRasterBand(3))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_GreenBand);
-                }
-                using (Band bnd = ds.GetRasterBand(4))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_BlueBand);
-                }
-            }
-            else if (band == ImageBandType.RGB)
-            {
-                using (Band bnd = ds.GetRasterBand(1))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_RedBand);
-                }
-                using (Band bnd = ds.GetRasterBand(2))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_GreenBand);
-                }
-                using (Band bnd = ds.GetRasterBand(3))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_BlueBand);
-                }
-            }
-            else if (band == ImageBandType.PalletCoded)
-            {
-                using (Band bnd = ds.GetRasterBand(3))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_PaletteIndex);
-                }
-            }
-            else
-            {
-                using (Band bnd = ds.GetRasterBand(3))
-                {
-                    bnd.SetRasterColorInterpretation(ColorInterp.GCI_GrayIndex);
-                }
+                case ImageBandType.ARGB:
+                    setRsColor(1, ColorInterp.GCI_AlphaBand);
+                    setRsColor(2, ColorInterp.GCI_RedBand);
+                    setRsColor(3, ColorInterp.GCI_GreenBand);
+                    setRsColor(4, ColorInterp.GCI_BlueBand);
+                    break;
+                case ImageBandType.RGB:
+                    setRsColor(1, ColorInterp.GCI_RedBand);
+                    setRsColor(2, ColorInterp.GCI_GreenBand);
+                    setRsColor(3, ColorInterp.GCI_BlueBand);
+                    break;
+                case ImageBandType.PalletCoded:
+                    setRsColor(3, ColorInterp.GCI_PaletteIndex);
+                    break;
+                default:
+                    setRsColor(3, ColorInterp.GCI_GrayIndex);
+                    break;
             }
 
             Filename = filename;
@@ -145,21 +116,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         private void ReadHeader()
         {
-            try
-            {
-                _dataset = Gdal.Open(Filename, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
+            _dataset = Helpers.Open(Filename);
             Width = _dataset.RasterXSize;
             Height = _dataset.RasterYSize;
             NumBands = _dataset.RasterCount;
@@ -183,21 +140,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// </summary>
         public override void Open()
         {
-            try
-            {
-                _dataset = Gdal.Open(Filename, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
+            _dataset = Helpers.Open(Filename);
             int numBands = _dataset.RasterCount;
             _red = _dataset.GetRasterBand(1);
             this.BandType = ImageBandType.RGB;
@@ -436,21 +379,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             if (ColorPalette == null)
             {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_Update);
-                }
-                catch
-                {
-                    try
-                    {
-                        _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new GdalException(ex.ToString());
-                    }
-                }
+                _dataset = Helpers.Open(Filename);
                 Band first = _dataset.GetRasterBand(1);
                 ColorTable ct = first.GetRasterColorTable();
                 int count = ct.GetCount();
@@ -1225,21 +1154,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             if (_dataset == null)
             {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_Update);
-                }
-                catch
-                {
-                    try
-                    {
-                        _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new GdalException(ex.ToString());
-                    }
-                }
+                _dataset = Helpers.Open(Filename);
             }
             Band first = _dataset.GetRasterBand(1);
             Bitmap result = null;

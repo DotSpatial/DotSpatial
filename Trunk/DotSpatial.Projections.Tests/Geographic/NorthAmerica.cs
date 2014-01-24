@@ -155,7 +155,6 @@ namespace DotSpatial.Projections.Tests.Geographic
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NorthAmericanDatum1927()
         {

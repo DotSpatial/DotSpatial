@@ -22,7 +22,6 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore]
         public void EMEP150KilometerGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EMEP150KilometerGrid;
@@ -31,7 +30,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void EMEP50KilometerGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EMEP50KilometerGrid;

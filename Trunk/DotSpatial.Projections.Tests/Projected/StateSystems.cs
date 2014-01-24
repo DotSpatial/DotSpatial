@@ -19,7 +19,6 @@ namespace DotSpatial.Projections.Tests.Projected
             
         }
 
-        [Ignore]
         [Test]
         public void NAD1927AlaskaAlbersFeet()
         {
@@ -27,7 +26,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927AlaskaAlbersMeters()
         {
@@ -35,7 +33,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927CaliforniaTealeAlbers()
         {
@@ -43,7 +40,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927GeorgiaStatewideAlbers()
         {
@@ -51,7 +47,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927TexasStatewideMappingSystem()
         {

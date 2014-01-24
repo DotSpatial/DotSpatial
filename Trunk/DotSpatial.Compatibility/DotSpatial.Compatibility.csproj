@@ -125,7 +125,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="DotSpatial.Compatibility.snk" />
     <None Include="package.nuspec">
       <SubType>Designer</SubType>

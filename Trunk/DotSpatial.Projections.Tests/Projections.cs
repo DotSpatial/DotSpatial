@@ -7,7 +7,7 @@ namespace DotSpatial.Projections.Tests
     public class Projections
     {
         [Test]
-        public void projectPoint()
+        public void ProjectPoint()
         {
             //Sets up a array to contain the x and y coordinates
             double[] first = new double[2];
@@ -41,8 +41,6 @@ namespace DotSpatial.Projections.Tests
 
             Assert.AreEqual(second[0], 10723420.030693574);
             Assert.AreEqual(second[1], 1768929.0089786104);
-            
         }
-
     }
 }

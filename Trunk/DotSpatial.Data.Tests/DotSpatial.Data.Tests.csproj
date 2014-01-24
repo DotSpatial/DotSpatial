@@ -69,9 +69,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -95,10 +93,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
-      <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
-      <Name>DotSpatial.Data.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj">
       <Project>{51c6e16e-920e-4d36-b41e-d48abef837e7}</Project>
       <Name>DotSpatial.Data.Rasters.GdalExtension</Name>
@@ -106,14 +100,6 @@
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
-      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
-      <Name>DotSpatial.Projections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
-      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
-      <Name>DotSpatial.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
       <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>

@@ -20,23 +20,21 @@ namespace DotSpatial.Projections.Tests.Projected
         {
             
         }
-        [Ignore]
+        
         [Test]
         public void NAD1927UTMZone10N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmNad1927.NAD1927UTMZone10N;
             Tester.TestProjection(pStart);
         }
-
-        [Ignore]
+        
         [Test]
         public void NAD1927UTMZone11N()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmNad1927.NAD1927UTMZone11N;
             Tester.TestProjection(pStart);
         }
-
-        [Ignore]
+        
         [Test]
         public void NAD1927UTMZone12N()
         {
@@ -44,7 +42,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone13N()
         {
@@ -52,7 +49,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone14N()
         {
@@ -60,7 +56,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone15N()
         {
@@ -68,7 +63,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone16N()
         {
@@ -76,7 +70,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone17N()
         {
@@ -84,7 +77,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone18N()
         {
@@ -92,7 +84,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone19N()
         {
@@ -100,7 +91,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone1N()
         {
@@ -108,7 +98,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone20N()
         {
@@ -116,7 +105,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone21N()
         {
@@ -124,7 +112,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone22N()
         {
@@ -132,7 +119,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone2N()
         {
@@ -140,7 +126,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone3N()
         {
@@ -148,7 +133,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone4N()
         {
@@ -156,7 +140,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone59N()
         {
@@ -164,7 +147,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone5N()
         {
@@ -172,7 +154,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone60N()
         {
@@ -180,7 +161,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone6N()
         {
@@ -188,7 +168,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone7N()
         {
@@ -196,7 +175,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone8N()
         {
@@ -204,7 +182,6 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
         public void NAD1927UTMZone9N()
         {

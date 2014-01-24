@@ -148,12 +148,10 @@
     <Compile Include="ProjectionInfoTest.cs" />
     <Compile Include="Projections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingESRIString.cs" />
     <Compile Include="ReprojectTests.cs" />
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
     <Content Include="x64\proj.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

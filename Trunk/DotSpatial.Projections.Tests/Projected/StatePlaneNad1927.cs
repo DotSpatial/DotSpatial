@@ -20,7 +20,7 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlabamaEastFIPS0101()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlabamaEastFIPS0101;
@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlabamaWestFIPS0102()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlabamaWestFIPS0102;
@@ -38,7 +38,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska10FIPS5010()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska10FIPS5010;
@@ -47,7 +47,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void NAD1927StatePlaneAlaska1FIPS5001()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska1FIPS5001;
@@ -56,7 +56,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska2FIPS5002()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska2FIPS5002;
@@ -65,7 +65,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska3FIPS5003()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska3FIPS5003;
@@ -74,14 +74,14 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska4FIPS5004()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska4FIPS5004;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneAlaska5FIPS5005()
         {
@@ -91,7 +91,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska6FIPS5006()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska6FIPS5006;
@@ -100,7 +100,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska7FIPS5007()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska7FIPS5007;
@@ -109,7 +109,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska8FIPS5008()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska8FIPS5008;
@@ -118,7 +118,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneAlaska9FIPS5009()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneAlaska9FIPS5009;
@@ -127,7 +127,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneArizonaCentralFIPS0202()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneArizonaCentralFIPS0202;
@@ -136,7 +136,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneArizonaEastFIPS0201()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneArizonaEastFIPS0201;
@@ -145,14 +145,14 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneArizonaWestFIPS0203()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneArizonaWestFIPS0203;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneArkansasNorthFIPS0301()
         {
@@ -162,7 +162,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneArkansasSouthFIPS0302()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneArkansasSouthFIPS0302;
@@ -171,7 +171,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneCaliforniaIFIPS0401()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneCaliforniaIFIPS0401;
@@ -180,7 +180,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneCaliforniaIIFIPS0402()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneCaliforniaIIFIPS0402;
@@ -189,14 +189,14 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneCaliforniaIIIFIPS0403()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneCaliforniaIIIFIPS0403;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneCaliforniaIVFIPS0404()
         {
@@ -206,7 +206,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneCaliforniaVFIPS0405()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneCaliforniaVFIPS0405;
@@ -215,14 +215,14 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        
         public void NAD1927StatePlaneCaliforniaVIFIPS0406()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneCaliforniaVIFIPS0406;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneCaliforniaVIIFIPS0407()
         {
@@ -230,7 +230,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneColoradoCentralFIPS0502()
         {
@@ -238,7 +238,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneColoradoNorthFIPS0501()
         {
@@ -246,7 +246,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneColoradoSouthFIPS0503()
         {
@@ -254,7 +254,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneConnecticutFIPS0600()
         {
@@ -262,7 +262,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneDelawareFIPS0700()
         {
@@ -270,7 +270,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneFloridaEastFIPS0901()
         {
@@ -278,7 +278,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneFloridaNorthFIPS0903()
         {
@@ -286,7 +286,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneFloridaWestFIPS0902()
         {
@@ -294,7 +294,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneGeorgiaEastFIPS1001()
         {
@@ -302,7 +302,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneGeorgiaWestFIPS1002()
         {
@@ -310,7 +310,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneGuamFIPS5400()
         {
@@ -318,7 +318,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIdahoCentralFIPS1102()
         {
@@ -326,7 +326,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIdahoEastFIPS1101()
         {
@@ -334,7 +334,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIdahoWestFIPS1103()
         {
@@ -342,7 +342,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIllinoisEastFIPS1201()
         {
@@ -350,7 +350,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIllinoisWestFIPS1202()
         {
@@ -358,7 +358,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIndianaEastFIPS1301()
         {
@@ -366,7 +366,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIndianaWestFIPS1302()
         {
@@ -374,7 +374,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIowaNorthFIPS1401()
         {
@@ -382,7 +382,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneIowaSouthFIPS1402()
         {
@@ -390,7 +390,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneKansasNorthFIPS1501()
         {
@@ -398,7 +398,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneKansasSouthFIPS1502()
         {
@@ -406,7 +406,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneKentuckyNorthFIPS1601()
         {
@@ -414,7 +414,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneKentuckySouthFIPS1602()
         {
@@ -422,7 +422,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneLouisianaNorthFIPS1701()
         {
@@ -430,7 +430,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneLouisianaSouthFIPS1702()
         {
@@ -438,7 +438,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMaineEastFIPS1801()
         {
@@ -446,7 +446,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMaineWestFIPS1802()
         {
@@ -454,7 +454,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMarylandFIPS1900()
         {
@@ -462,7 +462,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMassachusettsIslandFIPS2002()
         {
@@ -470,7 +470,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMassachusettsMainlandFIPS2001()
         {
@@ -478,7 +478,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMichiganCentralFIPS2112()
         {
@@ -486,7 +486,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMichiganNorthFIPS2111()
         {
@@ -494,15 +494,14 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMichiganSouthFIPS2113()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneNad1927.NAD1927StatePlaneMichiganSouthFIPS2113;
             Tester.TestProjection(pStart);
         }
-
-        [Ignore]
+       
         [Test]
         public void NAD1927StatePlaneMinnesotaCentralFIPS2202()
         {
@@ -510,7 +509,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMinnesotaNorthFIPS2201()
         {
@@ -518,7 +517,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMinnesotaSouthFIPS2203()
         {
@@ -526,7 +525,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMississippiEastFIPS2301()
         {
@@ -534,7 +533,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMississippiWestFIPS2302()
         {
@@ -542,7 +541,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMissouriCentralFIPS2402()
         {
@@ -550,7 +549,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMissouriEastFIPS2401()
         {
@@ -558,7 +557,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMissouriWestFIPS2403()
         {
@@ -566,7 +565,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMontanaCentralFIPS2502()
         {
@@ -574,7 +573,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMontanaNorthFIPS2501()
         {
@@ -582,7 +581,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneMontanaSouthFIPS2503()
         {
@@ -590,7 +589,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNebraskaNorthFIPS2601()
         {
@@ -598,7 +597,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNebraskaSouthFIPS2602()
         {
@@ -606,7 +605,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNevadaCentralFIPS2702()
         {
@@ -614,7 +613,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNevadaEastFIPS2701()
         {
@@ -622,7 +621,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNevadaWestFIPS2703()
         {
@@ -630,7 +629,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewHampshireFIPS2800()
         {
@@ -638,7 +637,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewJerseyFIPS2900()
         {
@@ -646,7 +645,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewMexicoCentralFIPS3002()
         {
@@ -654,7 +653,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewMexicoEastFIPS3001()
         {
@@ -662,7 +661,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewMexicoWestFIPS3003()
         {
@@ -670,7 +669,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewYorkCentralFIPS3102()
         {
@@ -678,7 +677,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewYorkEastFIPS3101()
         {
@@ -686,7 +685,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewYorkLongIslandFIPS3104()
         {
@@ -694,7 +693,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNewYorkWestFIPS3103()
         {
@@ -702,7 +701,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNorthCarolinaFIPS3200()
         {
@@ -710,7 +709,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNorthDakotaNorthFIPS3301()
         {
@@ -718,7 +717,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneNorthDakotaSouthFIPS3302()
         {
@@ -726,7 +725,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOhioNorthFIPS3401()
         {
@@ -734,7 +733,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOhioSouthFIPS3402()
         {
@@ -742,7 +741,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOklahomaNorthFIPS3501()
         {
@@ -750,7 +749,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOklahomaSouthFIPS3502()
         {
@@ -758,7 +757,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOregonNorthFIPS3601()
         {
@@ -766,7 +765,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneOregonSouthFIPS3602()
         {
@@ -774,7 +773,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlanePennsylvaniaNorthFIPS3701()
         {
@@ -782,7 +781,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlanePennsylvaniaSouthFIPS3702()
         {
@@ -790,7 +789,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlanePuertoRicoFIPS5201()
         {
@@ -798,7 +797,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneRhodeIslandFIPS3800()
         {
@@ -806,7 +805,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneSouthCarolinaNorthFIPS3901()
         {
@@ -814,7 +813,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneSouthCarolinaSouthFIPS3902()
         {
@@ -822,7 +821,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneSouthDakotaNorthFIPS4001()
         {
@@ -830,7 +829,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneSouthDakotaSouthFIPS4002()
         {
@@ -838,7 +837,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTennesseeFIPS4100()
         {
@@ -846,7 +845,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTexasCentralFIPS4203()
         {
@@ -854,7 +853,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTexasNorthCentralFIPS4202()
         {
@@ -862,7 +861,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTexasNorthFIPS4201()
         {
@@ -870,7 +869,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTexasSouthCentralFIPS4204()
         {
@@ -878,7 +877,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneTexasSouthFIPS4205()
         {
@@ -886,7 +885,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneUtahCentralFIPS4302()
         {
@@ -894,7 +893,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneUtahNorthFIPS4301()
         {
@@ -902,7 +901,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneUtahSouthFIPS4303()
         {
@@ -910,7 +909,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneVermontFIPS3400()
         {
@@ -918,7 +917,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneVirginiaNorthFIPS4501()
         {
@@ -926,7 +925,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneVirginiaSouthFIPS4502()
         {
@@ -934,7 +933,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWashingtonNorthFIPS4601()
         {
@@ -942,7 +941,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWashingtonSouthFIPS4602()
         {
@@ -950,7 +949,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWestVirginiaNorthFIPS4701()
         {
@@ -958,7 +957,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWestVirginiaSouthFIPS4702()
         {
@@ -966,7 +965,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWisconsinCentralFIPS4802()
         {
@@ -974,7 +973,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWisconsinNorthFIPS4801()
         {
@@ -982,7 +981,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWisconsinSouthFIPS4803()
         {
@@ -990,7 +989,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWyomingEastCentralFIPS4902()
         {
@@ -998,7 +997,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWyomingEastFIPS4901()
         {
@@ -1006,7 +1005,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWyomingWestCentralFIPS4903()
         {
@@ -1014,7 +1013,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void NAD1927StatePlaneWyomingWestFIPS4904()
         {

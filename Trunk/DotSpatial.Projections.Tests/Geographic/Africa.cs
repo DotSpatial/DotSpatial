@@ -475,7 +475,7 @@ namespace DotSpatial.Projections.Tests.Geographic
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void Schwarzeck()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Africa.Schwarzeck;
