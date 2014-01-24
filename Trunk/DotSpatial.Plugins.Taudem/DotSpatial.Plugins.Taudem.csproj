@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Windows Extensions\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\Windows Extensions\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,152 +55,7 @@
     <Compile Include="TaudemHelpers.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Taudem5Exe\AreaD8.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\AreaDinf.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\D8FlowDir.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\D8FlowPathExtremeUp.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\D8HDistToStrm.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfAvalanche.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfConcLimAccum.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfDecayAccum.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfDistDown.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfDistUp.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfFlowDir.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfRevAccum.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfTransLimAccum.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DinfUpDependence.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\DropAnalysis.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\GageWatershed.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\GridNet.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\Help\behappy7.jpg" />
-    <Content Include="Taudem5Exe\Help\block7.jpg" />
-    <Content Include="Taudem5Exe\Help\blockxp.JPG" />
-    <Content Include="Taudem5Exe\Help\command7.jpg" />
-    <Content Include="Taudem5Exe\Help\index.html" />
-    <Content Include="Taudem5Exe\Help\mpicheck7.jpg" />
-    <Content Include="Taudem5Exe\Help\path7.jpg" />
-    <Content Include="Taudem5Exe\Help\register7.jpg" />
-    <Content Include="Taudem5Exe\Help\style.css" />
-    <Content Include="Taudem5Exe\LengthArea.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\MoveOutletsToStreams.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2mpe.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2mpi.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2mt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2mtp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2nemesis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2nemesisp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\mpich2p.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\PeukerDouglas.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\PitRemove.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\SlopeArea.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\SlopeAreaRatio.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\SlopeAveDown.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\StreamNet.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Taudem5Exe\Threshold.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DotSpatial.Plugins.Taudem.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Taudem5Exe\Help\.svn\all-wcprops" />
-    <None Include="Taudem5Exe\Help\.svn\dir-prop-base" />
-    <None Include="Taudem5Exe\Help\.svn\entries" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\behappy7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\block7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\blockxp.JPG.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\command7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\mpicheck7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\path7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\prop-base\register7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\behappy7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\block7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\blockxp.JPG.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\command7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\index.html.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\mpicheck7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\path7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\register7.jpg.svn-base" />
-    <None Include="Taudem5Exe\Help\.svn\text-base\style.css.svn-base" />
-    <None Include="Taudem5Exe\runtaudem.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Taudem5Exe\Help\.svn\props\" />
-    <Folder Include="Taudem5Exe\Help\.svn\tmp\prop-base\" />
-    <Folder Include="Taudem5Exe\Help\.svn\tmp\props\" />
-    <Folder Include="Taudem5Exe\Help\.svn\tmp\text-base\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
       <Project>{f124e7c5-33cc-4b17-8c45-01e7d2e47dab}</Project>
@@ -225,6 +80,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y /i $(ProjectDir)Taudem5Exe $(TargetDir)Taudem5Exe</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

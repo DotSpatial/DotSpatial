@@ -11,9 +11,6 @@ using System.Linq;
 
 namespace DotSpatial.Extensions.SplashScreens
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public sealed class SplashScreenHelper
     {
         /// <summary>

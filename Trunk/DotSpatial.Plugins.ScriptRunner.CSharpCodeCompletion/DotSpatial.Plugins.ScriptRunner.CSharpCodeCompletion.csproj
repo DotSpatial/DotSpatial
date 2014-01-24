@@ -66,12 +66,12 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\Windows Extensions\ScriptRunner\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\Windows Extensions\ScriptRunner\</OutputPath>
-    <DocumentationFile>..\bin\Release\Windows Extensions\ScriptRunner\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.XML</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\DotSpatial.Plugins.ScriptRunner.CSharpCodeCompletion.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>

@@ -89,31 +89,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\DeserializeTest.map.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\test-RandomPts.dbf" />
-    <None Include="Data\test-RandomPts.prj" />
-    <None Include="Data\test-RandomPts.shp" />
-    <None Include="Data\test-RandomPts.shx" />
-    <None Include="Data\States\states.dbf" />
-    <None Include="Data\States\states.prj" />
-    <None Include="Data\States\states.sbn" />
-    <None Include="Data\States\states.sbx" />
-    <None Include="Data\States\states.shp" />
-    <None Include="Data\States\states.shx" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Rivers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PreBuildEvent>del "$(TargetDir)Data\*.*" /s /f /q
-xcopy "$(SolutionDir)DotSpatial.Serialization.Tests\Data\*.*" "$(TargetDir)Data\" /Y</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y /i $(ProjectDir)Data $(TargetDir)Data</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

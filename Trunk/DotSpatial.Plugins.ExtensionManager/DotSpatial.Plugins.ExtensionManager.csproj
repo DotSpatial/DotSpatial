@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Application Extensions\</OutputPath>
+    <OutputPath>..\bin\Debug\Application Extensions\DotSpatial.Plugins.ExtensionManager\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,10 +33,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\Application Extensions\</OutputPath>
+    <OutputPath>..\bin\Release\Application Extensions\DotSpatial.Plugins.ExtensionManager\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\Application Extensions\DotSpatial.Plugins.ExtensionManager\DotSpatial.Plugins.ExtensionManager.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NuGet.Core, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -178,6 +179,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\box_closed_32x32.png" />
     <Content Include="Resources\draw_eraser.png" />
     <Content Include="Resources\google_custom_search.png" />

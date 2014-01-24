@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
@@ -54,8 +56,8 @@ namespace DotSpatial.Plugins.ToolManager
         public override void Deactivate()
         {
             App.HeaderControl.RemoveAll();
-            this.App.DockManager.Remove("kTools");
-            this.toolManager = null;
+            App.DockManager.Remove("kTools");
+            toolManager = null;
             base.Deactivate();
         }
 
@@ -66,29 +68,27 @@ namespace DotSpatial.Plugins.ToolManager
 
         private void ShowToolsPanel()
         {
-            if (Tools != null && Tools.Count() > 0)
+            if (Tools != null && Tools.Any())
             {
-                if (this.toolManager == null)
+                if (toolManager != null) return;
+                toolManager = new Controls.ToolManager
                 {
-                    this.toolManager = new Controls.ToolManager();
-                    this.toolManager.App = App;
-                    this.toolManager.Legend = App.Legend;
-                    this.toolManager.Location = new Point(208, 12);
-                    this.toolManager.Name = "toolManager";
-                    this.toolManager.Size = new Size(192, 308);
-                    this.toolManager.TabIndex = 1;
+                    App = App,
+                    Legend = App.Legend,
+                    Location = new Point(208, 12),
+                    Name = "toolManager",
+                    Size = new Size(192, 308),
+                    TabIndex = 1
+                };
 
-                    App.CompositionContainer.ComposeParts(toolManager);
-
-                    Shell.Controls.Add(this.toolManager);
-
-                    this.App.DockManager.Add(new DockablePanel("kTools", "Tools", toolManager, DockStyle.Left) { SmallImage = this.toolManager.ImageList.Images["Hammer"] });
-                }
+                App.CompositionContainer.ComposeParts(toolManager);
+                Shell.Controls.Add(toolManager);
+                App.DockManager.Add(new DockablePanel("kTools", "Tools", toolManager, DockStyle.Left) { SmallImage = toolManager.ImageList.Images["Hammer"] });
             }
             else
             {
-                this.toolManager = null;
-                this.App.DockManager.Remove("kTools");
+                toolManager = null;
+                App.DockManager.Remove("kTools");
             }
         }
     }

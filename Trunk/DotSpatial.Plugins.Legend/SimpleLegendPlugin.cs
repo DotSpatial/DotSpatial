@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
-using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Plugins.SimpleLegend
 {

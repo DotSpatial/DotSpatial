@@ -1,0 +1,1 @@
+﻿IDockManager implementation for Windows.
