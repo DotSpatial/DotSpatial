@@ -53,7 +53,6 @@ namespace DotSpatial.Symbology
         public ImageLayer(string fileName)
         {
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName);
-            Configure();
         }
 
         /// <summary>
@@ -67,7 +66,6 @@ namespace DotSpatial.Symbology
             : base(container)
         {
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
-            Configure();
         }
 
         /// <summary>
@@ -79,7 +77,6 @@ namespace DotSpatial.Symbology
         public ImageLayer(string fileName, IProgressHandler progressHandler)
         {
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
-            Configure();
         }
 
         /// <summary>
@@ -88,7 +85,6 @@ namespace DotSpatial.Symbology
         public ImageLayer(IImageData baseImage)
         {
             DataSet = baseImage;
-            Configure();
         }
 
         /// <summary>
@@ -100,14 +96,8 @@ namespace DotSpatial.Symbology
             : base(container)
         {
             DataSet = baseImage;
-            Configure();
         }
-
-        private void Configure()
-        {
-            base.IsVisible = true;
-            base.LegendText = Path.GetFileName(DataSet.Filename);
-        }
+    
 
         #endregion
 
@@ -120,7 +110,19 @@ namespace DotSpatial.Symbology
         public new IImageData DataSet
         {
             get { return base.DataSet as IImageData; }
-            set { base.DataSet = value; }
+            set
+            {
+                var current = DataSet;
+                if (current == value) return;
+                base.DataSet = value;
+                OnDataSetChanged(value);
+            }
+        }
+
+        protected virtual void OnDataSetChanged(IImageData value)
+        {
+            IsVisible = value != null;
+            LegendText = value == null ? null : Path.GetFileName(value.Filename);
         }
 
         /// <summary>

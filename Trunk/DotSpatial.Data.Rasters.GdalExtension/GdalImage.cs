@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using DotSpatial.Serialization;
 using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
@@ -43,6 +44,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private byte[] b;
         private byte[] vals;
         private int _overview;
+        private bool _isOpened;
 
         #region Constructors
 
@@ -120,7 +122,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             Width = _dataset.RasterXSize;
             Height = _dataset.RasterYSize;
             NumBands = _dataset.RasterCount;
-            double[] test = new double[6];
+            var test = new double[6];
             _dataset.GetGeoTransform(test);
             ProjectionString = _dataset.GetProjection();
             Bounds = new RasterBounds(Height, Width, test);
@@ -133,6 +135,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             _dataset.Dispose();
             _dataset = null;
+            _isOpened = false;
         }
 
         /// <summary>
@@ -193,6 +196,29 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 ReadRgb();
             }*/
+            _isOpened = true;
+        }
+
+        /// <summary>
+        /// Open or close file. This is a simliar to calling Open/Close methods.
+        /// </summary>
+        [Serialize("IsOpened")]
+        public bool IsOpened
+        {
+            get { return _isOpened; }
+            set
+            {
+                if (_isOpened == value) return;
+                _isOpened = value;
+                if (value)
+                {
+                    Open();
+                }
+                else
+                {
+                    Close();
+                }
+            }
         }
 
         /// <summary>

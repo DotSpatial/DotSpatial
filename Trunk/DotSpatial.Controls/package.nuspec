@@ -22,7 +22,8 @@
       <dependency id="DotSpatial.Projections" />
       <dependency id="DotSpatial.Projections.Forms" />
       <dependency id="DotSpatial.Serialization" />
-      <dependency id="DotSpatial.Symbology" />
+      <dependency id="DotSpatial.Symbology" version="1.7" />
+      <!-- Into DotSpatial.Symbology added ImageLayer.OnDataSetChanged() method-->
       <dependency id="DotSpatial.Symbology.Forms" />
       <dependency id="DotSpatial.Topology" />
     </dependencies>

@@ -21,7 +21,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -49,13 +48,35 @@ namespace DotSpatial.Serialization
         /// <returns>The object represented by the serialized XML.</returns>
         public T Deserialize<T>(string xml)
         {
-            Contract.Requires(!String.IsNullOrWhiteSpace(xml));
+            if (xml == null) throw new ArgumentNullException("xml");
+            return DoDeserialize(default(T), xml, false);
+        }
 
+        /// <summary>
+        /// Deserializes the given XML, writing the values into the given object.
+        /// </summary>
+        /// <typeparam name="T">The type of the given object.</typeparam>
+        /// <param name="existingObject">An existing object to fill with data.</param>
+        /// <param name="xml">The serialized XML text.</param>
+        public void Deserialize<T>(T existingObject, string xml)
+        {
+            if (xml == null) throw new ArgumentNullException("xml");
+
+            // Value types will never evaluate to null, and that's just fine.
+            if (!typeof(T).IsValueType)
+            {
+                if (existingObject == null) throw new ArgumentNullException("existingObject");
+            }
+
+            DoDeserialize(existingObject, xml, true);
+        }
+
+        private T DoDeserialize<T>(T existingObject, string xml, bool fill)
+        {
             _references = new Dictionary<string, object>();
-
             try
             {
-                using (StringReader stringReader = new StringReader(xml))
+                using (var stringReader = new StringReader(xml))
                 {
                     XDocument document = XDocument.Load(stringReader);
                     XElement rootNode = document.Root;
@@ -63,6 +84,11 @@ namespace DotSpatial.Serialization
                         throw new XmlException("Could not find a root XML element.");
 
                     _typeCache = ReadTypeCache(rootNode);
+                    if (fill)
+                    {
+                        FillObject(rootNode, existingObject, true);
+                        return existingObject;
+                    }
                     return (T)ReadObject(rootNode, null);
                 }
             }
@@ -74,52 +100,13 @@ namespace DotSpatial.Serialization
                     _typeCache.Clear();
                     _typeCache = null;
                 }
-            }
+            }   
         }
 
-        /// <summary>
-        /// Deserializes the given XML, writing the values into the given object.
-        /// </summary>
-        /// <typeparam name="T">The type of the given object.</typeparam>
-        /// <param name="existingObject">An existing object to fill with data.</param>
-        /// <param name="xml">The serialized XML text.</param>
-        public void Deserialize<T>(T existingObject, string xml)
+        private static Dictionary<string, Type> ReadTypeCache(XContainer rootNode)
         {
-            // Value types will never evaluate to null, and that's just fine.
-            if (!typeof(T).IsValueType)
-            {
-                if (existingObject == null) throw new ArgumentNullException("existingObject");
-            }
-            _references = new Dictionary<string, object>();
-
-            try
-            {
-                using (StringReader stringReader = new StringReader(xml))
-                {
-                    XDocument document = XDocument.Load(stringReader);
-                    XElement rootNode = document.Root;
-                    if (rootNode == null)
-                        throw new XmlException("Could not find a root XML element.");
-
-                    _typeCache = ReadTypeCache(rootNode);
-                    FillObject(rootNode, existingObject, true);
-                }
-            }
-            finally
-            {
-                _references.Clear();
-                if (_typeCache != null)
-                {
-                    _typeCache.Clear();
-                    _typeCache = null;
-                }
-            }
-        }
-
-        private static Dictionary<string, Type> ReadTypeCache(XElement rootNode)
-        {
-            Dictionary<string, Type> result = new Dictionary<string, Type>();
-            TypeNameManager typeNameManager = new TypeNameManager();
+            var result = new Dictionary<string, Type>();
+            var typeNameManager = new TypeNameManager();
             foreach (var typeNode in rootNode.Elements(XmlConstants.TYPE_CACHE).Elements(XmlConstants.ITEM))
             {
                 var keyAttrib = typeNode.Attribute(XmlConstants.KEY);
@@ -127,15 +114,20 @@ namespace DotSpatial.Serialization
                 if (keyAttrib == null || valueAttrib == null)
                     continue;
 
-                // string[] parts = valueAttrib.Value.Split(',');
-
                 Type t;
-
                 try
                 {
                     // This method is too strict to handle auto-incrementing versioned dll references, but is
                     // needed to correctly grab core .Net Framework stuff and works faster for same-version dll files.
                     t = Type.GetType(valueAttrib.Value);
+                    if (t == null)
+                    {
+                        // Try to found type in current appdomain.
+                        // This will work for dynamically loaded assemblies (e.g. via MEF).
+                        t = Type.GetType(valueAttrib.Value,
+                            name => AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(z => z.FullName == name.FullName),
+                            null);
+                    }
                 }
                 catch (FileLoadException)
                 {
