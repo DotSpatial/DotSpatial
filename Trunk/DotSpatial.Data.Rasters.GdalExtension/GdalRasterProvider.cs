@@ -120,9 +120,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             if (File.Exists(name)) File.Delete(name);
-            string driver = driverCode ?? GetDriverCode(Path.GetExtension(name));
-
-            Driver d = Gdal.GetDriverByName(driver);
+            if (String.IsNullOrEmpty(driverCode))
+            {
+                driverCode = GetDriverCode(Path.GetExtension(name));
+            }
+            Driver d = Gdal.GetDriverByName(driverCode);
             if (d == null)
             {
                 // We didn't find a matching driver.
