@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeTableTests.cs" />
+    <Compile Include="DataManagerTests.cs" />
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="FeatureListTests.cs" />
     <Compile Include="LineShapefileTests.cs" />
