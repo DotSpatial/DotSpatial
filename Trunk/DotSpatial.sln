@@ -144,9 +144,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoCus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests", "DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj", "{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Tests", "DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 61
+		SccNumberOfProjects = 62
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -390,6 +392,10 @@ Global
 		SccProjectTopLevelParentUniqueName60 = DotSpatial.sln
 		SccProjectName60 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
 		SccLocalPath60 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
+		SccProjectUniqueName61 = DotSpatial.Positioning.Tests\\DotSpatial.Positioning.Tests.csproj
+		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
+		SccProjectName61 = DotSpatial.Positioning.Tests
+		SccLocalPath61 = DotSpatial.Positioning.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -636,6 +642,10 @@ Global
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -697,6 +707,7 @@ Global
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
+		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42} = {E589A674-26EA-4059-AD04-FA8E5A9EC7BE}
 		{39B1A581-0145-4398-8DB2-89288F33F358} = {E589A674-26EA-4059-AD04-FA8E5A9EC7BE}
 		{F7B4D9C2-2B59-42B7-A101-89BAE27D07BC} = {E589A674-26EA-4059-AD04-FA8E5A9EC7BE}
