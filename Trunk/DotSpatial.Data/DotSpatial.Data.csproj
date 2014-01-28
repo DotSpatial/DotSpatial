@@ -310,7 +310,6 @@
     <Compile Include="EnvelopeExt.cs" />
     <Compile Include="RectangleExt.cs" />
     <Compile Include="NullException.cs" />
-    <Compile Include="BaseCollection.cs" />
     <Compile Include="ChangeEventList.cs" />
     <Compile Include="Collective.cs" />
     <Compile Include="CollectiveCancel.cs" />
