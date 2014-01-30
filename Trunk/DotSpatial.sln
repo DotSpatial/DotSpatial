@@ -146,9 +146,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MapWindo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Tests", "DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Updater", "DotSpatial.Plugins.Updater\DotSpatial.Plugins.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 62
+		SccNumberOfProjects = 63
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -396,6 +398,10 @@ Global
 		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
 		SccProjectName61 = DotSpatial.Positioning.Tests
 		SccLocalPath61 = DotSpatial.Positioning.Tests
+		SccProjectUniqueName62 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
+		SccProjectTopLevelParentUniqueName62 = DotSpatial.sln
+		SccProjectName62 = DotSpatial.Plugins.Updater
+		SccLocalPath62 = DotSpatial.Plugins.Updater
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -646,6 +652,10 @@ Global
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -691,6 +701,7 @@ Global
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{D85281B4-6012-42A0-A8F1-B29068A3F433} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{32A86A6E-6BA1-4F14-9E84-5BE4DD0CACA4} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
