@@ -38,7 +38,7 @@
   <ItemGroup>
     <Reference Include="NuGet.Core, Version=1.6.30117.9648, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SupportFiles\NuGet.Core.dll</HintPath>
+      <HintPath>..\DotSpatial.Plugins.ExtensionManager\SupportFiles\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
