@@ -29,6 +29,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -159,7 +160,7 @@ namespace DotSpatial.Controls
             set
             {
                 _fileName = value;
-                OnFilenameChanged(null);
+                OnFilenameChanged(EventArgs.Empty);
             }
         }
 
@@ -281,7 +282,7 @@ namespace DotSpatial.Controls
                 else
                     _zoom = value;
                 CenterPaperOnPoint(paperCenter);
-                OnZoomChanged(null);
+                OnZoomChanged(EventArgs.Empty);
             }
         }
 
@@ -384,9 +385,9 @@ namespace DotSpatial.Controls
         internal void RemoveFromLayout(LayoutElement le)
         {
             _selectedLayoutElements.Remove(le);
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             _layoutElements.Remove(le);
-            OnElementsChanged(null);
+            OnElementsChanged(EventArgs.Empty);
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
         }
 
@@ -396,9 +397,9 @@ namespace DotSpatial.Controls
         internal void ClearLayout()
         {
             _selectedLayoutElements.Clear();
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             _layoutElements.Clear();
-            OnElementsChanged(null);
+            OnElementsChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -409,7 +410,7 @@ namespace DotSpatial.Controls
         {
             _selectedLayoutElements.Add(le);
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -419,7 +420,7 @@ namespace DotSpatial.Controls
         {
             _selectedLayoutElements.AddRange(le);
             Invalidate();
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -429,7 +430,7 @@ namespace DotSpatial.Controls
         {
             _selectedLayoutElements.Remove(le);
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -439,7 +440,7 @@ namespace DotSpatial.Controls
         {
             _selectedLayoutElements.Clear();
             Invalidate();
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         #endregion ---------------- Internal Methods
@@ -755,7 +756,7 @@ namespace DotSpatial.Controls
                 }
                 Filename = fileName;
                 Invalidate();
-                OnElementsChanged(null);
+                OnElementsChanged(EventArgs.Empty);
             }
         }
 
@@ -773,73 +774,98 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Shows a save dialog box and prompts the user to save a layout file
+        /// Shows a save dialog box and prompts the user to save a layout file.
         /// </summary>
+        /// <param name="promptSaveAs">Show prompt dialog or not. Note that dialog will be always shown when Filename is null or empty.</param>
         public void SaveLayout(bool promptSaveAs)
         {
-            string tempFilename = Filename;
-            if (Filename == string.Empty || promptSaveAs)
+            if (string.IsNullOrEmpty(Filename) || promptSaveAs)
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Title = MessageStrings.LayoutSaveDialogTitle;
-                sfd.Filter = "DotSpatial Layout File (*.mwl)|*.mwl|Portable Network Graphics (*.png)|*.png"; 
-                sfd.AddExtension = true;
-                sfd.OverwritePrompt = true;
+                var sfd = new SaveFileDialog
+                {
+                    Title = MessageStrings.LayoutSaveDialogTitle,
+                    Filter = "DotSpatial Layout File (*.mwl)|*.mwl|Portable Network Graphics (*.png)|*.png",
+                    AddExtension = true,
+                    OverwritePrompt = true
+                };
                 if (sfd.ShowDialog(this) == DialogResult.OK)
                 {
-                    tempFilename = sfd.FileName;
-                    switch (sfd.FilterIndex)
-                    {
-                        case 1:
-                            try
-                            {
-                                SaveLayout(tempFilename);
-                                Filename = tempFilename;
-                            }
-                            catch (Exception e)
-                            {
-                                MessageBox.Show(MessageStrings.LayoutErrorSave + e.Message, "DotSpatial Print Layout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            break;
-                        case 2:
-
-                            // This sets up our dimensions
-                            //   int widthInch = PaperWidth * 100;
-                            //   int heightInch = PaperHeight * 100;
-                            //   int PPI = 300; // Set this to what you'd like 300 is good for paper printing, 72 is usually monitors, 96 is apple cuz they have to be different etc....
-
-                            //    Bitmap outputBitmap = new Bitmap(widthInch * PPI, heightInch * PPI);
-                            //     outputBitmap.SetResolution(PPI, PPI);
-                            //     outputBitmap.graphicsUnit = graphicsUnits.Display;
-
-                            Bitmap outputBitmap = new Bitmap(PaperWidth, PaperHeight);
-                            Graphics g = Graphics.FromImage(outputBitmap);
-                            RectangleF paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
-                            g.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
-                            g.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width-1, paperRect.Height-1);
-                            DrawPage(g);
-                            outputBitmap.Save(sfd.FileName);
-
-                            // When working with drawing objects its important to dispose of them because they are unmanaged and won't be cleaned up by the garbage collector unless they are disposed
-                            g.Dispose(); 
-                            outputBitmap.Dispose();
-                           
-                            break;
-                    }
-                   
+                    SaveLayout(sfd.FileName);
                 }
-                else
-                    return;
+            }else if (!string.IsNullOrEmpty(Filename))
+            {
+                SaveLayout(Filename);
             }
-           
         }
 
         /// <summary>
-        /// Saves the layout to the specified fileName
+        /// Saves the layout to the specified fileName.
+        /// If file name has .mwl extension then it will be saved as DotSpatial Layout File.
+        /// Otherwise it will be trying to save as Bitmap.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">Specified file name</param>
+        /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
         public void SaveLayout(string fileName)
         {
+            if (fileName == null) throw new ArgumentNullException("fileName");
+
+            try
+            {
+                switch (Path.GetExtension(fileName))
+                {
+                    case ".mwl":
+                        ExportToMwl(fileName);
+                        Filename = fileName;
+                        break;
+                    default:
+                        ExportToBitmap(fileName);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(MessageStrings.LayoutErrorSave + " " + e.Message, "DotSpatial Print Layout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Export layout to bitmap.
+        /// </summary>
+        /// <param name="fileName">Bitmap file name</param>
+        /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
+        public void ExportToBitmap(string fileName)
+        {
+            if (fileName == null) throw new ArgumentNullException("fileName");
+
+            // This sets up our dimensions
+            //   int widthInch = PaperWidth * 100;
+            //   int heightInch = PaperHeight * 100;
+            //   int PPI = 300; // Set this to what you'd like 300 is good for paper printing, 72 is usually monitors, 96 is apple cuz they have to be different etc....
+
+            //    Bitmap outputBitmap = new Bitmap(widthInch * PPI, heightInch * PPI);
+            //     outputBitmap.SetResolution(PPI, PPI);
+            //     outputBitmap.graphicsUnit = graphicsUnits.Display;
+
+            using(var outputBitmap = new Bitmap(PaperWidth, PaperHeight))
+            using (var g = Graphics.FromImage(outputBitmap))
+            {
+                var paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
+                g.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
+                g.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width - 1, paperRect.Height - 1);
+                DrawPage(g);
+                outputBitmap.Save(fileName);
+            }
+        }
+
+        /// <summary>
+        /// Export layout to DotSpatial Layout File.
+        /// </summary>
+        /// <param name="fileName">DotSpatial Layout File</param>
+        /// <exception cref="ArgumentNullException">Throws when fileName is null.</exception>
+        public void ExportToMwl(string fileName)
+        {
+            if (fileName == null) throw new ArgumentNullException("fileName");
+
             //Creates the model xml document
             XmlDocument layoutXmlDoc = new XmlDocument();
             XmlElement root = layoutXmlDoc.CreateElement("DotSpatialLayout");
@@ -965,7 +991,7 @@ namespace DotSpatial.Controls
             le.Name = leName;
 
             _layoutElements.Insert(0, le);
-            OnElementsChanged(null);
+            OnElementsChanged(EventArgs.Empty);
             le.Invalidated += LeInvalidated;
             Invalidate(new Region(PaperToScreen(le.Rectangle)));
         }
@@ -1085,7 +1111,7 @@ namespace DotSpatial.Controls
             else
                 _zoom = yZoom;
             CenterPaperOnPoint(new PointF(PaperWidth / 2F, PaperHeight / 2F));
-            OnZoomChanged(null);
+            OnZoomChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -1176,7 +1202,7 @@ namespace DotSpatial.Controls
             foreach (LayoutElement le in _selectedLayoutElements.ToArray())
                 RemoveFromLayout(le);
             Invalidate();
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -1187,7 +1213,7 @@ namespace DotSpatial.Controls
             List<LayoutElement> unselected = _layoutElements.FindAll(delegate(LayoutElement o) { return (_selectedLayoutElements.Contains(o) == false); });
             _selectedLayoutElements.Clear();
             _selectedLayoutElements.InsertRange(0, unselected);
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -1211,7 +1237,7 @@ namespace DotSpatial.Controls
                 _layoutElements.Remove(le);
                 _layoutElements.Insert(index - 1, le);
             }
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -1238,7 +1264,7 @@ namespace DotSpatial.Controls
             {
                 _layoutElements.Insert(indexArray[i] + 1, _selectedLayoutElements[i]);
             }
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -1249,7 +1275,7 @@ namespace DotSpatial.Controls
         {
             _selectedLayoutElements.Clear();
             _selectedLayoutElements.InsertRange(0, _layoutElements);
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -1338,7 +1364,7 @@ namespace DotSpatial.Controls
             _layoutElements.Remove(le);
             _selectedLayoutElements.Insert(_selectedLayoutElements.IndexOf(le), newLb);
             _selectedLayoutElements.Remove(le);
-            OnSelectionChanged(null);
+            OnSelectionChanged(EventArgs.Empty);
             Invalidate();
         }
 
@@ -2023,7 +2049,7 @@ namespace DotSpatial.Controls
                                 }
                             }
                         }
-                        OnSelectionChanged(null);
+                        OnSelectionChanged(EventArgs.Empty);
                         _mouseMode = MouseMode.Default;
                         Invalidate();
                         break;
