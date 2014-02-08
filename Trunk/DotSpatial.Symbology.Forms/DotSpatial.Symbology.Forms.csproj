@@ -156,6 +156,9 @@
     <Compile Include="TabColorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="TableEditorControl.Designer.cs">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextFont.cs" />
     <Compile Include="CharacterCodeEditor.cs" />
     <Compile Include="CharacterControl.cs">

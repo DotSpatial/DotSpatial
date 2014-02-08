@@ -155,27 +155,33 @@ namespace DotSpatial.Data
         /// <param name="ySize">The number of values to write vertically</param>
         public override void WriteRaster(T[][] buffer, int xOff, int yOff, int xSize, int ySize)
         {
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.Write, NumColumns * ByteSize);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler,
-                                                 DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRowsInFile) { StartValue = yOff };
-            fs.Seek(HeaderSize, SeekOrigin.Begin);
+            var pm = new ProgressMeter(ProgressHandler,
+                    DataStrings.ReadingValuesFrom_S.Replace("%S", Filename), NumRowsInFile) { StartValue = yOff };
 
-            // Position the binary reader at the top of the "window"
-            long offset = yOff * (long)NumColumnsInFile * ByteSize;
-            fs.Seek(offset, SeekOrigin.Current);
-            BinaryWriter br = new BinaryWriter(fs);
-            int endX = xOff + xSize;
-            for (int row = 0; row < ySize; row++)
+            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.Write,
+                    NumColumns*ByteSize))
             {
-                // Position the binary reader at the beginning of the window
-                fs.Seek(ByteSize * xOff, SeekOrigin.Current);
-                byte[] values = new byte[xSize * ByteSize];
-                Buffer.BlockCopy(buffer[row], 0, values, 0, xSize * ByteSize);
-                br.Write(values);
-                pm.CurrentValue = row + yOff;
-                fs.Seek(ByteSize * (NumColumnsInFile - endX), SeekOrigin.Current);
+                
+                fs.Seek(HeaderSize, SeekOrigin.Begin);
+
+                // Position the binary reader at the top of the "window"
+                long offset = yOff*(long) NumColumnsInFile*ByteSize;
+                fs.Seek(offset, SeekOrigin.Current);
+                using (var br = new BinaryWriter(fs))
+                {
+                    int endX = xOff + xSize;
+                    for (int row = 0; row < ySize; row++)
+                    {
+                        // Position the binary reader at the beginning of the window
+                        fs.Seek(ByteSize*xOff, SeekOrigin.Current);
+                        byte[] values = new byte[xSize*ByteSize];
+                        Buffer.BlockCopy(buffer[row], 0, values, 0, xSize*ByteSize);
+                        br.Write(values);
+                        pm.CurrentValue = row + yOff;
+                        fs.Seek(ByteSize*(NumColumnsInFile - endX), SeekOrigin.Current);
+                    }
+                }
             }
-            br.Close();
         }
 
         /// <summary>
@@ -280,33 +286,30 @@ namespace DotSpatial.Data
             WriteHeader(fileName);
 
             // Open as append and it will automatically skip the header for us.
-            FileStream fs = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, ByteSize * NumColumnsInFile);
-            BinaryWriter bw = new BinaryWriter(fs);
-
-            // the row and column counters here are relative to the whole file, not just the window that is currently in memory.
-            pm.EndValue = NumRowsInFile;
-
-            for (int row = 0; row < NumRowsInFile; row++)
+            using (var bw =new BinaryWriter(new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None,ByteSize*NumColumnsInFile)))
             {
-                byte[] rawBytes = new byte[NumColumnsInFile * ByteSize];
-                T[] nd = new T[1];
-                nd[0] = (T)Convert.ChangeType(NoDataValue, typeof(T));
-                Buffer.BlockCopy(Data[row - StartRow], 0, rawBytes, StartColumn * ByteSize, NumColumns * ByteSize);
-                for (int col = 0; col < StartColumn; col++)
-                {
-                    Buffer.BlockCopy(nd, 0, rawBytes, col * ByteSize, ByteSize);
-                }
-                for (int col = EndColumn + 1; col < NumColumnsInFile; col++)
-                {
-                    Buffer.BlockCopy(nd, 0, rawBytes, col * ByteSize, ByteSize);
-                }
-                bw.Write(rawBytes);
-                pm.CurrentValue = row;
-            }
+                // the row and column counters here are relative to the whole file, not just the window that is currently in memory.
+                pm.EndValue = NumRowsInFile;
 
-            fs.Flush(); // flush anything that hasn't gotten written yet.
+                for (int row = 0; row < NumRowsInFile; row++)
+                {
+                    byte[] rawBytes = new byte[NumColumnsInFile*ByteSize];
+                    T[] nd = new T[1];
+                    nd[0] = (T) Convert.ChangeType(NoDataValue, typeof (T));
+                    Buffer.BlockCopy(Data[row - StartRow], 0, rawBytes, StartColumn*ByteSize, NumColumns*ByteSize);
+                    for (int col = 0; col < StartColumn; col++)
+                    {
+                        Buffer.BlockCopy(nd, 0, rawBytes, col*ByteSize, ByteSize);
+                    }
+                    for (int col = EndColumn + 1; col < NumColumnsInFile; col++)
+                    {
+                        Buffer.BlockCopy(nd, 0, rawBytes, col*ByteSize, ByteSize);
+                    }
+                    bw.Write(rawBytes);
+                    pm.CurrentValue = row;
+                }
+            }
             pm.Reset();
-            bw.Close();
         }
 
         /// <summary>
@@ -322,73 +325,74 @@ namespace DotSpatial.Data
         /// </summary>
         public void WriteHeader(string fileName)
         {
-            BinaryWriter bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate));
-            bw.Write(NumColumnsInFile);
-            bw.Write(NumRowsInFile);
-            bw.Write(CellWidth);
-            bw.Write(CellHeight);
-            bw.Write(Xllcenter);
-            bw.Write(Yllcenter);
-            if (DataType == typeof(int))
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
             {
-                bw.Write((int)RasterDataType.INTEGER);
-            }
-            if (DataType == typeof(float))
-            {
-                bw.Write((int)RasterDataType.SINGLE);
-            }
-            if (DataType == typeof(double))
-            {
-                bw.Write((int)RasterDataType.DOUBLE);
-            }
-            if (DataType == typeof(byte))
-            {
-                bw.Write((int)RasterDataType.BYTE);
-            }
-            if (DataType == typeof(short))
-            {
-                bw.Write((int)RasterDataType.SHORT);
-            }
-
-            byte[] nd = new byte[ByteSize];
-            T[] nds = new[] { (T)Convert.ChangeType(NoDataValue, typeof(T)) };
-            Buffer.BlockCopy(nds, 0, nd, 0, ByteSize);
-            bw.Write(nd);
-
-            // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
-            byte[] proj = new byte[255];
-            if (Projection != null)
-            {
-                byte[] temp = Encoding.Default.GetBytes(Projection.ToProj4String());
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
+                bw.Write(NumColumnsInFile);
+                bw.Write(NumRowsInFile);
+                bw.Write(CellWidth);
+                bw.Write(CellHeight);
+                bw.Write(Xllcenter);
+                bw.Write(Yllcenter);
+                if (DataType == typeof (int))
                 {
-                    proj[i] = temp[i];
+                    bw.Write((int) RasterDataType.INTEGER);
                 }
-                string prj = Path.ChangeExtension(Filename, ".prj");
-                if (File.Exists(prj))
+                if (DataType == typeof (float))
                 {
-                    File.Delete(prj);
+                    bw.Write((int) RasterDataType.SINGLE);
                 }
-                FileInfo fi = new FileInfo(prj);
-                TextWriter tw = fi.CreateText();
-                tw.WriteLine(Projection.ToEsriString());
-                tw.Close();
-            }
-            bw.Write(proj);
-            byte[] note = new byte[255];
-            if (Notes != null)
-            {
-                byte[] temp = Encoding.Default.GetBytes(Notes);
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
+                if (DataType == typeof (double))
                 {
-                    note[i] = temp[i];
+                    bw.Write((int) RasterDataType.DOUBLE);
                 }
-            }
+                if (DataType == typeof (byte))
+                {
+                    bw.Write((int) RasterDataType.BYTE);
+                }
+                if (DataType == typeof (short))
+                {
+                    bw.Write((int) RasterDataType.SHORT);
+                }
 
-            bw.Write(note);
-            bw.Close();
+                byte[] nd = new byte[ByteSize];
+                T[] nds = new[] {(T) Convert.ChangeType(NoDataValue, typeof (T))};
+                Buffer.BlockCopy(nds, 0, nd, 0, ByteSize);
+                bw.Write(nd);
+
+                // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
+                byte[] proj = new byte[255];
+                if (Projection != null)
+                {
+                    byte[] temp = Encoding.Default.GetBytes(Projection.ToProj4String());
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        proj[i] = temp[i];
+                    }
+                    string prj = Path.ChangeExtension(Filename, ".prj");
+                    if (File.Exists(prj))
+                    {
+                        File.Delete(prj);
+                    }
+                    FileInfo fi = new FileInfo(prj);
+                    TextWriter tw = fi.CreateText();
+                    tw.WriteLine(Projection.ToEsriString());
+                    tw.Close();
+                }
+                bw.Write(proj);
+                byte[] note = new byte[255];
+                if (Notes != null)
+                {
+                    byte[] temp = Encoding.Default.GetBytes(Notes);
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        note[i] = temp[i];
+                    }
+                }
+
+                bw.Write(note);
+            }
         }
 
         #endregion

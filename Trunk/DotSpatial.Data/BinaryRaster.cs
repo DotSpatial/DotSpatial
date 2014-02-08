@@ -767,41 +767,42 @@ namespace DotSpatial.Data
         /// <param name="fileName">a fileName to write data to</param>
         public void WriteHeader(string fileName)
         {
-            BinaryWriter bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate));
-            bw.Write(NumColumnsInFile);
-            bw.Write(NumRowsInFile);
-            bw.Write(CellWidth);
-            bw.Write(CellHeight);
-            bw.Write(Xllcenter);
-            bw.Write(Yllcenter);
-            bw.Write((int)RasterDataType.INTEGER);
-            bw.Write(Convert.ToInt32(NoDataValue));
-
-            // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
-            byte[] proj = new byte[255];
-            if (Projection != null)
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
             {
-                byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
-                {
-                    proj[i] = temp[i];
-                }
-            }
-            bw.Write(proj);
-            byte[] note = new byte[255];
-            if (Notes != null)
-            {
-                byte[] temp = Encoding.ASCII.GetBytes(Notes);
-                int len = Math.Min(temp.Length, 255);
-                for (int i = 0; i < len; i++)
-                {
-                    note[i] = temp[i];
-                }
-            }
+                bw.Write(NumColumnsInFile);
+                bw.Write(NumRowsInFile);
+                bw.Write(CellWidth);
+                bw.Write(CellHeight);
+                bw.Write(Xllcenter);
+                bw.Write(Yllcenter);
+                bw.Write((int) RasterDataType.INTEGER);
+                bw.Write(Convert.ToInt32(NoDataValue));
 
-            bw.Write(note);
-            bw.Close();
+                // These are each 256 bytes because they are ASCII encoded, not the standard DotNet Unicode
+                byte[] proj = new byte[255];
+                if (Projection != null)
+                {
+                    byte[] temp = Encoding.ASCII.GetBytes(Projection.ToProj4String());
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        proj[i] = temp[i];
+                    }
+                }
+                bw.Write(proj);
+                byte[] note = new byte[255];
+                if (Notes != null)
+                {
+                    byte[] temp = Encoding.ASCII.GetBytes(Notes);
+                    int len = Math.Min(temp.Length, 255);
+                    for (int i = 0; i < len; i++)
+                    {
+                        note[i] = temp[i];
+                    }
+                }
+
+                bw.Write(note);
+            }
         }
 
         /// <summary>
@@ -813,13 +814,16 @@ namespace DotSpatial.Data
         /// <param name="value">The actual value to write.</param>
         public void WriteValue(int row, int column, int value)
         {
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None);
-            fs.Seek(HeaderSize, SeekOrigin.Begin);
-            fs.Seek(row * NumColumnsInFile * ByteSize, SeekOrigin.Current);
-            fs.Seek(column * ByteSize, SeekOrigin.Current);
-            BinaryWriter bw = new BinaryWriter(fs);
-            bw.Write(value);
-            bw.Close();
+            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Write, FileShare.None))
+            {
+                fs.Seek(HeaderSize, SeekOrigin.Begin);
+                fs.Seek(row*NumColumnsInFile*ByteSize, SeekOrigin.Current);
+                fs.Seek(column*ByteSize, SeekOrigin.Current);
+                using (var bw = new BinaryWriter(fs))
+                {
+                    bw.Write(value);
+                }
+            }
         }
 
         /// <summary>
