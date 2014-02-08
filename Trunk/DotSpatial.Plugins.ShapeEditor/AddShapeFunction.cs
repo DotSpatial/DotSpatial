@@ -49,6 +49,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         private List<List<Coordinate>> _parts;
         private bool _standBy;
         private IMapLineLayer _tempLayer;
+        private IFeatureLayer _layer;
 
         #endregion
 
@@ -301,7 +302,9 @@ namespace DotSpatial.Plugins.ShapeEditor
                 Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
                 Feature f = new Feature(pt);
                 _featureSet.Features.Add(f);
+                _featureSet.ShapeIndices = null; // Reset shape indices
                 _featureSet.UpdateExtent();
+                _layer.AssignFastDrawnStates();
                 _featureSet.InvalidateVertices();
                 return;
             }
@@ -376,8 +379,10 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     _featureSet.Features.Add(f);
                 }
-                _featureSet.InvalidateVertices();
+                _featureSet.ShapeIndices = null; // Reset shape indices
                 _featureSet.UpdateExtent();
+                _layer.AssignFastDrawnStates();
+                _featureSet.InvalidateVertices();
             }
 
             _coordinates = new List<Coordinate>();
@@ -418,25 +423,23 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the featureset to modify.
-        /// </summary>
-        public IFeatureSet FeatureSet
-        {
-            get { return _featureSet; }
-            set { _featureSet = value; }
-        }
-
-        #endregion
-
         /// <summary>
         /// Gets a value indicating whether the "dispose" method has been called.
         /// </summary>
         public bool IsDisposed
         {
             get { return _disposed; }
+        }
+
+        public IFeatureLayer Layer
+        {
+            get { return _layer; }
+            set
+            {
+                if (_layer == value) return;
+                _layer = value;
+                _featureSet = _layer != null ? _layer.DataSet : null;
+            }
         }
 
         #region IDisposable Members
@@ -485,6 +488,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     if (!_coordinateDialog.IsDisposed) { _coordinateDialog.Dispose(); }
                     if (_context != null) { _context.Dispose(); }
                     if (_finishPart != null) { _finishPart.Dispose(); }
+
                     _featureSet = null;
                     _coordinates = null;
                     _coordinateDialog = null;
@@ -492,6 +496,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     _context = null;
                     _finishPart = null;
                     _parts = null;
+                    _layer = null;
                 }
                 _disposed = true;
             }
