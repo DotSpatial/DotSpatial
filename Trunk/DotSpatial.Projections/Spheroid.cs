@@ -151,7 +151,7 @@ namespace DotSpatial.Projections
                 case "BN":
                     AssignKnownEllipsoid(Proj4Ellipsoid.BesselNamibia);
                     break;
-                case "CC:":
+                case "CC":
                     AssignKnownEllipsoid(Proj4Ellipsoid.Clarke_1866);
                     break;
                 case "CD":
