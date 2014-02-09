@@ -103,6 +103,10 @@
       <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
       <Name>DotSpatial.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
       <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
       <Name>DotSpatial.Topology</Name>

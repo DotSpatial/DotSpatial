@@ -1288,17 +1288,6 @@ namespace DotSpatial.Projections.ProjectedCategories
             EuropeanDatum1950UTMZone36N.GeographicInfo.Datum.Name = "D_European_1950";
             EuropeanDatum1950UTMZone37N.GeographicInfo.Datum.Name = "D_European_1950";
             EuropeanDatum1950UTMZone38N.GeographicInfo.Datum.Name = "D_European_1950";
-            EuropeanDatum1950UTMZone28N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone29N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone30N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone31N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone32N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone33N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone34N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone35N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone36N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone37N.ScaleFactor = 0.9996;
-            EuropeanDatum1950UTMZone38N.ScaleFactor = 0.9996;
             FahudUTMZone39N.GeographicInfo.Datum.Name = "D_Fahud";
             FahudUTMZone40N.GeographicInfo.Datum.Name = "D_Fahud";
             FortDesaixUTMZone20N.GeographicInfo.Datum.Name = "D_Fort_Desaix";

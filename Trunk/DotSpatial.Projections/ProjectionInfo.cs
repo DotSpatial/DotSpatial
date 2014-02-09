@@ -974,7 +974,12 @@ namespace DotSpatial.Projections
             }
 
             // If it has a zone, and the projection is tmerc, it actually needs the utm initialization
-            bool tmercIsUtm = proj4String.Contains("zone=");
+            var tmercIsUtm = proj4String.Contains("zone=");
+            if (tmercIsUtm)
+            {
+                ScaleFactor = 0.9996; // Default scale factor for utm
+                                      // This also needed to write correct Esri String from given projection 
+            }
 
             string[] sections = proj4String.Split('+');
             foreach (string str in sections)

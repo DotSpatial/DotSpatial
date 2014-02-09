@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using DotSpatial.Projections;
+using DotSpatial.Topology;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -86,6 +89,48 @@ namespace DotSpatial.Data.Tests
 
             string actualFileName = target.Filename;
             Assert.AreEqual(expectedFullPath, actualFileName);
+        }
+
+        [Test(Description = @"https://dotspatial.codeplex.com/workitem/25169")]
+        public void UtmProjection_SamePoints_AfterSaveLoadShapeFile()
+        {
+            var fs = new FeatureSet(FeatureType.Point)
+            {
+                Projection = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984UTMZone33N // set any UTM projection
+            };
+
+            const double originalX = 13.408056;
+            const double originalY = 52.518611;
+
+            var wgs = KnownCoordinateSystems.Geographic.World.WGS1984;
+            var c = new[] { originalX, originalY };
+            var z = new[] { 0.0 };
+            Reproject.ReprojectPoints(c, z, wgs, fs.Projection, 0, 1);
+
+            var pt = new Point(c[0], c[1]);
+            fs.AddFeature(pt);
+            var tmpFile = Path.ChangeExtension(Path.GetTempFileName(), ".shp");
+            fs.SaveAs(tmpFile, true);
+
+            try
+            {
+                // Now try to open saved shapefile
+                // Points must have same location in WGS1984
+                var openFs = FeatureSet.Open(tmpFile);
+                var fs0 = (Point) openFs.Features[0].BasicGeometry;
+                var c1 = new[] {fs0.X, fs0.Y};
+                Reproject.ReprojectPoints(c1, z, openFs.Projection, wgs, 0, 1); // reproject back to wgs1984
+
+                Assert.IsTrue(Math.Abs(originalX - c1[0]) < 1e-8);
+                Assert.IsTrue(Math.Abs(originalY - c1[1]) < 1e-8);
+            }
+            finally
+            {
+                File.Delete(tmpFile);
+                File.Delete(Path.ChangeExtension(tmpFile, ".dbf"));
+                File.Delete(Path.ChangeExtension(tmpFile, ".shx"));
+                File.Delete(Path.ChangeExtension(tmpFile, ".prj"));
+            }
         }
     }
 }

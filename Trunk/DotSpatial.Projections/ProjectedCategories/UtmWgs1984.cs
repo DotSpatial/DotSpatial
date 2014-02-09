@@ -183,6 +183,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             WGS1984ComplexUTMZone28N = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             WGS1984ComplexUTMZone29N = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             WGS1984ComplexUTMZone30N = ProjectionInfo.FromProj4String("+ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+
             WGS1984UTMZone10N = ProjectionInfo.FromProj4String("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             WGS1984UTMZone10S = ProjectionInfo.FromProj4String("+proj=utm +zone=10 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
             WGS1984UTMZone11N = ProjectionInfo.FromProj4String("+proj=utm +zone=11 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
