@@ -8,7 +8,6 @@ namespace DotSpatial.Projections.Tests.Projected
     /// This class contains all the tests for the StatePlaneNad1927 category of Projected coordinate systems
     /// </summary>
     [TestFixture]
-    [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
     public class StatePlaneNad1927
     {
         /// <summary>
