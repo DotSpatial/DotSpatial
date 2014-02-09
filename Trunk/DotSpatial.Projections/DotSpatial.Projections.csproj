@@ -103,6 +103,7 @@
     <Compile Include="DatumTransformStage.cs" />
     <Compile Include="GridShiftTableFormat.cs" />
     <Compile Include="GsbNadTable.cs" />
+    <Compile Include="ICoordinateSystemCategoryHolder.cs" />
     <Compile Include="IDatumTransform.cs" />
     <Compile Include="IDatumTransformStage.cs" />
     <Compile Include="LasLosNadTable.cs" />

@@ -443,8 +443,7 @@ namespace DotSpatial.Controls
 
             if (String.IsNullOrEmpty(dspxProjectionEsriString)) return;
 
-            MapFrameProjectionHelper.ReprojectMapFrame(_applicationManager.Map.MapFrame, dspxProjectionEsriString);
-
+            _applicationManager.Map.MapFrame.ReprojectMapFrame(dspxProjectionEsriString);
             _applicationManager.Map.MapFrame.ResetExtents();
         }
 

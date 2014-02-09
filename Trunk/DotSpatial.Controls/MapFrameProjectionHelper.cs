@@ -1,4 +1,6 @@
-﻿using DotSpatial.Projections;
+﻿using System;
+using DotSpatial.Projections;
+using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
@@ -14,10 +16,27 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="mapFrame">The map frame that contains all layers that should be reprojected</param>
         /// <param name="newProjEsriString">The Esri WKT string of the new projection</param>
-        public static void ReprojectMapFrame(IMapFrame mapFrame, string newProjEsriString)
+        public static void ReprojectMapFrame(this IMapFrame mapFrame, string newProjEsriString)
         {
+            if (mapFrame == null) throw new ArgumentNullException("mapFrame");
+            if (newProjEsriString == null) throw new ArgumentNullException("newProjEsriString");
+
             //parse the projection
-            ProjectionInfo newProjection = ProjectionInfo.FromEsriString(newProjEsriString);
+            var newProjection = ProjectionInfo.FromEsriString(newProjEsriString);
+            mapFrame.ReprojectMapFrame(newProjection);
+        }
+
+        /// <summary>
+        /// Reprojects all layers in the map frame so that they use new projection
+        /// </summary>
+        /// <param name="mapFrame">The map frame that contains all layers that should be reprojected</param>
+        /// <param name="newProjection">New projection</param>
+        /// <param name="onCantReproject">Callback when layer can't be reprojected. Maybe null.</param>
+        public static void ReprojectMapFrame(this IMapFrame mapFrame, ProjectionInfo newProjection, 
+            Action<ILayer> onCantReproject = null)
+        {
+            if (mapFrame == null) throw new ArgumentNullException("mapFrame");
+            if (newProjection == null) throw new ArgumentNullException("newProjection");
 
             foreach (var layer in mapFrame.GetAllLayers())
             {
@@ -25,10 +44,14 @@ namespace DotSpatial.Controls
                 {
                     layer.Reproject(newProjection);
                 }
+                else
+                {
+                    if (onCantReproject != null) onCantReproject(layer);
+                }
             }
-            foreach (IMapGroup grp in mapFrame.GetAllGroups())
+            foreach (var grp in mapFrame.GetAllGroups())
             {
-                grp.Projection = ProjectionInfo.FromEsriString(newProjEsriString);
+                grp.Projection = newProjection;
             }
             mapFrame.Projection = newProjection;
 
@@ -37,7 +60,7 @@ namespace DotSpatial.Controls
             {
                 // this need to fire Map.ProjectionChanged event
                 parent.Projection = newProjection;
-            } 
+            }
         }
     }
 }

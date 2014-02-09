@@ -31,7 +31,7 @@ namespace DotSpatial.Projections
     /// <summary>
     /// GeographicSystems
     /// </summary>
-    public class GeographicSystems
+    public class GeographicSystems : ICoordinateSystemCategoryHolder
     {
         #region Private Variables
 
@@ -120,6 +120,7 @@ namespace DotSpatial.Projections
 
 
         #endregion
+
         /// <summary>
         /// Given the string name, this will return the specified coordinate category
         /// </summary>

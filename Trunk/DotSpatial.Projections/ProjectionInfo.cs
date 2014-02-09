@@ -954,6 +954,7 @@ namespace DotSpatial.Projections
                 // in memory copy of the ProjectionInfo. Passing it to the caller might introduce unintended results.
                 var info = FromProj4String(pi.ToProj4String());
                 info.NoDefs = false;
+                info.EpsgCode = epsgCode;
                 return info;
             }
 

@@ -1399,9 +1399,10 @@ namespace DotSpatial.Controls
         private void Projection_Click(object sender, EventArgs e)
         {
             //Launches a MapFrameProjectionDialog
-            MapFrameProjectionDialog dialog = new MapFrameProjectionDialog(this);
-            dialog.ShowDialog();
-            //MessageBox.Show(Projection.ToEsriString());
+            using (var dialog = new MapFrameProjectionDialog(this))
+            {
+                dialog.ShowDialog(Parent);
+            }
         }
 
         #endregion Protected Methods

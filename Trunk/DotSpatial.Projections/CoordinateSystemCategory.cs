@@ -21,7 +21,8 @@
 // ********************************************************************************************************
 
 using System;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSpatial.Projections
 {
@@ -37,19 +38,18 @@ namespace DotSpatial.Projections
         #endregion
 
         #region Constructors
-
+        
         /// <summary>
         /// Creates a new instance of CoordinateSystem
         /// </summary>
         public CoordinateSystemCategory()
         {
-            Type t = GetType();
-            FieldInfo[] fields = t.GetFields();
+            var fields = GetType().GetFields();
             _names = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
                 _names[i] = fields[i].Name;
-            }
+            } 
         }
 
         #endregion
@@ -63,13 +63,11 @@ namespace DotSpatial.Projections
         /// <returns></returns>
         public ProjectionInfo GetProjection(string name)
         {
-            Type t = GetType();
-            FieldInfo[] fields = t.GetFields();
-            foreach (FieldInfo info in fields)
+            foreach (var info in GetType().GetFields())
             {
                 if (info.Name == name)
                 {
-                    return info.GetValue(this) as ProjectionInfo;
+                    return (ProjectionInfo)info.GetValue(this);
                 }
             }
             return null;
@@ -95,14 +93,18 @@ namespace DotSpatial.Projections
         /// <returns>The array of projection info classes</returns>
         public ProjectionInfo[] ToArray()
         {
-            Type t = GetType();
-            FieldInfo[] fields = t.GetFields();
-            ProjectionInfo[] result = new ProjectionInfo[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
-            {
-                result[i] = fields[i].GetValue(this) as ProjectionInfo;
-            }
-            return result;
+            return AsEnumerable().ToArray();
+        }
+
+        /// <summary>
+        /// Obtains all the members of this category. This returns the
+        /// original classes, not a copy.
+        /// </summary>
+        /// <returns>The enumerable of projection info classes with field names</returns>
+        public IEnumerable<ProjectionInfo> AsEnumerable()
+        {
+            return GetType().GetFields()
+                .Select(field => (ProjectionInfo) field.GetValue(this));
         }
 
         #endregion

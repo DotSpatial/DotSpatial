@@ -53,7 +53,6 @@ namespace DotSpatial.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapFrameProjectionDialog));
-            this.panel1 = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
@@ -61,19 +60,27 @@ namespace DotSpatial.Controls
             this.lblEsriString = new System.Windows.Forms.Label();
             this.lblProj4String = new System.Windows.Forms.Label();
             this.txtProj4String = new System.Windows.Forms.TextBox();
-            this.btnChangeProjection = new System.Windows.Forms.Button();
-            this.groupBoxCurrentProjection = new System.Windows.Forms.GroupBox();
+            this.tcMain = new System.Windows.Forms.TabControl();
+            this.tbMain = new System.Windows.Forms.TabPage();
+            this.lnkSpatialReference = new System.Windows.Forms.LinkLabel();
+            this.txtEpsgCode = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtProjectionType = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbDetails = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnChange = new System.Windows.Forms.Button();
+            this.tcMain.SuspendLayout();
+            this.tbMain.SuspendLayout();
+            this.tbDetails.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBoxCurrentProjection.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnCancel);
-            this.panel1.Controls.Add(this.btnOk);
-            this.panel1.Controls.Add(this.btnApply);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
             // 
             // btnCancel
             // 
@@ -101,6 +108,7 @@ namespace DotSpatial.Controls
             // 
             resources.ApplyResources(this.txtEsriString, "txtEsriString");
             this.txtEsriString.Name = "txtEsriString";
+            this.txtEsriString.ReadOnly = true;
             // 
             // lblEsriString
             // 
@@ -116,42 +124,129 @@ namespace DotSpatial.Controls
             // 
             resources.ApplyResources(this.txtProj4String, "txtProj4String");
             this.txtProj4String.Name = "txtProj4String";
+            this.txtProj4String.ReadOnly = true;
             // 
-            // btnChangeProjection
+            // tcMain
             // 
-            resources.ApplyResources(this.btnChangeProjection, "btnChangeProjection");
-            this.btnChangeProjection.Name = "btnChangeProjection";
-            this.btnChangeProjection.UseVisualStyleBackColor = true;
-            this.btnChangeProjection.Click += new System.EventHandler(this.btnChangeProjection_Click);
+            resources.ApplyResources(this.tcMain, "tcMain");
+            this.tcMain.Controls.Add(this.tbMain);
+            this.tcMain.Controls.Add(this.tbDetails);
+            this.tcMain.Name = "tcMain";
+            this.tcMain.SelectedIndex = 0;
             // 
-            // groupBoxCurrentProjection
+            // tbMain
             // 
-            resources.ApplyResources(this.groupBoxCurrentProjection, "groupBoxCurrentProjection");
-            this.groupBoxCurrentProjection.Controls.Add(this.btnChangeProjection);
-            this.groupBoxCurrentProjection.Controls.Add(this.lblEsriString);
-            this.groupBoxCurrentProjection.Controls.Add(this.txtEsriString);
-            this.groupBoxCurrentProjection.Controls.Add(this.lblProj4String);
-            this.groupBoxCurrentProjection.Controls.Add(this.txtProj4String);
-            this.groupBoxCurrentProjection.Name = "groupBoxCurrentProjection";
-            this.groupBoxCurrentProjection.TabStop = false;
+            this.tbMain.Controls.Add(this.lnkSpatialReference);
+            this.tbMain.Controls.Add(this.txtEpsgCode);
+            this.tbMain.Controls.Add(this.label3);
+            this.tbMain.Controls.Add(this.txtProjectionType);
+            this.tbMain.Controls.Add(this.label2);
+            this.tbMain.Controls.Add(this.txtName);
+            this.tbMain.Controls.Add(this.label1);
+            resources.ApplyResources(this.tbMain, "tbMain");
+            this.tbMain.Name = "tbMain";
+            this.tbMain.UseVisualStyleBackColor = true;
+            // 
+            // lnkSpatialReference
+            // 
+            resources.ApplyResources(this.lnkSpatialReference, "lnkSpatialReference");
+            this.lnkSpatialReference.Name = "lnkSpatialReference";
+            this.lnkSpatialReference.TabStop = true;
+            this.lnkSpatialReference.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSpatialReference_LinkClicked);
+            // 
+            // txtEpsgCode
+            // 
+            resources.ApplyResources(this.txtEpsgCode, "txtEpsgCode");
+            this.txtEpsgCode.Name = "txtEpsgCode";
+            this.txtEpsgCode.ReadOnly = true;
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // txtProjectionType
+            // 
+            resources.ApplyResources(this.txtProjectionType, "txtProjectionType");
+            this.txtProjectionType.Name = "txtProjectionType";
+            this.txtProjectionType.ReadOnly = true;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // txtName
+            // 
+            resources.ApplyResources(this.txtName, "txtName");
+            this.txtName.Name = "txtName";
+            this.txtName.ReadOnly = true;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // tbDetails
+            // 
+            this.tbDetails.Controls.Add(this.tableLayoutPanel1);
+            resources.ApplyResources(this.tbDetails, "tbDetails");
+            this.tbDetails.Name = "tbDetails";
+            this.tbDetails.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.lblEsriString);
+            this.panel1.Controls.Add(this.txtEsriString);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.lblProj4String);
+            this.panel2.Controls.Add(this.txtProj4String);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // btnChange
+            // 
+            resources.ApplyResources(this.btnChange, "btnChange");
+            this.btnChange.Name = "btnChange";
+            this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.Click += new System.EventHandler(this.btnChangeToSelected_Click);
             // 
             // MapFrameProjectionDialog
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBoxCurrentProjection);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnChange);
+            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.btnApply);
+            this.Controls.Add(this.tcMain);
             this.Name = "MapFrameProjectionDialog";
+            this.tcMain.ResumeLayout(false);
+            this.tbMain.ResumeLayout(false);
+            this.tbMain.PerformLayout();
+            this.tbDetails.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.groupBoxCurrentProjection.ResumeLayout(false);
-            this.groupBoxCurrentProjection.PerformLayout();
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnApply;
@@ -159,7 +254,19 @@ namespace DotSpatial.Controls
         private System.Windows.Forms.Label lblEsriString;
         private System.Windows.Forms.Label lblProj4String;
         private System.Windows.Forms.TextBox txtProj4String;
-        private System.Windows.Forms.Button btnChangeProjection;
-        private System.Windows.Forms.GroupBox groupBoxCurrentProjection;
+        private System.Windows.Forms.TabControl tcMain;
+        private System.Windows.Forms.TabPage tbMain;
+        private System.Windows.Forms.TabPage tbDetails;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtProjectionType;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtEpsgCode;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.LinkLabel lnkSpatialReference;
+        private System.Windows.Forms.Button btnChange;
     }
 }

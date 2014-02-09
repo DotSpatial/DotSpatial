@@ -96,14 +96,7 @@ namespace DotSpatial.Projections.Forms
             set
             {
                 _originalString = value;
-                if (_originalString == null)
-                {
-                    lblOriginal.Text = Resources.Nothing;
-                }
-                else
-                {
-                    lblOriginal.Text = value;
-                }
+                lblOriginal.Text = _originalString == null ? Resources.Nothing : value;
             }
         }
 
@@ -166,10 +159,11 @@ namespace DotSpatial.Projections.Forms
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            ProjectionSelectDialog dialog = new ProjectionSelectDialog();
-            dialog.SelectedCoordinateSystem = SelectedCoordinateSystem;
-            if (dialog.ShowDialog(this) != DialogResult.OK) return;
-            SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
+            using (var dialog = new ProjectionSelectDialog {SelectedCoordinateSystem = SelectedCoordinateSystem})
+            {
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                SelectedCoordinateSystem = dialog.SelectedCoordinateSystem;
+            }
         }
     }
 }

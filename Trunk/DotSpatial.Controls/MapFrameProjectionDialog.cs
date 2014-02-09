@@ -21,6 +21,8 @@
 // ********************************************************************************************************
 
 using System;
+using System.Globalization;
+using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
@@ -32,14 +34,13 @@ namespace DotSpatial.Controls
     /// </summary>
     public partial class MapFrameProjectionDialog : Form
     {
+        #region Fields
+
         private bool _changesApplied;
-
-        /// <summary>
-        /// This is necessary because we want to change the projection of the MapFrame
-        /// </summary>
         private IMapFrame _mapFrame;
-
         private ProjectionInfo _projection;
+
+        #endregion
 
         /// <summary>
         /// use the mapFrame with this dialog
@@ -48,10 +49,10 @@ namespace DotSpatial.Controls
         public MapFrameProjectionDialog(IMapFrame mapFrame)
         {
             InitializeComponent();
-            _mapFrame = mapFrame;
-            _projection = new ProjectionInfo();
-            _projection.CopyProperties(_mapFrame.Projection);
-            UpdateProjectionStrings();
+            lnkSpatialReference.Links[0].LinkData = "http://spatialreference.org/";
+            tcMain.SelectTab(0);
+            MapFrame = mapFrame;
+            ChangesApplied = true;
         }
 
         /// <summary>
@@ -62,44 +63,101 @@ namespace DotSpatial.Controls
             get { return _mapFrame; }
             set
             {
+                if (_mapFrame == value) return;
                 _mapFrame = value;
-                UpdateProjectionStrings();
+                var projection = new ProjectionInfo();
+                if (_mapFrame != null)
+                {
+                    projection.CopyProperties(_mapFrame.Projection);
+                }
+                Projection = projection;
             }
         }
 
-        private void UpdateProjectionStrings()
+        /// <summary>
+        /// Gets or sets projection
+        /// </summary>
+        public ProjectionInfo Projection
         {
-            txtEsriString.Text = _projection.ToEsriString();
-            txtProj4String.Text = _projection.ToProj4String();
+            get { return _projection; }
+            set
+            {
+                if (_projection == value) return;
+                _projection = value;
+
+                txtEsriString.Text = _projection.ToEsriString();
+                txtProj4String.Text = _projection.ToProj4String();
+                txtName.Text = _projection.ToString();
+                txtProjectionType.Text = _projection.IsLatLon ? "Geographic" : "Projected ";
+                txtEpsgCode.Text = _projection.EpsgCode > 0 ? _projection.EpsgCode.ToString(CultureInfo.InvariantCulture) : "Not specified";
+            }
+        }
+
+        private bool ChangesApplied
+        {
+            get { return _changesApplied; }
+            set
+            {
+                if (_changesApplied == value) return;
+                _changesApplied = value;
+                btnOk.Enabled = btnApply.Enabled = !_changesApplied;
+            }
         }
 
         private void ApplyChanges()
         {
-            MapFrameProjectionHelper.ReprojectMapFrame(_mapFrame, _projection.ToEsriString());
+            if (ChangesApplied) return;
+            var ignoredLayers = new StringBuilder();
+            _mapFrame.ReprojectMapFrame(_projection, layer => ignoredLayers.AppendLine(layer.LegendText));
+            if (ignoredLayers.Length > 0)
+            {
+                MessageBox.Show(this, "These layers was skipped:" + Environment.NewLine + ignoredLayers,
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             _mapFrame.ResetExtents();
+            ChangesApplied = true;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (!_changesApplied) ApplyChanges();
+            ApplyChanges();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
             ApplyChanges();
-            _changesApplied = true;
         }
 
-        private void btnChangeProjection_Click(object sender, EventArgs e)
+        private void lnkSpatialReference_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ProjectionSelectDialog projDialog = new ProjectionSelectDialog();
-            projDialog.SelectedCoordinateSystem = _projection;
-            if (projDialog.ShowDialog() == DialogResult.OK)
+            // Display the appropriate link based on the value of the  
+            // LinkData property of the Link object. 
+            var target = e.Link.LinkData as string;
+
+            // If the value looks like a URL, navigate to it. 
+            if (null != target && (target.StartsWith("www.") ||
+                                   target.StartsWith("http:")))
             {
-                _projection = projDialog.SelectedCoordinateSystem;
-                UpdateProjectionStrings();
-                _changesApplied = false;
+                System.Diagnostics.Process.Start(target);
             }
+        }
+
+        private void btnChangeToSelected_Click(object sender, EventArgs e)
+        {
+            using (var pf = new ProjectionSelectDialog())
+            {
+                pf.SelectedCoordinateSystem = Projection;
+                pf.ChangesApplied += PfOnChangesApplied;
+                pf.ShowDialog(this);
+                pf.ChangesApplied -= PfOnChangesApplied;
+            }
+        }
+
+        private void PfOnChangesApplied(object sender, EventArgs eventArgs)
+        {
+            var pf = (ProjectionSelectDialog) sender;
+            Projection = pf.SelectedCoordinateSystem;
+            ChangesApplied = false;
         }
     }
 }
