@@ -783,7 +783,7 @@ namespace DotSpatial.Projections
             CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             Append(result, "x_0", FalseEasting);
             Append(result, "y_0", FalseNorthing);
@@ -791,7 +791,7 @@ namespace DotSpatial.Projections
             {
                 Append(result, "k_0", _scaleFactor);
             }
-
+            
             Append(result, "lat_0", LatitudeOfOrigin);
             Append(result, "lon_0", CentralMeridian);
             Append(result, "lat_1", StandardParallel1);
@@ -891,9 +891,17 @@ namespace DotSpatial.Projections
 
         private static void Append(StringBuilder result, string name, object value)
         {
-            if (value == null)
+            if (value == null) return;
+
+            // The round-trip ("R") format specifier guarantees that a numeric value that is converted to a string will be parsed back into the same numeric value. 
+            // This format is supported only for the Single, Double, and BigInteger types.
+            if (value is double)
             {
-                return;
+                value = ((double) value).ToString("R");
+            }
+            else if (value is float)
+            {
+                value = ((float) value).ToString("R");
             }
 
             result.AppendFormat(CultureInfo.InvariantCulture, " +{0}={1}", name, value);
