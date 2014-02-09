@@ -21,7 +21,6 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore("Verify this test")]
         public void NGO1948BaerumKommune()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsNorway.NGO1948BaerumKommune;
@@ -30,7 +29,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NGO1948Bergenhalvoen()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsNorway.NGO1948Bergenhalvoen;
@@ -103,7 +101,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NGO1948OsloKommune()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsNorway.NGO1948OsloKommune;

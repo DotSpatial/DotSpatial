@@ -124,7 +124,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Arc1950UTMZone34S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Arc1950UTMZone34S;
@@ -133,7 +132,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Arc1950UTMZone35S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Arc1950UTMZone35S;
@@ -142,7 +140,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Arc1950UTMZone36S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Arc1950UTMZone36S;
@@ -309,27 +306,21 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void CapeUTMZone34S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.CapeUTMZone34S;
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void CapeUTMZone35S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.CapeUTMZone35S;
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void CapeUTMZone36S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.CapeUTMZone36S;
@@ -994,7 +985,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone46S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone46S;
@@ -1011,7 +1001,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone47S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone47S;
@@ -1028,13 +1017,11 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone48S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone48S;
             Tester.TestProjection(pStart);
         }
-
 
         [Test]
         public void Indonesia1974UTMZone49N()
@@ -1043,9 +1030,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone49S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone49S;
@@ -1060,9 +1045,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone50S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone50S;
@@ -1077,15 +1060,12 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone51S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone51S;
             Tester.TestProjection(pStart);
         }
-
 
         [Test]
         public void Indonesia1974UTMZone52N()
@@ -1094,15 +1074,12 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone52S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone52S;
             Tester.TestProjection(pStart);
         }
-
 
         [Test]
         public void Indonesia1974UTMZone53N()
@@ -1111,24 +1088,19 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone53S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone53S;
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
         public void Indonesia1974UTMZone54S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.Indonesia1974UTMZone54S;
             Tester.TestProjection(pStart);
         }
-
 
         [Test]
         public void IRENET95UTMZone29N()
@@ -1355,7 +1327,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void MporalokoUTMZone32S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.MporalokoUTMZone32S;
@@ -1664,7 +1635,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void PointeNoireUTMZone32S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.PointeNoireUTMZone32S;
@@ -1879,9 +1849,8 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore("Verify this test")]
+        [Ignore]
         public void SchwarzeckUTMZone33S()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.UtmOther.SchwarzeckUTMZone33S;

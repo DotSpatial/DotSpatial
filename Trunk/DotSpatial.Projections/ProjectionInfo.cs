@@ -1174,12 +1174,13 @@ namespace DotSpatial.Projections
 
                     case "a":
                     case "R":
-                        GeographicInfo.Datum.Spheroid.EquatorialRadius = double.Parse(
-                            value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.EquatorialRadius = double.Parse(value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.KnownEllipsoid = Proj4Ellipsoid.Custom; // This will provide same spheroid on export to Proj4 string
                         break;
 
                     case "b":
                         GeographicInfo.Datum.Spheroid.PolarRadius = double.Parse(value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.KnownEllipsoid = Proj4Ellipsoid.Custom; // This will provide same spheroid on export to Proj4 string
                         break;
 
                     case "rf":

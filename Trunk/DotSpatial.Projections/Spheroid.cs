@@ -264,9 +264,8 @@ namespace DotSpatial.Projections
                     _equatorialRadius = 6375738.7;
                     InverseFlattening = 334.29;
                     break;
-                case Proj4Ellipsoid.Custom: // Default to WGS84
-                    _equatorialRadius = 6378137.0;
-                    InverseFlattening = 298.257223563;
+                case Proj4Ellipsoid.Custom: 
+                    // Nothing for Custom
                     break;
                 case Proj4Ellipsoid.Delambre_1810:
                     _equatorialRadius = 6376428;

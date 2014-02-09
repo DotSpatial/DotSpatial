@@ -20,7 +20,6 @@ namespace DotSpatial.Projections.Tests.Projected
         }
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZone0()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZone0;
@@ -29,7 +28,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZoneI()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZoneI;
@@ -38,7 +36,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZoneIIa()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZoneIIa;
@@ -47,7 +44,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZoneIIb()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZoneIIb;
@@ -56,7 +52,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZoneIII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZoneIII;
@@ -65,7 +60,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1880IndiaZoneIV()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1880IndiaZoneIV;
@@ -74,7 +68,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1937IndiaZoneIIb()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1937IndiaZoneIIb;
@@ -99,7 +92,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1962IndiaZoneI()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1962IndiaZoneI;
@@ -108,7 +100,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1962IndiaZoneIIa()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1962IndiaZoneIIa;
@@ -141,7 +132,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1975IndiaZoneI()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1975IndiaZoneI;
@@ -150,7 +140,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1975IndiaZoneIIa()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1975IndiaZoneIIa;
@@ -159,7 +148,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1975IndiaZoneIIb()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1975IndiaZoneIIb;
@@ -168,7 +156,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1975IndiaZoneIII()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1975IndiaZoneIII;
@@ -177,7 +164,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void Kalianpur1975IndiaZoneIV()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsIndia.Kalianpur1975IndiaZoneIV;
