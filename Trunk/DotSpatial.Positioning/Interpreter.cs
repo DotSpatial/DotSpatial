@@ -1821,6 +1821,7 @@ namespace DotSpatial.Positioning
                 if (existing.IsFixed != isFixed)
                 {
                     existing.IsFixed = isFixed;
+                    _satellites[index] = existing; // Push updated item back into source collection
                     hasChanged = true;
                 }
             }
