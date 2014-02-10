@@ -2252,6 +2252,8 @@ namespace DotSpatial.Positioning
 
             _units = (AreaUnit)Enum.Parse(typeof(AreaUnit), reader.ReadElementContentAsString(), true);
             _value = reader.ReadElementContentAsDouble();
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

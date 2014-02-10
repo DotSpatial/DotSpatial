@@ -530,6 +530,8 @@ namespace DotSpatial.Positioning
                     reader.ReadEndElement();
                     break;
             }
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable

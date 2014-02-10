@@ -3017,6 +3017,7 @@ return
                     reader.ReadEndElement();
                     break;
             }
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

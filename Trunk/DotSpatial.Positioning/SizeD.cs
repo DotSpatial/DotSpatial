@@ -494,11 +494,9 @@ namespace DotSpatial.Positioning
         /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
         public void ReadXml(XmlReader reader)
         {
-            if (reader != null)
-            {
-                double.TryParse(reader.GetAttribute("Width"), NumberStyles.Any, CultureInfo.InvariantCulture, out _width);
-                double.TryParse(reader.GetAttribute("Height"), NumberStyles.Any, CultureInfo.InvariantCulture, out _height);
-            }
+            double.TryParse(reader.GetAttribute("Width"), NumberStyles.Any, CultureInfo.InvariantCulture, out _width);
+            double.TryParse(reader.GetAttribute("Height"), NumberStyles.Any, CultureInfo.InvariantCulture, out _height);
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members
