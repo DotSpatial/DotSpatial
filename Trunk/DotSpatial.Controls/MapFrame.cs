@@ -115,7 +115,7 @@ namespace DotSpatial.Controls
             base.IsSelected = true;  // by default allow the map frame to be selected
 
             //add properties context menu item
-            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
+            base.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
         }
 
         /// <summary>
@@ -1278,7 +1278,7 @@ namespace DotSpatial.Controls
             if (layer.DataSet == null) return;
             if (!Data.DataSet.ProjectionSupported()) return;
 
-            bool preventReproject = DefineProjection(layer);
+            var preventReproject = DefineProjection(layer);
             if ((Projection == null || Layers.Count == 1))
             {
                 Projection = layer.DataSet.Projection;
@@ -1286,39 +1286,34 @@ namespace DotSpatial.Controls
             }
 
             if (preventReproject) return;
-
-            if (Data.DataSet.ProjectionSupported())
+            if (Projection.Equals(layer.DataSet.Projection)) return;
+            var bReproject = false;
+            if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-                if (!Projection.Equals(layer.DataSet.Projection))
+                string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
-                    Boolean bReproject = false;
-                    if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
-                    {
-                        string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            message =
-                                "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
-                        }
-                        DialogResult result = MessageBox.Show(
-                            message,
-                            MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
-                            MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            bReproject = true;
-                        }
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            ProjectionModeReproject = result == DialogResult.Yes ?
-                                                                                     ActionMode.Always : ActionMode.Never;
-                        }
-                    }
-                    if (bReproject || ProjectionModeReproject == ActionMode.Always)
-                    {
-                        layer.Reproject(Projection);
-                    }
+                    message =
+                        "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
                 }
+                DialogResult result = MessageBox.Show(
+                    message,
+                    MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    bReproject = true;
+                }
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
+                {
+                    ProjectionModeReproject = result == DialogResult.Yes
+                        ? ActionMode.Always
+                        : ActionMode.Never;
+                }
+            }
+            if (bReproject || ProjectionModeReproject == ActionMode.Always)
+            {
+                layer.Reproject(Projection);
             }
         }
 

@@ -122,7 +122,11 @@ namespace DotSpatial.Symbology
         protected virtual void OnDataSetChanged(IImageData value)
         {
             IsVisible = value != null;
-            LegendText = value == null ? null : Path.GetFileName(value.Filename);
+            // Change legendText only if image data refers to real file
+            if (value != null && File.Exists(value.Filename))
+            {
+                LegendText = Path.GetFileName(value.Filename);
+            }
         }
 
         /// <summary>
@@ -194,11 +198,13 @@ namespace DotSpatial.Symbology
         /// <param name="disposeManagedResources">True if managed memory objects should be set to null.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            base.Dispose(disposeManagedResources);
             if (disposeManagedResources)
             {
                 _symbolizer = null;
+                ImageLayerActions = null;
             }
+
+            base.Dispose(disposeManagedResources);
         }
     }
 }

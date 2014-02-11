@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="ColorSchemeTests.cs" />
     <Compile Include="FeatureLayerTest.cs" />
+    <Compile Include="ImageLayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
   </ItemGroup>
