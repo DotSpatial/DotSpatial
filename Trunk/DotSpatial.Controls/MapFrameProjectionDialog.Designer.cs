@@ -63,7 +63,7 @@ namespace DotSpatial.Controls
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tbMain = new System.Windows.Forms.TabPage();
             this.lnkSpatialReference = new System.Windows.Forms.LinkLabel();
-            this.txtEpsgCode = new System.Windows.Forms.TextBox();
+            this.txtAuthority = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtProjectionType = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -74,6 +74,8 @@ namespace DotSpatial.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnChange = new System.Windows.Forms.Button();
+            this.txtAuthorityCode = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tbMain.SuspendLayout();
             this.tbDetails.SuspendLayout();
@@ -136,8 +138,10 @@ namespace DotSpatial.Controls
             // 
             // tbMain
             // 
+            this.tbMain.Controls.Add(this.txtAuthorityCode);
+            this.tbMain.Controls.Add(this.label4);
             this.tbMain.Controls.Add(this.lnkSpatialReference);
-            this.tbMain.Controls.Add(this.txtEpsgCode);
+            this.tbMain.Controls.Add(this.txtAuthority);
             this.tbMain.Controls.Add(this.label3);
             this.tbMain.Controls.Add(this.txtProjectionType);
             this.tbMain.Controls.Add(this.label2);
@@ -154,11 +158,11 @@ namespace DotSpatial.Controls
             this.lnkSpatialReference.TabStop = true;
             this.lnkSpatialReference.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSpatialReference_LinkClicked);
             // 
-            // txtEpsgCode
+            // txtAuthority
             // 
-            resources.ApplyResources(this.txtEpsgCode, "txtEpsgCode");
-            this.txtEpsgCode.Name = "txtEpsgCode";
-            this.txtEpsgCode.ReadOnly = true;
+            resources.ApplyResources(this.txtAuthority, "txtAuthority");
+            this.txtAuthority.Name = "txtAuthority";
+            this.txtAuthority.ReadOnly = true;
             // 
             // label3
             // 
@@ -222,6 +226,17 @@ namespace DotSpatial.Controls
             this.btnChange.UseVisualStyleBackColor = true;
             this.btnChange.Click += new System.EventHandler(this.btnChangeToSelected_Click);
             // 
+            // txtAuthorityCode
+            // 
+            resources.ApplyResources(this.txtAuthorityCode, "txtAuthorityCode");
+            this.txtAuthorityCode.Name = "txtAuthorityCode";
+            this.txtAuthorityCode.ReadOnly = true;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
             // MapFrameProjectionDialog
             // 
             resources.ApplyResources(this, "$this");
@@ -264,9 +279,11 @@ namespace DotSpatial.Controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtProjectionType;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtEpsgCode;
+        private System.Windows.Forms.TextBox txtAuthority;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.LinkLabel lnkSpatialReference;
         private System.Windows.Forms.Button btnChange;
+        private System.Windows.Forms.TextBox txtAuthorityCode;
+        private System.Windows.Forms.Label label4;
     }
 }

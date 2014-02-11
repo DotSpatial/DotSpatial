@@ -89,7 +89,9 @@ namespace DotSpatial.Controls
                 txtProj4String.Text = _projection.ToProj4String();
                 txtName.Text = _projection.ToString();
                 txtProjectionType.Text = _projection.IsLatLon ? "Geographic" : "Projected ";
-                txtEpsgCode.Text = _projection.EpsgCode > 0 ? _projection.EpsgCode.ToString(CultureInfo.InvariantCulture) : "Not specified";
+
+                txtAuthority.Text = !string.IsNullOrEmpty(_projection.Authority) ? _projection.Authority : "Not specified";
+                txtAuthorityCode.Text = _projection.AuthorityCode > 0 ? _projection.AuthorityCode.ToString(CultureInfo.InvariantCulture) : "Not specified";
             }
         }
 

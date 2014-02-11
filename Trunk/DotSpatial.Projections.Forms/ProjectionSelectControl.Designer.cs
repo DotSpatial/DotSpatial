@@ -116,7 +116,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nudEpsgCode.Location = new System.Drawing.Point(9, 19);
             this.nudEpsgCode.Maximum = new decimal(new int[] {
-            10000,
+            1000000,
             0,
             0,
             0});
@@ -196,6 +196,7 @@
             this.tbEsriProj4.Location = new System.Drawing.Point(6, 50);
             this.tbEsriProj4.Multiline = true;
             this.tbEsriProj4.Name = "tbEsriProj4";
+            this.tbEsriProj4.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbEsriProj4.Size = new System.Drawing.Size(281, 90);
             this.tbEsriProj4.TabIndex = 9;
             // 

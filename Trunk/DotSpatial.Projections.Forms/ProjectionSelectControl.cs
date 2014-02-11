@@ -46,7 +46,7 @@ namespace DotSpatial.Projections.Forms
                     tbEsriProj4.Text = null;
                     return;
                 }
-                nudEpsgCode.Value = _selectedCoordinateSystem.EpsgCode;
+                nudEpsgCode.Value = _selectedCoordinateSystem.AuthorityCode;
                 tbEsriProj4.Text = chbEsri.Checked
                     ? _selectedCoordinateSystem.ToEsriString()
                     : _selectedCoordinateSystem.ToProj4String();
