@@ -85,6 +85,9 @@
     <Compile Include="Header\StatusPanel.cs" />
     <Compile Include="Header\TextEntryActionItem.cs" />
     <Compile Include="IMapLiDARLayer.cs" />
+    <Compile Include="LayoutControl.Designer.cs">
+      <DependentUpon>LayoutControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayoutForm.Designer.cs">
       <DependentUpon>LayoutForm.cs</DependentUpon>
     </Compile>

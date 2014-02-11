@@ -175,7 +175,6 @@ namespace DotSpatial.Controls
             this.Controls.Add(this._layoutMenuStrip1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "LayoutForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LayoutForm_FormClosing);
             this.Load += new System.EventHandler(this.LayoutForm_Load);
             this._toolStripContainer1.ContentPanel.ResumeLayout(false);
             this._toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

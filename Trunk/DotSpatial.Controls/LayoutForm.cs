@@ -59,12 +59,6 @@ namespace DotSpatial.Controls
             this.Close();
         }
 
-        private void LayoutForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Why clear the layout on closing? (Ted.)
-            _layoutControl1.ClearLayout();
-        }
-
         private void layoutControl1_FilenameChanged(object sender, EventArgs e)
         {
             Text = !string.IsNullOrEmpty(_layoutControl1.Filename)
