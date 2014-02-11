@@ -627,6 +627,7 @@ namespace DotSpatial.Projections
                 // we need to copy the projection information because the Authority Codes implementation returns its one and only
                 // in memory copy of the ProjectionInfo. Passing it to the caller might introduce unintended results.
                 var info = FromProj4String(pi.ToProj4String());
+                info.Name = pi.Name;
                 info.NoDefs = true;
                 info.Authority = authority;
                 info.AuthorityCode = code;
