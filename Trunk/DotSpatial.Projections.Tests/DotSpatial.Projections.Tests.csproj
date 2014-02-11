@@ -145,7 +145,7 @@
     <Compile Include="Projected\Wisconsin.cs" />
     <Compile Include="Projected\World.cs" />
     <Compile Include="Projected\WorldSpheroid.cs" />
-    <Compile Include="ProjectionInfoTest.cs" />
+    <Compile Include="ProjectionInfoTests.cs" />
     <Compile Include="Projections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReprojectTests.cs" />

@@ -829,14 +829,15 @@ namespace DotSpatial.Projections
             Append(result, "lon_0", CentralMeridian);
             Append(result, "lat_1", StandardParallel1);
             Append(result, "lat_2", StandardParallel2);
+
             if (Over)
             {
-                Append(result, "over", 1);
+                result.Append(" +over");
             }
 
             if (Geoc)
             {
-                Append(result, "geoc", 1);
+                result.Append(" +geoc");
             }
 
             Append(result, "alpha", alpha);
@@ -1011,6 +1012,16 @@ namespace DotSpatial.Projections
                     NoDefs = true;
                     continue;
                 }
+                if (s == "over")
+                {
+                    Over = true;
+                    continue;
+                }
+                if (s == "geoc")
+                {
+                    Geoc = GeographicInfo.Datum.Spheroid.EccentricitySquared() != 0;
+                    continue;
+                }
                 else if (s == "south")
                 {
                     IsSouth = true;
@@ -1092,15 +1103,7 @@ namespace DotSpatial.Projections
                     case "zone":
                         Zone = int.Parse(value, CultureInfo.InvariantCulture);
                         break;
-
-                    case "geoc":
-                        Geoc = bool.Parse(value) && (GeographicInfo.Datum.Spheroid.EccentricitySquared() != 0);
-                        break;
-
-                    case "over":
-                        Over = bool.Parse(value);
-                        break;
-
+                  
                     case "proj":
 
                         if (value == "longlat")
