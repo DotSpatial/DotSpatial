@@ -445,7 +445,7 @@ namespace DotSpatial.Controls
         {
             if (_layoutElements.Count > 0 && promptSave)
             {
-                DialogResult dr = MessageBox.Show(this, MessageStrings.LayoutSaveFirst, "DotSpatial Print Layout", MessageBoxButtons.YesNoCancel);
+                DialogResult dr = MessageBox.Show(this, MessageStrings.LayoutSaveFirst, "DotSpatial Print Layout", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (dr == DialogResult.Cancel)
                     return;
                 if (dr == DialogResult.Yes)
@@ -466,7 +466,7 @@ namespace DotSpatial.Controls
         {
             if (_layoutElements.Count > 0 && promptSave)
             {
-                DialogResult dr = MessageBox.Show(this, MessageStrings.LayoutSaveFirst, "DotSpatial Print Layout", MessageBoxButtons.YesNoCancel);
+                DialogResult dr = MessageBox.Show(this, MessageStrings.LayoutSaveFirst, "DotSpatial Print Layout", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (dr == DialogResult.Cancel)
                     return;
                 if (dr == DialogResult.Yes)
@@ -487,6 +487,25 @@ namespace DotSpatial.Controls
                 {
                     MessageBox.Show(MessageStrings.LayoutErrorLoad + e.Message, "DotSpatial Print Layout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+
+        private static class XmlHelper
+        {
+            public static T FromString<T>(string s)
+            {
+                return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromInvariantString(s);
+            }
+
+            public static string ToString<T>(T item)
+            {
+                return TypeDescriptor.GetConverter(typeof (T)).ConvertToInvariantString(item);
+            }
+
+            public static T EnumFromString<T>(string s)
+            {
+                return (T) Enum.Parse(typeof (T), s);
             }
         }
 
@@ -550,8 +569,13 @@ namespace DotSpatial.Controls
                         {
                             newLe.Name = child.Attributes["Name"].Value;
                             newLe.Invalidated += LeInvalidated;
-                            newLe.Rectangle = new RectangleF(float.Parse(child.Attributes["RectangleX"].Value, CultureInfo.InvariantCulture), float.Parse(child.Attributes["RectangleY"].Value, CultureInfo.InvariantCulture), float.Parse(child.Attributes["RectangleWidth"].Value, CultureInfo.InvariantCulture), float.Parse(child.Attributes["RectangleHeight"].Value, CultureInfo.InvariantCulture));
-                            newLe.ResizeStyle = (ResizeStyle)Enum.Parse(typeof(ResizeStyle), child.Attributes["ResizeStyle"].Value);
+                            newLe.Rectangle =
+                                new RectangleF(
+                                    float.Parse(child.Attributes["RectangleX"].Value, CultureInfo.InvariantCulture),
+                                    float.Parse(child.Attributes["RectangleY"].Value, CultureInfo.InvariantCulture),
+                                    float.Parse(child.Attributes["RectangleWidth"].Value, CultureInfo.InvariantCulture),
+                                    float.Parse(child.Attributes["RectangleHeight"].Value, CultureInfo.InvariantCulture));
+                            newLe.ResizeStyle = XmlHelper.EnumFromString<ResizeStyle>(child.Attributes["ResizeStyle"].Value);
                             if (child.Attributes["Background"] != null)
                                 newLe.Background = backDeserializer.Deserialize<PolygonSymbolizer>(child.Attributes["Background"].Value);
                             loadList.Insert(0, newLe);
@@ -583,8 +607,8 @@ namespace DotSpatial.Controls
                         }
                         else
                         {
-                            savedLandscape = (bool)TypeDescriptor.GetConverter(typeof(bool)).ConvertFromInvariantString(child.Attributes["Landscape"].Value);
-                            savedMargins = (Margins)TypeDescriptor.GetConverter(typeof(Margins)).ConvertFromInvariantString(child.Attributes["Margins"].Value);
+                            savedLandscape = XmlHelper.FromString<bool>(child.Attributes["Landscape"].Value);
+                            savedMargins = XmlHelper.FromString<Margins>(child.Attributes["Margins"].Value);
                         }
                     }
                     child = child.PreviousSibling;
@@ -599,17 +623,25 @@ namespace DotSpatial.Controls
                         XmlNode innerChild = child.ChildNodes[0];
                         if (loadList[i] is LayoutBitmap)
                         {
-                            LayoutBitmap lb = loadList[i] as LayoutBitmap;
-                            if (lb != null)
+                            var lb = (LayoutBitmap) loadList[i];
+
+                            lb.Filename = innerChild.Attributes["Filename"].Value;
+                            if (innerChild.Attributes["BitmapData"] != null)
                             {
-                                lb.Filename = innerChild.Attributes["Filename"].Value;
-                                lb.PreserveAspectRatio = Convert.ToBoolean(innerChild.Attributes["PreserveAspectRatio"].Value);
-                                lb.Draft = Convert.ToBoolean(innerChild.Attributes["Draft"].Value);
-                                if (innerChild.Attributes["Brightness"] != null)
-                                    lb.Brightness = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(innerChild.Attributes["Brightness"].Value);
-                                if (innerChild.Attributes["Contrast"] != null)
-                                    lb.Contrast = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(innerChild.Attributes["Contrast"].Value);
+                                var ba = Convert.FromBase64String(innerChild.Attributes["BitmapData"].Value);
+                                var bitmap = new Bitmap(new MemoryStream(ba));
+                                lb.Bitmap = bitmap;
                             }
+                            lb.PreserveAspectRatio = Convert.ToBoolean(innerChild.Attributes["PreserveAspectRatio"].Value);
+                            if (innerChild.Attributes["Brightness"] != null)
+                            {
+                                lb.Brightness = XmlHelper.FromString<int>(innerChild.Attributes["Brightness"].Value);
+                            }
+                            if (innerChild.Attributes["Contrast"] != null)
+                            {
+                                lb.Contrast = XmlHelper.FromString<int>(innerChild.Attributes["Contrast"].Value);
+                            }
+
                         }
                         else if (loadList[i] is LayoutLegend)
                         {
@@ -617,9 +649,9 @@ namespace DotSpatial.Controls
                             if (ll != null)
                             {
                                 ll.LayoutControl = this;
-                                ll.TextHint = (TextRenderingHint)Enum.Parse(typeof(TextRenderingHint), innerChild.Attributes["TextHint"].Value);
-                                ll.Color = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["Color"].Value);
-                                ll.Font = (Font)TypeDescriptor.GetConverter(typeof(Font)).ConvertFromInvariantString(innerChild.Attributes["Font"].Value);
+                                ll.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                                ll.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                ll.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
                             }
                             int mapIndex = Convert.ToInt32(innerChild.Attributes["Map"].Value);
                             if (mapIndex >= 0)
@@ -629,12 +661,12 @@ namespace DotSpatial.Controls
                             while (layStr.EndsWith("|"))
                             {
                                 layStr = layStr.TrimEnd("|".ToCharArray());
-                                layers.Add((int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(layStr.Substring(layStr.LastIndexOf("|") + 1)));
+                                layers.Add(XmlHelper.FromString<int>(layStr.Substring(layStr.LastIndexOf("|") + 1)));
                                 layStr = layStr.Substring(0, layStr.LastIndexOf("|") + 1);
                             }
                             if (ll != null)
                             {
-                                ll.NumColumns = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(innerChild.Attributes["NumColumns"].Value);
+                                ll.NumColumns = XmlHelper.FromString<int>(innerChild.Attributes["NumColumns"].Value);
                                 ll.Layers = layers;
                             }
                         }
@@ -642,10 +674,10 @@ namespace DotSpatial.Controls
                         {
                             LayoutMap lm = loadList[i] as LayoutMap;
                             Envelope env = new Envelope();
-                            env.Minimum.X = (double)TypeDescriptor.GetConverter(typeof(double)).ConvertFromInvariantString(innerChild.Attributes["EnvelopeXmin"].Value);
-                            env.Minimum.Y = (double)TypeDescriptor.GetConverter(typeof(double)).ConvertFromInvariantString(innerChild.Attributes["EnvelopeYmin"].Value);
-                            env.Maximum.X = (double)TypeDescriptor.GetConverter(typeof(double)).ConvertFromInvariantString(innerChild.Attributes["EnvelopeXmax"].Value);
-                            env.Maximum.Y = (double)TypeDescriptor.GetConverter(typeof(double)).ConvertFromInvariantString(innerChild.Attributes["EnvelopeYmax"].Value);
+                            env.Minimum.X = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmin"].Value);
+                            env.Minimum.Y = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmin"].Value);
+                            env.Maximum.X = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmax"].Value);
+                            env.Maximum.Y = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmax"].Value);
                             if (lm != null) lm.Envelope = env;
                         }
                         else if (loadList[i] is LayoutNorthArrow)
@@ -653,10 +685,10 @@ namespace DotSpatial.Controls
                             LayoutNorthArrow na = loadList[i] as LayoutNorthArrow;
                             if (na != null)
                             {
-                                na.Color = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["Color"].Value);
-                                na.NorthArrowStyle = (NorthArrowStyle)Enum.Parse(typeof(NorthArrowStyle), innerChild.Attributes["Style"].Value);
+                                na.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                na.NorthArrowStyle = XmlHelper.EnumFromString<NorthArrowStyle>(innerChild.Attributes["Style"].Value);
                                 if (innerChild.Attributes["Rotation"] != null)
-                                    na.Rotation = (float)TypeDescriptor.GetConverter(typeof(float)).ConvertFromInvariantString(innerChild.Attributes["Rotation"].Value);
+                                    na.Rotation = XmlHelper.FromString<float>(innerChild.Attributes["Rotation"].Value);
                             }
                         }
                         else if (loadList[i] is LayoutRectangle)
@@ -665,12 +697,15 @@ namespace DotSpatial.Controls
                             if (lr != null)
                             {
                                 //This code is to load legacy layouts that had properties for the color/outline of rectangles
-                                if (innerChild.Attributes["Color"] != null && innerChild.Attributes["BackColor"] != null && innerChild.Attributes["OutlineWidth"] != null)
+                                if (innerChild.Attributes["Color"] != null && 
+                                    innerChild.Attributes["BackColor"] != null &&
+                                    innerChild.Attributes["OutlineWidth"] != null)
                                 {
-                                    Color tempOutlineColor = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["Color"].Value);
-                                    Color tempBackColor = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["BackColor"].Value);
-                                    int tempOutlineWidth = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(innerChild.Attributes["OutlineWidth"].Value);
-                                    lr.Background = new PolygonSymbolizer(tempBackColor, tempOutlineColor, tempOutlineWidth);
+                                    var tempOutlineColor = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                    var tempBackColor = XmlHelper.FromString<Color>(innerChild.Attributes["BackColor"].Value);
+                                    var tempOutlineWidth = XmlHelper.FromString<int>(innerChild.Attributes["OutlineWidth"].Value);
+                                    lr.Background = new PolygonSymbolizer(tempBackColor, tempOutlineColor,
+                                        tempOutlineWidth);
                                 }
                             }
                         }
@@ -680,12 +715,12 @@ namespace DotSpatial.Controls
                             if (lsc != null)
                             {
                                 lsc.LayoutControl = this;
-                                lsc.TextHint = (TextRenderingHint)Enum.Parse(typeof(TextRenderingHint), innerChild.Attributes["TextHint"].Value);
-                                lsc.Color = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["Color"].Value);
-                                lsc.Font = (Font)TypeDescriptor.GetConverter(typeof(Font)).ConvertFromInvariantString(innerChild.Attributes["Font"].Value);
+                                lsc.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                                lsc.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                lsc.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
                                 lsc.BreakBeforeZero = Convert.ToBoolean(innerChild.Attributes["BreakBeforeZero"].Value);
-                                lsc.NumberOfBreaks = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(innerChild.Attributes["NumberOfBreaks"].Value);
-                                lsc.Unit = (ScaleBarUnit)Enum.Parse(typeof(ScaleBarUnit), innerChild.Attributes["Unit"].Value);
+                                lsc.NumberOfBreaks = XmlHelper.FromString<int>(innerChild.Attributes["NumberOfBreaks"].Value);
+                                lsc.Unit = XmlHelper.EnumFromString<ScaleBarUnit>(innerChild.Attributes["Unit"].Value);
                                 lsc.UnitText = innerChild.Attributes["UnitText"].Value;
                             }
                             int mapIndex = Convert.ToInt32(innerChild.Attributes["Map"].Value);
@@ -697,10 +732,10 @@ namespace DotSpatial.Controls
                             LayoutText lt = loadList[i] as LayoutText;
                             if (lt != null)
                             {
-                                lt.TextHint = (TextRenderingHint)Enum.Parse(typeof(TextRenderingHint), innerChild.Attributes["TextHint"].Value);
-                                lt.Color = (Color)TypeDescriptor.GetConverter(typeof(Color)).ConvertFromInvariantString(innerChild.Attributes["Color"].Value);
-                                lt.Font = (Font)TypeDescriptor.GetConverter(typeof(Font)).ConvertFromInvariantString(innerChild.Attributes["Font"].Value);
-                                lt.ContentAlignment = (ContentAlignment)TypeDescriptor.GetConverter(typeof(ContentAlignment)).ConvertFromString(innerChild.Attributes["ContentAlignment"].Value);
+                                lt.TextHint = XmlHelper.EnumFromString<TextRenderingHint>(innerChild.Attributes["TextHint"].Value);
+                                lt.Color = XmlHelper.FromString<Color>(innerChild.Attributes["Color"].Value);
+                                lt.Font = XmlHelper.FromString<Font>(innerChild.Attributes["Font"].Value);
+                                lt.ContentAlignment = XmlHelper.FromString<ContentAlignment>(innerChild.Attributes["ContentAlignment"].Value);
                                 lt.Text = innerChild.Attributes["Text"].Value;
                             }
                         }
@@ -840,8 +875,8 @@ namespace DotSpatial.Controls
             //Saves the printer paper settings
             XmlElement paperElement = layoutXmlDoc.CreateElement("Paper");
             paperElement.SetAttribute("Name", _printerSettings.DefaultPageSettings.PaperSize.PaperName);
-            paperElement.SetAttribute("Landscape", TypeDescriptor.GetConverter(typeof(bool)).ConvertToInvariantString(_printerSettings.DefaultPageSettings.Landscape));
-            paperElement.SetAttribute("Margins", TypeDescriptor.GetConverter(typeof(Margins)).ConvertToInvariantString(_printerSettings.DefaultPageSettings.Margins));
+            paperElement.SetAttribute("Landscape", XmlHelper.ToString(_printerSettings.DefaultPageSettings.Landscape));
+            paperElement.SetAttribute("Margins", XmlHelper.ToString(_printerSettings.DefaultPageSettings.Margins));
             root.AppendChild(paperElement);
 
             //Saves the Tools and their output configuration to the model
@@ -854,10 +889,18 @@ namespace DotSpatial.Controls
                     LayoutBitmap lb = le as LayoutBitmap;
                     XmlElement bitmap = layoutXmlDoc.CreateElement("Bitmap");
                     bitmap.SetAttribute("Filename", lb.Filename);
+                    if (!File.Exists(lb.Filename) && lb.Bitmap != null)
+                    {
+                        using (var mStr = new MemoryStream())
+                        {
+                            lb.Bitmap.Save(mStr, ImageFormat.Png);
+                            var bitmapData = Convert.ToBase64String(mStr.ToArray());
+                            bitmap.SetAttribute("BitmapData", bitmapData);
+                        }
+                    }
                     bitmap.SetAttribute("PreserveAspectRatio", lb.PreserveAspectRatio.ToString());
-                    bitmap.SetAttribute("Draft", lb.Draft.ToString());
-                    bitmap.SetAttribute("Brightness", TypeDescriptor.GetConverter(typeof(int)).ConvertToInvariantString(lb.Brightness));
-                    bitmap.SetAttribute("Contrast", TypeDescriptor.GetConverter(typeof(int)).ConvertToInvariantString(lb.Contrast));
+                    bitmap.SetAttribute("Brightness", XmlHelper.ToString(lb.Brightness));
+                    bitmap.SetAttribute("Contrast", XmlHelper.ToString(lb.Contrast));
                     element.AppendChild(bitmap);
                 }
                 else if (le is LayoutLegend)
@@ -865,33 +908,33 @@ namespace DotSpatial.Controls
                     LayoutLegend ll = le as LayoutLegend;
                     XmlElement legend = layoutXmlDoc.CreateElement("Legend");
                     legend.SetAttribute("TextHint", ll.TextHint.ToString());
-                    legend.SetAttribute("Color", TypeDescriptor.GetConverter(typeof(Color)).ConvertToInvariantString(ll.Color));
-                    legend.SetAttribute("Font", TypeDescriptor.GetConverter(typeof(Font)).ConvertToInvariantString(ll.Font));
+                    legend.SetAttribute("Color", XmlHelper.ToString(ll.Color));
+                    legend.SetAttribute("Font", XmlHelper.ToString(ll.Font));
                     legend.SetAttribute("Map", _layoutElements.IndexOf(ll.Map).ToString());
                     string layerString = string.Empty;
                     foreach (int i in ll.Layers)
-                        layerString = layerString + TypeDescriptor.GetConverter(typeof(int)).ConvertToInvariantString(i) + "|";
+                        layerString = layerString + XmlHelper.ToString(i) + "|";
                     legend.SetAttribute("Layers", layerString);
-                    legend.SetAttribute("NumColumns", TypeDescriptor.GetConverter(typeof(int)).ConvertToInvariantString(ll.NumColumns));
+                    legend.SetAttribute("NumColumns", XmlHelper.ToString(ll.NumColumns));
                     element.AppendChild(legend);
                 }
                 else if (le is LayoutMap)
                 {
                     LayoutMap lm = le as LayoutMap;
                     XmlElement map = layoutXmlDoc.CreateElement("Map");
-                    map.SetAttribute("EnvelopeXmin", TypeDescriptor.GetConverter(typeof(double)).ConvertToInvariantString(lm.Envelope.Minimum.X));
-                    map.SetAttribute("EnvelopeYmin", TypeDescriptor.GetConverter(typeof(double)).ConvertToInvariantString(lm.Envelope.Minimum.Y));
-                    map.SetAttribute("EnvelopeXmax", TypeDescriptor.GetConverter(typeof(double)).ConvertToInvariantString(lm.Envelope.Maximum.X));
-                    map.SetAttribute("EnvelopeYmax", TypeDescriptor.GetConverter(typeof(double)).ConvertToInvariantString(lm.Envelope.Maximum.Y));
+                    map.SetAttribute("EnvelopeXmin", XmlHelper.ToString(lm.Envelope.Minimum.X));
+                    map.SetAttribute("EnvelopeYmin", XmlHelper.ToString(lm.Envelope.Minimum.Y));
+                    map.SetAttribute("EnvelopeXmax", XmlHelper.ToString(lm.Envelope.Maximum.X));
+                    map.SetAttribute("EnvelopeYmax", XmlHelper.ToString(lm.Envelope.Maximum.Y));
                     element.AppendChild(map);
                 }
                 else if (le is LayoutNorthArrow)
                 {
                     LayoutNorthArrow na = le as LayoutNorthArrow;
                     XmlElement northArrow = layoutXmlDoc.CreateElement("NorthArrow");
-                    northArrow.SetAttribute("Color", TypeDescriptor.GetConverter(typeof(Color)).ConvertToInvariantString(na.Color));
+                    northArrow.SetAttribute("Color", XmlHelper.ToString(na.Color));
                     northArrow.SetAttribute("Style", na.NorthArrowStyle.ToString());
-                    northArrow.SetAttribute("Rotation", TypeDescriptor.GetConverter(typeof(float)).ConvertToInvariantString(na.Rotation));
+                    northArrow.SetAttribute("Rotation", XmlHelper.ToString(na.Rotation));
                     element.AppendChild(northArrow);
                 }
                 else if (le is LayoutRectangle)
@@ -906,8 +949,8 @@ namespace DotSpatial.Controls
                     LayoutScaleBar lsc = le as LayoutScaleBar;
                     XmlElement scaleBar = layoutXmlDoc.CreateElement("ScaleBar");
                     scaleBar.SetAttribute("TextHint", lsc.TextHint.ToString());
-                    scaleBar.SetAttribute("Color", TypeDescriptor.GetConverter(typeof(Color)).ConvertToInvariantString(lsc.Color));
-                    scaleBar.SetAttribute("Font", TypeDescriptor.GetConverter(typeof(Font)).ConvertToInvariantString(lsc.Font));
+                    scaleBar.SetAttribute("Color", XmlHelper.ToString(lsc.Color));
+                    scaleBar.SetAttribute("Font", XmlHelper.ToString(lsc.Font));
                     scaleBar.SetAttribute("BreakBeforeZero", lsc.BreakBeforeZero.ToString());
                     scaleBar.SetAttribute("NumberOfBreaks", lsc.NumberOfBreaks.ToString());
                     scaleBar.SetAttribute("Unit", lsc.Unit.ToString());
@@ -920,17 +963,17 @@ namespace DotSpatial.Controls
                     LayoutText lt = le as LayoutText;
                     XmlElement layoutText = layoutXmlDoc.CreateElement("Text");
                     layoutText.SetAttribute("TextHint", lt.TextHint.ToString());
-                    layoutText.SetAttribute("Color", TypeDescriptor.GetConverter(typeof(Color)).ConvertToInvariantString(lt.Color));
-                    layoutText.SetAttribute("Font", TypeDescriptor.GetConverter(typeof(Font)).ConvertToInvariantString(lt.Font));
+                    layoutText.SetAttribute("Color", XmlHelper.ToString(lt.Color));
+                    layoutText.SetAttribute("Font", XmlHelper.ToString(lt.Font));
                     layoutText.SetAttribute("ContentAlignment", lt.ContentAlignment.ToString());
                     layoutText.SetAttribute("Text", lt.Text);
                     element.AppendChild(layoutText);
                 }
 
-                element.SetAttribute("RectangleX", TypeDescriptor.GetConverter(typeof(float)).ConvertToInvariantString(le.Rectangle.X));
-                element.SetAttribute("RectangleY", TypeDescriptor.GetConverter(typeof(float)).ConvertToInvariantString(le.Rectangle.Y));
-                element.SetAttribute("RectangleWidth", TypeDescriptor.GetConverter(typeof(float)).ConvertToInvariantString(le.Rectangle.Width));
-                element.SetAttribute("RectangleHeight", TypeDescriptor.GetConverter(typeof(float)).ConvertToInvariantString(le.Rectangle.Height));
+                element.SetAttribute("RectangleX", XmlHelper.ToString(le.Rectangle.X));
+                element.SetAttribute("RectangleY", XmlHelper.ToString(le.Rectangle.Y));
+                element.SetAttribute("RectangleWidth", XmlHelper.ToString(le.Rectangle.Width));
+                element.SetAttribute("RectangleHeight", XmlHelper.ToString(le.Rectangle.Height));
                 element.SetAttribute("Background", backSerializer.Serialize(le.Background));
                 element.SetAttribute("ResizeStyle", le.ResizeStyle.ToString());
                 root.AppendChild(element);
@@ -1318,11 +1361,13 @@ namespace DotSpatial.Controls
             temp.SetResolution(300, 300);
             temp.Save(fileName);
             temp.Dispose();
-            LayoutBitmap newLb = new LayoutBitmap();
-            newLb.Rectangle = le.Rectangle;
-            newLb.Name = le.Name;
-            newLb.Filename = fileName;
-            newLb.Background = le.Background;
+            var newLb = new LayoutBitmap
+            {
+                Rectangle = le.Rectangle,
+                Name = le.Name,
+                Filename = fileName,
+                Background = le.Background
+            };
             _layoutElements.Insert(_layoutElements.IndexOf(le), newLb);
             _layoutElements.Remove(le);
             _selectedLayoutElements.Insert(_selectedLayoutElements.IndexOf(le), newLb);

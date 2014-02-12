@@ -446,7 +446,7 @@
     <value>DotSpatial Print Layout</value>
   </data>
   <data name="LayoutMenuPageSetup" xml:space="preserve">
-    <value>Page Setup</value>
+    <value>Page Setup...</value>
   </data>
   <data name="LayoutMenuStripDocToolbar" xml:space="preserve">
     <value>Document</value>
@@ -461,16 +461,16 @@
     <value>New</value>
   </data>
   <data name="LayoutMenuStripOpen" xml:space="preserve">
-    <value>Open</value>
+    <value>Open...</value>
   </data>
   <data name="LayoutMenuStripPrint" xml:space="preserve">
-    <value>Print</value>
+    <value>Print...</value>
   </data>
   <data name="LayoutMenuStripSave" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="LayoutMenuStripSaveAs" xml:space="preserve">
-    <value>Save as</value>
+    <value>Save as...</value>
   </data>
   <data name="LayoutMenuStripSelect" xml:space="preserve">
     <value>Select</value>
@@ -494,7 +494,7 @@
     <value>None</value>
   </data>
   <data name="LayoutMenuStripSelectPrinter" xml:space="preserve">
-    <value>Choose printer</value>
+    <value>Choose printer...</value>
   </data>
   <data name="LayoutMenuStripShowMargin" xml:space="preserve">
     <value>Show Margin</value>
@@ -518,7 +518,7 @@
     <value>Zoom</value>
   </data>
   <data name="LayoutPageSetupTitle" xml:space="preserve">
-    <value>Page Setup</value>
+    <value>Page Setup...</value>
   </data>
   <data name="LayoutToolStripZoomFull" xml:space="preserve">
     <value>Fit to screen</value>
