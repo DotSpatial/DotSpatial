@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// The Designer for a dialog to replace a field.
     /// </summary>
-    partial class SeachAndReplaceDialog
+    partial class SearchAndReplaceDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -57,88 +57,65 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(SeachAndReplaceDialog));
-            this.label1 = new Label();
-            this.label2 = new Label();
-            this.txtReplace = new TextBox();
-            this.btnCancel = new Button();
-            this.btnOK = new Button();
-            this.txtFind = new TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchAndReplaceDialog));
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtReplace = new System.Windows.Forms.TextBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.txtFind = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            //
+            // 
             // label1
-            //
-            this.label1.AccessibleDescription = null;
-            this.label1.AccessibleName = null;
+            // 
             resources.ApplyResources(this.label1, "label1");
-            this.label1.Font = null;
             this.label1.Name = "label1";
-            //
+            // 
             // label2
-            //
-            this.label2.AccessibleDescription = null;
-            this.label2.AccessibleName = null;
+            // 
             resources.ApplyResources(this.label2, "label2");
-            this.label2.Font = null;
             this.label2.Name = "label2";
-            //
+            // 
             // txtReplace
-            //
-            this.txtReplace.AccessibleDescription = null;
-            this.txtReplace.AccessibleName = null;
+            // 
             resources.ApplyResources(this.txtReplace, "txtReplace");
-            this.txtReplace.BackgroundImage = null;
-            this.txtReplace.Font = null;
             this.txtReplace.Name = "txtReplace";
-            //
+            // 
             // btnCancel
-            //
-            this.btnCancel.AccessibleDescription = null;
-            this.btnCancel.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.BackgroundImage = null;
-            this.btnCancel.Font = null;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new EventHandler(this.BtnCancelClick);
-            //
+            // 
             // btnOK
-            //
-            this.btnOK.AccessibleDescription = null;
-            this.btnOK.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnOK, "btnOK");
-            this.btnOK.BackgroundImage = null;
-            this.btnOK.Font = null;
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Name = "btnOK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new EventHandler(this.BtnOkClick);
-            //
+            this.btnOK.Click += new System.EventHandler(this.BtnOkClick);
+            // 
             // txtFind
-            //
-            this.txtFind.AccessibleDescription = null;
-            this.txtFind.AccessibleName = null;
+            // 
             resources.ApplyResources(this.txtFind, "txtFind");
-            this.txtFind.BackgroundImage = null;
-            this.txtFind.Font = null;
             this.txtFind.Name = "txtFind";
-            //
-            // Replace
-            //
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
+            // 
+            // SearchAndReplaceDialog
+            // 
+            this.AcceptButton = this.btnOK;
+            this.AutoScaleMode = this.AutoScaleMode;
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = ((ContainerControl)this).AutoScaleMode;
-            this.BackgroundImage = null;
             this.Controls.Add(this.txtFind);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtReplace);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Font = null;
-            this.Name = "SeachAndReplaceDialog";
+            this.Name = "SearchAndReplaceDialog";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

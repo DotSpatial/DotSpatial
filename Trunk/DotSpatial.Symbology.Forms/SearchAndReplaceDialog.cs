@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// This form diplay to user to find perticular value or string in DataGridView and replace.
     /// </summary>
-    public partial class SeachAndReplaceDialog : Form
+    public partial class SearchAndReplaceDialog : Form
     {
         #region Variable
 
@@ -59,21 +59,21 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Creates a new instance of the replace form.
         /// </summary>
-        public SeachAndReplaceDialog()
+        public SearchAndReplaceDialog()
         {
             InitializeComponent();
         }
 
-        private void BtnCancelClick(object sender, EventArgs e)
-        {
-            Hide();
-        }
-
         private void BtnOkClick(object sender, EventArgs e)
         {
+            if (String.IsNullOrWhiteSpace(txtFind.Text))
+            {
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             _find = txtFind.Text;
             _replace = txtReplace.Text;
-            DialogResult = DialogResult.OK;
         }
     }
 }

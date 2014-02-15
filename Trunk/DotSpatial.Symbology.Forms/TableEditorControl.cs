@@ -374,6 +374,7 @@ namespace DotSpatial.Symbology.Forms
         /// Gets or sets the feature layer used by this data Table
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public IFeatureLayer FeatureLayer
         {
             get { return _featureLayer; }
@@ -419,6 +420,7 @@ namespace DotSpatial.Symbology.Forms
         /// set or get the relavant full featureset
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public IFeatureSet FeatureSetData
         {
             get { return _featureLayer.DataSet; }
@@ -886,12 +888,14 @@ namespace DotSpatial.Symbology.Forms
 
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SeachAndReplaceDialog frmSeachAndReplaceDialog = new SeachAndReplaceDialog();
-            if (frmSeachAndReplaceDialog.ShowDialog() != DialogResult.OK) return;
-            string findString = frmSeachAndReplaceDialog.FindString;
-            string replaceString = frmSeachAndReplaceDialog.ReplaceString;
-            if (ReplaceString(findString, replaceString) == false)
-                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
+            using (var frmSeachAndReplaceDialog = new SearchAndReplaceDialog())
+            {
+                if (frmSeachAndReplaceDialog.ShowDialog(this) != DialogResult.OK) return;
+                if (!ReplaceString(frmSeachAndReplaceDialog.FindString, frmSeachAndReplaceDialog.ReplaceString))
+                {
+                    MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_CouldNotFindReplace);
+                }
+            }
         }
 
         private void importFieldDefinitionsFromDBFToolStripMenuItem_Click(object sender, EventArgs e)
@@ -956,40 +960,20 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void SetEditableIcons()
         {
-            if (_isEditable)
-            {
-                tsbtnSaveEdits.Visible = true;
-                tsbtnFieldCalculator.Visible = true;
-                tsbtnImportFieldsFromDBF.Visible = true;
-                tsbtnRefreshMap.Visible = true;
+            tsbtnSaveEdits.Visible = _isEditable;
+            tsbtnFieldCalculator.Visible = _isEditable;
+            tsbtnImportFieldsFromDBF.Visible = _isEditable;
+            tsbtnRefreshMap.Visible = _isEditable;
 
-                saveEditsToolStripMenuItem.Enabled = true;
-                addFieldToolStripMenuItem.Enabled = true;
-                removeFieldToolStripMenuItem.Enabled = true;
-                renameFieldToolStripMenuItem.Enabled = true;
-                fieldCalculatorToolToolStripMenuItem.Enabled = true;
-                importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = true;
-                copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = true;
+            saveEditsToolStripMenuItem.Enabled = _isEditable;
+            addFieldToolStripMenuItem.Enabled = _isEditable;
+            removeFieldToolStripMenuItem.Enabled = _isEditable;
+            renameFieldToolStripMenuItem.Enabled = _isEditable;
+            fieldCalculatorToolToolStripMenuItem.Enabled = _isEditable;
+            importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = _isEditable;
+            copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = _isEditable;
 
-                dataGridView1.ReadOnly = false;
-            }
-            else
-            {
-                tsbtnSaveEdits.Visible = false;
-                tsbtnFieldCalculator.Visible = false;
-                tsbtnImportFieldsFromDBF.Visible = false;
-                tsbtnRefreshMap.Visible = false;
-
-                saveEditsToolStripMenuItem.Enabled = false;
-                addFieldToolStripMenuItem.Enabled = false;
-                removeFieldToolStripMenuItem.Enabled = false;
-                renameFieldToolStripMenuItem.Enabled = false;
-                fieldCalculatorToolToolStripMenuItem.Enabled = false;
-                importFieldDefinitionsFromDBFToolStripMenuItem.Enabled = false;
-                copyShapeIDsToSpecifiedFieldToolStripMenuItem.Enabled = false;
-
-                dataGridView1.ReadOnly = true;
-            }
+            dataGridView1.ReadOnly = !_isEditable;
         }
 
         //Shows all rows (both selected and unselected)
@@ -1411,11 +1395,9 @@ namespace DotSpatial.Symbology.Forms
         /// <returns></returns>
         private bool ReplaceString(string exp, string expReplace)
         {
-            if (exp == null) return false;
-            exp.Trim();
-            exp = exp.ToLower();
+            if (string.IsNullOrWhiteSpace(exp)) return false;
+            exp = exp.Trim().ToLower();
             bool rowFiended = false;
-            string dgExp;
             int numRow = dataGridView1.RowCount;
             int numCol = dataGridView1.ColumnCount;
             progressBar.Visible = true;
@@ -1424,23 +1406,25 @@ namespace DotSpatial.Symbology.Forms
             progressBar.Value = 1;
             progressBar.Step = 1;
 
-            int category;
-            if (exp.IndexOf("*", 0) == 0)
+            Func<string, bool> categoryCheck;
+            if (exp.IndexOf("*", 0, StringComparison.Ordinal) == 0)
             {
                 //starting with "*"
-                category = 1;
                 exp = exp.Remove(0, 1);
+                //check it occur at the end
+                categoryCheck = s => s.EndsWith(exp);
             }
-            else if (exp.IndexOf("*", exp.Length - 1) == exp.Length - 1)
+            else if (exp.IndexOf("*", exp.Length - 1, StringComparison.Ordinal) == exp.Length - 1)
             {
                 //ending with "*"
-                category = 2;
                 exp = exp.Remove(exp.Length - 1, 1);
+                //check it occur at the begining
+                categoryCheck = s => s.StartsWith(exp);
             }
             else
             {
-                //take as normal case
-                category = 0;
+                // take as normal case
+                categoryCheck = s => s == exp;
             }
 
             for (int r = 0; r < numRow; r++)
@@ -1451,43 +1435,16 @@ namespace DotSpatial.Symbology.Forms
                 for (int c = 0; c < numCol; c++)
                 {
                     if (dataGridView1[c, r].Value == null) continue;
-                    dgExp = dataGridView1[c, r].Value.ToString(); //cell value
+                    string dgExp = dataGridView1[c, r].Value.ToString();
                     dgExp = dgExp.ToLower();
-                    bool itemReplaced = false;
-                    if (category == 1)
+                    var itemReplaced = categoryCheck(dgExp);
+                    if (itemReplaced)
                     {
-                        //stating with "*"
-                        if (dgExp.EndsWith(exp))
-                        {
-                            //check it occur at the end
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
+                        dataGridView1.Rows[r].Selected = true;
+                        rowFiended = true;
                     }
-                    else if (category == 2)
-                    {
-                        //ending with "*"
-                        if (dgExp.StartsWith(exp))
-                        {
-                            //check it occur at the begining
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
-                    }
-                    else
-                    {
-                        //take as normal case
-                        if (dgExp == exp)
-                        {
-                            //check it occur exacly same work
-                            dataGridView1.Rows[r].Selected = true;
-                            rowFiended = true;
-                            itemReplaced = true;
-                        }
-                    }
-                    //Replace the values
+
+                    // Replace the values
                     if (itemReplaced)
                     {
                         if (dataGridView1[c, r].ValueType == typeof(string))
@@ -1569,6 +1526,12 @@ namespace DotSpatial.Symbology.Forms
         {
             ShowSelectedRowCount();
             OnSelectionChanged();
+        }
+
+        private void TableEditorControl_Resize(object sender, EventArgs e)
+        {
+            if (dataGridView1.Columns.Count > 0)
+                dataGridView1.AutoResizeColumns();
         }
     }
 }

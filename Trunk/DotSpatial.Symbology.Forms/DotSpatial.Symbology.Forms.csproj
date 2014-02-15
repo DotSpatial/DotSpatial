@@ -83,6 +83,9 @@
     <Compile Include="AttributeCalculator.Designer.cs">
       <DependentUpon>AttributeCalculator.cs</DependentUpon>
     </Compile>
+    <Compile Include="AttributeDialog.Designer.cs">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalculatorUserGuide.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,11 +118,11 @@
     <Compile Include="RenameFieldDialog.Designer.cs">
       <DependentUpon>RenameFieldDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SeachAndReplaceDialog.cs">
+    <Compile Include="SearchAndReplaceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SeachAndReplaceDialog.Designer.cs">
-      <DependentUpon>SeachAndReplaceDialog.cs</DependentUpon>
+    <Compile Include="SearchAndReplaceDialog.Designer.cs">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="SelectByAttributes.cs">
       <SubType>Form</SubType>
@@ -466,12 +469,12 @@
       <DependentUpon>RenameFieldDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SeachAndReplaceDialog.resx">
-      <DependentUpon>SeachAndReplaceDialog.cs</DependentUpon>
+    <EmbeddedResource Include="SearchAndReplaceDialog.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SeachAndReplaceDialog.zh-CN.resx">
-      <DependentUpon>SeachAndReplaceDialog.cs</DependentUpon>
+    <EmbeddedResource Include="SearchAndReplaceDialog.zh-CN.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectByAttributes.resx">
