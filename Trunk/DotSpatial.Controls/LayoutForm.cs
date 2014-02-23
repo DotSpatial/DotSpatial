@@ -68,9 +68,12 @@ namespace DotSpatial.Controls
 
         private void LayoutForm_Load(object sender, EventArgs e)
         {
-            LayoutElement mapElement = _layoutControl1.CreateMapElement();
-            mapElement.Size = _layoutControl1.Size;
-            _layoutControl1.AddToLayout(mapElement);
+            if (MapControl != null)
+            {
+                var mapElement = _layoutControl1.CreateMapElement();
+                mapElement.Size = _layoutControl1.Size;
+                _layoutControl1.AddToLayout(mapElement);
+            }
         }
     }
 }

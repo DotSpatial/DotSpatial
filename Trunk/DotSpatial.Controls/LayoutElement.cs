@@ -164,7 +164,7 @@ namespace DotSpatial.Controls
                     value.Height = 10;
                 _size = value;
 
-                OnSizeChanged();
+                RefreshElement();
             }
         }
 

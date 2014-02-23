@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppManagerTest.cs" />
+    <Compile Include="LayoutMapTests.cs" />
     <Compile Include="MapFrameTest.cs" />
     <Compile Include="MapLayerCollectionTest.cs" />
     <Compile Include="MapPolygonLayerTest.cs" />

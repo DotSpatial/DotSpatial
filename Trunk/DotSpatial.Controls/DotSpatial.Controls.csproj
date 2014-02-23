@@ -91,6 +91,9 @@
     <Compile Include="LayoutForm.Designer.cs">
       <DependentUpon>LayoutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LayoutInsertToolStrip.Designer.cs">
+      <DependentUpon>LayoutInsertToolStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapFrameProjectionDialog.cs">
       <SubType>Form</SubType>
     </Compile>

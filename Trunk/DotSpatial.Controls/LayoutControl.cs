@@ -171,6 +171,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the Map control to use
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Map MapControl
         {
             get { return _mapControl; }
@@ -1298,25 +1299,25 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates an instance of the MapElement and returns it
         /// </summary>
-        public virtual LayoutElement CreateMapElement()
+        public virtual LayoutMap CreateMapElement()
         {
-            return new LayoutMap(_mapControl);
+            return new LayoutMap(MapControl);
         }
 
         /// <summary>
         /// Creates an instance of the LegendElement and returns it
         /// </summary>
-        public virtual LayoutElement CreateLegendElement()
+        public virtual LayoutLegend CreateLegendElement()
         {
-            return new LayoutLegend();
+            return new LayoutLegend {LayoutControl = this};
         }
 
         /// <summary>
         /// Creates an instance of the ScaleBarElement and returns it
         /// </summary>
-        public virtual LayoutElement CreateScaleBarElement()
+        public virtual LayoutScaleBar CreateScaleBarElement()
         {
-            return new LayoutScaleBar();
+            return new LayoutScaleBar {LayoutControl = this};
         }
 
         /// <summary>
