@@ -123,12 +123,13 @@ namespace DotSpatial.Controls
             {
                 if (_fileName == value) return;
                 _fileName = value;
-                Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;
-                UpdateThumbnail();
-                OnInvalidate();
+                Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;              
             }
         }
 
+        /// <summary>
+        /// Gets or sets bitmap to use
+        /// </summary>
         [Browsable(false)]
         public Bitmap Bitmap
         {
@@ -138,6 +139,8 @@ namespace DotSpatial.Controls
                 if (_bitmap == value) return;
                 if (_bitmap != null) _bitmap.Dispose();
                 _bitmap = value;
+                UpdateThumbnail();
+                OnInvalidate();
             }
         }
 
