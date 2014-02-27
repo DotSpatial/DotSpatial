@@ -137,39 +137,32 @@ namespace DotSpatial.Data
 
             // First check for the extension in the preferred plugins list
 
-            string ext = Path.GetExtension(fileName);
-            if (ext != null)
+            var ext = Path.GetExtension(fileName);
+            IDataProvider pdp;
+            if (PreferredProviders.TryGetValue(ext, out pdp))
             {
-                IFeatureSet result;
-                if (PreferredProviders.ContainsKey(ext))
+                var vp = pdp as IVectorProvider;
+                if (vp != null)
                 {
-                    IVectorProvider vp = PreferredProviders[ext] as IVectorProvider;
-                    if (vp != null)
-                    {
-                        result = vp.CreateNew(fileName, featureType, true, progHandler);
-                        if (result != null)
-                            return result;
-                    }
-                    // if we get here, we found the provider, but it did not succeed in opening the file.
+                    var result = vp.CreateNew(fileName, featureType, true, progHandler);
+                    if (result != null)
+                        return result;
                 }
+                // if we get here, we found the provider, but it did not succeed in opening the file.
+            }
 
-                // Then check the general list of developer specified providers... but not the directory providers
-
-                foreach (IDataProvider dp in DataProviders)
+            // Then check the general list of developer specified providers... but not the directory providers
+            foreach (var dp in DataProviders.OfType<IVectorProvider>())
+            {
+                if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
                 {
-                    if (GetSupportedExtensions(dp.DialogReadFilter).Contains(ext))
-                    {
-                        IVectorProvider vp = dp as IVectorProvider;
-                        if (vp != null)
-                        {
-                            // attempt to open with the fileName.
-                            result = vp.CreateNew(fileName, featureType, true, progHandler);
-                            if (result != null)
-                                return result;
-                        }
-                    }
+                    // attempt to open with the fileName.
+                    var result = dp.CreateNew(fileName, featureType, true, progHandler);
+                    if (result != null)
+                        return result;
                 }
             }
+
             throw new IOException(DataStrings.FileTypeNotSupported);
         }
 

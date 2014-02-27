@@ -925,6 +925,7 @@ namespace DotSpatial.Data
             result.ShapeIndices = ShapeIndices;
             result.Extent = Extent;
             result.IndexMode = IndexMode; // added by JamesP@esdm.co.uk as this was not being passed into result
+            result.CoordinateType = CoordinateType;
             if (!IndexMode)
             {
                 result.Features = Features;

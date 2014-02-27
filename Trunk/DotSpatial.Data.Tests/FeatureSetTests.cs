@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
@@ -130,6 +131,43 @@ namespace DotSpatial.Data.Tests
                 File.Delete(Path.ChangeExtension(tmpFile, ".dbf"));
                 File.Delete(Path.ChangeExtension(tmpFile, ".shx"));
                 File.Delete(Path.ChangeExtension(tmpFile, ".prj"));
+            }
+        }
+
+        [Test(Description = @"https://dotspatial.codeplex.com/discussions/535704")]
+        public void CoordinateType_WriteOnSaveAs()
+        {
+            var outfile = Path.ChangeExtension(Path.GetTempFileName(), ".shp");
+            IFeatureSet fs = new FeatureSet();
+            var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
+            IFeature f = new Feature(c);
+
+            fs.CoordinateType = CoordinateType.Z;
+            fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
+            fs.DataTable.Columns.Add(new DataColumn(("ID"), typeof(int)));
+
+            f = fs.AddFeature(f);
+
+            f.ShapeType = ShapeType.PointZ;
+
+            f.DataRow.BeginEdit();
+            f.DataRow["ID"] = 1;
+            f.DataRow.EndEdit();
+
+            fs.SaveAs(outfile, true);
+
+            var actual = FeatureSet.Open(outfile);
+            try
+            {
+                Assert.AreEqual(fs.CoordinateType, actual.CoordinateType);
+            }
+            finally 
+            {
+
+                File.Delete(outfile);
+                File.Delete(Path.ChangeExtension(outfile, ".dbf"));
+                File.Delete(Path.ChangeExtension(outfile, ".shx"));
+                File.Delete(Path.ChangeExtension(outfile, ".prj"));
             }
         }
     }
