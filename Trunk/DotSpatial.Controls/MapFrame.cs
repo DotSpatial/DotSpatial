@@ -68,6 +68,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public event EventHandler<ClipArgs> BufferChanged;
 
+        /// <summary>
+        /// Occurs when View changed
+        /// </summary>
+        public event EventHandler<ViewChangedEventArgs> ViewChanged;
+
         #endregion Events
 
         #region Private Variables
@@ -929,7 +934,23 @@ namespace DotSpatial.Controls
         public Rectangle View
         {
             get { return _view; }
-            set { _view = value; }
+            set
+            {
+                if (_view == value) return;
+
+                var h = ViewChanged;
+                if (h != null)
+                {
+                    var old_view = _view;
+                    _view = value;
+                    var args = new ViewChangedEventArgs {OldView = old_view, NewView = _view};
+                    h(this, args);
+                }
+                else
+                {
+                    _view = value;
+                }
+            }
         }
 
         /// <summary>

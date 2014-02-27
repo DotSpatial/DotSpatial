@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\LimitedStack.cs" />
+    <Compile Include="DatelineCrossingMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
     <Compile Include="Extensions\Extension.cs" />
@@ -232,6 +235,7 @@
     <Compile Include="MapFunction.cs" />
     <Compile Include="MapFunctionPan.cs" />
     <Compile Include="MapFunctionSelect.cs" />
+    <Compile Include="ViewChangedEventArgs.cs" />
     <Compile Include="YieldStyles.cs" />
     <Compile Include="MapFunctionZoom.cs" />
     <Compile Include="MapFunctionZoomOut.cs" />
