@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using DotSpatial.Projections;
+using DotSpatial.Tests.Common;
 using DotSpatial.Topology;
 using NUnit.Framework;
 
@@ -110,7 +111,7 @@ namespace DotSpatial.Data.Tests
 
             var pt = new Point(c[0], c[1]);
             fs.AddFeature(pt);
-            var tmpFile = Path.ChangeExtension(Path.GetTempFileName(), ".shp");
+            var tmpFile = FileTools.GetTempFileName(".shp");
             fs.SaveAs(tmpFile, true);
 
             try
@@ -127,17 +128,14 @@ namespace DotSpatial.Data.Tests
             }
             finally
             {
-                File.Delete(tmpFile);
-                File.Delete(Path.ChangeExtension(tmpFile, ".dbf"));
-                File.Delete(Path.ChangeExtension(tmpFile, ".shx"));
-                File.Delete(Path.ChangeExtension(tmpFile, ".prj"));
+                FileTools.DeleteShapeFile(tmpFile);
             }
         }
 
         [Test(Description = @"https://dotspatial.codeplex.com/discussions/535704")]
         public void CoordinateType_WriteOnSaveAs()
         {
-            var outfile = Path.ChangeExtension(Path.GetTempFileName(), ".shp");
+            var outfile = FileTools.GetTempFileName(".shp");
             IFeatureSet fs = new FeatureSet();
             var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
             IFeature f = new Feature(c);
@@ -163,11 +161,7 @@ namespace DotSpatial.Data.Tests
             }
             finally 
             {
-
-                File.Delete(outfile);
-                File.Delete(Path.ChangeExtension(outfile, ".dbf"));
-                File.Delete(Path.ChangeExtension(outfile, ".shx"));
-                File.Delete(Path.ChangeExtension(outfile, ".prj"));
+                FileTools.DeleteShapeFile(outfile);
             }
         }
     }

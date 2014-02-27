@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DotSpatial.Data.Rasters.GdalExtension;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
@@ -25,7 +26,7 @@ namespace DotSpatial.Data.Tests
         [TestMethod]
         public void GetNoDataCellCountTest()
         {
-            var path = Path.ChangeExtension(Path.GetTempFileName(), "bgd");
+            var path = FileTools.GetTempFileName(".bgd");
             const double xllcorner = 3267132.224761;
             const double yllcorner = 5326939.203029;
             const int ncols = 512;
@@ -95,7 +96,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanOpenRasterAfterClose()
         {
-            var rasterFileName = Path.ChangeExtension(Path.GetTempFileName(), ".tif");
+            var rasterFileName = FileTools.GetTempFileName(".tif");
             var p = new GdalRasterProvider();
             var raster = p.Create(rasterFileName, null, 20, 20, 1, typeof(float), new[] { "" });
             raster.Close();

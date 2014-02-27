@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Linq;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -22,7 +23,7 @@ namespace DotSpatial.Data.Tests
 
             at.Table.Rows.Add(1, string.Concat(Enumerable.Repeat("t", maxLen)));
 
-            var fileName = Path.ChangeExtension(Path.GetTempFileName(), ".dbf");
+            var fileName = FileTools.GetTempFileName(".dbf");
             at.SaveAs(fileName, true);
             try
             {

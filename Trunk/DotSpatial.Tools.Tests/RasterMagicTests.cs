@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DotSpatial.Data;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
@@ -38,7 +39,7 @@ namespace DotSpatial.Tools.Tests
             }
 
             var target = new RasterMultiply();
-            IRaster outRaster = new Raster {Filename = Path.ChangeExtension(Path.GetTempFileName(), "bgd")};
+            IRaster outRaster = new Raster {Filename = FileTools.GetTempFileName(".bgd")};
             target.Execute(source, source, outRaster, new MockProgressHandler());
             outRaster = Raster.Open(outRaster.Filename);
             File.Delete(outRaster.Filename);
