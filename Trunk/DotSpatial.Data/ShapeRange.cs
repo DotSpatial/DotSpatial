@@ -44,7 +44,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Control the epsilon to use for the intersect calculations
         /// </summary>
-        public double Epsilon = double.Epsilon;
+        public const double Epsilon = double.Epsilon;
 
         /// <summary>
         /// If this is null, then there is only one part for this ShapeIndex.
@@ -189,22 +189,10 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Creates a blank instance of a shaperange where vertices can be assigned later.
-        /// </summary>
-        public ShapeRange(FeatureType type)
-        {
-            FeatureType = type;
-            Parts = new List<PartRange>();
-            _numParts = -1; // default to relying on the parts list instead of the cached value.
-            _numPoints = -1; // rely on accumulation from parts instead of a solid number
-            _extent = new Extent();
-        }
-
-        /// <summary>
-        /// Creates a blank instance of a shaperange where vertices can be assigned later.
         /// <param name="type">the feature type clarifies point, line, or polygon.</param>
         /// <param name="coordType">The coordinate type clarifies whether M or Z values exist.</param>
         /// </summary>
-        public ShapeRange(FeatureType type, CoordinateType coordType)
+        public ShapeRange(FeatureType type, CoordinateType coordType = CoordinateType.Regular)
         {
             FeatureType = type;
             Parts = new List<PartRange>();
@@ -248,32 +236,8 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to turn into a shape range.</param>
         public ShapeRange(IEnvelope env)
+            :this(env.ToExtent())
         {
-            Extent = env.ToExtent();
-            Parts = new List<PartRange>();
-            _numParts = -1;
-            // Counter clockwise
-            // 1 2
-            // 4 3
-            double[] coords = new double[8];
-            // C1
-            coords[0] = Extent.MinX;
-            coords[1] = Extent.MaxY;
-            // C2
-            coords[2] = Extent.MaxX;
-            coords[3] = Extent.MaxY;
-            // C3
-            coords[4] = Extent.MaxX;
-            coords[5] = Extent.MinY;
-            // C4
-            coords[6] = Extent.MinX;
-            coords[7] = Extent.MinY;
-
-            FeatureType = FeatureType.Polygon;
-            ShapeType = ShapeType.Polygon;
-            PartRange pr = new PartRange(coords, 0, 0, FeatureType.Polygon);
-            pr.NumVertices = 4;
-            Parts.Add(pr);
         }
 
         /// <summary>
