@@ -226,19 +226,8 @@ namespace DotSpatial.Data
         /// <param name="overwrite">A boolean that is true if the file should be overwritten</param>
         public override void SaveAs(string fileName, bool overwrite)
         {
+            EnsureValidFileToSave(fileName, overwrite);
             Filename = fileName;
-            string dir = Path.GetDirectoryName(Path.GetFullPath(fileName));
-            if (dir != null && !Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (File.Exists(fileName))
-            {
-                if (fileName != Filename && overwrite == false) throw new IOException("File exists.");
-                File.Delete(fileName);
-                string shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
-            }
             
             // Set Header.ShapeType before setting extent.
             // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
@@ -273,9 +262,8 @@ namespace DotSpatial.Data
             }
 
             Header.SaveAs(fileName);
-            Stream shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
-            Stream shxStream =
-                new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
+            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
+            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
 
             // Special slightly faster writing for index mode
             if (IndexMode)
@@ -321,10 +309,10 @@ namespace DotSpatial.Data
                     fid++;
                 }
             }
-            shpStream.Flush();
+            
             shpStream.Close();
-            shxStream.Flush();
             shxStream.Close();
+
             UpdateAttributes();
             SaveProjection();
         }

@@ -783,5 +783,38 @@ namespace DotSpatial.Data
             }
             return result;
         }
+
+        /// <summary>
+        /// Checks that shape file can be saved to given fileName.
+        /// </summary>
+        /// <param name="fileName">File name to save.</param>
+        /// <param name="overwrite">Overwrite file or not.</param>
+        protected void EnsureValidFileToSave(string fileName, bool overwrite)
+        {
+            string dir = Path.GetDirectoryName(fileName);
+            if (dir != null && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            if (File.Exists(fileName))
+            {
+                if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
+                File.Delete(fileName);
+                var shx = Path.ChangeExtension(fileName, ".shx");
+                if (File.Exists(shx)) File.Delete(shx);
+            }
+        }
+
+        /// <summary>
+        /// Saves header
+        /// </summary>
+        /// <param name="fileName">File to save.</param>
+        protected void HeaderSaveAs(string fileName)
+        {
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+            Header.SaveAs(fileName);
+        }
     }
 }
