@@ -338,7 +338,8 @@ namespace DotSpatial.Data
                 string shx = Path.ChangeExtension(fileName, ".shx");
                 if (File.Exists(shx)) File.Delete(shx);
             }
-            InvalidateEnvelope();
+
+            // Set ShapeType before setting extent.
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.Polygon;
@@ -351,7 +352,8 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolygonZ;
             }
-            // Set ShapeType before setting extent.
+            
+            InvalidateEnvelope();
             Header.SetExtent(Extent);
             Header.ShxLength = Features.Count * 4 + 50;
             Header.SaveAs(fileName);
@@ -531,6 +533,7 @@ namespace DotSpatial.Data
                 if (File.Exists(shx)) File.Delete(shx);
             }
 
+            // Set ShapeType before setting extent.
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.Polygon;
@@ -543,9 +546,9 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolygonZ;
             }
-
-            // Set ShapeType before setting extent.
-            Header.SetExtent(MyExtent);
+            
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
 
             Header.ShxLength = ShapeIndices.Count * 4 + 50;
             Header.SaveAs(fileName);

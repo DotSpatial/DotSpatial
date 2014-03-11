@@ -307,7 +307,7 @@ namespace DotSpatial.Data
                 string shx = Path.ChangeExtension(fileName, ".shx");
                 if (File.Exists(shx)) File.Delete(shx);
             }
-            InvalidateEnvelope();
+            
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.MultiPoint;
@@ -320,7 +320,9 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.MultiPointZ;
             }
-            Header.SetExtent(MyExtent);
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
 
             Header.ShxLength = 50 + 4 * Features.Count;
             Header.SaveAs(fileName);
@@ -464,7 +466,8 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.MultiPointZ;
             }
-            Header.SetExtent(MyExtent);
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
 
             Header.ShxLength = ShapeIndices.Count * 4 + 50;
             Header.SaveAs(fileName);

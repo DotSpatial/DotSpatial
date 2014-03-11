@@ -81,7 +81,7 @@ namespace DotSpatial.Data
             {
                 CoordinateType = CoordinateType.Z;
             }
-            MyExtent = Header.ToExtent();
+            Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
             FillPoints(fileName);
@@ -110,7 +110,7 @@ namespace DotSpatial.Data
 
             // Get the basic header information.
             ShapefileHeader header = new ShapefileHeader(fileName);
-            MyExtent = header.ToExtent();
+            Extent = header.ToExtent();
             // Check to ensure that the fileName is the correct shape type
             if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM
                 && header.ShapeType != ShapeType.PointZ)
@@ -239,11 +239,8 @@ namespace DotSpatial.Data
                 string shx = Path.ChangeExtension(fileName, ".shx");
                 if (File.Exists(shx)) File.Delete(shx);
             }
-
-            // comment out by keen edge as per this discussion
-            // http://dotspatial.codeplex.com/Thread/View.aspx?ThreadId=234754
-            // InvalidateEnvelope();
-
+            
+            // Set Header.ShapeType before setting extent.
             // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
             int wordSize = 14; // 3 int(2) and 2 double(4)
             if (CoordinateType == CoordinateType.Regular)
@@ -260,8 +257,9 @@ namespace DotSpatial.Data
                 Header.ShapeType = ShapeType.PointZ;
                 wordSize = 22; // 3 int(2), 4 double (4)
             }
-            // Set Header.ShapeType before setting extent.
-            Header.SetExtent(MyExtent);
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
 
             if (IndexMode)
             {

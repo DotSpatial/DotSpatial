@@ -164,5 +164,32 @@ namespace DotSpatial.Data.Tests
                 FileTools.DeleteShapeFile(outfile);
             }
         }
+
+        [Test]
+        public void MultiPoint_SaveAsWorking()
+        {
+            var vertices = new[]
+            {
+                new Coordinate(10.1, 20.2, 3.3, 4.4),
+                new Coordinate(11.1, 22.2, 3.3, 4.4)
+            };
+
+            var mp = new MultiPoint(vertices);
+            var f = new Feature(mp);
+            var fs = new FeatureSet(f.FeatureType)
+            {
+                Projection = KnownCoordinateSystems.Geographic.World.WGS1984
+            };
+            fs.Features.Add(f);
+            var fileName = FileTools.GetTempFileName(".shp");
+            try
+            {
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+            }
+            catch (Exception)
+            {
+                FileTools.DeleteShapeFile(fileName);
+            }
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace DotSpatial.Data
             {
                 CoordinateType = CoordinateType.Z;
             }
-            MyExtent = Header.ToExtent();
+            Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
             FillLines(fileName, progressHandler);
@@ -515,10 +515,7 @@ namespace DotSpatial.Data
                 if (File.Exists(shx)) File.Delete(shx);
             }
 
-            // comment out by keen edge as per this discussion
-            // http://dotspatial.codeplex.com/Thread/View.aspx?ThreadId=234754
-            // InvalidateEnvelope();
-
+            // Set Header.ShapeType before calling SetExtent.
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.PolyLine;
@@ -531,8 +528,9 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolyLineZ;
             }
-            // Set Header.ShapeType before calling SetExtent.
-            Header.SetExtent(MyExtent);
+
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
 
             Header.ShxLength = ShapeIndices.Count * 4 + 50;
             Header.SaveAs(fileName);
