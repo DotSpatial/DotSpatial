@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="ClipWithPolygonTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SlopeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Analysis\DotSpatial.Analysis.csproj">
