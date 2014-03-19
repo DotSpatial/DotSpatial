@@ -107,6 +107,7 @@
     <Compile Include="Geographic\SpheroidBased.cs" />
     <Compile Include="Geographic\World.cs" />
     <Compile Include="KrovakTest.cs" />
+    <Compile Include="MeridianTests.cs" />
     <Compile Include="Proj4.cs" />
     <Compile Include="Projected\Africa.cs" />
     <Compile Include="Projected\Asia.cs" />

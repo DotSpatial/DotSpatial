@@ -44,8 +44,9 @@ namespace DotSpatial.Projections
         /// Creates a new instance of Meridian
         /// </summary>
         public Meridian()
+            : this(Proj4Meridian.Greenwich) // by default.
         {
-            _name = "Greenwich"; // by default.
+            
         }
 
         /// <summary>
@@ -76,13 +77,10 @@ namespace DotSpatial.Projections
         /// <param name="standardMeridianName">The string name of the meridian to use</param>
         public Meridian(string standardMeridianName)
         {
-            Proj4Meridian[] m = Enum.GetValues(typeof(Proj4Meridian)) as Proj4Meridian[];
-            if (m == null) return;
-            foreach (Proj4Meridian meridian in m)
+            Proj4Meridian meridian;
+            if (Enum.TryParse(standardMeridianName, true, out meridian))
             {
-                if (m.ToString().ToLower() != standardMeridianName.ToLower()) continue;
                 AssignMeridian(meridian);
-                break;
             }
         }
 
@@ -186,72 +184,60 @@ namespace DotSpatial.Projections
             }
         }
 
-        private void FindNameByValue(double pm)
+        private void FindNameByValue(double pmv)
         {
-            if (Math.Abs(pm) < .00000001)
+            const double precison = .0000001;
+            if (Math.Abs(pmv) < precison)
             {
-                _name = "Greenwich";
-                _code = 8901;
+                AssignMeridian(Proj4Meridian.Greenwich);
             }
-            else if (Math.Abs(pm - -9.131906111) < .00000001)
+            else if (Math.Abs(pmv - -9.131906111) < precison)
             {
-                _name = "Lisbon";
-                _code = 8902;
+                AssignMeridian(Proj4Meridian.Lisbon);
             }
-            else if (Math.Abs(pm - 2.337229167) < .00000001)
+            else if (Math.Abs(pmv - 2.337229167) < precison)
             {
-                _name = "Paris";
-                _code = 8903;
+                AssignMeridian(Proj4Meridian.Paris);
             }
-            else if (Math.Abs(pm - -74.08091667) < .00000001)
+            else if (Math.Abs(pmv - -74.08091667) < precison)
             {
-                _name = "Bogota";
-                _code = 8904;
+                AssignMeridian(Proj4Meridian.Bogota);
             }
-            else if (Math.Abs(pm - -3.687938889) < .00000001)
+            else if (Math.Abs(pmv - -3.687938889) < precison)
             {
-                _name = "Madrid";
-                _code = 8905;
+                AssignMeridian(Proj4Meridian.Madrid);
             }
-            else if (Math.Abs(pm - 12.45233333) < .00000001)
+            else if (Math.Abs(pmv - 12.45233333) < precison)
             {
-                _name = "Rome";
-                _code = 8906;
+                AssignMeridian(Proj4Meridian.Rome);
             }
-            else if (Math.Abs(pm - 7.439583333) < .00000001)
+            else if (Math.Abs(pmv - 7.439583333) < precison)
             {
-                _name = "Bern";
-                _code = 8907;
+                AssignMeridian(Proj4Meridian.Bern);
             }
-            else if (Math.Abs(pm - 106.8077194) < .00000001)
+            else if (Math.Abs(pmv - 106.8077194) < precison)
             {
-                _name = "Jakarta";
-                _code = 8908;
+                AssignMeridian(Proj4Meridian.Jakarta);
             }
-            else if (Math.Abs(pm - -17.66666667) < .00000001)
+            else if (Math.Abs(pmv - -17.66666667) < precison)
             {
-                _name = "Ferro";
-                _code = 8909;
+                AssignMeridian(Proj4Meridian.Ferro);
             }
-            else if (Math.Abs(pm - 4.367975) < .00000001)
+            else if (Math.Abs(pmv - 4.367975) < precison)
             {
-                _name = "Brussles";
-                _code = 8910;
+                AssignMeridian(Proj4Meridian.Brussels);
             }
-            else if (Math.Abs(pm - 18.05827778) < .00000001)
+            else if (Math.Abs(pmv - 18.05827778) < precison)
             {
-                _name = "Stockholm";
-                _code = 8911;
+                AssignMeridian(Proj4Meridian.Stockholm);
             }
-            else if (Math.Abs(pm - 23.7163375) < .00000001)
+            else if (Math.Abs(pmv - 23.7163375) < precison)
             {
-                _name = "Athens";
-                _code = 8912;
+                AssignMeridian(Proj4Meridian.Athens);
             }
-            else if (Math.Abs(pm - 10.72291667) < .00000001)
+            else if (Math.Abs(pmv - 10.72291667) < precison)
             {
-                _name = "Oslo";
-                _code = 8913;
+                AssignMeridian(Proj4Meridian.Oslo);
             }
             else
             {
@@ -293,33 +279,27 @@ namespace DotSpatial.Projections
             get
             {
                 if (_longitude != 0)
-                    return _longitude.ToString();
-                else
-                    return null;
+                    return _longitude.ToString(CultureInfo.InvariantCulture);
+                return null;
             }
             set
             {
-                string pm = value;
-                //maybe we have a numeric value
+                // maybe we have a numeric value
                 double lon;
-                if (double.TryParse(pm, NumberStyles.Any, CultureInfo.InvariantCulture, out lon))
+                if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out lon))
                 {
                     _longitude = lon;
                     // Try to find a standard name that has a close longitude.
                     FindNameByValue(lon);
                 }
-
-                Proj4Meridian[] meridians = Enum.GetValues(typeof(Proj4Meridian)) as Proj4Meridian[];
-                if (meridians != null)
+                // otherwise try parse as city name
+                else
                 {
-                    foreach (Proj4Meridian meridian in meridians)
+                    Proj4Meridian meridian;
+                    if (Enum.TryParse(value, true, out meridian))
                     {
-                        if (meridian.ToString().ToLower() == pm.ToLower())
-                        {
-                            AssignMeridian(meridian);
-                            return;
-                        }
-                    }
+                        AssignMeridian(meridian);
+                    }    
                 }
             }
         }
@@ -343,12 +323,12 @@ namespace DotSpatial.Projections
         /// <param name="esriString"></param>
         public void ParseEsriString(string esriString)
         {
-            if (System.String.IsNullOrEmpty(esriString))
+            if (String.IsNullOrEmpty(esriString))
                 return;
 
             if (esriString.Contains("PRIMEM") == false) return;
-            int iStart = esriString.IndexOf("PRIMEM") + 7;
-            int iEnd = esriString.IndexOf("]", iStart);
+            int iStart = esriString.IndexOf("PRIMEM", StringComparison.Ordinal) + 7;
+            int iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal);
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');
@@ -365,10 +345,9 @@ namespace DotSpatial.Projections
         /// <returns></returns>
         public string ToProj4String()
         {
-            if (String.IsNullOrEmpty(pm) || pm.Trim() == String.Empty)
+            if (String.IsNullOrWhiteSpace(pm))
                 return null;
-            else
-                return String.Format(" +pm={0}", pm);
+            return String.Format(" +pm={0}", pm);
         }
     }
 }
