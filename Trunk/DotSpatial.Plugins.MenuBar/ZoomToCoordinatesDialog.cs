@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
@@ -12,10 +7,10 @@ namespace DotSpatial.Plugins.MenuBar
 {
     public partial class ZoomToCoordinatesDialog : Form
     {
-        String regExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
+        private const String regExpression = "(-?\\d{1,3})[\\.\\,°]{0,1}\\s*(\\d{0,2})[\\.\\,\']{0,1}\\s*(\\d*)[\\.\\,°]{0,1}\\s*([NSnsEeWw]?)";
 
-        private double[] lat;
-        private double[] lon;
+        private readonly double[] lat;
+        private readonly double[] lon;
 
         public double latCoor { get; set; }
         public double lonCoor { get; set; }
@@ -29,26 +24,21 @@ namespace DotSpatial.Plugins.MenuBar
             lon = new double[3];
         }
 
-        private void ZoomToCoordinatesDialog_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void AcceptButton_Click(object sender, EventArgs e)
         {
             if (checkCoordinates())
             {
                 latCoor = loadCoordinates(lat);
                 lonCoor = loadCoordinates(lon);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 
         private bool checkCoordinates()
         {
-            bool latCheck = parseCoordinates(lat, d1.Text.ToString());
-            bool lonCheck = parseCoordinates(lon, d2.Text.ToString());
+            var latCheck = parseCoordinates(lat, d1.Text);
+            var lonCheck = parseCoordinates(lon, d2.Text);
 
             if (!latCheck) { latStatus.Text = "Invalid Latitude (Valid example: \"41.1939 N\")"; }
             else { latStatus.Text = ""; }
@@ -61,13 +51,10 @@ namespace DotSpatial.Plugins.MenuBar
         // Parse Coordinates will understand lat-lon coordinates in a variety of formats and separate them into Degrees, Minutes, and Seconds.
         // We could just accept a simple decimal value for the coordinates, but since users might be copying and pasting from a variety of sources
         // it makes it user friendly to be able to accept a number of different formats.
-        private bool parseCoordinates(double[] values, String text)
+        private bool parseCoordinates(IList<double> values, String text)
         {
-            Match match;
-            GroupCollection groups;
-
-            match = Regex.Match(text, regExpression);
-            groups = match.Groups;
+            var match = Regex.Match(text, regExpression);
+            var groups = match.Groups;
             try
             {  
                 values[0] = Double.Parse(groups[1].ToString());
@@ -98,12 +85,10 @@ namespace DotSpatial.Plugins.MenuBar
         }
 
         // Take Degrees-Minutes-Seconds from ParseCoordinates and turn them into doubles.
-        private double loadCoordinates(double[] values)
+        private static double loadCoordinates(IList<double> values)
         {
-            double coor;
-
             //Convert Degrees, Minutes, Seconds to x, y coordinates for both lat and long.
-            coor = values[2] / 100;
+            var coor = values[2] / 100;
             coor += values[1];
             coor = coor / 100;
             coor += Math.Abs(values[0]);

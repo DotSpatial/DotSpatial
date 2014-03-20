@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AcceptButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.BT_Accept = new System.Windows.Forms.Button();
+            this.BT_Cancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.d1 = new System.Windows.Forms.TextBox();
@@ -41,25 +41,25 @@
             this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // AcceptButton
+            // BT_Accept
             // 
-            this.AcceptButton.Location = new System.Drawing.Point(58, 130);
-            this.AcceptButton.Name = "AcceptButton";
-            this.AcceptButton.Size = new System.Drawing.Size(72, 30);
-            this.AcceptButton.TabIndex = 3;
-            this.AcceptButton.Text = "OK";
-            this.AcceptButton.UseVisualStyleBackColor = true;
-            this.AcceptButton.Click += new System.EventHandler(this.AcceptButton_Click);
+            this.BT_Accept.Location = new System.Drawing.Point(58, 130);
+            this.BT_Accept.Name = "BT_Accept";
+            this.BT_Accept.Size = new System.Drawing.Size(72, 30);
+            this.BT_Accept.TabIndex = 3;
+            this.BT_Accept.Text = "OK";
+            this.BT_Accept.UseVisualStyleBackColor = true;
+            this.BT_Accept.Click += new System.EventHandler(this.AcceptButton_Click);
             // 
-            // CancelButton
+            // BT_Cancel
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(136, 130);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(72, 30);
-            this.CancelButton.TabIndex = 4;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
+            this.BT_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.BT_Cancel.Location = new System.Drawing.Point(136, 130);
+            this.BT_Cancel.Name = "BT_Cancel";
+            this.BT_Cancel.Size = new System.Drawing.Size(72, 30);
+            this.BT_Cancel.TabIndex = 4;
+            this.BT_Cancel.Text = "Cancel";
+            this.BT_Cancel.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -140,7 +140,7 @@
             // 
             // ZoomToCoordinatesDialog
             // 
-            this.AcceptButton = this.AcceptButton;
+            this.AcceptButton = this.BT_Accept;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(277, 172);
@@ -153,15 +153,14 @@
             this.Controls.Add(this.d1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.AcceptButton);
+            this.Controls.Add(this.BT_Cancel);
+            this.Controls.Add(this.BT_Accept);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ZoomToCoordinatesDialog";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zoom to Coordinates";
-            this.Load += new System.EventHandler(this.ZoomToCoordinatesDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,8 +168,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button AcceptButton;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button BT_Accept;
+        private System.Windows.Forms.Button BT_Cancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox d1;
