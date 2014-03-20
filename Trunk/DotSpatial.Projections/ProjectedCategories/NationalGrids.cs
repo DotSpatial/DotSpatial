@@ -453,8 +453,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             JordanJTM = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=37 +k=0.999800 +x_0=500000 +y_0=-3000000 +ellps=intl +units=m +no_defs ");
             KandawalaCeylonBeltIndianYards1937 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=7.000480277777778 +lon_0=80.77171111111112 +k=1.000000 +x_0=160933.56048 +y_0=160933.56048 +a=6377276.345 +b=6356075.41314024 +to_meter=0.91439523 +no_defs ");
             KandawalaCeylonBeltMeters = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=7.000480277777778 +lon_0=80.77171111111112 +k=1.000000 +x_0=160933.56048 +y_0=160933.56048 +a=6377276.345 +b=6356075.41314024 +units=m +no_defs ");
-            KertauRSOMalayaChains = ProjectionInfo.FromProj4String("+a=6377304.063 +b=6356103.038993155 +to_meter=20.11678249437587 +no_defs ");
-            KertauRSOMalayaMeters = ProjectionInfo.FromProj4String("+a=6377304.063 +b=6356103.038993155 +units=m +no_defs ");
+            KertauRSOMalayaChains = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=4 +lonc=102.25 +alpha=323.0257905 +k=0.99984 +x_0=804671.2997750348 +y_0=0 +no_uoff +gamma=323.1301023611111 +a=6377304.063 +b=6356103.038993155 +towgs84=-11,851,5,0,0,0,0 +to_meter=20.11678249437587 +no_defs ");
+            KertauRSOMalayaMeters = ProjectionInfo.FromProj4String("+proj=omerc +lat_0=4 +lonc=102.25 +alpha=323.0257905 +k=0.99984 +x_0=804670.24 +y_0=0 +a=6377295.664 +b=6356094.667915204 +units=m +no_defs ");
             KertauSingaporeGrid = ProjectionInfo.FromProj4String("+proj=cass +lat_0=1.287646666666667 +lon_0=103.8530022222222 +x_0=30000 +y_0=30000 +a=6377304.063 +b=6356103.038993155 +units=m +no_defs ");
             KOCLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=32.5 +lat_0=32.5 +lon_0=45 +k_0=0.998786407767 +x_0=1500000 +y_0=1166200 +ellps=clrk80 +units=m +no_defs ");
             Korean1985KoreaCentralBelt = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=38 +lon_0=127 +k=1.000000 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs ");

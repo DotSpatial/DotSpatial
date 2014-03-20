@@ -1183,14 +1183,13 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        
         public void KandawalaCeylonBeltMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KandawalaCeylonBeltMeters;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
+        
         [Test]
         public void KertauRSOMalayaChains()
         {
@@ -1200,7 +1199,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void KertauRSOMalayaMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KertauRSOMalayaMeters;
@@ -1209,7 +1207,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        
         public void KertauSingaporeGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.KertauSingaporeGrid;
