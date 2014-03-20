@@ -347,9 +347,7 @@ namespace DotSpatial.Projections.Tests.Projected
             Tester.TestProjection(pStart);
         }
 
-
         [Test]
-        [Ignore]
         public void DeirezZorLevantStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorLevantStereographic;
@@ -358,7 +356,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void DeirezZorLevantZone()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorLevantZone;
@@ -367,7 +364,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        
         public void DeirezZorSyriaLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.DeirezZorSyriaLambert;

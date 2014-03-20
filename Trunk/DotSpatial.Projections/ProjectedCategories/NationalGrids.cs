@@ -357,8 +357,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             Corse = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=42.165 +lat_0=42.165 +lon_0=-2.337229166666667 +k_0=0.99994471 +x_0=234.358 +y_0=185861.369 +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +units=m +no_defs ");
             Datum73HayfordGaussIGeoE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1.000000 +x_0=200180.598 +y_0=299913.01 +ellps=intl +units=m +no_defs ");
             Datum73HayfordGaussIPCC = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1.000000 +x_0=180.598 +y_0=-86.99 +ellps=intl +units=m +no_defs ");
-            DeirezZorLevantStereographic = ProjectionInfo.FromProj4String("+a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
-            DeirezZorLevantZone = ProjectionInfo.FromProj4String("+a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
+            DeirezZorLevantStereographic = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=34.2 +lon_0=39.15 +k=0.9995341 +x_0=0 +y_0=0 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
+            DeirezZorLevantZone = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=34.65 +lat_0=34.65 +lon_0=37.35 +k_0=0.9996256 +x_0=300000 +y_0=300000 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             DeirezZorSyriaLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=34.65 +lat_0=34.65 +lon_0=37.35 +k_0=0.9996256 +x_0=300000 +y_0=300000 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             DHDN3DegreeGaussZone1 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=3 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             DHDN3DegreeGaussZone2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=6 +k=1.000000 +x_0=2500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
