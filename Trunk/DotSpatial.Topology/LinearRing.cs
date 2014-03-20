@@ -71,17 +71,6 @@ namespace DotSpatial.Topology
         #region ILinearRing Members
 
         /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Geometry Type
         /// </summary>
         public override string GeometryType
@@ -93,13 +82,18 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        ///
+        /// Gets a boolean that is true if the EndPoint is geometrically equal to the StartPoint in 2 Dimensions.
         /// </summary>
         public override bool IsClosed
         {
             get
             {
-                return true;
+                if (IsEmpty)
+                {
+                    // empty LinearRings are closed by definition
+                    return true;
+                }
+                return base.IsClosed;
             }
         }
 
@@ -118,14 +112,15 @@ namespace DotSpatial.Topology
 
         #endregion
 
+        /// <summary>
+        /// Correct constructions with non-closed sequences.
+        /// </summary>
         private void ValidateConstruction()
         {
-            if (!IsEmpty && !base.IsClosed)
+            if (!IsEmpty && !IsClosed)
             {
-                IList<Coordinate> lCoords = Coordinates.ToList();
-                lCoords.Add(Coordinates[0].Copy());
                 // The sequence is not closed, so add the first point again to close it.
-                Coordinates = lCoords;
+                Coordinates.Add(Coordinates[0].Copy());
             }
             if (Coordinates.Count >= 1 && Coordinates.Count < 3)
                 throw new ArgumentException("Number of points must be 0 or >= 3");
