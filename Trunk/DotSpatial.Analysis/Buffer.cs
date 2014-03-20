@@ -12,8 +12,6 @@
 // *******************************************************************************************************
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using DotSpatial.Data;
 
 namespace DotSpatial.Analysis
@@ -27,7 +25,7 @@ namespace DotSpatial.Analysis
         /// <summary>
         /// A static function to compute the buffer and return the result to the Execute function.
         /// </summary>
-        /// <param name="input">The feature set that will be buffered.</param>
+        /// <param name="inputFeatures">The feature set that will be buffered.</param>
         /// <param name="bufferDistance">The distance of the buffer.</param>
         /// <param name="outputFeatures">The resulting feature set that will show the buffer.</param>
         /// <param name="cancelProgressHandler">Optional parameter to report progress and cancel if needed.</param>

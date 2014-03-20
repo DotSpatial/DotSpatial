@@ -349,7 +349,7 @@ namespace DotSpatial.Topology
         /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this <c>Geometry</c> has any points of
+        /// <c>false</c> if this <c>Geometry</c> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
         public abstract bool IsSimple { get; }
