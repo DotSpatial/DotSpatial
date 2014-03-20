@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Geographic
 {
@@ -9,52 +9,16 @@ namespace DotSpatial.Projections.Tests.Geographic
     [TestFixture]
     public class Antarctica
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void AntarcticaTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
         }
 
-        [Test]
-        public void AustralianAntarctic1998()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Antarctica.AustralianAntarctic1998;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void CampAreaAstro()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Antarctica.CampAreaAstro;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void DeceptionIsland()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Antarctica.DeceptionIsland;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void Petrels1972()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Antarctica.Petrels1972;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void PointeGeologiePerroud1950()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Antarctica.PointeGeologiePerroud1950;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Geographic.Antarctica);
         }
     }
 }
