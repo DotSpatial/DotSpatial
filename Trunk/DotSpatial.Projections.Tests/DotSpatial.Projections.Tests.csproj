@@ -102,6 +102,7 @@
     <Compile Include="Geographic\Europe.cs" />
     <Compile Include="Geographic\NorthAmerica.cs" />
     <Compile Include="Geographic\Oceans.cs" />
+    <Compile Include="ProjectionInfoDesc.cs" />
     <Compile Include="Geographic\SolarSystem.cs" />
     <Compile Include="Geographic\SouthAmerica.cs" />
     <Compile Include="Geographic\SpheroidBased.cs" />

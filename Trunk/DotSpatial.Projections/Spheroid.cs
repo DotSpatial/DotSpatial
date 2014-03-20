@@ -511,7 +511,7 @@ namespace DotSpatial.Projections
             _proj4Names.Add(Proj4Ellipsoid.AppPhysics_1965, "APL4.9");
             _proj4Names.Add(Proj4Ellipsoid.Austrailia_SouthAmerica, "aust_SA");
             _proj4Names.Add(Proj4Ellipsoid.Bessel_1841, "bessel");
-            _proj4Names.Add(Proj4Ellipsoid.BesselNamibia, "Bess_nam");
+            _proj4Names.Add(Proj4Ellipsoid.BesselNamibia, "bess_nam");
             _proj4Names.Add(Proj4Ellipsoid.Clarke_1866, "clrk66");
             _proj4Names.Add(Proj4Ellipsoid.ClarkeModified_1880, "clrk80");
             _proj4Names.Add(Proj4Ellipsoid.CPM_1799, "CPM");
