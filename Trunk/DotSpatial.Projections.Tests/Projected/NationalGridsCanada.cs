@@ -34,7 +34,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify")]
         public void ATS1977NewBrunswickStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.ATS1977NewBrunswickStereographic;
@@ -364,7 +363,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
+        //[Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927QuebecLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927QuebecLambert;
@@ -501,7 +500,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify")]
         public void NAD1983CSRS98NewBrunswickStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1983CSRS98NewBrunswickStereographic;
@@ -510,7 +508,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify")]
         public void NAD1983CSRS98PrinceEdwardIsland()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1983CSRS98PrinceEdwardIsland;
@@ -735,7 +732,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify")]
         public void PrinceEdwardIslandStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.PrinceEdwardIslandStereographic;
