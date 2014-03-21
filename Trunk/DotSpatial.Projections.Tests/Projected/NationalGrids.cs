@@ -179,7 +179,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void BataviaNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.BataviaNEIEZ;
@@ -906,7 +905,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void EverestModified1969RSOMalayaMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.EverestModified1969RSOMalayaMeters;
@@ -1059,7 +1057,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void GunungSegaraNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.GunungSegaraNEIEZ;
@@ -1359,7 +1356,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void MakassarNEIEZ()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.MakassarNEIEZ;
@@ -1597,7 +1593,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void NewZealandMapGrid()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.NewZealandMapGrid;
@@ -2046,7 +2041,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void Stereo1933()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Stereo1933;
@@ -2055,7 +2049,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
         public void Stereo1970()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGrids.Stereo1970;

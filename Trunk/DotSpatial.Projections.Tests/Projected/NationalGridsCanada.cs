@@ -363,7 +363,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        //[Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927QuebecLambert()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.NationalGridsCanada.NAD1927QuebecLambert;
