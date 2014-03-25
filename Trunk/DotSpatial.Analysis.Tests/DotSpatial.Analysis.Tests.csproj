@@ -137,7 +137,7 @@
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"
-xcopy /s /y /i $(ProjectDir)Data $(TargetDir)Data</PostBuildEvent>
+xcopy /s /y /i "$(ProjectDir)Data" "$(TargetDir)Data"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
