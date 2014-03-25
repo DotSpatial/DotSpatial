@@ -82,23 +82,11 @@ namespace DotSpatial.Symbology
                 case IntervalSnapMethod.SignificantFigures:
                     if (Maximum != null)
                     {
-                        int digits = numDigits;
-                        double max = (double)Maximum;
-                        int md = (int)Math.Ceiling(Math.Log10(max));
-                        md -= digits;
-                        double norm = Math.Pow(10, md);
-                        double val = (double)Maximum;
-                        Maximum = norm * Math.Round(val / norm);
+                        Maximum = SigFig(Maximum.Value, numDigits);
                     }
                     if (Minimum != null)
                     {
-                        int digits = numDigits;
-                        double min = (double)Minimum;
-                        int md = (int)Math.Ceiling(Math.Log10(min));
-                        md -= digits;
-                        double norm = Math.Pow(10, md);
-                        double val = (double)Minimum;
-                        Minimum = norm * Math.Round(val / norm);
+                        Minimum = SigFig(Minimum.Value, numDigits);
                     }
                     break;
                 case IntervalSnapMethod.Rounding:
@@ -122,6 +110,14 @@ namespace DotSpatial.Symbology
                     }
                     break;
             }
+        }
+
+        private static double SigFig(double value, int numFigures)
+        {
+            int md = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
+            md -= numFigures;
+            double norm = Math.Pow(10, md);
+            return norm * Math.Round(value / norm);
         }
 
         /// <summary>
