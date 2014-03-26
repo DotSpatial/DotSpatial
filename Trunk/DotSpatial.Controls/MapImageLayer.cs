@@ -227,7 +227,7 @@ namespace DotSpatial.Controls
                 // but should correspond to 1 pixel in the source image.
 
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
-                Rectangle r = RectangleExt.ExpandBy(clipRectangles[i], dx * 2);
+                Rectangle r = clipRectangles[i].ExpandBy(dx * 2);
                 if (r.X < 0) r.X = 0;
                 if (r.Y < 0) r.Y = 0;
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;

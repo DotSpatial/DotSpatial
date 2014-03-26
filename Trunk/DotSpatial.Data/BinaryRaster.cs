@@ -150,21 +150,9 @@ namespace DotSpatial.Data
 
             // The affine coefficients defining the world file are the same except that they are translated over.  Only the position of the
             // upper left corner changes.  Everything else is the same as the previous raster.
-
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, new double[6]);
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            var ac = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
+            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, ac);
+            
             if (IsInRam)
             {
                 ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
@@ -307,20 +295,9 @@ namespace DotSpatial.Data
             result.EndRow = EndRow + StartRow;
 
             // Reposition the "raster" so that it matches the window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, new double[6]);
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            var ac = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
+            result.Bounds = new RasterBounds(result.NumRows, result.NumColumns, ac);
+            
             // Now we can copy any values currently in memory.
             if (IsInRam)
             {
@@ -450,16 +427,7 @@ namespace DotSpatial.Data
             EndRow = EndRow;
 
             // Reposition the "raster" so that it matches the window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-
-            // Translation only needs to change two coefficients
-            Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] + Bounds.AffineCoefficients[1] * startColumn +
-                                           Bounds.AffineCoefficients[2] * startRow;
-
-            Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] + Bounds.AffineCoefficients[4] * startColumn +
-                                           Bounds.AffineCoefficients[5] * startRow;
-
+            Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
             if (inRam)
             {
                 if (NumRows * NumColumns < 64000000)

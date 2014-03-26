@@ -100,8 +100,7 @@ namespace DotSpatial.Data
         {
             Bitmap result = new Bitmap(pixelSize.Width, pixelSize.Height);
             Graphics g = Graphics.FromImage(result);
-            IEnumerable<IImageData> images = GetImages();
-            foreach (ImageData image in images)
+            foreach (var image in GetImages())
             {
                 Extent bounds = envelope.Intersection(image.Extent);
 
@@ -423,12 +422,6 @@ namespace DotSpatial.Data
                 tile.Dispose();
             }
             base.Dispose(disposeManagedResources);
-        }
-
-        /// <inheritdoc />
-        public virtual void Open(string fileName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -117,6 +117,26 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        ///  Given the row and column, this returns new affine coefficients transformed to that cell
+        /// </summary>
+        /// <param name="startRow">The integer row index from 0 to numRows - 1</param>
+        /// <param name="startColumn">The integer column index from 0 to numColumns - 1</param>
+        /// <returns>Transoformed affine coefficients</returns>
+        public double[] TransfromToCorner(int startColumn, int startRow)
+        {
+            // X = [0] + [1] * column + [2] * row;
+            // Y = [3] + [4] * column + [5] * row;
+            var ba = new double[6];
+            ba[0] = _coefficients[0] + _coefficients[1] * startColumn + _coefficients[2] * startRow;
+            ba[1] = _coefficients[1];
+            ba[2] = _coefficients[2];
+            ba[3] = _coefficients[3] + _coefficients[4] * startColumn + _coefficients[5] * startRow;
+            ba[4] = _coefficients[4];
+            ba[5] = _coefficients[5];
+            return ba;
+        }
+
+        /// <summary>
         /// Returns the row and column index.
         /// </summary>
         /// <param name="location">Gets or sets the ICoordinate</param>
@@ -145,8 +165,8 @@ namespace DotSpatial.Data
                 rw = (c[3] + c[4] * location.X / c[1] - c[4] * c[0] / c[1] - location.Y) / div;
                 cl = (location.X - c[2] * rw - c[0]) / c[1];
             }
-            int iRow = (int)Math.Round(rw);
-            int iCol = (int)Math.Round(cl);
+            var iRow = (int)Math.Floor(rw);
+            var iCol = (int)Math.Floor(cl);
             return new RcIndex(iRow, iCol);
         }
 

@@ -206,7 +206,6 @@
     <Compile Include="Size2D.cs" />
     <Compile Include="SnapShotEventArgs.cs" />
     <Compile Include="SymbolMode.cs" />
-    <Compile Include="SymbologyRectangleExt.cs" />
     <Compile Include="SymbologyGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextSymbolChangedEventArgs.cs" />
