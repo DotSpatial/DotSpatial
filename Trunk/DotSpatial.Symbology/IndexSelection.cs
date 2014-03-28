@@ -487,42 +487,20 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public DataTable GetAttributes(int startIndex, int numRows)
         {
-            AttributeCache c = new AttributeCache(_layer.DataSet, numRows);
-            DataTable result = new DataTable();
-            result.Columns.AddRange(_layer.DataSet.GetColumns());
-            int i = 0;
-            FastDrawnState[] drawnStates = _layer.DrawnStates;
-            for (int fid = 0; fid < drawnStates.Length; fid++)
-            {
-                if (drawnStates[fid].Selected)
-                {
-                    i++;
-                    if (i < startIndex) continue;
-                    DataRow dr = result.NewRow();
-                    Dictionary<string, object> vals = c.RetrieveElement(fid);
-                    foreach (KeyValuePair<string, object> pair in vals)
-                    {
-                        dr[pair.Key] = pair.Value;
-                    }
-                    result.Rows.Add(dr);
-                    if (i > startIndex + numRows) break;
-                }
-            }
-            return result;
+            return GetAttributes(startIndex, numRows, _layer.DataSet.GetColumns().Select(d => d.ColumnName));
         }
 
         /// <inheritdoc />
         public DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
-            AttributeCache c = new AttributeCache(_layer.DataSet, numRows);
-            DataTable result = new DataTable();
-            List<DataColumn> dc = new List<DataColumn>();
-            DataColumn[] original = _layer.DataSet.GetColumns();
-            foreach (DataColumn col in original)
+            var c = new AttributeCache(_layer.DataSet, numRows);
+            var fn = new HashSet<string>(fieldNames);
+            var result = new DataTable();
+            foreach (DataColumn col in _layer.DataSet.GetColumns())
             {
-                if (fieldNames.Contains(col.ColumnName))
+                if (fn.Contains(col.ColumnName))
                 {
-                    dc.Add(col);
+                    result.Columns.Add(col);
                 }
             }
 
@@ -538,7 +516,8 @@ namespace DotSpatial.Symbology
                     Dictionary<string, object> vals = c.RetrieveElement(fid);
                     foreach (KeyValuePair<string, object> pair in vals)
                     {
-                        dr[pair.Key] = pair.Value;
+                        if (fn.Contains(pair.Key))
+                            dr[pair.Key] = pair.Value;
                     }
                     result.Rows.Add(dr);
                     if (i > startIndex + numRows) break;
@@ -821,7 +800,7 @@ namespace DotSpatial.Symbology
                 {
                     _current++;
                 } while (_current < _states.Length && _states[_current].Selected != _selectionState);
-                return !(_current == _states.Length);
+                return _current != _states.Length;
             }
 
             /// <inheritdoc />
