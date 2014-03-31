@@ -21,6 +21,7 @@
 // Jiri Kadlec        | 03/08/2010         |  Added the PanelManager to work with tabs and panels
 // Yang Cao           | 05/16/2011         |  Added the IHeaderControl to work with standard toolbar and ribbon control
 // Eric Hullinger     | 01/02/2014         |  Made changes so that the progress bar on the splash screen will update properly
+// Jacob Gillespie    | 03/31/2014         |  Plugins can now be stored in and loaded from one extensions/plugins directory.
 // ********************************************************************************************************
 
 using System;
@@ -55,20 +56,22 @@ namespace DotSpatial.Controls
     {
         #region Constants and Fields
 
-        private const int SplashDirectoryMessageLimit = 50;
-        private const string ExtensionsDirectory = "Extensions";
-
         /// <summary>
         /// Name of the folder where packages reside.
+        /// Found within the Extensions Directory.
         /// </summary>
         public const string PackageDirectory = "Packages";
+
+        private const string ExtensionsDirectory = "Extensions";
+        private const int SplashDirectoryMessageLimit = 50;
 
         private static ResourceManager resources;
 
         private AggregateCatalog _catalog;
         private IContainer _components;
-        private ISplashScreenManager splashScreen;
         private string message = "";
+        private ISplashScreenManager splashScreen;
+
         #endregion
 
         #region Constructors and Destructors
@@ -137,15 +140,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether extensions should be placed in AppDomain.CurrentDomain.BaseDirectory.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if extensions should be placed in AppDomain.CurrentDomain.BaseDirectory; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
-        /// This must be set before calling LoadExtensions();
-        /// </value>
-        public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
-
-        /// <summary>
         /// Gets the catalog containing all off the know extensions. Add any additional extensions to Catalog.Catalogs.
         /// </summary>
         public AggregateCatalog Catalog
@@ -185,10 +179,6 @@ namespace DotSpatial.Controls
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IExtension> Extensions { get; private set; }
 
-        [Browsable(false)]
-        [ImportMany]
-        private IEnumerable<ISatisfyImportsExtension> SatisfyImportsExtensions { get; set; }
-
         /// <summary>
         /// Gets or sets the header control
         /// </summary>
@@ -211,6 +201,10 @@ namespace DotSpatial.Controls
         [Browsable(false)]
         public IStatusControl ProgressHandler { get; set; }
 
+        [Browsable(false)]
+        [ImportMany]
+        private IEnumerable<ISatisfyImportsExtension> SatisfyImportsExtensions { get; set; }
+
         /// <summary>
         /// Gets or sets the serialization manager.
         /// </summary>
@@ -224,34 +218,18 @@ namespace DotSpatial.Controls
         /// </summary>
         public ShowExtensionsDialog ShowExtensionsDialog { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether extensions should be placed in AppDomain.CurrentDomain.BaseDirectory.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if extensions should be placed in AppDomain.CurrentDomain.BaseDirectory; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
+        /// This must be set before calling LoadExtensions();
+        /// </value>
+        public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
+
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Gets the extension.
-        /// </summary>
-        /// <param name="assemblyTitle">The assembly title.</param>
-        /// <returns>
-        /// Null if the extension is not present.
-        /// </returns>
-        public IExtension GetExtension(string assemblyTitle)
-        {
-            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",")).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the extension.
-        /// </summary>
-        /// <param name="assemblyTitle">The assembly title.</param>
-        /// <param name="version">The version.</param>
-        /// <returns>
-        /// Null if the extension is not present.
-        /// </returns>
-        public IExtension GetExtension(string assemblyTitle, string version)
-        {
-            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version).FirstOrDefault();
-        }
 
         /// <summary>
         /// Activates the extensions passed in and deactivates the rest.
@@ -299,35 +277,53 @@ namespace DotSpatial.Controls
             }
         }
 
-        private string PrefixWithEllipsis(string text, int length)
+        /// <summary>
+        /// Ensures the required imports are available for IExtension implementors. We guarantee DockManager, HeaderControl, and ProgressHandler
+        /// are available when an IExtension loads, so that the developer of an IExtension doesn't need to check to see whether they are null.
+        /// We make sure these are available before activating an IExtension.
+        /// </summary>
+        /// <returns></returns>
+        public bool EnsureRequiredImportsAreAvailable()
         {
-            if (text.Length <= length) return text;
+            DockManager = GetRequiredImport<IDockManager>();
+            HeaderControl = GetRequiredImport<IHeaderControl>();
+            ProgressHandler = GetRequiredImport<IStatusControl>();
 
-            return "..." + text.Substring(Math.Max(2, text.Length - length - 3));
-        }
+            if (DockManager == null || HeaderControl == null || ProgressHandler == null)
+                return false;
 
-        private void UpdateSplashScreen(string text)
-        {
-            if (splashScreen != null && text != null)
-                splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
+            return true;
         }
 
         /// <summary>
-        /// Updates the ProgressHandler.
+        /// Gets the extension.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void UpdateProgress(string message)
+        /// <param name="assemblyTitle">The assembly title.</param>
+        /// <returns>
+        /// Null if the extension is not present.
+        /// </returns>
+        public IExtension GetExtension(string assemblyTitle)
         {
-            if (splashScreen != null)
-                UpdateSplashScreen(message);
-            else if (ProgressHandler != null)
-                ProgressHandler.Progress(String.Empty, int.MinValue, message);
-            else
-            {
-                MessageBox.Show(message);
-            }
+            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",")).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Gets the extension.
+        /// </summary>
+        /// <param name="assemblyTitle">The assembly title.</param>
+        /// <param name="version">The version.</param>
+        /// <returns>
+        /// Null if the extension is not present.
+        /// </returns>
+        public IExtension GetExtension(string assemblyTitle, string version)
+        {
+            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Loads Extensions using MEF and then activates them.
+        /// Should only be called once on startup.
+        /// </summary>
         public virtual void LoadExtensions()
         {
             if (DesignMode)
@@ -369,95 +365,6 @@ namespace DotSpatial.Controls
             // To get that working.
             DataManager.DefaultDataManager.ProgressHandler = this.ProgressHandler;
         }
-        /// <summary>
-        /// Activates the extensions. This should be called only once.
-        /// </summary>
-        public void AppLoadExtensions()
-        {
-            message = "Discovering Extensions...";
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            _catalog = GetCatalog();
-
-            CompositionContainer = new CompositionContainer(_catalog);
-
-            try
-            {
-                IDataManager dataManager = DataManager.DefaultDataManager;
-                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
-            }
-            catch (CompositionException compositionException)
-            {
-                Trace.WriteLine(compositionException.Message);
-                throw;
-            }
-
-            message = "Loading Extensions...";
-            OnExtensionsActivating(EventArgs.Empty);
-        }
-
-        // Looks for the assembly in a path like Extensions\Packages\PackageName.Here-1.3.190\lib\net40
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            var knownExtensions = new[] { "dll", "exe" };
-            string assemblyName = args.Name.Split(',').First();
-            var tempAssemblyName = assemblyName.Remove(assemblyName.LastIndexOf("."));
-
-            var packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
-            if (!Directory.Exists(packagesFolder))
-                return null;
-
-            var potentialPackage = Directory.EnumerateDirectories(packagesFolder, tempAssemblyName + "*").FirstOrDefault();
-            if (potentialPackage == null)
-                return null;
-
-            var potentialFolder = Path.Combine(potentialPackage, "lib", "net40");
-            if (!Directory.Exists(potentialFolder))
-            {
-                // see if the client profile was targeted.
-                potentialFolder = Path.Combine(potentialPackage, "lib", "net40-Client");
-
-                if (!Directory.Exists(potentialFolder))
-                {
-                    // see if the net35 framework was targeted.
-                    potentialFolder = Path.Combine(potentialPackage, "lib", "net35");
-
-                    if (!Directory.Exists(potentialFolder))
-                    {
-                        // see if the net20 framework was targeted.
-                        potentialFolder = Path.Combine(potentialPackage, "lib", "net20");
-                        if (!Directory.Exists(potentialFolder))
-                            return null;
-                    }
-                }
-            }
-
-            foreach (string extension in knownExtensions)
-            {
-                string potentialFile = Path.Combine(potentialFolder, string.Format(CultureInfo.CurrentCulture, "{0}.{1}", assemblyName, extension));
-                if (File.Exists(potentialFile))
-                {
-                    return Assembly.LoadFrom(potentialFile);
-                }
-            }
-
-            return null;
-        }
-
-        private void OnExtensionsActivating(EventArgs ea)
-        {
-            if (ExtensionsActivating != null)
-            {
-                ExtensionsActivating(this, ea);
-            }
-        }
-
-        private void OnSatisfyImportsExtensionsActivated(EventArgs ea)
-        {
-            if (SatisfyImportsExtensionsActivated != null)
-            {
-                SatisfyImportsExtensionsActivated(this, ea);
-            }
-        }
 
         /// <summary>
         /// Triggers the ExtensionsActivated event.
@@ -473,46 +380,40 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Refreshes the extensions - activating any newly discovered ones.
+        /// </summary>
+        public void RefreshExtensions()
+        {
+            RefreshExtensions(this.Catalog);
+        }
+
+        /// <summary>
+        /// Updates the ProgressHandler.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void UpdateProgress(string message)
+        {
+            if (splashScreen != null)
+                UpdateSplashScreen(message);
+            else if (ProgressHandler != null)
+                ProgressHandler.Progress(String.Empty, int.MinValue, message);
+            else
+            {
+                MessageBox.Show(message);
+            }
+        }
+
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">
-        /// true if managed resources should be disposed; otherwise, false.
-        /// </param>
-        protected override void Dispose(bool disposing)
+        private static void Activate(IExtension extension)
         {
-            if (disposing && (_components != null))
+            if (!extension.IsActive)
             {
-                _components.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
-        private static void TryLoadingCatalog(AggregateCatalog catalog, ComposablePartCatalog cat)
-        {
-            try
-            {
-                // We call Parts.Count simply to load the dlls in this directory, so that we can determine whether they will load properly.
-                if (cat.Parts.Count() > 0)
-                    catalog.Catalogs.Add(cat);
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                Type type = ex.Types[0];
-                string typeAssembly;
-                if (type != null)
-                    typeAssembly = type.Assembly.ToString();
-                else
-                    typeAssembly = String.Empty;
-
-                string message = String.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
-                Trace.WriteLine(message);
-                MessageBox.Show(message);
+                if (!extension.TryActivate())
+                    MessageBox.Show(String.Format(resources.GetString("ErrorWhileWhileActivating"), extension.AssemblyQualifiedName));
             }
         }
 
@@ -566,49 +467,101 @@ namespace DotSpatial.Controls
             }
         }
 
-        private static void Activate(IExtension extension)
+        /// <summary>
+        /// Catalogs all extensions and then composes their parts.
+        /// </summary>
+        private void AppLoadExtensions()
         {
-            if (!extension.IsActive)
+            message = "Discovering Extensions...";
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            _catalog = GetCatalog();
+
+            CompositionContainer = new CompositionContainer(_catalog);
+
+            try
             {
-                if (!extension.TryActivate())
-                    MessageBox.Show(String.Format(resources.GetString("ErrorWhileWhileActivating"), extension.AssemblyQualifiedName));
+                IDataManager dataManager = DataManager.DefaultDataManager;
+                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
             }
+            catch (CompositionException compositionException)
+            {
+                Trace.WriteLine(compositionException.Message);
+                throw;
+            }
+
+            message = "Loading Extensions...";
+            OnExtensionsActivating(EventArgs.Empty);
         }
 
         /// <summary>
-        /// Ensures the required imports are available for IExtension implementors. We guarantee DockManager, HeaderControl, and ProgressHandler
-        /// are available when an IExtension loads, so that the developer of an IExtension doesn't need to check to see whether they are null.
-        /// We make sure these are available before activating an IExtension.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <returns></returns>
-        public bool EnsureRequiredImportsAreAvailable()
+        /// <param name="disposing">
+        /// true if managed resources should be disposed; otherwise, false.
+        /// </param>
+        protected override void Dispose(bool disposing)
         {
-            DockManager = GetRequiredImport<IDockManager>();
-            HeaderControl = GetRequiredImport<IHeaderControl>();
-            ProgressHandler = GetRequiredImport<IStatusControl>();
+            if (disposing && (_components != null))
+            {
+                _components.Dispose();
+            }
 
-            if (DockManager == null || HeaderControl == null || ProgressHandler == null)
-                return false;
-
-            return true;
+            base.Dispose(disposing);
         }
 
-        private T GetRequiredImport<T>() where T : class
+        /// <summary>
+        /// Looks for the assembly in a path like Extensions\Packages\
+        /// </summary>
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            T import = CompositionContainer.GetExportedValueOrDefault<T>();
+            var knownExtensions = new[] { "dll", "exe" };
+            string assemblyName = args.Name.Split(',').First();
+            string packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
 
-            if (import == default(T))
+            //check the ProgramData directory
+            if (Directory.Exists(packagesFolder))
             {
-                int importCount = CompositionContainer.GetExportedValues<T>().Count();
-                string extensionTypeName = typeof(T).Name;
-                if (importCount > 1)
-                    MessageBox.Show(String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount));
-                else
+                foreach (string extension in knownExtensions)
                 {
-                    MessageBox.Show(String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
+                    var potentialFiles = Directory.GetFiles(packagesFolder, assemblyName + "." + extension, SearchOption.AllDirectories);
+                    if (potentialFiles.Length > 0)
+                        return Assembly.LoadFrom(potentialFiles[0]);
                 }
             }
-            return import;
+
+            //check the installation directory
+            foreach (string directory in Directories)
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);
+
+                if (Directory.Exists(path))
+                {
+                    foreach (string extension in knownExtensions)
+                    {
+                        var potentialFiles = Directory.GetFiles(path, assemblyName + "." + extension, SearchOption.AllDirectories);
+                        if (potentialFiles.Length > 0)
+                            return Assembly.LoadFrom(potentialFiles[0]);
+                    }
+                }
+            }
+
+            //assembly not found
+            return null;
+        }
+
+        private static bool DirectoryCatalogExists(AggregateCatalog catalog, string dir)
+        {
+            foreach (var cat in catalog.Catalogs)
+            {
+                var directoryCatalog = cat as DirectoryCatalog;
+                if (directoryCatalog != null)
+                {
+                    if (directoryCatalog.FullPath.Equals(dir, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         private AggregateCatalog GetCatalog()
@@ -650,7 +603,7 @@ namespace DotSpatial.Controls
         /// Gets the directories in Directories and those nested one level deep.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<string> GetDirectoriesNestedOneLevel()
+        private IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
             if (DotSpatial.Mono.Mono.IsRunningOnMono())
@@ -681,16 +634,49 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Refreshes the extensions - activating any newly discovered ones.
+        /// Gets the paths of dlls for extensions that were downloaded as packages.
         /// </summary>
-        public void RefreshExtensions()
+        /// <param name="absolutePathToExtensions">The absolute path to extensions.</param>
+        /// <returns></returns>
+        private static IEnumerable<string> GetPackageExtensionPaths(string absolutePathToExtensions)
         {
-            RefreshExtensions(this.Catalog);
+            if (!Directory.Exists(absolutePathToExtensions))
+                yield break;
+
+            var packagesFolder = Path.Combine(absolutePathToExtensions, PackageDirectory);
+            if (!Directory.Exists(packagesFolder))
+                yield break;
+
+            var packageFolders = Directory.EnumerateDirectories(packagesFolder, "*", SearchOption.AllDirectories);
+            foreach (var packageFolder in packageFolders)
+                yield return packageFolder;
         }
 
-        private void RefreshExtensions(AggregateCatalog catalog)
+        private T GetRequiredImport<T>() where T : class
         {
-            LocateExtensions(catalog, AbsolutePathToExtensions);
+            T import = CompositionContainer.GetExportedValueOrDefault<T>();
+
+            if (import == default(T))
+            {
+                int importCount = CompositionContainer.GetExportedValues<T>().Count();
+                string extensionTypeName = typeof(T).Name;
+                if (importCount > 1)
+                    MessageBox.Show(String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount));
+                else
+                {
+                    MessageBox.Show(String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
+                }
+            }
+            return import;
+        }
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            _components = new Container();
         }
 
         private void LocateExtensions(AggregateCatalog catalog, string absolutePathToExtensions)
@@ -707,66 +693,61 @@ namespace DotSpatial.Controls
             }
         }
 
-        /// <summary>
-        /// Gets the paths of dlls for extensions that were downloaded as packages.
-        /// </summary>
-        /// <param name="absolutePathToExtensions">The absolute path to extensions.</param>
-        /// <returns></returns>
-        private static IEnumerable<string> GetPackageExtensionPaths(string absolutePathToExtensions)
+        private void OnExtensionsActivating(EventArgs ea)
         {
-            if (!Directory.Exists(absolutePathToExtensions))
-                yield break;
-
-            var packagesFolder = Path.Combine(absolutePathToExtensions, PackageDirectory);
-            if (!Directory.Exists(packagesFolder))
-                yield break;
-
-            var packageFolders = Directory.EnumerateDirectories(packagesFolder, "*", SearchOption.TopDirectoryOnly);
-            foreach (var packageFolder in packageFolders)
+            if (ExtensionsActivating != null)
             {
-                var potentialFolder = Path.Combine(packageFolder, "lib");
-                if (Directory.Exists(potentialFolder))
-                {
-                    yield return potentialFolder;
-
-                    potentialFolder = Path.Combine(packageFolder, "lib", "net40");
-                    if (Directory.Exists(potentialFolder))
-                    {
-                        yield return potentialFolder;
-                    }
-
-                    // see if the client profile was targeted.
-                    potentialFolder = Path.Combine(packageFolder, "lib", "net40-Client");
-                    if (Directory.Exists(potentialFolder))
-                    {
-                        yield return potentialFolder;
-                    }
-                }
+                ExtensionsActivating(this, ea);
             }
         }
 
-        private static bool DirectoryCatalogExists(AggregateCatalog catalog, string dir)
+        private void OnSatisfyImportsExtensionsActivated(EventArgs ea)
         {
-            foreach (var cat in catalog.Catalogs)
+            if (SatisfyImportsExtensionsActivated != null)
             {
-                var directoryCatalog = cat as DirectoryCatalog;
-                if (directoryCatalog != null)
-                {
-                    if (directoryCatalog.FullPath.Equals(dir, StringComparison.OrdinalIgnoreCase))
-                        return true;
-                }
+                SatisfyImportsExtensionsActivated(this, ea);
             }
-
-            return false;
         }
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        private string PrefixWithEllipsis(string text, int length)
         {
-            _components = new Container();
+            if (text.Length <= length) return text;
+
+            return "..." + text.Substring(Math.Max(2, text.Length - length - 3));
+        }
+
+        private void RefreshExtensions(AggregateCatalog catalog)
+        {
+            LocateExtensions(catalog, AbsolutePathToExtensions);
+        }
+
+        private static void TryLoadingCatalog(AggregateCatalog catalog, ComposablePartCatalog cat)
+        {
+            try
+            {
+                // We call Parts.Count simply to load the dlls in this directory, so that we can determine whether they will load properly.
+                if (cat.Parts.Count() > 0)
+                    catalog.Catalogs.Add(cat);
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                Type type = ex.Types[0];
+                string typeAssembly;
+                if (type != null)
+                    typeAssembly = type.Assembly.ToString();
+                else
+                    typeAssembly = String.Empty;
+
+                string message = String.Format("Skipping extension {0}. {1}", typeAssembly, ex.LoaderExceptions.First().Message);
+                Trace.WriteLine(message);
+                MessageBox.Show(message);
+            }
+        }
+
+        private void UpdateSplashScreen(string text)
+        {
+            if (splashScreen != null && text != null)
+                splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
         }
 
         #endregion
