@@ -20,6 +20,7 @@
 // |--------------------------|------------|--------------------------------------------------------------
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
+// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
 // ********************************************************************************************************
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,10 @@ namespace DotSpatial.Positioning
         ///
         /// </summary>
         private Azimuth _bearing;
+        /// <summary>
+        ///
+        /// </summary>
+        private Azimuth _heading;
         /// <summary>
         ///
         /// </summary>
@@ -270,9 +275,17 @@ namespace DotSpatial.Positioning
         /// </summary>
         public event EventHandler<AzimuthEventArgs> BearingChanged;
         /// <summary>
+        /// Occurs when the current direction of heading has changed.
+        /// </summary>
+        public event EventHandler<AzimuthEventArgs> HeadingChanged;
+        /// <summary>
         /// Occurs when a new bearing report has been received, even if the value has not changed.
         /// </summary>
         public event EventHandler<AzimuthEventArgs> BearingReceived;
+        /// <summary>
+        /// Occurs when a new heading report has been received, even if the value has not changed.
+        /// </summary>
+        public event EventHandler<AzimuthEventArgs> HeadingReceived;
         /// <summary>
         /// Occurs when the fix quality has changed.
         /// </summary>
@@ -808,6 +821,11 @@ namespace DotSpatial.Positioning
         public Azimuth Bearing
         {
             get { return _bearing; }
+        }
+        
+        public Azimuth Heading
+        {
+            get { return _heading; }
         }
 
 #if !PocketPC
@@ -1430,6 +1448,7 @@ namespace DotSpatial.Positioning
             _altitude = Distance.Invalid;
             _altitudeAboveEllipsoid = _altitude;
             _bearing = Azimuth.Invalid;
+            _heading = Azimuth.Invalid;
             _fixStatus = FixStatus.Unknown;
             _horizontalDop = DilutionOfPrecision.Maximum;
             _magneticVariation = Longitude.Invalid;
@@ -1752,6 +1771,35 @@ namespace DotSpatial.Positioning
             if (BearingChanged != null)
                 BearingChanged(this, new AzimuthEventArgs(_bearing));
         }
+        
+        /// <summary>
+        /// Updates the current direction of heading.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        protected virtual void SetHeading(Azimuth value)
+        {
+            // If the new value is invalid, ignore it
+            if (value.IsInvalid)
+                return;
+
+            // Notify of the receipt
+            if (HeadingReceived != null)
+                HeadingReceived(this, new AzimuthEventArgs(_heading));
+
+            // Change the devices class
+            Devices.Heading = _heading;
+
+            // If the value hasn't changed, skiiiip
+            if (_heading.Equals(value))
+                return;
+
+            // Yes. Set the new value
+            _heading = value;
+
+            // Notify of the change
+            if (HeadingChanged != null)
+                HeadingChanged(this, new AzimuthEventArgs(_heading));
+        }
 
         /// <summary>
         /// Updates the list of known GPS satellites.
@@ -2026,7 +2074,9 @@ namespace DotSpatial.Positioning
                     AltitudeChanged = null;
                     AltitudeReceived = null;
                     BearingChanged = null;
+                    HeadingChanged = null;
                     BearingReceived = null;
+                    HeadingReceived = null;
                     UtcDateTimeChanged = null;
                     DateTimeChanged = null;
                     FixAcquired = null;

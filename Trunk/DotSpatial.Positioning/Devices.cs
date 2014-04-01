@@ -20,6 +20,7 @@
 // |--------------------------|------------|--------------------------------------------------------------
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
+// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
 // ********************************************************************************************************
 using System;
 using System.Collections.Generic;
@@ -122,6 +123,10 @@ namespace DotSpatial.Positioning
         /// <summary>
         ///
         /// </summary>
+        private static Azimuth _heading;
+        /// <summary>
+        /// 
+        /// </summary>
         private static Speed _speed;
         /// <summary>
         ///
@@ -192,6 +197,10 @@ namespace DotSpatial.Positioning
         /// Occurs when any interpreter detects a change in the direction of travel.
         /// </summary>
         public static event EventHandler<AzimuthEventArgs> BearingChanged;
+        /// <summary>
+        /// Occurs when any interpreter detects a change in the direction of heading.
+        /// </summary>
+        public static event EventHandler<AzimuthEventArgs> HeadingChanged;
         /// <summary>
         /// Occurs when any interpreter detects when a GPS device can no longer calculate the current location.
         /// </summary>
@@ -823,6 +832,28 @@ namespace DotSpatial.Positioning
                 // Raise an event
                 if (BearingChanged != null)
                     BearingChanged(null, new AzimuthEventArgs(_bearing));
+            }
+        }
+        
+        /// <summary>
+        /// Controls the current direction of heading.
+        /// </summary>
+        /// <value>The heading.</value>
+        public static Azimuth Heading
+        {
+            get { return _heading; }
+            set
+            {
+                // Has anything actually changed?
+                if (_heading.Equals(value))
+                    return;
+
+                // Yes.
+                _heading = value;
+
+                // Raise an event
+                if (HeadingChanged != null)
+                    HeadingChanged(null, new AzimuthEventArgs(_heading));
             }
         }
 
