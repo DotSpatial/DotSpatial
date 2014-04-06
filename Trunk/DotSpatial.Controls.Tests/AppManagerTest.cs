@@ -1,36 +1,29 @@
 ﻿using System;
 using System.IO;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
+using NUnit.Framework;
+
 namespace DotSpatial.Controls.Tests
 {
-
-
     /// <summary>
     ///This is a test class for AppManagerTest and is intended
     ///to contain all AppManagerTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture()]
     public class AppManagerTest
     {
         /// <summary>
         ///A test for GetCustomSettingDefault
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void GetCustomSettingDefaultTest()
         {
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
+            Map map = new Map();
             AppManager target = new AppManager();
             target.Map = map;
 
             string uniqueName = "customsettingname";
             var expected = DateTime.Now;
-            var actual = target.SerializationManager.GetCustomSetting<DateTime>(uniqueName, expected);
+            var actual = target.SerializationManager.GetCustomSetting(uniqueName, expected);
             // checks that the default value is returned correctly
             Assert.AreEqual(expected, actual);
         }
@@ -38,10 +31,10 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         ///A test for GetCustomSettingFromMemory
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void GetCustomSettingFromMemoryTest()
         {
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
+            Map map = new Map();
             AppManager target = new AppManager();
             target.Map = map;
 
@@ -49,7 +42,7 @@ namespace DotSpatial.Controls.Tests
             var expected = DateTime.Now;
             target.SerializationManager.SetCustomSetting(uniqueName, expected);
 
-            var actual = target.SerializationManager.GetCustomSetting<DateTime>(uniqueName, DateTime.Now.AddDays(1));
+            var actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
         }
@@ -57,10 +50,10 @@ namespace DotSpatial.Controls.Tests
         /// <summary>
         ///A test for GetCustomSettingFromFile
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void GetCustomSettingFromFileTest()
         {
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
+            Map map = new Map();
             AppManager target = new AppManager();
             target.Map = map;
 
@@ -68,7 +61,7 @@ namespace DotSpatial.Controls.Tests
             var expected = DateTime.Now;
             target.SerializationManager.SetCustomSetting(uniqueName, expected);
 
-            var actual = target.SerializationManager.GetCustomSetting<DateTime>(uniqueName, DateTime.Now.AddDays(1));
+            var actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
             string path = Path.GetFullPath(Path.Combine("TestFiles", "SerializeTestWithCustomSettings.map.xml.dspx"));
@@ -76,12 +69,10 @@ namespace DotSpatial.Controls.Tests
             target.SerializationManager.SaveProject(path);
 
             target.SerializationManager.OpenProject(path);
-            actual = target.SerializationManager.GetCustomSetting<DateTime>(uniqueName, DateTime.Now.AddDays(1));
+            actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected.ToLongDateString(), actual.ToLongDateString());
 
             File.Delete(path);
         }
-
-
     }
 }

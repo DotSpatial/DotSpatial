@@ -176,19 +176,19 @@ namespace DotSpatial.Serialization
             {
                 result = Enum.Parse(type, value);
             }
-            else if (type.Equals(typeof(string)))
+            else if (type == typeof(string))
             {
                 result = XmlHelper.UnEscapeInvalidCharacters(value);
             }
             else if (type == typeof(DateTime))
             {
-                result = Convert.ToDateTime(value);
+                result = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
             }
-            else if (type.Equals(typeof(Color)))
+            else if (type == typeof(Color))
             {
                 result = ColorTranslator.FromHtml(value);
             }
-            else if (type.Equals(typeof(PointF)))
+            else if (type == typeof(PointF))
             {
                 string[] vals = XmlHelper.UnEscapeInvalidCharacters(value).Split('|');
                 result = new PointF(float.Parse(vals[0]), float.Parse(vals[1]));
