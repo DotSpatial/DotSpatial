@@ -76,32 +76,21 @@ namespace DotSpatial.Data
         public static IFeatureSet CombinedFields(this IFeatureSet self, IFeatureSet other)
         {
             IFeatureSet result = new FeatureSet(self.FeatureType);
-            Dictionary<string, DataColumn> resultColumns = new Dictionary<string, DataColumn>();
-            foreach (DataColumn dc in self.DataTable.Columns)
+            var uniqueNames = new HashSet<string>();
+            foreach (var fs in new []{self, other})
             {
-                string name = dc.ColumnName;
-                int i = 1;
-                while (resultColumns.ContainsKey(name))
+                foreach (DataColumn dc in fs.DataTable.Columns)
                 {
-                    name = dc.ColumnName + i;
-                    i++;
-                }
-                resultColumns.Add(name, dc);
-            }
-            foreach (DataColumn dc in other.DataTable.Columns)
-            {
-                string name = dc.ColumnName;
-                int i = 1;
-                while (resultColumns.ContainsKey(name))
-                {
-                    name = dc.ColumnName + i;
-                    i++;
-                }
-                resultColumns.Add(name, dc);
-            }
-            foreach (KeyValuePair<string, DataColumn> pair in resultColumns)
-            {
-                result.DataTable.Columns.Add(new DataColumn(pair.Key, pair.Value.DataType));
+                    var name = dc.ColumnName;
+                    var i = 1;
+                    while (uniqueNames.Contains(name))
+                    {
+                        name = dc.ColumnName + i;
+                        i++;
+                    }
+                    uniqueNames.Add(name);
+                    result.DataTable.Columns.Add(new DataColumn(name, dc.DataType));
+                }   
             }
             return result;
         }
@@ -286,7 +275,7 @@ namespace DotSpatial.Data
                 // Intersection is symmetric, so only consider I X J where J <= I
                 if (!self.AttributesPopulated) self.FillAttributes();
                 if (!other.AttributesPopulated) other.FillAttributes();
-                
+
                 for (int i = 0; i < self.Features.Count; i++)
                 {
                     IFeature selfFeature = self.Features[i];
@@ -306,9 +295,9 @@ namespace DotSpatial.Data
                 result = new FeatureSet();
                 result.CopyTableSchema(self);
                 result.FeatureType = self.FeatureType;
-                pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
                 if (other.Features != null && other.Features.Count > 0)
                 {
+                    pm = new ProgressMeter(progHandler, "Calculating Union", other.Features.Count);
                     IFeature union = other.Features[0];
                     for (int i = 1; i < other.Features.Count; i++)
                     {
@@ -331,8 +320,10 @@ namespace DotSpatial.Data
             else if (joinType == FieldJoinType.ForeignOnly)
             {
                 if (!other.AttributesPopulated) other.FillAttributes();
+
                 result = new FeatureSet();
                 result.CopyTableSchema(other);
+                result.FeatureType = other.FeatureType;
                 if (self.Features != null && self.Features.Count > 0)
                 {
                     pm = new ProgressMeter(progHandler, "Calculating Union", self.Features.Count);
@@ -348,11 +339,7 @@ namespace DotSpatial.Data
                         pm = new ProgressMeter(progHandler, "Calculating Intersection", other.Features.Count);
                         for (int i = 0; i < other.Features.Count; i++)
                         {
-                            IFeature test = other.Features[i].Intersection(union, result, joinType);
-                            if (test.BasicGeometry != null)
-                            {
-                                result.Features.Add(test);
-                            }
+                            other.Features[i].Intersection(union, result, FieldJoinType.LocalOnly);
                             pm.CurrentValue = i;
                         }
                     }
