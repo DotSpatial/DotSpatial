@@ -2212,7 +2212,6 @@ namespace DotSpatial.Symbology
                 if (current == '[')
                 {
                     isField = true;
-                    continue;
                 }
             }
 

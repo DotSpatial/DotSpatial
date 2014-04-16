@@ -753,30 +753,30 @@ namespace DotSpatial.Projections
                 // The following are frequently followed by specifications, so adding s doesn't work
                 if (Unit.Name.Contains("Foot") || Unit.Name.Contains("foot"))
                 {
-                    string plural = Unit.Name.Replace("Foot", "Feet");
-                    plural.Replace("foot", "Feet");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Foot", "Feet")
+                        .Replace("foot", "Feet");
                 }
 
                 if (Unit.Name.Contains("Yard") || Unit.Name.Contains("yard"))
                 {
-                    string plural = Unit.Name.Replace("Yard", "Yards");
-                    plural.Replace("yard", "Yards");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Yard", "Yards")
+                        .Replace("yard", "Yards");
                 }
 
                 if (Unit.Name.Contains("Chain") || Unit.Name.Contains("chain"))
                 {
-                    string plural = Unit.Name.Replace("Chain", "Chains");
-                    plural.Replace("chain", "Chains");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Chain", "Chains")
+                        .Replace("chain", "Chains");
                 }
 
                 if (Unit.Name.Contains("Link") || Unit.Name.Contains("link"))
                 {
-                    string plural = Unit.Name.Replace("Link", "Links");
-                    plural.Replace("link", "Links");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Link", "Links")
+                        .Replace("link", "Links");
                 }
 
                 return Unit.Name + "s";
@@ -931,11 +931,11 @@ namespace DotSpatial.Projections
             // This format is supported only for the Single, Double, and BigInteger types.
             if (value is double)
             {
-                value = ((double) value).ToString("R");
+                value = ((double) value).ToString("R", CultureInfo.InvariantCulture);
             }
             else if (value is float)
             {
-                value = ((float) value).ToString("R");
+                value = ((float) value).ToString("R", CultureInfo.InvariantCulture);
             }
 
             result.AppendFormat(CultureInfo.InvariantCulture, " +{0}={1}", name, value);
@@ -980,8 +980,6 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Attempts to parse known parameters from the set of proj4 parameters
         /// </summary>
-        /// <param name="proj4String">
-        /// </param>
         private void ParseProj4String(string proj4String)
         {
             if (string.IsNullOrEmpty(proj4String))

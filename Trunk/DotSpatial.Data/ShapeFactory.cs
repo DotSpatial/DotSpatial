@@ -56,7 +56,7 @@ namespace DotSpatial.Data
             List<int> counts = new List<int>();
             int count = 0;
             int numParts = 0;
-            foreach (List<Coordinate> part in allParts)
+            foreach (var part in allParts)
             {
                 int coordinatecount = 0;
                 foreach (Coordinate c in part)

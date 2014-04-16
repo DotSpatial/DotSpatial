@@ -1294,8 +1294,6 @@ namespace DotSpatial.Controls
                 case Keys.Delete:
                     DeleteSelectedElements();
                     break;
-                default:
-                    break;
             }
         }
 

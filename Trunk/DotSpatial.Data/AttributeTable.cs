@@ -1308,10 +1308,7 @@ namespace DotSpatial.Data
             string tempStr = new string(cBuffer);
             tempObject = DBNull.Value;
             Type t = field.DataType;
-            Lazy<string> errorMessage = new Lazy<string>(() =>
-            {
-                return String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t);
-            });
+            var errorMessage = new Lazy<string>(() => String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
 
             if (t == typeof(byte))
             {

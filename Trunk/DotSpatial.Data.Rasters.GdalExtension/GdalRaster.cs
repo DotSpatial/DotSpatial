@@ -391,7 +391,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 }
                 else
                 {
-                    foreach (GdalRaster<T> raster in Bands)
+                    foreach (var raster in Bands)
                     {
                         raster.NoDataValue = value;
                     }

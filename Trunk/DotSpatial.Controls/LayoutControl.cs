@@ -1928,8 +1928,6 @@ namespace DotSpatial.Controls
                 case Keys.F5:
                     RefreshElements();
                     break;
-                default:
-                    break;
             }
         }
 

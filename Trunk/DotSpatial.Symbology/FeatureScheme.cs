@@ -444,7 +444,6 @@ namespace DotSpatial.Symbology
             }
             Values.Sort();
             Statistics.Calculate(Values);
-            return;
         }
 
         /// <summary>
@@ -530,7 +529,6 @@ namespace DotSpatial.Symbology
                     double norm;
                     if (!double.TryParse(row[normField].ToString(), out norm) || double.IsNaN(val)) continue;
                     Values.Add(val / norm);
-                    continue;
                 }
             }
             else

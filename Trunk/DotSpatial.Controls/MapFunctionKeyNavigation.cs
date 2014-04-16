@@ -33,7 +33,7 @@ namespace DotSpatial.Controls
 
         private FunctionMode previousFunction = FunctionMode.None;
         private bool isPanningTemporarily;
-        private int KeyPanCount = 0;
+        private int KeyPanCount;
 
         #endregion
 

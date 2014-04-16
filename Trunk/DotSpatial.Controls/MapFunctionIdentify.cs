@@ -131,7 +131,7 @@ namespace DotSpatial.Controls
                     layer.Select(feature);
                 }
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 Debug.WriteLine("Clicked area has a null reference");
             }

@@ -364,9 +364,8 @@ namespace DotSpatial.Controls
             {
                 Initialize(new List<Extent> { ViewExtents });
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
-                return;
             }
         }
 
@@ -1039,7 +1038,6 @@ namespace DotSpatial.Controls
             catch
             {
                 // There was an exception (probably because of sizing issues) so don't bother with the chunk timer.
-                return;
             }
 
             //base.OnPaint(pe);
@@ -1291,7 +1289,6 @@ namespace DotSpatial.Controls
 
             ReprojectOnTheFly(layer);
             Initialize();
-            return;
         }
 
         private void ReprojectOnTheFly(IMapLayer layer)

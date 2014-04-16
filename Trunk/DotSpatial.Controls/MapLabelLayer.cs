@@ -467,7 +467,7 @@ namespace DotSpatial.Controls
 
         private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels)
         {
-            if (labelBounds == RectangleF.Empty || !RectangleExt.IntersectsWith(e.ImageRectangle, labelBounds)) return;
+            if (labelBounds == RectangleF.Empty || !e.ImageRectangle.IntersectsWith(labelBounds)) return;
             if (symb.PreventCollisions)
             {
                 if (!Collides(labelBounds, existingLabels))

@@ -455,10 +455,9 @@ namespace DotSpatial.Projections
         /// <returns></returns>
         public string ToProj4String()
         {
-            if (_knownEllipsoid == Proj4Ellipsoid.Custom)
-                return String.Format(" +a={0} +b={1}", _equatorialRadius, _polarRadius);
-            else
-                return String.Format(" +ellps={0}", _proj4Names[_knownEllipsoid]);
+            return _knownEllipsoid == Proj4Ellipsoid.Custom
+                ? String.Format(" +a={0} +b={1}", _equatorialRadius, _polarRadius)
+                : String.Format(" +ellps={0}", _proj4Names[_knownEllipsoid]);
         }
 
         /// <summary>

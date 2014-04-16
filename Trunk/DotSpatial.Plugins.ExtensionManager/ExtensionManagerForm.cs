@@ -650,7 +650,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Adds a category to Installed Extensions tab.
         /// </summary>
-        /// <typeparam name="IExtensionCategory"></typeparam>
         /// <param name="category">Extension Category</param>
         /// <returns></returns>
         private void AddCategory(IExtensionCategory category)
@@ -663,9 +662,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// Appends a label and some text to the text box on the
         /// Installed Extensions tab.
         /// </summary>
-        /// <typeparam name="string"></typeparam>
         /// <param name="label">The label for your text.  eg. "Label":</param>
-        /// <typeparam name="string"></typeparam>
         /// <param name="text">The text to be diplayed.</param>
         /// <returns></returns>
         private void AppendInstalledItem(string label, string text)
@@ -696,9 +693,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Appends a label and some text to the text box on the updates tab.
         /// </summary>
-        /// <typeparam name="string"></typeparam>
         /// <param name="label">The label for your text.  eg. "Label":</param>
-        /// <typeparam name="string"></typeparam>
         /// <param name="text">The text to be diplayed.</param>
         /// <returns></returns>
         private void AppendToUpdateTab(string label, string text)
@@ -713,7 +708,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Sets a feed to be used with auto-updating.
         /// </summary>
-        /// <typeparam name="ListViewItem"></typeparam>
         /// <param name="item">The feed that should be used for auto updates</param>
         /// <returns></returns>
         private void changeAutoUpdateSetting(ListViewItem item)
@@ -897,7 +891,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Gives you an array of strings.
         /// </summary>
-        /// <typeparam name="IEnumerable\<T\>"></typeparam>
         /// <param name="source">Enumerable source object</param>
         /// <returns>List of strings from the enumerable source object</returns>
         private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)

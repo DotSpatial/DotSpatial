@@ -46,7 +46,6 @@ namespace DotSpatial.Data
         /// Creates a new default field empty field - needed for datatable copy and clone methods.
         /// </summary>
         public Field()
-            :base()
         {
 
         }

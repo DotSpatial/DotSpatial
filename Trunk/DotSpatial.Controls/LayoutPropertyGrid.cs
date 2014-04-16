@@ -94,8 +94,6 @@ namespace DotSpatial.Controls
                 case Keys.F5:
                     _layoutControl.RefreshElements();
                     break;
-                default:
-                    break;
             }
         }
 
