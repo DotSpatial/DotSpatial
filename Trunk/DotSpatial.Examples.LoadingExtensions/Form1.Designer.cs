@@ -102,7 +102,6 @@
             // 
             // appManager1
             // 
-            this.appManager1.CompositionContainer = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
             this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;

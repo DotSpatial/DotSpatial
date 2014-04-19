@@ -47,10 +47,10 @@ namespace DotSpatial.Controls.Docking
         /// <param name="dock">The dock.</param>
         public DockablePanel(string key, string caption, Control innerControl, DockStyle dock)
         {
-            this.Dock = dock;
-            this.Key = key;
-            this.InnerControl = innerControl;
-            this.Caption = caption;
+            Dock = dock;
+            Key = key;
+            InnerControl = innerControl;
+            Caption = caption;
         }
 
         #endregion

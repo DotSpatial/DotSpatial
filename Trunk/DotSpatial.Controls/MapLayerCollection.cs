@@ -168,8 +168,6 @@ namespace DotSpatial.Controls
             if (r != null) return Add(r);
             var id = dataSet as IImageData;
             if (id != null) return Add(id);
-            ILiDARData ld = dataSet as ILiDARData;
-            if (ld != null) return Add(ld);
             return null;
         }
 
@@ -238,18 +236,6 @@ namespace DotSpatial.Controls
             MapImageLayer il = new MapImageLayer(image);
             base.Add(il);
             return il;
-        }
-
-        /// <summary>
-        /// Adds a special LiDAR dataset and creates a LiDAR layer, adding the layer to the map
-        /// </summary>
-        /// <param name="LiDARData">The specialized LiDAR Dataset</param>
-        /// <returns>The instance of the LiDAR layer</returns>
-        /// <remarks>This operation is not yet implemented.</remarks>
-        public virtual IMapLiDARLayer Add(ILiDARData LiDARData)
-        {
-            if (LiDARData == null) return null;
-            throw new NotImplementedException("adding LiDAR is not yet implemented");
         }
 
         #endregion

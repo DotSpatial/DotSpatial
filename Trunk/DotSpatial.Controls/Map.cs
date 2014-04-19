@@ -1142,6 +1142,7 @@ namespace DotSpatial.Controls
         /// Loading subsequent, but non-matching projections should throw an alert, and allow reprojection.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public ProjectionInfo Projection
         {
             get

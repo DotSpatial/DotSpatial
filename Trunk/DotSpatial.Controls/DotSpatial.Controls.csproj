@@ -57,16 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\LimitedStack.cs" />
     <Compile Include="DatelineCrossingMap.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
-    <Compile Include="Extensions\Extension.cs" />
-    <Compile Include="Extensions\PackageManager.cs" />
-    <Compile Include="Extensions\ShowExtensionsDialog.cs" />
-    <Compile Include="Extensions\AppManager.cs">
+    <Compile Include="Extension.cs" />
+    <Compile Include="PackageManager.cs" />
+    <Compile Include="ShowExtensionsDialog.cs" />
+    <Compile Include="AppManager.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CohenSutherland.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Header\MenuBarHeaderControl.cs" />
     <Compile Include="Header\StatusPanel.cs" />
     <Compile Include="Header\TextEntryActionItem.cs" />
-    <Compile Include="IMapLiDARLayer.cs" />
     <Compile Include="LayoutControl.Designer.cs">
       <DependentUpon>LayoutControl.cs</DependentUpon>
     </Compile>
@@ -179,7 +177,6 @@
     <Compile Include="MapFrameProjectionHelper.cs" />
     <Compile Include="MapFunctionKeyNavigation.cs" />
     <Compile Include="MapLayerEnumerator.cs" />
-    <Compile Include="MapLiDARLayer.cs" />
     <Compile Include="MessageStrings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -200,7 +197,6 @@
     <Compile Include="MapFrame.cs" />
     <Compile Include="MapGroup.cs" />
     <Compile Include="MapLayerCollection.cs" />
-    <Compile Include="MapLayerExt.cs" />
     <Compile Include="GeoLayerEnumerator.cs" />
     <Compile Include="IMapRasterLayer.cs" />
     <Compile Include="MapRasterLayer.cs" />
@@ -212,9 +208,7 @@
     </Compile>
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializingEventArgs.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="ShapefileLayerProvider.cs" />
-    <Compile Include="MapTileLayer.cs" />
     <Compile Include="ClipArgs.cs" />
     <Compile Include="DuplicationPreventer.cs" />
     <Compile Include="IMapFeatureLayer.cs" />
@@ -491,6 +485,9 @@
       <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
       <Name>DotSpatial.Topology</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -3,20 +3,13 @@
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
+using System;
+using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 
 namespace DemoMap
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using DotSpatial.Controls;
-
-    /// <summary>
-    /// Displays latitude and longitude coordinates at the current cursor position.
-    /// </summary>
     public class StatusShowSelectionCount : Extension
     {
 

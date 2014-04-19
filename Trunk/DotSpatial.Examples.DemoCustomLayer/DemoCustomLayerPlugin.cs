@@ -1,13 +1,9 @@
-﻿namespace DotSpatial.Examples.DemoCustomLayer
+﻿using System;
+using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
+
+namespace DotSpatial.Examples.DemoCustomLayer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
-    using DotSpatial.Controls;
-    using DotSpatial.Controls.Header;
-
     public class DemoCustomLayerPlugin : Extension
     {
         public override void Activate()

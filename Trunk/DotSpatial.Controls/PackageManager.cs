@@ -7,9 +7,6 @@
 namespace DotSpatial.Controls.Extensions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.IO;
     using DotSpatial.Controls.Properties;
     using DotSpatial.Extensions;

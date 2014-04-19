@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DotSpatial.Data;
 
 namespace DotSpatial.Examples.DemoCustomLayer
 {
     public class MyCustomDataSet : IDataSet
     {
-
         #region IDataSet Members
 
         public void Close()

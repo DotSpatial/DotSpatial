@@ -31,10 +31,6 @@ namespace DotSpatial.Controls
     [Serializable]
     public abstract class Extension : AssemblyInformation, IExtension
     {
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
         /// <summary>

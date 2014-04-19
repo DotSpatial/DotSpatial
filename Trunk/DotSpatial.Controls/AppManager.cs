@@ -31,7 +31,6 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -142,6 +141,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the catalog containing all off the know extensions. Add any additional extensions to Catalog.Catalogs.
         /// </summary>
+        [Browsable(false)]
         public AggregateCatalog Catalog
         {
             get
@@ -156,6 +156,7 @@ namespace DotSpatial.Controls
         /// <value>
         /// The composition container.
         /// </value>
+        [Browsable(false)]
         public CompositionContainer CompositionContainer { get; set; }
 
         /// <summary>
@@ -208,9 +209,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the serialization manager.
         /// </summary>
-        /// <value>
-        /// The serialization manager.
-        /// </value>
+        [Browsable(false)]
         public SerializationManager SerializationManager { get; set; }
 
         /// <summary>
@@ -240,7 +239,7 @@ namespace DotSpatial.Controls
         public void ActivateExtensionsExclusively(string[] names)
         {
             // Consider only extensions that can be deactivated.
-            IEnumerable<IExtension> extensions = Extensions.Where(t => t.DeactivationAllowed);
+            var extensions = Extensions.Where(t => t.DeactivationAllowed).ToList();
 
             var extensionCount = extensions.Count();
             int progress = 0;
@@ -251,8 +250,8 @@ namespace DotSpatial.Controls
                 if (ProgressHandler != null)
                 {
                     int percent = (progress * 100) / extensionCount;
-                    string message = String.Format(resources.GetString("LoadingPluginsPercentComplete"), extension.Name, percent);
-                    ProgressHandler.Progress(resources.GetString("LoadingPlugins"), percent, message);
+                    string msg = String.Format(resources.GetString("LoadingPluginsPercentComplete"), extension.Name, percent);
+                    ProgressHandler.Progress(resources.GetString("LoadingPlugins"), percent, msg);
                     progress++;
                 }
 
@@ -304,7 +303,7 @@ namespace DotSpatial.Controls
         /// </returns>
         public IExtension GetExtension(string assemblyTitle)
         {
-            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",")).FirstOrDefault();
+            return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ","));
         }
 
         /// <summary>
@@ -317,7 +316,7 @@ namespace DotSpatial.Controls
         /// </returns>
         public IExtension GetExtension(string assemblyTitle, string version)
         {
-            return Extensions.Where(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version).FirstOrDefault();
+            return Extensions.FirstOrDefault(t => t.AssemblyQualifiedName.Contains(assemblyTitle + ",") && t.Version == version);
         }
 
         /// <summary>
@@ -337,7 +336,7 @@ namespace DotSpatial.Controls
             PackageManager.RemovePendingPackagesAndExtensions();
             splashScreen = SplashScreenHelper.GetSplashScreenManager();
 
-            Thread updateThread = new Thread(() => AppLoadExtensions());
+            Thread updateThread = new Thread(AppLoadExtensions);
             updateThread.Start();
 
             //Update splash screen's progress bar while thread is active.
@@ -385,22 +384,22 @@ namespace DotSpatial.Controls
         /// </summary>
         public void RefreshExtensions()
         {
-            RefreshExtensions(this.Catalog);
+            RefreshExtensions(Catalog);
         }
 
         /// <summary>
         /// Updates the ProgressHandler.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void UpdateProgress(string message)
+        /// <param name="msg">The message.</param>
+        public void UpdateProgress(string msg)
         {
             if (splashScreen != null)
-                UpdateSplashScreen(message);
+                UpdateSplashScreen(msg);
             else if (ProgressHandler != null)
-                ProgressHandler.Progress(String.Empty, int.MinValue, message);
+                ProgressHandler.Progress(String.Empty, int.MinValue, msg);
             else
             {
-                MessageBox.Show(message);
+                MessageBox.Show(msg);
             }
         }
 
@@ -427,8 +426,7 @@ namespace DotSpatial.Controls
                 }
                 if (!EnsureRequiredImportsAreAvailable())
                     return;
-                else
-                    OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
+                OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
 
                 // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
                 // need to be created before other plugins are loaded.
@@ -436,7 +434,8 @@ namespace DotSpatial.Controls
                 {
                     if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
                     {
-                        Thread updateThread = new Thread(() => Activate(extension));
+                        IExtension extension1 = extension;
+                        Thread updateThread = new Thread(() => Activate(extension1));
                         updateThread.Start();
                         DateTime timeStarted = DateTime.UtcNow;
 
@@ -481,7 +480,7 @@ namespace DotSpatial.Controls
             try
             {
                 IDataManager dataManager = DataManager.DefaultDataManager;
-                CompositionContainer.ComposeParts(this, dataManager, this.SerializationManager);
+                CompositionContainer.ComposeParts(this, dataManager, SerializationManager);
             }
             catch (CompositionException compositionException)
             {
@@ -551,17 +550,8 @@ namespace DotSpatial.Controls
 
         private static bool DirectoryCatalogExists(AggregateCatalog catalog, string dir)
         {
-            foreach (var cat in catalog.Catalogs)
-            {
-                var directoryCatalog = cat as DirectoryCatalog;
-                if (directoryCatalog != null)
-                {
-                    if (directoryCatalog.FullPath.Equals(dir, StringComparison.OrdinalIgnoreCase))
-                        return true;
-                }
-            }
-
-            return false;
+            return catalog.Catalogs.OfType<DirectoryCatalog>()
+                .Any(directoryCatalog => directoryCatalog.FullPath.Equals(dir, StringComparison.OrdinalIgnoreCase));
         }
 
         private AggregateCatalog GetCatalog()
@@ -606,14 +596,7 @@ namespace DotSpatial.Controls
         private IEnumerable<string> GetDirectoriesNestedOneLevel()
         {
             // Visit each directory in Directories Property (usually set by application)
-            if (DotSpatial.Mono.Mono.IsRunningOnMono())
-            {
-                Directories.Add("Mono Extensions");
-            }
-            else
-            {
-                Directories.Add("Windows Extensions");
-            }
+            Directories.Add(Mono.Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);
@@ -660,12 +643,9 @@ namespace DotSpatial.Controls
             {
                 int importCount = CompositionContainer.GetExportedValues<T>().Count();
                 string extensionTypeName = typeof(T).Name;
-                if (importCount > 1)
-                    MessageBox.Show(String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount));
-                else
-                {
-                    MessageBox.Show(String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
-                }
+                MessageBox.Show(importCount > 1
+                    ? String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
+                    : String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
             }
             return import;
         }
@@ -679,7 +659,7 @@ namespace DotSpatial.Controls
             _components = new Container();
         }
 
-        private void LocateExtensions(AggregateCatalog catalog, string absolutePathToExtensions)
+        private void LocateExtensions(AggregateCatalog catalog)
         {
             var directories = GetPackageExtensionPaths(AbsolutePathToExtensions);
             foreach (var dir in directories)
@@ -718,7 +698,7 @@ namespace DotSpatial.Controls
 
         private void RefreshExtensions(AggregateCatalog catalog)
         {
-            LocateExtensions(catalog, AbsolutePathToExtensions);
+            LocateExtensions(catalog);
         }
 
         private static void TryLoadingCatalog(AggregateCatalog catalog, ComposablePartCatalog cat)
@@ -726,7 +706,7 @@ namespace DotSpatial.Controls
             try
             {
                 // We call Parts.Count simply to load the dlls in this directory, so that we can determine whether they will load properly.
-                if (cat.Parts.Count() > 0)
+                if (cat.Parts.Any())
                     catalog.Catalogs.Add(cat);
             }
             catch (ReflectionTypeLoadException ex)

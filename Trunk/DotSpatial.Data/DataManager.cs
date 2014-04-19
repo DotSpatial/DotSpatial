@@ -602,7 +602,6 @@ namespace DotSpatial.Data
                 var rasterExtensions = new List<string>();
                 var vectorExtensions = new List<string>();
                 var imageExtensions = new List<string>();
-                var LiDARExtensions = new List<string>();
                 var extensions = PreferredProviders.Select(item => item.Key).ToList();
 
                 foreach (IDataProvider dp in DataProviders)
@@ -625,8 +624,6 @@ namespace DotSpatial.Data
                                         vectorExtensions.Add(potentialExtension);
                                 if (dp is IImageDataProvider)
                                     imageExtensions.Add(potentialExtension);
-                                if (dp is ILiDARDataProvider)
-                                    LiDARExtensions.Add(potentialExtension);
                             }
                         }
                     }
@@ -642,8 +639,6 @@ namespace DotSpatial.Data
                     result.Append("|Rasters|" + String.Join(";", rasterExtensions.ToArray()));
                 if (imageExtensions.Count > 0)
                     result.Append("|Images|" + String.Join(";", imageExtensions.ToArray()));
-                if (LiDARExtensions.Count > 0)
-                    result.Append("|LiDAR|" + String.Join(";", LiDARExtensions.ToArray()));
 
                 foreach (KeyValuePair<string, IDataProvider> item in PreferredProviders)
                 {

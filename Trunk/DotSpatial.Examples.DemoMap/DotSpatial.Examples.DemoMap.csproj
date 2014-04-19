@@ -96,7 +96,7 @@
     <Compile Include="SimpleStatusControl.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StatusBarCoordinates.cs" />
+    <Compile Include="StatusShowCoordinates.cs" />
     <Compile Include="StatusShowSelectionCount.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

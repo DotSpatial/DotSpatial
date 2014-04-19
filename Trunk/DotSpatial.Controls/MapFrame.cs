@@ -29,7 +29,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using DotSpatial.Controls.Core;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
@@ -1432,5 +1431,41 @@ namespace DotSpatial.Controls
         }
 
         #endregion IMapFrame Members
+    }
+
+    internal class LimitedStack<T>
+    {
+        public readonly int Limit;
+        private readonly List<T> _stack;
+
+        public LimitedStack(int limit = 32)
+        {
+            Limit = limit;
+            _stack = new List<T>(limit);
+        }
+
+        public void Push(T item)
+        {
+            if (_stack.Count == Limit) _stack.RemoveAt(0);
+            _stack.Add(item);
+        }
+
+        public T Peek()
+        {
+            if (_stack.Count == 0) return default(T);
+            return _stack[_stack.Count - 1];
+        }
+
+        public T Pop()
+        {
+            var item = _stack[_stack.Count - 1];
+            _stack.RemoveAt(_stack.Count - 1);
+            return item;
+        }
+
+        public int Count
+        {
+            get { return _stack.Count; }
+        }
     }
 }

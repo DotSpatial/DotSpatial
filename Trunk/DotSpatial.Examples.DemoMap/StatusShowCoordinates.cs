@@ -4,15 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 using DotSpatial.Controls.Header;
+using System;
+using DotSpatial.Controls;
 
 namespace DemoMap
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using DotSpatial.Controls;
-
     /// <summary>
     /// Displays latitude and longitude coordinates at the current cursor position.
     /// </summary>
@@ -21,9 +17,10 @@ namespace DemoMap
         private Map _Map;
         private StatusPanel xPanel;
         private StatusPanel yPanel;
+
         public override void Activate()
         {
-            _Map = App.Map as Map;
+            _Map = (Map)App.Map;
             _Map.GeoMouseMove += Map_GeoMouseMove;
 
             xPanel = new StatusPanel() { Width = 160 };

@@ -13,10 +13,8 @@
 // The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
 // ********************************************************************************************************
 
-using System;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
-using DotSpatial.Controls;
 
 namespace DemoMap
 {

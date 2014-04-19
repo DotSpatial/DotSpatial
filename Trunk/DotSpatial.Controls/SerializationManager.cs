@@ -365,8 +365,7 @@ namespace DotSpatial.Controls
             object result;
             if (_customSettings.TryGetValue(uniqueName, out result))
                 return (T)result;
-            else
-                return defaultValue;
+            return defaultValue;
         }
 
         /// <summary>
