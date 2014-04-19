@@ -29,10 +29,6 @@ namespace DotSpatial.Controls.Header
 
         #endregion
 
-        #region Constructor
-
-        #endregion
-
         #region Public Methods
 
         /// <summary>
@@ -535,8 +531,8 @@ namespace DotSpatial.Controls.Header
 
         private void TextEntryActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as TextEntryActionItem;
-            var guiItem = this.GetItem(item.Key) as ToolStripTextBox;
+            var item = (TextEntryActionItem)sender;
+            var guiItem = (ToolStripTextBox)GetItem(item.Key);
 
             switch (e.PropertyName)
             {

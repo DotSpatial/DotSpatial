@@ -1,35 +1,22 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="TabbedDocking.cs" company="">
-// TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using DotSpatial.Controls.Docking;
+using System.Windows.Forms;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
+
 namespace DotSpatial.Plugins.TabbedDocking
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using DotSpatial.Controls.Docking;
-    using System.Windows.Forms;
-    using System.Drawing;
-    using System.ComponentModel.Composition;
-    using System.Diagnostics;
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class TabbedDocking : IDockManager, IPartImportsSatisfiedNotification
     {
         private System.Windows.Forms.TabControl uxTabControl;
 
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
-
-        public TabbedDocking()
-        {
-
-        }
 
         public event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
 

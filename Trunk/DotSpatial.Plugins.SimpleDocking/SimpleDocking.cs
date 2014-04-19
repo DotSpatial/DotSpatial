@@ -1,23 +1,18 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="SimpleDocking.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
-using System.ComponentModel.Composition;
 
-namespace DemoMap
+namespace DotSpatial.Plugins.SimpleDocking
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class SimpleDocking : IDockManager
     {
-
         [Import("Shell")]
         private ContainerControl Shell { get; set; }
         private List<Form> forms = new List<Form>();
@@ -160,7 +155,7 @@ namespace DemoMap
             if (owner != null)
             {
                 form.Owner = owner;
-                form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                form.StartPosition = FormStartPosition.CenterScreen;
             }
             form.ControlBox = false;
             form.Show();
@@ -170,7 +165,7 @@ namespace DemoMap
 
         private void form_Activated(object sender, EventArgs e)
         {
-            OnActivePanelChanged(new DockablePanelEventArgs((sender as Form).Name));
+            OnActivePanelChanged(new DockablePanelEventArgs(((Form) sender).Name));
         }
 
         public void HidePanel(string key)

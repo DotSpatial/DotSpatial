@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Composition;
-using DotSpatial.Controls.Header;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using DotSpatial.Controls.Header;
 
-namespace DemoMap
+namespace DotSpatial.Plugins.MonoHeaderControl
 {
     [Export(typeof(IHeaderControl))]
     class MonoHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
@@ -26,7 +24,7 @@ namespace DemoMap
         {
             mainmenu = new MainMenu();
 
-            Form form = Shell as Form;
+            var form = (Form)Shell;
             form.Menu = mainmenu;
 
             container = new FlowLayoutPanel();
@@ -48,18 +46,11 @@ namespace DemoMap
             menu.Enabled = item.Enabled;
             menu.Visible = item.Visible;
             menu.Click += (sender, e) => item.OnClick(e);
-            item.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SimpleActionItem_PropertyChanged);
+            item.PropertyChanged += SimpleActionItem_PropertyChanged;
 
-            MenuItem root = null;
-
-            if (!mainmenu.MenuItems.ContainsKey(item.RootKey))
-            {
-                root = new MenuItem(item.RootKey);
-            }
-            else
-            {
-                root = mainmenu.MenuItems.Find(item.RootKey, true).ElementAt(0);
-            }
+            MenuItem root = !mainmenu.MenuItems.ContainsKey(item.RootKey)
+                ? new MenuItem(item.RootKey)
+                : mainmenu.MenuItems.Find(item.RootKey, true).ElementAt(0);
 
             try
             {
@@ -87,7 +78,7 @@ namespace DemoMap
                 submenu.Visible = item.Visible;
                 submenu.Text = item.Caption;
                 submenu.MergeOrder = item.SortOrder;
-                item.PropertyChanged += new PropertyChangedEventHandler(RootItem_PropertyChanged);
+                item.PropertyChanged += RootItem_PropertyChanged;
                 mainmenu.MenuItems.Add(submenu);
             }
         }
@@ -117,14 +108,7 @@ namespace DemoMap
 
             container.Controls.Add(combo);
         }
-
-        private void addLabel(String text)
-        {
-            Label label = new Label();
-            label.Text = text;
-            container.Controls.Add(label);
-        }
-
+       
         public override void Add(SeparatorItem item)
         {
             //throw new NotImplementedException();
@@ -163,8 +147,8 @@ namespace DemoMap
 
         private void DropDownActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as DropDownActionItem;
-            var guiItem = this.GetItem(item.Key) as ComboBox;
+            var item = (DropDownActionItem)sender;
+            var guiItem = (ComboBox)GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -198,8 +182,8 @@ namespace DemoMap
 
         private void TextEntryActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as TextEntryActionItem;
-            var guiItem = this.GetItem(item.Key) as TextBox;
+            var item = (TextEntryActionItem)sender;
+            var guiItem = (TextBox)GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -223,7 +207,7 @@ namespace DemoMap
 
         private void ActionItem_PropertyChanged(ActionItem item, PropertyChangedEventArgs e)
         {
-            if (item.GetType().Equals(typeof(SimpleActionItem)) || item.GetType().Equals(typeof(RootItem)))
+            if (item.GetType() == typeof(SimpleActionItem) || item.GetType() == typeof(RootItem))
             {
                 MenuItem guiItem = GetMenuItem(item.Key);
 
@@ -254,7 +238,6 @@ namespace DemoMap
                         // note, this case will also be selected in the case that we set the Root key in our code.
                         break;
 
-                    case "Key":
                     default:
                         throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
                 }
@@ -290,7 +273,6 @@ namespace DemoMap
                         // note, this case will also be selected in the case that we set the Root key in our code.
                         break;
 
-                    case "Key":
                     default:
                         throw new NotSupportedException(" This Header Control implementation doesn't have an implemenation for or has banned modifying that property.");
                 }
@@ -314,16 +296,12 @@ namespace DemoMap
 
                 case "SortOrder":
                     break;
-                default:
-                    break;
             }
         }
 
         void SimpleActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = sender as SimpleActionItem;
-            var guiItem = this.GetItem(item.Key);
-
             switch (e.PropertyName)
             {
                 case "SmallImage":
@@ -349,14 +327,7 @@ namespace DemoMap
 
         private void ParseAllowEditingProperty(DropDownActionItem item, ComboBox guiItem)
         {
-            if (item.AllowEditingText)
-            {
-                guiItem.DropDownStyle = ComboBoxStyle.DropDown;
-            }
-            else
-            {
-                guiItem.DropDownStyle = ComboBoxStyle.DropDownList;
-            }
+            guiItem.DropDownStyle = item.AllowEditingText ? ComboBoxStyle.DropDown : ComboBoxStyle.DropDownList;
         }
     }
 }
