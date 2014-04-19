@@ -1309,7 +1309,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual LayoutLegend CreateLegendElement()
         {
-            return new LayoutLegend {LayoutControl = this};
+            return new LayoutLegend
+                   {
+                       LayoutControl = this,
+                       Map = _layoutElements.OfType<LayoutMap>().FirstOrDefault(),
+                   };
         }
 
         /// <summary>
@@ -1317,7 +1321,11 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual LayoutScaleBar CreateScaleBarElement()
         {
-            return new LayoutScaleBar {LayoutControl = this};
+            return new LayoutScaleBar
+                   {
+                       LayoutControl = this,
+                       Map = _layoutElements.OfType<LayoutMap>().FirstOrDefault()
+                   };
         }
 
         /// <summary>
