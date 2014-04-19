@@ -131,6 +131,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LegendItemActionsBase.cs" />
+    <Compile Include="SQLQueryControl.Designer.cs">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TableEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
