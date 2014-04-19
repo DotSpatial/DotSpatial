@@ -330,15 +330,15 @@ namespace DotSpatial.Controls
             {
                 if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
             }
-            // Then
+            // Then labels
             MapLabelLayer.ExistingLabels = new List<RectangleF>();
-            foreach (IMapLayer layer in Layers)
+            foreach (var layer in Layers)
             {
                 InitializeLabels(regions, args, layer);
             }
 
             // First draw all the vector content
-            foreach (IMapLayer layer in DrawingLayers)
+            foreach (var layer in DrawingLayers.OfType<IMapLayer>())
             {
                 if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
             }
@@ -507,30 +507,28 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Draw label content for a Map Layer
         /// </summary>
-        /// <param name="regions"></param>
-        /// <param name="args"></param>
-        /// <param name="layer"></param>
         protected virtual void InitializeLabels(List<Extent> regions, MapArgs args, IRenderable layer)
         {
-            IMapGroup grp = layer as IMapGroup;
-            if (layer.IsVisible)
-            {
-                if (grp != null)
-                {
-                    foreach (IMapLayer lyr in grp.Layers)
-                    {
-                        InitializeLabels(regions, args, lyr);
-                    }
-                    return;
-                }
+            if (!layer.IsVisible) return;
 
-                IMapFeatureLayer mfl = layer as IMapFeatureLayer;
-                if (mfl != null)
+            var grp = layer as IMapGroup;
+            if (grp != null)
+            {
+                foreach (IMapLayer lyr in grp.Layers)
                 {
-                    if (mfl.ShowLabels && mfl.LabelLayer != null)
+                    InitializeLabels(regions, args, lyr);
+                }
+                return;
+            }
+
+            var mfl = layer as IMapFeatureLayer;
+            if (mfl != null)
+            {
+                if (mfl.ShowLabels && mfl.LabelLayer != null)
+                {
+                    if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
                     {
-                        if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
-                            mfl.LabelLayer.DrawRegions(args, regions);
+                        mfl.LabelLayer.DrawRegions(args, regions);
                     }
                 }
             }
