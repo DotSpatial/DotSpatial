@@ -34,7 +34,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
 using System.Windows.Forms;
 using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Docking;
@@ -65,8 +64,6 @@ namespace DotSpatial.Controls
         private const string ExtensionsDirectory = "Extensions";
         private const int SplashDirectoryMessageLimit = 50;
 
-        private static ResourceManager resources;
-
         private AggregateCatalog _catalog;
         private IContainer _components;
         private string message = "";
@@ -85,7 +82,6 @@ namespace DotSpatial.Controls
             Directories = new List<string> { "Application Extensions", "Plugins" };
             SerializationManager = new SerializationManager(this);
             Extensions = new List<IExtension>();
-            resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
         }
 
         #endregion
@@ -254,8 +250,8 @@ namespace DotSpatial.Controls
                 if (ProgressHandler != null)
                 {
                     int percent = (progress * 100) / extensionCount;
-                    string msg = String.Format(resources.GetString("LoadingPluginsPercentComplete"), extension.Name, percent);
-                    ProgressHandler.Progress(resources.GetString("LoadingPlugins"), percent, msg);
+                    var msg = string.Format(MessageStrings.LoadingPluginsPercentComplete, extension.Name, percent);
+                    ProgressHandler.Progress(MessageStrings.LoadingPlugins, percent, msg);
                     progress++;
                 }
 
@@ -276,7 +272,7 @@ namespace DotSpatial.Controls
             //report progress
             if (ProgressHandler != null)
             {
-                ProgressHandler.Progress(resources.GetString("LoadingPlugins"), 0, String.Empty);
+                ProgressHandler.Progress(MessageStrings.LoadingPlugins, 0, String.Empty);
             }
         }
 
@@ -420,7 +416,7 @@ namespace DotSpatial.Controls
             if (!extension.IsActive)
             {
                 if (!extension.TryActivate())
-                    MessageBox.Show(String.Format(resources.GetString("ErrorWhileWhileActivating"), extension.AssemblyQualifiedName));
+                    MessageBox.Show(String.Format(MessageStrings.ErrorWhileWhileActivating, extension.AssemblyQualifiedName));
             }
         }
 
