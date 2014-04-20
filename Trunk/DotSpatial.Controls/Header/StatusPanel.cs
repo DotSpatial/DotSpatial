@@ -9,9 +9,13 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class StatusPanel : INotifyPropertyChanged
     {
+        #region Fields
+
         private string caption;
         private string key;
         private int width;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the StatusPanel class.
@@ -38,7 +42,7 @@ namespace DotSpatial.Controls.Header
                 if (caption == value)
                     return;
                 caption = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Caption"));
+                OnPropertyChanged("Caption");
             }
         }
 
@@ -59,7 +63,7 @@ namespace DotSpatial.Controls.Header
                 if (width == value)
                     return;
                 width = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Width"));
+                OnPropertyChanged("Width");
             }
         }
 
@@ -74,10 +78,9 @@ namespace DotSpatial.Controls.Header
             get { return key; }
             private set
             {
-                if (key == value)
-                    return;
+                if (key == value) return;
                 key = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Key"));
+                OnPropertyChanged("Key");
             }
         }
 
@@ -93,10 +96,13 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Triggers the PropertyChanged event.
         /// </summary>
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs ea)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, ea);
+            var h = PropertyChanged;
+            if (h != null)
+            {
+                h(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

@@ -5,9 +5,14 @@ using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls.Header;
 
-namespace DemoMap
+namespace DotSpatial.Examples.CustomAppManagerControls
 {
-    public class SimpleStatusControl : IStatusControl, IPartImportsSatisfiedNotification
+    /// <summary>
+    /// Simple implmenentation of IStatusControl.
+    /// It shows a technique how to create own status control as extension.
+    /// You may delete this class in your application. In this case default status control will be used.
+    /// </summary>
+    internal class SimpleStatusControl: IStatusControl, IPartImportsSatisfiedNotification
     {
         private StatusPanel defaultStatusPanel;
         private StatusStrip statusStrip;
@@ -19,20 +24,17 @@ namespace DemoMap
 
         public void OnImportsSatisfied()
         {
-            statusStrip = new StatusStrip();
+            statusStrip = new StatusStrip
+                          {
+                              ForeColor = Color.Blue
+                          };
 
-            statusStrip.Location = new Point(0, 285);
-            statusStrip.Name = "statusStrip1";
-            statusStrip.Size = new Size(508, 22);
-            statusStrip.TabIndex = 0;
-            statusStrip.Text = String.Empty;
+            // adding the status strip control
+            Shell.Controls.Add(statusStrip);
 
-            //adding the status strip control
-            Shell.Controls.Add(this.statusStrip);
-
-            //adding one initial status panel to the status strip control
+            // adding one initial status panel to the status strip control
             defaultStatusPanel = new StatusPanel();
-            this.Add(defaultStatusPanel);
+            Add(defaultStatusPanel);
         }
 
         #endregion
@@ -45,16 +47,18 @@ namespace DemoMap
         /// <param name="panel">the user-specified status panel</param>
         public void Add(StatusPanel panel)
         {
-            ToolStripStatusLabel myLabel = new ToolStripStatusLabel();
-            myLabel.Name = panel.Key;
-            myLabel.Text = panel.Caption;
-            myLabel.Width = panel.Width;
-            myLabel.Spring = (panel.Width == 0);
-            myLabel.TextAlign = ContentAlignment.MiddleLeft;
+            var myLabel = new ToolStripStatusLabel
+                          {
+                              Name = panel.Key,
+                              Text = panel.Caption,
+                              Width = panel.Width,
+                              Spring = (panel.Width == 0),
+                              TextAlign = ContentAlignment.MiddleLeft
+                          };
 
             panel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
                 {
-                    var item = sender as StatusPanel;
+                    var item = (StatusPanel)sender;
 
                     myLabel.Text = item.Caption;
                     myLabel.Width = item.Width;
@@ -65,14 +69,7 @@ namespace DemoMap
 
         public void Progress(string key, int percent, string message)
         {
-            if (percent == 0)
-            {
-                defaultStatusPanel.Caption = message;
-            }
-            else
-            {
-                defaultStatusPanel.Caption = String.Format("{0}... {1}%", message, percent);
-            }
+            defaultStatusPanel.Caption = percent == 0 ? message : String.Format("{0}... {1}%", message, percent);
 
             if (!statusStrip.InvokeRequired)
             {

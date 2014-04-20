@@ -6,10 +6,10 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Plugins.ExtensionManager.Properties;
-using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -25,6 +25,25 @@ namespace DotSpatial.Plugins.ExtensionManager
         #region Public Methods
 
         public override void Activate()
+        {
+            var updateThread = new Thread(DoActivate);
+            var timeStarted = DateTime.UtcNow;
+            updateThread.Start();
+
+            // Update splash screen's progress bar while thread is active or 10 seconds have past.
+            var span = TimeSpan.FromMilliseconds(0);
+            while (updateThread.IsAlive && span.TotalMilliseconds < 10000)
+            {
+                App.UpdateSplashScreen("Looking for updates");
+                span = DateTime.UtcNow - timeStarted;
+            }
+
+            // Join the threads. If the thread is still active, wait a full second before giving up.
+            updateThread.Join(1000);
+            App.UpdateSplashScreen("Finished.");
+        }
+
+        private void DoActivate()
         {
             AddButtons();
             base.Activate();
@@ -67,10 +86,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                     AppFunction fun = new AppFunction { Manager = App, Map = App.Map };
                     App.Map.MapFunctions.Insert(0, fun);
                     fun.Activate();
-                    break;
-
-                case ShowExtensionsDialog.None:
-                default:
                     break;
             }
         }

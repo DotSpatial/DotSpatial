@@ -36,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
+using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
@@ -187,13 +188,15 @@ namespace DotSpatial.Controls
         public IHeaderControl HeaderControl { get; set; }
 
         /// <summary>
-        /// Gets the Legend (Table of Contents) associated with the plugin manager
+        /// Gets or sets the Legend (Table of Contents) associated with the plugin manager
         /// </summary>
+        [Description("Gets or sets the Legend (Table of Contents) associated with the plugin manager")]
         public ILegend Legend { get; set; }
 
         /// <summary>
-        /// Gets the Map associated with the plugin manager
+        /// Gets or sets the Map associated with the plugin manager
         /// </summary>
+        [Description("Gets or sets the Map associated with the plugin manager")]
         public IMap Map { get; set; }
 
         /// <summary>
@@ -396,7 +399,7 @@ namespace DotSpatial.Controls
             if (splashScreen != null)
                 UpdateSplashScreen(msg);
             else if (ProgressHandler != null)
-                ProgressHandler.Progress(String.Empty, int.MinValue, msg);
+                ProgressHandler.Progress(String.Empty, 0, msg);
             else
             {
                 MessageBox.Show(msg);
@@ -418,51 +421,19 @@ namespace DotSpatial.Controls
 
         private void ActivateAllExtensions()
         {
-            if (Extensions != null && Extensions.Any())
+            foreach (var extension in SatisfyImportsExtensions.OrderBy(t => t.Priority))
             {
-                foreach (ISatisfyImportsExtension extension in SatisfyImportsExtensions.OrderBy(t => t.Priority))
-                {
-                    extension.Activate();
-                }
-                if (!EnsureRequiredImportsAreAvailable())
-                    return;
-                OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
+                extension.Activate();
+            }
 
-                // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
-                // need to be created before other plugins are loaded.
-                foreach (IExtension extension in Extensions.Where(t => t.DeactivationAllowed == false))
-                {
-                    if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
-                    {
-                        IExtension extension1 = extension;
-                        Thread updateThread = new Thread(() => Activate(extension1));
-                        updateThread.Start();
-                        DateTime timeStarted = DateTime.UtcNow;
+            if (!EnsureRequiredImportsAreAvailable()) return;
+            OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
 
-                        //Update splash screen's progress bar while thread is active or 10 seconds have past.
-                        TimeSpan span = TimeSpan.FromMilliseconds(0);
-                        while (updateThread.IsAlive && span.TotalMilliseconds < 10000)
-                        {
-                            UpdateSplashScreen("Looking for updates");
-                            //message = "Looking for updates";
-                            span = DateTime.UtcNow - timeStarted;
-                        }
-
-                        //Join the threads. If the thread is still active, wait a full second before giving up.
-                        updateThread.Join(1000);
-                        UpdateSplashScreen("Finished.");
-                        // message = "Finished.";
-                    }
-                    else
-                    {
-                        Activate(extension);
-                    }
-                }
-
-                foreach (IExtension extension in Extensions.Where(t => t.DeactivationAllowed))
-                {
-                    Activate(extension);
-                }
+            // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
+            // need to be created before other plugins are loaded.
+            foreach (var extension in Extensions.OrderBy(_ => _.DeactivationAllowed))
+            {
+                Activate(extension);
             }
         }
 
@@ -567,6 +538,9 @@ namespace DotSpatial.Controls
                 Trace.WriteLine("Cataloging: " + mainExe.FullName);
             }
 
+            // Add DotSpatial Controls (includes defaut required extensions)
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(AppManager).Assembly));
+
             // Add DotSpatial Data (Which includes data providers)
             Assembly dataDll = typeof(BinaryRasterProvider).Assembly;
             catalog.Catalogs.Add(new AssemblyCatalog(dataDll));
@@ -637,17 +611,27 @@ namespace DotSpatial.Controls
 
         private T GetRequiredImport<T>() where T : class
         {
-            T import = CompositionContainer.GetExportedValueOrDefault<T>();
+            var imports = CompositionContainer.GetExportedValues<T>().ToList();
 
-            if (import == default(T))
+            if (imports.Count > 1)
             {
-                int importCount = CompositionContainer.GetExportedValues<T>().Count();
+                // If more then one required import, skip default imports
+                imports = imports
+                    .Where(_ => !_.GetType().GetCustomAttributes(typeof (DefaultRequiredImportAttribute), false).Any())
+                    .ToList();
+            }
+
+            if (imports.Count != 1)
+            {
+                var importCount = imports.Count;
                 string extensionTypeName = typeof(T).Name;
                 MessageBox.Show(importCount > 1
                     ? String.Format("You may only include one {0} Extension. {1} were found.", extensionTypeName, importCount)
-                    : String.Format("A {0} extension must be included because a UI plugin was found. See http://wp.me/pvy5A-2v", extensionTypeName));
+                    : String.Format("A {0} extension must be included because a UI plugin was found.", extensionTypeName));
+                return null;
             }
-            return import;
+
+            return imports[0];
         }
 
         /// <summary>
@@ -683,10 +667,10 @@ namespace DotSpatial.Controls
 
         private void OnSatisfyImportsExtensionsActivated(EventArgs ea)
         {
-            if (SatisfyImportsExtensionsActivated != null)
-            {
-                SatisfyImportsExtensionsActivated(this, ea);
-            }
+            var h = SatisfyImportsExtensionsActivated;
+            if (h != null)
+                h(this, ea);
+            
         }
 
         private string PrefixWithEllipsis(string text, int length)
@@ -724,7 +708,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private void UpdateSplashScreen(string text)
+        public void UpdateSplashScreen(string text)
         {
             if (splashScreen != null && text != null)
                 splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
@@ -732,4 +716,5 @@ namespace DotSpatial.Controls
 
         #endregion
     }
+   
 }

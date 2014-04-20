@@ -1,6 +1,5 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="StatusBarCoordinates.cs" company="">
-// TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 using System;
@@ -10,9 +9,11 @@ using DotSpatial.Symbology;
 
 namespace DemoMap
 {
+    /// <summary>
+    /// Displays how much layers selected
+    /// </summary>
     public class StatusShowSelectionCount : Extension
     {
-
         private StatusPanel panel;
 
         public override void Activate()
@@ -20,8 +21,7 @@ namespace DemoMap
             App.Map.SelectionChanged += Map_SelectionChanged;
             App.Map.MapFrame.LayerSelected += MapFrame_LayerSelected;
 
-            panel = new StatusPanel();
-            panel.Width = 180;
+            panel = new StatusPanel {Width = 180};
             App.ProgressHandler.Add(panel);
 
             base.Activate();
@@ -47,6 +47,7 @@ namespace DemoMap
                 }
             }
         }
+
         void Map_SelectionChanged(object sender, EventArgs e)
         {
             UpdateStatus();

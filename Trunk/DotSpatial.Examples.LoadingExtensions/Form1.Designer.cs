@@ -35,6 +35,7 @@
             this.uxZoomWide = new System.Windows.Forms.Button();
             this.uxPan = new System.Windows.Forms.Button();
             this.appManager1 = new DotSpatial.Controls.AppManager();
+            this.legend1 = new DotSpatial.Controls.Legend();
             this.SuspendLayout();
             // 
             // uxMap
@@ -49,15 +50,16 @@
             this.uxMap.ExtendBuffer = false;
             this.uxMap.FunctionMode = DotSpatial.Controls.FunctionMode.None;
             this.uxMap.IsBusy = false;
+            this.uxMap.IsZoomedToMaxExtent = false;
             this.uxMap.Legend = null;
-            this.uxMap.Location = new System.Drawing.Point(12, 30);
+            this.uxMap.Location = new System.Drawing.Point(194, 30);
             this.uxMap.Name = "uxMap";
             this.uxMap.ProgressHandler = null;
             this.uxMap.ProjectionModeDefine = DotSpatial.Controls.ActionMode.Prompt;
             this.uxMap.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
             this.uxMap.RedrawLayersWhileResizing = false;
             this.uxMap.SelectionEnabled = true;
-            this.uxMap.Size = new System.Drawing.Size(560, 320);
+            this.uxMap.Size = new System.Drawing.Size(511, 308);
             this.uxMap.TabIndex = 0;
             // 
             // uxOpenFile
@@ -102,19 +104,43 @@
             // 
             // appManager1
             // 
+            this.appManager1.CompositionContainer = null;
             this.appManager1.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager1.Directories")));
             this.appManager1.DockManager = null;
             this.appManager1.HeaderControl = null;
-            this.appManager1.Legend = null;
+            this.appManager1.Legend = this.legend1;
             this.appManager1.Map = this.uxMap;
             this.appManager1.ProgressHandler = null;
             this.appManager1.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
+            // 
+            // legend1
+            // 
+            this.legend1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.legend1.BackColor = System.Drawing.Color.White;
+            this.legend1.ControlRectangle = new System.Drawing.Rectangle(0, 0, 190, 308);
+            this.legend1.DocumentRectangle = new System.Drawing.Rectangle(0, 0, 187, 428);
+            this.legend1.HorizontalScrollEnabled = true;
+            this.legend1.Indentation = 30;
+            this.legend1.IsInitialized = false;
+            this.legend1.Location = new System.Drawing.Point(-2, 30);
+            this.legend1.MinimumSize = new System.Drawing.Size(5, 5);
+            this.legend1.Name = "legend1";
+            this.legend1.ProgressHandler = null;
+            this.legend1.ResetOnResize = false;
+            this.legend1.SelectionFontColor = System.Drawing.Color.Black;
+            this.legend1.SelectionHighlight = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(238)))), ((int)(((byte)(252)))));
+            this.legend1.Size = new System.Drawing.Size(190, 308);
+            this.legend1.TabIndex = 5;
+            this.legend1.Text = "legend1";
+            this.legend1.VerticalScrollEnabled = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 362);
+            this.ClientSize = new System.Drawing.Size(717, 362);
+            this.Controls.Add(this.legend1);
             this.Controls.Add(this.uxPan);
             this.Controls.Add(this.uxZoomWide);
             this.Controls.Add(this.uxZoomIn);
@@ -134,6 +160,7 @@
         private System.Windows.Forms.Button uxZoomWide;
         private System.Windows.Forms.Button uxPan;
         private Controls.AppManager appManager1;
+        private Controls.Legend legend1;
 
     }
 }

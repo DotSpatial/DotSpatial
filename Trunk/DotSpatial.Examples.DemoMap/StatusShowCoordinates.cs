@@ -1,6 +1,5 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="StatusBarCoordinates.cs" company="">
-// TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 using DotSpatial.Controls.Header;
@@ -23,8 +22,8 @@ namespace DemoMap
             _Map = (Map)App.Map;
             _Map.GeoMouseMove += Map_GeoMouseMove;
 
-            xPanel = new StatusPanel() { Width = 160 };
-            yPanel = new StatusPanel() { Width = 160 };
+            xPanel = new StatusPanel { Width = 160 };
+            yPanel = new StatusPanel { Width = 160 };
             App.ProgressHandler.Add(xPanel);
             App.ProgressHandler.Add(yPanel);
 

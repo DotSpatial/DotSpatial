@@ -60,9 +60,12 @@
     <Compile Include="DatelineCrossingMap.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DefaultRequiredImports\DefaultRequiredImportAttribute.cs" />
+    <Compile Include="DefaultRequiredImports\StatusControl.cs" />
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Header\ProgressStatusPanel.cs" />
     <Compile Include="PackageManager.cs" />
     <Compile Include="ShowExtensionsDialog.cs" />
     <Compile Include="AppManager.cs">

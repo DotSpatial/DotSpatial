@@ -86,9 +86,6 @@ namespace DotSpatial.Controls
                 ProgressBar.Value = percent;
             if (ProgressLabel != null)
                 ProgressLabel.Text = message;
-
-            // todo: I think there is a bug somewhere if we need to call DoEvents at the end of this event handler.
-            Application.DoEvents();
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace DotSpatial.Controls
 
             if (ProgressBar == null)
             {
-                ToolStripProgressBar pb = e.Item as ToolStripProgressBar;
+                var pb = e.Item as ToolStripProgressBar;
                 if (pb != null)
                 {
                     ProgressBar = pb;
@@ -110,7 +107,7 @@ namespace DotSpatial.Controls
 
             if (ProgressLabel == null)
             {
-                ToolStripStatusLabel sl = e.Item as ToolStripStatusLabel;
+                var sl = e.Item as ToolStripStatusLabel;
                 if (sl != null)
                 {
                     ProgressLabel = sl;

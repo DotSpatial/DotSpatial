@@ -93,9 +93,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleStatusControl.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="StatusShowCoordinates.cs" />
     <Compile Include="StatusShowSelectionCount.cs" />
     <EmbeddedResource Include="MainForm.resx">
