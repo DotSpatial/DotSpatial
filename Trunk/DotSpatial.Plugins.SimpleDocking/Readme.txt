@@ -1,1 +1,0 @@
-﻿IDockManager implementation for Mono.

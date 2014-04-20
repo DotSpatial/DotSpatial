@@ -2,10 +2,12 @@
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
-using DotSpatial.Plugins.SimpleLegend.Properties;
 
-namespace DotSpatial.Plugins.SimpleLegend
+namespace DotSpatial.Examples.AppManagerCustomizationRuntime.Extensions
 {
+    /// <summary>
+    /// Simple plugin which adds legend to the dock manager
+    /// </summary
     public class SimpleLegendPlugin : Extension
     {
         public override void Activate()
@@ -37,7 +39,7 @@ namespace DotSpatial.Plugins.SimpleLegend
                               ResetOnResize = false,
                               SelectionFontColor = Color.Black,
                               SelectionHighlight = Color.FromArgb(215, 238, 252),
-                              Text = Resources.Legend,
+                              Text = "Legend",
                               VerticalScrollEnabled = true,
                               Size = new Size(150, 200)
                           };
@@ -47,7 +49,7 @@ namespace DotSpatial.Plugins.SimpleLegend
                 App.Map.Legend = legend1;
             }
             App.Legend = legend1;
-            App.DockManager.Add(new DockablePanel("kLegend", Resources.Legend, legend1, DockStyle.Left) { SmallImage = Resources.legend_16x16 });
+            App.DockManager.Add(new DockablePanel("kLegend", "Legend", legend1, DockStyle.Left));
         }
     }
 }

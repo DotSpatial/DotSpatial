@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
-using DotSpatial.Data.Properties;
 
 namespace DemoPlugin
 {
@@ -22,9 +21,6 @@ namespace DemoPlugin
 
         public override void Activate()
         {
-            //to test slow loading
-            //System.Threading.Thread.Sleep(20000);
-
             AddMenuItems(App.HeaderControl);
 
             //code for saving plugin settings...
@@ -87,27 +83,6 @@ namespace DemoPlugin
         {
             var manager = (SerializationManager)sender;
             manager.SetCustomSetting(UniqueKeyPluginStoredValueDate, _storedValue);
-        }
-
-        private void myButton_Click(object sender, EventArgs e)
-        {
-            foreach (var recentFile in Settings.Default.RecentFiles)
-            {
-                MessageBox.Show("Recent File: " + recentFile);
-            }
-
-            IMapRasterLayer[] layers = App.Map.GetRasterLayers();
-            if (layers.Length == 0)
-            {
-                MessageBox.Show("Please add a raster layer.");
-                return;
-            }
-            IMapRasterLayer layer = layers[0];
-            layer.Symbolizer.ShadedRelief.ElevationFactor = 1;
-            layer.Symbolizer.ShadedRelief.IsUsed = true;
-            layer.Symbolizer.CreateHillShade();
-
-            layer.WriteBitmap();
         }
     }
 }

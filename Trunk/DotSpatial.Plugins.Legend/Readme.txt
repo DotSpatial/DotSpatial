@@ -1,1 +1,1 @@
-﻿Basic legend control.
+﻿Plugin which adds basic legend control to the DockManager.

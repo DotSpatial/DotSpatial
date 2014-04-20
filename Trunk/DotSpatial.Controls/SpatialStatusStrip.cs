@@ -24,7 +24,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Forms;
-using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Controls
@@ -93,6 +92,7 @@ namespace DotSpatial.Controls
                 ProgressBar.Value = percent;
             if (ProgressLabel != null)
                 ProgressLabel.Text = message;
+            Refresh();
         }
 
         /// <summary>
@@ -122,6 +122,14 @@ namespace DotSpatial.Controls
             }
         }
 
+        protected override void OnItemRemoved(ToolStripItemEventArgs e)
+        {
+            base.OnItemRemoved(e);
+
+            if (ProgressBar == e.Item) ProgressBar = null;
+            if (ProgressLabel == e.Item) ProgressLabel = null;
+        }
+
         #region IStatusControl implementation
 
         public void Add(StatusPanel panel)
@@ -134,7 +142,7 @@ namespace DotSpatial.Controls
             {
                 pb = new ToolStripProgressBar
                 {
-                    Name = PanelGuiElements.GetKeyName<ToolStripProgressBar>(panel.Key),
+                    Name = GetKeyName<ToolStripProgressBar>(panel.Key),
                     Width = 100,
                     Alignment = ToolStripItemAlignment.Left
                 };
@@ -143,7 +151,7 @@ namespace DotSpatial.Controls
 
             var sl = new ToolStripStatusLabel
             {
-                Name = PanelGuiElements.GetKeyName<ToolStripStatusLabel>(panel.Key),
+                Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
                 Text = panel.Caption,
                 Spring = (panel.Width == 0),
                 TextAlign = ContentAlignment.MiddleLeft
@@ -206,6 +214,17 @@ namespace DotSpatial.Controls
                 Items.Remove(panelDesc.Progress);
         }
 
+        private static string GetKeyName<T>(string key)
+        {
+            return typeof(T).Name + key;
+        }
+
         #endregion
+
+        internal class PanelGuiElements
+        {
+            public ToolStripStatusLabel Caption { get; set; }
+            public ToolStripProgressBar Progress { get; set; }
+        }
     }
 }
