@@ -1,4 +1,4 @@
-﻿namespace DotSpatial.Examples.CustomAppManagerControls
+﻿namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
 {
     partial class Form1
     {
@@ -31,6 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.appManager = new DotSpatial.Controls.AppManager();
             this.map1 = new DotSpatial.Controls.Map();
+            this.spatialStatusStrip1 = new DotSpatial.Controls.SpatialStatusStrip();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.spatialStatusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // appManager
@@ -41,7 +47,7 @@
             this.appManager.HeaderControl = null;
             this.appManager.Legend = null;
             this.appManager.Map = this.map1;
-            this.appManager.ProgressHandler = null;
+            this.appManager.ProgressHandler = this.spatialStatusStrip1;
             this.appManager.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // map1
@@ -63,18 +69,60 @@
             this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.Prompt;
             this.map1.RedrawLayersWhileResizing = false;
             this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(552, 337);
+            this.map1.Size = new System.Drawing.Size(600, 383);
             this.map1.TabIndex = 0;
+            // 
+            // spatialStatusStrip1
+            // 
+            this.spatialStatusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel3});
+            this.spatialStatusStrip1.Location = new System.Drawing.Point(0, 361);
+            this.spatialStatusStrip1.Name = "spatialStatusStrip1";
+            this.spatialStatusStrip1.ProgressBar = this.toolStripProgressBar1;
+            this.spatialStatusStrip1.ProgressLabel = this.toolStripStatusLabel1;
+            this.spatialStatusStrip1.Size = new System.Drawing.Size(600, 22);
+            this.spatialStatusStrip1.TabIndex = 1;
+            this.spatialStatusStrip1.Text = "spatialStatusStrip1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(116, 17);
+            this.toolStripStatusLabel2.Text = "Design Time Control";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabel1.Text = "Ready";
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(297, 17);
+            this.toolStripStatusLabel3.Spring = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 337);
+            this.ClientSize = new System.Drawing.Size(600, 383);
+            this.Controls.Add(this.spatialStatusStrip1);
             this.Controls.Add(this.map1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.spatialStatusStrip1.ResumeLayout(false);
+            this.spatialStatusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -82,6 +130,11 @@
 
         private Controls.AppManager appManager;
         private Controls.Map map1;
+        private Controls.SpatialStatusStrip spatialStatusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
     }
 }
 

@@ -19,9 +19,13 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Forms;
-using DotSpatial.Data;
+using DotSpatial.Controls.DefaultRequiredImports;
+using DotSpatial.Controls.Header;
 
 namespace DotSpatial.Controls
 {
@@ -29,9 +33,11 @@ namespace DotSpatial.Controls
     /// A pre-configured status strip with a thread safe Progress function
     /// </summary>
     [ToolboxBitmap(typeof(SpatialStatusStrip), "SpatialStatusStrip.ico")]
-    [Obsolete("Load the DotSpatial.Plugins.MenuBar into a form that implements IStatusControl or, just use a regular .Net StatusStrip. See http://tinyurl.com/obsolete1")]
-    public partial class SpatialStatusStrip : StatusStrip, IProgressHandler
+    [PartNotDiscoverable] // Do not allow discover this class by MEF
+    public partial class SpatialStatusStrip : StatusStrip, IStatusControl
     {
+        private readonly Dictionary<StatusPanel, PanelGuiElements> _panels = new Dictionary<StatusPanel, PanelGuiElements>();
+
         /// <summary>
         /// Creates a new instance of the StatusStrip which has a built in, thread safe Progress handler
         /// </summary>
@@ -46,6 +52,7 @@ namespace DotSpatial.Controls
         /// <value>
         /// The progress bar.
         /// </value>
+        [Description("Gets or sets the progress bar. By default, the first ToolStripProgressBar that is added to the tool strip.")]
         public ToolStripProgressBar ProgressBar { get; set; }
 
         /// <summary>
@@ -54,6 +61,7 @@ namespace DotSpatial.Controls
         /// <value>
         /// The progress label.
         /// </value>
+        [Description("Gets or sets the progress label. By default, the first ToolStripStatusLabel that is added to the tool strip.")]
         public ToolStripStatusLabel ProgressLabel { get; set; }
 
         #region IProgressHandler Members
@@ -69,18 +77,17 @@ namespace DotSpatial.Controls
         {
             if (InvokeRequired)
             {
-                UpdateProg prg = UpdateProgress;
-                BeginInvoke(prg, new object[] { key, percent, message });
+                BeginInvoke((Action<int, string>)UpdateProgress, percent, message);
             }
             else
             {
-                UpdateProgress(key, percent, message);
+                UpdateProgress(percent, message);
             }
         }
 
         #endregion
 
-        private void UpdateProgress(string key, int percent, string message)
+        private void UpdateProgress(int percent, string message)
         {
             if (ProgressBar != null)
                 ProgressBar.Value = percent;
@@ -115,9 +122,89 @@ namespace DotSpatial.Controls
             }
         }
 
-        #region Nested type: UpdateProg
+        #region IStatusControl implementation
 
-        private delegate void UpdateProg(string key, int percent, string message);
+        public void Add(StatusPanel panel)
+        {
+            if (panel == null) throw new ArgumentNullException("panel");
+
+            ToolStripProgressBar pb = null;
+            var psp = panel as ProgressStatusPanel;
+            if (psp != null)
+            {
+                pb = new ToolStripProgressBar
+                {
+                    Name = PanelGuiElements.GetKeyName<ToolStripProgressBar>(panel.Key),
+                    Width = 100,
+                    Alignment = ToolStripItemAlignment.Left
+                };
+                Items.Add(pb);
+            }
+
+            var sl = new ToolStripStatusLabel
+            {
+                Name = PanelGuiElements.GetKeyName<ToolStripStatusLabel>(panel.Key),
+                Text = panel.Caption,
+                Spring = (panel.Width == 0),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            Items.Add(sl);
+
+            _panels.Add(panel, new PanelGuiElements { Caption = sl, Progress = pb });
+
+            panel.PropertyChanged += PanelOnPropertyChanged;
+        }
+
+        private void PanelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var panel = (StatusPanel)sender;
+            if (InvokeRequired)
+            {
+                BeginInvoke((Action<StatusPanel, string>)UpdatePanelGuiProps, panel, e.PropertyName);
+            }
+            else
+            {
+                UpdatePanelGuiProps(panel, e.PropertyName);
+            }
+        }
+
+        private void UpdatePanelGuiProps(StatusPanel sender, string propertyName)
+        {
+            PanelGuiElements panelDesc;
+            if (!_panels.TryGetValue(sender, out panelDesc)) return;
+
+            switch (propertyName)
+            {
+                case "Caption":
+                    if (panelDesc.Caption != null)
+                    {
+                        panelDesc.Caption.Text = sender.Caption;
+                    }
+                    break;
+                case "Percent":
+                    if (panelDesc.Progress != null && sender is ProgressStatusPanel)
+                    {
+                        panelDesc.Progress.Value = ((ProgressStatusPanel)sender).Percent;
+                    }
+                    break;
+            }
+            Refresh();
+        }
+
+        public void Remove(StatusPanel panel)
+        {
+            if (panel == null) throw new ArgumentNullException("panel");
+
+            panel.PropertyChanged -= PanelOnPropertyChanged;
+
+            PanelGuiElements panelDesc;
+            if (!_panels.TryGetValue(panel, out panelDesc)) return;
+
+            if (panelDesc.Caption != null)
+                Items.Remove(panelDesc.Caption);
+            if (panelDesc.Progress != null)
+                Items.Remove(panelDesc.Progress);
+        }
 
         #endregion
     }

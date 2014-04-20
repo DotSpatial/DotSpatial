@@ -1,7 +1,14 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
-namespace DotSpatial.Examples.CustomAppManagerControls
+namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
 {
     public partial class Form1 : Form
     {
@@ -19,7 +26,7 @@ namespace DotSpatial.Examples.CustomAppManagerControls
             appManager.LoadExtensions();
             //-----------
 
-            appManager.UpdateProgress("Ready"); // Show some status message
+            appManager.UpdateProgress("Control is Ready"); // Show some status message
         }
     }
 }

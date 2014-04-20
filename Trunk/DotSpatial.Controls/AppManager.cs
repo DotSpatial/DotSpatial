@@ -200,9 +200,10 @@ namespace DotSpatial.Controls
         public IMap Map { get; set; }
 
         /// <summary>
-        /// Gets the progress handler that is being used to display status messages.
+        /// Gets or sets the progress handler that is being used to display status messages.
         /// </summary>
-        [Browsable(false)]
+        [Browsable(true)]
+        [Description("Gets or sets the progress handler that is being used to display status messages. You can leave this empty to use default status bar.")]
         public IStatusControl ProgressHandler { get; set; }
 
         [Browsable(false)]
@@ -289,7 +290,11 @@ namespace DotSpatial.Controls
         {
             DockManager = GetRequiredImport<IDockManager>();
             HeaderControl = GetRequiredImport<IHeaderControl>();
-            ProgressHandler = GetRequiredImport<IStatusControl>();
+
+            if (ProgressHandler == null)
+            {
+                ProgressHandler = GetRequiredImport<IStatusControl>();
+            }
 
             if (DockManager == null || HeaderControl == null || ProgressHandler == null)
                 return false;

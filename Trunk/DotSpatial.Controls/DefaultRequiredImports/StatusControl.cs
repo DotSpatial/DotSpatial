@@ -46,7 +46,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
                 pb = new ToolStripProgressBar
                               {
-                                  Name = GetKeyName<ToolStripProgressBar>(panel.Key),
+                                  Name = PanelGuiElements.GetKeyName<ToolStripProgressBar>(panel.Key),
                                   Width = 100,
                                   Alignment = ToolStripItemAlignment.Left
                               };
@@ -55,7 +55,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
             var sl = new ToolStripStatusLabel
             {
-                Name = GetKeyName<ToolStripStatusLabel>(panel.Key),
+                Name = PanelGuiElements.GetKeyName<ToolStripStatusLabel>(panel.Key),
                 Text = panel.Caption,
                 Spring = (panel.Width == 0),
                 TextAlign = ContentAlignment.MiddleLeft
@@ -112,11 +112,6 @@ namespace DotSpatial.Controls.DefaultRequiredImports
             _defaultStatusPanel.Percent = percent;
         }
 
-        private static string GetKeyName<T>(string key)
-        {
-            return typeof (T).Name + key;
-        }
-
         public void Remove(StatusPanel panel)
         {
             if (panel == null) throw new ArgumentNullException("panel");
@@ -144,8 +139,10 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
             var statusControls = App.CompositionContainer.GetExportedValues<IStatusControl>().ToList();
 
-            // Activate only if there are no others IStatusControl implementations
-            if (statusControls.Count == 1 && statusControls[0].GetType() == GetType())
+            // Activate only if there are no other IStatusControl implementations and
+            // custom ProgressHandler not yet set
+            if (App.ProgressHandler == null &&
+                statusControls.Count == 1 && statusControls[0].GetType() == GetType())
             {
                 _isActivated = true;
 
@@ -156,12 +153,6 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 // adding initial status panel to the status strip control
                 Add(new ProgressStatusPanel());
             }
-        }
-
-        class PanelGuiElements
-        {
-            public ToolStripStatusLabel Caption { get; set; }
-            public ToolStripProgressBar Progress { get; set; }
         }
     }
 }

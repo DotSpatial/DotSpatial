@@ -61,6 +61,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DefaultRequiredImports\DefaultRequiredImportAttribute.cs" />
+    <Compile Include="DefaultRequiredImports\PanelGuiElements.cs" />
     <Compile Include="DefaultRequiredImports\StatusControl.cs" />
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
@@ -370,7 +371,7 @@
   <ItemGroup>
     <EmbeddedResource Include="SpatialToolStrip.ico" />
     <EmbeddedResource Include="SpatialProgressBar.ico" />
-    <EmbeddedResource Include="SpatialStatusStrip.ico" />
+    <EmbeddedResource Include="Resources\SpatialStatusStrip.ico" />
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
     <None Include="package.nuspec" />
