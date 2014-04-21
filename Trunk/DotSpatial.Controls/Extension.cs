@@ -81,6 +81,11 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Specifies the activation priority order
+        /// </summary>
+        public virtual int Priority { get { return 0; } }
+
         #endregion
 
         /// <summary>

@@ -244,7 +244,7 @@ namespace DotSpatial.Controls
             var extensionCount = extensions.Count();
             int progress = 0;
 
-            foreach (var extension in extensions)
+            foreach (var extension in extensions.OrderBy(_ => _.Priority))
             {
                 //report progress
                 if (ProgressHandler != null)
@@ -277,15 +277,22 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Ensures the required imports are available for IExtension implementors. We guarantee DockManager, HeaderControl, and ProgressHandler
+        /// Ensures the required imports are available for IExtension implementors. We guarantee DockManager, HeaderControl and ProgressHandler
         /// are available when an IExtension loads, so that the developer of an IExtension doesn't need to check to see whether they are null.
         /// We make sure these are available before activating an IExtension.
         /// </summary>
         /// <returns></returns>
         public bool EnsureRequiredImportsAreAvailable()
         {
-            DockManager = GetRequiredImport<IDockManager>();
-            HeaderControl = GetRequiredImport<IHeaderControl>();
+            if (DockManager == null)
+            {
+                DockManager = GetRequiredImport<IDockManager>();
+            }
+
+            if (HeaderControl == null)
+            {
+                HeaderControl = GetRequiredImport<IHeaderControl>();
+            }
 
             if (ProgressHandler == null)
             {
@@ -432,7 +439,13 @@ namespace DotSpatial.Controls
 
             // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
             // need to be created before other plugins are loaded.
-            foreach (var extension in Extensions.OrderBy(_ => _.DeactivationAllowed))
+            foreach (var extension in Extensions.Where(_ => !_.DeactivationAllowed).OrderBy(_ => _.Priority))
+            {
+                Activate(extension);
+            }
+
+            // Activate remaining extensions
+            foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
             {
                 Activate(extension);
             }

@@ -47,71 +47,28 @@ namespace DemoMap
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.appManager = new DotSpatial.Controls.AppManager();
-            this.map1 = new DotSpatial.Controls.Map();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ttHelp = new System.Windows.Forms.ToolTip(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // appManager
             // 
+            this.appManager.CompositionContainer = null;
             this.appManager.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager.Directories")));
             this.appManager.DockManager = null;
             this.appManager.HeaderControl = null;
-            this.appManager.Map = this.map1;
+            this.appManager.Legend = null;
             this.appManager.ProgressHandler = null;
             this.appManager.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
-            // 
-            // map1
-            // 
-            this.map1.AllowDrop = true;
-            this.map1.BackColor = System.Drawing.Color.White;
-            this.map1.CollectAfterDraw = false;
-            this.map1.CollisionDetection = true;
-            this.map1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.map1.ExtendBuffer = false;
-            this.map1.FunctionMode = DotSpatial.Controls.FunctionMode.None;
-            this.map1.IsBusy = false;
-            this.map1.Location = new System.Drawing.Point(0, 0);
-            this.map1.Name = "map1";
-            this.map1.ProgressHandler = null;
-            this.map1.ProjectionModeDefine = DotSpatial.Controls.ActionMode.PromptOnce;
-            this.map1.ProjectionModeReproject = DotSpatial.Controls.ActionMode.PromptOnce;
-            this.map1.RedrawLayersWhileResizing = false;
-            this.map1.SelectionEnabled = true;
-            this.map1.Size = new System.Drawing.Size(596, 506);
-            this.map1.TabIndex = 0;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.map1);
-            this.splitContainer1.Size = new System.Drawing.Size(857, 506);
-            this.splitContainer1.SplitterDistance = 257;
-            this.splitContainer1.TabIndex = 3;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(857, 506);
-            this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "DemoMap";
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -119,8 +76,5 @@ namespace DemoMap
         #endregion
 
         private AppManager appManager;
-        private Map map1;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ToolTip ttHelp;
     }
 }

@@ -6,6 +6,18 @@ namespace DotSpatial.Plugins.SimpleMap
 {
     public class SimpleMapPlugin : Extension
     {
+        private Map _map;
+
+        public SimpleMapPlugin()
+        {
+            DeactivationAllowed = false;
+        }
+
+        public override int Priority
+        {
+            get { return -10000; }
+        }
+
         public override void Activate()
         {
             ShowMap();
@@ -16,14 +28,15 @@ namespace DotSpatial.Plugins.SimpleMap
         {
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove("kMap");
+            if (App.Map == _map) App.Map = null;
             base.Deactivate();
         }
 
         private void ShowMap()
         {
-            var map = new Map {Text = "Map", Name = "map1", Legend = App.Legend};
-            App.Map = map;
-            App.DockManager.Add(new DockablePanel("kMap", "Map", map, DockStyle.Fill));
+            _map = new Map {Text = "Map", Name = "map1", Legend = App.Legend};
+            App.Map = _map;
+            App.DockManager.Add(new DockablePanel("kMap", "Map", _map, DockStyle.Fill));
         }
     }
 }

@@ -9,6 +9,11 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.Extensions
     /// </summary>
     public class SimpleMapPlugin : Extension
     {
+        public override int Priority
+        {
+            get { return -100; }
+        }
+
         public override void Activate()
         {
             ShowMap();
