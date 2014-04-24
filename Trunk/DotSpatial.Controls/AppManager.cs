@@ -162,12 +162,12 @@ namespace DotSpatial.Controls
         public List<string> Directories { get; set; }
 
         /// <summary>
-        /// Gets or sets the dock manager.
+        /// Gets or sets the dock manager that is being used to storing dock panels. You can leave this empty to use default dock manager.
         /// </summary>
         /// <value>
         /// The dock manager.
         /// </value>
-        [Browsable(false)]
+        [Description("Gets or sets the dock manager that is being used to storing dock panels. You can leave this empty to use default dock manager.")]
         public IDockManager DockManager { get; set; }
 
         /// <summary>

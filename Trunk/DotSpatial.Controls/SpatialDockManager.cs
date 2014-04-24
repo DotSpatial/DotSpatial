@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
 
@@ -17,31 +18,53 @@ namespace DotSpatial.Controls
 
         public SpatialDockManager()
         {
-            Panel1.Controls.Add(TabControl1 = new TabControl { Dock = DockStyle.Fill, });
-            Panel2.Controls.Add(TabControl2 = new TabControl { Dock = DockStyle.Fill });
-
-            if (IsInDesignMode)
+            Panel1.ControlAdded += delegate(object sender, ControlEventArgs args)
             {
-                TabControl1.TabPages.Add(new TabPage("Page1"));
-                TabControl1.TabPages.Add(new TabPage("Page2"));
-
-                TabControl2.TabPages.Add(new TabPage("Page1"));
-                TabControl2.TabPages.Add(new TabPage("Page2"));
-            }
+                if (TabControl1 != null) return;
+                TabControl1 = args.Control as TabControl;
+            };
+            Panel2.ControlAdded += delegate(object sender, ControlEventArgs args)
+            {
+                if (TabControl2 != null) return;
+                TabControl2 = args.Control as TabControl;
+            };
+            Panel1.ControlRemoved += delegate(object sender, ControlEventArgs args)
+            {
+                if (args.Control == TabControl1) TabControl1 = null;
+            };
+            Panel2.ControlRemoved += delegate(object sender, ControlEventArgs args)
+            {
+                if (args.Control == TabControl2) TabControl2 = null;
+            };
+          
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public TabControl TabControl1 { get; private set; }
+        /// <summary>
+        /// Gets or sets TabControl For Panel1. It used for storing Left and Top panels.
+        /// </summary>
+        [Description("Gets or sets TabControl For Panel1. It used for storing Left and Top panels.")]
+        public TabControl TabControl1 { get; set; }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public TabControl TabControl2 { get; private set; }
+        /// <summary>
+        /// Gets or sets TabControl For Panel2. It used for storing Right and Bottom panels.
+        /// </summary>
+        [Description("Gets or sets TabControl For Panel2. It used for storing Right and Bottom panels.")]
+        public TabControl TabControl2 { get; set; }
 
-
-        protected bool IsInDesignMode
+        /// <summary>
+        /// Add default tab controls to the dock manager
+        /// </summary>
+        public void AddDefaultTabControls()
         {
-            get
+            if (TabControl1 == null)
             {
-                return DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+                Panel1.Controls.Add(new TabControl {Dock = DockStyle.Fill});
+                Debug.Assert(TabControl1 != null);
+            }
+            if (TabControl2 == null)
+            {
+                Panel2.Controls.Add(new TabControl {Dock = DockStyle.Fill});
+                Debug.Assert(TabControl2 != null);
             }
         }
 
@@ -64,6 +87,7 @@ namespace DotSpatial.Controls
             {
                 tabControl = TabControl2;
             }
+            if (tabControl == null) return;
 
             var tabPage = new TabPage
                           {

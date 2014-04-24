@@ -37,6 +37,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 _isActivated = true;
 
                 _dockManager = new SpatialDockManager {Dock = DockStyle.Fill};
+                _dockManager.AddDefaultTabControls();
                 _dockManager.ActivePanelChanged += (sender, args) => RaiseDockableEvent(ActivePanelChanged, args);
                 _dockManager.PanelClosed += (sender, args) => RaiseDockableEvent(PanelClosed, args);
                 _dockManager.PanelAdded += (sender, args) => RaiseDockableEvent(PanelAdded, args);
