@@ -35,13 +35,11 @@ namespace DotSpatial.Plugins.SimpleHeaderControl
             toolStripContainer1.Name = "toolStripContainer1";
 
             // place all of the controls that were on the form originally inside of our content panel.
-            while (Shell.Controls.Count > 0)
+            foreach (Control control in Shell.Controls)
             {
-                foreach (Control control in Shell.Controls)
-                {
-                    toolStripContainer1.ContentPanel.Controls.Add(control);
-                }
+                toolStripContainer1.ContentPanel.Controls.Add(control);
             }
+
 
             Shell.Controls.Add(toolStripContainer1);
 

@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="HeaderControl.cs" company="DotSpatial Team">
-// TODO: Update copyright text.
+//
 // </copyright>
 // -----------------------------------------------------------------------
 
@@ -37,7 +37,8 @@ namespace DotSpatial.Controls.Header
         /// A key to use for the root container of any extensions that do not provider a root key.
         /// </summary>
         protected const string ExtensionsRootKey = "kExtensions";
-        readonly Dictionary<string, string> _items = new Dictionary<string, string>();
+
+        private readonly Dictionary<string, HeaderItemDesc> _items = new Dictionary<string, HeaderItemDesc>();
 
         #region IHeaderControl Members
 
@@ -49,10 +50,10 @@ namespace DotSpatial.Controls.Header
         {
             string assemblyName = Assembly.GetCallingAssembly().FullName;
             // create a copy of the enumeration so that we can remove items from the original collection.
-            var toRemove = _items.Where(i => i.Value == assemblyName).ToArray();
+            var toRemove = _items.Where(i => i.Value.AssemblyName == assemblyName).ToArray();
             foreach (var item in toRemove)
             {
-                this.Remove(item.Key);
+                Remove(item.Key);
             }
         }
 
@@ -64,18 +65,18 @@ namespace DotSpatial.Controls.Header
         {
             Contract.Requires(item != null, "item is null.");
 
-            string assemblyName = Assembly.GetCallingAssembly().FullName;
-
-            if (_items.ContainsKey(item.Key))
+            HeaderItemDesc hid;
+            if (_items.TryGetValue(item.Key, out hid))
             {
-                throw new ArgumentException(String.Format("The key \"{0}\" was already added by {1}. The key may only be used by one HeaderItem.", item.Key, assemblyName));
+                throw new ArgumentException(String.Format("The key \"{0}\" was already added by {1}. The key may only be used by one HeaderItem.", item.Key, hid.AssemblyName));
             }
 
             // We don't add the root items to this list. The HeaderControl implementation should remove a root
             // automatically when all item in the root are removed.
             if (item is RootItem == false)
             {
-                RecordItemAdd(item.Key, assemblyName);
+                string assemblyName = Assembly.GetCallingAssembly().FullName;
+                RecordItemAdd(item, assemblyName);
             }
 
             // Bypass static type checking until runtime.
@@ -152,14 +153,26 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Adds the item to dictionary so that it can be removed later.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="item">Item to add.</param>
         /// <param name="assemblyFullName">Full name of the assembly.</param>
-        protected void RecordItemAdd(string key, string assemblyFullName)
+        protected void RecordItemAdd(HeaderItem item, string assemblyFullName)
         {
             Contract.Requires(!String.IsNullOrEmpty(assemblyFullName), "assemblyFullName is null or empty.");
-            Contract.Requires(!String.IsNullOrEmpty(key), "key is null or empty.");
+            Contract.Requires(!String.IsNullOrEmpty(item.Key), "key is null or empty.");
 
-            _items.Add(key, assemblyFullName);
+            _items.Add(item.Key, new HeaderItemDesc(item, assemblyFullName));
+        }
+
+        /// <summary>
+        /// Gets header item by key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Header item or null if not found.</returns>
+        protected HeaderItem GetHeaderItemByKey(string key)
+        {
+            HeaderItemDesc hid;
+            if (_items.TryGetValue(key, out hid)) return hid.HeaderItem;
+            return null;
         }
 
         /// <summary>
@@ -169,8 +182,21 @@ namespace DotSpatial.Controls.Header
         /// <param name="key">The key of the new selected root item</param>
         protected void OnRootItemSelected(string key)
         {
-            if (RootItemSelected != null)
-                RootItemSelected(this, new RootItemEventArgs(key));
+            var h = RootItemSelected;
+            if (h != null)
+                h(this, new RootItemEventArgs(key));
+        }
+
+        private class HeaderItemDesc
+        {
+            public HeaderItemDesc(HeaderItem headerItem, string assemblyName)
+            {
+                HeaderItem = headerItem;
+                AssemblyName = assemblyName;
+            }
+
+            public HeaderItem HeaderItem { get; private set; }
+            public string AssemblyName { get; private set; }
         }
     }
 }

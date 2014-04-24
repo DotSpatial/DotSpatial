@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
@@ -17,8 +15,8 @@ namespace DotSpatial.Controls.Header
         public RootItem(string key, string caption)
             : this()
         {
-            this.Key = key;
-            this.Caption = caption;
+            Key = key;
+            Caption = caption;
         }
 
         /// <summary>
@@ -26,7 +24,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         public RootItem()
         {
-            this.visible = true;
+            visible = true;
         }
 
         /// <summary>
@@ -38,10 +36,9 @@ namespace DotSpatial.Controls.Header
             get { return caption; }
             set
             {
-                if (caption == value)
-                    return;
+                if (caption == value) return;
                 caption = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Caption"));
+                OnPropertyChanged("Caption");
             }
         }
 
@@ -57,10 +54,9 @@ namespace DotSpatial.Controls.Header
             get { return sortOrder; }
             set
             {
-                if (sortOrder == value)
-                    return;
+                if (sortOrder == value) return;
                 sortOrder = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SortOrder"));
+                OnPropertyChanged("SortOrder");
             }
         }
 
@@ -76,10 +72,9 @@ namespace DotSpatial.Controls.Header
             get { return visible; }
             set
             {
-                if (visible == value)
-                    return;
+                if (visible == value) return;
                 visible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Visible"));
+                OnPropertyChanged("Visible");
             }
         }
     }

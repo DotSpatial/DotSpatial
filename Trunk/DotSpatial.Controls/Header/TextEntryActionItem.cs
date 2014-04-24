@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace DotSpatial.Controls.Header
 {
@@ -26,10 +25,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (width == value)
-                    return;
+                if (width == value) return;
                 width = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Width"));
+                OnPropertyChanged("Width");
             }
         }
 
@@ -44,25 +42,23 @@ namespace DotSpatial.Controls.Header
             get { return text; }
             set
             {
-                if (text == value)
-                    return;
+                if (text == value) return;
                 text = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Text"));
+                OnPropertyChanged("Text");
             }
         }
 
         /// <summary>
         /// Gets or sets a value indicating the color of the text in the dropdownbox
         /// </summary>
-        public Color FontColor {
-            get {
-                return fontColor;
-            }
-            set {
-                if (fontColor == value)
-                    return;
+        public Color FontColor
+        {
+            get { return fontColor; }
+            set
+            {
+                if (fontColor == value) return;
                 fontColor = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("FontColor"));
+                OnPropertyChanged("FontColor");
             }
         }
     }

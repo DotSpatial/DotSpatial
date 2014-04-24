@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace DotSpatial.Controls.Header
 {
@@ -10,7 +9,7 @@ namespace DotSpatial.Controls.Header
     /// </summary>
     public class DropDownActionItem : ActionItem
     {
-        private List<object> _Items = new List<object>();
+        private readonly List<object> _Items = new List<object>();
         private bool allowEditingText;
         private string nullValuePrompt;
         private object selectedItem;
@@ -48,10 +47,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (allowEditingText == value)
-                    return;
+                if (allowEditingText == value) return;
                 allowEditingText = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("AllowEditingText"));
+                OnPropertyChanged("AllowEditingText");
             }
         }
 
@@ -77,10 +75,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (multiSelect == value)
-                    return;
+                if (multiSelect == value) return;
                 multiSelect = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("MultiSelect"));
+                OnPropertyChanged("MultiSelect");
             }
         }
 
@@ -96,10 +93,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (fontColor == value)
-                    return;
+                if (fontColor == value) return;
                 fontColor = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("FontColor"));
+                OnPropertyChanged("FontColor");
             }
         }
 
@@ -114,10 +110,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (displayText == value)
-                    return;
+                if (displayText == value) return;
                 displayText = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("DisplayText"));
+                OnPropertyChanged("DisplayText");
             }
         }
 
@@ -135,10 +130,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (width == value)
-                    return;
+                if (width == value) return;
                 width = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Width"));
+                OnPropertyChanged("Width");
             }
         }
 
@@ -156,10 +150,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (nullValuePrompt == value)
-                    return;
+                if (nullValuePrompt == value) return;
                 nullValuePrompt = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("NullValuePrompt"));
+                OnPropertyChanged("NullValuePrompt");
             }
         }
 
@@ -177,10 +170,9 @@ namespace DotSpatial.Controls.Header
             }
             set
             {
-                if (selectedItem == value)
-                    return;
+                if (selectedItem == value) return;
                 selectedItem = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SelectedItem"));
+                OnPropertyChanged("SelectedItem");
                 OnSelectedValueChanged(new SelectedValueChangedEventArgs(selectedItem));
             }
         }
