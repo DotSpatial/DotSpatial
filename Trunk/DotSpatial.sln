@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools", "DotSpat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Rasters.GdalExtension", "DotSpatial.Data.Rasters.GdalExtension\DotSpatial.Data.Rasters.GdalExtension.csproj", "{51C6E16E-920E-4D36-B41E-D48ABEF837E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoMap", "DotSpatial.Examples.DemoMap\DotSpatial.Examples.DemoMap.csproj", "{404204DE-C8BC-4438-A3F6-0636B4983A5B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning", "DotSpatial.Positioning\DotSpatial.Positioning.csproj", "{26E18588-B04D-4987-BF36-8206A7E36FF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Design", "DotSpatial.Positioning.Design\DotSpatial.Positioning.Design.csproj", "{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}"
@@ -42,8 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Nuget_DotSpatialCore.nuspec = Nuget_DotSpatialCore.nuspec
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoGPS", "DotSpatial.Examples.DemoGPS\C#\DotSpatial.Examples.DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}"
 EndProject
@@ -136,9 +132,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.StatusBarImprovements", "DotSpatial.Plugins.StatusBarImprovements\DotSpatial.Plugins.StatusBarImprovements.csproj", "{5D510F37-8E99-4874-A296-CA45A93DE856}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoMap", "DemoMap\DemoMap.csproj", "{404204DE-C8BC-4438-A3F6-0636B4983A5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.AppManagerCustomizationDesignTime", "Examples\AppManagerCustomizationDesignTime\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.AppManagerCustomizationRuntime", "Examples\AppManagerCustomizationRuntime\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj", "{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoGPS", "Examples\DemoGPS\C#\DotSpatial.Examples.DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 58
+		SccNumberOfProjects = 60
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -338,38 +342,46 @@ Global
 		SccProjectTopLevelParentUniqueName49 = DotSpatial.sln
 		SccProjectName49 = DotSpatial.Projections.Tests
 		SccLocalPath49 = DotSpatial.Projections.Tests
-		SccProjectUniqueName50 = DotSpatial.Examples.DemoMap\\DotSpatial.Examples.DemoMap.csproj
+		SccProjectUniqueName50 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj
 		SccProjectTopLevelParentUniqueName50 = DotSpatial.sln
-		SccProjectName50 = DotSpatial.Examples.DemoMap
-		SccLocalPath50 = DotSpatial.Examples.DemoMap
-		SccProjectUniqueName51 = DotSpatial.Examples.DemoGPS\\C#\\DotSpatial.Examples.DemoGPS.csproj
+		SccProjectName50 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
+		SccLocalPath50 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
+		SccProjectUniqueName51 = DotSpatial.Positioning.Tests\\DotSpatial.Positioning.Tests.csproj
 		SccProjectTopLevelParentUniqueName51 = DotSpatial.sln
-		SccProjectName51 = DotSpatial.Examples.DemoGPS/C#
-		SccLocalPath51 = DotSpatial.Examples.DemoGPS\\C#
-		SccProjectUniqueName52 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj
+		SccProjectName51 = DotSpatial.Positioning.Tests
+		SccLocalPath51 = DotSpatial.Positioning.Tests
+		SccProjectUniqueName52 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
 		SccProjectTopLevelParentUniqueName52 = DotSpatial.sln
-		SccProjectName52 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
-		SccLocalPath52 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
-		SccProjectUniqueName53 = DotSpatial.Positioning.Tests\\DotSpatial.Positioning.Tests.csproj
+		SccProjectName52 = DotSpatial.Plugins.Updater
+		SccLocalPath52 = DotSpatial.Plugins.Updater
+		SccProjectUniqueName53 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
 		SccProjectTopLevelParentUniqueName53 = DotSpatial.sln
-		SccProjectName53 = DotSpatial.Positioning.Tests
-		SccLocalPath53 = DotSpatial.Positioning.Tests
-		SccProjectUniqueName54 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
+		SccProjectName53 = DotSpatial.Tests.Common
+		SccLocalPath53 = DotSpatial.Tests.Common
+		SccProjectUniqueName54 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
 		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
-		SccProjectName54 = DotSpatial.Plugins.Updater
-		SccLocalPath54 = DotSpatial.Plugins.Updater
-		SccProjectUniqueName55 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
+		SccProjectName54 = DotSpatial.Plugins.SimpleMap
+		SccLocalPath54 = DotSpatial.Plugins.SimpleMap
+		SccProjectUniqueName55 = DotSpatial.Plugins.StatusBarImprovements\\DotSpatial.Plugins.StatusBarImprovements.csproj
 		SccProjectTopLevelParentUniqueName55 = DotSpatial.sln
-		SccProjectName55 = DotSpatial.Tests.Common
-		SccLocalPath55 = DotSpatial.Tests.Common
-		SccProjectUniqueName56 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
+		SccProjectName55 = DotSpatial.Plugins.StatusBarImprovements
+		SccLocalPath55 = DotSpatial.Plugins.StatusBarImprovements
+		SccProjectUniqueName56 = DemoMap\\DemoMap.csproj
 		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
-		SccProjectName56 = DotSpatial.Plugins.SimpleMap
-		SccLocalPath56 = DotSpatial.Plugins.SimpleMap
-		SccProjectUniqueName57 = DotSpatial.Plugins.StatusBarImprovements\\DotSpatial.Plugins.StatusBarImprovements.csproj
+		SccProjectName56 = DemoMap
+		SccLocalPath56 = DemoMap
+		SccProjectUniqueName57 = Examples\\AppManagerCustomizationDesignTime\\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
-		SccProjectName57 = DotSpatial.Plugins.StatusBarImprovements
-		SccLocalPath57 = DotSpatial.Plugins.StatusBarImprovements
+		SccProjectName57 = Examples/AppManagerCustomizationDesignTime
+		SccLocalPath57 = Examples\\AppManagerCustomizationDesignTime
+		SccProjectUniqueName58 = Examples\\AppManagerCustomizationRuntime\\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj
+		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
+		SccProjectName58 = Examples/AppManagerCustomizationRuntime
+		SccLocalPath58 = Examples\\AppManagerCustomizationRuntime
+		SccProjectUniqueName59 = Examples\\DemoGPS\\C#\\DotSpatial.Examples.DemoGPS.csproj
+		SccProjectTopLevelParentUniqueName59 = DotSpatial.sln
+		SccProjectName59 = Examples/DemoGPS/C#
+		SccLocalPath59 = Examples\\DemoGPS\\C#
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -416,10 +428,6 @@ Global
 		{51C6E16E-920E-4D36-B41E-D48ABEF837E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51C6E16E-920E-4D36-B41E-D48ABEF837E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51C6E16E-920E-4D36-B41E-D48ABEF837E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -448,10 +456,6 @@ Global
 		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -604,6 +608,22 @@ Global
 		{5D510F37-8E99-4874-A296-CA45A93DE856}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D510F37-8E99-4874-A296-CA45A93DE856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D510F37-8E99-4874-A296-CA45A93DE856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -627,6 +647,7 @@ Global
 		{9B692E11-0273-4331-9B15-1670093EDDBF} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{9108B04D-A3DE-4981-B66F-496078D462FE} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{F5956768-54E1-4EEE-9199-35F1A12C8FFC} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{51C6E16E-920E-4D36-B41E-D48ABEF837E7} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
@@ -652,8 +673,9 @@ Global
 		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{632B46F5-E73D-4160-9371-D146FADDE9D5} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{5D510F37-8E99-4874-A296-CA45A93DE856} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{11DF9872-A74C-4FE8-A139-DB9EC60C1E6E} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}

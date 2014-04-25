@@ -48,7 +48,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,7 +60,7 @@
     </DocumentationFile>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -121,11 +121,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj">
+    <ProjectReference Include="..\..\..\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj">
       <Project>{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}</Project>
       <Name>DotSpatial.Positioning.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
+    <ProjectReference Include="..\..\..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
       <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
       <Name>DotSpatial.Positioning</Name>
     </ProjectReference>

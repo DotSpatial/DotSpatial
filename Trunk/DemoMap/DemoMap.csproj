@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DotSpatialGlobe.ico" />
+    <None Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
