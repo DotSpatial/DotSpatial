@@ -86,7 +86,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DemoCustomLayerExtension\Readme.txt" />
+    <None Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotSpatial.Controls\DotSpatial.Controls.csproj">
