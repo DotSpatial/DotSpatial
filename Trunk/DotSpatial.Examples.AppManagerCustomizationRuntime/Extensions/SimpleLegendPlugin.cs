@@ -10,6 +10,16 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.Extensions
     /// </summary
     public class SimpleLegendPlugin : Extension
     {
+        public SimpleLegendPlugin()
+        {
+            DeactivationAllowed = false;
+        }
+
+        public override int Priority
+        {
+            get { return -50; }
+        }
+
         public override void Activate()
         {
             ShowLegend();

@@ -10,14 +10,14 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls.Docking;
 
-namespace DotSpatial.Examples.AppManagerCustomizationRuntime
+namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequirements
 {
     /// <summary>
     /// Simple implmenentation of IDockManager.
     /// It shows a technique how to create own dock manager as extension.
     /// You may delete this class in your application. In this case default dock manager control will be used.
     /// </summary>
-    internal class SimpleMdiDocking : IDockManager, IPartImportsSatisfiedNotification
+    internal class MdiDocking : IDockManager, IPartImportsSatisfiedNotification
     {
         #region Fields
 

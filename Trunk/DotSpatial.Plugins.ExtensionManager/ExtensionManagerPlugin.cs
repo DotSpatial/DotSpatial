@@ -26,7 +26,10 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         public override void Activate()
         {
-            var updateThread = new Thread(DoActivate);
+            AddButtons();
+            form.App = App;
+
+            var updateThread = new Thread(() => Update.autoUpdateController(App, form));
             var timeStarted = DateTime.UtcNow;
             updateThread.Start();
 
@@ -41,14 +44,8 @@ namespace DotSpatial.Plugins.ExtensionManager
             // Join the threads. If the thread is still active, wait a full second before giving up.
             updateThread.Join(1000);
             App.UpdateSplashScreen("Finished.");
-        }
 
-        private void DoActivate()
-        {
-            AddButtons();
             base.Activate();
-            form.App = App;
-            Update.autoUpdateController(App, form);
         }
 
         public override void Deactivate()
@@ -67,17 +64,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 case ShowExtensionsDialog.Default:
                     var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click);
+                    simpleAction.GroupCaption = HeaderControl.ApplicationMenuKey;
                     simpleAction.SmallImage = Resources.plugin_16x16;
                     simpleAction.LargeImage = Resources.plugin_32x32;
-                    simpleAction.GroupCaption = HeaderControl.ApplicationMenuKey;
                     simpleAction.SortOrder = 100;
                     App.HeaderControl.Add(simpleAction);
 
                     //sample projects menu
                     SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click);
-			        simpleActionItem.GroupCaption = "kApplicationMenu";
+                    simpleActionItem.GroupCaption = HeaderControl.ApplicationMenuKey;
+                    simpleActionItem.SmallImage = Resources.plugin_16x16;
 			        simpleActionItem.LargeImage = Resources.plugin_32x32;
-			        simpleActionItem.SmallImage = Resources.plugin_16x16;
 			        base.App.HeaderControl.Add(simpleActionItem);
 
                     break;

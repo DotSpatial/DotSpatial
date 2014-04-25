@@ -126,13 +126,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Tests", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tools.Tests", "DotSpatial.Tools.Tests\DotSpatial.Tools.Tests.csproj", "{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MonoHeaderControl", "DotSpatial.Plugins.MonoHeaderControl\DotSpatial.Plugins.MonoHeaderControl.csproj", "{3180E70F-F12B-469A-B8B9-1FCAB08A8797}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleHeaderControl", "DotSpatial.Plugins.SimpleHeaderControl\DotSpatial.Plugins.SimpleHeaderControl.csproj", "{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Tests", "DotSpatial.Projections.Tests\DotSpatial.Projections.Tests.csproj", "{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core Plugins", "Core Plugins", "{E589A674-26EA-4059-AD04-FA8E5A9EC7BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoCustomLayer", "DotSpatial.Examples.DemoCustomLayer\DotSpatial.Examples.DemoCustomLayer.csproj", "{A6B85AC5-BCA1-4015-98A4-DE343EF89088}"
 EndProject
@@ -152,7 +146,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleMa
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 64
+		SccNumberOfProjects = 62
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -352,62 +346,54 @@ Global
 		SccProjectTopLevelParentUniqueName49 = DotSpatial.sln
 		SccProjectName49 = DotSpatial.Mono
 		SccLocalPath49 = DotSpatial.Mono
-		SccProjectUniqueName50 = DotSpatial.Plugins.MonoHeaderControl\\DotSpatial.Plugins.MonoHeaderControl.csproj
+		SccProjectUniqueName50 = DotSpatial.Projections.Tests\\DotSpatial.Projections.Tests.csproj
 		SccProjectTopLevelParentUniqueName50 = DotSpatial.sln
-		SccProjectName50 = DotSpatial.Plugins.MonoHeaderControl
-		SccLocalPath50 = DotSpatial.Plugins.MonoHeaderControl
-		SccProjectUniqueName51 = DotSpatial.Plugins.SimpleHeaderControl\\DotSpatial.Plugins.SimpleHeaderControl.csproj
+		SccProjectName50 = DotSpatial.Projections.Tests
+		SccLocalPath50 = DotSpatial.Projections.Tests
+		SccProjectUniqueName51 = DotSpatial.Examples.DemoCustomLayer\\DotSpatial.Examples.DemoCustomLayer.csproj
 		SccProjectTopLevelParentUniqueName51 = DotSpatial.sln
-		SccProjectName51 = DotSpatial.Plugins.SimpleHeaderControl
-		SccLocalPath51 = DotSpatial.Plugins.SimpleHeaderControl
-		SccProjectUniqueName52 = DotSpatial.Projections.Tests\\DotSpatial.Projections.Tests.csproj
+		SccProjectName51 = DotSpatial.Examples.DemoCustomLayer
+		SccLocalPath51 = DotSpatial.Examples.DemoCustomLayer
+		SccProjectUniqueName52 = DotSpatial.Examples.DemoPlugin\\DotSpatial.Examples.DemoPlugin.csproj
 		SccProjectTopLevelParentUniqueName52 = DotSpatial.sln
-		SccProjectName52 = DotSpatial.Projections.Tests
-		SccLocalPath52 = DotSpatial.Projections.Tests
-		SccProjectUniqueName53 = DotSpatial.Examples.DemoCustomLayer\\DotSpatial.Examples.DemoCustomLayer.csproj
+		SccProjectName52 = DotSpatial.Examples.DemoPlugin
+		SccLocalPath52 = DotSpatial.Examples.DemoPlugin
+		SccProjectUniqueName53 = DotSpatial.Examples.DemoMap\\DotSpatial.Examples.DemoMap.csproj
 		SccProjectTopLevelParentUniqueName53 = DotSpatial.sln
-		SccProjectName53 = DotSpatial.Examples.DemoCustomLayer
-		SccLocalPath53 = DotSpatial.Examples.DemoCustomLayer
-		SccProjectUniqueName54 = DotSpatial.Examples.DemoPlugin\\DotSpatial.Examples.DemoPlugin.csproj
+		SccProjectName53 = DotSpatial.Examples.DemoMap
+		SccLocalPath53 = DotSpatial.Examples.DemoMap
+		SccProjectUniqueName54 = DotSpatial.Examples.DemoGPS\\C#\\DotSpatial.Examples.DemoGPS.csproj
 		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
-		SccProjectName54 = DotSpatial.Examples.DemoPlugin
-		SccLocalPath54 = DotSpatial.Examples.DemoPlugin
-		SccProjectUniqueName55 = DotSpatial.Examples.DemoMap\\DotSpatial.Examples.DemoMap.csproj
+		SccProjectName54 = DotSpatial.Examples.DemoGPS/C#
+		SccLocalPath54 = DotSpatial.Examples.DemoGPS\\C#
+		SccProjectUniqueName55 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj
 		SccProjectTopLevelParentUniqueName55 = DotSpatial.sln
-		SccProjectName55 = DotSpatial.Examples.DemoMap
-		SccLocalPath55 = DotSpatial.Examples.DemoMap
-		SccProjectUniqueName56 = DotSpatial.Examples.DemoGPS\\C#\\DotSpatial.Examples.DemoGPS.csproj
+		SccProjectName55 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
+		SccLocalPath55 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
+		SccProjectUniqueName56 = DotSpatial.Positioning.Tests\\DotSpatial.Positioning.Tests.csproj
 		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
-		SccProjectName56 = DotSpatial.Examples.DemoGPS/C#
-		SccLocalPath56 = DotSpatial.Examples.DemoGPS\\C#
-		SccProjectUniqueName57 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests\\DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests.csproj
+		SccProjectName56 = DotSpatial.Positioning.Tests
+		SccLocalPath56 = DotSpatial.Positioning.Tests
+		SccProjectUniqueName57 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
-		SccProjectName57 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
-		SccLocalPath57 = DotSpatial.Plugins.MapWindowProjectFileCompatibility.Tests
-		SccProjectUniqueName58 = DotSpatial.Positioning.Tests\\DotSpatial.Positioning.Tests.csproj
+		SccProjectName57 = DotSpatial.Plugins.Updater
+		SccLocalPath57 = DotSpatial.Plugins.Updater
+		SccProjectUniqueName58 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
 		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
-		SccProjectName58 = DotSpatial.Positioning.Tests
-		SccLocalPath58 = DotSpatial.Positioning.Tests
-		SccProjectUniqueName59 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
+		SccProjectName58 = DotSpatial.Tests.Common
+		SccLocalPath58 = DotSpatial.Tests.Common
+		SccProjectUniqueName59 = DotSpatial.Examples.AppManagerCustomizationDesignTime\\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj
 		SccProjectTopLevelParentUniqueName59 = DotSpatial.sln
-		SccProjectName59 = DotSpatial.Plugins.Updater
-		SccLocalPath59 = DotSpatial.Plugins.Updater
-		SccProjectUniqueName60 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
+		SccProjectName59 = DotSpatial.Examples.AppManagerCustomizationDesignTime
+		SccLocalPath59 = DotSpatial.Examples.AppManagerCustomizationDesignTime
+		SccProjectUniqueName60 = DotSpatial.Examples.AppManagerCustomizationRuntime\\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj
 		SccProjectTopLevelParentUniqueName60 = DotSpatial.sln
-		SccProjectName60 = DotSpatial.Tests.Common
-		SccLocalPath60 = DotSpatial.Tests.Common
-		SccProjectUniqueName61 = DotSpatial.Examples.AppManagerCustomizationDesignTime\\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj
+		SccProjectName60 = DotSpatial.Examples.AppManagerCustomizationRuntime
+		SccLocalPath60 = DotSpatial.Examples.AppManagerCustomizationRuntime
+		SccProjectUniqueName61 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
 		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
-		SccProjectName61 = DotSpatial.Examples.AppManagerCustomizationDesignTime
-		SccLocalPath61 = DotSpatial.Examples.AppManagerCustomizationDesignTime
-		SccProjectUniqueName62 = DotSpatial.Examples.AppManagerCustomizationRuntime\\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj
-		SccProjectTopLevelParentUniqueName62 = DotSpatial.sln
-		SccProjectName62 = DotSpatial.Examples.AppManagerCustomizationRuntime
-		SccLocalPath62 = DotSpatial.Examples.AppManagerCustomizationRuntime
-		SccProjectUniqueName63 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
-		SccProjectTopLevelParentUniqueName63 = DotSpatial.sln
-		SccProjectName63 = DotSpatial.Plugins.SimpleMap
-		SccLocalPath63 = DotSpatial.Plugins.SimpleMap
+		SccProjectName61 = DotSpatial.Plugins.SimpleMap
+		SccLocalPath61 = DotSpatial.Plugins.SimpleMap
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -622,14 +608,6 @@ Global
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F70CE7-AFEE-4B6C-BDC5-5361F4DF0B8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42}.Release|Any CPU.Build.0 = Release|Any CPU
 		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -732,7 +710,5 @@ Global
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{95114A54-769F-4A90-A346-C2CF85523AAD} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{8BE62AD2-595C-4E50-8AEA-4C7069F1CB42} = {E589A674-26EA-4059-AD04-FA8E5A9EC7BE}
-		{3180E70F-F12B-469A-B8B9-1FCAB08A8797} = {E589A674-26EA-4059-AD04-FA8E5A9EC7BE}
 	EndGlobalSection
 EndGlobal

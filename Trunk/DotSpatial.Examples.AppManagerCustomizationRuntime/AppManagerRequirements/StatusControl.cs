@@ -5,14 +5,14 @@ using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls.Header;
 
-namespace DotSpatial.Examples.AppManagerCustomizationRuntime
+namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequirements
 {
     /// <summary>
     /// Simple implmenentation of IStatusControl.
     /// It shows a technique how to create own status control as extension.
     /// You may delete this class in your application. In this case default status control will be used.
     /// </summary>
-    internal class SimpleStatusControl: IStatusControl, IPartImportsSatisfiedNotification
+    internal class StatusControl: IStatusControl, IPartImportsSatisfiedNotification
     {
         private StatusPanel defaultStatusPanel;
         private StatusStrip statusStrip;

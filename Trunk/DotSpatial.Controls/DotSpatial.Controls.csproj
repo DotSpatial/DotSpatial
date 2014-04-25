@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="DefaultRequiredImports\DefaultRequiredImportAttribute.cs" />
     <Compile Include="DefaultRequiredImports\DockManager.cs" />
+    <Compile Include="DefaultRequiredImports\HeaderControl.cs" />
     <Compile Include="DefaultRequiredImports\StatusControl.cs" />
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />

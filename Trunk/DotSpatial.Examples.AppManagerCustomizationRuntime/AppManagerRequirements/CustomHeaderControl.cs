@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 
-namespace DotSpatial.Plugins.MonoHeaderControl
+namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequirements
 {
+    /// <summary>
+    /// Sample implmenentation of IHeaderControl.
+    /// It shows a technique how to create own header control as extension.
+    /// </summary>
     [Export(typeof(IHeaderControl))]
-    class MonoHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
+    internal class CustomHeaderControl : HeaderControl, IPartImportsSatisfiedNotification
     {
         private MainMenu mainmenu;
         private FlowLayoutPanel container;
@@ -27,9 +31,16 @@ namespace DotSpatial.Plugins.MonoHeaderControl
             var form = (Form)Shell;
             form.Menu = mainmenu;
 
-            container = new FlowLayoutPanel();
-            container.Name = "Default Group";
-            container.Dock = DockStyle.Top;
+            container = new FlowLayoutPanel
+            {
+                Name = "Default Group",
+                Height = 0,
+                Dock = DockStyle.Top,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
             Shell.Controls.Add(container);
         }
 
@@ -40,53 +51,92 @@ namespace DotSpatial.Plugins.MonoHeaderControl
 
         public override void Add(SimpleActionItem item)
         {
-            MenuItem menu = new MenuItem(item.Caption);
-
-            menu.Name = item.Key;
-            menu.Enabled = item.Enabled;
-            menu.Visible = item.Visible;
-            menu.Click += (sender, e) => item.OnClick(e);
+            var menu = new IconMenuItem(item.Caption, item.SmallImage, (sender, e) => item.OnClick(e))
+            {Name = item.Key, Enabled = item.Enabled, Visible = item.Visible,};
             item.PropertyChanged += SimpleActionItem_PropertyChanged;
 
-            MenuItem root = !mainmenu.MenuItems.ContainsKey(item.RootKey)
-                ? new MenuItem(item.RootKey)
-                : mainmenu.MenuItems.Find(item.RootKey, true).ElementAt(0);
+            EnsureNonNullRoot(item);
 
-            try
+            MenuItem root;
+            if (item.MenuContainerKey == null)
             {
-                root.MenuItems.Add(menu);
+                root = !mainmenu.MenuItems.ContainsKey(item.RootKey)
+                    ? mainmenu.MenuItems[mainmenu.MenuItems.Add(new MenuItem(item.RootKey) {Name = item.RootKey})]
+                    : mainmenu.MenuItems.Find(item.RootKey, true)[0];
             }
-            catch (Exception e)
+            else
             {
-                Debug.Print(e.StackTrace);
+                root = mainmenu.MenuItems.Find(item.MenuContainerKey, true)[0];
             }
 
+            root.MenuItems.Add(menu);
+        }
+
+        /// <summary>
+        /// Ensure the extensions tab exists.
+        /// </summary>
+        private void EnsureExtensionsTabExists()
+        {
+            var exists = mainmenu.MenuItems.ContainsKey(ExtensionsRootKey);
+            if (!exists)
+            {
+                Add(new RootItem(ExtensionsRootKey, "Extensions"));
+            }
+        }
+
+        /// <summary>
+        /// Make sure the root key is present or use a default.
+        /// </summary>
+        /// <param name="item">
+        /// </param>
+        private void EnsureNonNullRoot(ActionItem item)
+        {
+            if (item.RootKey == null)
+            {
+                EnsureExtensionsTabExists();
+                item.RootKey = ExtensionsRootKey;
+            }
         }
 
         public override void Add(MenuContainerItem item)
         {
-            throw new NotImplementedException();
+            var submenu = new MenuItem
+            {
+                Name = item.Key,
+                Visible = item.Visible,
+                Text = item.Caption,
+            };
+
+            item.PropertyChanged += RootItem_PropertyChanged;
+            var root = mainmenu.MenuItems.Find(item.RootKey, true)[0];
+            root.MenuItems.Add(submenu);
         }
 
         public override void Add(RootItem item)
         {
-            MenuItem submenu = null;
-            if (!this.mainmenu.MenuItems.ContainsKey(item.Key))
+            if (!mainmenu.MenuItems.ContainsKey(item.Key))
             {
-                submenu = new MenuItem();
-                submenu.Name = item.Key;
-                submenu.Visible = item.Visible;
-                submenu.Text = item.Caption;
-                submenu.MergeOrder = item.SortOrder;
+                var submenu = new MenuItem
+                {
+                    Name = item.Key,
+                    Visible = item.Visible,
+                    Text = item.Caption,
+                    MergeOrder = item.SortOrder
+                };
                 item.PropertyChanged += RootItem_PropertyChanged;
                 mainmenu.MenuItems.Add(submenu);
+            }
+            else
+            {
+                var root = mainmenu.MenuItems.Find(item.Key, true)[0];
+                root.Text = item.Caption;
+                root.MergeOrder = item.SortOrder;
             }
         }
 
         public override void Add(DropDownActionItem item)
         {
-            ComboBox combo = new ComboBox();
-            combo.Name = item.Key;
+            var combo = new ComboBox {Name = item.Key};
 
             ParseAllowEditingProperty(item, combo);
 
@@ -103,21 +153,17 @@ namespace DotSpatial.Plugins.MonoHeaderControl
                 item.PropertyChanged += DropDownActionItem_PropertyChanged;
             };
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
-
-            //addLabel(item.ToolTipText);
-
             container.Controls.Add(combo);
         }
        
         public override void Add(SeparatorItem item)
         {
-            //throw new NotImplementedException();
+            
         }
 
         public override void Add(TextEntryActionItem item)
         {
-            TextBox textBox = new TextBox();
-            textBox.Name = item.Key;
+            var textBox = new TextBox {Name = item.Key};
             if (item.Width != 0)
             {
                 textBox.Width = item.Width;
@@ -128,20 +174,19 @@ namespace DotSpatial.Plugins.MonoHeaderControl
                 item.Text = textBox.Text;
                 item.PropertyChanged += TextEntryActionItem_PropertyChanged;
             };
-            //addLabel(item.ToolTipText);
             container.Controls.Add(textBox);
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
         }
 
         private Control GetItem(string key)
         {
-            Control item = container.Controls.Find(key, true).FirstOrDefault();
+            var item = container.Controls.Find(key, true).FirstOrDefault();
             return item;
         }
 
         private MenuItem GetMenuItem(string key)
         {
-            MenuItem item = mainmenu.MenuItems.Find(key, true).FirstOrDefault();
+            var item = mainmenu.MenuItems.Find(key, true).FirstOrDefault();
             return item;
         }
 
@@ -209,7 +254,7 @@ namespace DotSpatial.Plugins.MonoHeaderControl
         {
             if (item.GetType() == typeof(SimpleActionItem) || item.GetType() == typeof(RootItem))
             {
-                MenuItem guiItem = GetMenuItem(item.Key);
+                var guiItem = GetMenuItem(item.Key);
 
                 switch (e.PropertyName)
                 {
@@ -226,15 +271,12 @@ namespace DotSpatial.Plugins.MonoHeaderControl
                         break;
 
                     case "ToolTipText":
-                        //guiItem.ToolTipText = item.ToolTipText;
                         break;
 
                     case "GroupCaption":
-                        // todo: change group
                         break;
 
                     case "RootKey":
-                        // todo: change root
                         // note, this case will also be selected in the case that we set the Root key in our code.
                         break;
 
@@ -244,8 +286,7 @@ namespace DotSpatial.Plugins.MonoHeaderControl
             }
             else
             {
-                Control guiItem = GetItem(item.Key);
-
+                var guiItem = GetItem(item.Key);
                 switch (e.PropertyName)
                 {
                     case "Caption":
@@ -261,15 +302,12 @@ namespace DotSpatial.Plugins.MonoHeaderControl
                         break;
 
                     case "ToolTipText":
-                        //guiItem.ToolTipText = item.ToolTipText;
                         break;
 
                     case "GroupCaption":
-                        // todo: change group
                         break;
 
                     case "RootKey":
-                        // todo: change root
                         // note, this case will also be selected in the case that we set the Root key in our code.
                         break;
 
@@ -281,8 +319,8 @@ namespace DotSpatial.Plugins.MonoHeaderControl
 
         private void RootItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as RootItem;
-            var guiItem = this.GetItem(item.Key);
+            var item = (RootItem)sender;
+            var guiItem = GetItem(item.Key);
 
             switch (e.PropertyName)
             {
@@ -299,9 +337,9 @@ namespace DotSpatial.Plugins.MonoHeaderControl
             }
         }
 
-        void SimpleActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void SimpleActionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var item = sender as SimpleActionItem;
+            var item = (SimpleActionItem)sender;
             switch (e.PropertyName)
             {
                 case "SmallImage":
@@ -311,19 +349,15 @@ namespace DotSpatial.Plugins.MonoHeaderControl
                     break;
 
                 case "MenuContainerKey":
-                    Trace.WriteLine("MenuContainerKey must not be changed after item is added to header.");
                     break;
 
                 case "ToggleGroupKey":
-                    Trace.WriteLine("ToggleGroupKey must not be changed after item is added to header.");
                     break;
-
                 default:
                     ActionItem_PropertyChanged(item, e);
                     break;
             }
         }
-
 
         private void ParseAllowEditingProperty(DropDownActionItem item, ComboBox guiItem)
         {

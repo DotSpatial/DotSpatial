@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls.Header
 {
     /// <summary>
-    /// Sample implementation of toolbar header.
+    /// Implementation of toolbar header.
     /// </summary>
     public class MenuBarHeaderControl : HeaderControl
     {
