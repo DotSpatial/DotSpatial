@@ -134,15 +134,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.StatusBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoMap", "DemoMap\DemoMap.csproj", "{404204DE-C8BC-4438-A3F6-0636B4983A5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.AppManagerCustomizationDesignTime", "Examples\AppManagerCustomizationDesignTime\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppManagerCustomizationDesignTime", "Examples\AppManagerCustomizationDesignTime\AppManagerCustomizationDesignTime.csproj", "{E9CD3F46-B385-4BF8-9D09-D439514E5137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.AppManagerCustomizationRuntime", "Examples\AppManagerCustomizationRuntime\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj", "{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppManagerCustomizationRuntime", "Examples\AppManagerCustomizationRuntime\AppManagerCustomizationRuntime.csproj", "{C1664C14-FB90-48FC-9B0E-0F75E470ACCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoGPS", "Examples\DemoGPS\C#\DotSpatial.Examples.DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGPS", "Examples\DemoGPS\C#\DemoGPS.csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCustomLayer", "Examples\DemoCustomLayer\DemoCustomLayer.csproj", "{1405457A-EFF6-4994-A6C5-88928504FD02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "Examples\DemoPlugin\DemoPlugin.csproj", "{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 60
+		SccNumberOfProjects = 62
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
@@ -370,18 +374,26 @@ Global
 		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
 		SccProjectName56 = DemoMap
 		SccLocalPath56 = DemoMap
-		SccProjectUniqueName57 = Examples\\AppManagerCustomizationDesignTime\\DotSpatial.Examples.AppManagerCustomizationDesignTime.csproj
+		SccProjectUniqueName57 = Examples\\DemoCustomLayer\\DemoCustomLayer.csproj
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
-		SccProjectName57 = Examples/AppManagerCustomizationDesignTime
-		SccLocalPath57 = Examples\\AppManagerCustomizationDesignTime
-		SccProjectUniqueName58 = Examples\\AppManagerCustomizationRuntime\\DotSpatial.Examples.AppManagerCustomizationRuntime.csproj
+		SccProjectName57 = Examples/DemoCustomLayer
+		SccLocalPath57 = Examples\\DemoCustomLayer
+		SccProjectUniqueName58 = Examples\\AppManagerCustomizationDesignTime\\AppManagerCustomizationDesignTime.csproj
 		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
-		SccProjectName58 = Examples/AppManagerCustomizationRuntime
-		SccLocalPath58 = Examples\\AppManagerCustomizationRuntime
-		SccProjectUniqueName59 = Examples\\DemoGPS\\C#\\DotSpatial.Examples.DemoGPS.csproj
+		SccProjectName58 = Examples/AppManagerCustomizationDesignTime
+		SccLocalPath58 = Examples\\AppManagerCustomizationDesignTime
+		SccProjectUniqueName59 = Examples\\AppManagerCustomizationRuntime\\AppManagerCustomizationRuntime.csproj
 		SccProjectTopLevelParentUniqueName59 = DotSpatial.sln
-		SccProjectName59 = Examples/DemoGPS/C#
-		SccLocalPath59 = Examples\\DemoGPS\\C#
+		SccProjectName59 = Examples/AppManagerCustomizationRuntime
+		SccLocalPath59 = Examples\\AppManagerCustomizationRuntime
+		SccProjectUniqueName60 = Examples\\DemoGPS\\C#\\DemoGPS.csproj
+		SccProjectTopLevelParentUniqueName60 = DotSpatial.sln
+		SccProjectName60 = Examples/DemoGPS/C#
+		SccLocalPath60 = Examples\\DemoGPS\\C#
+		SccProjectUniqueName61 = Examples\\DemoPlugin\\DemoPlugin.csproj
+		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
+		SccProjectName61 = Examples/DemoPlugin
+		SccLocalPath61 = Examples\\DemoPlugin
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -624,6 +636,14 @@ Global
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1405457A-EFF6-4994-A6C5-88928504FD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1405457A-EFF6-4994-A6C5-88928504FD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1405457A-EFF6-4994-A6C5-88928504FD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1405457A-EFF6-4994-A6C5-88928504FD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -676,6 +696,8 @@ Global
 		{E9CD3F46-B385-4BF8-9D09-D439514E5137} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{1405457A-EFF6-4994-A6C5-88928504FD02} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{11DF9872-A74C-4FE8-A139-DB9EC60C1E6E} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}

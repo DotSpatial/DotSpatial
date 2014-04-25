@@ -154,6 +154,7 @@ namespace DotSpatial.Controls
         /// The composition container.
         /// </value>
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CompositionContainer CompositionContainer { get; set; }
 
         /// <summary>
@@ -464,8 +465,7 @@ namespace DotSpatial.Controls
 
             try
             {
-                IDataManager dataManager = DataManager.DefaultDataManager;
-                CompositionContainer.ComposeParts(this, dataManager, SerializationManager);
+                CompositionContainer.ComposeParts(this, DataManager.DefaultDataManager, SerializationManager);
             }
             catch (CompositionException compositionException)
             {
