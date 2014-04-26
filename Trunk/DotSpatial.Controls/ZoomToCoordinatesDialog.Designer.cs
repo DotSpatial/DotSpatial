@@ -1,4 +1,4 @@
-﻿namespace DotSpatial.Plugins.MenuBar
+﻿namespace DotSpatial.Controls
 {
     partial class ZoomToCoordinatesDialog
     {

@@ -759,30 +759,53 @@
   </data>
   <data name="ProjectFile" xml:space="preserve">
     <value>Project File</value>
-    <comment>ProjectFile description</comment>
   </data>
   <data name="ArchiveFile" xml:space="preserve">
     <value>Archive File</value>
-    <comment>ArchiveFile description</comment>
   </data>
   <data name="SupportedFiles" xml:space="preserve">
     <value>Supported Files</value>
-    <comment>SupportedFiles description</comment>
   </data>
   <data name="MW4Project" xml:space="preserve">
     <value>MW4 Project</value>
-    <comment>MW4Project description</comment>
   </data>
   <data name="LoadingPluginsPercentComplete" xml:space="preserve">
     <value>Loading Plugins - {0}, {1}% complete.</value>
-    <comment>LoadingPluginsPercentComplete description</comment>
   </data>
   <data name="LoadingPlugins" xml:space="preserve">
     <value>Loading Plugins</value>
-    <comment>LoadingPlugins description</comment>
   </data>
   <data name="ErrorWhileWhileActivating" xml:space="preserve">
     <value>Error while while activating {0}.</value>
-    <comment>ErrorWhileWhileActivating description</comment>
+  </data>
+  <data name="ClearAllDataAndStartANewMap" xml:space="preserve">
+    <value>Start a new Project?</value>
+  </data>
+  <data name="CouldNotOpenTheSpecifiedMapFile" xml:space="preserve">
+    <value>Could not open the specified map file: {0}</value>
+  </data>
+  <data name="DiscardChanges" xml:space="preserve">
+    <value>Discard Changes?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FailedToReadAPortionOfTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to read a portion of the specified map file: {0}</value>
+  </data>
+  <data name="FailedToReadTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to read the specified map file: {0}</value>
+  </data>
+  <data name="FailedToWriteTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to write the specified map file: {0}</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes?</value>
+  </data>
+  <data name="SaveChangesToCurrentProject" xml:space="preserve">
+    <value>Save changes to current project [{0}] ?</value>
+  </data>
+  <data name="SelectFeatures" xml:space="preserve">
+    <value>No feature layers were selected in the legend.  Select the layer to use.</value>
   </data>
 </root>

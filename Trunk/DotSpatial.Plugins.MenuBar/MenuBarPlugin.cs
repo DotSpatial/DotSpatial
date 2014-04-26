@@ -14,14 +14,12 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Plugins.MenuBar.Properties;
 using Msg = DotSpatial.Plugins.MenuBar.MessageStrings;
 using DotSpatial.Topology;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Plugins.MenuBar
 {
@@ -151,7 +149,7 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
         {
-            var mapFrame = sender as MapFrame;
+            var mapFrame = (MapFrame)sender;
             _ZoomNext.Enabled = mapFrame.CanZoomToNext();
             _ZoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
         }
@@ -244,7 +242,7 @@ namespace DotSpatial.Plugins.MenuBar
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void PrintLayout_Click(object sender, EventArgs e)
         {
-            using (LayoutForm layout = new LayoutForm())
+            using (var layout = new LayoutForm())
             {
                 layout.MapControl = App.Map as Map;
                 layout.ShowDialog();
@@ -337,16 +335,8 @@ namespace DotSpatial.Plugins.MenuBar
         /// </summary>
         private void DeselectAll_Click(object sender, EventArgs e)
         {
-            IEnvelope env = new Envelope();
+            IEnvelope env;
             App.Map.MapFrame.ClearSelection(out env);
-            
-            //foreach (IMapLayer layer in App.Map.MapFrame.GetAllLayers())
-            //{
-            //    IMapFeatureLayer mapFeatureLayer = layer as IMapFeatureLayer;
-            //    {
-            //        mapFeatureLayer.UnSelectAll();
-            //    }
-            //}
         }
 
         /// <summary>
@@ -429,57 +419,8 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void ZoomToCoordinates()
         {
-            //Show dialog prompting user for Lat-Long coordinates.
-            ZoomToCoordinatesDialog CoordinateDialog = new ZoomToCoordinatesDialog();
-            CoordinateDialog.ShowDialog();
-
-            //If user pressed OK, then calculate and move to coordinates.
-            if (CoordinateDialog.DialogResult == DialogResult.OK)
-            {
-                double [] xy = new double[2];
-                
-                //Now convert from Lat-Long to x,y coordinates that App.Map.ViewExtents can use to pan to the correct location.
-                xy = LatLonReproject(CoordinateDialog.lonCoor, CoordinateDialog.latCoor);
-
-                //Get extent where center is desired X,Y coordinate.
-                Double width = App.Map.ViewExtents.Width;
-                Double height = App.Map.ViewExtents.Height;
-                App.Map.ViewExtents.X = (xy[0] - (width / 2));
-                App.Map.ViewExtents.Y = (xy[1] + (height / 2));
-                Extent e = App.Map.ViewExtents;
-
-                //Set App.Map.ViewExtents to new extent that centers on desired LatLong.
-                App.Map.ViewExtents = e;
-            }
-            CoordinateDialog.Dispose();
-        }
-
-        private double[] LatLonReproject(double x, double y)
-        {
-            double[] xy = new double[2] { x, y };
-
-            //Change y coordinate to be less than 90 degrees to prevent a bug.
-            if (xy[1] >= 90) xy[1] = 89.9;
-            if (xy[1] <= -90) xy[1] = -89.9;
-
-            //Need to convert points to proper projection. Currently describe WGS84 points which may or may not be accurate.
-            bool isWgs84;
-
-            String wgs84String = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223562997]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-            String mapProjEsriString = App.Map.Projection.ToEsriString();
-            isWgs84 = (mapProjEsriString.Equals(wgs84String));
-
-            //If the projection is not WGS84, then convert points to properly describe desired location.
-            if (!isWgs84)
-            {
-                double[] z = new double[1];
-                ProjectionInfo wgs84Projection = ProjectionInfo.FromEsriString(wgs84String);
-                ProjectionInfo currentMapProjection = ProjectionInfo.FromEsriString(mapProjEsriString);
-                Reproject.ReprojectPoints(xy, z, wgs84Projection, currentMapProjection, 0, 1);
-            }
-
-            //Return array with 1 x and 1 y value.
-            return xy;
+            using(var CoordinateDialog = new ZoomToCoordinatesDialog(App.Map))
+                CoordinateDialog.ShowDialog();
         }
 
         #endregion
