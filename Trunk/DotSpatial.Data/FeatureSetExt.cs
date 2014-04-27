@@ -249,10 +249,6 @@ namespace DotSpatial.Data
 
                 // Add fResult, unless it is null, in which case add fOriginal.
                 fsunion.Features.Add(fResult ?? fOriginal);
-
-                // Union doesn't actually add to the output featureset.  The featureset is only
-                // provided to the union method to handle column manipulation if necessary.
-                fsunion.Features.Add(fResult);
             }
             return fsunion;
         }
