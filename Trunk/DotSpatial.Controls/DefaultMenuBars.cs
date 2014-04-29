@@ -1,31 +1,17 @@
-﻿// *******************************************************************************************************
-// Product: DotSpatial.Plugins.MenuBar
-// Description: Menubar for use with DotSpatial applications. Plugins can add functions to this.
-// Copyright & License: See www.DotSpatial.org.
-// Contributor(s): Open source contributors may list themselves and their modifications here.
-// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
-//--------------------------------------------------------------------------------------------------------
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------------
-// Dan Ames           |  3/2013            |  Cleaning up this file header. Adding pointer "untoggle" button. 
-// *******************************************************************************************************
-
-using System;
+﻿using System;
 using System.IO;
-using System.Xml;
 using System.Windows.Forms;
-using DotSpatial.Controls;
+using System.Xml;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
-using DotSpatial.Plugins.MenuBar.Properties;
-using Msg = DotSpatial.Plugins.MenuBar.MessageStrings;
 using DotSpatial.Topology;
+using Msg = DotSpatial.Controls.MessageStrings;
 
-namespace DotSpatial.Plugins.MenuBar
+namespace DotSpatial.Controls
 {
-    public class MenuBarPlugin : Extension
+    public class DefaultMenuBars
     {
-        #region Constants and Fields
+        #region Fields
 
         private const string FileMenuKey = HeaderControl.ApplicationMenuKey;
         private const string HomeMenuKey = HeaderControl.HomeRootItemKey;
@@ -34,49 +20,91 @@ namespace DotSpatial.Plugins.MenuBar
         private SimpleActionItem _ZoomPrevious;
         private SimpleActionItem _ZoomToLayer;
 
+        private AppManager App { get; set; }
+
         #endregion
 
-        public MenuBarPlugin()
+        public DefaultMenuBars(AppManager app)
         {
-            DeactivationAllowed = false;
+            if (app == null) throw new ArgumentNullException("app");
+            App = app;
+
+            App.MapChanged += (sender, args) => OnAppMapChanged(args);
         }
 
-        #region Public Methods
-
-        public override void Activate()
+        public void Initialize(IHeaderControl header)
         {
-            AddHeaderRootItems();
-            AddMenuItems();
+            if (header == null) throw new ArgumentNullException("header");
 
-            Map map = App.Map as Map;
-            if (map != null)
+            AddItems(header);
+            OnAppMapChanged(new MapChangedEventArgs(null, App.Map));
+        }
+
+        private void OnAppMapChanged(MapChangedEventArgs args)
+        {
+            if (args.OldValue != null)
             {
-                map.ViewExtentsChanged += new EventHandler<ExtentArgs>(MapFrame_ViewExtentsChanged);
+                // Unsubscribe events from old map
+                args.OldValue.Layers.LayerSelected -= Layers_LayerSelected;
+                if (args.OldValue is Map)
+                    ((Map)args.OldValue).ViewExtentsChanged -= MapFrame_ViewExtentsChanged;
             }
-            App.Map.Layers.LayerSelected += Layers_LayerSelected;
 
-            base.Activate();
+            if (args.NewValue != null)
+            {
+                args.NewValue.Layers.LayerSelected += Layers_LayerSelected;
+                if (args.NewValue is Map)
+                    ((Map)args.NewValue).ViewExtentsChanged += MapFrame_ViewExtentsChanged;
+            }
         }
 
-        public override void Deactivate()
+        private void AddItems(IHeaderControl header)
         {
-            App.HeaderControl.RemoveAll();
-            base.Deactivate();
-        }
+            // Root items
+            header.Add(new RootItem(FileMenuKey, MessageStrings.File) { SortOrder = -20 });
+            header.Add(new RootItem(HomeMenuKey, MessageStrings.Home) { SortOrder = -10 });
 
-        #endregion
+            // Menu items
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_New, NewProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 5, SmallImage = Images.document_empty_16x16, LargeImage = Images.document_empty_32x32, ToolTipText = Msg.FileNewToolTip });
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Open, OpenProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 10, SmallImage = Images.folder_16x16, LargeImage = Images.folder_32x32, ToolTipText = Msg.FileOpenToolTip });
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Save, SaveProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 15, SmallImage = Images.disk_16x16, LargeImage = Images.disk_32x32, });
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_SaveAs, SaveProjectAs_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 20, SmallImage = Images.save_as_16x16, LargeImage = Images.save_as_32x32, ToolTipText = Msg.FileSaveAsToolTip });
 
-        #region Methods
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Print, PrintLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 40, SmallImage = Images.printer_16x16, LargeImage = Images.printer_32x32 });
 
-        protected void AddHeaderRootItems()
-        {
-            App.HeaderControl.Add(new RootItem(FileMenuKey, MessageStrings.File) { SortOrder = -20 });
-            App.HeaderControl.Add(new RootItem(HomeMenuKey, MessageStrings.Home) { SortOrder = -10 });
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Reset_Layout, ResetLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 200, SmallImage = Images.layout_delete_16x16, LargeImage = Images.layout_delete_32x32 });
+
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Exit, Exit_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 5000, });
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Add_Layer, AddLayer_Click) { GroupCaption = Msg.Layers_Group, SmallImage = Images.layer_add_16x16, LargeImage = Images.layer_add_32x32 });
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Remove_Layer, RemoveLayer_Click) { GroupCaption = Msg.Layers_Group, SmallImage = Images.layer_remove_16x16, LargeImage = Images.layer_remove_32x32 });
+
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pan, PanTool_Click) { Key = Msg.Pan, GroupCaption = Msg.View_Group, SmallImage = Images.hand_16x16, LargeImage = Images.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomIn_Click) { Key = Msg.Zoom_In, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Images.zoom_in_16x16, LargeImage = Images.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_Out, ZoomOut_Click) { Key = Msg.Zoom_Out, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Images.zoom_out_16x16, LargeImage = Images.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Images.zoom_extend_16x16, LargeImage = Images.zoom_extend_32x32 });
+            _ZoomPrevious = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Images.zoom_to_previous_16, LargeImage = Images.zoom_to_previous, Enabled = false };
+            header.Add(_ZoomPrevious);
+            _ZoomNext = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Images.zoom_to_next_16, LargeImage = Images.zoom_to_next, Enabled = false };
+            header.Add(_ZoomNext);
+            _ZoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Images.zoom_layer_16x16, LargeImage = Images.zoom_layer_32x32 };
+            header.Add(_ZoomToLayer);
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, Coordinates_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Images.zoom_coordinate_16x16, LargeImage = Images.zoom_coordinate_32x32 });
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionTool_Click) { Key = Msg.Select, GroupCaption = Msg.Map_Tools_Group, SmallImage = Images.select_16x16, LargeImage = Images.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAll_Click) { Key = Msg.Deselect, GroupCaption = Msg.Map_Tools_Group, SmallImage = Images.deselect_16x16, LargeImage = Images.deselect_32x32 });
+
+            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Images.info_rhombus_16x16, LargeImage = Images.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
+
         }
 
         private static void ShowSaveAsError(string fileName)
         {
-            MessageBox.Show(String.Format(Resources.FailedToWriteTheSpecifiedMapFile, fileName), Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(String.Format(Msg.FailedToWriteTheSpecifiedMapFile, fileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -86,48 +114,7 @@ namespace DotSpatial.Plugins.MenuBar
         {
             App.Map.AddLayers();
         }
-
-        private void AddMenuItems()
-        {
-            IHeaderControl header = App.HeaderControl;
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_New, NewProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 5, SmallImage = Resources.document_empty_16x16, LargeImage = Resources.document_empty_32x32, ToolTipText = DotSpatial.Plugins.MenuBar.MessageStrings.FileNewToolTip });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Open, OpenProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 10, SmallImage = Resources.folder_16x16, LargeImage = Resources.folder_32x32, ToolTipText = DotSpatial.Plugins.MenuBar.MessageStrings.FileOpenToolTip });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Save, SaveProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 15, SmallImage = Resources.disk_16x16, LargeImage = Resources.disk_32x32, ShowInQuickAccessToolbar = Settings.Default.ShowSaveQuickAccessButton });
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_SaveAs, SaveProjectAs_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 20, SmallImage = Resources.save_as_16x16, LargeImage = Resources.save_as_32x32, ToolTipText = DotSpatial.Plugins.MenuBar.MessageStrings.FileSaveAsToolTip });
-
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Print, PrintLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 40, SmallImage = Resources.printer_16x16, LargeImage = Resources.printer_32x32 });
-
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Reset_Layout, ResetLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 200, SmallImage = Resources.layout_delete_16x16, LargeImage = Resources.layout_delete_32x32 });
-
-            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Exit, Exit_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 5000, });
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Add_Layer, AddLayer_Click) { GroupCaption = Msg.Layers_Group, SmallImage = Resources.layer_add_16x16, LargeImage = Resources.layer_add_32x32 });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Remove_Layer, RemoveLayer_Click) { GroupCaption = Msg.Layers_Group, SmallImage = Resources.layer_remove_16x16, LargeImage = Resources.layer_remove_32x32 });
-
-            //header.Add(new SimpleActionItem(HomeMenuKey, Msg.Save_Layer, null) { GroupCaption = Msg.Layers_Group, SmallImage = Resources.layer_save_16x16, LargeImage = Resources.layer_save_32x32, Enabled = false });
-
-            //header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pointer, PointerTool_Click) { GroupCaption = Msg.View_Group, SmallImage = Resources.cursor_arrow_16x16, LargeImage = Resources.cursor_arrow_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Pan, PanTool_Click) {Key = Msg.Pan, GroupCaption = Msg.View_Group, SmallImage = Resources.hand_16x16, LargeImage = Resources.hand_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomIn_Click) {Key = Msg.Zoom_In, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Resources.zoom_in_16x16, LargeImage = Resources.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_Out, ZoomOut_Click) {Key = Msg.Zoom_Out, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Resources.zoom_out_16x16, LargeImage = Resources.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Resources.zoom_extend_16x16, LargeImage = Resources.zoom_extend_32x32 });
-            _ZoomPrevious = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Resources.zoom_to_previous_16, LargeImage = Resources.zoom_to_previous, Enabled = false };
-            header.Add(_ZoomPrevious);
-            _ZoomNext = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Next, ZoomNext_Click) {GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Resources.zoom_to_next_16, LargeImage = Resources.zoom_to_next, Enabled = false };
-            header.Add(_ZoomNext);
-            _ZoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_layer_16x16, LargeImage = Resources.zoom_layer_32x32};
-            header.Add(_ZoomToLayer);
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, Coordinates_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Resources.zoom_coordinate_16x16, LargeImage = Resources.zoom_coordinate_32x32 });
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Select, SelectionTool_Click) {Key = Msg.Select, GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.select_16x16, LargeImage = Resources.select_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Deselect, DeselectAll_Click) { Key = Msg.Deselect, GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.deselect_16x16, LargeImage = Resources.deselect_32x32 });
-
-            header.Add(new SimpleActionItem(HomeMenuKey, Msg.Identify, IdentifierTool_Click) { GroupCaption = Msg.Map_Tools_Group, SmallImage = Resources.info_rhombus_16x16, LargeImage = Resources.info_rhombus_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
-          
-        }
+        
 
         void Layers_LayerSelected(object sender, Symbology.LayerSelectedEventArgs e)
         {
@@ -164,7 +151,7 @@ namespace DotSpatial.Plugins.MenuBar
             else if (String.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
             {
                 //if the current project is not specified - just ask to discard changes
-                if (MessageBox.Show(Resources.ClearAllDataAndStartANewMap, Resources.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show(Msg.ClearAllDataAndStartANewMap, Msg.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     App.SerializationManager.New();
                 }
@@ -172,8 +159,8 @@ namespace DotSpatial.Plugins.MenuBar
             else
             {
                 //the current project is specified - ask the users if they want to save changes to current project
-                string saveProjectMessage = String.Format(Resources.SaveChangesToCurrentProject, Path.GetFileName(App.SerializationManager.CurrentProjectFile));
-                DialogResult msgBoxResult = MessageBox.Show(saveProjectMessage, Resources.DiscardChanges, MessageBoxButtons.YesNoCancel);
+                string saveProjectMessage = String.Format(Msg.SaveChangesToCurrentProject, Path.GetFileName(App.SerializationManager.CurrentProjectFile));
+                DialogResult msgBoxResult = MessageBox.Show(saveProjectMessage, Msg.DiscardChanges, MessageBoxButtons.YesNoCancel);
 
                 if (msgBoxResult == DialogResult.Yes)
                 {
@@ -201,31 +188,22 @@ namespace DotSpatial.Plugins.MenuBar
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show(String.Format(Resources.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Resources.Error,
+                    MessageBox.Show(String.Format(Msg.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (XmlException)
                 {
-                    MessageBox.Show(String.Format(Resources.FailedToReadTheSpecifiedMapFile, dlg.FileName), Resources.Error,
+                    MessageBox.Show(String.Format(Msg.FailedToReadTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (ArgumentException)
                 {
-                    MessageBox.Show(String.Format(Resources.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Resources.Error,
+                    MessageBox.Show(String.Format(Msg.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        ///<summary>
-        ///This is a dummy tool who's main purpose is to unclick the other tools in the toggle group
-        ///If the toggle buttons could unclick themselves that would be a better solution and this 
-        ///arrow would be unnecessary. 
-        ///</summary>
-        private void PointerTool_Click(object sender, EventArgs e)
-        {
-            App.Map.FunctionMode = FunctionMode.None;
-        }
 
         /// <summary>
         /// Set the function mode to pan so user can move it with a mouse. 
@@ -419,10 +397,9 @@ namespace DotSpatial.Plugins.MenuBar
 
         private void ZoomToCoordinates()
         {
-            using(var CoordinateDialog = new ZoomToCoordinatesDialog(App.Map))
+            using (var CoordinateDialog = new ZoomToCoordinatesDialog(App.Map))
                 CoordinateDialog.ShowDialog();
         }
 
-        #endregion
     }
 }

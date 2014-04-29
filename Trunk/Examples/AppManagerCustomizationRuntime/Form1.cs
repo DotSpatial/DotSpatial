@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Forms;
+using DotSpatial.Controls;
 
 namespace DotSpatial.Examples.AppManagerCustomizationRuntime
 {
@@ -20,7 +21,9 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime
             //-----------
 
             appManager.UpdateProgress("Ready"); // Show some status message
-        }
 
+            // Add some menus
+            new DefaultMenuBars(appManager).Initialize(appManager.HeaderControl);
+        }
     }
 }

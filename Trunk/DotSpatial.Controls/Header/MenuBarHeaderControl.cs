@@ -19,10 +19,10 @@ namespace DotSpatial.Controls.Header
     {
         #region Constants and Fields
 
-        private const string STR_DefaultGroupName = "Default Group";
-        private ToolStripContainer _Container;
-        private MenuStrip _MenuStrip;
-        private List<ToolStrip> _Strips;
+        internal const string DEFAULT_GROUP_NAME = "Default Group";
+        private ToolStripPanel _tsPanel;
+        private MenuStrip _menuStrip;
+        private List<ToolStrip> _strips;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace DotSpatial.Controls.Header
         {
             var menu = new ToolStripMenuItem(item.Caption) {Name = item.Key};
 
-            var root = _MenuStrip.Items[item.RootKey] as ToolStripDropDownButton;
+            var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
             if (root != null)
             {
                 root.DropDownItems.Add(menu);
@@ -72,7 +72,7 @@ namespace DotSpatial.Controls.Header
         public override void Add(RootItem item)
         {
             // The root may have already been created.
-            var root = _MenuStrip.Items[item.Key] as ToolStripDropDownButton;
+            var root = _menuStrip.Items[item.Key] as ToolStripDropDownButton;
             if (root == null)
             {
                 // if not we need to create it.
@@ -134,7 +134,7 @@ namespace DotSpatial.Controls.Header
             menu.Click += (sender, e) => item.OnClick(e);
 
             EnsureNonNullRoot(item);
-            var root = _MenuStrip.Items[item.RootKey] as ToolStripDropDownButton;
+            var root = _menuStrip.Items[item.RootKey] as ToolStripDropDownButton;
             if (root == null)
             {
                 // Temporarily create the root.
@@ -234,22 +234,25 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// Initializes the specified container.
         /// </summary>
-        /// <param name="container">The container.</param>
-        public void Initialize(ToolStripContainer container)
+        /// <param name="toolStripPanel">The tool strip panel.</param>
+        /// <param name="menuStrip">Menu strip.</param>
+        public void Initialize(ToolStripPanel toolStripPanel, MenuStrip menuStrip)
         {
-            _Container = container;
+            if (toolStripPanel == null) throw new ArgumentNullException("toolStripPanel");
+            if (menuStrip == null) throw new ArgumentNullException("menuStrip");
 
-            // create the menu strip.
-            var strip = new MenuStrip {Name = STR_DefaultGroupName, Dock = DockStyle.Top};
+            if (_tsPanel != null)
+            {
+                RemoveAll();
+                _menuStrip.ItemClicked -= MenuStrip_ItemClicked;
+            }
 
-            // add the menu to the form so that it appears on top of all the toolbars.
-            container.Parent.Controls.Add(strip);
-
-            _Strips = new List<ToolStrip> {strip};
-            _MenuStrip = strip;
-
-            _MenuStrip.ItemClicked += MenuStrip_ItemClicked;
+            _tsPanel = toolStripPanel;
+            _menuStrip = menuStrip;
+            _menuStrip.ItemClicked += MenuStrip_ItemClicked;
+            _strips = new List<ToolStrip> { _menuStrip };
         }
+        
 
         /// <summary>
         /// Remove item from the standard toolbar or ribbon control
@@ -268,7 +271,7 @@ namespace DotSpatial.Controls.Header
                 item.Dispose();
                 if (toolStrip.Items.Count == 0)
                 {
-                    _Strips.Remove(toolStrip);
+                    _strips.Remove(toolStrip);
                     toolStrip.Dispose();
                 }
 
@@ -319,13 +322,13 @@ namespace DotSpatial.Controls.Header
         private void RefreshRootItemOrder()
         {
             // Get a list of all the menus
-            var pages = new List<ToolStripItem>(_MenuStrip.Items.Cast<ToolStripItem>().OrderBy(_ => _.MergeIndex));
+            var pages = new List<ToolStripItem>(_menuStrip.Items.Cast<ToolStripItem>().OrderBy(_ => _.MergeIndex));
 
             // Re add all of the items in the new order.
-            _MenuStrip.Items.Clear();
+            _menuStrip.Items.Clear();
             foreach (var sortedPage in pages)
             {
-                _MenuStrip.Items.Add(sortedPage);
+                _menuStrip.Items.Add(sortedPage);
             }
         }
 
@@ -370,18 +373,15 @@ namespace DotSpatial.Controls.Header
 
         private ToolStrip AddToolStrip(string groupName)
         {
-            var strip = new ToolStrip {Name = groupName};
-
-            _Strips.Add(strip);
-            _Strips.Remove(_MenuStrip);
-            var strips = _Strips.Cast<Control>().ToArray();
-            _Strips.Add(_MenuStrip);
-
-            _Container.TopToolStripPanel.SuspendLayout();
-            _Container.TopToolStripPanel.Controls.Clear();
-            _Container.TopToolStripPanel.Controls.AddRange(strips);
-            _Container.TopToolStripPanel.ResumeLayout();
-
+            var strip = new ToolStrip {Name = groupName, };
+            _strips.Add(strip);
+            var toAdd = new List<Control>(_tsPanel.Controls.Cast<Control>()) { strip };
+            
+            _tsPanel.SuspendLayout();
+            _tsPanel.Controls.Clear();
+            _tsPanel.Controls.AddRange(toAdd.ToArray());
+            _tsPanel.ResumeLayout();
+            
             return strip;
         }
 
@@ -394,7 +394,7 @@ namespace DotSpatial.Controls.Header
                 Visible = false,
                 MergeIndex = item.SortOrder
             };
-            _MenuStrip.Items.Add(menu);
+            _menuStrip.Items.Add(menu);
             return menu;
         }
 
@@ -438,7 +438,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         private void EnsureExtensionsTabExists()
         {
-            var exists = _MenuStrip.Items.ContainsKey(ExtensionsRootKey);
+            var exists = _menuStrip.Items.ContainsKey(ExtensionsRootKey);
             if (!exists)
             {
                 Add(new RootItem(ExtensionsRootKey, "Extensions"));
@@ -461,7 +461,7 @@ namespace DotSpatial.Controls.Header
 
         private ToolStripItem GetItem(string key)
         {
-            foreach (var strip in _Strips)
+            foreach (var strip in _strips)
             {
                 var item = strip.Items.Find(key, true).FirstOrDefault();
                 if (item != null)
@@ -475,8 +475,8 @@ namespace DotSpatial.Controls.Header
 
         private ToolStrip GetOrCreateStrip(string groupCaption)
         {
-            var query = from s in _Strips
-                        where s.Name == (groupCaption ?? STR_DefaultGroupName)
+            var query = from s in _strips
+                        where s.Name == (groupCaption ?? DEFAULT_GROUP_NAME)
                         select s;
 
             return query.FirstOrDefault() ?? AddToolStrip(groupCaption);
@@ -542,7 +542,7 @@ namespace DotSpatial.Controls.Header
         /// </param>
         private void UncheckButtonsExcept(ToolStripButton checkedButton)
         {
-            foreach (var strip in _Strips)
+            foreach (var strip in _strips)
             {
                 foreach (ToolStripItem item in strip.Items)
                 {

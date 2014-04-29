@@ -808,4 +808,115 @@
   <data name="SelectFeatures" xml:space="preserve">
     <value>No feature layers were selected in the legend.  Select the layer to use.</value>
   </data>
+  <data name="Add_Layer" xml:space="preserve">
+    <value>Add Layer...</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Deselect All</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileNewToolTip" xml:space="preserve">
+    <value>Clears the current map. The user is prompted to save any changes to the current map project.</value>
+  </data>
+  <data name="FileOpenToolTip" xml:space="preserve">
+    <value>Clears the current map and shows an ‘Open’ window that allows the user to navigate to a previously saved map.</value>
+  </data>
+  <data name="FileSaveAsToolTip" xml:space="preserve">
+    <value>Allows the user to save the project.</value>
+  </data>
+  <data name="FileSaveToolTip" xml:space="preserve">
+    <value>Allows the user to name the file and location where the map is to be saved on their computer.</value>
+  </data>
+  <data name="File_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="File_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="File_Open" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="File_Print" xml:space="preserve">
+    <value>Print Layout...</value>
+  </data>
+  <data name="File_Reset_Layout" xml:space="preserve">
+    <value>Reset Window Layout</value>
+  </data>
+  <data name="File_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="File_SaveAs" xml:space="preserve">
+    <value>Save As...</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="Identify" xml:space="preserve">
+    <value>Identify</value>
+  </data>
+  <data name="Layers_Group" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="Map_Tools_Group" xml:space="preserve">
+    <value>Map Tool</value>
+  </data>
+  <data name="Pan" xml:space="preserve">
+    <value>Pan</value>
+  </data>
+  <data name="Pointer" xml:space="preserve">
+    <value>Pointer</value>
+  </data>
+  <data name="Remove_Layer" xml:space="preserve">
+    <value>Remove Layer</value>
+  </data>
+  <data name="Save_Layer" xml:space="preserve">
+    <value>Save Layer...</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="View_Group" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Zoom_Group" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="Zoom_In" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="Zoom_In_Tooltip" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="Zoom_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Zoom_Next_Tooltip" xml:space="preserve">
+    <value>Zoom Next</value>
+  </data>
+  <data name="Zoom_Out" xml:space="preserve">
+    <value>Out</value>
+  </data>
+  <data name="Zoom_Out_Tooltip" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+  <data name="Zoom_Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Zoom_Previous_Tooltip" xml:space="preserve">
+    <value>Zoom Previous</value>
+  </data>
+  <data name="Zoom_To_Coordinates" xml:space="preserve">
+    <value>Zoom To Coordinates</value>
+  </data>
+  <data name="Zoom_To_Extents" xml:space="preserve">
+    <value>Full Extent</value>
+  </data>
+  <data name="Zoom_To_Extents_Tooltip" xml:space="preserve">
+    <value>Zoom to Full Extent</value>
+  </data>
+  <data name="Zoom_To_Layer" xml:space="preserve">
+    <value>Zoom To Layer</value>
+  </data>
 </root>

@@ -60,6 +60,7 @@
     <Compile Include="DatelineCrossingMap.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DefaultMenuBars.cs" />
     <Compile Include="DefaultRequiredImports\DefaultRequiredImportAttribute.cs" />
     <Compile Include="DefaultRequiredImports\DockManager.cs" />
     <Compile Include="DefaultRequiredImports\HeaderControl.cs" />
@@ -237,8 +238,14 @@
     <Compile Include="SpatialDockManager.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SpatialHeaderControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SpatialToolStrip.Designer.cs">
       <DependentUpon>SpatialToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SpatialToolStripPanel.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewChangedEventArgs.cs" />
     <Compile Include="YieldStyles.cs" />
@@ -522,6 +529,156 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\zoom_coordinate_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddWebLayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_arrow_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_arrow_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\deselect_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\deselect_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disk_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disk_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_empty_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_empty_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DotSpatialGlobe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DotSpatialGlobeSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_rhombus_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_add_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_add_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_remove_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_remove_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_save_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_save_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layout_delete_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layout_delete_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\measure_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\measure_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printer_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printer_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_extend_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_extend_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_in_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_in_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_layer_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_layer_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_out_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_out_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_selection_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_selection_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_to_next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_to_next_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_to_previous.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_to_previous_16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

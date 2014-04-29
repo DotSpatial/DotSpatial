@@ -390,4 +390,160 @@
   <data name="zoom_coordinate_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\zoom_coordinate_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AddWebLayer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AddWebLayer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursor_arrow_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\cursor_arrow_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursor_arrow_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\cursor_arrow_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deselect_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\deselect_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deselect_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\deselect_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Dice.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disk_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\disk_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disk_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\disk_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_empty_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\document_empty_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_empty_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\document_empty_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DotSpatialGlobe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\DotSpatialGlobe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DotSpatialGlobeSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\DotSpatialGlobeSmall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\folder_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\folder_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hand_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\hand_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hand_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\hand_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="info_rhombus_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\info_rhombus_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_add_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_add_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_add_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_add_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_remove_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_remove_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_remove_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_remove_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_save_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_save_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layer_save_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layer_save_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layout_delete_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layout_delete_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="layout_delete_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\layout_delete_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="measure_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\measure_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="measure_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\measure_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuLayerClear1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\mnuLayerClear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\printer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\printer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RunModel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\RunModel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_as_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\save_as_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_as_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\save_as_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\select_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="select_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\select_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="table_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\table_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_extend_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_extend_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_extend_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_extend_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_in_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_in_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_in_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_in_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_layer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_layer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_layer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_layer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_out_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_out_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_out_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_out_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_selection_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_selection_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_selection_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_selection_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_to_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_to_next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_to_next_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_to_next_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_to_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_to_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoom_to_previous_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\zoom_to_previous_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

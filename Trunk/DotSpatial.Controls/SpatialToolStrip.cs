@@ -34,7 +34,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// SpatialToolStrip
+    /// Preconfigured tool strip menu.
     /// </summary>
     [ToolboxItem(true)]
     [ToolboxBitmap(typeof(SpatialToolStrip), "SpatialToolStrip.ico")]
@@ -64,7 +64,7 @@ namespace DotSpatial.Controls
         public SpatialToolStrip(IMap map)
         {
             InitializeComponent();
-
+            
             Map = map;
             EnableControlsToMap();
             EnableControlsToAppManager();
@@ -121,6 +121,8 @@ namespace DotSpatial.Controls
                 EnableControlsToAppManager();
             }
         }
+       
+        #endregion
 
         private void EnableControlsToMap()
         {
@@ -147,8 +149,6 @@ namespace DotSpatial.Controls
                 cmdOpen.Enabled =
                     cmdSave.Enabled = ApplicationManager != null;
         }
-
-        #endregion
 
         private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
         {

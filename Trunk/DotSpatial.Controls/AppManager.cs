@@ -68,6 +68,8 @@ namespace DotSpatial.Controls
         private IContainer _components;
         private string message = "";
         private ISplashScreenManager splashScreen;
+        private IHeaderControl _headerControl;
+        private IMap _map;
 
         #endregion
 
@@ -108,6 +110,16 @@ namespace DotSpatial.Controls
         /// or HeaderControl before other extensions are activated.
         /// </summary>
         public event EventHandler SatisfyImportsExtensionsActivated;
+
+        /// <summary>
+        /// Occurs when HeaderControl changed.
+        /// </summary>
+        public event EventHandler HeaderControlChanged;
+
+        /// <summary>
+        /// Occurs when Map Changed
+        /// </summary>
+        public event EventHandler<MapChangedEventArgs> MapChanged;
 
         #endregion
 
@@ -181,8 +193,19 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the header control
         /// </summary>
-        [Browsable(false)]
-        public IHeaderControl HeaderControl { get; set; }
+        [Description("Gets or sets the header control. You can leave this empty to use default header control.")]
+        public IHeaderControl HeaderControl
+        {
+            get { return _headerControl; }
+            set
+            {
+                if (value == _headerControl) return;
+                _headerControl = value;
+
+                var h = HeaderControlChanged;
+                if (h != null) h(this, EventArgs.Empty);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the Legend (Table of Contents) associated with the plugin manager
@@ -194,7 +217,19 @@ namespace DotSpatial.Controls
         /// Gets or sets the Map associated with the plugin manager
         /// </summary>
         [Description("Gets or sets the Map associated with the plugin manager")]
-        public IMap Map { get; set; }
+        public IMap Map
+        {
+            get { return _map; }
+            set
+            {
+                if (value == _map) return;
+                var oldMap = _map;
+                _map = value;
+
+                var h = MapChanged;
+                if (h != null) h(this, new MapChangedEventArgs(oldMap, value));
+            }
+        }
 
         /// <summary>
         /// Gets or sets the progress handler that is being used to display status messages.
@@ -730,5 +765,16 @@ namespace DotSpatial.Controls
 
         #endregion
     }
-   
+
+    public class MapChangedEventArgs : EventArgs
+    {
+        public IMap OldValue { get; private set; }
+        public IMap NewValue { get; private set; }
+
+        public MapChangedEventArgs(IMap oldValue, IMap newValue)
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
 }

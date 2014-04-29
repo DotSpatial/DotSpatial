@@ -36,26 +36,22 @@ namespace DotSpatial.Controls.DefaultRequiredImports
             {
                 _isActivated = true;
 
-                var toolStripContainer1 = new ToolStripContainer();
-                toolStripContainer1.ContentPanel.SuspendLayout();
-                toolStripContainer1.SuspendLayout();
+                var container = new ToolStripPanel {Dock = DockStyle.Top};
+                Shell.Controls.Add(container);
 
-                toolStripContainer1.Dock = DockStyle.Fill;
-                toolStripContainer1.Name = "toolStripContainer1";
+                var menuStrip = new MenuStrip { Name = DEFAULT_GROUP_NAME, Dock = DockStyle.Top };
+                Shell.Controls.Add(menuStrip);
 
-                // place all of the controls that were on the form originally inside of our content panel.
-                foreach (Control control in Shell.Controls)
-                {
-                    toolStripContainer1.ContentPanel.Controls.Add(control);
-                }
+                Initialize(container, menuStrip);
 
-                Shell.Controls.Add(toolStripContainer1);
+                // Add default buttons
+                container.SuspendLayout();
+                menuStrip.SuspendLayout();
 
-                toolStripContainer1.ContentPanel.ResumeLayout(false);
-                toolStripContainer1.ResumeLayout(false);
-                toolStripContainer1.PerformLayout();
+                new DefaultMenuBars(App).Initialize(this);
 
-                Initialize(toolStripContainer1);
+                container.ResumeLayout();
+                menuStrip.ResumeLayout();
             }
         }
     }

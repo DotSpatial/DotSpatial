@@ -61,6 +61,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Layer....
+        /// </summary>
+        internal static string Add_Layer {
+            get {
+                return ResourceManager.GetString("Add_Layer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string AppManager_Home {
@@ -385,6 +394,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deselect All.
+        /// </summary>
+        internal static string Deselect {
+            get {
+                return ResourceManager.GetString("Deselect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discard Changes?.
         /// </summary>
         internal static string DiscardChanges {
@@ -637,11 +655,92 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        internal static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string File_Exit {
+            get {
+                return ResourceManager.GetString("File_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string File_New {
+            get {
+                return ResourceManager.GetString("File_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open....
+        /// </summary>
+        internal static string File_Open {
+            get {
+                return ResourceManager.GetString("File_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print Layout....
+        /// </summary>
+        internal static string File_Print {
+            get {
+                return ResourceManager.GetString("File_Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Window Layout.
+        /// </summary>
+        internal static string File_Reset_Layout {
+            get {
+                return ResourceManager.GetString("File_Reset_Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string File_Save {
+            get {
+                return ResourceManager.GetString("File_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save As....
+        /// </summary>
+        internal static string File_SaveAs {
+            get {
+                return ResourceManager.GetString("File_SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The fileName %S already exists.  Do you wish to overwrite it?.
         /// </summary>
         internal static string FileExists_S {
             get {
                 return ResourceManager.GetString("FileExists_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clears the current map. The user is prompted to save any changes to the current map project..
+        /// </summary>
+        internal static string FileNewToolTip {
+            get {
+                return ResourceManager.GetString("FileNewToolTip", resourceCulture);
             }
         }
         
@@ -669,6 +768,33 @@ namespace DotSpatial.Controls {
         internal static string FileNotPoints_S {
             get {
                 return ResourceManager.GetString("FileNotPoints_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clears the current map and shows an ‘Open’ window that allows the user to navigate to a previously saved map..
+        /// </summary>
+        internal static string FileOpenToolTip {
+            get {
+                return ResourceManager.GetString("FileOpenToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows the user to save the project..
+        /// </summary>
+        internal static string FileSaveAsToolTip {
+            get {
+                return ResourceManager.GetString("FileSaveAsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows the user to name the file and location where the map is to be saved on their computer..
+        /// </summary>
+        internal static string FileSaveToolTip {
+            get {
+                return ResourceManager.GetString("FileSaveToolTip", resourceCulture);
             }
         }
         
@@ -705,6 +831,24 @@ namespace DotSpatial.Controls {
         internal static string FindToolByName {
             get {
                 return ResourceManager.GetString("FindToolByName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map.
+        /// </summary>
+        internal static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify.
+        /// </summary>
+        internal static string Identify {
+            get {
+                return ResourceManager.GetString("Identify", resourceCulture);
             }
         }
         
@@ -804,6 +948,15 @@ namespace DotSpatial.Controls {
         internal static string KeySizeException {
             get {
                 return ResourceManager.GetString("KeySizeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layers.
+        /// </summary>
+        internal static string Layers_Group {
+            get {
+                return ResourceManager.GetString("Layers_Group", resourceCulture);
             }
         }
         
@@ -1483,6 +1636,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Map Tool.
+        /// </summary>
+        internal static string Map_Tools_Group {
+            get {
+                return ResourceManager.GetString("Map_Tools_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Projection Mismatch.
         /// </summary>
         internal static string MapFrame_GlcLayerAdded_Projection_Mismatch {
@@ -1807,6 +1969,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pan.
+        /// </summary>
+        internal static string Pan {
+            get {
+                return ResourceManager.GetString("Pan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter is invalid.
         /// </summary>
         internal static string ParameterInvalid {
@@ -1857,6 +2028,15 @@ namespace DotSpatial.Controls {
         internal static string PngInvalidSignatureException {
             get {
                 return ResourceManager.GetString("PngInvalidSignatureException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pointer.
+        /// </summary>
+        internal static string Pointer {
+            get {
+                return ResourceManager.GetString("Pointer", resourceCulture);
             }
         }
         
@@ -1987,6 +2167,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Layer.
+        /// </summary>
+        internal static string Remove_Layer {
+            get {
+                return ResourceManager.GetString("Remove_Layer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove the fields?.
         /// </summary>
         internal static string RemoveFields {
@@ -2005,6 +2194,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Layer....
+        /// </summary>
+        internal static string Save_Layer {
+            get {
+                return ResourceManager.GetString("Save_Layer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Changes?.
         /// </summary>
         internal static string SaveChanges {
@@ -2019,6 +2217,15 @@ namespace DotSpatial.Controls {
         internal static string SaveChangesToCurrentProject {
             get {
                 return ResourceManager.GetString("SaveChangesToCurrentProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
@@ -2122,11 +2329,137 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        internal static string View_Group {
+            get {
+                return ResourceManager.GetString("View_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Writing values to %S.
         /// </summary>
         internal static string WritingValues_S {
             get {
                 return ResourceManager.GetString("WritingValues_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom.
+        /// </summary>
+        internal static string Zoom_Group {
+            get {
+                return ResourceManager.GetString("Zoom_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In.
+        /// </summary>
+        internal static string Zoom_In {
+            get {
+                return ResourceManager.GetString("Zoom_In", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom In.
+        /// </summary>
+        internal static string Zoom_In_Tooltip {
+            get {
+                return ResourceManager.GetString("Zoom_In_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string Zoom_Next {
+            get {
+                return ResourceManager.GetString("Zoom_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Next.
+        /// </summary>
+        internal static string Zoom_Next_Tooltip {
+            get {
+                return ResourceManager.GetString("Zoom_Next_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out.
+        /// </summary>
+        internal static string Zoom_Out {
+            get {
+                return ResourceManager.GetString("Zoom_Out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Out.
+        /// </summary>
+        internal static string Zoom_Out_Tooltip {
+            get {
+                return ResourceManager.GetString("Zoom_Out_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        internal static string Zoom_Previous {
+            get {
+                return ResourceManager.GetString("Zoom_Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Previous.
+        /// </summary>
+        internal static string Zoom_Previous_Tooltip {
+            get {
+                return ResourceManager.GetString("Zoom_Previous_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom To Coordinates.
+        /// </summary>
+        internal static string Zoom_To_Coordinates {
+            get {
+                return ResourceManager.GetString("Zoom_To_Coordinates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Extent.
+        /// </summary>
+        internal static string Zoom_To_Extents {
+            get {
+                return ResourceManager.GetString("Zoom_To_Extents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to Full Extent.
+        /// </summary>
+        internal static string Zoom_To_Extents_Tooltip {
+            get {
+                return ResourceManager.GetString("Zoom_To_Extents_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom To Layer.
+        /// </summary>
+        internal static string Zoom_To_Layer {
+            get {
+                return ResourceManager.GetString("Zoom_To_Layer", resourceCulture);
             }
         }
     }
