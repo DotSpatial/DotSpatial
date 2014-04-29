@@ -435,6 +435,7 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                if (value == _legendText) return;
                 _legendText = value;
                 OnItemChanged(this);
             }
