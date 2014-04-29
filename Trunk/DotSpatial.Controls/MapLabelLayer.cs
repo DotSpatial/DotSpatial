@@ -55,7 +55,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// The existing labels, accessed for all map label layers, not just this instance
         /// </summary>
-        internal static List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
+        private  static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
         private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
@@ -105,6 +105,14 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Cleaer all existing labels for all layers
+        /// </summary>
+        public static void ClearAllExistingLabels()
+        {
+            ExistingLabels.Clear();
+        }
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features

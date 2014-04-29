@@ -330,7 +330,7 @@ namespace DotSpatial.Controls
                 if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
             }
             // Then labels
-            MapLabelLayer.ExistingLabels = new List<RectangleF>();
+            MapLabelLayer.ClearAllExistingLabels();
             foreach (var layer in Layers)
             {
                 InitializeLabels(regions, args, layer);
@@ -535,7 +535,7 @@ namespace DotSpatial.Controls
 
         private void PrintLayer(IMapLayer layer, MapArgs args)
         {
-            MapLabelLayer.ExistingLabels.Clear();
+            MapLabelLayer.ClearAllExistingLabels();
             IMapGroup group = layer as IMapGroup;
             if (group != null)
             {

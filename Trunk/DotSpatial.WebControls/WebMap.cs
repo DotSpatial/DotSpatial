@@ -114,11 +114,11 @@ namespace DotSpatial.WebControls
     public class WebMap : WebControl, ICallbackEventHandler, IPostBackEventHandler
     {
         /// <summary>
-        /// Occours when map is cliccked with Pan&click tool active
+        /// Occurs when map is clicked with Pan&click tool active
         /// </summary>
         public delegate void delegateMapClick(Object Sender, MapClickEventArgs e);
         /// <summary>
-        /// Occours when map is cliccked with Pan&click tool active
+        /// Occurs when map is clicked with Pan&click tool active
         /// </summary>
         public event delegateMapClick MapClick;
 
@@ -191,7 +191,6 @@ namespace DotSpatial.WebControls
 
         public void RaisePostBackEvent(string eventArgument)
         {
-
             GDIMap m = ControlMap;
 
             string[] arg = eventArgument.Split('|');
@@ -221,94 +220,9 @@ namespace DotSpatial.WebControls
                     }
                     break;
 
-                case "ADDFEATURE":
-                    {
-                        int num = Convert.ToInt32(arg[1]);
+//                case "ADDFEATURE":  //moved to RaiseCallbackEvent
 
-                        System.Drawing.Point pt = new System.Drawing.Point();
-                        Coordinate[] pm = new Coordinate[num];
-
-                        for (int i = 0; i < num; i++)
-                        {
-                            pt.X = Convert.ToInt32(arg[(i + 1) * 2]);
-                            pt.Y = Convert.ToInt32(arg[(i + 1) * 2 + 1]);
-
-                            pm[i] = m.PixelToProj(pt);
-                        }
-
-                        
-                        FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
-                        Feature f;
-                        FeatureType ft = FeatureType.Unspecified;
-
-                        if (m.Layers.SelectedLayer != null)
-                        {
-                            IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
-                        
-                            if(MFL.GetType() == typeof(MapPointLayer))
-                            {
-                                ft = FeatureType.Point;
-                            }
-                            if(MFL.GetType() == typeof( MapLineLayer))
-                            {
-                                ft = FeatureType.Line;
-                            }
-                            if(MFL.GetType() == typeof( MapPolygonLayer))
-                            {
-                                ft = FeatureType.Polygon;
-                            }
-
-                            if (ft != FeatureType.Unspecified)
-                            {
-                                
-                                f = new Feature(ft, pm);
-
-                                if (AddFeature != null)
-                                {
-                                    AddFeature(this, fs, f);
-                                }
-                                else
-                                {
-                                    fs.AddFeature(f);
-                                    fs.InitializeVertices();
-                                }
-                            }
-                        }
-
-                    }
-                    break;
-
-                case "DATAGRID":
-                    {
-                        if (m.Layers.SelectedLayer != null)
-                        {
-                            //string script=null;
-
-                            if (DataOnGrid != null)
-                            {
-                                DataGridEventArgs e = new DataGridEventArgs();
-                                IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
-
-                                int n = MFL.Selection.Count;
-
-                                if (n > 0)
-                                {
-                                    FeatureSet fs = MFL.Selection.ToFeatureSet();
-                                    e.Recordsource = fs.DataTable;
-                                }
-                                else
-                                {
-                                    e.Recordsource = MFL.DataSet.DataTable;
-                                }
-
-                                DataOnGrid(this, e);
-
-                            }
-
-                        }
-
-                    }
-                    break;
+//                case "DATAGRID":  //never gets here - wrong place? moved to RaiseCallbackEvent
 
                 case "FORCEREFRESH":
                     {
@@ -643,7 +557,9 @@ namespace DotSpatial.WebControls
 
                 if (m.Layers.SelectedLayer != null)
                 {
-                    IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
+//                    IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
+// exception if cast MapRasterLayer in previous line, so use IMapLayer:
+                    IMapLayer MFL = (IMapLayer)m.Layers.SelectedLayer;
                         
                     ActiveLayerType = 0;
                     if(MFL.GetType() == typeof(MapPointLayer))
@@ -743,7 +659,8 @@ namespace DotSpatial.WebControls
 
                 if (!cm.IsClientScriptBlockRegistered("CallServer"))
                 {
-                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "", true);
+//                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "", true);
+                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "''", true);
                     callbackReference = callbackReference.Replace("'" + ClientID + "'", "ID");
                     String callBackScript = "function CallServer(ID,arg) {" + callbackReference + "; }";
                     //String callBackScript = "function CallServer(arg, context) {alert(arg.toString()+' '+context.toString()); }";
@@ -772,11 +689,12 @@ namespace DotSpatial.WebControls
                 resourceName = "DotSpatial.WebControls.Script.wz_jsgraphics.js";
                 cm.RegisterClientScriptResource(GetType(), resourceName);
 
-                resourceName = "DotSpatial.WebControls.Script.wz_tooltip.js";
-                cm.RegisterClientScriptResource(GetType(), resourceName);
+// These .js scripts no longer needed with HTML tooltips (title):
+//                resourceName = "DotSpatial.WebControls.Script.wz_tooltip.js";
+//                cm.RegisterClientScriptResource(GetType(), resourceName);
 
-                resourceName = "DotSpatial.WebControls.Script.tip_ballon.js";
-                cm.RegisterClientScriptResource(GetType(), resourceName);
+//                resourceName = "DotSpatial.WebControls.Script.tip_balloon.js";
+//                cm.RegisterClientScriptResource(GetType(), resourceName);
 
                 resourceName = "DotSpatial.WebControls.Script.CookieManager.js";
                 cm.RegisterClientScriptResource(GetType(), resourceName);
@@ -811,15 +729,16 @@ namespace DotSpatial.WebControls
         }
        
         public void RaiseCallbackEvent(String eventArgument)
+//        public virtual void RaiseCallbackEvent(String eventArgument)  //to override in subclass
         {
-            returnCommand = "REFRESH";
+//            returnCommand = "REFRESH";  //unsightly refresh when change legend selection
+            returnCommand = "NOTHING";
 
-            string Nm = SessionName;
+//            string Nm = SessionName;  //not used
 
             GDIMap m = (GDIMap)System.Web.HttpContext.Current.Session[(string)ViewState[ClientID]];
 
             if (m == null) return;
-
 
                 string[] arg = eventArgument.Split('|');
 
@@ -856,15 +775,18 @@ namespace DotSpatial.WebControls
 
                                 IEnvelope affectedarea = null;
 
-                                m.Layers.SelectedLayer.Select(m.ViewExtents.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.IntersectsExtent, out affectedarea);
+//                                m.Layers.SelectedLayer.Select(m.ViewExtents.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.IntersectsExtent, out affectedarea);
+                                m.Layers.SelectedLayer.Select(ex.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.Intersects, out affectedarea);
 
                                 returnCommand = "STRUCTURE";
 
                             }
                             else
                             {
-                                returnValue = "<table><tr><td> Choose a layer! </td></tr><table>";
+                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
                                 returnCommand = "POPUP";
+//                                returnValue = "Select a layer first.";
+//                                returnCommand = "ALERT";
                             }
 
                         }
@@ -882,17 +804,21 @@ namespace DotSpatial.WebControls
                             {
                                 FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
 
-                                List<IFeature> flist = fs.Select(ex);
+//                                List<IFeature> flist = fs.Select(ex);  //returns empty list when IndexMode == false
+                                List<int> flist = fs.SelectIndices(ex);
 
                                 int n = flist.Count;
 
+//                                returnValue = "<table border='1'>";  //looks goofy
                                 returnValue = "<table>";
 
                                 if (n > 0)
                                 {
                                     for (int i = 0; i < fs.DataTable.Columns.Count; i++)
                                     {
-                                        returnValue += "<tr><td>" + fs.DataTable.Columns[i].ColumnName + "</td><td>" + flist[0].DataRow[i].ToString() + "</td></tr>";
+                                        returnValue += "<tr><td>" + fs.DataTable.Columns[i].ColumnName + 
+//                                                       "</td><td>" + flist[0].DataRow[i].ToString() + "</td></tr>";
+                                                       "</td><td>" + fs.GetFeature(flist[0]).DataRow[i].ToString() + "</td></tr>";
                                     }
 
                                     returnValue += "</table>";
@@ -901,8 +827,10 @@ namespace DotSpatial.WebControls
                             }
                             else
                             {
-                                returnValue = "<table><tr><td> Select a layer before info !</td></tr><table>";
+                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
                                 returnCommand = "POPUP";
+//                                returnValue = "Select a layer first.";
+//                                returnCommand = "ALERT";
                             }
                         }
                         break;
@@ -949,9 +877,9 @@ namespace DotSpatial.WebControls
                             Coordinate pm2 = m.PixelToProj(pt2);
 
                             Extent x = new Extent(Math.Min(pm1.X, pm2.X),
-                                                   Math.Min(pm1.Y, pm2.Y),
-                                                   Math.Max(pm1.X, pm2.X),
-                                                   Math.Max(pm1.Y, pm2.Y));
+                                                  Math.Min(pm1.Y, pm2.Y),
+                                                  Math.Max(pm1.X, pm2.X),
+                                                  Math.Max(pm1.Y, pm2.Y));
 
                             m.ViewExtents = x;
                             returnCommand = "REFRESHANDHIDEBUFFER";
@@ -988,9 +916,10 @@ namespace DotSpatial.WebControls
                             int x = Convert.ToInt32(arg[1]);
                             int y = Convert.ToInt32(arg[2]);
 
-                            System.Drawing.Point pnt = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
+// not used:                System.Drawing.Point pnt = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
 
                             m.MapFrame.Pan(new System.Drawing.Point(x, y));
+                            returnCommand = "REFRESH";
                         }
                         break;
 
@@ -1008,14 +937,169 @@ namespace DotSpatial.WebControls
                         }
                         break;
 
+                    case "DATAGRID":  //moved to here from RaisePostBackEvent
+                        {
+                            if (m.Layers.SelectedLayer != null)
+                            {
+                                //string script=null;
+
+                                IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
+
+                                int n = MFL.Selection.Count;
+
+                                FeatureSet fs;
+                                DataTable rs;
+                                if (n > 0)
+                                {
+                                    fs = MFL.Selection.ToFeatureSet();
+                                    rs = fs.DataTable;
+                                }
+                                else
+                                {
+                                    fs = MFL.DataSet as FeatureSet;
+                                    rs = fs.DataTable;
+                                }
+
+                                if (DataOnGrid != null)  //Let event handler display grid?
+                                {
+                                    DataGridEventArgs e = new DataGridEventArgs();
+                                    e.Recordsource = rs;
+                                    DataOnGrid(this, e);
+                                }
+                                else  //Display default HTML grid
+                                {
+                                    returnValue = "<table border='1'><tr>";
+
+                                    for (int h = 0; h < rs.Columns.Count; h++)
+                                    {
+                                        returnValue += "<th>" + rs.Columns[h].ColumnName + "</th>";
+                                    }
+                                    returnValue += "</tr>";
+
+                                    string rowHtml;
+                                    for (int r = 0; r < rs.Rows.Count; r++)
+                                    {  //note: _much_ faster if build each row separately
+                                        rowHtml = "<tr>";
+                                        for (int c = 0; c < rs.Columns.Count; c++)
+                                        {
+                                            rowHtml += "<td>" + fs.GetFeature(r).DataRow[c].ToString() + "</td>";
+                                        }
+                                        rowHtml += "</tr>";
+                                        returnValue += rowHtml;
+                                    }
+                                    returnValue += "</table>";
+                                    returnCommand = "POPUP";
+                                }
+
+                            }
+                            else
+                            {
+                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
+                                returnCommand = "POPUP";
+                            }
+                        }
+                        break;
+
+                    case "ADDFEATURE":  //moved to here from RaisePostBackEvent
+                        {
+                            int num = Convert.ToInt32(arg[1]);
+
+                            System.Drawing.Point pt = new System.Drawing.Point();
+                            Coordinate[] pm = new Coordinate[num];
+
+                            for (int i = 0; i < num; i++)
+                            {
+                                pt.X = Convert.ToInt32(arg[(i + 1) * 2]);
+                                pt.Y = Convert.ToInt32(arg[(i + 1) * 2 + 1]);
+
+                                pm[i] = m.PixelToProj(pt);
+                            }
+
+                            if (m.Layers.SelectedLayer != null)
+                            {
+                                FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
+                                Feature f;
+                                FeatureType ft = FeatureType.Unspecified;
+
+                                IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
+
+                                if(MFL.GetType() == typeof(MapPointLayer))
+                                {
+                                    ft = FeatureType.Point;
+                                }
+                                if(MFL.GetType() == typeof(MapLineLayer))
+                                {
+                                    ft = FeatureType.Line;
+                                }
+                                if(MFL.GetType() == typeof(MapPolygonLayer))
+                                {
+                                    ft = FeatureType.Polygon;
+                                }
+
+                                if (ft != FeatureType.Unspecified)
+                                {
+
+                                    f = new Feature(ft, pm);
+
+                                    try
+                                    {
+                                        if (AddFeature != null)
+                                        {
+                                            AddFeature(this, fs, f);
+                                        }
+                                        else
+                                        {
+                                            try
+                                            {
+                                                fs.AddFeature(f);
+                                                fs.Save();
+                                            }
+                                            catch
+                                            {
+                                                fs.Features.Remove(f);
+                                                throw;  //re-throw exception
+                                            }
+                                            fs.InitializeVertices();
+                                        }
+                                        //Apparently have to force recreating labels when add feature.
+                                        if (MFL.LabelLayer != null)
+                                        {
+                                              // Recreating label layer works.
+//                                            MapLabelLayer NewLabels = new MapLabelLayer();
+//                                            NewLabels.Symbology = MFL.LabelLayer.Symbology;
+//                                            NewLabels.Symbolizer = MFL.LabelLayer.Symbolizer;
+//                                            MFL.LabelLayer = NewLabels;
+                                            // Recreating just labels also works.
+                                            MFL.LabelLayer.CreateLabels();
+                                        }
+                                        returnCommand = "FORCEREFRESH";
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        returnValue = "Unable to save feature.<p>" + e.Message;
+                                        returnCommand = "POPUPANDREFRESH";  //erase new shape too
+                                    }
+
+//                                    fs.IndexMode = true;
+                                     //Adding a feature sets FeatureSet.IndexMode to false,
+                                     // causing fs.Select above in INFO case to return a list
+                                     // with Count == 0. One workaround is to set IndexMode
+                                     // back to true. This does cause all existing labels
+                                     // to disapper with refresh, but recreating label layer
+                                     // above fixed that. (Also tried InitializeVertices,
+                                     // InvalidateEnvelope, InvalidateVertices, UpdateExtents, etc.)
+                                     // Oops, setting IndexMode back to true corrupts shapes...
+                                }
+                            }
+
+                        }
+                        break;
+
                 }
-
-
 
             //ControlMap = m;
             System.Web.HttpContext.Current.Session[(string)ViewState[ClientID]] = m;
  
-           
             if (returnCommand == "STRUCTURE")
             {                
                 returnValue = redraw(ref m);
@@ -1031,6 +1115,7 @@ namespace DotSpatial.WebControls
             }
 
         }
+
 
         private string Milliseconds()
         {

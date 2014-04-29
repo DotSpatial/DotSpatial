@@ -295,7 +295,7 @@ namespace DotSpatial.WebControls
 
         private void PrintLayer(IMapLayer layer, MapArgs args)
         {
-            //MapLabelLayer.ExistingLabels.Clear();
+            MapLabelLayer.ClearAllExistingLabels();  //need to do this or labels not drawn on refresh
             IMapGroup group = layer as IMapGroup;
             if (group != null)
             {

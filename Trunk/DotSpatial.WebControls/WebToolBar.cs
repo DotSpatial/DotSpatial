@@ -19,8 +19,8 @@ namespace DotSpatial.WebControls
         //ZoomIn = 2,
         ZoomRect = 3,
         Pan = 4,
-        Info = 5,
-        Select = 6,
+        Select = 5,
+        Info = 6,
         DataGrid = 7,
         Edit = 8,
 
@@ -39,8 +39,8 @@ namespace DotSpatial.WebControls
         ZoomIN = 4,
         ZoomRECT = 5,
         Pan = 6,
-        Info = 7,
-        Select = 8,
+        Select = 7,
+        Info = 8,
         DataGrid = 9,
         Edit = 10,
 
@@ -52,8 +52,8 @@ namespace DotSpatial.WebControls
         ToolsMoveZoomIn = 15,
         ToolsMoveZoomAll = 16,
         ToolsMoveZoomOut = 17,
-
     }
+
 
     public class WebButton
     {
@@ -61,9 +61,10 @@ namespace DotSpatial.WebControls
         public WebButtonType Type;
         public string ImageURL = "";
         public string Command = "";
-
-        public string style;
+        public string Style = "";
+        public string ToolTip = "";
     }
+
 
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:WebToolBar runat=server></{0}:WebToolBar>")]
@@ -102,8 +103,8 @@ namespace DotSpatial.WebControls
             "DotSpatial.WebControls.Images.Tools2ZoomIN.gif",
             "DotSpatial.WebControls.Images.Tools3ZoomRect.gif",
             "DotSpatial.WebControls.Images.Tools4Pan.gif",
-            "DotSpatial.WebControls.Images.Tools5Info.gif",
             "DotSpatial.WebControls.Images.Tools6Select.gif",
+            "DotSpatial.WebControls.Images.Tools5Info.gif",
             "DotSpatial.WebControls.Images.Tools7DataGrid.gif",
             "DotSpatial.WebControls.Images.Tools8Edit.gif",
 
@@ -127,8 +128,8 @@ namespace DotSpatial.WebControls
             "WebToolBarClickTool('<WebMapID>',ToolZoomIn,'<index>')",
             "WebToolBarClickTool('<WebMapID>',ToolZoomRect,'<index>')",
             "WebToolBarClickTool('<WebMapID>',ToolPan,'<index>')",
-            "WebToolBarClickTool('<WebMapID>',ToolInfo,'<index>')",
             "WebToolBarClickTool('<WebMapID>',ToolSelect,'<index>')",
+            "WebToolBarClickTool('<WebMapID>',ToolInfo,'<index>')",
             "WebToolBarClickTool('<WebMapID>',ToolDataGrid,'<index>')",
             "WebToolBarClickTool('<WebMapID>',ToolEdit,'<index>')",
 
@@ -143,9 +144,8 @@ namespace DotSpatial.WebControls
 
         };
 
-        private string[] _stiles =
+        private string[] _styles =
         {
-
             "cursor:pointer; position:static; width:3px",
             "cursor:pointer; position:static; z-index:1000;",
             "cursor:pointer; position:static; z-index:1000;",
@@ -167,6 +167,30 @@ namespace DotSpatial.WebControls
             "cursor:pointer; position:absolute; z-index:1000; left:21px; top:78px;",
             "cursor:pointer; position:absolute; z-index:1000; left:21px; top:96px;"
 
+        };
+        
+        private string[] _tooltips =
+        {
+            "",
+            "",
+            "Zoom out",
+            "Zoom all",
+            "Zoom in",
+            "Zoom rectangle",
+            "Pan map",
+            "Select feature",
+            "Feature data",
+            "Layer data",
+            "Add feature",
+            
+            "Move west",
+            "Move north",
+            "Move east",
+            "Move south",
+            
+            "Zoom in",
+            "Zoom all",
+            "Zoom out"
         };
         #endregion
 
@@ -220,10 +244,10 @@ namespace DotSpatial.WebControls
             AddButton(WebButtonType.Pan);
             AddButton(WebButtonType.Space);
 
-            AddButton(WebButtonType.Info);
+            AddButton(WebButtonType.Select);
             AddButton(WebButtonType.Space);
 
-            AddButton(WebButtonType.Select);
+            AddButton(WebButtonType.Info);
             AddButton(WebButtonType.Space);
 
             AddButton(WebButtonType.DataGrid);
@@ -245,16 +269,14 @@ namespace DotSpatial.WebControls
             AddButton(WebButtonType.ToolsMoveZoomOut);
         }
 
-        public void AddButton(WebButtonType type, string Command = "", string imageURL = "",  string style="" )
+        public void AddButton(WebButtonType type, string Command = "", string ImageURL = "",  string Style="", string ToolTip="" )
         {
             WebButton b = new WebButton();
-
             b.Type = type;
-
             
-            if (imageURL != "")
+            if (ImageURL != "")
             {
-                b.ImageURL = imageURL;
+                b.ImageURL = ImageURL;
             }
             else
             {
@@ -270,15 +292,23 @@ namespace DotSpatial.WebControls
                 b.Command = _commands[(int)type];
             }
 
-            if (style != "")
+            if (Style != "")
             {
-                b.style = style;
+                b.Style = Style;
             }
             else
             {
-                b.style =  _stiles[(int)type];
+                b.Style = _styles[(int)type];
             }
 
+            if (ToolTip != "")
+            {
+                b.ToolTip = ToolTip;
+            }
+            else
+            {
+                b.ToolTip = _tooltips[(int)type];
+            }
 
             List<WebButton> btns = Buttons;
             btns.Add(b);
@@ -305,7 +335,6 @@ namespace DotSpatial.WebControls
                 {
                     WebButton b = _buttons[i];
 
-
                     if (b.Type != WebButtonType.Space)
                     {
                         ControlID = "Tool_" + MapID + i.ToString(); 
@@ -315,12 +344,28 @@ namespace DotSpatial.WebControls
                         ControlID = "Space_" + MapID + i.ToString();
                     }
 
-                    string command = _buttons[i].Command.Replace("<WebMapID>", MapID);
-
+                    string command = b.Command.Replace("<WebMapID>", MapID);
                     command = command.Replace("<index>", ControlID);
 
-                    htm += "<img id=\"" + ControlID + "\" onclick=\"" + command + "\"  ondrag(event)=\"return false\" onSelectStart=\"return false\" src=\"" + b.ImageURL + "\" style=\"" + b.style + "\" />";
-
+                    if (b.Type != WebButtonType.Space)
+                    {
+                    htm += "<input id=\"" + ControlID +
+                           "\" type=\"button" +
+                           "\" title=\"" + b.ToolTip + 
+                           "\" onclick=\"" + command + 
+                           "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" + 
+                           "\" style=\"" + b.Style + 
+                           " background-image: url(" + b.ImageURL + ");" +
+                           " background-color: transparent; border-width: 2px; height: 28px; width: 28px;\" />";
+                    }
+                    else
+                    {
+                    htm += "<img id=\"" + ControlID + 
+                           "\" title=\"" + b.ToolTip + 
+                           "\" onclick=\"" + command + 
+                           "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" +
+                           " src=\"" + b.ImageURL + "\" style=\"" + b.Style + "\" />";
+                    }
                 }
 
                 output.Write(htm);
