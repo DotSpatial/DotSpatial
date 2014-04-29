@@ -56,14 +56,13 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DemoPluginExtension\Snapin.cs" />
-    <Compile Include="Extensions\SimpleLegendPlugin.cs" />
-    <Compile Include="Extensions\SimpleMapPlugin.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapLegendExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DemoPluginExtension\AboutBox.resx">

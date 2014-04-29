@@ -50,8 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoCustomLayerExtension\DemoCustomLayerPlugin.cs" />
-    <Compile Include="Extensions\SimpleLegendPlugin.cs" />
-    <Compile Include="Extensions\SimpleMapPlugin.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +58,7 @@
     </Compile>
     <Compile Include="DemoCustomLayerExtension\MyCustomDataSet.cs" />
     <Compile Include="DemoCustomLayerExtension\MyCustomLayer2.cs" />
+    <Compile Include="MapLegendExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
