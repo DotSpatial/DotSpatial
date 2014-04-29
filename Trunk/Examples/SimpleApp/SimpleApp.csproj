@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Controls">
-      <HintPath>..\..\DotSpatial.Controls\obj\Debug\DotSpatial.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -84,6 +81,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+      <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
+      <Name>DotSpatial.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
       <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
       <Name>DotSpatial.Data.Forms</Name>
