@@ -133,7 +133,7 @@ namespace DotSpatial.Tools
                 output.DataTable.Columns.Add(new DataColumn(inputColumn.ColumnName, inputColumn.DataType));
             }
 
-            foreach (Feature fe in tempoutput.Features)
+            foreach (var fe in tempoutput.Features)
             {
                 output.Features.Add(fe);
             }
