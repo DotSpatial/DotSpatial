@@ -81,15 +81,15 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
-            Map.IsBusy = true;
-            _startPoint = e.Location;
-            _geoStartPoint = e.GeographicLocation;
-            if (e.Button == MouseButtons.Left)
-            {
-                _isDragging = true;
-            }
-
-            base.OnMouseDown(e);
+			if (e.Button == MouseButtons.Left)
+			{
+				_startPoint = e.Location;
+				_currentPoint = _startPoint;
+				_geoStartPoint = e.GeographicLocation;
+				_isDragging = true;
+				Map.IsBusy = true;
+			}
+			base.OnMouseDown(e);
         }
 
         /// <summary>
@@ -98,9 +98,16 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
-            _currentPoint = e.Location;
-            Map.Invalidate();
-            base.OnMouseMove(e);
+			int x = Math.Min(Math.Min(_startPoint.X, _currentPoint.X), e.X);
+			int y = Math.Min(Math.Min(_startPoint.Y, _currentPoint.Y), e.Y);
+			int mx = Math.Max(Math.Max(_startPoint.X, _currentPoint.X), e.X);
+			int my = Math.Max(Math.Max(_startPoint.Y, _currentPoint.Y), e.Y);
+			_currentPoint = e.Location;
+			if (_isDragging)
+			{
+				Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
+			}
+			base.OnMouseMove(e);
         }
 
         /// <summary>

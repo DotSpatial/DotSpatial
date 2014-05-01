@@ -87,6 +87,7 @@ namespace DotSpatial.Controls
             if (e.Button == MouseButtons.Left)
             {
                 _startPoint = e.Location;
+				_currentPoint = _startPoint;
                 _geoStartPoint = e.GeographicLocation;
                 _isDragging = true;
                 Map.IsBusy = true;

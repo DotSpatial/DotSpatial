@@ -639,17 +639,17 @@ namespace DotSpatial.Controls
                     }
                     if (states[shp].Visible == false) continue;
                     ShapeRange shape = shapes[shp];
-                    if (!shape.Extent.Intersects(e.GeographicExtents)) return;
+					if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
                     if (drawExtents.Contains(shape.Extent))
                     {
                         FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) return;
+						if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, null);
                     }
                     else
                     {
                         FastDrawnState state = states[shp];
-                        if (!borders.ContainsKey(state)) return;
+						if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, shClip);
                     }
                 }
