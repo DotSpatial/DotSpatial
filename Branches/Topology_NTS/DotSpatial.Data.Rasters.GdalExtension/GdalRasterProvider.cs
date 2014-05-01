@@ -120,9 +120,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         public IRaster Create(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType, string[] options)
         {
             if (File.Exists(name)) File.Delete(name);
-            string driver = driverCode ?? GetDriverCode(Path.GetExtension(name));
-
-            Driver d = Gdal.GetDriverByName(driver);
+            if (String.IsNullOrEmpty(driverCode))
+            {
+                driverCode = GetDriverCode(Path.GetExtension(name));
+            }
+            Driver d = Gdal.GetDriverByName(driverCode);
             if (d == null)
             {
                 // We didn't find a matching driver.
@@ -155,19 +157,19 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 return new GdalRaster<int>(name, dataset);
             }
-            else if (dataType == typeof(short))
+            if (dataType == typeof(short))
             {
                 return new GdalRaster<short>(name, dataset);
             }
-            else if (dataType == typeof(float))
+            if (dataType == typeof(float))
             {
                 return new GdalRaster<float>(name, dataset);
             }
-            else if (dataType == typeof(double))
+            if (dataType == typeof(double))
             {
                 return new GdalRaster<double>(name, dataset);
             }
-            else if (dataType == typeof(byte))
+            if (dataType == typeof(byte))
             {
                 return new GdalRaster<byte>(name, dataset);
             }
@@ -189,25 +191,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         [DebuggerStepThrough]
         public IRaster Open(string fileName)
         {
-            Dataset dataset;
             IRaster result = null;
-
-            try
-            {
-                dataset = Gdal.Open(fileName, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    dataset = Gdal.Open(fileName, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
-
+            var dataset = Helpers.Open(fileName);
             if (dataset != null)
             {
                 // Single band rasters are easy, just return the band as the raster.
@@ -218,7 +203,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 if (result == null)
                 {
                     dataset.Dispose();
-                    dataset = null;
                 }
             }
             return result;

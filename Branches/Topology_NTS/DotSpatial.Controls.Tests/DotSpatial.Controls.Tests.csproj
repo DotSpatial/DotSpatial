@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppManagerTest.cs" />
+    <Compile Include="DatelineCrossingMapTest.cs" />
+    <Compile Include="LayoutMapTests.cs" />
     <Compile Include="MapFrameTest.cs" />
     <Compile Include="MapLayerCollectionTest.cs" />
     <Compile Include="MapPolygonLayerTest.cs" />
@@ -136,7 +138,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y /i $(ProjectDir)TestFiles $(TargetDir)TestFiles</PostBuildEvent>
+    <PostBuildEvent>xcopy /s /y /i "$(ProjectDir)TestFiles" "$(TargetDir)TestFiles"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -19,6 +19,7 @@ var FirstMoved = true;
 
 var jg = null;
 
+
 function Exists(obj) {
     if (null == obj) { return false; }
     if ('undefined' == typeof (obj)) { return false; }
@@ -30,6 +31,7 @@ function GetActualLayerType(ID) {
     var lt = document.getElementById("LayerType_" + ID);
     return parseFloat(lt.innerHTML);
 }
+
 
 var mapsID = new Array();
 var mapsIDNum = 0;
@@ -53,6 +55,7 @@ function Initialize(ID) {
 
 }
 
+
 function AddMapsID(ID) {
 
     mapsIDNum += 1;
@@ -63,15 +66,15 @@ function AddMapsID(ID) {
 
 }
 
-function OnResizeMaps() {
 
+function OnResizeMaps() {
  
     for (var i = 0; i < mapsIDNum; i++) {
         OnResize(mapsID[i]);
     }
-    
 
 }
+
 
 function OnResize(ID) {
 
@@ -88,8 +91,8 @@ function OnResize(ID) {
 
     CallServer(ID, ret);
 
-
 }
+
 
 function Wait(ID) {
 
@@ -97,8 +100,8 @@ function Wait(ID) {
     if (elm != null) {
         elm.style.visibility = "visible";
     }
-
 }
+
 
 function EndWait(ID) {
     var elm = document.getElementById("Wait_" + ID);
@@ -106,11 +109,10 @@ function EndWait(ID) {
     if (elm != null) {
         elm.style.visibility = "hidden";
     }
-
 }
 
-function OnMouseDown(obj, event) 
-{
+
+function OnMouseDown(obj, event) {
 
     var ID = obj.id;
     ID = ID.toString();
@@ -164,7 +166,6 @@ function OnMouseDown(obj, event)
 }
 
 
-
 function OnMouseMove(obj, event) {
 
     ActualPoint = GetObjectPosition(event.clientX, event.clientY, obj);
@@ -179,7 +180,6 @@ function OnMouseMove(obj, event) {
     ID = ID.toString();
 
     var ActualTool = GetActualToolType(ID);
-
 
     switch (ActualTool)
     {
@@ -271,7 +271,6 @@ function OnMouseMove(obj, event) {
             }
             break;
 
-
     case (ToolZoomRect):
     case (ToolSelect):
          {
@@ -292,6 +291,7 @@ function OnMouseMove(obj, event) {
     return false;
 
 }
+
 
 function DisplayXY(obj) {
 
@@ -321,6 +321,7 @@ function DisplayXY(obj) {
     }
 }
 
+
 function CreateBufferFromList(Point) {
     if (crds_num==0)return;
 
@@ -339,6 +340,7 @@ function CreateBufferFromList(Point) {
 
 }
 
+
 function AddPointToList(Point) {
     crds_num += 1;
 
@@ -349,6 +351,7 @@ function AddPointToList(Point) {
     y_crds[crds_num-1] = Point.y;
 
 }
+
 
 function OnMouseUp(obj, event) {
 
@@ -364,7 +367,6 @@ function OnMouseUp(obj, event) {
 
     var ActualTool = GetActualToolType(ID);
 
-
     var ret = new Object();
     var sft = new Object();
 
@@ -373,13 +375,10 @@ function OnMouseUp(obj, event) {
         sft.y = StartPoint.y - EndPoint.y;
     }
 
-
     switch(ActualTool) {
 
         case ToolEdit:
             {
-
-
                 if (jg == null) {
                     jg = new jsGraphics("EditCanvas_" + obj.id);
                 }
@@ -414,7 +413,6 @@ function OnMouseUp(obj, event) {
                                 jg.drawPolygon(x_crds, y_crds);
                                 jg.paint();
                             }
-
                         }
                         break;
                 }
@@ -428,7 +426,8 @@ function OnMouseUp(obj, event) {
 
                     crds_num = 0;
 
-                    CallPostBack(ID,ret);
+//                    CallPostBack(ID, ret);
+                    CallServer(ID, ret);
                 }
 
             }
@@ -439,7 +438,7 @@ function OnMouseUp(obj, event) {
                 if (sft.x != 0 | sft.y != 0) {
                     ret = "Pan|" + sft.x.toString() + "|" + sft.y.toString();
                     Wait(obj.id);
-                    CallServer(ID,ret);
+                    CallServer(ID, ret);
                 }
                 obj.style.cursor = 'default';
             }
@@ -473,11 +472,11 @@ function OnMouseUp(obj, event) {
                 if (sft.x == 0 & sft.y == 0) {
                     if (event.button == 1 && window.event != null || event.button == 0) {
                         ret = "Click|0|" + EndPoint.x.toString() + "|" + EndPoint.y.toString();
-                        CallPostBack(ID,ret);
+                        CallPostBack(ID, ret);
                     }
                     else {
                         ret = "Click|1|" + EndPoint.x.toString() + "|" + EndPoint.y.toString();
-                        CallPostBack(ID,ret);
+                        CallPostBack(ID, ret);
                     }
                 }
 
@@ -489,19 +488,14 @@ function OnMouseUp(obj, event) {
         case ToolInfo:
             {
                 ret = "Info|1|" + EndPoint.x.toString() + "|" + EndPoint.y.toString();
-                CallServer(ID,ret);
+                CallServer(ID, ret);
             }
             break;
 
         case ToolSelect:
             {
                 ret = "Select|" + StartPoint.x.toString() + "|" + StartPoint.y.toString() + "|" + EndPoint.x.toString() + "|" + EndPoint.y.toString();
-                CallServer(ID,ret);
-            }
-            break;
-
-        case ToolEdit:
-            {
+                CallServer(ID, ret);
             }
             break;
 
@@ -523,11 +517,11 @@ function OnMouseUp(obj, event) {
 
                 Wait(obj.id);
                 SetActualTool(ToolPan);
-                CallServer(ID,ret);
+                CallServer(ID, ret);
             }
             break;
-    }
 
+    }
 
     //ActualTool = ToolPan;
     
@@ -549,191 +543,12 @@ function GetObjectPosition(x, y, obj) {
 }
 
 
-function ReceiveServerData(arg) 
-{
-
-    var elementId;
-    var Command;
-
-    if (arg != null & arg != "") {
-
-        var elms = arg.split("|");
-        
-        elementId = elms[0];
-        Command = elms[1];
-
-        var obj = document.getElementById(elementId);
-
-        var canvas = document.getElementById("Canvas_" + elementId);
-        var buffer = document.getElementById("Buffer_" + elementId);
-        var back = document.getElementById("Back_" + elementId);
-        var Copyright = document.getElementById("Copyright_" + elementId);
-        var mark = document.getElementById("Markers_" + elementId);
-        
-        //var nm = document.getElementById("Name_" + elementId);
-        //nm.innerHTML = elementId;
-
-        var l = new Object();
-        var t = new Object();
-        var w = new Object();
-        var h = new Object();
-        
-        switch (Command)
-        {
-            case "STRUCTURE":
-                {
-                    var innerHtmlStr = elms[2];
-
-                    obj.innerHTML = innerHtmlStr;
-
-                    UnTip();
-                }
-                break;
-
-            case "REFRESH":
-                {
-                    UnTip();
-
-                    canvas.src = elms[2];
-
-                    canvas.style.display = "block";
-
-                    buffer.style.left = "100000px";
-
-
-                    if (back != null) {
-
-                        back.innerHTML = elms[3];
-
-                        l = parseInt(elms[4]);
-                        t = parseInt(elms[5]);
-                        w = parseInt(elms[6]);
-                        h = parseInt(elms[7]);
-
-                        back.style.left = l.toString() + "px";
-                        back.style.top = t.toString() + "px";
-                        back.style.width = w.toString() + "px";
-                        back.style.height = h.toString() + "px";
-
-                    }
-
-                    if (Copyright != null) {
-
-                        Copyright.innerHTML = elms[8];
-
-                    }
-
-                    if (mark != null) {
-                        mark.style.left = "0px";
-                        mark.style.top = "0px";
-                        mark.innerHTML = elms[9];
-                    }
-
-                    document.getElementById("MinX_" + elementId).innerHTML = elms[10];
-                    document.getElementById("MinY_" + elementId).innerHTML = elms[11];
-                    document.getElementById("MaxX_" + elementId).innerHTML = elms[12];
-                    document.getElementById("MaxY_" + elementId).innerHTML = elms[13];
-
-
-                }
-                break;
-
-            case "REFRESHANDHIDEBUFFER":
-                {
-                    UnTip();
-
-                    canvas.src = "";
-                    canvas.style.left = 0;
-                    canvas.style.top = 0;
-                    canvas.src = elms[2];
-
-                    canvas.style.display = "block";
-
-                    buffer.style.left = "100000px";
-
-                    //                    document.getElementById("MinX_" + elementId).innerHTML = elms[3];
-                    //                    document.getElementById("MinY_" + elementId).innerHTML = elms[4];
-                    //                    document.getElementById("MaxX_" + elementId).innerHTML = elms[5];
-                    //                    document.getElementById("MaxY_" + elementId).innerHTML = elms[6];
-
-                    
-                    if (back != null) {
-
-                        back.innerHTML = elms[3];
-
-                        l = parseInt(elms[4]);
-                        t = parseInt(elms[5]);
-                        w = parseInt(elms[6]);
-                        h = parseInt(elms[7]);
-
-                        back.style.left = l.toString() + "px";
-                        back.style.top = t.toString() + "px";
-                        back.style.width = w.toString() + "px";
-                        back.style.height = h.toString() + "px";
-
-                    }
-
-                    if (Copyright != null) {
-
-                        Copyright.innerHTML = elms[8];
-
-                    }
-
-                    if (mark != null) {
-                        mark.style.left = "0px";
-                        mark.style.top = "0px";
-                        mark.innerHTML = elms[9];
-                    }
-
-                    document.getElementById("MinX_" + elementId).innerHTML = elms[10];
-                    document.getElementById("MinY_" + elementId).innerHTML = elms[11];
-                    document.getElementById("MaxX_" + elementId).innerHTML = elms[12];
-                    document.getElementById("MaxY_" + elementId).innerHTML = elms[13];
-
-                }
-                break;
-
-            case "POPUP":
-                {
-                    var html = elms[2];
-
-                    html = html + "<table><tr><td align='left'>";
-                    html = html + "<input id=\"ButtonTableDiv\" type=\"button\" value=\"Esci\" onclick=\"HideBox('PopupDiv')\" />"
-                    html = html + "</td></tr></table>";
-
-                    var elm = document.getElementById("PopupDiv");
-                    if (elm == null) {
-                        creatediv("PopupDiv", html, 'auto', 'auto', 100000);
-                    }
-                    else {
-                        elm.innerHTML = html;
-                    }
-
-                    showPopUpDiv("PopupDiv");
-                }
-                break;
-
-            case "SCRIPT":
-                {
-                    eval(elms[2]);
-                }
-                break;
-        }
-
-        ColorOnTool(elementId);
-
-    }
-
-
-    EndWait(elementId);
-
-}
-
 function SetOpacity(obj, value) {
     obj.style.opacity = value / 100.0;
     obj.style.mozopacity = value / 100.0;
     obj.style.filter = 'ALPHA(opacity=' + value + ')';
 }
+
 
 function handle(obj, delta) {
     var ret = new Object();
@@ -747,8 +562,8 @@ function handle(obj, delta) {
     CallServer(obj.id, ret);
 }
 
-/** Event handler for mouse wheel event.
-*/
+
+// Event handler for mouse wheel event.
 function wheel(event) {
     
     var delta = 0;
@@ -781,7 +596,196 @@ function wheel(event) {
     event.returnValue = false;
 }
 
-function creatediv(id, html, width, height, left, top) {
+
+function ReceiveServerData(arg) {
+
+    var elementId;
+    var Command;
+
+    if (arg != null & arg != "") {
+
+        var elms = arg.split("|");
+
+        elementId = elms[0];
+        Command = elms[1];
+
+        var obj = document.getElementById(elementId);
+
+        var canvas = document.getElementById("Canvas_" + elementId);
+        var buffer = document.getElementById("Buffer_" + elementId);
+        var back = document.getElementById("Back_" + elementId);
+        var Copyright = document.getElementById("Copyright_" + elementId);
+        var mark = document.getElementById("Markers_" + elementId);
+
+        //var nm = document.getElementById("Name_" + elementId);
+        //nm.innerHTML = elementId;
+
+        var l = new Object();
+        var t = new Object();
+        var w = new Object();
+        var h = new Object();
+
+        switch (Command)
+        {
+            case "STRUCTURE":
+                {
+                    var innerHtmlStr = elms[2];
+                    obj.innerHTML = innerHtmlStr;
+                }
+                break;
+
+            case "REFRESH":
+                {
+                    canvas.src = elms[2];
+
+                    canvas.style.display = "block";
+
+                    buffer.style.left = "100000px";
+
+                    if (back != null) {
+
+                        back.innerHTML = elms[3];
+
+                        l = parseInt(elms[4]);
+                        t = parseInt(elms[5]);
+                        w = parseInt(elms[6]);
+                        h = parseInt(elms[7]);
+
+                        back.style.left = l.toString() + "px";
+                        back.style.top = t.toString() + "px";
+                        back.style.width = w.toString() + "px";
+                        back.style.height = h.toString() + "px";
+
+                    }
+
+                    if (Copyright != null) {
+                        Copyright.innerHTML = elms[8];
+                    }
+
+                    if (mark != null) {
+                        mark.style.left = "0px";
+                        mark.style.top = "0px";
+                        mark.innerHTML = elms[9];
+                    }
+
+                    document.getElementById("MinX_" + elementId).innerHTML = elms[10];
+                    document.getElementById("MinY_" + elementId).innerHTML = elms[11];
+                    document.getElementById("MaxX_" + elementId).innerHTML = elms[12];
+                    document.getElementById("MaxY_" + elementId).innerHTML = elms[13];
+                }
+                break;
+
+            case "REFRESHANDHIDEBUFFER":
+                {
+                    canvas.src = "";
+                    canvas.style.left = 0;
+                    canvas.style.top = 0;
+                    canvas.src = elms[2];
+
+                    canvas.style.display = "block";
+
+                    buffer.style.left = "100000px";
+
+//                    document.getElementById("MinX_" + elementId).innerHTML = elms[3];
+//                    document.getElementById("MinY_" + elementId).innerHTML = elms[4];
+//                    document.getElementById("MaxX_" + elementId).innerHTML = elms[5];
+//                    document.getElementById("MaxY_" + elementId).innerHTML = elms[6];
+
+                    if (back != null) {
+
+                        back.innerHTML = elms[3];
+
+                        l = parseInt(elms[4]);
+                        t = parseInt(elms[5]);
+                        w = parseInt(elms[6]);
+                        h = parseInt(elms[7]);
+
+                        back.style.left = l.toString() + "px";
+                        back.style.top = t.toString() + "px";
+                        back.style.width = w.toString() + "px";
+                        back.style.height = h.toString() + "px";
+
+                    }
+
+                    if (Copyright != null) {
+                        Copyright.innerHTML = elms[8];
+                    }
+
+                    if (mark != null) {
+                        mark.style.left = "0px";
+                        mark.style.top = "0px";
+                        mark.innerHTML = elms[9];
+                    }
+
+                    document.getElementById("MinX_" + elementId).innerHTML = elms[10];
+                    document.getElementById("MinY_" + elementId).innerHTML = elms[11];
+                    document.getElementById("MaxX_" + elementId).innerHTML = elms[12];
+                    document.getElementById("MaxY_" + elementId).innerHTML = elms[13];
+                }
+                break;
+
+            case "POPUP":
+                {
+                    initPopupDiv("PopupDiv", elms[2], Command);
+                    showPopupDiv("PopupDiv");
+                }
+                break;
+
+            case "POPUPANDREFRESH":
+                {
+                    initPopupDiv("PopupDiv", elms[2], Command);
+                    showPopupDiv("PopupDiv");
+                }
+                break;
+
+            case "ALERT":
+                {
+                    alert(elms[2]);  //problem with alert() is that some browsers 
+                                     // prompt to block it after repeated alerts
+                }
+
+            case "SCRIPT":
+                {
+                    eval(elms[2]);
+                }
+                break;
+
+            case "FORCEREFRESH" :
+                {
+                    CallPostBack(elementId, "ForceRefresh");
+                }
+                break;
+        }
+
+        ColorOnTool(elementId);
+
+    }
+
+    EndWait(elementId);
+}
+
+
+function initPopupDiv(id, html, command) {
+    html = "<div style='max-height:500px; max-width:900px; overflow-y:auto; overflow-x:auto'>" + 
+           html + "</div>";
+
+    html = html + "<table width='100%'><tr><td style='text-align:center'>";
+    html = html + "<input id=\"" + id + "Button\" type=\"button\" value=\"OK\" " +
+                  "style=\"width:60px\" " +
+                  "onclick=\"HideBox('" + id + "', '" + command + "')\" />";
+    html = html + "</td></tr></table>";
+
+    var elm = document.getElementById(id);
+    if (elm == null) {
+        createPopupDiv(id, html, 'auto', 'auto', 100000);
+    }
+    else {
+        elm.innerHTML = html;
+    }
+}
+
+
+function createPopupDiv(id, html, width, height, left, top) {
 
     var newdiv = document.createElement('div');
     newdiv.setAttribute('id', id);
@@ -789,10 +793,12 @@ function creatediv(id, html, width, height, left, top) {
     if (width) {
         newdiv.style.width = width;
     }
+    newdiv.style.minWidth = "200px";
 
     if (height) {
         newdiv.style.height = height;
     }
+//    newdiv.style.minHeight = "100px";
 
     if ((left || top) || (left && top)) {
         newdiv.style.position = "absolute";
@@ -806,10 +812,15 @@ function creatediv(id, html, width, height, left, top) {
         }
     }
 
-    //newdiv.style.overflow = "scroll";
     newdiv.style.background = "white";
     newdiv.style.border = "2px solid black";
-    newdiv.style.padding = "3px";
+    newdiv.style.padding = "4px";
+
+//    newdiv.style.fontFamily = "Tahoma, Geneva, sans-serif";
+//    newdiv.style.fontFamily = "'Trebuchet MS', Helvetica, sans-serif";
+//    newdiv.style.fontFamily = "Arial, Helvetica, sans-serif";
+    newdiv.style.fontFamily = "'Lucida Sans Unicode', 'Lucida Grande', sans-serif";
+    newdiv.style.fontSize = "10pt";
 
     if (html) {
         newdiv.innerHTML = html;
@@ -818,17 +829,15 @@ function creatediv(id, html, width, height, left, top) {
     }
 
     document.body.appendChild(newdiv);
-
 } 
 
 
-function showPopUpDiv(divID) {
+function showPopupDiv(divID) {
 
     var elm = document.getElementById(divID);
 
     var width = document.documentElement.clientWidth + document.documentElement.scrollLeft;
     var height = document.documentElement.clientHeight;
-
 
     var layer = document.createElement('div');
     layer.style.zIndex = 200000;
@@ -843,10 +852,8 @@ function showPopUpDiv(divID) {
     layer.style.filter += ("progid:DXImageTransform.Microsoft.Alpha(opacity=60)");
     document.body.appendChild(layer);
 
-
     var elmwidth = elm.clientWidth;
     var elmheight = elm.clientHeight;
-
 
     //elm.style.position = (navigator.userAgent.indexOf('MSIE 6') > -1) ? 'absolute' : 'fixed';
     elm.style.position = 'absolute';
@@ -857,7 +864,7 @@ function showPopUpDiv(divID) {
 }
 
 
-function HideBox(divID) {
+function HideBox(divID, command) {
     var elm = document.getElementById(divID);
     elm.style.visibility = "hidden";
 
@@ -866,9 +873,8 @@ function HideBox(divID) {
 
     delete elm;
 
-    CallPostBack(divID,"ForceRefresh");
-
-
+    if (command == "POPUPANDREFRESH") {
+      CallPostBack(divID, "ForceRefresh");
+    }  
 }
-
 

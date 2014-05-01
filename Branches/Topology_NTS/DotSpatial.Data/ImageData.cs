@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
@@ -189,6 +190,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the fileName.
         /// </summary>
+        [Serialize("Filename", ConstructorArgumentIndex = 0)]
         public string Filename { get; set; }
 
         /// <summary>

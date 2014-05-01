@@ -924,8 +924,20 @@ Math.Round(
                 return false;
 #endif
             // Convert objects to an Elevation as needed before comparison
-            if (obj is Elevation || obj is double || obj is string || obj is int || obj is float)
+            if (obj is Elevation || obj is string)
                 return _decimalDegrees.Equals(((Elevation)obj).DecimalDegrees);
+            if (obj is double)
+            {
+                return _decimalDegrees.Equals(((Elevation)(double)obj).DecimalDegrees);
+            }
+            if (obj is int)
+            {
+                return _decimalDegrees.Equals(((Elevation)(int)obj).DecimalDegrees);
+            }
+            if (obj is float)
+            {
+                return _decimalDegrees.Equals(((Elevation)(float)obj).DecimalDegrees);
+            }
 
             // Nothing else will work, so False
             return false;

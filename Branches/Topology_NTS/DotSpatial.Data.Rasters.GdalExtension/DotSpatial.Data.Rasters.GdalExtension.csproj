@@ -105,6 +105,7 @@
     <Compile Include="GdalImageProvider.cs" />
     <Compile Include="GdalRaster.cs" />
     <Compile Include="GdalRasterProvider.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="OgrDataReader.cs" />
     <Compile Include="OgrVectorProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

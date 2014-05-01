@@ -48,6 +48,62 @@ namespace DotSpatial.Data
         /// </summary>
         public event EventHandler AttributesFilled;
 
+        #region Fields
+
+        // Constant for the size of a record
+        private const int FILE_DESCRIPTOR_SIZE = 32;
+        private bool _attributesPopulated;
+        private List<Field> _columns;
+        private DataTable _dataTable;
+        private List<int> _deletedRows;
+        private string _fileName;
+        private byte _fileType;
+        private bool _hasDeletedRecords;
+        private int _headerLength;
+        private bool _loaded;
+        private int _numFields;
+        private int _numRecords;
+        private long[] _offsets;
+        private IProgressHandler _progressHandler;
+        private ProgressMeter _progressMeter;
+        private int _recordLength;
+        private byte _ldid;
+        private Encoding _encoding;
+        private DateTime _updateDate;
+        private BinaryWriter _writer;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new instance of an attribute Table with no file reference
+        /// </summary>
+        public AttributeTable()
+        {
+            _deletedRows = new List<int>();
+            _fileType = 0x03;
+            _encoding = Encoding.Default;
+            _ldid = DbaseLocaleRegistry.GetLanguageDriverId(_encoding);
+            _progressHandler = DataManager.DefaultDataManager.ProgressHandler;
+            _progressMeter = new ProgressMeter(_progressHandler);
+            _dataTable = new DataTable();
+            _columns = new List<Field>();
+        }
+
+        /// <summary>
+        /// Creates a new AttributeTable with the specified fileName, or opens
+        /// an existing file with that name.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public AttributeTable(string fileName)
+            : this()
+        {
+            Open(fileName);
+        }
+
+        #endregion
+
         /// <summary>
         /// Reads just the content requested in order to satisfy the paging ability of VirtualMode for the DataGridView
         /// </summary>
@@ -56,15 +112,12 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public DataTable SupplyPageOfData(int lowerPageBoundary, int rowsPerPage)
         {
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-            BinaryReader myReader = new BinaryReader(myStream);
-
-            try
+            using(var myReader = GetBinaryReader())
             {
                 FileInfo fi = new FileInfo(_fileName);
 
                 // Encoding appears to be ASCII, not Unicode
-                myStream.Seek(_headerLength + 1, SeekOrigin.Begin);
+                myReader.BaseStream.Seek(_headerLength + 1, SeekOrigin.Begin);
                 if ((int)fi.Length == _headerLength)
                 {
                     // The file is empty, so we are done here
@@ -77,7 +130,7 @@ namespace DotSpatial.Data
                 int length = rawRows * _recordLength;
                 long offset = strt * _recordLength;
 
-                myStream.Seek(offset, SeekOrigin.Current);
+                myReader.BaseStream.Seek(offset, SeekOrigin.Current);
                 byte[] byteContent = myReader.ReadBytes(length);
                 DataTable result = new DataTable();
                 foreach (Field field in _columns)
@@ -94,10 +147,6 @@ namespace DotSpatial.Data
                 }
                 return result;
             }
-            finally
-            {
-                myReader.Close();
-            }
         }
 
         /// <summary>
@@ -109,9 +158,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public object[] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, string fieldName)
         {
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-
-            try
+            using(var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
             {
                 FileInfo fi = new FileInfo(_fileName);
 
@@ -144,10 +191,6 @@ namespace DotSpatial.Data
                 }
                 return result;
             }
-            finally
-            {
-                myStream.Close();
-            }
         }
 
         /// <summary>
@@ -159,9 +202,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public object[,] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, IEnumerable<string> fieldNames)
         {
-            var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-
-            try
+            using(var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
             {
                 var fi = new FileInfo(_fileName);
 
@@ -220,10 +261,6 @@ namespace DotSpatial.Data
                 }
                 return result;
             }
-            finally
-            {
-                myStream.Close();
-            }
         }
 
         /// <summary>
@@ -245,9 +282,20 @@ namespace DotSpatial.Data
                     AddRow(dataValues.Rows[row]);
                 }
             }
-            BinaryWriter bw = new BinaryWriter(new FileStream(Filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
-            WriteHeader(bw);
-            bw.Close();
+            using (var bw = GetBinaryWriter())
+            {
+                WriteHeader(bw);
+            }
+        }
+
+        private BinaryWriter GetBinaryWriter()
+        {
+            return new BinaryWriter(new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1000000));
+        }
+
+        private BinaryReader GetBinaryReader()
+        {
+            return new BinaryReader(new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000));
         }
 
         /// <summary>
@@ -257,15 +305,12 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public DataTable GetAttributes(IEnumerable<int> rowNumbers)
         {
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-            BinaryReader myReader = new BinaryReader(myStream);
-
-            try
+            using(var myReader = GetBinaryReader())
             {
                 FileInfo fi = new FileInfo(_fileName);
 
                 // Encoding appears to be ASCII, not Unicode
-                myStream.Seek(_headerLength + 1, SeekOrigin.Begin);
+                myReader.BaseStream.Seek(_headerLength + 1, SeekOrigin.Begin);
                 if ((int)fi.Length == _headerLength)
                 {
                     // The file is empty, so we are done here
@@ -286,16 +331,12 @@ namespace DotSpatial.Data
                     int rawRow = GetFileIndex(rowNumber);
                     if (rawRow > maxRawRow) break;
 
-                    myStream.Seek(_headerLength + 1 + rawRow * _recordLength, SeekOrigin.Begin);
+                    myReader.BaseStream.Seek(_headerLength + 1 + rawRow * _recordLength, SeekOrigin.Begin);
                     byte[] byteContent = myReader.ReadBytes(_recordLength);
                     result.Rows.Add(ReadTableRow(rawRow, 0, byteContent, result));
                 }
 
                 return result;
-            }
-            finally
-            {
-                myReader.Close();
             }
         }
 
@@ -343,14 +384,14 @@ namespace DotSpatial.Data
         {
             // Step 1) Modify the file structure to allow an additional row
             _numRecords += 1;
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Write, FileShare.Write, 100000);
-            BinaryWriter bw = new BinaryWriter(myStream);
-            WriteHeader(bw);
-            int rawRow = GetFileIndex(_numRecords - 1);
-            myStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
-            byte[] blank = new byte[_recordLength];
-            _writer.Write(blank); // the deleted flag
-            bw.Close();
+            using (var bw = GetBinaryWriter())
+            {
+                WriteHeader(bw);
+                int rawRow = GetFileIndex(_numRecords - 1);
+                bw.BaseStream.Seek(_headerLength + _recordLength*rawRow, SeekOrigin.Begin);
+                byte[] blank = new byte[_recordLength];
+                _writer.Write(blank); // the deleted flag
+            }
             // Step 2) Re-use the insert code to insert the values for the new row.
             Edit(_numRecords - 1, values);
         }
@@ -371,21 +412,21 @@ namespace DotSpatial.Data
 
             // Modify the header with the new row count
             _numRecords -= 1;
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Write, FileShare.Write, 100000);
-            BinaryWriter bw = new BinaryWriter(myStream);
-            WriteHeader(bw);
+            using (var bw = GetBinaryWriter())
+            {
+                WriteHeader(bw);
 
-            // Identify the matching row index in the file by accounting for existing deleted rows.
-            int rawRow = GetFileIndex(index);
+                // Identify the matching row index in the file by accounting for existing deleted rows.
+                int rawRow = GetFileIndex(index);
 
-            // Add the file row to the "deleted" list.  Future row index access will skip the deleted row.
-            _deletedRows.Add(rawRow);
-            _deletedRows.Sort();
+                // Add the file row to the "deleted" list.  Future row index access will skip the deleted row.
+                _deletedRows.Add(rawRow);
+                _deletedRows.Sort();
 
-            // Write an * to mark the row as deleted so that it doesn't appear.
-            myStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
-            bw.Write("*"); // the deleted flag
-            bw.Close();
+                // Write an * to mark the row as deleted so that it doesn't appear.
+                bw.BaseStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
+                bw.Write("*"); // the deleted flag
+            }
 
             // Re-calculate row offsets stored in _offsets
             if (null != _offsets)
@@ -416,14 +457,14 @@ namespace DotSpatial.Data
 
             // Step 1) Modify the file structure to allow an additional row
             _numRecords += 1;
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Write, FileShare.Write, 100000);
-            BinaryWriter bw = new BinaryWriter(myStream);
-            WriteHeader(bw);
-            int rawRow = GetFileIndex(_numRecords - 1);
-            myStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
-            byte[] blank = new byte[_recordLength];
-            bw.Write(blank); // the deleted flag
-            bw.Close();
+            using (var bw = GetBinaryWriter())
+            {
+                WriteHeader(bw);
+                int rawRow = GetFileIndex(_numRecords - 1);
+                bw.BaseStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
+                byte[] blank = new byte[_recordLength];
+                bw.Write(blank); // the deleted flag
+            }
             // Step 2) Re-use the insert code to insert the values for the new row.
             Edit(_numRecords - 1, values);
         }
@@ -539,8 +580,7 @@ namespace DotSpatial.Data
                 ncs[i] = new NumberConverter(fld.Length, fld.DecimalCount);
             }
             //overridden in sub-classes
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Write, FileShare.Write, 100000);
-            _writer = new BinaryWriter(myStream);
+            _writer = GetBinaryWriter();
             return ncs;
         }
 
@@ -660,69 +700,11 @@ namespace DotSpatial.Data
             return result;
         }
 
-        private static bool HasEof(FileStream fs, long length)
+        private static bool HasEof(Stream fs, long length)
         {
             fs.Seek(length, SeekOrigin.Begin);
             return 0x1a == fs.ReadByte();
         }
-
-        #region Variables
-
-        // Constant for the size of a record
-        private const int FILE_DESCRIPTOR_SIZE = 32;
-        private bool _attributesPopulated;
-        private byte[] _byteContent; // // Modifed on 20 Aug. 2012 by Andy
-        private List<Field> _columns;
-        private Stopwatch _dataRowWatch;
-        private DataTable _dataTable;
-        private List<int> _deletedRows;
-        private string _fileName;
-        private byte _fileType;
-        private bool _hasDeletedRecords;
-        private int _headerLength;
-        private bool _loaded;
-        private int _numFields;
-        private int _numRecords;
-        private long[] _offsets;
-        private IProgressHandler _progressHandler;
-        private ProgressMeter _progressMeter;
-        private int _recordLength;
-        private byte _ldid;
-        private Encoding _encoding;
-        private DateTime _updateDate;
-        private BinaryWriter _writer;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of an attribute Table with no file reference
-        /// </summary>
-        public AttributeTable()
-        {
-            _deletedRows = new List<int>();
-            _fileType = 0x03;
-            _encoding = Encoding.Default;
-            _ldid = DbaseLocaleRegistry.GetLanguageDriverId(_encoding);
-            _progressHandler = DataManager.DefaultDataManager.ProgressHandler;
-            _progressMeter = new ProgressMeter(_progressHandler);
-            _dataTable = new DataTable();
-            _columns = new List<Field>();
-        }
-
-        /// <summary>
-        /// Creates a new AttributeTable with the specified fileName, or opens
-        /// an existing file with that name.
-        /// </summary>
-        /// <param name="fileName"></param>
-        public AttributeTable(string fileName)
-            : this()
-        {
-            Open(fileName);
-        }
-
-        #endregion
 
         #region Methods
 
@@ -749,10 +731,8 @@ namespace DotSpatial.Data
 
             _attributesPopulated = false; // we had a file, but have not read the dbf content into memory yet.
             _dataTable = new DataTable();
-
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-            BinaryReader myReader = new BinaryReader(myStream);
-            try
+            
+            using (var myReader = GetBinaryReader())
             {
                 ReadTableHeader(myReader); // based on the header, set up the fields information etc.
 
@@ -765,8 +745,8 @@ namespace DotSpatial.Data
                 }
                 FileInfo fi = new FileInfo(_fileName);
                 long length = _headerLength + _numRecords * _recordLength;
-                long pos = myStream.Position;
-                if (HasEof(myStream, length))
+                long pos = myReader.BaseStream.Position;
+                if (HasEof(myReader.BaseStream, length))
                     length++;
 
                 if (fi.Length == length)
@@ -776,14 +756,14 @@ namespace DotSpatial.Data
                     return;
                 }
 
-                myStream.Seek(pos, SeekOrigin.Begin);
+                myReader.BaseStream.Seek(pos, SeekOrigin.Begin);
 
                 _hasDeletedRecords = true;
                 int count = 0;
                 int row = 0;
                 while (count < _numRecords)
                 {
-                    if (myStream.ReadByte() == (byte)' ')
+                    if (myReader.BaseStream.ReadByte() == (byte)' ')
                     {
                         count++;
                     }
@@ -792,54 +772,43 @@ namespace DotSpatial.Data
                         _deletedRows.Add(row);
                     }
                     row++;
-                    myStream.Seek(_recordLength - 1, SeekOrigin.Current);
+                    myReader.BaseStream.Seek(_recordLength - 1, SeekOrigin.Current);
                 }
-            }
-            finally
-            {
-                myReader.Close();
-                myStream.Close();
             }
         }
 
         private void GetRowOffsets()
         {
-            FileStream myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000);
-            BinaryReader myReader = new BinaryReader(myStream);
-            try
-            {
-                FileInfo fi = new FileInfo(_fileName);
+            var fi = new FileInfo(_fileName);
 
-                // Encoding appears to be ASCII, not Unicode
-                myStream.Seek(_headerLength + 1, SeekOrigin.Begin);
-                if ((int)fi.Length == _headerLength)
+            // Encoding appears to be ASCII, not Unicode
+            if ((int) fi.Length == _headerLength)
+            {
+                // The file is empty, so we are done here
+                return;
+            }
+
+            if (_hasDeletedRecords)
+            {
+                int length = (int) (fi.Length - _headerLength - 1);
+                int recordCount = length/_recordLength;
+                _offsets = new long[_numRecords];
+                int j = 0; // undeleted index
+                using (var myReader = GetBinaryReader())
                 {
-                    // The file is empty, so we are done here
-                    return;
-                }
-                int length = (int)(fi.Length - _headerLength - 1);
-                _byteContent = myReader.ReadBytes(length); // Modified on 20 Aug. by Andy
-                myReader.Close();
-                if (_hasDeletedRecords)
-                {
-                    int recordCount = length / _recordLength;
-                    _offsets = new long[_numRecords];
-                    int j = 0; // undeleted index
                     for (int i = 0; i <= recordCount; i++)
                     {
-                        if (_byteContent[i * _recordLength] != '*')
-                            _offsets[j] = i * _recordLength;
+                        // seek to byte
+                        myReader.BaseStream.Seek(_headerLength + 1 + i*_recordLength, SeekOrigin.Begin);
+                        var cb = myReader.ReadByte();
+                        if (cb != '*')
+                            _offsets[j] = i*_recordLength;
                         j++;
                         if (j == _numRecords) break;
                     }
                 }
-                _loaded = true;
             }
-            finally
-            {
-                myReader.Close();
-                myStream.Close();
-            }
+            _loaded = true;
         }
 
         private int GetColumnOffset(int column)
@@ -858,8 +827,6 @@ namespace DotSpatial.Data
         /// <param name="numRows">In the event that the dbf file is not found, this indicates how many blank rows should exist in the attribute Table.</param>
         public void Fill(int numRows)
         {
-            _dataRowWatch = new Stopwatch();
-
             _dataTable.Rows.Clear(); // if we have already loaded data, clear the data.
 
             if (File.Exists(_fileName) == false)
@@ -881,9 +848,6 @@ namespace DotSpatial.Data
             }
 
             if (!_loaded) GetRowOffsets();
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             ProgressMeter = new ProgressMeter(ProgressHandler, "Reading from DBF Table...", _numRecords);
             if (_numRecords < 10000000) ProgressMeter.StepPercent = 5;
             if (_numRecords < 5000000) ProgressMeter.StepPercent = 10;
@@ -891,28 +855,33 @@ namespace DotSpatial.Data
             if (_numRecords < 10000) ProgressMeter.StepPercent = 100;
             _dataTable.BeginLoadData();
             // Reading the Table elements as well as the shapes in a single progress loop.
-            for (int row = 0; row < _numRecords; row++)
+            using (var myReader = GetBinaryReader())
             {
-                // --------- DATABASE --------- CurrentFeature = ReadTableRow(myReader);
-                try
+                for (int row = 0; row < _numRecords; row++)
                 {
-                    _dataTable.Rows.Add(ReadTableRowFromChars(row));
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    _dataTable.Rows.Add(_dataTable.NewRow());
-                }
+                    // --------- DATABASE --------- CurrentFeature = ReadTableRow(myReader);
+                    DataRow nextRow = null;
+                    try
+                    {
+                        nextRow = ReadTableRowFromChars(row, myReader);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                        nextRow = _dataTable.NewRow();
+                    }
+                    finally
+                    {
+                        _dataTable.Rows.Add(nextRow);
+                    }
 
-                // If a progress message needs to be updated, this will handle that.
-                ProgressMeter.CurrentValue = row;
+                    // If a progress message needs to be updated, this will handle that.
+                    ProgressMeter.CurrentValue = row;
+                }
             }
             ProgressMeter.Reset();
             _dataTable.EndLoadData();
-            sw.Stop();
-
-            Debug.WriteLine("Load Time:" + sw.ElapsedMilliseconds + " Milliseconds");
-            Debug.WriteLine("Conversion:" + _dataRowWatch.ElapsedMilliseconds + " Milliseconds");
+            
             _attributesPopulated = true;
             OnAttributesFilled();
         }
@@ -925,8 +894,7 @@ namespace DotSpatial.Data
         {
             if (File.Exists(Filename)) File.Delete(Filename);
             UpdateSchema();
-            string dbfFile = Path.ChangeExtension(Filename, ".dbf");
-            _writer = new BinaryWriter(File.Open(dbfFile, FileMode.Create, FileAccess.Write, FileShare.None));
+            _writer = GetBinaryWriter();
             WriteHeader(_writer);
             WriteTable();
             _writer.Close();
@@ -1236,9 +1204,9 @@ namespace DotSpatial.Data
         /// Read a single dbase record
         /// </summary>
         /// <returns>Returns an IFeature with information appropriate for the current row in the Table</returns>
-        private DataRow ReadTableRowFromChars(int currentRow)
+        private DataRow ReadTableRowFromChars(int currentRow, BinaryReader myReader)
         {
-            DataRow result = _dataTable.NewRow();
+            var result = _dataTable.NewRow();
 
             long start;
             if (_hasDeletedRecords == false)
@@ -1246,16 +1214,14 @@ namespace DotSpatial.Data
             else
                 start = _offsets[currentRow];
 
+            myReader.BaseStream.Seek(_headerLength + 1 + start, SeekOrigin.Begin);
             for (int col = 0; col < _dataTable.Columns.Count; col++)
             {
                 // find the length of the field.
-                Field currentField = _columns[col];
+                var currentField = _columns[col];
 
                 // read the data.
-                byte[] byteBuffer = new byte[currentField.Length]; // Modified on Aug.20th by Andy
-                Array.Copy(_byteContent, start, byteBuffer, 0, currentField.Length); // Modified on 20 Aug. by Andy
-                start += currentField.Length;
-
+                var byteBuffer = myReader.ReadBytes(currentField.Length);
                 char[] cBuffer = _encoding.GetChars(byteBuffer);// Modified on 20 Aug. by Andy
                 if (IsNull(cBuffer)) continue;
 
@@ -1342,10 +1308,7 @@ namespace DotSpatial.Data
             string tempStr = new string(cBuffer);
             tempObject = DBNull.Value;
             Type t = field.DataType;
-            Lazy<string> errorMessage = new Lazy<string>(() =>
-            {
-                return String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t);
-            });
+            var errorMessage = new Lazy<string>(() => String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
 
             if (t == typeof(byte))
             {
@@ -1840,7 +1803,8 @@ namespace DotSpatial.Data
         /// </summary>
         protected virtual void OnAttributesFilled()
         {
-            if (AttributesFilled != null) AttributesFilled(this, EventArgs.Empty);
+            var h = AttributesFilled;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         #endregion

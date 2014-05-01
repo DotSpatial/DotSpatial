@@ -33,7 +33,7 @@ namespace DotSpatial.Controls
 
         private FunctionMode previousFunction = FunctionMode.None;
         private bool isPanningTemporarily;
-        private int KeyPanCount = 0;
+        private int KeyPanCount;
 
         #endregion
 
@@ -159,7 +159,6 @@ namespace DotSpatial.Controls
             if (e.KeyCode == (Keys.LButton | Keys.MButton | Keys.Back | Keys.ShiftKey | Keys.Space | Keys.F17) || e.KeyCode == Keys.Subtract)
             {
                 Extent MaxExtent = Map.GetMaxExtent();
-                int bla;
                 if ((Map.IsZoomedToMaxExtent == true))
                 {
                 }

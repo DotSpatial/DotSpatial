@@ -29,7 +29,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using DotSpatial.Controls.Core;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
@@ -67,6 +66,11 @@ namespace DotSpatial.Controls
         /// from the buffer, followed by the tool drawing.
         /// </summary>
         public event EventHandler<ClipArgs> BufferChanged;
+
+        /// <summary>
+        /// Occurs when View changed
+        /// </summary>
+        public event EventHandler<ViewChangedEventArgs> ViewChanged;
 
         #endregion Events
 
@@ -115,7 +119,7 @@ namespace DotSpatial.Controls
             base.IsSelected = true;  // by default allow the map frame to be selected
 
             //add properties context menu item
-            ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
+            base.ContextMenuItems.Add(new SymbologyMenuItem(MessageStrings.MapFrame_Projection, Projection_Click));
         }
 
         /// <summary>
@@ -325,15 +329,15 @@ namespace DotSpatial.Controls
             {
                 if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
             }
-            // Then
-            MapLabelLayer.ExistingLabels = new List<RectangleF>();
-            foreach (IMapLayer layer in Layers)
+            // Then labels
+            MapLabelLayer.ClearAllExistingLabels();
+            foreach (var layer in Layers)
             {
                 InitializeLabels(regions, args, layer);
             }
 
             // First draw all the vector content
-            foreach (IMapLayer layer in DrawingLayers)
+            foreach (var layer in DrawingLayers.OfType<IMapLayer>())
             {
                 if (layer.VisibleAtExtent(ViewExtents)) layer.DrawRegions(args, regions);
             }
@@ -359,9 +363,8 @@ namespace DotSpatial.Controls
             {
                 Initialize(new List<Extent> { ViewExtents });
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
-                return;
             }
         }
 
@@ -503,30 +506,28 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Draw label content for a Map Layer
         /// </summary>
-        /// <param name="regions"></param>
-        /// <param name="args"></param>
-        /// <param name="layer"></param>
         protected virtual void InitializeLabels(List<Extent> regions, MapArgs args, IRenderable layer)
         {
-            IMapGroup grp = layer as IMapGroup;
-            if (layer.IsVisible)
-            {
-                if (grp != null)
-                {
-                    foreach (IMapLayer lyr in grp.Layers)
-                    {
-                        InitializeLabels(regions, args, lyr);
-                    }
-                    return;
-                }
+            if (!layer.IsVisible) return;
 
-                IMapFeatureLayer mfl = layer as IMapFeatureLayer;
-                if (mfl != null)
+            var grp = layer as IMapGroup;
+            if (grp != null)
+            {
+                foreach (IMapLayer lyr in grp.Layers)
                 {
-                    if (mfl.ShowLabels && mfl.LabelLayer != null)
+                    InitializeLabels(regions, args, lyr);
+                }
+                return;
+            }
+
+            var mfl = layer as IMapFeatureLayer;
+            if (mfl != null)
+            {
+                if (mfl.ShowLabels && mfl.LabelLayer != null)
+                {
+                    if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
                     {
-                        if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
-                            mfl.LabelLayer.DrawRegions(args, regions);
+                        mfl.LabelLayer.DrawRegions(args, regions);
                     }
                 }
             }
@@ -534,7 +535,7 @@ namespace DotSpatial.Controls
 
         private void PrintLayer(IMapLayer layer, MapArgs args)
         {
-            MapLabelLayer.ExistingLabels.Clear();
+            MapLabelLayer.ClearAllExistingLabels();
             IMapGroup group = layer as IMapGroup;
             if (group != null)
             {
@@ -929,7 +930,23 @@ namespace DotSpatial.Controls
         public Rectangle View
         {
             get { return _view; }
-            set { _view = value; }
+            set
+            {
+                if (_view == value) return;
+
+                var h = ViewChanged;
+                if (h != null)
+                {
+                    var old_view = _view;
+                    _view = value;
+                    var args = new ViewChangedEventArgs {OldView = old_view, NewView = _view};
+                    h(this, args);
+                }
+                else
+                {
+                    _view = value;
+                }
+            }
         }
 
         /// <summary>
@@ -1018,7 +1035,6 @@ namespace DotSpatial.Controls
             catch
             {
                 // There was an exception (probably because of sizing issues) so don't bother with the chunk timer.
-                return;
             }
 
             //base.OnPaint(pe);
@@ -1270,7 +1286,6 @@ namespace DotSpatial.Controls
 
             ReprojectOnTheFly(layer);
             Initialize();
-            return;
         }
 
         private void ReprojectOnTheFly(IMapLayer layer)
@@ -1278,7 +1293,7 @@ namespace DotSpatial.Controls
             if (layer.DataSet == null) return;
             if (!Data.DataSet.ProjectionSupported()) return;
 
-            bool preventReproject = DefineProjection(layer);
+            var preventReproject = DefineProjection(layer);
             if ((Projection == null || Layers.Count == 1))
             {
                 Projection = layer.DataSet.Projection;
@@ -1286,39 +1301,34 @@ namespace DotSpatial.Controls
             }
 
             if (preventReproject) return;
-
-            if (Data.DataSet.ProjectionSupported())
+            if (Projection.Equals(layer.DataSet.Projection)) return;
+            var bReproject = false;
+            if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-                if (!Projection.Equals(layer.DataSet.Projection))
+                string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
-                    Boolean bReproject = false;
-                    if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
-                    {
-                        string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            message =
-                                "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
-                        }
-                        DialogResult result = MessageBox.Show(
-                            message,
-                            MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
-                            MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            bReproject = true;
-                        }
-                        if (ProjectionModeReproject == ActionMode.PromptOnce)
-                        {
-                            ProjectionModeReproject = result == DialogResult.Yes ?
-                                                                                     ActionMode.Always : ActionMode.Never;
-                        }
-                    }
-                    if (bReproject || ProjectionModeReproject == ActionMode.Always)
-                    {
-                        layer.Reproject(Projection);
-                    }
+                    message =
+                        "The newly added layer has a coordinate system, but that coordinate system does not match the other layers in the map.  Do you want to reproject new layers on the fly so that they are drawn in the same coordinate system as the other layers?";
                 }
+                DialogResult result = MessageBox.Show(
+                    message,
+                    MessageStrings.MapFrame_GlcLayerAdded_Projection_Mismatch,
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    bReproject = true;
+                }
+                if (ProjectionModeReproject == ActionMode.PromptOnce)
+                {
+                    ProjectionModeReproject = result == DialogResult.Yes
+                        ? ActionMode.Always
+                        : ActionMode.Never;
+                }
+            }
+            if (bReproject || ProjectionModeReproject == ActionMode.Always)
+            {
+                layer.Reproject(Projection);
             }
         }
 
@@ -1399,9 +1409,10 @@ namespace DotSpatial.Controls
         private void Projection_Click(object sender, EventArgs e)
         {
             //Launches a MapFrameProjectionDialog
-            MapFrameProjectionDialog dialog = new MapFrameProjectionDialog(this);
-            dialog.ShowDialog();
-            //MessageBox.Show(Projection.ToEsriString());
+            using (var dialog = new MapFrameProjectionDialog(this))
+            {
+                dialog.ShowDialog(Parent);
+            }
         }
 
         #endregion Protected Methods
@@ -1420,5 +1431,41 @@ namespace DotSpatial.Controls
         }
 
         #endregion IMapFrame Members
+    }
+
+    internal class LimitedStack<T>
+    {
+        public readonly int Limit;
+        private readonly List<T> _stack;
+
+        public LimitedStack(int limit = 32)
+        {
+            Limit = limit;
+            _stack = new List<T>(limit);
+        }
+
+        public void Push(T item)
+        {
+            if (_stack.Count == Limit) _stack.RemoveAt(0);
+            _stack.Add(item);
+        }
+
+        public T Peek()
+        {
+            if (_stack.Count == 0) return default(T);
+            return _stack[_stack.Count - 1];
+        }
+
+        public T Pop()
+        {
+            var item = _stack[_stack.Count - 1];
+            _stack.RemoveAt(_stack.Count - 1);
+            return item;
+        }
+
+        public int Count
+        {
+            get { return _stack.Count; }
+        }
     }
 }

@@ -135,7 +135,6 @@ namespace DotSpatial.Symbology
         /// <param name="color">The Color to apply</param>
         public virtual void SetColor(Color color)
         {
-            return;
         }
 
         /// <summary>

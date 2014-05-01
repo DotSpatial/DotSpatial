@@ -46,7 +46,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganCentralFIPS2112()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganCentralFIPS2112;
@@ -55,7 +54,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganCentralOldFIPS2102()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganCentralOldFIPS2102;
@@ -64,7 +62,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganEastOldFIPS2101()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganEastOldFIPS2101;
@@ -73,7 +70,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganNorthFIPS2111()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganNorthFIPS2111;
@@ -82,7 +78,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganSouthFIPS2113()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganSouthFIPS2113;
@@ -91,7 +86,6 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore("Verify this test")]
         public void NADMichiganStatePlaneMichiganWestOldFIPS2103()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StatePlaneOther.NADMichiganStatePlaneMichiganWestOldFIPS2103;

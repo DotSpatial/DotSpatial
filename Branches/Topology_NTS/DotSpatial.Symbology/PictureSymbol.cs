@@ -181,10 +181,7 @@ namespace DotSpatial.Symbology
                 {
                     return ConvertImageToBase64(Image);
                 }
-                else
-                {
-                    return String.Empty;
-                }
+                return String.Empty;
             }
             set
             {

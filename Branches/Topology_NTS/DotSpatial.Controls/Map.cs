@@ -209,6 +209,11 @@ namespace DotSpatial.Controls
             FunctionMode = FunctionMode.None;
         }
 
+        protected virtual void Draw(Graphics g, PaintEventArgs e)
+        {
+            _geoMapFrame.Draw(new PaintEventArgs(g, e.ClipRectangle));
+        }
+
         private void MapFrameItemChanged(object sender, EventArgs e)
         {
             Invalidate();
@@ -1137,6 +1142,7 @@ namespace DotSpatial.Controls
         /// Loading subsequent, but non-matching projections should throw an alert, and allow reprojection.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public ProjectionInfo Projection
         {
             get
@@ -1433,7 +1439,7 @@ namespace DotSpatial.Controls
             m.Translate(-clip.X, -clip.Y);
             g.Transform = m;
 
-            _geoMapFrame.Draw(new PaintEventArgs(g, e.ClipRectangle));
+            Draw(g, e);
 
             MapDrawArgs args = new MapDrawArgs(g, clip, _geoMapFrame);
             foreach (IMapFunction tool in MapFunctions)

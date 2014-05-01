@@ -38,21 +38,17 @@ namespace DotSpatial.Data
     {
         #region private fields
 
-        OSGeo.OGR.Feature _currentFeature;
+        private OSGeo.OGR.Feature _currentFeature;
         private const string FidFieldName = "FID";
         private const int FidFieldOrdinal = 1;
         private const string GeometryFieldName = "Geometry";
         private const int GeometryFieldOrdinal = 0;
-        private readonly int _iFeatureCount;
-        private int _iFeatureIndex;
         private readonly int _iFieldCount;
-        DataSource _ogrDataSource;
-        readonly FeatureDefn _ogrFeatureDefinition;
-        Layer _ogrLayer;
+        private readonly DataSource _ogrDataSource;
+        private readonly FeatureDefn _ogrFeatureDefinition;
+        private readonly Layer _ogrLayer;
         private DataTable _schemaTable;
         private bool bClosed = true;
-
-        //DotSpatial.Data.WKBReader wkbReader = null;
 
         #endregion
 
@@ -64,37 +60,20 @@ namespace DotSpatial.Data
         }
 
         public OgrDataReader(string sDataSource)
+            :this(sDataSource, null)
         {
-            //wkbReader = new DotSpatial.Data.WKBReader();
-
-            _ogrDataSource = Ogr.Open(sDataSource, 0);
-
-            _ogrLayer = _ogrDataSource.GetLayerByIndex(0);
-
-            _iFeatureCount = _ogrLayer.GetFeatureCount(1);
-            _ogrFeatureDefinition = _ogrLayer.GetLayerDefn();
-            _iFieldCount = _ogrFeatureDefinition.GetFieldCount();
-
-            BuildSchemaTable();
-
-            _currentFeature = null;
-            bClosed = false;
         }
 
         public OgrDataReader(string sDataSource, string sLayer)
         {
-            //wkbReader = new DotSpatial.Data.WKBReader();
-
             _ogrDataSource = Ogr.Open(sDataSource, 0);
+            _ogrLayer = sLayer != null
+                ? _ogrDataSource.GetLayerByName(sLayer)
+                : _ogrDataSource.GetLayerByIndex(0);
 
-            _ogrLayer = _ogrDataSource.GetLayerByName(sLayer);
-
-            _iFeatureCount = _ogrLayer.GetFeatureCount(1);
             _ogrFeatureDefinition = _ogrLayer.GetLayerDefn();
             _iFieldCount = _ogrFeatureDefinition.GetFieldCount();
-
             BuildSchemaTable();
-
             _currentFeature = null;
             bClosed = false;
         }
@@ -317,17 +296,8 @@ namespace DotSpatial.Data
         /// <returns>Boolean</returns>
         public bool Read()
         {
-            if (_iFeatureIndex < _iFeatureCount)
-            {
-                _currentFeature = _ogrLayer.GetFeature(_iFeatureIndex);
-                _iFeatureIndex++;
-
-                return _iFeatureIndex <= _iFeatureCount;
-            }
-            else
-            {
-                return false;
-            }
+            _currentFeature = _ogrLayer.GetNextFeature();
+            return _currentFeature != null;
         }
 
         /// <summary>
@@ -377,25 +347,17 @@ namespace DotSpatial.Data
             return GetFieldAsDateTime(i - 2);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
         public string GetDataTypeName(int i)
         {
             if (i == 1)
             {
                 return typeof(Int32).ToString();
             }
-            else if (i == 0)
+            if (i == 0)
             {
                 return typeof(byte[]).ToString();
             }
-            else
-            {
-                return _ogrFeatureDefinition.GetFieldDefn(i - 2).GetFieldType().ToString();
-            }
+            return _ogrFeatureDefinition.GetFieldDefn(i - 2).GetFieldType().ToString();
         }
 
         public double GetDouble(int i)
@@ -558,12 +520,7 @@ namespace DotSpatial.Data
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
+        
         public long GetInt64(int i)
         {
             throw new NotImplementedException();
@@ -581,7 +538,14 @@ namespace DotSpatial.Data
             int flag;
 
             _currentFeature.GetFieldAsDateTime(i - 2, out year, out month, out day, out h, out m, out s, out flag);
-            return new DateTime(year, month, day, h, m, s);
+            try
+            {
+                return new DateTime(year, month, day, h, m, s);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return DateTime.MinValue;
+            }
         }
 
         #endregion

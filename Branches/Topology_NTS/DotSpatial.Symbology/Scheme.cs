@@ -444,7 +444,7 @@ namespace DotSpatial.Symbology
 
         private static double SigFig(double value, int numFigures)
         {
-            int md = (int)Math.Ceiling(Math.Log10(value));
+            int md = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
             md -= numFigures;
             double norm = Math.Pow(10, md);
             return norm * Math.Round(value / norm);

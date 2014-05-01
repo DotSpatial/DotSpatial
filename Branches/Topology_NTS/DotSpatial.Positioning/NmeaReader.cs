@@ -20,6 +20,7 @@
 // |--------------------------|------------|--------------------------------------------------------------
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
+// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
 // ********************************************************************************************************
 using System;
 using System.IO;
@@ -263,6 +264,12 @@ namespace DotSpatial.Positioning
                 // Yes. Convert it using the fast pre-parseed constructor
                 return new GpvtgSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
             }
+            if (sentence.CommandWord.EndsWith("HDT", StringComparison.Ordinal))
+            {
+                // Yes. Convert it using the fast pre-parseed constructor
+                
+                return new GphdtSentence(sentence.Sentence, sentence.CommandWord, sentence.Words, sentence.ExistingChecksum);
+            }
 
             // Raise an event to try and parse this
             if (ResolveSentence != null)
@@ -346,6 +353,21 @@ namespace DotSpatial.Positioning
                 sentence = ReadTypedSentence() as IBearingSentence;
             // Return the location
             return sentence.Bearing;
+        }
+        
+        /// <summary>
+        /// Reads the Heading direction
+        /// </summary>
+        /// <returns>The direction as an azimuth angle</returns>
+        public Azimuth ReadHeading()
+        {
+            // Does it support the value we want?
+            IHeadingSentence sentence = ReadTypedSentence() as IHeadingSentence;
+            // If not, start over (recorsive)
+            while (sentence == null)
+                sentence = ReadTypedSentence() as IHeadingSentence;
+            // Return the location
+            return sentence.Heading;
         }
 
         /// <summary>

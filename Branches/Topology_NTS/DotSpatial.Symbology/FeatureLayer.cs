@@ -1393,12 +1393,14 @@ namespace DotSpatial.Symbology
         /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
         /// is used instead and features are not assumed to be loaded into ram.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(true)]
+        [Description("If edit mode is true, feature index is ignored, and features are assumed to be entirely loaded into ram.  If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.")]
         public bool EditMode
         {
             get { return _editMode; }
             set
             {
+                if (value == _editMode) return;
                 _editMode = value;
                 if (_editMode)
                 {
@@ -2212,7 +2214,6 @@ namespace DotSpatial.Symbology
                 if (current == '[')
                 {
                     isField = true;
-                    continue;
                 }
             }
 

@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 
@@ -69,7 +68,7 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage)
             : base(baseImage)
         {
-            Configure(baseImage);
+            
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(baseImage, container)
         {
-            Configure(baseImage);
+         
         }
 
         /// <summary>
@@ -91,23 +90,23 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage, Color transparent)
             : base(baseImage)
         {
-            Configure(baseImage);
             this.transparent = transparent;
         }
-
-        private void Configure(IImageData baseImage)
-        {
-            _bufferRectangle = new Rectangle(0, 0, baseImage.Width, baseImage.Height);
-            _bufferExtent = baseImage.Bounds.Extent;
-            base.IsVisible = true;
-            MyExtent = baseImage.Extent;
-            base.LegendText = Path.GetFileName(baseImage.Filename);
-            OnFinishedLoading();
-        }
+       
 
         #endregion
 
         #region Methods
+
+        protected override void OnDataSetChanged(IImageData value)
+        {
+            base.OnDataSetChanged(value);
+
+            _bufferRectangle = value == null? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
+            _bufferExtent = value == null? null : value.Bounds.Extent;
+            MyExtent =  value == null? null : value.Extent;
+            OnFinishedLoading();
+        }
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features
@@ -192,19 +191,10 @@ namespace DotSpatial.Controls
         {
             if (BufferChanged != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
-                BufferChanged(this, e);
+                BufferChanged(this, new ClipArgs(clipRectangles));
             }
         }
-
-        /// <summary>
-        /// Indiciates that whatever drawing is going to occur has finished and the contents
-        /// are about to be flipped forward to the front buffer.
-        /// </summary>
-        protected virtual void OnFinishDrawing()
-        {
-        }
-
+     
         #endregion
 
         #region Private Methods
@@ -237,7 +227,7 @@ namespace DotSpatial.Controls
                 // but should correspond to 1 pixel in the source image.
 
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
-                Rectangle r = RectangleExt.ExpandBy(clipRectangles[i], dx * 2);
+                Rectangle r = clipRectangles[i].ExpandBy(dx * 2);
                 if (r.X < 0) r.X = 0;
                 if (r.Y < 0) r.Y = 0;
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;

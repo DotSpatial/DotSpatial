@@ -19,40 +19,40 @@ namespace DotSpatial.Projections.Tests.Projected
             
         }
 
-        [Ignore]
         [Test]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersFeet()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1927AlaskaAlbersFeet;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927AlaskaAlbersMeters()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1927AlaskaAlbersMeters;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927CaliforniaTealeAlbers()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1927CaliforniaTealeAlbers;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927GeorgiaStatewideAlbers()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1927GeorgiaStatewideAlbers;
             Tester.TestProjection(pStart);
         }
 
-        [Ignore]
         [Test]
+        [Ignore("Doesn't work on x64 TeamCity. x86 is fine.")]
         public void NAD1927TexasStatewideMappingSystem()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.StateSystems.NAD1927TexasStatewideMappingSystem;

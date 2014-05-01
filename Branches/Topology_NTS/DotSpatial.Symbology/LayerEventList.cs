@@ -75,7 +75,6 @@ namespace DotSpatial.Symbology
         private int _disposeLockCount;
         private bool _isDisposed;
         private bool _isInitialized; // True if layers already existed before a member change
-        private bool _layerAddedFired;
         private ILayer _selectedLayer;
 
         #endregion
@@ -269,7 +268,10 @@ namespace DotSpatial.Symbology
         /// <param name="item"></param>
         protected virtual void OnLayerRemoved(T item)
         {
-            if (LayerRemoved != null) LayerRemoved(this, new LayerEventArgs(item));
+            if (EventsSuspended) return;
+
+            var h = LayerRemoved;
+            if (h != null) h(this, new LayerEventArgs(item));
         }
 
         /// <summary>
@@ -346,22 +348,10 @@ namespace DotSpatial.Symbology
         /// <param name="e">LayerEventArgs</param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
-            // todo: only LayerAdded event is suspended, there are lots of other events that need to be suspended, too.
-            if (EventsSuspended)
-            {
-                _layerAddedFired = true;
-                return;
-            }
-            if (LayerAdded != null) LayerAdded(sender, e);
-        }
-
-        /// <summary>
-        /// This occurs when the Resume events method is fired.
-        /// </summary>
-        protected override void OnResumeEvents()
-        {
-            if (_layerAddedFired) OnLayerAdded(this, new LayerEventArgs(null));
-            base.OnResumeEvents();
+            if (EventsSuspended) return;
+            
+            var h = LayerAdded;
+            if (h != null) h(sender, e);
         }
 
         /// <summary>
@@ -412,7 +402,7 @@ namespace DotSpatial.Symbology
                 Debug.Assert(_disposeLockCount == 0);
                 if (disposeManagedMemory)
                 {
-                    foreach (ILayer layer in this)
+                    foreach (var layer in this)
                     {
                         if (layer != null)
                         {

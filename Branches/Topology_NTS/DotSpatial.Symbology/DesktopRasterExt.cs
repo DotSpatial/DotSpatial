@@ -329,7 +329,6 @@ namespace DotSpatial.Symbology
             Marshal.Copy(rgbData, 0, bmpData.Scan0, numBytes);
             bitmap.UnlockBits(bmpData);
             rasterSymbolizer.ColorSchemeHasUpdated = true;
-            return;
         }
 
         /// <summary>
@@ -854,7 +853,6 @@ namespace DotSpatial.Symbology
             Marshal.Copy(rgbData, 0, bmpData.Scan0, numBytes);
             bitmap.UnlockBits(bmpData);
             rasterSymbolizer.ColorSchemeHasUpdated = true;
-            return;
         }
 
         private static T GetNoData<T>(Raster<T> raster) where T : IEquatable<T>, IComparable<T>
@@ -969,7 +967,6 @@ namespace DotSpatial.Symbology
             Marshal.Copy(rgbData, 0, bmpData.Scan0, numBytes);
             bitmap.UnlockBits(bmpData);
             rasterSymbolizer.ColorSchemeHasUpdated = true;
-            return;
         }
 
         private class ColorSet<T> 

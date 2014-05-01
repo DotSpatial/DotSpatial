@@ -1518,6 +1518,8 @@ namespace DotSpatial.Positioning
 
             _units = (SpeedUnit)Enum.Parse(typeof(SpeedUnit), reader.ReadElementContentAsString(), false);
             _value = reader.ReadElementContentAsDouble();
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

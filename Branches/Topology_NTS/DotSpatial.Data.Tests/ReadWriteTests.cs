@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -37,10 +38,7 @@ namespace DotSpatial.Data.Tests
             }
             finally
             {
-                File.Delete(newFile);
-                File.Delete(Path.ChangeExtension(newFile, ".dbf"));
-                File.Delete(Path.ChangeExtension(newFile, ".shx"));
-                File.Delete(Path.ChangeExtension(newFile, ".prj"));
+                FileTools.DeleteShapeFile(newFile);
             }
         }
     }

@@ -1,1 +1,0 @@
-﻿Simple Header Control for Windows.

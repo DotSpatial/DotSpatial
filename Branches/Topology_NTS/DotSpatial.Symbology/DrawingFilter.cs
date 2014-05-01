@@ -116,23 +116,25 @@ namespace DotSpatial.Symbology
         {
             _scheme = scheme;
             if (_isInitialized == false) DoInitialize();
-            List<IFeatureCategory> fc = _scheme.GetCategories().ToList();
-            // Short cut the rest of this (and prevent loading features) in the case where we know everything is in the default category
-            if (fc.Count == 1 && string.IsNullOrEmpty(fc[0].FilterExpression)) return;
-            List<DataTable> tables = new List<DataTable>(); // just in case there is more than one Table somehow
-            List<DataRow> allRows = new List<DataRow>();
-            List<DataTable> tempList = new List<DataTable>();
-            bool containsFID = false;
-            IEnumerable<IFeatureCategory> categories = _scheme.GetCategories();
+            var fc = _scheme.GetCategories().ToList();
 
-            foreach (var category in categories)
+            // Short cut the rest of this (and prevent loading features) in the case where we know everything is in the default category
+            if (fc.Count == 1 && string.IsNullOrEmpty(fc[0].FilterExpression))
             {
-                if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
+                // Replace SchemeCategory in _drawnStates
+                foreach (var drawnState in _drawnStates)
                 {
-                    containsFID = true;
+                    drawnState.Value.SchemeCategory = fc[0];
                 }
+                return;
             }
-            foreach (IFeature f in _featureList)
+
+            var tables = new List<DataTable>(); // just in case there is more than one Table somehow
+            var allRows = new List<DataRow>();
+            var tempList = new List<DataTable>();
+            var containsFID = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
+
+            foreach (var f in _featureList)
             {
                 if (f.DataRow == null)
                 {
@@ -155,7 +157,8 @@ namespace DotSpatial.Symbology
                 }
                 if (_drawnStates.ContainsKey(f)) _drawnStates[f].SchemeCategory = null;
             }
-            foreach (IFeatureCategory cat in categories)
+
+            foreach (IFeatureCategory cat in fc)
             {
                 foreach (DataTable dt in tables)
                 {

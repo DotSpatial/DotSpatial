@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.ExtensionManager")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

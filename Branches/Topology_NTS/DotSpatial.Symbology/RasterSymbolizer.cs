@@ -299,8 +299,6 @@ namespace DotSpatial.Symbology
             // Copy the values back into the bitmap
             Marshal.Copy(rgbData, 0, bmpData.Scan0, numBytes);
             bitmap.UnlockBits(bmpData);
-
-            return;
         }
 
         /// <summary>

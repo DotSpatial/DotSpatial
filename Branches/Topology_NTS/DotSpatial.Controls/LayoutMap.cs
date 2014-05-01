@@ -34,11 +34,33 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutMap : LayoutElement
     {
+        #region Fields
+
         private Bitmap _buffer;
         private IEnvelope _envelope;
         private bool _extentChanged = true;
         private Map _mapControl;
         private RectangleF _oldRectangle;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor to build a new LayoutMap control with map control
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Throws if mapControl is null.</exception>
+        public LayoutMap(Map mapControl)
+        {
+            if (mapControl == null) throw new ArgumentNullException("mapControl");
+
+            Name = "Map";
+            _mapControl = mapControl;
+            _envelope = _mapControl.ViewExtents.ToEnvelope();
+            ResizeStyle = ResizeStyle.NoScaling;
+        }
+
+        #endregion
 
         #region ------------------ Public Properties
 
@@ -84,7 +106,11 @@ namespace DotSpatial.Controls
         public Map MapControl
         {
             get { return _mapControl; }
-            set { _mapControl = value; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+                _mapControl = value;
+            }
         }
 
         /// <summary>
@@ -118,7 +144,6 @@ namespace DotSpatial.Controls
 
         private double UnitMeterConversion()
         {
-            if (_mapControl == null) return 1;
             if (_mapControl.Layers.Count == 0) return 1;
             if (_mapControl.Layers[0].DataSet == null) return 1;
             if (_mapControl.Layers[0].DataSet.Projection == null) return 1;
@@ -130,25 +155,7 @@ namespace DotSpatial.Controls
         #endregion
 
         #region ------------------- public methods
-
-        /// <summary>
-        /// The constructor to build a new LayoutMap control
-        /// </summary>
-        public LayoutMap()
-        {
-            Name = "Map";
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public LayoutMap(Map mapControl)
-        {
-            Name = "Map";
-            _mapControl = mapControl;
-            _envelope = _mapControl.ViewExtents.ToEnvelope();
-            ResizeStyle = ResizeStyle.NoScaling;
-        }
+        
 
         /// <summary>
         /// Updates the size of the control

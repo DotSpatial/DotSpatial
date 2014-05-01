@@ -224,21 +224,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             if (_dataset == null)
             {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_Update);
-                }
-                catch
-                {
-                    try
-                    {
-                        _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new GdalException(ex.ToString());
-                    }
-                }
+                _dataset = Helpers.Open(Filename);
             }
         }
 

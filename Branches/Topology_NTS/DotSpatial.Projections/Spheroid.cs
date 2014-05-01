@@ -151,7 +151,7 @@ namespace DotSpatial.Projections
                 case "BN":
                     AssignKnownEllipsoid(Proj4Ellipsoid.BesselNamibia);
                     break;
-                case "CC:":
+                case "CC":
                     AssignKnownEllipsoid(Proj4Ellipsoid.Clarke_1866);
                     break;
                 case "CD":
@@ -264,9 +264,8 @@ namespace DotSpatial.Projections
                     _equatorialRadius = 6375738.7;
                     InverseFlattening = 334.29;
                     break;
-                case Proj4Ellipsoid.Custom: // Default to WGS84
-                    _equatorialRadius = 6378137.0;
-                    InverseFlattening = 298.257223563;
+                case Proj4Ellipsoid.Custom: 
+                    // Nothing for Custom
                     break;
                 case Proj4Ellipsoid.Delambre_1810:
                     _equatorialRadius = 6376428;
@@ -456,10 +455,9 @@ namespace DotSpatial.Projections
         /// <returns></returns>
         public string ToProj4String()
         {
-            if (_knownEllipsoid == Proj4Ellipsoid.Custom)
-                return String.Format(" +a={0} +b={1}", _equatorialRadius, _polarRadius);
-            else
-                return String.Format(" +ellps={0}", _proj4Names[_knownEllipsoid]);
+            return _knownEllipsoid == Proj4Ellipsoid.Custom
+                ? String.Format(" +a={0} +b={1}", _equatorialRadius, _polarRadius)
+                : String.Format(" +ellps={0}", _proj4Names[_knownEllipsoid]);
         }
 
         /// <summary>
@@ -512,7 +510,7 @@ namespace DotSpatial.Projections
             _proj4Names.Add(Proj4Ellipsoid.AppPhysics_1965, "APL4.9");
             _proj4Names.Add(Proj4Ellipsoid.Austrailia_SouthAmerica, "aust_SA");
             _proj4Names.Add(Proj4Ellipsoid.Bessel_1841, "bessel");
-            _proj4Names.Add(Proj4Ellipsoid.BesselNamibia, "Bess_nam");
+            _proj4Names.Add(Proj4Ellipsoid.BesselNamibia, "bess_nam");
             _proj4Names.Add(Proj4Ellipsoid.Clarke_1866, "clrk66");
             _proj4Names.Add(Proj4Ellipsoid.ClarkeModified_1880, "clrk80");
             _proj4Names.Add(Proj4Ellipsoid.CPM_1799, "CPM");

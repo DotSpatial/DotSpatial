@@ -14,7 +14,7 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
     <dependencies>
-      <dependency id="DotSpatial.Projections"/>
+      <dependency id="DotSpatial.Projections" Version="1.7"/>
     </dependencies>
   </metadata>
 </package>

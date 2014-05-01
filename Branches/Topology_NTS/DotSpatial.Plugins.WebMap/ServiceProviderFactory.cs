@@ -81,18 +81,18 @@ namespace DotSpatial.Plugins.WebMap
             {
                 return new BrutileServiceProvider(name,
                     new ArcGisTileSource("http://bmproto.esri.com/ArcGIS/rest/services/Hydro/HydroBase2009/MapServer/",
-                        new GlobalMercator()), fileCache());
+                        new GlobalSphericalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldStreetMap))
             {
                 return new BrutileServiceProvider(name,  new ArcGisTileSource("http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/",
-                    new GlobalMercator()), fileCache());
+                    new GlobalSphericalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldImagery))
             {
                 return new BrutileServiceProvider(name, 
                     new ArcGisTileSource("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/",
-                        new GlobalMercator()), fileCache());
+                        new GlobalSphericalMercator()), fileCache());
             }
             if (servEq(Resources.EsriWorldTopo))
             {

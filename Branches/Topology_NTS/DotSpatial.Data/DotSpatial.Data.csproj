@@ -120,8 +120,6 @@
     <Compile Include="IExtentZ.cs" />
     <Compile Include="IFeatureRow.cs" />
     <Compile Include="IGetBitmap.cs" />
-    <Compile Include="ILiDARData.cs" />
-    <Compile Include="ILiDARDataProvider.cs" />
     <Compile Include="ImageDataEventArgs.cs" />
     <Compile Include="Endian.cs" />
     <Compile Include="IFeatureSource.cs" />
@@ -310,7 +308,6 @@
     <Compile Include="EnvelopeExt.cs" />
     <Compile Include="RectangleExt.cs" />
     <Compile Include="NullException.cs" />
-    <Compile Include="BaseCollection.cs" />
     <Compile Include="ChangeEventList.cs" />
     <Compile Include="Collective.cs" />
     <Compile Include="CollectiveCancel.cs" />

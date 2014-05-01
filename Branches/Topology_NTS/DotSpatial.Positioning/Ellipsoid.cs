@@ -427,6 +427,15 @@ namespace DotSpatial.Positioning
         #endregion Fields
 
         #region Constructors
+        
+// ReSharper disable UnusedMember.Global
+
+        // Needed for xml serialization\deserialization
+        internal Ellipsoid()
+        {
+            
+        }
+// ReSharper restore UnusedMember.Global
 
         /// <summary>
         /// Creates a new instance with the specified type, name, equatorial raduis and polar radius.
@@ -884,6 +893,10 @@ namespace DotSpatial.Positioning
             writer.WriteString(SemiMajorAxis.ToMeters().Value.ToString("G17"));
             writer.WriteEndElement();
 
+            writer.WriteStartElement(Xml.GML_XML_PREFIX, "semiMinorAxis", Xml.GML_XML_NAMESPACE);
+            writer.WriteString(SemiMinorAxis.ToMeters().Value.ToString("G17"));
+            writer.WriteEndElement();
+
             writer.WriteStartElement(Xml.GML_XML_PREFIX, "secondDefiningParameter", Xml.GML_XML_NAMESPACE);
             writer.WriteElementString(Xml.GML_XML_PREFIX, "inverseFlattening", Xml.GML_XML_NAMESPACE, InverseFlattening.ToString("G17"));
             writer.WriteEndElement();
@@ -910,7 +923,7 @@ namespace DotSpatial.Positioning
 
             // Remember the current depth. We'll keep reading until we return to this depth
             int depth = reader.Depth;
-
+         
             // Notify of the read
             OnReadXml(reader);
 
@@ -931,6 +944,8 @@ namespace DotSpatial.Positioning
                 if (reader.NodeType == XmlNodeType.Element)
                     OnReadXml(reader);
             }
+
+            reader.Read();
         }
 
         /// <summary>
@@ -950,6 +965,9 @@ namespace DotSpatial.Positioning
                 case "semiMajorAxis":
                     _equatorialRadius = new Distance(reader.ReadElementContentAsDouble(), DistanceUnit.Meters);
                     break;
+                case "semiMinorAxis":
+                    _polarRadius = new Distance(reader.ReadElementContentAsDouble(), DistanceUnit.Meters);
+                    break;
                 case "secondDefiningParameter":
                     // Read deeper
                     reader.Read();
@@ -957,13 +975,9 @@ namespace DotSpatial.Positioning
                 case "inverseFlattening":
                     _inverseFlattening = reader.ReadElementContentAsDouble();
                     break;
-                case "Ellipsoid":
+                default:
                     // Read deeper
                     reader.Read();
-                    break;
-                default:
-                    // Skip the whole tag
-                    reader.Skip();
                     break;
             }
         }

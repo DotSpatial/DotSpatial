@@ -23,13 +23,11 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    /// <summary>
-    /// gdalImage
-    /// </summary>
     public class GdalTiledImage : TiledImage
     {
         #region Private Variables
@@ -65,21 +63,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
         private void ReadHeader()
         {
-            try
-            {
-                _dataset = Gdal.Open(Filename, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
+            _dataset = Helpers.Open(Filename);
             Init(_dataset.RasterXSize, _dataset.RasterYSize);
             NumBands = _dataset.RasterCount;
             WorldFile = new WorldFile { Affine = new double[6] };
@@ -87,7 +71,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _dataset.GetGeoTransform(test);
             Bounds = new RasterBounds(Height, Width, test);
             WorldFile.Affine = test;
-            DoClose();
+            Close();
         }
 
         /// <summary>
@@ -101,36 +85,11 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
         /// <summary>
-        /// This close is just like the overrideable version, except it isn't overrideable so we can call it from the constructor.
-        /// </summary>
-        private void DoClose()
-        {
-            if (_dataset != null) _dataset.Dispose();
-            _dataset = null;
-            base.Close();
-        }
-
-        /// <summary>
         /// Attempts to open the specified file.
         /// </summary>
         public override void Open()
         {
-            try
-            {
-                _dataset = Gdal.Open(Filename, Access.GA_Update);
-            }
-            catch
-            {
-                try
-                {
-                    _dataset = Gdal.Open(Filename, Access.GA_ReadOnly);
-                }
-                catch (Exception ex)
-                {
-                    throw new GdalException(ex.ToString());
-                }
-            }
-
+            _dataset = Helpers.Open(Filename);
             _red = _dataset.GetRasterBand(1);
             if (_red.GetRasterColorInterpretation() == ColorInterp.GCI_PaletteIndex)
             {

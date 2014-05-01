@@ -17,7 +17,7 @@ namespace DotSpatial.Controls.Docking
         #region Public Events
 
         /// <summary>
-        ///   Occurs when the active panel is changed, meaning a difference panel is activated.
+        /// Occurs when the active panel is changed, meaning a difference panel is activated.
         /// </summary>
         event EventHandler<DockablePanelEventArgs> ActivePanelChanged;
 

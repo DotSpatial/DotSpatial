@@ -206,7 +206,6 @@
     <Compile Include="Size2D.cs" />
     <Compile Include="SnapShotEventArgs.cs" />
     <Compile Include="SymbolMode.cs" />
-    <Compile Include="SymbologyRectangleExt.cs" />
     <Compile Include="SymbologyGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextSymbolChangedEventArgs.cs" />
@@ -321,7 +320,6 @@
     <Compile Include="SelectionEM.cs" />
     <Compile Include="SelectionMode.cs" />
     <Compile Include="Statistics.cs" />
-    <Compile Include="WorldFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Symbology.snk" />

@@ -133,7 +133,7 @@ namespace DotSpatial.Projections.ProjectedCategories
         {
             ATS1977MTM4NovaScotia = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-61.5 +k=0.999900 +x_0=4500000 +y_0=0 +a=6378135 +b=6356750.304921594 +units=m +no_defs ");
             ATS1977MTM5NovaScotia = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-64.5 +k=0.999900 +x_0=5500000 +y_0=0 +a=6378135 +b=6356750.304921594 +units=m +no_defs ");
-            ATS1977NewBrunswickStereographic = ProjectionInfo.FromProj4String("+a=6378135 +b=6356750.304921594 +units=m +no_defs ");
+            ATS1977NewBrunswickStereographic = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=300000 +y_0=800000 +a=6378135 +b=6356750.304921594 +units=m +no_defs ");
             NAD192710TMAEPForest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.999200 +x_0=500000 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
             NAD192710TMAEPResource = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.999200 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
             NAD19273TM111 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-111 +k=0.999900 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
@@ -175,7 +175,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             NAD1927MTM4 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-61.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
             NAD1927MTM5 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-64.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
             NAD1927MTM6 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-67.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
-            NAD1927QuebecLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46 +lat_2=60 +lat_0=44 +lon_0=-68.5 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
+            NAD1927QuebecLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=60 +lat_2=46 +lat_0=44 +lon_0=-68.5 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs ");
             NAD198310TMAEPForest = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.999200 +x_0=500000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD198310TMAEPResource = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.999200 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD19833TM111 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-111 +k=0.999900 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
@@ -192,8 +192,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             NAD1983CSRS98MTM7 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-70.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             NAD1983CSRS98MTM8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-73.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
             NAD1983CSRS98MTM9 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-76.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            NAD1983CSRS98NewBrunswickStereographic = ProjectionInfo.FromProj4String("+ellps=GRS80 +units=m +no_defs ");
-            NAD1983CSRS98PrinceEdwardIsland = ProjectionInfo.FromProj4String("+ellps=GRS80 +units=m +no_defs ");
+            NAD1983CSRS98NewBrunswickStereographic = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=2500000 +y_0=7500000 +ellps=GRS80 +units=m +no_defs ");
+            NAD1983CSRS98PrinceEdwardIsland = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=47.25 +lon_0=-63 +k=0.999912 +x_0=400000 +y_0=800000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ");
             NAD1983CSRS98UTMZone11N = ProjectionInfo.FromProj4String("+proj=utm +zone=11 +ellps=GRS80 +units=m +no_defs ");
             NAD1983CSRS98UTMZone12N = ProjectionInfo.FromProj4String("+proj=utm +zone=12 +ellps=GRS80 +units=m +no_defs ");
             NAD1983CSRS98UTMZone13N = ProjectionInfo.FromProj4String("+proj=utm +zone=13 +ellps=GRS80 +units=m +no_defs ");
@@ -221,7 +221,7 @@ namespace DotSpatial.Projections.ProjectedCategories
             NAD1983MTM8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-73.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD1983MTM9 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=-76.5 +k=0.999900 +x_0=304800 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
             NAD1983QuebecLambert = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46 +lat_2=60 +lat_0=44 +lon_0=-68.5 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ");
-            PrinceEdwardIslandStereographic = ProjectionInfo.FromProj4String("+a=6378135 +b=6356750.304921594 +units=m +no_defs ");
+            PrinceEdwardIslandStereographic = ProjectionInfo.FromProj4String("+proj=sterea +lat_0=47.25 +lon_0=-63 +k=0.999912 +x_0=400000 +y_0=800000 +ellps=GRS80 +units=m +no_defs ");
 
             ATS1977MTM4NovaScotia.Name = "ATS_1977_MTM_4_Nova_Scotia";
             ATS1977MTM5NovaScotia.Name = "ATS_1977_MTM_5_Nova_Scotia";

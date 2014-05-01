@@ -320,25 +320,10 @@ namespace DotSpatial.Data
         /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
         public override void SaveAs(string fileName, bool overwrite)
         {
-            if (IndexMode)
-            {
-                SaveAsIndexed(fileName, overwrite);
-                return;
-            }
+            EnsureValidFileToSave(fileName, overwrite);
             Filename = fileName;
-            string dir = Path.GetDirectoryName(Path.GetFullPath(fileName));
-            if (dir != null && !Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (File.Exists(fileName))
-            {
-                if (fileName != Filename && overwrite == false) throw new IOException("File exists.");
-                File.Delete(fileName);
-                string shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
-            }
-            InvalidateEnvelope();
+
+            // Set ShapeType before setting extent.
             if (CoordinateType == CoordinateType.Regular)
             {
                 Header.ShapeType = ShapeType.Polygon;
@@ -351,13 +336,16 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.PolygonZ;
             }
-            // Set ShapeType before setting extent.
-            Header.SetExtent(Extent);
-            Header.ShxLength = Features.Count * 4 + 50;
-            Header.SaveAs(fileName);
+            HeaderSaveAs(fileName);
 
-            BufferedBinaryWriter bbWriter = new BufferedBinaryWriter(fileName);
-            BufferedBinaryWriter indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
+            if (IndexMode)
+            {
+                SaveAsIndexed(fileName);
+                return;
+            }
+
+            var bbWriter = new BufferedBinaryWriter(fileName);
+            var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
             int fid = 0;
             int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
             int contentLength = 0;
@@ -510,50 +498,10 @@ namespace DotSpatial.Data
             SaveProjection();
         }
 
-        /// <summary>
-        /// Saves the file to a new location when in indexed mode (not using Feature list)
-        /// </summary>
-        /// <param name="fileName">The fileName to save</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
-        private void SaveAsIndexed(string fileName, bool overwrite)
+        private void SaveAsIndexed(string fileName)
         {
-            Filename = fileName;
-            string dir = Path.GetDirectoryName(fileName);
-            if (dir != null && !Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (File.Exists(fileName))
-            {
-                if (fileName != Filename && overwrite == false) throw new IOException("File exists.");
-                File.Delete(fileName);
-                string shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
-            }
-
-            if (CoordinateType == CoordinateType.Regular)
-            {
-                Header.ShapeType = ShapeType.Polygon;
-            }
-            if (CoordinateType == CoordinateType.M)
-            {
-                Header.ShapeType = ShapeType.PolygonM;
-            }
-            if (CoordinateType == CoordinateType.Z)
-            {
-                Header.ShapeType = ShapeType.PolygonZ;
-            }
-
-            // Set ShapeType before setting extent.
-            Header.SetExtent(MyExtent);
-
-            Header.ShxLength = ShapeIndices.Count * 4 + 50;
-            Header.SaveAs(fileName);
-
-            FileStream shpStream =
-                new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
-            FileStream shxStream =
-                new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
+            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
+            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
 
             int fid = 0;
             int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
@@ -635,8 +583,7 @@ namespace DotSpatial.Data
                 fid++;
                 offset += 4; // header bytes
             }
-            shpStream.Flush();
-            shxStream.Flush();
+            
             shpStream.Close();
             shxStream.Close();
             offset += contentLength;

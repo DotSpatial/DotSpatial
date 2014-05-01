@@ -302,7 +302,7 @@ namespace DotSpatial.Controls
             if (theNode != null)
             {
                 // Verify that the tag property is not "null".
-                if ((theNode.Parent != null) && Tools.Where(tool => tool.Name == theNode.Name).Any())
+                if ((theNode.Parent != null) && Tools.Any(tool => tool.Name == theNode.Name))
                 {
                     DoDragDrop("ITool: " + theNode.Name, DragDropEffects.Copy);
                 }
@@ -324,7 +324,7 @@ namespace DotSpatial.Controls
             if (theNode != null)
             {
                 // Verify that the tag property is not "null".
-                var tool = Tools.Where(t => t.Name == theNode.Name).FirstOrDefault();
+                var tool = Tools.FirstOrDefault(t => t.Name == theNode.Name);
                 if (tool != null)
                 {
                     // Change the ToolTip only if the pointer moved to a new node.
@@ -347,7 +347,6 @@ namespace DotSpatial.Controls
 
         private static void BwDoWork(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker bw = sender as BackgroundWorker;
             object[] threadParameter = e.Argument as object[];
             if (threadParameter == null) return;
             ITool toolToExecute = threadParameter[0] as ITool;
@@ -358,35 +357,47 @@ namespace DotSpatial.Controls
             progForm.Progress(String.Empty, 0, "==================");
             progForm.Progress(String.Empty, 0, String.Format("Executing Tool: {0}", toolToExecute.Name));
             progForm.Progress(String.Empty, 0, "==================");
-            toolToExecute.Execute(progForm);
+            bool result = false;
+            try
+            {
+               result = toolToExecute.Execute(progForm);
+            }
+            catch (Exception ex)
+            {
+                progForm.Progress(String.Empty, 100, "Error: " + ex);
+            }
+            e.Result = result;
             progForm.ExecutionComplete();
             progForm.Progress(String.Empty, 100, "==================");
             progForm.Progress(String.Empty, 100, String.Format("Done Executing Tool: {0}", toolToExecute.Name));
             progForm.Progress(String.Empty, 100, "==================");
         }
 
-        private void executionComplete(object sender, AsyncCompletedEventArgs e)
+        private void executionComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (toolToExecute.OutputParameters != null)
+            if (toolToExecute.OutputParameters != null && (bool)e.Result)
             {
-                foreach (Parameter p in toolToExecute.OutputParameters)
+                foreach (var p in toolToExecute.OutputParameters)
                 {
-                    IFeatureSet featureset = p.Value as IFeatureSet;
-                    IRaster rasterset = p.Value as IRaster;
                     try
                     {
+                        var featureset = p.Value as IFeatureSet;
                         if (featureset != null)
                         {
                             App.Map.AddLayer(featureset.Filename);
                         }
-                        else if (rasterset != null)
+                        else
                         {
-                            App.Map.AddLayer(rasterset.Filename);
+                            var rasterset = p.Value as IRaster;
+                            if (rasterset != null)
+                            {
+                                App.Map.AddLayer(rasterset.Filename);
+                            }
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        MessageBox.Show("Error opening layer file.");
+                        MessageBox.Show("Unable to add layer. Reason: " + ex.Message);
                     }
                 }
             }

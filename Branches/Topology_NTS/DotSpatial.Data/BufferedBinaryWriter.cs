@@ -250,7 +250,7 @@ namespace DotSpatial.Data
         public void Write(char[] values)
         {
             List<byte> lstData = new List<byte>();
-            foreach (byte b in values)
+            foreach (var b in values)
             {
                 lstData.AddRange(BitConverter.GetBytes(b));
             }

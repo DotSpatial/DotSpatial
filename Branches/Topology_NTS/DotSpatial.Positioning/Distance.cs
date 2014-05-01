@@ -360,116 +360,88 @@ namespace DotSpatial.Positioning
             if (culture == null)
                 culture = CultureInfo.CurrentCulture;
 
-            //string NumericPortion = null;
-            //int Count = 0;
-            //string Unit = null;
+            // Trim surrounding spaces and switch to uppercase
+            value = value.Trim()
+                .ToUpper(CultureInfo.InvariantCulture)
+                .Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+            // Is it infinity?
+            if (value == "INFINITY")
+            {
+                _value = Infinity.Value;
+                _units = DistanceUnit.Meters;
+                return;
+            }
+            if (value == "SEALEVEL" || value == "SEA LEVEL")
+            {
+                _value = SeaLevel.Value;
+                _units = DistanceUnit.Meters;
+                return;
+            }
+            if (value == "EMPTY")
+            {
+                _value = 0;
+                _units = DistanceUnit.Meters;
+                return;
+            }
+            // Go until the first non-number character
+            int count = 0;
+            while (count < value.Length)
+            {
+                var subValue = value[count].ToString(CultureInfo.InvariantCulture);
+                if (char.IsDigit(subValue, 0) ||
+                    subValue == culture.NumberFormat.NumberGroupSeparator ||
+                    subValue == culture.NumberFormat.NumberDecimalSeparator)
+                {
+                    // Allow continuation
+                    count++;
+                }
+                else
+                    // Non-numeric character!
+                    break;
+            }
 
+            string unit = value.Substring(count).Trim();
+            // Get the numeric portion
+            string numericPortion = count > 0 ? value.Substring(0, count) : "0";
             try
             {
-                // Trim surrounding spaces and switch to uppercase
-                value = value.Trim().ToUpper(CultureInfo.InvariantCulture).Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
-                // Is it infinity?
-                if (value == "INFINITY")
-                {
-                    _value = Infinity.Value;
-                    _units = DistanceUnit.Meters;
-                    return;
-                }
-                if (value == "SEALEVEL" || value == "SEA LEVEL")
-                {
-                    _value = SeaLevel.Value;
-                    _units = DistanceUnit.Meters;
-                    return;
-                }
-                if (value == "EMPTY")
-                {
-                    _value = 0;
-                    _units = DistanceUnit.Meters;
-                    return;
-                }
-                // Go until the first non-number character
-                int count = 0;
-                while (count < value.Length)
-                {
-                    string subValue = value.Substring(count, 1);
-                    if ((subValue == "0") || (subValue == "1") || (subValue == "2") || (subValue == "3")
-                    || (subValue == "4") || (subValue == "5") || (subValue == "6") || (subValue == "7")
-                    || (subValue == "8") || (subValue == "9")
-                    || (subValue == culture.NumberFormat.NumberGroupSeparator)
-                    || (subValue == culture.NumberFormat.NumberDecimalSeparator))
-                        // Allow continuation
-                        count++;
-                    else
-                        // Non-numeric character!
-                        break;
-                }
-                string unit = value.Substring(count).Trim();
-                // Get the numeric portion
-                string numericPortion = count > 0 ? value.Substring(0, count) : "0";
-                try
-                {
-                    _value = double.Parse(numericPortion, culture);
-                }
-                catch (Exception ex)
-                {
-#if PocketPC
-                    throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, ex);
-#else
-                    throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, "value", ex);
-#endif
-                }
-                //catch
-                //{
-                //    throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion), "value");
-                //}
-                // Try to interpret the measurement
-                if ((unit == "M") || (unit == "M.") || (unit == "METERS") || (unit == "METRES")
-                    || (unit == "METRE") || (unit == "METER"))
-                    _units = DistanceUnit.Meters;
-                else if ((unit == "CM") || (unit == "CM.") || (unit == "CENTIMETER")
-                    || (unit == "CENTIMETERS") || (unit == "CENTIMETRE") || (unit == "CENTIMETRES"))
-                    _units = DistanceUnit.Centimeters;
-                else if ((unit == "KM") || (unit == "KM.") || (unit == "KILOMETRES")
-                    || (unit == "KILOMETERS") || (unit == "KILOMETRE") || (unit == "KILOMETER"))
-                    _units = DistanceUnit.Kilometers;
-                else if ((unit == "MI") || (unit == "MI.") || (unit == "MILE")
-                    || (unit == "MILES") || (unit == "STATUTE MILES"))
-                    _units = DistanceUnit.StatuteMiles;
-                else if ((unit == "NM") || (unit == "NM.") || (unit == "NAUTICAL MILE")
-                    || (unit == "NAUTICAL MILES"))
-                    _units = DistanceUnit.NauticalMiles;
-                else if ((unit == "IN") || (unit == "IN.") || (unit == "\"") || (unit == "INCHES")
-                    || (unit == "INCH"))
-                    _units = DistanceUnit.Inches;
-                else if ((unit == "FT") || (unit == "FT.") || (unit == "'") || (unit == "FOOT")
-                    || (unit == "FEET"))
-                    _units = DistanceUnit.Feet;
-                else
-                {
-                    if (_value == 0)
-                    {
-                        _units = RegionInfo.CurrentRegion.IsMetric ? DistanceUnit.Meters : DistanceUnit.Feet;
-                    }
-                    else
-                    {
-                        throw new ArgumentException(Properties.Resources.Distance_InvalidUnitPortion, "value");
-                    }
-                }
-                // Return the new distance class
-                //return new Distance(_Value, _Units);
+                _value = double.Parse(numericPortion, culture);
             }
             catch (Exception ex)
             {
 #if PocketPC
-                throw new ArgumentException(Properties.Resources.Distance_InvalidFormat, ex);
+                    throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Distance_InvalidFormat, "value", ex);
+                throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, "value", ex);
 #endif
             }
-            //catch
-            //{
-            //    throw new ArgumentException(Properties.Resources.Distance_InvalidFormat), "value");
-            //}
+
+            // Try to interpret the measurement
+            if ((unit == "M") || (unit == "M.") || (unit == "METERS") || (unit == "METRES")
+                || (unit == "METRE") || (unit == "METER"))
+                _units = DistanceUnit.Meters;
+            else if ((unit == "CM") || (unit == "CM.") || (unit == "CENTIMETER")
+                     || (unit == "CENTIMETERS") || (unit == "CENTIMETRE") || (unit == "CENTIMETRES"))
+                _units = DistanceUnit.Centimeters;
+            else if ((unit == "KM") || (unit == "KM.") || (unit == "KILOMETRES")
+                     || (unit == "KILOMETERS") || (unit == "KILOMETRE") || (unit == "KILOMETER"))
+                _units = DistanceUnit.Kilometers;
+            else if ((unit == "MI") || (unit == "MI.") || (unit == "MILE")
+                     || (unit == "MILES") || (unit == "STATUTE MILES"))
+                _units = DistanceUnit.StatuteMiles;
+            else if ((unit == "NM") || (unit == "NM.") || (unit == "NAUTICAL MILE")
+                     || (unit == "NAUTICAL MILES"))
+                _units = DistanceUnit.NauticalMiles;
+            else if ((unit == "IN") || (unit == "IN.") || (unit == "\"") || (unit == "INCHES")
+                     || (unit == "INCH"))
+                _units = DistanceUnit.Inches;
+            else if ((unit == "FT") || (unit == "FT.") || (unit == "'") || (unit == "FOOT")
+                     || (unit == "FEET"))
+                _units = DistanceUnit.Feet;
+            else
+            {
+                throw new ArgumentException(Properties.Resources.Distance_InvalidUnitPortion, "value");
+            }
         }
 
         /// <summary>
@@ -2240,6 +2212,7 @@ namespace DotSpatial.Positioning
 
             _units = (DistanceUnit)Enum.Parse(typeof(DistanceUnit), reader.ReadElementContentAsString(), true);
             _value = reader.ReadElementContentAsDouble();
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

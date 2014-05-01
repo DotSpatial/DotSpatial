@@ -143,7 +143,7 @@ namespace DotSpatial.Projections.Transforms
                 {
                     lp[lam] = p[I];
                     lp[phi] = _tphi[NTPHI];
-                    for (int j = NTPHI - 1; j > 0; j++)
+                    for (int j = NTPHI - 1; j >= 0; j--)
                     {
                         lp[phi] = _tphi[j] + p[R] * lp[phi];
                     }

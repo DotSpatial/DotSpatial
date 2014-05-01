@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.WebControls", "DotSpatial.WebControls\DotSpatial.WebControls.csproj", "{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoWEB", "DotSpatial.Examples.DemoWEB\DotSpatial.Examples.DemoWEB.csproj", "{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Controls", "DotSpatial.Controls\DotSpatial.Controls.csproj", "{01A845C6-D391-4258-81B0-C6ABF23D3364}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data", "DotSpatial.Data\DotSpatial.Data.csproj", "{C1018695-3401-47A9-B195-ABD3A20C2489}"
@@ -31,17 +29,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Form
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6E8FF9DE-3694-4D98-876B-05E4DA07CC36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoWEB", "Examples\DemoWEB\DotSpatial.Examples.DemoWEB.csproj", "{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 15
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
-		SccProjectUniqueName0 = DotSpatial.WebControls\\DotSpatial.WebControls.csproj
-		SccProjectName0 = DotSpatial.WebControls
-		SccLocalPath0 = DotSpatial.WebControls
-		SccProjectUniqueName1 = DotSpatial.Examples.DemoWEB\\DotSpatial.Examples.DemoWEB.csproj
-		SccProjectName1 = DotSpatial.Examples.DemoWEB
-		SccLocalPath1 = DotSpatial.Examples.DemoWEB
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DotSpatial.WebControls\\DotSpatial.WebControls.csproj
+		SccProjectName1 = DotSpatial.WebControls
+		SccLocalPath1 = DotSpatial.WebControls
 		SccProjectUniqueName2 = DotSpatial.Controls\\DotSpatial.Controls.csproj
 		SccProjectTopLevelParentUniqueName2 = DotSpatial.WebControls.sln
 		SccProjectName2 = DotSpatial.Controls
@@ -90,7 +88,9 @@ Global
 		SccProjectTopLevelParentUniqueName13 = DotSpatial.WebControls.sln
 		SccProjectName13 = DotSpatial.Projections.Forms
 		SccLocalPath13 = DotSpatial.Projections.Forms
-		SccLocalPath14 = .
+		SccProjectUniqueName14 = Examples\\DemoWEB\\DotSpatial.Examples.DemoWEB.csproj
+		SccProjectName14 = Examples/DemoWEB
+		SccLocalPath14 = Examples\\DemoWEB
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,10 +101,6 @@ Global
 		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -153,6 +149,10 @@ Global
 		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -26,7 +27,7 @@ namespace DotSpatial.Data.Tests
             Assert.IsTrue(target.Features.Count > 0);
             target.IndexMode = indexMode;
 
-            var exportPath = Path.ChangeExtension(Path.GetTempFileName(), ".shp");
+            var exportPath = FileTools.GetTempFileName(".shp");
             target.SaveAs(exportPath, true);
 
             try
@@ -42,10 +43,7 @@ namespace DotSpatial.Data.Tests
             }
             finally
             {
-                File.Delete(exportPath);
-                File.Delete(Path.ChangeExtension(exportPath, ".dbf"));
-                File.Delete(Path.ChangeExtension(exportPath, ".shx"));
-                File.Delete(Path.ChangeExtension(exportPath, ".prj"));
+                FileTools.DeleteShapeFile(exportPath);
             }
         }
     }

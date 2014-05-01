@@ -670,6 +670,7 @@ namespace DotSpatial.Positioning
         {
             double.TryParse(reader.GetAttribute("X"), NumberStyles.Any, CultureInfo.InvariantCulture, out _x);
             double.TryParse(reader.GetAttribute("Y"), NumberStyles.Any, CultureInfo.InvariantCulture, out _y);
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

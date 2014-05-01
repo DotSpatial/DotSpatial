@@ -20,6 +20,7 @@
 // |--------------------------|------------|--------------------------------------------------------------
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
+// | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
 // ********************************************************************************************************
 using System;
 using System.Text;
@@ -178,6 +179,11 @@ namespace DotSpatial.Positioning
                     IBearingSentence bearingSentence = sentence as IBearingSentence;
                     if (bearingSentence != null)
                         SetBearing(bearingSentence.Bearing);
+                    
+                    // Does this sentence support heading?
+                    IHeadingSentence headingSentence = sentence as IHeadingSentence;
+                    if (headingSentence != null)
+                        SetHeading(headingSentence.Heading);
 
                     // Does this sentence support speed?
                     ISpeedSentence speedSentence = sentence as ISpeedSentence;

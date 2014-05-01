@@ -220,26 +220,13 @@ namespace DotSpatial.Data
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
 
-            Raster<T> result = new Raster<T>(numRows, numCols);
+            var result = new Raster<T>(numRows, numCols);
 
             result.Projection = Projection;
 
             // The affine coefficients defining the world file are the same except that they are translated over.  Only the position of the
             // upper left corner changes.  Everything else is the same as the previous raster.
-
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds.AffineCoefficients = new double[6];
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
+            result.Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
 
             ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, numRows);
             // copy values directly using both data structures
@@ -364,20 +351,7 @@ namespace DotSpatial.Data
             result.FileType = FileType;
 
             // Reposition the new "raster" so that it matches the specified window, not the whole raster
-            // X = [0] + [1] * column + [2] * row;
-            // Y = [3] + [4] * column + [5] * row;
-            result.Bounds.AffineCoefficients = new double[6];
-            result.Bounds.AffineCoefficients[0] = Bounds.AffineCoefficients[0] +
-                                                  Bounds.AffineCoefficients[1] * startColumn +
-                                                  Bounds.AffineCoefficients[2] * startRow;
-            result.Bounds.AffineCoefficients[1] = Bounds.AffineCoefficients[1];
-            result.Bounds.AffineCoefficients[2] = Bounds.AffineCoefficients[2];
-            result.Bounds.AffineCoefficients[3] = Bounds.AffineCoefficients[3] +
-                                                  Bounds.AffineCoefficients[4] * startColumn +
-                                                  Bounds.AffineCoefficients[5] * startRow;
-            result.Bounds.AffineCoefficients[4] = Bounds.AffineCoefficients[4];
-            result.Bounds.AffineCoefficients[5] = Bounds.AffineCoefficients[5];
-
+            result.Bounds.AffineCoefficients = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
             // Now we can copy any values currently in memory.
 
             ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow);

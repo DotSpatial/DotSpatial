@@ -925,6 +925,7 @@ namespace DotSpatial.Data
             result.ShapeIndices = ShapeIndices;
             result.Extent = Extent;
             result.IndexMode = IndexMode; // added by JamesP@esdm.co.uk as this was not being passed into result
+            result.CoordinateType = CoordinateType;
             if (!IndexMode)
             {
                 result.Features = Features;
@@ -1457,7 +1458,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            IPolygon[] polygons = new Polygon[shells.Count];
+            var polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
@@ -2368,45 +2369,7 @@ namespace DotSpatial.Data
         /// <inheritdoc />
         public virtual DataTable GetAttributes(int startIndex, int numRows)
         {
-            // overridden in sub-classes
-            DataTable result = new DataTable();
-            DataColumn[] columns = GetColumns();
-
-            // Always add FID in this paging scenario.
-            bool hasFid = false;
-            foreach (DataColumn col in columns)
-            {
-                if (col.ColumnName == "FID")
-                {
-                    hasFid = true;
-                }
-            }
-
-            if (!hasFid)
-            {
-                result.Columns.Add("FID", typeof(int));
-            }
-
-            int i = 0;
-            for (int row = startIndex; i < numRows; row++)
-            {
-                DataRow myRow = result.NewRow();
-                myRow["FID"] = row;
-                foreach (DataColumn col in columns)
-                {
-                    if (col.ColumnName == "FID")
-                    {
-                        continue; // prefer our own FID here for indexing.
-                    }
-
-                    myRow[col.ColumnName] = _dataTable.Rows[row][col.ColumnName];
-                }
-
-                result.Rows.Add(myRow);
-                i++;
-            }
-
-            return result;
+            return GetAttributes(startIndex, numRows, GetColumns().Select(d => d.ColumnName));
         }
 
         /// <summary>
@@ -2427,41 +2390,35 @@ namespace DotSpatial.Data
         public virtual DataTable GetAttributes(int startIndex, int numRows, IEnumerable<string> fieldNames)
         {
             // overridden in subclasses.
-            DataTable result = new DataTable();
+            var result = new DataTable();
             DataColumn[] columns = GetColumns();
 
             // Always add FID in this paging scenario.  This is for the in-ram case.  A more appropriate
             // implementation exists
-            result.Columns.Add("FID", typeof(int));
-            foreach (string name in fieldNames)
+            if (columns.All(c => c.ColumnName != "FID"))
             {
-                foreach (var col in columns)
-                {
-                    if (col.ColumnName == name)
-                    {
-                        result.Columns.Add(col);
-                        break;
-                    }
-                }
+                result.Columns.Add("FID", typeof (int));
             }
 
-            int i = 0;
-            for (int row = startIndex; i < numRows; row++)
+            var fn = new HashSet<string>(fieldNames);
+            foreach (var col in columns)
+            {
+                if (fn.Contains(col.ColumnName))
+                {
+                    result.Columns.Add(col);
+                }
+            }
+            
+            for (int row = startIndex, i = 0; i < numRows && row <_dataTable.Rows.Count; row++, i++)
             {
                 DataRow myRow = result.NewRow();
                 myRow["FID"] = row;
-                foreach (string name in fieldNames)
+                foreach (var name in fn.Where(d => d != "FID"))
                 {
-                    if (name == "FID")
-                    {
-                        continue;
-                    }
-
                     myRow[name] = _dataTable.Rows[row][name];
                 }
 
                 result.Rows.Add(myRow);
-                i++;
             }
 
             return result;

@@ -74,12 +74,12 @@ namespace DotSpatial.Modeling.Forms
 
         private void BtnAddDataClick(object sender, EventArgs e)
         {
-            /////////////////////////////////
-            //Replace with something that uses the default data provider
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.OverwritePrompt = true;
-            sfd.Filter = "BGD| *.bgd";
-            if (sfd.ShowDialog() != DialogResult.OK) return;
+            var sfd = new SaveFileDialog
+            {
+                OverwritePrompt = true,
+                Filter = DataManager.DefaultDataManager.RasterWriteFilter
+            };
+            if (sfd.ShowDialog(this) != DialogResult.OK) return;
             IRaster raster = new Raster();
             raster.Filename = sfd.FileName;
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
+using DotSpatial.Tests.Common;
 using DotSpatial.Topology;
 using NUnit.Framework;
 
@@ -21,8 +22,9 @@ namespace DotSpatial.Tools.Tests
             var target = new RasterToPolygon();
             var p = new GdalRasterProvider();
             var raster = p.Open(file);
-            var outShape = new PolygonShapefile {Filename = Path.ChangeExtension(file, ".shp")};
+            var outShape = new PolygonShapefile {Filename = FileTools.GetTempFileName(".shp")};
             target.Execute(raster, outShape, new MockProgressHandler());
+            FileTools.DeleteShapeFile(outShape.Filename);
 
             var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
             Assert.That(mpCount > 0);
@@ -38,8 +40,9 @@ namespace DotSpatial.Tools.Tests
             var flowDirectionGrid = p.Open(flowDirectionGridFile);
 
             var target = new RasterToPolygon();
-            var outShape = new PolygonShapefile { Filename = Path.ChangeExtension(rasterFile, ".shp") };
+            var outShape = new PolygonShapefile { Filename = FileTools.GetTempFileName(".shp") };
             target.Execute(raster, flowDirectionGrid, outShape, new MockProgressHandler());
+            FileTools.DeleteShapeFile(outShape.Filename);
 
             var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
             Assert.That(mpCount == 0);

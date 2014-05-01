@@ -145,8 +145,16 @@ namespace DotSpatial.Data
             get { return _attributeTable; }
             set
             {
+                if (_attributeTable == value) return;
+                if (_attributeTable != null)
+                {
+                    _attributeTable.AttributesFilled -= AttributeTableAttributesFilled;
+                }
                 _attributeTable = value;
-                _attributeTable.AttributesFilled += AttributeTableAttributesFilled;
+                if (_attributeTable != null)
+                {
+                    _attributeTable.AttributesFilled += AttributeTableAttributesFilled;
+                }
             }
         }
 
@@ -459,18 +467,11 @@ namespace DotSpatial.Data
             WriteBytes(headerData, 0, 9994, false);          //  Byte 0          File Code       9994        Integer     Big
             // Bytes 4 - 20 are unused
             WriteBytes(headerData, 24, length, false);       //  Byte 24         File Length     File Length Integer     Big
-
-            // Create a new file stream for a .SHP file
-            FileStream fs = new FileStream(fileName, FileMode.Open);
-
-            // Create a binary writer in order to write the byte values to the file
-            BinaryWriter bw = new BinaryWriter(fs);
-
-            // Actnaully write our byte array to the file
-            bw.Write(headerData);
-
-            // Close the file, which we are now finished writing the header to.
-            bw.Close();
+            using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Open)))
+            {
+                // Actually write our byte array to the file
+                bw.Write(headerData);
+            }
         }
 
         /// <summary>
@@ -730,7 +731,7 @@ namespace DotSpatial.Data
             {
                 foreach (var col in columns)
                 {
-                    if (col.ColumnName.ToLower() == name.ToLower())
+                    if (String.Equals(col.ColumnName, name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         result.Columns.Add(col);
                         break;
@@ -774,12 +775,46 @@ namespace DotSpatial.Data
         /// </summary>
         public override DataColumn[] GetColumns()
         {
-            List<Field> result = new List<Field>();
-            foreach (Field field in _attributeTable.Columns)
+            var result = new DataColumn[_attributeTable.Columns.Count];
+            for (var i = 0; i < _attributeTable.Columns.Count; i++)
             {
-                result.Add(new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount));
+                var field = _attributeTable.Columns[i];
+                result[i] = new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount);
             }
-            return result.ToArray();
+            return result;
+        }
+
+        /// <summary>
+        /// Checks that shape file can be saved to given fileName.
+        /// </summary>
+        /// <param name="fileName">File name to save.</param>
+        /// <param name="overwrite">Overwrite file or not.</param>
+        protected void EnsureValidFileToSave(string fileName, bool overwrite)
+        {
+            string dir = Path.GetDirectoryName(fileName);
+            if (dir != null && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            if (File.Exists(fileName))
+            {
+                if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
+                File.Delete(fileName);
+                var shx = Path.ChangeExtension(fileName, ".shx");
+                if (File.Exists(shx)) File.Delete(shx);
+            }
+        }
+
+        /// <summary>
+        /// Saves header
+        /// </summary>
+        /// <param name="fileName">File to save.</param>
+        protected void HeaderSaveAs(string fileName)
+        {
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
+            Header.SaveAs(fileName);
         }
     }
 }

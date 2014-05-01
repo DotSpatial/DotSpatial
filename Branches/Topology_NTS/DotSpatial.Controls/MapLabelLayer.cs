@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -54,7 +55,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// The existing labels, accessed for all map label layers, not just this instance
         /// </summary>
-        public static List<RectangleF> ExistingLabels; // for collision prevention, tracks existing labels.
+        private  static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
         private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
@@ -62,6 +63,7 @@ namespace DotSpatial.Controls
         private int _chunkSize;
         private bool _isInitialized;
         private Image _stencil; // draw features to the stencil
+        private static readonly Caches _caches = new Caches();
 
         #endregion
 
@@ -97,13 +99,20 @@ namespace DotSpatial.Controls
 
         private void Configure()
         {
-            ExistingLabels = new List<RectangleF>();
             _chunkSize = 10000;
         }
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Cleaer all existing labels for all layers
+        /// </summary>
+        public static void ClearAllExistingLabels()
+        {
+            ExistingLabels.Clear();
+        }
 
         /// <summary>
         /// This will draw any features that intersect this region.  To specify the features
@@ -115,6 +124,9 @@ namespace DotSpatial.Controls
         public void DrawRegions(MapArgs args, List<Extent> regions)
         {
             if (FeatureSet == null) return;
+            var sw = new Stopwatch();
+            sw.Start();
+
             if (FeatureSet.IndexMode)
             {
                 // First determine the number of features we are talking about based on region.
@@ -153,6 +165,9 @@ namespace DotSpatial.Controls
                 List<Rectangle> clipRects = args.ProjToPixel(regions);
                 DrawFeatures(args, drawList, clipRects, true);
             }
+
+            sw.Stop();
+            Debug.WriteLine("MapLabelLayer {0} DrawRegions: {1} ms", FeatureSet.Name, sw.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -247,6 +262,9 @@ namespace DotSpatial.Controls
         // This draws the individual line features
         private void DrawFeatures(MapArgs e, IEnumerable<int> features)
         {
+            // Check that exists at least one category with Expression
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+
             Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
 
             // Only draw features that are currently visible.
@@ -260,10 +278,26 @@ namespace DotSpatial.Controls
             //Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            FeatureType type = FeatureSet.FeatureType;
-            foreach (ILabelCategory category in Symbology.Categories)
+
+            Action<int, IFeature> drawFeature;
+            switch (FeatureSet.FeatureType)
             {
-                List<int> catFeatures = new List<int>();
+                case FeatureType.Polygon:
+                    drawFeature = (fid, feature) => DrawPolygonFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Line:
+                    drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected,ExistingLabels);
+                    break;
+                case FeatureType.Point:
+                    drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
+                    break;
+                default:
+                   return; // Can't draw something else
+            }
+
+            foreach (var category in Symbology.Categories)
+            {
+                var catFeatures = new List<int>();
                 foreach (int fid in features)
                 {
                     if (drawStates[fid] == null || drawStates[fid].Category == null) continue;
@@ -295,24 +329,12 @@ namespace DotSpatial.Controls
                         }
                     }
                 }
-                foreach (int fid in catFeatures)
+
+                foreach (var fid in catFeatures)
                 {
-                    if (!this.FeatureLayer.DrawnStates[fid].Visible)
-                        continue;
-                   
-                    IFeature feature = FeatureSet.GetFeature(fid);
-                    switch (type)
-                    {
-                        case FeatureType.Polygon:
-                            DrawPolygonFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                            break;
-                        case FeatureType.Line:
-                            DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                            break;
-                        case FeatureType.Point:
-                            DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
-                            break;
-                    }
+                    if (!FeatureLayer.DrawnStates[fid].Visible) continue;
+                    var feature = FeatureSet.GetFeature(fid);
+                    drawFeature(fid, feature);
                 }
             }
 
@@ -322,10 +344,12 @@ namespace DotSpatial.Controls
         // This draws the individual line features
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
+            // Check that exists at least one category with Expression
+            if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
+
             Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
 
             // Only draw features that are currently visible.
-
             if (DrawnStates == null || !DrawnStates.ContainsKey(features.First()))
             {
                 CreateLabels();
@@ -335,13 +359,27 @@ namespace DotSpatial.Controls
             //Sets the graphics objects smoothing modes
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            FeatureType type = features.First().FeatureType;
+
+            Action<IFeature> drawFeature;
+            switch (features.First().FeatureType)
+            {
+                case FeatureType.Polygon:
+                    drawFeature = (f) => DrawPolygonFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Line:
+                    drawFeature = (f) => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                case FeatureType.Point:
+                    drawFeature = (f) => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    break;
+                default:
+                    return; // Can't draw something else
+            }
+
+
             foreach (ILabelCategory category in Symbology.Categories)
             {
                 var cat = category; // prevent access to unmodified closure problems
-                //List<IFeature> catFeatures = (from feature in features
-                //                              where drawStates.ContainsKey(feature) && drawStates[feature].Category == cat
-                //                             select feature).ToList();
                 List<IFeature> catFeatures = new List<IFeature>();
                 foreach (IFeature f in features)
                 {
@@ -378,21 +416,8 @@ namespace DotSpatial.Controls
                 }
                 for (int i = 0; i < catFeatures.Count; i++)
                 {
-                    if (!this.FeatureLayer.DrawnStates[i].Visible)
-                        continue;
-
-                    switch (type)
-                    {
-                        case FeatureType.Polygon:
-                            DrawPolygonFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
-                            break;
-                        case FeatureType.Line:
-                            DrawLineFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
-                            break;
-                        case FeatureType.Point:
-                            DrawPointFeature(e, g, catFeatures[i], drawStates[catFeatures[i]].Category, drawStates[catFeatures[i]].Selected, ExistingLabels);
-                            break;
-                    }
+                    if (!FeatureLayer.DrawnStates[i].Visible) continue;
+                    drawFeature(catFeatures[i]);
                 }
             }
 
@@ -401,22 +426,12 @@ namespace DotSpatial.Controls
 
         private static bool Collides(RectangleF rectangle, IEnumerable<RectangleF> drawnRectangles)
         {
-            foreach (RectangleF drawnRectangle in drawnRectangles)
-            {
-                if (rectangle.IntersectsWith(drawnRectangle)) return true;
-            }
-            return false;
+            return drawnRectangles.Any(rectangle.IntersectsWith);
         }
 
         /// <summary>
         /// Draws a label on a polygon with various different methods
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="g"></param>
-        /// <param name="f"></param>
-        /// <param name="category"></param>
-        /// <param name="selected"></param>
-        /// <param name="existingLabels"></param>
         public static void DrawPolygonFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
             ILabelSymbolizer symb = category.Symbolizer;
@@ -425,7 +440,7 @@ namespace DotSpatial.Controls
             //Gets the features text and calculate the label size
             string txt = GetLabelText(f, category);
             if (txt == null) return;
-            SizeF labelSize = g.MeasureString(txt, symb.GetFont());
+            Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
             if (f.NumGeometries == 1)
             {
@@ -461,13 +476,11 @@ namespace DotSpatial.Controls
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels);
                 }
             }
-
-            //Depending on the labeling strategy we do diff things
         }
 
         private static void CollisionDraw(string txt, Graphics g, ILabelSymbolizer symb, IFeature f, MapArgs e, RectangleF labelBounds, List<RectangleF> existingLabels)
         {
-            if (labelBounds == RectangleF.Empty || !RectangleExt.IntersectsWith(e.ImageRectangle, labelBounds)) return;
+            if (labelBounds.IsEmpty || !e.ImageRectangle.IntersectsWith(labelBounds)) return;
             if (symb.PreventCollisions)
             {
                 if (!Collides(labelBounds, existingLabels))
@@ -482,7 +495,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private static RectangleF PlacePolygonLabel(IBasicGeometry geom, MapArgs e, SizeF labelSize, ILabelSymbolizer symb)
+        private static RectangleF PlacePolygonLabel(IBasicGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
             IPolygon pg = Geometry.FromBasicGeometry(geom) as IPolygon;
             if (pg == null) return RectangleF.Empty;
@@ -500,11 +513,11 @@ namespace DotSpatial.Controls
                     break;
             }
             if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
-            PointF adjustment = Position(symb, labelSize);
+            var lz = labelSize();
+            PointF adjustment = Position(symb, lz);
             float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
             float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            RectangleF result = new RectangleF(x, y, labelSize.Width, labelSize.Height);
-            return result;
+            return new RectangleF(x, y, lz.Width, lz.Height);
         }
 
         /// <summary>
@@ -524,7 +537,8 @@ namespace DotSpatial.Controls
             //Gets the features text and calculate the label size
             string txt = GetLabelText(f, category);
             if (txt == null) return;
-            SizeF labelSize = g.MeasureString(txt, symb.GetFont());
+
+            Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
             //Depending on the labeling strategy we do diff things
             if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
@@ -542,25 +556,20 @@ namespace DotSpatial.Controls
             }
         }
 
-        private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, SizeF labelSize, ILabelSymbolizer symb)
+        private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
             Coordinate c = f.GetBasicGeometryN(1).Coordinates[0];
             if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
-            PointF adjustment = Position(symb, labelSize);
+            var lz = labelSize();
+            PointF adjustment = Position(symb, lz);
             float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
             float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            return new RectangleF(x, y, labelSize.Width, labelSize.Height);
+            return new RectangleF(x, y, lz.Width, lz.Height);
         }
 
         /// <summary>
         /// Draws a label on a line with various different methods
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="g"></param>
-        /// <param name="f"></param>
-        /// <param name="category"></param>
-        /// <param name="selected"></param>
-        /// <param name="existingLabels"></param>
         public static void DrawLineFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
             if (f == null) return;
@@ -570,7 +579,7 @@ namespace DotSpatial.Controls
             //Gets the features text and calculate the label size
             string txt = GetLabelText(f, category);
             if (txt == null) return;
-            SizeF labelSize = g.MeasureString(txt, symb.GetFont());
+            Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
             if (f.NumGeometries == 1)
             {
@@ -609,7 +618,7 @@ namespace DotSpatial.Controls
             }
         }
 
-        private static RectangleF PlaceLineLabel(IBasicGeometry lineString, SizeF labelSize, MapArgs e, ILabelSymbolizer symb)
+        private static RectangleF PlaceLineLabel(IBasicGeometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb)
         {
             ILineString ls = Geometry.FromBasicGeometry(lineString) as ILineString;
             if (ls == null) return RectangleF.Empty;
@@ -621,10 +630,11 @@ namespace DotSpatial.Controls
             else
                 c = ls.Envelope.Center();
 
-            PointF adjustment = Position(symb, labelSize);
+            var lz = labelSize();
+            PointF adjustment = Position(symb, lz);
             float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
             float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            return new RectangleF(x, y, labelSize.Width, labelSize.Height);
+            return new RectangleF(x, y, lz.Width, lz.Height);
         }
 
         private static PointF Position(ILabelSymbolizer symb, SizeF size)
@@ -667,36 +677,30 @@ namespace DotSpatial.Controls
         private static void DrawLabel(Graphics g, string labelText, RectangleF labelBounds, ILabelSymbolizer symb, IFeature feature)
         {
             //Sets up the brushes and such for the labeling
-            Brush foreBrush = new SolidBrush(symb.FontColor);
-            Font textFont = symb.GetFont();
-            StringFormat format = new StringFormat { Alignment = symb.Alignment, };
-            Pen borderPen = new Pen(symb.BorderColor);
-            Brush backBrush = new SolidBrush(symb.BackColor);
-            Brush haloBrush = new SolidBrush(symb.HaloColor);
-            Pen haloPen = new Pen(symb.HaloColor);
-            haloPen.Width = 2;
-            haloPen.Alignment = PenAlignment.Outset;
-            Brush shadowBrush = new SolidBrush(symb.DropShadowColor);
+            Font textFont = _caches.GetFont(symb);
+            var format = new StringFormat { Alignment = symb.Alignment, };
 
             //Text graphics path
-            GraphicsPath gp = new GraphicsPath();
+            var gp = new GraphicsPath();
             gp.AddString(labelText, textFont.FontFamily, (int)textFont.Style, textFont.SizeInPoints * 96F / 72F, labelBounds, format);
 
             // Rotate text
             var angleToRotate = GetAngleToRotate(symb, feature);
             RotateAt(g, labelBounds.X, labelBounds.Y, angleToRotate);
 
-            //Draws the text outline
+            // Draws the text outline
             if (symb.BackColorEnabled && symb.BackColor != Color.Transparent)
             {
+                var backBrush = _caches.GetSolidBrush(symb.BackColor);
                 if (symb.FontColor == Color.Transparent)
                 {
-                    GraphicsPath backgroundGP = new GraphicsPath();
-                    backgroundGP.AddRectangle(labelBounds);
-                    backgroundGP.FillMode = FillMode.Alternate;
-                    backgroundGP.AddPath(gp, true);
-                    g.FillPath(backBrush, backgroundGP);
-                    backgroundGP.Dispose();
+                    using (var backgroundGP = new GraphicsPath())
+                    {
+                        backgroundGP.AddRectangle(labelBounds);
+                        backgroundGP.FillMode = FillMode.Alternate;
+                        backgroundGP.AddPath(gp, true);
+                        g.FillPath(backBrush, backgroundGP);
+                    }
                 }
                 else
                 {
@@ -704,40 +708,41 @@ namespace DotSpatial.Controls
                 }
             }
 
-            //Draws the border if its enabled
+            // Draws the border if its enabled
             if (symb.BorderVisible && symb.BorderColor != Color.Transparent)
+            {
+                var borderPen = _caches.GetPen(symb.BorderColor);
                 g.DrawRectangle(borderPen, labelBounds.X, labelBounds.Y, labelBounds.Width, labelBounds.Height);
+            }
 
-            //Draws the drop shadow
+            // Draws the drop shadow
             if (symb.DropShadowEnabled && symb.DropShadowColor != Color.Transparent)
             {
-                Matrix gpTrans = new Matrix();
+                var shadowBrush = _caches.GetSolidBrush(symb.DropShadowColor);
+                var gpTrans = new Matrix();
                 gpTrans.Translate(symb.DropShadowPixelOffset.X, symb.DropShadowPixelOffset.Y);
                 gp.Transform(gpTrans);
                 g.FillPath(shadowBrush, gp);
                 gpTrans = new Matrix();
                 gpTrans.Translate(-symb.DropShadowPixelOffset.X, -symb.DropShadowPixelOffset.Y);
                 gp.Transform(gpTrans);
+                gpTrans.Dispose();
             }
 
-            //Draws the text halo
+            // Draws the text halo
             if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
-                g.DrawPath(haloPen, gp);
+            {
+                using(var haloPen = new Pen(symb.HaloColor) {Width = 2, Alignment = PenAlignment.Outset})
+                    g.DrawPath(haloPen, gp);
+            }
 
-            //Draws the text if its not transparent
+            // Draws the text if its not transparent
             if (symb.FontColor != Color.Transparent)
             {
+                var foreBrush = _caches.GetSolidBrush(symb.FontColor);
                 g.FillPath(foreBrush, gp);
             }
-
-            //Cleans up the rest of the drawing objects
-            // if an exception occurs in this method, the lack of using statements or a try/finally statement will result in a memory leak.
-            shadowBrush.Dispose();
-            borderPen.Dispose();
-            foreBrush.Dispose();
-            backBrush.Dispose();
-            haloBrush.Dispose();
-            haloPen.Dispose();
+            gp.Dispose();
         }
 
         private static float GetAngleToRotate(ILabelSymbolizer symb, IFeature feature)
@@ -784,10 +789,11 @@ namespace DotSpatial.Controls
         private static string GetLabelText(IFeature feature, ILabelCategory category)
         {
             string result = category.Expression;
-            if (result != null && feature != null)
+            if (!string.IsNullOrEmpty(result) && feature != null)
             {
                 foreach (DataColumn dc in feature.DataRow.Table.Columns)
                 {
+                    if (String.IsNullOrEmpty(result)) break; // Result already is empty, no need to iterate over columns
                     result = result.Replace("[" + dc.ColumnName + "]", feature.DataRow[dc.ColumnName].ToString());
                 }
             }
@@ -936,10 +942,10 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            if (BufferChanged != null)
+            var h = BufferChanged;
+            if (h != null)
             {
-                ClipArgs e = new ClipArgs(clipRectangles);
-                BufferChanged(this, e);
+                h(this, new ClipArgs(clipRectangles));
             }
         }
 
@@ -956,6 +962,43 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnStartDrawing()
         {
+        }
+
+        private class Caches
+        {
+            private readonly Dictionary<string, Font> _symbFonts = new Dictionary<string, Font>();
+            private readonly Dictionary<Color, Brush> _solidBrushes = new Dictionary<Color, Brush>();
+            private readonly Dictionary<Color, Pen> _pens = new Dictionary<Color, Pen>();
+
+            public Font GetFont(ILabelSymbolizer symb)
+            {
+                var fontDesc = string.Format("{0};{1};{2}", symb.FontFamily, symb.FontSize, symb.FontStyle);
+                return _symbFonts.GetOrAdd(fontDesc, _ => symb.GetFont());
+            }
+
+            public Brush GetSolidBrush(Color color)
+            {
+                return _solidBrushes.GetOrAdd(color, _ => new SolidBrush(color));
+            }
+
+            public Pen GetPen(Color color)
+            {
+                return _pens.GetOrAdd(color, _ => new Pen(color));
+            }
+        }
+    }
+
+    internal static class DictionaryExtensions
+    {
+        public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, Func<TKey, TValue> valueFactory)
+        {
+            TValue value;
+            if (!dic.TryGetValue(key, out value))
+            {
+                value = valueFactory(key);
+                dic.Add(key, value);
+            }
+            return value;
         }
     }
 }

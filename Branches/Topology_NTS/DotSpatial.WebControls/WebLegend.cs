@@ -156,6 +156,7 @@ namespace DotSpatial.WebControls
             WebMap wm = (WebMap)FindControl(WebMapID);
             GDIMap m = wm.ControlMap;
 
+            m.Layers.SelectedLayer = null;
             for (int i = m.Layers.Count - 1; i >= 0; i--)
             {
                 LegendItem liR = (LegendItem)m.Layers[i];
@@ -165,12 +166,13 @@ namespace DotSpatial.WebControls
                 if (li != null)
                 {
                     li.IsSelected = true;
+                    m.Layers.SelectedLayer = m.Layers[i];
                     break;
                 }
             }
 
             //GDIMapXXX
-            //bool founded = false;
+            //bool found = false;
             //foreach (LegendItem liR in m.Legend.RootNodes)
             //{
             //    if (liR.LegendText == keys[0])
@@ -182,14 +184,14 @@ namespace DotSpatial.WebControls
             //        if (li != null)
             //        {
             //            li.IsSelected = true;
-            //            founded = true;
+            //            found = true;
             //            break;
             //        }
 
             //    }
             //}
 
-            //if (founded == false)
+            //if (found == false)
             //{
 
             //}
@@ -206,7 +208,7 @@ namespace DotSpatial.WebControls
             GDIMap m = wm.ControlMap;
             WebMapClient wmc =wm.Back;
 
-            bool founded = false;
+            bool found = false;
 
             for (int i = m.Layers.Count - 1; i >= 0; i--)
             {
@@ -217,12 +219,12 @@ namespace DotSpatial.WebControls
                     if (li != null)
                     {
                         li.Checked = e.Node.Checked;
-                        founded = true;
+                        found = true;
                         break;
                     }
             }
 
-            if (founded == false)
+            if (found == false)
             {
                 wmc.Check(keys, e.Node.Checked);
             }

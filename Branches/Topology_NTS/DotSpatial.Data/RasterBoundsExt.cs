@@ -154,15 +154,16 @@ namespace DotSpatial.Data
         /// </summary>
         public static void SaveWorldFile(this IRasterBounds bounds)
         {
-            StreamWriter sw = new StreamWriter(bounds.WorldFile);
-            double[] affine = bounds.AffineCoefficients;
-            sw.WriteLine(affine[1].ToString());  // Dx
-            sw.WriteLine(affine[2].ToString());  // rotation X
-            sw.WriteLine(affine[4].ToString());  // rotation Y
-            sw.WriteLine(affine[5].ToString());  // Dy
-            sw.WriteLine(affine[0].ToString()); // Top Left X
-            sw.WriteLine(affine[3].ToString()); // Top Left Y
-            sw.Close();
+            using (var sw = new StreamWriter(bounds.WorldFile))
+            {
+                double[] affine = bounds.AffineCoefficients;
+                sw.WriteLine(affine[1]); // Dx
+                sw.WriteLine(affine[2]); // rotation X
+                sw.WriteLine(affine[4]); // rotation Y
+                sw.WriteLine(affine[5]); // Dy
+                sw.WriteLine(affine[0]); // Top Left X
+                sw.WriteLine(affine[3]); // Top Left Y
+            }
         }
 
         /// <summary>
@@ -229,12 +230,13 @@ namespace DotSpatial.Data
         public static void Set_AffineMatrix(this IRasterBounds bounds, Matrix matrix)
         {
             double[] affine = new double[6];
-            affine[0] = Double.Parse(matrix.Elements[0].ToString()); // XShift
-            affine[2] = Double.Parse(matrix.Elements[1].ToString()); // RotationX
-            affine[4] = Double.Parse(matrix.Elements[2].ToString()); // RotationY
-            affine[3] = Double.Parse(matrix.Elements[3].ToString()); // YShift
-            affine[1] = Double.Parse(matrix.Elements[4].ToString()); // CellWidth
-            affine[5] = Double.Parse(matrix.Elements[5].ToString()); // CellHeight
+            affine[0] = Convert.ToDouble(matrix.Elements[0]); // XShift
+            affine[2] = Convert.ToDouble(matrix.Elements[1]); // RotationX
+            affine[4] = Convert.ToDouble(matrix.Elements[2]); // RotationY
+            affine[3] = Convert.ToDouble(matrix.Elements[3]); // YShift
+            affine[1] = Convert.ToDouble(matrix.Elements[4]); // CellWidth
+            affine[5] = Convert.ToDouble(matrix.Elements[5]); // CellHeight
+            bounds.AffineCoefficients = affine;
         }
 
         /// <summary>
@@ -310,10 +312,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the center of the specified cell</returns>
         public static Coordinate CellCenter_ToProj(this IRasterBounds bounds, int row, int column)
         {
-            double[] affine = bounds.AffineCoefficients;
-            double x = affine[0] + affine[1] * column + affine[2] * row;
-            double y = affine[3] + affine[4] * column + affine[5] * row;
-            return new Coordinate(x, y);
+            return new AffineTransform(bounds.AffineCoefficients).CellCenter_ToProj(row, column);
         }
 
         /// <summary>
@@ -325,10 +324,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the top left corner of the specified cell</returns>
         public static Coordinate CellTopLeft_ToProj(this IRasterBounds bounds, int row, int column)
         {
-            double[] affine = bounds.AffineCoefficients;
-            double x = affine[0] + affine[1] * (column - 0.5) + affine[2] * (row - 0.5);
-            double y = affine[3] + affine[4] * (column - 0.5) + affine[5] * (row - 0.5);
-            return new Coordinate(x, y);
+            return new AffineTransform(bounds.AffineCoefficients).CellTopLeft_ToProj(row, column);
         }
 
         /// <summary>
@@ -340,10 +336,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the top right corner of the specified cell</returns>
         public static Coordinate CellTopRight_ToProj(this IRasterBounds bounds, int row, int column)
         {
-            double[] affine = bounds.AffineCoefficients;
-            double x = affine[0] + affine[1] * (column + 0.5) + affine[2] * (row - 0.5);
-            double y = affine[3] + affine[4] * (column + 0.5) + affine[5] * (row - 0.5);
-            return new Coordinate(x, y);
+            return new AffineTransform(bounds.AffineCoefficients).CellTopRight_ToProj(row, column);
         }
 
         /// <summary>
@@ -355,10 +348,7 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the bottom left corner of the specified cell</returns>
         public static Coordinate CellBottomLeft_ToProj(this IRasterBounds bounds, int row, int column)
         {
-            double[] affine = bounds.AffineCoefficients;
-            double x = affine[0] + affine[1] * (column - 0.5) + affine[2] * (row + 0.5);
-            double y = affine[3] + affine[4] * (column - 0.5) + affine[5] * (row + 0.5);
-            return new Coordinate(x, y);
+            return new AffineTransform(bounds.AffineCoefficients).CellBottomLeft_ToProj(row, column);
         }
 
         /// <summary>
@@ -370,11 +360,9 @@ namespace DotSpatial.Data
         /// <returns>The geographic position of the bottom right corner of the specified cell</returns>
         public static Coordinate CellBottomRight_ToProj(this IRasterBounds bounds, int row, int column)
         {
-            double[] affine = bounds.AffineCoefficients;
-            double x = affine[0] + affine[1] * (column + 0.5) + affine[2] * (row + 0.5);
-            double y = affine[3] + affine[4] * (column + 0.5) + affine[5] * (row + 0.5);
-            return new Coordinate(x, y);
+            return new AffineTransform(bounds.AffineCoefficients).CellBottomRight_ToProj(row, column);
         }
+
 
         /// <summary>
         /// Returns the row col index
@@ -384,37 +372,13 @@ namespace DotSpatial.Data
         /// <returns>An RcIndex that shows the best row or column index for the specified coordinate.</returns>
         public static RcIndex ProjToCell(this IRasterBounds bounds, Coordinate location)
         {
-            double[] c = bounds.AffineCoefficients;
-            double rw, cl;
-            if (c[2] == 0 && c[4] == 0)
-            {
-                // If we don't have skew terms, then the x and y terms are independent.
-                // also both of the other tests will have divide by zero errors and fail.
-                cl = (location.X - c[0]) / c[1];
-                rw = (location.Y - c[3]) / c[5];
-            }
-            else if (c[2] != 0)
-            {
-                // this equation will have divide by zero if c[2] is zero, but works if c[4] is zero
-                double div = (c[5] * c[1]) / c[2] - c[4];
-                cl = (c[3] + (c[5] * location.X) / c[2] - (c[5] * c[0]) / c[2] - location.Y) / div;
-                rw = (location.X - c[0] - c[1] * cl) / c[2];
-            }
-            else
-            {
-                double div = (c[4] * c[2] / c[1] - c[5]);
-                rw = (c[3] + c[4] * location.X / c[1] - c[4] * c[0] / c[1] - location.Y) / div;
-                cl = (location.X - c[2] * rw - c[0]) / c[1];
-            }
-            int iRow = (int)Math.Floor(rw);
-            int iCol = (int)Math.Floor(cl);
-
-            if (iRow < 0 || iCol < 0 || iRow >= bounds.NumRows || iCol >= bounds.NumColumns)
+            var pc = new AffineTransform(bounds.AffineCoefficients).ProjToCell(location);
+            if (pc.Row < 0 || pc.Column < 0 || pc.Row >= bounds.NumRows || pc.Column >= bounds.NumColumns)
             {
                 return RcIndex.Empty;
             }
 
-            return new RcIndex(iRow, iCol);
+            return pc;
         }
 
         /// <summary>

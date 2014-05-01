@@ -163,9 +163,8 @@ namespace DotSpatial.Controls
                 if (value.Height < 10)
                     value.Height = 10;
                 _size = value;
-                OnSizeChanged();
-                OnInvalidate();
-                UpdateThumbnail();
+
+                RefreshElement();
             }
         }
 
@@ -194,9 +193,7 @@ namespace DotSpatial.Controls
                 _location = value.Location;
                 _size = value.Size;
 
-                OnSizeChanged();
-                OnInvalidate();
-                UpdateThumbnail();
+                RefreshElement();
             }
         }
 
@@ -322,8 +319,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnInvalidate()
         {
-            if (Invalidated != null)
-                Invalidated(this, null);
+            var h = Invalidated;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -331,8 +328,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSizeChanged()
         {
-            if (SizeChanged != null)
-                SizeChanged(this, null);
+            var h = SizeChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -340,8 +337,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnThumbnailChanged()
         {
-            if (ThumbnailChanged != null)
-                ThumbnailChanged(this, null);
+            var h = ThumbnailChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>

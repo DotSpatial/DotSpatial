@@ -349,7 +349,7 @@ namespace DotSpatial.Topology
         /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this <c>Geometry</c> has any points of
+        /// <c>false</c> if this <c>Geometry</c> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
         public abstract bool IsSimple { get; }
@@ -1265,15 +1265,24 @@ namespace DotSpatial.Topology
             if (p != null) return new Point(p);
 
             // if that fails, test for multi-geometry
-            IBasicGeometry test = geom.GetBasicGeometryN(0);
-            pg = test as IBasicPolygon;
-            if (pg != null) return new MultiPolygon(geom);
+            if (geom.NumGeometries > 0)
+            {
+                IBasicGeometry test = geom.GetBasicGeometryN(0);
+                pg = test as IBasicPolygon;
+                if (pg != null) return new MultiPolygon(geom);
 
-            ls = test as IBasicLineString;
-            if (ls != null) return new MultiLineString(geom);
+                ls = test as IBasicLineString;
+                if (ls != null) return new MultiLineString(geom);
 
-            p = test as IBasicPoint;
-            if (p != null) return new MultiPoint(geom);
+                p = test as IBasicPoint;
+                if (p != null) return new MultiPoint(geom);
+            }
+            else
+            {
+                // test for empty geometries
+                var iGeometry = geom as IGeometry;
+                if (iGeometry != null && iGeometry.IsEmpty) return iGeometry;
+            }
 
             return null;
         }

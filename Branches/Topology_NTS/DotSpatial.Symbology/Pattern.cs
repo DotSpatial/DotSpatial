@@ -140,7 +140,6 @@ namespace DotSpatial.Symbology
             if (_innerPattern != null)
             {
                 _innerPattern.FillPath(g, gp);
-                return;
             }
             // Does nothing by default, and must be handled in sub-classes
         }

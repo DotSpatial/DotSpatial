@@ -34,14 +34,29 @@ namespace DotSpatial.Controls
     /// </summary>
     public class LayoutBitmap : LayoutElement
     {
+        #region Fields
+
         private Bitmap _bitmap;
         private int _brightness;
         private int _contrast;
-        private bool _draft;
         private string _fileName;
         private bool _preserveAspectRatio;
 
-        #region ------------------ Public Properties
+        #endregion
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public LayoutBitmap()
+        {
+            ResizeStyle = ResizeStyle.HandledInternally;
+            _preserveAspectRatio = true;
+            Name = "Bitmap";
+            ResizeStyle = ResizeStyle.StretchToFit;
+        }
+
+
+        #region Public Properties
 
         /// <summary>
         /// Preserves the aspect ratio if this boolean is true, otherwise it allows stretching of
@@ -51,7 +66,13 @@ namespace DotSpatial.Controls
         public bool PreserveAspectRatio
         {
             get { return _preserveAspectRatio; }
-            set { _preserveAspectRatio = value; UpdateThumbnail(); OnInvalidate(); }
+            set
+            {
+                if (_preserveAspectRatio == value) return;
+                _preserveAspectRatio = value;
+                UpdateThumbnail();
+                OnInvalidate();
+            }
         }
 
         /// <summary>
@@ -63,6 +84,7 @@ namespace DotSpatial.Controls
             get { return _brightness; }
             set
             {
+                if (_brightness == value) return;
                 if (value < -255) _brightness = -255;
                 else if (value > 255) _brightness = 255;
                 else _brightness = value;
@@ -80,6 +102,7 @@ namespace DotSpatial.Controls
             get { return _contrast; }
             set
             {
+                if (_contrast == value) return;
                 if (value < -255) _contrast = -255;
                 else if (value > 255) _contrast = 255;
                 else _contrast = value;
@@ -98,66 +121,32 @@ namespace DotSpatial.Controls
             get { return _fileName; }
             set
             {
-                try
-                {
-                    new Bitmap(value);
-                    _fileName = value;
-                    if (_bitmap != null) _bitmap.Dispose();
-                    _bitmap = new Bitmap(_fileName);
-                }
-                catch
-                {
-                    // GDI+ supports the following file formats: BMP, GIF, EXIF, JPG, PNG and TIFF.
-                    _fileName = string.Empty;
-                }
-                UpdateThumbnail();
-                OnInvalidate();
+                if (_fileName == value) return;
+                _fileName = value;
+                Bitmap = File.Exists(_fileName) ? new Bitmap(_fileName) : null;              
             }
         }
 
         /// <summary>
-        /// Allows for a faster but lower quality bitmap to be rendered to the screen
-        /// and a higher quality bitmap to be printed during actual printing.
+        /// Gets or sets bitmap to use
         /// </summary>
-        [Browsable(true), Category("Behavior")]
-        public bool Draft
+        [Browsable(false)]
+        public Bitmap Bitmap
         {
-            get { return _draft; }
+            get { return _bitmap; }
             set
             {
-                _draft = value;
-                if (_draft)
-                {
-                    if (_bitmap != null) _bitmap.Dispose();
-                    _bitmap = null;
-                }
-                else
-                {
-                    if (File.Exists(_fileName))
-                        _bitmap = new Bitmap(_fileName);
-                }
+                if (_bitmap == value) return;
+                if (_bitmap != null) _bitmap.Dispose();
+                _bitmap = value;
+                UpdateThumbnail();
                 OnInvalidate();
             }
         }
 
         #endregion
 
-        #region ------------------- public methods
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public LayoutBitmap()
-        {
-            ResizeStyle = ResizeStyle.HandledInternally;
-            _preserveAspectRatio = true;
-            Name = "Bitmap";
-            _draft = true;
-            _fileName = string.Empty;
-            ResizeStyle = ResizeStyle.StretchToFit;
-            _brightness = 0;
-            _contrast = 0;
-        }
+        #region Public methods
 
         /// <summary>
         /// This gets called to instruct the element to draw itself in the appropriate spot of the graphics object
@@ -166,79 +155,42 @@ namespace DotSpatial.Controls
         /// <param name="printing">Boolean, true if this is being drawn to a print document</param>
         public override void Draw(Graphics g, bool printing)
         {
+            if (_bitmap == null) return;
+          
             //This color matrix is used to adjust how the image is drawn to the graphics object
-            float bright = _brightness / 255.0F;
-            float cont = (_contrast + 255.0F) / 255.0F;
-            float[][] colorArray = {new[] {cont,   0,      0,      0,    0},
-                                    new[] {0,      cont,   0,      0,    0},
-                                    new[] {0,      0,      cont,   0,    0},
-                                    new float[] {0,      0,      0,      1,    0},
-                                    new[] {bright, bright, bright, 0,    1}};
-            ColorMatrix cm = new ColorMatrix(colorArray);
-            ImageAttributes imgAttrib = new ImageAttributes();
+            var bright = _brightness / 255.0F;
+            var cont = (_contrast + 255.0F) / 255.0F;
+            float[][] colorArray =
+            {
+                new[] {cont, 0, 0, 0, 0},
+                new[] {0, cont, 0, 0, 0},
+                new[] {0, 0, cont, 0, 0},
+                new float[] {0, 0, 0, 1, 0},
+                new[] {bright, bright, bright, 0, 1}
+            };
+            var cm = new ColorMatrix(colorArray);
+            var imgAttrib = new ImageAttributes();
             imgAttrib.SetColorMatrix(cm);
 
             //Defines a parallelgram where the image is to be drawn
-            PointF[] destPoints = new[]{LocationF,
-                                        new PointF(LocationF.X + Size.Width, LocationF.Y),
-                                        new PointF(LocationF.X, LocationF.Y + Size.Height)};
-            Rectangle srcRect;
-
-            //When printing we use this code
-            if (printing)
+            var destPoints = new[]
             {
-                //Open the original and gets its rectangle
-                Bitmap original = new Bitmap(_fileName);
-                srcRect = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
+                LocationF,
+                new PointF(LocationF.X + Size.Width, LocationF.Y),
+                new PointF(LocationF.X, LocationF.Y + Size.Height)
+            };
 
-                //Modifies the parallelogram if we are preserving aspect ration
-                if (_preserveAspectRatio)
-                {
-                    if ((Size.Width / original.Width) < (Size.Height / original.Height))
-                        destPoints[2] = new PointF(LocationF.X, LocationF.Y + (Size.Width * original.Height / original.Width));
-                    else
-                        destPoints[1] = new PointF(LocationF.X + (Size.Height * original.Width / original.Height), LocationF.Y);
-                }
-
-                //Draws the bitmap
-                g.DrawImage(_bitmap, destPoints, srcRect, GraphicsUnit.Pixel, imgAttrib);
-
-                //Clean up and return
-                imgAttrib.Dispose();
-                original.Dispose();
-                return;
-            }
-
-            //If we are not resizing and in Draft mode
-            if (Resizing == false && Draft)
-            {
-                if (File.Exists(_fileName))
-                {
-                    if ((_bitmap == null) || (_bitmap != null && _bitmap.Width != Convert.ToInt32(Size.Width)))
-                    {
-                        Bitmap original = new Bitmap(_fileName);
-                        if (_bitmap != null) _bitmap.Dispose();
-                        _bitmap = new Bitmap(Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Width * original.Height / original.Width), PixelFormat.Format32bppArgb);
-                        Graphics graph = Graphics.FromImage(_bitmap);
-                        graph.DrawImage(original, 0, 0, _bitmap.Width, _bitmap.Height);
-                        original.Dispose();
-                        graph.Dispose();
-                    }
-                }
-            }
-            if (_bitmap == null) return;
-
-            //Modifies the parallelogram if we are preserving aspect ration
+            var destSize = _bitmap.Size;
             if (_preserveAspectRatio)
             {
-                if ((Size.Width / _bitmap.Width) < (Size.Height / _bitmap.Height))
-                    destPoints[2] = new PointF(LocationF.X, LocationF.Y + (Size.Width * _bitmap.Height / _bitmap.Width));
+                if ((Size.Width / destSize.Width) < (Size.Height / destSize.Height))
+                    destPoints[2] = new PointF(LocationF.X, LocationF.Y + (Size.Width * destSize.Height / destSize.Width));
                 else
-                    destPoints[1] = new PointF(LocationF.X + (Size.Height * _bitmap.Width / _bitmap.Height), LocationF.Y);
+                    destPoints[1] = new PointF(LocationF.X + (Size.Height * destSize.Width / destSize.Height), LocationF.Y);
             }
-            //Draws the bitmap to the screen
-            srcRect = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
+            var srcRect = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
             g.DrawImage(_bitmap, destPoints, srcRect, GraphicsUnit.Pixel, imgAttrib);
+            imgAttrib.Dispose();
         }
 
         #endregion

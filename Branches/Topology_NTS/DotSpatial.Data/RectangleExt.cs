@@ -24,7 +24,7 @@ using System.Drawing;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// RectangleEM
+    /// Contains various extensions for Rectangle
     /// </summary>
     public static class RectangleExt
     {
@@ -69,10 +69,6 @@ namespace DotSpatial.Data
         {
             return new Rectangle(self.X - distance, self.Y - distance, self.Width + 2 * distance, self.Height + 2 * distance);
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

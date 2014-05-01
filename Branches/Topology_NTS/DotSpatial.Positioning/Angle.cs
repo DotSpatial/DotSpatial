@@ -2183,6 +2183,8 @@ Math.Round(
             // Read in the element content
             // I'm going to assume for now that the unit of measure is degrees.
             _decimalDegrees = reader.ReadElementContentAsDouble();
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

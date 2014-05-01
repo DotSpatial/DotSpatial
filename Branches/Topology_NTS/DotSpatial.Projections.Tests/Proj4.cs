@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 
@@ -25,9 +27,16 @@ namespace DotSpatial.Projections.Tests
 
     public class Proj4
     {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr pj_init_plus_delegate(string init);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void pj_free_delegate(IntPtr pointer);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int pj_transform_delegate(IntPtr srcPrj, IntPtr destPrj, int nPoints, int offset, ref double x, ref double y, ref double z);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int pj_is_latlong_delegate(IntPtr coordPointer);
 
         private static readonly pj_init_plus_delegate _pj_init_plus;
@@ -40,6 +49,7 @@ namespace DotSpatial.Projections.Tests
             // init proj delegates
             var basePath = (IntPtr.Size == 8) ? "x64" : "x86";
             var path = basePath + "/" + "proj.dll";
+            path = Path.GetFullPath(path);
 
             _pj_init_plus = (pj_init_plus_delegate)FunctionLoader.LoadFunction<pj_init_plus_delegate>(path, "pj_init_plus");
             _pj_free = (pj_free_delegate)FunctionLoader.LoadFunction<pj_free_delegate>(path, "pj_free");
@@ -49,10 +59,10 @@ namespace DotSpatial.Projections.Tests
 
         private const double RAD_TO_DEG = 57.2957795130823;
         private const double DEG_TO_RAD = 0.0174532925199433;
-        private static bool _convertToDegrees;
-        private static bool _convertToRadians;
-        private static IntPtr _srcPrj;
-        private static IntPtr _destPrj;
+        private bool _convertToDegrees;
+        private bool _convertToRadians;
+        private IntPtr _srcPrj;
+        private IntPtr _destPrj;
 
         /// <summary>
         /// Projects a 2D point from one coordinate system to another
@@ -62,11 +72,11 @@ namespace DotSpatial.Projections.Tests
         /// <param name="y">Y value of point to project.</param>
         /// <param name="srcPrj4String">Source projection string (proj4 format)</param>
         /// <param name="destPrj4String">Destination projection string (proj4 format)</param>
-        public static void ProjectPoint(ref double x, ref double y, string srcPrj4String, string destPrj4String)
+        public void ProjectPoint(ref double x, ref double y, string srcPrj4String, string destPrj4String)
         {
             try
             {
-                InitializeGlobalVariables(ref srcPrj4String, ref destPrj4String);
+                InitializeGlobalVariables(srcPrj4String, destPrj4String);
                 ConvertAndProjectPoint(ref x, ref y);
             }
             finally
@@ -80,7 +90,7 @@ namespace DotSpatial.Projections.Tests
         /// </summary>
         /// <param name="sourceProj">The proj4 source projection.</param>
         /// <param name="destProj">The proj4 destination projection.</param>
-        private static void InitializeGlobalVariables(ref string sourceProj, ref string destProj)
+        private void InitializeGlobalVariables(string sourceProj, string destProj)
         {
             _destPrj = _pj_init_plus(destProj);
             Assert.True(_destPrj != IntPtr.Zero, "Could not initialize proj.dll for output: At least one parameter in the destination projection is incorrect. Projection: " + destProj);
@@ -102,7 +112,7 @@ namespace DotSpatial.Projections.Tests
         /// </summary>
         /// <param name="x">X value of point to project.</param>
         /// <param name="y">Y value of point to project.</param>
-        private static void ConvertAndProjectPoint(ref double x, ref double y)
+        private void ConvertAndProjectPoint(ref double x, ref double y)
         {
             if (_convertToRadians)
             {
@@ -113,7 +123,7 @@ namespace DotSpatial.Projections.Tests
             int retcode = _pj_transform(_srcPrj, _destPrj, 1, 0, ref x, ref y, ref z);
             if (retcode != 0)
             {
-                throw new DotSpatial.Projections.ProjectionException(retcode);
+                throw new ProjectionException(retcode);
             }
             if (!_convertToDegrees) return;
             x *= RAD_TO_DEG;
@@ -124,7 +134,7 @@ namespace DotSpatial.Projections.Tests
         /// <summary>
         /// Releases memory used by the srcPrj and destPrj structures.
         /// </summary>
-        private static void FreeProjPointers()
+        private void FreeProjPointers()
         {
             if (_srcPrj != IntPtr.Zero)
             {
@@ -152,7 +162,5 @@ namespace DotSpatial.Projections.Tests
                 _destPrj = IntPtr.Zero;
             }
         }
-
-    
     }
 }

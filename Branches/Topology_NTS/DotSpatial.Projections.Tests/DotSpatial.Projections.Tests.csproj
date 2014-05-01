@@ -102,11 +102,13 @@
     <Compile Include="Geographic\Europe.cs" />
     <Compile Include="Geographic\NorthAmerica.cs" />
     <Compile Include="Geographic\Oceans.cs" />
+    <Compile Include="ProjectionInfoDesc.cs" />
     <Compile Include="Geographic\SolarSystem.cs" />
     <Compile Include="Geographic\SouthAmerica.cs" />
     <Compile Include="Geographic\SpheroidBased.cs" />
     <Compile Include="Geographic\World.cs" />
     <Compile Include="KrovakTest.cs" />
+    <Compile Include="MeridianTests.cs" />
     <Compile Include="Proj4.cs" />
     <Compile Include="Projected\Africa.cs" />
     <Compile Include="Projected\Asia.cs" />
@@ -145,15 +147,13 @@
     <Compile Include="Projected\Wisconsin.cs" />
     <Compile Include="Projected\World.cs" />
     <Compile Include="Projected\WorldSpheroid.cs" />
-    <Compile Include="ProjectionInfoTest.cs" />
+    <Compile Include="ProjectionInfoTests.cs" />
     <Compile Include="Projections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingESRIString.cs" />
     <Compile Include="ReprojectTests.cs" />
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
     <Content Include="x64\proj.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

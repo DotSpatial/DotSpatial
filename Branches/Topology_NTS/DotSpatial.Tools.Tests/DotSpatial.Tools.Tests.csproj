@@ -82,6 +82,10 @@
       <Project>{7ed7b00d-56ee-47cf-aaa5-34a09e40a566}</Project>
       <Name>DotSpatial.Modeling.Forms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Tests.Common\DotSpatial.Tests.Common.csproj">
+      <Project>{95114A54-769F-4A90-A346-C2CF85523AAD}</Project>
+      <Name>DotSpatial.Tests.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Tools\DotSpatial.Tools.csproj">
       <Project>{878a9c2c-21ac-4e63-9819-715b66b63cf5}</Project>
       <Name>DotSpatial.Tools</Name>
@@ -116,7 +120,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"
-xcopy /s /y /i $(ProjectDir)Data $(TargetDir)Data
+xcopy /s /y /i "$(ProjectDir)Data" "$(TargetDir)Data"
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

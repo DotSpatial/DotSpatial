@@ -1,6 +1,5 @@
-using System.IO;
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
@@ -10,29 +9,16 @@ namespace DotSpatial.Projections.Tests.Projected
     [TestFixture]
     public class SpheroidBased
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void SpheroidBasedTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
         }
 
-        [Test]
-        public void Lambert2()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.SpheroidBased.Lambert2;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        [Ignore("Verify this test")]
-        public void Lambert2Wide()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.SpheroidBased.Lambert2Wide;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Projected.SpheroidBased);
         }
     }
 }

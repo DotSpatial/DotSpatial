@@ -192,7 +192,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void UpdateAddShapeFunctionLayer()
         {
-            _addShapeFunction.FeatureSet = _activeLayer.DataSet;
+            _addShapeFunction.Layer = _activeLayer;
             SetSnapLayers(_addShapeFunction);
         }
 

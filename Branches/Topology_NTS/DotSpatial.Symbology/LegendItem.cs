@@ -138,7 +138,6 @@ namespace DotSpatial.Symbology
         public virtual void LegendSymbol_Painted(Graphics g, Rectangle box)
         {
             // throw new NotImplementedException("This should be implemented in a sub-class");
-            return;
         }
 
         /// <summary>
@@ -436,6 +435,7 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                if (value == _legendText) return;
                 _legendText = value;
                 OnItemChanged(this);
             }

@@ -6,6 +6,7 @@ using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using DotSpatial.Tests.Common;
 using MapWindow.Tests.XML.TestData;
 using NUnit.Framework;
 
@@ -162,8 +163,7 @@ namespace DotSpatial.Serialization.Tests
         public void TestMapFrameIsNotNull()
         {
             string filename = Path.Combine("Data", "test-RandomPts.shp");
-            string projectFileName = Path.GetTempFileName();
-            projectFileName = Path.ChangeExtension(projectFileName, ".dspx");
+            string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
 
             AppManager manager = new AppManager();
@@ -194,8 +194,7 @@ namespace DotSpatial.Serialization.Tests
         public void TestMapFrameIsNotNull_Group()
         {
             string filename = Path.Combine("Data", "test-RandomPts.shp");
-            string projectFileName = Path.GetTempFileName();
-            projectFileName = Path.ChangeExtension(projectFileName, ".dspx");
+            string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
             
             AppManager manager = new AppManager();

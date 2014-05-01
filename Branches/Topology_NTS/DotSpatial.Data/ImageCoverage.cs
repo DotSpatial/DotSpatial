@@ -66,7 +66,7 @@ namespace DotSpatial.Data
         {
             Bitmap result = new Bitmap(pixelSize.Width, pixelSize.Height);
             Graphics g = Graphics.FromImage(result);
-            foreach (ImageData image in _images)
+            foreach (var image in GetImages())
             {
                 Extent bounds = envelope.Intersection(image.Extent);
 

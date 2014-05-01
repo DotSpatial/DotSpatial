@@ -76,19 +76,22 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets the dX
+        /// Gets the Dx
         /// </summary>
         public double Dx
         {
-            get { return _bufferRectangle.Width / _bufferEnvelope.Width; }
+            get
+            {
+                return _bufferEnvelope.Width != 0.0? _bufferRectangle.Width / _bufferEnvelope.Width : 0.0;
+            }
         }
 
         /// <summary>
-        /// Gets the double valued
+        /// Gets the Dy
         /// </summary>
         public double Dy
         {
-            get { return _bufferRectangle.Height / _bufferEnvelope.Height; }
+            get { return _bufferEnvelope.Height != 0.0? _bufferRectangle.Height / _bufferEnvelope.Height : 0.0; }
         }
 
         /// <summary>

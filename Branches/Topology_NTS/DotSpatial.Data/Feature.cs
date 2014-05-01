@@ -345,7 +345,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            IPolygon[] polygons = new Polygon[shells.Count];
+            var polygons = new Polygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = new Polygon(shells[i], holesForShells[i].ToArray());

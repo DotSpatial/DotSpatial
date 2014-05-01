@@ -82,6 +82,11 @@ namespace DotSpatial.Projections
         public string Authority { get; set; }
 
         /// <summary>
+        ///   Gets or sets the athority code
+        /// </summary>
+        public int AuthorityCode { get; set; }
+
+        /// <summary>
         ///   Gets or sets the auxiliary sphere type.
         /// </summary>
         public AuxiliarySphereType AuxiliarySphereType { get; set; }
@@ -94,6 +99,7 @@ namespace DotSpatial.Projections
         /// <summary>
         ///   Gets or sets the Reference Code
         /// </summary>
+        [Obsolete("Use AuthorityCode instead")]
         public int EpsgCode { get; set; }
 
         /// <summary>
@@ -600,9 +606,36 @@ namespace DotSpatial.Projections
         /// <param name="epsgCode">
         /// The epsg Code.
         /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">Throws when there is no projection for given epsg code</exception>
         public static ProjectionInfo FromEpsgCode(int epsgCode)
         {
-            return ReadAuthorityCode("EPSG", epsgCode);
+            return FromAuthorityCode("EPSG", epsgCode);
+        }
+
+        /// <summary>
+        /// Using the specified code, this will attempt to look up the related reference information from the appropriate authority code.
+        /// </summary>
+        /// <param name="authority"> The authority. </param>
+        /// <param name="code">  The code. </param>
+        /// <returns>ProjectionInfo</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Throws when there is no projection for given authority and code</exception>
+        public static ProjectionInfo FromAuthorityCode(string authority, int code)
+        {
+            var pi = AuthorityCodeHandler.Instance[string.Format("{0}:{1}", authority, code)];
+            if (pi != null)
+            {
+                // we need to copy the projection information because the Authority Codes implementation returns its one and only
+                // in memory copy of the ProjectionInfo. Passing it to the caller might introduce unintended results.
+                var info = FromProj4String(pi.ToProj4String());
+                info.Name = pi.Name;
+                info.NoDefs = true;
+                info.Authority = authority;
+                info.AuthorityCode = code;
+                info.EpsgCode = code;
+                return info;
+            }
+
+            throw new ArgumentOutOfRangeException("authority", "Authority Code not found.");
         }
 
         /// <summary>
@@ -720,30 +753,30 @@ namespace DotSpatial.Projections
                 // The following are frequently followed by specifications, so adding s doesn't work
                 if (Unit.Name.Contains("Foot") || Unit.Name.Contains("foot"))
                 {
-                    string plural = Unit.Name.Replace("Foot", "Feet");
-                    plural.Replace("foot", "Feet");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Foot", "Feet")
+                        .Replace("foot", "Feet");
                 }
 
                 if (Unit.Name.Contains("Yard") || Unit.Name.Contains("yard"))
                 {
-                    string plural = Unit.Name.Replace("Yard", "Yards");
-                    plural.Replace("yard", "Yards");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Yard", "Yards")
+                        .Replace("yard", "Yards");
                 }
 
                 if (Unit.Name.Contains("Chain") || Unit.Name.Contains("chain"))
                 {
-                    string plural = Unit.Name.Replace("Chain", "Chains");
-                    plural.Replace("chain", "Chains");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Chain", "Chains")
+                        .Replace("chain", "Chains");
                 }
 
                 if (Unit.Name.Contains("Link") || Unit.Name.Contains("link"))
                 {
-                    string plural = Unit.Name.Replace("Link", "Links");
-                    plural.Replace("link", "Links");
-                    return plural;
+                    return Unit.Name
+                        .Replace("Link", "Links")
+                        .Replace("link", "Links");
                 }
 
                 return Unit.Name + "s";
@@ -783,7 +816,7 @@ namespace DotSpatial.Projections
             CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             Append(result, "x_0", FalseEasting);
             Append(result, "y_0", FalseNorthing);
@@ -791,19 +824,20 @@ namespace DotSpatial.Projections
             {
                 Append(result, "k_0", _scaleFactor);
             }
-
+            
             Append(result, "lat_0", LatitudeOfOrigin);
             Append(result, "lon_0", CentralMeridian);
             Append(result, "lat_1", StandardParallel1);
             Append(result, "lat_2", StandardParallel2);
+
             if (Over)
             {
-                Append(result, "over", 1);
+                result.Append(" +over");
             }
 
             if (Geoc)
             {
-                Append(result, "geoc", 1);
+                result.Append(" +geoc");
             }
 
             Append(result, "alpha", alpha);
@@ -891,9 +925,17 @@ namespace DotSpatial.Projections
 
         private static void Append(StringBuilder result, string name, object value)
         {
-            if (value == null)
+            if (value == null) return;
+
+            // The round-trip ("R") format specifier guarantees that a numeric value that is converted to a string will be parsed back into the same numeric value. 
+            // This format is supported only for the Single, Double, and BigInteger types.
+            if (value is double)
             {
-                return;
+                value = ((double) value).ToString("R", CultureInfo.InvariantCulture);
+            }
+            else if (value is float)
+            {
+                value = ((float) value).ToString("R", CultureInfo.InvariantCulture);
             }
 
             result.AppendFormat(CultureInfo.InvariantCulture, " +{0}={1}", name, value);
@@ -936,35 +978,8 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// Reads the authority code.
-        /// </summary>
-        /// <param name="authority">
-        /// The authority.
-        /// </param>
-        /// <param name="epsgCode">
-        /// The code.
-        /// </param>
-        private static ProjectionInfo ReadAuthorityCode(string authority, int epsgCode)
-        {
-            ProjectionInfo pi =
-                AuthorityCodeHandler.Instance[string.Format("{0}:{1}", authority, epsgCode)];
-            if (pi != null)
-            {
-                // we need to copy the projection information because the Authority Codes implementation returns its one and only
-                // in memory copy of the ProjectionInfo. Passing it to the caller might introduce unintended results.
-                var info = FromProj4String(pi.ToProj4String());
-                info.NoDefs = false;
-                return info;
-            }
-
-            throw new ArgumentOutOfRangeException("Authority Code not found.");
-        }
-
-        /// <summary>
         /// Attempts to parse known parameters from the set of proj4 parameters
         /// </summary>
-        /// <param name="proj4String">
-        /// </param>
         private void ParseProj4String(string proj4String)
         {
             if (string.IsNullOrEmpty(proj4String))
@@ -973,7 +988,12 @@ namespace DotSpatial.Projections
             }
 
             // If it has a zone, and the projection is tmerc, it actually needs the utm initialization
-            bool tmercIsUtm = proj4String.Contains("zone=");
+            var tmercIsUtm = proj4String.Contains("zone=");
+            if (tmercIsUtm)
+            {
+                ScaleFactor = 0.9996; // Default scale factor for utm
+                                      // This also needed to write correct Esri String from given projection 
+            }
 
             string[] sections = proj4String.Split('+');
             foreach (string str in sections)
@@ -988,6 +1008,16 @@ namespace DotSpatial.Projections
                 if (s == "no_defs")
                 {
                     NoDefs = true;
+                    continue;
+                }
+                if (s == "over")
+                {
+                    Over = true;
+                    continue;
+                }
+                if (s == "geoc")
+                {
+                    Geoc = GeographicInfo.Datum.Spheroid.EccentricitySquared() != 0;
                     continue;
                 }
                 else if (s == "south")
@@ -1071,15 +1101,7 @@ namespace DotSpatial.Projections
                     case "zone":
                         Zone = int.Parse(value, CultureInfo.InvariantCulture);
                         break;
-
-                    case "geoc":
-                        Geoc = bool.Parse(value) && (GeographicInfo.Datum.Spheroid.EccentricitySquared() != 0);
-                        break;
-
-                    case "over":
-                        Over = bool.Parse(value);
-                        break;
-
+                  
                     case "proj":
 
                         if (value == "longlat")
@@ -1168,12 +1190,13 @@ namespace DotSpatial.Projections
 
                     case "a":
                     case "R":
-                        GeographicInfo.Datum.Spheroid.EquatorialRadius = double.Parse(
-                            value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.EquatorialRadius = double.Parse(value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.KnownEllipsoid = Proj4Ellipsoid.Custom; // This will provide same spheroid on export to Proj4 string
                         break;
 
                     case "b":
                         GeographicInfo.Datum.Spheroid.PolarRadius = double.Parse(value, CultureInfo.InvariantCulture);
+                        GeographicInfo.Datum.Spheroid.KnownEllipsoid = Proj4Ellipsoid.Custom; // This will provide same spheroid on export to Proj4 string
                         break;
 
                     case "rf":

@@ -419,7 +419,10 @@ namespace DotSpatial.Projections
                 }
             }
 
-            source.Transform.Inverse(xy, startIndex, numPoints);
+            if (source.Transform != null)
+            {
+                source.Transform.Inverse(xy, startIndex, numPoints);
+            }
 
             for (int i = startIndex; i < numPoints; i++)
             {

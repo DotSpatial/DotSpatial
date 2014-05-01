@@ -28,6 +28,7 @@ namespace DotSpatial.Analysis
         /// </summary>
         /// <param name="ConstrainingFeatures">Random points will be generated inside all features in this feature set.</param>
         /// <param name="NumberOfPoints">The number of points to be randomly generated.</param>
+        /// <param name="fsOut">FeatureSet, the points should be added to.</param>
         /// <param name="cancelProgressHandler">Optional parameter to report progress and cancel entire process if needed.</param>
         /// <returns>A point feature set with the randomly created features.</returns>
         public static IFeatureSet RandomPoints(IFeatureSet ConstrainingFeatures, int NumberOfPoints, IFeatureSet fsOut = null, ICancelProgressHandler cancelProgressHandler = null)
@@ -97,6 +98,6 @@ namespace DotSpatial.Analysis
                 }
             }
             return fsOut;
-        }        
+        }
     }
 }

@@ -30,12 +30,11 @@ namespace DotSpatial.Projections
     /// <summary>
     /// Projected
     /// </summary>
-    public class ProjectedSystems
+    public class ProjectedSystems : ICoordinateSystemCategoryHolder
     {
-        private string[] _names;
-
         #region Fields
 
+        private string[] _names;
         private Africa _africa;
         private Asia _asia;
         private Europe _europe;

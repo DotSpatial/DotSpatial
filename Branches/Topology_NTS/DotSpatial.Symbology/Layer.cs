@@ -825,6 +825,9 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                var current = Projection;
+                if (current == value) return;
+
                 if (DataSet != null)
                 {
                     DataSet.Projection = value;
@@ -849,21 +852,21 @@ namespace DotSpatial.Symbology
             }
             set
             {
+                var current = ProjectionString;
+                if (current == value) return;
+
                 if (DataSet != null)
                 {
                     DataSet.ProjectionString = value;
-                    return;
                 }
                 _projectionString = value;
-                if (Data.DataSet.ProjectionSupported())
+
+                var test = ProjectionInfo.FromProj4String(value);
+                if (!test.IsValid)
                 {
-                    ProjectionInfo test = ProjectionInfo.FromProj4String(value);
-                    if (!test.IsValid)
-                    {
-                        test.TryParseEsriString(value);
-                    }
-                    if (test.IsValid) Projection = test;
+                    test.TryParseEsriString(value);
                 }
+                if (test.IsValid) Projection = test;
             }
         }
 

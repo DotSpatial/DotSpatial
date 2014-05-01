@@ -331,13 +331,10 @@ namespace DotSpatial.Positioning
             if (!reader.IsStartElement("Speed"))
                 reader.ReadToDescendant("Speed");
 
-            reader.ReadStartElement();
             _speed.ReadXml(reader);
-            reader.ReadEndElement();
-
-            reader.ReadStartElement();
             _bearing.ReadXml(reader);
-            reader.ReadEndElement();
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

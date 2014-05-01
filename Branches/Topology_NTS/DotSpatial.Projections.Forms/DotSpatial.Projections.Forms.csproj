@@ -68,8 +68,17 @@
     <Compile Include="ProjectionCustomDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ProjectionSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectionSelectControl.Designer.cs">
+      <DependentUpon>ProjectionSelectControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectionSelectDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectionSelectDialog.Designer.cs">
+      <DependentUpon>ProjectionSelectDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectionStrings.Designer.cs">
       <DependentUpon>ProjectionStrings.resx</DependentUpon>
@@ -100,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectionCustomDialog.zh-CN.resx">
       <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionSelectControl.resx">
+      <DependentUpon>ProjectionSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectionSelectDialog.resx">
       <DependentUpon>ProjectionSelectDialog.cs</DependentUpon>

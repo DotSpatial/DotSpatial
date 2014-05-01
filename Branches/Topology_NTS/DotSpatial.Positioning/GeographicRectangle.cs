@@ -1537,27 +1537,12 @@ namespace DotSpatial.Positioning
                                     northEast = new Position(reader);
                                 break;
                             case "lowercorner":
-                                // Read the start element, <lowerCorner>
-                                reader.ReadStartElement();
-
                                 // Read the position
                                 southWest = new Position(reader);
-
-                                // Read the end element </lowerCorner>
-                                reader.ReadEndElement();
                                 break;
                             case "uppercorner":
-                                // Read the start element, <lowerCorner>
-                                reader.ReadStartElement();
-
                                 // Read the position
                                 northEast = new Position(reader);
-
-                                // Read the end element </lowerCorner>
-                                reader.ReadEndElement();
-                                break;
-                            default:
-                                // Skip this unknown element
                                 break;
                         }
                     }
@@ -1577,7 +1562,7 @@ namespace DotSpatial.Positioning
 
                     #endregion <gml:Envelope>
 
-                    return;
+                    break;
                 case "boundedby":
 
                     #region <gml:boundedBy>
@@ -1600,7 +1585,7 @@ namespace DotSpatial.Positioning
 
                     #endregion <gml:boundedBy>
 
-                    return;
+                    break;
                 case "box":
 
                     #region <gml:Box>
@@ -1644,8 +1629,10 @@ namespace DotSpatial.Positioning
 
                     #endregion <gml:Box>
 
-                    return;
+                    break;
             }
+
+            reader.Read();
         }
 
         #endregion IXmlSerializable Members

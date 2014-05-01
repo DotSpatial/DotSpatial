@@ -1,1 +1,0 @@
-﻿Menubar for use with DotSpatial applications. Plugins can add functions to this.

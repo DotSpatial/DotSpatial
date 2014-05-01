@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
+using DotSpatial.Projections;
+using DotSpatial.Tests.Common;
 using DotSpatial.Topology;
 using NUnit.Framework;
 
@@ -29,101 +29,9 @@ namespace DotSpatial.Data.Tests
         {
             var file = Path.Combine(_shapefiles, @"Topology_Test.shp");
             IFeatureSet fs = FeatureSet.Open(file);
-            FeatureSet fsunion = new FeatureSet();
-
-            // This is needed or else the table won't have the columns for copying attributes.
-            fsunion.CopyTableSchema(fs);
-
-            // Create a list of all the original shapes so if we union A->B we don't also union B->A
-            var freeFeatures = fs.Features.Select((t, i) => i).ToList();
-
-            while (freeFeatures.Count > 0)
-            {
-                var fOriginal = fs.Features[freeFeatures[0]];
-
-                // Whether this gets unioned or not, it has been handled and should not be re-done.
-                // We also don't want to waste time unioning shapes to themselves.
-                freeFeatures.RemoveAt(0);
-
-                // This is the unioned result.  Remember, we may just add the original feature if no 
-                // shapes present themselves for unioning.
-                IFeature fResult = null;
-
-                // This is the list of any shapes that get unioned with our shape.  
-                List<int> mergedList = new List<int>();
-                bool shapeChanged;
-                do
-                {
-                    shapeChanged = false; // reset this each time.
-                    foreach (int index in freeFeatures)
-                    {
-                        if (fResult == null)
-                        {
-                            if (fOriginal.Intersects(fs.Features[index]))
-                            {
-                                // If FieldJoinType is set to all, and large numbers of shapes are combined,
-                                // the attribute table will have a huge number of extra columns, since 
-                                // every column will be replicated for each instance.
-                                fResult = fOriginal.Union(fs.Features[index], fsunion, FieldJoinType.LocalOnly);
-
-                                // if the shape changed for an index greater than 0, then the newly unioned
-                                // shape might now union with an earlier shape that we skipped before.
-                                shapeChanged = true;
-                            }
-                        }
-                        else
-                        {
-                            if (fResult.Intersects(fs.Features[index]))
-                            {
-                                // snowball unioned features.  Keep adding features to the same unioned shape.
-                                fResult = fResult.Union(fs.Features[index], fsunion, FieldJoinType.LocalOnly);
-                                shapeChanged = true;
-                            }
-                        }
-                        if (shapeChanged)
-                        {
-
-                            // Don't modify the "freefeatures" list during a loop.  Keep track until later.
-                            mergedList.Add(index);
-
-                            // Less double-checking happens if we break rather than finishing the loop
-                            // and then retest the whole loop because of a change early in the list.
-                            break;
-                        }
-
-                    }
-                    foreach (int index in mergedList)
-                    {
-                        // We don't want to add the same shape twice.
-                        freeFeatures.Remove(index);
-                    }
-                } while (shapeChanged);
-
-                // Add fResult, unless it is null, in which case add fOriginal.
-                fsunion.Features.Add(fResult ?? fOriginal);
-
-                // Union doesn't actually add to the output featureset.  The featureset is only
-                // provided to the union method to handle column manipulation if necessary.
-                fsunion.Features.Add(fResult);
-
-            }
-
-            // fsunion is in-memory until this is called.  Once this is called, the extension will
-            // be parsed to determine that a shapefile is required.  The attributes and features will
-            // be moved to variables in an appropriate shapefile class internally, and
-            // then that class will save the features to the disk.
-            fsunion.SaveAs(_shapefiles + @"Union_Test.shp", true);
-
-            try
-            {
-                // cleanup
-                File.Delete(_shapefiles + @"Union_Test.shp");
-                File.Delete(_shapefiles + @"Union_Test.dbf");
-                File.Delete(_shapefiles + @"Union_Test.shx");
-            }
-            catch (IOException)
-            {
-            }
+            var union = fs.UnionShapes(ShapeRelateType.Intersecting);
+            Assert.IsNotNull(union);
+            Assert.IsTrue(union.Features.Count > 0);
         }
 
         /// <summary>
@@ -183,6 +91,105 @@ namespace DotSpatial.Data.Tests
 
             string actualFileName = target.Filename;
             Assert.AreEqual(expectedFullPath, actualFileName);
+        }
+
+        [Test(Description = @"https://dotspatial.codeplex.com/workitem/25169")]
+        public void UtmProjection_SamePoints_AfterSaveLoadShapeFile()
+        {
+            var fs = new FeatureSet(FeatureType.Point)
+            {
+                Projection = KnownCoordinateSystems.Projected.UtmWgs1984.WGS1984UTMZone33N // set any UTM projection
+            };
+
+            const double originalX = 13.408056;
+            const double originalY = 52.518611;
+
+            var wgs = KnownCoordinateSystems.Geographic.World.WGS1984;
+            var c = new[] { originalX, originalY };
+            var z = new[] { 0.0 };
+            Reproject.ReprojectPoints(c, z, wgs, fs.Projection, 0, 1);
+
+            var pt = new Point(c[0], c[1]);
+            fs.AddFeature(pt);
+            var tmpFile = FileTools.GetTempFileName(".shp");
+            fs.SaveAs(tmpFile, true);
+
+            try
+            {
+                // Now try to open saved shapefile
+                // Points must have same location in WGS1984
+                var openFs = FeatureSet.Open(tmpFile);
+                var fs0 = (Point) openFs.Features[0].BasicGeometry;
+                var c1 = new[] {fs0.X, fs0.Y};
+                Reproject.ReprojectPoints(c1, z, openFs.Projection, wgs, 0, 1); // reproject back to wgs1984
+
+                Assert.IsTrue(Math.Abs(originalX - c1[0]) < 1e-8);
+                Assert.IsTrue(Math.Abs(originalY - c1[1]) < 1e-8);
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(tmpFile);
+            }
+        }
+
+        [Test(Description = @"https://dotspatial.codeplex.com/discussions/535704")]
+        public void CoordinateType_WriteOnSaveAs()
+        {
+            var outfile = FileTools.GetTempFileName(".shp");
+            IFeatureSet fs = new FeatureSet();
+            var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
+            IFeature f = new Feature(c);
+
+            fs.CoordinateType = CoordinateType.Z;
+            fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
+            fs.DataTable.Columns.Add(new DataColumn(("ID"), typeof(int)));
+
+            f = fs.AddFeature(f);
+
+            f.ShapeType = ShapeType.PointZ;
+
+            f.DataRow.BeginEdit();
+            f.DataRow["ID"] = 1;
+            f.DataRow.EndEdit();
+
+            fs.SaveAs(outfile, true);
+
+            var actual = FeatureSet.Open(outfile);
+            try
+            {
+                Assert.AreEqual(fs.CoordinateType, actual.CoordinateType);
+            }
+            finally 
+            {
+                FileTools.DeleteShapeFile(outfile);
+            }
+        }
+
+        [Test]
+        public void MultiPoint_SaveAsWorking()
+        {
+            var vertices = new[]
+            {
+                new Coordinate(10.1, 20.2, 3.3, 4.4),
+                new Coordinate(11.1, 22.2, 3.3, 4.4)
+            };
+
+            var mp = new MultiPoint(vertices);
+            var f = new Feature(mp);
+            var fs = new FeatureSet(f.FeatureType)
+            {
+                Projection = KnownCoordinateSystems.Geographic.World.WGS1984
+            };
+            fs.Features.Add(f);
+            var fileName = FileTools.GetTempFileName(".shp");
+            try
+            {
+                Assert.DoesNotThrow(() => fs.SaveAs(fileName, true));
+            }
+            catch (Exception)
+            {
+                FileTools.DeleteShapeFile(fileName);
+            }
         }
     }
 }

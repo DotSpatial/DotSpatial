@@ -296,10 +296,9 @@ namespace DotSpatial.Plugins.WebMap
         private void ForceMaxExtentZoom()
         {
             //special case when there are no other layers in the map. Set map projection to WebMercator and zoom to max ext.
-            MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
+            App.Map.MapFrame.ReprojectMapFrame(WebMercProj);
 
-            // modifying the view extents didn't get the job done, so we are creating a new featureset.
-            // App.Map.ViewExtents = new Extent(TileCalculator.MinWebMercX, TileCalculator.MinWebMercY, TileCalculator.MaxWebMercX, TileCalculator.MaxWebMercY);
+             // modifying the view extents didn't get the job done, so we are creating a new featureset.
             var fs = new FeatureSet(FeatureType.Point);
             fs.Features.Add(new Coordinate(TileCalculator.MinWebMercX, TileCalculator.MinWebMercY));
             fs.Features.Add(new Coordinate(TileCalculator.MaxWebMercX, TileCalculator.MaxWebMercY));
@@ -335,7 +334,7 @@ namespace DotSpatial.Plugins.WebMap
                 App.Map.ViewExtents = new Extent(viewExtentXY);
 
                 //if projection is not WebMercator - reproject all layers:
-                MapFrameProjectionHelper.ReprojectMapFrame(App.Map.MapFrame, WebMercProj.ToEsriString());
+                App.Map.MapFrame.ReprojectMapFrame(WebMercProj);
 
                 App.ProgressHandler.Progress(String.Empty, 0, "Loading Basemap...");
             }
@@ -426,7 +425,6 @@ namespace DotSpatial.Plugins.WebMap
                 _opacity = Convert.ToInt16(opacity);
 
                 _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Properties.Resources.Legend_Title);
-
                 if (basemapName.Equals(Properties.Resources.None))
                 {
                     if (_baseMapLayer != null)
@@ -536,7 +534,7 @@ namespace DotSpatial.Plugins.WebMap
 
             //Stitch them into a single image
             var stitchedBasemap = TileCalculator.StitchTiles(tiles.Bitmaps, _opacity);
-            var tileImage = new InRamImageData(stitchedBasemap);
+            var tileImage = new InRamImageData(stitchedBasemap) {Projection = _baseMapLayer.Projection};
 
             //report progress and check for cancel
             if (!bwProgress(70)) return;

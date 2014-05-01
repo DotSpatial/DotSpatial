@@ -1,1 +1,0 @@
-﻿Header Control for Mono.

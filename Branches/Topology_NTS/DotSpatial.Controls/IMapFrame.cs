@@ -53,6 +53,11 @@ namespace DotSpatial.Controls
         /// </summary>
         event EventHandler<ClipArgs> BufferChanged;
 
+        /// <summary>
+        /// Occurs when View changed
+        /// </summary>
+        event EventHandler<ViewChangedEventArgs> ViewChanged;
+
         #endregion
 
         #region Methods

@@ -62,7 +62,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void Perroud1950TerreAdeliePolarStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.Perroud1950TerreAdeliePolarStereographic;
@@ -71,7 +71,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void Petrels1972TerreAdeliePolarStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.Petrels1972TerreAdeliePolarStereographic;
@@ -136,7 +136,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void WGS1984AntarcticPolarStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.WGS1984AntarcticPolarStereographic;
@@ -153,7 +153,7 @@ namespace DotSpatial.Projections.Tests.Projected
 
 
         [Test]
-        [Ignore]
+        [Ignore("Verify")]
         public void WGS1984AustralianAntarcticPolarStereographic()
         {
             ProjectionInfo pStart = KnownCoordinateSystems.Projected.Polar.WGS1984AustralianAntarcticPolarStereographic;

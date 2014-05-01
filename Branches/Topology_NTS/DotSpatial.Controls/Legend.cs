@@ -41,7 +41,8 @@ namespace DotSpatial.Controls
         #region Event
 
         /// <summary>
-        /// Occurs when the layer
+        /// Occurs when the drag method is used to alter the order of layers or
+        /// groups in the legend.
         /// </summary>
         public event EventHandler OrderChanged;
 
@@ -842,7 +843,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnOrderChanged()
         {
-            if (OrderChanged != null) OrderChanged(this, EventArgs.Empty);
+            var h = OrderChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         #endregion

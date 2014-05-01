@@ -90,6 +90,7 @@
     <Compile Include="GpgllSentence.cs" />
     <Compile Include="GpgsaSentence.cs" />
     <Compile Include="GpgsvSentence.cs" />
+    <Compile Include="GphdtSentence.cs" />
     <Compile Include="GprmcSentence.cs" />
     <Compile Include="GpvtgSentence.cs" />
     <Compile Include="Interfaces.cs" />
