@@ -8,6 +8,7 @@ namespace DotSpatial.Positioning.Tests
     {
         [Test]
         [TestCase("50 m", 50, DistanceUnit.Meters)]
+        [TestCase("-5m", -5, DistanceUnit.Meters)]
         public void Parse_ValidValues(string input, double value, DistanceUnit unit)
         {
             var actual = Distance.Parse(input);

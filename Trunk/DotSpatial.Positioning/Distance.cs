@@ -390,7 +390,8 @@ namespace DotSpatial.Positioning
                 var subValue = value[count].ToString(CultureInfo.InvariantCulture);
                 if (char.IsDigit(subValue, 0) ||
                     subValue == culture.NumberFormat.NumberGroupSeparator ||
-                    subValue == culture.NumberFormat.NumberDecimalSeparator)
+                    subValue == culture.NumberFormat.NumberDecimalSeparator ||
+                    subValue == culture.NumberFormat.NegativeSign)
                 {
                     // Allow continuation
                     count++;
