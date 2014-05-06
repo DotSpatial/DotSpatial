@@ -66,17 +66,12 @@ namespace DotSpatial.Controls
             : base(fileName, symbolizer)
         {
             base.LegendText = Path.GetFileNameWithoutExtension(fileName);
-            if (DataSet.NumRows * DataSet.NumColumns > 8000)
+            if ((long)DataSet.NumRows * DataSet.NumColumns > MaxCellsInMemory)
             {
                 string pyrFile = Path.ChangeExtension(fileName, ".mwi");
-                if (File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh")))
-                {
-                    BitmapGetter = new PyramidImage(pyrFile);
-                }
-                else
-                {
-                    BitmapGetter = CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
-                }
+                BitmapGetter = File.Exists(pyrFile) && File.Exists(Path.ChangeExtension(pyrFile, ".mwh"))
+                    ? new PyramidImage(pyrFile)
+                    : CreatePyramidImage(pyrFile, DataManager.DefaultDataManager.ProgressHandler);
             }
             else
             {
@@ -111,7 +106,7 @@ namespace DotSpatial.Controls
             base.LegendText = Path.GetFileNameWithoutExtension(raster.Filename);
             // string imageFile = Path.ChangeExtension(raster.Filename, ".png");
             // if (File.Exists(imageFile)) File.Delete(imageFile);
-            if (raster.NumRows * raster.NumColumns > 8000 * 8000)
+            if ((long)raster.NumRows * raster.NumColumns > MaxCellsInMemory)
             {
                 // For huge images, assume that GDAL or something was needed anyway,
                 // and we would rather avoid having to re-create the pyramids if there is any chance

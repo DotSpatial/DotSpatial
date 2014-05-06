@@ -39,10 +39,16 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class RasterLayer : Layer, IRasterLayer
     {
-        #region Private Variables
+        #region Fields
 
         [Serialize("Symbolizer", ConstructorArgumentIndex = 1)]
         private IRasterSymbolizer _symbolizer;
+
+        /// <summary>
+        /// Gets or sets maximum number of cells which can be stored in memory.
+        /// By default it is 8000 * 8000.
+        /// </summary>
+        public static int MaxCellsInMemory = 8000 * 8000;
 
         #endregion
 
@@ -142,11 +148,12 @@ namespace DotSpatial.Symbology
 
             IImageData result = DataManager.DefaultDataManager.CreateImage(fileName, rows, cols, false, progressHandler, bandType);
             int numBlocks = 1;
-            if (rows * cols > 8000 * 8000)
+            const int maxRC = 8000*8000;
+            if (rows * cols > maxRC)
             {
-                numBlocks = Convert.ToInt32(Math.Ceiling(8000 * 8000 / (double)cols));
+                numBlocks = Convert.ToInt32(Math.Ceiling(maxRC / (double)cols));
             }
-            int blockRows = (8000 * 8000) / cols;
+            int blockRows = maxRC / cols;
             ProjectionHelper ph = new ProjectionHelper(DataSet.Extent, new Rectangle(0, 0, cols, rows));
             for (int iblock = 0; iblock < numBlocks; iblock++)
             {
@@ -242,7 +249,7 @@ namespace DotSpatial.Symbology
         /// <param name="progressHandler"></param>
         protected void DefaultWriteBitmap(IProgressHandler progressHandler)
         {
-            if (DataSet.NumRowsInFile * DataSet.NumColumnsInFile > 8000 * 8000)
+            if ((long)DataSet.NumRowsInFile * DataSet.NumColumnsInFile > MaxCellsInMemory)
             {
                 // For huge images, assume that GDAL or something was needed anyway,
                 // and we would rather avoid having to re-create the pyramids if there is any chance
