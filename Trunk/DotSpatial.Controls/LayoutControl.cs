@@ -1344,8 +1344,8 @@ namespace DotSpatial.Controls
                 sfd.AddExtension = true;
                 if (sfd.ShowDialog(this) == DialogResult.Cancel)
                     return;
-                ConvertElementToBitmap(le, sfd.FileName);
 
+                ConvertElementToBitmap(le, sfd.FileName);
             }
         }
 
@@ -1357,16 +1357,16 @@ namespace DotSpatial.Controls
         public virtual void ConvertElementToBitmap(LayoutElement le, string fileName)
         {
             if (le is LayoutBitmap) return;
-            var temp = new Bitmap(Convert.ToInt32(le.Size.Width * 3), Convert.ToInt32(le.Size.Height * 3), PixelFormat.Format32bppArgb);
-            temp.SetResolution(96, 96);
+            const float coeff = 1.0f;
+            var temp = new Bitmap(Convert.ToInt32(le.Size.Width * coeff), Convert.ToInt32(le.Size.Height * coeff), PixelFormat.Format32bppArgb);
+            temp.SetResolution(96.0f, 96.0f);
             temp.MakeTransparent();
             var g = Graphics.FromImage(temp);
             g.PageUnit = GraphicsUnit.Pixel;
-            g.ScaleTransform(300F / 100F, 300F / 100F);
+            g.ScaleTransform(coeff, coeff);
             g.TranslateTransform(-le.LocationF.X, -le.LocationF.Y);
-            le.Draw(g, true);
+            le.Draw(g, false);
             g.Dispose();
-            temp.SetResolution(300, 300);
             temp.Save(fileName);
             temp.Dispose();
             var newLb = new LayoutBitmap
