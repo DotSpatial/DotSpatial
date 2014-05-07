@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.GeographicCategories
     /// </summary>
     public class Oceans : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo AlaskanIslands;
         public readonly ProjectionInfo AmericanSamoa1962;
@@ -221,97 +221,6 @@ namespace DotSpatial.Projections.GeographicCategories
             VitiLevu1916 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
             WakeIslandAstro1952 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             WakeEniwetok1960 = ProjectionInfo.FromProj4String("+proj=longlat +a=6378270 +b=6356794.343434343 +no_defs ");
-
-            AlaskanIslands.IsLatLon = true;
-            AmericanSamoa1962.IsLatLon = true;
-            Anguilla1957.IsLatLon = true;
-            Anna1Astro1965.IsLatLon = true;
-            Antigua1943.IsLatLon = true;
-            AscensionIsland1958.IsLatLon = true;
-            AstroBeaconE1945.IsLatLon = true;
-            AstroDOS714.IsLatLon = true;
-            AstronomicalStation1952.IsLatLon = true;
-            AzoresCentral1948.IsLatLon = true;
-            AzoresCentral1995.IsLatLon = true;
-            AzoresOccidental1939.IsLatLon = true;
-            AzoresOriental1940.IsLatLon = true;
-            AzoresOriental1995.IsLatLon = true;
-            BabSouth.IsLatLon = true;
-            Barbados.IsLatLon = true;
-            Barbados1938.IsLatLon = true;
-            BellevueIGN.IsLatLon = true;
-            Bermuda1957.IsLatLon = true;
-            Bermuda2000.IsLatLon = true;
-            CantonAstro1966.IsLatLon = true;
-            ChathamIslandAstro1971.IsLatLon = true;
-            Combani1950.IsLatLon = true;
-            CSG1967.IsLatLon = true;
-            Dominica1945.IsLatLon = true;
-            DOS1968.IsLatLon = true;
-            EasterIsland1967.IsLatLon = true;
-            FortDesaix.IsLatLon = true;
-            FortMarigot.IsLatLon = true;
-            FortThomas1955.IsLatLon = true;
-            Gan1970.IsLatLon = true;
-            GraciosaBaseSW1948.IsLatLon = true;
-            GrandComoros.IsLatLon = true;
-            Grenada1953.IsLatLon = true;
-            Guam1963.IsLatLon = true;
-            GUX1Astro.IsLatLon = true;
-            Hjorsey1955.IsLatLon = true;
-            IGN53Mare.IsLatLon = true;
-            IGN56Lifou.IsLatLon = true;
-            IGN72GrandeTerre.IsLatLon = true;
-            IGN72NukuHiva.IsLatLon = true;
-            ISTS061Astro1968.IsLatLon = true;
-            ISTS073Astro1969.IsLatLon = true;
-            Jamaica1875.IsLatLon = true;
-            Jamaica1969.IsLatLon = true;
-            JohnstonIsland1961.IsLatLon = true;
-            K01949.IsLatLon = true;
-            KerguelenIsland1949.IsLatLon = true;
-            KusaieAstro1951.IsLatLon = true;
-            LC5Astro1961.IsLatLon = true;
-            Madeira1936.IsLatLon = true;
-            Mahe1971.IsLatLon = true;
-            Majuro.IsLatLon = true;
-            MidwayAstro1961.IsLatLon = true;
-            Montserrat1958.IsLatLon = true;
-            MOP78.IsLatLon = true;
-            NEA74Noumea.IsLatLon = true;
-            ObservMeteorologico1939.IsLatLon = true;
-            OldHawaiian.IsLatLon = true;
-            PicodeLasNieves.IsLatLon = true;
-            PitcairnAstro1967.IsLatLon = true;
-            PitondesNeiges.IsLatLon = true;
-            Pohnpei.IsLatLon = true;
-            PortoSanto1936.IsLatLon = true;
-            PortoSanto1995.IsLatLon = true;
-            PuertoRico.IsLatLon = true;
-            Reunion.IsLatLon = true;
-            RGFG1995.IsLatLon = true;
-            RGNC1991.IsLatLon = true;
-            RGR1992.IsLatLon = true;
-            RRAF1991.IsLatLon = true;
-            SaintPierreetMiquelon1950.IsLatLon = true;
-            SainteAnne.IsLatLon = true;
-            SantoDOS1965.IsLatLon = true;
-            SaoBraz.IsLatLon = true;
-            SapperHill1943.IsLatLon = true;
-            SelvagemGrande1938.IsLatLon = true;
-            StKitts1955.IsLatLon = true;
-            StLucia1955.IsLatLon = true;
-            StVincent1945.IsLatLon = true;
-            ST71Belep.IsLatLon = true;
-            ST84IledesPins.IsLatLon = true;
-            ST87Ouvea.IsLatLon = true;
-            Tahaa.IsLatLon = true;
-            Tahiti.IsLatLon = true;
-            TernIslandAstro1961.IsLatLon = true;
-            TristanAstro1968.IsLatLon = true;
-            VitiLevu1916.IsLatLon = true;
-            WakeIslandAstro1952.IsLatLon = true;
-            WakeEniwetok1960.IsLatLon = true;
 
             AlaskanIslands.GeographicInfo.Name = "GCS_Alaskan_Islands";
             AmericanSamoa1962.GeographicInfo.Name = "GCS_American_Samoa_1962";

@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.GeographicCategories
     /// </summary>
     public class Antarctica : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo AustralianAntarctic1998;
         public readonly ProjectionInfo CampAreaAstro;
@@ -51,13 +51,7 @@ namespace DotSpatial.Projections.GeographicCategories
             DeceptionIsland = ProjectionInfo.FromProj4String("+proj=longlat +ellps=clrk80 +no_defs ");
             Petrels1972 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
             PointeGeologiePerroud1950 = ProjectionInfo.FromProj4String("+proj=longlat +ellps=intl +no_defs ");
-
-            AustralianAntarctic1998.IsLatLon = true;
-            CampAreaAstro.IsLatLon = true;
-            DeceptionIsland.IsLatLon = true;
-            Petrels1972.IsLatLon = true;
-            PointeGeologiePerroud1950.IsLatLon = true;
-
+            
             AustralianAntarctic1998.GeographicInfo.Name = "GCS_Australian_Antarctic_1998";
             CampAreaAstro.GeographicInfo.Name = "GCS_Camp_Area";
             DeceptionIsland.GeographicInfo.Name = "GCS_Deception_Island";

@@ -14,6 +14,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         public void WorldGeographicTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(true, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

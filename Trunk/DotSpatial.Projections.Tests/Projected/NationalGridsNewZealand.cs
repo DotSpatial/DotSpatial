@@ -13,7 +13,8 @@ namespace DotSpatial.Projections.Tests.Projected
         [TestCaseSource("GetProjections")]
         public void NationalGridsNewZealandTests(ProjectionInfoDesc pInfo)
         {
-            Tester.TestProjection(pInfo.ProjectionInfo);   
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

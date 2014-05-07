@@ -14,6 +14,7 @@ namespace DotSpatial.Projections.Tests.Projected
         public void UtmOtherTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

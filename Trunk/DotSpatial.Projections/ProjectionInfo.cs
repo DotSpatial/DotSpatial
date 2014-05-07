@@ -1109,14 +1109,9 @@ namespace DotSpatial.Projections
                             IsLatLon = true;
                         }
 
-                        if (tmercIsUtm)
-                        {
-                            Transform = new UniversalTransverseMercator();
-                        }
-                        else
-                        {
-                            Transform = TransformManager.DefaultTransformManager.GetProj4(value);
-                        }
+                        Transform = tmercIsUtm
+                            ? new UniversalTransverseMercator()
+                            : TransformManager.DefaultTransformManager.GetProj4(value);
 
                         break;
 

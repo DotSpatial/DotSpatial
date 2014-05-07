@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -15,6 +14,7 @@ namespace DotSpatial.Projections.Tests.Geographic
         public void SpheroidBasedTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(true, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Geographic
 {
@@ -9,61 +9,17 @@ namespace DotSpatial.Projections.Tests.Geographic
     [TestFixture]
     public class Australia
     {
-
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void AustraliaGeographicTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(true, pInfo.ProjectionInfo.IsLatLon);
         }
 
-        [Test]
-        public void AustralianGeodeticDatum1966()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.AustralianGeodeticDatum1966;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void AustralianGeodeticDatum1984()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.AustralianGeodeticDatum1984;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void ChathamIslands1979()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.ChathamIslands1979;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void GeocentricDatumofAustralia1994()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.GeocentricDatumofAustralia1994;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void NewZealandGeodeticDatum1949()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.NewZealandGeodeticDatum1949;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void NZGD2000()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Geographic.Australia.NZGD2000;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Geographic.Australia);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace DotSpatial.Projections.ProjectedCategories
     /// </summary>
     public class GaussKrugerBeijing1954 : CoordinateSystemCategory
     {
-        #region Private Variables
+        #region Fields
 
         public readonly ProjectionInfo Beijing19543DegreeGKCM102E;
         public readonly ProjectionInfo Beijing19543DegreeGKCM105E;

@@ -15,6 +15,7 @@ namespace DotSpatial.Projections.Tests.Projected
         public void NationalGridsNorwayTests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

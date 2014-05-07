@@ -15,6 +15,7 @@ namespace DotSpatial.Projections.Tests.Projected
         public void GausKrugerBeijing1954Tests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()

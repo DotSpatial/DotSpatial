@@ -13,7 +13,8 @@ namespace DotSpatial.Projections.Tests.Geographic
         [TestCaseSource("GetProjections")]
         public void AfricaTests(ProjectionInfoDesc pInfo)
         {
-            Tester.TestProjection(pInfo.ProjectionInfo);   
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(true, pInfo.ProjectionInfo.IsLatLon);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()
