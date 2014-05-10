@@ -13,10 +13,8 @@ using DotSpatial.Controls.Extensions;
 using System.IO;
 using System.Reflection;
 using DotSpatial.Extensions;
-using System.Collections.Specialized;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Text.RegularExpressions;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -134,12 +132,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         //packageNames are all packages found and checked by getUpdatesFromLocal.
         private void getAvailableUpdatesFromFeed(List<String> packageNames)
         {
-            IEnumerable<IPackage> onlinePacks = null;
-            List<IPackage> updatePacks = new List<IPackage>();
-            Task<PackageList> task = getAllPackagesFromFeed();
-
-            //Get list of packages from current feed.
-            task.ContinueWith(t =>
+            IPackage[] onlinePacks = null;
+            // Get list of packages from current feed.
+            getAllPackagesFromFeed().ContinueWith(t =>
             {
                 if (t.Result != null)
                 {
@@ -147,6 +142,9 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
             }).Wait();
 
+            if (onlinePacks == null) return;
+
+            var updatePacks = new List<IPackage>();
             foreach (IPackage pack in onlinePacks)
             {
                 if (IsPackageUpdateable(pack))
@@ -231,14 +229,14 @@ namespace DotSpatial.Plugins.ExtensionManager
             return versionCorrect;
         }
 
-        private bool IsOnline()
+        private static bool IsOnline()
         {
             try
             {
-                IPHostEntry dummy = Dns.GetHostEntry("www.google.com");
+                Dns.GetHostEntry("www.google.com");
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -250,14 +248,13 @@ namespace DotSpatial.Plugins.ExtensionManager
             List<String> updatesOccurred = new List<String>();
             Packages packages = new Packages();
             System.Collections.Specialized.StringCollection feeds = FeedManager.getAutoUpdateFeeds();
-            Update update = new Update(packages, null, app);
 
-            if (update.IsOnline() == true)
+            if (IsOnline())
             {
                 foreach (String feed in feeds)
                 {
                     packages.SetNewSource(feed);
-                    update = new Update(packages, null, app);
+                    var update = new Update(packages, null, app);
                     updatesOccurred.AddRange(update.autoUpdate());
                 }
             }
