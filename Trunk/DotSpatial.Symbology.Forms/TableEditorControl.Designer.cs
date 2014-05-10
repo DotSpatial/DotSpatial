@@ -362,7 +362,6 @@ namespace DotSpatial.Symbology.Forms
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeRows = false;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.dataGridView1.Name = "dataGridView1";
@@ -378,7 +377,6 @@ namespace DotSpatial.Symbology.Forms
             this.Controls.Add(this.panel1);
             this.Name = "TableEditorControl";
             resources.ApplyResources(this, "$this");
-            this.Resize += new System.EventHandler(this.TableEditorControl_Resize);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

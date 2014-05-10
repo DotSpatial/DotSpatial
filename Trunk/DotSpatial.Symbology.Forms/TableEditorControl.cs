@@ -1527,11 +1527,5 @@ namespace DotSpatial.Symbology.Forms
             ShowSelectedRowCount();
             OnSelectionChanged();
         }
-
-        private void TableEditorControl_Resize(object sender, EventArgs e)
-        {
-            if (dataGridView1.Columns.Count > 0)
-                dataGridView1.AutoResizeColumns();
-        }
     }
 }
