@@ -349,7 +349,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 400</value>
+    <value>363, 400</value>
   </data>
   <data name="sqlExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -358,7 +358,7 @@
     <value>sqlExpression</value>
   </data>
   <data name="&gt;&gt;sqlExpression.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sqlExpression.Parent" xml:space="preserve">
     <value>tabExpression</value>
@@ -373,7 +373,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 406</value>
   </data>
   <data name="tabExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -703,7 +703,7 @@
     <value>cbBorderColor</value>
   </data>
   <data name="&gt;&gt;cbBorderColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbBorderColor.Parent" xml:space="preserve">
     <value>gpbBorderColor</value>
@@ -727,7 +727,7 @@
     <value>sldBorderOpacity</value>
   </data>
   <data name="&gt;&gt;sldBorderOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldBorderOpacity.Parent" xml:space="preserve">
     <value>gpbBorderColor</value>
@@ -805,7 +805,7 @@
     <value>cbFontColor</value>
   </data>
   <data name="&gt;&gt;cbFontColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbFontColor.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -829,7 +829,7 @@
     <value>sldFontOpacity</value>
   </data>
   <data name="&gt;&gt;sldFontOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldFontOpacity.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -1036,7 +1036,7 @@
     <value>ffcFamilyName</value>
   </data>
   <data name="&gt;&gt;ffcFamilyName.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FontFamilyControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FontFamilyControl, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;ffcFamilyName.Parent" xml:space="preserve">
     <value>gpbFont</value>
@@ -1111,7 +1111,7 @@
     <value>cbBackgroundColor</value>
   </data>
   <data name="&gt;&gt;cbBackgroundColor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;cbBackgroundColor.Parent" xml:space="preserve">
     <value>gpbBackgroundColor</value>
@@ -1135,7 +1135,7 @@
     <value>sldBackgroundOpacity</value>
   </data>
   <data name="&gt;&gt;sldBackgroundOpacity.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sldBackgroundOpacity.Parent" xml:space="preserve">
     <value>gpbBackgroundColor</value>
@@ -1240,7 +1240,7 @@
     <value>labelAlignmentControl1</value>
   </data>
   <data name="&gt;&gt;labelAlignmentControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.LabelAlignmentControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.LabelAlignmentControl, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;labelAlignmentControl1.Parent" xml:space="preserve">
     <value>tabAdvanced</value>
@@ -1645,7 +1645,7 @@
     <value>clrHalo</value>
   </data>
   <data name="&gt;&gt;clrHalo.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorBox, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorBox, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;clrHalo.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -1825,7 +1825,7 @@
     <value>sliderOpacityShadow</value>
   </data>
   <data name="&gt;&gt;sliderOpacityShadow.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.RampSlider, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sliderOpacityShadow.Parent" xml:space="preserve">
     <value>gpbUseLabelShadow</value>
@@ -1879,7 +1879,7 @@
     <value>colorButtonShadow</value>
   </data>
   <data name="&gt;&gt;colorButtonShadow.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.ColorButton, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;colorButtonShadow.Parent" xml:space="preserve">
     <value>gpbUseLabelShadow</value>
@@ -1915,7 +1915,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 406</value>
   </data>
   <data name="tabAdvanced.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1945,7 +1945,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 400</value>
+    <value>363, 400</value>
   </data>
   <data name="sqlMembers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1954,7 +1954,7 @@
     <value>sqlMembers</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.SQLQueryControl, DotSpatial.Symbology.Forms, Version=1.6.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;sqlMembers.Parent" xml:space="preserve">
     <value>tabMembers</value>
@@ -1969,7 +1969,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>366, 406</value>
+    <value>369, 406</value>
   </data>
   <data name="tabMembers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
