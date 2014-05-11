@@ -119,13 +119,7 @@ namespace DotSpatial.Controls
             // Add default menus/buttons
             if (ApplicationManager != null && ApplicationManager.HeaderControl != null)
             {
-                ToolbarsContainer.SuspendLayout();
-                MenuStrip.SuspendLayout();
-
                 new DefaultMenuBars(ApplicationManager).Initialize(ApplicationManager.HeaderControl);
-
-                ToolbarsContainer.ResumeLayout();
-                MenuStrip.ResumeLayout();
             }
         }
 

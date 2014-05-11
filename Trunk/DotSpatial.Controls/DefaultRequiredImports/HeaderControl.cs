@@ -45,13 +45,7 @@ namespace DotSpatial.Controls.DefaultRequiredImports
                 Initialize(container, menuStrip);
 
                 // Add default buttons
-                container.SuspendLayout();
-                menuStrip.SuspendLayout();
-
                 new DefaultMenuBars(App).Initialize(this);
-
-                container.ResumeLayout();
-                menuStrip.ResumeLayout();
             }
         }
     }
