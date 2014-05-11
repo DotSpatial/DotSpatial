@@ -49,7 +49,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// If this is null, then there is only one part for this ShapeIndex.
         /// </summary>
-        public List<PartRange> Parts;
+        public List<PartRange> Parts { get; private set; }
 
         /// <summary>
         /// The record number
@@ -141,7 +141,7 @@ namespace DotSpatial.Data
         public object Clone()
         {
             ShapeRange copy = (ShapeRange)MemberwiseClone();
-            copy.Parts = new List<PartRange>();
+            copy.Parts = new List<PartRange>(Parts.Count);
             foreach (PartRange part in Parts)
             {
                 copy.Parts.Add(part.Copy());
@@ -199,17 +199,17 @@ namespace DotSpatial.Data
             _numParts = -1; // default to relying on the parts list instead of the cached value.
             _numPoints = -1; // rely on accumulation from parts instead of a solid number
 
-            if (coordType == CoordinateType.Z)
+            switch (coordType)
             {
-                _extent = new ExtentMZ();
-            }
-            else if (coordType == CoordinateType.M)
-            {
-                _extent = new ExtentM();
-            }
-            else
-            {
-                _extent = new Extent();
+                case CoordinateType.Z:
+                    _extent = new ExtentMZ();
+                    break;
+                case CoordinateType.M:
+                    _extent = new ExtentM();
+                    break;
+                default:
+                    _extent = new Extent();
+                    break;
             }
         }
 

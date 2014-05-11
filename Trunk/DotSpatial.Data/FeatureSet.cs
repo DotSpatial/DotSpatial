@@ -2548,7 +2548,6 @@ namespace DotSpatial.Data
 
                 // for simplicity in looping, there is always at least one part.
                 // That way, the shape range can be ignored and the parts loop used instead.
-                shx.Parts = new List<PartRange>();
                 int shapeStart = vIndex;
                 for (int part = 0; part < f.NumGeometries; part++)
                 {

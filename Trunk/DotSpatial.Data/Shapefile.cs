@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using DotSpatial.Serialization;
@@ -295,12 +296,8 @@ namespace DotSpatial.Data
             if (ext != ".shp" && ext != ".shx" && ext != ".dbf")
                 throw new ArgumentException(String.Format("The file extension {0} is not supported by Shapefile data provider.", ext));
             string name = Path.ChangeExtension(fileName, ".shp");
-            ShapefileHeader head = new ShapefileHeader();
+            var head = new ShapefileHeader();
             head.Open(name);
-            PointShapefile psf;
-            LineShapefile lsf;
-            PolygonShapefile pgsf;
-            MultiPointShapefile mpsf;
             switch (head.ShapeType)
             {
                 case ShapeType.MultiPatch:
@@ -309,7 +306,7 @@ namespace DotSpatial.Data
                 case ShapeType.MultiPoint:
                 case ShapeType.MultiPointM:
                 case ShapeType.MultiPointZ:
-                    mpsf = new MultiPointShapefile();
+                    var mpsf = new MultiPointShapefile();
                     mpsf.Open(name, progressHandler);
                     return mpsf;
 
@@ -319,26 +316,21 @@ namespace DotSpatial.Data
                 case ShapeType.Point:
                 case ShapeType.PointM:
                 case ShapeType.PointZ:
-
-                    // Instantiate a new object to handle the point shapefile
-                    psf = new PointShapefile();
-
-                    // Open the geometric components of the data (but not the dbf components)
+                    var psf = new PointShapefile();
                     psf.Open(name, progressHandler);
-
                     return psf;
 
                 case ShapeType.Polygon:
                 case ShapeType.PolygonM:
                 case ShapeType.PolygonZ:
-                    pgsf = new PolygonShapefile();
+                    var pgsf = new PolygonShapefile();
                     pgsf.Open(name, progressHandler);
                     return pgsf;
 
                 case ShapeType.PolyLine:
                 case ShapeType.PolyLineM:
                 case ShapeType.PolyLineZ:
-                    lsf = new LineShapefile();
+                    var lsf = new LineShapefile();
                     lsf.Open(name, progressHandler);
                     return lsf;
             }
@@ -601,38 +593,38 @@ namespace DotSpatial.Data
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // This will store the header elements that we read from the file.
-            List<ShapeHeader> result = new List<ShapeHeader>();
+            var fileLen = new FileInfo(shxFilename).Length;
+            if (fileLen == 100)
+            {
+                // the file is empty so we are done reading
+                return Enumerable.Empty<ShapeHeader>().ToList();
+            }
 
             // Use a the length of the file to dimension the byte array
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(shxFilename);
-
-            if (bbReader.FileLength == 100)
+            using (var bbReader = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
             {
-                // the file is empty, so we are done
-                bbReader.Close();
+                // Skip the header and begin reading from the first record
+                bbReader.Seek(100, SeekOrigin.Begin);
+
+                _header.ShxLength = (int)(fileLen / 2);
+                var length = (int)(fileLen - 100);
+                var numRecords = length / 8;
+                // Each record consists of 2 Big-endian integers for a total of 8 bytes.
+                // This will store the header elements that we read from the file.
+                var result = new List<ShapeHeader>(numRecords);
+                for (var i = 0; i < numRecords; i++)
+                {
+                    result.Add(new ShapeHeader
+                    {
+                        Offset = bbReader.ReadInt32(Endian.BigEndian),
+                        ContentLength = bbReader.ReadInt32(Endian.BigEndian),
+                    });
+                }
+
                 return result;
             }
-
-            // Skip the header and begin reading from the first record
-            bbReader.Seek(100, SeekOrigin.Begin);
-
-            _header.ShxLength = (int)bbReader.FileLength / 2;
-            long length = bbReader.FileLength - 100;
-
-            long numRecords = length / 8; // Each record consists of 2 Big-endian integers for a total of 8 bytes.
-            for (long i = 0; i < numRecords; i++)
-            {
-                ShapeHeader sh = new ShapeHeader
-                                 {
-                                     Offset = bbReader.ReadInt32(false),
-                                     ContentLength = bbReader.ReadInt32(false)
-                                 };
-                result.Add(sh);
-            }
-            bbReader.Close();
-            return result;
         }
+        
 
         /// <summary>
         /// Ensures that the attribute Table will have information that matches the current Table of attribute information

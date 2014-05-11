@@ -59,32 +59,30 @@ namespace DotSpatial.Data
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
-            //JK - handle case when filename doesn't exist
-            if (!File.Exists(fileName))
-            {
-                Attributes = new AttributeTable();
-                Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.Point };
-                FeatureType = FeatureType.Point;
-                return;
-            }
+            if (!File.Exists(fileName)) return;
 
-            IndexMode = true;
             Filename = fileName;
-
+            IndexMode = true;
             Header = new ShapefileHeader(fileName);
-            CoordinateType = CoordinateType.Regular;
-            if (Header.ShapeType == ShapeType.PointM)
+
+            switch (Header.ShapeType)
             {
-                CoordinateType = CoordinateType.M;
+                case ShapeType.PointM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PointZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
             }
-            if (Header.ShapeType == ShapeType.PointZ)
-            {
-                CoordinateType = CoordinateType.Z;
-            }
+
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
-            FillPoints(fileName);
+
+            FillPoints(fileName, progressHandler);
             ReadProjection();
         }
 
@@ -92,12 +90,13 @@ namespace DotSpatial.Data
         /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
         /// </summary>
         /// <param name="fileName">A string fileName</param>
-        private void FillPoints(string fileName)
+        /// <param name="progressHandler">Progress handler</param>
+        private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
             // Check to ensure the fileName is not null
             if (fileName == null)
             {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
+                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
             }
 
             if (File.Exists(fileName) == false)
@@ -109,7 +108,7 @@ namespace DotSpatial.Data
             List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
 
             // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(fileName);
+            var header = new ShapefileHeader(fileName);
             Extent = header.ToExtent();
             // Check to ensure that the fileName is the correct shape type
             if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM
@@ -138,10 +137,16 @@ namespace DotSpatial.Data
                 z = new double[numShapes];
             }
 
+            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
+            {
+                StepPercent = 5
+            };
             using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 for (var shp = 0; shp < numShapes; shp++)
                 {
+                    progressMeter.CurrentPercent = (int)(shp * 100.0 / numShapes);
+
                     reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
 
                     var recordNumber = reader.ReadInt32(Endian.BigEndian);
@@ -149,7 +154,7 @@ namespace DotSpatial.Data
                     var contentLen = reader.ReadInt32(Endian.BigEndian);
                     Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
 
-                    var shapeType = (ShapeType) reader.ReadInt32(Endian.LittleEndian);
+                    var shapeType = (ShapeType) reader.ReadInt32();
                     if (shapeType == ShapeType.NullShape)
                     {
                         if (m != null)
@@ -161,17 +166,17 @@ namespace DotSpatial.Data
 
                     // Read X
                     var ind = 4;
-                    vert[shp*2] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                    vert[shp*2] = reader.ReadDouble();
                     ind += 8;
 
                     // Read Y
-                    vert[shp*2 + 1] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                    vert[shp*2 + 1] = reader.ReadDouble();
                     ind += 8;
 
                     // Read Z
                     if (z != null)
                     {
-                        z[shp] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                        z[shp] = reader.ReadDouble();
                         ind += 8;
                     }
 
@@ -184,7 +189,7 @@ namespace DotSpatial.Data
                         }
                         else
                         {
-                            m[shp] = reader.ReadDouble(1, Endian.LittleEndian)[0];
+                            m[shp] = reader.ReadDouble();
                             ind += 8;
                         }
                     }
@@ -192,6 +197,7 @@ namespace DotSpatial.Data
                fin:
                     var shape = new ShapeRange(FeatureType.Point)
                     {
+                        RecordNumber = recordNumber,
                         StartIndex = shp,
                         ContentLength = shapeHeaders[shp].ContentLength,
                         NumPoints = 1,
@@ -208,6 +214,8 @@ namespace DotSpatial.Data
             Vertex = vert;
             M = m;
             Z = z;
+
+            progressMeter.Reset();
         }
 
         /// <inheritdoc />

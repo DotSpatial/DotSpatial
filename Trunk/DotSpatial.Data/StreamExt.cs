@@ -29,13 +29,16 @@ namespace DotSpatial.Data
     public static class StreamExt
     {
         /// <summary>
-        /// This defaults to reading the value in little endian format.
+        /// Attempts to read count of bytes from stream.
         /// </summary>
-        /// <param name="stream">The stream to read the value from</param>
-        /// <returns>The integer value</returns>
-        public static int ReadInt32(this Stream stream)
+        /// <param name="stream">Input stream.</param>
+        /// <param name="count">Count of bytes.</param>
+        /// <returns>Bytes array.</returns>
+        public static byte[] ReadBytes(this Stream stream, int count)
         {
-            return ReadInt32(stream, Endian.LittleEndian);
+            var bytes = new byte[count];
+            stream.Read(bytes, 0, bytes.Length);
+            return bytes;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace DotSpatial.Data
         /// <param name="stream">The stream to read the value from</param>
         /// <param name="endian">Specifies what endian property should be used.</param>
         /// <returns>The integer value</returns>
-        public static int ReadInt32(this Stream stream, Endian endian)
+        public static int ReadInt32(this Stream stream, Endian endian = Endian.LittleEndian)
         {
             byte[] val = new byte[4];
             stream.Read(val, 0, 4);
@@ -58,17 +61,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads the specified number of integers into the array as little endian.
-        /// </summary>
-        /// <param name="stream">the stream to read from</param>
-        /// <param name="count">The integer count of integers to read</param>
-        /// <returns>The array of integers that will have count integers.</returns>
-        public static int[] ReadInt32(this Stream stream, int count)
-        {
-            return ReadInt32(stream, count, Endian.LittleEndian);
-        }
-
-        /// <summary>
         /// Reads the specified number of integers.  If a value other than the
         /// systems endian format is specified the values will be reversed.
         /// </summary>
@@ -76,7 +68,7 @@ namespace DotSpatial.Data
         /// <param name="count">The integer count of integers to read</param>
         /// <param name="endian">The endian order of the bytes.</param>
         /// <returns>The array of integers that will have count integers.</returns>
-        public static int[] ReadInt32(this Stream stream, int count, Endian endian)
+        public static int[] ReadInt32(this Stream stream, int count, Endian endian = Endian.LittleEndian)
         {
             int[] result = new int[count];
             byte[] val = new byte[4 * count];
@@ -103,19 +95,7 @@ namespace DotSpatial.Data
         /// <returns>A double precision value</returns>
         public static double ReadDouble(this Stream stream)
         {
-            return ReadDouble(stream, 1, Endian.LittleEndian)[0];
-        }
-
-        /// <summary>
-        /// Reads the specified number of double precision values.  If this system
-        /// is not little endian, it will reverse the individual memebrs.
-        /// </summary>
-        /// <param name="stream">The stream to read the values from.</param>
-        /// <param name="count">The integer count of doubles to read.</param>
-        /// <returns></returns>
-        public static double[] ReadDouble(this Stream stream, int count)
-        {
-            return ReadDouble(stream, count, Endian.LittleEndian);
+            return ReadDouble(stream, 1)[0];
         }
 
         /// <summary>
@@ -126,7 +106,7 @@ namespace DotSpatial.Data
         /// <param name="count">The integer count of doubles to read.</param>
         /// <param name="endian">The endian to use.</param>
         /// <returns></returns>
-        public static double[] ReadDouble(this Stream stream, int count, Endian endian)
+        public static double[] ReadDouble(this Stream stream, int count, Endian endian = Endian.LittleEndian)
         {
             byte[] val = new byte[count * 8];
             stream.Read(val, 0, count * 8);

@@ -397,7 +397,6 @@ namespace DotSpatial.Data
             var featureType = geometry.FeatureType;
             ShapeRange shx = new ShapeRange(featureType) { Extent = new Extent(geometry.Envelope) };
             int vIndex = offset / 2;
-            shx.Parts = new List<PartRange>();
             int shapeStart = vIndex;
             for (int part = 0; part < geometry.NumGeometries; part++)
             {

@@ -33,8 +33,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class PolygonShapefile : Shapefile
     {
-        private const int BLOCKSIZE = 16000000;
-
         /// <summary>
         /// Creates a new instance of a PolygonShapefile for in-ram handling only.
         /// </summary>
@@ -42,10 +40,7 @@ namespace DotSpatial.Data
             : base(FeatureType.Polygon)
         {
             Attributes = new AttributeTable();
-            Header = new ShapefileHeader();
-            Header.FileLength = 100;
-            Header.ShapeType = ShapeType.Polygon;
-            FeatureType = FeatureType.Polygon;
+            Header = new ShapefileHeader {FileLength = 100, ShapeType = ShapeType.Polygon};
         }
 
         /// <summary>
@@ -65,25 +60,30 @@ namespace DotSpatial.Data
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
-            //JK - handle case when filename doesn't exist
             if (!File.Exists(fileName)) return;
 
-            IndexMode = true;
             Filename = fileName;
+            IndexMode = true;
             Header = new ShapefileHeader(fileName);
-            CoordinateType = CoordinateType.Regular;
-            if (Header.ShapeType == ShapeType.PolygonM)
+           
+            switch (Header.ShapeType)
             {
-                CoordinateType = CoordinateType.M;
+                case ShapeType.PolygonM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PolygonZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
             }
-            if (Header.ShapeType == ShapeType.PolygonZ)
-            {
-                CoordinateType = CoordinateType.Z;
-            }
+
+            Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
 
-            FillPolygons(fileName, progressHandler);
+            LineShapefile.FillLines(fileName, progressHandler, this, FeatureType.Polygon);
             ReadProjection();
         }
 
@@ -137,169 +137,6 @@ namespace DotSpatial.Data
         // Byte Z*      Mmin                Double      1           Little
         // Byte Z+8*    Mmax                Double      1           Little
         // Byte Z+16*   Marray              Double      NumPoints   Little
-
-        private void FillPolygons(string fileName, IProgressHandler progressHandler)
-        {
-            // Check to ensure the fileName is not null
-            if (fileName == null)
-            {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
-            }
-
-            if (File.Exists(fileName) == false)
-            {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(fileName);
-            Extent = new Extent(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
-
-            // Check to ensure that the fileName is the correct shape type
-            if (header.ShapeType != ShapeType.Polygon &&
-                 header.ShapeType != ShapeType.PolygonM &&
-                 header.ShapeType != ShapeType.PolygonZ)
-            {
-                throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
-            }
-
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
-            // TO DO: replace with a normal reader.  We no longer need Buffered Binary reader as
-            // the buffer can be set on the underlying file stream.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(fileName, progressHandler);
-
-            if (bbReader.FileLength == 100)
-            {
-                // The shapefile is empty so we can simply return here
-                bbReader.Close();
-                return;
-            }
-
-            // Skip the shapefile header by skipping the first 100 bytes in the shapefile
-            bbReader.Seek(100, SeekOrigin.Begin);
-
-            int numShapes = shapeHeaders.Count;
-
-            int[] partOffsets = new int[numShapes];
-            //byte[] allBounds = new byte[numShapes * 32];
-
-            // probably all will be in one block, but use a byteBlock just in case.
-            ByteBlock allParts = new ByteBlock(BLOCKSIZE);
-            ByteBlock allCoords = new ByteBlock(BLOCKSIZE);
-            bool isM = (header.ShapeType == ShapeType.PolygonM || header.ShapeType == ShapeType.PolygonZ);
-            bool isZ = (header.ShapeType == ShapeType.PolygonZ);
-            ByteBlock allZ = null;
-            ByteBlock allM = null;
-            if (isZ)
-            {
-                allZ = new ByteBlock(BLOCKSIZE);
-            }
-            if (isM)
-            {
-                allM = new ByteBlock(BLOCKSIZE);
-            }
-
-            int pointOffset = 0;
-            for (int shp = 0; shp < numShapes; shp++)
-            {
-                // Read from the index file because some deleted records
-                // might still exist in the .shp file.
-                long offset = (shapeHeaders[shp].ByteOffset);
-                bbReader.Seek(offset, SeekOrigin.Begin);
-
-                // Position  Value Type    Number  Byte Order
-                ShapeRange shape = new ShapeRange(FeatureType.Polygon); //------------------------------------
-                shape.RecordNumber = bbReader.ReadInt32(false);         // Byte 0   Record Integer   1     Big
-                shape.ContentLength = bbReader.ReadInt32(false);        // Byte 4   Length Integer   1     Big
-
-                // Setting shape type also controls extent class type.
-                shape.ShapeType = (ShapeType)bbReader.ReadInt32();      // Byte 8   Type   Integer   1     Little
-                shape.StartIndex = pointOffset;
-                if (shape.ShapeType == ShapeType.NullShape)
-                {
-                    continue;
-                }
-                shape.Extent.MinX = bbReader.ReadDouble();
-                shape.Extent.MinY = bbReader.ReadDouble();
-                shape.Extent.MaxX = bbReader.ReadDouble();
-                shape.Extent.MaxY = bbReader.ReadDouble();
-                shape.NumParts = bbReader.ReadInt32();                  // Byte 44  #Parts  Integer  1    Little
-                shape.NumPoints = bbReader.ReadInt32();                 // Byte 48  #Points Integer  1    Little
-                partOffsets[shp] = allParts.IntOffset();
-                allParts.Read(shape.NumParts * 4, bbReader);
-                allCoords.Read(shape.NumPoints * 16, bbReader);
-                pointOffset += shape.NumPoints;
-
-                if (header.ShapeType == ShapeType.PolygonM)
-                {
-                    // These are listed as "optional" but there isn't a good indicator of
-                    // how to determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
-                    {
-                        IExtentM mExt = (IExtentM)shape.Extent;
-                        mExt.MinM = bbReader.ReadDouble();
-                        mExt.MaxM = bbReader.ReadDouble();
-
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
-                    }
-                }
-
-                if (header.ShapeType == ShapeType.PolygonZ)
-                {
-                    bool hasM = shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints;
-                    IExtentZ zExt = (IExtentZ)shape.Extent;
-                    zExt.MinZ = bbReader.ReadDouble();
-                    zExt.MaxZ = bbReader.ReadDouble();
-
-                    // For Z shapefiles, the Z part is not optional.
-                    if (allZ != null) allZ.Read(shape.NumPoints * 8, bbReader);
-                    // These are listed as "optional" but there isn't a good indicator of
-                    // how to determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    if (hasM)
-                    {
-                        IExtentM mExt = (IExtentM)shape.Extent;
-                        mExt.MinM = bbReader.ReadDouble();
-                        mExt.MaxM = bbReader.ReadDouble();
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
-                    }
-                }
-                ShapeIndices.Add(shape);
-            }
-
-            double[] vert = allCoords.ToDoubleArray();
-            Vertex = vert;
-            if (isM) M = allM.ToDoubleArray();
-            if (isZ) Z = allZ.ToDoubleArray();
-            List<ShapeRange> shapes = ShapeIndices;
-            //double[] bounds = new double[numShapes * 4];
-            //Buffer.BlockCopy(allBounds, 0, bounds, 0, allBounds.Length);
-            int[] parts = allParts.ToIntArray();
-            ProgressMeter = new ProgressMeter(ProgressHandler, "Testing Parts and Holes", shapes.Count);
-            for (int shp = 0; shp < shapes.Count; shp++)
-            {
-                ShapeRange shape = shapes[shp];
-                //shape.Extent = new Extent(bounds, shp * 4);
-                for (int part = 0; part < shape.NumParts; part++)
-                {
-                    int offset = partOffsets[shp];
-                    int endIndex = shape.NumPoints + shape.StartIndex;
-                    int startIndex = parts[offset + part] + shape.StartIndex;
-                    if (part < shape.NumParts - 1) endIndex = parts[offset + part + 1] + shape.StartIndex;
-                    int count = endIndex - startIndex;
-                    PartRange partR = new PartRange(vert, shape.StartIndex, parts[offset + part], FeatureType.Polygon);
-                    partR.NumVertices = count;
-                    shape.Parts.Add(partR);
-                }
-                ProgressMeter.CurrentValue = shp;
-            }
-            ProgressMeter.Reset();
-        }
 
         /// <summary>
         /// Gets the specified feature by constructing it from the vertices, rather

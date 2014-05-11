@@ -308,20 +308,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Reads a double from the buffer, automatically loading the next buffer if necessary.
-        /// </summary>
-        /// <returns>A double value converted from bytes in the file.</returns>
-        public double ReadDouble()
-        {
-            return ReadDouble(true);
-        }
-
-        /// <summary>
         /// Reads a double-precision floating point from 8 bytes in the buffer, automatically loading the next buffer if necessary.
         /// </summary>
         /// <param name="isLittleEndian">Boolean, true if the value should be returned with little endian byte ordering.</param>
         /// <returns>A double value converted from bytes in the file.</returns>
-        public double ReadDouble(bool isLittleEndian)
+        public double ReadDouble(bool isLittleEndian = true)
         {
             // Integers are 8 Bytes long.
 
