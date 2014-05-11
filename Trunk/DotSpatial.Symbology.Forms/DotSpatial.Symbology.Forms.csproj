@@ -392,12 +392,39 @@
     <Compile Include="ZenithEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AddCustomSymbolDialog.de-DE.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.it.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.pt-BR.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddCustomSymbolDialog.resx">
       <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AddCustomSymbolDialog.zh-CN.resx">
       <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.de-DE.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.it.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.pt-BR.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.de-DE.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.it.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.pt-BR.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AngleControl.resx">
       <DependentUpon>AngleControl.cs</DependentUpon>
@@ -406,6 +433,24 @@
     <EmbeddedResource Include="AngleControl.zh-CN.resx">
       <DependentUpon>AngleControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.de-DE.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.it.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.pt-BR.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.de-DE.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.it.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.pt-BR.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AttributeDialog.resx">
       <DependentUpon>AttributeDialog.cs</DependentUpon>
@@ -439,6 +484,24 @@
       <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.de-DE.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.it.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.pt-BR.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.de-DE.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.it-IT.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.pt-BR.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DeleteFieldsDialog.resx">
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -447,22 +510,127 @@
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.de-DE.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.it-IT.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.pt-BR.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DetailedPolygonSymbolDialog.en-US.resx">
       <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.de-DE.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.it-IT.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.pt-BR.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.de-DE.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.it-IT.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.pt-BR.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.zh-CN.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.de-DE.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.it-IT.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.pt-BR.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.de-DE.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.it-IT.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.pt-BR.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="JoinDialog.zh-CN.resx">
       <DependentUpon>JoinDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.de-DE.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.it-IT.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.pt-BR.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.de-DE.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.it-IT.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.pt-BR.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.de-DE.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.en-US.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.it-IT.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.pt-BR.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDialog.en-US.resx">
+      <DependentUpon>PropertyDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RasterCategoryControl.en-US.resx">
       <DependentUpon>RasterCategoryControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.de-DE.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.it-IT.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.pt-BR.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RenameFieldDialog.resx">
       <DependentUpon>RenameFieldDialog.cs</DependentUpon>
@@ -470,6 +638,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RenameFieldDialog.zh-CN.resx">
       <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.de-DE.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.it-IT.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.pt-BR.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchAndReplaceDialog.resx">
@@ -496,12 +676,57 @@
       <DependentUpon>SelectField.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.de-DE.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.it-IT.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.pt-BR.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.de-DE.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.it-IT.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.pt-BR.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SymbolizerCollectionControl.zh-CN.resx">
       <DependentUpon>SymbolizerCollectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.de-DE.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.it-IT.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.pt-BR.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.de-DE.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.it-IT.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.pt-BR.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableEditorControl.cs.resx">
       <DependentUpon>TableEditorControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.de-DE.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.it-IT.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.pt-BR.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableEditorControl.resx">
       <DependentUpon>TableEditorControl.cs</DependentUpon>
