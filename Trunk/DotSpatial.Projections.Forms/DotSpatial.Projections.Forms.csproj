@@ -104,6 +104,15 @@
     <EmbeddedResource Include="DoubleBox.resx">
       <DependentUpon>DoubleBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionCustomDialog.de-DE.resx">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionCustomDialog.it-IT.resx">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionCustomDialog.pt-BR.resx">
+      <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectionCustomDialog.resx">
       <DependentUpon>ProjectionCustomDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,10 +140,16 @@
     <EmbeddedResource Include="UndefinedProjectionDialog.cs.resx">
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UndefinedProjectionDialog.de-DE.resx">
+      <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.de.resx">
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.el.resx">
+      <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UndefinedProjectionDialog.it-IT.resx">
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.ja-JP.resx">
@@ -144,6 +159,9 @@
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.nl.resx">
+      <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UndefinedProjectionDialog.pt-BR.resx">
       <DependentUpon>UndefinedProjectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UndefinedProjectionDialog.pt.resx">

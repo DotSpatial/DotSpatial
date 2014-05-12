@@ -95,6 +95,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MeasureDialog.de-DE.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MeasureDialog.it-IT.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MeasureDialog.pt-BR.resx">
+      <DependentUpon>MeasureDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MeasureDialog.resx">
       <DependentUpon>MeasureDialog.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+		<value>17, 17</value>
+	</metadata>
+	<assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+		<value>0, 0</value>
+	</data>
+	<data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>451, 25</value>
+	</data>
+	<assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+	<data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+	<data name="tsbDistance.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+		<value>Magenta</value>
+	</data>
+	<data name="tsbDistance.Size" type="System.Drawing.Size, System.Drawing">
+		<value>23, 22</value>
+	</data>
+	<data name="tsbArea.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+		<value>Magenta</value>
+	</data>
+	<data name="tsbArea.Size" type="System.Drawing.Size, System.Drawing">
+		<value>23, 22</value>
+	</data>
+	<data name="tsbClear.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+		<value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANQSURBVDhPdZNZTBNRFEAHaClF0QiiBmqnrdLYETqVRcvE
+        LhIpBeQPDISgSIlaE4xCWFKixjSSGv0g4BbcjVvEDxXBBDCKP2oUFdwRgiwW6EgXGtZir7fEEOMyyc28
+        ufPOeffOe0P0Z2byX2i1Ve9Vqu4rNH2cDA5eQfzn+sIwm2xJSU87Gebh7mXLlHPTXup05nd79zq7zGYv
+        azJNHaHp08VS6dI/HZ8TE9XWwsI3rNk8y5aVedrT018Zw8IyiM6EhG99Bw9CPwZrsQBbXj5xSamsCyeI
+        +UqcGzdutu7Y0WGzWH64Dx+G6cpKGDMYZmvCw+8R1+XyWuvOnTBUUQFWkwkcZjM4iovHK+Xyk7pFi0Ib
+        ZDKVx2BoHz50yOs+cABmcN600QgXY2MHYni8KsLXczVNn7UVFMD3/fthqKQEJrCanrw8Z7Na3fAxK+uZ
+        A2EX5jylpTCNi52Xy/siuNwqbFMx1+pKPj+iNjq6zpGbC+49e2B03z5wl5WBG2UuHLtwxdnt22EmJ2du
+        ZQGXewSxtRic37/VylKh8NRnnY51ZmeDPSMDnFot2GNiYEwshl6S9NSsXt0l5vOPIkRhBPy1WQaKCm1e
+        v75pcNUqL7tkCdi4XGAJAibw/jwy0sUIBNUICTH8/7nTb/PzMz5Q1KtePz+vDUFf+AR2FHSIxZPHGOaW
+        TCQi/wlPGI3bPBpNj3PxYhhGyOHvD+MLF8Iojwdf8XkAJd1S6fh1vf4CTZKieYm3qIhn37Urd5hhBqw4
+        2Qe7/PygLzLS+0mpHP8YFeX9inA75js4HOiWy+FmevpFSiLxtUIQo/n5hSzDDI0g7CvZifC0QAD1CkV/
+        Xnz8uTMM0zAok022o6QF3z8JCIB3KLmaknJZQ5JrCKdONzgSGAgjv8qeioiAFpXKvoEka9EvUQiF1F29
+        /lonSh6j5A7Oe4Dt9SQmQn1q6g2iV69/Mrh8uceBkkmEH6nVo0qR6MT8IcGBSioV30lLu/kaJU1YaWNI
+        CNyn6UlTXFwrUalSMV3JyR0uipp9qtWOKfEsILPuz63CikQoud0dHz/jg3fHxrYuCAraOvcdLBpNZmNK
+        SluaRFLH4XB8v+nfhwSTySSpuLtlS2NFXFwbNygoG1MhPwF1WoBqeK4kKgAAAABJRU5ErkJggg==
+</value>
+	</data>
+	<data name="tsbClear.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+		<value>Magenta</value>
+	</data>
+	<data name="tsbClear.Size" type="System.Drawing.Size, System.Drawing">
+		<value>23, 22</value>
+	</data>
+	<metadata name="ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+		<value>122, 17</value>
+	</metadata>
+	<data name="lblPartialValue.Location" type="System.Drawing.Point, System.Drawing">
+		<value>62, 49</value>
+	</data>
+	<data name="lblPartialValue.Size" type="System.Drawing.Size, System.Drawing">
+		<value>237, 22</value>
+	</data>
+	<data name="lblPartialValue.TabIndex" type="System.Int32, mscorlib">
+		<value>4</value>
+	</data>
+	<data name="&gt;&gt;lblPartialValue.Name" xml:space="preserve">
+    <value>lblPartialValue</value>
+  </data>
+	<data name="&gt;&gt;lblPartialValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblPartialValue.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;lblPartialValue.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+	<data name="lblTotalValue.Location" type="System.Drawing.Point, System.Drawing">
+		<value>62, 82</value>
+	</data>
+	<data name="lblTotalValue.Size" type="System.Drawing.Size, System.Drawing">
+		<value>237, 22</value>
+	</data>
+	<data name="lblTotalValue.TabIndex" type="System.Int32, mscorlib">
+		<value>7</value>
+	</data>
+	<data name="&gt;&gt;lblTotalValue.Name" xml:space="preserve">
+    <value>lblTotalValue</value>
+  </data>
+	<data name="&gt;&gt;lblTotalValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblTotalValue.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;lblTotalValue.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+	<data name="cmbUnits.Location" type="System.Drawing.Point, System.Drawing">
+		<value>311, 50</value>
+	</data>
+	<data name="cmbUnits.Size" type="System.Drawing.Size, System.Drawing">
+		<value>108, 21</value>
+	</data>
+	<data name="cmbUnits.TabIndex" type="System.Int32, mscorlib">
+		<value>5</value>
+	</data>
+	<data name="&gt;&gt;cmbUnits.Name" xml:space="preserve">
+    <value>cmbUnits</value>
+  </data>
+	<data name="&gt;&gt;cmbUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;cmbUnits.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;cmbUnits.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+	<data name="label1.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+		<value>22, 82</value>
+	</data>
+	<data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>34, 13</value>
+	</data>
+	<data name="label1.TabIndex" type="System.Int32, mscorlib">
+		<value>6</value>
+	</data>
+	<data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+	<data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+	<data name="lblMeasure.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="lblMeasure.Location" type="System.Drawing.Point, System.Drawing">
+		<value>81, 25</value>
+	</data>
+	<data name="lblMeasure.Size" type="System.Drawing.Size, System.Drawing">
+		<value>49, 13</value>
+	</data>
+	<data name="lblMeasure.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="&gt;&gt;lblMeasure.Name" xml:space="preserve">
+    <value>lblMeasure</value>
+  </data>
+	<data name="&gt;&gt;lblMeasure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblMeasure.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;lblMeasure.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+	<data name="label2.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+		<value>NoControl</value>
+	</data>
+	<data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 49</value>
+	</data>
+	<data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+		<value>44, 13</value>
+	</data>
+	<data name="label2.TabIndex" type="System.Int32, mscorlib">
+		<value>3</value>
+	</data>
+	<data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+	<data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+	<data name="label3.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+		<value>NoControl</value>
+	</data>
+	<data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+		<value>360, 25</value>
+	</data>
+	<data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+		<value>31, 13</value>
+	</data>
+	<data name="label3.TabIndex" type="System.Int32, mscorlib">
+		<value>2</value>
+	</data>
+	<data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+	<data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+	<data name="lblTotalUnits.Location" type="System.Drawing.Point, System.Drawing">
+		<value>311, 86</value>
+	</data>
+	<data name="lblTotalUnits.Size" type="System.Drawing.Size, System.Drawing">
+		<value>107, 18</value>
+	</data>
+	<data name="lblTotalUnits.TabIndex" type="System.Int32, mscorlib">
+		<value>8</value>
+	</data>
+	<data name="&gt;&gt;lblTotalUnits.Name" xml:space="preserve">
+    <value>lblTotalUnits</value>
+  </data>
+	<data name="&gt;&gt;lblTotalUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;lblTotalUnits.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;lblTotalUnits.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="label4.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+		<value>12, 122</value>
+	</data>
+	<data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+		<value>251, 13</value>
+	</data>
+	<data name="label4.TabIndex" type="System.Int32, mscorlib">
+		<value>9</value>
+	</data>
+	<data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+	<data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>True</value>
+	</metadata>
+	<metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>54</value>
+	</metadata>
+	<data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+		<value>451, 144</value>
+	</data>
+	<data name="&gt;&gt;tsbDistance.Name" xml:space="preserve">
+    <value>tsbDistance</value>
+  </data>
+	<data name="&gt;&gt;tsbDistance.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;tsbArea.Name" xml:space="preserve">
+    <value>tsbArea</value>
+  </data>
+	<data name="&gt;&gt;tsbArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;tsbClear.Name" xml:space="preserve">
+    <value>tsbClear</value>
+  </data>
+	<data name="&gt;&gt;tsbClear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;ttHelp.Name" xml:space="preserve">
+    <value>ttHelp</value>
+  </data>
+	<data name="&gt;&gt;ttHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MeasureDialog</value>
+  </data>
+	<data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="toolStrip1.Text" xml:space="preserve">
+		<value>toolStrip1</value>
+	</data>
+	<data name="tsbDistance.Text" xml:space="preserve">
+		<value>Distanza</value>
+	</data>
+	<data name="tsbDistance.ToolTipText" xml:space="preserve">
+		<value>Distanza di misura</value>
+	</data>
+	<data name="tsbArea.Text" xml:space="preserve">
+		<value>Zona</value>
+	</data>
+	<data name="tsbArea.ToolTipText" xml:space="preserve">
+		<value>Area di misura</value>
+	</data>
+	<data name="tsbClear.Text" xml:space="preserve">
+		<value>toolStripButton1</value>
+	</data>
+	<data name="tsbClear.ToolTipText" xml:space="preserve">
+		<value>Cancella le misure esistenti</value>
+	</data>
+	<data name="lblPartialValue.Text" xml:space="preserve">
+		<value>0.0</value>
+	</data>
+	<data name="lblPartialValue.ToolTip" xml:space="preserve">
+		<value>La distanza del segmento o del poligono in fase di modifica.</value>
+	</data>
+	<data name="lblTotalValue.Text" xml:space="preserve">
+		<value>0.0</value>
+	</data>
+	<data name="lblTotalValue.ToolTip" xml:space="preserve">
+		<value>Il totale di tutti i segmenti o parti.</value>
+	</data>
+	<data name="cmbUnits.ToolTip" xml:space="preserve">
+		<value>Selezionando un'unità convertirà anche le misurazioni nell'unità specificata.</value>
+	</data>
+	<data name="label1.Text" xml:space="preserve">
+		<value>Totale:</value>
+	</data>
+	<data name="lblMeasure.Text" xml:space="preserve">
+		<value>Distanza</value>
+	</data>
+	<data name="label2.Text" xml:space="preserve">
+		<value>Corrente:</value>
+	</data>
+	<data name="label3.Text" xml:space="preserve">
+		<value>Unità</value>
+	</data>
+	<data name="lblTotalUnits.Text" xml:space="preserve">
+		<value>Metri</value>
+	</data>
+	<data name="label4.Text" xml:space="preserve">
+		<value>Fare clic per aggiungere un punto. Tasto destro del mouse quando si è fatto.</value>
+	</data>
+	<data name="$this.Text" xml:space="preserve">
+		<value>Distanza di misura</value>
+	</data>
+</root>
