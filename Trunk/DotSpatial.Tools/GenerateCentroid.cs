@@ -150,6 +150,7 @@ namespace DotSpatial.Tools
                 i++;
             }
 
+            output.AttributesPopulated = true;
             output.SaveAs(output.Filename, true);
             return true;
         }

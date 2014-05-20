@@ -155,6 +155,7 @@ namespace DotSpatial.Tools
                 }
             }
 
+            output.AttributesPopulated = true;
             output.Save();
             return true;
         }
