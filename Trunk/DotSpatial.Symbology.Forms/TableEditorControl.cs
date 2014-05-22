@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -73,10 +74,8 @@ namespace DotSpatial.Symbology.Forms
         private bool _ignoreTableSelectionChanged;
         private bool _isEditable = true;
         private List<int> _selectedRows;
-        private DataTable _selection;
         private List<int> _selectionIndices;
         private bool _showOnlySelectedRows;
-        private bool _virtualHooked;
         private AttributeCache _attributeCache;
 
         #endregion
@@ -104,33 +103,16 @@ namespace DotSpatial.Symbology.Forms
             FeatureLayer = layer;
             _selectedRows = new List<int>();
             enableEditingToolStripMenuItem.CheckedChanged += EnableEditingToolStripMenuItemCheckedChanged;
-            Disposed += OnDisposed;
             RemoveUnusedButtonsFromToolstrip();
+
+            Disposed += delegate { FeatureLayer = null; };
             Load += delegate
             {
                 SetSelectionFromLayer();
                 dataGridView1.SelectionChanged += DataGridView1SelectionChanged;
             };
         }
-
-        private void OnDisposed(object sender, EventArgs eventArgs)
-        {
-            _ignoreTableSelectionChanged = true;
-            if (_fidField != null)
-            {
-                if (_featureLayer.DataSet.DataTable.Columns.Contains(_fidField))
-                    _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
-            }
-            _selection = null;
-            _selectionIndices = null;
-            _selectedRows = null;
-            _attributeCache = null;
-            if (_featureLayer != null)
-            {
-                _featureLayer.SelectionChanged -= SelectedFeaturesChanged;
-                _featureLayer = null;
-            }
-        }
+       
 
         #endregion
 
@@ -182,81 +164,70 @@ namespace DotSpatial.Symbology.Forms
 
         private void SetSelectionFromLayer()
         {
-            dataGridView1.SuspendLayout();
             if (_featureLayer == null) return;
             if (_ignoreSelectionChanged) return;
+
+            dataGridView1.SuspendLayout();
             _ignoreSelectionChanged = true;
             _ignoreTableSelectionChanged = true;
-            if (!_featureLayer.EditMode)
+
+            try
             {
-                FastDrawnState[] states = _featureLayer.DrawnStates;
-                if (_featureLayer.DataSet.AttributesPopulated)
+                if (!_featureLayer.EditMode)
                 {
-                    _ignoreSelectionChanged = true;
-                    _ignoreTableSelectionChanged = true;
-                    dataGridView1.SuspendLayout();
-                    if (states == null)
+                    FastDrawnState[] states = _featureLayer.DrawnStates;
+                    if (states == null) return;
+
+                    if (_featureLayer.DataSet.AttributesPopulated)
                     {
-                        _ignoreSelectionChanged = false;
-                        _ignoreTableSelectionChanged = false;
-                        return;
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            int fid = (int) row.Cells[_fidField].Value;
+                            row.Selected = states[fid].Selected;
+                        }
                     }
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    else
                     {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        row.Selected = states[fid].Selected;
+                        foreach (AttributeCache.DataPage page in _attributeCache.Pages)
+                        {
+                            for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
+                            {
+                                dataGridView1.Rows[row].Selected = states[row].Selected;
+                            }
+                        }
                     }
-                    dataGridView1.ResumeLayout();
-                    _ignoreSelectionChanged = false;
-                    _ignoreTableSelectionChanged = false;
                 }
                 else
                 {
-                    if (states == null)
+                    IFeatureSelection fs = _featureLayer.Selection as IFeatureSelection;
+                    if (fs == null) return;
+                    if (_featureLayer.DataSet.AttributesPopulated)
                     {
-                        return;
-                    }
-                    foreach (AttributeCache.DataPage page in _attributeCache.Pages)
-                    {
-                        for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
-                            dataGridView1.Rows[row].Selected = states[row].Selected;
+                            int fid = (int) row.Cells[_fidField].Value;
+                            row.Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[fid]].IsSelected;
+                        }
+                    }
+                    else
+                    {
+                        foreach (AttributeCache.DataPage page in _attributeCache.Pages)
+                        {
+                            for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
+                            {
+                                dataGridView1.Rows[row].Selected =
+                                    fs.Filter.DrawnStates[_featureLayer.DataSet.Features[row]].IsSelected;
+                            }
                         }
                     }
                 }
             }
-            else
+            finally
             {
-                IFeatureSelection fs = _featureLayer.Selection as IFeatureSelection;
-                if (fs == null) return;
-                if (_featureLayer.DataSet.AttributesPopulated)
-                {
-                    _ignoreSelectionChanged = true;
-                    _ignoreTableSelectionChanged = true;
-                    dataGridView1.SuspendLayout();
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        int fid = (int)row.Cells[_fidField].Value;
-                        row.Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[fid]].IsSelected;
-                    }
-                    dataGridView1.ResumeLayout();
-                    _ignoreSelectionChanged = false;
-                    _ignoreTableSelectionChanged = false;
-                }
-                else
-                {
-                    foreach (AttributeCache.DataPage page in _attributeCache.Pages)
-                    {
-                        for (int row = page.LowestIndex; row <= page.HighestIndex; row++)
-                        {
-                            dataGridView1.Rows[row].Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[row]].IsSelected;
-                        }
-                    }
-                }
+                _ignoreSelectionChanged = false;
+                _ignoreTableSelectionChanged = false;
+                dataGridView1.ResumeLayout();
             }
-            _ignoreSelectionChanged = false;
-            _ignoreTableSelectionChanged = false;
-            dataGridView1.ResumeLayout();
         }
         
 
@@ -381,18 +352,55 @@ namespace DotSpatial.Symbology.Forms
             set
             {
                 if (_featureLayer == value) return;
-                _featureLayer = value;
-                //to show the Filename label
-                if (_featureLayer != null && _featureLayer.DataSet != null)
-                {
-                    DisplayFilePathLabel(FeatureLayer.DataSet.Filename);
-                }
                 if (_featureLayer != null)
                 {
-                    _featureLayer.ProgressHandler = null;
+                    _featureLayer.SelectionChanged -= SelectedFeaturesChanged;
+                    if (_fidField != null)
+                    {
+                        _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+                        _fidField = null;
+                    }
                 }
+                _featureLayer = value;
 
-                FeatureLayerSetup();
+                dataGridView1.CellValueNeeded -= DataGridView1CellValueNeeded;
+                dataGridView1.CellValuePushed -= dataGridView1_CellValuePushed;
+                dataGridView1.RowValidated -= dataGridView1_RowValidated;
+
+                if (_featureLayer != null)
+                {
+                    //to show the Filename label
+                    DisplayFilePathLabel(FeatureLayer.DataSet.Filename);
+
+                    _featureLayer.ProgressHandler = null;
+
+                    if (_featureLayer.DataSet.NumRows() < 10000 && !_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        _featureLayer.DataSet.FillAttributes();
+                    }
+
+                    if (_featureLayer.DataSet.AttributesPopulated)
+                    {
+                        dataGridView1.VirtualMode = false;
+                        AddFid(_featureLayer.DataSet.DataTable);
+                        dataGridView1.DataSource = _featureLayer.DataSet.DataTable;
+                    }
+                    else
+                    {
+                        dataGridView1.VirtualMode = true;
+                        dataGridView1.CellValueNeeded += DataGridView1CellValueNeeded;
+                        dataGridView1.CellValuePushed += dataGridView1_CellValuePushed;
+                        dataGridView1.RowValidated += dataGridView1_RowValidated;
+
+                        _attributeCache = new AttributeCache(FeatureLayer.DataSet, 16);
+                        foreach (var field in _featureLayer.DataSet.GetColumns())
+                        {
+                            dataGridView1.Columns.Add(field.ColumnName, field.ColumnName);
+                        }
+                        dataGridView1.RowCount = _featureLayer.DataSet.NumRows();
+                    }
+                    _featureLayer.SelectionChanged += SelectedFeaturesChanged;
+                }
             }
         }
 
@@ -504,48 +512,6 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        private void FeatureLayerSetup()
-        {
-            if (_featureLayer == null) return;
-            if (_featureLayer.DataSet.NumRows() < 10000 && !_featureLayer.DataSet.AttributesPopulated)
-            {
-                _featureLayer.DataSet.FillAttributes();
-            }
-
-            if (_featureLayer.DataSet.AttributesPopulated)
-            {
-                dataGridView1.VirtualMode = false;
-                dataGridView1.AllowUserToOrderColumns = true;
-                dataGridView1.DataSource = _featureLayer.DataSet.DataTable;
-                if (_virtualHooked)
-                {
-                    dataGridView1.CellValueNeeded -= DataGridView1CellValueNeeded;
-                    dataGridView1.CellValuePushed -= dataGridView1_CellValuePushed;
-                    dataGridView1.RowValidated -= dataGridView1_RowValidated;
-                }
-                AddFid(_featureLayer.DataSet.DataTable);
-            }
-            else
-            {
-                dataGridView1.VirtualMode = true;
-                dataGridView1.AllowUserToOrderColumns = false;
-                if (!_virtualHooked)
-                {
-                    dataGridView1.CellValueNeeded += DataGridView1CellValueNeeded;
-                    dataGridView1.CellValuePushed += dataGridView1_CellValuePushed;
-                    dataGridView1.RowValidated += dataGridView1_RowValidated;
-                    _virtualHooked = true;
-                }
-                _attributeCache = new AttributeCache(FeatureLayer.DataSet, 16);                
-                foreach (var field in _featureLayer.DataSet.GetColumns())
-                {
-                    dataGridView1.Columns.Add(field.ColumnName, field.ColumnName);
-                }
-                dataGridView1.RowCount = _featureLayer.DataSet.NumRows();
-            }
-            _featureLayer.SelectionChanged += SelectedFeaturesChanged;
-        }
-
         private void AddFid(DataTable table)
         {
             const string name = "FID";
@@ -556,7 +522,7 @@ namespace DotSpatial.Symbology.Forms
             }
             _fidField = name + i;
             table.Columns.Add(_fidField, typeof(int));
-            for (int row = 0; row < table.Rows.Count; row++)
+            for (var row = 0; row < table.Rows.Count; row++)
             {
                 table.Rows[row][_fidField] = row;
             }
@@ -564,25 +530,23 @@ namespace DotSpatial.Symbology.Forms
 
         private void DataGridView1SelectionChanged(object sender, EventArgs e)
         {
+            if (!_featureLayer.DataSet.AttributesPopulated) return; // For now can handle only populated data sets with fid column
+            Debug.Assert(_fidField != null);
+
             if (_ignoreTableSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            if (_featureLayer.DataSet.AttributesPopulated)
+            try
             {
                 //manage selection using the Selection property
                 IndexSelection sel = _featureLayer.Selection as IndexSelection;
                 if (sel != null)
                 {
-                    //check the 'fid' field
-                    if (string.IsNullOrEmpty(_fidField) || !_featureLayer.DataSet.DataTable.Columns.Contains(_fidField))
-                    {
-                        _ignoreSelectionChanged = false;
-                        return;
-                    }
+                    sel.SuspendChanges();
                     //set the selected state of the corresponding feature
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
-                        int fid = (int)row.Cells[_fidField].Value;
+                        int fid = (int) row.Cells[_fidField].Value;
                         if (row.Selected)
                         {
                             sel.Add(fid);
@@ -592,6 +556,7 @@ namespace DotSpatial.Symbology.Forms
                             sel.Remove(fid);
                         }
                     }
+                    sel.ResumeChanges();
                 }
                 else
                 {
@@ -608,11 +573,9 @@ namespace DotSpatial.Symbology.Forms
                     _featureLayer.Select(adds);
                     _featureLayer.UnSelect(removes);
                 }
-
-                if (_featureLayer != null)
-                {
-                    _featureLayer.Invalidate();
-                }
+            }
+            finally
+            {
                 _ignoreSelectionChanged = false;
             }
         }
@@ -673,6 +636,7 @@ namespace DotSpatial.Symbology.Forms
         private void tsbtnZoomToSelected_Click(object sender, EventArgs e)
         {
             ZoomToSelected();
+            OnSelectionZoom();
         }
 
         #endregion
@@ -686,17 +650,13 @@ namespace DotSpatial.Symbology.Forms
         {
             if (_ignoreSelectionChanged) return;
 
-            //when selection is changed by the user..
-
             _ignoreSelectionChanged = true;
-
-            //fire the SelectionChanged event of the layer
-            //_featureLayer.Selection.
-
-            if (SelectionChanged != null)
+            var h = SelectionChanged;
+            if (h != null)
             {
-                SelectionChanged(this, EventArgs.Empty);
+                h(this, EventArgs.Empty);
             }
+
             _ignoreSelectionChanged = false;
         }
 
@@ -708,8 +668,11 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
 
             _ignoreSelectionChanged = true;
-            //if (tsbtnZoomToSelected.Click != null)
-            SelectionZoom(this, EventArgs.Empty);
+            var h = SelectionZoom;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
             _ignoreSelectionChanged = false;
         }
 
@@ -721,8 +684,12 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            //Call the event Handler
-            MapRefreshed(this, EventArgs.Empty);
+            var h = MapRefreshed;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
+
             _ignoreSelectionChanged = false;
         }
 
@@ -734,9 +701,12 @@ namespace DotSpatial.Symbology.Forms
             if (_ignoreSelectionChanged) return;
             _ignoreSelectionChanged = true;
 
-            //Call the event Handeler
-
-            ZoomToShapeBeingEdited(this, EventArgs.Empty);
+            var h = ZoomToShapeBeingEdited;
+            if (h != null)
+            {
+                h(this, EventArgs.Empty);
+            }
+            
             _ignoreSelectionChanged = false;
         }
 
@@ -1008,24 +978,24 @@ namespace DotSpatial.Symbology.Forms
             {
                 int numRows = _featureLayer.DataSet.DataTable.Rows.Count;
                 dataGridView1.SuspendLayout();
-                _selection = new DataTable();
-                _selection.Columns.AddRange(_featureLayer.DataSet.GetColumns());
+                var selection = new DataTable();
+                selection.Columns.AddRange(_featureLayer.DataSet.GetColumns());
 
-                if (!_selection.Columns.Contains(_fidField))
+                if (!selection.Columns.Contains(_fidField))
                 {
-                    _selection.Columns.Add(_fidField, typeof(int));
+                    selection.Columns.Add(_fidField, typeof(int));
                 }
                 if (_selectionIndices == null) _selectionIndices = new List<int>();
                 _selectionIndices.Clear();
                 for (int row = 0; row < numRows; row++)
                 {
                     if (!_featureLayer.DrawnStates[row].Selected) continue;
-                    DataRow dr = _selection.NewRow();
+                    DataRow dr = selection.NewRow();
                     dr.ItemArray = _featureLayer.DataSet.DataTable.Rows[row].ItemArray;
-                    _selection.Rows.Add(dr);
+                    selection.Rows.Add(dr);
                     _selectionIndices.Add(row);
                 }
-                dataGridView1.DataSource = _selection;
+                dataGridView1.DataSource = selection;
                 dataGridView1.SelectAll();
                 dataGridView1.ResumeLayout();
             }
@@ -1058,31 +1028,38 @@ namespace DotSpatial.Symbology.Forms
             if (attributeCal != null) _featureLayer.DataSet = attributeCal.FeatureSet;
         }
 
-        private void ShowSelectedRowCount()
-        {
-            int numSelected = dataGridView1.SelectedRows.Count;
-
-            lblSelectedNumber.Text = String.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, numSelected, _featureLayer.DataSet.NumRows());
-        }
-
-        //saves edits to the data Table
         private void SaveEdits()
         {
+            dataGridView1.SuspendLayout();
+            _ignoreTableSelectionChanged = true;
+
             try
             {
-                dataGridView1.SuspendLayout();
 
-                //remove temporary columns
+                // remove fid column
+                if (_fidField != null)
+                {
+                    _featureLayer.DataSet.DataTable.Columns.Remove(_fidField);
+                }
 
                 _featureLayer.DataSet.Save();
 
-                dataGridView1.ResumeLayout();
+                // restore fid column
+                if (_fidField != null)
+                {
+                    AddFid(_featureLayer.DataSet.DataTable);
+                }
 
-                //ReloadDataSource();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ + ex.Message);
+                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ +
+                                ex.Message);
+            }
+            finally
+            {
+                _ignoreTableSelectionChanged = false;
+                dataGridView1.ResumeLayout();
             }
         }
 
@@ -1524,7 +1501,8 @@ namespace DotSpatial.Symbology.Forms
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            ShowSelectedRowCount();
+            lblSelectedNumber.Text = String.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, dataGridView1.SelectedRows.Count, _featureLayer.DataSet.NumRows());
+
             OnSelectionChanged();
         }
     }
