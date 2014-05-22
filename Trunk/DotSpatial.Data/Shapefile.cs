@@ -784,11 +784,11 @@ namespace DotSpatial.Data
         protected void EnsureValidFileToSave(string fileName, bool overwrite)
         {
             string dir = Path.GetDirectoryName(fileName);
-            if (dir != null && !Directory.Exists(dir))
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
-            if (File.Exists(fileName))
+            else if (File.Exists(fileName))
             {
                 if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
                 File.Delete(fileName);
