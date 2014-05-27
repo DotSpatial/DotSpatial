@@ -974,6 +974,8 @@ namespace DotSpatial.Symbology.Forms
         //Limits the displayed rows only to rows which are selected
         private void ShowOnlySelectedRows()
         {
+            _ignoreSelectionChanged = true;
+            _ignoreTableSelectionChanged = true;
             if (_featureLayer.DataSet.AttributesPopulated)
             {
                 int numRows = _featureLayer.DataSet.DataTable.Rows.Count;
@@ -987,6 +989,7 @@ namespace DotSpatial.Symbology.Forms
                 }
                 if (_selectionIndices == null) _selectionIndices = new List<int>();
                 _selectionIndices.Clear();
+                _selectedRows.Clear();
                 for (int row = 0; row < numRows; row++)
                 {
                     if (!_featureLayer.DrawnStates[row].Selected) continue;
@@ -994,6 +997,7 @@ namespace DotSpatial.Symbology.Forms
                     dr.ItemArray = _featureLayer.DataSet.DataTable.Rows[row].ItemArray;
                     selection.Rows.Add(dr);
                     _selectionIndices.Add(row);
+                    _selectedRows.Add(row);
                 }
                 dataGridView1.DataSource = selection;
                 dataGridView1.SelectAll();
@@ -1005,8 +1009,10 @@ namespace DotSpatial.Symbology.Forms
                 dataGridView1.Rows.Clear(); // without this setting rowCount takes a looooong time
                 dataGridView1.RowCount = _featureLayer.Selection.Count;
             }
+
+            _ignoreTableSelectionChanged = false;
+            _ignoreSelectionChanged = false;
             _showOnlySelectedRows = true;
-            Refresh();
         }
 
         private void FieldCalculationExecute()
