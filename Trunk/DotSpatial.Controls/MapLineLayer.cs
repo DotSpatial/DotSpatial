@@ -327,7 +327,7 @@ namespace DotSpatial.Controls
                 PartRange prtx = shpx.Parts[prt];
                 int start = prtx.StartIndex;
                 int end = prtx.EndIndex;
-                List<double[]> points = new List<double[]>();
+                var points = new List<double[]>(end - start + 1);
 
                 for (int i = start; i <= end; i++)
                 {
@@ -351,15 +351,14 @@ namespace DotSpatial.Controls
 
                 foreach (List<double[]> linestring in multiLinestrings)
                 {
-                    List<Point> intPoints = DuplicationPreventer.Clean(linestring);
-                    if (intPoints.Count < 2)
+                    var intPoints = DuplicationPreventer.Clean(linestring).ToArray();
+                    if (intPoints.Length < 2)
                     {
-                        points.Clear();
                         continue;
                     }
+
                     path.StartFigure();
-                    Point[] pointArray = intPoints.ToArray();
-                    path.AddLines(pointArray);
+                    path.AddLines(intPoints);
                 }
             }
         }

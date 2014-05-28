@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -30,7 +29,6 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
@@ -57,8 +55,6 @@ namespace DotSpatial.Controls
         const int SELECTED = 1;
         const int X = 0;
         const int Y = 1;
-        private static object lock1 = new object();
-        private static double totalTime;
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
         private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
         private Rectangle _bufferRectangle;
@@ -235,8 +231,8 @@ namespace DotSpatial.Controls
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     FinishDrawing();
-                    OnBufferChanged(clipRectangles);
                     Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
                     //this.StartDrawing();
                 }
             }
@@ -269,8 +265,8 @@ namespace DotSpatial.Controls
                 if (numChunks > 0 && chunk < numChunks - 1)
                 {
                     // FinishDrawing();
-                    OnBufferChanged(clipRectangles);
                     Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
                     // this.StartDrawing();
                 }
             }
@@ -392,11 +388,9 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            if (BufferChanged != null)
-            {
-                ClipArgs e = new ClipArgs(clipRectangles);
-                BufferChanged(this, e);
-            }
+            var h = BufferChanged;
+            if (h == null) return;
+            h(this, new ClipArgs(clipRectangles));
         }
 
         /// <summary>
@@ -422,16 +416,13 @@ namespace DotSpatial.Controls
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
             List<GraphicsPath> paths;
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             // First, use the coordinates to build the drawing paths
             BuildPaths(e, features, out paths);
+
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths);
-            sw.Stop();
-            //Debug.WriteLine("Drawing time: " + sw.ElapsedMilliseconds);
 
-            foreach (GraphicsPath path in paths)
+            foreach (var path in paths)
             {
                 path.Dispose();
             }
@@ -442,11 +433,14 @@ namespace DotSpatial.Controls
         {
             if (DataSet.ShapeIndices == null) return;
             List<GraphicsPath> paths;
+
             // First, use the coordinates to build the drawing paths
             BuildPaths(e, indices, out paths);
+
             // Next draw all the paths using the various category symbols.
             DrawPaths(e, paths);
-            foreach (GraphicsPath path in paths)
+
+            foreach (var path in paths)
             {
                 path.Dispose();
             }
@@ -561,18 +555,12 @@ namespace DotSpatial.Controls
                     } // category
                 } // selectState
             }
-
-            for (int i = 0; i < Symbology.Categories.Count; i++)
-            {
-                paths[i].Dispose();
-            }
+        
             if (e.Device == null) g.Dispose();
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<int> indices, out List<GraphicsPath> paths)
         {
-            DateTime startTime = DateTime.Now;
-
             paths = new List<GraphicsPath>();
             Rectangle clipRect = ComputeClippingRectangle(e);
             Extent drawExtents = e.PixelToProj(clipRect);
@@ -655,11 +643,6 @@ namespace DotSpatial.Controls
                 }
             }
             if (ProgressReportingEnabled) ProgressMeter.Reset();
-
-            TimeSpan interval = DateTime.Now - startTime;
-            totalTime += interval.TotalMilliseconds;
-
-            //Console.WriteLine("Total milliseconds: " + totalTime.ToString());
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<IFeature> features, out List<GraphicsPath> borderPaths)
@@ -719,11 +702,11 @@ namespace DotSpatial.Controls
                 PartRange prtx = shpx.Parts[prt];
                 int start = prtx.StartIndex;
                 int end = prtx.EndIndex;
-                List<double[]> points = new List<double[]>();
+                var points = new List<double[]>(end - start + 1);
 
                 for (int i = start; i <= end; i++)
                 {
-                    double[] pt = new double[2];
+                    var pt = new double[2];
                     pt[X] = (vertices[i * 2] - minX) * dx;
                     pt[Y] = (maxY - vertices[i * 2 + 1]) * dy;
                     points.Add(pt);
@@ -732,21 +715,14 @@ namespace DotSpatial.Controls
                 {
                     points = shClip.Clip(points);
                 }
-                List<Point> intPoints = DuplicationPreventer.Clean(points);
-                if (intPoints.Count < 2)
+                var intPoints = DuplicationPreventer.Clean(points).ToArray();
+                if (intPoints.Length < 2)
                 {
-                    points.Clear();
                     continue;
                 }
 
-                //Would be nice to figure out how to get rid of this lock
-                lock (lock1)
-                {
-                    borderPath.StartFigure();
-                    Point[] pointArray = intPoints.ToArray();
-                    borderPath.AddLines(pointArray);
-                }
-                points.Clear();
+                borderPath.StartFigure();
+                borderPath.AddLines(intPoints);             
             }
         }
 

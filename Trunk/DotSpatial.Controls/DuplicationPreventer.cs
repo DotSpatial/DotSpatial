@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -38,52 +39,41 @@ namespace DotSpatial.Controls
         /// Cycles through the PointF points, where necessary and removes duplicate points
         /// that are found at the integer level.
         /// </summary>
-        /// <param name="points"></param>
-        /// <returns></returns>
-        public static List<Point> Clean(List<PointF> points)
+        public static IEnumerable<Point> Clean(IEnumerable<PointF> points)
         {
-            List<Point> result = new List<Point>();
-            Point previous = Point.Empty;
-            bool isFirst = true;
-            foreach (PointF point in points)
+            var previous = Point.Empty;
+            var isFirst = true;
+            foreach (var point in points)
             {
-                Point pt = new Point();
-                pt.X = Convert.ToInt32(point.X);
-                pt.Y = Convert.ToInt32(point.Y);
+                if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
+                var pt = new Point {X = Convert.ToInt32(point.X), Y = Convert.ToInt32(point.Y)};
                 if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
                 {
                     isFirst = false;
                     previous = pt;
-                    result.Add(pt);
+                    yield return pt;
                 }
             }
-            return result;
         }
 
         /// <summary>
-        /// Cleans the list of points by removing duplicates
+        /// Cleans the enumerable of points by removing duplicates
         /// </summary>
-        /// <param name="points"></param>
-        /// <returns></returns>
-        public static List<Point> Clean(List<double[]> points)
+        public static IEnumerable<Point> Clean(IEnumerable<double[]> points)
         {
-            List<Point> result = new List<Point>();
-            Point previous = Point.Empty;
-            bool isFirst = true;
-            foreach (double[] point in points)
+            var previous = Point.Empty;
+            var isFirst = true;
+            foreach (var point in points)
             {
                 if (double.IsNaN(point[X]) || double.IsNaN(point[Y])) continue;
-                Point pt = new Point();
-                pt.X = Convert.ToInt32(point[X]);
-                pt.Y = Convert.ToInt32(point[Y]);
+                var pt = new Point {X = Convert.ToInt32(point[X]), Y = Convert.ToInt32(point[Y])};
                 if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
                 {
                     isFirst = false;
                     previous = pt;
-                    result.Add(pt);
+                    yield return pt;
                 }
             }
-            return result;
         }
 
         #endregion
