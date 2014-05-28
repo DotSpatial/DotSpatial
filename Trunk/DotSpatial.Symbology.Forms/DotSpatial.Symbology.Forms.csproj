@@ -93,6 +93,9 @@
       <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorCategoryActions.cs" />
+    <Compile Include="DetailedLineSymbolControl.Designer.cs">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterEventArgs.cs" />
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />
@@ -509,6 +512,15 @@
     <EmbeddedResource Include="DeleteFieldsDialog.zh-CN.resx">
       <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedLineSymbolDialog.de-DE.resx">
       <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>

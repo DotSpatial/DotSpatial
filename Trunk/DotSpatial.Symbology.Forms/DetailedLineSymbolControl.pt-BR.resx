@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<data name="cmbStrokeType.Location" type="System.Drawing.Point, System.Drawing">
+		<value>196, 101</value>
+	</data>
+	<data name="cmbStrokeType.Size" type="System.Drawing.Size, System.Drawing">
+		<value>159, 21</value>
+	</data>
+	<data name="cmbStrokeType.ToolTip" xml:space="preserve">
+    <value>Determine que tipo de traço está sendo usado.</value>
+  </data>
+	<data name="chkSmoothing.Size" type="System.Drawing.Size, System.Drawing">
+		<value>77, 17</value>
+	</data>
+	<data name="chkSmoothing.Text" xml:space="preserve">
+    <value>Suavização</value>
+  </data>
+	<data name="chkSmoothing.ToolTip" xml:space="preserve">
+    <value>Controla ou não se a linha usa suavização de serrilhado.</value>
+  </data>
+	<data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+		<value>54, 13</value>
+	</data>
+	<data name="label3.Text" xml:space="preserve">
+    <value>Visualizar:</value>
+  </data>
+	<data name="lblScaleMode.Size" type="System.Drawing.Size, System.Drawing">
+		<value>86, 13</value>
+	</data>
+	<data name="lblScaleMode.Text" xml:space="preserve">
+    <value>&amp;Modo de escala:</value>
+  </data>
+	<data name="cmbScaleMode.Location" type="System.Drawing.Point, System.Drawing">
+		<value>106, 25</value>
+	</data>
+	<data name="cmbScaleMode.ToolTip" xml:space="preserve">
+    <value>Linhas geográficas ficam maior quando você aumentar o zoom e se e usar unidades de mapa para controle da largura. Simbólicos e simples mantêm a mesma largura, ao aumentar o zoom.</value>
+  </data>
+	<data name="groupBox1.Text" xml:space="preserve">
+    <value>Características do symbolizer</value>
+  </data>
+	<data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>74, 13</value>
+	</data>
+	<data name="label1.Text" xml:space="preserve">
+    <value>&amp;Cor do primeiro plano:</value>
+  </data>
+	<data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+		<value>62, 13</value>
+	</data>
+	<data name="label5.Text" xml:space="preserve">
+    <value>Opacidade:</value>
+  </data>
+	<data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+		<value>26, 13</value>
+	</data>
+	<data name="label9.Text" xml:space="preserve">
+    <value>Cor:</value>
+  </data>
+	<data name="cbColorSimple.ToolTip" xml:space="preserve">
+    <value>Clique para alterar a cor</value>
+  </data>
+	<data name="sldOpacitySimple.ToolTip" xml:space="preserve">
+    <value>Use o controle deslizante para ajustar a opacidade, com 0 sendo totalmente transparente e com 1 sendo totalmente opaco</value>
+  </data>
+	<data name="cmbStrokeStyle.Items" xml:space="preserve">
+    <value>Sólido</value>
+  </data>
+	<data name="cmbStrokeStyle.Items1" xml:space="preserve">
+    <value>Traço</value>
+  </data>
+	<data name="cmbStrokeStyle.Items2" xml:space="preserve">
+    <value>Ponto</value>
+  </data>
+	<data name="cmbStrokeStyle.Items3" xml:space="preserve">
+    <value>Ponto traço</value>
+  </data>
+	<data name="cmbStrokeStyle.Items4" xml:space="preserve">
+    <value>Traço ponto ponto</value>
+  </data>
+	<data name="cmbStrokeStyle.Items5" xml:space="preserve">
+    <value>Personalizado</value>
+  </data>
+	<data name="cmbStrokeStyle.ToolTip" xml:space="preserve">
+    <value>Permite que alguns estilos de traço simples.  Para estilos mais complexos, selecione traços cartográficos.</value>
+  </data>
+	<data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+		<value>129, 180</value>
+	</data>
+	<data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+		<value>77, 13</value>
+	</data>
+	<data name="label2.Text" xml:space="preserve">
+    <value>&amp;Cor de fundo:</value>
+  </data>
+	<data name="dblWidth.Caption" xml:space="preserve">
+    <value>Largura:</value>
+  </data>
+	<data name="dblWidth.ToolTip" xml:space="preserve">
+    <value>Defina a largura do traço.  O modo de escala determina as unidades de medida.</value>
+  </data>
+	<data name="tabSimple.Text" xml:space="preserve">
+    <value>Simples</value>
+  </data>
+	<data name="lblColorCartographic.Size" type="System.Drawing.Size, System.Drawing">
+		<value>26, 13</value>
+	</data>
+	<data name="lblColorCartographic.Text" xml:space="preserve">
+    <value>Cor:</value>
+  </data>
+	<data name="lblOpacityCartographic.Size" type="System.Drawing.Size, System.Drawing">
+		<value>62, 13</value>
+	</data>
+	<data name="lblOpacityCartographic.Text" xml:space="preserve">
+    <value>Opacidade:</value>
+  </data>
+	<data name="lblStartCap.Location" type="System.Drawing.Point, System.Drawing">
+		<value>22, 26</value>
+	</data>
+	<data name="lblStartCap.Size" type="System.Drawing.Size, System.Drawing">
+		<value>63, 13</value>
+	</data>
+	<data name="lblStartCap.Text" xml:space="preserve">
+    <value>Tampão inicio:
+</value>
+  </data>
+	<data name="cmbEndCap.Location" type="System.Drawing.Point, System.Drawing">
+		<value>113, 53</value>
+	</data>
+	<data name="cmbEndCap.ToolTip" xml:space="preserve">
+    <value>Controla como o final da linha é desenhado.</value>
+  </data>
+	<data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+		<value>22, 56</value>
+	</data>
+	<data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+		<value>76, 13</value>
+	</data>
+	<data name="label4.Text" xml:space="preserve">
+    <value>&amp;Imagem:</value>
+  </data>
+	<data name="cmbStartCap.Location" type="System.Drawing.Point, System.Drawing">
+		<value>113, 23</value>
+	</data>
+	<data name="cmbStartCap.ToolTip" xml:space="preserve">
+    <value>Controla como a tampão de início é desenhado.</value>
+  </data>
+	<data name="grpCaps.Location" type="System.Drawing.Point, System.Drawing">
+		<value>58, 159</value>
+	</data>
+	<data name="grpCaps.Size" type="System.Drawing.Size, System.Drawing">
+		<value>248, 89</value>
+	</data>
+	<data name="grpCaps.Text" xml:space="preserve">
+    <value>Tampas de Linha</value>
+  </data>
+	<data name="grpCaps.ToolTip" xml:space="preserve">
+    <value>Controla como os tampões finais são desenhados.</value>
+  </data>
+	<data name="cbColorCartographic.ToolTip" xml:space="preserve">
+    <value>Clique para alterar a cor</value>
+  </data>
+	<data name="sldOpacityCartographic.ToolTip" xml:space="preserve">
+    <value>Use o controle deslizante para alterar a opacidade</value>
+  </data>
+	<data name="dblStrokeOffset.Caption" xml:space="preserve">
+    <value>Deslocamento:</value>
+  </data>
+	<data name="radLineJoin.ToolTip" xml:space="preserve">
+    <value>Controla como as conexões são traçadas entre dois segmentos</value>
+  </data>
+	<data name="dblWidthCartographic.Caption" xml:space="preserve">
+    <value>Largura:</value>
+  </data>
+	<data name="dblWidthCartographic.ToolTip" xml:space="preserve">
+    <value>A largura do presente curso, o modo de escala determina se as unidades são pixel ou geográfica.</value>
+  </data>
+	<data name="tabCartographic.Text" xml:space="preserve">
+    <value>Linha cartográfica</value>
+  </data>
+	<data name="dashControl1.ToolTip" xml:space="preserve">
+    <value>Desenha a combinação de padrões de traço e contornos de formas personalizadas.</value>
+  </data>
+	<data name="tabDash.Text" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+	<data name="dblOffset.Caption" xml:space="preserve">
+    <value>Deslocamento:</value>
+  </data>
+	<data name="ccDecorations.ToolTip" xml:space="preserve">
+    <value>Lista as decorações, onde a decoração superior é desenhada para o último.</value>
+  </data>
+	<data name="btnEdit.Text" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+	<data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+		<value>49, 13</value>
+	</data>
+	<data name="label6.Text" xml:space="preserve">
+    <value>Símbolo:</value>
+  </data>
+	<data name="lblDecorationPreview.ToolTip" xml:space="preserve">
+    <value>Uma prévia do próprio símbolo de decoração.</value>
+  </data>
+	<data name="lblNumberOfPositions.Size" type="System.Drawing.Size, System.Drawing">
+		<value>116, 13</value>
+	</data>
+	<data name="lblNumberOfPositions.Text" xml:space="preserve">
+    <value>O número de posições:</value>
+  </data>
+	<data name="nudDecorationCount.Location" type="System.Drawing.Point, System.Drawing">
+		<value>243, 27</value>
+	</data>
+	<data name="nudDecorationCount.Size" type="System.Drawing.Size, System.Drawing">
+		<value>45, 20</value>
+	</data>
+	<data name="nudDecorationCount.ToolTip" xml:space="preserve">
+    <value>Os dois primeiros são desenhados sobre os locais de início e de término.  Depois disso, a linha é dividida uniformemente.</value>
+  </data>
+	<data name="radRotationFixed.Size" type="System.Drawing.Size, System.Drawing">
+		<value>220, 17</value>
+	</data>
+	<data name="radRotationFixed.Text" xml:space="preserve">
+    <value>Manter o símbolo de ângulo fixo a página</value>
+  </data>
+	<data name="radRotationFixed.ToolTip" xml:space="preserve">
+    <value>O símbolo básico sempre é desenhado.</value>
+  </data>
+	<data name="radRotationWithLine.Size" type="System.Drawing.Size, System.Drawing">
+		<value>186, 17</value>
+	</data>
+	<data name="radRotationWithLine.Text" xml:space="preserve">
+    <value>Girar o símbolo para seguir ao ângulo</value>
+  </data>
+	<data name="radRotationWithLine.ToolTip" xml:space="preserve">
+    <value>O símbolo básico é desenhado quando a linha está oeste para leste.</value>
+  </data>
+	<data name="grpRotation.Size" type="System.Drawing.Size, System.Drawing">
+		<value>247, 70</value>
+	</data>
+	<data name="grpRotation.Text" xml:space="preserve">
+    <value>Rotação</value>
+  </data>
+	<data name="chkFlipFirst.Size" type="System.Drawing.Size, System.Drawing">
+		<value>81, 17</value>
+	</data>
+	<data name="chkFlipFirst.Text" xml:space="preserve">
+    <value>Flip primeiro</value>
+  </data>
+	<data name="chkFlipAll.Size" type="System.Drawing.Size, System.Drawing">
+		<value>71, 17</value>
+	</data>
+	<data name="chkFlipAll.Text" xml:space="preserve">
+    <value>Flip todos</value>
+  </data>
+	<data name="grpFlip.ToolTip" xml:space="preserve">
+    <value>Controla como inverter os símbolos.</value>
+  </data>
+	<data name="tabDecoration.Text" xml:space="preserve">
+    <value>Linha decorações</value>
+  </data>
+	<data name="ccStrokes.ToolTip" xml:space="preserve">
+    <value>Lista dos traços, onde o curso superior é desenhado para o último.</value>
+  </data>
+	<data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+	<data name="btnAddToCustom.Text" xml:space="preserve">
+		<value>Adicionar a padrões personalizados</value>
+	</data>
+	<data name="lblUnits.Text" xml:space="preserve">
+		<value>&amp;Unidades:</value>
+	</data>
+	<data name="lblSymbolType.Text" xml:space="preserve">
+		<value>Tipo &amp;do símbolo:</value>
+	</data>
+	<data name="label10.Text" xml:space="preserve">
+		<value>Graus</value>
+	</data>
+	<data name="groupBox6.Text" xml:space="preserve">
+		<value>Tamanho</value>
+	</data>
+	<data name="doubleBox7.Caption" xml:space="preserve">
+		<value>Largura:</value>
+	</data>
+	<data name="doubleBox8.Caption" xml:space="preserve">
+		<value>Altura:</value>
+	</data>
+	<data name="groupBox7.Text" xml:space="preserve">
+		<value>Deslocamento</value>
+	</data>
+	<data name="doubleBox9.Caption" xml:space="preserve">
+		<value>Ângulo:</value>
+	</data>
+	<data name="tabPicture.Text" xml:space="preserve">
+		<value>Imagens</value>
+	</data>
+	<data name="lblImageOpacity.Text" xml:space="preserve">
+		<value>Imagem &amp; de opacidade:</value>
+	</data>
+	<data name="grpOutlinePicture.Text" xml:space="preserve">
+		<value>Contorno</value>
+	</data>
+	<data name="lblOutlineColorPicture.Text" xml:space="preserve">
+		<value>Cor do contorno:</value>
+	</data>
+	<data name="dbxOutlineWidthPicture.Caption" xml:space="preserve">
+		<value>Largura &amp; de contorno:</value>
+	</data>
+	<data name="chkUseOutlinePicture.Text" xml:space="preserve">
+		<value>&amp;Usar o contorno</value>
+	</data>
+	<data name="lblImage.Text" xml:space="preserve">
+		<value>&amp;Imagem:</value>
+	</data>
+	<data name="tabCharacter.Text" xml:space="preserve">
+		<value>Carater</value>
+	</data>
+	<data name="lblColorCharacter.Text" xml:space="preserve">
+		<value>Cor:</value>
+	</data>
+	<data name="lblFontFamily.Text" xml:space="preserve">
+		<value>&amp;Família de fonte:</value>
+	</data>
+	<data name="groupBox2.Text" xml:space="preserve">
+		<value>Contorno</value>
+	</data>
+	<data name="lblOutlineColor.Text" xml:space="preserve">
+		<value>Cor do contorno:</value>
+	</data>
+	<data name="dbxOutlineWidth.Caption" xml:space="preserve">
+		<value>Largura do contorno:</value>
+	</data>
+	<data name="chkUseOutline.Text" xml:space="preserve">
+		<value>Use contorno</value>
+	</data>
+	<data name="lblColorSimple.Text" xml:space="preserve">
+		<value>Cor de preenchimento:</value>
+	</data>
+	<data name="grpPlacement.Text" xml:space="preserve">
+		<value>Colocação</value>
+	</data>
+	<data name="grpOffset.Text" xml:space="preserve">
+		<value>Deslocamento</value>
+	</data>
+	<data name="angleControl.Caption" xml:space="preserve">
+		<value>&amp; Ângulo:</value>
+	</data>
+	<data name="lblPatternType.Text" xml:space="preserve">
+		<value>&amp;Tipo de padrão:</value>
+	</data>
+	<data name="dbxScaleY.Caption" xml:space="preserve">
+		<value>Relação Y:</value>
+	</data>
+	<data name="dbxScaleX.Caption" xml:space="preserve">
+		<value>Relação X:</value>
+	</data>
+	<data name="angTileAngle.Caption" xml:space="preserve">
+		<value>&amp; Ângulo:</value>
+	</data>
+	<data name="lblTileMode.Text" xml:space="preserve">
+		<value>&amp;Modo de telha:</value>
+	</data>
+	<data name="tabGradient.Text" xml:space="preserve">
+		<value>Gradiente </value>
+	</data>
+	<data name="lblEndColor.Text" xml:space="preserve">
+		<value>Cor final:</value>
+	</data>
+	<data name="lblStartColor.Text" xml:space="preserve">
+		<value>Cor inicial:</value>
+	</data>
+	<data name="angGradientAngle.Caption" xml:space="preserve">
+		<value>&amp; Ângulo:</value>
+	</data>
+	<data name="tabHatch.Text" xml:space="preserve">
+		<value>Hachura</value>
+	</data>
+	<data name="lblHatchStyle.Text" xml:space="preserve">
+		<value>&amp;Estilo de hachura:</value>
+	</data>
+</root>
