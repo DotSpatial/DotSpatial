@@ -64,7 +64,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// The _feature lookup.
         /// </summary>
-        private Dictionary<DataRow, IFeature> _featureLookup;
+        private readonly Dictionary<DataRow, IFeature> _featureLookup;
 
         /// <summary>
         /// The _features.
@@ -263,15 +263,7 @@ namespace DotSpatial.Data
                 return;
             }
 
-            if (_featureLookup.ContainsKey(e.Feature.DataRow))
-            {
-                _featureLookup[e.Feature.DataRow] = e.Feature;
-            }
-            else
-            {
-                _featureLookup.Add(e.Feature.DataRow, e.Feature);
-            }
-
+            _featureLookup[e.Feature.DataRow] = e.Feature;
             if (FeatureAdded != null)
             {
                 FeatureAdded(sender, e);
@@ -671,8 +663,9 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public List<int> Find(string filterExpression)
         {
-            DataRow[] hits = _dataTable.Select(filterExpression);
-            return hits.Select(dr => _dataTable.Rows.IndexOf(dr)).ToList();
+            var dt = DataTable;
+            DataRow[] hits = dt.Select(filterExpression);
+            return hits.Select(dr => dt.Rows.IndexOf(dr)).ToList();
         }
 
         /// <summary>
@@ -1058,7 +1051,6 @@ namespace DotSpatial.Data
         /// </returns>
         public virtual List<IFeature> SelectByAttribute(string filterExpression)
         {
-            List<IFeature> result = new List<IFeature>();
             DataTable dt = DataTable;
             bool isTemp = false;
             if (filterExpression != null)
@@ -1069,13 +1061,9 @@ namespace DotSpatial.Data
                     isTemp = true;
                 }
             }
-
+            
             DataRow[] rows = dt.Select(filterExpression);
-            if (FeatureLookup != null && FeatureLookup.Any())
-            {
-                result.AddRange(rows.Select(dr => FeatureLookup[dr]));
-            }
-
+            var result = rows.Select(dr => FeatureLookup[dr]).ToList();
             if (isTemp)
             {
                 dt.Columns.Remove("FID");
@@ -1096,24 +1084,22 @@ namespace DotSpatial.Data
         /// </returns>
         public virtual List<int> SelectIndexByAttribute(string filterExpression)
         {
-            List<int> result = new List<int>();
+            var result = new List<int>();
             if (AttributesPopulated && DataTable != null)
             {
-                DataRow[] rows = DataTable.Select(filterExpression);
+                var rows = DataTable.Select(filterExpression);
                 result.AddRange(rows.Select(row => DataTable.Rows.IndexOf(row)));
             }
             else
             {
-                // page in sets of 10, 000 rows
-                int numPages = (int)Math.Ceiling((double)NumRows() / 10000);
+                const int rowsPerPage = 10000;
+                var numPages = (int)Math.Ceiling((double)NumRows() / rowsPerPage);
                 for (int page = 0; page < numPages; page++)
                 {
-                    DataTable table = GetAttributes(page * 10000, 10000);
-                    DataRow[] rows = table.Select(filterExpression);
-
-                    foreach (DataRow row in rows)
+                    var table = GetAttributes(page * rowsPerPage, rowsPerPage);
+                    foreach (var row in table.Select(filterExpression))
                     {
-                        result.Add(table.Rows.IndexOf(row) + page * 10000);
+                        result.Add(table.Rows.IndexOf(row) + page * rowsPerPage);
                     }
                 }
             }
@@ -2631,7 +2617,6 @@ namespace DotSpatial.Data
         {
             if (disposeManagedResources)
             {
-                _featureLookup = null;
                 _features = null;
                 Filename = null;
                 _m = null;

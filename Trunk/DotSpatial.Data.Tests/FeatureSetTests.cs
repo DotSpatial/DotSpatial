@@ -191,5 +191,12 @@ namespace DotSpatial.Data.Tests
                 FileTools.DeleteShapeFile(fileName);
             }
         }
+
+        [Test]
+        public void FeatureLookupIsNotNull()
+        {
+            var target = new FeatureSet();
+            Assert.IsNotNull(target.FeatureLookup);
+        }
     }
 }

@@ -89,6 +89,7 @@
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterTest.cs" />
     <Compile Include="ReadWriteTests.cs" />
+    <Compile Include="ShapefileTests.cs" />
     <Compile Include="ShapeTests.cs" />
   </ItemGroup>
   <ItemGroup>

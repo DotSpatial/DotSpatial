@@ -400,7 +400,7 @@ namespace DotSpatial.Data
             {
                 _attributeTable.Fill(_attributeTable.NumRecords);
             }
-            if (FeatureLookup == null || FeatureLookup.Count == 0)
+            if (FeatureLookup.Count == 0)
             {
                 SetupFeatureLookup();
             }
@@ -423,24 +423,10 @@ namespace DotSpatial.Data
         /// </summary>
         private void SetupFeatureLookup()
         {
-            if (!IndexMode)
+            for (var i = 0; i < _attributeTable.Table.Rows.Count; i++)
             {
-                int i = 0;
-
-                foreach (DataRow dr in _attributeTable.Table.Rows)
-                {
-                    Features[i].DataRow = dr;
-                    if (FeatureLookup.ContainsKey(dr))
-                    {
-                        FeatureLookup[dr] = Features[i];
-                    }
-                    else
-                    {
-                        FeatureLookup.Add(dr, Features[i]);
-                    }
-
-                    i++;
-                }
+                Features[i].DataRow = _attributeTable.Table.Rows[i];
+                FeatureLookup[Features[i].DataRow] = Features[i];
             }
         }
 

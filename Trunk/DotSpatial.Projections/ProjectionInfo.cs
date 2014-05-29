@@ -99,7 +99,7 @@ namespace DotSpatial.Projections
         /// <summary>
         ///   Gets or sets the Reference Code
         /// </summary>
-        [Obsolete("Use AuthorityCode instead")]
+        [Obsolete("Use AuthorityCode instead")] // Set obsolete in 1.7.
         public int EpsgCode { get; set; }
 
         /// <summary>
