@@ -661,6 +661,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Set obsolete in 1.7.
         public List<int> Find(string filterExpression)
         {
             var dt = DataTable;
@@ -1148,7 +1149,7 @@ namespace DotSpatial.Data
             {
                 copy.Features.Add(Features[row]);
             }
-
+            
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }
