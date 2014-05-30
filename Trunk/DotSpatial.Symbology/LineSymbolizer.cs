@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
@@ -70,7 +71,6 @@ namespace DotSpatial.Symbology
                                              StartCap = caps,
                                              EndCap = caps,
                                              DashStyle = dash,
-                                             CompoundArray = new[] { 0F, 0.2F, 0.8F, 1F }
                                          };
             _strokes.Add(bs);
 
@@ -80,7 +80,6 @@ namespace DotSpatial.Symbology
                                              EndCap = caps,
                                              DashStyle = dash,
                                              Width = width - 2,
-                                             CompoundArray = new[] { .2F, .8F }
                                          };
             _strokes.Add(cs);
         }
@@ -93,7 +92,7 @@ namespace DotSpatial.Symbology
         public LineSymbolizer(IEnumerable<IStroke> strokes)
         {
             _strokes = new CopyList<IStroke>();
-            foreach (IStroke stroke in strokes)
+            foreach (var stroke in strokes)
             {
                 _strokes.Add(stroke);
             }
@@ -144,11 +143,10 @@ namespace DotSpatial.Symbology
         /// <param name="target"></param>
         public override void Draw(Graphics g, Rectangle target)
         {
-            foreach (IStroke stroke in _strokes)
+            foreach (var stroke in _strokes)
             {
-                Pen p = stroke.ToPen(1);
-                g.DrawLine(p, new Point(target.X, target.Y + target.Height / 2), new Point(target.Right, target.Y + target.Height / 2));
-                p.Dispose();
+                using(var p = stroke.ToPen(1))
+                    g.DrawLine(p, new Point(target.X, target.Y + target.Height / 2), new Point(target.Right, target.Y + target.Height / 2));
             }
         }
 
@@ -160,11 +158,10 @@ namespace DotSpatial.Symbology
         /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels</param>
         public virtual void DrawPath(Graphics g, GraphicsPath gp, double scaleWidth)
         {
-            foreach (IStroke stroke in _strokes)
+            foreach (var stroke in _strokes)
             {
-                Pen p = stroke.ToPen(scaleWidth);
-                g.DrawPath(p, gp);
-                p.Dispose();
+                using(var p = stroke.ToPen(scaleWidth))
+                    g.DrawPath(p, gp);
             }
         }
 
@@ -175,7 +172,7 @@ namespace DotSpatial.Symbology
         {
             if (_strokes == null) return Color.Empty;
             if (_strokes.Count == 0) return Color.Empty;
-            ISimpleStroke ss = _strokes[_strokes.Count - 1] as ISimpleStroke;
+            var ss = _strokes[_strokes.Count - 1] as ISimpleStroke;
             return ss != null ? ss.Color : Color.Empty;
         }
 
@@ -188,7 +185,7 @@ namespace DotSpatial.Symbology
         {
             if (_strokes == null) return;
             if (_strokes.Count == 0) return;
-            ISimpleStroke ss = _strokes[_strokes.Count - 1] as ISimpleStroke;
+            var ss = _strokes[_strokes.Count - 1] as ISimpleStroke;
             if (ss != null)
             {
                 ss.Color = fillColor;
@@ -204,11 +201,9 @@ namespace DotSpatial.Symbology
         {
             double w = 0;
             if (_strokes == null) return 1;
-            foreach (IStroke stroke in _strokes)
+            foreach (var stroke in _strokes.OfType<ISimpleStroke>())
             {
-                ISimpleStroke ss = stroke as ISimpleStroke;
-                if (ss == null) continue;
-                if (ss.Width > w) w = ss.Width;
+                if (stroke.Width > w) w = stroke.Width;
             }
             return w;
         }
@@ -222,12 +217,12 @@ namespace DotSpatial.Symbology
             if (_strokes == null) return;
             if (_strokes.Count == 0) return;
 
-            double w = GetWidth();
+            var w = GetWidth();
             if (w == 0) return;
 
-            double ratio = width / w;
+            var ratio = width / w;
 
-            foreach (ISimpleStroke stroke in _strokes)
+            foreach (var stroke in _strokes.OfType<ISimpleStroke>())
             {
                 stroke.Width *= ratio;
             }
@@ -241,8 +236,8 @@ namespace DotSpatial.Symbology
         /// <param name="width">The width of the outline in pixels</param>
         public override void SetOutline(Color outlineColor, double width)
         {
-            double w = GetWidth();
-            _strokes.Insert(0, new SimpleStroke(w + 2 * width, Color.Black));
+            var w = GetWidth();
+            _strokes.Insert(0, new SimpleStroke(w + 2 * width, outlineColor));
             base.SetOutline(outlineColor, width);
         }
 
