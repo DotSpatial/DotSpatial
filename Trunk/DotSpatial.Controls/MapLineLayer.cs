@@ -345,8 +345,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    multiLinestrings = new List<List<double[]>>();
-                    multiLinestrings.Add(points);
+                    multiLinestrings = new List<List<double[]>> {points};
                 }
 
                 foreach (List<double[]> linestring in multiLinestrings)
@@ -663,9 +662,11 @@ namespace DotSpatial.Controls
                 for (int i = start; i <= end; i++)
                 {
                     if (double.IsNaN(vertices[i * 2]) || double.IsNaN(vertices[i * 2 + 1])) continue;
-                    Point pt = new Point();
-                    pt.X = Convert.ToInt32((vertices[i * 2] - minX) * dx);
-                    pt.Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy);
+                    var pt = new Point
+                    {
+                        X = Convert.ToInt32((vertices[i*2] - minX)*dx),
+                        Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                    };
 
                     if (i == 0 || (pt.X != previousPoint.X || pt.Y != previousPoint.Y))
                     {

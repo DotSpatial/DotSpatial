@@ -37,8 +37,7 @@ namespace DotSpatial.Controls
         /// </summary>
         protected override void OnCreateGroup()
         {
-            MapGroup grp = new MapGroup(Layers, ParentMapFrame, ProgressHandler);
-            grp.LegendText = "New Group";
+            new MapGroup(Layers, ParentMapFrame, ProgressHandler) {LegendText = "New Group"};
         }
 
         #region Nested type: MapLayerEnumerator

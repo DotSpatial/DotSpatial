@@ -633,8 +633,10 @@ namespace DotSpatial.Data
             Extent result;
             string fail;
             if (TryParse(text, out result, out fail)) return result;
-            ExtentParseException ep = new ExtentParseException(String.Format("Attempting to read an extent string failed while reading the {0} term.", fail));
-            ep.Expression = text;
+            var ep = new ExtentParseException(String.Format("Attempting to read an extent string failed while reading the {0} term.", fail))
+            {
+                Expression = text
+            };
             throw ep;
         }
 
@@ -819,7 +821,7 @@ namespace DotSpatial.Data
         /// <returns>Boolean, true if the parse was successful.</returns>
         private static bool TryExtract(string entireText, string name, out double min, out double max)
         {
-            int i = entireText.IndexOf(name);
+            int i = entireText.IndexOf(name, StringComparison.Ordinal);
             i += name.Length + 1;
             int j = entireText.IndexOf(']', i);
             string vals = entireText.Substring(i, j - i);

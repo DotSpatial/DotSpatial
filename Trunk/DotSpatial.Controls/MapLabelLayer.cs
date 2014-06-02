@@ -364,13 +364,13 @@ namespace DotSpatial.Controls
             switch (features.First().FeatureType)
             {
                 case FeatureType.Polygon:
-                    drawFeature = (f) => DrawPolygonFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    drawFeature = f => DrawPolygonFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 case FeatureType.Line:
-                    drawFeature = (f) => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    drawFeature = f => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 case FeatureType.Point:
-                    drawFeature = (f) => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
+                    drawFeature = f => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 default:
                     return; // Can't draw something else

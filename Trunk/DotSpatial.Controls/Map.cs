@@ -453,26 +453,22 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual List<IMapLayer> AddLayers()
         {
-            List<IDataSet> sets = DataManager.DefaultDataManager.OpenFiles();
-            if (sets == null || sets.Count == 0) return null;
-            List<IMapLayer> results = new List<IMapLayer>();
-            foreach (IDataSet set in sets)
+            var results = new List<IMapLayer>();
+            foreach (var set in DataManager.DefaultDataManager.OpenFiles())
             {
-                if (set == null) return null;
-
-                IFeatureSet fs = set as IFeatureSet;
+                var fs = set as IFeatureSet;
                 if (fs != null)
                 {
                     results.Add(Layers.Add(fs));
                     continue;
                 }
-                IImageData id = set as IImageData;
+                var id = set as IImageData;
                 if (id != null)
                 {
                     results.Add(Layers.Add(id));
                     continue;
                 }
-                IRaster r = set as IRaster;
+                var r = set as IRaster;
                 if (r != null)
                 {
                     results.Add(Layers.Add(r));
@@ -533,8 +529,7 @@ namespace DotSpatial.Controls
         /// <returns>A list of the IMapRasterLayers that were opened.</returns>
         public virtual List<IMapRasterLayer> AddRasterLayers()
         {
-            List<IRaster> sets = DataManager.DefaultDataManager.OpenRasters();
-            if (sets == null) return new List<IMapRasterLayer>();
+            var sets = DataManager.DefaultDataManager.OpenRasters();
             return sets.Select(raster => Layers.Add(raster)).ToList();
         }
 
@@ -556,8 +551,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of added MapFeatureLayers</returns>
         public virtual List<IMapFeatureLayer> AddFeatureLayers()
         {
-            List<IFeatureSet> sets = DataManager.DefaultDataManager.OpenVectors();
-            if (sets == null) return new List<IMapFeatureLayer>();
+            var sets = DataManager.DefaultDataManager.OpenVectors();
             return sets.Select(featureSet => Layers.Add(featureSet)).ToList();
         }
 
@@ -579,8 +573,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of added MapImageLayers</returns>
         public virtual List<IMapImageLayer> AddImageLayers()
         {
-            List<IImageData> sets = DataManager.DefaultDataManager.OpenImages();
-            if (sets == null) return new List<IMapImageLayer>();
+            var sets = DataManager.DefaultDataManager.OpenImages();
             return sets.Select(imageData => Layers.Add(imageData)).ToList();
         }
 
@@ -612,9 +605,9 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void SaveLayer()
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            IMapLayer layer = _geoMapFrame.Layers[0];
-            IMapFeatureLayer mfl = layer as IMapFeatureLayer;
+            var sfd = new SaveFileDialog();
+            var layer = _geoMapFrame.Layers[0];
+            var mfl = layer as IMapFeatureLayer;
             if (mfl != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.VectorWriteFilter;
@@ -622,7 +615,8 @@ namespace DotSpatial.Controls
                 mfl.DataSet.SaveAs(sfd.FileName, true);
                 return;
             }
-            IMapRasterLayer mrl = layer as IMapRasterLayer;
+
+            var mrl = layer as IMapRasterLayer;
             if (mrl != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.RasterWriteFilter;
@@ -630,7 +624,8 @@ namespace DotSpatial.Controls
                 mrl.DataSet.SaveAs(sfd.FileName);
                 return;
             }
-            IMapImageLayer mil = layer as IMapImageLayer;
+
+            var mil = layer as IMapImageLayer;
             if (mil != null)
             {
                 sfd.Filter = DataManager.DefaultDataManager.ImageWriteFilter;
@@ -651,7 +646,7 @@ namespace DotSpatial.Controls
             const double eps = 1e-7;
             if (Extent.Width < eps || Extent.Height < eps)
             {
-                Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
+                var newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
                 ViewExtents = newExtent;
             }
             else

@@ -142,7 +142,7 @@ namespace DotSpatial.Data
             // Check to ensure the fileName is not null
             if (fileName == null)
             {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
+                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", "fileName"));
             }
 
             if (File.Exists(fileName) == false)

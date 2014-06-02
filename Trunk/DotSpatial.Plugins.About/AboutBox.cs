@@ -194,7 +194,7 @@ namespace DotSpatial.Plugins.About
             }
             set
             {
-                if (value == null || value == String.Empty)
+                if (string.IsNullOrEmpty(value))
                 {
                     MoreRichTextBox.Visible = false;
                 }

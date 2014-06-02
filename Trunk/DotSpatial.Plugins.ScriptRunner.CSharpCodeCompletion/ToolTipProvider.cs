@@ -168,7 +168,7 @@ namespace CSharpEditor
                 text.Append(member.ToString());
             }
             string documentation = member.Documentation;
-            if (documentation != null && documentation.Length > 0)
+            if (!string.IsNullOrEmpty(documentation))
             {
                 text.Append('\n');
                 text.Append(CodeCompletionData.XmlDocumentationToText(documentation));

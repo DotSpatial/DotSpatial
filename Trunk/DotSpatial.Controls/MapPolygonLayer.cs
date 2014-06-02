@@ -461,9 +461,11 @@ namespace DotSpatial.Controls
                 IPolygonSymbolizer ps = Symbolizer;
                 g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
                 Extent catBounds = DataSet.Extent;
-                RectangleF bounds = new RectangleF();
-                bounds.X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx);
-                bounds.Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy);
+                var bounds = new RectangleF
+                {
+                    X = Convert.ToSingle((catBounds.MinX - e.MinX)*e.Dx),
+                    Y = Convert.ToSingle((e.MaxY - catBounds.MaxY)*e.Dy)
+                };
                 float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                 bounds.Width = r - bounds.X;
                 float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);
@@ -510,9 +512,11 @@ namespace DotSpatial.Controls
                             catBounds = CalculateCategoryExtent(category);
                         }
                         if (catBounds == null) catBounds = Extent;
-                        RectangleF bounds = new RectangleF();
-                        bounds.X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx);
-                        bounds.Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy);
+                        var bounds = new RectangleF
+                        {
+                            X = Convert.ToSingle((catBounds.MinX - e.MinX)*e.Dx),
+                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY)*e.Dy)
+                        };
                         float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                         bounds.Width = r - bounds.X;
                         float b = Convert.ToSingle((e.MaxY - catBounds.MinY) * e.Dy);

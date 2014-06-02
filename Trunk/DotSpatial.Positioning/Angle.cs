@@ -341,7 +341,7 @@ namespace DotSpatial.Positioning
                         return;
                     case 2: // Hours and decimal minutes
                         // If this is a fractional value, remember that it is
-                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
+                        if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal) != -1)
                         {
                             throw new ArgumentException(Properties.Resources.Angle_OnlyRightmostIsDecimal, "value");
                         }

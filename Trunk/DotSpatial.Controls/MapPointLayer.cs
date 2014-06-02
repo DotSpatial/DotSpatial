@@ -398,9 +398,11 @@ namespace DotSpatial.Controls
                     }
                     if (featureType == FeatureType.Point)
                     {
-                        Point pt = new Point();
-                        pt.X = Convert.ToInt32((vertices[index * 2] - minX) * dx);
-                        pt.Y = Convert.ToInt32((maxY - vertices[index * 2 + 1]) * dy);
+                        var pt = new Point
+                        {
+                            X = Convert.ToInt32((vertices[index*2] - minX)*dx),
+                            Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
+                        };
                         double scaleSize = 1;
                         if (ps.ScaleMode == ScaleMode.Geographic)
                         {
@@ -417,9 +419,11 @@ namespace DotSpatial.Controls
                         ShapeRange range = DataSet.ShapeIndices[index];
                         for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                         {
-                            Point pt = new Point();
-                            pt.X = Convert.ToInt32((vertices[i * 2] - minX) * dx);
-                            pt.Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy);
+                            var pt = new Point
+                            {
+                                X = Convert.ToInt32((vertices[i*2] - minX)*dx),
+                                Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                            };
                             double scaleSize = 1;
                             if (ps.ScaleMode == ScaleMode.Geographic)
                             {
@@ -488,9 +492,11 @@ namespace DotSpatial.Controls
                         }
                         if (featureType == FeatureType.Point)
                         {
-                            Point pt = new Point();
-                            pt.X = Convert.ToInt32((vertices[index * 2] - minX) * dx);
-                            pt.Y = Convert.ToInt32((maxY - vertices[index * 2 + 1]) * dy);
+                            var pt = new Point
+                            {
+                                X = Convert.ToInt32((vertices[index*2] - minX)*dx),
+                                Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
+                            };
 
                             Matrix shift = origTransform.Clone();
                             shift.Translate(pt.X, pt.Y);
@@ -503,9 +509,11 @@ namespace DotSpatial.Controls
                             ShapeRange range = DataSet.ShapeIndices[index];
                             for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                             {
-                                Point pt = new Point();
-                                pt.X = Convert.ToInt32((vertices[i * 2] - minX) * dx);
-                                pt.Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy);
+                                var pt = new Point
+                                {
+                                    X = Convert.ToInt32((vertices[i*2] - minX)*dx),
+                                    Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                                };
 
                                 Matrix shift = origTransform.Clone();
                                 shift.Translate(pt.X, pt.Y);

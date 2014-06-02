@@ -1243,9 +1243,9 @@ namespace DotSpatial.Projections
                 return true;
             }
 
-            int iStart = esriString.IndexOf(@""",");
+            int iStart = esriString.IndexOf(@""",", StringComparison.Ordinal);
             Name = esriString.Substring(8, iStart - 8);
-            int iEnd = esriString.IndexOf("PARAMETER");
+            int iEnd = esriString.IndexOf("PARAMETER", StringComparison.Ordinal);
             string gcs;
             if (iEnd != -1)
             {
@@ -1270,15 +1270,15 @@ namespace DotSpatial.Projections
             alpha = GetParameter("Azimuth", esriString);
             _longitudeOf1st = GetParameter("Longitude_Of_1st", esriString);
             _longitudeOf2nd = GetParameter("Longitude_Of_2nd", esriString);
-            LatitudeOfOrigin = GetParameter(new string[] { "Latitude_Of_Origin", "Latitude_Of_Center", "Central_Parallel" }, ref LatitudeOfOriginAlias, esriString);
-            iStart = esriString.LastIndexOf("UNIT");
+            LatitudeOfOrigin = GetParameter(new[] { "Latitude_Of_Origin", "Latitude_Of_Center", "Central_Parallel" }, ref LatitudeOfOriginAlias, esriString);
+            iStart = esriString.LastIndexOf("UNIT", StringComparison.Ordinal);
             string unit = esriString.Substring(iStart, esriString.Length - iStart);
             Unit.ParseEsriString(unit);
 
             if (esriString.Contains("PROJECTION"))
             {
-                iStart = esriString.IndexOf("PROJECTION") + 12;
-                iEnd = esriString.IndexOf("]", iStart) - 1;
+                iStart = esriString.IndexOf("PROJECTION", StringComparison.Ordinal) + 12;
+                iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal) - 1;
                 string projection = esriString.Substring(iStart, iEnd - iStart);
 
                 Transform = TransformManager.DefaultTransformManager.GetProjection(projection);

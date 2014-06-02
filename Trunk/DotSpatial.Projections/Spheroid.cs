@@ -645,8 +645,8 @@ namespace DotSpatial.Projections
         public void ParseEsriString(string esriString)
         {
             if (esriString.Contains("SPHEROID") == false) return;
-            int iStart = esriString.IndexOf("SPHEROID") + 9;
-            int iEnd = esriString.IndexOf("]", iStart);
+            int iStart = esriString.IndexOf("SPHEROID", StringComparison.Ordinal) + 9;
+            int iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal);
             if (iEnd < iStart) return;
             string extracted = esriString.Substring(iStart, iEnd - iStart);
             string[] terms = extracted.Split(',');

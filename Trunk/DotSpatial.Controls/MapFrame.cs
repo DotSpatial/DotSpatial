@@ -1343,10 +1343,11 @@ namespace DotSpatial.Controls
                 ProjectionInfo result = _chosenProjection;
                 if (ProjectionModeDefine == ActionMode.Prompt || ProjectionModeDefine == ActionMode.PromptOnce)
                 {
-                    UndefinedProjectionDialog dlg = new UndefinedProjectionDialog();
-                    dlg.OriginalString = layer.DataSet.ProjectionString;
-
-                    dlg.MapProjection = Projection;
+                    var dlg = new UndefinedProjectionDialog
+                    {
+                        OriginalString = layer.DataSet.ProjectionString,
+                        MapProjection = Projection
+                    };
 
                     if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
                     dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);

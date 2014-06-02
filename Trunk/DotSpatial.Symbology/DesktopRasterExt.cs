@@ -857,9 +857,8 @@ namespace DotSpatial.Symbology
 
         private static T GetNoData<T>(Raster<T> raster) where T : IEquatable<T>, IComparable<T>
         {
-            T noData;
             // Get nodata value.
-            noData = default(T);
+            var noData = default(T);
             try
             {
                 noData = (T)Convert.ChangeType(raster.NoDataValue, typeof(T));

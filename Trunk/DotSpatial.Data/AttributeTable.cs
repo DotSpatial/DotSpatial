@@ -1304,9 +1304,8 @@ namespace DotSpatial.Data
 
         private object ParseNumericColumn(Field field, int currentRow, char[] cBuffer, DataTable table, string parseErrString)
         {
-            object tempObject;
             string tempStr = new string(cBuffer);
-            tempObject = DBNull.Value;
+            object tempObject = DBNull.Value;
             Type t = field.DataType;
             var errorMessage = new Lazy<string>(() => String.Format(parseErrString, tempStr, currentRow, field.Ordinal, field.ColumnName, _fileName, t));
 

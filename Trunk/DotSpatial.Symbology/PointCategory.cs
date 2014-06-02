@@ -141,7 +141,7 @@ namespace DotSpatial.Symbology
             Symbolizer = new PointSymbolizer(symbols);
             List<ISymbol> copy = symbols.CloneList();
 
-            if (copy.Count() > 0)
+            if (copy.Any())
             {
                 IColorable c = symbols.Last() as IColorable;
                 if (c != null)

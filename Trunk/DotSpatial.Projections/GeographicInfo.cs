@@ -118,8 +118,8 @@ namespace DotSpatial.Projections
                 return;
 
             if (esriString.Contains("GEOGCS") == false) return;
-            int iStart = esriString.IndexOf("GEOGCS") + 8;
-            int iEnd = esriString.IndexOf(@""",", iStart) - 1;
+            int iStart = esriString.IndexOf("GEOGCS", StringComparison.Ordinal) + 8;
+            int iEnd = esriString.IndexOf(@""",", iStart, StringComparison.Ordinal) - 1;
             if (iEnd >= iStart)
                 _name = esriString.Substring(iStart, iEnd - iStart + 1);
             _datum.ParseEsriString(esriString);

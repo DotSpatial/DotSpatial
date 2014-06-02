@@ -199,12 +199,8 @@ namespace DotSpatial.Symbology
         public override bool CanReceiveItem(ILegendItem item)
         {
             if (item.GetParentItem() != this) return false;
-            ILayer lyr = item as ILayer;
+            var lyr = item as ILayer;
             if (lyr != null) return false;
-            IFrame mf = item as IFrame;
-            if (mf != null) return false;
-            IGroup gr = item as IGroup;
-            if (gr != null) return false;
             return true;
         }
 

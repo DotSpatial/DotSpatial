@@ -79,8 +79,7 @@ namespace DotSpatial.Controls
                 symbolizer.Raster = DataSet;
 
                 DataSet.DrawToBitmap(symbolizer, bmp, null);
-                InRamImage id = new InRamImage(bmp);
-                id.Bounds = DataSet.Bounds;
+                var id = new InRamImage(bmp) {Bounds = DataSet.Bounds};
                 BitmapGetter = id;
             }
         }
@@ -128,8 +127,7 @@ namespace DotSpatial.Controls
                 Bitmap bmp = new Bitmap(raster.NumColumns, raster.NumRows);
                 raster.PaintColorSchemeToBitmap(base.Symbolizer, bmp, raster.ProgressHandler);
 
-                InRamImage id = new InRamImage(bmp);
-                id.Bounds.AffineCoefficients = raster.Bounds.AffineCoefficients;
+                var id = new InRamImage(bmp) {Bounds = {AffineCoefficients = raster.Bounds.AffineCoefficients}};
                 BitmapGetter = id;
             }
         }

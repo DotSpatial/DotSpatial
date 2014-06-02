@@ -144,9 +144,7 @@ namespace DotSpatial.Data
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
 
-            var result = new BinaryRaster<T>(fileName, numCols, numRows, inRam);
-
-            result.Projection = Projection;
+            var result = new BinaryRaster<T>(fileName, numCols, numRows, inRam) {Projection = Projection};
 
             // The affine coefficients defining the world file are the same except that they are translated over.  Only the position of the
             // upper left corner changes.  Everything else is the same as the previous raster.
@@ -280,19 +278,21 @@ namespace DotSpatial.Data
         {
             int numCols = endColumn - startColumn + 1;
             int numRows = endRow - startRow + 1;
-            var result = new BinaryRaster<T>();
-            result.Filename = Filename;
-            result.Projection = Projection;
-            result.DataType = typeof(int);
-            result.NumRows = endRow - startRow + 1;
-            result.NumColumns = endColumn - startColumn + 1;
-            result.NumRowsInFile = NumRowsInFile;
-            result.NumColumnsInFile = NumColumnsInFile;
-            result.NoDataValue = NoDataValue;
-            result.StartColumn = startColumn + StartColumn;
-            result.StartRow = startRow + StartRow;
-            result.EndColumn = endColumn + StartColumn;
-            result.EndRow = EndRow + StartRow;
+            var result = new BinaryRaster<T>
+            {
+                Filename = Filename,
+                Projection = Projection,
+                DataType = typeof (int),
+                NumRows = endRow - startRow + 1,
+                NumColumns = endColumn - startColumn + 1,
+                NumRowsInFile = NumRowsInFile,
+                NumColumnsInFile = NumColumnsInFile,
+                NoDataValue = NoDataValue,
+                StartColumn = startColumn + StartColumn,
+                StartRow = startRow + StartRow,
+                EndColumn = endColumn + StartColumn,
+                EndRow = EndRow + StartRow
+            };
 
             // Reposition the "raster" so that it matches the window, not the whole raster
             var ac = new AffineTransform(Bounds.AffineCoefficients).TransfromToCorner(startColumn, startRow);
@@ -303,8 +303,10 @@ namespace DotSpatial.Data
             {
                 //result.ReadHeader(Filename);
                 result.Data = new T[numRows][];
-                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow);
-                pm.StartValue = startRow;
+                ProgressMeter pm = new ProgressMeter(ProgressHandler, DataStrings.CopyingValues, endRow)
+                {
+                    StartValue = startRow
+                };
                 // copy values directly using both data structures
                 for (int row = 0; row < numRows; row++)
                 {

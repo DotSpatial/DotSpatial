@@ -15,7 +15,7 @@
     <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
     <dependencies>
       <dependency id="DotSpatial.Data" />
-      <dependency id="DotSpatial.Data.Forms" />
+      <dependency id="DotSpatial.Data.Forms" version="1.7" />
       <dependency id="DotSpatial.Extensions" version="1.7" />
       <dependency id="DotSpatial.Modeling.Forms" />
       <dependency id="DotSpatial.Mono" />

@@ -1800,7 +1800,7 @@ namespace DotSpatial.Symbology
             {
                 // We don't want to read the table multiple times for each category.  Just
                 // read a block and then do all the categories we can for that block.
-                List<string> names = new List<string>();
+                var names = new List<string>();
                 foreach (var category in categories)
                 {
                     var current = DistinctFieldsInExpression(category.FilterExpression);
@@ -1810,7 +1810,7 @@ namespace DotSpatial.Symbology
                     }
                 }
 
-                if (names.Count() == 0)
+                if (names.Count == 0)
                 {
                     for (int i = 0; i < DataSet.NumRows(); i++)
                     {

@@ -155,10 +155,7 @@ namespace DotSpatial.Controls
         {
             if (InvokeRequired)
             {
-                Invoke(new MethodInvoker(delegate
-                                             {
-                                                 RefreshTree();
-                                             }));
+                Invoke(new MethodInvoker(RefreshTree));
             }
             else
             {
@@ -173,7 +170,7 @@ namespace DotSpatial.Controls
         /// <returns>true if the tool can be created otherwise false</returns>
         public bool CanCreateTool(string name)
         {
-            return Tools.Where(tool => tool.AssemblyQualifiedName == name).Any();
+            return Tools.Any(tool => tool.AssemblyQualifiedName == name);
         }
 
         /// <summary>
@@ -183,7 +180,7 @@ namespace DotSpatial.Controls
         /// <returns>Returns an new instance of the tool or NULL if the tools unique name doesn't exist in the manager</returns>
         public ITool GetTool(string name)
         {
-            ITool tool = Tools.Where(t => t.AssemblyQualifiedName == name).FirstOrDefault();
+            ITool tool = Tools.FirstOrDefault(t => t.AssemblyQualifiedName == name);
             if (tool != null)
             {
                 tool.Initialize();
@@ -248,7 +245,6 @@ namespace DotSpatial.Controls
                 }
             }
             CollapseAll();
-            return;
         }
 
         /// <summary>
