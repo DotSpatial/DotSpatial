@@ -1,5 +1,4 @@
-﻿using DotSpatial.Projections;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
 {

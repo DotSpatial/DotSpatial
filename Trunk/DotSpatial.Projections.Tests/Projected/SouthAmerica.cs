@@ -1,6 +1,6 @@
 
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
@@ -10,36 +10,17 @@ namespace DotSpatial.Projections.Tests.Projected
     [TestFixture]
     public class SouthAmerica
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void SouthAmericaProjectedTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
-        [Test]
-        public void SouthAmericaAlbersEqualAreaConic()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.SouthAmerica.SouthAmericaAlbersEqualAreaConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void SouthAmericaEquidistantConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.SouthAmerica.SouthAmericaEquidistantConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void SouthAmericaLambertConformalConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.SouthAmerica.SouthAmericaLambertConformalConic;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Projected.SouthAmerica);
         }
     }
 }

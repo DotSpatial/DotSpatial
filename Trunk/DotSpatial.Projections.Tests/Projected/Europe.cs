@@ -1,6 +1,6 @@
 
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
@@ -10,70 +10,17 @@ namespace DotSpatial.Projections.Tests.Projected
     [TestFixture]
     public class Europe
     {
-
-
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void EuropeProjectedTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
-        [Test]
-        public void EMEP150KilometerGrid()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EMEP150KilometerGrid;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EMEP50KilometerGrid()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EMEP50KilometerGrid;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void ETRS1989LAEA()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.ETRS1989LAEA;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void ETRS1989LCC()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.ETRS1989LCC;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EuropeAlbersEqualAreaConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EuropeAlbersEqualAreaConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EuropeEquidistantConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EuropeEquidistantConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void EuropeLambertConformalConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Europe.EuropeLambertConformalConic;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Projected.Europe);
         }
     }
 }

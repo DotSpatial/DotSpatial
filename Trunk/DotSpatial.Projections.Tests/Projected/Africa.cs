@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Projected
 {
@@ -9,44 +9,17 @@ namespace DotSpatial.Projections.Tests.Projected
     [TestFixture]
     public class ProjectedAfrica
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        [TestCaseSource("GetProjections")]
+        public void AfricaProjectedTests(ProjectionInfoDesc pInfo)
         {
-            
+            Tester.TestProjection(pInfo.ProjectionInfo);
+            Assert.AreEqual(false, pInfo.ProjectionInfo.IsLatLon);
         }
 
-        [Test]
-        public void AfricaAlbersEqualAreaConic()
+        private static IEnumerable<ProjectionInfoDesc> GetProjections()
         {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Africa.AfricaAlbersEqualAreaConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void AfricaEquidistantConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Africa.AfricaEquidistantConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void AfricaLambertConformalConic()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Africa.AfricaLambertConformalConic;
-            Tester.TestProjection(pStart);
-        }
-
-
-        [Test]
-        public void AfricaSinusoidal()
-        {
-            ProjectionInfo pStart = KnownCoordinateSystems.Projected.Africa.AfricaSinusoidal;
-            Tester.TestProjection(pStart);
+            return ProjectionInfoDesc.GetForCoordinateSystemCategory(KnownCoordinateSystems.Projected.Africa);
         }
     }
 }
