@@ -132,7 +132,7 @@
     <value>0, 31</value>
   </data>
   <data name="lbCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 370</value>
+    <value>142, 403</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lbCategories.TabIndex" type="System.Int32, mscorlib">
@@ -250,7 +250,7 @@
     <value>Bottom</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 401</value>
+    <value>0, 434</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 31</value>
@@ -349,7 +349,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 400</value>
+    <value>363, 433</value>
   </data>
   <data name="sqlExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -373,7 +373,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabExpression.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -392,6 +392,60 @@
   </data>
   <data name="&gt;&gt;tabExpression.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="tbFloatingFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbFloatingFormat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 405</value>
+  </data>
+  <data name="tbFloatingFormat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 20</value>
+  </data>
+  <data name="tbFloatingFormat.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Name" xml:space="preserve">
+    <value>tbFloatingFormat</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.Parent" xml:space="preserve">
+    <value>tabBasic</value>
+  </data>
+  <data name="&gt;&gt;tbFloatingFormat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 408</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="label13.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>Floating Format:</value>
+  </data>
+  <data name="&gt;&gt;label13.Name" xml:space="preserve">
+    <value>label13</value>
+  </data>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>tabBasic</value>
+  </data>
+  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="grbLabelRotation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="cmbLabelAngleField.Location" type="System.Drawing.Point, System.Drawing">
     <value>118, 58</value>
@@ -532,7 +586,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;grbLabelRotation.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="chkPrioritizeLow.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -565,7 +619,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;chkPrioritizeLow.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="chkPreventCollision.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -598,7 +652,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;chkPreventCollision.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lblPriorityField.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -628,7 +682,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;lblPriorityField.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="cmbPriorityField.Location" type="System.Drawing.Point, System.Drawing">
     <value>81, 246</value>
@@ -652,7 +706,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;cmbPriorityField.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="chkBorder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -757,7 +811,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbBorderColor.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="lblFontColor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1066,7 +1120,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbFont.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="lblPreview.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1093,7 +1147,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;lblPreview.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="cbBackgroundColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 24</value>
@@ -1198,7 +1252,7 @@
     <value>tabBasic</value>
   </data>
   <data name="&gt;&gt;gpbBackgroundColor.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="tabBasic.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1207,7 +1261,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabBasic.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1915,7 +1969,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabAdvanced.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1945,7 +1999,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 400</value>
+    <value>363, 433</value>
   </data>
   <data name="sqlMembers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1969,7 +2023,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 406</value>
+    <value>369, 439</value>
   </data>
   <data name="tabMembers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1996,7 +2050,7 @@
     <value>0, 0</value>
   </data>
   <data name="tabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>377, 432</value>
+    <value>377, 465</value>
   </data>
   <data name="tabs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2026,7 +2080,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>523, 432</value>
+    <value>523, 465</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
     <value>142</value>
@@ -2170,7 +2224,7 @@
     <value>Bottom</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 432</value>
+    <value>0, 465</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>523, 92</value>
@@ -2194,7 +2248,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>523, 524</value>
+    <value>523, 557</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -434,11 +434,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public static void DrawPolygonFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
-            ILabelSymbolizer symb = category.Symbolizer;
-            if (selected) symb = category.SelectionSymbolizer;
+            var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category);
+            string txt = GetLabelText(f, category, symb);
             if (txt == null) return;
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
@@ -531,11 +530,10 @@ namespace DotSpatial.Controls
         /// <param name="existingLabels"></param>
         public static void DrawPointFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
-            ILabelSymbolizer symb = category.Symbolizer;
-            if (selected) symb = category.SelectionSymbolizer;
+            var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category);
+            string txt = GetLabelText(f, category, symb);
             if (txt == null) return;
 
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
@@ -572,12 +570,10 @@ namespace DotSpatial.Controls
         /// </summary>
         public static void DrawLineFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
-            if (f == null) return;
-            ILabelSymbolizer symb = category.Symbolizer;
-            if (selected) symb = category.SelectionSymbolizer;
+            var symb = selected? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category);
+            string txt = GetLabelText(f, category, symb);
             if (txt == null) return;
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
@@ -786,18 +782,50 @@ namespace DotSpatial.Controls
             gr.TranslateTransform(cx, cy, MatrixOrder.Append);
         }
 
-        private static string GetLabelText(IFeature feature, ILabelCategory category)
+        private static string GetLabelText(IFeature feature, ILabelCategory category, ILabelSymbolizer symb)
         {
+            var useFloatingFormat = !string.IsNullOrWhiteSpace(symb.FloatingFormat);
             string result = category.Expression;
             if (!string.IsNullOrEmpty(result) && feature != null)
             {
                 foreach (DataColumn dc in feature.DataRow.Table.Columns)
                 {
                     if (String.IsNullOrEmpty(result)) break; // Result already is empty, no need to iterate over columns
-                    result = result.Replace("[" + dc.ColumnName + "]", feature.DataRow[dc.ColumnName].ToString());
+
+                    var currValue = feature.DataRow[dc.ColumnName];
+                    if (useFloatingFormat &&
+                        (dc.DataType == typeof (double) ||
+                        dc.DataType == typeof (float)))
+                    {
+                        try
+                        {
+                            var dv = Convert.ToDouble(currValue);
+                            currValue = dv.ToString(symb.FloatingFormat);
+                        }
+                        catch (Exception)
+                        {
+                            currValue = SafeToString(currValue);
+                        }
+                    }
+                    else
+                    {
+                        currValue = SafeToString(currValue);
+                    }
+
+
+                    result = result.Replace("[" + dc.ColumnName + "]", (string)currValue);
                 }
             }
             return result;
+        }
+
+        private static string SafeToString(object value)
+        {
+            if (value == null || value == DBNull.Value)
+            {
+                return string.Empty;
+            }
+            return value.ToString();
         }
 
         /// <summary>

@@ -55,8 +55,7 @@ namespace DotSpatial.Symbology
         public LabelCategory()
         {
             _symbolizer = new LabelSymbolizer();
-            _selectionSymbolizer = new LabelSymbolizer();
-            _selectionSymbolizer.FontColor = Color.Cyan;
+            _selectionSymbolizer = new LabelSymbolizer {FontColor = Color.Cyan};
         }
 
         #endregion
@@ -86,7 +85,7 @@ namespace DotSpatial.Symbology
         /// <returns>A shallow copy of this object.</returns>
         public virtual LabelCategory Copy()
         {
-            LabelCategory result = MemberwiseClone() as LabelCategory;
+            var result = MemberwiseClone() as LabelCategory;
             if (result == null) return null;
             result.Symbolizer = Symbolizer.Copy();
             result.SelectionSymbolizer = SelectionSymbolizer.Copy();

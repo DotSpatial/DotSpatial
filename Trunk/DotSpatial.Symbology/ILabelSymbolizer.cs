@@ -307,6 +307,12 @@ namespace DotSpatial.Symbology
             set;
         }
 
+        /// <summary>
+        /// Gets or sets format string used to draw float fields. E.g.:
+        /// #.##, 0.000. If empty - then format not used.
+        /// </summary>
+        string FloatingFormat { get; set; }
+
         #endregion
     }
 }

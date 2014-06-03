@@ -50,6 +50,8 @@ namespace DotSpatial.Symbology.Forms
             this.tabExpression = new System.Windows.Forms.TabPage();
             this.sqlExpression = new DotSpatial.Symbology.Forms.SQLQueryControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
+            this.tbFloatingFormat = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.grbLabelRotation = new System.Windows.Forms.GroupBox();
             this.cmbLabelAngleField = new System.Windows.Forms.ComboBox();
             this.rbIndividualAngle = new System.Windows.Forms.RadioButton();
@@ -241,6 +243,8 @@ namespace DotSpatial.Symbology.Forms
             // 
             // tabBasic
             // 
+            this.tabBasic.Controls.Add(this.tbFloatingFormat);
+            this.tabBasic.Controls.Add(this.label13);
             this.tabBasic.Controls.Add(this.grbLabelRotation);
             this.tabBasic.Controls.Add(this.chkPrioritizeLow);
             this.tabBasic.Controls.Add(this.chkPreventCollision);
@@ -254,13 +258,24 @@ namespace DotSpatial.Symbology.Forms
             this.tabBasic.Name = "tabBasic";
             this.tabBasic.UseVisualStyleBackColor = true;
             // 
+            // tbFloatingFormat
+            // 
+            resources.ApplyResources(this.tbFloatingFormat, "tbFloatingFormat");
+            this.tbFloatingFormat.Name = "tbFloatingFormat";
+            this.tbFloatingFormat.TextChanged += new System.EventHandler(this.tbFloatingFormat_TextChanged);
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
             // grbLabelRotation
             // 
+            resources.ApplyResources(this.grbLabelRotation, "grbLabelRotation");
             this.grbLabelRotation.Controls.Add(this.cmbLabelAngleField);
             this.grbLabelRotation.Controls.Add(this.rbIndividualAngle);
             this.grbLabelRotation.Controls.Add(this.rbCommonAngle);
             this.grbLabelRotation.Controls.Add(this.nudAngle);
-            resources.ApplyResources(this.grbLabelRotation, "grbLabelRotation");
             this.grbLabelRotation.Name = "grbLabelRotation";
             this.grbLabelRotation.TabStop = false;
             // 
@@ -955,6 +970,7 @@ namespace DotSpatial.Symbology.Forms
             this.tabMembers.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -1036,5 +1052,7 @@ namespace DotSpatial.Symbology.Forms
         private RadioButton rbCommonAngle;
         private ComboBox cmbLabelAngleField;
         private ToolTip ttLabelSetup;
+        private TextBox tbFloatingFormat;
+        private Label label13;
     }
 }
