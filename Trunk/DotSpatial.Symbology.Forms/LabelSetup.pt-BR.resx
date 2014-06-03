@@ -123,12 +123,6 @@
   <data name="tabExpression.Text" xml:space="preserve">
     <value>Expressão</value>
   </data>
-  <data name="tabBasic.Text" xml:space="preserve">
-    <value>Propriedades básicas</value>
-  </data>
-  <data name="grbLabelRotation.Text" xml:space="preserve">
-    <value>Rotação do rótulo</value>
-  </data>
   <data name="cmbLabelAngleField.ToolTip" xml:space="preserve">
     <value>Coluna que contém os ângulos individuais.</value>
   </data>
@@ -150,6 +144,9 @@
   </data>
   <data name="nudAngle.ToolTip" xml:space="preserve">
     <value>Valor do ângulo comum.</value>
+  </data>
+  <data name="grbLabelRotation.Text" xml:space="preserve">
+    <value>Rotação do rótulo</value>
   </data>
   <data name="chkPrioritizeLow.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 17</value>
@@ -184,9 +181,6 @@
   <data name="chkBorder.Text" xml:space="preserve">
     <value>Contorno:</value>
   </data>
-  <data name="gpbFont.Text" xml:space="preserve">
-    <value>Fonte:</value>
-  </data>
   <data name="lblFontColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
   </data>
@@ -211,6 +205,9 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Tamanho:</value>
   </data>
+  <data name="gpbFont.Text" xml:space="preserve">
+    <value>Fonte:</value>
+  </data>
   <data name="lblPreview.Text" xml:space="preserve">
     <value>Pre-visualização Fonte</value>
   </data>
@@ -220,11 +217,8 @@
   <data name="chkBackgroundColor.Text" xml:space="preserve">
     <value>Cor de fundo:</value>
   </data>
-  <data name="tabAdvanced.Text" xml:space="preserve">
-    <value>Propriedades avançadas</value>
-  </data>
-  <data name="grpOffset.Text" xml:space="preserve">
-    <value>Deslocamento</value>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>Propriedades básicas</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>20, 13</value>
@@ -237,6 +231,9 @@
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>&amp; X:</value>
+  </data>
+  <data name="grpOffset.Text" xml:space="preserve">
+    <value>Deslocamento</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 13</value>
@@ -298,6 +295,9 @@
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>Cor da sombra:</value>
+  </data>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>Propriedades avançadas</value>
   </data>
   <data name="tabMembers.Text" xml:space="preserve">
     <value>Membros</value>
