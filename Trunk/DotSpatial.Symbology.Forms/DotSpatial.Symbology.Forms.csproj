@@ -100,6 +100,9 @@
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />
     <Compile Include="ImageLayerActions.cs" />
+    <Compile Include="LabelSetup.Designer.cs">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerActions.cs" />
     <Compile Include="FeatureLayerActions.cs" />
     <Compile Include="DeleteFieldsDialog.cs">
