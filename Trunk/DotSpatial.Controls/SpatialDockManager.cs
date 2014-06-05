@@ -136,9 +136,8 @@ namespace DotSpatial.Controls
         {
             var tabPage = GetByKey(key);
             if (tabPage == null) return;
-
-            tabPage.Show();
-            tabPage.Focus();
+            
+            ((TabControl)tabPage.Parent).SelectTab(tabPage);
             OnActivePanelChanged(new DockablePanelEventArgs(key));
         }
 
@@ -147,7 +146,18 @@ namespace DotSpatial.Controls
             var tabPage = GetByKey(key);
             if (tabPage == null) return;
 
-            tabPage.Hide();
+            var tabControl = ((TabControl) tabPage.Parent);
+            // Select another tab (if any)
+            var i = 0;
+            while (tabControl.TabPages.Count > i)
+            {
+                var current = tabControl.TabPages[i++];
+                if (current != tabPage)
+                {
+                    SelectPanel(current.Name);
+                    break;
+                }
+            }
         }
 
         public void ShowPanel(string key)

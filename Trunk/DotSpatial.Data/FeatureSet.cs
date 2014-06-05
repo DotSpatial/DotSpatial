@@ -1562,7 +1562,7 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the surrent file path. This is the relative path relative to
+        /// Gets or sets the current file path. This is the relative path relative to
         /// the current project folder. For feature sets coming from a database
         /// or a web service, the FilePath property is NULL.
         /// </summary>

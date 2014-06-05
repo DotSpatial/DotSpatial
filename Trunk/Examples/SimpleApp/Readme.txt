@@ -1,0 +1,1 @@
+﻿ SimpleApp - the simpliest DS application with map, legend, plugins support, and with some predefined menus\buttons.
