@@ -172,6 +172,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the list of string paths (relative to this one) to search for plugins.
         /// </summary>
+        [Description("Gets or sets the list of string paths (relative to this one) to search for plugins.")]
         public List<string> Directories { get; set; }
 
         /// <summary>
@@ -251,7 +252,20 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the method for enabling extension Apps.
         /// </summary>
+        [Obsolete("Use ShowExtensionsDialogMode instead")] // Marked obsolete in 1.7
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ShowExtensionsDialog ShowExtensionsDialog { get; set; }
+
+        /// <summary>
+        /// Gets or sets the method for enabling extension Apps.
+        /// </summary>
+        [Description("Gets or sets the method for enabling extension Apps.")]
+        public ShowExtensionsDialogMode ShowExtensionsDialogMode
+        {
+            get { return (ShowExtensionsDialogMode) ((int) ShowExtensionsDialog); }
+            set { ShowExtensionsDialog = (ShowExtensionsDialog) ((int) value); }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether extensions should be placed in AppDomain.CurrentDomain.BaseDirectory.

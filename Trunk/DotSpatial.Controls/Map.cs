@@ -136,14 +136,14 @@ namespace DotSpatial.Controls
 
         public bool PreFilterMessage(ref Message m) 
         {
-            if (m.Msg == (int)0x0100)
+            if (m.Msg == 0x0100)
             {
-                if(this.ContainsFocus)
+                if(ContainsFocus)
                     OnKeyDown(new KeyEventArgs((Keys)m.WParam.ToInt32()));
             }
-            else if (m.Msg == (int)0x0101)
+            else if (m.Msg == 0x0101)
             {
-                if (this.ContainsFocus)
+                if (ContainsFocus)
                     OnKeyUp(new KeyEventArgs((Keys)m.WParam.ToInt32()));
             }
             return false;
@@ -151,19 +151,19 @@ namespace DotSpatial.Controls
 
         private void Map_KeyUp(object sender, KeyEventArgs e)
         {
-
-            foreach (IMapFunction tool in MapFunctions)
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled) tool.DoKeyUp(e);
+                tool.DoKeyUp(e);
+                if (e.Handled) break;
             }
         }
 
         private void Map_KeyDown(object sender, KeyEventArgs e)
         {
-
-            foreach (IMapFunction tool in MapFunctions)
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled) tool.DoKeyDown(e);
+                tool.DoKeyDown(e);
+                if (e.Handled) break;
             }
         }
        
@@ -654,7 +654,7 @@ namespace DotSpatial.Controls
                 ViewExtents = Extent;
             }
 
-            this.IsZoomedToMaxExtent = true;
+            IsZoomedToMaxExtent = true;
         }
 
         //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
@@ -688,16 +688,17 @@ namespace DotSpatial.Controls
         /// [Name]</param>
         /// <param name="font">The font to use for these labels</param>
         /// <param name="fontColor">The color for the labels</param>
+        // Todo: move to IFeatureLayer extensions
         public void AddLabels(IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
             featureLayer.ShowLabels = true;
 
-            MapLabelLayer ll = new MapLabelLayer();
+            var ll = new MapLabelLayer();
             ll.Symbology.Categories.Clear();
-            LabelCategory lc = new LabelCategory { Expression = expression };
+            var lc = new LabelCategory { Expression = expression };
             ll.Symbology.Categories.Add(lc);
 
-            ILabelSymbolizer ls = ll.Symbolizer;
+            var ls = ll.Symbolizer;
             ls.Orientation = ContentAlignment.MiddleCenter;
             ls.BackColorEnabled = false;
             ls.BackColorEnabled = false;
@@ -712,19 +713,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Removes any existing label categories
         /// </summary>
+        // Todo: move to IFeatureLayer extensions
         public void ClearLabels(IFeatureLayer featureLayer)
         {
             featureLayer.ShowLabels = false;
-            if (featureLayer.LabelLayer == null) return;
-        }
-
-        /// <summary>
-        /// Opens a new layer and automatically adds it to the map.
-        /// </summary>
-        [Obsolete("Use AddLayers() with no parameters")]
-        public virtual void OpenLayer()
-        {
-            AddLayers();
         }
 
         /// <summary>
@@ -1127,9 +1119,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public List<ILayer> GetLayers()
         {
-            List<ILayer> result = new List<ILayer>();
-            if (_geoMapFrame == null) return result;
-            return _geoMapFrame.Layers.Cast<ILayer>().ToList();
+            return _geoMapFrame == null ? Enumerable.Empty<ILayer>().ToList() : _geoMapFrame.Layers.Cast<ILayer>().ToList();
         }
 
         /// <summary>
@@ -1245,11 +1235,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires the LayerAdded event
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
-            if (LayerAdded != null) LayerAdded(sender, e);
+            var h = LayerAdded;
+            if (h != null) h(sender, e);
         }
 
         private void MapFrame_SelectionChanged(object sender, EventArgs e)
@@ -1262,7 +1251,8 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnSelectionChanged()
         {
-            if (SelectionChanged != null) SelectionChanged(this, EventArgs.Empty);
+            var h = SelectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         private void MapFrame_BufferChanged(object sender, ClipArgs e)
@@ -1272,7 +1262,7 @@ namespace DotSpatial.Controls
             {
                 if (clip.IsEmpty == false)
                 {
-                    Rectangle mapClip = new Rectangle(clip.X - view.X, clip.Y - view.Y, clip.Width, clip.Height);
+                    var mapClip = new Rectangle(clip.X - view.X, clip.Y - view.Y, clip.Width, clip.Height);
                     Invalidate(mapClip);
                 }
             }
@@ -1418,37 +1408,40 @@ namespace DotSpatial.Controls
         {
             if (_geoMapFrame.IsPanning) return;
 
-            Rectangle clip = e.ClipRectangle;
+            var clip = e.ClipRectangle;
             if (clip.IsEmpty) clip = ClientRectangle;
 
             // if the area to paint is too small, there's nothing to paint.
             // Added to fix http://dotspatial.codeplex.com/workitem/320
             if (clip.Width < 1 || clip.Height < 1) return;
 
-            Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(stencil);
-            Brush b = new SolidBrush(BackColor);
-            g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
-            b.Dispose();
-            Matrix m = new Matrix();
-            m.Translate(-clip.X, -clip.Y);
-            g.Transform = m;
-
-            Draw(g, e);
-
-            MapDrawArgs args = new MapDrawArgs(g, clip, _geoMapFrame);
-            foreach (IMapFunction tool in MapFunctions)
+            using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
+            using (var g = Graphics.FromImage(stencil))
             {
-                if (tool.Enabled) tool.Draw(args);
+                using(var b = new SolidBrush(BackColor))
+                    g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
+
+                using (var m = new Matrix())
+                {
+                    m.Translate(-clip.X, -clip.Y);
+                    g.Transform = m;
+
+                    Draw(g, e);
+
+                    var args = new MapDrawArgs(g, clip, _geoMapFrame);
+                    foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+                    {
+                        tool.Draw(args);
+                    }
+
+                    var pe = new PaintEventArgs(g, e.ClipRectangle);
+                    base.OnPaint(pe);
+                }
+
+                e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
             }
-
-            PaintEventArgs pe = new PaintEventArgs(g, e.ClipRectangle);
-            base.OnPaint(pe);
-
-            g.Dispose();
-            e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
-            stencil.Dispose();
         }
+
 
         /// <summary>
         /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
@@ -1456,19 +1449,22 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         public Bitmap SnapShot()
         {
-            Rectangle clip = ClientRectangle;
-            Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(stencil);
-            g.FillRectangle(Brushes.White, new Rectangle(0, 0, stencil.Width, stencil.Height));
+            var clip = ClientRectangle;
+            var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
+            using (var g = Graphics.FromImage(stencil))
+            {
+                g.FillRectangle(Brushes.White, new Rectangle(0, 0, stencil.Width, stencil.Height));
 
-            // Translate the buffer so that drawing occurs in client coordinates, regardless of whether
-            // there is a clip rectangle or not.
-            Matrix m = new Matrix();
-            m.Translate(-clip.X, -clip.Y);
-            g.Transform = m;
+                // Translate the buffer so that drawing occurs in client coordinates, regardless of whether
+                // there is a clip rectangle or not.
+                using (var m = new Matrix())
+                {
+                    m.Translate(-clip.X, -clip.Y);
+                    g.Transform = m;
+                    _geoMapFrame.Draw(new PaintEventArgs(g, clip));
+                }
+            }
 
-            _geoMapFrame.Draw(new PaintEventArgs(g, clip));
-            g.Dispose();
             return stencil;
         }
 
@@ -1479,12 +1475,13 @@ namespace DotSpatial.Controls
         /// <returns>A bitmap with the specified width</returns>
         public Bitmap SnapShot(int width)
         {
-            int height = (int)(width * (MapFrame.ViewExtents.Height / MapFrame.ViewExtents.Width));
-            Bitmap bmp = new Bitmap(height, width);
-            Graphics g = Graphics.FromImage(bmp);
-            g.Clear(Color.White);
-            _geoMapFrame.Print(g, new Rectangle(0, 0, width, height));
-            g.Dispose();
+            var height = (int)(width * (MapFrame.ViewExtents.Height / MapFrame.ViewExtents.Width));
+            var bmp = new Bitmap(height, width);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+                _geoMapFrame.Print(g, new Rectangle(0, 0, width, height));
+            }
             return bmp;
         }
 
@@ -1494,14 +1491,11 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseDoubleClick(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseDoubleClick(args);
+                if (args.Handled) break;
             }
 
             base.OnMouseDoubleClick(e);
@@ -1513,14 +1507,11 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseDown(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseDown(args);
+                if (args.Handled) break;
             }
 
             base.OnMouseDown(e);
@@ -1532,16 +1523,13 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseUp(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseUp(args);
+                if (args.Handled) break;
             }
+
             base.OnMouseUp(e);
         }
 
@@ -1551,19 +1539,16 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            GeoMouseArgs args = new GeoMouseArgs(e, this);
-            foreach (IMapFunction tool in MapFunctions)
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
             {
-                if (tool.Enabled)
-                {
-                    tool.DoMouseMove(args);
-                    if (args.Handled) break;
-                }
+                tool.DoMouseMove(args);
+                if (args.Handled) break;
             }
-            if (GeoMouseMove != null)
-            {
-                GeoMouseMove(this, new GeoMouseArgs(e, this));
-            }
+
+            var h = GeoMouseMove;
+            if (h != null) h(this, args);
+            
             base.OnMouseMove(e);
         }
 
@@ -1571,40 +1556,31 @@ namespace DotSpatial.Controls
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(MouseEventArgs e) 
+        protected override void OnMouseWheel(MouseEventArgs e)
         {
-                GeoMouseArgs args = new GeoMouseArgs(e, this);
-                foreach (IMapFunction tool in MapFunctions)
-                {
-                    if (tool.Enabled)
-                    {
-                        tool.DoMouseWheel(args);
-                        if (args.Handled) break;
-                    }
-                }
-           
-                base.OnMouseWheel(e);        
-        }
+            var args = new GeoMouseArgs(e, this);
+            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            {
+                tool.DoMouseWheel(args);
+                if (args.Handled) break;
+            }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+            base.OnMouseWheel(e);
+        }
+       
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
-            if (FinishedRefresh != null)
-            {
-                FinishedRefresh(this, e);
-            }
+            var h = FinishedRefresh;
+            if (h != null) h(this, e);
         }
 
         /// <summary>
-        /// Fires the ProjectionChanged event
-        /// and also reprojects all map layers
+        /// Fires the ProjectionChanged event.
         /// </summary>
         protected virtual void OnProjectionChanged()
         {
-            if (ProjectionChanged != null) ProjectionChanged(this, null);
+            var h = ProjectionChanged;
+            if (h != null) h(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1614,28 +1590,26 @@ namespace DotSpatial.Controls
         /// <param name="args"></param>
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
-            if (ViewExtentsChanged != null) ViewExtentsChanged(sender, args);
+            var h = ViewExtentsChanged;
+            if (h != null) h(sender, args);
 
-            Extent MaxExtent = GetMaxExtent();
-
-            if (MaxExtent.Width != 0 && MaxExtent.Height != 0)
+            var maxExtent = GetMaxExtent();
+            if (maxExtent.Width != 0 && maxExtent.Height != 0)
             {
-                if ((this.ViewExtents.Width > (MaxExtent.Width + 1)) && (this.ViewExtents.Height > (MaxExtent.Height + 1)))
+                if ((ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
                 {
-                    this.ZoomToMaxExtent();
+                    ZoomToMaxExtent();
                 }
             }
-            
         }
 
         /// <summary>
         /// Fires the FunctionModeChanged event.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected virtual void OnFunctionModeChanged(object sender, EventArgs e)
         {
-            if (FunctionModeChanged != null) FunctionModeChanged(this, e);
+            var h = FunctionModeChanged;
+            if (h != null) h(this, e);
         }
 
         private void OnSizeChanged(object sender, EventArgs eventArgs)
@@ -1665,10 +1639,7 @@ namespace DotSpatial.Controls
         protected virtual void OnResized()
         {
             var handler = Resized;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            if (handler != null) handler(this, EventArgs.Empty);
         }
 
         #endregion

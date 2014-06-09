@@ -188,7 +188,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="filterExpression">The filter expression to find features for.</param>
         /// <returns>The list of integers that are the FIDs of the specified values.</returns>
-        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Set obsolete in 1.7.
+        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
         List<int> Find(string filterExpression);
 
         /// <summary>

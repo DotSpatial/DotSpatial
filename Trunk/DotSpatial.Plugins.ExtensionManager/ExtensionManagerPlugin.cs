@@ -60,27 +60,31 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void AddButtons()
         {
-            switch (App.ShowExtensionsDialog)
+            switch (App.ShowExtensionsDialogMode)
             {
-                case ShowExtensionsDialog.Default:
-                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click);
-                    simpleAction.GroupCaption = HeaderControl.ApplicationMenuKey;
-                    simpleAction.SmallImage = Resources.plugin_16x16;
-                    simpleAction.LargeImage = Resources.plugin_32x32;
-                    simpleAction.SortOrder = 100;
+                case ShowExtensionsDialogMode.Default:
+                    var simpleAction = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Extension Manager...", ExtensionManager_Click)
+                    {
+                        GroupCaption = HeaderControl.ApplicationMenuKey,
+                        SmallImage = Resources.plugin_16x16,
+                        LargeImage = Resources.plugin_32x32,
+                        SortOrder = 100
+                    };
                     App.HeaderControl.Add(simpleAction);
 
                     //sample projects menu
-                    SimpleActionItem simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click);
-                    simpleActionItem.GroupCaption = HeaderControl.ApplicationMenuKey;
-                    simpleActionItem.SmallImage = Resources.plugin_16x16;
-			        simpleActionItem.LargeImage = Resources.plugin_32x32;
-			        base.App.HeaderControl.Add(simpleActionItem);
+                    var simpleActionItem = new SimpleActionItem(HeaderControl.ApplicationMenuKey, "Open sample project..", OpenSampleProjects_Click)
+                    {
+                        GroupCaption = HeaderControl.ApplicationMenuKey,
+                        SmallImage = Resources.plugin_16x16,
+                        LargeImage = Resources.plugin_32x32
+                    };
+                    App.HeaderControl.Add(simpleActionItem);
 
                     break;
 
-                case ShowExtensionsDialog.MapGlyph:
-                    AppFunction fun = new AppFunction { Manager = App, Map = App.Map };
+                case ShowExtensionsDialogMode.MapGlyph:
+                    var fun = new AppFunction { Manager = App, Map = App.Map };
                     App.Map.MapFunctions.Insert(0, fun);
                     fun.Activate();
                     break;

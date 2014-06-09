@@ -318,7 +318,6 @@
             this.appManager.Legend = this.legend1;
             this.appManager.Map = this.map1;
             this.appManager.ProgressHandler = this.spatialStatusStrip1;
-            this.appManager.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // spatialDockManager1
             // 

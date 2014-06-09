@@ -53,13 +53,13 @@ namespace DemoMap
             // 
             // appManager
             // 
-            this.appManager.CompositionContainer = null;
             this.appManager.Directories = ((System.Collections.Generic.List<string>)(resources.GetObject("appManager.Directories")));
             this.appManager.DockManager = null;
             this.appManager.HeaderControl = null;
             this.appManager.Legend = null;
+            this.appManager.Map = null;
             this.appManager.ProgressHandler = null;
-            this.appManager.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
+            this.appManager.ShowExtensionsDialogMode = DotSpatial.Controls.ShowExtensionsDialogMode.Default;
             // 
             // MainForm
             // 

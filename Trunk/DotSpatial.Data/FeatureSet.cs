@@ -661,7 +661,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Set obsolete in 1.7.
+        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
         public List<int> Find(string filterExpression)
         {
             var dt = DataTable;

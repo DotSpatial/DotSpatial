@@ -40,7 +40,6 @@
             this.appManager.HeaderControl = null;
             this.appManager.Legend = null;
             this.appManager.ProgressHandler = null;
-            this.appManager.ShowExtensionsDialog = DotSpatial.Controls.ShowExtensionsDialog.Default;
             // 
             // Form1
             // 
