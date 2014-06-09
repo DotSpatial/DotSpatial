@@ -85,6 +85,7 @@
     <Compile Include="DatelineCrossingMapTest.cs" />
     <Compile Include="LayoutMapTests.cs" />
     <Compile Include="MapFrameTest.cs" />
+    <Compile Include="MapFunctionTests.cs" />
     <Compile Include="MapLayerCollectionTest.cs" />
     <Compile Include="MapPolygonLayerTest.cs" />
     <Compile Include="MapTest.cs" />

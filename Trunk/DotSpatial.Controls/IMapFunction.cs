@@ -25,7 +25,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// ITool
+    /// Interface for map functions.
     /// </summary>
     public interface IMapFunction
     {

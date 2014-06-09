@@ -68,6 +68,9 @@
     <Compile Include="Docking\DockablePanelEventArgs.cs" />
     <Compile Include="Docking\DockablePanel.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="FeatureIdentifier.Designer.cs">
+      <DependentUpon>FeatureIdentifier.cs</DependentUpon>
+    </Compile>
     <Compile Include="Header\ProgressStatusPanel.cs" />
     <Compile Include="PackageManager.cs" />
     <Compile Include="ShowExtensionsDialog.cs" />
