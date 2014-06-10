@@ -281,20 +281,11 @@ namespace DotSpatial.Controls
         /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this
         /// category.</param>
         /// <param name="name">The name of the category.</param>
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
                               ILabelSymbolizer symbolizer, string name)
         {
-            if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
-            featureLayer.ShowLabels = true;
-            ILabelCategory lc = new LabelCategory
-                                    {
-                                        Expression = expression,
-                                        FilterExpression = filterExpression,
-                                        Symbolizer = symbolizer,
-                                        Name = name,
-                                    };
-            featureLayer.LabelLayer.Symbology.Categories.Add(lc);
-            featureLayer.LabelLayer.CreateLabels();
+            featureLayer.AddLabels(expression, filterExpression, symbolizer, name);
         }
 
         /// <summary>
@@ -309,21 +300,11 @@ namespace DotSpatial.Controls
         ///  category.</param>
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than
         /// this value, labels should appear.</param>
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
                               ILabelSymbolizer symbolizer, double width)
         {
-            if (featureLayer.LabelLayer == null) featureLayer.LabelLayer = new MapLabelLayer();
-            featureLayer.ShowLabels = true;
-            ILabelCategory lc = new LabelCategory
-                                    {
-                                        Expression = expression,
-                                        FilterExpression = filterExpression,
-                                        Symbolizer = symbolizer
-                                    };
-            featureLayer.LabelLayer.UseDynamicVisibility = true;
-            featureLayer.LabelLayer.DynamicVisibilityWidth = width;
-            featureLayer.LabelLayer.Symbology.Categories.Add(lc);
-            featureLayer.LabelLayer.CreateLabels();
+            featureLayer.AddLabels(expression, filterExpression, symbolizer, width);
         }
 
         /// <summary>
@@ -688,35 +669,19 @@ namespace DotSpatial.Controls
         /// [Name]</param>
         /// <param name="font">The font to use for these labels</param>
         /// <param name="fontColor">The color for the labels</param>
-        // Todo: move to IFeatureLayer extensions
+        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
         public void AddLabels(IFeatureLayer featureLayer, string expression, Font font, Color fontColor)
         {
-            featureLayer.ShowLabels = true;
-
-            var ll = new MapLabelLayer();
-            ll.Symbology.Categories.Clear();
-            var lc = new LabelCategory { Expression = expression };
-            ll.Symbology.Categories.Add(lc);
-
-            var ls = ll.Symbolizer;
-            ls.Orientation = ContentAlignment.MiddleCenter;
-            ls.BackColorEnabled = false;
-            ls.BackColorEnabled = false;
-            ls.FontColor = fontColor;
-            ls.FontFamily = font.FontFamily.ToString();
-            ls.FontSize = font.Size;
-            ls.FontStyle = font.Style;
-            ls.PartsLabelingMethod = PartLabelingMethod.LabelLargestPart;
-            featureLayer.LabelLayer = ll;
+            featureLayer.AddLabels(expression, font, fontColor);
         }
 
         /// <summary>
         /// Removes any existing label categories
         /// </summary>
-        // Todo: move to IFeatureLayer extensions
+        [Obsolete("Use featureLayer.ClearLabels() instead")] // Marked in 1.7
         public void ClearLabels(IFeatureLayer featureLayer)
         {
-            featureLayer.ShowLabels = false;
+            featureLayer.ClearLabels();
         }
 
         /// <summary>
@@ -1031,8 +996,7 @@ namespace DotSpatial.Controls
         /// If true then the map is zoomed to its full extents
         /// Added by Eric Hullinger 1/3/2013
         /// </summary>
-        public bool IsZoomedToMaxExtent
-        { get; set; }
+        public bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
         /// Gets or sets the back buffer.  The back buffer should be in Format32bbpArgb bitmap.

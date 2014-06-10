@@ -72,6 +72,7 @@
       <DependentUpon>FeatureIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Header\ProgressStatusPanel.cs" />
+    <Compile Include="IFeatureLayerExtensions.cs" />
     <Compile Include="PackageManager.cs" />
     <Compile Include="ShowExtensionsDialog.cs" />
     <Compile Include="AppManager.cs">

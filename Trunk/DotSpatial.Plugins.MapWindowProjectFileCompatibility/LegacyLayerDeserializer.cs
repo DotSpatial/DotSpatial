@@ -154,8 +154,7 @@ namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 
             string expression = String.Format("[{0}]", fieldName);
 
-            map.AddLabels(featureLayer, expression, null, symbolizer, expression);
-
+            featureLayer.AddLabels(expression, null, symbolizer, expression);
             featureLayer.LabelLayer.UseDynamicVisibility = Convert.ToBoolean(labels["UseMinZoomLevel"]);
 
             try { featureLayer.LabelLayer.DynamicVisibilityWidth = Convert.ToDouble(labels["Scale"]); }
