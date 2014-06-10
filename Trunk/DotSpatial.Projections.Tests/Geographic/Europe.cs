@@ -1,6 +1,5 @@
-
+using System;
 using NUnit.Framework;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Projections.Tests.Geographic
 {
@@ -10,15 +9,21 @@ namespace DotSpatial.Projections.Tests.Geographic
     [TestFixture]
     public class Europe
     {
-        /// <summary>
-        /// Creates a new instance of the Africa Class
-        /// </summary>
-        [TestFixtureSetUp]
-        public void Initialize()
+        [Test]
+        public void Belge1972_EPSG31370()
         {
-            
+            // see https://dotspatial.codeplex.com/discussions/548133
+
+            var source = ProjectionInfo.FromEpsgCode(31370);
+            var dest = KnownCoordinateSystems.Geographic.World.WGS1984;
+            double[] vertices = { 156117.21, 133860.06 };
+            Reproject.ReprojectPoints(vertices, null, source, dest, 0, 1);
+
+            Assert.IsTrue(Math.Abs(vertices[0] - 4.455) < 1e-7);
+            Assert.IsTrue(Math.Abs(vertices[1] - 50.515485) < 1e-7);
         }
 
+        
         [Test]
         public void Albanian1987()
         {

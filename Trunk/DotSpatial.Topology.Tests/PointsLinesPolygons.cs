@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 

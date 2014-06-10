@@ -97,7 +97,7 @@
     <Compile Include="AuthorityCodes\AuthorityCodeHandler.cs" />
     <Compile Include="AuxiliarySphereType.cs" />
     <EmbeddedResource Include="AuthorityCodes\AuthorityCodeToProj4.ds" />
-    <None Include="DeflateStreamUtility.cs" />
+    <None Include="AuthorityCodes\DeflateStreamUtility.cs" />
     <Compile Include="DatNadTable.cs" />
     <Compile Include="DatumTransform.cs" />
     <Compile Include="DatumTransformStage.cs" />
@@ -371,6 +371,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AuthorityCodes\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\DeflateStreamUtility.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

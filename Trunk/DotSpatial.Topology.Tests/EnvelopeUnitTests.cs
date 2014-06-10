@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Topology.Tests

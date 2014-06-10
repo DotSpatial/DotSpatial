@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-namespace DotSpatial.Topology.Tests
+
+namespace DotSpatial.Tests.Common
 {
     public static class AssertExt
     {
@@ -21,9 +22,5 @@ namespace DotSpatial.Topology.Tests
                 Assert.Fail("Double values " + a + " and " + b + " were not equal.");
             }
         }
-
-
-
-
     }
 }
