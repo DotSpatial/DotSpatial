@@ -51,15 +51,6 @@ namespace DotSpatial.Controls
         #region Private variables
 
         const int SELECTED = 1;
-        private const int X = 0;
-        private const int Y = 1;
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
-        /*
-                private readonly Rectangle _drawingBounds = new Rectangle(-32000, -32000, 64000, 64000);
-        */
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
 
         #endregion
 
@@ -170,8 +161,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -280,12 +271,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Builds a linestring into the graphics path, using minX, maxY, dx and dy for the transformations.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="ls"></param>
-        /// <param name="minX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="dx"></param>
-        /// <param name="dy"></param>
         internal static void BuildLineString(GraphicsPath path, IBasicLineString ls, double minX, double maxY, double dx, double dy)
         {
             IList<Coordinate> cs = ls.Coordinates;
@@ -331,9 +316,11 @@ namespace DotSpatial.Controls
 
                 for (int i = start; i <= end; i++)
                 {
-                    double[] pt = new double[2];
-                    pt[X] = (vertices[i * 2] - minX) * dx;
-                    pt[Y] = (maxY - vertices[i * 2 + 1]) * dy;
+                    var pt = new[]
+                    {
+                        (vertices[i*2] - minX)*dx,
+                        (maxY - vertices[i*2 + 1])*dy
+                    };
                     points.Add(pt);
                 }
 
@@ -370,43 +357,27 @@ namespace DotSpatial.Controls
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public IEnvelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets an integer number of chunks for this layer.
@@ -477,7 +448,7 @@ namespace DotSpatial.Controls
 
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
 
             if (DrawnStatesNeeded)
             {
@@ -495,14 +466,7 @@ namespace DotSpatial.Controls
                         // Define the symbology based on the category and selection state
                         ILineSymbolizer ls = category.Symbolizer;
                         if (selectState == SELECTED) ls = category.SelectionSymbolizer;
-                        if (ls.Smoothing)
-                        {
-                            g.SmoothingMode = SmoothingMode.AntiAlias;
-                        }
-                        else
-                        {
-                            g.SmoothingMode = SmoothingMode.None;
-                        }
+                        g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                         // Compute a clipping rectangle that accounts for symbology
                         Rectangle clipRect = ComputeClippingRectangle(e, ls);
@@ -550,14 +514,7 @@ namespace DotSpatial.Controls
                 ILineCategory category = Symbology.Categories[0];
                 ILineSymbolizer ls = category.Symbolizer;
 
-                if (ls.Smoothing)
-                {
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                }
-                else
-                {
-                    g.SmoothingMode = SmoothingMode.None;
-                }
+                g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                 Rectangle clipRect = ComputeClippingRectangle(e, ls);
                 // Determine the subset of the specified features that are visible and match the category
@@ -587,7 +544,7 @@ namespace DotSpatial.Controls
         // This draws the individual line features
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
 
             for (int selectState = 0; selectState < 2; selectState++)
             {
@@ -596,14 +553,7 @@ namespace DotSpatial.Controls
                     // Define the symbology based on the category and selection state
                     ILineSymbolizer ls = category.Symbolizer;
                     if (selectState == SELECTED) ls = category.SelectionSymbolizer;
-                    if (ls.Smoothing)
-                    {
-                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                    }
-                    else
-                    {
-                        g.SmoothingMode = SmoothingMode.None;
-                    }
+                    g.SmoothingMode = ls.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
 
                     Rectangle clipRect = ComputeClippingRectangle(e, ls);
 

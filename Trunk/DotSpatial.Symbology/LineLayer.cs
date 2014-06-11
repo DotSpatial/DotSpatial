@@ -195,13 +195,5 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-
-        #region Protected Methods
-
-        #endregion
-
-        #region Private Functions
-
-        #endregion
     }
 }

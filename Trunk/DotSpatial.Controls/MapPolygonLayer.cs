@@ -49,16 +49,7 @@ namespace DotSpatial.Controls
 
         #region Private variables
 
-        // All the lists of pens to use for drawing the various stages
-        // private List<Pen> _scaledPens;
-
         const int SELECTED = 1;
-        const int X = 0;
-        const int Y = 1;
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
 
         #endregion
 
@@ -160,8 +151,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -278,8 +269,8 @@ namespace DotSpatial.Controls
         /// </summary>
         public void FinishDrawing()
         {
-            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
-            _stencil = _backBuffer;
+            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            Buffer = BackBuffer;
         }
 
         /// <summary>
@@ -315,57 +306,35 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        public IEnvelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// true if the layer component reports progress messages, false otherwise
         /// </summary>
         [ShallowCopy,
          Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool ProgressReportingEnabled
-        {
-            get;
-            set;
-        }
+        public bool ProgressReportingEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the label layer that is associated with this polygon layer.
@@ -453,7 +422,7 @@ namespace DotSpatial.Controls
         /// <param name="paths"></param>
         private void DrawPaths(MapArgs e, IList<GraphicsPath> paths)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             int numCategories = Symbology.Categories.Count;
 
             if (!DrawnStatesNeeded && !EditMode)
@@ -503,14 +472,7 @@ namespace DotSpatial.Controls
                     foreach (IPolygonCategory category in Symbology.Categories)
                     {
                         Extent catBounds;
-                        if (CategoryExtents.Keys.Contains(category))
-                        {
-                            catBounds = CategoryExtents[category];
-                        }
-                        else
-                        {
-                            catBounds = CalculateCategoryExtent(category);
-                        }
+                        catBounds = CategoryExtents.Keys.Contains(category) ? CategoryExtents[category] : CalculateCategoryExtent(category);
                         if (catBounds == null) catBounds = Extent;
                         var bounds = new RectangleF
                         {
@@ -710,9 +672,11 @@ namespace DotSpatial.Controls
 
                 for (int i = start; i <= end; i++)
                 {
-                    var pt = new double[2];
-                    pt[X] = (vertices[i * 2] - minX) * dx;
-                    pt[Y] = (maxY - vertices[i * 2 + 1]) * dy;
+                    var pt = new[]
+                    {
+                        (vertices[i*2] - minX)*dx,
+                        (maxY - vertices[i*2 + 1])*dy
+                    };
                     points.Add(pt);
                 }
                 if (null != shClip)

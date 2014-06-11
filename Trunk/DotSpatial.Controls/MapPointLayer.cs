@@ -47,18 +47,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Private Variables
-
-        // private bool _isPreventingOverlap;
-        // private KDTree _regularTree;
-
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private Image _stencil; // draw features to the stencil
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -182,8 +170,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (_backBuffer == null) return;
-            Graphics g = Graphics.FromImage(_backBuffer);
+            if (BackBuffer == null) return;
+            Graphics g = Graphics.FromImage(BackBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -294,8 +282,8 @@ namespace DotSpatial.Controls
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
-            _stencil = _backBuffer;
+            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
+            Buffer = BackBuffer;
         }
 
         /// <summary>
@@ -371,7 +359,7 @@ namespace DotSpatial.Controls
         // This draws the individual point features
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
             FeatureType featureType = DataSet.FeatureType;
 
@@ -532,7 +520,7 @@ namespace DotSpatial.Controls
         // This draws the individual point features
         private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
-            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
             double minX = e.MinX;
             double maxY = e.MaxY;
@@ -597,45 +585,27 @@ namespace DotSpatial.Controls
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+        public Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnvelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets or sets the label layer that is associated with this point layer.

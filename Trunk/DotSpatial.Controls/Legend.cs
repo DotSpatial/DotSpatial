@@ -79,7 +79,7 @@ namespace DotSpatial.Controls
         private readonly TextBox _editBox;
         private readonly Icon _icoChecked;
         private readonly Icon _icoUnchecked;
-        private readonly List<LegendBox> _selection;
+        private readonly HashSet<ILegendItem> _selection;
         private LegendBox _dragItem;
         private LegendBox _dragTarget;
         private IColorCategory _editCategory;
@@ -87,7 +87,7 @@ namespace DotSpatial.Controls
         private bool _ignoreHide;
         private int _indentation;
         private bool _isDragging;
-        public List<LegendBox> _legendBoxes; // for hit-testing
+        private List<LegendBox> _legendBoxes; // for hit-testing
         private SymbologyEventManager _manager;
         private Rectangle _previousLine;
         private LegendBox _previousMouseDown;
@@ -111,7 +111,7 @@ namespace DotSpatial.Controls
             _icoChecked = Images.Checked;
             _icoUnchecked = Images.Unchecked;
             _contextMenu = new ContextMenu();
-            _selection = new List<LegendBox>();
+            _selection = new HashSet<ILegendItem>();
             _editBox = new TextBox { Parent = this, Visible = false };
             _editBox.LostFocus += EditBoxLostFocus;
             _indentation = 30;
@@ -153,8 +153,7 @@ namespace DotSpatial.Controls
                 _editBox.Visible = false;
                 _editBox.Text = string.Empty;
                 _ignoreHide = false;
-                IsInitialized = false;
-                Invalidate();
+                RefreshNodes();
             }
         }
 
@@ -176,8 +175,7 @@ namespace DotSpatial.Controls
                 OnIncludeMapFrame(mapFrame);
             }
             _rootNodes.Add(mapFrame);
-            IsInitialized = false;
-            Invalidate();
+            RefreshNodes();
         }
 
         /// <summary>
@@ -190,8 +188,7 @@ namespace DotSpatial.Controls
             _rootNodes.Remove(mapFrame);
             if (_rootNodes.Contains(mapFrame) == false) OnExcludeMapFrame(mapFrame);
             if (preventRefresh) return;
-            IsInitialized = false;
-            Invalidate();
+            RefreshNodes();
         }
 
         /// <summary>
@@ -201,6 +198,8 @@ namespace DotSpatial.Controls
         public void RefreshNodes()
         {
             // do any code that needs to happen if content changes
+            _previousMouseDown = null; // to avoid memory leaks, because LegendBox contains reference to Layer
+
             IsInitialized = false;
             Invalidate();
         }
@@ -210,19 +209,19 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ClearSelection()
         {
-            List<LegendBox> list = _selection.ToList();
+            var list = _selection.ToList();
             IFrame ParentMap = null;
             if (list.Count > 0)
             {
-                ParentMap = list[0].Item.ParentMapFrame();
+                ParentMap = list[0].ParentMapFrame();
                 if (ParentMap != null)
                 {
                     ParentMap.SuspendEvents();
                 }
             }
-            foreach (LegendBox lb in list)
+            foreach (var lb in list)
             {
-                lb.Item.IsSelected = false;
+                lb.IsSelected = false;
             }
             
             _selection.Clear();
@@ -231,8 +230,8 @@ namespace DotSpatial.Controls
             {
                 ParentMap.ResumeEvents();
             }
-            IsInitialized = false;
-            Invalidate();
+
+            RefreshNodes();
         }
 
         /// <summary>
@@ -243,7 +242,9 @@ namespace DotSpatial.Controls
         {
             mapFrame.ItemChanged += MapFrameItemChanged;
             mapFrame.LayerSelected += LayersLayerSelected;
+            mapFrame.LayerRemoved += MapFrameOnLayerRemoved;
         }
+        
 
         /// <summary>
         /// Occurs when we need to no longer listen to the map frame events
@@ -253,26 +254,29 @@ namespace DotSpatial.Controls
         {
             mapFrame.ItemChanged -= MapFrameItemChanged;
             mapFrame.LayerSelected -= LayersLayerSelected;
+            mapFrame.LayerRemoved -= MapFrameOnLayerRemoved;
+        }
+
+        private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
+        {
+            _selection.Remove(e.Layer);
         }
 
         private void LayersLayerSelected(object sender, LayerSelectedEventArgs e)
         {
-            LegendBox lb = BoxFromItem(e.Layer);
-            if (lb == null) return;
             if (e.IsSelected)
             {
-                _selection.Add(lb);
+                _selection.Add(e.Layer);
             }
             else
             {
-                if (_selection.Contains(lb)) _selection.Remove(lb);
+                _selection.Remove(e.Layer);
             }
         }
 
         // a good selectionHighlight color: 215, 238, 252
         private Brush HighlightBrush(Rectangle box)
         {
-            
             float med = _selectionHighlight.GetBrightness();
             float bright = med + 0.05f;
             if (bright > 1f) bright = 1f;
@@ -529,12 +533,7 @@ namespace DotSpatial.Controls
                 rl.RasterLayerActions = manager == null ? null : manager.RasterLayerActions;
             }
         }
-        
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+      
         protected virtual PointF OnInitializeItem(DrawLegendItemArgs e)
         {
             if (e.Item.LegendItemVisible == false) return e.TopLeft;
@@ -551,7 +550,7 @@ namespace DotSpatial.Controls
             {
                 // Draw the item itself
                 // Point tl = new Point((int)topLeft.X, (int)topLeft.Y);
-                LegendBox itemBox = new LegendBox();
+                var itemBox = new LegendBox();
                 _legendBoxes.Add(itemBox);
                 itemBox.Item = e.Item;
                 itemBox.Bounds = new Rectangle(0, (int)topLeft.Y, Width, ItemHeight);
@@ -589,21 +588,19 @@ namespace DotSpatial.Controls
                 itemBox.Textbox = new Rectangle((int)tempTopLeft.X, (int)topLeft.Y + dY, width, ItemHeight);
                 if (itemBox.Item.IsSelected)
                 {
-                   
-                    if (_selection.Contains(itemBox) == false) _selection.Add(itemBox);
+                    _selection.Add(itemBox.Item);
                     Rectangle innerBox = itemBox.Textbox;
                     innerBox.Inflate(-1, -1);
-                    Brush b = HighlightBrush(innerBox);
-                    e.Graphics.FillRectangle(b, innerBox);
-                    b.Dispose();
+                    using (var b = HighlightBrush(innerBox))
+                    {
+                        e.Graphics.FillRectangle(b, innerBox);
+                    }
 
                     SymbologyGlobal.DrawRoundedRectangle(e.Graphics, _highlightBorderPen, itemBox.Textbox);
-
                     e.Graphics.DrawString(e.Item.LegendText, Font, _selectionFontBrush, tempTopLeft);
                 }
                 else
                 {
-          
                     e.Graphics.DrawString(e.Item.LegendText, Font, Brushes.Black, tempTopLeft);
                 }
             }
@@ -887,8 +884,7 @@ namespace DotSpatial.Controls
                             e.ItemBox.Item.Checked = !e.ItemBox.Item.Checked;
                         }
                         if (CheckBoxMouseUp != null) CheckBoxMouseUp(this, e);
-                        IsInitialized = false;
-                        Invalidate();
+                        RefreshNodes();
                     }
                 }
                 if (e.ItemBox.Textbox.Contains(loc))
@@ -956,10 +952,8 @@ namespace DotSpatial.Controls
             {
                 e.ItemBox.Item.IsExpanded = !e.ItemBox.Item.IsExpanded;
                 if (ExpandBoxMouseDown != null) ExpandBoxMouseDown(this, e);
-                IsInitialized = false;
-                SizePage();
-                ResetScroll();
-                Invalidate();
+
+                ResetLegend();
                 return;
             }
 
@@ -1088,15 +1082,17 @@ namespace DotSpatial.Controls
         {
             int w = Width;
             int totalHeight = 0;
-            Graphics g = CreateGraphics();
-            foreach (ILegendItem li in _rootNodes)
+            using (var g = CreateGraphics())
             {
-                Size itemSize = SizeItem(0, li, g);
-                totalHeight += itemSize.Height;
-                if (itemSize.Width > w) w = itemSize.Width;
+                foreach (var li in _rootNodes)
+                {
+                    var itemSize = SizeItem(0, li, g);
+                    totalHeight += itemSize.Height;
+                    if (itemSize.Width > w) w = itemSize.Width;
+                }
             }
+
             int h = totalHeight;
-            g.Dispose();
             DocumentRectangle = new Rectangle(0, 0, w, h);
         }
 
@@ -1134,20 +1130,20 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         private void MapFrameItemChanged(object sender, EventArgs e)
         {
+            ResetLegend();
+        }
+
+        private void ResetLegend()
+        {
             SizePage();
             ResetScroll();
-
             RefreshNodes();
         }
 
         // Given a legend item, it searches the list of LegendBoxes until it finds it.
         private LegendBox BoxFromItem(ILegendItem item)
         {
-            foreach (LegendBox box in _legendBoxes)
-            {
-                if (box.Item == item) return box;
-            }
-            return null;
+            return _legendBoxes.FirstOrDefault(box => box.Item == item);
         }
 
         #endregion

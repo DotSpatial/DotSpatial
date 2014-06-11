@@ -50,7 +50,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         public ButtonHandler(AppManager manager)
         {
             if (manager.HeaderControl == null)
-                throw new ArgumentNullException("A HeaderControl must be available through the AppManager.");
+                throw new ArgumentNullException("manager", "A HeaderControl must be available through the AppManager.");
 
             _Header = manager.HeaderControl;
             AddButtons();
@@ -76,8 +76,14 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     _geoMap.Layers.LayerSelected += Layers_LayerSelected;
                     _geoMap.MapFrame.LayerSelected += MapFrame_LayerSelected;
+                    _geoMap.MapFrame.LayerRemoved += MapFrameOnLayerRemoved;
                 }
             }
+        }
+
+        private void MapFrameOnLayerRemoved(object sender, LayerEventArgs e)
+        {
+            if (e.Layer == _activeLayer) _activeLayer = null;
         }
 
         /// <summary>
@@ -163,15 +169,15 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void MapFrame_LayerSelected(object sender, LayerSelectedEventArgs e)
         {
-            if (e.IsSelected == false && e.Layer == _activeLayer)
+            if (!e.IsSelected && e.Layer == _activeLayer)
             {
+                _activeLayer = null;
                 if (_moveVertexFunction != null) { _moveVertexFunction.DeselectFeature(); }
                 return;
             }
-            IFeatureLayer fl = e.Layer as IFeatureLayer;
-            _activeLayer = null;
-            if (fl == null) { return; }
-            _activeLayer = fl;
+            
+            _activeLayer = e.Layer as IFeatureLayer;
+            if (_activeLayer == null) { return; }
 
             if (_moveVertexFunction != null)
             {
