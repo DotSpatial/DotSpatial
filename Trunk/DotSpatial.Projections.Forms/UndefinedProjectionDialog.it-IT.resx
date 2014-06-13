@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,363 +59,124 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-	<data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-		<value>15, 9</value>
-	</data>
-	<data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-		<value>369, 37</value>
-	</data>
-	<assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-	<data name="label1.TabIndex" type="System.Int32, mscorlib">
-		<value>0</value>
-	</data>
-	<data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 9</value>
   </data>
-	<data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>417, 37</value>
   </data>
-	<data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>La proiezione è stata fornita in un formato non riconosciuto o non specifica di proiezione potrebbe essere trovata.  È stata la proiezione specificata:</value>
   </data>
-	<data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="lblOriginal.Text" xml:space="preserve">
+    <value>Niente</value>
   </data>
-	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-	<data name="lblOriginal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Top, Left, Right</value>
-	</data>
-	<data name="lblOriginal.Location" type="System.Drawing.Point, System.Drawing">
-		<value>15, 59</value>
-	</data>
-	<data name="lblOriginal.Size" type="System.Drawing.Size, System.Drawing">
-		<value>366, 48</value>
-	</data>
-	<data name="lblOriginal.TabIndex" type="System.Int32, mscorlib">
-		<value>1</value>
-	</data>
-	<data name="&gt;&gt;lblOriginal.Name" xml:space="preserve">
-    <value>lblOriginal</value>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 13</value>
   </data>
-	<data name="&gt;&gt;lblOriginal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Selezionare un'opzione di definizione:</value>
   </data>
-	<data name="&gt;&gt;lblOriginal.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="radLatLong.Size" type="System.Drawing.Size, System.Drawing">
+    <value>256, 17</value>
   </data>
-	<data name="&gt;&gt;lblOriginal.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="radLatLong.Text" xml:space="preserve">
+    <value>Utilizzare la latitudine e la longitudine (WGS1984)</value>
   </data>
-	<data name="label3.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-		<value>12, 116</value>
-	</data>
-	<data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-		<value>126, 13</value>
-	</data>
-	<data name="label3.TabIndex" type="System.Int32, mscorlib">
-		<value>2</value>
-	</data>
-	<data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
+  <data name="radSelectedTransform.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 17</value>
   </data>
-	<data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="radSelectedTransform.Text" xml:space="preserve">
+    <value>Uso selezionato Transform</value>
   </data>
-	<data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="radMapFrame.Size" type="System.Drawing.Size, System.Drawing">
+    <value>281, 17</value>
   </data>
-	<data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="radMapFrame.Text" xml:space="preserve">
+    <value>Utilizzare il sistema di coordinate corrente della mappa.</value>
   </data>
-	<data name="radLatLong.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="radLatLong.Location" type="System.Drawing.Point, System.Drawing">
-		<value>21, 155</value>
-	</data>
-	<data name="radLatLong.Size" type="System.Drawing.Size, System.Drawing">
-		<value>215, 17</value>
-	</data>
-	<data name="radLatLong.TabIndex" type="System.Int32, mscorlib">
-		<value>3</value>
-	</data>
-	<data name="&gt;&gt;radLatLong.Name" xml:space="preserve">
-    <value>radLatLong</value>
+  <data name="lblMapProjection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>394, 22</value>
   </data>
-	<data name="&gt;&gt;radLatLong.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lblMapProjection.Text" xml:space="preserve">
+    <value>Niente</value>
   </data>
-	<data name="&gt;&gt;radLatLong.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="radDoNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>334, 17</value>
   </data>
-	<data name="&gt;&gt;radLatLong.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="radDoNothing.Text" xml:space="preserve">
+    <value>Non fare nulla.  (Non modificate le coordinate saranno disegnate).</value>
   </data>
-	<data name="radSelectedTransform.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="radSelectedTransform.Location" type="System.Drawing.Point, System.Drawing">
-		<value>21, 232</value>
-	</data>
-	<data name="radSelectedTransform.Size" type="System.Drawing.Size, System.Drawing">
-		<value>139, 17</value>
-	</data>
-	<data name="radSelectedTransform.TabIndex" type="System.Int32, mscorlib">
-		<value>4</value>
-	</data>
-	<data name="&gt;&gt;radSelectedTransform.Name" xml:space="preserve">
-    <value>radSelectedTransform</value>
+  <data name="chkAlways.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 296</value>
   </data>
-	<data name="&gt;&gt;radSelectedTransform.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="chkAlways.Size" type="System.Drawing.Size, System.Drawing">
+    <value>266, 17</value>
   </data>
-	<data name="&gt;&gt;radSelectedTransform.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="chkAlways.Text" xml:space="preserve">
+    <value>Utilizzare questa opzione per il resto della sessione.</value>
   </data>
-	<data name="&gt;&gt;radSelectedTransform.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-	<data name="lblSelectedTransform.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Top, Left, Right</value>
-	</data>
-	<data name="lblSelectedTransform.Location" type="System.Drawing.Point, System.Drawing">
-		<value>35, 262</value>
-	</data>
-	<data name="lblSelectedTransform.Size" type="System.Drawing.Size, System.Drawing">
-		<value>303, 19</value>
-	</data>
-	<data name="lblSelectedTransform.TabIndex" type="System.Int32, mscorlib">
-		<value>5</value>
-	</data>
-	<data name="&gt;&gt;lblSelectedTransform.Name" xml:space="preserve">
-    <value>lblSelectedTransform</value>
-  </data>
-	<data name="&gt;&gt;lblSelectedTransform.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;lblSelectedTransform.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;lblSelectedTransform.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-	<data name="btnSelect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Top, Right</value>
-	</data>
-	<data name="btnSelect.Location" type="System.Drawing.Point, System.Drawing">
-		<value>347, 262</value>
-	</data>
-	<data name="btnSelect.Size" type="System.Drawing.Size, System.Drawing">
-		<value>37, 21</value>
-	</data>
-	<data name="btnSelect.TabIndex" type="System.Int32, mscorlib">
-		<value>6</value>
-	</data>
-	<data name="&gt;&gt;btnSelect.Name" xml:space="preserve">
-    <value>btnSelect</value>
-  </data>
-	<data name="&gt;&gt;btnSelect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;btnSelect.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;btnSelect.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-	<data name="radMapFrame.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="radMapFrame.Location" type="System.Drawing.Point, System.Drawing">
-		<value>21, 178</value>
-	</data>
-	<data name="radMapFrame.Size" type="System.Drawing.Size, System.Drawing">
-		<value>219, 17</value>
-	</data>
-	<data name="radMapFrame.TabIndex" type="System.Int32, mscorlib">
-		<value>7</value>
-	</data>
-	<data name="&gt;&gt;radMapFrame.Name" xml:space="preserve">
-    <value>radMapFrame</value>
-  </data>
-	<data name="&gt;&gt;radMapFrame.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;radMapFrame.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;radMapFrame.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-	<data name="lblMapProjection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Top, Left, Right</value>
-	</data>
-	<data name="lblMapProjection.Location" type="System.Drawing.Point, System.Drawing">
-		<value>35, 198</value>
-	</data>
-	<data name="lblMapProjection.Size" type="System.Drawing.Size, System.Drawing">
-		<value>346, 22</value>
-	</data>
-	<data name="lblMapProjection.TabIndex" type="System.Int32, mscorlib">
-		<value>8</value>
-	</data>
-	<data name="&gt;&gt;lblMapProjection.Name" xml:space="preserve">
-    <value>lblMapProjection</value>
-  </data>
-	<data name="&gt;&gt;lblMapProjection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;lblMapProjection.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;lblMapProjection.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-	<data name="button2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Bottom, Right</value>
-	</data>
-	<data name="button2.Location" type="System.Drawing.Point, System.Drawing">
-		<value>309, 299</value>
-	</data>
-	<data name="button2.Size" type="System.Drawing.Size, System.Drawing">
-		<value>75, 23</value>
-	</data>
-	<data name="button2.TabIndex" type="System.Int32, mscorlib">
-		<value>10</value>
-	</data>
-	<data name="&gt;&gt;button2.Name" xml:space="preserve">
-    <value>button2</value>
-  </data>
-	<data name="&gt;&gt;button2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;button2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-	<data name="radDoNothing.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="radDoNothing.Location" type="System.Drawing.Point, System.Drawing">
-		<value>21, 132</value>
-	</data>
-	<data name="radDoNothing.Size" type="System.Drawing.Size, System.Drawing">
-		<value>272, 17</value>
-	</data>
-	<data name="radDoNothing.TabIndex" type="System.Int32, mscorlib">
-		<value>11</value>
-	</data>
-	<data name="&gt;&gt;radDoNothing.Name" xml:space="preserve">
-    <value>radDoNothing</value>
-  </data>
-	<data name="&gt;&gt;radDoNothing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;radDoNothing.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;radDoNothing.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-	<data name="chkAlways.AutoSize" type="System.Boolean, mscorlib">
-		<value>True</value>
-	</data>
-	<data name="chkAlways.Location" type="System.Drawing.Point, System.Drawing">
-		<value>12, 299</value>
-	</data>
-	<data name="chkAlways.Size" type="System.Drawing.Size, System.Drawing">
-		<value>221, 17</value>
-	</data>
-	<data name="chkAlways.TabIndex" type="System.Int32, mscorlib">
-		<value>12</value>
-	</data>
-	<data name="&gt;&gt;chkAlways.Name" xml:space="preserve">
-    <value>chkAlways</value>
-  </data>
-	<data name="&gt;&gt;chkAlways.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;chkAlways.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-	<data name="&gt;&gt;chkAlways.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-	<metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-		<value>True</value>
-	</metadata>
-	<data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-		<value>6, 13</value>
-	</data>
-	<data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-		<value>396, 334</value>
-	</data>
-	<data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-		<value>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
         AAABAAMAEBAAAAAAGABoAwAANgAAACAgAAAAABgAqAwAAJ4DAAAwMAAAAAAYAKgcAABGEAAAKAAAABAA
         AAAgAAAAAQAYAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOfWwdq5ktKod9Cmecud
         atGgYOrSsPDm2AAAAAAAAAAAAAAAAAAAAAAAAOjs8N7Pv9qyhNuzgdy4j9y2id++mdq6mOnStObJo+vg
@@ -609,47 +370,8 @@
         AEAAHwAA/AAAAAAfAAD+AAAgAD8AAP8AAAAAfwAA/4AAAAD/AAD/wAAAAf8AAP/gAAAD/wAA//gAAB//
         AAD//AAAf/8AAP//AAP//wAA///4D///AAD///////8AAP///////wAA
 </value>
-	</data>
-	<data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>UndefinedProjectionDialog</value>
   </data>
-	<data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Proiezione non validi o mancanti</value>
   </data>
-	<data name="label1.Text" xml:space="preserve">
-		<value>La proiezione è stata fornita in un formato non riconosciuto o non specifica di proiezione potrebbe essere trovata.  È stata la proiezione specificata:</value>
-	</data>
-	<data name="lblOriginal.Text" xml:space="preserve">
-		<value>Niente</value>
-	</data>
-	<data name="label3.Text" xml:space="preserve">
-		<value>Selezionare un'opzione di definizione:</value>
-	</data>
-	<data name="radLatLong.Text" xml:space="preserve">
-		<value>Utilizzare la latitudine e la longitudine (WGS1984)</value>
-	</data>
-	<data name="radSelectedTransform.Text" xml:space="preserve">
-		<value>Uso selezionato Transform</value>
-	</data>
-	<data name="btnSelect.Text" xml:space="preserve">
-		<value>...</value>
-	</data>
-	<data name="radMapFrame.Text" xml:space="preserve">
-		<value>Utilizzare il sistema di coordinate corrente della mappa.</value>
-	</data>
-	<data name="lblMapProjection.Text" xml:space="preserve">
-		<value>Niente</value>
-	</data>
-	<data name="button2.Text" xml:space="preserve">
-		<value>OK</value>
-	</data>
-	<data name="radDoNothing.Text" xml:space="preserve">
-		<value>Non fare nulla.  (Non modificate le coordinate saranno disegnate).</value>
-	</data>
-	<data name="chkAlways.Text" xml:space="preserve">
-		<value>Utilizzare questa opzione per il resto della sessione.</value>
-	</data>
-	<data name="$this.Text" xml:space="preserve">
-		<value>Proiezione non validi o mancanti</value>
-	</data>
 </root>

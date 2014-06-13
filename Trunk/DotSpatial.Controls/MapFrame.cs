@@ -1346,7 +1346,8 @@ namespace DotSpatial.Controls
                     var dlg = new UndefinedProjectionDialog
                     {
                         OriginalString = layer.DataSet.ProjectionString,
-                        MapProjection = Projection
+                        MapProjection = Projection,
+                        LayerName = layer.DataSet.Name,
                     };
 
                     if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;

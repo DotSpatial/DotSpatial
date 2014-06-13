@@ -51,6 +51,7 @@
             // lblOriginal
             // 
             resources.ApplyResources(this.lblOriginal, "lblOriginal");
+            this.lblOriginal.AutoEllipsis = true;
             this.lblOriginal.Name = "lblOriginal";
             // 
             // label3
@@ -73,6 +74,7 @@
             // lblSelectedTransform
             // 
             resources.ApplyResources(this.lblSelectedTransform, "lblSelectedTransform");
+            this.lblSelectedTransform.AutoEllipsis = true;
             this.lblSelectedTransform.Name = "lblSelectedTransform";
             // 
             // btnSelect
@@ -93,6 +95,7 @@
             // lblMapProjection
             // 
             resources.ApplyResources(this.lblMapProjection, "lblMapProjection");
+            this.lblMapProjection.AutoEllipsis = true;
             this.lblMapProjection.Name = "lblMapProjection";
             // 
             // button2
