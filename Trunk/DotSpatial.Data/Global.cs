@@ -59,7 +59,7 @@ namespace DotSpatial.Data
             if (typeof(U) == typeof(double)) return (double)(object)value;
 
             if (typeof(U) == typeof(ushort)) return System.Convert.ToDouble((ushort)(object)value);
-            if (typeof(U) == typeof(uint)) return System.Convert.ToDouble((ushort)(object)value);
+            if (typeof(U) == typeof(uint)) return System.Convert.ToDouble((uint)(object)value);
             if (typeof(U) == typeof(ulong)) return System.Convert.ToDouble((ulong)(object)value);
 
             return 0;

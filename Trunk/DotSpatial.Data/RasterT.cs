@@ -612,10 +612,15 @@ namespace DotSpatial.Data
 
         #region Properties
 
+
+        
         /// <summary>
-        /// This only works for a few numeric types, and will return 0 if it is not identifiable as one
-        /// of these basic types: byte, short, int, long, float, double, decimal, UInt16, UInt32, UInt64,
+        /// Gets the size of each raster element in bytes.
         /// </summary>
+        /// <remarks>
+        /// This only works for a few numeric types, and will return 0 if it is not identifiable as one
+        /// of these basic types: byte, short, int, long, float, double, decimal, sbyte, ushort, uint, ulong, bool.
+        /// </remarks>
         public override int ByteSize
         {
             get
@@ -632,10 +637,13 @@ namespace DotSpatial.Data
             if (value is long) return 8;
             if (value is float) return 4;
             if (value is double) return 8;
-            if (value is decimal) return 16;
-            if (value is UInt16) return 2;
-            if (value is UInt32) return 4;
-            if (value is UInt64) return 8;
+
+            if (value is sbyte) return 1;
+            if (value is ushort) return 2;
+            if (value is uint) return 4;
+            if (value is ulong) return 8;
+
+            if (value is bool) return 1;
 
             return 0;
         }

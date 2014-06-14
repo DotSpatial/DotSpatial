@@ -917,22 +917,27 @@ namespace DotSpatial.Data
             string extension = Path.GetExtension(filename);
 
             // Compare the strings, ignoring case
-            if (String.Compare(extension, ".ASC", true) == 0) return RasterFileType.ASCII;
-            if (String.Compare(extension, ".ARC", true) == 0) return RasterFileType.ASCII;
-            if (String.Compare(extension, ".BGD", true) == 0) return RasterFileType.BINARY;
-            if (String.Compare(extension, ".FLT", true) == 0) return RasterFileType.FLT;
-            if (String.Compare(extension, ".ADF", true) == 0) return RasterFileType.ESRI;
-            if (String.Compare(extension, ".ECW", true) == 0) return RasterFileType.ECW;
-            if (String.Compare(extension, ".BIL", true) == 0) return RasterFileType.BIL;
-            if (String.Compare(extension, ".SID", true) == 0) return RasterFileType.MrSID;
-            if (String.Compare(extension, ".AUX", true) == 0) return RasterFileType.PAUX;
-            if (String.Compare(extension, ".PIX", true) == 0) return RasterFileType.PCIDsk;
-            if (String.Compare(extension, ".DHM", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".DT0", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".DT1", true) == 0) return RasterFileType.DTED;
-            if (String.Compare(extension, ".TIF", true) == 0) return RasterFileType.GeoTiff;
-            if (String.Compare(extension, ".IMG", true) == 0) return RasterFileType.BIL;
-            if (String.Compare(extension, ".DDF", true) == 0) return RasterFileType.SDTS;
+            var eUp = extension != null? extension.ToUpper() : string.Empty;
+            switch (eUp)
+            {
+               case  ".ASC": return RasterFileType.ASCII;
+               case  ".ARC": return RasterFileType.ASCII;
+               case  ".BGD": return RasterFileType.BINARY;
+               case  ".FLT": return RasterFileType.FLT;
+               case  ".ADF": return RasterFileType.ESRI;
+               case  ".ECW": return RasterFileType.ECW;
+               case  ".BIL": return RasterFileType.BIL;
+               case  ".SID": return RasterFileType.MrSID;
+               case  ".AUX": return RasterFileType.PAUX;
+               case  ".PIX": return RasterFileType.PCIDsk;
+               case  ".DHM": return RasterFileType.DTED;
+               case  ".DT0": return RasterFileType.DTED;
+               case  ".DT1": return RasterFileType.DTED;
+               case  ".TIF": return RasterFileType.GeoTiff;
+               case  ".IMG": return RasterFileType.BIL;
+               case  ".DDF": return RasterFileType.SDTS;        
+            }
+            
             return RasterFileType.CUSTOM;
         }
 

@@ -174,19 +174,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static double ToDouble(T value)
         {
-            if (typeof(T) == typeof(byte)) return Convert.ToDouble((byte)(object)value);
-            if (typeof(T) == typeof(short)) return Convert.ToDouble((short)(object)value);
-            if (typeof(T) == typeof(int)) return Convert.ToDouble((int)(object)value);
-            if (typeof(T) == typeof(long)) return Convert.ToDouble((long)(object)value);
-
-            if (typeof(T) == typeof(float)) return Convert.ToDouble((float)(object)value);
-            if (typeof(T) == typeof(double)) return (double)(object)value;
-
-            if (typeof(T) == typeof(ushort)) return Convert.ToDouble((ushort)(object)value);
-            if (typeof(T) == typeof(uint)) return Convert.ToDouble((ushort)(object)value);
-            if (typeof(T) == typeof(ulong)) return Convert.ToDouble((ulong)(object)value);
-
-            return 0;
+            return Global.ToDouble(value);
         }
 
         #endregion

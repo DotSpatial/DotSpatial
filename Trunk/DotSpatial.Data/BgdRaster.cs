@@ -31,10 +31,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class BgdRaster<T> : Raster<T> where T : IComparable<T>, IEquatable<T>
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -325,6 +321,12 @@ namespace DotSpatial.Data
         /// </summary>
         public void WriteHeader(string fileName)
         {
+            var dt = GetRasterDataType();
+            if (dt == RasterDataType.INVALID)
+            {
+                throw new Exception("Invalid DataType");
+            }
+
             using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
             {
                 bw.Write(NumColumnsInFile);
@@ -333,29 +335,9 @@ namespace DotSpatial.Data
                 bw.Write(CellHeight);
                 bw.Write(Xllcenter);
                 bw.Write(Yllcenter);
-                if (DataType == typeof (int))
-                {
-                    bw.Write((int) RasterDataType.INTEGER);
-                }
-                if (DataType == typeof (float))
-                {
-                    bw.Write((int) RasterDataType.SINGLE);
-                }
-                if (DataType == typeof (double))
-                {
-                    bw.Write((int) RasterDataType.DOUBLE);
-                }
-                if (DataType == typeof (byte))
-                {
-                    bw.Write((int) RasterDataType.BYTE);
-                }
-                if (DataType == typeof (short))
-                {
-                    bw.Write((int) RasterDataType.SHORT);
-                }
-
-                byte[] nd = new byte[ByteSize];
-                T[] nds = new[] {(T) Convert.ChangeType(NoDataValue, typeof (T))};
+                bw.Write((int) dt);
+                var nd = new byte[ByteSize];
+                var nds = new[] {(T) Convert.ChangeType(NoDataValue, typeof (T))};
                 Buffer.BlockCopy(nds, 0, nd, 0, ByteSize);
                 bw.Write(nd);
 
@@ -374,10 +356,11 @@ namespace DotSpatial.Data
                     {
                         File.Delete(prj);
                     }
-                    FileInfo fi = new FileInfo(prj);
-                    TextWriter tw = fi.CreateText();
-                    tw.WriteLine(Projection.ToEsriString());
-                    tw.Close();
+                    var fi = new FileInfo(prj);
+                    using (var tw = fi.CreateText())
+                    {
+                        tw.WriteLine(Projection.ToEsriString());
+                    }
                 }
                 bw.Write(proj);
                 byte[] note = new byte[255];
@@ -393,6 +376,34 @@ namespace DotSpatial.Data
 
                 bw.Write(note);
             }
+        }
+
+        private RasterDataType GetRasterDataType()
+        {
+            if (DataType == typeof(byte))
+                return RasterDataType.BYTE;
+            if (DataType == typeof(short))
+                return RasterDataType.SHORT;
+            if (DataType == typeof (int))
+                return RasterDataType.INTEGER;
+            if (DataType == typeof(long))
+                return RasterDataType.LONG;
+            if (DataType == typeof(float))
+                return RasterDataType.SINGLE;
+            if (DataType == typeof(double))
+                return RasterDataType.DOUBLE;
+            if (DataType == typeof(sbyte))
+                return RasterDataType.SBYTE;
+            if (DataType == typeof(ushort))
+                return RasterDataType.USHORT;
+            if (DataType == typeof(uint))
+                return RasterDataType.UINTEGER;
+            if (DataType == typeof(ulong))
+                return RasterDataType.ULONG;
+            if (DataType == typeof(bool))
+                return RasterDataType.BOOL;
+
+            return RasterDataType.INVALID;
         }
 
         #endregion
@@ -413,38 +424,41 @@ namespace DotSpatial.Data
         /// <param name="fileName">The string fileName specifying what file to load</param>
         public void ReadHeader(string fileName)
         {
-            BinaryReader br = new BinaryReader(new FileStream(fileName, FileMode.Open));
-            StartColumn = 0;
-            NumColumns = br.ReadInt32();
-            NumColumnsInFile = NumColumns;
-            EndColumn = NumColumns - 1;
-            StartRow = 0;
-            NumRows = br.ReadInt32();
-            NumRowsInFile = NumRows;
-            EndRow = NumRows - 1;
-            Bounds = new RasterBounds(NumRows, NumColumns, new[] { 0.0, 1.0, 0.0, NumRows, 0.0, -1.0 });
+            using (var br = new BinaryReader(new FileStream(fileName, FileMode.Open)))
+            {
+                StartColumn = 0;
+                NumColumns = br.ReadInt32();
+                NumColumnsInFile = NumColumns;
+                EndColumn = NumColumns - 1;
+                StartRow = 0;
+                NumRows = br.ReadInt32();
+                NumRowsInFile = NumRows;
+                EndRow = NumRows - 1;
+                Bounds = new RasterBounds(NumRows, NumColumns, new[] {0.0, 1.0, 0.0, NumRows, 0.0, -1.0});
 
-            CellWidth = br.ReadDouble();
-            Bounds.AffineCoefficients[5] = -br.ReadDouble(); // dy
-            Xllcenter = br.ReadDouble();
-            Yllcenter = br.ReadDouble();
-            br.ReadInt32(); //  Read RasterDataType only to skip it since we know the type already.
-            byte[] noDataBytes = br.ReadBytes(ByteSize);
-            T[] nd = new T[1];
-            Buffer.BlockCopy(noDataBytes, 0, nd, 0, ByteSize);
-            NoDataValue = Global.ToDouble(nd[0]);
-            string proj = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
-            ProjectionString = proj;
+                CellWidth = br.ReadDouble();
+                Bounds.AffineCoefficients[5] = -br.ReadDouble(); // dy
+                Xllcenter = br.ReadDouble();
+                Yllcenter = br.ReadDouble();
+                br.ReadInt32(); //  Read RasterDataType only to skip it since we know the type already.
+                byte[] noDataBytes = br.ReadBytes(ByteSize);
+                var nd = new T[1];
+                Buffer.BlockCopy(noDataBytes, 0, nd, 0, ByteSize);
+                NoDataValue = Global.ToDouble(nd[0]);
+                string proj = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
+                ProjectionString = proj;
 
-            Notes = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
-            if (Notes.Length == 0) Notes = null;
-            br.Close();
+                Notes = Encoding.Default.GetString(br.ReadBytes(255)).Replace('\0', ' ').Trim();
+                if (Notes.Length == 0) Notes = null;
+            }
+
             string prj = Path.ChangeExtension(Filename, ".prj");
             if (File.Exists(prj))
             {
-                StreamReader sr = new StreamReader(prj);
-                ProjectionString = sr.ReadToEnd();
-                sr.Close();
+                using (var sr = new StreamReader(prj))
+                {
+                    ProjectionString = sr.ReadToEnd();
+                }
             }
         }
 

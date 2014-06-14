@@ -19,11 +19,14 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Data
 {
     /// <summary>
     /// Data types specific to grids
     /// </summary>
+    // todo: Not sure that we need UNKNOWN and CUSTOM cases. For now i've marked them as Deprecated.
     public enum RasterDataType
     {
         /// <summary>
@@ -54,6 +57,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Unknown
         /// </summary>
+        [Obsolete("Use INVALID case instead")] // Marked in 1.7
         UNKNOWN = 4,
 
         /// <summary>
@@ -64,6 +68,37 @@ namespace DotSpatial.Data
         /// <summary>
         /// Specified as the CustomType string
         /// </summary>
+        [Obsolete("Do not use it. There is no support for this case anywhere in code.")] // Marked in 1.7
         CUSTOM = 6,
+
+        /// <summary>
+        /// Signed 64 Bit Integers
+        /// </summary>
+        LONG = 7,
+
+        /// <summary>
+        /// Unsigned short 16 Bit Integers
+        /// </summary>
+        USHORT = 8,
+
+        /// <summary>
+        /// Unsigned 32 Bit Integers
+        /// </summary>
+        UINTEGER = 9,
+
+        /// <summary>
+        /// Unsigned 64 Bit Integers
+        /// </summary>
+        ULONG = 10,
+
+        /// <summary>
+        /// Signed 8-bit Integers: -128 to 127
+        /// </summary>
+        SBYTE = 11,
+
+        /// <summary>
+        /// Booleans: True(1) or False(0).
+        /// </summary>
+        BOOL = 12,
     }
 }
