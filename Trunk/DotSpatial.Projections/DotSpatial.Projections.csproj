@@ -278,8 +278,7 @@
     <Compile Include="Transforms\Winkel2.cs" />
     <Compile Include="Transforms\WinkelTripel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\FieldInfo.cs" />
-    <Compile Include="Reflection\PropertyInfoEM.cs" />
+    <Compile Include="Reflection\MemberInfoExtensions.cs" />
     <Compile Include="ShallowCopy.cs" />
     <None Include="package.nuspec" />
   </ItemGroup>

@@ -25,7 +25,7 @@ using System.Drawing;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// DuplicationPreventer
+    /// Contains methods to remove duplicates
     /// </summary>
     public static class DuplicationPreventer
     {
