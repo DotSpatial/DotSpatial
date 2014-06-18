@@ -130,9 +130,5 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-
-        #region Properties
-
-        #endregion
     }
 }

@@ -48,9 +48,7 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            Extent MaxExtent = e.Map.GetMaxExtent();
-
-            if ((e.Map.IsZoomedToMaxExtent == true))
+            if (e.Map.IsZoomedToMaxExtent)
             {}
             else
             {

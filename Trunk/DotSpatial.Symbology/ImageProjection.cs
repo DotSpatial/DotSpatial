@@ -23,9 +23,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// geoGraphics
-    /// </summary>
     public class ImageProjection : IProj
     {
         #region Private Variables
@@ -47,10 +44,6 @@ namespace DotSpatial.Symbology
             _extents = inExtent;
             _destRectangle = inDestRectangle;
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 

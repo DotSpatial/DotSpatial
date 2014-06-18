@@ -131,10 +131,7 @@ namespace DotSpatial.Controls
         protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
-
-            Extent MaxExtent = e.Map.GetMaxExtent();
-         
-            if ((e.Map.IsZoomedToMaxExtent == true) && (_direction * e.Delta < 0))
+            if (e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0))
             {}
             else
             {
@@ -171,9 +168,6 @@ namespace DotSpatial.Controls
                     r.X += Convert.ToInt32(w / _sensitivity - (e.X * w / (outFactor * cw)));
                     r.Y += Convert.ToInt32(h / _sensitivity - (e.Y * h / (outFactor * ch)));
                 }
-                int mapHeight = e.Map.MapFrame.View.Height;
-                int mapWidth = e.Map.MapFrame.View.Width;
-
 
                 e.Map.MapFrame.View = r;
                 e.Map.Invalidate();

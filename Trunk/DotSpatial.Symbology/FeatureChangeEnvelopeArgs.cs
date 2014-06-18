@@ -28,12 +28,6 @@ namespace DotSpatial.Symbology
     /// </summary>
     public class FeatureChangeEnvelopeArgs : FeatureChangeArgs
     {
-        #region Private Variables
-
-        private IEnvelope _envelope;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -42,7 +36,7 @@ namespace DotSpatial.Symbology
         public FeatureChangeEnvelopeArgs(List<int> inChangedFeatures, IEnvelope inEnvelope)
             : base(inChangedFeatures)
         {
-            _envelope = inEnvelope;
+            Envelope = inEnvelope;
         }
 
         #endregion
@@ -52,11 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the geographic envelope for the most recent selection event.
         /// </summary>
-        public IEnvelope Envelope
-        {
-            get { return _envelope; }
-            protected set { _envelope = value; }
-        }
+        public IEnvelope Envelope { get; protected set; }
 
         #endregion
     }

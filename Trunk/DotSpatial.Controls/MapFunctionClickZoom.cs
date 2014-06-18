@@ -57,11 +57,7 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
+        
         protected override void OnDraw(MapDrawArgs e)
         {
             if (_isDragging)

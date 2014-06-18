@@ -22,9 +22,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ChangeBase
-    /// </summary>
     public class Changeable
     {
         #region Events

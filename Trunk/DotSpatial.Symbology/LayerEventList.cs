@@ -410,13 +410,6 @@ namespace DotSpatial.Symbology
                             if (!layer.IsDisposeLocked) layer.Dispose();
                         }
                     }
-                    ZoomToLayer = null;
-                    LayerVisibleChanged = null;
-                    LayerAdded = null;
-                    LayerRemoved = null;
-                    LayerSelected = null;
-                    SelectionChanging = null;
-                    SelectionChanged = null;
                 }
             }
             _isDisposed = true;

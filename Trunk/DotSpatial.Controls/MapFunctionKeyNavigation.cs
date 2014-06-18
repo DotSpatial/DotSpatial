@@ -158,8 +158,7 @@ namespace DotSpatial.Controls
             // Zoom Out
             if (e.KeyCode == (Keys.LButton | Keys.MButton | Keys.Back | Keys.ShiftKey | Keys.Space | Keys.F17) || e.KeyCode == Keys.Subtract)
             {
-                Extent MaxExtent = Map.GetMaxExtent();
-                if ((Map.IsZoomedToMaxExtent == true))
+                if (Map.IsZoomedToMaxExtent)
                 {
                 }
                 else

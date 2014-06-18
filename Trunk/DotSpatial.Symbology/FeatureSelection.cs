@@ -28,9 +28,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FilterCollection
-    /// </summary>
     public class FeatureSelection : Changeable, IFeatureSelection
     {
         #region Events

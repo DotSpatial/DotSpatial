@@ -94,16 +94,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         public void UpdateItemParentPointers()
         {
-            foreach (IColorCategory item in InnerList)
+            foreach (var item in InnerList)
             {
-                if (_scheme == null)
-                {
-                    item.SetParentItem(null);
-                }
-                else
-                {
-                    item.SetParentItem(_scheme.GetParentItem());
-                }
+                item.SetParentItem(_scheme == null ? null : _scheme.GetParentItem());
             }
         }
     }

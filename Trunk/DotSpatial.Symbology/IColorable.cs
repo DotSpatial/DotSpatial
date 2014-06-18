@@ -22,9 +22,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IColorSymbol
-    /// </summary>
     public interface IColorable
     {
         #region Properties

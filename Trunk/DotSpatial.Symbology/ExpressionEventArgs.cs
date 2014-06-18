@@ -22,14 +22,9 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// StringEventArgs
-    /// </summary>
     public class ExpressionEventArgs : EventArgs
     {
         #region Private Variables
-
-        private string _expression;
 
         #endregion
 
@@ -41,7 +36,7 @@ namespace DotSpatial.Symbology
         /// <param name="expression">The string expression for this event args</param>
         public ExpressionEventArgs(string expression)
         {
-            _expression = expression;
+            Expression = expression;
         }
 
         #endregion
@@ -51,11 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The string expression for this event.
         /// </summary>
-        public string Expression
-        {
-            get { return _expression; }
-            protected set { _expression = value; }
-        }
+        public string Expression { get; protected set; }
 
         #endregion
     }

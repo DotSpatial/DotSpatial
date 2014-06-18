@@ -21,9 +21,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// RasterColorSchemes
-    /// </summary>
     public enum ColorSchemeType
     {
         /// <summary>

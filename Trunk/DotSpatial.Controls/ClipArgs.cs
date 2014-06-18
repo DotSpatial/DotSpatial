@@ -24,17 +24,8 @@ using System.Drawing;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// ClipArgs
-    /// </summary>
     public class ClipArgs : EventArgs
     {
-        #region Private Variables
-
-        private List<Rectangle> _clipRegions;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -42,7 +33,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public ClipArgs(List<Rectangle> clipRectangles)
         {
-            _clipRegions = clipRectangles;
+            ClipRectangles = clipRectangles;
         }
 
         /// <summary>
@@ -50,8 +41,9 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="clipRectangle">The clip rectangle</param>
         public ClipArgs(Rectangle clipRectangle)
+            : this(new List<Rectangle> { clipRectangle })
         {
-            _clipRegions = new List<Rectangle> { clipRectangle };
+        
         }
 
         #endregion
@@ -61,11 +53,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the ClipRectangle for this event.
         /// </summary>
-        public List<Rectangle> ClipRectangles
-        {
-            get { return _clipRegions; }
-            protected set { _clipRegions = value; }
-        }
+        public List<Rectangle> ClipRectangles { get; protected set; }
 
         #endregion
     }

@@ -44,7 +44,7 @@ namespace DotSpatial.Data
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
             double w = (self.Width * newRectangle.Width / original.Width);
             double h = (self.Height * newRectangle.Height / original.Height);
-            double[] ext = new[] { self.X + dx, self.X + dx + w, self.Y + dy - h, self.Y + dy };
+            double[] ext = { self.X + dx, self.X + dx + w, self.Y + dy - h, self.Y + dy };
             return new Envelope(ext);
         }
 

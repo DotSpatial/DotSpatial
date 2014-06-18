@@ -644,18 +644,12 @@ namespace DotSpatial.Controls
         /// </summary>
         public Extent GetMaxExtent()
         {
-            Extent MaxExtent;
             // to prevent exception when zoom to map with one layer with one point
             const double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                MaxExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-            }
-            else
-            {
-                MaxExtent = Extent;
-            }
-            return MaxExtent;
+            var maxExtent = Extent.Width < eps || Extent.Height < eps
+                ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
+                : Extent;
+            return maxExtent;
         }
 
 

@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void lbxUniqueValues_DoubleClick(object sender, EventArgs e)
         {
-            rtbFilterText.SelectedText = lbxUniqueValues.SelectedItem.ToString() + " ";
+            rtbFilterText.SelectedText = lbxUniqueValues.SelectedItem + " ";
         }
 
         /// <summary>

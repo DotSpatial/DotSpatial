@@ -218,7 +218,7 @@ namespace DotSpatial.Controls
             if (raster == null) return null;
 
             raster.ProgressHandler = ProgressHandler;
-            MapRasterLayer gr = new MapRasterLayer(raster);
+            var gr = new MapRasterLayer(raster);
             Add(gr);
             return gr;
         }
@@ -233,7 +233,7 @@ namespace DotSpatial.Controls
             if (image == null) return null;
 
             if (image.Height == 0 || image.Width == 0) return null;
-            MapImageLayer il = new MapImageLayer(image);
+            var il = new MapImageLayer(image);
             base.Add(il);
             return il;
         }

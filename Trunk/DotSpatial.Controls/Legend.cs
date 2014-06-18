@@ -458,9 +458,9 @@ namespace DotSpatial.Controls
             PointF topLeft = new Point(0, 0);
             if (_rootNodes == null || _rootNodes.Count == 0) return;
             _legendBoxes = new List<LegendBox>();
-            foreach (ILegendItem item in _rootNodes)
+            foreach (var item in _rootNodes)
             {
-                DrawLegendItemArgs args = new DrawLegendItemArgs(e.Graphics, item, ClientRectangle, topLeft);
+                var args = new DrawLegendItemArgs(e.Graphics, item, ClientRectangle, topLeft);
                 OnInitializeItem(args);
                 topLeft.Y += SizeItem((int)topLeft.X, item, e.Graphics).Height;
             }
@@ -619,9 +619,9 @@ namespace DotSpatial.Controls
                 {
                     List<ILegendItem> items = e.Item.LegendItems.ToList();
                     if (e.Item is IGroup) items.Reverse(); // reverse layers because of drawing order, don't bother reversing categories.
-                    foreach (ILegendItem item in items)
+                    foreach (var item in items)
                     {
-                        DrawLegendItemArgs args = new DrawLegendItemArgs(e.Graphics, item, e.ClipRectangle, topLeft);
+                        var args = new DrawLegendItemArgs(e.Graphics, item, e.ClipRectangle, topLeft);
                         topLeft = OnInitializeItem(args);
                         if (topLeft.Y > ControlRectangle.Bottom) break;
                     }

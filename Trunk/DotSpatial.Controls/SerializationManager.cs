@@ -25,10 +25,10 @@ namespace DotSpatial.Controls
     /// </summary>
     public class SerializationManager
     {
-        private static ResourceManager resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
-        AppManager _applicationManager;
-        ProjectChangeTracker _changeTracker;
-        private Dictionary<string, object> _customSettings;
+        private static readonly ResourceManager resources = new ResourceManager("DotSpatial.Controls.MessageStrings", Assembly.GetExecutingAssembly());
+        readonly AppManager _applicationManager;
+        readonly ProjectChangeTracker _changeTracker;
+        private readonly Dictionary<string, object> _customSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationManager"/> class.

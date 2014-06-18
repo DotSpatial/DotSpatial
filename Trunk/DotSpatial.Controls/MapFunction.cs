@@ -77,12 +77,9 @@ namespace DotSpatial.Controls
 
         #region Private Variables
 
-        private Image _buttonImage;
-        private Bitmap _cursorBitmap;
         private bool _enabled;
         private IMap _map;
         private string _name;
-        private bool _preventBackBuffer;
 
         #endregion
 
@@ -300,28 +297,18 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Describes a button image
         /// </summary>
-        [Category("Appearance"),
-         Description("This controls is the image that will be used for buttons that activate this tool.")]
-        public Image ButtonImage
-        {
-            get { return _buttonImage; }
-            set { _buttonImage = value; }
-        }
+        [Category("Appearance"), Description("This controls is the image that will be used for buttons that activate this tool.")]
+        public Image ButtonImage { get; set; }
 
         /// <summary>
         /// This controls the cursor that this tool uses, unless the action has been cancelled by attempting
         /// to use the tool outside the bounds of the image.
         /// </summary>
-        [Category("Appearance"),
-         Description(
-             "This controls the cursor that this tool uses, unless the action has been cancelled by " +
-             "attempting to use the tool outside the bounds of the image."
-             )]
-        public Bitmap CursorBitmap
-        {
-            get { return _cursorBitmap; }
-            set { _cursorBitmap = value; }
-        }
+        [Category("Appearance"), Description(
+            "This controls the cursor that this tool uses, unless the action has been cancelled by " +
+            "attempting to use the tool outside the bounds of the image."
+            )]
+        public Bitmap CursorBitmap { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that is true if this tool should be handed drawing instructions
@@ -358,11 +345,7 @@ namespace DotSpatial.Controls
         /// If this is false, then the typical contents from the map's back buffer are drawn first,
         /// followed by the contents of this tool.
         /// </summary>
-        public virtual bool PreventBackBuffer
-        {
-            get { return _preventBackBuffer; }
-            protected set { _preventBackBuffer = value; }
-        }
+        public virtual bool PreventBackBuffer { get; protected set; }
 
         /// <inheritdoc/>
         public YieldStyles YieldStyle { get; set; }

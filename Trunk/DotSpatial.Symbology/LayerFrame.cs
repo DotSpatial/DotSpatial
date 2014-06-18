@@ -279,18 +279,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (_viewExtents == null)
-                {
-                    if (Extent != null)
-                    {
-                        _viewExtents = Extent.Copy();
-                    }
-                    else
-                    {
-                        _viewExtents = new Extent(-180, -90, 180, 90);
-                    }
-                }
-                return _viewExtents;
+                return _viewExtents ?? (_viewExtents = Extent != null ? Extent.Copy() : new Extent(-180, -90, 180, 90));
             }
             set
             {

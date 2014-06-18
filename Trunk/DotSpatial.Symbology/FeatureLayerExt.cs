@@ -22,9 +22,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureLayerEM
-    /// </summary>
     public static class FeatureLayerExt
     {
         #region Methods
@@ -42,8 +39,5 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        #region Properties
-
-        #endregion
     }
 }

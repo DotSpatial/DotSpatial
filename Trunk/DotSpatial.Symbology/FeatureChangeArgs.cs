@@ -23,17 +23,9 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// SelectionEventArgs
-    /// </summary>
     public class FeatureChangeArgs : EventArgs
     {
-        #region Private Variables
-
-        List<int> _changedFeatures;
-
-        #endregion
-
+      
         #region Constructors
 
         /// <summary>
@@ -41,7 +33,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public FeatureChangeArgs(List<int> inChangedFeatures)
         {
-            _changedFeatures = inChangedFeatures;
+            ChangedFeatures = inChangedFeatures;
         }
 
         #endregion
@@ -51,11 +43,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the list of features that were changed by this event.
         /// </summary>
-        public List<int> ChangedFeatures
-        {
-            get { return _changedFeatures; }
-            protected set { _changedFeatures = value; }
-        }
+        public List<int> ChangedFeatures { get; protected set; }
 
         #endregion
     }

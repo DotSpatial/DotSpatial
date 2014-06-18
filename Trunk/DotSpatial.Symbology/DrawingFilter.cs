@@ -27,9 +27,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// DrawingFilter
-    /// </summary>
     public class DrawingFilter : IDrawingFilter
     {
         #region Events

@@ -95,7 +95,6 @@
     <Compile Include="EnvelopeArgs.cs" />
     <Compile Include="FeatureChangeArgs.cs" />
     <Compile Include="FeatureChangeEnvelopeArgs.cs" />
-    <Compile Include="FieldInfoEm.cs" />
     <Compile Include="FilterCollectionEM.cs" />
     <Compile Include="GradientModel.cs" />
     <Compile Include="GraphicsPathExt.cs" />
@@ -180,7 +179,7 @@
     <Compile Include="ICustomLineSymbolProvider.cs" />
     <Compile Include="ICustomSymbolizer.cs" />
     <Compile Include="SymbolizerType.cs" />
-    <Compile Include="PropertyInfoExt.cs" />
+    <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="RandomExt.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="BinaryLayerProvider.cs" />

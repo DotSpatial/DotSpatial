@@ -120,7 +120,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         private void UpdateItemParentPointers()
         {
-            foreach (ILineCategory item in InnerList)
+            foreach (var item in InnerList)
             {
                 if (_scheme == null)
                 {

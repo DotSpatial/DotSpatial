@@ -25,16 +25,11 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Category
-    /// </summary>
     public class Category : LegendItem
     {
         #region Private Variables
 
         private Range _range;
-        private string _status;
-        object _tag;
 
         #endregion
 
@@ -237,21 +232,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a status message for this string.
         /// </summary>
-        public string Status
-        {
-            get { return _status; }
-            set { _status = value; }
-        }
+        public string Status { get; set; }
 
         /// <summary>
         /// This is not used by DotSpatial, but is provided for convenient linking for this object
         /// in plugins or other applications.
         /// </summary>
-        public object Tag
-        {
-            get { return _tag; }
-            set { _tag = value; }
-        }
+        public object Tag { get; set; }
 
         #endregion
     }

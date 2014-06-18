@@ -24,9 +24,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class MapArgs : EventArgs, IProj
     {
         #region Private Variables

@@ -96,35 +96,7 @@ namespace DotSpatial.Symbology
             throw new NotImplementedException();
             //bool TO_DO_Draw_LINE_SNAPSHOT = true;
         }
-
-        /// <summary>
-        /// Draws a LineString.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="p"></param>
-        /// <param name="pens"></param>
-        /// <param name="bls"></param>
-        internal static void DrawLineString(Graphics g, IProj p, List<Pen> pens, IBasicLineString bls)
-        {
-            // Even if an entire multi-linestring is in view, entire parts may be outside the view
-            if (bls.Envelope.Intersects(p.GeographicExtents.ToEnvelope()) == false) return;
-
-            // get the coordinates once and cache them, because some data types have to create the array.
-            IList<Coordinate> clist = bls.Coordinates;
-            int count = clist.Count;
-            Point[] points = new Point[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                points[i] = p.ProjToPixel(clist[i]);
-            }
-
-            foreach (Pen currentPen in pens)
-            {
-                g.DrawLines(currentPen, points);
-            }
-        }
-
+      
         #endregion
 
         #region Properties

@@ -28,9 +28,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// CartographicStroke
-    /// </summary>
     [Serializable,
     XmlRoot("CartographicStroke")]
     public class CartographicStroke : SimpleStroke, ICartographicStroke

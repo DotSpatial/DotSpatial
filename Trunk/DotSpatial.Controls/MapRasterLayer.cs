@@ -125,7 +125,7 @@ namespace DotSpatial.Controls
             {                
                 // Ensure smaller images match the scheme.
                 Bitmap bmp = new Bitmap(raster.NumColumns, raster.NumRows);
-                raster.PaintColorSchemeToBitmap(base.Symbolizer, bmp, raster.ProgressHandler);
+                raster.PaintColorSchemeToBitmap(Symbolizer, bmp, raster.ProgressHandler);
 
                 var id = new InRamImage(bmp) {Bounds = {AffineCoefficients = raster.Bounds.AffineCoefficients}};
                 BitmapGetter = id;

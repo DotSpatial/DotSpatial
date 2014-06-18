@@ -27,10 +27,7 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
-    public class MapImageLayer : ImageLayer, IMapImageLayer
+   public class MapImageLayer : ImageLayer, IMapImageLayer
     {
         #region Events
 
@@ -45,11 +42,7 @@ namespace DotSpatial.Controls
         #region Private Variables
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private Extent _bufferExtent; // the geographic extent of the current buffer.
-        private Rectangle _bufferRectangle;
-        private bool _isInitialized;
-        private Image _stencil; // draw features to the stencil
-        private Color transparent;
+       private Color transparent;
 
         #endregion
 
@@ -102,8 +95,8 @@ namespace DotSpatial.Controls
         {
             base.OnDataSetChanged(value);
 
-            _bufferRectangle = value == null? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
-            _bufferExtent = value == null? null : value.Bounds.Extent;
+            BufferRectangle = value == null? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
+            BufferExtent = value == null? null : value.Bounds.Extent;
             MyExtent =  value == null? null : value.Extent;
             OnFinishedLoading();
         }
@@ -140,46 +133,30 @@ namespace DotSpatial.Controls
             set { _backBuffer = value; }
         }
 
-        /// <summary>
-        /// Gets the current buffer.
-        /// </summary>
-        public Image Buffer
-        {
-            get { return _stencil; }
-            set { _stencil = value; }
-        }
+       /// <summary>
+       /// Gets the current buffer.
+       /// </summary>
+       public Image Buffer { get; set; }
 
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        public Extent BufferExtent
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
+       /// <summary>
+       /// Gets or sets the geographic region represented by the buffer
+       /// Calling Initialize will set this automatically.
+       /// </summary>
+       public Extent BufferExtent { get; set; }
 
-        /// <summary>
-        /// Gets or sets the rectangle in pixels to use as the back buffer.
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        public Rectangle BufferRectangle
-        {
-            get { return _bufferRectangle; }
-            set { _bufferRectangle = value; }
-        }
+       /// <summary>
+       /// Gets or sets the rectangle in pixels to use as the back buffer.
+       /// Calling Initialize will set this automatically.
+       /// </summary>
+       public Rectangle BufferRectangle { get; set; }
 
-        /// <summary>
-        /// Gets or sets whether the image layer is initialized
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized
-        {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
-        }
+       /// <summary>
+       /// Gets or sets whether the image layer is initialized
+       /// </summary>
+       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+       public new bool IsInitialized { get; set; }
 
-        #endregion
+       #endregion
 
         #region Protected Methods
 
@@ -215,7 +192,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                if (_backBuffer == null) _backBuffer = new Bitmap(_bufferRectangle.Width, _bufferRectangle.Height);
+                if (_backBuffer == null) _backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
                 g = Graphics.FromImage(_backBuffer);
             }
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);

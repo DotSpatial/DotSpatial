@@ -38,7 +38,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool IntersectsWith(this Rectangle self, RectangleF other)
         {
-            Rectangle temp = new Rectangle((int)other.X, (int)other.Y, (int)other.Width, (int)other.Height);
+            var temp = new Rectangle((int)other.X, (int)other.Y, (int)other.Width, (int)other.Height);
             return self.IntersectsWith(temp);
         }
 

@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
         /// <returns>The list of the layers</returns>
         public static List<ILayer> GetAllLayers(this IMapFrame mapFrame)
         {
-            List<ILayer> layerList = new List<ILayer>();
+            var layerList = new List<ILayer>();
             GetNestedLayers(mapFrame, layerList);
             return layerList;
         }
@@ -48,7 +48,7 @@ namespace DotSpatial.Controls
             if (layerList == null) layerList = new List<ILayer>();
 
             //recursive function -- all nested groups and layers are considered
-            foreach (IMapLayer lyr in grp.Layers)
+            foreach (var lyr in grp.Layers)
             {
                 grp = lyr as IMapGroup;
                 if (grp != null)
@@ -68,7 +68,7 @@ namespace DotSpatial.Controls
         /// <returns>the list of the groups</returns>
         public static List<IMapGroup> GetAllGroups(this IMapFrame mapFrame)
         {
-            List<IMapGroup> groupList = new List<IMapGroup>();
+            var groupList = new List<IMapGroup>();
             GetNestedGroups(mapFrame, groupList);
             return groupList;
         }
@@ -79,7 +79,7 @@ namespace DotSpatial.Controls
             if (groupList == null) groupList = new List<IMapGroup>();
 
             //recursive function -- all nested groups and layers are considered
-            foreach (ILayer lyr in grp.Layers)
+            foreach (var lyr in grp.Layers)
             {
                 grp = lyr as IMapGroup;
                 if (grp != null)

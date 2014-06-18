@@ -20,17 +20,9 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LayerEventArgs
-    /// </summary>
+  
     public class LayerSelectedEventArgs : LayerEventArgs
     {
-        #region Private Variables
-
-        private bool _selected;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -39,7 +31,7 @@ namespace DotSpatial.Symbology
         public LayerSelectedEventArgs(ILayer layer, bool selected)
             : base(layer)
         {
-            _selected = selected;
+            IsSelected = selected;
         }
 
         #endregion
@@ -49,11 +41,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets a boolean that indicates whether or not the layer is selected
         /// </summary>
-        public bool IsSelected
-        {
-            get { return _selected; }
-            protected set { _selected = value; }
-        }
+        public bool IsSelected { get; protected set; }
 
         #endregion
     }

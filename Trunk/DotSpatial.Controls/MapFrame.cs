@@ -255,13 +255,13 @@ namespace DotSpatial.Controls
                     l.IsSelected = false;
                 }
            } 
-            if (former == null && this.IsSelected == true)
+            if (former == null && IsSelected)
             {
                 former = this;
             }
-            this.IsSelected = true;
+            IsSelected = true;
             bool cleared = base.ClearSelection(out affectedAreas);
-            this.IsSelected = false;
+            IsSelected = false;
             if (former != null)
             {
                 former.IsSelected = true;

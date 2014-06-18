@@ -32,8 +32,6 @@ namespace DotSpatial.Symbology
 
         private DrawWindow _drawWindow;
         private Graphics _graphics;
-        private int _part;
-        private int _stage;
 
         #endregion
 
@@ -45,10 +43,8 @@ namespace DotSpatial.Symbology
         /// <param name="inGraphics">A System.Windows.Drawing.Graphics object</param>
         /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
         public DrawArgs(Graphics inGraphics, DrawWindow inDrawWindow)
+            : this(inGraphics, inDrawWindow, 0, 0)
         {
-            _graphics = inGraphics;
-            _drawWindow = inDrawWindow;
-            _part = 0;
         }
 
         /// <summary>
@@ -58,10 +54,8 @@ namespace DotSpatial.Symbology
         /// <param name="inDrawWindow">A DotSpatial.Drawing.DrawWindow to draw to</param>
         /// <param name="inPart">An integer part representing a value from 0 to NumParts being drawn</param>
         public DrawArgs(Graphics inGraphics, DrawWindow inDrawWindow, int inPart)
+            : this(inGraphics, inDrawWindow, inPart, 0)
         {
-            _graphics = inGraphics;
-            _drawWindow = inDrawWindow;
-            _part = inPart;
         }
 
         /// <summary>
@@ -75,8 +69,8 @@ namespace DotSpatial.Symbology
         {
             _graphics = inGraphics;
             _drawWindow = inDrawWindow;
-            _part = inPart;
-            _stage = inStage;
+            Part = inPart;
+            Stage = inStage;
         }
 
         #endregion
@@ -104,21 +98,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the part index being drawn.
         /// </summary>
-        public int Part
-        {
-            get { return _part; }
-            protected set { _part = value; }
-        }
+        public int Part { get; protected set; }
 
         /// <summary>
         /// Gets the integer stage index.  As an example, if all the borders are drawn first, and then all the fillings are drawn,
         /// but each stage has several parts, the stage gives a way to subdivide a larger object into several drawing passes.
         /// </summary>
-        public int Stage
-        {
-            get { return _stage; }
-            protected set { _stage = value; }
-        }
+        public int Stage { get; protected set; }
 
         #endregion
     }

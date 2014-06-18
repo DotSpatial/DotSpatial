@@ -22,9 +22,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ChangedObjectEvent
-    /// </summary>
     public class ChangedObjectEventArgs : EventArgs
     {
         #region Private Variables

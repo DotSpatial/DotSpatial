@@ -102,7 +102,7 @@ namespace DotSpatial.Symbology
                                         (self.ImageRectangle.Height / self.GeographicExtents.Height));
                 return new Point(x, y);
             }
-            catch (System.OverflowException)
+            catch (OverflowException)
             {
                 return Point.Empty;
             }

@@ -20,9 +20,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ImageSymbolizer
-    /// </summary>
     public class ImageSymbolizer : IImageSymbolizer
     {
         #region Private Variables
