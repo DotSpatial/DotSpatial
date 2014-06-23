@@ -24,7 +24,7 @@ using System.IO;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// StreamEm
+    /// Stream extensions
     /// </summary>
     public static class StreamExt
     {
@@ -51,7 +51,7 @@ namespace DotSpatial.Data
         /// <returns>The integer value</returns>
         public static int ReadInt32(this Stream stream, Endian endian = Endian.LittleEndian)
         {
-            byte[] val = new byte[4];
+            var val = new byte[4];
             stream.Read(val, 0, 4);
             if ((endian == Endian.LittleEndian) != BitConverter.IsLittleEndian)
             {
@@ -70,14 +70,14 @@ namespace DotSpatial.Data
         /// <returns>The array of integers that will have count integers.</returns>
         public static int[] ReadInt32(this Stream stream, int count, Endian endian = Endian.LittleEndian)
         {
-            int[] result = new int[count];
-            byte[] val = new byte[4 * count];
+            var result = new int[count];
+            var val = new byte[4 * count];
             stream.Read(val, 0, val.Length);
             if ((endian == Endian.LittleEndian) != BitConverter.IsLittleEndian)
             {
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    byte[] temp = new byte[4];
+                    var temp = new byte[4];
                     Array.Copy(val, i * 4, temp, 0, 4);
                     Array.Reverse(temp);
                     Array.Copy(temp, 0, val, i * 4, 4);
@@ -108,19 +108,19 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static double[] ReadDouble(this Stream stream, int count, Endian endian = Endian.LittleEndian)
         {
-            byte[] val = new byte[count * 8];
+            var val = new byte[count * 8];
             stream.Read(val, 0, count * 8);
             if ((endian == Endian.LittleEndian) != BitConverter.IsLittleEndian)
             {
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    byte[] temp = new byte[8];
+                    var temp = new byte[8];
                     Array.Copy(val, i * 8, temp, 0, 8);
                     Array.Reverse(temp);
                     Array.Copy(temp, 0, val, i * 8, 8);
                 }
             }
-            double[] result = new double[count];
+            var result = new double[count];
             Buffer.BlockCopy(val, 0, result, 0, count * 8);
             return result;
         }
@@ -132,7 +132,7 @@ namespace DotSpatial.Data
         /// <param name="value"></param>
         public static void WriteBe(this Stream stream, int value)
         {
-            byte[] val = BitConverter.GetBytes(value);
+            var val = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian) Array.Reverse(val);
             stream.Write(val, 0, 4);
         }
@@ -144,7 +144,7 @@ namespace DotSpatial.Data
         /// <param name="value"></param>
         public static void WriteLe(this Stream stream, int value)
         {
-            byte[] val = BitConverter.GetBytes(value);
+            var val = BitConverter.GetBytes(value);
             if (!BitConverter.IsLittleEndian) Array.Reverse(val);
             stream.Write(val, 0, 4);
         }
@@ -159,15 +159,15 @@ namespace DotSpatial.Data
         /// <param name="count"></param>
         public static void WriteLe(this Stream stream, int[] values, int startIndex, int count)
         {
-            byte[] bytes = new byte[count * 4];
+            var bytes = new byte[count * 4];
             Buffer.BlockCopy(values, startIndex * 4, bytes, 0, bytes.Length);
             if (!BitConverter.IsLittleEndian)
             {
                 // Reverse to little endian if this is a big endian machine
-                byte[] temp = bytes;
+                var temp = bytes;
                 bytes = new byte[temp.Length];
                 Array.Reverse(temp);
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     Array.Copy(temp, i * 4, bytes, (count - i - 1) * 4, 4);
                 }
@@ -182,7 +182,7 @@ namespace DotSpatial.Data
         /// <param name="value"></param>
         public static void WriteLe(this Stream stream, double value)
         {
-            byte[] val = BitConverter.GetBytes(value);
+            var val = BitConverter.GetBytes(value);
             if (!BitConverter.IsLittleEndian) Array.Reverse(val);
             stream.Write(val, 0, 8);
         }
@@ -197,15 +197,15 @@ namespace DotSpatial.Data
         /// <param name="count">The integer count of doubles to write.</param>
         public static void WriteLe(this Stream stream, double[] values, int startIndex, int count)
         {
-            byte[] bytes = new byte[count * 8];
+            var bytes = new byte[count * 8];
             Buffer.BlockCopy(values, startIndex * 8, bytes, 0, bytes.Length);
             if (!BitConverter.IsLittleEndian)
             {
                 // Reverse to little endian if this is a big endian machine
-                byte[] temp = bytes;
+                var temp = bytes;
                 bytes = new byte[temp.Length];
                 Array.Reverse(temp);
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     Array.Copy(temp, i * 8, bytes, (count - i - 1) * 8, 8);
                 }

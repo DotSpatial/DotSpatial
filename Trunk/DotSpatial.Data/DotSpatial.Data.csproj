@@ -147,7 +147,6 @@
     <Compile Include="PolygonShapefileFeatureSource.cs" />
     <Compile Include="PolygonShapefileShapeSource.cs" />
     <Compile Include="ProgressMeter.cs" />
-    <Compile Include="ProjectionHelper.cs" />
     <Compile Include="ProjExt.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -241,7 +240,6 @@
     <Compile Include="HfaSpheroid.cs" />
     <Compile Include="IDataLayer.cs" />
     <Compile Include="PluginInfo.cs" />
-    <Compile Include="ProjectReader.cs" />
     <Compile Include="AffineTransform.cs" />
     <Compile Include="BinaryRasterProvider.cs" />
     <Compile Include="RasterBoundsExt.cs" />
@@ -323,7 +321,7 @@
     <Compile Include="EventList.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="ICancelProgressHandler.cs" />
-    <Compile Include="IChangeEvent.cs" />
+    <Compile Include="ISuspendEvents.cs" />
     <Compile Include="IChangeEventList.cs" />
     <Compile Include="IChangeItem.cs" />
     <Compile Include="IEventDictionary.cs" />
@@ -361,6 +359,7 @@
     <EmbeddedResource Include="DataStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DataStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

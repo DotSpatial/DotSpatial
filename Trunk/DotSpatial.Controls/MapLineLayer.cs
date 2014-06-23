@@ -33,9 +33,6 @@ using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public class MapLineLayer : LineLayer, IMapLineLayer
     {
         #region Events

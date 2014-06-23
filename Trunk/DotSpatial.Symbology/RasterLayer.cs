@@ -796,5 +796,33 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
+
+        #region Nested Class : ProjectionHelper
+
+        private class ProjectionHelper : IProj
+        {
+            /// <summary>
+            /// Initializes a new instance of the ProjectionHelper class.
+            /// </summary>
+            /// <param name="geographicExtents">The geographic extents to project to and from.</param>
+            /// <param name="viewRectangle">The view rectangle in pixels to transform with.</param>
+            public ProjectionHelper(Extent geographicExtents, Rectangle viewRectangle)
+            {
+                GeographicExtents = geographicExtents;
+                ImageRectangle = viewRectangle;
+            }
+
+            /// <summary>
+            /// Gets or sets the geographic extent to use.
+            /// </summary>
+            public Extent GeographicExtents { get; set; }
+
+            /// <summary>
+            /// Gets or sets the rectangular pixel region to use.
+            /// </summary>
+            public Rectangle ImageRectangle { get; set; }
+        }
+
+        #endregion
     }
 }

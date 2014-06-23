@@ -23,9 +23,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IntBuffer
-    /// </summary>
     public class ValueGrid<T> : IValueGrid where T : IEquatable<T>, IComparable<T>
     {
         #region Private Variables

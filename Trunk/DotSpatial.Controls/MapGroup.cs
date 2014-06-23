@@ -27,9 +27,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoGroup
-    /// </summary>
     public class MapGroup : Group, IMapGroup
     {
         /// <summary>

@@ -25,7 +25,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// RandomEM
+    /// Extensions for <see cref="Random"/> class
     /// </summary>
     public static class RandomExt
     {
@@ -79,8 +79,8 @@ namespace DotSpatial.Symbology
         /// <returns>A floating point value that is greater than or equal to the minimum and less than or equal to the maximum</returns>
         public static float NextFloat(this Random generator, float minimum, float maximum)
         {
-            double dbl = generator.NextDouble();
-            double spread = maximum - (double)minimum;
+            var dbl = generator.NextDouble();
+            var spread = maximum - (double)minimum;
             return (float)(dbl * spread + minimum);
         }
 
@@ -92,7 +92,7 @@ namespace DotSpatial.Symbology
         /// <returns>The T type to generate</returns>
         public static T NextEnum<T>(this Random generator)
         {
-            string[] names = Enum.GetNames(typeof(T));
+            var names = Enum.GetNames(typeof(T));
             return Global.ParseEnum<T>(names[generator.Next(0, names.Length - 1)]);
         }
 
@@ -105,9 +105,9 @@ namespace DotSpatial.Symbology
         /// <returns>An array of boolean values.</returns>
         public static bool[] NextBoolArray(this Random generator, int minLength, int maxLength)
         {
-            int len = generator.Next(minLength, maxLength);
-            bool[] result = new bool[len];
-            for (int i = 0; i < len; i++)
+            var len = generator.Next(minLength, maxLength);
+            var result = new bool[len];
+            for (var i = 0; i < len; i++)
             {
                 result[i] = (generator.Next(0, 1) == 1);
             }

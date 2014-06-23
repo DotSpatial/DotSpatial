@@ -32,9 +32,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
         #region Events

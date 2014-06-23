@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
@@ -30,9 +29,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public class MapRasterLayer : RasterLayer, IMapRasterLayer
     {
         #region Events

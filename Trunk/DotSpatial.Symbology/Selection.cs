@@ -22,9 +22,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// Selection
-    /// </summary>
     public class Selection : FeatureSelection
     {
         #region Constructors
