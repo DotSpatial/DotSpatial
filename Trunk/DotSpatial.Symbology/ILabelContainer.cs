@@ -19,6 +19,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using DotSpatial.Topology;
 
@@ -27,6 +28,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// A layer or other object capable of containing
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface ILabelContainer
     {
         /// <summary>

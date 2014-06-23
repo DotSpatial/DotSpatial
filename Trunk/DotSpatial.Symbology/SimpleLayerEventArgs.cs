@@ -25,6 +25,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// LayerEventArgs
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class SimpleLayerEventArgs : EventArgs
     {
         #region Private Variables

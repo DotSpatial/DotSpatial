@@ -18,11 +18,14 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Data
 {
     /// <summary>
     /// ScaleBarPositions
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum ScaleBarPosition
     {
         /// <summary>

@@ -25,6 +25,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// ChunkEventArgs
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class ChunkEventArgs : EventArgs
     {
         #region Private Variables

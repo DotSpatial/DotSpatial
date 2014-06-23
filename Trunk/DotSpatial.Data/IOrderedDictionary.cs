@@ -19,6 +19,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 
 namespace DotSpatial.Data
@@ -26,6 +27,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// This has the indexing and ordering capabilities, but without all the events of an EventDictionary
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         /// <summary>

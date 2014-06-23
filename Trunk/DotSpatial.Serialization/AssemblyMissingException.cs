@@ -28,6 +28,7 @@ namespace DotSpatial.Serialization
     /// <summary>
     /// This exception will occur if an assembly referenced by a saved map layer could not be found.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class AssemblyMissingException : Exception
     {
         /// <summary>

@@ -27,6 +27,7 @@ namespace DotSpatial.Data
     /// This combines the attribute table with a shape source in order to allow easy creation of
     /// FeatureTable and FeatureRow constructs.
     /// </summary>
+    [Obsolete("Do not use it. This class is not supported in DotSpatial anymore.")] // Marked in 1.7
     public class ShapefileReader : IDataReader
     {
         private readonly AttributeTable _attributeTable;

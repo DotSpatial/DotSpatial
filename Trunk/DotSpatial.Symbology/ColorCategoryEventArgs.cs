@@ -26,6 +26,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// An EventArgs specifically tailored to ColorCategory.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class ColorCategoryEventArgs : EventArgs
     {
         private IColorCategory _colorCategory;

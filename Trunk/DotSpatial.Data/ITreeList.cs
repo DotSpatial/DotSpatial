@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 
 namespace DotSpatial.Data
@@ -25,6 +26,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// An all purpose item
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface ITreeList<T> : IList<T> where T : IParentItem<T>
     {
     }

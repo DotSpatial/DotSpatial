@@ -27,6 +27,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// A set of PaintEventArgs that can be used before a drawing function in order to cancel an event.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class DrawCompletedArgs : DrawArgs
     {
         private bool _cancelled; // If this is true, the event was cancelled (not aborted by an exception)

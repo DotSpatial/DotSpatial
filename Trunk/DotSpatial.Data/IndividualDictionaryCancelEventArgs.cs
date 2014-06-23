@@ -19,6 +19,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.ComponentModel;
 
 namespace DotSpatial.Data
@@ -27,6 +28,7 @@ namespace DotSpatial.Data
     /// Contains properties for both a specified item and an integer index
     /// as well as the option to cancel.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class IndividualDictionaryCancelEventArgs<TKey, TValue> : CancelEventArgs
     {
         #region Private Variables

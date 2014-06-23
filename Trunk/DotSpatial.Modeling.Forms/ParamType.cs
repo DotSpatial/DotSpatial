@@ -19,11 +19,14 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Modeling.Forms
 {
     /// <summary>
     /// Defines the data types which can be parameters for a ITool
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum ParameterType
     {
         /// <summary>

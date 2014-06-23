@@ -28,6 +28,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// RasterEnumerator
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     internal class RasterEnumerator<T> : IEnumerator<Raster<T>>, IEnumerator<IRaster> where T : struct, IEquatable<T>, IComparable<T>
     {
         #region Private Variables

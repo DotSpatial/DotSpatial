@@ -26,6 +26,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Characterizes
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface ISymbolRange
     {
         /// <summary>

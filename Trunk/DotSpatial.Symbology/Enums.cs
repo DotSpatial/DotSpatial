@@ -19,11 +19,14 @@
 //
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Symbology
 {
     /// <summary>
     /// World or pixel coordinates
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum GeoReferenceType
     {
         /// <summary>
@@ -45,6 +48,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// An enumeration showing whetehr this item should use a picture or an image
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum PictureType
     {
         /// <summary>
@@ -66,6 +70,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Gives an enumeration for several different line styles
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum LineStyle
     {
         /// <summary>
@@ -92,6 +97,7 @@ namespace DotSpatial.Symbology
     /// This is like a boolean, but with a "default" of empty.  Empty signifies
     /// that the value is not specified.
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum TrueFalse
     {
         /// <summary>
@@ -134,6 +140,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// Specifies the OGC treatment to give the line at the end-points
     /// </summary>
+    [Obsolete("Do not use it. This enum is not used in DotSpatial anymore.")] // Marked in 1.7
     public enum LineCapType
     {
         /// <summary>

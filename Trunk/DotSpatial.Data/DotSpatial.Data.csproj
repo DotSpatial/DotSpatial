@@ -123,7 +123,7 @@
     <Compile Include="ImageDataEventArgs.cs" />
     <Compile Include="Endian.cs" />
     <Compile Include="IFeatureSource.cs" />
-    <Compile Include="ImagePalletType.cs" />
+    <Compile Include="ImageBandType.cs" />
     <Compile Include="InRamImage.cs" />
     <Compile Include="IProj.cs" />
     <Compile Include="IRasterBoundDataSet.cs" />

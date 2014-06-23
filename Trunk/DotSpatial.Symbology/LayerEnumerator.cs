@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,6 +27,7 @@ namespace DotSpatial.Symbology
     /// <summary>
     /// LayerEnumerator
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class LayerLegendEnumerator : IEnumerator<ILegendItem>
     {
         readonly IEnumerator<ILayer> _internalEnumerator;

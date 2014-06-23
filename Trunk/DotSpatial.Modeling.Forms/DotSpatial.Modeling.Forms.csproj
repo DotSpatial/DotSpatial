@@ -105,7 +105,7 @@
     <Compile Include="Elements\DoubleElement.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Enums.cs" />
+    <Compile Include="ToolStatus.cs" />
     <Compile Include="Elements\FeatureSetElement.cs">
       <SubType>UserControl</SubType>
     </Compile>

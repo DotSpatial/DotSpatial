@@ -27,6 +27,7 @@ namespace DotSpatial.Symbology
     /// The main difference here is that tests against the DrawWindow happen before the nested Draw2D methods.
     /// The DrawWindow is editable at this stage, but will become read-only during drawing.
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class DrawWindowArgs : EventArgs
     {
         #region Private Variables

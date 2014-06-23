@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
@@ -27,6 +28,7 @@ namespace DotSpatial.Data
     /// <summary>
     /// IDataLayer
     /// </summary>
+    [Obsolete("Do not use it. This interface is not used in DotSpatial anymore.")] // Marked in 1.7
     public interface IDataLayer
     {
         #region Methods

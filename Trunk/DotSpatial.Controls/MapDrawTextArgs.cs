@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Drawing;
 using DotSpatial.Symbology;
 
@@ -26,6 +27,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// GeoDrawTextArgs
     /// </summary>
+    [Obsolete("Do not use it. This class is not used in DotSpatial anymore.")] // Marked in 1.7
     public class MapDrawTextArgs
     {
         #region Private Variables
