@@ -225,9 +225,14 @@ namespace DotSpatial.Symbology
         {
             double dx = end.X - start.X;
             double dy = end.Y - start.Y;
-            if (dx == 0 || dy == 0) return 0;
-            double angle = Math.Atan(dy / dx);
-            return (float)(angle * 360 / Math.PI);
+            if (Math.Abs(dx) < 1 && dy > 0) return -90;
+            if (Math.Abs(dx) < 1 && dy < 0) return 90;
+            var angle = Math.Atan(dy/dx);
+            if (dx > 0)
+                return (float) (angle*180/Math.PI);
+            if (dy < 0)
+                return (float) (-180 + angle*180/Math.PI);
+            return (float) (180 + angle*180/Math.PI);
         }
 
         private struct DecorationSpot
