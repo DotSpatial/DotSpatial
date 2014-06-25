@@ -88,14 +88,10 @@ namespace DotSpatial.Symbology
             result.SelectionSymbolizer = SelectionSymbolizer.Copy();
             return result;
         }
-
-        /// <summary>
-        /// Returns the name of this category.
-        /// </summary>
-        /// <returns></returns>
+        
         public override string ToString()
         {
-            return _name;
+            return string.IsNullOrEmpty(Name) ? "<No Name>" : Name;
         }
 
         #endregion
