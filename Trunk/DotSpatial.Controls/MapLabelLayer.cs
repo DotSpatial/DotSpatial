@@ -124,8 +124,10 @@ namespace DotSpatial.Controls
         public void DrawRegions(MapArgs args, List<Extent> regions)
         {
             if (FeatureSet == null) return;
+#if DEBUG
             var sw = new Stopwatch();
             sw.Start();
+#endif
 
             if (FeatureSet.IndexMode)
             {
@@ -166,8 +168,10 @@ namespace DotSpatial.Controls
                 DrawFeatures(args, drawList, clipRects, true);
             }
 
+#if DEBUG
             sw.Stop();
             Debug.WriteLine("MapLabelLayer {0} DrawRegions: {1} ms", FeatureSet.Name, sw.ElapsedMilliseconds);
+#endif
         }
 
         /// <summary>

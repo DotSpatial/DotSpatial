@@ -163,8 +163,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             else
             {
-                Stopwatch sw = new Stopwatch();
+#if DEBUG
+                var sw = new Stopwatch();
                 sw.Start();
+#endif
                 List<T> result = new List<T>();
                 foreach (long index in indices)
                 {
@@ -190,8 +192,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
                     result.Add(data[0]);
                 }
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine("Time to read values from file:" + sw.ElapsedMilliseconds);
+#endif
                 return result;
             }
         }

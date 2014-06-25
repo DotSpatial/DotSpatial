@@ -566,11 +566,12 @@ namespace DotSpatial.Tools
                 }
             }
 
-            var sw = new Stopwatch();
             foreach (var pair in featureHash)
             {
-                sw.Restart();
-
+#if DEBUG
+                var sw = new Stopwatch();
+                sw.Start();
+#endif
                 var key = pair.Key;
                 var lineSegList = pair.Value.List;
 
@@ -618,8 +619,10 @@ namespace DotSpatial.Tools
                 var f = output.AddFeature(geometry);
                 f.DataRow["Value"] = key;
 
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine(sw.ElapsedMilliseconds);
+#endif
             }
 
             output.AttributesPopulated = true;

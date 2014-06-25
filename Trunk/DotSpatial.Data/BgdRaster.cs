@@ -119,25 +119,34 @@ namespace DotSpatial.Data
         public override List<T> GetValuesT(IEnumerable<long> indices)
         {
             if (IsInRam) return base.GetValuesT(indices);
-            Stopwatch sw = new Stopwatch();
+#if DEBUG
+            var sw = new Stopwatch();
             sw.Start();
-            List<T> result = new List<T>();
-            FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, ByteSize);
-            fs.Seek(HeaderSize, SeekOrigin.Begin);
-            BinaryReader br = new BinaryReader(fs);
-            foreach (long index in indices)
+#endif
+            var result = new List<T>();
+            using (var fs = new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.Read, ByteSize))
             {
-                long offset = HeaderSize + index * ByteSize;
-                // Position the binary reader at the top of the "window"
-                fs.Seek(offset, SeekOrigin.Begin);
-                byte[] values = br.ReadBytes(ByteSize);
-                T[] x = new T[1];
-                Buffer.BlockCopy(values, 0, x, 0, ByteSize);
-                result.Add(x[0]);
+                fs.Seek(HeaderSize, SeekOrigin.Begin);
+                using (var br = new BinaryReader(fs))
+                {
+                    foreach (long index in indices)
+                    {
+                        var offset = HeaderSize + index*ByteSize;
+                        // Position the binary reader at the top of the "window"
+                        fs.Seek(offset, SeekOrigin.Begin);
+                        var values = br.ReadBytes(ByteSize);
+                        var x = new T[1];
+                        Buffer.BlockCopy(values, 0, x, 0, ByteSize);
+                        result.Add(x[0]);
+                    }
+                }
             }
-            br.Close();
+
+#if DEBUG
             sw.Stop();
             Debug.WriteLine("Time to read values from file:" + sw.ElapsedMilliseconds);
+#endif
+
             return result;
         }
 

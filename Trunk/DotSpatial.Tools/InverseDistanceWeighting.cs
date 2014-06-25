@@ -207,8 +207,6 @@ namespace DotSpatial.Tools
                 randomList.RemoveAt(index);
             }
 
-            Stopwatch sw = new Stopwatch();
-
             // Makes sure we don't try to search for more points then exist
             if (kd.Count < pointCount)
             {
@@ -227,9 +225,7 @@ namespace DotSpatial.Tools
                         Double[] pixelCoord = new double[2];
                         pixelCoord[0] = output.CellToProj(y, x).X;
                         pixelCoord[1] = output.CellToProj(y, x).Y;
-                        sw.Start();
                         object[] result = kd.Nearest(pixelCoord, pointCount);
-                        sw.Stop();
 
                         // Sets up the IDW numerator and denominator
                         double top = 0;
@@ -288,8 +284,6 @@ namespace DotSpatial.Tools
                         }
                     }
                 }
-
-                Debug.WriteLine(sw.ElapsedMilliseconds);
             }
 
             output.Save();

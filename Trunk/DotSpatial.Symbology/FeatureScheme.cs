@@ -642,8 +642,6 @@ namespace DotSpatial.Symbology
         private static List<Break> GetUniqueValues(string fieldName, DataTable table)
         {
             ArrayList lst = new ArrayList();
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             bool containsNull = false;
             foreach (DataRow dr in table.Rows)
             {
@@ -662,8 +660,7 @@ namespace DotSpatial.Symbology
                 if (lst.Contains(val)) continue;
                 if (val.ToString() != "[NULL]") lst.Add(val);
             }
-            sw.Stop();
-            //Debug.WriteLine("GetUniqueValuesTime: " + sw.ElapsedMilliseconds);
+            
             lst.Sort(); // breaks if a value is null.
             List<Break> result = new List<Break>();
             if (containsNull) result.Add(new Break("[NULL]"));

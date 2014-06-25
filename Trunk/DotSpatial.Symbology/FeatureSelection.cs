@@ -141,9 +141,11 @@ namespace DotSpatial.Symbology
             bool added = false;
             SuspendChanges();
             affectedArea = new Envelope();
-            Stopwatch sw = new Stopwatch();
-            Stopwatch total = new Stopwatch();
+
+#if DEBUG            
+            var total = new Stopwatch();
             total.Start();
+#endif
             foreach (IFeature f in FeatureList)
             {
                 bool doAdd = false;
@@ -234,12 +236,21 @@ namespace DotSpatial.Symbology
                     added = true;
                 }
             }
+
+#if DEBUG
+            var sw = new Stopwatch();
             sw.Start();
+#endif
+
             ResumeChanges();
+
+#if DEBUG
             sw.Stop();
             total.Stop();
             Debug.WriteLine("Geometry Intersection Time: " + sw.ElapsedMilliseconds);
             Debug.WriteLine("Total Intersection Time: " + total.ElapsedMilliseconds);
+#endif
+
             return added;
         }
 

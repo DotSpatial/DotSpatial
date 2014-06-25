@@ -380,16 +380,17 @@ namespace DotSpatial.Symbology
         /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null</exception>
         public static void DrawToBitmapOld(this IRaster raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             if (rasterSymbolizer == null)
             {
                 throw new ArgumentNullException("rasterSymbolizer");
             }
-
             if (rasterSymbolizer.Scheme.Categories == null || rasterSymbolizer.Scheme.Categories.Count == 0) return;
 
+#if DEBUG
+            var sw = new Stopwatch();
+            sw.Start();
+#endif
+            
             bool useHillShade = false;
             float[][] hillshade = rasterSymbolizer.HillShade;
             if (rasterSymbolizer.ShadedRelief.IsUsed)
@@ -398,7 +399,6 @@ namespace DotSpatial.Symbology
 
                 useHillShade = true;
             }
-            Color pixelColor;
             try
             {
                 for (int row = 0; row < raster.NumRows; row++)
@@ -416,7 +416,7 @@ namespace DotSpatial.Symbology
                             rgbData[off + 3] = rasterSymbolizer.NoDataColor.A;
                             continue;
                         }
-                        pixelColor = rasterSymbolizer.GetColor(value);
+                        Color pixelColor = rasterSymbolizer.GetColor(value);
 
                         // control transparency here
                         float alpha = rasterSymbolizer.Opacity * 255f;
@@ -467,17 +467,20 @@ namespace DotSpatial.Symbology
                     pm.Next();
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                Debug.WriteLine(" Unable to write data to raster.");
+                Trace.WriteLine("Unable to write data to raster: " + ex);
             }
             if (rasterSymbolizer.IsSmoothed)
             {
                 Smoother mySmoother = new Smoother(stride, raster.NumColumns, raster.NumRows, rgbData, pm.ProgressHandler);
                 mySmoother.Smooth();
             }
+
+#if DEBUG
             sw.Stop();
-            Debug.WriteLine("SymbologyRasterExt_DrawToBitmap: " + sw.ElapsedMilliseconds + "milliseconds");
+            Debug.WriteLine("DesktopRasterExt.DrawToBitmapOld: " + sw.ElapsedMilliseconds + "milliseconds");
+#endif
         }
 
         private static List<ColorSet<T>> GetColorSets<T>(IEnumerable<IColorCategory> categories) where T : struct, IComparable<T>
@@ -628,15 +631,17 @@ namespace DotSpatial.Symbology
         private static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm) 
             where T : struct, IEquatable<T>, IComparable<T>
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             if (rasterSymbolizer == null)
             {
                 throw new ArgumentNullException("rasterSymbolizer");
             }
 
             if (rasterSymbolizer.Scheme.Categories == null || rasterSymbolizer.Scheme.Categories.Count == 0) return;
+
+#if DEBUG
+            var sw = new Stopwatch();
+            sw.Start();
+#endif
 
             bool useHillShade = false;
             float[][] hillshade = rasterSymbolizer.HillShade;
@@ -715,17 +720,20 @@ namespace DotSpatial.Symbology
                     pm.Next();
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                Debug.WriteLine(" Unable to write data to raster.");
+                Trace.WriteLine("Unable to write data to raster: " + ex);
             }
             if (rasterSymbolizer.IsSmoothed)
             {
                 Smoother mySmoother = new Smoother(stride, raster.NumColumns, raster.NumRows, rgbData, pm.ProgressHandler);
                 mySmoother.Smooth();
             }
+
+#if DEBUG
             sw.Stop();
             Debug.WriteLine("SymbologyRasterExt_DrawToBitmapT: " + sw.ElapsedMilliseconds + "milliseconds");
+#endif
         }
 
         /// <summary>
@@ -1161,9 +1169,6 @@ namespace DotSpatial.Symbology
                 return result;
             }
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             // Use a HashSet here, because it has O(1) lookup for preventing duplicates
             HashSet<long> exclusiveResults = new HashSet<long>();
             int remaining = sampleSize;
@@ -1185,9 +1190,7 @@ namespace DotSpatial.Symbology
             // is better than getting one value, discarding the cache and then comming back later for the value
             // next to it.
             result = raster.GetValues(sorted);
-
-            sw.Stop();
-            Debug.WriteLine("GetValues time: " + sw.ElapsedMilliseconds + " for " + sampleSize + " values.");
+          
             raster.Sample = result;
             return result;
         }

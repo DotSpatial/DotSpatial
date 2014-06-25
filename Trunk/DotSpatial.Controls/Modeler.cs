@@ -315,16 +315,19 @@ namespace DotSpatial.Controls
             get { return _toolShape; }
             set
             {
-                Stopwatch sw = new Stopwatch();
+#if DEBUG
+                var sw = new Stopwatch();
                 sw.Start();
-
+#endif
                 foreach (ModelElement modelEl in _modelElements)
                 {
                     if (modelEl as ToolElement != null)
                         modelEl.Shape = value;
                 }
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine("my sw: " + sw.ElapsedMilliseconds);
+#endif
 
                 _toolShape = value;
                 IsInitialized = false;

@@ -265,16 +265,20 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     {
                         h = gs.Bounds.NumRows - j * blockHeight;
                     }
+#if DEBUG
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
+#endif
                     byte[] vals = gs.ReadWindow(j * blockHeight, 0, h, width, 0);
                     Debug.WriteLine("Reading Value time: " + sw.ElapsedMilliseconds);
                     pm.CurrentValue = j * 2 + 1;
                     sw.Reset();
                     sw.Start();
                     py.WriteWindow(vals, j * blockHeight, 0, h, width, 0);
+#if DEBUG
                     sw.Stop();
                     Debug.WriteLine("Writing Pyramid time: " + sw.ElapsedMilliseconds);
+#endif
                     pm.CurrentValue = (j + 1) * 2;
                 }
                 gs.Dispose();

@@ -272,11 +272,15 @@ namespace DotSpatial.Symbology
             {
                 if (_changeOccured)
                 {
-                    Stopwatch sw = new Stopwatch();
+#if DEBUG
+                    var sw = new Stopwatch();
                     sw.Start();
+#endif
                     OnItemChanged();
+#if DEBUG
                     sw.Stop();
                     Debug.WriteLine("OnItemChanged time:" + sw.ElapsedMilliseconds);
+#endif
                 }
             }
             // Prevent forcing extra negatives.

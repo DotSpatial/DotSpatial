@@ -1732,8 +1732,11 @@ namespace DotSpatial.Controls
             graph.FillRectangle(Brushes.DarkGray, invalRect);
 
             //This code draws the paper
+#if DEBUG
             var sw = new Stopwatch();
             sw.Start();
+#endif
+
             var paperRect = PaperToScreen(0F, 0F, PaperWidth, PaperHeight);
             graph.FillRectangle(Brushes.White, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
             graph.DrawRectangle(Pens.Black, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
@@ -1744,8 +1747,10 @@ namespace DotSpatial.Controls
                                           (PaperHeight - _printerSettings.DefaultPageSettings.Margins.Top - _printerSettings.DefaultPageSettings.Margins.Bottom));
                 graph.DrawRectangle(Pens.LightGray, paperRect.X, paperRect.Y, paperRect.Width, paperRect.Height);
             }
+#if DEBUG
             sw.Stop();
             Debug.WriteLine("Time to draw paper: " + sw.ElapsedMilliseconds);
+#endif
 
             //Draws the layout elements
             for (var i = LayoutElements.Count - 1; i >= 0; i--)
