@@ -784,13 +784,40 @@ namespace DotSpatial.Controls
 
         private static string GetLabelText(IFeature feature, ILabelCategory category, ILabelSymbolizer symb)
         {
+            // Function which checks that text contains any expression
+            var exprCheck = (Func<string, bool>) delegate(string inStr)
+            {
+                if (String.IsNullOrEmpty(inStr)) return false;
+                const char symb1 = ']';
+                const char symb2 = '[';
+                bool s1 = false, s2 = false;
+                foreach (var t in inStr)
+                {
+                    if (t == symb1)
+                    {
+                        s1 = true;
+                        if (s1 && s2) return true;
+                    }
+                    else if (t == symb2)
+                    {
+                        s2 = true;
+                        if (s1 && s2) return true;
+                    }
+                }
+
+                return false;
+            };
+
             var useFloatingFormat = !string.IsNullOrWhiteSpace(symb.FloatingFormat);
-            string result = category.Expression;
-            if (!string.IsNullOrEmpty(result) && feature != null)
+            var result = category.Expression;
+            if (feature != null && exprCheck(result))
             {
                 foreach (DataColumn dc in feature.DataRow.Table.Columns)
                 {
-                    if (String.IsNullOrEmpty(result)) break; // Result already is empty, no need to iterate over columns
+                    var curColumnReplacement = "[" + dc.ColumnName + "]";
+
+                    // Check that this column used in expression
+                    if (!result.Contains(curColumnReplacement)) continue; 
 
                     var currValue = feature.DataRow[dc.ColumnName];
                     if (useFloatingFormat &&
@@ -812,8 +839,8 @@ namespace DotSpatial.Controls
                         currValue = SafeToString(currValue);
                     }
 
-
-                    result = result.Replace("[" + dc.ColumnName + "]", (string)currValue);
+                    result = result.Replace(curColumnReplacement, (string)currValue);
+                    if (!exprCheck(result)) break; // result string does not contains any expressions, no need to iterate over columns
                 }
             }
             return result;
