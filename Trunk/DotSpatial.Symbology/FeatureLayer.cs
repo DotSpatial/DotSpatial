@@ -716,7 +716,7 @@ namespace DotSpatial.Symbology
         {
             if (_editMode)
             {
-                IFeatureSelection sel = _selection as IFeatureSelection;
+                var sel = _selection as IFeatureSelection;
                 if (sel != null)
                 {
                     sel.Add(feature);
@@ -724,10 +724,10 @@ namespace DotSpatial.Symbology
             }
             else
             {
-                IIndexSelection sel = _selection as IIndexSelection;
+                var sel = _selection as IIndexSelection;
                 if (sel != null)
                 {
-                    sel.Add(DataSet.Features.IndexOf(feature));
+                    sel.Add(feature.Fid);
                 }
             }
         }

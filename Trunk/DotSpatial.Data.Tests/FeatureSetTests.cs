@@ -145,9 +145,6 @@ namespace DotSpatial.Data.Tests
             fs.DataTable.Columns.Add(new DataColumn(("ID"), typeof(int)));
 
             f = fs.AddFeature(f);
-
-            f.ShapeType = ShapeType.PointZ;
-
             f.DataRow.BeginEdit();
             f.DataRow["ID"] = 1;
             f.DataRow.EndEdit();

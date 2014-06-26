@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Topology;
@@ -247,6 +248,7 @@ namespace DotSpatial.Data
                         ShapeType = (ShapeType) reader.ReadInt32(),
                         StartIndex = totalPointsCount
                     };
+                    Debug.Assert(shape.RecordNumber == shp + 1);
 
                     if (shape.ShapeType != ShapeType.NullShape)
                     {

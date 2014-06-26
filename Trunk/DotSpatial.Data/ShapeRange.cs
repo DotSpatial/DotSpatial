@@ -24,9 +24,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ShapeIndex
-    /// </summary>
     public sealed class ShapeRange : ICloneable
     {
         #region Private Variables
@@ -34,12 +31,12 @@ namespace DotSpatial.Data
         /// <summary>
         /// The feature type
         /// </summary>
-        public readonly FeatureType FeatureType;
+        public FeatureType FeatureType { get; private set; }
 
         /// <summary>
         /// The content length
         /// </summary>
-        public int ContentLength;
+        public int ContentLength { get; set; }
 
         /// <summary>
         /// Control the epsilon to use for the intersect calculations
@@ -52,9 +49,9 @@ namespace DotSpatial.Data
         public List<PartRange> Parts { get; private set; }
 
         /// <summary>
-        /// The record number
+        /// The record number (for .shp files usually 1-based)
         /// </summary>
-        public int RecordNumber;
+        public int RecordNumber { get; set; }
 
         private Extent _extent;
         private int _numParts;

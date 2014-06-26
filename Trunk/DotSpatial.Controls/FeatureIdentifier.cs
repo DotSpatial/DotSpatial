@@ -165,7 +165,7 @@ namespace DotSpatial.Controls
         /// <param name="bounds"></param>
         public virtual bool Add(IFeatureLayer layer, Extent bounds)
         {
-            var result = ((FeatureSet) layer.DataSet).IdentifySelect(bounds);
+            var result = ((FeatureSet) layer.DataSet).Select(bounds);
             if (result.Count == 0)
             {
                 return false;
@@ -179,22 +179,7 @@ namespace DotSpatial.Controls
 
             foreach (var feature in result)
             {
-                DataRow dr = null;
-                if (!layer.DataSet.AttributesPopulated)
-                {
-                    var fid = feature.ShapeIndex != null ? layer.DataSet.ShapeIndices.IndexOf(feature.ShapeIndex) : feature.Fid;
-                    using (var dt = layer.DataSet.GetAttributes(fid, 1))
-                    {
-                        if ((dt != null) && (dt.Rows.Count > 0))
-                            dr = layer.DataSet.GetAttributes(fid, 1).Rows[0];
-                    }
-
-                    feature.DataRow = dr;
-                }
-                else
-                {
-                    dr = feature.DataRow;
-                }
+                var dr = feature.DataRow;
                 var name = feature.Fid.ToString(CultureInfo.InvariantCulture);
                 if (_featureIDFields.ContainsKey(layer.LegendText))
                 {

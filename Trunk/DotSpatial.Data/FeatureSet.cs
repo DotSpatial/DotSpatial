@@ -938,41 +938,16 @@ namespace DotSpatial.Data
             result.Save();
         }
 
-        /// <inheritdoc/>
+        [Obsolete("Use Select(region) instead")] // Marked in 1.7
         public List<IFeature> IdentifySelect(Extent region)
         {
-            Extent ignoreMe;
-            return IdentifySelect(region, out ignoreMe);
+            return Select(region);
         }
 
-        /// <inheritdoc/>
+        [Obsolete("Use Select(region, out affectedRegion) instead")] // Marked in 1.7
         public List<IFeature> IdentifySelect(Extent region, out Extent affectedRegion)
         {
-
-            List<IFeature> result = new List<IFeature>();
-            affectedRegion = new Extent();
-
-            bool useProgress = (Features.Count > 10000);
-            //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting Features", Features.Count);
-            foreach (IFeature feature in Features)
-            {
-                //if (useProgress)
-                //    ProgressMeter.Next();
-                if (!region.Intersects(feature.Envelope))
-                {
-                    continue;
-                }
-                if (!feature.Intersects(region.ToEnvelope()))
-                {
-                    continue;
-                }
-                result.Add(feature);
-                affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
-            }
-            //if (useProgress)
-            //    ProgressMeter.Reset();
-
-            return result;
+            return Select(region, out affectedRegion);
         }
 
         /// <inheritdoc/>
@@ -985,56 +960,39 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual List<IFeature> Select(Extent region, out Extent affectedRegion)
         {
-       
-            List<IFeature> result = new List<IFeature>();
-            if (IndexMode)
-            {
-                ShapeRange aoi = new ShapeRange(region);
-                Extent affected = new Extent();
-                List<ShapeRange> shapes = ShapeIndices;
-                if (shapes != null)
-                {
-                    //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting shapes", shapes.Count);
-                    for (int shp = 0; shp < shapes.Count; shp++)
-                    {
-                        //ProgressMeter.Next();
-                        if (!shapes[shp].Intersects(aoi))
-                        {
-                            continue;
-                        }
-
-                        IFeature f = GetFeature(shp);
-                        affected.ExpandToInclude(shapes[shp].Extent);
-                        result.Add(f);
-                    }
-                    //ProgressMeter.Reset();
-                }
-
-                affectedRegion = affected;
-                return result;
-            }
-            
+            var result = new List<IFeature>();
             affectedRegion = new Extent();
 
-            bool useProgress = (Features.Count > 10000);
-            //ProgressMeter = new ProgressMeter(ProgressHandler, "Selecting Features", Features.Count);
-            foreach (IFeature feature in Features)
+            if (IndexMode)
             {
-                //if (useProgress)
-                //    ProgressMeter.Next();
-                if (!region.Intersects(feature.Envelope))
+                var aoi = new ShapeRange(region);
+                var shapes = ShapeIndices;
+                for (var shp = 0; shp < shapes.Count; shp++)
                 {
-                    continue;
+                    if (!shapes[shp].Intersects(aoi))
+                    {
+                        continue;
+                    }
+
+                    var feature = GetFeature(shp);
+                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                    result.Add(feature);
                 }
-                if (!feature.Intersects(region.ToEnvelope()))
-                {
-                    continue;
-                }
-                result.Add(feature);
-                affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
             }
-            //if (useProgress)
-            //    ProgressMeter.Reset();
+            else
+            {
+                foreach (var feature in Features)
+                {
+                    if (!region.Intersects(feature.Envelope) ||
+                       !feature.Intersects(region.ToEnvelope()))
+                    {
+                        continue;
+                    }
+                  
+                    result.Add(feature);
+                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                }
+            }
 
             return result;
         }
@@ -1203,10 +1161,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the line for the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetLine(int index)
         {
             ShapeRange shape = ShapeIndices[index];
@@ -1254,13 +1208,10 @@ namespace DotSpatial.Data
                 geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[]{});
             }
 
-            Feature f = new Feature(geom)
+            var f = new Feature(geom)
                             {
                                 ParentFeatureSet = this,
                                 ShapeIndex = shape,
-                                RecordNumber = shape.RecordNumber,
-                                ContentLength = shape.ContentLength,
-                                ShapeType = shape.ShapeType
                             };
 
             // Attribute reading is only handled in the overridden case.
@@ -1270,10 +1221,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Returns a single multipoint feature for the shape at the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetMultiPoint(int index)
         {
             ShapeRange shape = ShapeIndices[index];
@@ -1304,19 +1251,23 @@ namespace DotSpatial.Data
                 FeatureGeometryFactory = GeometryFactory.Default;
             }
 
-            IMultiPoint mp = FeatureGeometryFactory.CreateMultiPoint(coords);
-            return new Feature(mp);
+            var mp = FeatureGeometryFactory.CreateMultiPoint(coords);
+            var f = new Feature(mp)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape,
+            };
+
+            // Attribute reading is only handled in the overridden case.
+            return f;
         }
 
         /// <summary>
         /// Gets the point for the shape at the specified index
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetPoint(int index)
         {
+            ShapeRange shape = ShapeIndices[index];
             Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
             if (M != null && M.Length != 0)
             {
@@ -1334,7 +1285,11 @@ namespace DotSpatial.Data
             }
 
             IPoint p = FeatureGeometryFactory.CreatePoint(c);
-            Feature f = new Feature(p) { ParentFeatureSet = this, RecordNumber = index };
+            var f = new Feature(p)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = shape,
+            };
 
             // Attributes only retrieved in the overridden case
             return f;
@@ -1344,10 +1299,6 @@ namespace DotSpatial.Data
         /// If the FeatureType is polygon, this is the code for converting the vertex array
         /// into a feature.
         /// </summary>
-        /// <param name="index">
-        /// </param>
-        /// <returns>
-        /// </returns>
         protected IFeature GetPolygon(int index)
         {
             if (FeatureGeometryFactory == null)
@@ -1460,13 +1411,9 @@ namespace DotSpatial.Data
                 // It's a multi part
                 feature.BasicGeometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
             }
-
-            // feature.FID = feature.RecordNumber; FID is now dynamic
+            
             feature.ParentFeatureSet = this;
             feature.ShapeIndex = shape;
-            feature.RecordNumber = shape.RecordNumber;
-            feature.ContentLength = shape.ContentLength;
-            feature.ShapeType = shape.ShapeType;
 
             // Attributes handled in the overridden case
             return feature;
@@ -1537,7 +1484,7 @@ namespace DotSpatial.Data
         /// </returns>
         private FeatureSet CopySubset(string filterExpression)
         {
-            return CopySubset(Find(filterExpression));
+            return CopySubset(SelectIndexByAttribute(filterExpression));
         }
 
         /// <summary>

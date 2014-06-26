@@ -46,17 +46,11 @@ namespace DotSpatial.Data
         public static string ComparisonField;
 
         private IBasicGeometry _basicGeometry;
-        private int _contentLength;
         private DataRow _dataRow;
         private CacheTypes _envelopSource;
         private IEnvelope _envelope;
         private int _numParts;
-        private CacheTypes _numPartsSource;
-        private long _offset;
         private IFeatureSet _parentFeatureSet;
-        private int _recordNumber;
-        private ShapeRange _shapeIndex;
-        private ShapeType _shapeType;
 
         #endregion
 
@@ -120,13 +114,7 @@ namespace DotSpatial.Data
             {
                 ReadPolygonShape(shape);
             }
-            else
-            {
-                // These properties are set by ReadPolygonShape, so set them here for everybody else.
-                RecordNumber = shape.Range.RecordNumber;
-                ContentLength = shape.Range.ContentLength;
-                ShapeType = shape.Range.ShapeType;
-            }
+            
         }
 
         /// <summary>
@@ -360,10 +348,6 @@ namespace DotSpatial.Data
                 // It's a multi part
                 _basicGeometry = new MultiPolygon(polygons);
             }
-
-            RecordNumber = shape.Range.RecordNumber;
-            ContentLength = shape.Range.ContentLength;
-            ShapeType = shape.Range.ShapeType;
         }
 
         /// <summary>
@@ -504,7 +488,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_numPartsSource == CacheTypes.Cached)
+                if (NumPartsSource == CacheTypes.Cached)
                 {
                     return _numParts;
                 }
@@ -535,7 +519,7 @@ namespace DotSpatial.Data
             set
             {
                 _numParts = value;
-                _numPartsSource = CacheTypes.Cached;
+                NumPartsSource = CacheTypes.Cached;
             }
         }
 
@@ -544,26 +528,13 @@ namespace DotSpatial.Data
         /// is dynamic, then NumParts will be read from the geometry on this feature.
         /// If it is cached, then the value is separate from the geometry.
         /// </summary>
-        public CacheTypes NumPartsSource
-        {
-            get { return _numPartsSource; }
-            set { _numPartsSource = value; }
-        }
+        public CacheTypes NumPartsSource { get; set; }
 
         /// <summary>
         /// This specifies the offset, if any in the data file
         /// </summary>
-        public long Offset
-        {
-            get
-            {
-                return _offset;
-            }
-            protected set
-            {
-                _offset = value;
-            }
-        }
+        [Obsolete("This property no longer used.")] // Marked in 1.7
+        public long Offset { get; protected set; }
 
         #region IFeature Members
 
@@ -591,8 +562,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int ContentLength
         {
-            get { return _contentLength; }
-            set { _contentLength = value; }
+            get { return ShapeIndex != null? ShapeIndex.ContentLength : 0; }
+            set
+            {
+                // nothing
+            }
         }
 
         /// <summary>
@@ -696,9 +670,12 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_parentFeatureSet.AttributesPopulated == false)
+                if (!_parentFeatureSet.AttributesPopulated)
                 {
-                    return _recordNumber;
+                    return RecordNumber - 1;
+                    // -1 because RecordNumber for shapefiles is 1-based.
+                    // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
+
                 }
                 return _parentFeatureSet.Features.IndexOf(this);
             }
@@ -745,8 +722,11 @@ namespace DotSpatial.Data
         /// </summary>
         public int RecordNumber
         {
-            get { return _recordNumber; }
-            set { _recordNumber = value; }
+            get { return ShapeIndex != null ? ShapeIndex.RecordNumber : -1; }
+            set
+            {
+                // nothing
+            }
         }
 
         /// <summary>
@@ -764,19 +744,21 @@ namespace DotSpatial.Data
         /// </summary>
         public ShapeType ShapeType
         {
-            get { return _shapeType; }
-            set { _shapeType = value; }
+            get { return ShapeIndex != null ? ShapeIndex.ShapeType : ShapeType.NullShape; }
+            set
+            {
+                // nothing
+
+                // todo: Remove setters for ShapeType/RecordNumber/ContentLength from public interface
+                // They all must be available only through ShapeIndex property.
+            }
         }
 
         /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
         /// feature.  If the Vertices have not yet been defined, this will be null.
         /// </summary>
-        public ShapeRange ShapeIndex
-        {
-            get { return _shapeIndex; }
-            set { _shapeIndex = value; }
-        }
+        public ShapeRange ShapeIndex { get; set; }
 
         #endregion
     }
