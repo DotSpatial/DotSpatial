@@ -10,6 +10,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public class ListViewHelper
     {
+
         public void AddPackages(IEnumerable<IPackage> list, ListView listView, int pagenumber)
         {
             if (list == null)
@@ -33,24 +34,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             var pagelist = list.ToArray();
             foreach (var package in pagelist)
             {
-                ListViewItem item = new ListViewItem(package.Id);
-                string description = null;
-                if (package.Description.Length > 56)
-                {
-                    description = package.Description.Substring(0, 53) + "...";
-                }
-                else
-                {
-                    description = package.Description;
-                }
-                item.SubItems.Add(description);
+                ListViewItem item = new ListViewItem(package.Id.Substring(package.Id.LastIndexOf('.') + 1));
                 item.ImageIndex = 0;
 
                 listView.Items.Add(item);
                 item.Tag = package;
 
-                var task = BeginGetImage(package.IconUrl.ToString());
-                tasks.Add(task);
+                if (package.IconUrl != null)
+                {
+                    var task = BeginGetImage(package.IconUrl.ToString());
+                    tasks.Add(task);
+                }
             }
             listView.EndUpdate();
 

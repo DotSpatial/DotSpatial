@@ -336,17 +336,17 @@ namespace DotSpatial.Controls
         {
             if (DockManager == null)
             {
-                DockManager = GetRequiredImport<IDockManager>();
+            DockManager = GetRequiredImport<IDockManager>();
             }
 
             if (HeaderControl == null)
             {
-                HeaderControl = GetRequiredImport<IHeaderControl>();
+            HeaderControl = GetRequiredImport<IHeaderControl>();
             }
 
             if (ProgressHandler == null)
             {
-                ProgressHandler = GetRequiredImport<IStatusControl>();
+            ProgressHandler = GetRequiredImport<IStatusControl>();
             }
 
             if (DockManager == null || HeaderControl == null || ProgressHandler == null)
@@ -405,7 +405,7 @@ namespace DotSpatial.Controls
             {
                 UpdateSplashScreen(message);
             }
-            updateThread.Join(100);
+            updateThread.Join();
 
             ActivateAllExtensions();
             OnExtensionsActivated(EventArgs.Empty);
@@ -479,25 +479,52 @@ namespace DotSpatial.Controls
 
         private void ActivateAllExtensions()
         {
-            foreach (var extension in SatisfyImportsExtensions.OrderBy(t => t.Priority))
+            if (Extensions != null && Extensions.Any())
             {
-                extension.Activate();
-            }
+                Thread updateThread = null;
 
-            if (!EnsureRequiredImportsAreAvailable()) return;
-            OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
+                foreach (ISatisfyImportsExtension extension in SatisfyImportsExtensions.OrderBy(t => t.Priority))
+                {
+                    extension.Activate();
+                }
 
-            // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
-            // need to be created before other plugins are loaded.
-            foreach (var extension in Extensions.Where(_ => !_.DeactivationAllowed).OrderBy(_ => _.Priority))
-            {
-                Activate(extension);
-            }
+                if (!EnsureRequiredImportsAreAvailable()) return;
+                OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
 
-            // Activate remaining extensions
-            foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
-            {
-                Activate(extension);
+                // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
+                // need to be created before other plugins are loaded.
+                foreach (var extension in Extensions.Where(_ => !_.DeactivationAllowed).OrderBy(_ => _.Priority))
+                {
+                    if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
+                    {
+                        updateThread = new Thread(() => Activate(extension));
+                        updateThread.Start();
+
+                        //Update splash screen's progress bar
+                        message = "Looking for updates";
+                        UpdateSplashScreen(message);
+                    }
+                    else
+                    {
+                        Activate(extension);
+                    }
+                }
+
+                // Activate remaining extensions
+                foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
+                {
+                    Activate(extension);
+                }
+
+                //Join the threads
+                if (updateThread != null)
+                {
+                    while (updateThread.IsAlive)
+                        UpdateSplashScreen(message);
+                    updateThread.Join();
+                    message = "Finished.";
+                    UpdateSplashScreen(message);
+                }
             }
         }
 
@@ -547,8 +574,8 @@ namespace DotSpatial.Controls
         /// </summary>
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var knownExtensions = new[] { "dll", "exe" };
-            string assemblyName = args.Name.Split(',').First();
+            string[] knownExtensions = new[] { "dll", "exe" };
+            string assemblyName = new AssemblyName(args.Name).Name;
             string packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
 
             //check the ProgramData directory

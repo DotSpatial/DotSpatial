@@ -76,54 +76,27 @@ namespace DotSpatial.Plugins.Updater
 
         #region Public Methods
 
-        /// <summary>
-        /// Installs the specified package.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public IPackage Install(string name)
-        {
-            try
-            {
-                IPackage package = Repo.FindPackage(name);
-                // important: the following line will throw an exception when debugging
-                // if using the official Nuget.Core dll.
-                // Run without debugging to avoid the exception and install the package
-                // more at http://nuget.codeplex.com/discussions/259099
-                // We include a custom nuget.core without SecurityTransparent to avoid the error.
-
-                if (package != null)
-                {
-                    packageManager.InstallPackage(package, true, false);
-                    return package;
-                }
-            }
-            catch (WebException ex)
-            {
-                // Timed out.
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-            }
-
-            return null;
-        }
-
         public IPackage GetLocalPackage(string id)
         {
-            return packageManager.LocalRepository.FindPackage(id);
+            var pack = packageManager.LocalRepository.FindPackage(id);
+            String[] files = Directory.GetDirectories(repositoryLocation, id + '*');
+            if (files.Length > 0 && files[0] != Path.Combine(repositoryLocation, packageManager.PathResolver.GetPackageDirectory(pack)))
+            {
+                Directory.Move(files[0], Path.Combine(repositoryLocation, packageManager.PathResolver.GetPackageDirectory(pack)));
+                pack = packageManager.LocalRepository.FindPackage(id);
+            }
+            return pack;
         }
 
         /// <summary>
         /// Updates the specified package and dependencies.
         /// </summary>
         /// <param name="package">The package.</param>
-        public void Update(IPackage package)
+        public void Update(string packageId, SemanticVersion version)
         {
-            packageManager.InstallPackage(package, true, false);
+            var pack = GetLocalPackage(packageId);
+            packageManager.UninstallPackage(pack, true, false);
+            packageManager.InstallPackage(packageId, version, false, false);
         }
 
         public void SetNewSource(string source)

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using NuGet;
 using System.Drawing;
 using System.Threading.Tasks;
+using DotSpatial.Controls;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -78,7 +79,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             listOfButtons.Clear();
         }
-        public void DisplayPackages(ListView listview, int pagenumber, TabPage tab)
+        public void DisplayPackages(ListView listview, int pagenumber, TabPage tab, AppManager App)
         {
             ResetButtons(tab);
             listview.Items.Clear();
@@ -95,7 +96,10 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 else
                 {
-                    add.AddPackages(t.Result.packages, listview, pagenumber);
+                    var packages = from pack in t.Result.packages
+                                        where App.GetExtension(pack.Id) == null
+                                        select pack;
+                    add.AddPackages(packages.ToArray(), listview, pagenumber);
                     CreateButtons(t.Result.TotalPackageCount);
                     AddButtons(tab);
                 }
@@ -109,7 +113,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 try
                 {
                     var result = from item in packages.Repo.GetPackages()
-                                 where item.IsLatestVersion && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
+                                 where item.IsLatestVersion && item.Id.Contains("Plugins") && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
                                  select item;
 
                     var info = new PackageList();

@@ -27,25 +27,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         public override void Activate()
         {
             AddButtons();
-            form.App = App;
-
-            var updateThread = new Thread(() => Update.autoUpdateController(App, form));
-            var timeStarted = DateTime.UtcNow;
-            updateThread.Start();
-
-            // Update splash screen's progress bar while thread is active or 10 seconds have past.
-            var span = TimeSpan.FromMilliseconds(0);
-            while (updateThread.IsAlive && span.TotalMilliseconds < 10000)
-            {
-                App.UpdateSplashScreen("Looking for updates");
-                span = DateTime.UtcNow - timeStarted;
-            }
-
-            // Join the threads. If the thread is still active, wait a full second before giving up.
-            updateThread.Join(1000);
-            App.UpdateSplashScreen("Finished.");
-
             base.Activate();
+            form.App = App;
+            Update.autoUpdateController(App);
         }
 
         public override void Deactivate()

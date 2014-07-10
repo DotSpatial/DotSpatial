@@ -13,42 +13,32 @@ using DotSpatial.Controls.Extensions;
 using System.IO;
 using System.Reflection;
 using DotSpatial.Extensions;
+using System.Collections.Specialized;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Diagnostics;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
     public class Update
     {
-        public Update(Packages package, ListViewHelper adder, AppManager Appmanager)
+        public Update(Packages package, AppManager Appmanager)
         {
             this.packages = package;
-            this.Add = adder;
             this.App = Appmanager;
         }
 
         private readonly Packages packages;
-        private readonly ListViewHelper Add;
         private AppManager App;
         private GetPackage getpack;
-        private ListView listview;
-        private TabPage tab;
-        private IEnumerable<IPackage> list = null;
+        private List<IPackage> list = null;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private const string HideFromAutoUpdate = "HideFromAutoUpdate";
-        private const string minVersion = "minVersion:";
+        private bool updateApp = false;
 
-        //Function that refreshes the listview in the updates tab.
-        public void RefreshUpdate(ListView lv, TabPage tp)
-        {
-            listview = lv;
-            tab = tp;
-            getAllAvailableUpdates();
-
-            //Refresh the list view with the updates found.
-            if (list != null) { setListView(); }
-        }
-
+        /// <summary>
+        /// Gets updates for the installed packages.
+        /// </summary>
         private void getAllAvailableUpdates()
         {
             list = null;
@@ -56,185 +46,106 @@ namespace DotSpatial.Plugins.ExtensionManager
             //Look for packages to be updated in the folder where Extension Manager downloads new packages.
             getpack = new GetPackage(packages);
             IEnumerable<IPackage> localPackages = getpack.GetPackagesFromExtensions(App.Extensions);
-            List<String> packageNames = null;
+
             if (localPackages.Count() > 0)
             {
                 getAvailableUpdatesFromLocal(localPackages);
-                packageNames = getPackageNames(localPackages);
-            }
-
-            //Find other packages that may need updating by looking at the current feed and comparing to installed packages.
-            getAvailableUpdatesFromFeed(packageNames);
-        }
-
-        //Using the class variable 'list' to refresh the packages that are eligble for update.
-        private void setListView()
-        {
-            int Count = list.Count();
-
-            try
-            {
-                if (listview.InvokeRequired)
-                {
-                    listview.Invoke((Action)(() =>
-                    {
-                        listview.Clear();
-                        Add.AddPackages(list, listview, 0);
-                        tab.Text = String.Format("Updates ({0})", Count);
-                        if (Count == 0)
-                        {
-                            listview.Clear();
-                            listview.Items.Add("No updates available for the selected feed.");
-                        }
-                    }));
-                }
-                else
-                {
-                    listview.Clear();
-                    Add.AddPackages(list, listview, 0);
-                    tab.Text = String.Format("Updates ({0})", Count);
-                    if (Count == 0)
-                    {
-                        listview.Clear();
-                        listview.Items.Add("No updates available for the selected feed.");
-                    }
-                }
-            }
-            catch 
-            {     
-                //do nothing
             }
         }
 
-        //Looks in the folder where extensions are saved (when downloaded through the Ext Manager) and determines if updates are needed.
+        /// <summary>
+        /// Finds all available updates.
+        /// </summary>
         private void getAvailableUpdatesFromLocal(IEnumerable<IPackage> localPackages)
         {
+            IEnumerable<IPackage> updates = null;
             try
             {
-                list = packages.Repo.GetUpdates(localPackages, false, false);
+                updates = packages.Repo.GetUpdates(localPackages, false, true);
             }
-            catch (WebException)
+            catch (Exception){}
+
+            if (updates != null || updates.Count() < 1)
             {
-                if (listview != null && tab != null)
+                List<IPackage> result = new List<IPackage>();
+                var sortedPackages = updates.OrderBy(item => item.Id)
+                                .ThenByDescending(item => item.Version);
+
+                String id = "";
+
+                foreach (var package in sortedPackages)
                 {
-                    listview.Invoke((Action)(() =>
+                    if (id != package.Id && (package.Tags == null || (!package.Tags.Contains(HideReleaseFromEndUser) 
+                        && !package.Tags.Contains(HideFromAutoUpdate))))
                     {
-                        listview.Clear();
-                        tab.Text = "Update";
-                        listview.Items.Add("Updates could not be retrieved for the selected feed.");
-                        listview.Items.Add("Try again later or change the feed.");
-                    }));
+                        result.Add(package);
+                        id = package.Id;
+                    }
                 }
+
+                list = result;
             }
+            try
+            {
+                CheckUpdateApp();
+            }
+            catch (Exception) { }
+
         }
 
-        //Looks at all packages from the current feed, finds local version of it (if any), compares versions.
-        //packageNames are all packages found and checked by getUpdatesFromLocal.
-        private void getAvailableUpdatesFromFeed(List<String> packageNames)
+        /// <summary>
+        /// Checks for updates for the main application.
+        /// </summary>
+        private void CheckUpdateApp()
         {
-            IPackage[] onlinePacks = null;
-            // Get list of packages from current feed.
-            getAllPackagesFromFeed().ContinueWith(t =>
+            //find app name
+            string name = Assembly.GetEntryAssembly().GetName().Name;
+            int i;
+            for (i = 0; i < name.Length; i++)
             {
-                if (t.Result != null)
-                {
-                    onlinePacks = t.Result.packages;
-                }
-            }).Wait();
+                if (!Char.IsLetter(name[i]))
+                    break;
+            }
+            name = name.Substring(0, i);
 
-            if (onlinePacks == null) return;
+            //find app package
+            var packs = packages.Repo.FindPackagesById(name);
 
-            var updatePacks = new List<IPackage>();
-            foreach (IPackage pack in onlinePacks)
+            //compare app version
+            var programVersion = SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
+            foreach (var pack in packs.Reverse())
             {
-                if (IsPackageUpdateable(pack))
+                if (pack != null && pack.Version > programVersion && IsSameRelease(pack.Version.Version, programVersion.Version))
                 {
-                    //If packageNames has no names, just add all packages that are updateable.
-                    if (packageNames == null)
-                    {
-                        updatePacks.Add(pack);
-                    }
-                    else if (!packageNames.Contains(pack.Id)) //If there are packageNames, then make sure we are not adding a package we've already checked.
-                    {
-                        updatePacks.Add(pack);
-                    }
+                    list.Insert(0, pack);
+                    updateApp = true;
+                    break;
                 }
             }
-            //If list is not null, add the new packages to it.
-            list = list != null ? list.Concat(updatePacks) : updatePacks;
         }
 
-        //Return list of all packages from currently selected feed.
-        private Task<PackageList> getAllPackagesFromFeed()
+        /// <summary>
+        /// Checks if the user is running as an admin.
+        /// </summary>
+        public static bool IsSameRelease(Version version1, Version version2)
         {
-            var task = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    List<IPackage> result = new List<IPackage>();
-                    var allPackages = from item in packages.Repo.GetPackages() where
-                                 (item.Tags == null || (!item.Tags.Contains(HideReleaseFromEndUser)))
-                                 select item;
-
-                    var sortedPackages = allPackages.OrderBy(item => item.Id)
-                                    .ThenByDescending(item => item.Version);
-
-                    String id = "";
-
-                    foreach(var package in sortedPackages)
-                    {
-                        if (id != package.Id && MinVersionCheck(package))
-                        {
-                            result.Add(package);
-                            id = package.Id;
-                        }
-                    }
-                    
-                    var info = new PackageList();
-                    info.TotalPackageCount = result.Count();
-                    info.packages = result.ToArray();
-                    return info;
-                }
-                catch (InvalidOperationException)
-                {
-                    // This usually means the url was bad.
-                    return null;
-                }
-            });
-            return task;
+            if (version1.Major != version2.Major)
+                return false;
+            if (version1.Minor != version2.Minor)
+                return false;
+            return true;
         }
 
-        private bool MinVersionCheck(IPackage item)
-        {
-            bool versionCorrect = true;
-
-            if (item.Tags != null && item.Tags.Contains(minVersion))
-            {
-                var tags = item.Tags.Split(' ');
-
-                foreach (var tag in tags)
-                {
-                    if (tag.Contains(minVersion))
-                    {
-                        var version = SemanticVersion.Parse(tag.Substring(minVersion.Length - 1));
-                        var programVersion = 
-                            SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
-                        if (programVersion < version)
-                            versionCorrect = false;
-                        break;
-                    }
-                }
-            }
-
-            return versionCorrect;
-        }
-
-        private static bool IsOnline()
+        /// <summary>
+        /// Checks if the user is running as an admin.
+        /// </summary>
+        public static bool IsAdminRole()
         {
             try
             {
-                Dns.GetHostEntry("www.google.com");
-                return true;
+                WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
             catch (Exception)
             {
@@ -242,240 +153,75 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
         }
 
-        //Cycle through feeds from settings and call autoupdate function. If any updates occur, show message box.
-        public static void autoUpdateController(AppManager app, ExtensionManagerForm form)
+        /// <summary>
+        /// performs auto updates from the default feed.
+        /// </summary>
+        public static void autoUpdateController(AppManager app)
         {
-            List<String> updatesOccurred = new List<String>();
             Packages packages = new Packages();
             System.Collections.Specialized.StringCollection feeds = FeedManager.getAutoUpdateFeeds();
-
-            if (IsOnline())
+            if (feeds.Count > 0)
             {
-                foreach (String feed in feeds)
-                {
-                    packages.SetNewSource(feed);
-                    var update = new Update(packages, null, app);
-                    updatesOccurred.AddRange(update.autoUpdate());
-                }
-            }
-
-            if (updatesOccurred.Count > 0)
-            {
-                String begin;
-                if (updatesOccurred.Count == 1){ begin = "The following extension has been updated:"; }
-                else{ begin = "The following extensions have been updated:"; }
-
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(begin);
-                sb.AppendLine();
-                for (int i = 0; i < updatesOccurred.Count && i<25; i++)
-                {
-                    sb.AppendLine("-" + updatesOccurred.ElementAt(i));
-                }
-                if (updatesOccurred.Count > 25) { sb.AppendLine("..."); }
-                sb.AppendLine();
-                sb.Append("Updates will finish when HydroDesktop is restarted.");
-                sb.AppendLine("\n\n      Do you want to restart HydroDesktop now?");
-
-                DialogResult dialogResult = MessageBox.Show(sb.ToString(), "Update Complete", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    System.Diagnostics.Process.Start(Application.ExecutablePath);
-                    Environment.Exit(-1);
-                }
-                form.AutoUpdateRestartNeccesary();
+                Update update = new Update(packages, app);
+                update.autoUpdate();
             }
         }
 
-        //autoUpdate any packages found in current feed.
-        internal List<String> autoUpdate()
+        /// <summary>
+        ///autoUpdate any packages found in current feed.
+        /// </summary>
+        internal void autoUpdate()
         {
-            List<String> updatesOccurred = new List<String>();
-            getAllAvailableUpdates();
+            var file = Path.Combine(AppManager.AbsolutePathToExtensions, "updates.txt");
 
-            if (list != null && list.Count() > 0)
+            //skip autoUpdating if already done
+            if (File.Exists(file))
             {
-                DialogResult dialogResult = MessageBox.Show("       "+list.Count()+" Updates available.\n\n"+
-                    "Do you want to install them now?", "Updates available", MessageBoxButtons.YesNo);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    foreach (IPackage p in list)
-                    {
-                        if ((p.Tags == null) || (!p.Tags.Contains(HideFromAutoUpdate)))
-                        {
-                            foreach (PackageDependency dependency in p.Dependencies)
-                            {
-                                if (packages.GetLocalPackage(dependency.Id) == null)
-                                    packages.Update(packages.Repo.FindPackage(dependency.Id));
-                            }
-
-                            try
-                            {
-                                UpdatePackage(p);
-                                updatesOccurred.Add(p.GetFullName());
-                            }
-                            catch
-                            {
-                                MessageBox.Show("Error updating " + p.GetFullName());
-                            }
-                        }
-                    }
-                }
-            }
-            return updatesOccurred;
-        }
-
-        //Mark old package for removal and download updated package.
-        internal void UpdatePackage(IPackage pack)
-        {
-            if (pack == null) return;
-        
-            //We used to deactivate the package here so that the new package would be usable immediately.
-            //This causes some issues, so now we just mark it for removal. It will be removed next time application is started
-            //and the new package will be activated instead.
-            var extension = App.GetExtension(pack.Id);
-
-            if (IsPackageInstalled(pack))
-                App.MarkPackageForRemoval(GetPackagePath(pack));
-            else
-            {
-                //Make a backup of the extension
                 try
                 {
-                    BackupExtension(extension);
+                    File.Delete(file);
                 }
-                catch (Exception)
+                catch(Exception) { }
+                return;
+            }
+
+            //find updates
+            getAllAvailableUpdates();
+            
+            if (list != null && list.Count > 0)
+            {
+                //save packages to update
+                string[] updates = new string[list.Count * 2];
+                for (int i = 0; i < list.Count; i++)
                 {
-                    DialogResult dialogResult = MessageBox.Show("Unable to make a backup of the extension." +
-                    "\n\nDo you want to Update without backing up?", "Backup Error", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.No)
-                    {
+                    updates[i * 2] = list[i].Id;
+                    updates[i * 2 + 1] = list[i].Version.ToString();
+                }
+                try
+                {
+                    if(System.Reflection.Assembly.GetEntryAssembly().FullName.Contains("_dev"))
                         throw new Exception();
+                    File.WriteAllLines(file, updates);
+
+                    //open updater
+                    var updaterPath = Path.Combine(AppManager.AbsolutePathToExtensions, "DotSpatial.Updater.exe");
+                    if (File.Exists(updaterPath))
+                    {
+                        Process updater = new Process();
+                        updater.StartInfo.FileName = updaterPath;
+                        updater.StartInfo.Arguments = '"' + System.Reflection.Assembly.GetEntryAssembly().Location + '"';
+
+                        if (updateApp && !IsAdminRole())
+                        {
+                            updater.StartInfo.UseShellExecute = true;
+                            updater.StartInfo.Verb = "runas";
+                        }
+                        updater.Start();
+                        Environment.Exit(0);
                     }
                 }
+                catch (Exception e) { }
             }
-
-            App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
-
-            // get new version
-            packages.Update(pack);
-
-            App.ProgressHandler.Progress(null, 0, "");
-        }
-
-        private void BackupExtension(IExtension extension)
-        {
-            string path = GetExtensionPath(extension);
-            string directory = "\\" + Path.GetFileName(Path.GetDirectoryName(path)) + "\\";
-
-            //create the backup directory and set the permissions
-            string destinationDirectory = Application.StartupPath + "\\backup\\";
-            DirectoryInfo di = new DirectoryInfo(destinationDirectory);
-            FileSystemAccessRule fsar = new FileSystemAccessRule(
-                new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl,
-                InheritanceFlags.ContainerInherit, PropagationFlags.InheritOnly, AccessControlType.Allow);
-            DirectorySecurity ds = null;
-
-            if (!di.Exists)
-            {
-                Directory.CreateDirectory(destinationDirectory);
-            }
-
-            ds = di.GetAccessControl();
-            ds.AddAccessRule(fsar);
-
-            //create the directory of the extension
-            destinationDirectory += directory;
-            di = new DirectoryInfo(destinationDirectory);
-            ds = null;
-
-            if (!di.Exists)
-            {
-                Directory.CreateDirectory(destinationDirectory);
-            }
-
-            ds = di.GetAccessControl();
-            ds.AddAccessRule(fsar);
-
-            File.Copy(path, destinationDirectory + Path.GetFileName(path));
-            App.MarkExtensionForRemoval(path);
-        }
-
-        //Determines if a package has a local version that can be deleted and is out of date.
-        private bool IsPackageUpdateable(IPackage pack)
-        {
-            // Is there a local version?
-            var ext = App.GetExtension(pack.Id);
-            if (ext == null) return false;
-
-            //Checks if current version is greater than or equal to posted version, return false if true.
-            //Assumes that version numbers in assembly files are accurate (not currently true).
-            SemanticVersion extVersion = SemanticVersion.Parse(ext.Version);
-            if (extVersion >= pack.Version) return false;
-            string assemblyLocation = GetExtensionPath(ext);
-
-            // The original file may be in a different location than the extensions directory. During an update, the
-            // original file will be deleted and the new package will be placed in the packages folder in the extensions
-            // directory.
-            FileIOPermission deletePermission = new FileIOPermission(FileIOPermissionAccess.Write, assemblyLocation);
-
-            try
-            {
-                deletePermission.Demand();
-            }
-            catch (SecurityException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static string GetExtensionPath(IExtension ext)
-        {
-            var assembly = Assembly.GetAssembly(ext.GetType());
-            return assembly.Location;
-        }
-
-        internal static bool IsPackageInstalled(IPackage pack)
-        {
-            string path = GetPackagePath(pack);
-            return Directory.Exists(path);
-        }
-
-        internal static string GetPackagePath(IPackage pack)
-        {
-            string path = Path.Combine(AppManager.AbsolutePathToExtensions, AppManager.PackageDirectory);
-            return FindPackageFolder(path, pack);
-        }
-
-        internal static string FindPackageFolder(string path, IPackage pack)
-        {
-            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"^^(?!p_|t_).*");
-            var folder = Directory.GetDirectories(path, pack.Id + ".*")
-                                      .Where(directory => reg.IsMatch(directory))
-                                      .ToList();
-            if (folder.Count > 0)
-                return folder.First().ToString();
-            else
-                return "NotFound";
-        }
-
-        internal static string GetPackageFolderName(IPackage pack)
-        {
-            return String.Format("{0}.{1}", pack.Id, pack.Version);
-        }
-
-        
-        private List<String> getPackageNames(IEnumerable<IPackage> packs)
-        {
-            List<String> packNames = new List<String>();
-            foreach (IPackage p in packs)
-            {
-                packNames.Add(p.Id);
-            }
-            return packNames;
         }
     }
 }

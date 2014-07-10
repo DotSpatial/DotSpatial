@@ -8,65 +8,142 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NuGet;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Security.Principal;
 
 namespace DotSpatial.Plugins.Updater
 {
     public partial class Updater : Form
     {
-        private String ExtensionFolder;
-        private List<Tuple<string, string>> ExtensionsToUpdate;
+        [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
+        public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
+        private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
+        private const string HideFromAutoUpdate = "HideFromAutoUpdate";
+        private const int ScrollBarMargin = 25;
+        private readonly ListViewHelper Add = new ListViewHelper();
         private readonly Packages packages;
+        private string PackagePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "Packages");
+        private string AppPath = null;
 
         public Updater(string[] args)
         {
-            ExtensionsToUpdate = new List<Tuple<string, string>>();
             InitializeComponent();
+            Load += Form_Load;
+            uxUpdates.HandleCreated += SetTheme;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            packages = new Packages(PackagePath);
+            uxUpdates.TileSize = new Size(uxUpdates.Width - ScrollBarMargin, 22);
 
             if (args.Length > 0)
-            {
-                ExtensionFolder = args[0];
+                AppPath = args[0];
+        }
 
-                for (int i = 1; i < args.Length; i++)
+        public static bool IsAdminRole()
+        {
+            try
+            {
+                WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private void Form_Load(object sender, EventArgs e)
+        {
+            var task = Task.Factory.StartNew(() =>
+            {
+                var localUpdateable = GetLocalUpdateable();
+
+                if (localUpdateable != null || localUpdateable.Length > 0)
+                    performUpdates(localUpdateable);
+            });
+
+            task.ContinueWith(t =>
+            {
+                if (AppPath != null && File.Exists(AppPath))
                 {
-                    ExtensionsToUpdate.Add(new Tuple<string, string>(args[i], args[i + 1]));
-                    i++;
+                    Process app = new Process();
+                    app.StartInfo.FileName = AppPath;
+                    app.Start();
                 }
+                Application.Exit();
+            });
+        }
+
+        private string[] GetLocalUpdateable()
+        {
+            try
+            {
+                var file = Path.Combine(Path.GetDirectoryName(PackagePath), "updates.txt");
+                string[] updates = File.ReadAllLines(file);
+                return updates;
+            }
+            catch (Exception) { }
+
+            return null;
+        }
+
+        private void performUpdates(string[] updates)
+        {
+            List<string> updated = new List<string>();
+
+            for (int i = 0; i < updates.Length/2; i++)
+            {
+                UpdatesLabel.Invoke((Action)(() =>
+                {
+                    UpdatesLabel.Text = string.Format("Performing Update {0} of {1}, {2}.", i * 2 + 1, 
+                        updates.Length/2, updates[i * 2].Substring(updates[i * 2].LastIndexOf('.') + 1));
+                }));
+
+                try
+                {
+                    if (IsAdminRole() && i == 0)
+                        UpdateApp(updates[i * 2], updates[i * 2 + 1]);
+                    else
+                        UpdatePackage(updates[i * 2], updates[i * 2 + 1]);
+                    updated.Insert(0, updates[i * 2]);
+                    Add.AddPackages(updated, uxUpdates, 0);
+                }
+                catch(Exception){}
             }
 
-            packages = new Packages(ExtensionFolder);
-            performUpdates();
+            UpdatesLabel.Invoke((Action)(() =>
+            {
+                UpdatesLabel.Text = "All Updates Completed";
+            }));
         }
 
-        private void performUpdates()
+        private void UpdatePackage(string id, string version)
         {
-            foreach (Tuple<string, string> tuple in ExtensionsToUpdate)
-                UpdatePackage(packages.Repo.FindPackage(tuple.Item1), tuple.Item2);
+            packages.Update(id, SemanticVersion.Parse(version));
         }
 
-        internal void UpdatePackage(IPackage pack, String CurrentLocation)
+        private void UpdateApp(string id, string version)
         {
-            if (pack == null) return;
+            var path = Path.GetDirectoryName(AppPath);
+            if (path.Contains(id))
+            {
+                packages.Manager.InstallPackage(id, SemanticVersion.Parse(version), true, false);
+                File.Copy(Path.Combine(path, "unins000.exe"), Path.Combine(PackagePath, id + '.' + version, "lib", "unins000.exe"), true);
+                File.Copy(Path.Combine(path, "unins000.exe"), Path.Combine(PackagePath, id + '.' + version, "lib", "unins000.dat"), true);
+                Directory.Delete(path, true);
+                Directory.Move(Path.Combine(PackagePath, id + '.' + version, "lib"), path);
+                Directory.Delete(Path.Combine(PackagePath, id + '.' + version), true);
+            }
+            else
+                throw new Exception();
+        }
 
-            //try
-            //{
-            //    BackupExtension(extension);
-            //}
-            //catch (Exception)
-            //{
-            //    DialogResult dialogResult = MessageBox.Show("Unable to make a backup of the extension." +
-            //    "\n\nDo you want to Update without backing up?", "Backup Error", MessageBoxButtons.YesNo);
-            //    if (dialogResult == DialogResult.No)
-            //    {
-            //        throw new Exception();
-            //    }
-            //}
-
-            //App.ProgressHandler.Progress(null, 0, "Updating " + pack.Title);
-
-            // get new version
-            packages.Update(pack);
-
-            //App.ProgressHandler.Progress(null, 0, "");
+        private void SetTheme(object sender, EventArgs e)
+        {
+            SetWindowTheme(((ListView)sender).Handle, "Explorer", null);
         }
     }
 }
