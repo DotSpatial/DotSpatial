@@ -479,52 +479,25 @@ namespace DotSpatial.Controls
 
         private void ActivateAllExtensions()
         {
-            if (Extensions != null && Extensions.Any())
+            foreach (var extension in SatisfyImportsExtensions.OrderBy(_ => _.Priority))
             {
-                Thread updateThread = null;
+                extension.Activate();
+            }
 
-                foreach (ISatisfyImportsExtension extension in SatisfyImportsExtensions.OrderBy(t => t.Priority))
-                {
-                    extension.Activate();
-                }
+            if (!EnsureRequiredImportsAreAvailable()) return;
+            OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
 
-                if (!EnsureRequiredImportsAreAvailable()) return;
-                OnSatisfyImportsExtensionsActivated(EventArgs.Empty);
-
-                // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
-                // need to be created before other plugins are loaded.
-                foreach (var extension in Extensions.Where(_ => !_.DeactivationAllowed).OrderBy(_ => _.Priority))
-                {
-                    if (extension.Name.Equals("DotSpatial.Plugins.ExtensionManager"))
-                    {
-                        updateThread = new Thread(() => Activate(extension));
-                        updateThread.Start();
-
-                        //Update splash screen's progress bar
-                        message = "Looking for updates";
-                        UpdateSplashScreen(message);
-                    }
-                    else
-                    {
-                        Activate(extension);
-                    }
-                }
-
-                // Activate remaining extensions
-                foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
-                {
+            // Load "Application Extensions" first. We do this to temporarily deal with the situation where specific root menu items
+            // need to be created before other plugins are loaded.
+            foreach (var extension in Extensions.Where(_ => !_.DeactivationAllowed).OrderBy(_ => _.Priority))
+            {
                     Activate(extension);
-                }
+            }
 
-                //Join the threads
-                if (updateThread != null)
-                {
-                    while (updateThread.IsAlive)
-                        UpdateSplashScreen(message);
-                    updateThread.Join();
-                    message = "Finished.";
-                    UpdateSplashScreen(message);
-                }
+            // Activate remaining extensions
+            foreach (var extension in Extensions.Where(_ => _.DeactivationAllowed).OrderBy(_ => _.Priority))
+            {
+                Activate(extension);
             }
         }
 
@@ -574,7 +547,7 @@ namespace DotSpatial.Controls
         /// </summary>
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string[] knownExtensions = new[] { "dll", "exe" };
+            var knownExtensions = new[] { "dll", "exe" };
             string assemblyName = new AssemblyName(args.Name).Name;
             string packagesFolder = Path.Combine(AbsolutePathToExtensions, PackageDirectory);
 

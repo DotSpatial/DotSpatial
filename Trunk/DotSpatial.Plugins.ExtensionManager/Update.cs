@@ -98,6 +98,9 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// </summary>
         private void CheckUpdateApp()
         {
+            if (System.Reflection.Assembly.GetEntryAssembly().FullName.Contains("_dev"))
+                throw new Exception();
+
             //find app name
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
@@ -190,6 +193,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             
             if (list != null && list.Count > 0)
             {
+                MessageBox.Show("hello");
                 //save packages to update
                 string[] updates = new string[list.Count * 2];
                 for (int i = 0; i < list.Count; i++)
@@ -199,8 +203,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 try
                 {
-                    if(System.Reflection.Assembly.GetEntryAssembly().FullName.Contains("_dev"))
-                        throw new Exception();
                     File.WriteAllLines(file, updates);
 
                     //open updater

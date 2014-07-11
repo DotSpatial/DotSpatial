@@ -16,6 +16,7 @@ namespace DotSpatial.Plugins.ExtensionManager
     public class ExtensionManagerPlugin : Extension
     {
         ExtensionManagerForm form = new ExtensionManagerForm();
+        Thread updateThread;
 
         public ExtensionManagerPlugin()
         {
@@ -27,9 +28,14 @@ namespace DotSpatial.Plugins.ExtensionManager
         public override void Activate()
         {
             AddButtons();
-            base.Activate();
             form.App = App;
-            Update.autoUpdateController(App);
+
+            updateThread = new Thread(() => Update.autoUpdateController(App));
+            updateThread.Start();
+            App.UpdateSplashScreen("Looking for updates");
+            App.ExtensionsActivated += ExtensionsActivated;
+
+            base.Activate();
         }
 
         public override void Deactivate()
@@ -73,6 +79,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                     fun.Activate();
                     break;
             }
+        }
+
+        private void ExtensionsActivated(object sender, EventArgs e)
+        {
+            App.UpdateSplashScreen("Looking for updates");
+            updateThread.Join();
+            App.UpdateSplashScreen("Finished.");
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose is called when a non-modal form is closed.")]
