@@ -121,8 +121,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MapWindo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Tests", "DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ExtensionManager.Updater", "DotSpatial.Plugins.Updater\DotSpatial.Plugins.ExtensionManager.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tests.Common", "DotSpatial.Tests.Common\DotSpatial.Tests.Common.csproj", "{95114A54-769F-4A90-A346-C2CF85523AAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SimpleMap", "DotSpatial.Plugins.SimpleMap\DotSpatial.Plugins.SimpleMap.csproj", "{632B46F5-E73D-4160-9371-D146FADDE9D5}"
@@ -142,6 +140,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "Examples\DemoPlugin\DemoPlugin.csproj", "{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "Examples\SimpleApp\SimpleApp.csproj", "{AE2B37D2-031B-401C-A257-84C05876BB7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ExtensionManager.Updater", "DotSpatial.Plugins.ExtensionManager.Updater\DotSpatial.Plugins.ExtensionManager.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -389,10 +389,10 @@ Global
 		SccProjectTopLevelParentUniqueName60 = DotSpatial.sln
 		SccProjectName60 = Examples/SimpleApp
 		SccLocalPath60 = Examples\\SimpleApp
-		SccProjectUniqueName61 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.ExtensionManager.Updater.csproj
+		SccProjectUniqueName61 = DotSpatial.Plugins.ExtensionManager.Updater\\DotSpatial.Plugins.ExtensionManager.Updater.csproj
 		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
-		SccProjectName61 = DotSpatial.Plugins.Updater
-		SccLocalPath61 = DotSpatial.Plugins.Updater
+		SccProjectName61 = DotSpatial.Plugins.ExtensionManager.Updater
+		SccLocalPath61 = DotSpatial.Plugins.ExtensionManager.Updater
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -599,10 +599,6 @@ Global
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95114A54-769F-4A90-A346-C2CF85523AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95114A54-769F-4A90-A346-C2CF85523AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95114A54-769F-4A90-A346-C2CF85523AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -643,6 +639,10 @@ Global
 		{AE2B37D2-031B-401C-A257-84C05876BB7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE2B37D2-031B-401C-A257-84C05876BB7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE2B37D2-031B-401C-A257-84C05876BB7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -688,9 +688,9 @@ Global
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{D85281B4-6012-42A0-A8F1-B29068A3F433} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{632B46F5-E73D-4160-9371-D146FADDE9D5} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{5D510F37-8E99-4874-A296-CA45A93DE856} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{E9CD3F46-B385-4BF8-9D09-D439514E5137} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
