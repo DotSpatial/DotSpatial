@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Application Extensions\DotSpatial.Plugins.ExtensionManager\</OutputPath>
+    <OutputPath>..\bin\Debug\Plugins\DotSpatial.Plugins.ExtensionManager\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

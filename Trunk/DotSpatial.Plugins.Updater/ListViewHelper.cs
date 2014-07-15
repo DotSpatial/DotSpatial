@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NuGet;
 
-namespace DotSpatial.Plugins.Updater
+namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     public class ListViewHelper
     {
 
-        public void AddPackages(IEnumerable<string> list, ListView listView, int pagenumber)
+        public void AddChecked(IEnumerable<string> list, ListView listView)
         {
             if (list == null)
             {
@@ -22,7 +22,7 @@ namespace DotSpatial.Plugins.Updater
             imageList.ImageSize = new Size(16, 16);
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             // Add a default image at position 0;
-            imageList.Images.Add(DotSpatial.Plugins.Updater.Properties.Resources.Tick_16x16);
+            imageList.Images.Add(Properties.Resources.Tick_16x16);
 
             var pagelist = list.ToArray();
             ListViewItem[] items = new ListViewItem[pagelist.Length];

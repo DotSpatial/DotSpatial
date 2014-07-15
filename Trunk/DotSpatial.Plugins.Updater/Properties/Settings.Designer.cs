@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotSpatial.Plugins.Updater.Properties {
+namespace DotSpatial.Plugins.ExtensionManager.Updater.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

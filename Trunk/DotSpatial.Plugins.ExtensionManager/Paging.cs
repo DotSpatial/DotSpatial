@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using NuGet;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Reflection;
 using DotSpatial.Controls;
 
 namespace DotSpatial.Plugins.ExtensionManager
@@ -16,6 +17,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly ListViewHelper add;
         private readonly Packages packages;
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
+        private string AppName;
 
         public const int PageSize = 9;
 
@@ -24,6 +26,15 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             this.packages = packageHelper;
             this.add = adder;
+
+            string name = Assembly.GetEntryAssembly().GetName().Name;
+            int i;
+            for (i = 0; i < name.Length; i++)
+            {
+                if (!Char.IsLetter(name[i]))
+                    break;
+            }
+            AppName = name.Substring(0, i);
         }
 
         public void CreateButtons(int packageCount)
@@ -113,13 +124,28 @@ namespace DotSpatial.Plugins.ExtensionManager
                 try
                 {
                     var result = from item in packages.Repo.GetPackages()
-                                 where item.IsLatestVersion && item.Id.Contains("Plugins") && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
+                                 where item.Id.Contains("Plugins") && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
                                  select item;
+                    result = result.OrderBy(item => item.Id)
+                                .ThenByDescending(item => item.Version);
+
+                    String id = "";
+                    List<IPackage> onlinePacks = new List<IPackage>();
+                    foreach (var item in result)
+                    {
+                        if (id != item.Id && AppDependencyCheck(item))
+                        {
+                            onlinePacks.Add(item);
+                            id = item.Id;
+                        }
+                    }
+                    if(onlinePacks.Count() == 0)
+                        throw new InvalidOperationException();
 
                     var info = new PackageList();
                     //info.TotalPackageCount = result.Count();
                     //info.packages = result.Skip(pagenumber * Paging.PageSize).Take(Paging.PageSize).ToArray();
-                    info.packages = result.ToArray(); //Toggle comments here to reenable paging.
+                    info.packages = onlinePacks.ToArray(); //Toggle comments here to reenable paging.
 
                     return info;
                 }
@@ -130,6 +156,37 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
             });
             return task;
+        }
+
+        private bool AppDependencyCheck(IPackage pack)
+        {
+            bool result = true;
+            var programVersion = SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());
+
+            foreach(var dependency in pack.Dependencies)
+            {
+                if (!dependency.Id.Contains("Plugins"))
+                {
+                    if (dependency.Id == AppName)
+                    {
+                        if (dependency.VersionSpec.IsMaxInclusive)
+                        {
+                            if (programVersion > dependency.VersionSpec.MaxVersion)
+                                result = false;
+                        }
+                        if (result && dependency.VersionSpec.IsMinInclusive)
+                        {
+                            if(programVersion < dependency.VersionSpec.MinVersion)
+                                result = false;
+                        }
+                    }
+                    else
+                        result = false;
+
+                    break;
+                }
+            }
+            return result;
         }
     }
 }

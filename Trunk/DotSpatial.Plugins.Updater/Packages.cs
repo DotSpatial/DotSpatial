@@ -9,7 +9,7 @@ using System.Net;
 using NuGet;
 using System;
 
-namespace DotSpatial.Plugins.Updater
+namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     public class Packages
     {

@@ -1,4 +1,4 @@
-﻿namespace DotSpatial.Plugins.Updater
+﻿namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
     partial class Updater
     {
@@ -79,8 +79,8 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::DotSpatial.Plugins.Updater.Properties.Resources.Loading_Animation;
-            this.pictureBox1.InitialImage = global::DotSpatial.Plugins.Updater.Properties.Resources.Loading_Animation;
+            this.pictureBox1.Image = global::DotSpatial.Plugins.ExtensionManager.Updater.Properties.Resources.Loading_Animation;
+            this.pictureBox1.InitialImage = global::DotSpatial.Plugins.ExtensionManager.Updater.Properties.Resources.Loading_Animation;
             this.pictureBox1.Location = new System.Drawing.Point(40, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);

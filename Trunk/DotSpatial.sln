@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Topology", "DotSpatial.Topology\DotSpatial.Topology.csproj", "{A8079861-C636-4ECE-99C1-AD313276787B}"
@@ -123,7 +121,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.MapWindo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.Tests", "DotSpatial.Positioning.Tests\DotSpatial.Positioning.Tests.csproj", "{B786AA1D-D5B8-4A75-A576-552EF2B5C24B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Updater", "DotSpatial.Plugins.Updater\DotSpatial.Plugins.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ExtensionManager.Updater", "DotSpatial.Plugins.Updater\DotSpatial.Plugins.ExtensionManager.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Tests.Common", "DotSpatial.Tests.Common\DotSpatial.Tests.Common.csproj", "{95114A54-769F-4A90-A346-C2CF85523AAD}"
 EndProject
@@ -351,50 +349,50 @@ Global
 		SccProjectTopLevelParentUniqueName50 = DotSpatial.sln
 		SccProjectName50 = DotSpatial.Positioning.Tests
 		SccLocalPath50 = DotSpatial.Positioning.Tests
-		SccProjectUniqueName51 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.Updater.csproj
+		SccProjectUniqueName51 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
 		SccProjectTopLevelParentUniqueName51 = DotSpatial.sln
-		SccProjectName51 = DotSpatial.Plugins.Updater
-		SccLocalPath51 = DotSpatial.Plugins.Updater
-		SccProjectUniqueName52 = DotSpatial.Tests.Common\\DotSpatial.Tests.Common.csproj
+		SccProjectName51 = DotSpatial.Tests.Common
+		SccLocalPath51 = DotSpatial.Tests.Common
+		SccProjectUniqueName52 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
 		SccProjectTopLevelParentUniqueName52 = DotSpatial.sln
-		SccProjectName52 = DotSpatial.Tests.Common
-		SccLocalPath52 = DotSpatial.Tests.Common
-		SccProjectUniqueName53 = DotSpatial.Plugins.SimpleMap\\DotSpatial.Plugins.SimpleMap.csproj
+		SccProjectName52 = DotSpatial.Plugins.SimpleMap
+		SccLocalPath52 = DotSpatial.Plugins.SimpleMap
+		SccProjectUniqueName53 = DotSpatial.Plugins.StatusBarImprovements\\DotSpatial.Plugins.StatusBarImprovements.csproj
 		SccProjectTopLevelParentUniqueName53 = DotSpatial.sln
-		SccProjectName53 = DotSpatial.Plugins.SimpleMap
-		SccLocalPath53 = DotSpatial.Plugins.SimpleMap
-		SccProjectUniqueName54 = DotSpatial.Plugins.StatusBarImprovements\\DotSpatial.Plugins.StatusBarImprovements.csproj
+		SccProjectName53 = DotSpatial.Plugins.StatusBarImprovements
+		SccLocalPath53 = DotSpatial.Plugins.StatusBarImprovements
+		SccProjectUniqueName54 = DemoMap\\DemoMap.csproj
 		SccProjectTopLevelParentUniqueName54 = DotSpatial.sln
-		SccProjectName54 = DotSpatial.Plugins.StatusBarImprovements
-		SccLocalPath54 = DotSpatial.Plugins.StatusBarImprovements
-		SccProjectUniqueName55 = DemoMap\\DemoMap.csproj
+		SccProjectName54 = DemoMap
+		SccLocalPath54 = DemoMap
+		SccProjectUniqueName55 = Examples\\DemoCustomLayer\\DemoCustomLayer.csproj
 		SccProjectTopLevelParentUniqueName55 = DotSpatial.sln
-		SccProjectName55 = DemoMap
-		SccLocalPath55 = DemoMap
-		SccProjectUniqueName56 = Examples\\DemoCustomLayer\\DemoCustomLayer.csproj
+		SccProjectName55 = Examples/DemoCustomLayer
+		SccLocalPath55 = Examples\\DemoCustomLayer
+		SccProjectUniqueName56 = Examples\\AppManagerCustomizationDesignTime\\AppManagerCustomizationDesignTime.csproj
 		SccProjectTopLevelParentUniqueName56 = DotSpatial.sln
-		SccProjectName56 = Examples/DemoCustomLayer
-		SccLocalPath56 = Examples\\DemoCustomLayer
-		SccProjectUniqueName57 = Examples\\AppManagerCustomizationDesignTime\\AppManagerCustomizationDesignTime.csproj
+		SccProjectName56 = Examples/AppManagerCustomizationDesignTime
+		SccLocalPath56 = Examples\\AppManagerCustomizationDesignTime
+		SccProjectUniqueName57 = Examples\\AppManagerCustomizationRuntime\\AppManagerCustomizationRuntime.csproj
 		SccProjectTopLevelParentUniqueName57 = DotSpatial.sln
-		SccProjectName57 = Examples/AppManagerCustomizationDesignTime
-		SccLocalPath57 = Examples\\AppManagerCustomizationDesignTime
-		SccProjectUniqueName58 = Examples\\AppManagerCustomizationRuntime\\AppManagerCustomizationRuntime.csproj
+		SccProjectName57 = Examples/AppManagerCustomizationRuntime
+		SccLocalPath57 = Examples\\AppManagerCustomizationRuntime
+		SccProjectUniqueName58 = Examples\\DemoGPS\\C#\\DemoGPS.csproj
 		SccProjectTopLevelParentUniqueName58 = DotSpatial.sln
-		SccProjectName58 = Examples/AppManagerCustomizationRuntime
-		SccLocalPath58 = Examples\\AppManagerCustomizationRuntime
-		SccProjectUniqueName59 = Examples\\DemoGPS\\C#\\DemoGPS.csproj
+		SccProjectName58 = Examples/DemoGPS/C#
+		SccLocalPath58 = Examples\\DemoGPS\\C#
+		SccProjectUniqueName59 = Examples\\DemoPlugin\\DemoPlugin.csproj
 		SccProjectTopLevelParentUniqueName59 = DotSpatial.sln
-		SccProjectName59 = Examples/DemoGPS/C#
-		SccLocalPath59 = Examples\\DemoGPS\\C#
-		SccProjectUniqueName60 = Examples\\DemoPlugin\\DemoPlugin.csproj
+		SccProjectName59 = Examples/DemoPlugin
+		SccLocalPath59 = Examples\\DemoPlugin
+		SccProjectUniqueName60 = Examples\\SimpleApp\\SimpleApp.csproj
 		SccProjectTopLevelParentUniqueName60 = DotSpatial.sln
-		SccProjectName60 = Examples/DemoPlugin
-		SccLocalPath60 = Examples\\DemoPlugin
-		SccProjectUniqueName61 = Examples\\SimpleApp\\SimpleApp.csproj
+		SccProjectName60 = Examples/SimpleApp
+		SccLocalPath60 = Examples\\SimpleApp
+		SccProjectUniqueName61 = DotSpatial.Plugins.Updater\\DotSpatial.Plugins.ExtensionManager.Updater.csproj
 		SccProjectTopLevelParentUniqueName61 = DotSpatial.sln
-		SccProjectName61 = Examples/SimpleApp
-		SccLocalPath61 = Examples\\SimpleApp
+		SccProjectName61 = DotSpatial.Plugins.Updater
+		SccLocalPath61 = DotSpatial.Plugins.Updater
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -650,7 +648,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9B692E11-0273-4331-9B15-1670093EDDBF} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{A8079861-C636-4ECE-99C1-AD313276787B} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{D286DF06-21FA-40BE-B384-6ACA509AC98C} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{C1018695-3401-47A9-B195-ABD3A20C2489} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
@@ -659,7 +656,6 @@ Global
 		{56E70075-71E0-4FDA-BCA6-CF7581112354} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{F124E7C5-33CC-4B17-8C45-01E7D2E47DAB} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{878A9C2C-21AC-4E63-9819-715B66B63CF5} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
-		{51C6E16E-920E-4D36-B41E-D48ABEF837E7} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{26E18588-B04D-4987-BF36-8206A7E36FF9} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
@@ -667,7 +663,12 @@ Global
 		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{1DA244CE-5862-4DFB-8943-244A80B7E3EE} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{9B692E11-0273-4331-9B15-1670093EDDBF} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{9108B04D-A3DE-4981-B66F-496078D462FE} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{715F4E59-7362-4EB6-BA2E-3FFC54CBAA41} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{51C6E16E-920E-4D36-B41E-D48ABEF837E7} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{84A7D4BB-8404-4AC5-A9D4-3C667F2001DC} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{F249DB09-41BE-4581-A7A7-B50EA408900C} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{D58E5921-9C7B-4276-ABF1-F444EB050680} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
@@ -675,7 +676,6 @@ Global
 		{5C73542E-24BC-46A6-B6BF-10D180872312} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{8B41651D-47CC-416D-93A1-C74B1B01FDB2} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{2609869B-5A49-4E93-8FC6-3B1D06C59C96} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{9108B04D-A3DE-4981-B66F-496078D462FE} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
 		{7888B17F-915E-4648-9C49-8B4B42808B7B} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{820E1426-5BAE-4834-88FB-EC407D4E5CC8} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{B2335CBA-5E66-4A2D-9F6E-1224E06F2E57} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
@@ -688,7 +688,15 @@ Global
 		{735DEE23-1732-4D18-8341-E8E2482F3BB4} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{167E5199-0B69-4A4B-BC7B-C81D8476B1F6} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{D85281B4-6012-42A0-A8F1-B29068A3F433} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
+		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{632B46F5-E73D-4160-9371-D146FADDE9D5} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{5D510F37-8E99-4874-A296-CA45A93DE856} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
+		{E9CD3F46-B385-4BF8-9D09-D439514E5137} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{1405457A-EFF6-4994-A6C5-88928504FD02} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
+		{AE2B37D2-031B-401C-A257-84C05876BB7B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 		{11DF9872-A74C-4FE8-A139-DB9EC60C1E6E} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{027B40CF-E09F-4A7B-909D-523D6BEB03F6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{3B9F0407-F461-4A3C-BD79-9C8599A9F4F5} = {12970967-D98D-4777-A5F8-11A9F037CC28}
@@ -700,16 +708,6 @@ Global
 		{945A2FD7-C93C-456B-80A2-04FCBC6AFC51} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{AA7EFFC8-6B3D-4332-BCFA-9EC0589FB2A6} = {12970967-D98D-4777-A5F8-11A9F037CC28}
 		{B786AA1D-D5B8-4A75-A576-552EF2B5C24B} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{CE69E9FF-19B7-4082-8A6D-2E59340FAC52} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
 		{95114A54-769F-4A90-A346-C2CF85523AAD} = {12970967-D98D-4777-A5F8-11A9F037CC28}
-		{632B46F5-E73D-4160-9371-D146FADDE9D5} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{5D510F37-8E99-4874-A296-CA45A93DE856} = {49A57AB3-0588-4DC1-AC5F-47DE2C3EFC57}
-		{404204DE-C8BC-4438-A3F6-0636B4983A5B} = {0F7FCF26-2DB1-4653-B5B5-24C4731339B6}
-		{E9CD3F46-B385-4BF8-9D09-D439514E5137} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{C1664C14-FB90-48FC-9B0E-0F75E470ACCF} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{1405457A-EFF6-4994-A6C5-88928504FD02} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{467F0628-2B9A-4AFB-815A-FA3CB8F4F18C} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
-		{AE2B37D2-031B-401C-A257-84C05876BB7B} = {B1A21F91-D189-4F39-A5F2-AE1E9D72B9FF}
 	EndGlobalSection
 EndGlobal
