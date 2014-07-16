@@ -107,10 +107,13 @@ namespace DotSpatial.Plugins.ExtensionManager
                 }
                 else
                 {
-                    var packages = from pack in t.Result.packages
+                    var packs = from pack in t.Result.packages
                                         where App.GetExtension(pack.Id) == null
                                         select pack;
-                    add.AddPackages(packages.ToArray(), listview, pagenumber);
+                    var localPacks = packages.Manager.LocalRepository.GetPackages();
+                    packs = from pack in packs where !localPacks.Where(p => p.Id == pack.Id).Any() select pack;
+
+                    add.AddPackages(packs.ToArray(), listview, pagenumber);
                     CreateButtons(t.Result.TotalPackageCount);
                     AddButtons(tab);
                 }

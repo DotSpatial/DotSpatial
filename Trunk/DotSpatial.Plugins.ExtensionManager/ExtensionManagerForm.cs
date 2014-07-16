@@ -63,7 +63,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             getpack = new GetPackage(packages);
             paging = new Paging(packages, Add);
 
-            // Databind the check list box to the Name property of extension.
             Installed.TileSize = new Size((Installed.Width - ScrollBarMargin) / 4, 45);
             Installed.HandleCreated += SetTheme;
             Installed.MultiSelect = false;
@@ -71,6 +70,17 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxPackages.TileSize = new Size((uxPackages.Width - ScrollBarMargin)/4, 45);
             uxPackages.HandleCreated += SetTheme;
             uxPackages.MultiSelect = false;
+
+            var dataService = packages.Repo as DataServicePackageRepository;
+            if (dataService != null)
+            {
+                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
+            }
+            var packageManager = packages.Manager;
+            if (packageManager != null)
+            {
+                packageManager.PackageInstalling += new EventHandler<PackageOperationEventArgs>(Package_Installing);
+            }
 
             paging.PageChanged += new EventHandler<PageSelectedEventArgs>(Add_PageChanged);
             FormClosing += ExtensionManager_FormClosing;
@@ -135,17 +145,10 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             tabControl.SelectedTab = tabOnline;
 
-            foreach (Feed feed in FeedManager.GetFeeds())
-            {
-                uxFeedSelection.Items.Add(feed.Url);
-                if(FeedManager.isAutoUpdateFeed(feed.Url))
-                    checkBox1.Checked = true;
-            }
+            if(FeedManager.getAutoUpdateFeeds().Count > 0)
+                checkBox1.Checked = true;
 
-            // Select the first item in the drop down, kicking off a package list update.
-            uxFeedSelection.SelectedIndex = 0;
             SearchAndClearIcons();
-            uxClear.Visible = false;
         }
 
         private void InstallButton_Click(object sender, EventArgs e)
@@ -324,8 +327,10 @@ namespace DotSpatial.Plugins.ExtensionManager
 
         private void tab_selected(object sender, EventArgs e)
         {
-            if (tabControl.SelectedIndex == 0)
+            if (tabControl.SelectedTab == tabInstalled)
                 ShowInstalled();
+            if (tabControl.SelectedTab == tabOnline)
+                DisplayPackages();
         }
 
         private void uxClear_Click(object sender, EventArgs e)
@@ -337,16 +342,11 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxSearch.Visible = true;
         }
 
-        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnFeedChanged();
-        }
-
         private void uxSearch_Click(object sender, EventArgs e)
         {
             Search();
             uxSearch.Visible = false;
-            uxClear.Location = new Point(291, 42);
+            //uxClear.Location = new Point(291, 42);
             uxClear.Visible = true;
         }
 
@@ -479,29 +479,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         }
 
         /// <summary>
-        /// Changes the feed for the online tab.
-        /// </summary>
-        /// <typeparam name="string"></typeparam>
-        /// <returns></returns>
-        private void OnFeedChanged()
-        {
-            string feedUrl = uxFeedSelection.SelectedItem.ToString();
-            packages.SetNewSource(feedUrl);
-            currentPageNumber = 0;
-            DisplayPackages();
-            var dataService = packages.Repo as DataServicePackageRepository;
-            if (dataService != null)
-            {
-                dataService.ProgressAvailable += new EventHandler<ProgressEventArgs>(dataService_ProgressAvailable);
-            }
-            var packageManager = packages.Manager;
-            if (packageManager != null)
-            {
-                packageManager.PackageInstalling += new EventHandler<PackageOperationEventArgs>(Package_Installing);
-            }
-        }
-
-        /// <summary>
         /// Searches the online feed selected for the specified search term
         /// in uxSearchText.
         /// </summary>
@@ -555,6 +532,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             uxClear.Image = image.Images[1];
             uxSearch.Click += new EventHandler(this.uxSearch_Click);
             uxClear.Click += new EventHandler(this.uxClear_Click);
+            uxClear.Visible = false;
         }
 
         /// <summary>

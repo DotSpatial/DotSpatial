@@ -176,9 +176,10 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
                     File.WriteAllLines(Path.Combine(UpdaterPath, "updates.txt"), updateList);
 
                     //start new updater
-                    Process app = new Process();
-                    app.StartInfo.FileName = Path.Combine(UpdaterPath, "Updater(1).exe");
-                    app.Start();
+                    Process updater = new Process();
+                    updater.StartInfo.FileName = Path.Combine(UpdaterPath, "Updater(1).exe");
+                    updater.StartInfo.Arguments = '"' + AppPath + '"';
+                    updater.Start();
                     Application.Exit();
                 }
                 catch (Exception) { }

@@ -33,7 +33,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionManagerForm));
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabInstalled = new System.Windows.Forms.TabPage();
             this.Installed = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,20 +41,19 @@
             this.uxShowExtensionsFolder = new System.Windows.Forms.Button();
             this.uxUninstall = new System.Windows.Forms.Button();
             this.tabOnline = new System.Windows.Forms.TabPage();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.uxClear = new System.Windows.Forms.PictureBox();
             this.uxSearch = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.uxPackages = new System.Windows.Forms.ListView();
             this.Pack = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.uxFeedSelection = new System.Windows.Forms.ComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.uxSearchText = new System.Windows.Forms.TextBox();
             this.uxInstall = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabInstalled.SuspendLayout();
             this.tabOnline.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxClear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uxSearch)).BeginInit();
@@ -62,38 +61,36 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabInstalled);
             this.tabControl.Controls.Add(this.tabOnline);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(722, 562);
+            this.tabControl.Size = new System.Drawing.Size(722, 528);
             this.tabControl.TabIndex = 2;
             // 
-            // tabPage1
+            // tabInstalled
             // 
-            this.tabPage1.Controls.Add(this.Installed);
-            this.tabPage1.Controls.Add(this.richTextBox2);
-            this.tabPage1.Controls.Add(this.uxShowExtensionsFolder);
-            this.tabPage1.Controls.Add(this.uxUninstall);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(714, 536);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Installed Extensions";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabInstalled.Controls.Add(this.Installed);
+            this.tabInstalled.Controls.Add(this.richTextBox2);
+            this.tabInstalled.Controls.Add(this.uxShowExtensionsFolder);
+            this.tabInstalled.Controls.Add(this.uxUninstall);
+            this.tabInstalled.Location = new System.Drawing.Point(4, 22);
+            this.tabInstalled.Name = "tabInstalled";
+            this.tabInstalled.Padding = new System.Windows.Forms.Padding(3);
+            this.tabInstalled.Size = new System.Drawing.Size(714, 502);
+            this.tabInstalled.TabIndex = 0;
+            this.tabInstalled.Text = "Installed Extensions";
+            this.tabInstalled.UseVisualStyleBackColor = true;
             // 
             // Installed
             // 
-            this.Installed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.Installed.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.Installed.FullRowSelect = true;
-            this.Installed.Location = new System.Drawing.Point(6, 68);
+            this.Installed.Location = new System.Drawing.Point(6, 39);
             this.Installed.MultiSelect = false;
             this.Installed.Name = "Installed";
             this.Installed.ShowGroups = false;
@@ -115,7 +112,7 @@
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(6, 344);
+            this.richTextBox2.Location = new System.Drawing.Point(6, 315);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
             this.richTextBox2.Size = new System.Drawing.Size(702, 155);
@@ -124,7 +121,7 @@
             // 
             // uxShowExtensionsFolder
             // 
-            this.uxShowExtensionsFolder.Location = new System.Drawing.Point(8, 22);
+            this.uxShowExtensionsFolder.Location = new System.Drawing.Point(6, 6);
             this.uxShowExtensionsFolder.Name = "uxShowExtensionsFolder";
             this.uxShowExtensionsFolder.Size = new System.Drawing.Size(136, 23);
             this.uxShowExtensionsFolder.TabIndex = 9;
@@ -135,9 +132,9 @@
             // uxUninstall
             // 
             this.uxUninstall.Enabled = false;
-            this.uxUninstall.Location = new System.Drawing.Point(402, 505);
+            this.uxUninstall.Location = new System.Drawing.Point(402, 476);
             this.uxUninstall.Name = "uxUninstall";
-            this.uxUninstall.Size = new System.Drawing.Size(74, 23);
+            this.uxUninstall.Size = new System.Drawing.Size(75, 23);
             this.uxUninstall.TabIndex = 7;
             this.uxUninstall.Text = "Uninstall";
             this.uxUninstall.UseVisualStyleBackColor = true;
@@ -150,21 +147,31 @@
             this.tabOnline.Controls.Add(this.uxSearch);
             this.tabOnline.Controls.Add(this.label1);
             this.tabOnline.Controls.Add(this.uxPackages);
-            this.tabOnline.Controls.Add(this.uxFeedSelection);
             this.tabOnline.Controls.Add(this.richTextBox1);
             this.tabOnline.Controls.Add(this.uxSearchText);
             this.tabOnline.Controls.Add(this.uxInstall);
             this.tabOnline.Location = new System.Drawing.Point(4, 22);
             this.tabOnline.Name = "tabOnline";
             this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOnline.Size = new System.Drawing.Size(714, 536);
+            this.tabOnline.Size = new System.Drawing.Size(714, 502);
             this.tabOnline.TabIndex = 1;
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(620, 16);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(86, 17);
+            this.checkBox1.TabIndex = 28;
+            this.checkBox1.Text = "Auto Update";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // uxClear
             // 
-            this.uxClear.Location = new System.Drawing.Point(366, 42);
+            this.uxClear.Location = new System.Drawing.Point(288, 13);
             this.uxClear.Name = "uxClear";
             this.uxClear.Size = new System.Drawing.Size(25, 25);
             this.uxClear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -174,7 +181,7 @@
             // 
             // uxSearch
             // 
-            this.uxSearch.Location = new System.Drawing.Point(288, 42);
+            this.uxSearch.Location = new System.Drawing.Point(288, 13);
             this.uxSearch.Name = "uxSearch";
             this.uxSearch.Size = new System.Drawing.Size(25, 25);
             this.uxSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -185,7 +192,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 510);
+            this.label1.Location = new System.Drawing.Point(8, 481);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 24;
@@ -194,13 +201,11 @@
             // 
             // uxPackages
             // 
-            this.uxPackages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.uxPackages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Pack,
             this.Description});
             this.uxPackages.FullRowSelect = true;
-            this.uxPackages.Location = new System.Drawing.Point(6, 68);
+            this.uxPackages.Location = new System.Drawing.Point(6, 39);
             this.uxPackages.MultiSelect = false;
             this.uxPackages.Name = "uxPackages";
             this.uxPackages.ShowGroups = false;
@@ -220,20 +225,9 @@
             this.Description.Text = "Description";
             this.Description.Width = 1500;
             // 
-            // uxFeedSelection
-            // 
-            this.uxFeedSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.uxFeedSelection.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxFeedSelection.FormattingEnabled = true;
-            this.uxFeedSelection.Location = new System.Drawing.Point(8, 10);
-            this.uxFeedSelection.Name = "uxFeedSelection";
-            this.uxFeedSelection.Size = new System.Drawing.Size(314, 23);
-            this.uxFeedSelection.TabIndex = 15;
-            this.uxFeedSelection.SelectedIndexChanged += new System.EventHandler(this.uxFeedSelection_SelectedIndexChanged);
-            // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 344);
+            this.richTextBox1.Location = new System.Drawing.Point(6, 315);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(702, 155);
@@ -242,7 +236,7 @@
             // 
             // uxSearchText
             // 
-            this.uxSearchText.Location = new System.Drawing.Point(8, 42);
+            this.uxSearchText.Location = new System.Drawing.Point(8, 13);
             this.uxSearchText.Name = "uxSearchText";
             this.uxSearchText.Size = new System.Drawing.Size(274, 20);
             this.uxSearchText.TabIndex = 12;
@@ -252,9 +246,8 @@
             // 
             // uxInstall
             // 
-            this.uxInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.uxInstall.Enabled = false;
-            this.uxInstall.Location = new System.Drawing.Point(402, 505);
+            this.uxInstall.Location = new System.Drawing.Point(402, 476);
             this.uxInstall.Name = "uxInstall";
             this.uxInstall.Size = new System.Drawing.Size(75, 23);
             this.uxInstall.TabIndex = 3;
@@ -262,23 +255,12 @@
             this.uxInstall.UseVisualStyleBackColor = true;
             this.uxInstall.Click += new System.EventHandler(this.InstallButton_Click);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(620, 16);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(86, 17);
-            this.checkBox1.TabIndex = 28;
-            this.checkBox1.Text = "Auto Update";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // ExtensionManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(722, 562);
+            this.ClientSize = new System.Drawing.Size(722, 528);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -290,7 +272,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExtensionManagerForm_FormClosed);
             this.Load += new System.EventHandler(this.ExtensionManagerForm_Load);
             this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabInstalled.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
             this.tabOnline.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxClear)).EndInit();
@@ -306,7 +288,6 @@
         private System.Windows.Forms.Button uxInstall;
         private System.Windows.Forms.TextBox uxSearchText;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ComboBox uxFeedSelection;
         private System.Windows.Forms.ListView uxPackages;
         private System.Windows.Forms.ColumnHeader Pack;
         private System.Windows.Forms.ColumnHeader Description;
@@ -314,7 +295,7 @@
         private System.Windows.Forms.PictureBox uxSearch;
         private System.Windows.Forms.PictureBox uxClear;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabInstalled;
         private System.Windows.Forms.ListView Installed;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
