@@ -1,0 +1,20 @@
+<SFRendering>
+  <Layer Name="Major Roads" GroupName="Transportation" Type="2" Path="Shapefiles\ROADS.SHP" Tag="" LegendPicture="" Visible="True" LabelsVisible="False" Expanded="True">
+    <Image Type="">
+    </Image>
+    <ShapeFileProperties LabelsVisible="False" MapTooltipField="-1" MapTooltipsEnabled="False" VerticesVisible="False" Color="16777215" DrawFill="True" TransparencyPercent="1" FillStipple="0" LineOrPointSize="2" LineStipple="0" OutLineColor="16777215" PointType="0" CustomLineStipple="0" UseTransparency="False" TransparencyColor="0" FillStippleTransparent="True" FillStippleLineColor="-16777216">
+      <CustomPointType>
+        <Image Type="">
+        </Image>
+      </CustomPointType>
+      <Legend FieldIndex="2" Key="" NumberOfBreaks="3" SchemeCaption="">
+        <ColorBreaks>
+          <Break StartColor="255" EndColor="255" StartValue="Interstate" EndValue="Interstate" Caption="Interstate" Visible="True" />
+          <Break StartColor="4210816" EndColor="4210816" StartValue="State Highway" EndValue="State Highway" Caption="State Highway" Visible="True" />
+          <Break StartColor="0" EndColor="0" StartValue="US Highway" EndValue="US Highway" Caption="US Highway" Visible="True" />
+        </ColorBreaks>
+      </Legend>
+    </ShapeFileProperties>
+    <DynamicVisibility UseDynamicVisibility="False" Scale="0" />
+  </Layer>
+</SFRendering>

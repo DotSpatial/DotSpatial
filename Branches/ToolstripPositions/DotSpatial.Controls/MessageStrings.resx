@@ -1,0 +1,922 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArgumentCannotBeNegative_S" xml:space="preserve">
+    <value>The argument %S cannot be negative.</value>
+  </data>
+  <data name="ArgumentCouldNotBeCast_S1_S2" xml:space="preserve">
+    <value>The argument %S1 could not be successfully cast into %S2.</value>
+  </data>
+  <data name="ArgumentNull_S" xml:space="preserve">
+    <value>The argument %S was null.  Try testing for the null case before calling this method.</value>
+    <comment>Using %S as a string wildcard.  Use String.Replace to replace that in code.</comment>
+  </data>
+  <data name="ArgumentOfWrongType_S1_S2" xml:space="preserve">
+    <value>The argument %S1 was incorrect for %S2.</value>
+  </data>
+  <data name="ArgumentOutOfRangeException_S" xml:space="preserve">
+    <value>The argument %S was outside the range of accepted values.</value>
+  </data>
+  <data name="bgdDataTypeError" xml:space="preserve">
+    <value>The file type was supposedly bgd, but there was a problem with reading the data type.</value>
+  </data>
+  <data name="BinarySupportsOneBand" xml:space="preserve">
+    <value>Binary rasters only support one band, which is the raster itself.</value>
+  </data>
+  <data name="ByteArrayTooSmall" xml:space="preserve">
+    <value>The specified argument byteArray was too small to contain the requested information</value>
+  </data>
+  <data name="CalculatingStatistics" xml:space="preserve">
+    <value>Calculating Statistics</value>
+  </data>
+  <data name="CannotCopyToSelf_S" xml:space="preserve">
+    <value>The fileName %S cannot be copied to itself.</value>
+  </data>
+  <data name="ColorBreakCaptionHelp" xml:space="preserve">
+    <value>Enter the text you want to display in the legend.</value>
+  </data>
+  <data name="ColorBreakColorHelp" xml:space="preserve">
+    <value>Left click after selecting to edit, or right click to assign a color range.</value>
+  </data>
+  <data name="ColorBreakNotNumeric" xml:space="preserve">
+    <value>Raster values should be numeric and be drawn with a range like [low] - [high]</value>
+  </data>
+  <data name="ColorBreakValue" xml:space="preserve">
+    <value>The value or range of values shown as [low] - [high]</value>
+  </data>
+  <data name="CopyingValues" xml:space="preserve">
+    <value>Copying Values</value>
+  </data>
+  <data name="CopyingValues_S1_S2" xml:space="preserve">
+    <value>Copying values from %S1 to %S2</value>
+  </data>
+  <data name="CopyingValuesFrom_S" xml:space="preserve">
+    <value>Copying Values from %S</value>
+  </data>
+  <data name="CopyingValuesFrom_S1_To_S2" xml:space="preserve">
+    <value>Copying Values from %S1 to %S2</value>
+  </data>
+  <data name="CreatingShadedRelief" xml:space="preserve">
+    <value>Creating Shaded Relief</value>
+  </data>
+  <data name="CreatingTexture" xml:space="preserve">
+    <value>Creating Texture</value>
+  </data>
+  <data name="DataTypeIncorrect_S" xml:space="preserve">
+    <value>The parameter %S was not the correct datatype.</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>The Number of digits to show after the decimal.</value>
+  </data>
+  <data name="DecimalCountInvalid" xml:space="preserve">
+    <value>This should be an integer from 0 to 15.</value>
+  </data>
+  <data name="EndOfFile" xml:space="preserve">
+    <value>Cannot read past the end of the file.</value>
+  </data>
+  <data name="FeatureTypeCannotChange" xml:space="preserve">
+    <value>The feature type cannot be changed here.  Try creating a new feature of the appropriate type.</value>
+  </data>
+  <data name="FeatureTypeNotLine" xml:space="preserve">
+    <value>The FeatureType specified was not the line feature type.</value>
+  </data>
+  <data name="FeatureTypeNotPoint" xml:space="preserve">
+    <value>The FeatureType specified was not the point feature type. </value>
+  </data>
+  <data name="FeatureTypeNotPolygon" xml:space="preserve">
+    <value>The FeatureType specified was not the polygon feature type.</value>
+  </data>
+  <data name="FileExists_S" xml:space="preserve">
+    <value>The fileName %S already exists.  Do you wish to overwrite it?</value>
+  </data>
+  <data name="FileNotFound_S" xml:space="preserve">
+    <value>The fileName %S was not found.</value>
+  </data>
+  <data name="FileNotLines_S" xml:space="preserve">
+    <value>The fileName %S contains a feature type other than lines.</value>
+  </data>
+  <data name="FileNotPoints_S" xml:space="preserve">
+    <value>The fileName %S contains a feature type other than points.</value>
+  </data>
+  <data name="FileTooLarge" xml:space="preserve">
+    <value>The file was too large to fit into memory all at once.  Try using a DataSource instead.</value>
+  </data>
+  <data name="FileTypeNotSupported" xml:space="preserve">
+    <value>The specified file type is not supported.</value>
+  </data>
+  <data name="ImplementedInSubclass" xml:space="preserve">
+    <value>This property or method is overrided in a subclass and should not be used directly.</value>
+  </data>
+  <data name="IndexingErrorIn_S" xml:space="preserve">
+    <value>There was an error while attempting to index %S</value>
+  </data>
+  <data name="InvalidNumberFormat" xml:space="preserve">
+    <value>The value entered was not understood.  Please use either numbers or syntax 'start - end', e.g. '1-5'</value>
+  </data>
+  <data name="MoreThan100UniqueValues" xml:space="preserve">
+    <value>There are more than 100 unique values.  Are you sure you want to continue?</value>
+  </data>
+  <data name="NotImplemented" xml:space="preserve">
+    <value>This has not yet been implemented.</value>
+  </data>
+  <data name="NumericValuesOnly" xml:space="preserve">
+    <value>Please only enter numeric values.</value>
+  </data>
+  <data name="OnlyShapefilesSupported" xml:space="preserve">
+    <value>For now, only the shapefile vector format is being supported.</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>Opacity controls how transparent the item is.  A 0 is fully transparent, while 1 is fully opaque.</value>
+  </data>
+  <data name="OpacityInvalid" xml:space="preserve">
+    <value>Opacity should be a floating decimal point between 0 and 1.</value>
+  </data>
+  <data name="PaintingColorScheme" xml:space="preserve">
+    <value>Painting Color Scheme To Bitmap</value>
+  </data>
+  <data name="PaintingHillshade" xml:space="preserve">
+    <value>Painting Hillshade To Bitmap</value>
+  </data>
+  <data name="ParseFailed_S" xml:space="preserve">
+    <value>The value you entered could not be parsed into a %S.  Make sure the value is in the valid range.</value>
+  </data>
+  <data name="RasterRequiresCast" xml:space="preserve">
+    <value>To work with anything other than an in-memory raster window, you must first cast this raster to the correct data format.</value>
+  </data>
+  <data name="RastersMustHaveCellSize" xml:space="preserve">
+    <value>The specified rasters must have their cell sizes dimensioned.</value>
+  </data>
+  <data name="RastersNeedSameCellSize" xml:space="preserve">
+    <value>The rasters must have equally sized cells to use this method.</value>
+  </data>
+  <data name="RasterTooLarge" xml:space="preserve">
+    <value>The specified raster would be too large to store in memory.</value>
+  </data>
+  <data name="ReadingValuesFrom_S" xml:space="preserve">
+    <value>Reading values from %S</value>
+  </data>
+  <data name="StartIndexTooLarge" xml:space="preserve">
+    <value>The argument startIndex was too large to read the requested number of bytes from byteArray.</value>
+  </data>
+  <data name="TooManyUniqueValues" xml:space="preserve">
+    <value>There are too many Unique values.</value>
+  </data>
+  <data name="WritingValues_S" xml:space="preserve">
+    <value>Writing values to %S</value>
+  </data>
+  <data name="KeyDuplicateException" xml:space="preserve">
+    <value>The specified key already exists in the tree.</value>
+  </data>
+  <data name="KeyMissingException" xml:space="preserve">
+    <value>The specified key could not be found in the tree.</value>
+  </data>
+  <data name="KeySizeException" xml:space="preserve">
+    <value>The size of the key did not match the size of the tree.</value>
+  </data>
+  <data name="CoordinateMismatchException" xml:space="preserve">
+    <value>The number of ordinates did not match between the dimensions, so the hyperdistance cannot be accurately calculated.</value>
+  </data>
+  <data name="TopologyException_Depth" xml:space="preserve">
+    <value>Assigned depths do not match</value>
+  </data>
+  <data name="PolygonException_HoleElementNull" xml:space="preserve">
+    <value>Holes must not contain null elements</value>
+  </data>
+  <data name="PolygonException_ShellEmptyButHolesNot" xml:space="preserve">
+    <value>Shell is empty but holes are not</value>
+  </data>
+  <data name="NumberException_TooLarge_S" xml:space="preserve">
+    <value>The value %S was too large to encode with 18 ASCII characters.</value>
+  </data>
+  <data name="NumberException_TooSmall_S" xml:space="preserve">
+    <value>The value %S was too small to be encoded with 18 ASCII characters.</value>
+  </data>
+  <data name="NumberException_NumDigitsTooLarge" xml:space="preserve">
+    <value>The specified number of significant digits (%S) is too large for this field.</value>
+  </data>
+  <data name="CurrentElementNotSpecified" xml:space="preserve">
+    <value>The current element was not defined.  Before attempting to read the element, first assign the value of the current XML Element to read.</value>
+  </data>
+  <data name="Selection_FeatureNotFound" xml:space="preserve">
+    <value>The specified feature was not found in the feature list and could not be selected.</value>
+  </data>
+  <data name="ReadOnlyList" xml:space="preserve">
+    <value>The list is currently set to read-only, and cannot be modified.</value>
+  </data>
+  <data name="ListItemNotFound" xml:space="preserve">
+    <value>The item specified was not found in this list.</value>
+  </data>
+  <data name="LineFeatureTypeException" xml:space="preserve">
+    <value>An incompatible feature type was supplied and was not of type Line.</value>
+  </data>
+  <data name="PointFeatureTypeException" xml:space="preserve">
+    <value>An incompatible feature type was supplied and was not of type Point.</value>
+  </data>
+  <data name="PolygonFeatureTypeException" xml:space="preserve">
+    <value>An incompatible feature type was supplied and was not of type polygon.</value>
+  </data>
+  <data name="InsufficientDimensions_S" xml:space="preserve">
+    <value>The number of dimensions in %S is insufficient for this calculation.</value>
+  </data>
+  <data name="FeaturesAll" xml:space="preserve">
+    <value>All Features</value>
+  </data>
+  <data name="FeaturesExtent" xml:space="preserve">
+    <value>All Features in View Extent</value>
+  </data>
+  <data name="FeaturesSelected" xml:space="preserve">
+    <value>Selected features</value>
+  </data>
+  <data name="DoubleError" xml:space="preserve">
+    <value>The value entered could not be correctly parsed into a valid double precision floating point value.</value>
+  </data>
+  <data name="DoubleHelp" xml:space="preserve">
+    <value>Enter a double precision floating point value.</value>
+  </data>
+  <data name="DefaultToolproviderSettingsDialogText" xml:space="preserve">
+    <value>There are no setting for the default Tool Provider. It scans the same folders the ToolManager scans for Tool Providers</value>
+  </data>
+  <data name="DefaultToolproviderSettingsDialogTitle" xml:space="preserve">
+    <value>Default Tool Provider Settings</value>
+  </data>
+  <data name="FeaturesetInvalid" xml:space="preserve">
+    <value>The feature set is invalid.</value>
+  </data>
+  <data name="FeaturesetMissing" xml:space="preserve">
+    <value>No feature set is specified.</value>
+  </data>
+  <data name="FeaturesetValid" xml:space="preserve">
+    <value>The feature set is valid.</value>
+  </data>
+  <data name="LineElementWrongDataType" xml:space="preserve">
+    <value>The wrong type of feature set was selected. Please select a line feature set.</value>
+  </data>
+  <data name="ToolSetupIncorectly" xml:space="preserve">
+    <value>The tool cannot be run because one or more of its parameters is not set.</value>
+  </data>
+  <data name="FindToolByName" xml:space="preserve">
+    <value>Find Tool</value>
+  </data>
+  <data name="NewModel" xml:space="preserve">
+    <value>New Model</value>
+  </data>
+  <data name="FeatureTypeException" xml:space="preserve">
+    <value>The feature set selected was the incorrect type.</value>
+  </data>
+  <data name="InvalidDouble" xml:space="preserve">
+    <value>The value is invalid, it must be a decimal between %min and %max</value>
+  </data>
+  <data name="InvalidInteger" xml:space="preserve">
+    <value>The value is invalid, it must be an integer between %min and %max</value>
+  </data>
+  <data name="ParameterInvalid" xml:space="preserve">
+    <value>The parameter is invalid</value>
+  </data>
+  <data name="ParameterValid" xml:space="preserve">
+    <value>The parameter is valid</value>
+  </data>
+  <data name="linkErrorCircle" xml:space="preserve">
+    <value>Output data cannot be linked to tools that generate it.</value>
+  </data>
+  <data name="linkErrorToData" xml:space="preserve">
+    <value>Links can only be made from data to tools.</value>
+  </data>
+  <data name="linkError" xml:space="preserve">
+    <value>Failed to create link</value>
+  </data>
+  <data name="linkNoFreeInput" xml:space="preserve">
+    <value>There are no free inputs for the this tool that take the data type attempting to be linked to it.</value>
+  </data>
+  <data name="ModelerConfirmDelete" xml:space="preserve">
+    <value>Delete elements?</value>
+  </data>
+  <data name="ModelerConfirmDeleteSource" xml:space="preserve">
+    <value>Deleting the selected model elements will also delete the model elements associated with them.</value>
+  </data>
+  <data name="ModelTipDelete" xml:space="preserve">
+    <value>Delete selected model elements</value>
+  </data>
+  <data name="ModelTipFullExtent" xml:space="preserve">
+    <value>Zoom full extent of model</value>
+  </data>
+  <data name="ModelTipLink" xml:space="preserve">
+    <value>Link data to tools</value>
+  </data>
+  <data name="ModelTipZoomOut" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
+  <data name="ModelTipZoonIn" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="ModelTipAddData" xml:space="preserve">
+    <value>Add data to the model</value>
+  </data>
+  <data name="ModelTipLoad" xml:space="preserve">
+    <value>Load a model</value>
+  </data>
+  <data name="ModelTipNew" xml:space="preserve">
+    <value>Create a new empty model</value>
+  </data>
+  <data name="ModelTipSave" xml:space="preserve">
+    <value>Save the current model</value>
+  </data>
+  <data name="ModelSaveCurrentModel" xml:space="preserve">
+    <value>Do you want to save the changes to %S?</value>
+  </data>
+  <data name="ModelTipRunModel" xml:space="preserve">
+    <value>Run Model</value>
+  </data>
+  <data name="LayoutFormTitle" xml:space="preserve">
+    <value>DotSpatial Print Layout</value>
+  </data>
+  <data name="LayoutMenuPageSetup" xml:space="preserve">
+    <value>Page Setup...</value>
+  </data>
+  <data name="LayoutMenuStripDocToolbar" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="LayoutMenuStripEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="LayoutMenuStripFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="LayoutMenuStripNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="LayoutMenuStripOpen" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="LayoutMenuStripPrint" xml:space="preserve">
+    <value>Print...</value>
+  </data>
+  <data name="LayoutMenuStripSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="LayoutMenuStripSaveAs" xml:space="preserve">
+    <value>Save as...</value>
+  </data>
+  <data name="LayoutMenuStripSelect" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="LayoutMenuStripSelectAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="LayoutMenuStripSelectDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="LayoutMenuStripSelectInvert" xml:space="preserve">
+    <value>Invert</value>
+  </data>
+  <data name="LayoutMenuStripSelectMoveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="LayoutMenuStripSelectMoveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="LayoutMenuStripSelectNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="LayoutMenuStripSelectPrinter" xml:space="preserve">
+    <value>Choose printer...</value>
+  </data>
+  <data name="LayoutMenuStripShowMargin" xml:space="preserve">
+    <value>Show Margin</value>
+  </data>
+  <data name="LayoutMenuStripToolbars" xml:space="preserve">
+    <value>Toolbars</value>
+  </data>
+  <data name="LayoutMenuStripView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="LayoutMenuStripZoomFull" xml:space="preserve">
+    <value>Fit to screen</value>
+  </data>
+  <data name="LayoutMenuStripZoomIn" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="LayoutMenuStripZoomOut" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
+  <data name="LayoutMenuStripZoomToolbar" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="LayoutPageSetupTitle" xml:space="preserve">
+    <value>Page Setup...</value>
+  </data>
+  <data name="LayoutToolStripZoomFull" xml:space="preserve">
+    <value>Fit to screen</value>
+  </data>
+  <data name="LayoutToolStripZoomIn" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="LayoutToolStripZoomOut" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
+  <data name="LayoutMapToolStripMaxExtent" xml:space="preserve">
+    <value>Zoom map to full extent of layers</value>
+  </data>
+  <data name="LayoutMapToolStripPan" xml:space="preserve">
+    <value>Pan map</value>
+  </data>
+  <data name="LayoutMapToolStripZoomIn" xml:space="preserve">
+    <value>Zoom map in</value>
+  </data>
+  <data name="LayoutMapToolStripZoomOut" xml:space="preserve">
+    <value>Zoom map out</value>
+  </data>
+  <data name="LayoutInsertToolStripBitmap" xml:space="preserve">
+    <value>Insert bitmap</value>
+  </data>
+  <data name="LayoutInsertToolStripMap" xml:space="preserve">
+    <value>Insert map</value>
+  </data>
+  <data name="LayoutInsertToolStripNorthArrow" xml:space="preserve">
+    <value>Insert north arrow</value>
+  </data>
+  <data name="LayoutInsertToolStripRectangle" xml:space="preserve">
+    <value>Insert rectangle</value>
+  </data>
+  <data name="LayoutInsertToolStripText" xml:space="preserve">
+    <value>Insert text</value>
+  </data>
+  <data name="LayoutInsertMenuStripLegend" xml:space="preserve">
+    <value>Insert legend</value>
+  </data>
+  <data name="LayoutInsertMenuStripScaleBar" xml:space="preserve">
+    <value>Insert scale bar</value>
+  </data>
+  <data name="LayoutMenuStripSelectConvert" xml:space="preserve">
+    <value>Convert to bitmap</value>
+  </data>
+  <data name="LayoutMenuStripInsertToolbar" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="LayoutMenuStripMapToolbar" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="LayoutErrorLoad" xml:space="preserve">
+    <value>Error opening layout file: </value>
+  </data>
+  <data name="LayoutLoadDialogTitle" xml:space="preserve">
+    <value>Load Print Layout</value>
+  </data>
+  <data name="LayoutSaveDialogTitle" xml:space="preserve">
+    <value>Save Print Layout As</value>
+  </data>
+  <data name="LayoutSaveFirst" xml:space="preserve">
+    <value>Do you want to save the current print layout?</value>
+  </data>
+  <data name="LayoutErrorSave" xml:space="preserve">
+    <value>Error saving layout file:</value>
+  </data>
+  <data name="LayoutMenuStripClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="StringFieldInvalid" xml:space="preserve">
+    <value>Fields that are the string datatype cannot be converted to a raster.  Do you wish to use the FID value instead?</value>
+  </data>
+  <data name="LayoutMenuStripRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="LayoutCmnuBottom" xml:space="preserve">
+    <value>Align Bottom</value>
+  </data>
+  <data name="LayoutCmnuHeight" xml:space="preserve">
+    <value>Fit to Height</value>
+  </data>
+  <data name="LayoutCmnuHor" xml:space="preserve">
+    <value>Align Horizontal</value>
+  </data>
+  <data name="LayoutCmnuLeft" xml:space="preserve">
+    <value>Align Left</value>
+  </data>
+  <data name="LayoutCmnuMarginFit" xml:space="preserve">
+    <value>Margin Fit</value>
+  </data>
+  <data name="LayoutCmnuRight" xml:space="preserve">
+    <value>Align Right</value>
+  </data>
+  <data name="LayoutCmnuSelectionAlignment" xml:space="preserve">
+    <value>Selection Alignment</value>
+  </data>
+  <data name="LayoutCmnuSelectionFit" xml:space="preserve">
+    <value>Selection Fit</value>
+  </data>
+  <data name="LayoutCmnuTop" xml:space="preserve">
+    <value>Align top</value>
+  </data>
+  <data name="LayoutCmnuVert" xml:space="preserve">
+    <value>Align Vertical</value>
+  </data>
+  <data name="LayoutCmnuWidth" xml:space="preserve">
+    <value>Fit to Width</value>
+  </data>
+  <data name="LayouyCmnuMarginAlignment" xml:space="preserve">
+    <value>Margin Alignment</value>
+  </data>
+  <data name="LayoutCmnuMargAlign" xml:space="preserve">
+    <value>Margin Alignment</value>
+  </data>
+  <data name="LayoutMapToolStripViewExtent" xml:space="preserve">
+    <value>Zoom map to extent of data view</value>
+  </data>
+  <data name="IncompatibleDestinationField" xml:space="preserve">
+    <value>The destination field data type is incompatible (double or string or integer)</value>
+  </data>
+  <data name="ToSave" xml:space="preserve">
+    <value>To save the calulated value press the Apply button</value>
+  </data>
+  <data name="FactGreaterThanZero" xml:space="preserve">
+    <value>Factorial value should be grater than 0</value>
+  </data>
+  <data name="NonStandardFunction" xml:space="preserve">
+    <value>The function name was not recognized as one of the standard function names.</value>
+  </data>
+  <data name="RootNthRootIncorrect" xml:space="preserve">
+    <value>The root n-th root is incorrect</value>
+  </data>
+  <data name="TooManyClosingBrackets" xml:space="preserve">
+    <value>There were too many closing brackets in the string expression.</value>
+  </data>
+  <data name="SpecifyField" xml:space="preserve">
+    <value>Please specify an attribute field to use for classification before using this feature.</value>
+  </data>
+  <data name="FieldNotNumeric" xml:space="preserve">
+    <value>The specified field is not a numeric field and so the "EqualBreaks" option is not supported.</value>
+  </data>
+  <data name="RemoveFields" xml:space="preserve">
+    <value>Are you sure you want to remove the fields?</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="CouldNotExecuteQuery" xml:space="preserve">
+    <value>Could not execute the query.</value>
+  </data>
+  <data name="CouldNotFindReplace" xml:space="preserve">
+    <value>Could not find or replace items.</value>
+  </data>
+  <data name="EnterFindString" xml:space="preserve">
+    <value>Enter Find String</value>
+  </data>
+  <data name="FieldImportFailed" xml:space="preserve">
+    <value>Could not import column fields.</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="NoMatch" xml:space="preserve">
+    <value>None of the rows contain a value that matches the specified value.</value>
+  </data>
+  <data name="NoRowInTable" xml:space="preserve">
+    <value>There is no row in the Table.</value>
+  </data>
+  <data name="CustomOnly" xml:space="preserve">
+    <value>In order to specify a custom filter expression, the custom mode must be selected first.</value>
+  </data>
+  <data name="Expression" xml:space="preserve">
+    <value>Expression</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="Extensions" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Plugins" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="MapLayers" xml:space="preserve">
+    <value>Map Layers</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="FeaturetypeUnspecified" xml:space="preserve">
+    <value>The FeatureType was not specified.  Please specify a featuretype before attempting to call this method.</value>
+  </data>
+  <data name="FeatureTypeMismatch" xml:space="preserve">
+    <value>The FeatureType of the feature you are trying to add does not match the feature type of this featureset.</value>
+  </data>
+  <data name="PyramidHeaderException" xml:space="preserve">
+    <value>The header has not been defined for the image scale you are attempting to access.</value>
+  </data>
+  <data name="PyramidOutOfBoundsException" xml:space="preserve">
+    <value>The rows or columns would extend beyond the specified number of columns or rows for the specified scale.</value>
+  </data>
+  <data name="PyramidByteMismatchException" xml:space="preserve">
+    <value>The number of bytes should be 4 * rows * cols since only ARGB format is supported.</value>
+  </data>
+  <data name="PngInsuficientLengthException" xml:space="preserve">
+    <value>The desired length of %S1 was too long.  The total length was %S2 and the offset was %S3.</value>
+  </data>
+  <data name="PngInvalidSignatureException" xml:space="preserve">
+    <value>The beginning eight bytes of the specified file did not match the png signature.</value>
+  </data>
+  <data name="DataExtensions" xml:space="preserve">
+    <value>Data Extensions</value>
+  </data>
+  <data name="AppManager_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
+    <value>Reproject map layer to match the map coordinate system? This will not affect the source file.</value>
+  </data>
+  <data name="Map_OnDragDrop_Invalid" xml:space="preserve">
+    <value>One or more of the files was not a valid data type for the map.</value>
+  </data>
+  <data name="MapFrame_GlcLayerAdded_Projection_Mismatch" xml:space="preserve">
+    <value>Projection Mismatch</value>
+  </data>
+  <data name="MapFunctionSelect_NoSelectableLayer" xml:space="preserve">
+    <value>No layers are currently selectable layers active in the legend.  Select the layer or group in the legend for which selection should occur.</value>
+  </data>
+  <data name="MapFunctionSelect_OnKeyDown_No_Deletable_Layers" xml:space="preserve">
+    <value>There was no selected feature layer in the legend to clarify which features to delete.  Please select a layer or group in the legend.</value>
+  </data>
+  <data name="MapFrame_Projection" xml:space="preserve">
+    <value>Projection</value>
+  </data>
+  <data name="ProjectFile" xml:space="preserve">
+    <value>Project File</value>
+  </data>
+  <data name="ArchiveFile" xml:space="preserve">
+    <value>Archive File</value>
+  </data>
+  <data name="SupportedFiles" xml:space="preserve">
+    <value>Supported Files</value>
+  </data>
+  <data name="MW4Project" xml:space="preserve">
+    <value>MW4 Project</value>
+  </data>
+  <data name="LoadingPluginsPercentComplete" xml:space="preserve">
+    <value>Loading Plugins - {0}, {1}% complete.</value>
+  </data>
+  <data name="LoadingPlugins" xml:space="preserve">
+    <value>Loading Plugins</value>
+  </data>
+  <data name="ErrorWhileWhileActivating" xml:space="preserve">
+    <value>Error while while activating {0}.</value>
+  </data>
+  <data name="ClearAllDataAndStartANewMap" xml:space="preserve">
+    <value>Start a new Project?</value>
+  </data>
+  <data name="CouldNotOpenTheSpecifiedMapFile" xml:space="preserve">
+    <value>Could not open the specified map file: {0}</value>
+  </data>
+  <data name="DiscardChanges" xml:space="preserve">
+    <value>Discard Changes?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FailedToReadAPortionOfTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to read a portion of the specified map file: {0}</value>
+  </data>
+  <data name="FailedToReadTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to read the specified map file: {0}</value>
+  </data>
+  <data name="FailedToWriteTheSpecifiedMapFile" xml:space="preserve">
+    <value>Failed to write the specified map file: {0}</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes?</value>
+  </data>
+  <data name="SaveChangesToCurrentProject" xml:space="preserve">
+    <value>Save changes to current project [{0}] ?</value>
+  </data>
+  <data name="SelectFeatures" xml:space="preserve">
+    <value>No feature layers were selected in the legend.  Select the layer to use.</value>
+  </data>
+  <data name="Add_Layer" xml:space="preserve">
+    <value>Add Layer...</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Deselect All</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileNewToolTip" xml:space="preserve">
+    <value>Clears the current map. The user is prompted to save any changes to the current map project.</value>
+  </data>
+  <data name="FileOpenToolTip" xml:space="preserve">
+    <value>Clears the current map and shows an ‘Open’ window that allows the user to navigate to a previously saved map.</value>
+  </data>
+  <data name="FileSaveAsToolTip" xml:space="preserve">
+    <value>Allows the user to save the project.</value>
+  </data>
+  <data name="FileSaveToolTip" xml:space="preserve">
+    <value>Allows the user to name the file and location where the map is to be saved on their computer.</value>
+  </data>
+  <data name="File_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="File_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="File_Open" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="File_Print" xml:space="preserve">
+    <value>Print Layout...</value>
+  </data>
+  <data name="File_Reset_Layout" xml:space="preserve">
+    <value>Reset Window Layout</value>
+  </data>
+  <data name="File_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="File_SaveAs" xml:space="preserve">
+    <value>Save As...</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="Identify" xml:space="preserve">
+    <value>Identify</value>
+  </data>
+  <data name="Layers_Group" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="Map_Tools_Group" xml:space="preserve">
+    <value>Map Tool</value>
+  </data>
+  <data name="Pan" xml:space="preserve">
+    <value>Pan</value>
+  </data>
+  <data name="Pointer" xml:space="preserve">
+    <value>Pointer</value>
+  </data>
+  <data name="Remove_Layer" xml:space="preserve">
+    <value>Remove Layer</value>
+  </data>
+  <data name="Save_Layer" xml:space="preserve">
+    <value>Save Layer...</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="View_Group" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Zoom_Group" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="Zoom_In" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="Zoom_In_Tooltip" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="Zoom_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Zoom_Next_Tooltip" xml:space="preserve">
+    <value>Zoom Next</value>
+  </data>
+  <data name="Zoom_Out" xml:space="preserve">
+    <value>Out</value>
+  </data>
+  <data name="Zoom_Out_Tooltip" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+  <data name="Zoom_Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Zoom_Previous_Tooltip" xml:space="preserve">
+    <value>Zoom Previous</value>
+  </data>
+  <data name="Zoom_To_Coordinates" xml:space="preserve">
+    <value>Zoom To Coordinates</value>
+  </data>
+  <data name="Zoom_To_Extents" xml:space="preserve">
+    <value>Full Extent</value>
+  </data>
+  <data name="Zoom_To_Extents_Tooltip" xml:space="preserve">
+    <value>Zoom to Full Extent</value>
+  </data>
+  <data name="Zoom_To_Layer" xml:space="preserve">
+    <value>Zoom To Layer</value>
+  </data>
+</root>

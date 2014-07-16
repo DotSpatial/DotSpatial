@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners />
+    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
+    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Plugins.WebMap.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary />
+    <language>en-US</language>
+    <tags>Spatial GIS DotSpatial</tags>
+    <!--
+    <dependencies>
+      <dependency id="BruTile" version="0.8.4" />
+    </dependencies>-->
+    <references>
+      <reference file="DotSpatial.Plugins.WebMap.dll" />
+      <reference file="Brutile.dll" />
+      <reference file="Brutile.Desktop.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="Lib\Brutile.dll" target="lib\net40-client"/>
+    <file src="Lib\Brutile.Desktop.dll" target="lib\net40-client"/>
+    <file src="app.config" target="lib\net40-client\DotSpatial.Plugins.WebMap.dll.config" />
+  </files>
+</package>

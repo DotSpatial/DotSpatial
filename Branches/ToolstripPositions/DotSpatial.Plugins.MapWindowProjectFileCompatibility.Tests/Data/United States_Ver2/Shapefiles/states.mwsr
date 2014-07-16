@@ -1,0 +1,13 @@
+<SFRendering>
+  <Layer Name="State Boundaries" GroupName="Boundaries" Type="3" Path="Shapefiles\states.shp" Tag="" LegendPicture="" Visible="True" LabelsVisible="False" Expanded="False">
+    <Image Type="">
+    </Image>
+    <ShapeFileProperties LabelsVisible="False" MapTooltipField="-1" MapTooltipsEnabled="False" VerticesVisible="False" Color="10395354" DrawFill="True" TransparencyPercent="1" FillStipple="0" LineOrPointSize="2" LineStipple="2" OutLineColor="0" PointType="0" CustomLineStipple="0" UseTransparency="False" TransparencyColor="0" FillStippleTransparent="True" FillStippleLineColor="-16777216">
+      <CustomPointType>
+        <Image Type="">
+        </Image>
+      </CustomPointType>
+    </ShapeFileProperties>
+    <DynamicVisibility UseDynamicVisibility="False" Scale="0" />
+  </Layer>
+</SFRendering>

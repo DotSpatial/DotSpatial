@@ -1,0 +1,10 @@
+<MapWinGIS OcxVersion="4.8" FileType="LayerFile" FileVersion="0" Description="">
+  <Layer LayerType="Shapefile" LayerName="Major Lakes" LayerVisible="1" LayerKey="" Filename="">
+    <ShapefileClass>
+      <DefaultDrawingOptions FillBgColor="12753530" FillBgTransparent="0" FillColor="8279610" FillHatchStyle="37" FillType="1" LineColor="12753530" LineWidth="2.000000" PointShapeRatio="1.000000" />
+      <ShapefileCategoriesClass />
+      <LabelsClass FontName="BatangChe" FontSize="12" FrameBackColor="11197130" FrameOutlineColor="12349952" FrameOutlineStyle="1" FrameOutlineWidth="2" FrameType="0" ShadowVisible="1" Generated="1" MaxVisibleScale="7650000.000000" AutoOffset="0" DynamicVisibility="-1" AvoidCollisions="0" Positioning="1" Expression="[NAME] " />
+      <ChartsClass ValuesFontName="" Visible="-1" />
+    </ShapefileClass>
+  </Layer>
+</MapWinGIS>

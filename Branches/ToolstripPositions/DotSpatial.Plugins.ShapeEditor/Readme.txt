@@ -1,0 +1,1 @@
+﻿Allow tu create shapes in DotSpatial.

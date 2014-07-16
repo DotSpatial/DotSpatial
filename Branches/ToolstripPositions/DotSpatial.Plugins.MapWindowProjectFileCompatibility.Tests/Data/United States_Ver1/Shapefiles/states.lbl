@@ -1,0 +1,53 @@
+<MapWindow version="4.1.2336.21737">
+  <Labels Field="2" Font="Microsoft Sans Serif" Size="8.25" Color="-16777216" Justification="1" UseMinZoomLevel="False" Scaled="False" UseShadows="False" ShadowColor="-1" Offset="0" StandardViewWidth="0" UseLabelCollision="True" RemoveDuplicateLabels="False" xMin="0" yMin="0" xMax="0" yMax="0">
+    <Label X="-120.424518334984" Y="47.3759216646379" Rotation="0" Name="Washington" />
+    <Label X="-109.651522198748" Y="47.0323250484207" Rotation="0" Name="Montana" />
+    <Label X="-69.2347974496523" Y="45.3893451625591" Rotation="0" Name="Maine" />
+    <Label X="-100.470335849613" Y="47.446078014524" Rotation="0" Name="North Dakota" />
+    <Label X="-100.23486555524" Y="44.4333288726656" Rotation="0" Name="South Dakota" />
+    <Label X="-107.552043317559" Y="42.9986065638419" Rotation="0" Name="Wyoming" />
+    <Label X="-90.0060489782308" Y="44.633143589845" Rotation="0" Name="Wisconsin" />
+    <Label X="-114.66095949438" Y="44.3861736521403" Rotation="0" Name="Idaho" />
+    <Label X="-72.6611059492112" Y="44.0721804773986" Rotation="0" Name="Vermont" />
+    <Label X="-94.3056778405755" Y="46.3156863563354" Rotation="0" Name="Minnesota" />
+    <Label X="-120.553520049709" Y="43.9316458429976" Rotation="0" Name="Oregon" />
+    <Label X="-71.5782478077727" Y="43.6851203448091" Rotation="0" Name="New Hampshire" />
+    <Label X="-93.5008660631661" Y="42.0759988836592" Rotation="0" Name="Iowa" />
+    <Label X="-71.8316672723182" Y="42.2754300844134" Rotation="0" Name="Massachusetts" />
+    <Label X="-99.8074090890776" Y="41.523160928421" Rotation="0" Name="Nebraska" />
+    <Label X="-75.5297887220433" Y="42.860384283376" Rotation="0" Name="New York" />
+    <Label X="-77.8031379017414" Y="40.8748075940515" Rotation="0" Name="Pennsylvania" />
+    <Label X="-72.7252269097163" Y="41.617936561667" Rotation="0" Name="Connecticut" />
+    <Label X="-71.5549802315848" Y="41.6794463077556" Rotation="0" Name="Rhode Island" />
+    <Label X="-74.6770192151579" Y="40.1982119272545" Rotation="0" Name="New Jersey" />
+    <Label X="-86.2761632472661" Y="39.9126896323529" Rotation="0" Name="Indiana" />
+    <Label X="-116.649817601334" Y="39.3520857587554" Rotation="0" Name="Nevada" />
+    <Label X="-111.675066630644" Y="39.3228516962631" Rotation="0" Name="Utah" />
+    <Label X="-119.576678067241" Y="37.3349784908524" Rotation="0" Name="California" />
+    <Label X="-82.7875058056044" Y="40.2874720764327" Rotation="0" Name="Ohio" />
+    <Label X="-89.2036863221908" Y="40.0639714518223" Rotation="0" Name="Illinois" />
+    <Label X="-77.0159291430928" Y="38.9024893788139" Rotation="0" Name="District of Columbia" />
+    <Label X="-75.5009092617244" Y="38.9949997107809" Rotation="0" Name="Delaware" />
+    <Label X="-80.6142481108298" Y="38.6411133146314" Rotation="0" Name="West Virginia" />
+    <Label X="-76.7280163494003" Y="39.0221960947903" Rotation="0" Name="Maryland" />
+    <Label X="-105.547295116252" Y="38.9972672738994" Rotation="0" Name="Colorado" />
+    <Label X="-85.2904070566255" Y="37.5264389184972" Rotation="0" Name="Kentucky" />
+    <Label X="-98.3828988254268" Y="38.4826358792051" Rotation="0" Name="Kansas" />
+    <Label X="-78.7607454090707" Y="37.5122723779033" Rotation="0" Name="Virginia" />
+    <Label X="-92.4800200875499" Y="38.3639480728981" Rotation="0" Name="Missouri" />
+    <Label X="-111.663881430852" Y="34.2916456616445" Rotation="0" Name="Arizona" />
+    <Label X="-97.5091480755637" Y="35.5839091812951" Rotation="0" Name="Oklahoma" />
+    <Label X="-79.0695858994311" Y="35.490264843543" Rotation="0" Name="North Carolina" />
+    <Label X="-86.3341008934777" Y="35.846632756145" Rotation="0" Name="Tennessee" />
+    <Label X="-99.4120043540353" Y="31.0391980727795" Rotation="0" Name="Texas" />
+    <Label X="-106.101838263353" Y="34.4233470008132" Rotation="0" Name="New Mexico" />
+    <Label X="-86.8263572424271" Y="32.7946851795586" Rotation="0" Name="Alabama" />
+    <Label X="-89.6639364073216" Y="32.7590275157842" Rotation="0" Name="Mississippi" />
+    <Label X="-83.4543329240889" Y="32.6549380604808" Rotation="0" Name="Georgia" />
+    <Label X="-80.9012089493116" Y="33.9185818205835" Rotation="0" Name="South Carolina" />
+    <Label X="-92.4336452605295" Y="34.8978572266716" Rotation="0" Name="Arkansas" />
+    <Label X="-92.0292350184771" Y="31.1070312841653" Rotation="0" Name="Louisiana" />
+    <Label X="-81.8689203750412" Y="29.1079764563481" Rotation="0" Name="Florida" />
+    <Label X="-85.7598547784687" Y="44.4926603766278" Rotation="0" Name="Michigan" />
+  </Labels>
+</MapWindow>

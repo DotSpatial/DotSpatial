@@ -1,0 +1,1 @@
+﻿An updater that works for applications deployed using ClickOnce.

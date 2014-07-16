@@ -1,0 +1,2 @@
+These are example route files for the GeoFramework.Gps.Emulators.RouteFileEmulator. 
+For each of these routes, the recommended Interval for the emulator is 3 seconds.

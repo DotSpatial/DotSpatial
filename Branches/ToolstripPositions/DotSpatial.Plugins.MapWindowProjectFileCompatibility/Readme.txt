@@ -1,0 +1,1 @@
+﻿Allow to open MapWindow 4 projects.
