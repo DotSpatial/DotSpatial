@@ -36,15 +36,26 @@ namespace DotSpatial.Controls
             {
                 if (value == _applicationManager) return;
                 if (_applicationManager != null)
+                {
                     _applicationManager.HeaderControlChanged -= ApplicationManagerOnHeaderControlChanged;
+                    _applicationManager.ExtensionsActivated -= ApplicationManagerOnExtensionsActivated;
+                }
 
                 _applicationManager = value;
 
                 if (_applicationManager != null)
+                {
                     _applicationManager.HeaderControlChanged += ApplicationManagerOnHeaderControlChanged;
+                    _applicationManager.ExtensionsActivated += ApplicationManagerOnExtensionsActivated;
+                }
 
                 InitHeaderControl();
             }
+        }
+
+        private void ApplicationManagerOnExtensionsActivated(object sender, EventArgs eventArgs)
+        {
+            _menuBar.LoadToolstrips();
         }
 
         private void ApplicationManagerOnHeaderControlChanged(object sender, EventArgs eventArgs)
