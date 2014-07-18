@@ -1,1 +1,0 @@
-﻿Contains several improvements to StatusBar.
