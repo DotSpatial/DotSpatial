@@ -41,8 +41,9 @@ namespace DotSpatial.Controls.DefaultRequiredImports
 
                 var menuStrip = new MenuStrip { Name = DEFAULT_GROUP_NAME, Dock = DockStyle.Top };
                 Shell.Controls.Add(menuStrip);
-
+               
                 Initialize(container, menuStrip);
+                App.ExtensionsActivated += delegate { LoadToolstrips(); };
 
                 // Add default buttons
                 new DefaultMenuBars(App).Initialize(this);
