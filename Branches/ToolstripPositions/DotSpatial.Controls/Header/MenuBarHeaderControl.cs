@@ -26,9 +26,19 @@ namespace DotSpatial.Controls.Header
         private ToolStripPanel _tsPanel;
         private MenuStrip _menuStrip;
         private List<ToolStrip> _strips;
-
         private Boolean _toolstripsLoaded; // indicates whether toolstrips were loaded after programstart
         private readonly List<ToolstripPosition> _stripPosList = new List<ToolstripPosition>(); // List to remember ToolstripPositions for saving on exit.
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// If set the userdefined toolstrip-order won't be saved/loaded;
+        /// </summary>
+        /// <remarks>Enables the user to ignore Toolstrippositionsaving (e.g. in DesignMode)</remarks>
+        public bool IgnoreToolstripPositionSaving { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -251,6 +261,7 @@ namespace DotSpatial.Controls.Header
                 _menuStrip.ItemClicked -= MenuStrip_ItemClicked;
                 _tsPanel.Layout -= RememberLayout;
                 Application.ApplicationExit -= SaveToolstripPositions;
+                _stripPosList.Clear();
             }
 
             _tsPanel = toolStripPanel;
@@ -260,8 +271,10 @@ namespace DotSpatial.Controls.Header
             _menuStrip = menuStrip;
             _menuStrip.ItemClicked += MenuStrip_ItemClicked;
             _strips = new List<ToolStrip> { _menuStrip };
+            if (_stripPosList.Count == 0) //set the default position of the menustrip for it to show on top
+                _stripPosList.Add(new ToolstripPosition(_menuStrip.Name, 0, 0));
         }
-        
+
         /// <summary>
         /// Loads the toolstrips in the order, that was saved on the last exit.
         /// </summary>
@@ -279,7 +292,7 @@ namespace DotSpatial.Controls.Header
             }
             _toolstripsLoaded = true; //all toolstrips in _StripPosList are added, any missing strips can now be added
 
-            var index = Math.Max(0, _tsPanel.Rows.Length - 1); //add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
+            var index = Math.Max(1, _tsPanel.Rows.Length - 1); //add toolstrips that were added after saving (e.g. Plugins dropped into Plugin-folder)
             foreach (var strip in Enumerable.Reverse(_strips)) //Reverse order because join adds at the beginning of the ToolStripPanelRow
             {
                 if (!_stripPosList.Exists(_ => _.Name == strip.Name))
@@ -289,7 +302,6 @@ namespace DotSpatial.Controls.Header
             }
         }
         
-
         /// <summary>
         /// Remove item from the standard toolbar or ribbon control
         /// </summary>
@@ -412,6 +424,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         private void LoadToolstripPositions()
         {
+            if (IgnoreToolstripPositionSaving) return;
             var path = GetMenuBarHeaderControlConfigPath();
             if (!File.Exists(path)) return;
             using (var stream = File.Open(path, FileMode.Open))
@@ -427,6 +440,7 @@ namespace DotSpatial.Controls.Header
         /// </summary>
         private void RememberLayout(object sender, EventArgs e)
         {
+            if (IgnoreToolstripPositionSaving) return;
             // Because we don't know what was moved where we correct all positions. 
             // This is done in reverse, because we don't want to repeat the first rows while the last row throws an exception.
             for (var i = _tsPanel.Rows.Length - 1; i >= 0; i--)
@@ -454,19 +468,22 @@ namespace DotSpatial.Controls.Header
             }
         }
 
+        /// <summary>
+        /// Gets the path to the MenuBarHeaderControl.config-file in which the toolstrip-order is saved.
+        /// </summary>
         private static string GetMenuBarHeaderControlConfigPath()
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Application.ProductName);
             path = Path.Combine(path, "MenuBarHeaderControl.config");
             return path;
         }
-
-
+        
         /// <summary>
         /// Saves the toolstrips positions so that the user doesn't have to reorder them on next start.
         /// </summary>
         private void SaveToolstripPositions(object sender, EventArgs e)
         {
+            if (IgnoreToolstripPositionSaving) return;
             var path = GetMenuBarHeaderControlConfigPath();
             var dir = Path.GetDirectoryName(path);
             Debug.Assert(dir != null);

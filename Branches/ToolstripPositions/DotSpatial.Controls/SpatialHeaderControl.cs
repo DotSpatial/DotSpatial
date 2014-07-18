@@ -48,7 +48,7 @@ namespace DotSpatial.Controls
                     _applicationManager.HeaderControlChanged += ApplicationManagerOnHeaderControlChanged;
                     _applicationManager.ExtensionsActivated += ApplicationManagerOnExtensionsActivated;
                 }
-
+                
                 InitHeaderControl();
             }
         }
@@ -90,12 +90,6 @@ namespace DotSpatial.Controls
                 if (value == _menuStrip) return;
                 _menuStrip = value;
                 InitHeaderControl();
-
-                if (DesignMode && _menuStrip != null)
-                {
-                    // Recreate toolbar every time when it become visible
-                    _menuStrip.VisibleChanged += (sender, args) => { if (_menuStrip.Visible) InitHeaderControl(); };
-                }
             }
         }
 
@@ -125,12 +119,19 @@ namespace DotSpatial.Controls
         {
             if (_isInitializing) return;
             if (ToolbarsContainer == null || MenuStrip == null) return;
-            _menuBar.Initialize(ToolbarsContainer, MenuStrip);
 
             // Add default menus/buttons
             if (ApplicationManager != null && ApplicationManager.HeaderControl != null)
             {
+                _menuBar.IgnoreToolstripPositionSaving = DesignMode;
+                _menuBar.Initialize(ToolbarsContainer, MenuStrip);
                 new DefaultMenuBars(ApplicationManager).Initialize(ApplicationManager.HeaderControl);
+
+                // load here in DesignMode, because _applicationManager.ExtensionsActivated doesn't get raised
+                if (DesignMode)
+                {
+                    _menuBar.LoadToolstrips();
+                }
             }
         }
 
