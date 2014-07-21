@@ -35,6 +35,17 @@ namespace DotSpatial.Controls
         public LayoutForm()
         {
             InitializeComponent();
+
+            if (Mono.Mono.IsRunningOnMono())
+            {
+                // On Mac and possibly other Mono platforms, GdipCreateLineBrushFromRect
+                // in gdiplus native lib returns InvalidParameter in Mono file LinearGradientBrush.cs
+                // if a StripPanel's Width or Height is 0, so force them to non-0.
+                _toolStripContainer1.TopToolStripPanel.Size = new System.Drawing.Size(_toolStripContainer1.TopToolStripPanel.Size.Width, 1);
+                _toolStripContainer1.BottomToolStripPanel.Size = new System.Drawing.Size(_toolStripContainer1.BottomToolStripPanel.Size.Width, 1);
+                _toolStripContainer1.LeftToolStripPanel.Size = new System.Drawing.Size(1, _toolStripContainer1.LeftToolStripPanel.Size.Height);
+                _toolStripContainer1.RightToolStripPanel.Size = new System.Drawing.Size(1, _toolStripContainer1.RightToolStripPanel.Size.Height);
+            }
         }
 
         /// <summary>
