@@ -34,7 +34,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2009-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en", UltimateResourceFallbackLocation.MainAssembly)]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
