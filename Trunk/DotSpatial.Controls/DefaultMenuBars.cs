@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
@@ -220,11 +221,32 @@ namespace DotSpatial.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void PrintLayout_Click(object sender, EventArgs e)
         {
-            using (var layout = new LayoutForm())
+            if (!Mono.Mono.IsRunningOnMono())
             {
-                layout.MapControl = App.Map as Map;
-                layout.ShowDialog();
+                // In Windows always show the dialog
+                using (var layout = new LayoutForm())
+                {
+                    layout.MapControl = App.Map as Map;
+                    layout.ShowDialog();
+                }
             }
+            else
+            {
+                // In Mono show the dialog only if printers installed.
+                if (new PrinterSettings().IsValid)
+                {
+                    using (var layout = new LayoutForm())
+                    {
+                        layout.MapControl = App.Map as Map;
+                        layout.ShowDialog();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No printers installed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            
         }
 
         /// <summary>

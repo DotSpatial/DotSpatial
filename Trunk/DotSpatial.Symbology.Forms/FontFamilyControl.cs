@@ -37,11 +37,12 @@ namespace DotSpatial.Symbology.Forms
         public FontFamilyControl()
         {
             InitializeComponent();
-            foreach (FontFamily family in FontFamily.Families)
+            foreach (var family in FontFamily.Families)
             {
                 ffdNames.Items.Add(family.Name);
             }
-            ffdNames.SelectedItem = "Arial";
+
+            ffdNames.SelectedItem = ffdNames.Items.Contains("Arial") ? "Arial" : ffdNames.Items[0];  // Arial does not exist on Linux
             ffdNames.SelectedValueChanged += FfdNamesSelectedValueChanged;
         }
 
