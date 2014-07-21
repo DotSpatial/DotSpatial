@@ -30,11 +30,22 @@ namespace DotSpatial.Plugins.ExtensionManager
         private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
         private const string HideFromAutoUpdate = "HideFromAutoUpdate";
         private bool updateApp = false;
+        private string AppName;
 
         public Update(Packages package, AppManager Appmanager)
         {
             this.packages = package;
             this.App = Appmanager;
+
+            //find name of app
+            string name = Assembly.GetEntryAssembly().GetName().Name;
+            int i;
+            for (i = 0; i < name.Length; i++)
+            {
+                if (!Char.IsLetter(name[i]))
+                    break;
+            }
+            AppName = name.Substring(0, i);
         }
 
         /// <summary>
@@ -118,18 +129,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// </summary>
         private void CheckUpdateApp()
         {
-            //find app name
-            string name = Assembly.GetEntryAssembly().GetName().Name;
-            int i;
-            for (i = 0; i < name.Length; i++)
-            {
-                if (!Char.IsLetter(name[i]))
-                    break;
-            }
-            name = name.Substring(0, i);
-
             //find app package
-            var packs = packages.Repo.FindPackagesById(name);
+            var packs = packages.Repo.FindPackagesById(AppName);
 
             //compare app version
             var programVersion = SemanticVersion.Parse(Assembly.GetEntryAssembly().GetName().Version.ToString());

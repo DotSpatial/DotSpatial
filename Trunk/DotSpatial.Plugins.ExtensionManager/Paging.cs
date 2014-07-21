@@ -27,6 +27,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             this.packages = packageHelper;
             this.add = adder;
 
+            //find name of app
             string name = Assembly.GetEntryAssembly().GetName().Name;
             int i;
             for (i = 0; i < name.Length; i++)

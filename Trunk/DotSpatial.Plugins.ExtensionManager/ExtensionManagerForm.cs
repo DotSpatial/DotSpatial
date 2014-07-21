@@ -50,6 +50,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         private int currentPageNumber;
         private GetPackage getpack;
         private AppManager _App;
+        private string AppName;
+
         public Update Updates;
 
         #endregion
@@ -86,6 +88,16 @@ namespace DotSpatial.Plugins.ExtensionManager
             FormClosing += ExtensionManager_FormClosing;
             tabControl.Deselecting += tab_deselecting;
             tabControl.SelectedIndexChanged += tab_selected;
+
+            //find name of app
+            string name = Assembly.GetEntryAssembly().GetName().Name;
+            int i;
+            for (i = 0; i < name.Length; i++)
+            {
+                if (!Char.IsLetter(name[i]))
+                    break;
+            }
+            AppName = name.Substring(0, i);
         }
 
         #endregion
@@ -320,7 +332,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             if (restartNeccesary)
             {
                 if (tabControl.SelectedIndex == 0)
-                    MessageBox.Show("Please restart HydroDesktop before attempting to download any plugins.");
+                    MessageBox.Show("Please restart " + AppName +" before attempting to download any plugins.");
                 e.Cancel = true;
             }
         }
@@ -544,7 +556,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         private void ShowInstalled()
         {
             var localPackages = from item in packages.Manager.LocalRepository.GetPackages()
-                                where item.Id.Contains("Plugins") && !item.Id.Contains("HydroDesktop.Plugins") 
+                                where item.Id.Contains("Plugins") && !item.Id.Contains(AppName + ".Plugins") 
                                 && App.GetExtension(item.Id) != null && App.GetExtension(item.Id).DeactivationAllowed
                                 select item;
 
