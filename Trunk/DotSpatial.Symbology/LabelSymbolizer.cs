@@ -18,6 +18,7 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Serialization;
@@ -25,7 +26,7 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-   public class LabelSymbolizer : Descriptor, ILabelSymbolizer
+    public class LabelSymbolizer : Descriptor, ILabelSymbolizer
     {
         #region Constructors
 
@@ -57,6 +58,7 @@ namespace DotSpatial.Symbology
             PartsLabelingMethod = PartLabelingMethod.LabelLargestPart;
             PreventCollisions = true;
             PriorityField = "FID";
+            Orientation = ContentAlignment.MiddleCenter;
         }
 
         #endregion
@@ -81,6 +83,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Category("General"), Description("Gets or sets the background color of a rectangle around the label")]
         [Serialize("BackColorOpacity")]
+        [Obsolete("Use BackColor.GetOpacity() instead")] // Marked in 1.7
         public float BackColorOpacity
         {
             get { return BackColor.GetOpacity(); }
@@ -92,6 +95,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Category("Border"), Description("Gets or sets the border color opacity")]
         [Serialize("BorderColorOpacity")]
+        [Obsolete("Use BorderColor.GetOpacity() instead")] // Marked in 1.7
         public float BorderColorOpacity
         {
             get { return BorderColor.GetOpacity(); }
@@ -102,6 +106,7 @@ namespace DotSpatial.Symbology
         /// Gets or set the color that the font should be drawn in.
         /// </summary>
         [Serialize("FontColorOpacity")]
+        [Obsolete("Use FontColor.GetOpacity() instead")] // Marked in 1.7
         public float FontColorOpacity
         {
             get { return FontColor.GetOpacity(); }
@@ -141,13 +146,16 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the background color
         /// </summary>
-        [Category("General"), Description("Gets or sets the background color of a rectangle around the label"), Serialize("BackColor")]
+        [Category("General"), Description("Gets or sets the background color of a rectangle around the label"),
+         Serialize("BackColor")]
         public Color BackColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a background color should be used
         /// </summary>
-        [Category("General"), Description("Gets or sets a boolean indicating whether or not a background color should be used"), Serialize("BackColorEnabled")]
+        [Category("General"),
+         Description("Gets or sets a boolean indicating whether or not a background color should be used"),
+         Serialize("BackColorEnabled")]
         public bool BackColorEnabled { get; set; }
 
         /// <summary>
@@ -159,7 +167,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
         /// </summary>
-        [Category("Border"), Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label."), Serialize("BorderVisible")]
+        [Category("Border"),
+         Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label."),
+         Serialize("BorderVisible")]
         public bool BorderVisible { get; set; }
 
         /// <summary>
@@ -193,7 +203,7 @@ namespace DotSpatial.Symbology
         public string FontFamily { get; set; }
 
         /// <summary>
-        /// gets or sets the font size
+        /// Gets or sets the font size
         /// </summary>
         [Serialize("FontSize")]
         public float FontSize { get; set; }
