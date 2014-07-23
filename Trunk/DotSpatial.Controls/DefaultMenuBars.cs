@@ -221,32 +221,20 @@ namespace DotSpatial.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void PrintLayout_Click(object sender, EventArgs e)
         {
-            if (!Mono.Mono.IsRunningOnMono())
+            // In Mono show the dialog only if printers installed else show error message.
+            if (Mono.Mono.IsRunningOnMono() )
             {
-                // In Windows always show the dialog
-                using (var layout = new LayoutForm())
-                {
-                    layout.MapControl = App.Map as Map;
-                    layout.ShowDialog();
-                }
-            }
-            else
-            {
-                // In Mono show the dialog only if printers installed.
-                if (new PrinterSettings().IsValid)
-                {
-                    using (var layout = new LayoutForm())
-                    {
-                        layout.MapControl = App.Map as Map;
-                        layout.ShowDialog();
-                    }
-                }
-                else
+                if (!new PrinterSettings().IsValid)
                 {
                     MessageBox.Show("No printers installed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
-            
+            using (var layout = new LayoutForm())
+            {
+                layout.MapControl = App.Map as Map;
+                layout.ShowDialog();
+            }
         }
 
         /// <summary>

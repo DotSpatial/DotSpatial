@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LayoutCmnuBottom" xml:space="preserve">
     <value>Unten ausrichten</value>
@@ -310,7 +310,8 @@
     <value>Randausgleich</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
-    <value>Reproject Kartenebene Karte Koordinatensystem angepasst? Dies beeinträchtigt nicht die Quelldatei.</value>
+    <value>Koordinatensystem des Layers an Koordinatensystem der Map anpassen? Dies beeinträchtigt nicht die Quelldatei.</value>
+    <comment>Reproject map layer to match the map coordinate system? This will not affect the source file.</comment>
   </data>
   <data name="MapFrame_Projection" xml:space="preserve">
     <value>Projektion</value>

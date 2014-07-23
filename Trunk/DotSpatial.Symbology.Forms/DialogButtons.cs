@@ -29,7 +29,7 @@ namespace DotSpatial.Symbology.Forms
     /// <summary>
     /// DialogButtons
     /// </summary>
-    [DefaultEvent("OkClicked"), ToolboxItem(false)]
+    [DefaultEvent("OkClicked"), ToolboxItem(true)]
     public class DialogButtons : UserControl
     {
         #region Events
