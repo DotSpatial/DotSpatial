@@ -28,6 +28,7 @@ Option Explicit On
 
 Imports DotSpatial.Controls.Header
 Imports System.IO
+Imports System.Reflection
 
 Public Class TaudemPlugin
     Inherits Controls.Extension
@@ -69,7 +70,7 @@ Public Class TaudemPlugin
         tdbChoiceList = New tdbChoices_v3
         tdbFileList = New tdbFileTypes_v3
         tdbChoiceList.SetDefaultTDchoices()
-        tdbChoiceList.ConfigFileName = Directory.GetCurrentDirectory() + "\awd.cfg"
+        tdbChoiceList.ConfigFileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "awd.cfg")
         tdbChoiceList.LoadConfig()
 
         App.HeaderControl.Add(New SimpleActionItem("Watershed Delineation", AddressOf AutoWatershedDelineation_Click))
