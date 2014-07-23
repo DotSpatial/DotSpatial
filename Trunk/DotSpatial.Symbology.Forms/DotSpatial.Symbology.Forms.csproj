@@ -615,6 +615,9 @@
     <EmbeddedResource Include="LayerDialog.pt-BR.resx">
       <DependentUpon>LayerDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LineJoinControl.de-DE.resx">
+      <DependentUpon>LineJoinControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OutlineControl.de-DE.resx">
       <DependentUpon>OutlineControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -690,6 +693,12 @@
     <EmbeddedResource Include="SelectField.zh-CN.resx">
       <DependentUpon>SelectField.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Size2DDialog.de-DE.resx">
+      <DependentUpon>Size2DDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SizeControl.de-DE.resx">
+      <DependentUpon>SizeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SQLExpressionDialog.de-DE.resx">
       <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
