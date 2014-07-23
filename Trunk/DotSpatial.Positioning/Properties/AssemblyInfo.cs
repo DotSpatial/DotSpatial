@@ -34,36 +34,15 @@ using System.Runtime.ConstrainedExecution;
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning")]
 
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]
 
 #if PocketPC
-    [assembly: AssemblyTitle("DotSpatial.Positioning.PocketPC")]
+   [assembly: AssemblyTitle("DotSpatial.Positioning.PocketPC")]
 #else
-[assembly: AssemblyTitle("DotSpatial.Positioning")]
+   [assembly: AssemblyTitle("DotSpatial.Positioning")]
 #endif
 
-/* The version of the assembly depends on the framework version.  Design-Time assemblies
- * have no revision number because that would require much code change for each release.
- * We only care about the major version number and VS version numbers. */
-
-#if Framework40
-// .NET Framework 4.0
-
-[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2010")]
-#elif Framework30
-		// .NET Framework 3.5
-		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2008")]
-#elif Framework20
-    // .NET Framework 2.0
-    [assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2005")]
-#elif Framework10
-		// .NET Framework 1.0
-		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2002")]
-#else
-		// .NET Framework 1.1
-		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2003")]
-#endif
+[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications.")]
 
 /* Compact Framework 1.0 requires that design-time assemblies contain a special assembly attribute to link them
  * up to the assemblies to use on the mobile device.
@@ -72,7 +51,7 @@ using System.Runtime.ConstrainedExecution;
     [assembly: System.CF.Design.RuntimeAssembly("DotSpatial.Positioning.PocketPC, Version=1.4.5000.7, Culture=neutral, PublicKeyToken=d77afaeb30e3236a")]
 #endif
 
-/* Thisd assembly contains language-specific resources.  Help the CLR find them. */
+/* This assembly contains language-specific resources.  Help the CLR find them. */
 #if Framework20 && !PocketPC
 [assembly: NeutralResourcesLanguageAttribute("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif

@@ -48,7 +48,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Framework20;Framework30;DesignTime</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;Framework20;Framework30;DesignTime;Framework40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -131,7 +131,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>rem runas /user:administrator "$(DevEnvDir)..\..\..\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\gacutil.exe" /if "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

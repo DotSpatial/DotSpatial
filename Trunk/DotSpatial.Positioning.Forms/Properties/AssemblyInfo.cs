@@ -26,16 +26,15 @@ using System.Runtime.ConstrainedExecution;
 /* These assembly attributes will be the same regardless of the product. */
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyCompany("DotSpatial")]
+[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyCopyright("Copyright© 2003-2009  DotSpatial.Positioning")]
 
 /* These attributes will change for each assembly. */
-[assembly: AssemblyDescription("Global Positioning System Framework for Visual Studio.NET")]
+[assembly: AssemblyDescription("Global Positioning System Framework.")]
 [assembly: AssemblyProduct("DotSpatial.Positioning.Forms")]
 
 /* The version will crank up depending on how much the code has changed. */
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]
 
 /* The title of the assembly varies depending on whether the assembly is for design-time use,
  * and whether the assembly targets a desktop or mobile device.

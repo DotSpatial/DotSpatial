@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DotSpatial.Symbology.Forms")]
-[assembly: AssemblyDescription("Windows forms elements related to customizing map cartographic symbols.")]
+[assembly: AssemblyDescription("Windows forms controls related to customizing map cartographic symbols.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Symbology.Forms")]
@@ -39,5 +39,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d73f1a25-3f64-4174-a480-93926db72fbf")]
 
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]

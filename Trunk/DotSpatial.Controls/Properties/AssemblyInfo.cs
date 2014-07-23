@@ -11,7 +11,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DotSpatial.Controls")]
@@ -27,5 +26,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("86a8a37c-da91-46b5-ac7e-f559d5763011")]
 
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]

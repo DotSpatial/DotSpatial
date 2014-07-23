@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("DotSpatial.Projections.Forms")]
-[assembly: AssemblyDescription("Windows Forms elements for working with Projections and coordinate systems.")]
+[assembly: AssemblyDescription("Windows Forms controls for working with Projections and coordinate systems.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Projections.Forms")]
@@ -38,5 +38,4 @@ using System.Runtime.InteropServices;
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 [assembly: Guid("0f3393a0-45aa-43bd-9eda-def636b55135")]
 
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]

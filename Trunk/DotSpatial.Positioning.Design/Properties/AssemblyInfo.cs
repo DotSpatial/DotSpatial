@@ -30,25 +30,10 @@ using System.Security;
 [assembly: AssemblyProduct("DotSpatial.Positioning.Design")]
 [assembly: AssemblyTitle("DotSpatial.Positioning.Design")]
 
-[assembly: AssemblyVersion("1.6")]
-[assembly: AssemblyFileVersion("1.6")]
+[assembly: AssemblyVersion("1.7")]
+[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications.")]
 
-/* The version of the assembly depends on the framework version.  Design-Time assemblies
- * have no revision number because that would require much code change for each release.
- * We only care about the major version number and VS version numbers. */
-
-#if Framework40
-		// .NET Framework 4.0
-		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2010")]
-#elif Framework30
-// .NET Framework 3.5
-[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2008")]
-#elif Framework20
-    // .NET Framework 2.0
-    [assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2005")]
-#endif
-
-/* Thisd assembly contains language-specific resources.  Help the CLR find them. */
+/* This assembly contains language-specific resources.  Help the CLR find them. */
 [assembly: NeutralResourcesLanguageAttribute("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 
 /* The assembly configuration just explains what target platform this assembly is for.  This
