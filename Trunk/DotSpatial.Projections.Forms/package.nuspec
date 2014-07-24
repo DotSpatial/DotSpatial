@@ -17,4 +17,7 @@
       <dependency id="DotSpatial.Projections" Version="1.7"/>
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-client\" />
+  </files>
 </package>
