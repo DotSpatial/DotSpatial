@@ -18,6 +18,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-client\" />
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-client\" />
   </files>
 </package>
