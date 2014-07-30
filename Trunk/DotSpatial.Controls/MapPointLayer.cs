@@ -300,7 +300,6 @@ namespace DotSpatial.Controls
         {
             var g = e.Device ?? Graphics.FromImage(BackBuffer);
             var origTransform = g.Transform;
-            var featureType = DataSet.FeatureType;
 
             var minX = e.MinX;
             var maxY = e.MaxY;
@@ -325,45 +324,25 @@ namespace DotSpatial.Controls
                         if (!DrawnStates[index].Visible) continue;
                     }
 
+
+                    double scaleSize = 1;
+                    if (ps.ScaleMode == ScaleMode.Geographic)
+                    {
+                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                    }
                     var shape = DataSet.GetShape(index, false);
-                    if (featureType == FeatureType.Point)
+                    for (var i = 0; i < shape.Vertices.Length; i += 2)
                     {
                         var pt = new Point
                         {
-                            X = Convert.ToInt32((shape.Vertices[0] - minX) * dx),
-                            Y = Convert.ToInt32((maxY - shape.Vertices[1])*dy)
+                            X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
+                            Y = Convert.ToInt32((maxY - shape.Vertices[i+ 1]) * dy)
                         };
-                        double scaleSize = 1;
-                        if (ps.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                        }
+
                         var shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
                         g.Transform = shift;
                         ps.Draw(g, scaleSize);
-                    }
-                    else
-                    {
-                        // multi-point
-                        var range = DataSet.ShapeIndices[index];
-                        for (var i = range.StartIndex; i <= range.EndIndex(); i++)
-                        {
-                            var pt = new Point
-                            {
-                                X = Convert.ToInt32((shape.Vertices[0] - minX)*dx),
-                                Y = Convert.ToInt32((maxY - shape.Vertices[1]) * dy)
-                            };
-                            double scaleSize = 1;
-                            if (ps.ScaleMode == ScaleMode.Geographic)
-                            {
-                                scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                            }
-                            var shift = origTransform.Clone();
-                            shift.Translate(pt.X, pt.Y);
-                            g.Transform = shift;
-                            ps.Draw(g, scaleSize);
-                        }
                     }
                 }
             }
@@ -421,12 +400,12 @@ namespace DotSpatial.Controls
                             bmp = selectedSymbol;
                         }
                         var shape = DataSet.GetShape(index, false);
-                        if (featureType == FeatureType.Point)
+                        for (var i = 0; i < shape.Vertices.Length; i += 2)
                         {
                             var pt = new Point
                             {
-                                X = Convert.ToInt32((shape.Vertices[0] - minX) * dx),
-                                Y = Convert.ToInt32((maxY - shape.Vertices[1])*dy)
+                                X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
+                                Y = Convert.ToInt32((maxY - shape.Vertices[i + 1]) * dy)
                             };
 
                             var shift = origTransform.Clone();
@@ -434,23 +413,6 @@ namespace DotSpatial.Controls
                             g.Transform = shift;
 
                             g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
-                        }
-                        else
-                        {
-                            var range = DataSet.ShapeIndices[index];
-                            for (var i = range.StartIndex; i <= range.EndIndex(); i++)
-                            {
-                                var pt = new Point
-                                {
-                                    X = Convert.ToInt32((shape.Vertices[0] - minX) * dx),
-                                    Y = Convert.ToInt32((maxY - shape.Vertices[1]) * dy)
-                                };
-
-                                var shift = origTransform.Clone();
-                                shift.Translate(pt.X, pt.Y);
-                                g.Transform = shift;
-                                g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
-                            }
                         }
                     }
                 }
@@ -493,6 +455,12 @@ namespace DotSpatial.Controls
                     }
                     if (ps == null) continue;
                     g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
+                    double scaleSize = 1;
+                    if (ps.ScaleMode == ScaleMode.Geographic)
+                    {
+                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                    }
+
                     foreach (var c in feature.Coordinates)
                     {
                         var pt = new Point
@@ -500,11 +468,7 @@ namespace DotSpatial.Controls
                             X = Convert.ToInt32((c.X - minX)*dx),
                             Y = Convert.ToInt32((maxY - c.Y)*dy)
                         };
-                        double scaleSize = 1;
-                        if (ps.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scaleSize = e.ImageRectangle.Width/e.GeographicExtents.Width;
-                        }
+                        
                         var shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
                         g.Transform = shift;

@@ -1,28 +1,21 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in January, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// *******************************************************************************************************
+// Product: DotSpatial.Data.PointShapefile.cs
+// Description: A shapefile class that handles the special case where the data type is point.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Max Miroshnikov    |  07/2014           | Created.
+// *******************************************************************************************************
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
@@ -67,6 +60,9 @@ namespace DotSpatial.Data
 
             switch (Header.ShapeType)
             {
+                case ShapeType.Point:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
                 case ShapeType.PointM:
                     CoordinateType = CoordinateType.M;
                     break;
@@ -74,8 +70,7 @@ namespace DotSpatial.Data
                     CoordinateType = CoordinateType.Z;
                     break;
                 default:
-                    CoordinateType = CoordinateType.Regular;
-                    break;
+                    throw new Exception("Unsupported ShapeType");
             }
 
             Extent = Header.ToExtent();
@@ -188,17 +183,9 @@ namespace DotSpatial.Data
 
         private Shape ReadShape(int shp, Stream reader)
         {
-            var vert = new double[2]; // X, Y
-            double[] m = null;
-            double[] z = null;
-            if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
-            {
-                m = new double[1];
-            }
-            if (Header.ShapeType == ShapeType.PointZ)
-            {
-                z = new double[1];
-            }
+            var pointsNum = 0;
+            double xmin = 0, ymin = 0, xmax = 0, ymax = 0, zmin = 0, zmax = 0, mmin = 0, mmax = 0;
+            double[] vert = null, m = null, z = null;
 
             var shapeHeaders = ShapeHeaders;
             reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
@@ -209,42 +196,42 @@ namespace DotSpatial.Data
             Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
 
             var shapeType = (ShapeType)reader.ReadInt32();
-            if (shapeType == ShapeType.NullShape)
+            if (shapeType == ShapeType.NullShape) goto fin;
+
+            var byteLen = 4; // from shapeType read
+
+            // Initialize points arrays
+            pointsNum = 1;
+            vert = new double[2 * pointsNum];
+            if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
             {
-                if (m != null)
-                {
-                    m[shp] = double.MinValue;
-                }
-                goto fin;
+                m = Enumerable.Repeat(double.MinValue, pointsNum).ToArray();
+            }
+            if (Header.ShapeType == ShapeType.PointZ)
+            {
+                z = new double[1];
             }
 
-            // Read X
-            var ind = 4;
-            vert[0] = reader.ReadDouble();
-            ind += 8;
-
-            // Read Y
-            vert[1] = reader.ReadDouble();
-            ind += 8;
+            // Read X, Y
+            vert[0] = reader.ReadDouble(); byteLen += 8;
+            vert[1] = reader.ReadDouble(); byteLen += 8;
+            xmin = xmax = vert[0];
+            ymin = ymax = vert[1];
 
             // Read Z
             if (z != null)
             {
-                z[0] = reader.ReadDouble();
-                ind += 8;
+                z[0] = reader.ReadDouble(); byteLen += 8;
+                zmin = zmax = z[0];
             }
 
             // Read M
             if (m != null)
             {
-                if (shapeHeaders[0].ByteLength <= ind)
+                if (byteLen + 8 == shapeHeaders[shp].ByteLength) // +8 means read one double
                 {
-                    m[0] = double.MinValue;
-                }
-                else
-                {
-                    m[0] = reader.ReadDouble();
-                    ind += 8;
+                    m[0] = reader.ReadDouble(); byteLen += 8;
+                    mmin = mmax = m[0];
                 }
             }
 
@@ -254,13 +241,25 @@ namespace DotSpatial.Data
                 RecordNumber = recordNumber,
                 StartIndex = 0,
                 ContentLength = shapeHeaders[shp].ContentLength,
-                NumPoints = 1,
-                NumParts = 1,
-                Extent = new Extent(new[] {vert[0], vert[1], vert[0], vert[1]}),
+                NumPoints = pointsNum,
+                Extent = new Extent(xmin, ymin, xmax, ymax),
                 ShapeType = shapeType,
             };
-            shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.Point) {NumVertices = 1});
-            return new Shape(FeatureType) {Range = shr, M = m, Z = z, Vertices = vert,};
+            if (vert != null)
+            {
+                shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.Point) {NumVertices = vert.Length});
+            }
+            return new Shape(FeatureType)
+            {
+                Range = shr,
+                M = m,
+                Z = z,
+                Vertices = vert,
+                MaxM = mmax,
+                MinM = mmin,
+                MaxZ = zmax,
+                MinZ = zmin
+            };
         }
        
 

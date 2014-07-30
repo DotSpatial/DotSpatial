@@ -708,11 +708,6 @@ namespace DotSpatial.Data
                 return GetPolygon(index);
             }
 
-            if (FeatureType == FeatureType.MultiPoint)
-            {
-                return GetMultiPoint(index);
-            }
-
             return null;
         }
 
@@ -1171,50 +1166,6 @@ namespace DotSpatial.Data
                                 ParentFeatureSet = this,
                                 ShapeIndex = shape,
                             };
-
-            // Attribute reading is only handled in the overridden case.
-            return f;
-        }
-
-        /// <summary>
-        /// Returns a single multipoint feature for the shape at the specified index
-        /// </summary>
-        protected IFeature GetMultiPoint(int index)
-        {
-            ShapeRange shape = ShapeIndices[index];
-            List<Coordinate> coords = new List<Coordinate>();
-            foreach (PartRange part in shape.Parts)
-            {
-                int i = part.StartIndex;
-                foreach (Vertex vertex in part)
-                {
-                    Coordinate c = new Coordinate(vertex.X, vertex.Y);
-                    coords.Add(c);
-                    if (M != null && M.Length != 0)
-                    {
-                        c.M = M[i];
-                    }
-
-                    if (Z != null && Z.Length != 0)
-                    {
-                        c.Z = Z[i];
-                    }
-
-                    i++;
-                }
-            }
-
-            if (FeatureGeometryFactory == null)
-            {
-                FeatureGeometryFactory = GeometryFactory.Default;
-            }
-
-            var mp = FeatureGeometryFactory.CreateMultiPoint(coords);
-            var f = new Feature(mp)
-            {
-                ParentFeatureSet = this,
-                ShapeIndex = shape,
-            };
 
             // Attribute reading is only handled in the overridden case.
             return f;

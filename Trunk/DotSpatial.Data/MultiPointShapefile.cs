@@ -1,26 +1,19 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Data.dll
-// Description:  The data access libraries for the DotSpatial project.
-//
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is DotSpatial
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created in February, 2008.
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// *******************************************************************************************************
+// Product: DotSpatial.Data.MultiPointShapefile.cs
+// Description:  A shapefile class that handles the special case where each features has multiple points.
+// Copyright & License: See www.DotSpatial.org.
+// *******************************************************************************************************
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// Max Miroshnikov    |  07/2014           | Created.
+// *******************************************************************************************************
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Topology;
@@ -32,8 +25,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class MultiPointShapefile : Shapefile
     {
-        private const int BLOCKSIZE = 16000000;
-
         /// <summary>
         /// Creates a new instance of a MultiPointShapefile for in-ram handling only.
         /// </summary>
@@ -55,87 +46,51 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the feature at the specified index offset
-        /// </summary>
-        /// <param name="index">the integer index</param>
-        /// <returns>An IFeature created from the shape at the specified offset</returns>
-        public override IFeature GetFeature(int index)
-        {
-            IFeature f = GetMultiPoint(index);
-            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
-            return f;
-        }
-
-        /// <summary>
         /// Opens a shapefile
         /// </summary>
         /// <param name="fileName">The string fileName of the point shapefile to load</param>
         /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
         public void Open(string fileName, IProgressHandler progressHandler)
         {
-            IndexMode = true;
+            if (!File.Exists(fileName)) return;
+
             Filename = fileName;
-            FeatureType = FeatureType.MultiPoint;
+            IndexMode = true;
             Header = new ShapefileHeader(fileName);
-            CoordinateType = CoordinateType.Regular;
-            if (Header.ShapeType == ShapeType.MultiPointM)
+
+            switch (Header.ShapeType)
             {
-                CoordinateType = CoordinateType.M;
+                case ShapeType.MultiPoint:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+                case ShapeType.MultiPointM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.MultiPointZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    throw new Exception("Unsupported ShapeType");
             }
-            if (Header.ShapeType == ShapeType.MultiPointZ)
-            {
-                CoordinateType = CoordinateType.Z;
-            }
+
+            Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
             Attributes.Open(fileName);
+
             FillPoints(fileName, progressHandler);
             ReadProjection();
         }
 
-        // X Y MultiPoints: Total Length = 28 Bytes
-        // ---------------------------------------------------------
-        // Position     Value               Type        Number      Byte Order
-        // ---------------------------------------------------------
-        // Byte 0       Record Number       Integer     1           Big
-        // Byte 4       Content Length      Integer     1           Big
-        // Byte 8       Shape Type 8        Integer     1           Little
-        // Byte 12      Xmin                Double      1           Little
-        // Byte 20      Ymin                Double      1           Little
-        // Byte 28      Xmax                Double      1           Little
-        // Byte 36      Ymax                Double      1           Little
-        // Byte 48      NumPoints           Integer     1           Little
-        // Byte X       Points              Point       NumPoints   Little
-
-        // X Y M MultiPoints: Total Length = 34 Bytes
-        // ---------------------------------------------------------
-        // Position     Value               Type        Number      Byte Order
-        // ---------------------------------------------------------
-        // Byte 0       Record Number       Integer     1           Big
-        // Byte 4       Content Length      Integer     1           Big
-        // Byte 8       Shape Type 28       Integer     1           Little
-        // Byte 12      Box                 Double      4           Little
-        // Byte 44      NumPoints           Integer     1           Little
-        // Byte X       Points              Point       NumPoints   Little
-        // Byte Y*      Mmin                Double      1           Little
-        // Byte Y + 8*  Mmax                Double      1           Little
-        // Byte Y + 16* Marray              Double      NumPoints   Little
-
-        // X Y Z M MultiPoints: Total Length = 44 Bytes
-        // ---------------------------------------------------------
-        // Position     Value               Type        Number  Byte Order
-        // ---------------------------------------------------------
-        // Byte 0       Record Number       Integer     1           Big
-        // Byte 4       Content Length      Integer     1           Big
-        // Byte 8       Shape Type 18       Integer     1           Little
-        // Byte 12      Box                 Double      4           Little
-        // Byte 44      NumPoints           Integer     1           Little
-        // Byte X       Points              Point       NumPoints   Little
-        // Byte Y       Zmin                Double      1           Little
-        // Byte Y + 8   Zmax                Double      1           Little
-        // Byte Y + 16  Zarray              Double      NumPoints   Little
-        // Byte Z*      Mmin                Double      1           Little
-        // Byte Z+8*    Mmax                Double      1           Little
-        // Byte Z+16*   Marray              Double      NumPoints   Little
+        private List<ShapeHeader> _shapeHeaders;
+        private List<ShapeHeader> ShapeHeaders
+        {
+            get
+            {
+                if (_shapeHeaders != null) return _shapeHeaders;
+                _shapeHeaders = ReadIndexFile(Filename);
+                return _shapeHeaders;
+            }
+        }
 
         private void FillPoints(string fileName, IProgressHandler progressHandler)
         {
@@ -151,365 +106,344 @@ namespace DotSpatial.Data
             }
 
             // Get the basic header information.
-            ShapefileHeader header = new ShapefileHeader(fileName);
-            Extent = new Extent(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
+            var header = Header;
+            Extent = Header.ToExtent();
             // Check to ensure that the fileName is the correct shape type
-            if (header.ShapeType != ShapeType.MultiPoint &&
-                 header.ShapeType != ShapeType.MultiPointM &&
-                 header.ShapeType != ShapeType.MultiPointZ)
+            if (header.ShapeType != ShapeType.MultiPoint && header.ShapeType != ShapeType.MultiPointM
+                && header.ShapeType != ShapeType.MultiPointZ)
             {
-                throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
+                throw new ApplicationException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
-            // This will set up a reader so that we can read values in huge chunks, which is much faster than one value at a time.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(fileName, progressHandler);
-
-            if (bbReader.FileLength == 100)
+            if (new FileInfo(fileName).Length == 100)
             {
-                // The shapefile is empty so we can simply return here
-                bbReader.Close();
+                // the file is empty so we are done reading
                 return;
             }
-
-            // Skip the shapefile header by skipping the first 100 bytes in the shapefile
-            bbReader.Seek(100, SeekOrigin.Begin);
-
-            int numShapes = shapeHeaders.Count;
-
-            byte[] bigEndians = new byte[numShapes * 8];
-            byte[] allBounds = new byte[numShapes * 32];
-
-            ByteBlock allCoords = new ByteBlock(BLOCKSIZE);
-            bool isM = (header.ShapeType == ShapeType.MultiPointZ || header.ShapeType == ShapeType.MultiPointM);
-            bool isZ = (header.ShapeType == ShapeType.PolyLineZ);
-            ByteBlock allZ = null;
-            ByteBlock allM = null;
-            if (isZ)
+            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
             {
-                allZ = new ByteBlock(BLOCKSIZE);
-            }
-            if (isM)
+                StepPercent = 5
+            };
+            var numShapes = ShapeHeaders.Count;
+            using (var reader = new FileStream(fileName, FileMode.Open))
             {
-                allM = new ByteBlock(BLOCKSIZE);
-            }
-            int pointOffset = 0;
-            for (int shp = 0; shp < numShapes; shp++)
-            {
-                // Read from the index file because some deleted records
-                // might still exist in the .shp file.
-                long offset = (shapeHeaders[shp].ByteOffset);
-                bbReader.Seek(offset, SeekOrigin.Begin);
-
-                // time: 200 ms
-                ShapeRange shape = new ShapeRange(FeatureType.MultiPoint)
-                                   {
-                                       RecordNumber = bbReader.ReadInt32(false),
-                                       ContentLength = bbReader.ReadInt32(false),
-                                       ShapeType = (ShapeType)bbReader.ReadInt32(),
-                                       StartIndex = pointOffset
-                                   };
-
-                //bbReader.Read(bigEndians, shp * 8, 8);
-                if (shape.ShapeType == ShapeType.NullShape)
+                for (var shp = 0; shp < numShapes; shp++)
                 {
-                    continue;
+                    progressMeter.CurrentPercent = (int)(shp * 100.0 / numShapes);
+                    var shape = ReadShape(shp, reader);
+                    ShapeIndices.Add(shape.Range);
                 }
-                bbReader.Read(allBounds, shp * 32, 32);
-                shape.NumParts = 1;
-                shape.NumPoints = bbReader.ReadInt32();
-                allCoords.Read(shape.NumPoints * 16, bbReader);
-                pointOffset += shape.NumPoints;
+            }
+            progressMeter.Reset();
+        }
 
-                if (header.ShapeType == ShapeType.MultiPointM)
+        public override Shape GetShape(int index, bool getAttributes)
+        {
+            var sh = base.GetShape(index, getAttributes);
+            if (sh != null) return sh;
+
+            using (var reader = new FileStream(Filename, FileMode.Open))
+                sh = ReadShape(index, reader);
+            if (getAttributes)
+            {
+                sh.Attributes = AttributesPopulated
+                    ? DataTable.Rows[index].ItemArray
+                    : Attributes.SupplyPageOfData(index, 1).Rows[0].ItemArray;
+            }
+            return sh;
+        }
+
+        /// <inheritdoc />
+        public override IFeature GetFeature(int index)
+        {
+            var f = base.GetFeature(index);
+            if (f != null) return f;
+
+            var shape = GetShape(index, false);
+            var coords = new Coordinate[shape.Vertices.Length / 2];
+            for (int i = 0; i < shape.Vertices.Length; i += 2)
+            {
+                var coordinate = new Coordinate(shape.Vertices[i], shape.Vertices[i + 1]);
+                if (shape.M != null)
+                    coordinate.M = shape.M[i/2];
+                if (shape.Z != null)
+                    coordinate.Z = shape.Z[i/2];
+                coords[i/2] = coordinate;
+            }
+
+            var p = GetFeatureGeometryFactory().CreateMultiPoint(coords);
+            f = new Feature(p)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = ShapeIndices[index],
+                DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0],
+            };
+            return f;
+        }
+
+        private Shape ReadShape(int shp, Stream reader)
+        {
+            var pointsNum = 0;
+            double xmin = 0, ymin = 0, xmax = 0, ymax = 0, zmin = 0, zmax = 0, mmin = 0, mmax = 0;
+            double[] vert = null, m = null, z = null;
+
+            var shapeHeaders = ShapeHeaders;
+            reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
+
+            var recordNumber = reader.ReadInt32(Endian.BigEndian);
+            Debug.Assert(recordNumber == shp + 1);
+            var contentLen = reader.ReadInt32(Endian.BigEndian);
+            Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
+
+            var shapeType = (ShapeType)reader.ReadInt32();
+            if (shapeType == ShapeType.NullShape) goto fin;
+
+            var byteLen = 4; // from shapeType read
+
+            // Read bounding box
+            xmin = reader.ReadDouble(); byteLen += 8;
+            ymin = reader.ReadDouble(); byteLen += 8;
+            xmax = reader.ReadDouble(); byteLen += 8;
+            ymax = reader.ReadDouble(); byteLen += 8;
+
+            // Read num points
+            pointsNum = reader.ReadInt32(); byteLen += 4;
+
+            // Initialize points arrays
+            vert = new double[2 * pointsNum]; // X, Y
+            if (Header.ShapeType == ShapeType.MultiPointM || Header.ShapeType == ShapeType.MultiPointZ)
+            {
+                m = Enumerable.Repeat(double.MinValue, pointsNum).ToArray();
+            }
+            if (Header.ShapeType == ShapeType.MultiPointZ)
+            {
+                z = new double[pointsNum];
+            }
+
+            // Read X and Y coordinates
+            for (var i = 0; i < pointsNum; i += 2)
+            {
+                vert[i] = reader.ReadDouble(); byteLen += 8;    // X
+                vert[i+1] = reader.ReadDouble(); byteLen += 8;  // Y
+            }
+
+            // Read Z
+            if (z != null)
+            {
+                zmin = reader.ReadDouble(); byteLen += 8;
+                zmax = reader.ReadDouble(); byteLen += 8;
+
+                for (var i = 0; i < pointsNum; i++)
                 {
-                    // These are listed as "optional" but there isn't a good indicator of
-                    // how to determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
+                    z[i] = reader.ReadDouble(); byteLen += 8;
+                }
+            }
+
+            // Read M
+            if (m != null)
+            {
+                if (byteLen + 2 * 8 + pointsNum * 8 == shapeHeaders[shp].ByteLength) // mmin, mmax and pointsNum doubles
+                {
+                    mmin = reader.ReadDouble(); byteLen += 8;
+                    mmax = reader.ReadDouble(); byteLen += 8;
+
+                    for (var i = 0; i < pointsNum; i++)
                     {
-                        IExtentM mExt = (IExtentM)MyExtent;
-                        mExt.MinM = bbReader.ReadDouble();
-                        mExt.MaxM = bbReader.ReadDouble();
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
+                        m[i] = reader.ReadDouble(); byteLen += 8;
                     }
                 }
-                if (header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    bool hasM = shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints;
-                    IExtentZ zExt = (IExtentZ)MyExtent;
-                    zExt.MinZ = bbReader.ReadDouble();
-                    zExt.MaxZ = bbReader.ReadDouble();
-                    // For Z shapefiles, the Z part is not optional.
-                    if (allZ != null) allZ.Read(shape.NumPoints * 8, bbReader);
-
-                    // These are listed as "optional" but there isn't a good indicator of
-                    // how to determine if they were added.
-                    // To handle the "optional" M values, check the contentLength for the feature.
-                    // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                    if (hasM)
-                    {
-                        IExtentM mExt = (IExtentM)MyExtent;
-                        mExt.MinM = bbReader.ReadDouble();
-                        mExt.MaxM = bbReader.ReadDouble();
-                        if (allM != null) allM.Read(shape.NumPoints * 8, bbReader);
-                    }
-                }
-                // Now that we have read all the values, create the geometries from the points and parts arrays.
-                ShapeIndices.Add(shape);
             }
-            double[] vert = allCoords.ToDoubleArray();
-            Vertex = vert;
-            if (isM) M = allM.ToDoubleArray();
-            if (isZ) Z = allZ.ToDoubleArray();
-            Array.Reverse(bigEndians);
-            List<ShapeRange> shapes = ShapeIndices;
-            double[] bounds = new double[numShapes * 4];
-            Buffer.BlockCopy(allBounds, 0, bounds, 0, allBounds.Length);
-            for (int shp = 0; shp < numShapes; shp++)
+
+       fin:
+            var shr = new ShapeRange(FeatureType.MultiPoint)
             {
-                ShapeRange shape = shapes[shp];
-                shape.Extent = new Extent(bounds, shp * 4);
-                int endIndex = shape.NumPoints + shape.StartIndex;
-                int startIndex = shape.StartIndex;
-                int count = endIndex - startIndex;
-                PartRange partR = new PartRange(vert, shape.StartIndex, 0, FeatureType.MultiPoint) { NumVertices = count };
-                shape.Parts.Add(partR);
+                RecordNumber = recordNumber,
+                StartIndex = 0,
+                ContentLength = shapeHeaders[shp].ContentLength,
+                NumPoints = pointsNum,
+                Extent = new Extent(xmin, ymin, xmax, ymax),
+                ShapeType = shapeType,
+            };
+            if (vert != null)
+            {
+                shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.MultiPoint) {NumVertices = vert.Length});
             }
-
-            bbReader.Dispose();
+            return new Shape(FeatureType)
+            {
+                Range = shr,
+                M = m,
+                Z = z,
+                Vertices = vert,
+                MaxM = mmax,
+                MinM = mmin,
+                MaxZ = zmax,
+                MinZ = zmin
+            };
         }
 
         /// <summary>
-        /// Saves the file to a new location
+        /// Saves the shapefile to a different fileName, but still as a shapefile.  This method does not support saving to
+        /// any other file format.
         /// </summary>
-        /// <param name="fileName">The fileName to save</param>
-        /// <param name="overwrite">Boolean that specifies whether or not to overwrite the existing file</param>
+        /// <param name="fileName">The string fileName to save as</param>
+        /// <param name="overwrite">A boolean that is true if the file should be overwritten</param>
         public override void SaveAs(string fileName, bool overwrite)
         {
             EnsureValidFileToSave(fileName, overwrite);
-            Filename = fileName;
-
-            // Set ShapeType before setting extent.
-            if (CoordinateType == CoordinateType.Regular)
-            {
-                Header.ShapeType = ShapeType.MultiPoint;
-            }
-            if (CoordinateType == CoordinateType.M)
-            {
-                Header.ShapeType = ShapeType.MultiPointM;
-            }
-            if (CoordinateType == CoordinateType.Z)
-            {
-                Header.ShapeType = ShapeType.MultiPointZ;
-            }
-            HeaderSaveAs(fileName);
 
             if (IndexMode)
             {
-                SaveAsIndexed(fileName);
-                return;
+                if (Filename == fileName)
+                {
+                    // files already there. Nothing to do.
+                }
+                else
+                {
+                    // In Index mode shapes are not loaded into memory, so we can just copy source .shp and .shx files to the new location
+                    File.Copy(Filename, fileName);
+                    var shx = Path.ChangeExtension(Filename, ".shx");
+                    if (File.Exists(shx)) File.Copy(shx, Path.ChangeExtension(fileName, ".shx"));
+                }
             }
-
-            var bbWriter = new BufferedBinaryWriter(fileName);
-            var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
-            int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
-            int contentLength = 0;
-            ProgressMeter = new ProgressMeter(ProgressHandler, "Saving (Not Indexed)...", Features.Count);
-            foreach (IFeature f in Features)
+            else
             {
-                offset += contentLength; // adding the previous content length from each loop calculates the word offset
-                List<Coordinate> points = new List<Coordinate>();
-                contentLength = 20;
-                for (int iPart = 0; iPart < f.NumGeometries; iPart++)
+                // Set Header.ShapeType before setting extent.
+                switch (CoordinateType)
                 {
-                    IList<Coordinate> coords = f.BasicGeometry.GetBasicGeometryN(iPart).Coordinates;
-                    foreach (Coordinate coord in coords)
+                    case CoordinateType.Regular:
+                        Header.ShapeType = ShapeType.MultiPoint;
+                        break;
+                    case CoordinateType.M:
+                        Header.ShapeType = ShapeType.MultiPointM;
+                        break;
+                    case CoordinateType.Z:
+                        Header.ShapeType = ShapeType.MultiPointZ;
+                        break;
+                    default:
+                        throw new Exception("Unsupported CoordinateType");
+                }
+
+                // Calculate total .shp file length
+                var totalOffset = 50;
+                for (var shp = 0; shp < Count; shp++)
+                {
+                    var f = GetFeature(shp);
+                    totalOffset += GetContentLength(f);
+                }
+
+                // Save headers for .shp and .shx files
+                InvalidateEnvelope();
+                Header.SetExtent(Extent);
+                Header.ShxLength = 50 + Count * 4;
+                Header.FileLength = totalOffset;
+                Header.SaveAs(fileName);
+
+                // Reset shapeheaders
+                _shapeHeaders = null;
+
+                // Append data into .shp and .shx
+                int offset = 50;
+                using (var shpStream = new FileStream(Header.Filename, FileMode.Append))
+                using (var shxStream = new FileStream(Header.ShxFilename, FileMode.Append))
+                {
+                    for (var shp = 0; shp < Count; shp++)
                     {
-                        points.Add(coord);
+                        shpStream.WriteBe(shp + 1);
+                        var feature = GetFeature(shp);
+                        var shpt = feature.ShapeType.GetValueOrDefault(Header.ShapeType);
+                        var contentLen = GetContentLength(feature);
+
+                        shpStream.WriteBe(contentLen - 4);
+                        shpStream.WriteLe((int)shpt);
+                        if (shpt != ShapeType.NullShape)
+                        {
+                            // Bounding Box
+                            var extent = feature.Envelope.ToExtent();
+                            shpStream.WriteLe(extent.MinX);
+                            shpStream.WriteLe(extent.MinY);
+                            shpStream.WriteLe(extent.MaxX);
+                            shpStream.WriteLe(extent.MaxY);
+
+                            // NumPoints
+                            shpStream.WriteLe(feature.NumPoints);
+
+                            // XY coordinates
+                            for (int i = 0; i < feature.NumPoints; i++)
+                            {
+                                shpStream.WriteLe(feature.Coordinates[i].X);
+                                shpStream.WriteLe(feature.Coordinates[i].Y);
+                            }
+
+                            // Z coordinates
+                            if (shpt == ShapeType.MultiPointZ)
+                            {
+                                // Z-box
+                                var minZ = feature.Coordinates.Min(_ => _.Z);
+                                var maxZ = feature.Coordinates.Max(_ => _.Z);
+                                shpStream.WriteLe(minZ);
+                                shpStream.WriteLe(maxZ);
+
+                                // Z coordinates
+                                for (var i = 0; i < feature.NumPoints; i++)
+                                {
+                                    shpStream.WriteLe(feature.Coordinates[i].Z);
+                                }
+                            }
+
+                            // M coordinates
+                            if (shpt == ShapeType.MultiPointZ || shpt == ShapeType.MultiPointM)
+                            {
+                                // M-box
+                                var minm = feature.Coordinates.Min(_ => _.M);
+                                var maxm = feature.Coordinates.Max(_ => _.M);
+                                shpStream.WriteLe(minm);
+                                shpStream.WriteLe(maxm);
+
+                                // M coordinates
+                                for (var i = 0; i < feature.NumPoints; i++)
+                                {
+                                    shpStream.WriteLe(feature.Coordinates[i].M);
+                                }   
+                            }
+                        }
+
+                        shxStream.WriteBe(offset);
+                        shxStream.WriteBe(contentLen - 4);
+                        offset += contentLen;
                     }
                 }
-
-                if (Header.ShapeType == ShapeType.MultiPoint)
-                {
-                    contentLength += points.Count * 8;
-                }
-                if (Header.ShapeType == ShapeType.MultiPointM)
-                {
-                    contentLength += 8; // mmin, mmax
-                    contentLength += points.Count * 12;
-                }
-                if (Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += points.Count * 16;
-                }
-
-                //                                           Index File
-                //                                       ---------------------------------------------------------
-                //                                         Position     Value   Type        Number      Byte Order
-                //                                        ---------------------------------------------------------
-                indexWriter.Write(offset, false);        // Byte 0     Offset   Integer     1           Big
-                indexWriter.Write(contentLength, false); // Byte 4     Length   Integer     1           Big
-
-                //                                           X Y Poly Lines
-                //                                        ---------------------------------------------------------
-                //                                         Position     Value   Type        Number      Byte Order
-                //                                              ---------------------------------------------------------
-                bbWriter.Write(fid + 1, false);             // Byte 0     Record  Integer     1           Big
-                bbWriter.Write(contentLength, false);     // Byte 4     Length  Integer     1           Big
-                bbWriter.Write((int)Header.ShapeType);    // Byte 8     Shape   Integer     1           Little
-                if (Header.ShapeType == ShapeType.NullShape)
-                {
-                    continue;
-                }
-                bbWriter.Write(f.Envelope.Minimum.X);      // Byte 12   Xmin    Double      1           Little
-                bbWriter.Write(f.Envelope.Minimum.Y);      // Byte 20   Ymin    Double      1           Little
-                bbWriter.Write(f.Envelope.Maximum.X);      // Byte 28   Xmax    Double      1           Little
-                bbWriter.Write(f.Envelope.Maximum.Y);      // Byte 36   Ymax    Double      1           Little
-
-                bbWriter.Write(points.Count);              // Byte 44   #Points Integer     1           Little
-                // Byte X    Points   Point    #Points       Little
-
-                foreach (Coordinate coord in points)
-                {
-                    bbWriter.Write(coord.X);
-                    bbWriter.Write(coord.Y);
-                }
-
-                if (Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    bbWriter.Write(f.Envelope.Minimum.Z);
-                    bbWriter.Write(f.Envelope.Maximum.Z);
-                    foreach (Coordinate coord in points)
-                    {
-                        bbWriter.Write(coord.Z);
-                    }
-                }
-                if (Header.ShapeType == ShapeType.MultiPointM || Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    if (f.Envelope == null)
-                    {
-                        bbWriter.Write(0.0);
-                        bbWriter.Write(0.0);
-                    }
-                    else
-                    {
-                        bbWriter.Write(f.Envelope.Minimum.M);
-                        bbWriter.Write(f.Envelope.Maximum.M);
-                    }
-                    foreach (Coordinate coord in points)
-                    {
-                        bbWriter.Write(coord.M);
-                    }
-                }
-
-                ProgressMeter.CurrentValue = fid;
-                fid++;
-                offset += 4;
             }
-            ProgressMeter.Reset();
-            bbWriter.Close();
-            indexWriter.Close();
 
-            offset += contentLength;
-            WriteFileLength(Filename, offset);
+            // Update filename
+            Filename = fileName;
+
+            // Save .dbf and .prj files
             UpdateAttributes();
             SaveProjection();
         }
-        
-        private void SaveAsIndexed(string fileName)
+
+        private int GetContentLength(IFeature f)
         {
-            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
-            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
-            int fid = 0;
-            int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
-            int contentLength = 0;
+            var shpt = f.ShapeType.GetValueOrDefault(Header.ShapeType);
 
-            foreach (ShapeRange shape in ShapeIndices)
+            var baseLen = 3 * 2; // 3 ints
+            switch (shpt)
             {
-                offset += contentLength; // adding the previous content length from each loop calculates the word offset
-
-                contentLength = 20;
-
-                if (Header.ShapeType == ShapeType.MultiPoint)
-                {
-                    contentLength += shape.NumPoints * 8;
-                }
-                if (Header.ShapeType == ShapeType.MultiPointM)
-                {
-                    contentLength += 8; // mmin, mmax
-                    contentLength += shape.NumPoints * 12;
-                }
-                if (Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    contentLength += 16; // mmin, mmax, zmin, zmax
-                    contentLength += shape.NumPoints * 16;
-                }
-
-                //                                         Index File
-                //                                         ---------------------------------------------------------
-                //                                        Position     Value   Type     Number  Byte Order
-                //                                        ---------------------------------------------------------
-                shxStream.WriteBe(offset);                 // Byte 0  Offset   Integer    1     Big
-                shxStream.WriteBe(contentLength);          // Byte 4  Length   Integer    1     Big
-
-                //                                         X Y Poly Lines
-                //                                         ---------------------------------------------------------
-                //                                          Position  Value    Type      Number  Byte Order
-                //                                        ---------------------------------------------------------
-                shpStream.WriteBe(fid + 1);                // Byte 0  Record   Integer     1     Big
-                shpStream.WriteBe(contentLength);          // Byte 4  Length   Integer     1     Big
-                shpStream.WriteLe((int)Header.ShapeType);  // Byte 8  Type 3   Integer     1     Little
-                if (Header.ShapeType == ShapeType.NullShape)
-                {
-                    continue;
-                }
-                shpStream.WriteLe(shape.Extent.MinX);     // Byte 12  Xmin     Double      1     Little
-                shpStream.WriteLe(shape.Extent.MinY);     // Byte 20  Ymin     Double      1     Little
-                shpStream.WriteLe(shape.Extent.MaxX);     // Byte 28  Xmax     Double      1     Little
-                shpStream.WriteLe(shape.Extent.MaxY);     // Byte 36  Ymax     Double      1     Little
-                shpStream.WriteLe(shape.NumPoints);       // Byte 44  #Points  Integer     1     Little
-
-                int start = shape.StartIndex;
-                int count = shape.NumPoints;
-                shpStream.WriteLe(Vertex, start * 2, count * 2);
-
-                if (Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    double[] shapeZ = new double[count];
-                    Array.Copy(Z, start, shapeZ, 0, count);
-                    shpStream.WriteLe(shapeZ.Min());
-                    shpStream.WriteLe(shapeZ.Max());
-                    shpStream.WriteLe(Z, start, count);
-                }
-                if (Header.ShapeType == ShapeType.MultiPointM || Header.ShapeType == ShapeType.MultiPointZ)
-                {
-                    if (M != null && M.Length >= start + count)
-                    {
-                        double[] shapeM = new double[count];
-                        Array.Copy(M, start, shapeM, 0, count);
-                        shpStream.WriteLe(shapeM.Min());
-                        shpStream.WriteLe(shapeM.Max());
-                        shpStream.WriteLe(M, start, count);
-                    }
-                }
-
-                fid++;
-                offset += 4;
+                case ShapeType.MultiPoint:
+                    // Bounding Box, NumPoints, XY-coords
+                    baseLen += 4 * 4 + 2 + f.NumPoints * 8;
+                    break;
+                case ShapeType.MultiPointM:
+                    // Bounding Box, NumPoints, XY-points, M-box, M-coords
+                    baseLen += 4 * 4 + 2 + f.NumPoints * 8 + 4 * 2 + 4 * f.NumPoints;
+                    break;
+                case ShapeType.MultiPointZ:
+                    // Bounding Box, NumPoints, XY-points, M-box, M-coords, Z-box, Z-coords
+                    baseLen += 4 * 4 + 2 + f.NumPoints * 8 + 4 * 2 + 4 * f.NumPoints + 4 * 2 + 4 * f.NumPoints;
+                    break;
             }
-            
-            shpStream.Close();
-            shxStream.Close();
 
-            offset += contentLength;
-            WriteFileLength(Filename, offset);
-            UpdateAttributes();
-            SaveProjection();
+            return baseLen;
         }
     }
 }

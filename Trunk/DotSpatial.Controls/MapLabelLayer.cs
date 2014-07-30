@@ -230,6 +230,7 @@ namespace DotSpatial.Controls
                     drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected,ExistingLabels);
                     break;
                 case FeatureType.Point:
+                case FeatureType.MultiPoint:
                     drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
                     break;
                 default:
@@ -311,6 +312,7 @@ namespace DotSpatial.Controls
                     drawFeature = f => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 case FeatureType.Point:
+                case FeatureType.MultiPoint:
                     drawFeature = f => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 default:
@@ -491,7 +493,7 @@ namespace DotSpatial.Controls
 
         private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
-            Coordinate c = f.GetBasicGeometryN(1).Coordinates[0];
+            Coordinate c = f.GetBasicGeometryN(0).Coordinates[0];
             if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
             var lz = labelSize();
             PointF adjustment = Position(symb, lz);
