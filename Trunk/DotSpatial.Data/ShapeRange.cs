@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
@@ -119,12 +120,7 @@ namespace DotSpatial.Data
             {
                 if (_numPoints < 0)
                 {
-                    int n = 0;
-                    foreach (PartRange part in Parts)
-                    {
-                        n += part.NumVertices;
-                    }
-                    return n;
+                    return Parts.Sum(part => part.NumVertices);
                 }
                 return _numPoints;
             }
@@ -219,11 +215,10 @@ namespace DotSpatial.Data
             FeatureType = FeatureType.Point;
             Parts = new List<PartRange>();
             _numParts = -1;
-            double[] coords = new double[2];
+            var coords = new double[2];
             coords[0] = v.X;
             coords[1] = v.Y;
-            PartRange prt = new PartRange(coords, 0, 0, FeatureType.Point);
-            prt.NumVertices = 1;
+            var prt = new PartRange(coords, 0, 0, FeatureType.Point) {NumVertices = 1};
             Extent = new Extent(v.X, v.Y, v.X, v.Y);
             Parts.Add(prt);
         }
@@ -249,7 +244,7 @@ namespace DotSpatial.Data
             // Counter clockwise
             // 1 2
             // 4 3
-            double[] coords = new double[8];
+            var coords = new double[8];
             // C1
             coords[0] = ext.MinX;
             coords[1] = ext.MaxY;
@@ -398,7 +393,7 @@ namespace DotSpatial.Data
         /// <param name="vertices">The double array of vertices that should be referenced by the parts.</param>
         public void SetVertices(double[] vertices)
         {
-            foreach (PartRange prt in Parts)
+            foreach (var prt in Parts)
             {
                 prt.Vertices = vertices;
             }

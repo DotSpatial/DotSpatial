@@ -23,35 +23,18 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// RangeIndex
-    /// </summary>
     public class VertexRange : IEnumerable<Vertex>
     {
-        // Even though it is normally taboo to allow for public fields, for performance they will be
-        // much faster than working through property accessors.
-
-        private int _partOffset;
-        private int _shapeOffset;
-
         /// <summary>
         /// For parts, controlling the part offset is perhaps more useful that controlling the shape offset.
         /// </summary>
-        public int PartOffset
-        {
-            get { return _partOffset; }
-            set { _partOffset = value; }
-        }
+        public int PartOffset { get; set; }
 
         /// <summary>
         /// The StartIndex is the sum of the shape offset and the part offset.  Controlling them separately
         /// allows the entire shape offset to be adjusted independantly after the part is created.
         /// </summary>
-        public int ShapeOffset
-        {
-            get { return _shapeOffset; }
-            set { _shapeOffset = value; }
-        }
+        public int ShapeOffset { get; set; }
 
         /// <summary>
         /// The integer index of the first vertex included in this range.  This is overridden
@@ -59,7 +42,7 @@ namespace DotSpatial.Data
         /// </summary>
         public int StartIndex
         {
-            get { return _shapeOffset + _partOffset; }
+            get { return ShapeOffset + PartOffset; }
         }
 
         /// <summary>
@@ -67,30 +50,19 @@ namespace DotSpatial.Data
         /// </summary>
         public int EndIndex
         {
-            get { return StartIndex + _numVertices - 1; }
+            get { return StartIndex + NumVertices - 1; }
         }
 
         /// <summary>
         /// Gets or sets the number of vertices.  This will also set the EndIndex
         /// relative to the start position.
         /// </summary>
-        public int NumVertices
-        {
-            get { return _numVertices; }
-            set
-            {
-                _numVertices = value;
-            }
-        }
+        public int NumVertices { get; set; }
 
         /// <summary>
         /// Gets or sets the vertices
         /// </summary>
-        public double[] Vertices
-        {
-            get { return _vertices; }
-            set { _vertices = value; }
-        }
+        public double[] Vertices { get; set; }
 
         #region Enumerator
 
@@ -103,7 +75,7 @@ namespace DotSpatial.Data
         /// property accessors slowing down the process.  However, it's here
         /// if someone wants it.
         /// </summary>
-        public class VertexRangeEnumerator : IEnumerator<Vertex>
+        private class VertexRangeEnumerator : IEnumerator<Vertex>
         {
             private readonly int _end;
             private readonly int _start;
@@ -172,14 +144,6 @@ namespace DotSpatial.Data
 
         #endregion
 
-        #region Private Variables
-
-        // Internally keep track of the vertices array.
-        private int _numVertices;
-        private double[] _vertices;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -197,9 +161,9 @@ namespace DotSpatial.Data
         /// <param name="partOffset"></param>
         public VertexRange(double[] allVertices, int shapeOffset, int partOffset)
         {
-            _shapeOffset = shapeOffset;
-            _partOffset = partOffset;
-            _vertices = allVertices;
+            ShapeOffset = shapeOffset;
+            PartOffset = partOffset;
+            Vertices = allVertices;
         }
 
         #endregion
@@ -215,7 +179,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public IEnumerator<Vertex> GetEnumerator()
         {
-            return new VertexRangeEnumerator(_vertices, StartIndex, EndIndex);
+            return new VertexRangeEnumerator(Vertices, StartIndex, EndIndex);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

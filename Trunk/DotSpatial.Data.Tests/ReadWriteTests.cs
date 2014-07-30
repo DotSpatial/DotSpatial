@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Linq;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
@@ -15,25 +13,26 @@ namespace DotSpatial.Data.Tests
         [TestCase("counties.shp")]
         [TestCase("cities.shp")]
         [TestCase("rivers.shp")]
-        public void PolygonShapeFile(string filename)
+        public void DataTheSameAfterSaveAs(string filename)
         {
             var testFile = Path.Combine(new[] { _shapefiles, filename });
             var newFile = Path.Combine(new[] { Path.GetTempPath(), filename });
 
             var original = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(testFile);;
-
-            original.Filename = newFile;
-            original.Save();
-
+            
+            original.SaveAs(newFile, true);
             var newSave = (IFeatureSet)DataManager.DefaultDataManager.OpenFile(newFile);
 
             try
             {
-                Assert.AreEqual(original.Features.Count, newSave.Features.Count);
-                for (var j = 0; j < original.Features.Count; j += 100)
+                Assert.AreEqual(original.Count, newSave.Count);
+                for (var j = 0; j < original.Count; j++)
                 {
-                    Assert.AreEqual(original.Features.ElementAt(j).Coordinates,
-                        newSave.Features.ElementAt(j).Coordinates);
+                    var originalShape = original.GetFeature(j);
+                    var newSaveShape = newSave.GetFeature(j);
+
+                    Assert.AreEqual(originalShape.Coordinates, newSaveShape.Coordinates);
+                    Assert.AreEqual(originalShape.DataRow.ItemArray, newSaveShape.DataRow.ItemArray);
                 }
             }
             finally

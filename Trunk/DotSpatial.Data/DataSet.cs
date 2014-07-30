@@ -25,9 +25,6 @@ using DotSpatial.Projections;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// DataSet
-    /// </summary>
     public class DataSet : DisposeBase, IDataSet
     {
         #region Private Variables

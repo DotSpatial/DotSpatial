@@ -100,7 +100,7 @@ namespace DotSpatial.Controls
                     {
                         continue;
                     }
-                    IMapLabelLayer gll = fl.LabelLayer;
+                    var gll = fl.LabelLayer;
                     //gll.Select(_selectionEnvelope, e); // using this form of selection can test the actual pixel rectangles
                     if (gll != null)
                     {
@@ -164,7 +164,7 @@ namespace DotSpatial.Controls
                     {
                         continue;
                     }
-                    IMapLabelLayer gll = fl.LabelLayer;
+                    var gll = fl.LabelLayer;
                     if (gll != null)
                     {
                         gll.ClearSelection();

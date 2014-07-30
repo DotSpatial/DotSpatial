@@ -23,13 +23,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public interface IMapRasterLayer : IRasterLayer, IMapLayer
     {
         #region Events
@@ -89,15 +85,6 @@ namespace DotSpatial.Controls
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        IEnvelope BufferEnvelope
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.

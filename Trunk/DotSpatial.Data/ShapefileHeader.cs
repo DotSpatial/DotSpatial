@@ -21,7 +21,6 @@
 
 using System;
 using System.IO;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
@@ -30,34 +29,6 @@ namespace DotSpatial.Data
     /// </summary>
     public class ShapefileHeader
     {
-        #region Private Variables
-
-        // Always 9994 if it is a shapefile
-        private int _fileCode;
-
-        // The length of the shp file in bytes
-        private int _fileLength;
-        private string _fileName;
-        private double _mMax;
-        private double _mMin;
-
-        // The version, which should be 1000
-
-        // Specifies line, polygon, point etc.
-        private ShapeType _shapeType;
-        private int _shxLength;
-        private int _version;
-
-        // Extent Values for the entire shapefile
-        private double _xMax;
-        private double _xMin;
-        private double _yMax;
-        private double _yMin;
-        private double _zMax;
-        private double _zMin;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -86,16 +57,16 @@ namespace DotSpatial.Data
         /// </summary>
         public void Clear()
         {
-            _version = 1000;
-            _fileCode = 9994;
-            _xMin = 0.0;
-            _xMax = 0.0;
-            _yMin = 0.0;
-            _yMax = 0.0;
-            _zMin = 0.0;
-            _zMax = 0.0;
-            _mMin = 0.0;
-            _mMax = 0.0;
+            Version = 1000;
+            FileCode = 9994;
+            Xmin = 0.0;
+            Xmax = 0.0;
+            Ymin = 0.0;
+            Ymax = 0.0;
+            Zmin = 0.0;
+            Zmax = 0.0;
+            Mmin = 0.0;
+            Mmax = 0.0;
         }
 
         /// <summary>
@@ -104,7 +75,7 @@ namespace DotSpatial.Data
         /// <param name="inFilename">The fileName to read</param>
         public void Open(string inFilename)
         {
-            _fileName = inFilename;
+            Filename = inFilename;
 
             //  Position        Field           Value       Type        ByteOrder
             //  --------------------------------------------------------------
@@ -127,46 +98,41 @@ namespace DotSpatial.Data
             //  Byte 92         Bounding Box    Mmax        Double      Little
 
             // This may throw an IOException if the file is already in use.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(inFilename);
+            using (var bbReader = new FileStream(inFilename, FileMode.Open))
+            {
 
-            bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
+                // Reading BigEndian simply requires us to reverse the byte order.
+                FileCode = bbReader.ReadInt32(Endian.BigEndian);
 
-            bbReader.Close(); // Close the internal readers connected to the file, but don't close the file itself.
+                // Skip the next 20 bytes because they are unused
+                bbReader.Seek(20, SeekOrigin.Current);
 
-            // Reading BigEndian simply requires us to reverse the byte order.
-            _fileCode = bbReader.ReadInt32(false);
+                // Read the file length in reverse sequence
+                FileLength = bbReader.ReadInt32(Endian.BigEndian);
 
-            // Skip the next 20 bytes because they are unused
-            bbReader.Seek(20, SeekOrigin.Current);
+                // From this point on, all the header values are in little Endean
 
-            // Read the file length in reverse sequence
-            _fileLength = bbReader.ReadInt32(false);
+                // Read the version
+                Version = bbReader.ReadInt32();
 
-            // From this point on, all the header values are in little Endean
+                // Read in the shape type that should be the shape type for the whole shapefile
+                ShapeType = (ShapeType) bbReader.ReadInt32();
 
-            // Read the version
-            _version = bbReader.ReadInt32();
-
-            // Read in the shape type that should be the shape type for the whole shapefile
-            _shapeType = (ShapeType)bbReader.ReadInt32();
-
-            // Get the extents, each of which are double values.
-            _xMin = bbReader.ReadDouble();
-            _yMin = bbReader.ReadDouble();
-            _xMax = bbReader.ReadDouble();
-            _yMax = bbReader.ReadDouble();
-            _zMin = bbReader.ReadDouble();
-            _zMax = bbReader.ReadDouble();
-            _mMin = bbReader.ReadDouble();
-            _mMax = bbReader.ReadDouble();
-
-            bbReader.Dispose();
-
-            string shxFile = Path.ChangeExtension(Filename, ".shx");
-            FileInfo fi = new FileInfo(shxFile);
+                // Get the extents, each of which are double values.
+                Xmin = bbReader.ReadDouble();
+                Ymin = bbReader.ReadDouble();
+                Xmax = bbReader.ReadDouble();
+                Ymax = bbReader.ReadDouble();
+                Zmin = bbReader.ReadDouble();
+                Zmax = bbReader.ReadDouble();
+                Mmin = bbReader.ReadDouble();
+                Mmax = bbReader.ReadDouble();
+            }
+            
+            var fi = new FileInfo(ShxFilename);
             if (fi.Exists)
             {
-                _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
+                ShxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
             }
         }
 
@@ -175,7 +141,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void Save()
         {
-            SaveAs(_fileName);
+            SaveAs(Filename);
         }
 
         /// <summary>
@@ -185,9 +151,9 @@ namespace DotSpatial.Data
         /// <param name="outFilename">The string fileName to create.</param>
         public void SaveAs(string outFilename)
         {
-            _fileName = outFilename;
-            Write(_fileName, _fileLength);
-            Write(ShxFilename, _shxLength);
+            Filename = outFilename;
+            Write(Filename, FileLength);
+            Write(ShxFilename, ShxLength);
         }
 
         /// <summary>
@@ -198,307 +164,114 @@ namespace DotSpatial.Data
         ///  shx header is the file length parameter.</param>
         private void Write(string destFilename, int destFileLength)
         {
-            string dir = Path.GetDirectoryName(Path.GetFullPath(Filename));
-            if (dir != null)
-                if (!Directory.Exists(dir))
-                {
-                    //if (MessageBox.Show("Directory " + dir + " does not exist.  Do you want to create it?",
-                    // "Create Directory?", MessageBoxButtons.YesNo) != DialogResult.OK)
-                    //    return;
-                    Directory.CreateDirectory(dir);
-                }
-            //if (File.Exists(destFilename)) File.Delete(destFilename);
+            var dir = Path.GetDirectoryName(Path.GetFullPath(Filename));
+            if (dir != null && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
 
-            FileStream fs = new FileStream(destFilename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
-
-            fs.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
-
-            byte[] bt = new byte[20];
-            fs.Write(bt, 0, 20);          //  Bytes 4 - 20 are unused
-
-            fs.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
-
-            fs.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
-
-            fs.WriteLe((int)_shapeType);  //  Byte 32         Shape Type      Shape Type  Integer     Little
-
-            fs.WriteLe(_xMin);            //  Byte 36         Bounding Box    Xmin        Double      Little
-
-            fs.WriteLe(_yMin);            //  Byte 44         Bounding Box    Ymin        Double      Little
-
-            fs.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
-
-            fs.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
-
-            fs.WriteLe(_zMin);         //  Byte 68         Bounding Box    Zmin        Double      Little
-
-            fs.WriteLe(_zMax);          //  Byte 76         Bounding Box    Zmax        Double      Little
-
-            fs.WriteLe(_mMin);         //  Byte 84         Bounding Box    Mmin        Double      Little
-
-            fs.WriteLe(_mMax);        //  Byte 92         Bounding Box    Mmax        Double      Little
-
-            // ------------ WRITE TO SHP FILE -------------------------
-
-            fs.Close();
+            using (var fs = new FileStream(destFilename, FileMode.Create))
+            {
+                fs.WriteBe(FileCode);        //  Byte 0          File Code       9994        Integer     Big
+                var bt = new byte[20];
+                fs.Write(bt, 0, 20);          //  Bytes 4 - 20 are unused
+                fs.WriteBe(destFileLength);   //  Byte 24         File Length     File Length Integer     Big
+                fs.WriteLe(Version);         //  Byte 28         Version         1000        Integer     Little
+                fs.WriteLe((int) ShapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
+                fs.WriteLe(Xmin);            //  Byte 36         Bounding Box    Xmin        Double      Little
+                fs.WriteLe(Ymin);            //  Byte 44         Bounding Box    Ymin        Double      Little
+                fs.WriteLe(Xmax);            //  Byte 52         Bounding Box    Xmax        Double      Little
+                fs.WriteLe(Ymax);            //  Byte 60         Bounding Box    Ymax        Double      Little
+                fs.WriteLe(Zmin);            //  Byte 68         Bounding Box    Zmin        Double      Little
+                fs.WriteLe(Zmax);            //  Byte 76         Bounding Box    Zmax        Double      Little
+                fs.WriteLe(Mmin);            //  Byte 84         Bounding Box    Mmin        Double      Little
+                fs.WriteLe(Mmax);            //  Byte 92         Bounding Box    Mmax        Double      Little
+            }
         }
 
         #endregion
 
+        #region Properties
+
         /// <summary>
         /// Gets or sets the integer file code that should always be 9994.
         /// </summary>
-        public int FileCode
-        {
-            get { return _fileCode; }
-            set
-            {
-                _fileCode = value;
-            }
-        }
+        public int FileCode { get; set; }
 
         /// <summary>
         /// Gets or sets the integer file length in bytes
         /// </summary>
-        public int FileLength
-        {
-            get { return _fileLength; }
-            set
-            {
-                _fileLength = value;
-            }
-        }
+        public int FileLength { get; set; }
 
         /// <summary>
         /// Gets or sets the string fileName to use for this header
         /// </summary>
-        public string Filename
-        {
-            get { return _fileName; }
-            set { _fileName = value; }
-        }
+        public string Filename { get; set; }
 
         /// <summary>
         /// Gets or sets the DotSpatial.Data.Shapefiles.ShapeType enumeration specifying
         /// whether the shapes are points, lines, polygons etc.
         /// </summary>
-        public ShapeType ShapeType
-        {
-            get { return _shapeType; }
-            set
-            {
-                _shapeType = value;
-            }
-        }
+        public ShapeType ShapeType { get; set; }
 
         /// <summary>
         /// Changes the extension of the fileName to .shx instead of .shp
         /// </summary>
         public string ShxFilename
         {
-            get { return Path.ChangeExtension(_fileName, ".shx"); }
+            get { return Path.ChangeExtension(Filename, ".shx"); }
         }
 
         /// <summary>
         /// Gets or sets the version, which should be 1000
         /// </summary>
-        public int Version
-        {
-            get { return _version; }
-            set
-            {
-                _version = value;
-            }
-        }
+        public int Version { get; set; }
 
         /// <summary>
         /// The minimum X coordinate for the values in the shapefile
         /// </summary>
-        public double Xmin
-        {
-            get { return _xMin; }
-            set
-            {
-                _xMin = value;
-            }
-        }
+        public double Xmin { get; set; }
 
         /// <summary>
         /// The maximum X coordinate for the shapes in the shapefile
         /// </summary>
-        public double Xmax
-        {
-            get { return _xMax; }
-            set
-            {
-                _xMax = value;
-            }
-        }
+        public double Xmax { get; set; }
 
         /// <summary>
         /// The minimum Y coordinate for the values in the shapefile
         /// </summary>
-        public double Ymin
-        {
-            get { return _yMin; }
-            set
-            {
-                _yMin = value;
-            }
-        }
+        public double Ymin { get; set; }
 
         /// <summary>
         /// The maximum Y coordinate for the shapes in the shapefile
         /// </summary>
-        public double Ymax
-        {
-            get { return _yMax; }
-            set
-            {
-                _yMax = value;
-            }
-        }
+        public double Ymax { get; set; }
 
         /// <summary>
         /// The minimum Z coordinate for the values in the shapefile
         /// </summary>
-        public double Zmin
-        {
-            get { return _zMin; }
-            set
-            {
-                _zMin = value;
-            }
-        }
+        public double Zmin { get; set; }
 
         /// <summary>
         /// The maximum Z coordinate for the shapes in the shapefile
         /// </summary>
-        public double Zmax
-        {
-            get { return _zMax; }
-            set
-            {
-                _zMax = value;
-            }
-        }
+        public double Zmax { get; set; }
 
         /// <summary>
         /// The minimum M coordinate for the values in the shapefile
         /// </summary>
-        public double Mmin
-        {
-            get { return _mMin; }
-            set
-            {
-                _mMin = value;
-            }
-        }
+        public double Mmin { get; set; }
 
         /// <summary>
         /// The maximum M coordinate for the shapes in the shapefile
         /// </summary>
-        public double Mmax
-        {
-            get { return _mMax; }
-            set
-            {
-                _mMax = value;
-            }
-        }
+        public double Mmax { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the shx file in 16 bit words.
         /// </summary>
-        public int ShxLength
-        {
-            get { return _shxLength; }
-            set { _shxLength = value; }
-        }
+        public int ShxLength { get; set; }
 
-        /// <summary>
-        /// Generates a new envelope based on the extents of this shapefile.
-        /// </summary>
-        /// <returns>An Envelope</returns>
-        public IEnvelope ToEnvelope()
-        {
-            IEnvelope env = new Envelope(_xMin, _xMax, _yMin, _yMax, Zmin, Zmax);
-            env.Minimum.M = _mMin;
-            env.Maximum.M = _mMax;
-            return env;
-        }
-
-        /// <summary>
-        /// Generates a new extent from the shape header.  This will infer the whether the ExtentMZ, ExtentM
-        /// or Extent class is the best implementation.  Casting is required to access the higher
-        /// values from the Extent return type.
-        /// </summary>
-        /// <returns>Extent, which can be Extent, ExtentM, or ExtentMZ</returns>
-        public Extent ToExtent()
-        {
-            if (ShapeType == ShapeType.MultiPointZ ||
-                ShapeType == ShapeType.PointZ ||
-                ShapeType == ShapeType.PolygonZ ||
-                ShapeType == ShapeType.PolyLineZ)
-            {
-                return new ExtentMZ(_xMin, _yMin, _mMin, _zMin, _xMax, _yMax, _mMax, _zMax);
-            }
-            if (ShapeType == ShapeType.MultiPointM ||
-                ShapeType == ShapeType.PointM ||
-                ShapeType == ShapeType.PolygonM ||
-                ShapeType == ShapeType.PolyLineM)
-            {
-                return new ExtentM(_xMin, _yMin, _mMin, _xMax, _yMax, _mMax);
-            }
-            Extent ext = new Extent(_xMin, _yMin, _xMax, _yMax);
-
-            return ext;
-        }
-
-        /// <summary>
-        /// The shape type is assumed to be fixed, and will control how the input extent is treated as far
-        /// as M and Z values, rather than updating the shape type based on the extent.
-        /// </summary>
-        public void SetExtent(IExtent extent)
-        {
-            IExtentZ zExt = extent as ExtentMZ;
-            IExtentM mExt = extent as ExtentM;
-            if ((ShapeType == ShapeType.MultiPointZ ||
-                 ShapeType == ShapeType.PointZ ||
-                 ShapeType == ShapeType.PolygonZ ||
-                 ShapeType == ShapeType.PolyLineZ))
-            {
-                if (zExt == null || extent.HasZ == false)
-                {
-                    _zMin = double.MaxValue;
-                    _zMax = double.MinValue;
-                }
-                else
-                {
-                    _zMin = zExt.MinZ;
-                    _zMax = zExt.MaxZ;
-                }
-            }
-            if (ShapeType == ShapeType.MultiPointM ||
-                ShapeType == ShapeType.PointM ||
-                ShapeType == ShapeType.PolygonM ||
-                ShapeType == ShapeType.PolyLineM)
-            {
-                if (mExt == null || extent.HasM == false)
-                {
-                    _mMin = double.MaxValue;
-                    _mMax = double.MinValue;
-                }
-                else
-                {
-                    _mMin = mExt.MinM;
-                    _mMax = mExt.MaxM;
-                }
-            }
-            _xMin = extent.MinX;
-            _xMax = extent.MaxX;
-            _yMin = extent.MinY;
-            _yMax = extent.MaxY;
-        }
+        #endregion
     }
 }

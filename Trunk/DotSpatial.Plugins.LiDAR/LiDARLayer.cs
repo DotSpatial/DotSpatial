@@ -29,7 +29,6 @@ namespace DotSpatial.Plugins.LiDAR
         // private KDTree _regularTree;
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
         private Rectangle _bufferRectangle;
         private Image _stencil; // draw features to the stencil
 
@@ -279,18 +278,6 @@ namespace DotSpatial.Plugins.LiDAR
         {
             get { return _stencil; }
             set { _stencil = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [ShallowCopy,
-         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
         }
 
         /// <summary>

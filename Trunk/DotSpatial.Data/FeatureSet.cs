@@ -676,7 +676,7 @@ namespace DotSpatial.Data
         /// </param>
         /// <returns>
         /// </returns>
-        /// Warning. This method should be moved outside of FeatureSet.
+        // todo: Warning. This method should be moved outside of FeatureSet.
         public List<string> GetColumnNames(string xlsFilePath)
         {
             OleDbConnection con =
@@ -693,14 +693,9 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual IFeature GetFeature(int index)
         {
-            if (IndexMode == false)
+            if (!IndexMode)
             {
                 return Features[index];
-            }
-
-            if (FeatureType == FeatureType.Point)
-            {
-                return GetPoint(index);
             }
 
             if (FeatureType == FeatureType.Line)
@@ -721,57 +716,20 @@ namespace DotSpatial.Data
             return null;
         }
 
+        /// <summary>
+        /// Get feature by it's index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Feature</returns>
+        public IFeature this[int index]
+        {
+            get { return GetFeature(index); }
+        }
+
         /// <inheritdoc/>
         public virtual Shape GetShape(int index, bool getAttributes)
         {
-            if (IndexMode == false)
-            {
-                return new Shape(Features[index]);
-            }
-
-            Shape result = new Shape(FeatureType);
-
-            // This will also deep copy the parts, attributes and vertices
-            ShapeRange range = ShapeIndices[index];
-            result.Range = range.Copy();
-            int start = range.StartIndex;
-            int numPoints = range.NumPoints;
-
-            if (_z != null && (_z.Length - start) >= numPoints)
-            {
-                result.Z = new double[numPoints];
-                Array.Copy(_z, start, result.Z, 0, numPoints);
-            }
-
-            if (_m != null && (_m.Length - start) >= numPoints)
-            {
-                result.M = new double[numPoints];
-                Array.Copy(_m, start, result.M, 0, numPoints);
-            }
-
-            double[] vertices = new double[numPoints * 2];
-            Array.Copy(_vertices, start * 2, vertices, 0, numPoints * 2);
-            result.Vertices = vertices;
-
-            // There is presumed to be only a single shape in the output array.
-            result.Range.StartIndex = 0;
-            if (AttributesPopulated)
-            {
-                if (getAttributes)
-                {
-                    result.Attributes = DataTable.Rows[index].ItemArray;
-                }
-            }
-            else
-            {
-                DataTable dt = GetAttributes(index, 1);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    result.Attributes = dt.Rows[0].ItemArray;
-                }
-            }
-
-            return result;
+            return !IndexMode ? new Shape(Features[index]) : null;
         }
 
         /// <inheritdoc/>
@@ -805,6 +763,7 @@ namespace DotSpatial.Data
         /// <returns>
         /// A modified featureset with the changes.
         /// </returns>
+        // todo: Warning. This method should be moved outside of FeatureSet.
         public IFeatureSet Join(string xlsFilePath, string localJoinField, string xlsJoinField)
         {
             IFeatureSet res = Open(Filename);
@@ -893,19 +852,10 @@ namespace DotSpatial.Data
         {
             if (FeatureType == FeatureType.Unspecified)
             {
-                if (IndexMode)
+                if (Count > 0)
                 {
-                    if (ShapeIndices.Count > 0)
-                    {
-                        FeatureType = ShapeIndices[0].FeatureType;
-                    }
-                }
-                else
-                {
-                    if (Features.Count > 0)
-                    {
-                        FeatureType = Features[0].FeatureType;
-                    }
+                    var shp = GetFeature(0); // todo use GetShape when they will be done Line\Polygon\MultiPoint
+                    FeatureType = shp.FeatureType;
                 }
             }
 
@@ -915,14 +865,22 @@ namespace DotSpatial.Data
             // No reason to prevent it that I can see.
             // Same for the ShapeIndices.  I'd like to simply set them here and prevent the hassle of a
             // pure copy process.
-            result.Vertex = Vertex;
-            result.ShapeIndices = ShapeIndices;
+
+            if (!(result is PointShapefile)) // todo: special case to prevent populating ShapeIndices array. Remove this with Vertex prooperty.  
+            {
+                result.Vertex = Vertex;
+            }
+
             result.Extent = Extent;
             result.IndexMode = IndexMode; // added by JamesP@esdm.co.uk as this was not being passed into result
             result.CoordinateType = CoordinateType;
             if (!IndexMode)
             {
                 result.Features = Features;
+            }
+            else
+            {
+                result.ShapeIndices = ShapeIndices;
             }
 
             if (AttributesPopulated)
@@ -1263,39 +1221,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the point for the shape at the specified index
-        /// </summary>
-        protected IFeature GetPoint(int index)
-        {
-            ShapeRange shape = ShapeIndices[index];
-            Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
-            if (M != null && M.Length != 0)
-            {
-                c.M = M[index];
-            }
-
-            if (Z != null && Z.Length != 0)
-            {
-                c.Z = Z[index];
-            }
-
-            if (FeatureGeometryFactory == null)
-            {
-                FeatureGeometryFactory = GeometryFactory.Default;
-            }
-
-            IPoint p = FeatureGeometryFactory.CreatePoint(c);
-            var f = new Feature(p)
-            {
-                ParentFeatureSet = this,
-                ShapeIndex = shape,
-            };
-
-            // Attributes only retrieved in the overridden case
-            return f;
-        }
-
-        /// <summary>
         /// If the FeatureType is polygon, this is the code for converting the vertex array
         /// into a feature.
         /// </summary>
@@ -1603,6 +1528,11 @@ namespace DotSpatial.Data
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGeometryFactory FeatureGeometryFactory { get; set; }
 
+        public IGeometryFactory GetFeatureGeometryFactory()
+        {
+            return FeatureGeometryFactory ?? GeometryFactory.Default;
+        }
+
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
@@ -1624,28 +1554,48 @@ namespace DotSpatial.Data
         public FeatureType FeatureType { get; set; }
 
         /// <summary>
-        /// A list of the features in this layer
+        /// A list of the features in this layer. Use it for accessing small feature sets.
+        /// Access to this list will cause loading all features into memory.
+        /// Recommended way to access features - method <see cref="GetFeature"/> or indexer property.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IFeatureList Features
         {
             get
             {
-                if (IndexMode && (_features == null || _features.Count == 0))
+                if (IndexMode && _features.IsNullOrEmpty())
                 {
                     // People working with features like this probably want to see changes from the features themselves.
-                    FeaturesFromVertices();
+                    LoadAllFeatures();
                     IndexMode = false;
                 }
 
                 return _features;
             }
-
             set
             {
                 OnIncludeFeatures(_features);
                 OnExcludeFeatures(_features);
                 _features = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the count of features.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int Count
+        {
+            get
+            {
+                try
+                {
+                    return IndexMode ? _shapeIndices.Count() : _features.Count();
+                }
+                catch (ArgumentNullException) // may raise when ShapeIndices or Features is null 
+                {
+                    return 0;
+                }
             }
         }
 
@@ -1657,7 +1607,7 @@ namespace DotSpatial.Data
         public virtual string Filename { get; set; }
 
         /// <summary>
-        /// If this is true, then the ShapeIndices and Vertex values are used,
+        /// If this is true, then the ShapeIndices are used,
         /// and features are created on demand.  Otherwise the list of Features
         /// is used directly.
         /// </summary>
@@ -1666,6 +1616,7 @@ namespace DotSpatial.Data
 
         /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete]
         public double[] M
         {
             get
@@ -1955,6 +1906,7 @@ namespace DotSpatial.Data
         {
             get
             {
+                // todo: remove initializtion from features
                 if (_shapeIndices == null)
                 {
                     OnInitializeVertices();
@@ -1975,38 +1927,37 @@ namespace DotSpatial.Data
         /// </summary>
         public void UpdateExtent()
         {
-            MyExtent = new Extent();
-            if (!IndexMode)
+            Extent mx;
+            if (Count == 0)
             {
-                if (Features == null || Features.Count <= 0)
-                {
-                    MyExtent = new Extent(-180, -90, 180, 90);
-                    return;
-                }
-
-                foreach (IFeature feature in Features)
-                {
-                    feature.UpdateEnvelope();
-                    MyExtent.ExpandToInclude(new Extent(feature.Envelope));
-                }
+                mx = new Extent(-180, -90, 180, 90);
             }
             else
             {
-                if (_shapeIndices == null || _shapeIndices.Count == 0)
+                mx = new Extent();
+                if (!IndexMode)
                 {
-                    MyExtent = new Extent(-180, -90, 180, 90);
-                    return;
+                    foreach (var feature in Features)
+                    {
+                        feature.UpdateEnvelope();
+                        mx.ExpandToInclude(new Extent(feature.Envelope));
+                    }
                 }
-
-                foreach (ShapeRange range in _shapeIndices)
+                else
                 {
-                    range.CalculateExtents();
-                    MyExtent.ExpandToInclude(range.Extent);
+                    foreach (var range in _shapeIndices)
+                    {
+                        range.CalculateExtents();
+                        mx.ExpandToInclude(range.Extent);
+                    }
                 }
             }
+
+            MyExtent = mx;
         }
 
         /// <inheritdoc/>
+        [Obsolete]
         public double[] Vertex
         {
             get
@@ -2049,6 +2000,7 @@ namespace DotSpatial.Data
 
         /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete]
         public double[] Z
         {
             get
@@ -2184,38 +2136,28 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the features from the shape indices and vertex array
+        /// Forces to load all features into memory.
         /// </summary>
-        protected void FeaturesFromVertices()
+        private void LoadAllFeatures()
         {
             if (_features == null)
             {
-                _features = new FeatureList(this) { IncludeAttributes = false };
+                _features = new FeatureList(this);
             }
             else
             {
                 // need to preserve event handler already attached to this feature list
                 _features.Clear();
-                _features.IncludeAttributes = false;
             }
 
+            _features.IncludeAttributes = false;
             _features.SuspendEvents();
             for (int shp = 0; shp < ShapeIndices.Count; shp++)
             {
-                var f = GetFeature(shp);
-                _features.Add(f);
-                if (AttributesPopulated)
-                {
-                    // Don't force population if we haven't populated yet, but
-                    // definitely assign the DataRow if it already exists.
-                    _features[shp].DataRow = DataTable.Rows[shp];
-                }
+                _features.Add(GetFeature(shp));
             }
-
             _features.ResumeEvents();
             _features.IncludeAttributes = true;
-
-            // from this point on, any features that get added will also add a DataRow to the DataTable.
         }
 
         /// <summary>

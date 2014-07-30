@@ -29,9 +29,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public class PolygonLayer : FeatureLayer, IPolygonLayer
     {
         #region Constructors
@@ -114,14 +111,8 @@ namespace DotSpatial.Symbology
         [ShallowCopy]
         public new IPolygonSymbolizer SelectionSymbolizer
         {
-            get
-            {
-                return base.SelectionSymbolizer as IPolygonSymbolizer;
-            }
-            set
-            {
-                base.SelectionSymbolizer = value;
-            }
+            get { return base.SelectionSymbolizer as IPolygonSymbolizer; }
+            set { base.SelectionSymbolizer = value; }
         }
 
         /// <summary>
@@ -138,14 +129,8 @@ namespace DotSpatial.Symbology
         [ShallowCopy]
         public new IPolygonSymbolizer Symbolizer
         {
-            get
-            {
-                return base.Symbolizer as IPolygonSymbolizer;
-            }
-            set
-            {
-                base.Symbolizer = value;
-            }
+            get { return base.Symbolizer as IPolygonSymbolizer; }
+            set { base.Symbolizer = value; }
         }
 
         /// <summary>
@@ -161,10 +146,7 @@ namespace DotSpatial.Symbology
         public new IPolygonScheme Symbology
         {
             get { return base.Symbology as IPolygonScheme; }
-            set
-            {
-                base.Symbology = value;
-            }
+            set { base.Symbology = value; }
         }
 
         #endregion

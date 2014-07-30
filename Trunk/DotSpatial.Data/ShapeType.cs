@@ -27,12 +27,12 @@ namespace DotSpatial.Data
     public enum ShapeType : byte
     {
         /// <summary>
-        /// 0 - No shape type specified, or the shapetype is invalid
+        /// 0 - No geometric data for the shape.
         /// </summary>
         NullShape = 0,
 
         /// <summary>
-        /// 1 - Each shape is a single point
+        /// 1 - A point consists of a pair of double-precision coordinates in the order X,Y
         /// </summary>
         Point = 1,
 
@@ -52,47 +52,47 @@ namespace DotSpatial.Data
         MultiPoint = 8,
 
         /// <summary>
-        /// 11 - Each shape is a point with a Z value
+        /// 11 - Each shape is a point (X, Y) with Z and M value
         /// </summary>
         PointZ = 11,
 
         /// <summary>
-        /// 13 - Each shape is a linestring with each vertex having a z value
+        /// 13 - Each shape is a linestring with each vertex having Z and M value
         /// </summary>
         PolyLineZ = 13,
 
         /// <summary>
-        /// 15 - Each shape is a closed linestring with each vertex having a z value
+        /// 15 - Each shape is a closed linestring with each vertex having Z and M value
         /// </summary>
         PolygonZ = 15,
 
         /// <summary>
-        /// 18 - Each shape has several unconnected points, each of which has a z value
+        /// 18 - Each shape has several unconnected points, each of which has Z and M value
         /// </summary>
         MultiPointZ = 18,
 
         /// <summary>
-        /// 21 - Each shape has several unconnected points, each of which has an m and z value
+        /// 21 - Each shape has several unconnected points, each of which has M value
         /// </summary>
         PointM = 21,
 
         /// <summary>
-        /// 23 - Each shape is made up of several points connected to form a line, each vertex having an m and z value
+        /// 23 - Each shape is made up of several points connected to form a line, each vertex having M value
         /// </summary>
         PolyLineM = 23,
 
         /// <summary>
-        /// 25 - Each shape is a closed linestring with each vertex having a z value and m value
+        /// 25 - Each shape is a closed linestring with each vertex having M value
         /// </summary>
         PolygonM = 25,
 
         /// <summary>
-        /// 28 - Each shape has several unconnected points, each of which has a z value and m value
+        /// 28 - Each shape has several unconnected points, each of which has M value
         /// </summary>
         MultiPointM = 28,
 
         /// <summary>
-        /// 31 - Not sure what this does
+        /// 31 - A MultiPatch consists of a number of surface patches.
         /// </summary>
         MultiPatch = 31
     }

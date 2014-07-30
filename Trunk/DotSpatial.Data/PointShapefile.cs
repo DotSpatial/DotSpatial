@@ -86,6 +86,17 @@ namespace DotSpatial.Data
             ReadProjection();
         }
 
+        private List<ShapeHeader> _shapeHeaders;
+        private List<ShapeHeader> ShapeHeaders
+        {
+            get
+            {
+                if (_shapeHeaders != null) return _shapeHeaders;
+                _shapeHeaders = ReadIndexFile(Filename);
+                return _shapeHeaders;
+            }
+        }
+
         /// <summary>
         /// Obtains a typed list of ShapefilePoint structures with double values associated with the various coordinates.
         /// </summary>
@@ -104,12 +115,9 @@ namespace DotSpatial.Data
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
             // Get the basic header information.
-            var header = new ShapefileHeader(fileName);
-            Extent = header.ToExtent();
+            var header = Header;
+            Extent = Header.ToExtent();
             // Check to ensure that the fileName is the correct shape type
             if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM
                 && header.ShapeType != ShapeType.PointZ)
@@ -122,109 +130,139 @@ namespace DotSpatial.Data
                 // the file is empty so we are done reading
                 return;
             }
-
-            var numShapes = shapeHeaders.Count;
-            double[] m = null;
-            double[] z = null;
-            var vert = new double[2 * numShapes]; // X,Y
-
-            if (header.ShapeType == ShapeType.PointM || header.ShapeType == ShapeType.PointZ)
-            {
-                m = new double[numShapes];
-            }
-            if (header.ShapeType == ShapeType.PointZ)
-            {
-                z = new double[numShapes];
-            }
-
             var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
             {
                 StepPercent = 5
             };
-            using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            var numShapes = ShapeHeaders.Count;
+            using (var reader = new FileStream(fileName, FileMode.Open))
             {
                 for (var shp = 0; shp < numShapes; shp++)
                 {
                     progressMeter.CurrentPercent = (int)(shp * 100.0 / numShapes);
-
-                    reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-
-                    var recordNumber = reader.ReadInt32(Endian.BigEndian);
-                    Debug.Assert(recordNumber == shp + 1);
-                    var contentLen = reader.ReadInt32(Endian.BigEndian);
-                    Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
-
-                    var shapeType = (ShapeType) reader.ReadInt32();
-                    if (shapeType == ShapeType.NullShape)
-                    {
-                        if (m != null)
-                        {
-                            m[shp] = double.MinValue;
-                        }
-                        goto fin;
-                    }
-
-                    // Read X
-                    var ind = 4;
-                    vert[shp*2] = reader.ReadDouble();
-                    ind += 8;
-
-                    // Read Y
-                    vert[shp*2 + 1] = reader.ReadDouble();
-                    ind += 8;
-
-                    // Read Z
-                    if (z != null)
-                    {
-                        z[shp] = reader.ReadDouble();
-                        ind += 8;
-                    }
-
-                    // Read M
-                    if (m != null)
-                    {
-                        if (shapeHeaders[shp].ByteLength <= ind)
-                        {
-                            m[shp] = double.MinValue;
-                        }
-                        else
-                        {
-                            m[shp] = reader.ReadDouble();
-                            ind += 8;
-                        }
-                    }
-
-               fin:
-                    var shape = new ShapeRange(FeatureType.Point)
-                    {
-                        RecordNumber = recordNumber,
-                        StartIndex = shp,
-                        ContentLength = shapeHeaders[shp].ContentLength,
-                        NumPoints = 1,
-                        NumParts = 1
-                    };
-                    ShapeIndices.Add(shape);
-                    var part = new PartRange(vert, shp, 0, FeatureType.Point) {NumVertices = 1};
-                    shape.Parts.Add(part);
-                    shape.Extent = new Extent(new[] {vert[shp*2], vert[shp*2 + 1], vert[shp*2], vert[shp*2 + 1]});
-
+                    var shape = ReadShape(shp, reader);
+                    ShapeIndices.Add(shape.Range);
                 }
             }
-
-            Vertex = vert;
-            M = m;
-            Z = z;
-
             progressMeter.Reset();
+        }
+
+        public override Shape GetShape(int index, bool getAttributes)
+        {
+            var sh = base.GetShape(index, getAttributes);
+            if (sh != null) return sh;
+            
+            using (var reader = new FileStream(Filename, FileMode.Open))
+                sh = ReadShape(index, reader);
+            if (getAttributes)
+            {
+                sh.Attributes = AttributesPopulated
+                    ? DataTable.Rows[index].ItemArray
+                    : Attributes.SupplyPageOfData(index, 1).Rows[0].ItemArray;
+            }
+            return sh;
         }
 
         /// <inheritdoc />
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetPoint(index);
-            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            var f = base.GetFeature(index);
+            if (f != null) return f;
+
+            var shape = GetShape(index, false);
+            var coordinate = new Coordinate(shape.Vertices);
+            if (shape.M != null)
+                coordinate.M = shape.M[0];
+            if (shape.Z != null)
+                coordinate.Z = shape.Z[0];
+
+            var p = GetFeatureGeometryFactory().CreatePoint(coordinate);
+            f = new Feature(p)
+            {
+                ParentFeatureSet = this,
+                ShapeIndex = ShapeIndices[index],
+                DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0],
+            };
             return f;
         }
+
+        private Shape ReadShape(int shp, Stream reader)
+        {
+            var vert = new double[2]; // X, Y
+            double[] m = null;
+            double[] z = null;
+            if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
+            {
+                m = new double[1];
+            }
+            if (Header.ShapeType == ShapeType.PointZ)
+            {
+                z = new double[1];
+            }
+
+            var shapeHeaders = ShapeHeaders;
+            reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
+
+            var recordNumber = reader.ReadInt32(Endian.BigEndian);
+            Debug.Assert(recordNumber == shp + 1);
+            var contentLen = reader.ReadInt32(Endian.BigEndian);
+            Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
+
+            var shapeType = (ShapeType)reader.ReadInt32();
+            if (shapeType == ShapeType.NullShape)
+            {
+                if (m != null)
+                {
+                    m[shp] = double.MinValue;
+                }
+                goto fin;
+            }
+
+            // Read X
+            var ind = 4;
+            vert[0] = reader.ReadDouble();
+            ind += 8;
+
+            // Read Y
+            vert[1] = reader.ReadDouble();
+            ind += 8;
+
+            // Read Z
+            if (z != null)
+            {
+                z[0] = reader.ReadDouble();
+                ind += 8;
+            }
+
+            // Read M
+            if (m != null)
+            {
+                if (shapeHeaders[0].ByteLength <= ind)
+                {
+                    m[0] = double.MinValue;
+                }
+                else
+                {
+                    m[0] = reader.ReadDouble();
+                    ind += 8;
+                }
+            }
+
+        fin:
+            var shr = new ShapeRange(FeatureType.Point)
+            {
+                RecordNumber = recordNumber,
+                StartIndex = 0,
+                ContentLength = shapeHeaders[shp].ContentLength,
+                NumPoints = 1,
+                NumParts = 1,
+                Extent = new Extent(new[] {vert[0], vert[1], vert[0], vert[1]}),
+                ShapeType = shapeType,
+            };
+            shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.Point) {NumVertices = 1});
+            return new Shape(FeatureType) {Range = shr, M = m, Z = z, Vertices = vert,};
+        }
+       
 
         /// <summary>
         /// Saves the shapefile to a different fileName, but still as a shapefile.  This method does not support saving to
@@ -235,92 +273,99 @@ namespace DotSpatial.Data
         public override void SaveAs(string fileName, bool overwrite)
         {
             EnsureValidFileToSave(fileName, overwrite);
+
+            if (IndexMode)
+            {
+                if (Filename == fileName)
+                {
+                    // files already there. Nothing to do.
+                }
+                else
+                {
+                    // In Index mode shapes are not loaded into memory, so we can just copy source .shp and .shx files to the new location
+                    File.Copy(Filename, fileName);
+                    var shx = Path.ChangeExtension(Filename, ".shx");
+                    if (File.Exists(shx)) File.Copy(shx, Path.ChangeExtension(fileName, ".shx"));
+                }
+            }
+            else
+            {
+                // Set Header.ShapeType before setting extent.
+                // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
+                int wordSize;
+                switch (CoordinateType)
+                {
+                    case CoordinateType.Regular:
+                        Header.ShapeType = ShapeType.Point;
+                        wordSize = 14; // 3 int(2) and 2 double(4) = X,Y
+                        break;
+                    case CoordinateType.M:
+                        Header.ShapeType = ShapeType.PointM;
+                        wordSize = 18; // 3 int(2), 3 double(4) = X,Y,M
+                        break;
+                    case CoordinateType.Z:
+                        Header.ShapeType = ShapeType.PointZ;
+                        wordSize = 22; // 3 int(2), 4 double (4) = X,Y,Z,M
+                        break;
+                    default:
+                        throw new Exception("Unsupported CoordinateType");
+                }
+
+                // Calculate total .shp file length
+                var totalOffset = 50;
+                for (var shp = 0; shp < Count; shp++)
+                {
+                    var f = GetFeature(shp);
+                    var shpt = f.ShapeType.GetValueOrDefault(Header.ShapeType);
+                    totalOffset += shpt == ShapeType.NullShape ? 6 : wordSize;
+                }
+
+                // Save headers for .shp and .shx files
+                InvalidateEnvelope();
+                Header.SetExtent(Extent);
+                Header.ShxLength = 50 + Count * 4;
+                Header.FileLength = totalOffset;
+                Header.SaveAs(fileName);
+
+                // Reset shapeheaders
+                _shapeHeaders = null;
+
+                // Append data into .shp and .shx
+                int offset = 50;
+                using (var shpStream = new FileStream(Header.Filename, FileMode.Append))
+                using (var shxStream = new FileStream(Header.ShxFilename, FileMode.Append))
+                {
+                    for (var shp = 0; shp < Count; shp++)
+                    {
+                        shpStream.WriteBe(shp + 1);
+                        var feature = GetFeature(shp);
+                        var shpt = feature.ShapeType.GetValueOrDefault(Header.ShapeType);
+                        var contentLen = shpt == ShapeType.NullShape ? 2 : wordSize - 4;
+
+                        shpStream.WriteBe(contentLen);
+                        shpStream.WriteLe((int)shpt);
+                        if (shpt != ShapeType.NullShape)
+                        {
+                            var coordinate = feature.Coordinates[0];
+                            shpStream.WriteLe(coordinate.X);
+                            shpStream.WriteLe(coordinate.Y);
+                            if (shpt == ShapeType.PointZ)
+                                shpStream.WriteLe(coordinate.Z);
+                            if (shpt == ShapeType.PointZ || shpt == ShapeType.PointM)
+                                shpStream.WriteLe(coordinate.M);
+                        }
+
+                        shxStream.WriteBe(offset);
+                        shxStream.WriteBe(contentLen);
+                        offset += shpt == ShapeType.NullShape ? 6 : wordSize;
+                    }
+                }
+            }
+
+            // Update filename
             Filename = fileName;
-            
-            // Set Header.ShapeType before setting extent.
-            // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
-            int wordSize = 14; // 3 int(2) and 2 double(4)
-            if (CoordinateType == CoordinateType.Regular)
-            {
-                Header.ShapeType = ShapeType.Point;
-            }
-            if (CoordinateType == CoordinateType.M)
-            {
-                Header.ShapeType = ShapeType.PointM;
-                wordSize = 18; // 3 int(2), 3 double(4)
-            }
-            if (CoordinateType == CoordinateType.Z)
-            {
-                Header.ShapeType = ShapeType.PointZ;
-                wordSize = 22; // 3 int(2), 4 double (4)
-            }
 
-            InvalidateEnvelope();
-            Header.SetExtent(Extent);
-
-            if (IndexMode)
-            {
-                Header.ShxLength = ShapeIndices.Count * 4 + 50;
-                Header.FileLength = ShapeIndices.Count * wordSize + 50;
-            }
-            else
-            {
-                Header.ShxLength = Features.Count * 4 + 50;
-                Header.FileLength = Features.Count * wordSize + 50;
-            }
-
-            Header.SaveAs(fileName);
-            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
-            var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
-
-            // Special slightly faster writing for index mode
-            if (IndexMode)
-            {
-                for (int shp = 0; shp < ShapeIndices.Count; shp++)
-                {
-                    shpStream.WriteBe(shp + 1);
-                    shpStream.WriteBe(wordSize - 4); // shape word size without 4 shapeHeader words.
-                    shxStream.WriteBe(50 + shp * wordSize);
-                    shxStream.WriteBe(wordSize - 4);
-                    shpStream.WriteLe((int)Header.ShapeType);
-                    shpStream.WriteLe(Vertex[shp * 2]);
-                    shpStream.WriteLe(Vertex[shp * 2 + 1]);
-                    if (Z != null) shpStream.WriteLe(Z[shp]);
-                    if (M != null) shpStream.WriteLe(M[shp]);
-                }
-            }
-            else
-            {
-                int fid = 0;
-                foreach (IFeature f in Features)
-                {
-                    Coordinate c = f.BasicGeometry.Coordinates[0];
-                    shpStream.WriteBe(fid + 1);
-                    shpStream.WriteBe(wordSize - 4);
-                    shxStream.WriteBe(50 + fid * wordSize);
-                    shxStream.WriteBe(wordSize - 4);
-                    shpStream.WriteLe((int)Header.ShapeType);
-                    if (Header.ShapeType == ShapeType.NullShape)
-                    {
-                        continue;
-                    }
-                    shpStream.WriteLe(c.X);
-                    shpStream.WriteLe(c.Y);
-                    if (Header.ShapeType == ShapeType.PointZ)
-                    {
-                        shpStream.WriteLe(c.Z);
-                    }
-                    if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
-                    {
-                        shpStream.WriteLe(c.M);
-                    }
-                    fid++;
-                }
-            }
-            
-            shpStream.Close();
-            shxStream.Close();
-
+            // Save .dbf and .prj files
             UpdateAttributes();
             SaveProjection();
         }

@@ -31,13 +31,5 @@ namespace DotSpatial.Controls
     /// </summary>
     public interface IMapFeatureLayer : IMapLayer, IFeatureLayer
     {
-        /// <summary>
-        /// Gets or sets the label layer that is associated with this feature layer.
-        /// </summary>
-        new IMapLabelLayer LabelLayer
-        {
-            get;
-            set;
-        }
     }
 }

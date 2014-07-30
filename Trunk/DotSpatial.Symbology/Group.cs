@@ -166,7 +166,7 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public override void Invalidate()
         {
-            foreach (ILayer layer in GetLayers())
+            foreach (var layer in GetLayers())
             {
                 layer.Invalidate();
             }

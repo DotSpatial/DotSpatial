@@ -23,9 +23,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PointShape
-    /// </summary>
     public static class PointShape
     {
         /// <summary>

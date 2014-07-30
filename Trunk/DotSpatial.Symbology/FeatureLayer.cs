@@ -1284,12 +1284,6 @@ namespace DotSpatial.Symbology
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the chunk size on the drawing filter.  This should be controlled
-        /// by drawing layers.
-        /// </summary>
-        protected int ChunkSize { get; set; }
-
-        /// <summary>
         /// Gets or sets the underlying dataset for this layer, specifically as an IFeatureSet
         /// </summary>
         [Serialize("DataSet", ConstructorArgumentIndex = 0)]

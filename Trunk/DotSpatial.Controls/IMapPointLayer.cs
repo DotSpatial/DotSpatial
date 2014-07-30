@@ -22,9 +22,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IGeoPointLayer
-    /// </summary>
     public interface IMapPointLayer : IPointLayer, IMapFeatureLayer
     {
     }

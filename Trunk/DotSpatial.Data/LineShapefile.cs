@@ -146,10 +146,7 @@ namespace DotSpatial.Data
         public override IFeature GetFeature(int index)
         {
             IFeature f = GetLine(index);
-            if (f != null)
-            {
-                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
-            }
+            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
             return f;
         }
         

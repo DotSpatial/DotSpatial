@@ -22,23 +22,8 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IGeoLabelLayer
-    /// </summary>
     public interface IMapLabelLayer : ILabelLayer, IMapLayer
     {
-        /// <summary>
-        /// Gets or sets the feature layer that this label layer is attached to.
-        /// </summary>
-        new IMapFeatureLayer FeatureLayer
-        {
-            get;
-            set;
-        }
 
-        /// <summary>
-        /// Resolves ambiguity
-        /// </summary>
-        new void Invalidate();
     }
 }

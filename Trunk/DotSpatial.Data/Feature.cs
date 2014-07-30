@@ -739,12 +739,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
-        /// and whether or not the shape is null.
+        ///  When a feature is loaded from a Shapefile, this will identify it's type.
         /// </summary>
-        public ShapeType ShapeType
+        public ShapeType? ShapeType
         {
-            get { return ShapeIndex != null ? ShapeIndex.ShapeType : ShapeType.NullShape; }
+            get { return ShapeIndex != null ? ShapeIndex.ShapeType : (ShapeType?) null; }
             set
             {
                 // nothing

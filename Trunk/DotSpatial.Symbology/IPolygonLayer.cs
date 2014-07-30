@@ -21,15 +21,8 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// A layer with drawing characteristics for LineStrings
-    /// </summary>
     public interface IPolygonLayer : IFeatureLayer
     {
-        #region Methods
-
-        #endregion
-
         #region Properties
 
         /// <summary>

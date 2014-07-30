@@ -23,9 +23,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IFeatureList
-    /// </summary>
     public interface IFeatureList : IList<IFeature>
     {
         #region Events

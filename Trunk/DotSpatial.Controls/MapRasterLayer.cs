@@ -226,18 +226,7 @@ namespace DotSpatial.Controls
             get { return _stencil; }
             set { _stencil = value; }
         }
-
-        /// <summary>
-        /// Gets or sets the geographic region represented by the buffer
-        /// Calling Initialize will set this automatically.
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public IEnvelope BufferEnvelope
-        {
-            get { return _bufferExtent; }
-            set { _bufferExtent = value; }
-        }
-
+      
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
@@ -283,17 +272,6 @@ namespace DotSpatial.Controls
         protected virtual void OnFinishDrawing()
         {
         }
-
-        ///// <summary>
-        ///// This ensures that when the symbolic content for the layer is updated that we re-load the image.
-        ///// </summary>
-        //protected override void OnItemChanged()
-        //{
-        //    if (_baseImage == null) return;
-        //    string imgFile = _baseImage.Filename;
-        //    _baseImage.Open(imgFile);
-        //    base.OnItemChanged();
-        //}
 
         /// <summary>
         /// Occurs when a new drawing is started, but after the BackBuffer has been established.
