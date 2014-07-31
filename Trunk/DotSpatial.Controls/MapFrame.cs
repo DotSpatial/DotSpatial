@@ -523,12 +523,11 @@ namespace DotSpatial.Controls
             var mfl = layer as IMapFeatureLayer;
             if (mfl != null)
             {
-                var lbl = mfl.LabelLayer as IMapLayer;
-                if (mfl.ShowLabels && lbl != null)
+                if (mfl.ShowLabels && mfl.LabelLayer != null)
                 {
-                    if (lbl.VisibleAtExtent(args.GeographicExtents))
+                    if (mfl.LabelLayer.VisibleAtExtent(args.GeographicExtents))
                     {
-                        lbl.DrawRegions(args, regions);
+                        mfl.LabelLayer.DrawRegions(args, regions);
                     }
                 }
             }
@@ -568,14 +567,13 @@ namespace DotSpatial.Controls
                     {
                         if (ViewExtents.Width > mfl.DynamicVisibilityWidth) return;
                     }
-                    var lbl = mfl.LabelLayer as IMapLayer;
-                    if (mfl.ShowLabels && lbl != null)
+                    if (mfl.ShowLabels && mfl.LabelLayer != null)
                     {
                         if (mfl.LabelLayer.UseDynamicVisibility)
                         {
                             if (ViewExtents.Width > mfl.LabelLayer.DynamicVisibilityWidth) return;
                         }
-                        lbl.DrawRegions(args, new List<Extent> { args.GeographicExtents });
+                        mfl.LabelLayer.DrawRegions(args, new List<Extent> { args.GeographicExtents });
                     }
                 }
             }

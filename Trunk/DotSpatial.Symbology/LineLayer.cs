@@ -26,6 +26,7 @@ using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Symbology
 {
@@ -112,8 +113,14 @@ namespace DotSpatial.Symbology
         [ShallowCopy]
         public new ILineSymbolizer SelectionSymbolizer
         {
-            get { return base.SelectionSymbolizer as ILineSymbolizer; }
-            set { base.SelectionSymbolizer = value; }
+            get
+            {
+                return base.SelectionSymbolizer as ILineSymbolizer;
+            }
+            set
+            {
+                base.SelectionSymbolizer = value;
+            }
         }
 
         /// <summary>
@@ -130,8 +137,14 @@ namespace DotSpatial.Symbology
         [ShallowCopy]
         public new ILineSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as ILineSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as ILineSymbolizer;
+            }
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         /// <summary>
@@ -147,7 +160,10 @@ namespace DotSpatial.Symbology
         public new ILineScheme Symbology
         {
             get { return base.Symbology as ILineScheme; }
-            set { base.Symbology = value; }
+            set
+            {
+                base.Symbology = value;
+            }
         }
 
         #endregion

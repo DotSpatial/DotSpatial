@@ -20,6 +20,9 @@
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// FastDrawnState uses fields, not properties.
+    /// </summary>
     public class FastDrawnState
     {
         #region Fields
@@ -27,18 +30,18 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The category that describes the symbolic drawing for this item.
         /// </summary>
-        public IFeatureCategory Category { get; set; }
+        public IFeatureCategory Category;
 
         /// <summary>
         /// Boolean, true if this item should be drawn as being selected
         /// </summary>
-        public bool Selected { get; set; }
+        public bool Selected;
 
         /// <summary>
         /// A Boolean that indicates whether or not this feature should be drawn at all.
         /// This should default to true.
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible;
 
         /// <summary>
         /// Creates a blank fast drawn state
@@ -76,7 +79,7 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            var item = obj as FastDrawnState;
+            FastDrawnState item = obj as FastDrawnState;
             if (item == null) return false;
             return item.Selected == Selected && item.Category == Category && Visible == item.Visible;
         }
@@ -89,7 +92,15 @@ namespace DotSpatial.Symbology
         /// <returns>An integer hash code for this item.</returns>
         public override int GetHashCode()
         {
-            var sel = Selected ? -1 : 1;
+            int sel;
+            if (Selected)
+            {
+                sel = -1;
+            }
+            else
+            {
+                sel = 1;
+            }
             if (Category == null) return 0;
             return Category.GetHashCode() * sel;
         }

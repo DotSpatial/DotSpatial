@@ -20,8 +20,15 @@
 // ********************************************************************************************************
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// A layer with drawing characteristics for LineStrings
+    /// </summary>
     public interface ILineLayer : IFeatureLayer
     {
+        #region Methods
+
+        #endregion
+
         #region Properties
 
         /// <summary>

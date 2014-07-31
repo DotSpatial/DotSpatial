@@ -21,7 +21,7 @@
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Coordinate type.
+    /// CoordinateTypes
     /// </summary>
     public enum CoordinateType
     {
@@ -29,14 +29,12 @@ namespace DotSpatial.Data
         /// X and Y coordinates only
         /// </summary>
         Regular,
-
         /// <summary>
-        /// X, Y and M values are available.
+        /// M values are available
         /// </summary>
         M,
-
         /// <summary>
-        /// Y, Y, M and Z values are available.
+        /// Z values are available
         /// </summary>
         Z,
     }

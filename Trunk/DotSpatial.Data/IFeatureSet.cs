@@ -102,13 +102,6 @@ namespace DotSpatial.Data
         IFeature GetFeature(int index);
 
         /// <summary>
-        /// Get feature by it's index
-        /// </summary>
-        /// <param name="index">Index</param>
-        /// <returns>Feature</returns>
-        IFeature this[int index] { get; }
-
-        /// <summary>
         /// Gets a shape at the specified shape index.  If the featureset is in
         /// indexmode, this returns a copy of the shape.  If not, it will create
         /// a new shape based on the specified feature.
@@ -265,7 +258,6 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Gets the list of all the features that are included in this layer.
-        /// To access features separately use <see cref="GetFeature"/> or indexer property.
         /// </summary>
         IFeatureList Features
         {
@@ -301,12 +293,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the count of features.
-        /// </summary>
-        int Count { get; }
-        
-
-        /// <summary>
         /// Gets the string fileName for this feature layer, if any
         /// </summary>
         string Filename
@@ -336,11 +322,10 @@ namespace DotSpatial.Data
             get;
             set;
         }
-       
+
         /// <summary>
         /// Gets an array of Vertex structures with X and Y coordinates
         /// </summary>
-        [Obsolete]
         double[] Vertex
         {
             get;
@@ -350,7 +335,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Z coordinates
         /// </summary>
-        [Obsolete]
         double[] Z
         {
             get;
@@ -360,7 +344,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// M coordinates
         /// </summary>
-        [Obsolete]
         double[] M
         {
             get;
@@ -371,7 +354,6 @@ namespace DotSpatial.Data
         /// Gets a boolean that indicates whether or not the InvalidateVertices has been called
         /// more recently than the cached vertex array has been built.
         /// </summary>
-        [Obsolete("Do not use it in your code. This is DS internal thnng.")]
         bool VerticesAreValid
         {
             get;

@@ -24,6 +24,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Layer
+    /// </summary>
     public interface IMapLayer : ILayer
     {
         /// <summary>

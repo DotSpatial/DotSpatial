@@ -105,28 +105,36 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the pointSymbolizer characteristics to use for the selected features.
         /// </summary>
-        [Category("Appearance"),
-         Description("Gets or sets the symbolic characteristics to use for the selected features."),
-        //TypeConverter(typeof(GeneralTypeConverter)),
-        //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
+        [Category("Appearance"), Description("Gets or sets the symbolic characteristics to use for the selected features."),
+            //TypeConverter(typeof(GeneralTypeConverter)),
+            //Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
          ShallowCopy]
         public new IPointSymbolizer SelectionSymbolizer
         {
             get { return base.SelectionSymbolizer as IPointSymbolizer; }
-            set { base.SelectionSymbolizer = value; }
+            set
+            {
+                base.SelectionSymbolizer = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets the symbolic characteristics for this layer.
         /// </summary>
         [Category("Appearance"), Description("Gets or sets the symbolic characteristics for this layer."),
-        //TypeConverter(typeof(GeneralTypeConverter)),
-        // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
+            //TypeConverter(typeof(GeneralTypeConverter)),
+            // Editor(typeof(PointSymbolizerEditor), typeof(UITypeEditor)),
          ShallowCopy]
         public new IPointSymbolizer Symbolizer
         {
-            get { return base.Symbolizer as IPointSymbolizer; }
-            set { base.Symbolizer = value; }
+            get
+            {
+                return base.Symbolizer as IPointSymbolizer;
+            }
+            set
+            {
+                base.Symbolizer = value;
+            }
         }
 
         /// <summary>

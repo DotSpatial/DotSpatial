@@ -36,7 +36,6 @@ namespace DotSpatial.Symbology
     /// what LayerManager should be used for their project.
     /// </summary>
     [ToolboxItem(true)]
-    // TODO: Remove LayerManager, use DataManager instead
     public class LayerManager : ILayerManager
     {
         #region Private Variables

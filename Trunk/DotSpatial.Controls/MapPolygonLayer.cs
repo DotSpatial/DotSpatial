@@ -25,13 +25,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer, ISupportChunksDrawing
+    public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
         #region Events
 
@@ -99,6 +100,7 @@ namespace DotSpatial.Controls
         private void Configure()
         {
             ChunkSize = 25000;
+            ProgressReportingEnabled = true;
         }
 
         #endregion
@@ -144,7 +146,7 @@ namespace DotSpatial.Controls
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
         /// <param name= "color">The color to use when clearing.  Specifying transparent
         /// will replace content with transparent pixels.</param>
-        public void Clear(IEnumerable<Rectangle> rectangles, Color color)
+        public void Clear(List<Rectangle> rectangles, Color color)
         {
             if (BackBuffer == null) return;
             Graphics g = Graphics.FromImage(BackBuffer);
@@ -199,7 +201,29 @@ namespace DotSpatial.Controls
         public virtual void DrawFeatures(MapArgs args, List<IFeature> features,
                                          List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    FinishDrawing();
+                    Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
+                    //this.StartDrawing();
+                }
+            }
         }
 
         /// <summary>
@@ -211,7 +235,29 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, indices, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, indices);
+                return;
+            }
+
+            int count = indices.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    // FinishDrawing();
+                    Application.DoEvents();
+                    OnBufferChanged(clipRectangles);
+                    // this.StartDrawing();
+                }
+            }
         }
 
         /// <summary>
@@ -220,7 +266,6 @@ namespace DotSpatial.Controls
         /// </summary>
         public void FinishDrawing()
         {
-            OnFinishDrawing();
             if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
             Buffer = BackBuffer;
         }
@@ -266,7 +311,14 @@ namespace DotSpatial.Controls
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Buffer { get; set; }
-     
+
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnvelope BufferEnvelope { get; set; }
+
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
@@ -275,11 +327,22 @@ namespace DotSpatial.Controls
         public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of features that will be rendered before
-        /// refreshing the screen.
+        /// true if the layer component reports progress messages, false otherwise
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int ChunkSize { get; set; }
+        [ShallowCopy,
+         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool ProgressReportingEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label layer that is associated with this polygon layer.
+        /// </summary>
+        [ShallowCopy,
+         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new IMapLabelLayer LabelLayer
+        {
+            get { return base.LabelLayer as IMapLabelLayer; }
+            set { base.LabelLayer = value; }
+        }
 
         #endregion
 
@@ -292,7 +355,8 @@ namespace DotSpatial.Controls
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             var h = BufferChanged;
-            if (h != null) h(this, new ClipArgs(clipRectangles));
+            if (h == null) return;
+            h(this, new ClipArgs(clipRectangles));
         }
 
         /// <summary>
@@ -309,15 +373,6 @@ namespace DotSpatial.Controls
         protected virtual void OnStartDrawing()
         {
         }
-
-        /// <summary>
-        /// Indiciates that whatever drawing is going to occur has finished and the contents
-        /// are about to be flipped forward to the front buffer.
-        /// </summary>
-        protected virtual void OnFinishDrawing()
-        {
-        }
-
 
         #endregion
 
@@ -493,12 +548,18 @@ namespace DotSpatial.Controls
             List<ShapeRange> shapes = DataSet.ShapeIndices;
             double[] vertices = DataSet.Vertex;
 
+            if (ProgressReportingEnabled)
+            {
+                ProgressMeter = new ProgressMeter(ProgressHandler, "Building Paths", indices.Count());
+            }
+
             if (!DrawnStatesNeeded)
             {
                 FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
 
                 foreach (int shp in indices)
                 {
+                    if (ProgressReportingEnabled) ProgressMeter.Next();
                     ShapeRange shape = shapes[shp];
                     if (!shape.Extent.Intersects(e.GeographicExtents)) return;
                     if (shp >= shapes.Count) return;
@@ -520,6 +581,7 @@ namespace DotSpatial.Controls
 
                 foreach (int shp in indices)
                 {
+                    if (ProgressReportingEnabled) ProgressMeter.Next();
                     if (shp >= shapes.Count) return;
                     if (shp >= states.Length)
                     {
@@ -543,6 +605,7 @@ namespace DotSpatial.Controls
                     }
                 }
             }
+            if (ProgressReportingEnabled) ProgressMeter.Reset();
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<IFeature> features, out List<GraphicsPath> borderPaths)
@@ -627,13 +690,6 @@ namespace DotSpatial.Controls
                 borderPath.AddLines(intPoints);             
             }
         }
-
-        #endregion
-
-        #region ISupportChunksDrawing implementation
-
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
 
         #endregion
     }

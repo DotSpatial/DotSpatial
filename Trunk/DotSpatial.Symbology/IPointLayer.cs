@@ -26,6 +26,10 @@ namespace DotSpatial.Symbology
     /// </summary>
     public interface IPointLayer : IFeatureLayer
     {
+        #region Methods
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -36,6 +40,7 @@ namespace DotSpatial.Symbology
         new IPointSymbolizer Symbolizer
         {
             get;
+
             set;
         }
 

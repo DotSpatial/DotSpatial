@@ -101,7 +101,6 @@
     <Compile Include="BinaryReaderWriterExtensions.cs" />
     <Compile Include="DbaseLocaleRegistry.cs" />
     <Compile Include="DisposeBase.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExtentArgs.cs" />
     <Compile Include="ExtentM.cs" />
     <Compile Include="ExtentMZ.cs" />
@@ -160,7 +159,6 @@
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="ShapefileFeatureSource.cs" />
     <Compile Include="ShapefileFeatureSourceQuadtree.cs" />
-    <Compile Include="ShapefileHeaderExtensions.cs" />
     <Compile Include="ShapefileIndexFile.cs" />
     <Compile Include="ShapefileReader.cs" />
     <Compile Include="ShapefileShapeSource.cs" />

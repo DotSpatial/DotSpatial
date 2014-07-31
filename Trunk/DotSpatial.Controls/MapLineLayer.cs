@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
@@ -32,7 +33,7 @@ using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
-    public class MapLineLayer : LineLayer, IMapLineLayer, ISupportChunksDrawing
+    public class MapLineLayer : LineLayer, IMapLineLayer
     {
         #region Events
 
@@ -155,7 +156,7 @@ namespace DotSpatial.Controls
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
         /// <param name= "color">The color to use when clearing.  Specifying transparent
         /// will replace content with transparent pixels.</param>
-        public void Clear(IEnumerable<Rectangle> rectangles, Color color)
+        public void Clear(List<Rectangle> rectangles, Color color)
         {
             if (BackBuffer == null) return;
             Graphics g = Graphics.FromImage(BackBuffer);
@@ -207,7 +208,27 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                }
+            }
         }
 
         /// <summary>
@@ -219,7 +240,29 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, indices, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, indices);
+                return;
+            }
+
+            int count = indices.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    // FinishDrawing();
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                    // this.StartDrawing();
+                }
+            }
         }
 
         /// <summary>
@@ -320,6 +363,13 @@ namespace DotSpatial.Controls
         public Image Buffer { get; set; }
 
         /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnvelope BufferEnvelope { get; set; }
+
+        /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
@@ -327,11 +377,27 @@ namespace DotSpatial.Controls
         public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of features that will be rendered before
-        /// refreshing the screen.
+        /// Gets an integer number of chunks for this layer.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int ChunkSize { get; set; }
+        public int NumChunks
+        {
+            get
+            {
+                if (DrawingFilter == null) return 0;
+                return DrawingFilter.NumChunks;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the label layer that is associated with this line layer.
+        /// </summary>
+        [ShallowCopy]
+        public new IMapLabelLayer LabelLayer
+        {
+            get { return base.LabelLayer as IMapLabelLayer; }
+            set { base.LabelLayer = value; }
+        }
 
         #endregion
 
@@ -343,8 +409,11 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            var h = BufferChanged;
-            if (h != null) h(this, new ClipArgs(clipRectangles));
+            if (BufferChanged != null)
+            {
+                ClipArgs e = new ClipArgs(clipRectangles);
+                BufferChanged(this, e);
+            }
         }
 
         /// <summary>
@@ -368,43 +437,6 @@ namespace DotSpatial.Controls
         /// </summary>
         protected virtual void OnStartDrawing()
         {
-        }
-
-        /// <summary>
-        /// Indicates that the drawing process has been finalized and swaps the back buffer
-        /// to the front buffer.
-        /// </summary>
-        public void FinishDrawing()
-        {
-            OnFinishDrawing();
-            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
-            Buffer = BackBuffer;
-        }
-
-        /// <summary>
-        /// Copies any current content to the back buffer so that drawing should occur on the
-        /// back buffer (instead of the fore-buffer).  Calling draw methods without
-        /// calling this may cause exceptions.
-        /// </summary>
-        /// <param name="preserve">Boolean, true if the front buffer content should be copied to the back buffer
-        /// where drawing will be taking place.</param>
-        public void StartDrawing(bool preserve)
-        {
-            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-            if (Buffer != null)
-            {
-                if (Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
-                {
-                    if (preserve)
-                    {
-                        Graphics g = Graphics.FromImage(backBuffer);
-                        g.DrawImageUnscaled(Buffer, 0, 0);
-                    }
-                }
-            }
-            if (BackBuffer != null && BackBuffer != Buffer) BackBuffer.Dispose();
-            BackBuffer = backBuffer;
-            OnStartDrawing();
         }
 
         #endregion
@@ -595,13 +627,6 @@ namespace DotSpatial.Controls
                 graphPath.AddLines(partPoints.ToArray());
             }
         }
-
-        #endregion
-
-        #region ISupportChunksDrawing implementation
-
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
 
         #endregion
     }

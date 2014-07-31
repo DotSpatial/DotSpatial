@@ -22,6 +22,9 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// ILabelLayer
+    /// </summary>
     public interface ILabelLayer : ILayer
     {
         #region Methods
@@ -37,6 +40,11 @@ namespace DotSpatial.Symbology
         /// square brackets will be replaced by the values for those fields in the FeatureSet.
         /// </summary>
         void CreateLabels();
+
+        /// <summary>
+        /// Invalidates any cached content for this layer.
+        /// </summary>
+        new void Invalidate();
 
         /// <summary>
         /// Highlights the values from a specified region.  This will not unselect any members,

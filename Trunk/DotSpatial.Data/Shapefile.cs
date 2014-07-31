@@ -668,7 +668,14 @@ namespace DotSpatial.Data
         public void ReadProjection()
         {
             string prjFile = Path.ChangeExtension(Filename, ".prj");
-            Projection = File.Exists(prjFile) ? ProjectionInfo.Open(prjFile) : new ProjectionInfo();
+            if (File.Exists(prjFile))
+            {
+                Projection = ProjectionInfo.Open(prjFile);
+            }
+            else
+            {
+                Projection = new ProjectionInfo();
+            }
         }
 
         /// <summary>

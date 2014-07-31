@@ -28,13 +28,17 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    public class MapLabelLayer : LabelLayer, IMapLabelLayer, ISupportChunksDrawing
+    /// <summary>
+    /// GeoLabelLayer
+    /// </summary>
+    public class MapLabelLayer : LabelLayer, IMapLabelLayer
     {
         #region Events
 
@@ -53,6 +57,12 @@ namespace DotSpatial.Controls
         /// </summary>
         private  static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
+        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
+        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
+        private Rectangle _bufferRectangle;
+        private int _chunkSize;
+        private bool _isInitialized;
+        private Image _stencil; // draw features to the stencil
         private static readonly Caches _caches = new Caches();
 
         #endregion
@@ -89,7 +99,7 @@ namespace DotSpatial.Controls
 
         private void Configure()
         {
-            ChunkSize = 10000;
+            _chunkSize = 10000;
         }
 
         #endregion
@@ -114,6 +124,11 @@ namespace DotSpatial.Controls
         public void DrawRegions(MapArgs args, List<Extent> regions)
         {
             if (FeatureSet == null) return;
+#if DEBUG
+            var sw = new Stopwatch();
+            sw.Start();
+#endif
+
             if (FeatureSet.IndexMode)
             {
                 // First determine the number of features we are talking about based on region.
@@ -152,6 +167,11 @@ namespace DotSpatial.Controls
                 List<Rectangle> clipRects = args.ProjToPixel(regions);
                 DrawFeatures(args, drawList, clipRects, true);
             }
+
+#if DEBUG
+            sw.Stop();
+            Debug.WriteLine("MapLabelLayer {0} DrawRegions: {1} ms", FeatureSet.Name, sw.ElapsedMilliseconds);
+#endif
         }
 
         /// <summary>
@@ -162,8 +182,8 @@ namespace DotSpatial.Controls
         /// will replace content with transparent pixels.</param>
         public void Clear(List<Rectangle> rectangles, Color color)
         {
-            if (BackBuffer == null) return;
-            Graphics g = Graphics.FromImage(BackBuffer);
+            if (_backBuffer == null) return;
+            Graphics g = Graphics.FromImage(_backBuffer);
             foreach (Rectangle r in rectangles)
             {
                 if (r.IsEmpty == false)
@@ -184,7 +204,29 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    //  FinishDrawing();
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                    //this.StartDrawing();
+                }
+            }
         }
 
         /// <summary>
@@ -194,10 +236,31 @@ namespace DotSpatial.Controls
         /// <param name="features">The features that should be drawn.</param>
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<int> features, List<Rectangle> clipRectangles,
-            bool useChunks)
+        public virtual void DrawFeatures(MapArgs args, List<int> features, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = features.Count - (chunk * ChunkSize);
+                DrawFeatures(args, features.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    //  FinishDrawing();
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                    //this.StartDrawing();
+                }
+            }
         }
 
         // This draws the individual line features
@@ -206,7 +269,7 @@ namespace DotSpatial.Controls
             // Check that exists at least one category with Expression
             if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
 
-            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
 
             // Only draw features that are currently visible.
 
@@ -230,7 +293,6 @@ namespace DotSpatial.Controls
                     drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected,ExistingLabels);
                     break;
                 case FeatureType.Point:
-                case FeatureType.MultiPoint:
                     drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
                     break;
                 default:
@@ -289,7 +351,7 @@ namespace DotSpatial.Controls
             // Check that exists at least one category with Expression
             if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
 
-            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
 
             // Only draw features that are currently visible.
             if (DrawnStates == null || !DrawnStates.ContainsKey(features.First()))
@@ -312,7 +374,6 @@ namespace DotSpatial.Controls
                     drawFeature = f => DrawLineFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 case FeatureType.Point:
-                case FeatureType.MultiPoint:
                     drawFeature = f => DrawPointFeature(e, g, f, drawStates[f].Category, drawStates[f].Selected, ExistingLabels);
                     break;
                 default:
@@ -465,6 +526,12 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Draws a label on a point with various different methods
         /// </summary>
+        /// <param name="e"></param>
+        /// <param name="g"></param>
+        /// <param name="f"></param>
+        /// <param name="category"></param>
+        /// <param name="selected"></param>
+        /// <param name="existingLabels"></param>
         public static void DrawPointFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
@@ -493,7 +560,7 @@ namespace DotSpatial.Controls
 
         private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
-            Coordinate c = f.GetBasicGeometryN(0).Coordinates[0];
+            Coordinate c = f.GetBasicGeometryN(1).Coordinates[0];
             if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
             var lz = labelSize();
             PointF adjustment = Position(symb, lz);
@@ -799,11 +866,29 @@ namespace DotSpatial.Controls
         public void FinishDrawing()
         {
             OnFinishDrawing();
-            if (Buffer != null && Buffer != BackBuffer) Buffer.Dispose();
-            Buffer = BackBuffer;
+            if (_stencil != null && _stencil != _backBuffer) _stencil.Dispose();
+            _stencil = _backBuffer;
             FeatureLayer.Invalidate();
         }
 
+        ///// <summary>
+        ///// This begins the process of drawing features in the given geographic regions
+        ///// to the buffer, where the transform is specified by the GeoArgs.  This also
+        ///// configures the size of the buffer and the geographic extents based on
+        ///// the input args.
+        ///// </summary>
+        //public virtual void Initialize(MapArgs args, List<IEnvelope> regions)
+        //{
+        //    BufferEnvelope = args.GeographicExtents.Copy();
+        //    BufferRectangle = args.ImageRectangle;
+        //    Buffer = new Bitmap(args.ImageRectangle.Width, args.ImageRectangle.Height);
+        //    StartDrawing(true); // set-up the back buffer, preserving what we can
+        //   // this.Clear(regions); // clear the regions to draw in
+        //    DrawRegions(args, regions); // actually do the drawing.
+        //    FinishDrawing();
+        //    List<Rectangle> clipRects = args.ProjToPixel(regions);
+        //    OnBufferChanged(clipRects);
+        //}
 
         /// <summary>
         /// Copies any current content to the back buffer so that drawing should occur on the
@@ -839,33 +924,74 @@ namespace DotSpatial.Controls
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image BackBuffer { get; set; }
+        public Image BackBuffer
+        {
+            get { return _backBuffer; }
+            set { _backBuffer = value; }
+        }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Buffer { get; set; }
+        public Image Buffer
+        {
+            get { return _stencil; }
+            set { _stencil = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnvelope BufferEnvelope
+        {
+            get { return _bufferExtent; }
+            set { _bufferExtent = value; }
+        }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle BufferRectangle { get; set; }
+        public Rectangle BufferRectangle
+        {
+            get { return _bufferRectangle; }
+            set { _bufferRectangle = value; }
+        }
 
         /// <summary>
         /// Gets or sets the maximum number of labels that will be rendered before
         /// refreshing the screen.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int ChunkSize { get; set; }
+        public int ChunkSize
+        {
+            get { return _chunkSize; }
+            set { _chunkSize = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the MapFeatureLayer that this label layer is attached to.
+        /// </summary>
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new IMapFeatureLayer FeatureLayer
+        {
+            get { return base.FeatureLayer as IMapFeatureLayer; }
+            set { base.FeatureLayer = value; }
+        }
 
         /// <summary>
         /// Gets or sets whether or not this layer has been initialized.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized { get; set; }
+        public new bool IsInitialized
+        {
+            get { return _isInitialized; }
+            set { _isInitialized = value; }
+        }
 
         #endregion
 
@@ -876,7 +1002,10 @@ namespace DotSpatial.Controls
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
             var h = BufferChanged;
-            if (h != null) h(this, new ClipArgs(clipRectangles));
+            if (h != null)
+            {
+                h(this, new ClipArgs(clipRectangles));
+            }
         }
 
         /// <summary>
@@ -893,13 +1022,6 @@ namespace DotSpatial.Controls
         protected virtual void OnStartDrawing()
         {
         }
-
-        #region ISupportChunksDrawing implementation
-
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
-
-        #endregion
 
         private class Caches
         {

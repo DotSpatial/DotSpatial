@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
@@ -35,7 +36,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is a specialized FeatureLayer that specifically handles point drawing
     /// </summary>
-    public class MapPointLayer : PointLayer, IMapPointLayer, ISupportChunksDrawing
+    public class MapPointLayer : PointLayer, IMapPointLayer
     {
         #region Events
 
@@ -112,11 +113,11 @@ namespace DotSpatial.Controls
         public virtual void DrawRegions(MapArgs args, List<Extent> regions)
         {
             // First determine the number of features we are talking about based on region.
-            var clipRects = args.ProjToPixel(regions);
-            if (!DataSet.IndexMode)
+            List<Rectangle> clipRects = args.ProjToPixel(regions);
+            if (EditMode)
             {
-                var drawList = new List<IFeature>();
-                foreach (var region in regions)
+                List<IFeature> drawList = new List<IFeature>();
+                foreach (Extent region in regions)
                 {
                     if (region != null)
                     {
@@ -128,13 +129,33 @@ namespace DotSpatial.Controls
             }
             else
             {
-                var drawList = new List<int>();
-                var shapes = DataSet.ShapeIndices;
-                for (var shp = 0; shp < shapes.Count; shp++)
+                List<int> drawList = new List<int>();
+                double[] verts = DataSet.Vertex;
+
+                if (DataSet.FeatureType == FeatureType.Point)
                 {
-                    if (regions.Any(region => shapes[shp].Extent.Intersects(region)))
+                    for (int shp = 0; shp < verts.Length / 2; shp++)
                     {
-                        drawList.Add(shp);
+                        foreach (Extent extent in regions)
+                        {
+                            if (extent.Intersects(verts[shp * 2], verts[shp * 2 + 1]))
+                            {
+                                drawList.Add(shp);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    List<ShapeRange> shapes = DataSet.ShapeIndices;
+                    for (int shp = 0; shp < shapes.Count; shp++)
+                    {
+                        foreach (Extent region in regions)
+                        {
+                            if (!shapes[shp].Extent.Intersects(region)) continue;
+                            drawList.Add(shp);
+                            break;
+                        }
                     }
                 }
                 DrawFeatures(args, drawList, clipRects, true);
@@ -147,20 +168,19 @@ namespace DotSpatial.Controls
         /// <param name="rectangles">The rectangular region in pixels to clear.</param>
         /// <param name= "color">The color to use when clearing.  Specifying transparent
         /// will replace content with transparent pixels.</param>
-        public void Clear(IEnumerable<Rectangle> rectangles, Color color)
+        public void Clear(List<Rectangle> rectangles, Color color)
         {
             if (BackBuffer == null) return;
-            using (var g = Graphics.FromImage(BackBuffer))
+            Graphics g = Graphics.FromImage(BackBuffer);
+            foreach (Rectangle r in rectangles)
             {
-                foreach (var r in rectangles)
+                if (r.IsEmpty == false)
                 {
-                    if (r.IsEmpty == false)
-                    {
-                        g.Clip = new Region(r);
-                        g.Clear(color);
-                    }
+                    g.Clip = new Region(r);
+                    g.Clear(color);
                 }
             }
+            g.Dispose();
         }
 
         /// <summary>
@@ -172,7 +192,7 @@ namespace DotSpatial.Controls
         public override bool CreateLayerFromSelectedFeatures(out IFeatureLayer result)
         {
             MapPointLayer temp;
-            var resultOk = CreateLayerFromSelectedFeatures(out temp);
+            bool resultOk = CreateLayerFromSelectedFeatures(out temp);
             result = temp;
             return resultOk;
         }
@@ -186,7 +206,7 @@ namespace DotSpatial.Controls
         {
             result = null;
             if (Selection == null || Selection.Count == 0) return false;
-            var fs = Selection.ToFeatureSet();
+            FeatureSet fs = Selection.ToFeatureSet();
             result = new MapPointLayer(fs);
             return true;
         }
@@ -200,7 +220,25 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false || features.Count < ChunkSize)
+            {
+                DrawFeatures(args, features);
+                return;
+            }
+
+            int count = features.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int groupSize = ChunkSize;
+                if (chunk == numChunks - 1) groupSize = count - chunk * ChunkSize;
+                List<IFeature> subset = features.GetRange(chunk * ChunkSize, groupSize);
+                DrawFeatures(args, subset);
+                if (numChunks <= 0 || chunk >= numChunks - 1) continue;
+                FinishDrawing();
+                OnBufferChanged(clipRectangles);
+                Application.DoEvents();
+            }
         }
 
         /// <summary>
@@ -212,9 +250,30 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
         {
-            this.DrawUsingChunks(args, indices, clipRectangles, useChunks, DrawFeatures);
+            if (useChunks == false)
+            {
+                DrawFeatures(args, indices);
+                return;
+            }
+
+            int count = indices.Count;
+            int numChunks = (int)Math.Ceiling(count / (double)ChunkSize);
+
+            for (int chunk = 0; chunk < numChunks; chunk++)
+            {
+                int numFeatures = ChunkSize;
+                if (chunk == numChunks - 1) numFeatures = indices.Count - (chunk * ChunkSize);
+                DrawFeatures(args, indices.GetRange(chunk * ChunkSize, numFeatures));
+
+                if (numChunks > 0 && chunk < numChunks - 1)
+                {
+                    // FinishDrawing();
+                    OnBufferChanged(clipRectangles);
+                    Application.DoEvents();
+                    // this.StartDrawing();
+                }
+            }
         }
-     
 
         /// <summary>
         /// Indicates that the drawing process has been finalized and swaps the back buffer
@@ -236,14 +295,14 @@ namespace DotSpatial.Controls
         /// where drawing will be taking place.</param>
         public void StartDrawing(bool preserve)
         {
-            var backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+            Bitmap backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
             if (Buffer != null)
             {
                 if (Buffer.Width == backBuffer.Width && Buffer.Height == backBuffer.Height)
                 {
                     if (preserve)
                     {
-                        var g = Graphics.FromImage(backBuffer);
+                        Graphics g = Graphics.FromImage(backBuffer);
                         g.DrawImageUnscaled(Buffer, 0, 0);
                     }
                 }
@@ -263,8 +322,11 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
         {
-            var h = BufferChanged;
-            if (h != null) h(this, new ClipArgs(clipRectangles));
+            if (BufferChanged != null)
+            {
+                ClipArgs e = new ClipArgs(clipRectangles);
+                BufferChanged(this, e);
+            }
         }
 
         /// <summary>
@@ -293,63 +355,81 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Private  Methods
-        
-        // todo: There are a 3(!!!) different methods to draw points. Use one.
 
-        private void DrawFeatures(MapArgs e, List<int> indices)
+        // This draws the individual point features
+        private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
-            var g = e.Device ?? Graphics.FromImage(BackBuffer);
-            var origTransform = g.Transform;
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            Matrix origTransform = g.Transform;
+            FeatureType featureType = DataSet.FeatureType;
 
-            var minX = e.MinX;
-            var maxY = e.MaxY;
-            var dx = e.Dx;
-            var dy = e.Dy;
+            double minX = e.MinX;
+            double maxY = e.MaxY;
+            double dx = e.Dx;
+            double dy = e.Dy;
 
             if (!DrawnStatesNeeded)
             {
                 if (Symbology == null || Symbology.Categories.Count == 0) return;
-                var state = new FastDrawnState(false, Symbology.Categories[0]);
-                var pc = state.Category as IPointCategory;
+                FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
+                IPointCategory pc = state.Category as IPointCategory;
                 IPointSymbolizer ps = null;
                 if (pc != null && pc.Symbolizer != null) ps = pc.Symbolizer;
                 if (ps == null) return;
-
                 g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-
-                foreach (var index in indices)
+                double[] vertices = DataSet.Vertex;
+                foreach (int index in indices)
                 {
                     if (DrawnStates != null && DrawnStates.Length > index)
                     {
                         if (!DrawnStates[index].Visible) continue;
                     }
-
-
-                    double scaleSize = 1;
-                    if (ps.ScaleMode == ScaleMode.Geographic)
-                    {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
-                    var shape = DataSet.GetShape(index, false);
-                    for (var i = 0; i < shape.Vertices.Length; i += 2)
+                    if (featureType == FeatureType.Point)
                     {
                         var pt = new Point
                         {
-                            X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
-                            Y = Convert.ToInt32((maxY - shape.Vertices[i+ 1]) * dy)
+                            X = Convert.ToInt32((vertices[index*2] - minX)*dx),
+                            Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
                         };
-
-                        var shift = origTransform.Clone();
+                        double scaleSize = 1;
+                        if (ps.ScaleMode == ScaleMode.Geographic)
+                        {
+                            scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                        }
+                        Matrix shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
                         g.Transform = shift;
                         ps.Draw(g, scaleSize);
+                    }
+                    else
+                    {
+                        // multi-point
+                        ShapeRange range = DataSet.ShapeIndices[index];
+                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
+                        {
+                            var pt = new Point
+                            {
+                                X = Convert.ToInt32((vertices[i*2] - minX)*dx),
+                                Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                            };
+                            double scaleSize = 1;
+                            if (ps.ScaleMode == ScaleMode.Geographic)
+                            {
+                                scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                            }
+                            Matrix shift = origTransform.Clone();
+                            shift.Translate(pt.X, pt.Y);
+                            g.Transform = shift;
+                            ps.Draw(g, scaleSize);
+                        }
                     }
                 }
             }
             else
             {
-                var states = DrawnStates;
-                foreach (var category in Symbology.Categories)
+                FastDrawnState[] states = DrawnStates;
+                double[] vertices = DataSet.Vertex;
+                foreach (IPointCategory category in Symbology.Categories)
                 {
                     if (category.Symbolizer == null) continue;
 
@@ -358,13 +438,13 @@ namespace DotSpatial.Controls
                     {
                         scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
                     }
-                    var size = category.Symbolizer.GetSize();
+                    Size2D size = category.Symbolizer.GetSize();
                     if (size.Width * scaleSize < 1 || size.Height * scaleSize < 1) continue;
 
-                    var normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
-                    var bg = Graphics.FromImage(normalSymbol);
+                    Bitmap normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
+                    Graphics bg = Graphics.FromImage(normalSymbol);
                     bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    var trans = bg.Transform;
+                    Matrix trans = bg.Transform;
 
                     // keenedge:
                     // added ' * scaleSize ' to fix a problme when ploted using ScaleMode=Geographic.   however, it still
@@ -374,45 +454,60 @@ namespace DotSpatial.Controls
                     bg.Transform = trans;
                     category.Symbolizer.Draw(bg, 1);
 
-                    var selSize = category.SelectionSymbolizer.GetSize();
+                    Size2D selSize = category.SelectionSymbolizer.GetSize();
                     if (selSize.Width * scaleSize < 1 || selSize.Height * scaleSize < 1) continue;
 
-                    var selectedSymbol = new Bitmap((int)(selSize.Width * scaleSize + 1), (int)(selSize.Height * scaleSize + 1));
-                    var sg = Graphics.FromImage(selectedSymbol);
+                    Bitmap selectedSymbol = new Bitmap((int)(selSize.Width * scaleSize + 1), (int)(selSize.Height * scaleSize + 1));
+                    Graphics sg = Graphics.FromImage(selectedSymbol);
                     sg.SmoothingMode = category.SelectionSymbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    var trans2 = sg.Transform;
+                    Matrix trans2 = sg.Transform;
                     trans2.Translate((float)selSize.Width / 2, (float)selSize.Height / 2);
                     sg.Transform = trans2;
                     category.SelectionSymbolizer.Draw(sg, 1);
 
-                    foreach (var index in indices)
+                    foreach (int index in indices)
                     {
-                        var state = states[index];
+                        FastDrawnState state = states[index];
                         if (!state.Visible) continue;
                         if (state.Category == null) continue;
-                        var pc = state.Category as IPointCategory;
+                        IPointCategory pc = state.Category as IPointCategory;
                         if (pc == null) continue;
                         if (pc != category) continue;
-
-                        var bmp = normalSymbol;
+                        Bitmap bmp = normalSymbol;
                         if (state.Selected)
                         {
                             bmp = selectedSymbol;
                         }
-                        var shape = DataSet.GetShape(index, false);
-                        for (var i = 0; i < shape.Vertices.Length; i += 2)
+                        if (featureType == FeatureType.Point)
                         {
                             var pt = new Point
                             {
-                                X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
-                                Y = Convert.ToInt32((maxY - shape.Vertices[i + 1]) * dy)
+                                X = Convert.ToInt32((vertices[index*2] - minX)*dx),
+                                Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
                             };
 
-                            var shift = origTransform.Clone();
+                            Matrix shift = origTransform.Clone();
                             shift.Translate(pt.X, pt.Y);
                             g.Transform = shift;
 
                             g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
+                        }
+                        else
+                        {
+                            ShapeRange range = DataSet.ShapeIndices[index];
+                            for (int i = range.StartIndex; i <= range.EndIndex(); i++)
+                            {
+                                var pt = new Point
+                                {
+                                    X = Convert.ToInt32((vertices[i*2] - minX)*dx),
+                                    Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                                };
+
+                                Matrix shift = origTransform.Clone();
+                                shift.Translate(pt.X, pt.Y);
+                                g.Transform = shift;
+                                g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
+                            }
                         }
                     }
                 }
@@ -422,54 +517,49 @@ namespace DotSpatial.Controls
             else g.Transform = origTransform;
         }
 
-        private void DrawFeatures(MapArgs e, List<IFeature> features)
+        // This draws the individual point features
+        private void DrawFeatures(MapArgs e, IEnumerable<IFeature> features)
         {
-            var states = DrawingFilter.DrawnStates;
+            Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
+            Matrix origTransform = g.Transform;
+            double minX = e.MinX;
+            double maxY = e.MaxY;
+            double dx = e.Dx;
+            double dy = e.Dy;
+            IDictionary<IFeature, IDrawnState> states = DrawingFilter.DrawnStates;
             if (states == null) return;
-
-            var g = e.Device ?? Graphics.FromImage(BackBuffer);
-            var origTransform = g.Transform;
-
-            var minX = e.MinX;
-            var maxY = e.MaxY;
-            var dx = e.Dx;
-            var dy = e.Dy;
-            foreach (var category in Symbology.Categories)
+            foreach (IPointCategory category in Symbology.Categories)
             {
-                foreach (var feature in features)
+                foreach (IFeature feature in features)
                 {
                     if (states.ContainsKey(feature) == false) continue;
-                    var ds = states[feature];
+                    IDrawnState ds = states[feature];
                     if (ds == null) continue;
                     if (!ds.IsVisible) continue;
                     if (ds.SchemeCategory == null) continue;
-                    var pc = ds.SchemeCategory as IPointCategory;
+                    IPointCategory pc = ds.SchemeCategory as IPointCategory;
                     if (pc == null) continue;
                     if (pc != category) continue;
-
-
-                    var ps = pc.Symbolizer;
+                    IPointSymbolizer ps = pc.Symbolizer;
                     if (ds.IsSelected)
                     {
                         ps = pc.SelectionSymbolizer;
                     }
                     if (ps == null) continue;
                     g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    double scaleSize = 1;
-                    if (ps.ScaleMode == ScaleMode.Geographic)
+                    foreach (Coordinate c in feature.Coordinates)
                     {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
-
-                    foreach (var c in feature.Coordinates)
-                    {
-                        var pt = new Point
+                        Point pt = new Point
+                                       {
+                                           X = Convert.ToInt32((c.X - minX) * dx),
+                                           Y = Convert.ToInt32((maxY - c.Y) * dy)
+                                       };
+                        double scaleSize = 1;
+                        if (ps.ScaleMode == ScaleMode.Geographic)
                         {
-                            X = Convert.ToInt32((c.X - minX)*dx),
-                            Y = Convert.ToInt32((maxY - c.Y)*dy)
-                        };
-                        
-                        var shift = origTransform.Clone();
+                            scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                        }
+                        Matrix shift = origTransform.Clone();
                         shift.Translate(pt.X, pt.Y);
                         g.Transform = shift;
                         ps.Draw(g, scaleSize);
@@ -477,8 +567,14 @@ namespace DotSpatial.Controls
                 }
             }
 
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
+            if (e.Device == null)
+            {
+                g.Dispose();
+            }
+            else
+            {
+                g.Transform = origTransform;
+            }
         }
 
         #endregion
@@ -498,6 +594,13 @@ namespace DotSpatial.Controls
         public Image Buffer { get; set; }
 
         /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnvelope BufferEnvelope { get; set; }
+
+        /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
@@ -505,11 +608,14 @@ namespace DotSpatial.Controls
         public Rectangle BufferRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of features that will be rendered before
-        /// refreshing the screen.
+        /// Gets or sets the label layer that is associated with this point layer.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int ChunkSize { get; set; }
+        [ShallowCopy]
+        public new IMapLabelLayer LabelLayer
+        {
+            get { return base.LabelLayer as IMapLabelLayer; }
+            set { base.LabelLayer = value; }
+        }
 
         #endregion
 
@@ -524,7 +630,7 @@ namespace DotSpatial.Controls
         /// <returns>A GeoPointLayer created from the specified fileName.</returns>
         public static new MapPointLayer OpenFile(string fileName, IProgressHandler progressHandler)
         {
-            var fl = LayerManager.DefaultLayerManager.OpenLayer(fileName, progressHandler);
+            ILayer fl = LayerManager.DefaultLayerManager.OpenLayer(fileName, progressHandler);
             return fl as MapPointLayer;
         }
 
@@ -536,16 +642,9 @@ namespace DotSpatial.Controls
         /// <returns>A GeoPointLayer created from the specified fileName.</returns>
         public static new MapPointLayer OpenFile(string fileName)
         {
-            var fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
+            IFeatureLayer fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
             return fl as MapPointLayer;
         }
-
-        #endregion
-
-        #region ISupportChunksDrawing implementation
-
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; }}
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
 
         #endregion
     }

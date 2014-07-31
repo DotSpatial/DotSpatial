@@ -1,4 +1,4 @@
-﻿using DotSpatial.Tests.Common;
+﻿using System.Linq;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -12,13 +12,9 @@ namespace DotSpatial.Data.Tests
             const string path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
             var target = new PointShapefile(path);
             Assert.AreEqual(CoordinateType.Z, target.CoordinateType);
-            for (var i = 0; i < target.ShapeIndices.Count; i++)
-            {
-                var shape = target.GetShape(i, false);
-                Assert.IsNotNull(shape.Z);
-                Assert.IsNotNull(shape.M);
-                Assert.IsTrue(shape.M[0] < -1e38);
-            }
+            Assert.IsNotNull(target.Z);
+            Assert.IsNotNull(target.M);
+            Assert.IsTrue(target.M.All(d => d < -1e38));
         }
 
         [Test]
@@ -27,90 +23,6 @@ namespace DotSpatial.Data.Tests
             const string path = @"Data\Shapefiles\Yield\Yield 2012.shp";
             var target = new PointShapefile(path);
             Assert.IsNotNull(target);
-
-            Shape nullShape = null;
-            for (var i = 0; i < target.ShapeIndices.Count; i++)
-            {
-                var shape = target.GetShape(i, false);
-                if (shape.Range.ShapeType == ShapeType.NullShape)
-                {
-                    nullShape = shape;
-                    break;
-                }
-            }
-            Assert.IsNotNull(nullShape);
-            Assert.IsNull(nullShape.Vertices);
-        }
-
-        [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
-        public void CanOpen(string path)
-        {
-            var target = new PointShapefile(path);
-            Assert.IsTrue(target.Count > 0);
-            for (var i = 0; i < target.Count; i++)
-            {
-                var shape = target.GetShape(i, false);
-                Assert.IsNotNull(shape);
-            }
-        }
-
-        [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
-        public void CanSave_IndexModeTrue(string path)
-        {
-            var expected = new PointShapefile(path);
-            Assert.IsTrue(expected.IndexMode);
-            var newFile = FileTools.GetTempFileName(".shp");
-            expected.SaveAs(newFile, true);
-
-            try
-            {
-                var actual = new PointShapefile(path);
-                Assert.AreEqual(expected.Count, actual.Count);
-                for (var i = 0; i < expected.Count; i++)
-                {
-                    var targetF = expected[i];
-                    var actualF = actual[i];
-
-                    Assert.AreEqual(targetF.Coordinates, actualF.Coordinates);
-                    Assert.AreEqual(targetF.DataRow.ItemArray, actualF.DataRow.ItemArray);
-                }
-            }
-            finally
-            {
-                FileTools.DeleteShapeFile(newFile);
-            }
-        }
-
-        [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
-        public void CanSave_IndexModeFalse(string path)
-        {
-            var expected = new PointShapefile(path);
-            var count = expected.Features.Count; // Force to load all features into memory
-            Assert.AreEqual(count, expected.Count);
-            Assert.IsTrue(!expected.IndexMode);
-            var newFile = FileTools.GetTempFileName(".shp");
-            expected.SaveAs(newFile, true);
-
-            try
-            {
-                var actual = new PointShapefile(path);
-                Assert.AreEqual(expected.Count, actual.Count);
-                for (var i = 0; i < expected.Count; i++)
-                {
-                    var targetF = expected[i];
-                    var actualF = actual[i];
-
-                    Assert.AreEqual(targetF.Coordinates, actualF.Coordinates);
-                    Assert.AreEqual(targetF.DataRow.ItemArray, actualF.DataRow.ItemArray);
-                }
-            }
-            finally
-            {
-                FileTools.DeleteShapeFile(newFile);
-            }
         }
     }
 }
