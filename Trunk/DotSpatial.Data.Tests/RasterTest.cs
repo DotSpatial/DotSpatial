@@ -58,7 +58,14 @@ namespace DotSpatial.Data.Tests
             const long expected = (nrows / frequencyOfNoValue) * ncols + ncols;
             var actual = target.GetNoDataCellCount();
             Assert.AreEqual(expected, actual);
-            File.Delete(path);
+
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
@@ -67,26 +74,23 @@ namespace DotSpatial.Data.Tests
         [TestMethod]
         public void SaveAsTest()
         {
+            const string GridDataFolder = @"Data\Grids\";
             var p = new GdalRasterProvider();
-            var sourceGrid = p.Open(FileTools.PathToTestFile( @"Rasters\elev_cm_ESRI\elev_cm_clip2\hdr.adf"));
+            var sourceGrid = p.Open(GridDataFolder + @"elev_cm_ESRI\elev_cm_clip2\hdr.adf");
             var sourceGridMaximum = sourceGrid.Maximum;
 
-            var savedGridName = FileTools.GetTempFileName(".tif");
-            try
-            {
-                sourceGrid.SaveAs(savedGridName);
-                Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);
+            const string savedGridName = GridDataFolder + @"elev_cm.tif";
+            sourceGrid.SaveAs(savedGridName);
 
-                var savedSourceGrid = Raster.Open(savedGridName);
-                Assert.AreEqual(sourceGridMaximum, savedSourceGrid.Maximum, 0.0001);
+            Assert.AreEqual(sourceGrid.Maximum, sourceGridMaximum, 0.0001);
 
-                sourceGrid.Close();
-                savedSourceGrid.Close();
-            }
-            finally
-            {
-                File.Delete(savedGridName);
-            }
+            var savedSourceGrid = Raster.Open(savedGridName);
+
+            Assert.AreEqual(sourceGridMaximum, savedSourceGrid.Maximum, 0.0001);
+
+            sourceGrid.Close();
+            savedSourceGrid.Close();
+            File.Delete(savedGridName);
         }
 
         [Test]

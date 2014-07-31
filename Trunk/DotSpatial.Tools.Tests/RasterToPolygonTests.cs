@@ -13,13 +13,12 @@ namespace DotSpatial.Tools.Tests
     class RasterToPolygonTests
     {
         [Test]
-        [TestCase(@"Rasters\DEM_w.tif")]
-        [TestCase(@"Rasters\DanSite1w.tif")]
-        [TestCase(@"Rasters\DanSite2w.tif")]
-        [TestCase(@"Rasters\c1w.tif")]
+        [TestCase(@"Data\DEM_w.tif")]
+        [TestCase(@"Data\DanSite1w.tif")]
+        [TestCase(@"Data\DanSite2w.tif")]
+        [TestCase(@"Data\c1w.tif")]
         public void CanCreateMultiPartPolygons(string file)
         {
-            file = FileTools.PathToTestFile(file);
             var target = new RasterToPolygon();
             var p = new GdalRasterProvider();
             var raster = p.Open(file);
@@ -32,13 +31,10 @@ namespace DotSpatial.Tools.Tests
         }
 
         [Test]
-        [TestCase(@"Rasters\DEM_w.tif", @"Rasters\DEM_p.tif")]
-        [TestCase(@"Rasters\c1w.tif", @"Rasters\c1p.tif")]
+        [TestCase(@"Data\DEM_w.tif", @"Data\DEM_p.tif")]
+        [TestCase(@"Data\c1w.tif", @"Data\c1p.tif")]
         public void NoMultiPartPolygonsWithConnectionGrid(string rasterFile, string flowDirectionGridFile)
         {
-            rasterFile = FileTools.PathToTestFile(rasterFile);
-            flowDirectionGridFile = FileTools.PathToTestFile(flowDirectionGridFile);
-
             var p = new GdalRasterProvider();
             var raster = p.Open(rasterFile);
             var flowDirectionGrid = p.Open(flowDirectionGridFile);

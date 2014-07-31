@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
@@ -54,29 +53,26 @@ namespace DotSpatial.Controls.Tests
         [Test]
         public void GetCustomSettingFromFileTest()
         {
-            var map = new Map();
-            var target = new AppManager {Map = map};
+            Map map = new Map();
+            AppManager target = new AppManager();
+            target.Map = map;
 
-            var uniqueName = Guid.NewGuid().ToString();
+            string uniqueName = "customsettingname";
             var expected = DateTime.Now;
             target.SerializationManager.SetCustomSetting(uniqueName, expected);
 
             var actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
             Assert.AreEqual(expected, actual);
 
-            var path = FileTools.GetTempFileName(".dspx");
-            try
-            {
-                target.SerializationManager.SaveProject(path);
-                target.SerializationManager.OpenProject(path);
-                actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
-                Assert.AreEqual(expected.ToLongDateString(), actual.ToLongDateString());
+            string path = Path.GetFullPath(Path.Combine("TestFiles", "SerializeTestWithCustomSettings.map.xml.dspx"));
 
-            }
-            finally
-            {
-                File.Delete(path);    
-            }
+            target.SerializationManager.SaveProject(path);
+
+            target.SerializationManager.OpenProject(path);
+            actual = target.SerializationManager.GetCustomSetting(uniqueName, DateTime.Now.AddDays(1));
+            Assert.AreEqual(expected.ToLongDateString(), actual.ToLongDateString());
+
+            File.Delete(path);
         }
     }
 }

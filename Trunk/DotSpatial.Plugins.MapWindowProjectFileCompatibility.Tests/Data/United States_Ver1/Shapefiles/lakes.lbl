@@ -1,0 +1,33 @@
+<MapWindow version="3.0.1322.15251">
+  <Labels Field="2" Font="Microsoft Sans Serif" Size="8.25" Color="-16776961" Justification="1" UseMinZoomLevel="True" xMin="-113.853239566053" yMin="40.1230907342645" xMax="-110.822419504946" yMax="42.6098469947374">
+    <Label X="-112.522140265538" Y="41.1874222042414" Name="Great Salt Lake" />
+    <Label X="-110.831167299555" Y="37.2804520348787" Name="Lake Powell" />
+    <Label X="-115.813434510907" Y="33.3149757323027" Name="Salton Sea" />
+    <Label X="-80.8217628624637" Y="26.9399740611958" Name="Lake Okeechobee" />
+    <Label X="-95.1082825910303" Y="48.0312114683988" Name="Upper Red Lake" />
+    <Label X="-114.482403208472" Y="36.1540951100436" Name="Lake Mead" />
+    <Label X="-82.3120697292722" Y="33.8146544655919" Name="Clarks Hill Lake" />
+    <Label X="-94.6955274071787" Y="49.28400477897" Name="Lake of the Woods" />
+    <Label X="-106.879769292189" Y="47.7485356721958" Name="Fort Peck Lake" />
+    <Label X="-100.325523935395" Y="45.3202199491338" Name="Lake Oahe" />
+    <Label X="-93.6561952690439" Y="46.2344428052823" Name="Mille Lacs Lake" />
+    <Label X="-86.7402405199134" Y="44.0478590844804" Name="Lake Michigan" />
+    <Label X="-110.353960691985" Y="44.4462531523255" Name="Yellowstone Lake" />
+    <Label X="-88.4117671623888" Y="44.0206699140688" Name="Lake Winnebago" />
+    <Label X="-76.7028155623573" Y="42.6858120557546" Name="Gayuga Lake" />
+    <Label X="-81.2641784238057" Y="42.1462793894495" Name="Lake Erie" />
+    <Label X="-76.8865581496098" Y="42.660448726283" Name="Seneca Lake" />
+    <Label X="-82.6867268637672" Y="42.4579082358798" Name="Lake St. Clair" />
+    <Label X="-77.1325623628069" Y="42.5242467137762" Name="Keuka Lake" />
+    <Label X="-120.024234144248" Y="39.0993202240832" Name="Lake Tahoe" />
+    <Label X="-87.9996143483549" Y="36.8601877337016" Name="Lake Barkley" />
+    <Label X="-88.0647066353397" Y="36.4812627359651" Name="Kentucky Lake" />
+    <Label X="-96.7080137193235" Y="33.9220570575991" Name="Lake Texoma" />
+    <Label X="-102.346262033376" Y="47.7986513497373" Name="Lake Sakakawea" />
+    <Label X="-71.334749101083" Y="43.624503523241" Name="Lake Winnipesaukee" />
+    <Label X="-73.3198614716229" Y="44.5726209210503" Name="Lake Champlain" />
+    <Label X="-87.8830874916416" Y="47.5842082294152" Name="Lake Superior" />
+    <Label X="-82.3204514520994" Y="45.0185810205987" Name="Lake Huron" />
+    <Label X="-77.7410452969949" Y="43.6711137706834" Name="Lake Ontario" />
+  </Labels>
+</MapWindow>

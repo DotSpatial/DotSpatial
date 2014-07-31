@@ -7,10 +7,9 @@ namespace DotSpatial.Data.Tests
     class MultiPointShapefileTests
     {
         [Test]
-        [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
+        [TestCase(@"Data\Shapefiles\multipoint.shape\multipoint.shp")]
         public void CanOpen(string path)
         {
-            path = FileTools.PathToTestFile(path);
             var target = new MultiPointShapefile(path);
             Assert.IsTrue(target.Count > 0);
             for (var i = 0; i < target.Count; i++)
@@ -21,10 +20,9 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test]
-        [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
+        [TestCase(@"Data\Shapefiles\multipoint.shape\multipoint.shp")]
         public void CanSave_IndexModeTrue(string path)
         {
-            path = FileTools.PathToTestFile(path);
             var expected = new MultiPointShapefile(path);
             Assert.IsTrue(expected.IndexMode);
             var newFile = FileTools.GetTempFileName(".shp");
@@ -50,10 +48,9 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test]
-        [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
+        [TestCase(@"Data\Shapefiles\multipoint.shape\multipoint.shp")]
         public void CanSave_IndexModeFalse(string path)
         {
-            path = FileTools.PathToTestFile(path);
             var expected = new MultiPointShapefile(path);
             var count = expected.Features.Count; // Force to load all features into memory
             Assert.AreEqual(count, expected.Count);

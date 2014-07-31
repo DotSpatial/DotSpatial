@@ -11,7 +11,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanReadLineShapeWithNullShapes()
         {
-            var path = FileTools.PathToTestFile(@"Shapefiles\Archi\ARCHI_13-01-01.shp");
+            const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
             var target = new LineShapefile(path);
             Assert.IsNotNull(target);
             Assert.IsTrue(target.ShapeIndices.Any(d => d.ShapeType == ShapeType.NullShape));
@@ -22,7 +22,7 @@ namespace DotSpatial.Data.Tests
         [TestCase(true)]
         public void CanExportLineShapeWithNullShapes(bool indexMode)
         {
-            var path = FileTools.PathToTestFile(@"Shapefiles\Archi\ARCHI_13-01-01.shp");
+            const string path = @"Data\Shapefiles\Archi\ARCHI_13-01-01.shp";
             var target = new LineShapefile(path);
             Assert.IsTrue(target.Features.Count > 0);
             target.IndexMode = indexMode;

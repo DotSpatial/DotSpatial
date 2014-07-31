@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using DotSpatial.Data;
-using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Analysis.Tests
@@ -11,7 +10,7 @@ namespace DotSpatial.Analysis.Tests
         [Test]
         public void SlopeIsWorking()
         {
-            var raster = Raster.Open(FileTools.PathToTestFile(@"Rasters\kriging.bgd"));
+            var raster = Raster.Open(Path.Combine("Data", "kriging.bgd"));
             var actual = Slope.GetSlope(raster, 1, true,  null);
             try
             {
@@ -39,7 +38,6 @@ namespace DotSpatial.Analysis.Tests
             finally
             {
                 File.Delete(actual.Filename);
-                File.Delete(Path.ChangeExtension(actual.Filename, ".prj"));
             }
         }
     }

@@ -40,7 +40,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanReadDataRowWithZeroDates()
         {
-            var path = FileTools.PathToTestFile(@"Shapefiles\DateShapefile\DateShapefile.dbf");
+            const string path = @"Data\Shapefiles\DateShapefile\DateShapefile.dbf";
             var at = new AttributeTable(path);
             var dt = at.SupplyPageOfData(0, 1);
             Assert.IsNotNull(dt);

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-16"?>
+<root type="0">
+  <types>
+    <item key="0" value="DotSpatial.Controls.Map, DotSpatial.Controls, Version=1.0.0.25625, Culture=neutral, PublicKeyToken=4d9e49339a7d240c" />
+    <item key="1" value="DotSpatial.Controls.MapFrame, DotSpatial.Controls, Version=1.0.0.25625, Culture=neutral, PublicKeyToken=4d9e49339a7d240c" />
+    <item key="2" value="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <item key="3" value="DotSpatial.Data.Extent, DotSpatial.Data, Version=1.0.0.25622, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d" />
+    <item key="4" value="System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <item key="5" value="DotSpatial.Controls.MapLayerCollection, DotSpatial.Controls, Version=1.0.0.25625, Culture=neutral, PublicKeyToken=4d9e49339a7d240c" />
+    <item key="6" value="System.Collections.Generic.List`1[[DotSpatial.Symbology.ILayer, DotSpatial.Symbology, Version=1.0.0.25623, Culture=neutral, PublicKeyToken=6178c08da7998387]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <item key="7" value="DotSpatial.Symbology.DynamicVisibilityMode, DotSpatial.Symbology, Version=1.0.0.25623, Culture=neutral, PublicKeyToken=6178c08da7998387" />
+    <item key="8" value="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </types>
+  <member name="MapFrame" type="1">
+    <member name="IsLegendGroup" type="2" value="False" />
+    <member name="ViewExtents" type="3">
+      <member name="MaxX" type="4" value="213.873644859813" />
+      <member name="MaxY" type="4" value="125.28" />
+      <member name="MinX" type="4" value="-213.873644859813" />
+      <member name="MinY" type="4" value="-125.28" />
+    </member>
+    <member name="ExtendBuffer" type="2" value="False" />
+    <member name="Layers" type="5">
+      <member name="InnerList" type="6" />
+    </member>
+    <member name="DynamicVisibilityWidth" type="4" value="0" />
+    <member name="DynamicVisibilityMode" type="7" value="ZoomedIn" />
+    <member name="UseDynamicVisibility" type="2" value="False" />
+    <member name="LegendText" type="8" value="Map Layers" />
+  </member>
+</root>
