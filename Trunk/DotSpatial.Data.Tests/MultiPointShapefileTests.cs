@@ -22,6 +22,20 @@ namespace DotSpatial.Data.Tests
 
         [Test]
         [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
+        public void CanUpdateExtent_IndexModeTrue(string path)
+        {
+            path = FileTools.PathToTestFile(path);
+            var target = new MultiPointShapefile(path);
+            Assert.IsTrue(target.Count > 0);
+            Assert.IsTrue(target.IndexMode);
+            target.Extent = null;
+            target.UpdateExtent();
+            Assert.IsNotNull(target.Extent);
+        }
+
+
+        [Test]
+        [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
         public void CanSave_IndexModeTrue(string path)
         {
             path = FileTools.PathToTestFile(path);
