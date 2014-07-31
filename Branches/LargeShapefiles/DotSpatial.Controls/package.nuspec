@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <description>$description$</description>
+    <owners />
+    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
+    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <iconUrl>http://download.codeplex.com/Download?ProjectName=dotspatial&amp;DownloadId=246554</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary />
+    <language>en-US</language>
+    <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
+    <dependencies>
+      <dependency id="DotSpatial.Data" />
+      <dependency id="DotSpatial.Data.Forms" version="1.7" />
+      <dependency id="DotSpatial.Extensions" version="1.7" />
+      <dependency id="DotSpatial.Modeling.Forms" />
+      <dependency id="DotSpatial.Mono" />
+      <dependency id="DotSpatial.Projections" />
+      <dependency id="DotSpatial.Projections.Forms" version="1.7"/>
+      <dependency id="DotSpatial.Serialization" />
+      <dependency id="DotSpatial.Symbology" version="1.7" />
+      <dependency id="DotSpatial.Symbology.Forms" />
+      <dependency id="DotSpatial.Topology" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />
+  </files>
+</package>

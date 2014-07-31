@@ -1,0 +1,1 @@
+This directory used for storing any tests files (shapefiles, grids, etc) for reusing them between separate unit-tests assemblies.

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="DotSpatial.Geometries.IBasicGeometry">
+    <Position X="10.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IQAAAAAAAAAIAACEAAAAAAAAYCAAAAAAABAAAABAAAA=</HashCode>
+      <FileName>Geometries\IBasicGeometry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicLineString">
+    <Position X="18.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicLineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicPoint">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicPolygon">
+    <Position X="21" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometry">
+    <Position X="10.5" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CABAAAAEgJAAhIBAsAgAQABIAAQgTABAgARAAQAIRAA=</HashCode>
+      <FileName>Geometries\IGeometry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILineString">
+    <Position X="14.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAgAAAAAQAAAAAAAAAAAAAAAAEAAAEACAAAAAAg=</HashCode>
+      <FileName>Geometries\ILineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IPolygon">
+    <Position X="17.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IOverlay">
+    <Position X="13.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAQAAAAAAAIAAAAQAAAAA=</HashCode>
+      <FileName>Geometries\IOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILinearRing">
+    <Position X="14.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ILinearRing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometryCollection">
+    <Position X="9.75" Y="14" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACCAAAAAQAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Geometries\IGeometryCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IPoint">
+    <Position X="6.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IRelate">
+    <Position X="16" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAABAAAAAAAAAAAAAIABAAAAAAACAACARCIA=</HashCode>
+      <FileName>Geometries\IRelate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiPolygon">
+    <Position X="12" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiPoint">
+    <Position X="9.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiLineString">
+    <Position X="7.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiLineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IVectorD">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAEAADAABACAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Geometries\IVectorD.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinate">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAQAAIAAAAAgAAIAYAE=</HashCode>
+      <FileName>Geometries\ICoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

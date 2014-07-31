@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Projections</RootNamespace>
+    <AssemblyName>DotSpatial.Projections</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DotSpatial.Projections.4.0.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.Projections.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthorityCodes\AuthorityCodeHandler.cs" />
+    <Compile Include="AuxiliarySphereType.cs" />
+    <EmbeddedResource Include="AuthorityCodes\AuthorityCodeToProj4.ds" />
+    <None Include="AuthorityCodes\DeflateStreamUtility.cs" />
+    <Compile Include="DatNadTable.cs" />
+    <Compile Include="DatumTransform.cs" />
+    <Compile Include="DatumTransformStage.cs" />
+    <Compile Include="GridShiftTableFormat.cs" />
+    <Compile Include="GsbNadTable.cs" />
+    <Compile Include="ICoordinateSystemCategoryHolder.cs" />
+    <Compile Include="IDatumTransform.cs" />
+    <Compile Include="IDatumTransformStage.cs" />
+    <Compile Include="LasLosNadTable.cs" />
+    <Compile Include="LlaNadTable.cs" />
+    <Compile Include="ProjCloneableEM.cs" />
+    <Compile Include="IDescriptor.cs" />
+    <Compile Include="IMatchable.cs" />
+    <Compile Include="IRandomizable.cs" />
+    <Compile Include="MatchableEM.cs" />
+    <Compile Include="AngularUnit.cs" />
+    <Compile Include="CoordinateSystemCategory.cs" />
+    <Compile Include="CopyBase.cs" />
+    <Compile Include="Datum.cs" />
+    <Compile Include="DatumType.cs" />
+    <Compile Include="Descriptor.cs" />
+    <Compile Include="GeocentricGeodetic.cs" />
+    <Compile Include="GeographicCategories\Africa.cs" />
+    <Compile Include="GeographicCategories\Antarctica.cs" />
+    <Compile Include="GeographicCategories\Asia.cs" />
+    <Compile Include="GeographicCategories\Australia.cs" />
+    <Compile Include="GeographicCategories\CountySystems.cs" />
+    <Compile Include="GeographicCategories\Europe.cs" />
+    <Compile Include="GeographicCategories\NorthAmerica.cs" />
+    <Compile Include="GeographicCategories\Oceans.cs" />
+    <Compile Include="GeographicCategories\SolarSystem.cs" />
+    <Compile Include="GeographicCategories\SouthAmerica.cs" />
+    <Compile Include="GeographicCategories\SpheroidBased.cs" />
+    <Compile Include="GeographicCategories\World.cs" />
+    <Compile Include="GeographicInfo.cs" />
+    <Compile Include="GeographicSystems.cs" />
+    <Compile Include="GridShift.cs" />
+    <Compile Include="IEsriString.cs" />
+    <Compile Include="IProjectionCategory.cs" />
+    <Compile Include="IReproject.cs" />
+    <Compile Include="KnownCoordinateSystems.cs" />
+    <Compile Include="LinearUnit.cs" />
+    <Compile Include="Meridian.cs" />
+    <Compile Include="MeridionalDistance.cs" />
+    <Compile Include="Nad\NadTable.cs" />
+    <Compile Include="Nad\NadTables.cs" />
+    <Compile Include="Nad\PhiLam.cs" />
+    <Compile Include="Proj4Datum.cs" />
+    <Compile Include="Proj4Ellipsoid.cs" />
+    <Compile Include="Proj4Meridian.cs" />
+    <Compile Include="ProjectedCategories\Africa.cs" />
+    <Compile Include="ProjectedCategories\Asia.cs" />
+    <Compile Include="ProjectedCategories\Europe.cs" />
+    <Compile Include="ProjectedCategories\GaussKrugerBeijing1954.cs" />
+    <Compile Include="ProjectedCategories\GaussKrugerOther.cs" />
+    <Compile Include="ProjectedCategories\GaussKrugerPulkovo1942.cs" />
+    <Compile Include="ProjectedCategories\GaussKrugerPulkovo1995.cs" />
+    <Compile Include="ProjectedCategories\KrugerXian1980.cs" />
+    <Compile Include="ProjectedCategories\Minnesota.cs" />
+    <Compile Include="ProjectedCategories\Nad1983IntlFeet.cs" />
+    <Compile Include="ProjectedCategories\NationalGrids.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsAustralia.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsCanada.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsIndia.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsJapan.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsNewZealand.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsNorway.cs" />
+    <Compile Include="ProjectedCategories\NationalGridsSweden.cs" />
+    <Compile Include="ProjectedCategories\NorthAmerica.cs" />
+    <Compile Include="ProjectedCategories\Polar.cs" />
+    <Compile Include="ProjectedCategories\SouthAmerica.cs" />
+    <Compile Include="ProjectedCategories\SpheroidBased.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneNad1927.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneNad1983.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneNad1983Feet.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneNad1983Harn.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneNad1983HarnFeet.cs" />
+    <Compile Include="ProjectedCategories\StatePlaneOther.cs" />
+    <Compile Include="ProjectedCategories\StateSystems.cs" />
+    <Compile Include="ProjectedCategories\TransverseMercator.cs" />
+    <Compile Include="ProjectedCategories\UtmNad1927.cs" />
+    <Compile Include="ProjectedCategories\UtmNad1983.cs" />
+    <Compile Include="ProjectedCategories\UtmOther.cs" />
+    <Compile Include="ProjectedCategories\UtmWgs1972.cs" />
+    <Compile Include="ProjectedCategories\UtmWgs1984.cs" />
+    <Compile Include="ProjectedCategories\Wisconsin.cs" />
+    <Compile Include="ProjectedCategories\World.cs" />
+    <Compile Include="ProjectedCategories\WorldSpheroid.cs" />
+    <Compile Include="ProjectedSystems.cs" />
+    <Compile Include="ProjectionException.cs" />
+    <Compile Include="ProjectionInfo.cs" />
+    <Compile Include="ProjectionInvalidEsriFormatException.cs" />
+    <Compile Include="ProjectionMessages.Designer.cs">
+      <DependentUpon>ProjectionMessages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ProjectionNames.Designer.cs">
+      <DependentUpon>ProjectionNames.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reproject.cs" />
+    <Compile Include="Spheroid.cs" />
+    <Compile Include="Transforms\Aitoff.cs" />
+    <Compile Include="Transforms\AlbersConicEqualArea.cs" />
+    <Compile Include="Transforms\AlbersEqualArea.cs" />
+    <Compile Include="Transforms\AnalyticModes.cs" />
+    <Compile Include="Transforms\AzimuthalEquidistant.cs" />
+    <Compile Include="Transforms\BipolarObliqueConformalConic.cs" />
+    <Compile Include="Transforms\Bonne.cs" />
+    <Compile Include="Transforms\Cassini.cs" />
+    <Compile Include="Transforms\DoubleStereographic.cs" />
+    <Compile Include="Transforms\Extensions.cs" />
+    <Compile Include="Transforms\GaussKruger.cs" />
+    <Compile Include="Transforms\HotineObliqueMercatorAzimuthNaturalOrigin.cs" />
+    <Compile Include="Transforms\MercatorAuxiliarySphere.cs" />
+    <Compile Include="Transforms\CrasterParabolic.cs" />
+    <Compile Include="Transforms\CylindricalEqualArea.cs" />
+    <Compile Include="Transforms\Eckert1.cs" />
+    <Compile Include="Transforms\Eckert2.cs" />
+    <Compile Include="Transforms\Eckert3.cs" />
+    <Compile Include="Transforms\Eckert4.cs" />
+    <Compile Include="Transforms\Eckert5.cs" />
+    <Compile Include="Transforms\Eckert6.cs" />
+    <Compile Include="Transforms\EllipticalTransform.cs" />
+    <Compile Include="Transforms\EquidistantConic.cs" />
+    <Compile Include="Transforms\EquidistantCylindrical.cs" />
+    <Compile Include="Transforms\Factors.cs" />
+    <Compile Include="Transforms\Foucaut.cs" />
+    <Compile Include="Transforms\GallStereographic.cs" />
+    <Compile Include="Transforms\Gauss.cs" />
+    <Compile Include="Transforms\GeneralSinusoidal.cs" />
+    <Compile Include="Transforms\GeostationarySatellite.cs" />
+    <Compile Include="Transforms\Gnomonic.cs" />
+    <Compile Include="Transforms\GoodeHomolosine.cs" />
+    <Compile Include="Transforms\HammerAitoff.cs" />
+    <Compile Include="Transforms\HotineObliqueMercatorAzimuthCenter.cs" />
+    <Compile Include="Transforms\ITransform.cs" />
+    <Compile Include="Transforms\Kavraisky5.cs" />
+    <Compile Include="Transforms\Kavraisky7.cs" />
+    <Compile Include="Transforms\KnownTransform.cs" />
+    <Compile Include="Transforms\Krovak.cs" />
+    <Compile Include="Transforms\LambertAzimuthalEqualArea.cs" />
+    <Compile Include="Transforms\LambertConformalConic.cs" />
+    <Compile Include="Transforms\LambertEqualAreaConic.cs" />
+    <Compile Include="Transforms\LongLat.cs" />
+    <Compile Include="Transforms\Loximuthal.cs" />
+    <Compile Include="Transforms\McBrydeThomasFlatPolarSine.cs" />
+    <Compile Include="Transforms\Mercator.cs" />
+    <Compile Include="Transforms\MillerCylindrical.cs" />
+    <Compile Include="Transforms\Mollweide.cs" />
+    <Compile Include="Transforms\NewZealandMapGrid.cs" />
+    <Compile Include="Transforms\ObliqueCylindricalEqualArea.cs" />
+    <Compile Include="Transforms\ObliqueMercator.cs" />
+    <Compile Include="Transforms\ObliqueStereographicAlternative.cs" />
+    <Compile Include="Transforms\Orthographic.cs" />
+    <Compile Include="Transforms\Polyconic.cs" />
+    <Compile Include="Transforms\Proj.cs" />
+    <Compile Include="Transforms\PutinsP1.cs" />
+    <Compile Include="Transforms\QuarticAuthalic.cs" />
+    <Compile Include="Transforms\Robinson.cs" />
+    <Compile Include="Transforms\Sinusoidal.cs" />
+    <Compile Include="Transforms\Stereographic.cs" />
+    <Compile Include="Transforms\StereographicNorthPole.cs" />
+    <Compile Include="Transforms\SwissObliqueMercator.cs" />
+    <Compile Include="Transforms\Transform.cs" />
+    <Compile Include="Transforms\TransformManager.cs" />
+    <Compile Include="Transforms\TransverseMercator.cs" />
+    <Compile Include="Transforms\TwoPointEquidistant.cs" />
+    <Compile Include="Transforms\UniversalPolarStereographic.cs" />
+    <Compile Include="Transforms\UniversalTransverseMercator.cs" />
+    <Compile Include="Transforms\VanderGrinten1.cs" />
+    <Compile Include="Transforms\Wagner4.cs" />
+    <Compile Include="Transforms\Wagner5.cs" />
+    <Compile Include="Transforms\Wagner6.cs" />
+    <Compile Include="Transforms\Winkel1.cs" />
+    <Compile Include="Transforms\Winkel2.cs" />
+    <Compile Include="Transforms\WinkelTripel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\MemberInfoExtensions.cs" />
+    <Compile Include="ShallowCopy.cs" />
+    <None Include="package.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\alaska.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\conus.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\FL.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\hawaii.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\MD.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\null.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\prvi.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\stgeorge.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\stlrnc.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\stpaul.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\TN.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\WI.lla" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\WO.lla" />
+    <EmbeddedResource Include="ProjectionMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProjectionMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectionNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProjectionNames.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nad\ntv1_can.dat" />
+    <EmbeddedResource Include="Nad\ntv2_0.GSB" />
+    <EmbeddedResource Include="XML\gcs.csv" />
+    <EmbeddedResource Include="XML\pcs.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\datums.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotSpatial.Projections.4.0.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\AuthorityCodeToProj4.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\DeflateStreamUtility.exe" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

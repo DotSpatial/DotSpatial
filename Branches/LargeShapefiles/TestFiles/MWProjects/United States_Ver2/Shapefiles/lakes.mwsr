@@ -1,0 +1,13 @@
+<SFRendering>
+  <Layer Name="Major Lakes" GroupName="Hydrology" Type="3" Path="Shapefiles\LAKES.SHP" Tag="" LegendPicture="" Visible="True" LabelsVisible="False" Expanded="True">
+    <Image Type="">
+    </Image>
+    <ShapeFileProperties LabelsVisible="False" MapTooltipField="-1" MapTooltipsEnabled="False" VerticesVisible="False" Color="16777152" DrawFill="True" TransparencyPercent="1" FillStipple="0" LineOrPointSize="1" LineStipple="0" OutLineColor="13749760" PointType="0" CustomLineStipple="0" UseTransparency="False" TransparencyColor="0" FillStippleTransparent="True" FillStippleLineColor="-16777216">
+      <CustomPointType>
+        <Image Type="">
+        </Image>
+      </CustomPointType>
+    </ShapeFileProperties>
+    <DynamicVisibility UseDynamicVisibility="False" Scale="0" />
+  </Layer>
+</SFRendering>

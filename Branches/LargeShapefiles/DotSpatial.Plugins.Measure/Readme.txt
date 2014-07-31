@@ -1,0 +1,1 @@
+﻿Allow to measure distances on the map.

@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<data name="nudStart.Location" type="System.Drawing.Point, System.Drawing">
+		<value>172, 94</value>
+	</data>
+	<data name="nudStart.Size" type="System.Drawing.Size, System.Drawing">
+		<value>41, 20</value>
+	</data>
+	<assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="nudStart.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="&gt;&gt;nudStart.Name" xml:space="preserve">
+    <value>nudStart</value>
+  </data>
+	<data name="&gt;&gt;nudStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;nudStart.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;nudStart.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+	<data name="nudEnd.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 189</value>
+	</data>
+	<data name="nudEnd.Size" type="System.Drawing.Size, System.Drawing">
+		<value>45, 20</value>
+	</data>
+	<data name="nudEnd.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="&gt;&gt;nudEnd.Name" xml:space="preserve">
+    <value>nudEnd</value>
+  </data>
+	<data name="&gt;&gt;nudEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;nudEnd.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;nudEnd.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+	<data name="label1.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+		<value>169, 78</value>
+	</data>
+	<data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+		<value>33, 13</value>
+	</data>
+	<data name="label1.TabIndex" type="System.Int32, mscorlib">
+		<value>2</value>
+	</data>
+	<data name="label1.Text" xml:space="preserve">
+    <value>Da:</value>
+  </data>
+	<data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+	<data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+	<data name="lsvStart.Location" type="System.Drawing.Point, System.Drawing">
+		<value>60, 19</value>
+	</data>
+	<data name="lsvStart.Size" type="System.Drawing.Size, System.Drawing">
+		<value>100, 100</value>
+	</data>
+	<data name="lsvStart.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="lsvStart.Text" xml:space="preserve">
+    <value>lineSymbolView1</value>
+  </data>
+	<data name="&gt;&gt;lsvStart.Name" xml:space="preserve">
+    <value>lsvStart</value>
+  </data>
+	<data name="&gt;&gt;lsvStart.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;lsvStart.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;lsvStart.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<data name="lsvEnd.Location" type="System.Drawing.Point, System.Drawing">
+		<value>60, 123</value>
+	</data>
+	<data name="lsvEnd.Size" type="System.Drawing.Size, System.Drawing">
+		<value>100, 100</value>
+	</data>
+	<data name="lsvEnd.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="lsvEnd.Text" xml:space="preserve">
+    <value>lineSymbolView2</value>
+  </data>
+	<data name="&gt;&gt;lsvEnd.Name" xml:space="preserve">
+    <value>lsvEnd</value>
+  </data>
+	<data name="&gt;&gt;lsvEnd.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.LineSymbolView, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;lsvEnd.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;lsvEnd.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+	<data name="trkEnd.Location" type="System.Drawing.Point, System.Drawing">
+		<value>166, 123</value>
+	</data>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="trkEnd.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+		<value>Vertical</value>
+	</data>
+	<data name="trkEnd.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+		<value>Yes</value>
+	</data>
+	<data name="trkEnd.RightToLeftLayout" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="trkEnd.Size" type="System.Drawing.Size, System.Drawing">
+		<value>45, 100</value>
+	</data>
+	<data name="trkEnd.TabIndex" type="System.Int32, mscorlib">
+		<value>9</value>
+	</data>
+	<data name="&gt;&gt;trkEnd.Name" xml:space="preserve">
+    <value>trkEnd</value>
+  </data>
+	<data name="&gt;&gt;trkEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;trkEnd.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;trkEnd.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+	<data name="btnEdit.Location" type="System.Drawing.Point, System.Drawing">
+		<value>172, 19</value>
+	</data>
+	<data name="btnEdit.Size" type="System.Drawing.Size, System.Drawing">
+		<value>39, 22</value>
+	</data>
+	<data name="btnEdit.TabIndex" type="System.Int32, mscorlib">
+		<value>7</value>
+	</data>
+	<data name="btnEdit.Text" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+	<data name="&gt;&gt;btnEdit.Name" xml:space="preserve">
+    <value>btnEdit</value>
+  </data>
+	<data name="&gt;&gt;btnEdit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;btnEdit.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;btnEdit.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+	<data name="trkStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+		<value>Top, Bottom, Left</value>
+	</data>
+	<data name="trkStart.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 19</value>
+	</data>
+	<data name="trkStart.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+		<value>Vertical</value>
+	</data>
+	<data name="trkStart.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+		<value>No</value>
+	</data>
+	<data name="trkStart.Size" type="System.Drawing.Size, System.Drawing">
+		<value>45, 100</value>
+	</data>
+	<data name="trkStart.TabIndex" type="System.Int32, mscorlib">
+		<value>8</value>
+	</data>
+	<data name="&gt;&gt;trkStart.Name" xml:space="preserve">
+    <value>trkStart</value>
+  </data>
+	<data name="&gt;&gt;trkStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;trkStart.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;trkStart.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+	<data name="label2.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+		<value>6, 173</value>
+	</data>
+	<data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+		<value>23, 13</value>
+	</data>
+	<data name="label2.TabIndex" type="System.Int32, mscorlib">
+		<value>4</value>
+	</data>
+	<data name="label2.Text" xml:space="preserve">
+    <value>A:</value>
+  </data>
+	<data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+	<data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+	<data name="chkSizeRange.AutoSize" type="System.Boolean, mscorlib">
+		<value>True</value>
+	</data>
+	<data name="chkSizeRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>9, 0</value>
+	</data>
+	<data name="chkSizeRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>81, 17</value>
+	</data>
+	<data name="chkSizeRange.TabIndex" type="System.Int32, mscorlib">
+		<value>3</value>
+	</data>
+	<data name="chkSizeRange.Text" xml:space="preserve">
+    <value>Gamma dimensionale</value>
+  </data>
+	<data name="&gt;&gt;chkSizeRange.Name" xml:space="preserve">
+    <value>chkSizeRange</value>
+  </data>
+	<data name="&gt;&gt;chkSizeRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;chkSizeRange.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;chkSizeRange.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+	<data name="psvStart.Location" type="System.Drawing.Point, System.Drawing">
+		<value>60, 19</value>
+	</data>
+	<data name="psvStart.Size" type="System.Drawing.Size, System.Drawing">
+		<value>100, 100</value>
+	</data>
+	<data name="psvStart.TabIndex" type="System.Int32, mscorlib">
+		<value>0</value>
+	</data>
+	<data name="psvStart.Text" xml:space="preserve">
+    <value>pointSymbolView1</value>
+  </data>
+	<data name="&gt;&gt;psvStart.Name" xml:space="preserve">
+    <value>psvStart</value>
+  </data>
+	<data name="&gt;&gt;psvStart.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;psvStart.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;psvStart.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+	<data name="psvEnd.Location" type="System.Drawing.Point, System.Drawing">
+		<value>60, 123</value>
+	</data>
+	<data name="psvEnd.Size" type="System.Drawing.Size, System.Drawing">
+		<value>100, 100</value>
+	</data>
+	<data name="psvEnd.TabIndex" type="System.Int32, mscorlib">
+		<value>1</value>
+	</data>
+	<data name="psvEnd.Text" xml:space="preserve">
+    <value>pointSymbolView2</value>
+  </data>
+	<data name="&gt;&gt;psvEnd.Name" xml:space="preserve">
+    <value>psvEnd</value>
+  </data>
+	<data name="&gt;&gt;psvEnd.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.PointSymbolView, DotSpatial.Symbology.Forms, Version=1.0.0.37877, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+	<data name="&gt;&gt;psvEnd.Parent" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;psvEnd.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+	<data name="grpSizeRange.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+		<value>Fill</value>
+	</data>
+	<data name="grpSizeRange.Location" type="System.Drawing.Point, System.Drawing">
+		<value>0, 0</value>
+	</data>
+	<data name="grpSizeRange.Size" type="System.Drawing.Size, System.Drawing">
+		<value>223, 229</value>
+	</data>
+	<data name="grpSizeRange.TabIndex" type="System.Int32, mscorlib">
+		<value>3</value>
+	</data>
+	<data name="&gt;&gt;grpSizeRange.Name" xml:space="preserve">
+    <value>grpSizeRange</value>
+  </data>
+	<data name="&gt;&gt;grpSizeRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+	<data name="&gt;&gt;grpSizeRange.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+	<data name="&gt;&gt;grpSizeRange.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+	<metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<value>True</value>
+	</metadata>
+	<data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+		<value>223, 229</value>
+	</data>
+	<data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FeatureSizeRangeControl</value>
+  </data>
+	<data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

@@ -1,0 +1,1139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Symbology.Forms</RootNamespace>
+    <AssemblyName>DotSpatial.Symbology.Forms</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.Symbology.Forms.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DotSpatial.Symbology.Forms.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddCustomSymbolDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AngleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AngleEditor.cs" />
+    <Compile Include="AnglePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AngleTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddNewColum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddNewColum.Designer.cs">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AttributeCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AttributeCalculator.Designer.cs">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AttributeDialog.Designer.cs">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CalculatorUserGuide.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CalculatorUserGuide.Designer.cs">
+      <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorCategoryActions.cs" />
+    <Compile Include="DetailedLineSymbolControl.Designer.cs">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterEventArgs.cs" />
+    <Compile Include="ICategoryControl.cs" />
+    <Compile Include="IIWin32WindowOwner.cs" />
+    <Compile Include="ImageLayerActions.cs" />
+    <Compile Include="LabelSetup.Designer.cs">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerActions.cs" />
+    <Compile Include="FeatureLayerActions.cs" />
+    <Compile Include="DeleteFieldsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteFieldsDialog.Designer.cs">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FunClass.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RasterLayerActions.cs" />
+    <Compile Include="RenameFieldDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RenameFieldDialog.Designer.cs">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchAndReplaceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchAndReplaceDialog.Designer.cs">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectByAttributes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LegendItemActionsBase.cs" />
+    <Compile Include="SQLQueryControl.Designer.cs">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TableEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AzimuthAngleEditor.cs" />
+    <Compile Include="CategoryCollectionConverter.cs" />
+    <Compile Include="BarGraph.cs" />
+    <Compile Include="ColorRange.cs" />
+    <Compile Include="ColorRangeEventArgs.cs" />
+    <Compile Include="FeatureCategoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FeatureSizeRange.cs" />
+    <Compile Include="FeatureSizeRangeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LineSymbolView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PointSymbolView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RasterCategoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SizeRangeEventArgs.cs" />
+    <Compile Include="TabColorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TableEditorControl.Designer.cs">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextFont.cs" />
+    <Compile Include="CharacterCodeEditor.cs" />
+    <Compile Include="CharacterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DecorationCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PatternCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StrokeCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SymbolCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SymbolizerCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CollectionPropertyGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorPanelStyle.cs" />
+    <Compile Include="ColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ButtonStates.cs" />
+    <Compile Include="ButtonStatesEM.cs" />
+    <Compile Include="DashControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DashSlider.cs" />
+    <Compile Include="DashSliderHorizontal.cs" />
+    <Compile Include="DashSliderVertical.cs" />
+    <Compile Include="SquareButton.cs" />
+    <Compile Include="DialogButtons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DoubleBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DynamicVisibilityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DynamicVisibilityEditor.cs" />
+    <Compile Include="DynamicVisibilityModeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DynamicVisibilityTypeConverter.cs" />
+    <Compile Include="ExportFeature.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpressionEditor.cs" />
+    <Compile Include="FontBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FontFamilyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FontFamilyControl.Designer.cs">
+      <DependentUpon>FontFamilyControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FontFamilyDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FontFamilyNameEditor.cs" />
+    <Compile Include="ColorLever.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GradientControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GradientSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HueHandle.cs" />
+    <Compile Include="HueSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RoundedHandle.cs" />
+    <Compile Include="TwoColorHandle.cs" />
+    <Compile Include="TwoColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IErrorCheck.cs" />
+    <Compile Include="SymbologyFormsImages.Designer.cs">
+      <DependentUpon>SymbologyFormsImages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="JoinDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LabelAlignmentButton.cs" />
+    <Compile Include="LabelAlignmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabelAlignmentPicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LabelSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LineJoinControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LineSchemePropertyGridEditor.cs" />
+    <Compile Include="LineSymbolizerEditor.cs" />
+    <Compile Include="SymbologyFormsMessageStrings.Designer.cs">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="OpacityEditor.cs" />
+    <Compile Include="OpenFileEditor.cs" />
+    <Compile Include="OutlineControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PointFConverter.cs" />
+    <Compile Include="PointSchemePropertyGridEditor.cs" />
+    <Compile Include="PointSymbolizerEditor.cs" />
+    <Compile Include="PolygonSchemePropertyGridEditor.cs" />
+    <Compile Include="PolygonSymbolizerEditor.cs" />
+    <Compile Include="PredefinedLineSymbolControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SymbolPreview.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProgressCancelDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyDialogProvider.cs" />
+    <Compile Include="PropertyGridEditor.cs" />
+    <Compile Include="RampSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RasterColorSchemeEditor.cs" />
+    <Compile Include="LayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StrokesEditor.cs" />
+    <Compile Include="SymbologyProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SQLExpressionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SQLQueryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SymbologyStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SymbologyStatusStrip.Designer.cs">
+      <DependentUpon>SymbologyStatusStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BreakSlider.cs" />
+    <Compile Include="BreakSliderEventArgs.cs" />
+    <Compile Include="BreakSliderGraph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StatisticalEventArgs.cs" />
+    <Compile Include="SymbologyEventManager.cs" />
+    <Compile Include="DetailedLineSymbolControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DetailedLineSymbolDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailedPointSymbolControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DetailedPointSymbolDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailedPolygonSymbolControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DetailedPolygonSymbolDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LineSymbolDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatisticalBreaksDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Size2DDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SizeBox.cs" />
+    <Compile Include="SizeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SymbolSizeChooser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TabColorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValidTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="VerticalScrollControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ZenithEditor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddCustomSymbolDialog.de-DE.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.it.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.pt-BR.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCustomSymbolDialog.zh-CN.resx">
+      <DependentUpon>AddCustomSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.de-DE.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.it.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.pt-BR.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.de-DE.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.it.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.pt-BR.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AngleControl.zh-CN.resx">
+      <DependentUpon>AngleControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.de-DE.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.it.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.pt-BR.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.de-DE.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.it.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.pt-BR.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeDialog.zh-CN.resx">
+      <DependentUpon>AttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewColum.zh-CN.resx">
+      <DependentUpon>AddNewColum.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeCalculator.zh-CN.resx">
+      <DependentUpon>AttributeCalculator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CalculatorUserGuide.resx">
+      <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CalculatorUserGuide.zh-CN.resx">
+      <DependentUpon>CalculatorUserGuide.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.de-DE.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.it.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.pt-BR.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.de-DE.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.it-IT.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.pt-BR.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteFieldsDialog.zh-CN.resx">
+      <DependentUpon>DeleteFieldsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.de-DE.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.it-IT.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.pt-BR.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.de-DE.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.it-IT.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.pt-BR.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolDialog.en-US.resx">
+      <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.de-DE.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.it-IT.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.pt-BR.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.de-DE.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.it-IT.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.pt-BR.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.zh-CN.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.de-DE.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.it-IT.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.pt-BR.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.de-DE.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.it-IT.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.pt-BR.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JoinDialog.zh-CN.resx">
+      <DependentUpon>JoinDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.de-DE.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.it-IT.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.pt-BR.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.de-DE.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.it-IT.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.pt-BR.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineJoinControl.de-DE.resx">
+      <DependentUpon>LineJoinControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.de-DE.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.en-US.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.it-IT.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.pt-BR.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDialog.en-US.resx">
+      <DependentUpon>PropertyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RasterCategoryControl.en-US.resx">
+      <DependentUpon>RasterCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.de-DE.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.it-IT.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.pt-BR.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RenameFieldDialog.zh-CN.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.de-DE.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.it-IT.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.pt-BR.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchAndReplaceDialog.zh-CN.resx">
+      <DependentUpon>SearchAndReplaceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectByAttributes.resx">
+      <DependentUpon>SelectByAttributes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectByAttributes.zh-CN.resx">
+      <DependentUpon>SelectByAttributes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectField.resx">
+      <DependentUpon>SelectField.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectField.zh-CN.resx">
+      <DependentUpon>SelectField.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Size2DDialog.de-DE.resx">
+      <DependentUpon>Size2DDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SizeControl.de-DE.resx">
+      <DependentUpon>SizeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.de-DE.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.it-IT.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.pt-BR.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.de-DE.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.it-IT.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.pt-BR.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbolizerCollectionControl.zh-CN.resx">
+      <DependentUpon>SymbolizerCollectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.de-DE.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.it-IT.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.pt-BR.resx">
+      <DependentUpon>SymbologyFormsMessageStrings.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.de-DE.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.it-IT.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.pt-BR.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.cs.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.de-DE.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.it-IT.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.pt-BR.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableEditorControl.zh-CN.resx">
+      <DependentUpon>TableEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureCategoryControl.zh-CN.resx">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureSizeRangeControl.zh-CN.resx">
+      <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RasterCategoryControl.resx">
+      <DependentUpon>RasterCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RasterCategoryControl.zh-CN.resx">
+      <DependentUpon>RasterCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorControl.zh-CN.resx">
+      <DependentUpon>TabColorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollectionControl.resx">
+      <DependentUpon>CollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DecorationCollectionControl.resx">
+      <DependentUpon>DecorationCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PatternCollectionControl.resx">
+      <DependentUpon>PatternCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrokeCollectionControl.resx">
+      <DependentUpon>StrokeCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbolCollectionControl.resx">
+      <DependentUpon>SymbolCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbolizerCollectionControl.resx">
+      <DependentUpon>SymbolizerCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollectionPropertyGrid.resx">
+      <DependentUpon>CollectionPropertyGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollectionPropertyGrid.zh-CN.resx">
+      <DependentUpon>CollectionPropertyGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorBox.zh-CN.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorDropDown.resx">
+      <DependentUpon>ColorDropDown.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker.zh-CN.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogButtons.zh-CN.resx">
+      <DependentUpon>DialogButtons.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DoubleBox.resx">
+      <DependentUpon>DoubleBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityControl.resx">
+      <DependentUpon>DynamicVisibilityControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityControl.zh-CN.resx">
+      <DependentUpon>DynamicVisibilityControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DynamicVisibilityModeDialog.resx">
+      <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportFeature.resx">
+      <DependentUpon>ExportFeature.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportFeature.zh-CN.resx">
+      <DependentUpon>ExportFeature.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontBox.resx">
+      <DependentUpon>FontBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontBox.zh-CN.resx">
+      <DependentUpon>FontBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontFamilyControl.resx">
+      <DependentUpon>FontFamilyControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GradientControl.resx">
+      <DependentUpon>GradientControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsImages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SymbologyFormsImages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JoinDialog.resx">
+      <DependentUpon>JoinDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelAlignmentControl.resx">
+      <DependentUpon>LabelAlignmentControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelSetup.zh-CN.resx">
+      <DependentUpon>LabelSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineJoinControl.resx">
+      <DependentUpon>LineJoinControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineJoinControl.zh-CN.resx">
+      <DependentUpon>LineJoinControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbologyFormsMessageStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SymbologyFormsMessageStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlineControl.zh-CN.resx">
+      <DependentUpon>OutlineControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressCancelDialog.resx">
+      <DependentUpon>ProgressCancelDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressCancelDialog.zh-CN.resx">
+      <DependentUpon>ProgressCancelDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDialog.resx">
+      <DependentUpon>PropertyDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDialog.zh-CN.resx">
+      <DependentUpon>PropertyDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerDialog.zh-CN.resx">
+      <DependentUpon>LayerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLExpressionDialog.zh-CN.resx">
+      <DependentUpon>SQLExpressionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SQLQueryControl.zh-CN.resx">
+      <DependentUpon>SQLQueryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolControl.zh-CN.resx">
+      <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedLineSymbolDialog.zh-CN.resx">
+      <DependentUpon>DetailedLineSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolControl.zh-CN.resx">
+      <DependentUpon>DetailedPointSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolDialog.resx">
+      <DependentUpon>DetailedPointSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPointSymbolDialog.zh-CN.resx">
+      <DependentUpon>DetailedPointSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolControl.zh-CN.resx">
+      <DependentUpon>DetailedPolygonSymbolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolDialog.resx">
+      <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailedPolygonSymbolDialog.zh-CN.resx">
+      <DependentUpon>DetailedPolygonSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineSymbolDialog.resx">
+      <DependentUpon>LineSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineSymbolDialog.zh-CN.resx">
+      <DependentUpon>LineSymbolDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatisticalBreaksDialog.resx">
+      <DependentUpon>StatisticalBreaksDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatisticalBreaksDialog.zh-CN.resx">
+      <DependentUpon>StatisticalBreaksDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Size2DDialog.resx">
+      <DependentUpon>Size2DDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Size2DDialog.zh-CN.resx">
+      <DependentUpon>Size2DDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SizeControl.resx">
+      <DependentUpon>SizeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SizeControl.zh-CN.resx">
+      <DependentUpon>SizeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorDialog.resx">
+      <DependentUpon>TabColorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabColorDialog.zh-CN.resx">
+      <DependentUpon>TabColorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AngleControl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DotSpatial.Symbology.Forms.snk" />
+    <None Include="package.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ColorLever.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RampSlider.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowDownGreen.png" />
+    <None Include="Resources\zoom.png" />
+    <None Include="Resources\table_edit.png" />
+    <None Include="Resources\script.png" />
+    <None Include="Resources\RunModel.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\redbluearrows.png" />
+    <None Include="Resources\Pan.ico" />
+    <None Include="Resources\mnuLayerClear.png" />
+    <None Include="Resources\mnuLayerAdd.png" />
+    <None Include="Resources\FolderOpen.png" />
+    <None Include="Resources\down.png" />
+    <None Include="Resources\Disk.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\color_scheme.png" />
+    <None Include="Resources\calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info.png" />
+    <None Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7b7195e7-c20e-49b9-9cb0-4f451a2463b6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

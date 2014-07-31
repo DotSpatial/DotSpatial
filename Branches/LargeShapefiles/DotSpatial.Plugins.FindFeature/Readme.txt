@@ -1,0 +1,1 @@
+﻿Allows a user to select polygons that match a query.

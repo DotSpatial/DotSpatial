@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.GeometriesGraph.GeometryGraph">
+    <Position X="8.5" Y="32" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>CIIAigAAgUAQAGAQCEBNAAIAAEAAAAAEAAEAAICAgAI=</HashCode>
+      <FileName>GeometryGraph\GeometryGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.PlanarGraph">
+    <Position X="8.5" Y="25.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIgiJAAAAAhABBQAABAAIAAEAAIBAAAAAAAACBIAAQ=</HashCode>
+      <FileName>GeometryGraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

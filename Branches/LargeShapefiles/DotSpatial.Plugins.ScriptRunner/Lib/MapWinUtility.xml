@@ -1,0 +1,672 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+MapWinUtility
+</name>
+</assembly>
+<members>
+<member name="F:MapWinUtility.frmCustomMsgBox.LabelAccept">
+	<summary>
+ Label of the default button of the message box
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.LabelCancel">
+	<summary>
+ Label of the button activated by the "Esc" key
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.LabelTimeout">
+	<summary>
+ Label to return when the timeout expires without the user pressing a button
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.TimeoutSeconds">
+	<summary>
+ Number of seconds to wait before returning LabelTimeout (not used if not greater than zero)
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.RegistryAppName">
+	<summary>
+ Application Name to get and set registry value for checkbox
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.RegistrySection">
+	<summary>
+ Registry Section to get and set registry value for checkbox
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.RegistryKey">
+	<summary>
+ Registry Key to get and set registry value for checkbox
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.RegistryCheckboxText">
+	<summary>
+ Text displayed for checkbox that offers to never again show this message
+ </summary>
+	<remarks>Only used if RegistryAppName, RegistrySection, and RegistryKey are set</remarks>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.LayoutMargin">
+	<summary>
+ Number of pixels left empty around edges and between controls
+ </summary>
+</member><member name="F:MapWinUtility.frmCustomMsgBox.pLabelClicked">
+	<summary>
+ The label of the button that was clicked
+ </summary>
+</member><member name="M:MapWinUtility.frmCustomMsgBox.AskUser(System.String,System.String,System.String[])">
+	<summary>
+ Display aTitle and aMessage and ask the user to choose a button from aButtonLabels
+ </summary>
+	<param name="aMessage">Text in main area of message box</param>
+	<param name="aTitle">Text for title area of message box</param>
+	<param name="aButtonLabels">Labels for buttons</param>
+	<returns>Label of button that was clicked</returns>
+</member><member name="M:MapWinUtility.frmCustomMsgBox.AskUser(System.String,System.String,System.Collections.IEnumerable)">
+	<summary>
+ Display aTitle and aMessage and ask the user to choose a button from aButtonLabels
+ </summary>
+	<param name="aMessage">Text in main area of message box</param>
+	<param name="aTitle">Text for title area of message box</param>
+	<param name="aButtonLabels">Labels for buttons</param>
+	<returns>Label of button that was clicked</returns>
+</member><member name="M:MapWinUtility.modLaunch.LaunchProgram(System.String,System.String,System.String,System.Boolean)">
+	<summary>
+ Launch a program and redirect its standard output and error into Logger.Dbg
+ </summary>
+	<param name="aExeName">Full path of program to launch</param>
+	<param name="aWorkingDirectory">Folder to start program in</param>
+	<param name="aArguments">Command-line arguments to program to launch</param>
+	<param name="aWait">
+ True to wait until program finishes before returning from LaunchProgram, 
+ False to return immediately while program continues to run
+ </param>
+	<returns>
+ 0 if aWait=False and launch was successful
+ -1 if launch was unsuccessful
+ exit code of program if aWait=True and launch was successful</returns>
+</member><member name="M:MapWinUtility.Metadata.#ctor(System.String)">
+	<summary>
+ Create a new instance from an XML string
+ </summary>
+	<param name="aFileName">XML file containing metadata</param>
+</member><member name="P:MapWinUtility.Metadata.XML">
+	<summary>
+ Metadata structure as a System.Xml.XmlDocument
+ </summary>
+	<returns>Internal representation of this object</returns>
+	<remarks>Manipulation of this object may render it non-compliant with DTD</remarks>
+</member><member name="M:MapWinUtility.Metadata.DefaultXmlString">
+	<summary>
+ Create a new blank instance with all required elements present with "missing" values
+ </summary>
+</member><member name="M:MapWinUtility.Metadata.SetBoundingBox(System.String,System.String,System.String,System.String)">
+	<summary>
+ Set bounding box in geographic coordinates
+ </summary>
+	<param name="aWestBC">west bounding coordinate (decimal degress of longitude)</param>
+	<param name="aEastBC">east bounding coordinate (decimal degress of longitude)</param>
+	<param name="aNorthBC">north bounding coordinate (decimal degress of latitude)</param>
+	<param name="aSouthBC">north bounding coordinate (decimal degress of latitude)</param>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Metadata.GetBoundingBox(System.String@,System.String@,System.String@,System.String@)">
+	<summary>
+ Get bounding box in geographic coordinates
+ </summary>
+	<param name="aWestBC">west bounding coordinate (decimal degress of longitude)</param>
+	<param name="aEastBC">east bounding coordinate (decimal degress of longitude)</param>
+	<param name="aNorthBC">north bounding coordinate (decimal degress of latitude)</param>
+	<param name="aSouthBC">north bounding coordinate (decimal degress of latitude)</param>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Metadata.AddProcessStep(System.String)">
+	<summary>
+ Add a processing step to lineage within dataqual
+ </summary>
+	<param name="aDescription">Description of the processing step</param>
+</member><member name="M:MapWinUtility.Metadata.AddProcessStep(System.String,System.DateTime)">
+	<summary>
+ Add a processing step to lineage within dataqual
+ </summary>
+	<param name="aDescription">Description of the processing step</param>
+	<param name="aDate">Date of the processing step, defaults to current date and time if omitted</param>
+</member><member name="M:MapWinUtility.Metadata.AddProcessSteps(System.Collections.Generic.List{System.String})">
+	<summary>
+ Add processing steps to lineage within dataqual
+ </summary>
+	<param name="aProcessSteps">Processing steps to add</param>
+</member><member name="M:MapWinUtility.Metadata.FindOrAddChild(System.Xml.XmlNode,System.String,System.String)">
+	<summary>
+ Find a child node by case-insensitive search for the given tag
+ Create a new child with the given tag if not found
+ </summary>
+	<param name="aNode">Node whose children will be searched</param>
+	<param name="aTag">Search for a child with this tag</param>
+	<returns>the found or created node</returns>
+</member><member name="M:MapWinUtility.Metadata.FromString(System.String)">
+	<summary>
+ Replace the entire state of this object with an XML string
+ </summary>
+	<param name="aXML">New metadata XML string to use instead of current metadata</param>
+</member><member name="M:MapWinUtility.Metadata.ToString">
+	<summary>
+ Return an XML string containing current metadata
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Metadata.Save(System.String)">
+	<summary>
+ Calling save with a file name will write an XML text file with the specified name.
+ If no file name is given, the file name this object was created with or previously saved to is used.
+ </summary>
+	<param name="aFileName">Specifying a filename will save the metadata to a new location.</param>
+	<remarks></remarks>
+</member><member name="T:MapWinUtility.Metadata">
+	<summary>
+ Create and manage FGDC metadata in XML format
+ </summary>
+</member><member name="M:MapWinUtility.DataManagement.CheckFile2Newest(System.String,System.String,System.Single)">
+	<summary>
+Chris Michaelis July 2 2005
+Used to compare write times between the first and second file.
+Returns true if File2 is newer than File1
+ </summary>
+</member><member name="M:MapWinUtility.Net.GetWebResponse(System.String,System.Net.WebHeaderCollection,System.Int32)">
+	<summary>
+ Make a System.Net.WebRequest and return its response
+ </summary>
+	<param name="aUrl">URL to retrieve</param>
+	<param name="aHeaders">Optional headers for web request</param>
+	<param name="aTimeout">Milliseconds to wait for a response before deciding it has failed</param>
+	<returns>WebResponse that comes from the requested URL</returns>
+	<remarks>If a proxy server is needed, prompt for it then proceed</remarks>
+</member><member name="M:MapWinUtility.Net.SetRequestProxy(System.Net.WebRequest)">
+	<summary>
+ Private routine for using locally cached proxy server information
+ </summary>
+	<param name="aRequest">Set the proxy server of this request</param>
+</member><member name="M:MapWinUtility.Net.ProxyFromString(System.String)">
+	<summary>
+ Private function for parsing proxy server information from a string
+ </summary>
+	<param name="aProxyString">Proxy information formatted as:
+ servername:port
+ or for servers requiring authentication:
+ servername:port:username:password
+ </param>
+	<returns>
+ True if proxy server information was parsed from string into m_WebProxy
+ False if proxy server information could not be parsed from aProxyString
+ </returns>
+	<remarks>port must be numeric, 80 and 8080 are popular ports</remarks>
+</member><member name="M:MapWinUtility.Net.WebExceptionSetProxy(System.Net.WebException)">
+	<summary>
+ Private routine to handle a WebException that is a result of needing proxy information
+ </summary>
+	<param name="aWebException">WebException that may be the result of needing proxy information</param>
+	<returns>
+ True if proxy information was found. True implies that another attempt at the same action which produced the given exception may succeed.
+ False means one of the following:
+  a) the exception was not (407) Proxy Authentication Required
+  b) proxy information was not found
+  c) too many tries have been made to get proxy information
+ </returns>
+	<remarks>
+ The first time this is called, it checks the registry for saved proxy information.
+ If no information is found in the registry, or another proxy exception occurs,
+ the user is prompted for proxy information which is then saved in the registry.
+ </remarks>
+</member><member name="M:MapWinUtility.Net.ExecuteUrl(System.String,System.String,System.Boolean,System.Int32)">
+	<summary>
+ Send an HTTP POST to a URL and return the results as a string
+ </summary>
+	<param name="fullUrl">URL to access</param>
+	<param name="postdata">data to sent in POST</param>
+	<param name="bAllowAutoRedirect">True to allow redirection from fullUrl</param>
+	<param name="iTimeout">fail after not getting a response for this many milliseconds</param>
+	<returns>response from web server as a string</returns>
+</member><member name="M:MapWinUtility.Net.DownloadFile(System.String)">
+	<summary>
+ Download from a URL to a string
+ </summary>
+	<param name="URL">URL to request</param>
+	<returns>Response from URL as string</returns>
+</member><member name="M:MapWinUtility.Net.CheckInternetConnection(System.String,System.Int32)">
+	<summary>
+ Check for an internet connection by attempting to get a response from CheckAgainstURL
+ </summary>
+	<param name="CheckAgainstURL">URL to access</param>
+	<param name="TimeoutMilliseconds">Fail after not getting a response for this many milliseconds</param>
+	<returns>True if a response was received from CheckAgainstURL, False if there was an error or timeout</returns>
+</member><member name="F:MapWinUtility.Scripting.ByteOrderMarker">
+	<summary>
+ Unicode prefix sometimes gets included in a string, we have to remove it before interpreting as a filename or script
+ </summary>
+</member><member name="M:MapWinUtility.Scripting.PrepareScript(System.String,System.String,System.String,System.String@,System.String)">
+	<summary>
+	</summary>
+	<param name="aLanguage"></param>
+	<param name="aDLLfilename"></param>
+	<param name="aCode"></param>
+	<param name="aErrors"></param>
+	<param name="aPluginFolder"></param>
+	<returns>an assembly built by compiling aCode or the contents of the file referenced by aCode</returns>
+	<remarks>
+ Broke out the run method into PrepareScript and Run.
+ No longer have to pass in a reference to the Mainform.
+ Output assembly can be loaded by the appropriate Plugin manager from the calling code.
+ </remarks>
+</member><member name="M:MapWinUtility.MiscUtils.ParseDouble(System.String,System.Double)">
+	<summary>
+ Parses double value from string. Uses invariant culture first (. separator). On failure replces '.' to ',' and tries again.
+ </summary>
+	<param name="str">A string to parse value from</param>
+	<param name="defaultValue">Default value to return if parsing has faield</param>
+	<returns>True on success, false otherwise</returns>
+</member><member name="M:MapWinUtility.Serialization.Serialize(System.Object@,System.Xml.XmlElement@)">
+	<summary>
+ A generic method for serialization of object as a child of the given XML node
+ </summary>
+</member><member name="M:MapWinUtility.Serialization.Serialize2(System.Object@,System.Xml.XmlElement@)">
+	<summary>
+ A generic method for serialization of object as a child of the given XML node
+ </summary>
+</member><member name="M:MapWinUtility.Serialization.Deserialize(System.Xml.XmlElement@,System.Type)">
+	<summary>
+ Generic method for deserialization of an object from the given node
+ </summary>
+	<param name="xelParent"></param>
+	<param name="t"></param>
+	<returns></returns>
+</member><member name="M:MapWinUtility.Serialization.Deserialize(System.String,System.Type)">
+	<summary>
+ Generic method for deserialization of an object from the given node
+ </summary>
+	<param name="state"></param>
+	<param name="t"></param>
+	<returns></returns>
+</member><member name="M:MapWinUtility.Log.ClearLog">
+	<summary>
+Deletes all previous error messages.
+</summary>
+</member><member name="M:MapWinUtility.Log.GetLastMsg">
+	<summary>
+Provides access to the last message recieved through 
+the MapWinX library.
+</summary>
+	<returns>A description of the problem encountered. 
+</returns>
+</member><member name="M:MapWinUtility.Log.PutMsg(System.String)">
+	<summary>
+Sets the last message recieved through
+the MapWinX library.
+</summary>
+	<param name="Msg">A string describing the problem encountered or the message to write.</param>
+</member><member name="M:MapWinUtility.IProgressStatus.Progress(System.Int32,System.Int32)">
+	<summary>
+ Log the progress of a long-running task
+ </summary>
+	<param name="aCurrentPosition">Current position/item of task</param>
+	<param name="aLastPosition">Final position/item of task</param>
+	<remarks>
+ A final call when the task is done with aCurrent = aLast 
+ indicates completion and should clear the progress display.
+ </remarks>
+</member><member name="M:MapWinUtility.IProgressStatus.Status(System.String)">
+	<summary>
+ Update the current status message
+ </summary>
+	<param name="aStatusMessage">Description of current processing status</param>
+	<remarks></remarks>
+</member><member name="T:MapWinUtility.IProgressStatus">
+	<summary>
+ Interface for handling status and progress updates
+ </summary>
+</member><member name="P:MapWinUtility.IProgressStatusCancel.Canceled">
+	<summary>
+ True if user has requested to abort the activity monitored by Progress
+ </summary>
+	<remarks>Automatically resets to False after returning True</remarks>
+</member><member name="T:MapWinUtility.IProgressStatusCancel">
+	<summary>
+ Interface that can also be implemented when implementing IProgressStatus if also providing the option to cancel a long-running action
+ </summary>
+	<remarks></remarks>
+</member><member name="T:MapWinUtility.NullProgressStatus">
+	<summary>
+ Default implementation does nothing
+ </summary>
+</member><member name="M:MapWinUtility.ProgressLevel.#ctor(System.Boolean,System.Boolean)">
+	<summary>
+ Create a new level in the stack of logger progress levels
+ </summary>
+	<param name="aIncrementAfter">True to increment progress by one at level above new level after finishing, Default = False</param>
+	<param name="aStaySameLevel">True to keep new level at the same level we are already on rather than adding to the stack</param>
+	<remarks>Recommendation: Using myLevel as new ProgressLevel()...[call other code that contains progress]...End Using</remarks>
+</member><member name="M:MapWinUtility.ProgressLevel.Reset">
+	<summary>
+ Reset the progress without destroying this level and creating a new one
+ </summary>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.ProgressLevel.Dispose">
+	<summary>
+ Ensure the stack of logger progress levels is consistent after we are finished with this level
+ </summary>
+</member><member name="F:MapWinUtility.MonitorProgressStatus.InnerProgressStatus">
+	<summary>
+ Another IProgressStatus which will also get a copy of Status and Progress messages
+ </summary>
+	<remarks>
+ This lets us send Progress and Status to MapWindow's status bar while also sending to StatusMonitor.exe
+ </remarks>
+</member><member name="P:MapWinUtility.MonitorProgressStatus.Canceled">
+	<summary>
+ True if user has requested to cancel current operation
+ Automatically cleared after level 1 progress hears that it is True
+ </summary>
+</member><member name="P:MapWinUtility.MonitorProgressStatus.Paused">
+	<summary>
+ True while user has requested a pause in execution
+ </summary>
+	<value></value>
+	<returns>True when paused, False when not paused</returns>
+	<remarks>
+ A button in StatusMonitor.exe labeled "Pause" 
+ sends a message "P" through MonitorMessageHandler.
+ The button then changes label to "Run" and if pressed 
+ sends a message "R", which changes Paused back to False.
+ Pausing is enforced by the While Paused loop in Sub Progress
+ </remarks>
+</member><member name="M:MapWinUtility.MonitorProgressStatus.StartMonitor(System.String,System.String,System.String)">
+	<summary>
+ Start status monitor as a separate executable
+ </summary>
+	<param name="aMonitorFileName">Full path to status monitor program</param>
+	<param name="aWorkingDirectory">Directory to start running in, probably no need to specify this</param>
+	<param name="aArguments">Arguments to status monitor. If not specified, current process ID is used as only argument</param>
+	<returns>True if started or decided to use already running monitor, False if failed to start</returns>
+	<remarks>pMonitorProcess is set if monitor is successfully started</remarks>
+</member><member name="M:MapWinUtility.MonitorProgressStatus.StopMonitor">
+	<summary>
+ Stop StatusMonitor which was started by StartMonitor
+ </summary>
+</member><member name="M:MapWinUtility.MonitorProgressStatus.MonitorMessageHandler(System.Object,System.Diagnostics.DataReceivedEventArgs)">
+	<summary>
+ Messages from standard output of StatusMonitor.exe are handled
+ </summary>
+	<param name="aSendingProcess"></param>
+	<param name="aOutLine"></param>
+	<remarks>
+ All messages are logged, "P" pauses, "R" resumes, "C" cancels
+ </remarks>
+</member><member name="T:MapWinUtility.MonitorProgressStatus">
+	<summary>
+ Use StatusMonitor.exe to display Status and Progress and allow user to cancel long-running actions
+ </summary>
+</member><member name="F:MapWinUtility.Logger.AutoFlush">
+	<summary>
+ True to flush after each write to log file
+ False to buffer writes to log file and wait for explicit Flush() or operating system
+ </summary>
+	<remarks>False may save some time, True makes log files more likely to be helpful</remarks>
+</member><member name="F:MapWinUtility.Logger.Icon">
+	<summary>
+ Icon to be used on custom message boxes
+ </summary>
+</member><member name="M:MapWinUtility.Logger.#ctor">
+	<summary>
+ New is private to ensure Logger is a singleton
+ </summary>
+</member><member name="M:MapWinUtility.Logger.StartToFile(System.String,System.Boolean,System.Boolean,System.Boolean)">
+	<summary>
+ Start logging to a file
+ </summary>
+	<param name="aLogFileName">Name of file to put subsequent log messages in</param>
+	<param name="aAppend">True to append to existing file, False to create new file</param>
+	<param name="aRenameExisting">True to rename old log files as needed to use aLogFileName,
+ False to overwrite existing log file</param>
+	<param name="aForceNameChange">True to change log file even if already logging to a file</param>
+	<remarks>If aLogFileName is blank and aForceNameChange = True, logging to file is stopped.</remarks>
+</member><member name="P:MapWinUtility.Logger.FileName">
+	<summary>File name being logged to</summary>
+</member><member name="M:MapWinUtility.Logger.MakeLogName(System.String)">
+	<summary>Append a number to a given file name if needed to make it unique</summary>
+</member><member name="P:MapWinUtility.Logger.TimeStamping">
+	<summary>True to enable time stamping each log event</summary>
+</member><member name="P:MapWinUtility.Logger.TimeStampRelative">
+	<summary>
+ True to start time stamps at zero when execution starts, stamp elapsed hh:mm:ss.milliseconds,
+ False to stamp each event with current date/time            YYYY-MM-DD@hh:mm:ss.milliseconds
+ </summary>
+</member><member name="P:MapWinUtility.Logger.ProgressStatus">
+	<summary>Progress and status messages are displayed by this object</summary>
+</member><member name="P:MapWinUtility.Logger.Canceled">
+	<summary>
+ True if user has requested to cancel current operation
+ </summary>
+</member><member name="M:MapWinUtility.Logger.Flush">
+	<summary>Write any pending log messages to the log file (if logging to a file)</summary>
+</member><member name="M:MapWinUtility.Logger.Dbg(System.String[])">
+	<summary>
+ Add a "debug" message to the log. 
+ </summary>
+	<param name="aMessages">Any number of strings to add to the log, usually just one</param>
+	<remarks>
+ Debug messages are commonly used to indicate that execution has reached a certain line.
+ Important values just computed or about to be used are often included.
+ </remarks>
+</member><member name="M:MapWinUtility.Logger.CustomMsgBox">
+	<summary>
+ Create a custom message box form
+ </summary>
+</member><member name="M:MapWinUtility.Logger.Msg(System.String,Microsoft.VisualBasic.MsgBoxStyle,System.String)">
+	<summary>
+  Log the use of a Microsoft.VisualBasic.MsgBox 
+ </summary>
+	<param name="aMessage">Message to display</param>
+	<param name="aMsgBoxStyle">Message box style</param>
+	<param name="aTitle">Title of message box</param>
+	<returns>MsgBoxResult</returns>
+	<remarks>Logs when the message box is displayed and what the user selects</remarks>
+</member><member name="M:MapWinUtility.Logger.Msg(System.String,Microsoft.VisualBasic.MsgBoxStyle,Microsoft.VisualBasic.MsgBoxResult,System.String)">
+	<summary>
+  Log the use of a Microsoft.VisualBasic.MsgBox 
+ </summary>
+	<param name="aMessage">Message to display</param>
+	<param name="aMsgBoxStyle">Message box style</param>
+	<param name="aMsgBoxDefault">Message box default result</param>
+	<param name="aTitle">Title of message box</param>
+	<returns>MsgBoxResult</returns>
+	<remarks>Logs when the message box is displayed and what the user selects</remarks>
+</member><member name="M:MapWinUtility.Logger.Message(System.String,System.String,System.Windows.Forms.MessageBoxButtons,System.Windows.Forms.MessageBoxIcon,System.Windows.Forms.DialogResult)">
+	<summary>
+ Log the use of a Windows.Forms.MessageBox
+ </summary>
+	<param name="aText">Message to show</param>
+	<param name="aCaption">Caption for top of message box</param>
+	<param name="aButtons">Buttons to display</param>
+	<param name="aIcon">Icon to include in message box</param>
+	<param name="aDefaultResult">Button to press when user presses Enter</param>
+	<returns>DialogResult selected by user</returns>
+	<remarks>Logs when the message box is displayed and what the user selects</remarks>
+</member><member name="M:MapWinUtility.Logger.Message(System.String,System.String,System.Windows.Forms.MessageBoxButtons,System.Windows.Forms.MessageBoxIcon,System.Windows.Forms.MessageBoxDefaultButton)">
+	<summary>
+ Log the use of a Windows.Forms.MessageBox
+ </summary>
+	<param name="aText">Message to show</param>
+	<param name="aCaption">Caption for top of message box</param>
+	<param name="aButtons">Buttons to display</param>
+	<param name="aIcon">Icon to include in message box</param>
+	<param name="aDefaultButton">Button to press when user presses Enter</param>
+	<returns>DialogResult selected by user</returns>
+	<remarks>Logs when the message box is displayed and what the user selects</remarks>
+</member><member name="M:MapWinUtility.Logger.MessageBoxDefaultButtonToDialogResult(System.Windows.Forms.MessageBoxButtons,System.Windows.Forms.MessageBoxDefaultButton)">
+	<summary>
+ Translate MessageBoxDefaultButton and a set of MessageBoxButtons into a DialogResult
+ </summary>
+	<param name="aButtons"></param>
+	<param name="aDefaultButton"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Logger.Status(System.String)">
+	<summary>
+ Display the current status in the status bar
+ </summary>
+	<param name="aMessage">Status message</param>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Logger.Status(System.String,System.Boolean)">
+	<summary>
+ Display the current status in the status bar
+ </summary>
+	<param name="aMessage">Status message</param>
+	<param name="aLog">Write to log file flag</param>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Logger.Progress(System.Int32,System.Int32)">
+	<summary>
+ Log the progress of a long-running task
+ </summary>
+	<param name="aCurrent">Current position/item of task</param>
+	<param name="aLast">Final position/item of task</param>
+	<remarks>
+ A final call when the task is done with aCurrent = aLast 
+ is desirable to clear the progress display.
+ If aLast = 100, then aCurrent is percent progress, but 
+ the caller should not convert aCurrent into percent if 
+ aLast is not 100.
+ </remarks>
+</member><member name="M:MapWinUtility.Logger.Progress(System.String,System.Int32,System.Int32)">
+	<summary>
+ Combination of Status(aMessage) and Progress(aCurrent, aLast)
+ </summary>
+	<param name="aMessage">Status message</param>
+	<param name="aCurrent">Current position/item of task</param>
+	<param name="aLast">Final position/item of task</param>
+	<remarks>It is preferred to use Status or Progress(aCurrent, aLast) if
+ only the functionality of one of them is desired.</remarks>
+</member><member name="P:MapWinUtility.Logger.ProgressRefresh">
+	<summary>
+ Time in milliseconds that must elapse before a new progress update is passed to ProgressStatus
+ </summary>
+	<remarks>
+ A delay is desirable for tasks that make progress quickly because the
+ time to update displayed progress can become significant.
+ Default is 200 milliseconds so progress display is refreshed at most 5 times per second.
+ Set to zero to disable this feature.
+ </remarks>
+</member><member name="M:MapWinUtility.Logger.MethodCallingLogger">
+	<summary>Walks up the stack to find the method that called into this class</summary>
+	<returns>file name (if available) and method name of the method that called into this class</returns>
+	<remarks>stack is not available if not compiled in debug mode, so an empty string is returned</remarks>
+</member><member name="T:MapWinUtility.Logger">
+	<summary>
+ Logger provides program logging to a file and progress messages.
+ All methods and variables are shared, so there is no need to 
+ create or pass an instance of Logger. Just make a reference to 
+ this library and use Logger.Dbg, Logger.Msg, Logger.Status, Logger.Progress
+ 
+ If a clsProgressStatus is set, then progress and status messages 
+ are sent to it, allowing display.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Strings.StrSplit(System.String@,System.String@,System.String@)">
+	<summary>
+ Divides string into 2 portions at position of 1st occurence of specified delimeter. Quote specifies a particular string that is exempt from the delimeter search.
+ </summary>
+	<param name="aSource">String to be analyzed</param>
+	<param name="aDelim">Single-character string delimeter</param>
+	<param name="aQuote">Multi-character string exempted from search</param>
+	<returns>
+ Returns leading portion of incoming string up to first occurence of delimeter.  
+ Returns input parameter without that portion. 
+ If no delimiter in string, returns whole string, and input parameter reduced to null string.
+ </returns>
+	<remarks>
+ Example: StrSplit("Julie, Todd, Jane, and Ray", ",", "") = "Julie", and "Todd, Jane, and Ray" is returned as Source.
+ Example: StrSplit("'Julie, Todd', Jane, and Ray", ",", "'") = "Julie, Todd", and "Jane, and Ray" is returned as Source.
+ </remarks>
+</member><member name="M:MapWinUtility.Strings.WholeFileString(System.String@,System.Int32)">
+	<summary>
+ Converts specified text file to a string.
+ </summary>
+	<param name="aFilename">Name of text file to read</param>
+	<param name="aTimeoutMilliseconds">Keep trying for this much time</param>
+	<returns>Contents of specified text file as string.</returns>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Strings.IsEmpty(System.String)">
+	<summary>
+ See if a String is empty or Nothing
+ </summary>
+	<param name="aString">String to check</param>
+	<returns>True is empty or Nothing, otherwise False</returns>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.Strings.SaveFileString(System.String@,System.String@)">
+	<summary>
+ Saves incoming string to a text file.
+ </summary>
+	<param name="aFileName">Name of output text file</param>
+	<param name="aFileContents">Incoming string to be saved to file</param>
+	<remarks></remarks>
+</member><member name="M:MapWinUtility.modFile.FileExists(System.String,System.Boolean,System.Boolean)">
+	<summary>
+ Tests for existence of a specified file or directory
+ </summary>
+	<param name="aPathName">file or directory name to check for</param>
+	<param name="aAcceptDirectories">True to look for a directory matching PathName</param>
+	<param name="aAcceptFiles">True to look for a file matching PathName</param>
+	<returns>True if the specified file or directory exists, False if it does not</returns>
+	<remarks>AcceptDirectories and AcceptFiles can both be true to check for a file or directory at the same time.</remarks>
+</member><member name="M:MapWinUtility.modFile.FilenameNoExt(System.String)">
+	<summary>
+ Converts full path, filename, and extension to only path and filename without extension
+ </summary>
+	<param name="aFilename">Complete file name</param>
+	<returns>path and file name without extension</returns>
+	<remarks>Example: FilenameNoExt ("C:\foo\bar.txt") = "C:\foo\bar"</remarks>
+</member><member name="M:MapWinUtility.modFile.FilesMatch(System.String,System.String)">
+	<summary>
+ Compare two files and return True if contents are identical.
+ </summary>
+	<param name="aFilename1">Name of first file to compare</param>
+	<param name="aFilename2">Name of second file to compare</param>
+	<returns>true if files are identical, false if not</returns>
+	<remarks>An exception will occur if either file cannot be read.</remarks>
+</member><member name="M:MapWinUtility.modFile.FilesMatchText(System.String,System.String,System.Boolean)">
+	<summary>
+ Compare two files and return True if contents are identical.
+ </summary>
+	<param name="aFilename1">Name of first file to compare</param>
+	<param name="aFilename2">Name of second file to compare</param>
+	<param name="aIgnoreCase">Ignore case flag</param>
+	<returns>true if files are identical, false if not</returns>
+	<remarks>An exception will occur if either file cannot be read.</remarks>
+</member><member name="M:MapWinUtility.modFile.MkDirPath(System.String)">
+	<summary>
+ Create the specified directory and any above it that are not yet there.
+ </summary>
+	<param name="aNewDirectory">new directory to create</param>
+	<remarks>Example: MkDirPath("C:\foo\bar") creates the "C:\foo" and "C:\foo\bar" directories if they do not already exist.</remarks>
+</member><member name="M:MapWinUtility.modFile.PathNameOnly(System.String@)">
+	<summary>
+ Reduces full path, filename, and extension to only path
+ </summary>
+	<param name="aFilename">path and file name</param>
+	<returns>path portion of aFilename</returns>
+	<remarks>Example: PathNameOnly ("C:\foo\bar.txt") = "C:\foo"</remarks>
+</member><member name="M:MapWinUtility.modFile.TryDelete(System.String,System.Boolean)">
+	<summary>
+ Try to delete a file or directory. 
+ If it cannot not be deleted, log a message instead of throwing an exception
+ </summary>
+	<param name="aPath">Full path of file or directory to be deleted</param>
+	<returns>
+ True if aPath was deleted without error or did not exist
+ False if there was an exception while trying to delete
+ </returns>
+	<remarks>
+ If aPath is a directory, all the contents are deleted too.
+ Helpful for non-critical cleanup of temporary files that may be locked
+ </remarks>
+</member><member name="M:MapWinUtility.modFile.TryCopy(System.String,System.String,System.Boolean)">
+	<summary>
+ Try copying file from aFromPath to aToPath
+ If it cannot not be copied, log a message instead of throwing an exception
+ </summary>
+	<param name="aFromPath">Path of existing file</param>
+	<param name="aToPath">Location for new copy of file</param>
+	<returns>True if file was copied, False if file did not exist or could not be copied</returns>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

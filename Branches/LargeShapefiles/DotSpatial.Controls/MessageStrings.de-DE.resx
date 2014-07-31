@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LayoutCmnuBottom" xml:space="preserve">
+    <value>Unten ausrichten</value>
+  </data>
+  <data name="LayoutCmnuHeight" xml:space="preserve">
+    <value>An Höhe anpassen</value>
+  </data>
+  <data name="LayoutCmnuHor" xml:space="preserve">
+    <value>Horizontal ausrichten</value>
+  </data>
+  <data name="LayoutCmnuLeft" xml:space="preserve">
+    <value>Linksbündig</value>
+  </data>
+  <data name="LayoutCmnuMargAlign" xml:space="preserve">
+    <value>Randausgleich</value>
+  </data>
+  <data name="LayoutCmnuMarginFit" xml:space="preserve">
+    <value>Marge Fit</value>
+  </data>
+  <data name="LayoutCmnuRight" xml:space="preserve">
+    <value>Rechtsbündig ausrichten</value>
+  </data>
+  <data name="LayoutCmnuSelectionAlignment" xml:space="preserve">
+    <value>Auswahl-Ausrichtung</value>
+  </data>
+  <data name="LayoutCmnuSelectionFit" xml:space="preserve">
+    <value>Auswahl-Fit</value>
+  </data>
+  <data name="LayoutCmnuTop" xml:space="preserve">
+    <value>Oben ausrichten</value>
+  </data>
+  <data name="LayoutCmnuVert" xml:space="preserve">
+    <value>Vertikal ausrichten</value>
+  </data>
+  <data name="LayoutCmnuWidth" xml:space="preserve">
+    <value>An Breite anpassen</value>
+  </data>
+  <data name="LayoutErrorLoad" xml:space="preserve">
+    <value>Fehler beim Öffnen der Layout-Datei:</value>
+  </data>
+  <data name="LayoutErrorSave" xml:space="preserve">
+    <value>Fehler beim Speichern der Layout-Datei:</value>
+  </data>
+  <data name="LayoutFormTitle" xml:space="preserve">
+    <value>Seitenlayout</value>
+  </data>
+  <data name="LayoutInsertMenuStripLegend" xml:space="preserve">
+    <value>Legende einfügen</value>
+  </data>
+  <data name="LayoutInsertMenuStripScaleBar" xml:space="preserve">
+    <value>Maßstabsbalken einfügen</value>
+  </data>
+  <data name="LayoutInsertToolStripBitmap" xml:space="preserve">
+    <value>Bitmap einfügen</value>
+  </data>
+  <data name="LayoutInsertToolStripMap" xml:space="preserve">
+    <value>Karte einfügen</value>
+  </data>
+  <data name="LayoutInsertToolStripNorthArrow" xml:space="preserve">
+    <value>Nordpfeil einfügen</value>
+  </data>
+  <data name="LayoutInsertToolStripRectangle" xml:space="preserve">
+    <value>Rechteck einfügen</value>
+  </data>
+  <data name="LayoutInsertToolStripText" xml:space="preserve">
+    <value>Text einfügen</value>
+  </data>
+  <data name="LayoutLoadDialogTitle" xml:space="preserve">
+    <value>Drucklayout laden</value>
+  </data>
+  <data name="LayoutMapToolStripMaxExtent" xml:space="preserve">
+    <value>Zoom in vollem Umfang alle Schichten anzeigen.</value>
+  </data>
+  <data name="LayoutMapToolStripPan" xml:space="preserve">
+    <value>Karte verschieben</value>
+  </data>
+  <data name="LayoutMapToolStripViewExtent" xml:space="preserve">
+    <value>Karte zum Umfang der Datenansicht vergrößern</value>
+  </data>
+  <data name="LayoutMapToolStripZoomIn" xml:space="preserve">
+    <value>Karte vergrößern</value>
+  </data>
+  <data name="LayoutMapToolStripZoomOut" xml:space="preserve">
+    <value>Karte verkleinern</value>
+  </data>
+  <data name="LayoutMenuPageSetup" xml:space="preserve">
+    <value>Seite einrichten</value>
+  </data>
+  <data name="LayoutMenuStripClose" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="LayoutMenuStripDocToolbar" xml:space="preserve">
+    <value>Dokument</value>
+  </data>
+  <data name="LayoutMenuStripEdit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="LayoutMenuStripFile" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="LayoutMenuStripInsertToolbar" xml:space="preserve">
+    <value>Einfügen</value>
+  </data>
+  <data name="LayoutMenuStripMapToolbar" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="LayoutMenuStripNew" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="LayoutMenuStripOpen" xml:space="preserve">
+    <value>Öffenen</value>
+  </data>
+  <data name="LayoutMenuStripPrint" xml:space="preserve">
+    <value>Drucken</value>
+  </data>
+  <data name="LayoutMenuStripRefresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="LayoutMenuStripSave" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="LayoutMenuStripSaveAs" xml:space="preserve">
+    <value>Speichern als</value>
+  </data>
+  <data name="LayoutMenuStripSelect" xml:space="preserve">
+    <value>Auswählen</value>
+  </data>
+  <data name="LayoutMenuStripSelectAll" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="LayoutMenuStripSelectConvert" xml:space="preserve">
+    <value>In Bitmap konvertieren</value>
+  </data>
+  <data name="LayoutMenuStripSelectDelete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="LayoutMenuStripSelectInvert" xml:space="preserve">
+    <value>Umkehren</value>
+  </data>
+  <data name="LayoutMenuStripSelectMoveDown" xml:space="preserve">
+    <value>Nach unten</value>
+  </data>
+  <data name="LayoutMenuStripSelectMoveUp" xml:space="preserve">
+    <value>Nach oben</value>
+  </data>
+  <data name="LayoutMenuStripSelectNone" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="LayoutMenuStripSelectPrinter" xml:space="preserve">
+    <value>Wählen Sie Drucker</value>
+  </data>
+  <data name="LayoutMenuStripShowMargin" xml:space="preserve">
+    <value>Zeigen Rand an</value>
+  </data>
+  <data name="LayoutMenuStripToolbars" xml:space="preserve">
+    <value>Symbolleisten</value>
+  </data>
+  <data name="LayoutMenuStripView" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
+  <data name="LayoutMenuStripZoomFull" xml:space="preserve">
+    <value>An Bildschirm anpassen</value>
+  </data>
+  <data name="LayoutMenuStripZoomIn" xml:space="preserve">
+    <value>Vergrößern</value>
+  </data>
+  <data name="LayoutMenuStripZoomOut" xml:space="preserve">
+    <value>Verkleinern</value>
+  </data>
+  <data name="LayoutMenuStripZoomToolbar" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="LayoutPageSetupTitle" xml:space="preserve">
+    <value>Seite einrichten</value>
+  </data>
+  <data name="LayoutSaveDialogTitle" xml:space="preserve">
+    <value>Drucklayout speichern als..</value>
+  </data>
+  <data name="LayoutSaveFirst" xml:space="preserve">
+    <value>Möchten Sie das aktuelle Drucklayout speichern?</value>
+  </data>
+  <data name="LayoutToolStripZoomFull" xml:space="preserve">
+    <value>An Bildschirm anpassen</value>
+  </data>
+  <data name="LayoutToolStripZoomIn" xml:space="preserve">
+    <value>Vergrößern</value>
+  </data>
+  <data name="LayoutToolStripZoomOut" xml:space="preserve">
+    <value>Verkleinern</value>
+  </data>
+  <data name="LayouyCmnuMarginAlignment" xml:space="preserve">
+    <value>Randausgleich</value>
+  </data>
+  <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
+    <value>Koordinatensystem des Layers an Koordinatensystem der Map anpassen? Dies beeinträchtigt nicht die Quelldatei.</value>
+    <comment>Reproject map layer to match the map coordinate system? This will not affect the source file.</comment>
+  </data>
+  <data name="MapFrame_Projection" xml:space="preserve">
+    <value>Projektion</value>
+  </data>
+  <data name="MapLayers" xml:space="preserve">
+    <value>Kartenebenen</value>
+  </data>
+</root>

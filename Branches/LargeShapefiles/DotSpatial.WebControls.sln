@@ -1,0 +1,174 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.WebControls", "DotSpatial.WebControls\DotSpatial.WebControls.csproj", "{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Controls", "DotSpatial.Controls\DotSpatial.Controls.csproj", "{01A845C6-D391-4258-81B0-C6ABF23D3364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data", "DotSpatial.Data\DotSpatial.Data.csproj", "{C1018695-3401-47A9-B195-ABD3A20C2489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Mono", "DotSpatial.Mono\DotSpatial.Mono.csproj", "{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections", "DotSpatial.Projections\DotSpatial.Projections.csproj", "{D286DF06-21FA-40BE-B384-6ACA509AC98C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Data.Forms", "DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj", "{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology", "DotSpatial.Symbology\DotSpatial.Symbology.csproj", "{21C1D7A7-E8E5-4590-A921-2287AD43CB98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Topology", "DotSpatial.Topology\DotSpatial.Topology.csproj", "{A8079861-C636-4ECE-99C1-AD313276787B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Symbology.Forms", "DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj", "{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Extensions", "DotSpatial.Extensions\DotSpatial.Extensions.csproj", "{9108B04D-A3DE-4981-B66F-496078D462FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Modeling.Forms", "DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj", "{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Projections.Forms", "DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj", "{1DA244CE-5862-4DFB-8943-244A80B7E3EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6E8FF9DE-3694-4D98-876B-05E4DA07CC36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Examples.DemoWEB", "Examples\DemoWEB\DotSpatial.Examples.DemoWEB.csproj", "{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 15
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DotSpatial.WebControls\\DotSpatial.WebControls.csproj
+		SccProjectName1 = DotSpatial.WebControls
+		SccLocalPath1 = DotSpatial.WebControls
+		SccProjectUniqueName2 = DotSpatial.Controls\\DotSpatial.Controls.csproj
+		SccProjectTopLevelParentUniqueName2 = DotSpatial.WebControls.sln
+		SccProjectName2 = DotSpatial.Controls
+		SccLocalPath2 = DotSpatial.Controls
+		SccProjectUniqueName3 = DotSpatial.Data\\DotSpatial.Data.csproj
+		SccProjectTopLevelParentUniqueName3 = DotSpatial.WebControls.sln
+		SccProjectName3 = DotSpatial.Data
+		SccLocalPath3 = DotSpatial.Data
+		SccProjectUniqueName4 = DotSpatial.Mono\\DotSpatial.Mono.csproj
+		SccProjectTopLevelParentUniqueName4 = DotSpatial.WebControls.sln
+		SccProjectName4 = DotSpatial.Mono
+		SccLocalPath4 = DotSpatial.Mono
+		SccProjectUniqueName5 = DotSpatial.Projections\\DotSpatial.Projections.csproj
+		SccProjectTopLevelParentUniqueName5 = DotSpatial.WebControls.sln
+		SccProjectName5 = DotSpatial.Projections
+		SccLocalPath5 = DotSpatial.Projections
+		SccProjectUniqueName6 = DotSpatial.Data.Forms\\DotSpatial.Data.Forms.csproj
+		SccProjectTopLevelParentUniqueName6 = DotSpatial.WebControls.sln
+		SccProjectName6 = DotSpatial.Data.Forms
+		SccLocalPath6 = DotSpatial.Data.Forms
+		SccProjectUniqueName7 = DotSpatial.Symbology\\DotSpatial.Symbology.csproj
+		SccProjectTopLevelParentUniqueName7 = DotSpatial.WebControls.sln
+		SccProjectName7 = DotSpatial.Symbology
+		SccLocalPath7 = DotSpatial.Symbology
+		SccProjectUniqueName8 = DotSpatial.Topology\\DotSpatial.Topology.csproj
+		SccProjectTopLevelParentUniqueName8 = DotSpatial.WebControls.sln
+		SccProjectName8 = DotSpatial.Topology
+		SccLocalPath8 = DotSpatial.Topology
+		SccProjectUniqueName9 = DotSpatial.Serialization\\DotSpatial.Serialization.csproj
+		SccProjectTopLevelParentUniqueName9 = DotSpatial.WebControls.sln
+		SccProjectName9 = DotSpatial.Serialization
+		SccLocalPath9 = DotSpatial.Serialization
+		SccProjectUniqueName10 = DotSpatial.Symbology.Forms\\DotSpatial.Symbology.Forms.csproj
+		SccProjectTopLevelParentUniqueName10 = DotSpatial.WebControls.sln
+		SccProjectName10 = DotSpatial.Symbology.Forms
+		SccLocalPath10 = DotSpatial.Symbology.Forms
+		SccProjectUniqueName11 = DotSpatial.Extensions\\DotSpatial.Extensions.csproj
+		SccProjectTopLevelParentUniqueName11 = DotSpatial.WebControls.sln
+		SccProjectName11 = DotSpatial.Extensions
+		SccLocalPath11 = DotSpatial.Extensions
+		SccProjectUniqueName12 = DotSpatial.Modeling.Forms\\DotSpatial.Modeling.Forms.csproj
+		SccProjectTopLevelParentUniqueName12 = DotSpatial.WebControls.sln
+		SccProjectName12 = DotSpatial.Modeling.Forms
+		SccLocalPath12 = DotSpatial.Modeling.Forms
+		SccProjectUniqueName13 = DotSpatial.Projections.Forms\\DotSpatial.Projections.Forms.csproj
+		SccProjectTopLevelParentUniqueName13 = DotSpatial.WebControls.sln
+		SccProjectName13 = DotSpatial.Projections.Forms
+		SccLocalPath13 = DotSpatial.Projections.Forms
+		SccProjectUniqueName14 = Examples\\DemoWEB\\DotSpatial.Examples.DemoWEB.csproj
+		SccProjectName14 = Examples/DemoWEB
+		SccLocalPath14 = Examples\\DemoWEB
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F1D51CC-8DE7-4D84-A415-A36A2EB3507B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A845C6-D391-4258-81B0-C6ABF23D3364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1018695-3401-47A9-B195-ABD3A20C2489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1018695-3401-47A9-B195-ABD3A20C2489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1018695-3401-47A9-B195-ABD3A20C2489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1018695-3401-47A9-B195-ABD3A20C2489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D286DF06-21FA-40BE-B384-6ACA509AC98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D286DF06-21FA-40BE-B384-6ACA509AC98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D286DF06-21FA-40BE-B384-6ACA509AC98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D286DF06-21FA-40BE-B384-6ACA509AC98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C1D7A7-E8E5-4590-A921-2287AD43CB98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C1D7A7-E8E5-4590-A921-2287AD43CB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C1D7A7-E8E5-4590-A921-2287AD43CB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C1D7A7-E8E5-4590-A921-2287AD43CB98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8079861-C636-4ECE-99C1-AD313276787B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8079861-C636-4ECE-99C1-AD313276787B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8079861-C636-4ECE-99C1-AD313276787B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8079861-C636-4ECE-99C1-AD313276787B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B692E11-0273-4331-9B15-1670093EDDBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B692E11-0273-4331-9B15-1670093EDDBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B692E11-0273-4331-9B15-1670093EDDBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B692E11-0273-4331-9B15-1670093EDDBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9108B04D-A3DE-4981-B66F-496078D462FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9108B04D-A3DE-4981-B66F-496078D462FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9108B04D-A3DE-4981-B66F-496078D462FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9108B04D-A3DE-4981-B66F-496078D462FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA244CE-5862-4DFB-8943-244A80B7E3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CB8DD2-DA69-45AF-82A5-9A8A290DF17E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1018695-3401-47A9-B195-ABD3A20C2489} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{D286DF06-21FA-40BE-B384-6ACA509AC98C} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{7B7195E7-C20E-49B9-9CB0-4F451A2463B6} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{21C1D7A7-E8E5-4590-A921-2287AD43CB98} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{A8079861-C636-4ECE-99C1-AD313276787B} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{9B692E11-0273-4331-9B15-1670093EDDBF} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{9108B04D-A3DE-4981-B66F-496078D462FE} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{7ED7B00D-56EE-47CF-AAA5-34A09E40A566} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{1DA244CE-5862-4DFB-8943-244A80B7E3EE} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+		{01A845C6-D391-4258-81B0-C6ABF23D3364} = {6E8FF9DE-3694-4D98-876B-05E4DA07CC36}
+	EndGlobalSection
+EndGlobal
