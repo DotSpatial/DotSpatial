@@ -3,6 +3,8 @@ using System.Data;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
+using DotSpatial.Data;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 namespace DotSpatial.Symbology.Tests
@@ -21,41 +23,47 @@ namespace DotSpatial.Symbology.Tests
         [Test]
         public void ExportSelectionTest()
         {
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
+            string filename = FileTools.PathToTestFile(@"Shapefiles\Soils\soils.shp");
+            string fileOut = FileTools.GetTempFileName(".shp");
+            try
+            {
+                var provider = new ShapefileLayerProvider();
+                var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
+                target.SelectByAttribute("[BPEJ_K_S42]>7710");
 
-            ShapefileLayerProvider provider = new ShapefileLayerProvider();
-            var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
-            target.SelectByAttribute("[BPEJ_K_S42]>7710");
+                Assert.IsTrue(target.Selection.Count > 0);
+                target.ExportSelection(fileOut);
 
-            Assert.IsTrue(target.Selection.Count > 0);
-
-            target.ExportSelection(fileOut);
-
-            File.Delete(fileOut);
+            }
+            finally
+            {
+                FileTools.DeleteShapeFile(fileOut);
+            }
         }
-
-        /// <summary>
-        ///A test for ExportSelection http://dotspatial.codeplex.com/workitem/203
-        ///</summary>
+     
         [Test]
         public void ExportSelectionTestWithCulture()
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("cs-CZ");
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("cs-CZ");
-
-            string filename = Path.Combine("TestFiles", "soils.shp");
-            string fileOut = Path.Combine("TestFiles", "soilsExport.shp");
-
-            ShapefileLayerProvider provider = new ShapefileLayerProvider();
-            var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
-            target.SelectByAttribute("[BPEJ_K_S42]>7710");
-
-            Assert.IsTrue(target.Selection.Count > 0);
-
-            target.ExportSelection(fileOut);
-
-            File.Delete(fileOut);
+            var currentCultute = Thread.CurrentThread.CurrentCulture;
+            var currentUICultute = Thread.CurrentThread.CurrentUICulture;
+            string filename = FileTools.PathToTestFile(@"Shapefiles\Soils\soils.shp");
+            string fileOut = FileTools.GetTempFileName(".shp");
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("cs-CZ");
+                var provider = new ShapefileLayerProvider();
+                var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
+                target.SelectByAttribute("[BPEJ_K_S42]>7710");
+                Assert.IsTrue(target.Selection.Count > 0);
+                target.ExportSelection(fileOut);
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = currentCultute;
+                Thread.CurrentThread.CurrentUICulture = currentUICultute;
+                FileTools.DeleteShapeFile(fileOut);   
+            }
+            
         }
     }
 }

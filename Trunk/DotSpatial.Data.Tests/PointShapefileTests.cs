@@ -9,7 +9,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanReadPointZWithoutM()
         {
-            const string path = @"Data\Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp";
+            var path = FileTools.PathToTestFile(@"Shapefiles\shp-no-m\SPATIAL_F_LUFTNINGSVENTIL.shp");
             var target = new PointShapefile(path);
             Assert.AreEqual(CoordinateType.Z, target.CoordinateType);
             for (var i = 0; i < target.ShapeIndices.Count; i++)
@@ -24,7 +24,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void CanLoadShapePointWithNullShapes()
         {
-            const string path = @"Data\Shapefiles\Yield\Yield 2012.shp";
+            var path = FileTools.PathToTestFile(@"Shapefiles\Yield\Yield 2012.shp");
             var target = new PointShapefile(path);
             Assert.IsNotNull(target);
 
@@ -43,9 +43,10 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
+        [TestCase(@"Shapefiles\Cities\cities.shp")]
         public void CanOpen(string path)
         {
+            path = FileTools.PathToTestFile(path);
             var target = new PointShapefile(path);
             Assert.IsTrue(target.Count > 0);
             for (var i = 0; i < target.Count; i++)
@@ -56,9 +57,10 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
+        [TestCase(@"Shapefiles\Cities\cities.shp")]
         public void CanSave_IndexModeTrue(string path)
         {
+            path = FileTools.PathToTestFile(path);
             var expected = new PointShapefile(path);
             Assert.IsTrue(expected.IndexMode);
             var newFile = FileTools.GetTempFileName(".shp");
@@ -84,9 +86,10 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test]
-        [TestCase(@"Data\Shapefiles\cities.shp")]
+        [TestCase(@"Shapefiles\cities.shp")]
         public void CanSave_IndexModeFalse(string path)
         {
+            path = FileTools.PathToTestFile(path);
             var expected = new PointShapefile(path);
             var count = expected.Features.Count; // Force to load all features into memory
             Assert.AreEqual(count, expected.Count);

@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Data.Rasters.GdalExtension.snk" />
+    <None Include="GdalPostBuild.bat" />
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -176,6 +177,9 @@
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
+    <PostBuildEvent>call "$(ProjectDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>setx DS_GDAL_DIR "$(TargetDir)\"</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace DotSpatial.Tests.Common
 {
@@ -19,6 +21,21 @@ namespace DotSpatial.Tests.Common
             var toReturn = Path.ChangeExtension(tmpFile, extension);
             File.Delete(tmpFile);
             return toReturn;
+        }
+
+        /// <summary>
+        /// Get path to test file
+        /// </summary>
+        /// <param name="relativePath">Relative path inside TestFiles folder</param>
+        /// <returns>Full path to test file</returns>
+        public static string PathToTestFile(string relativePath)
+        {
+            var ds_solutionPath = Environment.GetEnvironmentVariable("DS_SOLUTION_DIR", EnvironmentVariableTarget.User);
+            Debug.Assert(ds_solutionPath != null);
+            Debug.Assert(Directory.Exists(ds_solutionPath));
+            return Path.Combine(ds_solutionPath,
+                                "TestFiles",
+                                relativePath);
         }
     }
 }

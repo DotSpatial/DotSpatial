@@ -120,8 +120,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)GdalPostBuild.bat" "$(TargetDir)" "$(SolutionDir)"
-xcopy /s /y /i "$(ProjectDir)Data" "$(TargetDir)Data"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

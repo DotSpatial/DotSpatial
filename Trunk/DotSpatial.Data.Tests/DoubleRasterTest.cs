@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using DotSpatial.Tests.Common;
 using NUnit.Framework;
 
 
@@ -12,7 +13,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void SmallRasterTest()
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "doubletest.BGD");
+            string path = FileTools.GetTempFileName(".BGD");
 
             const double xllcorner = 3267132.224761;
             const double yllcorner = 5326939.203029;
@@ -40,15 +41,21 @@ namespace DotSpatial.Data.Tests
             output.Save();
 
             IRaster testRaster = Raster.Open(path);
-            for (int row = 0; row < mRow; row++)
+            try
             {
-                for (int col = 0; col < mCol; col++)
+                for (int row = 0; row < mRow; row++)
                 {
-                    Assert.AreEqual(output.Value[row, col], testRaster.Value[row, col]);
+                    for (int col = 0; col < mCol; col++)
+                    {
+                        Assert.AreEqual(output.Value[row, col], testRaster.Value[row, col]);
+                    }
                 }
             }
-
-            System.IO.File.Delete(path);
+            finally
+            {
+                System.IO.File.Delete(path);    
+            }
+            
         }
     }
 }

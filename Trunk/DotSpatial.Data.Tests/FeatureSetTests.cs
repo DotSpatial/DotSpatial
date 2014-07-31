@@ -11,12 +11,10 @@ namespace DotSpatial.Data.Tests
     [TestFixture]
     public class FeatureSetTests
     {
-        private readonly string _shapefiles = Path.Combine(@"Data", @"Shapefiles");
-
         [Test]
         public void IndexModeToFeaturesClear()
         {
-            var file = Path.Combine(_shapefiles, @"Topology_Test.shp");
+            var file = FileTools.PathToTestFile(@"Shapefiles\TopologyTest\Topology_Test.shp");
             IFeatureSet fs = FeatureSet.Open(file);
             fs.FillAttributes();
             fs.Features.Clear();
@@ -27,7 +25,7 @@ namespace DotSpatial.Data.Tests
         [Test]
         public void UnionFeatureSetTest()
         {
-            var file = Path.Combine(_shapefiles, @"Topology_Test.shp");
+            var file = FileTools.PathToTestFile(@"Shapefiles\TopologyTest\Topology_Test.shp");
             IFeatureSet fs = FeatureSet.Open(file);
             var union = fs.UnionShapes(ShapeRelateType.Intersecting);
             Assert.IsNotNull(union);

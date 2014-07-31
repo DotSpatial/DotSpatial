@@ -67,7 +67,6 @@
     <Compile Include="Graph.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="TestHexFormatter.cs" />
-    <Compile Include="XmlDeserializerTest.cs" />
     <Compile Include="XmlHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +102,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y /i "$(ProjectDir)Data" "$(TargetDir)Data"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

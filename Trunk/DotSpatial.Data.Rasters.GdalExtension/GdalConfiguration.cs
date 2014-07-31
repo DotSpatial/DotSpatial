@@ -28,7 +28,9 @@
  *****************************************************************************/
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Gdal = OSGeo.GDAL.Gdal;
 using Ogr = OSGeo.OGR.Ogr;
@@ -49,6 +51,27 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         }
 
 
+        private static bool GdalPathValid(string gdalPath)
+        {
+            var dInfo = new DirectoryInfo(gdalPath);
+            var pathValid = true;
+            if (dInfo.Exists)
+            {
+                var subDirs = dInfo.GetDirectories();
+                if (subDirs.All(_ => _.Name != "data") ||
+                    subDirs.All(_ => _.Name != GetPlatform()) ||
+                    subDirs.All(_ => _.Name != "share"))
+                    pathValid = false;
+            }
+            else
+            {
+                pathValid = false;
+            }
+
+            return pathValid;
+        }
+
+
         /// <summary>
         /// Construction of Gdal/Ogr
         /// </summary>
@@ -58,10 +81,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             var executingDirectory = Path.GetDirectoryName(executingAssemblyFile);
 
             if (string.IsNullOrEmpty(executingDirectory))
-                throw new InvalidOperationException("cannot get executing directory");
-
+                throw new InvalidOperationException("Cannot get executing directory");
 
             var gdalPath = Path.Combine(executingDirectory, "gdal");
+            if (!GdalPathValid(gdalPath))
+            {
+                // DotSpatial special environment path to allow have gdal libraries outsude ExecutingAssembly
+                var dsGdalDir = Environment.GetEnvironmentVariable("DS_GDAL_DIR", EnvironmentVariableTarget.User);
+                gdalPath = dsGdalDir != null ? Path.Combine(dsGdalDir, "gdal") : string.Empty;
+            }
+            if (!GdalPathValid(gdalPath))
+                throw new InvalidOperationException("Invalid GDAL directory");
+
             var nativePath = Path.Combine(gdalPath, GetPlatform());
 
             // Prepend native path to environment path, to ensure the
@@ -117,28 +148,26 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             PrintDriversGdal();
         }
 
+        [Conditional("DEBUG")]
         private static void PrintDriversOgr()
         {
-#if DEBUG
             var num = Ogr.GetDriverCount();
             for (var i = 0; i < num; i++)
             {
                 var driver = Ogr.GetDriver(i);
-                Console.WriteLine(string.Format("OGR {0}: {1}", i, driver.name));
+                Console.WriteLine("OGR {0}: {1}", i, driver.name);
             }
-#endif
         }
 
+        [Conditional("DEBUG")]
         private static void PrintDriversGdal()
         {
-#if DEBUG
             var num = Gdal.GetDriverCount();
             for (var i = 0; i < num; i++)
             {
                 var driver = Gdal.GetDriver(i);
-                Console.WriteLine(string.Format("GDAL {0}: {1}-{2}", i, driver.ShortName, driver.LongName));
+                Console.WriteLine("GDAL {0}: {1}-{2}", i, driver.ShortName, driver.LongName);
             }
-#endif
         }
     }
 }

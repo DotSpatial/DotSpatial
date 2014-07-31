@@ -1,14 +1,7 @@
-﻿using System;
-using System.IO;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
-using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
-using DotSpatial.Serialization;
+﻿using System.IO;
+using DotSpatial.Tests.Common;
 using DotSpatial.Data;
+using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
 {
@@ -16,18 +9,18 @@ namespace DotSpatial.Controls.Tests
     ///This is a test class for MapTest and is intended
     ///to contain all MapTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class MapLayerCollectionTest
     {
         /// <summary>
         ///A test for SelectedLayer.
         ///After the selected layer is removed, Layers.SelectedLayer should be null
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void SelectedLayerNullIfLayerRemoved()
         {
             var map = new Map();
-            var path = Path.Combine("TestFiles", "test-randomPts.shp");
+            var path = FileTools.PathToTestFile(@"Shapefiles\Lakes\lakes.shp");
             var myLayer = map.AddLayer(path);
 
             Assert.IsNotNull(myLayer, "the added map layer should not be null.");
@@ -46,11 +39,11 @@ namespace DotSpatial.Controls.Tests
         ///A test for MapFrame property
         ///is the mapFrame null when adding a group?
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void MapFrameIsNotNull_Group()
         {
             var map = new Map();
-            var path = Path.Combine("TestFiles", "test-randomPts.shp");
+            var path = FileTools.PathToTestFile(@"Shapefiles\Cities\cities.shp");
 
             var fs = FeatureSet.Open(path);
             var myLayer = new MapPointLayer(fs);
