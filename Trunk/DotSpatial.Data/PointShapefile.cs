@@ -247,7 +247,7 @@ namespace DotSpatial.Data
             };
             if (vert != null)
             {
-                shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.Point) {NumVertices = 1});
+                shr.Parts.Add(new PartRange(vert, 0, 0, FeatureType.Point) {NumVertices = vert.Length});
             }
             return new Shape(FeatureType)
             {
