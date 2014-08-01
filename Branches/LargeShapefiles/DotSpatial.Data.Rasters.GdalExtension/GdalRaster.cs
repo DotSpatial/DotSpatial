@@ -30,15 +30,12 @@ using OSGeo.GDAL;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    /// <summary>
-    ///
-    /// </summary>
     internal class GdalRaster<T> : Raster<T> where T : IEquatable<T>, IComparable<T>
     {
         #region Private Variables
 
-        readonly Band _band;
-        readonly Dataset _dataset;
+        private readonly Band _band;
+        private readonly Dataset _dataset;
 
         #endregion
 
@@ -253,12 +250,12 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (_band != null)
                 _band.Dispose();
             else
-                foreach (IRaster raster in Bands)
+                foreach (var raster in Bands)
                 {
                     raster.Close();
                     raster.Dispose();
                 }
-
+            
             if (_dataset != null)
             {
                 _dataset.FlushCache();

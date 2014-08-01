@@ -422,7 +422,7 @@ namespace DotSpatial.Data
             if (IsInRam)
             {
                 Data = ReadRaster();
-                GetStatistics();
+                Value.Updated = true; //Set updated to calculate statistics on demand
             }
         }
 

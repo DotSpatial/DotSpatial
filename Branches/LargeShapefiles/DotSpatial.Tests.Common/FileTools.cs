@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace DotSpatial.Tests.Common
 {
@@ -30,9 +31,22 @@ namespace DotSpatial.Tests.Common
         /// <returns>Full path to test file</returns>
         public static string PathToTestFile(string relativePath)
         {
-            var ds_solutionPath = Environment.GetEnvironmentVariable("DS_SOLUTION_DIR", EnvironmentVariableTarget.User);
-            Debug.Assert(ds_solutionPath != null);
+            /* Supposed next directory hierarchy:
+              
+              - UnitTestProjectFolder
+              -- bin
+              --- Debug(Release)
+              ---- ExecutingAssembly location
+              - TestFiles             
+             
+             */
+
+            var executingAssemblyFile = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
+            var executingDirectory = Path.GetDirectoryName(executingAssemblyFile);
+            Debug.Assert(executingDirectory != null);
+            var ds_solutionPath = Path.GetFullPath(Path.Combine(executingDirectory, @"..\..\.."));
             Debug.Assert(Directory.Exists(ds_solutionPath));
+            Debug.Assert(ds_solutionPath != null);
             return Path.Combine(ds_solutionPath,
                                 "TestFiles",
                                 relativePath);
