@@ -74,7 +74,7 @@ namespace DotSpatial.Controls
                 Bitmap bmp = new Bitmap(DataSet.NumColumns, DataSet.NumRows);
                 symbolizer.Raster = DataSet;
 
-                DataSet.DrawToBitmap(symbolizer, bmp, null);
+                DataSet.DrawToBitmap(symbolizer, bmp);
                 var id = new InRamImage(bmp) {Bounds = DataSet.Bounds};
                 BitmapGetter = id;
             }

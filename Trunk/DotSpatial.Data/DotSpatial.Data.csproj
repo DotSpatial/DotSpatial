@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Argb.cs" />
     <Compile Include="BinaryReaderWriterExtensions.cs" />
     <Compile Include="DbaseLocaleRegistry.cs" />
     <Compile Include="DisposeBase.cs" />

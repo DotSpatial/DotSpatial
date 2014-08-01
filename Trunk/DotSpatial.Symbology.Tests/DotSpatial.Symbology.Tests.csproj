@@ -67,6 +67,7 @@
     <Compile Include="LabelSymbolizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
+    <Compile Include="RasterLayerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
       <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Tests.Common\DotSpatial.Tests.Common.csproj">
+      <Project>{95114A54-769F-4A90-A346-C2CF85523AAD}</Project>
+      <Name>DotSpatial.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
       <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>

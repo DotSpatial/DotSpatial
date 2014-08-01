@@ -22,9 +22,6 @@ using System;
 
 namespace DotSpatial.Topology
 {
-    /// <summary>
-    /// IFloatVector3
-    /// </summary>
     public struct FloatVector3
     {
         #region Private Variables
