@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
@@ -135,18 +136,18 @@ namespace DotSpatial.Symbology
                 var Colors = _raster.CategoryColors();
                 if (Colors != null && Colors.Length > 0)
                 {   // Use colors that are built into the raster, e.g. GeoTIFF with palette
-                    var Names = _raster.CategoryNames();
-                    bool overMaxCount = false;
-                    var UniqueValues = _raster.GetUniqueValues(Colors.Length, out overMaxCount);
+                    var names = _raster.CategoryNames();
+                    bool overMaxCount;
+                    var uniqueValues = _raster.GetUniqueValues(Colors.Length, out overMaxCount);
                     _isElevation = false;
                     for (int i = 0; i < Colors.Length; i++)
                     {   //Only add colors to the legend if they appear in the layer
                         //NLCD CategoryColors include 256 colors, but only 16 are valid
-                        if (UniqueValues.Contains(Convert.ToDouble(i)))
+                        if (uniqueValues.Contains(Convert.ToDouble(i)))
                         {   // It seems buggy that using value i - 1 below works
                             ICategory newCat = new ColorCategory(i - 1, Colors[i]);
-                            if (Names != null && Names.Length > i)
-                                newCat.LegendText = Names[i];
+                            if (names != null && names.Length > i)
+                                newCat.LegendText = names[i];
                             else
                                 newCat.LegendText = i.ToString();
                             Scheme.AddCategory(newCat);

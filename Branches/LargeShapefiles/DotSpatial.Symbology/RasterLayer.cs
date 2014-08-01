@@ -44,6 +44,8 @@ namespace DotSpatial.Symbology
         [Serialize("Symbolizer", ConstructorArgumentIndex = 1)]
         private IRasterSymbolizer _symbolizer;
 
+        private IGetBitmap _bitmapGetter;
+
         /// <summary>
         /// Gets or sets maximum number of cells which can be stored in memory.
         /// By default it is 8000 * 8000.
@@ -173,11 +175,7 @@ namespace DotSpatial.Symbology
         {
             if (disposing)
             {
-                if (BitmapGetter != null)
-                {
-                    BitmapGetter.Dispose();
-                    BitmapGetter = null;
-                }
+                BitmapGetter = null;
                 RasterLayerActions = null;
                 Symbolizer = null;
             }
@@ -361,7 +359,16 @@ namespace DotSpatial.Symbology
         /// that that would be slow, so caching is probably better.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IGetBitmap BitmapGetter { get; set; }
+        public IGetBitmap BitmapGetter
+        {
+            get { return _bitmapGetter; }
+            set
+            {
+                if (value == _bitmapGetter) return;
+                if (_bitmapGetter != null) _bitmapGetter.Dispose(); // Dispose previous bitmapGetter to avoid memory leaks
+                _bitmapGetter = value;
+            }
+        }
 
         /// <summary>
         /// Gets the geographic height of the cells for this raster (North-South)

@@ -67,6 +67,7 @@
     <Compile Include="LabelSymbolizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
+    <Compile Include="RasterLayerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">

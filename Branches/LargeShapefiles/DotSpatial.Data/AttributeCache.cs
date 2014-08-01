@@ -25,9 +25,6 @@ using System.Diagnostics;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Cache
-    /// </summary>
     public class AttributeCache : IEnumerable<Dictionary<string, object>>
     {
         private static int _rowsPerPage;
