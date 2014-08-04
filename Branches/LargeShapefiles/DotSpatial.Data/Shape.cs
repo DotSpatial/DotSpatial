@@ -68,11 +68,11 @@ namespace DotSpatial.Data
         public Shape(IFeature feature)
             : this((IBasicGeometry)feature)
         {
-            if (Equals(feature, null))
-                throw new ArgumentNullException("feature");
-            if (feature.NumPoints == 0)
-                throw new ArgumentOutOfRangeException("feature", "The IFeature.NumPoints of the parameter feature must be greater than 0.");
+            if (feature == null) throw new ArgumentNullException("feature");
+            
             _attributes = feature.DataRow.ItemArray;
+            if (feature.ShapeType != null)
+                _shapeRange.ShapeType = feature.ShapeType.Value;
         }
 
         /// <summary>
@@ -82,8 +82,7 @@ namespace DotSpatial.Data
         /// <param name="geometry">The geometry to create a shape from.</param>
         public Shape(IBasicGeometry geometry)
         {
-            if (Equals(geometry, null))
-                throw new ArgumentNullException("geometry");
+            if (geometry == null) throw new ArgumentNullException("geometry");
 
             var coords = geometry.Coordinates;
             _vertices = new double[geometry.NumPoints * 2];
@@ -106,8 +105,7 @@ namespace DotSpatial.Data
         /// <param name="coord"></param>
         public Shape(Coordinate coord)
         {
-            if (Equals(coord, null))
-                throw new ArgumentNullException("coord");
+            if (coord == null) throw new ArgumentNullException("coord");
             
             if (!double.IsNaN(coord.Z))
             {
@@ -142,34 +140,29 @@ namespace DotSpatial.Data
         /// <param name="extent"></param>
         public Shape(IExtent extent)
         {
-            if (Equals(extent, null))
-                throw new ArgumentNullException("extent");
-            
-            _shapeRange = new ShapeRange(FeatureType.Polygon);
-            double xMin = extent.MinX;
-            double yMin = extent.MinY;
-            double xMax = extent.MaxX;
-            double yMax = extent.MaxY;
-            _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
+            if (extent == null) throw new ArgumentNullException("extent");
+            CreateFromExtent(extent);
         }
 
         /// <summary>
         /// Creates a clockwise polygon shape from an envelope
         /// </summary>
-        /// <param name="envelope"></param>
+        /// <param name="envelope">Envelope</param>
         public Shape(IEnvelope envelope)
         {
-            if (Equals(envelope, null))
-                throw new ArgumentNullException("envelope");
+            if (envelope == null) throw new ArgumentNullException("envelope");
+            CreateFromExtent(envelope.ToExtent());
+        }
 
+        private void CreateFromExtent(IExtent extent)
+        {
             _shapeRange = new ShapeRange(FeatureType.Polygon);
-            double xMin = envelope.Minimum.X;
-            double yMin = envelope.Minimum.Y;
-            double xMax = envelope.Maximum.X;
-            double yMax = envelope.Maximum.Y;
-            _vertices = new[] {xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin};
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
+            var xMin = extent.MinX;
+            var yMin = extent.MinY;
+            var xMax = extent.MaxX;
+            var yMax = extent.MaxY;
+            _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) { NumVertices = 4 });
         }
 
         #endregion

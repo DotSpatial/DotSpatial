@@ -32,10 +32,7 @@ namespace DotSpatial.Data.Tests
             Assert.IsNotNull(union);
             Assert.IsTrue(union.Features.Count > 0);
         }
-
-        /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
-        ///</summary>
+        
         [Test]
         public void FilePathTestWithSpaces()
         {
@@ -53,10 +50,7 @@ namespace DotSpatial.Data.Tests
             string actualFileName = target.Filename;
             Assert.AreEqual(expectedFullPath, actualFileName);
         }
-
-        /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
-        ///</summary>
+        
         [Test]
         public void FilePathTest1()
         {
@@ -72,10 +66,7 @@ namespace DotSpatial.Data.Tests
             string actualFileName = target.Filename;
             Assert.AreEqual(expectedFullPath, actualFileName);
         }
-
-        /// <summary>
-        ///A test for FilePath http://dotspatial.codeplex.com/workitem/232
-        ///</summary>
+      
         [Test]
         public void FilePathTest2()
         {

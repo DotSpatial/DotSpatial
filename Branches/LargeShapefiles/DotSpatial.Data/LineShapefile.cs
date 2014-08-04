@@ -12,6 +12,7 @@
 // *******************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -51,7 +52,6 @@ namespace DotSpatial.Data
         }
 
         #endregion
-
 
         protected override Extent ReadExtent(int shp, Stream reader)
         {
@@ -160,27 +160,12 @@ namespace DotSpatial.Data
             };
             if (vert != null)
             {
-                var totalVertices = 0;
                 for (var i = 0; i < numParts; i++)
                 {
-                    int numVertices, partOffset;
-                    if (numParts == 1)
-                    {
-                        numVertices = pointsNum;
-                        partOffset = 0;
-                    }
-                    else
-                    {
-                        numVertices = i == numParts - 1
-                            ? (vert.Length + 1 - parts[i])/2
-                            : (parts[i + 1] - 1 - parts[i])/2;
-
-                        partOffset = totalVertices;
-                        totalVertices += numVertices;
-                    }
-
-
-                    var partRange = new PartRange(vert, 0, partOffset, FeatureType) { NumVertices = numVertices };
+                    var numVertices = i == numParts - 1
+                        ? vert.Length/2 - parts[i]
+                        : parts[i + 1] - parts[i];
+                    var partRange = new PartRange(vert, 0, parts[i], FeatureType) { NumVertices = numVertices };
                     shr.Parts.Add(partRange);    
                 }
             }
@@ -199,7 +184,155 @@ namespace DotSpatial.Data
 
         protected override void WriteFeatures(string fileName)
         {
-            throw new NotImplementedException();
+            // Set Header.ShapeType before setting extent.
+            switch (CoordinateType)
+            {
+                case CoordinateType.Regular:
+                    Header.ShapeType = FeatureType == FeatureType.Line ? ShapeType.PolyLine : ShapeType.Polygon;
+                    break;
+                case CoordinateType.M:
+                    Header.ShapeType = FeatureType == FeatureType.Line ? ShapeType.PolyLineM : ShapeType.PolygonM;
+                    break;
+                case CoordinateType.Z:
+                    Header.ShapeType = FeatureType == FeatureType.Line ? ShapeType.PolyLineZ : ShapeType.PolygonZ;
+                    break;
+                default:
+                    throw new Exception("Unsupported CoordinateType");
+            }
+
+            // Calculate total .shp file length
+            var totalOffset = 50;
+            for (var shp = 0; shp < Count; shp++)
+            {
+                var f = GetFeature(shp);
+                totalOffset += GetContentLength(f);
+            }
+
+            // Save headers for .shp and .shx files
+            InvalidateEnvelope();
+            Header.SetExtent(Extent);
+            Header.ShxLength = 50 + Count * 4;
+            Header.FileLength = totalOffset;
+            Header.SaveAs(fileName);
+
+            // Reset shapeheaders
+            ResetShapeHeaders();
+
+            // Append data into .shp and .shx
+            int offset = 50;
+            using (var shpStream = new FileStream(Header.Filename, FileMode.Append))
+            using (var shxStream = new FileStream(Header.ShxFilename, FileMode.Append))
+            {
+                for (var shp = 0; shp < Count; shp++)
+                {
+                    shpStream.WriteBe(shp + 1);
+                    var feature = GetFeature(shp);
+                    var shpt = feature.ShapeType.GetValueOrDefault(Header.ShapeType);
+                    var contentLen = GetContentLength(feature);
+
+                    shpStream.WriteBe(contentLen - 4);
+                    shpStream.WriteLe((int)shpt);
+                    if (shpt != ShapeType.NullShape)
+                    {
+                        // Bounding Box
+                        var extent = feature.Envelope.ToExtent();
+                        shpStream.WriteLe(extent.MinX);
+                        shpStream.WriteLe(extent.MinY);
+                        shpStream.WriteLe(extent.MaxX);
+                        shpStream.WriteLe(extent.MaxY);
+
+                        // NumParts
+                        shpStream.WriteLe(feature.NumGeometries);
+
+                        // NumPoints
+                        shpStream.WriteLe(feature.NumPoints);
+
+                        // Parts and Points
+                        var parts = new int[feature.NumGeometries];
+                        var points = new List<Coordinate>(feature.NumPoints);
+                        for (var iPart = 0; iPart < feature.NumGeometries; iPart++)
+                        {
+                            parts[iPart] = points.Count;
+                            var bl = feature.GetBasicGeometryN(iPart);
+                            points.AddRange(bl.Coordinates);
+                        }
+
+                        // Parts
+                        shpStream.WriteLe(parts, 0, parts.Length);
+
+                        // XY coordinates
+                        foreach (var t in points)
+                        {
+                            shpStream.WriteLe(t.X);
+                            shpStream.WriteLe(t.Y);
+                        }
+
+                        // Z coordinates
+                        if (shpt == ShapeType.PolyLineZ || shpt == ShapeType.PolygonZ)
+                        {
+                            // Z-box
+                            var minZ = feature.Coordinates.Min(_ => _.Z);
+                            var maxZ = feature.Coordinates.Max(_ => _.Z);
+                            shpStream.WriteLe(minZ);
+                            shpStream.WriteLe(maxZ);
+
+                            // Z coordinates
+                            for (var i = 0; i < feature.NumPoints; i++)
+                            {
+                                shpStream.WriteLe(feature.Coordinates[i].Z);
+                            }
+                        }
+
+                        // M coordinates
+                        if (shpt == ShapeType.PolyLineZ || shpt == ShapeType.PolygonZ || 
+                            shpt == ShapeType.PolyLineM || shpt == ShapeType.PolygonM)
+                        {
+                            // M-box
+                            var minm = feature.Coordinates.Min(_ => _.M);
+                            var maxm = feature.Coordinates.Max(_ => _.M);
+                            shpStream.WriteLe(minm);
+                            shpStream.WriteLe(maxm);
+
+                            // M coordinates
+                            for (var i = 0; i < feature.NumPoints; i++)
+                            {
+                                shpStream.WriteLe(feature.Coordinates[i].M);
+                            }
+                        }
+                    }
+
+                    shxStream.WriteBe(offset);
+                    shxStream.WriteBe(contentLen - 4);
+                    offset += contentLen;
+                }
+            }
+        }
+
+        private int GetContentLength(IFeature f)
+        {
+            var shpt = f.ShapeType.GetValueOrDefault(Header.ShapeType);
+
+            var baseLen = 3 * 2; // 3 ints
+            switch (shpt)
+            {
+                case ShapeType.PolyLine:
+                case ShapeType.Polygon:
+                    // Bounding Box, NumParts, NumPoints, Parts, XY-coords
+                    baseLen += 4 * 4 + 2 + 2 + 2 * f.NumGeometries +  f.NumPoints * 8;
+                    break;
+                case ShapeType.PolyLineM:
+                case ShapeType.PolygonM:
+                    // Bounding Box, NumParts, NumPoints, Parts, XY-coords, M-box, M-coords
+                    baseLen += 4 * 4 + 2 + 2 + 2 * f.NumGeometries + f.NumPoints * 8 + 4 * 2 + 4 * f.NumPoints;
+                    break;
+                case ShapeType.PolyLineZ:
+                case ShapeType.PolygonZ:
+                    // Bounding Box, NumPoints, XY-points, M-box, M-coords, Z-box, Z-coords
+                    baseLen += 4 * 4 + 2 + 2 + 2 * f.NumGeometries + f.NumPoints * 8 + 4 * 2 + 4 * f.NumPoints + 4 *2 + 4*f.NumPoints;
+                    break;
+            }
+
+            return baseLen;
         }
     }
 }

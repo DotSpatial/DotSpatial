@@ -711,7 +711,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual Shape GetShape(int index, bool getAttributes)
         {
-            return new Shape(Features[index]);
+            return Features[index].ToShape();
         }
 
         /// <inheritdoc/>

@@ -743,14 +743,7 @@ namespace DotSpatial.Data
         /// </summary>
         public ShapeType? ShapeType
         {
-            get { return ShapeIndex != null ? ShapeIndex.ShapeType : (ShapeType?) null; }
-            set
-            {
-                // nothing
-
-                // todo: Remove setters for ShapeType/RecordNumber/ContentLength from public interface
-                // They all must be available only through ShapeIndex property.
-            }
+            get; set;
         }
 
         /// <summary>

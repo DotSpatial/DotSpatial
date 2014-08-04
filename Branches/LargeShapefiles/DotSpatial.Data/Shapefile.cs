@@ -479,6 +479,7 @@ namespace DotSpatial.Data
             {
                 ParentFeatureSet = this,
                 DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0],
+                ShapeType = shape.Range.ShapeType,
             };
             return f;
         }

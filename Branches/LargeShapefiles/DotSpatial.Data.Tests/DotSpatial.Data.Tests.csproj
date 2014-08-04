@@ -83,10 +83,7 @@
     <Compile Include="DataManagerTests.cs" />
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="FeatureListTests.cs" />
-    <Compile Include="LineShapefileTests.cs" />
-    <Compile Include="MultiPointShapefileTests.cs" />
     <Compile Include="PointShapefileTests.cs" />
-    <Compile Include="PolygonShapefileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FeatureSetTests.cs" />
     <Compile Include="RasterTest.cs" />
