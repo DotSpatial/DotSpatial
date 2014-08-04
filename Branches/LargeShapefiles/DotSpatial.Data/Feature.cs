@@ -757,6 +757,7 @@ namespace DotSpatial.Data
         /// This is simply a quick access to the Vertices list for this specific
         /// feature.  If the Vertices have not yet been defined, this will be null.
         /// </summary>
+        [Obsolete]
         public ShapeRange ShapeIndex { get; set; }
 
         #endregion

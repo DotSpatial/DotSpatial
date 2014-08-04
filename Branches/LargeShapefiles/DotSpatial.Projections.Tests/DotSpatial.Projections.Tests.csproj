@@ -183,6 +183,10 @@
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
       <Name>DotSpatial.Projections</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Tests.Common\DotSpatial.Tests.Common.csproj">
+      <Project>{95114A54-769F-4A90-A346-C2CF85523AAD}</Project>
+      <Name>DotSpatial.Tests.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

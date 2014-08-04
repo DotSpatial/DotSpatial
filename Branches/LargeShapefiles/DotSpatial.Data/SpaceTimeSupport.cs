@@ -20,9 +20,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// SpaceTimeSupport
-    /// </summary>
     public enum SpaceTimeSupport
     {
         /// <summary>

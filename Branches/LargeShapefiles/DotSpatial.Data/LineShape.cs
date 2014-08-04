@@ -19,24 +19,13 @@
 // ********************************************************************************************************
 
 using System;
+using System.Linq;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// LineShape
-    /// </summary>
     public static class LineShape
     {
-        /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
-        /// </summary>
-        public static double Epsilon
-        {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
-        }
-
         /// <summary>
         /// Calculates the intersection of a polygon shape without relying on the NTS geometry
         /// </summary>
@@ -80,20 +69,11 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool IntersectsVertex(ShapeRange lineShape, ShapeRange otherShape)
         {
-            foreach (PartRange part in lineShape.Parts)
-            {
-                foreach (Segment segment in part.Segments)
-                {
-                    foreach (PartRange oPart in otherShape.Parts)
-                    {
-                        foreach (Vertex v in oPart)
-                        {
-                            if (segment.IntersectsVertex(v)) return true;
-                        }
-                    }
-                }
-            }
-            return false;
+            return lineShape.Parts
+                .Any(part => part.Segments
+                    .Any(segment => otherShape.Parts
+                        .Any(oPart => oPart
+                            .Any(segment.IntersectsVertex))));
         }
 
         /// <summary>
@@ -109,26 +89,11 @@ namespace DotSpatial.Data
             if (otherShape.FeatureType != FeatureType.Line && otherShape.FeatureType != FeatureType.Polygon)
                 throw new ArgumentException("Expected otherShape to be a line or polygon feature type, got " + otherShape.FeatureType);
 
-            foreach (PartRange part in lineShape.Parts)
-            {
-                foreach (Segment segment in part.Segments)
-                {
-                    foreach (PartRange oPart in otherShape.Parts)
-                    {
-                        foreach (Segment oSegment in oPart.Segments)
-                        {
-                            if (segment.Intersects(oSegment))
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // If the other segment is a polygon, we need to check the "
-
-            return false;
+            return lineShape.Parts
+                .Any(part => part.Segments
+                    .Any(segment => otherShape.Parts
+                        .Any(oPart => oPart.Segments
+                            .Any(segment.Intersects))));
         }
     }
 }

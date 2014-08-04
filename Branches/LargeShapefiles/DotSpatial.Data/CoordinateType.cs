@@ -36,7 +36,7 @@ namespace DotSpatial.Data
         M,
 
         /// <summary>
-        /// Y, Y, M and Z values are available.
+        /// X, Y, M and Z values are available.
         /// </summary>
         Z,
     }

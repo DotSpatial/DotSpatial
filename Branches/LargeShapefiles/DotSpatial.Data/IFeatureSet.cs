@@ -101,6 +101,8 @@ namespace DotSpatial.Data
         /// <param name="index">The integer index</param>
         IFeature GetFeature(int index);
 
+        Extent GetFeatureExtent(int index);
+
         /// <summary>
         /// Get feature by it's index
         /// </summary>
@@ -320,6 +322,7 @@ namespace DotSpatial.Data
         /// fast acting sealed classes and are not meant to be overridden or support clever
         /// new implementations.
         /// </summary>
+        [Obsolete]
         List<ShapeRange> ShapeIndices
         {
             get;
@@ -331,6 +334,7 @@ namespace DotSpatial.Data
         /// and features are created on demand.  Otherwise the list of Features
         /// is used directly.
         /// </summary>
+        [Obsolete]
         bool IndexMode
         {
             get;

@@ -19,21 +19,13 @@
 // ********************************************************************************************************
 
 using System;
+using System.Linq;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
     public static class PointShape
     {
-        /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
-        /// </summary>
-        public static double Epsilon
-        {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
-        }
-
         /// <summary>
         /// Calculates the intersection of a polygon shape without relying on the NTS geometry
         /// </summary>
@@ -63,20 +55,11 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool VerticesIntersect(ShapeRange pointShape, ShapeRange otherPointShape)
         {
-            foreach (PartRange part in pointShape.Parts)
-            {
-                foreach (PartRange oPart in otherPointShape.Parts)
-                {
-                    foreach (Vertex v1 in part)
-                    {
-                        foreach (Vertex v2 in oPart)
-                        {
-                            if (v1 == v2) return true;
-                        }
-                    }
-                }
-            }
-            return false;
+            return pointShape.Parts
+                .Any(part => otherPointShape.Parts
+                    .Any(oPart => part
+                        .Any(v1 => oPart
+                            .Any(v2 => v1 == v2))));
         }
     }
 }

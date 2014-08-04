@@ -27,7 +27,6 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
@@ -113,32 +112,17 @@ namespace DotSpatial.Controls
         {
             // First determine the number of features we are talking about based on region.
             var clipRects = args.ProjToPixel(regions);
-            if (!DataSet.IndexMode)
+
+            var drawList = new List<int>();
+            for (var shp = 0; shp < DataSet.Count; shp++)
             {
-                var drawList = new List<IFeature>();
-                foreach (var region in regions)
+                var pointExtent = DataSet.GetFeatureExtent(shp);
+                if (regions.Any(pointExtent.Intersects))
                 {
-                    if (region != null)
-                    {
-                        // Use union to prevent duplicates.  No sense in drawing more than we have to.
-                        drawList = drawList.Union(DataSet.Select(region)).ToList();
-                    }
+                    drawList.Add(shp);
                 }
-                DrawFeatures(args, drawList, clipRects, true);
             }
-            else
-            {
-                var drawList = new List<int>();
-                var shapes = DataSet.ShapeIndices;
-                for (var shp = 0; shp < shapes.Count; shp++)
-                {
-                    if (regions.Any(region => shapes[shp].Extent.Intersects(region)))
-                    {
-                        drawList.Add(shp);
-                    }
-                }
-                DrawFeatures(args, drawList, clipRects, true);
-            }
+            DrawFeatures(args, drawList, clipRects, true);
         }
 
         /// <summary>
@@ -190,19 +174,7 @@ namespace DotSpatial.Controls
             result = new MapPointLayer(fs);
             return true;
         }
-
-        /// <summary>
-        /// If useChunks is true, then this method
-        /// </summary>
-        /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
-        /// <param name="features">The features that should be drawn.</param>
-        /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified, this clarifies the changed rectangles.</param>
-        /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
-        {
-            this.DrawUsingChunks(args, features, clipRectangles, useChunks, DrawFeatures);
-        }
-
+       
         /// <summary>
         /// If useChunks is true, then this method
         /// </summary>
@@ -293,8 +265,6 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Private  Methods
-        
-        // todo: There are a 3(!!!) different methods to draw points. Use one.
 
         private void DrawFeatures(MapArgs e, List<int> indices)
         {
@@ -306,179 +276,72 @@ namespace DotSpatial.Controls
             var dx = e.Dx;
             var dy = e.Dy;
 
-            if (!DrawnStatesNeeded)
+            var states = DrawnStates;
+            foreach (var category in Symbology.Categories)
             {
-                if (Symbology == null || Symbology.Categories.Count == 0) return;
-                var state = new FastDrawnState(false, Symbology.Categories[0]);
-                var pc = state.Category as IPointCategory;
-                IPointSymbolizer ps = null;
-                if (pc != null && pc.Symbolizer != null) ps = pc.Symbolizer;
-                if (ps == null) return;
-
-                g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
+                var normalSymbol = GetSymbolizerBitmap(category.Symbolizer, e);
+                var selectedSymbol = GetSymbolizerBitmap(category.SelectionSymbolizer, e);
+                if (normalSymbol == null || selectedSymbol == null) continue;
 
                 foreach (var index in indices)
                 {
-                    if (DrawnStates != null && DrawnStates.Length > index)
-                    {
-                        if (!DrawnStates[index].Visible) continue;
-                    }
+                    var state = states[index];
+                    if (!state.Visible) continue;
+                    var pc = state.Category as IPointCategory;
+                    if (pc == null) continue;
+                    if (pc != category) continue;
 
-
-                    double scaleSize = 1;
-                    if (ps.ScaleMode == ScaleMode.Geographic)
-                    {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
+                    var bmp = state.Selected? selectedSymbol : normalSymbol;
                     var shape = DataSet.GetShape(index, false);
-                    for (var i = 0; i < shape.Vertices.Length; i += 2)
+                    foreach (var part in shape.Range.Parts)
                     {
-                        var pt = new Point
-                        {
-                            X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
-                            Y = Convert.ToInt32((maxY - shape.Vertices[i+ 1]) * dy)
-                        };
-
-                        var shift = origTransform.Clone();
-                        shift.Translate(pt.X, pt.Y);
-                        g.Transform = shift;
-                        ps.Draw(g, scaleSize);
-                    }
-                }
-            }
-            else
-            {
-                var states = DrawnStates;
-                foreach (var category in Symbology.Categories)
-                {
-                    if (category.Symbolizer == null) continue;
-
-                    double scaleSize = 1;
-                    if (category.Symbolizer.ScaleMode == ScaleMode.Geographic)
-                    {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
-                    var size = category.Symbolizer.GetSize();
-                    if (size.Width * scaleSize < 1 || size.Height * scaleSize < 1) continue;
-
-                    var normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
-                    var bg = Graphics.FromImage(normalSymbol);
-                    bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    var trans = bg.Transform;
-
-                    // keenedge:
-                    // added ' * scaleSize ' to fix a problme when ploted using ScaleMode=Geographic.   however, it still
-                    // appeared to be shifted up and left by 1 pixel so I also added the one pixel shift to the NW.
-                    // trans.Translate((float)size.Width / 2, (float)size.Height / 2);
-                    trans.Translate(((float)(size.Width * scaleSize) / 2 - 1), (float)(size.Height * scaleSize) / 2 - 1);
-                    bg.Transform = trans;
-                    category.Symbolizer.Draw(bg, 1);
-
-                    var selSize = category.SelectionSymbolizer.GetSize();
-                    if (selSize.Width * scaleSize < 1 || selSize.Height * scaleSize < 1) continue;
-
-                    var selectedSymbol = new Bitmap((int)(selSize.Width * scaleSize + 1), (int)(selSize.Height * scaleSize + 1));
-                    var sg = Graphics.FromImage(selectedSymbol);
-                    sg.SmoothingMode = category.SelectionSymbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    var trans2 = sg.Transform;
-                    trans2.Translate((float)selSize.Width / 2, (float)selSize.Height / 2);
-                    sg.Transform = trans2;
-                    category.SelectionSymbolizer.Draw(sg, 1);
-
-                    foreach (var index in indices)
-                    {
-                        var state = states[index];
-                        if (!state.Visible) continue;
-                        if (state.Category == null) continue;
-                        var pc = state.Category as IPointCategory;
-                        if (pc == null) continue;
-                        if (pc != category) continue;
-
-                        var bmp = normalSymbol;
-                        if (state.Selected)
-                        {
-                            bmp = selectedSymbol;
-                        }
-                        var shape = DataSet.GetShape(index, false);
-                        for (var i = 0; i < shape.Vertices.Length; i += 2)
+                        foreach (var vertex in part)
                         {
                             var pt = new Point
                             {
-                                X = Convert.ToInt32((shape.Vertices[i] - minX) * dx),
-                                Y = Convert.ToInt32((maxY - shape.Vertices[i + 1]) * dy)
+                                X = Convert.ToInt32((vertex.X - minX)*dx),
+                                Y = Convert.ToInt32((maxY - vertex.Y)*dy)
                             };
 
                             var shift = origTransform.Clone();
                             shift.Translate(pt.X, pt.Y);
                             g.Transform = shift;
 
-                            g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
+                            g.DrawImageUnscaled(bmp, -bmp.Width/2, -bmp.Height/2);
                         }
                     }
                 }
             }
 
+
             if (e.Device == null) g.Dispose();
             else g.Transform = origTransform;
         }
 
-        private void DrawFeatures(MapArgs e, List<IFeature> features)
+        private static Bitmap GetSymbolizerBitmap(IPointSymbolizer symbolizer, IProj e)
         {
-            var states = DrawingFilter.DrawnStates;
-            if (states == null) return;
-
-            var g = e.Device ?? Graphics.FromImage(BackBuffer);
-            var origTransform = g.Transform;
-
-            var minX = e.MinX;
-            var maxY = e.MaxY;
-            var dx = e.Dx;
-            var dy = e.Dy;
-            foreach (var category in Symbology.Categories)
+            if (symbolizer == null) return null;
+            double scaleSize = 1;
+            if (symbolizer.ScaleMode == ScaleMode.Geographic)
             {
-                foreach (var feature in features)
-                {
-                    if (states.ContainsKey(feature) == false) continue;
-                    var ds = states[feature];
-                    if (ds == null) continue;
-                    if (!ds.IsVisible) continue;
-                    if (ds.SchemeCategory == null) continue;
-                    var pc = ds.SchemeCategory as IPointCategory;
-                    if (pc == null) continue;
-                    if (pc != category) continue;
-
-
-                    var ps = pc.Symbolizer;
-                    if (ds.IsSelected)
-                    {
-                        ps = pc.SelectionSymbolizer;
-                    }
-                    if (ps == null) continue;
-                    g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    double scaleSize = 1;
-                    if (ps.ScaleMode == ScaleMode.Geographic)
-                    {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                    }
-
-                    foreach (var c in feature.Coordinates)
-                    {
-                        var pt = new Point
-                        {
-                            X = Convert.ToInt32((c.X - minX)*dx),
-                            Y = Convert.ToInt32((maxY - c.Y)*dy)
-                        };
-                        
-                        var shift = origTransform.Clone();
-                        shift.Translate(pt.X, pt.Y);
-                        g.Transform = shift;
-                        ps.Draw(g, scaleSize);
-                    }
-                }
+                scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
             }
+            var size = symbolizer.GetSize();
+            if (size.Width * scaleSize < 1 || size.Height * scaleSize < 1) return null;
 
-            if (e.Device == null) g.Dispose();
-            else g.Transform = origTransform;
+            var bitmap = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
+            var bg = Graphics.FromImage(bitmap);
+            bg.SmoothingMode = symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
+            var trans = bg.Transform;
+
+            // keenedge:
+            // added ' * scaleSize ' to fix a problme when ploted using ScaleMode=Geographic.   however, it still
+            // appeared to be shifted up and left by 1 pixel so I also added the one pixel shift to the NW.
+            trans.Translate(((float)(size.Width * scaleSize) / 2 - 1), (float)(size.Height * scaleSize) / 2 - 1);
+            bg.Transform = trans;
+            symbolizer.Draw(bg, 1);
+
+            return bitmap;
         }
 
         #endregion
@@ -513,8 +376,6 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Static Methods
-
         /// <summary>
         /// Attempts to create a new GeoPointLayer using the specified file.  If the filetype is not
         /// does not generate a point layer, an exception will be thrown.
@@ -539,8 +400,6 @@ namespace DotSpatial.Controls
             var fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
             return fl as MapPointLayer;
         }
-
-        #endregion
 
         #region ISupportChunksDrawing implementation
 

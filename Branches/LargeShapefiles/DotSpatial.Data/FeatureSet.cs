@@ -24,7 +24,6 @@ using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
 
 namespace DotSpatial.Data
 {
@@ -108,9 +107,6 @@ namespace DotSpatial.Data
         {
             IndexMode = false; // this is false unless we are loading it from a specific shapefile case.
             _featureLookup = new Dictionary<DataRow, IFeature>();
-            _features = new FeatureList(this);
-            _features.FeatureAdded += FeaturesFeatureAdded;
-            _features.FeatureRemoved += FeaturesFeatureRemoved;
             _dataTable = new DataTable();
         }
 
@@ -693,22 +689,13 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual IFeature GetFeature(int index)
         {
-            if (!IndexMode)
-            {
-                return Features[index];
-            }
+            return Features[index];
+        }
 
-            if (FeatureType == FeatureType.Line)
-            {
-                return GetLine(index);
-            }
-
-            if (FeatureType == FeatureType.Polygon)
-            {
-                return GetPolygon(index);
-            }
-
-            return null;
+        /// <inheritdoc/>
+        public virtual Extent GetFeatureExtent(int index)
+        {
+            return Features[index].Envelope.ToExtent();
         }
 
         /// <summary>
@@ -724,7 +711,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public virtual Shape GetShape(int index, bool getAttributes)
         {
-            return !IndexMode ? new Shape(Features[index]) : null;
+            return new Shape(Features[index]);
         }
 
         /// <inheritdoc/>
@@ -1110,190 +1097,7 @@ namespace DotSpatial.Data
         {
             return DataManager.DefaultDataManager.OpenFile(fileName, true, progressHandler) as IFeatureSet;
         }
-
-        /// <summary>
-        /// Gets the line for the specified index
-        /// </summary>
-        protected IFeature GetLine(int index)
-        {
-            ShapeRange shape = ShapeIndices[index];
-            List<IBasicLineString> lines = new List<IBasicLineString>();
-            foreach (PartRange part in shape.Parts)
-            {
-                int i = part.StartIndex;
-                List<Coordinate> coords = new List<Coordinate>();
-                foreach (Vertex d in part)
-                {
-                    Coordinate c = new Coordinate(d.X, d.Y);
-                    coords.Add(c);
-                    if (M != null && M.Length > 0)
-                    {
-                        c.M = M[i];
-                    }
-
-                    if (Z != null && Z.Length > 0)
-                    {
-                        c.Z = Z[i];
-                    }
-
-                    i++;
-                }
-
-                lines.Add(new LineString(coords));
-            }
-
-            IGeometry geom;
-            if (FeatureGeometryFactory == null)
-            {
-                FeatureGeometryFactory = GeometryFactory.Default;
-            }
-
-            if (shape.Parts.Count > 1)
-            {
-                geom = FeatureGeometryFactory.CreateMultiLineString(lines.ToArray());
-            }
-            else if (shape.Parts.Count == 1)
-            {
-                geom = FeatureGeometryFactory.CreateLineString(lines[0].Coordinates);
-            }
-            else
-            {
-                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[]{});
-            }
-
-            var f = new Feature(geom)
-                            {
-                                ParentFeatureSet = this,
-                                ShapeIndex = shape,
-                            };
-
-            // Attribute reading is only handled in the overridden case.
-            return f;
-        }
-
-        /// <summary>
-        /// If the FeatureType is polygon, this is the code for converting the vertex array
-        /// into a feature.
-        /// </summary>
-        protected IFeature GetPolygon(int index)
-        {
-            if (FeatureGeometryFactory == null)
-            {
-                FeatureGeometryFactory = GeometryFactory.Default;
-            }
-
-            Feature feature = new Feature
-                                  {
-                                      Envelope = ShapeIndices[index].Extent.ToEnvelope()
-                                  };
-            ShapeRange shape = ShapeIndices[index];
-            List<ILinearRing> shells = new List<ILinearRing>();
-            List<ILinearRing> holes = new List<ILinearRing>();
-            foreach (PartRange part in shape.Parts)
-            {
-                List<Coordinate> coords = new List<Coordinate>();
-                int i = part.StartIndex;
-                foreach (Vertex d in part)
-                {
-                    Coordinate c = new Coordinate(d.X, d.Y);
-                    if (M != null && M.Length > 0)
-                    {
-                        c.M = M[i];
-                    }
-                    if (Z != null && Z.Length > 0)
-                    {
-                        c.Z = Z[i];
-                    }
-                    i++;
-                    coords.Add(c);
-                }
-                ILinearRing ring = FeatureGeometryFactory.CreateLinearRing(coords);
-                if (shape.Parts.Count == 1)
-                {
-                    shells.Add(ring);
-                }
-                else
-                {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
-                    {
-                        holes.Add(ring);
-                    }
-                    else
-                    {
-                        shells.Add(ring);
-                    }
-                }
-            }
-
-            // Now we have a list of all shells and all holes
-            List<ILinearRing>[] holesForShells = new List<ILinearRing>[shells.Count];
-            for (int i = 0; i < shells.Count; i++)
-            {
-                holesForShells[i] = new List<ILinearRing>();
-            }
-
-            // Find holes
-            foreach (ILinearRing t in holes)
-            {
-                ILinearRing testRing = t;
-                ILinearRing minShell = null;
-                IEnvelope minEnv = null;
-                IEnvelope testEnv = testRing.EnvelopeInternal;
-                Coordinate testPt = testRing.Coordinates[0];
-                ILinearRing tryRing;
-                for (int j = 0; j < shells.Count; j++)
-                {
-                    tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
-                    if (minShell != null)
-                    {
-                        minEnv = minShell.EnvelopeInternal;
-                    }
-
-                    bool isContained = false;
-
-                    if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                            || PointInList(testPt, tryRing.Coordinates)))
-                    {
-                        isContained = true;
-                    }
-
-                    // Check if this new containing ring is smaller than the current minimum ring
-                    if (isContained)
-                    {
-                        if (minShell == null || minEnv.Contains(tryEnv))
-                        {
-                            minShell = tryRing;
-                        }
-
-                        holesForShells[j].Add(t);
-                    }
-                }
-            }
-
-            var polygons = new IPolygon[shells.Count];
-            for (int i = 0; i < shells.Count; i++)
-            {
-                polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
-            }
-
-            if (polygons.Length == 1)
-            {
-                feature.BasicGeometry = polygons[0];
-            }
-            else
-            {
-                // It's a multi part
-                feature.BasicGeometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
-            }
-            
-            feature.ParentFeatureSet = this;
-            feature.ShapeIndex = shape;
-
-            // Attributes handled in the overridden case
-            return feature;
-        }
+    
 
         /// <summary>
         /// handles the attributes while adding a shape
@@ -1444,9 +1248,10 @@ namespace DotSpatial.Data
             {
                 return _dataTable;
             }
-
             set
             {
+                if (value == _dataTable) return;
+
                 OnDataTableExcluded(_dataTable);
                 _dataTable = value;
                 OnDataTableIncluded(_dataTable);
@@ -1479,11 +1284,6 @@ namespace DotSpatial.Data
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGeometryFactory FeatureGeometryFactory { get; set; }
 
-        public IGeometryFactory GetFeatureGeometryFactory()
-        {
-            return FeatureGeometryFactory ?? GeometryFactory.Default;
-        }
-
         /// <summary>
         /// Gets the feature lookup Table itself.
         /// </summary>
@@ -1514,40 +1314,43 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (IndexMode && _features.IsNullOrEmpty())
+                if (_features == null)
                 {
-                    // People working with features like this probably want to see changes from the features themselves.
-                    LoadAllFeatures();
-                    IndexMode = false;
+                    var fl = new FeatureList(this, Count);
+                    fl.SuspendEvents();
+                    fl.IncludeAttributes = false;
+                    for (var i = 0; i < fl.Capacity; i++)
+                    {
+                        fl.Add(GetFeature(i));
+                    }
+                    Features = fl;
+                    fl.IncludeAttributes = true;
+                    fl.ResumeEvents();
                 }
-
                 return _features;
             }
             set
             {
-                OnIncludeFeatures(_features);
+                if (value == _features) return;
+
                 OnExcludeFeatures(_features);
+                OnIncludeFeatures(value);
                 _features = value;
             }
+        }
+
+        public bool FeaturesInRam
+        {
+            get { return _features != null; }
         }
 
         /// <summary>
         /// Gets the count of features.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int Count
+        public virtual int Count
         {
-            get
-            {
-                try
-                {
-                    return IndexMode ? _shapeIndices.Count() : _features.Count();
-                }
-                catch (ArgumentNullException) // may raise when ShapeIndices or Features is null 
-                {
-                    return 0;
-                }
-            }
+            get { return _features != null? _features.Count() : 0; }
         }
 
         /// <summary>
@@ -1563,6 +1366,7 @@ namespace DotSpatial.Data
         /// is used directly.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete]
         public bool IndexMode { get; set; }
 
         /// <inheritdoc/>
@@ -1853,6 +1657,7 @@ namespace DotSpatial.Data
         /// new implementations.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete]
         public List<ShapeRange> ShapeIndices
         {
             get
@@ -1886,21 +1691,10 @@ namespace DotSpatial.Data
             else
             {
                 mx = new Extent();
-                if (!IndexMode)
+                for (var i = 0; i < Count; i++)
                 {
-                    foreach (var feature in Features)
-                    {
-                        feature.UpdateEnvelope();
-                        mx.ExpandToInclude(new Extent(feature.Envelope));
-                    }
-                }
-                else
-                {
-                    foreach (var range in _shapeIndices)
-                    {
-                        range.CalculateExtents();
-                        mx.ExpandToInclude(range.Extent);
-                    }
+                    var extent = GetFeatureExtent(i);
+                    mx.ExpandToInclude(extent);
                 }
             }
 
@@ -2087,31 +1881,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Forces to load all features into memory.
-        /// </summary>
-        private void LoadAllFeatures()
-        {
-            if (_features == null)
-            {
-                _features = new FeatureList(this);
-            }
-            else
-            {
-                // need to preserve event handler already attached to this feature list
-                _features.Clear();
-            }
-
-            _features.IncludeAttributes = false;
-            _features.SuspendEvents();
-            for (int shp = 0; shp < ShapeIndices.Count; shp++)
-            {
-                _features.Add(GetFeature(shp));
-            }
-            _features.ResumeEvents();
-            _features.IncludeAttributes = true;
-        }
-
-        /// <summary>
         /// Allows the un-wiring of event handlers related to the data Table.
         /// </summary>
         /// <param name="dataTable">
@@ -2144,13 +1913,11 @@ namespace DotSpatial.Data
         /// </param>
         protected virtual void OnExcludeFeatures(IFeatureList features)
         {
-            if (_features == null)
-            {
+            if (features == null) 
                 return;
-            }
 
-            _features.FeatureAdded -= FeaturesFeatureAdded;
-            _features.FeatureRemoved -= FeaturesFeatureRemoved;
+            features.FeatureAdded -= FeaturesFeatureAdded;
+            features.FeatureRemoved -= FeaturesFeatureRemoved;
         }
 
         /// <summary>
@@ -2160,13 +1927,10 @@ namespace DotSpatial.Data
         /// </param>
         protected virtual void OnIncludeFeatures(IFeatureList features)
         {
-            if (_features == null)
-            {
-                return;
-            }
+            if (features == null) return;
 
-            _features.FeatureAdded += FeaturesFeatureAdded;
-            _features.FeatureRemoved += FeaturesFeatureRemoved;
+            features.FeatureAdded += FeaturesFeatureAdded;
+            features.FeatureRemoved += FeaturesFeatureRemoved;
         }
 
         #endregion

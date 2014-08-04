@@ -31,6 +31,7 @@ namespace DotSpatial.Symbology.Tests
                 var target = (FeatureLayer)provider.OpenLayer(filename, false, null, null);
                 target.SelectByAttribute("[BPEJ_K_S42]>7710");
 
+                Assert.IsTrue(target.Selection.Count < target.DataSet.Count);
                 Assert.IsTrue(target.Selection.Count > 0);
                 target.ExportSelection(fileOut);
 

@@ -33,9 +33,9 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// This is a generic shapefile that is inherited by other specific shapefile types.
+    /// Base class for shapefiles.
     /// </summary>
-    public class Shapefile : FeatureSet
+    public abstract class Shapefile : FeatureSet
     {
         #region Private Variables
 
@@ -49,40 +49,48 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// When creating a new shapefile, this simply prevents the basic values from being null.
-        /// </summary>
-        public Shapefile()
-        {
-            Configure();
-        }
-
-        /// <summary>
         /// Creates a new shapefile that has a specific feature type
         /// </summary>
         /// <param name="featureType"></param>
         protected Shapefile(FeatureType featureType)
-            : base(featureType)
+            : this(null, featureType)
         {
         }
 
         /// <summary>
         /// Creates a new instance of a shapefile based on a fileName
         /// </summary>
-        /// <param name="fileName"></param>
-        protected Shapefile(string fileName)
-        {
-            base.Filename = fileName;
-            Configure();
-        }
-
-        private void Configure()
+        /// <param name="fileName">File name</param>
+        /// <param name="featureType">Feature type</param>
+        protected Shapefile(string fileName, FeatureType featureType)
+            : base(featureType)
         {
             Attributes = new AttributeTable();
-            _header = new ShapefileHeader();
-            IndexMode = true;
+            Header = new ShapefileHeader();
+            
+            Open(fileName, null);
         }
 
+
         #endregion
+
+        private List<ShapeHeader> _shapeHeaders;
+        protected List<ShapeHeader> ShapeHeaders
+        {
+            get
+            {
+                if (_shapeHeaders != null) return _shapeHeaders;
+                _shapeHeaders = ReadIndexFile(Filename);
+                return _shapeHeaders;
+            }
+        }
+
+        private List<Extent> _extents;
+
+        protected void ResetShapeHeaders()
+        {
+            _shapeHeaders = null;
+        }
 
         /// <summary>
         /// The buffer size is an integer value in bytes specifying how large a piece of memory can be used at any one time.
@@ -339,6 +347,166 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// Opens a shapefile
+        /// </summary>
+        /// <param name="fileName">The string fileName of the point shapefile to load</param>
+        /// <param name="progressHandler">Any valid implementation of the DotSpatial.Data.IProgressHandler</param>
+        private void Open(string fileName, IProgressHandler progressHandler)
+        {
+            if (!File.Exists(fileName)) return;
+        
+            Header = new ShapefileHeader(fileName);
+
+            // Check to ensure that the fileName is the correct shape type
+            switch (FeatureType)
+            {
+                case FeatureType.Line:
+                    if (Header.ShapeType != ShapeType.PolyLine &&
+                        Header.ShapeType != ShapeType.PolyLineM &&
+                        Header.ShapeType != ShapeType.PolyLineZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotLines_S.Replace("%S", fileName));
+                    }
+                    break;
+                case FeatureType.Polygon:
+                    if (Header.ShapeType != ShapeType.Polygon &&
+                        Header.ShapeType != ShapeType.PolygonM &&
+                        Header.ShapeType != ShapeType.PolygonZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotPolygons_S.Replace("%S", fileName));
+                    }
+                    break;
+                case FeatureType.Point:
+                    if (Header.ShapeType != ShapeType.Point &&
+                        Header.ShapeType != ShapeType.PointM &&
+                        Header.ShapeType != ShapeType.PointZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
+                    }
+                    break;
+                case FeatureType.MultiPoint:
+                    if (Header.ShapeType != ShapeType.MultiPoint &&
+                        Header.ShapeType != ShapeType.MultiPointM &&
+                        Header.ShapeType != ShapeType.MultiPointZ)
+                    {
+                        throw new ArgumentException(DataStrings.FileNotMultipoints_S.Replace("%S", fileName));
+                    }
+                    break;
+            }
+
+            switch (Header.ShapeType)
+            {
+                case ShapeType.Point:
+                case ShapeType.MultiPoint:
+                case ShapeType.PolyLine:
+                case ShapeType.Polygon:
+                    CoordinateType = CoordinateType.Regular;
+                    break;
+                case ShapeType.PointM:
+                case ShapeType.MultiPointM:
+                case ShapeType.PolyLineM:
+                case ShapeType.PolygonM:
+                    CoordinateType = CoordinateType.M;
+                    break;
+                case ShapeType.PointZ:
+                case ShapeType.MultiPointZ:
+                case ShapeType.PolyLineZ:
+                case ShapeType.PolygonZ:
+                    CoordinateType = CoordinateType.Z;
+                    break;
+                default:
+                    throw new Exception("Unsupported ShapeType");
+            }
+
+            Filename = fileName;
+            IndexMode = true;
+
+            Extent = Header.ToExtent();
+            Name = Path.GetFileNameWithoutExtension(fileName);
+            Attributes.Open(fileName);
+
+            FillIndexes(fileName, progressHandler);
+            ReadProjection();
+        }
+
+        private void FillIndexes(string fileName, IProgressHandler progressHandler)
+        {
+            if (new FileInfo(fileName).Length == 100)
+            {
+                // the file is empty so we are done reading
+                return;
+            }
+
+            var progressMeter = new ProgressMeter(progressHandler, "Reading from " + Path.GetFileName(fileName))
+            {
+                StepPercent = 5
+            };
+            var numShapes = ShapeHeaders.Count;
+            _extents = new List<Extent>(numShapes);
+            using (var reader = new FileStream(fileName, FileMode.Open))
+            {
+                for (var shp = 0; shp < numShapes; shp++)
+                {
+                    progressMeter.CurrentPercent = (int)(shp * 100.0 / numShapes);
+                    var extent = ReadExtent(shp, reader);
+                    _extents.Add(extent);
+                }
+            }
+            progressMeter.Reset();
+        }
+
+        protected abstract Extent ReadExtent(int shp, Stream reader);
+        protected abstract Shape ReadShape(int shp, Stream reader);
+
+        public override int Count
+        {
+            get
+            {
+                if (FeaturesInRam) return base.Count;
+                return ShapeHeaders.Count;
+            }
+        }
+
+
+        /// <inheritdoc />
+        public override IFeature GetFeature(int index)
+        {
+            if (FeaturesInRam) return base.GetFeature(index);
+            
+            var shape = GetShape(index, false);
+            var geometry = shape.ToGeometry(FeatureGeometryFactory);
+            var f = new Feature(geometry)
+            {
+                ParentFeatureSet = this,
+                DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0],
+            };
+            return f;
+        }
+
+        public override Extent GetFeatureExtent(int index)
+        {
+            if (FeaturesInRam) return base.GetFeatureExtent(index);
+            // Create copy to avoid potentially editing extents from _extents list
+            return (Extent)_extents[index].Clone(); 
+        }
+
+        public override Shape GetShape(int index, bool getAttributes)
+        {
+            if (FeaturesInRam) return base.GetShape(index, getAttributes);
+
+            Shape sh;
+            using (var reader = new FileStream(Filename, FileMode.Open))
+                sh = ReadShape(index, reader);
+            if (getAttributes)
+            {
+                sh.Attributes = AttributesPopulated
+                    ? DataTable.Rows[index].ItemArray
+                    : Attributes.SupplyPageOfData(index, 1).Rows[0].ItemArray;
+            }
+            return sh;
+        }
+
+        /// <summary>
         /// saves a single row to the data source.
         /// </summary>
         /// <param name="index">the integer row (or FID) index</param>
@@ -415,7 +583,15 @@ namespace DotSpatial.Data
             _attributeTable.Fill(NumRows());
             DataTable = _attributeTable.Table;
             base.AttributesPopulated = true;
+
             // Link the data rows to the vectors in this object
+            if (FeaturesInRam)
+            {
+                for (var i = 0; i < Features.Count; i++)
+                {
+                    Features[i].DataRow = DataTable.Rows[i];
+                }   
+            }
         }
 
         /// <summary>
@@ -560,34 +736,18 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="fileName">A string fileName of the .shx file to read.</param>
         /// <returns>A List of ShapeHeaders that give offsets and lengths so that reading can be optimized</returns>
-        public List<ShapeHeader> ReadIndexFile(string fileName)
+        private List<ShapeHeader> ReadIndexFile(string fileName)
         {
-            string shxFilename = fileName;
-            string ext = Path.GetExtension(fileName);
-
-            if (ext != ".shx")
+            var shxFilename = Path.ChangeExtension(fileName, ".shx");
+            if (shxFilename == null || !File.Exists(shxFilename) ||
+                new FileInfo(shxFilename).Length == 100)
             {
-                shxFilename = Path.ChangeExtension(fileName, ".shx");
-            }
-            if (shxFilename == null)
-            {
-                throw new NullReferenceException(DataStrings.ArgumentNull_S.Replace("%S", fileName));
-            }
-
-            if (File.Exists(shxFilename) == false)
-            {
-                throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
-            }
-
-            var fileLen = new FileInfo(shxFilename).Length;
-            if (fileLen == 100)
-            {
-                // the file is empty so we are done reading
                 return Enumerable.Empty<ShapeHeader>().ToList();
             }
 
             // Use a the length of the file to dimension the byte array
-            using (var bbReader = new FileStream(shxFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
+            var fileLen = new FileInfo(shxFilename).Length;
+            using (var bbReader = new FileStream(shxFilename, FileMode.Open))
             {
                 // Skip the header and begin reading from the first record
                 bbReader.Seek(100, SeekOrigin.Begin);
@@ -667,7 +827,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void ReadProjection()
         {
-            string prjFile = Path.ChangeExtension(Filename, ".prj");
+            var prjFile = Path.ChangeExtension(Filename, ".prj");
             Projection = File.Exists(prjFile) ? ProjectionInfo.Open(prjFile) : new ProjectionInfo();
         }
 
@@ -676,11 +836,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void SaveProjection()
         {
-            string prjFile = Path.ChangeExtension(Filename, ".prj");
-            if (File.Exists(prjFile))
-            {
-                File.Delete(prjFile);
-            }
+            var prjFile = Path.ChangeExtension(Filename, ".prj");
             if (Projection != null) Projection.SaveAs(prjFile);
         }
 
@@ -755,37 +911,54 @@ namespace DotSpatial.Data
             return result;
         }
 
-        /// <summary>
-        /// Checks that shape file can be saved to given fileName.
-        /// </summary>
-        /// <param name="fileName">File name to save.</param>
-        /// <param name="overwrite">Overwrite file or not.</param>
-        protected void EnsureValidFileToSave(string fileName, bool overwrite)
+        protected abstract void WriteFeatures(string fileName);
+        
+        public override void SaveAs(string fileName, bool overwrite)
         {
-            string dir = Path.GetDirectoryName(fileName);
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            if (!FeaturesInRam)
             {
-                Directory.CreateDirectory(dir);
+                if (Filename == fileName)
+                {
+                    // files already there. Nothing to do.
+                    return;
+
+                }
             }
-            else if (File.Exists(fileName))
+
+            if (File.Exists(fileName))
             {
                 if (fileName != Filename && overwrite == false) throw new ArgumentOutOfRangeException("fileName", "File exists and overwrite = False.");
                 File.Delete(fileName);
-                var shx = Path.ChangeExtension(fileName, ".shx");
-                if (File.Exists(shx)) File.Delete(shx);
+                var shx1 = Path.ChangeExtension(fileName, ".shx");
+                if (File.Exists(shx1)) File.Delete(shx1);
             }
-        }
+            else
+            {
+                var dir = Path.GetDirectoryName(fileName);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }   
+            }
 
-        /// <summary>
-        /// Saves header
-        /// </summary>
-        /// <param name="fileName">File to save.</param>
-        protected void HeaderSaveAs(string fileName)
-        {
-            InvalidateEnvelope();
-            Header.SetExtent(Extent);
-            Header.ShxLength = IndexMode ? ShapeIndices.Count * 4 + 50 : Features.Count * 4 + 50;
-            Header.SaveAs(fileName);
+            if (!FeaturesInRam)
+            {
+                // Shapes are not loaded into memory, so we can just copy source .shp and .shx files to the new location
+                File.Copy(Filename, fileName);
+                var shx = Path.ChangeExtension(Filename, ".shx");
+                if (File.Exists(shx)) File.Copy(shx, Path.ChangeExtension(fileName, ".shx"));
+            }
+            else
+            {
+                WriteFeatures(fileName);
+            }
+
+            // Update filename
+            Filename = fileName;
+
+            // Save .dbf and .prj files
+            UpdateAttributes();
+            SaveProjection();
         }
     }
 }

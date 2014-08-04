@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using DotSpatial.Tests.Common;
+using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
 {
@@ -153,6 +155,25 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(23.0, pi.LatitudeOfOrigin);
             var proj4Str = pi.ToProj4String();
             Assert.IsTrue(proj4Str.Contains("+lat_0=23"));
+        }
+
+        [Test]
+        public void CanSaveAsToSameFile()
+        {
+            var target = new ProjectionInfo();
+            var prjFile = FileTools.GetTempFileName(".prj");
+            try
+            {
+                target.SaveAs(prjFile); // Save one time
+                Assert.IsTrue(File.Exists(prjFile));
+                target.Phi0 = 1;
+                Assert.DoesNotThrow(() => target.SaveAs(prjFile)); // Save second time;
+                Assert.IsTrue(File.Exists(prjFile));
+            }
+            finally
+            {
+                File.Delete(prjFile);
+            }
         }
     }
 }

@@ -374,13 +374,10 @@ namespace DotSpatial.Data
             switch (FeatureType)
             {
                 case FeatureType.Polygon:
-                    PolygonShape.Epsilon = Epsilon;
                     return PolygonShape.Intersects(this, shape);
                 case FeatureType.Line:
-                    LineShape.Epsilon = Epsilon;
                     return LineShape.Intersects(this, shape);
                 case FeatureType.Point:
-                    PointShape.Epsilon = Epsilon;
                     return PointShape.Intersects(this, shape);
                 default:
                     return false;

@@ -793,12 +793,7 @@ namespace DotSpatial.Projections
         /// </param>
         public void SaveAs(string prjFilename)
         {
-            if (File.Exists(prjFilename))
-            {
-                File.Delete(prjFilename);
-            }
-
-            using (StreamWriter sw = File.CreateText(prjFilename))
+            using (var sw = new StreamWriter(prjFilename))
             {
                 sw.WriteLine(ToEsriString());
             }

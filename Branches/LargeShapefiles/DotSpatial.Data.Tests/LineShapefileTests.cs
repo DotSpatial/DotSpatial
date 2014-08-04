@@ -14,7 +14,20 @@ namespace DotSpatial.Data.Tests
             var path = FileTools.PathToTestFile(@"Shapefiles\Archi\ARCHI_13-01-01.shp");
             var target = new LineShapefile(path);
             Assert.IsNotNull(target);
-            Assert.IsTrue(target.ShapeIndices.Any(d => d.ShapeType == ShapeType.NullShape));
+            Assert.IsTrue(target.Count > 0);
+
+            Shape nullShape = null;
+            for (var i = 0; i < target.Count; i++)
+            {
+                var shape = target.GetShape(i, false);
+                if (shape.Range.ShapeType == ShapeType.NullShape)
+                {
+                    nullShape = shape;
+                    break;
+                }
+            }
+            Assert.IsNotNull(nullShape);
+            Assert.IsNull(nullShape.Vertices);
         }
 
         [Test]

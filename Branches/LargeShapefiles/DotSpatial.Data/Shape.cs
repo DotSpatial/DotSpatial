@@ -191,24 +191,20 @@ namespace DotSpatial.Data
         /// <returns>The geometry version of this shape.</returns>
         public IGeometry ToGeometry(IGeometryFactory factory)
         {
-            if (_shapeRange.FeatureType == FeatureType.Polygon)
+            switch (_shapeRange.FeatureType)
             {
-                return FromPolygon(factory);
-            }
-            if (_shapeRange.FeatureType == FeatureType.Line)
-            {
-                return FromLine(factory);
-            }
-            if (_shapeRange.FeatureType == FeatureType.MultiPoint)
-            {
-                return FromMultiPoint(factory);
-            }
-            if (_shapeRange.FeatureType == FeatureType.Point)
-            {
-                return FromPoint(factory);
+                case FeatureType.Polygon:
+                    return FromPolygon(factory);
+                case FeatureType.Line:
+                    return FromLine(factory);
+                case FeatureType.MultiPoint:
+                    return FromMultiPoint(factory);
+                case FeatureType.Point:
+                    return FromPoint(factory);
             }
             return null;
         }
+
 
         /// <summary>
         /// Get the point for this shape if this is a point shape.
@@ -218,11 +214,11 @@ namespace DotSpatial.Data
         protected IGeometry FromPoint(IGeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            foreach (PartRange part in _shapeRange.Parts)
+            foreach (var part in _shapeRange.Parts)
             {
-                foreach (Vertex vertex in part)
+                foreach (var vertex in part)
                 {
-                    var c = new Coordinate(vertex.X, vertex.Y);
+                    var c = GetCoordinate(vertex, part.StartIndex);
                     return factory.CreatePoint(c);
                 }
             }
@@ -264,20 +260,23 @@ namespace DotSpatial.Data
 
         private List<Coordinate> GetCoordinates(VertexRange part,  List<Coordinate> coords = null)
         {
-            if (coords == null)
-            {
-                coords = new List<Coordinate>();
-            }
-            int i = part.StartIndex;
+            if (coords == null) coords = new List<Coordinate>();
+            var i = part.StartIndex;
             foreach (var d in part)
             {
-                var c = new Coordinate(d.X, d.Y);
-                if (M != null && M.Length > 0) c.M = M[i];
-                if (Z != null && Z.Length > 0) c.Z = Z[i];
+                var c = GetCoordinate(d, i);
                 i++;
                 coords.Add(c);
             }
             return coords;
+        }
+
+        private Coordinate GetCoordinate(Vertex vertex, int index)
+        {
+            var c = new Coordinate(vertex.X, vertex.Y);
+            if (M != null && M.Length > 0) c.M = M[index];
+            if (Z != null && Z.Length > 0) c.Z = Z[index];
+            return c;
         }
 
         /// <summary>
@@ -288,8 +287,8 @@ namespace DotSpatial.Data
         protected IGeometry FromPolygon(IGeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            List<ILinearRing> shells = new List<ILinearRing>();
-            List<ILinearRing> holes = new List<ILinearRing>();
+            var shells = new List<ILinearRing>();
+            var holes = new List<ILinearRing>();
             foreach (var part in _shapeRange.Parts)
             {
                 var coords = GetCoordinates(part);
@@ -499,7 +498,7 @@ namespace DotSpatial.Data
             set
             {
                 _vertices = value;
-                foreach (PartRange part in _shapeRange.Parts)
+                foreach (var part in _shapeRange.Parts)
                 {
                     part.Vertices = value;
                 }

@@ -84,17 +84,14 @@ namespace DotSpatial.Modeling.Forms
             sfd.Filter = "Shape Files|*.shp";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                IFeatureSet _addedFeatureSet = new Shapefile();
-                _addedFeatureSet.Filename = sfd.FileName;
-
-                //If the features set is null do nothing the user probably hit cancel
-                if (_addedFeatureSet == null)
-                    return;
+                //IFeatureSet _addedFeatureSet = new Shapefile();
+                //var flename = sfd.FileName;
 
                 //If the feature type is good save it
                 //This inserts the new featureset into the list
-                textBox1.Text = Path.GetFileNameWithoutExtension(_addedFeatureSet.Filename);
-                Param.Value = _addedFeatureSet;
+                textBox1.Text = Path.GetFileNameWithoutExtension(sfd.FileName);
+                // Todo: fix compile error
+                //Param.Value = _addedFeatureSet;
                 base.Status = ToolStatus.Ok;
                 LightTipText = ModelingMessageStrings.FeaturesetValid;
             }

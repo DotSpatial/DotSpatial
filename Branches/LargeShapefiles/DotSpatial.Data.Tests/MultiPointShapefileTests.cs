@@ -22,12 +22,11 @@ namespace DotSpatial.Data.Tests
 
         [Test]
         [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
-        public void CanUpdateExtent_IndexModeTrue(string path)
+        public void CanUpdateExtent(string path)
         {
             path = FileTools.PathToTestFile(path);
             var target = new MultiPointShapefile(path);
             Assert.IsTrue(target.Count > 0);
-            Assert.IsTrue(target.IndexMode);
             target.Extent = null;
             target.UpdateExtent();
             Assert.IsNotNull(target.Extent);
@@ -36,11 +35,11 @@ namespace DotSpatial.Data.Tests
 
         [Test]
         [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
-        public void CanSave_IndexModeTrue(string path)
+        public void CanSave_InRamFalse(string path)
         {
             path = FileTools.PathToTestFile(path);
             var expected = new MultiPointShapefile(path);
-            Assert.IsTrue(expected.IndexMode);
+            Assert.AreEqual(false, expected.FeaturesInRam);
             var newFile = FileTools.GetTempFileName(".shp");
             expected.SaveAs(newFile, true);
 
@@ -65,13 +64,13 @@ namespace DotSpatial.Data.Tests
 
         [Test]
         [TestCase(@"Shapefiles\multipoint.shape\multipoint.shp")]
-        public void CanSave_IndexModeFalse(string path)
+        public void CanSave_InRamTrue(string path)
         {
             path = FileTools.PathToTestFile(path);
             var expected = new MultiPointShapefile(path);
             var count = expected.Features.Count; // Force to load all features into memory
             Assert.AreEqual(count, expected.Count);
-            Assert.IsTrue(!expected.IndexMode);
+            Assert.AreEqual(true, expected.FeaturesInRam);
             var newFile = FileTools.GetTempFileName(".shp");
             expected.SaveAs(newFile, true);
 

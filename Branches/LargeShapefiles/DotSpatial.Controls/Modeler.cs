@@ -1147,13 +1147,14 @@ namespace DotSpatial.Controls
             switch (par.ParamType)
             {
                 case "DotSpatial FeatureSet Param":
-                    addedFeatureSet = new Shapefile
-                                          {
-                                              Filename =
-                                                  Path.GetTempPath() +
-                                                  Path.DirectorySeparatorChar + par.ModelName + ".shp"
-                                          };
-                    par.Value = addedFeatureSet;
+                    // Todo: fix compile error
+                    //addedFeatureSet = new Shapefile
+                    //                      {
+                    //                          Filename =
+                    //                              Path.GetTempPath() +
+                    //                              Path.DirectorySeparatorChar + par.ModelName + ".shp"
+                    //                      };
+                    //par.Value = addedFeatureSet;
                     break;
                 case "DotSpatial LineFeatureSet Param":
                     addedFeatureSet = new LineShapefile

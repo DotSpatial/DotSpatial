@@ -23,9 +23,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ShapefileDataProvider
-    /// </summary>
     public class ShapefileDataProvider : IVectorProvider
     {
         private IProgressHandler _progressHandler;

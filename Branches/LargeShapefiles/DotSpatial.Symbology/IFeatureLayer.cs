@@ -325,6 +325,7 @@ namespace DotSpatial.Symbology
         /// are assumed to be entirely loaded into ram.  If edit mode is false, then index
         /// is used instead and features are not assumed to be loaded into ram.
         /// </summary>
+        [Obsolete]
         bool EditMode { get; set; }
 
         /// <summary>

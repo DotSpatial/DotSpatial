@@ -51,7 +51,7 @@ namespace DotSpatial.Data
         #endregion
 
         #region Methods
-
+       
         /// <summary>
         /// Resets all the extent values to 0
         /// </summary>

@@ -60,13 +60,14 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="path"></param>
         public override void GenerateDefaultOutput(string path)
         {
-            FeatureSet addedFeatureSet = new Shapefile
-                                             {
-                                                 Filename =
-                                                     Path.GetDirectoryName(path) +
-                                                     Path.DirectorySeparatorChar + ModelName + ".shp"
-                                             };
-            Value = addedFeatureSet;
+            // todo: Fix compile error
+            //FeatureSet addedFeatureSet = new Shapefile
+            //                                 {
+            //                                     Filename =
+            //                                         Path.GetDirectoryName(path) +
+            //                                         Path.DirectorySeparatorChar + ModelName + ".shp"
+            //                                 };
+            //Value = addedFeatureSet;
         }
 
         /// <summary>

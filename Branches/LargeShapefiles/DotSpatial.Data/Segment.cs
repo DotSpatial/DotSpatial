@@ -23,9 +23,6 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Segment
-    /// </summary>
     public class Segment
     {
         #region Private Variables

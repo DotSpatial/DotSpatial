@@ -1343,6 +1343,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Browsable(true)]
         [Description("If edit mode is true, feature index is ignored, and features are assumed to be entirely loaded into ram.  If edit mode is false, then index is used instead and features are not assumed to be loaded into ram.")]
+        [Obsolete]
         public bool EditMode
         {
             get { return _editMode; }
@@ -1692,30 +1693,23 @@ namespace DotSpatial.Symbology
         public void AssignFastDrawnStates()
         {
             _drawnStatesNeeded = true;
-            _drawnStates = new FastDrawnState[DataSet.ShapeIndices.Count];
             _selection.Changed -= SelectedFeaturesChanged;
             _selection = new IndexSelection(this); // update the new drawn-states;
             _selection.Changed += SelectedFeaturesChanged;
 
             // Fastest when no categories are used because we don't need DataTable at all
-            List<IFeatureCategory> categories = _scheme.GetCategories().ToList();
-            IFeatureCategory deflt = null;
+            var categories = _scheme.GetCategories().ToList();
+            IFeatureCategory defCat = null;
             if (categories.Count > 0 && categories[0].FilterExpression == null)
             {
-                deflt = categories[0];
+                defCat = categories[0];
             }
 
-            for (int i = 0; i < DataSet.ShapeIndices.Count; i++)
-            {
-                _drawnStates[i] = new FastDrawnState { Category = deflt };
-            }
-
-            if (categories.Count == 1 && categories[0].FilterExpression == null)
-            {
-                return;
-            }
-
-            bool containsFid = false;
+            _drawnStates = Enumerable.Repeat<Func<FastDrawnState>>(() => new FastDrawnState { Category = defCat }, DataSet.Count)
+                .Select(d => d())
+                .ToArray();
+            if (categories.Count == 1 && categories[0].FilterExpression == null) return;
+            
             if (!DataSet.AttributesPopulated)
             {
                 // We don't want to read the table multiple times for each category.  Just
@@ -1760,13 +1754,7 @@ namespace DotSpatial.Symbology
             else
             {
                 DataTable table = DataSet.DataTable;
-                foreach (var category in categories)
-                {
-                    if (category.FilterExpression != null && category.FilterExpression.Contains("[FID]"))
-                    {
-                        containsFid = true;
-                    }
-                }
+                var containsFid = categories.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
 
                 if (containsFid && table.Columns.Contains("FID") == false)
                 {
@@ -1779,7 +1767,7 @@ namespace DotSpatial.Symbology
 
                 foreach (var category in categories)
                 {
-                    DataRow[] result = table.Select(category.FilterExpression);
+                    var result = table.Select(category.FilterExpression);
                     foreach (DataRow row in result)
                     {
                         _drawnStates[table.Rows.IndexOf(row)].Category = category;

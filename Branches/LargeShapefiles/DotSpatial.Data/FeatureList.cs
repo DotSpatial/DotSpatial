@@ -62,27 +62,24 @@ namespace DotSpatial.Data
         /// to be aware of the parent featureset.
         /// </summary>
         public FeatureList()
+            : this(null)
         {
-            Configure();
         }
 
         /// <summary>
-        /// Instantiates a new instance of a FeatureList where the ParentFeatureSet
-        /// is specified so that each feature will be aware of its parent.
+        /// Instantiates a new instance of a FeatureList where the ParentFeatureSet 
+        /// and list capacity is specified.
         /// </summary>
         /// <param name="parent">The ParentFeatureSet of the specified item</param>
-        public FeatureList(IFeatureSet parent)
+        /// <param name="capacity">List capacity</param>
+        public FeatureList(IFeatureSet parent, int capacity = 4)
         {
             _parent = parent;
-            Configure();
-        }
-
-        private void Configure()
-        {
             _suspension = 0;
-            _list = new List<IFeature>();
+            _list = new List<IFeature>(capacity);
             _includeAttributes = true;
         }
+        
 
         #endregion
 

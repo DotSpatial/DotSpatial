@@ -12,10 +12,11 @@ namespace DotSpatial.Data.Tests
     public class FeatureSetTests
     {
         [Test]
-        public void IndexModeToFeaturesClear()
+        public void ClearFeatures()
         {
             var file = FileTools.PathToTestFile(@"Shapefiles\TopologyTest\Topology_Test.shp");
             IFeatureSet fs = FeatureSet.Open(file);
+            Assert.IsTrue(fs.Features.Count > 0);
             fs.FillAttributes();
             fs.Features.Clear();
             Assert.AreEqual(fs.Features.Count, 0);
@@ -192,6 +193,13 @@ namespace DotSpatial.Data.Tests
         {
             var target = new FeatureSet();
             Assert.IsNotNull(target.FeatureLookup);
+        }
+
+        [Test]
+        public void Count_FeatureSetNew()
+        {
+            var target = new FeatureSet();
+            Assert.AreEqual(0, target.Count);
         }
     }
 }

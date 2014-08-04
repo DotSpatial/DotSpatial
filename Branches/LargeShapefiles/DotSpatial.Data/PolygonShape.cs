@@ -19,6 +19,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Linq;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Data
@@ -28,15 +29,6 @@ namespace DotSpatial.Data
     /// </summary>
     public static class PolygonShape
     {
-        /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
-        /// </summary>
-        public static double Epsilon
-        {
-            get { return Vertex.Epsilon; }
-            set { Vertex.Epsilon = value; }
-        }
-
         /// <summary>
         /// Calculates the intersection of a polygon shape without relying on the NTS geometry
         /// </summary>
@@ -82,14 +74,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static bool ContainsVertex(ShapeRange polygonShape, ShapeRange otherShape)
         {
-            foreach (PartRange otherPart in otherShape.Parts)
-            {
-                if (ContainsVertex(polygonShape, otherPart))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return otherShape.Parts.Any(otherPart => ContainsVertex(polygonShape, otherPart));
         }
 
         /// <summary>

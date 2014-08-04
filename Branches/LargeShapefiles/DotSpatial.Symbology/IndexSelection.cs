@@ -612,13 +612,9 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                int count = 0;
-                if (_layer.DrawnStates == null) return 0;
-                for (int i = 0; i < _layer.DrawnStates.Length; i++)
-                {
-                    if (_layer.DrawnStates[i].Selected == _selectionState) count++;
-                }
-                return count;
+                var ds = _layer.DrawnStates;
+                if (ds == null) return 0;
+                return ds.Count(t => t.Selected == _selectionState);
             }
         }
 
