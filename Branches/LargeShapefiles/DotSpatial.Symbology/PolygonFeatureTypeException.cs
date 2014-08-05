@@ -22,9 +22,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// PolygonFeatureTypeException
-    /// </summary>
     public class PolygonFeatureTypeException : ArgumentException
     {
         #region Constructors

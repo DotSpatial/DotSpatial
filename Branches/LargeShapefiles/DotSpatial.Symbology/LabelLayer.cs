@@ -86,7 +86,7 @@ namespace DotSpatial.Symbology
 
         private void Configure()
         {
-            if (_featureSet != null) MyExtent = _featureSet.Extent.Copy();
+            if (_featureSet != null) Extent = _featureSet.Extent.Copy();
             _symbology = new LabelScheme();
         }
 

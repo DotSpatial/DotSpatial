@@ -281,13 +281,13 @@ namespace DotSpatial.Symbology
                 Rectangle target = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 ImageProjection ip = new ImageProjection(extents, target);
                 // Cycle through each layer, and as long as it is not this layer, draw the bmp
-                foreach (ILegendItem layer in GetParentItem().LegendItems)
-                {
-                    // Temporarily I am only interested in doing this for vector datasets
-                    IFeatureLayer fl = layer as IFeatureLayer;
-                    if (fl == null) continue;
-                    fl.DrawSnapShot(g, ip);
-                }
+                //foreach (ILegendItem layer in GetParentItem().LegendItems)
+                //{
+                //    // Temporarily I am only interested in doing this for vector datasets
+                //    IFeatureLayer fl = layer as IFeatureLayer;
+                //    if (fl == null) continue;
+                //    fl.DrawSnapShot(g, ip);
+                //}
                 if (Symbolizer.ShadedRelief.IsUsed)
                 {
                     // After we have drawn the underlying texture, apply a hillshade if it is requested

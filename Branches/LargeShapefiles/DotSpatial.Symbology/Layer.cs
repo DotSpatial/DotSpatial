@@ -30,7 +30,7 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {
-   [ToolboxItem(false)]
+    [ToolboxItem(false)]
     public class Layer : RenderableLegendItem, ILayer
     {
         #region Events

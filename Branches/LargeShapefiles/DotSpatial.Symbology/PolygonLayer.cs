@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
@@ -32,6 +31,15 @@ namespace DotSpatial.Symbology
     public class PolygonLayer : FeatureLayer, IPolygonLayer
     {
         #region Constructors
+
+        /// <summary>
+        /// This creates a new layer with an empty dataset configured to the polygon feature type.
+        /// </summary>
+        public PolygonLayer()
+            : this(new FeatureSet(FeatureType.Polygon))
+        {
+        }
+
 
         /// <summary>
         /// Constructor
@@ -71,28 +79,11 @@ namespace DotSpatial.Symbology
 
         private void Configure(IFeatureSet inFeatureSet)
         {
-            if (inFeatureSet.FeatureType != FeatureType.Polygon)
-            {
-                throw new PolygonFeatureTypeException();
-            }
-            PolygonScheme ps = new PolygonScheme();
-            ps.SetParentItem(this);
-            Symbology = ps;
-        }
+            if (inFeatureSet == null) throw new ArgumentNullException("inFeatureSet");
+            if (inFeatureSet.FeatureType != FeatureType.Polygon) throw new PolygonFeatureTypeException();
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws some section of the extent to the specified graphics object.
-        /// </summary>
-        /// <param name="g">The graphics object to draw to.</param>
-        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
-        public override void DrawSnapShot(Graphics g, IProj p)
-        {
-            //bool To_DO_DRaw_Polygon_Snapshot = true;
-            throw new NotImplementedException();
+            Symbology = new PolygonScheme();
+            Symbology.SetParentItem(this);
         }
 
         #endregion

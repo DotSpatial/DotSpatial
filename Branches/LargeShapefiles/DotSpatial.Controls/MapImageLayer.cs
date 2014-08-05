@@ -39,9 +39,9 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region Private Variables
+       #region Private Variables
 
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
+       private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
        private Color transparent;
 
         #endregion
@@ -97,7 +97,7 @@ namespace DotSpatial.Controls
 
             BufferRectangle = value == null? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
             BufferExtent = value == null? null : value.Bounds.Extent;
-            MyExtent =  value == null? null : value.Extent;
+            Extent =  value == null? null : value.Extent;
             OnFinishedLoading();
         }
 
@@ -149,12 +149,6 @@ namespace DotSpatial.Controls
        /// Calling Initialize will set this automatically.
        /// </summary>
        public Rectangle BufferRectangle { get; set; }
-
-       /// <summary>
-       /// Gets or sets whether the image layer is initialized
-       /// </summary>
-       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-       public new bool IsInitialized { get; set; }
 
        #endregion
 

@@ -404,22 +404,6 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// This method actually draws the image to the snapshot using the graphics object.  This should be
-        /// overridden in sub-classes because the drawing methods are very different.
-        /// </summary>
-        /// <param name="g">
-        /// A graphics object to draw to
-        /// </param>
-        /// <param name="p">
-        /// A projection handling interface designed to translate
-        ///  geographic coordinates to screen coordinates
-        /// </param>
-        public virtual void DrawSnapShot(Graphics g, IProj p)
-        {
-            // Overridden in subclasses
-        }
-
-        /// <summary>
         /// Saves a featureset with only the selected features to the specified fileName.
         /// </summary>
         /// <param name="fileName">
@@ -1015,14 +999,16 @@ namespace DotSpatial.Symbology
         /// </returns>
         public Bitmap SnapShot(Extent geographicExtent, int width)
         {
-            int height = Convert.ToInt32((geographicExtent.Height / geographicExtent.Width) * width);
-            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(bmp);
-            ImageProjection p = new ImageProjection(geographicExtent, new Rectangle(0, 0, width, height));
-            DrawSnapShot(g, p);
-            g.Dispose();
-            OnSnapShotTaken(bmp);
-            return bmp;
+            throw new NotImplementedException();
+
+            //int height = Convert.ToInt32((geographicExtent.Height / geographicExtent.Width) * width);
+            //Bitmap bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            //Graphics g = Graphics.FromImage(bmp);
+            //ImageProjection p = new ImageProjection(geographicExtent, new Rectangle(0, 0, width, height));
+            //DrawSnapShot(g, p);
+            //g.Dispose();
+            //OnSnapShotTaken(bmp);
+            //return bmp;
         }
 
         /// <summary>
@@ -1904,18 +1890,18 @@ namespace DotSpatial.Symbology
             else
             {
                 FastDrawnState[] states = DrawnStates;
-                List<ShapeRange> ranges = DataSet.ShapeIndices;
                 for (int shp = 0; shp < DrawnStates.Length; shp++)
                 {
                     if (states[shp].Category != null)
                     {
+                        var extent = DataSet.GetFeatureExtent(shp);
                         if (!_categoryExtents.ContainsKey(states[shp].Category))
                         {
-                            _categoryExtents.Add(states[shp].Category, ranges[shp].Extent.Copy());
+                            _categoryExtents.Add(states[shp].Category, extent);
                         }
                         else
                         {
-                            _categoryExtents[states[shp].Category].ExpandToInclude(ranges[shp].Extent);
+                            _categoryExtents[states[shp].Category].ExpandToInclude(extent);
                         }
                     }
                 }
@@ -2013,7 +1999,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         protected virtual void OnCreateLabels()
         {
-            _labelLayer = new LabelLayer();
+            LabelLayer = new LabelLayer(this);
         }
 
         /// <summary>

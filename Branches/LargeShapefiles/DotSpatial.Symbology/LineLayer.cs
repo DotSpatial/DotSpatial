@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
@@ -37,12 +36,10 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Constructor
+        /// This creates a new layer with an empty dataset configured to the point feature type.
         /// </summary>
-        /// <param name="inFeatureSet"></param>
-        /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied</exception>
-        public LineLayer(IFeatureSet inFeatureSet)
-            : this(inFeatureSet, null)
+        public LineLayer()
+            : this(new FeatureSet(FeatureType.Line))
         {
         }
 
@@ -52,7 +49,7 @@ namespace DotSpatial.Symbology
         /// <param name="inFeatureSet">A featureset that contains lines</param>
         /// <param name="progressHandler">An IProgressHandler for receiving status messages</param>
         /// <exception cref="LineFeatureTypeException">Thrown if a non-line featureSet is supplied</exception>
-        public LineLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)
+        public LineLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler = null)
             : base(inFeatureSet, null, progressHandler)
         {
             Configure(inFeatureSet);
@@ -73,31 +70,15 @@ namespace DotSpatial.Symbology
 
         private void Configure(IFeatureSet inFeatureSet)
         {
-            if (inFeatureSet.FeatureType != FeatureType.Line)
-            {
-                throw new LineFeatureTypeException();
-            }
+            if (inFeatureSet == null) throw new ArgumentNullException("inFeatureSet");
+            if (inFeatureSet.FeatureType != FeatureType.Line) throw new LineFeatureTypeException();
+
             Symbology = new LineScheme();
+            Symbology.SetParentItem(this);
         }
 
         #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Draws some section of the extent to the specified graphics object.
-        /// </summary>
-        /// <param name="g">The graphics object to draw to.</param>
-        /// <param name="p">The projection interface that specifies how to transform geographic coordinates to an image.</param>
-        public override void DrawSnapShot(Graphics g, IProj p)
-        {
-            // First pass is the "border" which actually fills things in, but then will be painted over with the fill.
-            throw new NotImplementedException();
-            //bool TO_DO_Draw_LINE_SNAPSHOT = true;
-        }
       
-        #endregion
-
         #region Properties
 
         /// <summary>

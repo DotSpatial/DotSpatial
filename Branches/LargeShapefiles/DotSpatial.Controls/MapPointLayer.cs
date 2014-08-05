@@ -58,43 +58,37 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a new instance of a GeoPointLayer without sending any status messages
         /// </summary>
-        /// <param name="featureSet">The IFeatureLayer of data values to turn into a graphical GeoPointLayer</param>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
         public MapPointLayer(IFeatureSet featureSet)
             : base(featureSet)
         {
-            // this simply handles the default case where no status messages are requested
             Configure();
-            OnFinishedLoading();
         }
 
         /// <summary>
         /// Creates a new instance of the point layer where the container is specified
         /// </summary>
-        /// <param name="featureSet"></param>
-        /// <param name="container"></param>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
         public MapPointLayer(IFeatureSet featureSet, ICollection<ILayer> container)
             : base(featureSet, container, null)
         {
             Configure();
-            OnFinishedLoading();
         }
 
         /// <summary>
         /// Creates a new instance of the point layer where the container is specified
         /// </summary>
-        /// <param name="featureSet"></param>
-        /// <param name="container"></param>
-        /// <param name="notFinished"></param>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
         public MapPointLayer(IFeatureSet featureSet, ICollection<ILayer> container, bool notFinished)
             : base(featureSet, container, null)
         {
-            Configure();
-            if (notFinished == false) OnFinishedLoading();
+            Configure(notFinished);
         }
 
-        private void Configure()
+        private void Configure(bool notFinished = false)
         {
             ChunkSize = 50000;
+            if (notFinished == false) OnFinishedLoading();
         }
 
         #endregion
@@ -174,9 +168,9 @@ namespace DotSpatial.Controls
             result = new MapPointLayer(fs);
             return true;
         }
-       
+
         /// <summary>
-        /// If useChunks is true, then this method
+        /// Draw features
         /// </summary>
         /// <param name="args">The GeoArgs that control how these features should be drawn.</param>
         /// <param name="indices">The features that should be drawn.</param>
@@ -240,14 +234,6 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// A default method to generate a label layer.
-        /// </summary>
-        protected override void OnCreateLabels()
-        {
-            LabelLayer = new MapLabelLayer(this);
-        }
-
-        /// <summary>
         /// Indiciates that whatever drawing is going to occur has finished and the contents
         /// are about to be flipped forward to the front buffer.
         /// </summary>
@@ -281,8 +267,6 @@ namespace DotSpatial.Controls
             {
                 var normalSymbol = GetSymbolizerBitmap(category.Symbolizer, e);
                 var selectedSymbol = GetSymbolizerBitmap(category.SelectionSymbolizer, e);
-                if (normalSymbol == null || selectedSymbol == null) continue;
-
                 foreach (var index in indices)
                 {
                     var state = states[index];
@@ -292,6 +276,7 @@ namespace DotSpatial.Controls
                     if (pc != category) continue;
 
                     var bmp = state.Selected? selectedSymbol : normalSymbol;
+                    if (bmp == null) continue;
                     var shape = DataSet.GetShape(index, false);
                     foreach (var part in shape.Range.Parts)
                     {
@@ -321,11 +306,8 @@ namespace DotSpatial.Controls
         private static Bitmap GetSymbolizerBitmap(IPointSymbolizer symbolizer, IProj e)
         {
             if (symbolizer == null) return null;
-            double scaleSize = 1;
-            if (symbolizer.ScaleMode == ScaleMode.Geographic)
-            {
-                scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-            }
+
+            var scaleSize = symbolizer.GetScale(e);
             var size = symbolizer.GetSize();
             if (size.Width * scaleSize < 1 || size.Height * scaleSize < 1) return null;
 

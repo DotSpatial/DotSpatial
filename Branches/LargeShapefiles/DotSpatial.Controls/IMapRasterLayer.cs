@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Symbology;
 
@@ -95,17 +94,7 @@ namespace DotSpatial.Controls
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets whether the image layer is initialized
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        new bool IsInitialized
-        {
-            get;
-            set;
-        }
-
+     
         #endregion
     }
 }

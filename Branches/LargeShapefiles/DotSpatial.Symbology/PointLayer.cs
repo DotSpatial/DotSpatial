@@ -19,6 +19,7 @@
 // Modified to do 3D in January 2008 by Ted Dunsford
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using DotSpatial.Data;
@@ -38,19 +39,8 @@ namespace DotSpatial.Symbology
         /// This creates a new layer with an empty dataset configured to the point feature type.
         /// </summary>
         public PointLayer()
-            : this(new FeatureSet(FeatureType.Point), null)
+            : this(new FeatureSet(FeatureType.Point))
         {
-        }
-
-        /// <summary>
-        /// Creates a new instance of a PointLayer without sending any status messages
-        /// </summary>
-        /// <param name="inFeatureSet">The IFeatureLayer of data values to turn into a graphical PointLayer</param>
-        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
-        public PointLayer(IFeatureSet inFeatureSet)
-            : this(inFeatureSet, null)
-        {
-            // this simply handles the default case where no status messages are requested
         }
 
         /// <summary>
@@ -59,7 +49,7 @@ namespace DotSpatial.Symbology
         /// <param name="inFeatureSet">Any implentation of an IFeatureLayer</param>
         /// <param name="progressHandler">A valid implementation of the IProgressHandler interface.</param>
         /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
-        public PointLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler)
+        public PointLayer(IFeatureSet inFeatureSet, IProgressHandler progressHandler = null)
             : base(inFeatureSet, null, progressHandler)
         {
             Configure(inFeatureSet);
@@ -71,8 +61,7 @@ namespace DotSpatial.Symbology
         /// <param name="inFeatureSet">Any implementation of an IFeatureLayer.</param>
         /// <param name="container">An IContainer to contain this layer.</param>
         /// <param name="progressHandler">A valid implementation of the IProgressHandler interface.</param>
-        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is
-        ///  not point or multi-point.</exception>
+        /// <exception cref="PointFeatureTypeException">Thrown if the featureSet FeatureType is not point or multi-point</exception>
         public PointLayer(IFeatureSet inFeatureSet, ICollection<ILayer> container, IProgressHandler progressHandler)
             : base(inFeatureSet, container, progressHandler)
         {
@@ -81,21 +70,12 @@ namespace DotSpatial.Symbology
 
         private void Configure(IFeatureSet inFeatureSet)
         {
-            FeatureType ft = inFeatureSet.FeatureType;
-            if (ft != FeatureType.Point && ft != FeatureType.MultiPoint && ft != FeatureType.Unspecified)
-            {
-                throw new PointFeatureTypeException();
-            }
-            if (inFeatureSet.NumRows() == 0)
-            {
-                MyExtent = new Extent(-180, -90, 180, 90);
-            }
-            if (inFeatureSet.NumRows() == 1)
-            {
-                MyExtent = inFeatureSet.Extent.Copy();
-                MyExtent.ExpandBy(10, 10);
-            }
+            if (inFeatureSet == null) throw new ArgumentNullException("inFeatureSet");
+            if (inFeatureSet.FeatureType != FeatureType.Point &&
+                inFeatureSet.FeatureType != FeatureType.MultiPoint) throw new PointFeatureTypeException();
+            
             Symbology = new PointScheme();
+            Symbology.SetParentItem(this);
         }
 
         #endregion

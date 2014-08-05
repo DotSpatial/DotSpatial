@@ -22,9 +22,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureSymbolizer
-    /// </summary>
     public interface IFeatureSymbolizer : ILegendItem
     {
         #region Methods

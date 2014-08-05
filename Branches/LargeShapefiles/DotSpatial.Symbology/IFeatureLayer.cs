@@ -67,19 +67,6 @@ namespace DotSpatial.Symbology
         void AssignFastDrawnStates();
 
         /// <summary>
-        /// This method actually draws the image to the snapshot using the graphics object.  This should be
-        /// overridden in sub-classes because the drawing methods are very different.
-        /// </summary>
-        /// <param name="g">
-        /// A graphics object to draw to
-        /// </param>
-        /// <param name="p">
-        /// A projection handling interface designed to translate geographic coordinates to screen
-        /// coordinates
-        /// </param>
-        void DrawSnapShot(Graphics g, IProj p);
-
-        /// <summary>
         /// Saves a featureset with only the selected features to the specified fileName.
         /// </summary>
         /// <param name="fileName">

@@ -25,9 +25,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILineSymbolizer
-    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public interface ILineSymbolizer : IFeatureSymbolizer
     {

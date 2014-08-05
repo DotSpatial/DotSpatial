@@ -101,6 +101,7 @@ namespace DotSpatial.Symbology
         public virtual Extent Extent
         {
             get { return _extent; }
+            protected set { _extent = value; }
         }
 
         /// <summary>

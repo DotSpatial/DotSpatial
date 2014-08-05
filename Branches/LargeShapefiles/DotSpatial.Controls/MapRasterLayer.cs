@@ -238,16 +238,6 @@ namespace DotSpatial.Controls
             set { _bufferRectangle = value; }
         }
 
-        /// <summary>
-        /// Gets or sets whether the image layer is initialized
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool IsInitialized
-        {
-            get { return _isInitialized; }
-            set { _isInitialized = value; }
-        }
-
         #endregion
 
         #region Protected Methods
