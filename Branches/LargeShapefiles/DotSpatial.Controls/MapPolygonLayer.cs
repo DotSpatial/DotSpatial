@@ -387,7 +387,7 @@ namespace DotSpatial.Controls
                 var shape = DataSet.GetShape(shp, false);
                 if (!shape.Range.Extent.Intersects(e.GeographicExtents)) continue;
 
-                BuildPolygon(shape.Vertices, shape.Range, borders[state], e,
+                BuildPolygon(shape.Range, borders[state], e,
                     drawExtents.Contains(shape.Range.Extent) ? null : shClip);
             }
         }
@@ -403,37 +403,22 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Appends the specified polygon to the graphics path.
         /// </summary>
-        private static void BuildPolygon(double[] vertices, ShapeRange shpx, GraphicsPath borderPath, MapArgs args, SoutherlandHodgman shClip)
+        private static void BuildPolygon(ShapeRange shpx, GraphicsPath borderPath, MapArgs args, SoutherlandHodgman shClip)
         {
-            double minX = args.MinX;
-            double maxY = args.MaxY;
-            double dx = args.Dx;
-            double dy = args.Dy;
+            var minX = args.MinX;
+            var maxY = args.MaxY;
+            var dx = args.Dx;
+            var dy = args.Dy;
 
             foreach (var prtx in shpx.Parts)
             {
-                int start = prtx.StartIndex;
-                int end = prtx.EndIndex;
-                var points = new List<double[]>(end - start + 1);
-
-                for (int i = start; i <= end; i++)
-                {
-                    var pt = new[]
-                    {
-                        (vertices[i*2] - minX)*dx,
-                        (maxY - vertices[i*2 + 1])*dy
-                    };
-                    points.Add(pt);
-                }
-                if (null != shClip)
+                var points = prtx.Select(v => new Vertex((v.X - minX)*dx, (maxY - v.Y)*dy)).ToList();
+                if (shClip != null)
                 {
                     points = shClip.Clip(points);
                 }
                 var intPoints = DuplicationPreventer.Clean(points).ToArray();
-                if (intPoints.Length < 2)
-                {
-                    continue;
-                }
+                if (intPoints.Length < 2) continue;
 
                 borderPath.StartFigure();
                 borderPath.AddLines(intPoints);

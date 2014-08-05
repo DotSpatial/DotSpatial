@@ -341,27 +341,16 @@ namespace DotSpatial.Controls
 
         private static void BuildLineString(GraphicsPath path, double[] vertices, ShapeRange shpx, MapArgs args, Rectangle clipRect)
         {
-            double minX = args.MinX;
-            double maxY = args.MaxY;
-            double dx = args.Dx;
-            double dy = args.Dy;
+            var minX = args.MinX;
+            var maxY = args.MaxY;
+            var dx = args.Dx;
+            var dy = args.Dy;
+
             foreach (var prtx in shpx.Parts)
             {
-                int start = prtx.StartIndex;
-                int end = prtx.EndIndex;
-                var points = new List<double[]>(end - start + 1);
+                var points = prtx.Select(v => new Vertex((v.X - minX) * dx, (maxY - v.Y) * dy)).ToList();
+                List<List<Vertex>> multiLinestrings;
 
-                for (int i = start; i <= end; i++)
-                {
-                    var pt = new[]
-                    {
-                        (vertices[i*2] - minX)*dx,
-                        (maxY - vertices[i*2 + 1])*dy
-                    };
-                    points.Add(pt);
-                }
-
-                List<List<double[]>> multiLinestrings;
                 if (!shpx.Extent.Within(args.GeographicExtents))
                 {
                     multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top,
@@ -369,7 +358,7 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
-                    multiLinestrings = new List<List<double[]>> { points };
+                    multiLinestrings = new List<List<Vertex>> { points };
                 }
 
                 foreach (var linestring in multiLinestrings)

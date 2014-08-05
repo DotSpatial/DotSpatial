@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -29,9 +30,6 @@ namespace DotSpatial.Controls
     /// </summary>
     public static class DuplicationPreventer
     {
-        const int X = 0;
-        const int Y = 1;
-
         #region Methods
 
         /// <summary>
@@ -40,19 +38,9 @@ namespace DotSpatial.Controls
         /// </summary>
         public static IEnumerable<Point> Clean(IEnumerable<PointF> points)
         {
-            var previous = Point.Empty;
-            var isFirst = true;
-            foreach (var point in points)
-            {
-                if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
-                var pt = new Point {X = Convert.ToInt32(point.X), Y = Convert.ToInt32(point.Y)};
-                if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
-                {
-                    isFirst = false;
-                    previous = pt;
-                    yield return pt;
-                }
-            }
+            return Clean(points,
+               v => new Point(Convert.ToInt32(v.X), Convert.ToInt32(v.Y)),
+               v => float.IsNaN(v.X) || float.IsNaN(v.Y));
         }
 
         /// <summary>
@@ -60,12 +48,30 @@ namespace DotSpatial.Controls
         /// </summary>
         public static IEnumerable<Point> Clean(IEnumerable<double[]> points)
         {
+            return Clean(points,
+               v => new Point(Convert.ToInt32(v[0]), Convert.ToInt32(v[1])),
+               v => double.IsNaN(v[0]) || double.IsNaN(v[1]));
+        }
+
+        /// <summary>
+        /// Cleans the enumerable of vertex by removing duplicates
+        /// </summary>
+        public static IEnumerable<Point> Clean(IEnumerable<Vertex> points)
+        {
+            return Clean(points,
+                v => new Point(Convert.ToInt32(v.X), Convert.ToInt32(v.Y)),
+                v => double.IsNaN(v.X) || double.IsNaN(v.Y));
+        }
+
+        private static IEnumerable<Point> Clean<T>(IEnumerable<T> points, Func<T, Point> getXY, Func<T, bool> isNan)
+        {
             var previous = Point.Empty;
             var isFirst = true;
             foreach (var point in points)
             {
-                if (double.IsNaN(point[X]) || double.IsNaN(point[Y])) continue;
-                var pt = new Point {X = Convert.ToInt32(point[X]), Y = Convert.ToInt32(point[Y])};
+                if (isNan(point)) continue;
+
+                var pt = getXY(point);
                 if (isFirst || pt.X != previous.X || pt.Y != previous.Y)
                 {
                     isFirst = false;

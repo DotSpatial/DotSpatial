@@ -25,25 +25,28 @@ using DotSpatial.Topology;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// A vertex is a two dimensional structure with an X and a Y value.  This is deliberately kept as small as possibl.e
+    /// A vertex is a two dimensional structure with an X and a Y value.  This is deliberately kept as small as possible
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct Vertex
+    public struct Vertex : IEquatable<Vertex>
     {
         /// <summary>
         /// The tolerance for testing equality
         /// </summary>
         public static double Epsilon = double.Epsilon;
 
+        private readonly double _x;
+        private readonly double _y;
+
         /// <summary>
         /// An X coordinate
         /// </summary>
-        public double X;
+        public double X { get { return _x; } }
 
         /// <summary>
         /// The Y coordinate
         /// </summary>
-        public double Y;
+        public double Y { get { return _y; } }
 
         #region Private Variables
 
@@ -56,8 +59,8 @@ namespace DotSpatial.Data
         /// </summary>
         public Vertex(double x, double y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
 
         /// <summary>

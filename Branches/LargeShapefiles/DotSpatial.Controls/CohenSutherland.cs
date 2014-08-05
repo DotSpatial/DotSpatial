@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {
@@ -63,9 +64,6 @@ namespace DotSpatial.Controls
         private const int Right = 2;
         private const int Bottom = 4;
         private const int Top = 8;
-
-        private const int X = 0;
-        private const int Y = 1;
 
         private static int ComputeOutCode(double x, double y, double xmin, double ymin, double xmax, double ymax)
         {
@@ -182,29 +180,24 @@ namespace DotSpatial.Controls
         ///<summary>
         /// Clip a linestring
         ///</summary>
-        ///<param name="linestring"></param>
-        ///<param name="xmin"></param>
-        ///<param name="ymin"></param>
-        ///<param name="xmax"></param>
-        ///<param name="ymax"></param>
         ///<returns>
         /// List of clipped linestrings.
         /// </returns>
-        public static List<List<double[]>> ClipLinestring(List<double[]> linestring, double xmin, double ymin, double xmax, double ymax)
+        public static List<List<Vertex>> ClipLinestring(List<Vertex> linestring, double xmin, double ymin, double xmax, double ymax)
         {
-            List<List<double[]>> returnLinestrings = new List<List<double[]>>();
-            List<double[]> returnLinestring = new List<double[]>();
+            var returnLinestrings = new List<List<Vertex>>();
+            var returnLinestring = new List<Vertex>();
             int numLines = linestring.Count - 1;
-            LineClipStatus prevClipStatus = LineClipStatus.Outside;
+            var prevClipStatus = LineClipStatus.Outside;
 
             for (int lineNum = 0; lineNum < numLines; lineNum++)
             {
-                double[] p0 = linestring[lineNum];
-                double[] p1 = linestring[lineNum + 1];
-                double x0 = p0[X];
-                double y0 = p0[Y];
-                double x1 = p1[X];
-                double y1 = p1[Y];
+                var p0 = linestring[lineNum];
+                var p1 = linestring[lineNum + 1];
+                double x0 = p0.X;
+                double y0 = p0.Y;
+                double x1 = p1.X;
+                double y1 = p1.Y;
                 LineClipStatus clipStatus = ClipLine(ref x0, ref y0, ref x1, ref y1, xmin,
                                                                     ymin, xmax, ymax);
 
@@ -215,14 +208,14 @@ namespace DotSpatial.Controls
                         (prevClipStatus & LineClipStatus.ClippedLast) == LineClipStatus.ClippedLast)
                     {
                         // Add both
-                        returnLinestring.Add(new[] { x0, y0 });
+                        returnLinestring.Add(new Vertex(x0, y0));
                     }
-                    returnLinestring.Add(new[] { x1, y1 });
+                    returnLinestring.Add(new Vertex(x1,y1));
                 }
                 if ((clipStatus & LineClipStatus.ClippedLast) == LineClipStatus.ClippedLast)
                 {
                     returnLinestrings.Add(returnLinestring);
-                    returnLinestring = new List<double[]>();
+                    returnLinestring = new List<Vertex>();
                     prevClipStatus = LineClipStatus.Outside;
                 }
                 else
