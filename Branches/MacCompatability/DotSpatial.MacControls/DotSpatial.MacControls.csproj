@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{169E139D-AACE-44BD-A72E-C307EBD16DE5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotSpatial.MacControls</RootNamespace>
+    <AssemblyName>DotSpatial.MacControls</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Mac Debug\</OutputPath>
+    <DefineConstants>DEBUG;MonoMac;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Mac Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+    <DefineConstants>MonoMac;</DefineConstants>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="MapFunctionZoom.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MapCore.Mac.cs" />
+    <Compile Include="..\DotSpatial.Controls\MapCore.cs">
+      <Link>MapCore.cs</Link>
+    </Compile>
+    <Compile Include="MacMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Name>DotSpatial.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Modeling.Forms\DotSpatial.Modeling.Forms.csproj">
+      <Project>{7ED7B00D-56EE-47CF-AAA5-34A09E40A566}</Project>
+      <Name>DotSpatial.Modeling.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
+      <Project>{BDC11A53-B435-4B9F-B8FA-06BE940ACDA8}</Project>
+      <Name>DotSpatial.Mono</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections.Forms\DotSpatial.Projections.Forms.csproj">
+      <Project>{1DA244CE-5862-4DFB-8943-244A80B7E3EE}</Project>
+      <Name>DotSpatial.Projections.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
+      <Project>{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}</Project>
+      <Name>DotSpatial.Symbology.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+      <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
+      <Name>DotSpatial.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoMac">
+      <HintPath>MonoMac.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DefaultRequiredImports\" />
+    <Folder Include="Docking\" />
+    <Folder Include="Header\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DotSpatial.Controls\Images.Designer.cs">
+      <Link>Images.Designer.cs</Link>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\DotSpatial.Controls\Images.resx">
+      <Link>Images.resx</Link>
+      <LogicalName>DotSpatial.Controls.Images.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

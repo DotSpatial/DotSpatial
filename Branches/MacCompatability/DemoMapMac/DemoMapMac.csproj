@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FD423E2A-1D2F-4387-A91E-A4477221062F}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MacDemoMap</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>MacDemoMap</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Mac Debug\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Mac Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Mac AppStore\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <CreatePackage>false</CreatePackage>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnablePackageSigning>false</EnablePackageSigning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="MonoMac">
+      <HintPath>..\DotSpatial.MacControls\MonoMac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindowController.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="MainWindow.xib">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </InterfaceDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108B04D-A3DE-4981-B66F-496078D462FE}</Project>
+      <Name>DotSpatial.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9B692E11-0273-4331-9B15-1670093EDDBF}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology.Forms\DotSpatial.Symbology.Forms.csproj">
+      <Project>{97EDE2AD-90D0-44B6-ADB6-AD20052C0B6F}</Project>
+      <Name>DotSpatial.Symbology.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.MacControls\DotSpatial.MacControls.csproj">
+      <Project>{169E139D-AACE-44BD-A72E-C307EBD16DE5}</Project>
+      <Name>DotSpatial.MacControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
+      <Name>DotSpatial.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data.Forms\DotSpatial.Data.Forms.csproj">
+      <Project>{7B7195E7-C20E-49B9-9CB0-4F451A2463B6}</Project>
+      <Name>DotSpatial.Data.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+      <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
+      <Name>DotSpatial.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\deselect_16x16.png" />
+    <BundleResource Include="Resources\deselect_32x32.png" />
+    <BundleResource Include="Resources\hand_16x16.png" />
+    <BundleResource Include="Resources\hand_32x32.png" />
+    <BundleResource Include="Resources\select_16x16.png" />
+    <BundleResource Include="Resources\select_32x32.png" />
+    <BundleResource Include="Resources\zoom_in_16x16.png" />
+    <BundleResource Include="Resources\zoom_in_32x32.png" />
+    <BundleResource Include="Resources\zoom_out_16x16.png" />
+    <BundleResource Include="Resources\zoom_out_32x32.png" />
+    <BundleResource Include="Resources\DotSpatialGlobe.icns" />
+  </ItemGroup>
+</Project>

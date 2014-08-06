@@ -87,7 +87,7 @@ namespace DotSpatial.Controls
         private bool _isPanning;
         private IMapLayerCollection _layers;
         private Rectangle _originalView;
-        private Control _parent;
+        private IMap _parent;
         private ActionMode _projectionModeDefine;
         private ActionMode _projectionModeReproject;
         private bool _resizing;
@@ -127,7 +127,7 @@ namespace DotSpatial.Controls
         /// geographic extents of the world will be used.
         /// </summary>
         /// <param name="inParent">The parent control that should own this map frame.</param>
-        public MapFrame(Control inParent)
+        public MapFrame(IMap inParent)
             : this()
         {
             _parent = inParent;
@@ -136,7 +136,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Creates a new instance of MapFrame
         /// </summary>
-        public MapFrame(Control inParent, Extent inExtent)
+        public MapFrame(IMap inParent, Extent inExtent)
             : this()
         {
             _parent = inParent;
@@ -471,8 +471,8 @@ namespace DotSpatial.Controls
         {
             if (_parent != null)
             {
-                _width = _parent.ClientSize.Width;
-                _height = _parent.ClientSize.Height;
+                _width = _parent.ClientRectangle.Width;
+                _height = _parent.ClientRectangle.Height;
             }
             else
             {
@@ -1030,7 +1030,10 @@ namespace DotSpatial.Controls
             if (clipView.Width == 0 || clipView.Height == 0) return;
             try
             {
-                pe.Graphics.DrawImage(_buffer, clip, clipView, GraphicsUnit.Pixel);
+                if(_buffer.Size == clip.Size)
+                    pe.Graphics.DrawImage(_buffer, clip, clipView, GraphicsUnit.Pixel);
+                else
+                    pe.Graphics.DrawImageUnscaledAndClipped(_buffer, clip);
             }
             catch
             {
@@ -1162,7 +1165,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the parent control for this map frame.
         /// </summary>
-        public new Control Parent
+        public new IMap Parent
         {
             get { return _parent; }
             set
@@ -1343,23 +1346,23 @@ namespace DotSpatial.Controls
                 ProjectionInfo result = _chosenProjection;
                 if (ProjectionModeDefine == ActionMode.Prompt || ProjectionModeDefine == ActionMode.PromptOnce)
                 {
-                    var dlg = new UndefinedProjectionDialog
-                    {
-                        OriginalString = layer.DataSet.ProjectionString,
-                        MapProjection = Projection,
-                        LayerName = layer.DataSet.Name,
-                    };
-
-                    if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
-                    dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);
-                    dlg.ShowDialog(Parent);
-
-                    if (dlg.AlwaysUse)
-                    {
-                        _chosenProjection = dlg.Result;
-                        ProjectionModeDefine = ActionMode.Always;
-                    }
-                    result = dlg.Result;
+//                    var dlg = new UndefinedProjectionDialog
+//                    {
+//                        OriginalString = layer.DataSet.ProjectionString,
+//                        MapProjection = Projection,
+//                        LayerName = layer.DataSet.Name,
+//                    };
+//
+//                    if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
+//                    dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);
+//                    dlg.ShowDialog(Parent);
+//
+//                    if (dlg.AlwaysUse)
+//                    {
+//                        _chosenProjection = dlg.Result;
+//                        ProjectionModeDefine = ActionMode.Always;
+//                    }
+//                    result = dlg.Result;
                 }
                 if (result != null)
                 {
@@ -1410,11 +1413,11 @@ namespace DotSpatial.Controls
         /// </summary>
         private void Projection_Click(object sender, EventArgs e)
         {
-            //Launches a MapFrameProjectionDialog
-            using (var dialog = new MapFrameProjectionDialog(this))
-            {
-                dialog.ShowDialog(Parent);
-            }
+//            //Launches a MapFrameProjectionDialog
+//            using (var dialog = new MapFrameProjectionDialog(this))
+//            {
+//                dialog.ShowDialog(Parent);
+//            }
         }
 
         #endregion Protected Methods

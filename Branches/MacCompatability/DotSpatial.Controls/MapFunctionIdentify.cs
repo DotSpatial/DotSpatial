@@ -85,7 +85,7 @@ namespace DotSpatial.Controls
 
             if (!_frmFeatureIdentifier.Visible)
             {
-                _frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
+                //_frmFeatureIdentifier.Show(Map.MapFrame != null ? Map.MapFrame.Parent : null);
             }
 
             base.OnMouseUp(e);

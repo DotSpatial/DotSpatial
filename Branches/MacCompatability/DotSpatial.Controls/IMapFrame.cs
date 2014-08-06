@@ -247,7 +247,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the parent control for this map frame.
         /// </summary>
-        Control Parent
+        IMap Parent
         {
             get;
             set;

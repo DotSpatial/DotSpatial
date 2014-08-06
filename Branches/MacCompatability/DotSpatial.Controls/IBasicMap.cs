@@ -189,6 +189,14 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Map BackColor
+        /// </summary>
+        Color BackColor {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the screen coordinates of the top of this control
         /// </summary>
         int Top
