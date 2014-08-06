@@ -1,0 +1,1 @@
+﻿Allows to manage Extensions.

@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning.GPS (Desktop Framework 4.0)", "DotSpatial.Positioning.GPS (Desktop Framework 4.0).csproj", "{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{D80E2A32-C178-48C2-A73D-2984F76705B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPS Diagnostics DF40 (CSharp)", "Examples\Desktop Framework\C#\GPS Diagnostics DF40 (CSharp).csproj", "{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GPS Diagnostics DF40 (VB.NET)", "Examples\Desktop Framework\VB.NET\GPS Diagnostics DF40 (VB.NET).vbproj", "{452F1CB0-6401-4D64-B2CC-CD53C411D927}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{98093CAB-C591-46C5-A6F4-4A864644F1BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning (Desktop Framework 4.0)", "..\GeoSpatial\DotSpatial.Positioning (Desktop Framework 4.0).csproj", "{26E18588-B04D-4987-BF36-8206A7E36FF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Positioning Designers (Visual Studio 2010)", "..\GeoSpatial\DotSpatial.Positioning Designers (Visual Studio 2010).csproj", "{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{039133A0-EE65-45AC-A4A2-33F1C8786318}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|x86.ActiveCfg = Debug|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Debug|x86.Build.0 = Debug|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|x86.ActiveCfg = Release|x86
+		{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}.Release|x86.Build.0 = Release|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|x86.ActiveCfg = Debug|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Debug|x86.Build.0 = Debug|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|x86.ActiveCfg = Release|x86
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C}.Release|x86.Build.0 = Release|x86
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Debug|x86.ActiveCfg = Debug|x86
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Debug|x86.Build.0 = Debug|x86
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Release|x86.ActiveCfg = Release|x86
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927}.Release|x86.Build.0 = Release|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|x86.ActiveCfg = Debug|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Debug|x86.Build.0 = Debug|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|x86.ActiveCfg = Release|x86
+		{26E18588-B04D-4987-BF36-8206A7E36FF9}.Release|x86.Build.0 = Release|x86
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E591A3F-D723-41DA-BD08-D38C27ABFD6C} = {D80E2A32-C178-48C2-A73D-2984F76705B3}
+		{452F1CB0-6401-4D64-B2CC-CD53C411D927} = {D80E2A32-C178-48C2-A73D-2984F76705B3}
+		{26E18588-B04D-4987-BF36-8206A7E36FF9} = {98093CAB-C591-46C5-A6F4-4A864644F1BD}
+		{7F9F4CB4-F86D-45F0-8FA0-00C5E19B72A0} = {98093CAB-C591-46C5-A6F4-4A864644F1BD}
+	EndGlobalSection
+EndGlobal

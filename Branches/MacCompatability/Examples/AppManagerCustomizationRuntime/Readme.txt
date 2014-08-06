@@ -1,0 +1,1 @@
+﻿This sample shows how to create own implementations of IHeaderControl, IDockManager and IStatusControl.

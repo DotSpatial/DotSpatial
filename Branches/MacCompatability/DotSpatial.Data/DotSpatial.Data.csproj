@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C1018695-3401-47A9-B195-ABD3A20C2489}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Data</RootNamespace>
+    <AssemblyName>DotSpatial.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DotSpatial.Data.4.0.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\dotSpatial\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Argb.cs" />
+    <Compile Include="BinaryReaderWriterExtensions.cs" />
+    <Compile Include="DbaseLocaleRegistry.cs" />
+    <Compile Include="DisposeBase.cs" />
+    <Compile Include="ExtentArgs.cs" />
+    <Compile Include="ExtentM.cs" />
+    <Compile Include="ExtentMZ.cs" />
+    <Compile Include="ExtentParseException.cs" />
+    <Compile Include="FeatureRow.cs" />
+    <Compile Include="FeatureRowChangeEvent.cs" />
+    <Compile Include="FeatureSetEventArgs.cs" />
+    <Compile Include="FeatureSourceFeatureEditEvent.cs" />
+    <Compile Include="FeatureTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Fields.cs" />
+    <Compile Include="IContainRasterBounds.cs" />
+    <Compile Include="IDisposeLock.cs" />
+    <Compile Include="IExtent.cs" />
+    <Compile Include="IExtentM.cs" />
+    <Compile Include="IExtentZ.cs" />
+    <Compile Include="IFeatureRow.cs" />
+    <Compile Include="IGetBitmap.cs" />
+    <Compile Include="ImageDataEventArgs.cs" />
+    <Compile Include="Endian.cs" />
+    <Compile Include="IFeatureSource.cs" />
+    <Compile Include="ImageBandType.cs" />
+    <Compile Include="InRamImage.cs" />
+    <Compile Include="IProj.cs" />
+    <Compile Include="IRasterBoundDataSet.cs" />
+    <Compile Include="IReproject.cs" />
+    <Compile Include="IShapeSource.cs" />
+    <Compile Include="LineShape.cs" />
+    <Compile Include="LineShapefileFeatureSource.cs" />
+    <Compile Include="LineShapefileShapeSource.cs" />
+    <Compile Include="MiscUtil\ExpressionUtil.cs" />
+    <Compile Include="MiscUtil\NullOp.cs" />
+    <Compile Include="MiscUtil\Operator.cs" />
+    <Compile Include="PointShape.cs" />
+    <Compile Include="PointShapefileFeatureSource.cs" />
+    <Compile Include="PointShapefileShapeSource.cs" />
+    <Compile Include="PolygonShape.cs" />
+    <Compile Include="DataFormat.cs" />
+    <Compile Include="DataManager.cs" />
+    <Compile Include="DataProviders.cs" />
+    <Compile Include="Extent.cs" />
+    <Compile Include="FileMode.cs" />
+    <Compile Include="PolygonShapefileFeatureSource.cs" />
+    <Compile Include="PolygonShapefileShapeSource.cs" />
+    <Compile Include="ProgressMeter.cs" />
+    <Compile Include="ProjExt.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RasterBoundDataSet.cs" />
+    <Compile Include="RasterEventArgs.cs" />
+    <Compile Include="RowEditEvent.cs" />
+    <Compile Include="ShapeFactory.cs" />
+    <Compile Include="ShapefileFeatureSource.cs" />
+    <Compile Include="ShapefileFeatureSourceQuadtree.cs" />
+    <Compile Include="ShapefileIndexFile.cs" />
+    <Compile Include="ShapefileReader.cs" />
+    <Compile Include="ShapefileShapeSource.cs" />
+    <Compile Include="ShapeReader.cs" />
+    <Compile Include="ShapeRelateType.cs" />
+    <Compile Include="CulturePreferences.cs" />
+    <Compile Include="BufferedBinaryReader.cs" />
+    <Compile Include="BufferedBinaryWriter.cs" />
+    <Compile Include="IDataManager.cs" />
+    <Compile Include="ILog.cs" />
+    <Compile Include="DataStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="BoxStatistics.cs" />
+    <Compile Include="CoordinateType.cs" />
+    <Compile Include="DataTableStatisticsExt.cs" />
+    <Compile Include="EndPointInteraction.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Field.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FieldDataType.cs" />
+    <Compile Include="IDataSet.cs" />
+    <Compile Include="BitmapGrid.cs" />
+    <Compile Include="DotNetImageProvider.cs" />
+    <Compile Include="IImageCoverage.cs" />
+    <Compile Include="IImageData.cs" />
+    <Compile Include="IImageSet.cs" />
+    <Compile Include="IImageSource.cs" />
+    <Compile Include="ImageCoverage.cs" />
+    <Compile Include="ImageData.cs" />
+    <Compile Include="ITiledImage.cs" />
+    <Compile Include="InRamImageData.cs" />
+    <Compile Include="BitDepth.cs" />
+    <Compile Include="ColorType.cs" />
+    <Compile Include="CRC32.cs" />
+    <Compile Include="Deflate.cs" />
+    <Compile Include="InterlaceMethod.cs" />
+    <Compile Include="MwPng.cs" />
+    <Compile Include="PngHeader.cs" />
+    <Compile Include="PngInsuficientLengthException.cs" />
+    <Compile Include="PngInvalidSignatureException.cs" />
+    <Compile Include="PyramidByteMismatchException.cs" />
+    <Compile Include="PyramidException.cs" />
+    <Compile Include="PyramidHeader.cs" />
+    <Compile Include="PyramidImage.cs" />
+    <Compile Include="PyramidImageHeader.cs" />
+    <Compile Include="PyramidOutOfBoundsException.cs" />
+    <Compile Include="PyramidUndefinedHeaderException.cs" />
+    <Compile Include="TileCollection.cs" />
+    <Compile Include="TiledImage.cs" />
+    <Compile Include="WorldFile.cs" />
+    <Compile Include="HfaCoordinate.cs" />
+    <Compile Include="HfaDatum.cs" />
+    <Compile Include="HfaDatumType.cs" />
+    <Compile Include="HfaEPRJ.cs" />
+    <Compile Include="HfaEPT.cs" />
+    <Compile Include="HfaExt.cs" />
+    <Compile Include="Hfa.cs" />
+    <Compile Include="HfaAccess.cs" />
+    <Compile Include="HfaCompress.cs" />
+    <Compile Include="HfaDictionary.cs" />
+    <Compile Include="HfaEntry.cs" />
+    <Compile Include="HfaEnumerationNotFoundException.cs" />
+    <Compile Include="HfaField.cs" />
+    <Compile Include="HfaInfo.cs" />
+    <Compile Include="HfaInvalidCountException.cs" />
+    <Compile Include="HfaNotCompressedException.cs" />
+    <Compile Include="HfaPointerInsertNotSupportedException.cs" />
+    <Compile Include="HfaType.cs" />
+    <Compile Include="HfaTypeException.cs" />
+    <Compile Include="HfaMapInfo.cs" />
+    <Compile Include="HfaNAD.cs" />
+    <Compile Include="HfaProParameters.cs" />
+    <Compile Include="HfaProType.cs" />
+    <Compile Include="HfaSize.cs" />
+    <Compile Include="HfaSpheroid.cs" />
+    <Compile Include="IDataLayer.cs" />
+    <Compile Include="PluginInfo.cs" />
+    <Compile Include="AffineTransform.cs" />
+    <Compile Include="BinaryRasterProvider.cs" />
+    <Compile Include="RasterBoundsExt.cs" />
+    <Compile Include="RasterExt.cs" />
+    <Compile Include="BgdRaster.cs" />
+    <Compile Include="RasterT.cs" />
+    <Compile Include="ValueGrid.cs" />
+    <Compile Include="BinaryRaster.cs" />
+    <Compile Include="RasterEnumerator.cs" />
+    <Compile Include="IRaster.cs" />
+    <Compile Include="IRasterBounds.cs" />
+    <Compile Include="IValueGrid.cs" />
+    <Compile Include="IValueRow.cs" />
+    <Compile Include="Raster.cs" />
+    <Compile Include="RasterBounds.cs" />
+    <Compile Include="RasterDataType.cs" />
+    <Compile Include="RasterFileType.cs" />
+    <Compile Include="RCIndex.cs" />
+    <Compile Include="Smoother.cs" />
+    <Compile Include="ScaleBarInfo.cs" />
+    <Compile Include="ScaleBarPosition.cs" />
+    <Compile Include="SpaceTimeSupport.cs" />
+    <Compile Include="StatusBarInfo.cs" />
+    <Compile Include="StreamExt.cs" />
+    <Compile Include="ByteBlock.cs" />
+    <Compile Include="DataSet.cs" />
+    <Compile Include="Feature.cs" />
+    <Compile Include="FeatureExt.cs" />
+    <Compile Include="FeatureEventArgs.cs" />
+    <Compile Include="FeatureList.cs" />
+    <Compile Include="FeatureListExt.cs" />
+    <Compile Include="FeatureSet.cs" />
+    <Compile Include="FeatureSetExt.cs" />
+    <Compile Include="FeatureTypeMismatchException.cs" />
+    <Compile Include="FieldJoinType.cs" />
+    <Compile Include="IFeature.cs" />
+    <Compile Include="IFeatureList.cs" />
+    <Compile Include="IFeatureSet.cs" />
+    <Compile Include="AttributeCache.cs" />
+    <Compile Include="AttributePager.cs" />
+    <Compile Include="AttributeTable.cs" />
+    <Compile Include="IAttributeSource.cs" />
+    <Compile Include="LineShapefile.cs" />
+    <Compile Include="MultiPointShapefile.cs" />
+    <Compile Include="NumberConverter.cs" />
+    <Compile Include="NumberException.cs" />
+    <Compile Include="PointShapefile.cs" />
+    <Compile Include="PolygonShapefile.cs" />
+    <Compile Include="Shapefile.cs" />
+    <Compile Include="ShapefileHeader.cs" />
+    <Compile Include="ShapeHeader.cs" />
+    <Compile Include="FeatureSetPack.cs" />
+    <Compile Include="WKBFeatureReader.cs" />
+    <Compile Include="PartRange.cs" />
+    <Compile Include="Segment.cs" />
+    <Compile Include="SegmentRange.cs" />
+    <Compile Include="Shape.cs" />
+    <Compile Include="ShapefileDataProvider.cs" />
+    <Compile Include="ShapeRange.cs" />
+    <Compile Include="ShapeType.cs" />
+    <Compile Include="UnspecifiedFeaturetypeException.cs" />
+    <Compile Include="Vertex.cs" />
+    <Compile Include="VertexRange.cs" />
+    <Compile Include="EnvelopeExt.cs" />
+    <Compile Include="RectangleExt.cs" />
+    <Compile Include="NullException.cs" />
+    <Compile Include="ChangeEventList.cs" />
+    <Compile Include="Collective.cs" />
+    <Compile Include="CollectiveCancel.cs" />
+    <Compile Include="CollectiveIndex.cs" />
+    <Compile Include="CollectiveIndexCancelEventArgs.cs" />
+    <Compile Include="CollectiveIndexCompare.cs" />
+    <Compile Include="CollectiveIndexCompareCancel.cs" />
+    <Compile Include="Compare.cs" />
+    <Compile Include="CompareCancel.cs" />
+    <Compile Include="Comparison.cs" />
+    <Compile Include="ComparisonCancelEventArgs.cs" />
+    <Compile Include="CopyList.cs" />
+    <Compile Include="EventList.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="ICancelProgressHandler.cs" />
+    <Compile Include="ISuspendEvents.cs" />
+    <Compile Include="IChangeEventList.cs" />
+    <Compile Include="IChangeItem.cs" />
+    <Compile Include="IEventDictionary.cs" />
+    <Compile Include="IEventList.cs" />
+    <Compile Include="IListEM.cs" />
+    <Compile Include="INamedList.cs" />
+    <Compile Include="IndividualEventArgs.cs" />
+    <Compile Include="IndividualCancelEventArgs.cs" />
+    <Compile Include="IndividualDictionaryEventArgs.cs" />
+    <Compile Include="IndividualDictionaryCancelEventArgs.cs" />
+    <Compile Include="IndividualIndex.cs" />
+    <Compile Include="IndividualIndexCancel.cs" />
+    <Compile Include="IOrderedDictionary.cs" />
+    <Compile Include="IParentItem.cs" />
+    <Compile Include="IProgressHandler.cs" />
+    <Compile Include="IReadOnlyList.cs" />
+    <Compile Include="ITreeList.cs" />
+    <Compile Include="MessageCancelEventArgs.cs" />
+    <Compile Include="NamedList.cs" />
+    <Compile Include="NonNumericException.cs" />
+    <Compile Include="Number.cs" />
+    <Compile Include="NumberFormat.cs" />
+    <Compile Include="ReadOnlyList.cs" />
+    <Compile Include="SubclassList.cs" />
+    <Compile Include="TreeList.cs" />
+    <Compile Include="ValidationType.cs" />
+    <Compile Include="IDataProvider.cs" />
+    <Compile Include="IImageDataProvider.cs" />
+    <Compile Include="IRasterProvider.cs" />
+    <Compile Include="IVectorProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MockICancelProgressHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DotSpatial.Data.4.0.snk" />
+    <None Include="package.nuspec" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Mono\DotSpatial.Mono.csproj">
+      <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
+      <Name>DotSpatial.Mono</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
+      <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
+      <Name>DotSpatial.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
+      <Name>DotSpatial.Topology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

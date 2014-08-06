@@ -1,0 +1,2515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Algorithm.CentroidArea" Collapsed="true">
+    <Position X="47.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEgAAAIAAAAAAAAQABACAAAAAAAAoAgAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.CentroidLine" Collapsed="true">
+    <Position X="49.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.CentroidPoint" Collapsed="true">
+    <Position X="51" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAMAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\CentroidPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.CgAlgorithms" Collapsed="true">
+    <Position X="28.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABARAAgAIAAAAAABIAAEAABCiAAAAAAIAAKA=</HashCode>
+      <FileName>Algorithm\CGAlgorithms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.ConvexHull" Collapsed="true">
+    <Position X="47.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYACAAAEAAAAAAAAAEAEAAAAAAggABJABQAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\ConvexHull.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.HCoordinate" Collapsed="true">
+    <Position X="45.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAQABAAAAAAAAABAAAAAAAAAYAAQAAAIYAA=</HashCode>
+      <FileName>Algorithm\HCoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.InteriorPointArea" Collapsed="true">
+    <Position X="30" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIIAAAAQQAAAAAACAAAAAAAAAAAAAAAiAACIAAAAAA=</HashCode>
+      <FileName>Algorithm\InteriorPointArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.InteriorPointLine" Collapsed="true">
+    <Position X="31.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQAAAAABAAAAAAABAAQAAAAAAgAAAAAAAACA=</HashCode>
+      <FileName>Algorithm\InteriorPointLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.InteriorPointPoint" Collapsed="true">
+    <Position X="33.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQAAAAABAAAAAAAAAAQAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\InteriorPointPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.LineIntersector" Collapsed="true">
+    <Position X="24.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IkBAAQCIAAAIgAAGAQgAAgRIgAgAQgAAwAAEAAIACAA=</HashCode>
+      <FileName>Algorithm\LineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.McPointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAEABAAEEAAAAAAAAAAQgAAAAACAA=</HashCode>
+      <FileName>Algorithm\McPointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.MinimumDiameter" Collapsed="true">
+    <Position X="38.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAAAAQAAEBAAAAAAAABAQEgAIAEBAAABAAAAAAY=</HashCode>
+      <FileName>Algorithm\MinimumDiameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.NonRobustCgAlgorithms" Collapsed="true">
+    <Position X="40.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAACA=</HashCode>
+      <FileName>Algorithm\NonRobustCGAlgorithms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.NonRobustLineIntersector" Collapsed="true">
+    <Position X="25.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAgAAAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\NonRobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.NotRepresentableException" Collapsed="true">
+    <Position X="42.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\NotRepresentableException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.PointLocator" Collapsed="true">
+    <Position X="33.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAQAAAAAAAQAAAAABAAAEAMAQAAIA=</HashCode>
+      <FileName>Algorithm\PointLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.RobustDeterminant" Collapsed="true">
+    <Position X="40.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\RobustDeterminant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.RobustLineIntersector" Collapsed="true">
+    <Position X="23.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAAAAAAAAAAAAAAAABAgAAAAAAAQAAAAAAAAgA=</HashCode>
+      <FileName>Algorithm\RobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.SimplePointInAreaLocator" Collapsed="true">
+    <Position X="40.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAQAABA=</HashCode>
+      <FileName>Algorithm\SimplePointInAreaLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.SimplePointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\SimplePointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.SiRtreePointInRing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAEABAAEAAAAAAAAAAAAgAAAAACAA=</HashCode>
+      <FileName>Algorithm\SIRtreePointInRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Coordinate" Collapsed="true">
+    <Position X="24.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAQE+AcAwAAAAgQAAIBAAAAAAAJAYjE=</HashCode>
+      <FileName>Coordinate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Envelope" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAABACABAAAAAAEAAAAAEQAAgQAAQEIEABCAAAE4JA=</HashCode>
+      <FileName>Envelope.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.BeBinaryReader" Collapsed="true">
+    <Position X="37" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAAAAAEAAAAAAgAAAAAACAAAAAEAREAAAAAA=</HashCode>
+      <FileName>Geometries\BeBinaryReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.BeBinaryWriter" Collapsed="true">
+    <Position X="38.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Geometries\BeBinaryWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.ClassNotSupportedException" Collapsed="true">
+    <Position X="30" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ClassNotSupportedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateArrays" Collapsed="true">
+    <Position X="49.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEAAIAAAAABAQAAAwAAJAAAAAAAAIAAAAABjAAACAAA=</HashCode>
+      <FileName>Geometries\CoordinateArrays.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateArraySequence" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="51" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAAIIBAUCADABAQAAAAAQCAEAkAAAABQIBA=</HashCode>
+      <FileName>Geometries\CoordinateArraySequence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateArraySequenceEnumerator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACEABAAAAACAAAAAAAAAAAAAoAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateArraySequenceEnumerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateArraySequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateArraySequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateF" Collapsed="true">
+    <Position X="31.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAIAAQAAAQE+AUAwAAAAgQAgIBAAAAgAAJAYjE=</HashCode>
+      <FileName>Geometries\CoordinateF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAIIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Geometries\CoordinateList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateListSequence" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAAAIBAQCABAJAQAgAAAQCAEAkAAAABQIBA=</HashCode>
+      <FileName>Geometries\CoordinateListSequence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateListSequenceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateListSequenceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.CoordinateMismatchException" Collapsed="true">
+    <Position X="38.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\CoordinateMismatchException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Dimension" Collapsed="true">
+    <Position X="42.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Geometries\Dimension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.EnumerableEM" Collapsed="true">
+    <Position X="45.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ExtensionMethods\EnumerableEM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.EnvelopeEM" Collapsed="true">
+    <Position X="49.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AigAAFIIAABhAhAAEEEQAAJACAAIAABACAikAQAYAMA=</HashCode>
+      <FileName>Geometries\ExtensionMethods\EnvelopeEM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.InsufficientDimensionsException" Collapsed="true">
+    <Position X="28.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ExtensionMethods\InsufficientDimensionsException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.GeometryCollectionEnumerator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABAAAAACgAAAQAAAAAABAIABAAAAAAAA=</HashCode>
+      <FileName>Geometries\GeometryCollectionEnumerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.GeometryCollectionNotSupportedException" Collapsed="true">
+    <Position X="31.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\GeometryCollectionNotSupportedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.GeometryFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAgACCiAgSIgAAiMIgiIANBgACAAEiACAAVAAAA=</HashCode>
+      <FileName>Geometries\GeometryFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.GmlWriter" Collapsed="true">
+    <Position X="42.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACACAAAAAAAAAAAAAAAAAAQAAAQAAAAAAAAAAEQAAA=</HashCode>
+      <FileName>Geometries\GmlWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.IntersectionMatrix" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAAAAgAIAAFABEiAAAAAAAAAQAAAAAAgFAAQgAgwA=</HashCode>
+      <FileName>Geometries\IntersectionMatrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.LineSegment" Collapsed="true">
+    <Position X="0.5" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAIAAAQABAQEkgCgSABAAACAAIBAAkACACAAAqA=</HashCode>
+      <FileName>Geometries\LineSegment.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Location" Collapsed="true">
+    <Position X="30" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometries\Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Matrix4" Collapsed="true">
+    <Position X="11.5" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAWAAAAAAAAIACAAAAAAAAAAAAAAAAAEAEAAAAAAA=</HashCode>
+      <FileName>Geometries\Matrix4.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MatrixD" Collapsed="true">
+    <Position X="11.5" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAIAAABAAAAAAAAAAAAAAAoABKBACA=</HashCode>
+      <FileName>Geometries\MatrixD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.PolygonException" Collapsed="true">
+    <Position X="37" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\PolygonException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.PrecisionModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAMAQEgAIAAAA4AAAAAIDBgAAAAAAAAiA=</HashCode>
+      <FileName>Geometries\PrecisionModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.ShouldNeverReachHereException" Collapsed="true">
+    <Position X="35.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ShouldNeverReachHereException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.SlowCoordinate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAQAAAAAAQI6AUAQAAAAAQAAIAAAAAgAAIAYiE=</HashCode>
+      <FileName>Geometries\SlowCoordinate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.TopologyException" Collapsed="true">
+    <Position X="45.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAQAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\TopologyException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Triangle" Collapsed="true">
+    <Position X="30" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAACAAAAAAAAAAAAAAAQAAAACAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Triangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Vector" Collapsed="true">
+    <Position X="25.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAWAIAAUAAEAAA8AEDAABACAKAAIAAAADABEAAiqA=</HashCode>
+      <FileName>Geometries\Vector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.WkbReader" Collapsed="true">
+    <Position X="40.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAFAAAQAAoAAAAIAgAAAAgCAAAAAEAAAAIAAAAIAA=</HashCode>
+      <FileName>Geometries\WkbReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.WkbWriter" Collapsed="true">
+    <Position X="42.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAI=</HashCode>
+      <FileName>Geometries\WkbWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.WktWriter" Collapsed="true">
+    <Position X="44" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAQAgACEGIAQiAAAAAAACAACBAAUAMQgAAAEIAQA=</HashCode>
+      <FileName>Geometries\WktWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Geometry" Collapsed="true">
+    <Position X="16.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KQBAQBQUgJBIlITMsEgQQABIYCxiTABAoDTCASBZXIg=</HashCode>
+      <FileName>Geometry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.GeometryCollection" Collapsed="true">
+    <Position X="17.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAQAAUgJAIBBCCGAYAQARIICAAQAAAABBAAQAEBAA=</HashCode>
+      <FileName>GeometryCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.LinearRing" Collapsed="true">
+    <Position X="22.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIEAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>LinearRing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.LineString" Collapsed="true">
+    <Position X="22.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBQZAgUAJAARAAAmAIAQARIYCAAQEAAAFBCAAAAhAg=</HashCode>
+      <FileName>LineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiLineString" Collapsed="true">
+    <Position X="17.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAAAAAACAIAAAAIQAAAQEAAAABCAAAABAA=</HashCode>
+      <FileName>MultiLineString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiPoint" Collapsed="true">
+    <Position X="20" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAABAAACAoAAAAIQAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>MultiPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.MultiPolygon" Collapsed="true">
+    <Position X="15.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAQAAIAAAAAAAAIAAAAIQAAAQAAAAABAAAAABAA=</HashCode>
+      <FileName>MultiPolygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Point" Collapsed="true">
+    <Position X="11" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAQEAUAJAIDACAHAoAwAAIYAQAQABAABBgAAJAZAE=</HashCode>
+      <FileName>Point.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Polygon" Collapsed="true">
+    <Position X="13.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwBAQAAUALQABAAIEAIAQARIYAQEQAADABBAQQAABAA=</HashCode>
+      <FileName>Polygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MapWindow.GoingOut.AttributesTable" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgACCAAIAAQAAAAAAAEACABAAAEAAAA=</HashCode>
+      <FileName>Features\AttributesTable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapWindow.GoingOut.NtsFeature" Collapsed="true">
+    <Position X="44" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAEAAAAAQAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Features\NTSFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapWindow.Drawing.SizeD" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAEAAAAAAAAAIAAAAAAAAAAAAAAAAIAAAABAAAAAA=</HashCode>
+      <FileName>Geometries\SizeD.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.GeometryEditor" Collapsed="true">
+    <Position X="33.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAACAAACABAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\GeometryEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.GeometryTransformer" Collapsed="true">
+    <Position X="38.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAQBAAAAAAAAQAAkICAEAAAAgSgACgCAg=</HashCode>
+      <FileName>Geometries\Utilities\GeometryTransformer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.LinearComponentExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAABAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\LinearComponentExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.PointExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAQAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\PointExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.PolygonExtracter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAEBAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\PolygonExtracter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.ShortCircuitedGeometryVisitor" Collapsed="true">
+    <Position X="15" Y="16.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAABAIAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\ShortCircuitedGeometryVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Geometries.Utilities.UnsupportedGeometryException" Collapsed="true">
+    <Position X="35.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Utilities\UnsupportedGeometryException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Depth" Collapsed="true">
+    <Position X="40.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIIAAACAAAAAAAEGAAABAAAAAAAAIAIAAAAAAAAACA=</HashCode>
+      <FileName>GeometryGraph\Depth.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.DirectedEdge" Collapsed="true">
+    <Position X="22.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAKAAEAAkgABAEAAACgAEAJAAgAIAAjAAAAAIPEAgA=</HashCode>
+      <FileName>GeometryGraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.DirectedEdgeStar" Collapsed="true">
+    <Position X="17.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAkQAAgABAABAAAAAAAAABAggAAgEEACEIAAA=</HashCode>
+      <FileName>GeometryGraph\DirectedEdgeStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Edge" Collapsed="true">
+    <Position X="7.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAKIAAIAAEQhASEgAAAABQAIAgAAMAiIBAAAIEEWjA=</HashCode>
+      <FileName>GeometryGraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeEnd" Collapsed="true">
+    <Position X="21.75" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAFgBIAEAAABBwEABBAAAQEAAAABQAAAAACAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\EdgeEnd.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeEndStar" Collapsed="true">
+    <Position X="16.75" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgEgjAAAABBAIQAAACAAwAAAAAAgAAIIAAAUIAgA=</HashCode>
+      <FileName>GeometryGraph\EdgeEndStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeIntersection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAIBAQAAQAAABAAAAAAAABAAAFAAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\EdgeIntersection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeIntersectionList" Collapsed="true">
+    <Position X="33.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAABAAAQAAAIAAAgAAAgAAAEACCA=</HashCode>
+      <FileName>GeometryGraph\EdgeIntersectionList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeList" Collapsed="true">
+    <Position X="35.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEIAgAAAAAQAABBACABgBAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\EdgeList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeNodingValidator" Collapsed="true">
+    <Position X="37" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>GeometryGraph\EdgeNodingValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeRing" Collapsed="true">
+    <Position X="11.75" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ogAGgEAAEoIQBCQEEFBAAAQgAAQgAAIAICAAAAhAABA=</HashCode>
+      <FileName>GeometryGraph\EdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.GeometryGraph" Collapsed="true">
+    <Position X="8.5" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIIAigAAgUAQAGAQCEBNAAIAAEAAAAAEAAEAAICAgAI=</HashCode>
+      <FileName>GeometryGraph\GeometryGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.GraphComponent" Collapsed="true">
+    <Position X="6.75" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAABADAABBAAEAAAAAAIAAAIAAIAAAEEAA=</HashCode>
+      <FileName>GeometryGraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Label" Collapsed="true">
+    <Position X="42.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCAAAAgCAAAAAAQMBAEAAEEAAAAAAQAoAAAAAAEQBAA=</HashCode>
+      <FileName>GeometryGraph\Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Node" Collapsed="true">
+    <Position X="5.5" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAJAgAAAAAAEBACEAABAAAAAAAIBAAAAIAAAAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.NodeFactory" Collapsed="true">
+    <Position X="1.75" Y="22.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometryGraph\NodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.NodeMap" Collapsed="true">
+    <Position X="35.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAEAAAAEAAAAIAAAAAAggAAEIAAA=</HashCode>
+      <FileName>GeometryGraph\NodeMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.PlanarGraph" Collapsed="true">
+    <Position X="8.5" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgiJAAAAAhABBQAABAAIAAEAAIBAAAAAAAACBIAAQ=</HashCode>
+      <FileName>GeometryGraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Position" Collapsed="true">
+    <Position X="42.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.QuadrantOp" Collapsed="true">
+    <Position X="47.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAEAAQAAAAAAAAACAAAAAAAAAAAABA=</HashCode>
+      <FileName>GeometryGraph\QuadrantOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.TopologyLocation" Collapsed="true">
+    <Position X="47.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAgCAAAAAARMCAEAAEEAAAAAAQAoACACAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\TopologyLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.TwoHorizontalEdgesException" Collapsed="true">
+    <Position X="31.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometryGraph\TwoHorizontalEdgesException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.EdgeSetIntersector" Collapsed="true">
+    <Position X="18" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GeometryGraph\Index\EdgeSetIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.MonotoneChain" Collapsed="true">
+    <Position X="42.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAAEAAA=</HashCode>
+      <FileName>GeometryGraph\Index\MonotoneChain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.MonotoneChainEdge" Collapsed="true">
+    <Position X="45.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAABBAAAQAEgAAAAAAoABAAAACQAAAAAAAAAA=</HashCode>
+      <FileName>GeometryGraph\Index\MonotoneChainEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.MonotoneChainIndexer" Collapsed="true">
+    <Position X="47.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometryGraph\Index\MonotoneChainIndexer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SegmentIntersector" Collapsed="true">
+    <Position X="45.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAASAAAAIACAADAACAAQCACAAAAACAAAgAUQAIFA=</HashCode>
+      <FileName>GeometryGraph\Index\SegmentIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SimpleEdgeSetIntersector" Collapsed="true">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAA=</HashCode>
+      <FileName>GeometryGraph\Index\SimpleEdgeSetIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SimpleMcSweepLineIntersector" Collapsed="true">
+    <Position X="18" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAAAAAAAAABAAAAAAAABAAAAAAAAAAAAAEAAI=</HashCode>
+      <FileName>GeometryGraph\Index\SimpleMCSweepLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SimpleSweepLineIntersector" Collapsed="true">
+    <Position X="20.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAAAAAAAAABAAAAAAAABAAAAAAAAAAAAAEAAI=</HashCode>
+      <FileName>GeometryGraph\Index\SimpleSweepLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SweepLineEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAIAAAAAIAAAYwgACAAAAAIAAAAAAAIAAAAAQACAAA=</HashCode>
+      <FileName>GeometryGraph\Index\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.Index.SweepLineSegment" Collapsed="true">
+    <Position X="38.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAACAAQAAAAAAQAAABAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GeometryGraph\Index\SweepLineSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.ArrayListVisitor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\ArrayListVisitor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Bintree" Collapsed="true">
+    <Position X="40.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAkAAAAAQABAAAAAAAAQAAAABAAggEQAAAAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Bintree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Interval" Collapsed="true">
+    <Position X="42.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAABAAABAAAAAAEAAAAEAAAAAAAAAAEABCAAAQAAA=</HashCode>
+      <FileName>Index\Bintree\Interval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Key" Collapsed="true">
+    <Position X="35.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAAAAgAAAAgAAAAIgAAQAAAAAAAAABAQAAAAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Node" Collapsed="true">
+    <Position X="20.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAEIEAASAAEAAIAAAAAQAgBAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.NodeBase" Collapsed="true">
+    <Position X="21.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAACBAAAAAAAAQAABAEIAAgAAAIBAAAAAE=</HashCode>
+      <FileName>Index\Bintree\NodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Bintree.Root" Collapsed="true">
+    <Position X="22.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAACAAABAAAAAA=</HashCode>
+      <FileName>Index\Bintree\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Chain.MonotoneChain" Collapsed="true">
+    <Position X="40.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAhASAAABAAACAICAAAYIAAAAAQAQAEAA=</HashCode>
+      <FileName>Index\Chain\MonotoneChain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Chain.MonotoneChainBuilder" Collapsed="true">
+    <Position X="44" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Index\Chain\MonotoneChainBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Chain.MonotoneChainOverlapAction" Collapsed="true">
+    <Position X="49.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Index\Chain\MonotoneChainOverlapAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Chain.MonotoneChainSelectAction" Collapsed="true">
+    <Position X="51" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Index\Chain\MonotoneChainSelectAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.FarthestNeighborList" Collapsed="true">
+    <Position X="51" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAEAAAQAAgAAAAAAAAAQAABAAAAAAQAAAAAAIAAA=</HashCode>
+      <FileName>Index\KDTree\FarthestNeighborList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.HPoint" Collapsed="true">
+    <Position X="23.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAgAAkAAAAAAAAAAAAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Index\KDTree\HPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.HRect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="51" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAACAAAAAAAAEAAAAAABAAhQAAAAAGABBAAAgABA=</HashCode>
+      <FileName>Index\KDTree\HRect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.KdNode" Collapsed="true">
+    <Position X="30" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAEAAEAAAAgAEAAAAAAAAAAAAAQkAwQAAAQAgAAA=</HashCode>
+      <FileName>Index\KDTree\KDNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.KdTree" Collapsed="true">
+    <Position X="31.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAEABQAAAEAAAAAAQAABEAAAAAAQCAAIAgAAA=</HashCode>
+      <FileName>Index\KDTree\KDTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.KeyDuplicateException" Collapsed="true">
+    <Position X="37" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\KDTree\KeyDuplicateException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.KeyMissingException" Collapsed="true">
+    <Position X="38.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\KDTree\KeyMissingException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.KeySizeException" Collapsed="true">
+    <Position X="40.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\KDTree\KeySizeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.NearestNeighborList" Collapsed="true">
+    <Position X="28.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABQIEAAAAAAgAAAEAAAAAYAAAAAQAAAAAAAAAQIAAA=</HashCode>
+      <FileName>Index\KDTree\NearestNeighborList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.NegativeArgumentException" Collapsed="true">
+    <Position X="30" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\KDTree\NegativeArgumentException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.NeighborsOutOfRangeException" Collapsed="true">
+    <Position X="31.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\KDTree\NeighborsOutOfRangeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.KDTree.PriorityQueue" Collapsed="true">
+    <Position X="45.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFIAEAAABAAAAAAAAgAABATAAAAAAAAQAACCAABAAAA=</HashCode>
+      <FileName>Index\KDTree\PriorityQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.DoubleBits" Collapsed="true">
+    <Position X="47.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEoAAAAAEAEABABAAAAAAACAAAAEAFAAAAACAM=</HashCode>
+      <FileName>Index\QuadTree\DoubleBits.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.IntervalSize" Collapsed="true">
+    <Position X="44" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Index\QuadTree\IntervalSize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.Key" Collapsed="true">
+    <Position X="33.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CFAAAIAAAAAAgACAAAAAAQAAAAAAAAABAAAAAAAAEAA=</HashCode>
+      <FileName>Index\QuadTree\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.Node" Collapsed="true">
+    <Position X="20.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAACAEAEAASAAEAAIAAAAAAAhBAAAEAA=</HashCode>
+      <FileName>Index\QuadTree\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.NodeBase" Collapsed="true">
+    <Position X="21.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJgAAAAAAgACBQAAAAABAQABBEEIAAgAAAIBAAAAIE=</HashCode>
+      <FileName>Index\QuadTree\NodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.Quadtree" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAkAAACAQAAAAAAAABAQAAAAAAAggEQAAAAAAAAA=</HashCode>
+      <FileName>Index\QuadTree\Quadtree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Quadtree.Root" Collapsed="true">
+    <Position X="22.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAgAAAA=</HashCode>
+      <FileName>Index\QuadTree\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.AbstractNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAIAAAAACAQAAAAEAAAABAAAQAAAAAgA=</HashCode>
+      <FileName>Index\Strtree\AbstractNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.AbstractStRtree" Collapsed="true">
+    <Position X="16.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEIBUgQAAAQACCgAAEABAQAQAAAgAgkAQAAAYAAAAA=</HashCode>
+      <FileName>Index\Strtree\AbstractSTRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.Interval" Collapsed="true">
+    <Position X="40.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgAEAAAAAAQAAAAgAAAAAAAAAAAAIAAAAAAAAAAAIA=</HashCode>
+      <FileName>Index\Strtree\Interval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.ItemBoundable" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="51" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAEABAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Index\Strtree\ItemBoundable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.SiRtree" Collapsed="true">
+    <Position X="15.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABEAAEAAAAAAAAAAAAEAAAAAAAAAAAggAQAAAAAAAAA=</HashCode>
+      <FileName>Index\Strtree\SIRtree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Strtree.StRtree" Collapsed="true">
+    <Position X="17.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABEBAAAACAAAAAAEABDAAAAAAAAgAAQAAIAAEAAA=</HashCode>
+      <FileName>Index\Strtree\STRtree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Sweepline.SweepLineEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAIAAAIwAAKAAAgAAAAAAAAAIAAAAAQACAAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Sweepline.SweepLineIndex" Collapsed="true">
+    <Position X="33.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAAAAAAAAABAEAAACAABAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Index.Sweepline.SweepLineInterval" Collapsed="true">
+    <Position X="35.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAEAAAAAAEABAAAAAAEABAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineInterval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.IntersectionAdder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAkCAACgAACAACAACAAQAAAAAAAACAAAiAAQAIBA=</HashCode>
+      <FileName>Noding\IntersectionAdder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.IntersectionFinderAdder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAEAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\IntersectionFinderAdder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.InvalidOctantException" Collapsed="true">
+    <Position X="45.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\InvalidOctantException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.IteratedNoder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACEAAAAAAAAAIAAAAAAAAAIIAAAQCAAAAAAEAAAA=</HashCode>
+      <FileName>Noding\IteratedNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.McIndexNoder" Collapsed="true">
+    <Position X="10.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIEAQAAAAAAAAAIBAAgEAAAAAIgAAQAAAEAAAAAAAA=</HashCode>
+      <FileName>Noding\MCIndexNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.NodingValidator" Collapsed="true">
+    <Position X="38.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAQAAAAAAAAgAAAAAgAAAAgAAAECAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\NodingValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.Octant" Collapsed="true">
+    <Position X="47.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\Octant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.OrientedCoordinateArray" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAQAAIAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\OrientedCoordinateArray.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.ScaledNoder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQECAAAAgAIAAMAAAAgAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\ScaledNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SegmentNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="47.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAQAAAAAAAAAAAAAACAEAAgEAgAA=</HashCode>
+      <FileName>Noding\SegmentNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SegmentNodeList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAABAAAABAgABAAAIABAgAAAgAIAEAgAA=</HashCode>
+      <FileName>Noding\SegmentNodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.NodeVertexIterator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAQAABAAABALABEBAAAAABAAAIAEAAAAAAAA=</HashCode>
+      <FileName>Noding\SegmentNodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SegmentPointComparator" Collapsed="true">
+    <Position X="51" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABAAAACAAA=</HashCode>
+      <FileName>Noding\SegmentPointComparator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SegmentString" Collapsed="true">
+    <Position X="28.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAABAAABAQAAAIAAAQAIAAAAFQAAAEAAIAAAAA=</HashCode>
+      <FileName>Noding\SegmentString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SegmentStringDissolver" Collapsed="true">
+    <Position X="30" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAABAAgAAAAAAAAAAQAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Noding\SegmentStringDissolver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SimpleNoder" Collapsed="true">
+    <Position X="12.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAIAAAQCAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\SimpleNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.SinglePassNoder" Collapsed="true">
+    <Position X="11.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAEAAAIAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\SinglePassNoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.Snapround.HotPixel" Collapsed="true">
+    <Position X="49.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACIAAACABAMRAAAQAIAEAAgAAAAACCCBAAACAAAAIA=</HashCode>
+      <FileName>Noding\Snapround\HotPixel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.Snapround.McIndexPointSnapper" Collapsed="true">
+    <Position X="33.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\Snapround\MCIndexPointSnapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.Snapround.McIndexSnapRounder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAIQAAAAAAgABogAAQCAAAAAAAABAA=</HashCode>
+      <FileName>Noding\Snapround\MCIndexSnapRounder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Noding.Snapround.SimpleSnapRounder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIQAAAAAAgAFIAAAQCAAAAAAAIBAA=</HashCode>
+      <FileName>Noding\Snapround\SimpleSnapRounder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.BufferBuilder" Collapsed="true">
+    <Position X="42.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAgAAIAAACAkAACAAAAAAAggAAAAAAEAAUQAQAQ=</HashCode>
+      <FileName>Operation\Buffer\BufferBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.BufferOp" Collapsed="true">
+    <Position X="44" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAESAAgAAAAMAAAgAAAACAAAYAAAAAAAAAEIAAABYAA=</HashCode>
+      <FileName>Operation\Buffer\BufferOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.BufferSubgraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIgADAAAAAAgAQAAAAEQAEAAAAQAkAAAACAAAQABQA=</HashCode>
+      <FileName>Operation\Buffer\BufferSubgraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.OffsetCurveBuilder" Collapsed="true">
+    <Position X="49.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBEKkAAACBwCghAAACAgAAICEBAAAiSAACAAAAKKg=</HashCode>
+      <FileName>Operation\Buffer\OffsetCurveBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.OffsetCurveSetBuilder" Collapsed="true">
+    <Position X="51" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIACgAAAQIQIBAAAAAEAAAAAAQAAAAAAAAAIAAAIAA=</HashCode>
+      <FileName>Operation\Buffer\OffsetCurveSetBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.RightmostEdgeFinder" Collapsed="true">
+    <Position X="38.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAdAAAAAABQgQAAABAAAAAAAABAAAAEAAAAAAABA=</HashCode>
+      <FileName>Operation\Buffer\RightmostEdgeFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Buffer.SubgraphDepthLocater" Collapsed="true">
+    <Position X="28.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAIAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Buffer\SubgraphDepthLocater.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Distance.ConnectedElementLocationFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAEAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Distance\ConnectedElementLocationFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Distance.ConnectedElementPointFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAgAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Distance\ConnectedElementPointFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Distance.DistanceOp" Collapsed="true">
+    <Position X="45.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAgAAAAAAAAQAgCICAIQAEBABQAAAAAAEBAAA=</HashCode>
+      <FileName>Operation\Distance\DistanceOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Distance.GeometryLocation" Collapsed="true">
+    <Position X="37" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCAAAAAAAAAABAAAIAAAAAAEAAAAABAAAAFAAAAAAAA=</HashCode>
+      <FileName>Operation\Distance\GeometryLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.GeometryGraphOperation" Collapsed="true">
+    <Position X="6.75" Y="19.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAACAAAAAAAAACAAAAAAAAAAAAAICAAACAAAAAAA=</HashCode>
+      <FileName>Operation\GeometryGraphOperation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.IsSimpleOp" Collapsed="true">
+    <Position X="47.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAACAAAAAAAAAIAAAAgAAAAAACA=</HashCode>
+      <FileName>Operation\IsSimpleOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.EdgeString" Collapsed="true">
+    <Position X="42.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAAAAAIAAAAAABAAAAAIAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\EdgeString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeDirectedEdge" Collapsed="true">
+    <Position X="3" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeEdge" Collapsed="true">
+    <Position X="7.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMergeGraph" Collapsed="true">
+    <Position X="2.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMergeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Linemerge.LineMerger" Collapsed="true">
+    <Position X="47.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAQAAAAACAAAAAAAAgAoAAAAwQAAAACAAAAAAA=</HashCode>
+      <FileName>Operation\Linemerge\LineMerger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.EdgeSetNoder" Collapsed="true">
+    <Position X="40.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAQAAAAACAAAAAABAAAA=</HashCode>
+      <FileName>Operation\Overlay\EdgeSetNoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.LineBuilder" Collapsed="true">
+    <Position X="45.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAwAAAAgAAAAAAAAAIAAA0AACAAAEAAAARAA=</HashCode>
+      <FileName>Operation\Overlay\LineBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.MaximalEdgeRing" Collapsed="true">
+    <Position X="10.5" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAgAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MaximalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.MinimalEdgeRing" Collapsed="true">
+    <Position X="12.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\MinimalEdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.OverlayNodeFactory" Collapsed="true">
+    <Position X="0.5" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\OverlayNodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.OverlayOp" Collapsed="true">
+    <Position X="5.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAACAACCACUAkABAAEQIIAABBCgAAkFIAAQIBEA=</HashCode>
+      <FileName>Operation\Overlay\OverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.PointBuilder" Collapsed="true">
+    <Position X="30" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAGAAAAAAAAAAAAAAAAIAAAkAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Operation\Overlay\PointBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Overlay.PolygonBuilder" Collapsed="true">
+    <Position X="35.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAACAAAAAAEAQAAAAAABBICACAgBAAAAAAAAABA=</HashCode>
+      <FileName>Operation\Overlay\PolygonBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.DuplicateEdgeException" Collapsed="true">
+    <Position X="28.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Polygonize\DuplicateEdgeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.EdgeRing" Collapsed="true">
+    <Position X="38.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIJAAAAQAgAAAAEAmAgBAAQBoAAgAAAAAAACAACAACA=</HashCode>
+      <FileName>Operation\Polygonize\EdgeRing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.LineStringAdder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Polygonize\LineStringAdder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.NullEdgeException" Collapsed="true">
+    <Position X="45.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Polygonize\NullEdgeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeDirectedEdge" Collapsed="true">
+    <Position X="0.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAQEAAAAAAAABAAAAAIAAAAAAAgAAAAAAAAAAg=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeDirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeEdge" Collapsed="true">
+    <Position X="5.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.PolygonizeGraph" Collapsed="true">
+    <Position X="0.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiABBAIAMgAIAAAACAAAAAAAEAAAAAAAAAAyAAABEAA=</HashCode>
+      <FileName>Operation\Polygonize\PolygonizeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Polygonize.Polygonizer" Collapsed="true">
+    <Position X="40.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAKAACAAAABCgAYAAAAAACAAAAAAABAAIAAEAQAAI=</HashCode>
+      <FileName>Operation\Polygonize\Polygonizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.RectangleContains" Collapsed="true">
+    <Position X="30" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAABAAEAAAAAAAAAAAAAABAAAAAAAQAAAQAAA=</HashCode>
+      <FileName>Operation\Predicate\RectangleContains.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.RectangleIntersects" Collapsed="true">
+    <Position X="31.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQBAAQAAAAAAAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.EnvelopeIntersectsVisitor" Collapsed="true">
+    <Position X="12.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAEAAAAAAAAAABAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.ContainsPointVisitor" Collapsed="true">
+    <Position X="15" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAQABAAAAAAAABAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.LineIntersectsVisitor" Collapsed="true">
+    <Position X="17.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAQAQAEABAAAAAAAQBAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Operation\Predicate\RectangleIntersects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Predicate.SegmentIntersectionTester" Collapsed="true">
+    <Position X="44" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAaAAAAYACAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Predicate\SegmentIntersectionTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.EdgeEndBuilder" Collapsed="true">
+    <Position X="30" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.EdgeEndBundle" Collapsed="true">
+    <Position X="20.5" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAIBBAAAAEAQAAAEAAAAAAAAAAAAAEAEAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.EdgeEndBundleStar" Collapsed="true">
+    <Position X="15.5" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundleStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateComputer" Collapsed="true">
+    <Position X="33.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAABAAAIAAAACgAABAAEAAYAAQAAICAAAAGAAAEAA=</HashCode>
+      <FileName>Operation\Relate\RelateComputer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateNode" Collapsed="true">
+    <Position X="5.5" Y="25.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateNodeFactory" Collapsed="true">
+    <Position X="2.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNodeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateNodeGraph" Collapsed="true">
+    <Position X="35.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAACBAAAAAAAAAgAAAAAAAAAAAQgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateNodeGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.RelateOp" Collapsed="true">
+    <Position X="7.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAABAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Operation\Relate\RelateOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.ConnectedInteriorTester" Collapsed="true">
+    <Position X="42.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAACAAAABIAAAAACAgAAAAAAAAAGCAgAAAAAQEA=</HashCode>
+      <FileName>Operation\Valid\ConnectedInteriorTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.ConsistentAreaTester" Collapsed="true">
+    <Position X="45.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIEEAAAAAAAAAAAAIAAAAAAAICAAgAAAAAAAA=</HashCode>
+      <FileName>Operation\Valid\ConsistentAreaTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.IsValidOp" Collapsed="true">
+    <Position X="49.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JEKAIAAAgIAAAAEAAAgQgAAiAAgADAQIAIAACQQAABQ=</HashCode>
+      <FileName>Operation\Valid\IsValidOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.QuadtreeNestedRingTester" Collapsed="true">
+    <Position X="51" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAABAAAAACAAEAAAAAIAAAAAQAAAAEAAAAAABAA=</HashCode>
+      <FileName>Operation\Valid\QuadtreeNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.RepeatedPointTester" Collapsed="true">
+    <Position X="37" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgABAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Valid\RepeatedPointTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.ShellHoleIdentityException" Collapsed="true">
+    <Position X="33.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operation\Valid\ShellHoleIdentityException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.SimpleNestedRingTester" Collapsed="true">
+    <Position X="38.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAABAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Operation\Valid\SimpleNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.SweeplineNestedRingTester" Collapsed="true">
+    <Position X="37" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAABAAAAACAAEAEAAEAAAAAAAAAAAAAAAAAADAA=</HashCode>
+      <FileName>Operation\Valid\SweeplineNestedRingTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Valid.TopologyValidationError" Collapsed="true">
+    <Position X="28.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAAAAAAAAAAABAAEAAAAAAAAAAACAAAAAAAAIAAAAIA=</HashCode>
+      <FileName>Operation\Valid\TopologyValidationError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Algorithm.ConnectedSubgraphFinder" Collapsed="true">
+    <Position X="44" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAACAAABAAAA=</HashCode>
+      <FileName>Planargraph\Algorithm\ConnectedSubgraphFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.DirectedEdge" Collapsed="true">
+    <Position X="2" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAABECAAAEgARDQEAAAABIAEAgYABAAAAEAgACEAAAg=</HashCode>
+      <FileName>Planargraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.DirectedEdgeStar" Collapsed="true">
+    <Position X="44" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAAAAABBAQIAIABAAQAAAABAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Planargraph\DirectedEdgeStar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Edge" Collapsed="true">
+    <Position X="6.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAgAAAABAAAAAAAAAAAAAAwAIAABAA=</HashCode>
+      <FileName>Planargraph\Edge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.GraphComponent" Collapsed="true">
+    <Position X="5.25" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiEAAABAAAAAABAAAAAAAAAAAAAgABAEAAA=</HashCode>
+      <FileName>Planargraph\GraphComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Node" Collapsed="true">
+    <Position X="9.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAACAAgABAABAAUAAAABAAQAAABAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Planargraph\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.NodeMap" Collapsed="true">
+    <Position X="33.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAAAABAAAAAAIAAAAAAggAAAAAAA=</HashCode>
+      <FileName>Planargraph\NodeMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.PlanarGraph" Collapsed="true">
+    <Position X="1.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgiCAAAAAgAAAAAABABBAAAAAAAAAAQAgQAAAABAA=</HashCode>
+      <FileName>Planargraph\PlanarGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Planargraph.Subgraph" Collapsed="true">
+    <Position X="51" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAAAAAAgAAAAAABAABAAAAAAAAAAAAgQAAUQAAA=</HashCode>
+      <FileName>Planargraph\Subgraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Precision.CommonBits" Collapsed="true">
+    <Position X="33.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAIAAAAAQAEAUEAAQAACAAAAAAAAAAAAAQAAACAA=</HashCode>
+      <FileName>Precision\CommonBits.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Precision.CommonBitsOp" Collapsed="true">
+    <Position X="35.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAABAAAAEBAQAQAAAAAAAAAAQAAQAA=</HashCode>
+      <FileName>Precision\CommonBitsOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Precision.CommonBitsRemover" Collapsed="true">
+    <Position X="37" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAAAAABAAAAAAAACQAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Precision\CommonBitsRemover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Precision.EnhancedPrecisionOp" Collapsed="true">
+    <Position X="44" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAQAAAAAAAAAAAAQAAQAA=</HashCode>
+      <FileName>Precision\EnhancedPrecisionOp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Precision.SimpleGeometryPrecisionReducer" Collapsed="true">
+    <Position X="37" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAAAAABAAAAAAAAAAAAAQAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Precision\SimpleGeometryPrecisionReducer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.DouglasPeuckerLineSimplifier" Collapsed="true">
+    <Position X="49.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAIAAAAAQAAAAAAAAAAAAAAAAAAAgAAAAAACA=</HashCode>
+      <FileName>Simplify\DouglasPeuckerLineSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.DouglasPeuckerSimplifier" Collapsed="true">
+    <Position X="51" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEBAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAACA=</HashCode>
+      <FileName>Simplify\DouglasPeuckerSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.LineSegmentIndex" Collapsed="true">
+    <Position X="49.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgBAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Simplify\LineSegmentIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.LineSegmentVisitor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="51" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAAAAABAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Simplify\LineSegmentIndex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.TaggedLineSegment" Collapsed="true">
+    <Position X="0.5" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgQAAQAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Simplify\TaggedLineSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.TaggedLinesSimplifier" Collapsed="true">
+    <Position X="40.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAACA=</HashCode>
+      <FileName>Simplify\TaggedLinesSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.TaggedLineString" Collapsed="true">
+    <Position X="42.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACIAAAAAgBABAABAESAwAAAACAQAAAAAAACggAAAAA=</HashCode>
+      <FileName>Simplify\TaggedLineString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.TaggedLineStringSimplifier" Collapsed="true">
+    <Position X="44" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAAEBAAACAAAAIAABBAAgQAIQAAAIAAgQAACAACA=</HashCode>
+      <FileName>Simplify\TaggedLineStringSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Simplify.TopologyPreservingSimplifier" Collapsed="true">
+    <Position X="49.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIABAAAAABAAAAAAEAAAAAAAAAAAAAAIAAAAACA=</HashCode>
+      <FileName>Simplify\TopologyPreservingSimplifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.TopologyText" Collapsed="true">
+    <Position X="51" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIAACAAAAEhGEAIAAABGIJAAYQAACAACAAABCAEAZA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.Assert" Collapsed="true">
+    <Position X="31.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Assert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.AssertionFailedException" Collapsed="true">
+    <Position X="33.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\AssertionFailedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.CollectionUtil" Collapsed="true">
+    <Position X="31.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Utilities\CollectionUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.Global" Collapsed="true">
+    <Position X="40.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Global.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.HexConverter" Collapsed="true">
+    <Position X="47.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\HexConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.UniqueCoordinateArrayFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAIBAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\UniqueCoordinateArrayFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Iesi.Collections.DictionarySet" Collapsed="true">
+    <Position X="4" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAQQAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.HashedSet" Collapsed="true">
+    <Position X="5.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.HybridSet" Collapsed="true">
+    <Position X="7.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.ListSet" Collapsed="true">
+    <Position X="0.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ListSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Set" Collapsed="true">
+    <Position X="4" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAATAABAAAAEGFAQBAAIAAIEAIBAAAQBQIBA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.SortedSet" Collapsed="true">
+    <Position X="3" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.CollectionWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="23.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAAAAQAAAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\CollectionWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.DictionarySet&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAASABBAAAAAAFAQQAACAAAEAIBAAAABQIAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\DictionarySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.EnumerableWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="23.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAgAAAAAABAAAAAIAEAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.HashedSet&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HashedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.HybridSet&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\HybridSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Iesi.Collections.Generic.Set&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAQAACITAQBCYACEGFAcBIBIAAIFEIDAAASFQIRA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\Set.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.SetWrapper&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAIAAAAARAABAYAAAEBAQBIAAAAAEEIBAAAQBQIDA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\SetWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Iesi.Collections.Generic.SortedSet&lt;T&gt;" Collapsed="true">
+    <Position X="15.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\SortedSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Utilities.Iesi.Collections.Generic.ReadOnlyException" Collapsed="true">
+    <Position X="28.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ReadOnlyException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.Fortune" Collapsed="true">
+    <Position X="28.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAACAAAAAQAAAcEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Voronoi\FortuneVoronoi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.HashSet&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAQAAAABAQAAAAAAAAEAAAACABQIAA=</HashCode>
+      <FileName>Voronoi\HashSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DotSpatial.Analysis.MathTools" Collapsed="true">
+    <Position X="31.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhA=</HashCode>
+      <FileName>Voronoi\ToolBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VEvent" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Voronoi\VEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Analysis.VDataEvent" Collapsed="true">
+    <Position X="19.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Voronoi\VEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VCircleEvent" Collapsed="true">
+    <Position X="21.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABAAIYEA=</HashCode>
+      <FileName>Voronoi\VEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VNode" Collapsed="true">
+    <Position X="19.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAQAACAAAAAAAAAQAAQAAAAAQgACACgABEACCA=</HashCode>
+      <FileName>Voronoi\VNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VDataNode" Collapsed="true">
+    <Position X="18.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Voronoi\VNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VEdgeNode" Collapsed="true">
+    <Position X="20.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Voronoi\VNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VoronoiEdge" Collapsed="true">
+    <Position X="37" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEACAAAEAAAABAEEAARAAIAAACAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Voronoi\VoronoiEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Analysis.VoronoiGraph" Collapsed="true">
+    <Position X="38.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Voronoi\VoronoiGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="DotSpatial.Geometries.Angle" Collapsed="true">
+    <Position X="28.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAIAgAgAABA4AUEAAAAAgFAAIACAAAAABKAAiA=</HashCode>
+      <FileName>Geometries\Angle.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DotSpatial.Geometries.FloatVector3" Collapsed="true">
+    <Position X="31.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAABAAA8AUDAABACAIAAIAAAAAAAEAAYiE=</HashCode>
+      <FileName>Geometries\FloatVector3.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Iesi.Collections.Generic.EnumeratorWrapper&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAACAAAAAAAAAAAAAoAAAAAgAAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\EnumeratorWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="DotSpatial.Analysis.Vector2" Collapsed="true">
+    <Position X="33.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAE4AEAAAAAAAAQAIBAAAQAAAAAaiA=</HashCode>
+      <FileName>Voronoi\Vector2.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="DotSpatial.Topology.Algorithm.IPointInRing" Collapsed="true">
+    <Position X="51" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\IPointInRing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicGeometry" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAAAAAAAIAACEAAAAAAAAYCAAAAAAABAAAABAAAA=</HashCode>
+      <FileName>Geometries\IBasicGeometry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicLineString" Collapsed="true">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicLineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicPoint" Collapsed="true">
+    <Position X="8.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IBasicPolygon" Collapsed="true">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Geometries\IBasicPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinate" Collapsed="true">
+    <Position X="16.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAQAAIAAAAAgAAIAYAE=</HashCode>
+      <FileName>Geometries\ICoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinateF" Collapsed="true">
+    <Position X="31.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAA0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ICoordinateF.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinateFilter" Collapsed="true">
+    <Position X="33.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ICoordinateFilter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinateSequence" Collapsed="true">
+    <Position X="35.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAIAAACAAAAAAAAAAAQCAAAkAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ICoordinateSequence.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ICoordinateSequenceFactory" Collapsed="true">
+    <Position X="37" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ICoordinateSequenceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IEnvelope" Collapsed="true">
+    <Position X="25.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAABACAAAAAAAAAAAAAAAAAAgQAAQAIAAACAAAAAAA=</HashCode>
+      <FileName>Geometries\IEnvelope.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometry" Collapsed="true">
+    <Position X="5.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABAAAAEgJAAhIBAsAgAQABIAAQgTABAgARAAQAIRAA=</HashCode>
+      <FileName>Geometries\IGeometry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometryCollection" Collapsed="true">
+    <Position X="5.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACCAAAAAQAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Geometries\IGeometryCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometryComponentFilter" Collapsed="true">
+    <Position X="38.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IGeometryComponentFilter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometryFactory" Collapsed="true">
+    <Position X="40.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAgAgAIAAACEIAgAANAgACAAAgAAAAQAAAA=</HashCode>
+      <FileName>Geometries\IGeometryFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IGeometryFilter" Collapsed="true">
+    <Position X="42.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IGeometryFilter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IIntersectionMatrix" Collapsed="true">
+    <Position X="45.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAAAAgAIAAFABEgAAAAAAAAAQAAAAAAgFAAAgAgwA=</HashCode>
+      <FileName>Geometries\IIntersectionMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILinearRing" Collapsed="true">
+    <Position X="2.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ILinearRing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILineSegment" Collapsed="true">
+    <Position X="14.5" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAQABAAEEgCgSABAAAAAAABAAkACACAAAIA=</HashCode>
+      <FileName>Geometries\ILineSegment.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILineSegmentBase" Collapsed="true">
+    <Position X="14.5" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ILineSegmentBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ILineString" Collapsed="true">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAgAAAAAQAAAAAAAAAAAAAAAAEAAAEACAAAAAAg=</HashCode>
+      <FileName>Geometries\ILineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMatrix" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAABAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Geometries\IMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMatrix4" Collapsed="true">
+    <Position X="0.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Geometries\IMatrix4.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMatrixD" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Geometries\IMatrixD.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiLineString" Collapsed="true">
+    <Position X="3.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiLineString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiPoint" Collapsed="true">
+    <Position X="5.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IMultiPolygon" Collapsed="true">
+    <Position X="7.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IMultiPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IOverlay" Collapsed="true">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAQAAAAAAAIAAAAQAAAAA=</HashCode>
+      <FileName>Geometries\IOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IPoint" Collapsed="true">
+    <Position X="8" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IPolygon" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\IPolygon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IRectangle" Collapsed="true">
+    <Position X="25.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Geometries\IRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IRelate" Collapsed="true">
+    <Position X="13.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAABAAAAAAAAAAAAAIABAAAAAAACAACARCIA=</HashCode>
+      <FileName>Geometries\IRelate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.ISize" Collapsed="true">
+    <Position X="33.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAABAAAAAA=</HashCode>
+      <FileName>Geometries\ISize.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IVector" Collapsed="true">
+    <Position X="38.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAWAIAAEAAEAAAkAADAABACACAAIAAAADABAAACIA=</HashCode>
+      <FileName>Geometries\IVector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Geometries.IVectorD" Collapsed="true">
+    <Position X="16.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAEAADAABACAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Geometries\IVectorD.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapWindow.GoingOut.IAttributesTable" Collapsed="true">
+    <Position X="28.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAACAAIAAQAAAAAAAEACABAAAEAAAA=</HashCode>
+      <FileName>Features\IAttributesTable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Index.IIndexVisitor" Collapsed="true">
+    <Position X="44" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\IIndexVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Index.IItemVisitor" Collapsed="true">
+    <Position X="47.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\IItemVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Index.ISpatialIndex" Collapsed="true">
+    <Position X="35.25" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\ISpatialIndex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Index.Strtree.IBoundable" Collapsed="true">
+    <Position X="30" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Index\Strtree\IBoundable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Index.Sweepline.ISweepLineOverlapAction" Collapsed="true">
+    <Position X="37" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\ISweepLineOverlapAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Noding.INoder" Collapsed="true">
+    <Position X="49.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\INoder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DotSpatial.Topology.Noding.ISegmentIntersector" Collapsed="true">
+    <Position X="28.25" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Noding\ISegmentIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Iesi.Collections.ISet" Collapsed="true">
+    <Position X="30" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAARAAAAAAAAEBAABAAAAAAEAIBAAAQBQAAA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\ISet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Iesi.Collections.Generic.ISet&lt;T&gt;" Collapsed="true">
+    <Position X="31.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAARAAAAAAAAEBAABAAAAAAEAIBAAAQBQABA=</HashCode>
+      <FileName>Utilities\Iesi.Collections\Generic\ISet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="DotSpatial.Topology.Algorithm.IntersectionTypes" Collapsed="true">
+    <Position X="37" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\IntersectionTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.ByteOrder" Collapsed="true">
+    <Position X="30" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\ByteOrder.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.BufferStyles" Collapsed="true">
+    <Position X="28.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAIAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.Dimensions" Collapsed="true">
+    <Position X="31.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAgAAAAAAAIAAEAAAAAAAAgAgAAAAAAAA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.GeometryTypes" Collapsed="true">
+    <Position X="35.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAgACAgAQAAAAAAAAAAAAAACABAAACADA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.Locations" Collapsed="true">
+    <Position X="38.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAIAIAAAAABAA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.Ordinates" Collapsed="true">
+    <Position X="42.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAYAE=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.PrecisionModels" Collapsed="true">
+    <Position X="45.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.FeatureTypes" Collapsed="true">
+    <Position X="33.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAADACA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.ShapeGeometryTypes" Collapsed="true">
+    <Position X="47.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAEAEAAEhAAAoAAAAAABAAAACAAAAAAAAAACICA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.VectorFieldType" Collapsed="true">
+    <Position X="30" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAgAAAAAAAAAgAAAAAQAICAACAAABAhgAIE=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.VectorGeometryType" Collapsed="true">
+    <Position X="31.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAABACAAACAAAAAACEAAAoAAAgACQCAAAAAAAIQAA=</HashCode>
+      <FileName>Geometries\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Geometries.WkbGeometryTypes" Collapsed="true">
+    <Position X="33.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAgAAAgAQAAAAAAAAAAAAAAAABAAACACA=</HashCode>
+      <FileName>Geometries\WkbGeometryTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Topology.GeometriesGraph.Positions" Collapsed="true">
+    <Position X="44" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAACAAAIA=</HashCode>
+      <FileName>GeometryGraph\Position.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Topology.Index.Sweepline.SweepLineEvents" Collapsed="true">
+    <Position X="51" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Index\Sweepline\SweepLineEvent.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Topology.Noding.Octants" Collapsed="true">
+    <Position X="40.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAEAIAAAQAEAAAAAAoAAAgAAIA=</HashCode>
+      <FileName>Noding\Octant.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Topology.Operation.Overlay.SpatialFunctions" Collapsed="true">
+    <Position X="49.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Operation\Overlay\OverlayOp.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DotSpatial.Topology.Operation.Valid.TopologyValidationErrors" Collapsed="true">
+    <Position X="28.25" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACCQAAAAIQAAAABAAAAACAAAAIAAEQEAAAAQAAA=</HashCode>
+      <FileName>Operation\Valid\TopologyValidationError.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.Algorithm.LineIntersector">
+    <Position X="24.75" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IkBAAQCIAAAIgAAGAQgAAgRIgAgAQgAAwAAEAAIACAA=</HashCode>
+      <FileName>Algorithm\LineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.NonRobustLineIntersector">
+    <Position X="26.5" Y="14.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEABAgAAAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithm\NonRobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.Algorithm.RobustLineIntersector">
+    <Position X="23.5" Y="14.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAAAAAAAAAAAAAAAABAgAAAAAAAQAAAAAAAAgA=</HashCode>
+      <FileName>Algorithm\RobustLineIntersector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

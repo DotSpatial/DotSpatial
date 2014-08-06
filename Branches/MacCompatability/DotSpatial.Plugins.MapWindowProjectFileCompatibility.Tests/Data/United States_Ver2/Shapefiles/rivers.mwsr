@@ -1,0 +1,13 @@
+<SFRendering>
+  <Layer Name="Major Rivers" GroupName="Hydrology" Type="2" Path="Shapefiles\Rivers.shp" Tag="" LegendPicture="" Visible="True" LabelsVisible="False" Expanded="True">
+    <Image Type="">
+    </Image>
+    <ShapeFileProperties LabelsVisible="False" MapTooltipField="-1" MapTooltipsEnabled="False" VerticesVisible="False" Color="12582912" DrawFill="True" TransparencyPercent="1" FillStipple="0" LineOrPointSize="1" LineStipple="0" OutLineColor="12582912" PointType="0" CustomLineStipple="0" UseTransparency="False" TransparencyColor="0" FillStippleTransparent="True" FillStippleLineColor="-16777216">
+      <CustomPointType>
+        <Image Type="">
+        </Image>
+      </CustomPointType>
+    </ShapeFileProperties>
+    <DynamicVisibility UseDynamicVisibility="False" Scale="0" />
+  </Layer>
+</SFRendering>

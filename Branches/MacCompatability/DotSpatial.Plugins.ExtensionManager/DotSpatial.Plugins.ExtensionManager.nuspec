@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners />
+    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
+    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <iconUrl>http://www.mapwindow.org/downloads/documentation/dotspatial-package-icons/DotSpatial.Plugins.ExtensionManager.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary />
+    <language>en-US</language>
+    <tags>Spatial GIS DotSpatial</tags>
+    <!-- At this time we use a custom version of the Nuget Core to avoid a security issue -->
+    <!--<dependencies>
+      <dependency id="Nuget.Core"/>
+    </dependencies>-->
+  </metadata>
+  <files>
+    <file src="SupportFiles\Nuget.Core.dll" target="lib\net40-Client" />
+  </files>
+</package>

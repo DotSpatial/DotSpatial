@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8079861-C636-4ECE-99C1-AD313276787B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Topology</RootNamespace>
+    <AssemblyName>DotSpatial.Topology</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DotSpatial.Topology.4.0.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.Topology.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DimensionType.cs" />
+    <Compile Include="FeatureType.cs" />
+    <Compile Include="Angle.cs" />
+    <Compile Include="BufferStyle.cs" />
+    <Compile Include="PrecisionModelType.cs" />
+    <Compile Include="LocationType.cs" />
+    <Compile Include="Ordinate.cs" />
+    <Compile Include="Utilities\BeBinaryReader.cs" />
+    <Compile Include="Utilities\BeBinaryWriter.cs" />
+    <Compile Include="Utilities\ByteOrder.cs" />
+    <Compile Include="Coordinate.cs" />
+    <Compile Include="CoordinateArrays.cs" />
+    <Compile Include="CoordinateArraySequence.cs" />
+    <Compile Include="Utilities\CoordinateArraySequenceFactory.cs" />
+    <Compile Include="CoordinateF.cs" />
+    <Compile Include="CoordinateList.cs" />
+    <Compile Include="CoordinateListSequence.cs" />
+    <Compile Include="Utilities\CoordinateListSequenceFactory.cs" />
+    <Compile Include="CoordinateMismatchException.cs" />
+    <Compile Include="Dimension.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Envelope.cs" />
+    <Compile Include="EnvelopeExt.cs" />
+    <Compile Include="EnumerableExt.cs" />
+    <Compile Include="InsufficientDimensionsException.cs" />
+    <Compile Include="FloatVector3.cs" />
+    <Compile Include="Utilities\WkbReader.cs" />
+    <Compile Include="Geometry.cs" />
+    <Compile Include="GeometryCollection.cs" />
+    <Compile Include="GeometryCollectionNotSupportedException.cs" />
+    <Compile Include="GeometryFactory.cs" />
+    <Compile Include="Utilities\GmlWriter.cs" />
+    <Compile Include="IBasicGeometry.cs" />
+    <Compile Include="IBasicLineString.cs" />
+    <Compile Include="IBasicPoint.cs" />
+    <Compile Include="IBasicPolygon.cs" />
+    <Compile Include="ICoordinate.cs" />
+    <Compile Include="ICoordinateF.cs" />
+    <Compile Include="ICoordinateFilter.cs" />
+    <Compile Include="ICoordinateSequence.cs" />
+    <Compile Include="ICoordinateSequenceFactory.cs" />
+    <Compile Include="IEnvelope.cs" />
+    <Compile Include="IGeometry.cs" />
+    <Compile Include="IGeometryCollection.cs" />
+    <Compile Include="IGeometryComponentFilter.cs" />
+    <Compile Include="IGeometryFactory.cs" />
+    <Compile Include="IGeometryFilter.cs" />
+    <Compile Include="IIntersectionMatrix.cs" />
+    <Compile Include="ILinearRing.cs" />
+    <Compile Include="ILineSegment.cs" />
+    <Compile Include="ILineSegmentBase.cs" />
+    <Compile Include="ILineString.cs" />
+    <Compile Include="IMatrix.cs" />
+    <Compile Include="IMatrix4.cs" />
+    <Compile Include="IMatrixD.cs" />
+    <Compile Include="IMultiLineString.cs" />
+    <Compile Include="IMultiPoint.cs" />
+    <Compile Include="IMultiPolygon.cs" />
+    <Compile Include="IntersectionMatrix.cs" />
+    <Compile Include="IOverlay.cs" />
+    <Compile Include="IPoint.cs" />
+    <Compile Include="IPolygon.cs" />
+    <Compile Include="IRectangle.cs" />
+    <Compile Include="IRelate.cs" />
+    <Compile Include="ISize.cs" />
+    <Compile Include="IVector.cs" />
+    <Compile Include="IVectorD.cs" />
+    <Compile Include="GeometryGraph\Depth.cs" />
+    <Compile Include="GeometryGraph\DirectedEdge.cs" />
+    <Compile Include="GeometryGraph\DirectedEdgeStar.cs" />
+    <Compile Include="GeometryGraph\Edge.cs" />
+    <Compile Include="GeometryGraph\EdgeEnd.cs" />
+    <Compile Include="GeometryGraph\EdgeEndStar.cs" />
+    <Compile Include="GeometryGraph\EdgeIntersection.cs" />
+    <Compile Include="GeometryGraph\EdgeIntersectionList.cs" />
+    <Compile Include="GeometryGraph\EdgeList.cs" />
+    <Compile Include="GeometryGraph\EdgeNodingValidator.cs" />
+    <Compile Include="GeometryGraph\EdgeRing.cs" />
+    <Compile Include="GeometryGraph\GeometryGraph.cs" />
+    <Compile Include="GeometryGraph\GraphComponent.cs" />
+    <Compile Include="GeometryGraph\Index\EdgeSetIntersector.cs" />
+    <Compile Include="GeometryGraph\Index\MonotoneChain.cs" />
+    <Compile Include="GeometryGraph\Index\MonotoneChainEdge.cs" />
+    <Compile Include="GeometryGraph\Index\MonotoneChainIndexer.cs" />
+    <Compile Include="GeometryGraph\Index\SegmentIntersector.cs" />
+    <Compile Include="GeometryGraph\Index\SimpleEdgeSetIntersector.cs" />
+    <Compile Include="GeometryGraph\Index\SimpleMCSweepLineIntersector.cs" />
+    <Compile Include="GeometryGraph\Index\SimpleSweepLineIntersector.cs" />
+    <Compile Include="GeometryGraph\Index\SweepLineEvent.cs" />
+    <Compile Include="GeometryGraph\Index\SweepLineSegment.cs" />
+    <Compile Include="GeometryGraph\Label.cs" />
+    <Compile Include="GeometryGraph\Node.cs" />
+    <Compile Include="GeometryGraph\NodeFactory.cs" />
+    <Compile Include="GeometryGraph\NodeMap.cs" />
+    <Compile Include="GeometryGraph\PlanarGraph.cs" />
+    <Compile Include="GeometryGraph\Position.cs" />
+    <Compile Include="GeometryGraph\QuadrantOp.cs" />
+    <Compile Include="GeometryGraph\TopologyLocation.cs" />
+    <Compile Include="GeometryGraph\TwoHorizontalEdgesException.cs" />
+    <Compile Include="LinearRing.cs" />
+    <Compile Include="LineSegment.cs" />
+    <Compile Include="LineString.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Matrix4.cs" />
+    <Compile Include="MatrixD.cs" />
+    <Compile Include="MultiLineString.cs" />
+    <Compile Include="MultiPoint.cs" />
+    <Compile Include="MultiPolygon.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="Polygon.cs" />
+    <Compile Include="PolygonException.cs" />
+    <Compile Include="PrecisionModel.cs" />
+    <Compile Include="SizeD.cs" />
+    <Compile Include="TopologyException.cs" />
+    <Compile Include="Triangle.cs" />
+    <Compile Include="Utilities\GeometryEditor.cs" />
+    <Compile Include="Utilities\GeometryTransformer.cs" />
+    <Compile Include="Utilities\LinearComponentExtracter.cs" />
+    <Compile Include="Utilities\PointExtracter.cs" />
+    <Compile Include="Utilities\PolygonExtracter.cs" />
+    <Compile Include="Utilities\ShortCircuitedGeometryVisitor.cs" />
+    <Compile Include="UnsupportedGeometryException.cs" />
+    <Compile Include="Vector.cs" />
+    <Compile Include="Utilities\WkbGeometryType.cs" />
+    <Compile Include="Utilities\WkbWriter.cs" />
+    <Compile Include="Utilities\WktWriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TopologyText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TopologyText.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Algorithm\CentroidArea.cs" />
+    <Compile Include="Algorithm\CentroidLine.cs" />
+    <Compile Include="Algorithm\CentroidPoint.cs" />
+    <Compile Include="Algorithm\CGAlgorithms.cs" />
+    <Compile Include="Algorithm\ConvexHull.cs" />
+    <Compile Include="Algorithm\HCoordinate.cs" />
+    <Compile Include="Algorithm\InteriorPointArea.cs" />
+    <Compile Include="Algorithm\InteriorPointLine.cs" />
+    <Compile Include="Algorithm\InteriorPointPoint.cs" />
+    <Compile Include="Algorithm\IntersectionType.cs" />
+    <Compile Include="Algorithm\IPointInRing.cs" />
+    <Compile Include="Algorithm\LineIntersector.cs" />
+    <Compile Include="Algorithm\McPointInRing.cs" />
+    <Compile Include="Algorithm\MinimumDiameter.cs" />
+    <Compile Include="Algorithm\NonRobustCGAlgorithms.cs" />
+    <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
+    <Compile Include="Algorithm\NotRepresentableException.cs" />
+    <Compile Include="Algorithm\PointLocator.cs" />
+    <Compile Include="Algorithm\RobustDeterminant.cs" />
+    <Compile Include="Algorithm\RobustLineIntersector.cs" />
+    <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
+    <Compile Include="Algorithm\SimplePointInRing.cs" />
+    <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="ClassNotSupportedException.cs" />
+    <Compile Include="Index\ArrayListVisitor.cs" />
+    <Compile Include="Index\Bintree\Bintree.cs" />
+    <Compile Include="Index\Bintree\Interval.cs" />
+    <Compile Include="Index\Bintree\Key.cs" />
+    <Compile Include="Index\Bintree\Node.cs" />
+    <Compile Include="Index\Bintree\NodeBase.cs" />
+    <Compile Include="Index\Bintree\Root.cs" />
+    <Compile Include="Index\Chain\MonotoneChain.cs" />
+    <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
+    <Compile Include="Index\Chain\MonotoneChainOverlapAction.cs" />
+    <Compile Include="Index\Chain\MonotoneChainSelectAction.cs" />
+    <Compile Include="Index\IIndexVisitor.cs" />
+    <Compile Include="Index\IItemVisitor.cs" />
+    <Compile Include="Index\ISpatialIndex.cs" />
+    <Compile Include="Index\KDTree\FarthestNeighborList.cs" />
+    <Compile Include="Index\KDTree\HPoint.cs" />
+    <Compile Include="Index\KDTree\HRect.cs" />
+    <Compile Include="Index\KDTree\KDNode.cs" />
+    <Compile Include="Index\KDTree\KDTree.cs" />
+    <Compile Include="Index\KDTree\KeyDuplicateException.cs" />
+    <Compile Include="Index\KDTree\KeyMissingException.cs" />
+    <Compile Include="Index\KDTree\KeySizeException.cs" />
+    <Compile Include="Index\KDTree\NearestNeighborList.cs" />
+    <Compile Include="Index\KDTree\NeighborsOutOfRangeException.cs" />
+    <Compile Include="Index\KDTree\PriorityQueue.cs" />
+    <Compile Include="Index\QuadTree\DoubleBits.cs" />
+    <Compile Include="Index\QuadTree\IntervalSize.cs" />
+    <Compile Include="Index\QuadTree\Key.cs" />
+    <Compile Include="Index\QuadTree\Node.cs" />
+    <Compile Include="Index\QuadTree\NodeBase.cs" />
+    <Compile Include="Index\QuadTree\Quadtree.cs" />
+    <Compile Include="Index\QuadTree\Root.cs" />
+    <Compile Include="Index\Strtree\AbstractNode.cs" />
+    <Compile Include="Index\Strtree\AbstractSTRtree.cs" />
+    <Compile Include="Index\Strtree\IBoundable.cs" />
+    <Compile Include="Index\Strtree\Interval.cs" />
+    <Compile Include="Index\Strtree\ItemBoundable.cs" />
+    <Compile Include="Index\Strtree\SIRtree.cs" />
+    <Compile Include="Index\Strtree\STRtree.cs" />
+    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
+    <Compile Include="Index\Sweepline\SweepLineEvent.cs" />
+    <Compile Include="Index\Sweepline\SweepLineIndex.cs" />
+    <Compile Include="Index\Sweepline\SweepLineInterval.cs" />
+    <Compile Include="Index\KDTree\NegativeArgumentException.cs" />
+    <Compile Include="Noding\INoder.cs" />
+    <Compile Include="Noding\IntersectionAdder.cs" />
+    <Compile Include="Noding\IntersectionFinderAdder.cs" />
+    <Compile Include="Noding\InvalidOctantException.cs" />
+    <Compile Include="Noding\ISegmentIntersector.cs" />
+    <Compile Include="Noding\IteratedNoder.cs" />
+    <Compile Include="Noding\MCIndexNoder.cs" />
+    <Compile Include="Noding\NodingValidator.cs" />
+    <Compile Include="Noding\Octant.cs" />
+    <Compile Include="Noding\OrientedCoordinateArray.cs" />
+    <Compile Include="Noding\ScaledNoder.cs" />
+    <Compile Include="Noding\SegmentNode.cs" />
+    <Compile Include="Noding\SegmentNodeList.cs" />
+    <Compile Include="Noding\SegmentPointComparator.cs" />
+    <Compile Include="Noding\SegmentString.cs" />
+    <Compile Include="Noding\SegmentStringDissolver.cs" />
+    <Compile Include="Noding\SimpleNoder.cs" />
+    <Compile Include="Noding\SinglePassNoder.cs" />
+    <Compile Include="Noding\Snapround\HotPixel.cs" />
+    <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
+    <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
+    <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
+    <Compile Include="Operation\Buffer\BufferBuilder.cs" />
+    <Compile Include="Operation\Buffer\BufferOp.cs" />
+    <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveBuilder.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveSetBuilder.cs" />
+    <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
+    <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
+    <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
+    <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
+    <Compile Include="Operation\Distance\DistanceOp.cs" />
+    <Compile Include="Operation\Distance\GeometryLocation.cs" />
+    <Compile Include="Operation\GeometryGraphOperation.cs" />
+    <Compile Include="Operation\IsSimpleOp.cs" />
+    <Compile Include="Operation\Linemerge\EdgeString.cs" />
+    <Compile Include="Operation\Linemerge\LineMergeDirectedEdge.cs" />
+    <Compile Include="Operation\Linemerge\LineMergeEdge.cs" />
+    <Compile Include="Operation\Linemerge\LineMergeGraph.cs" />
+    <Compile Include="Operation\Linemerge\LineMerger.cs" />
+    <Compile Include="Operation\Overlay\EdgeSetNoder.cs" />
+    <Compile Include="Operation\Overlay\LineBuilder.cs" />
+    <Compile Include="Operation\Overlay\MaximalEdgeRing.cs" />
+    <Compile Include="Operation\Overlay\MinimalEdgeRing.cs" />
+    <Compile Include="Operation\Overlay\OverlayNodeFactory.cs" />
+    <Compile Include="Operation\Overlay\OverlayOp.cs" />
+    <Compile Include="Operation\Overlay\PointBuilder.cs" />
+    <Compile Include="Operation\Overlay\PolygonBuilder.cs" />
+    <Compile Include="Operation\Polygonize\DuplicateEdgeException.cs" />
+    <Compile Include="Operation\Polygonize\EdgeRing.cs" />
+    <Compile Include="Operation\Polygonize\LineStringAdder.cs" />
+    <Compile Include="Operation\Polygonize\NullEdgeException.cs" />
+    <Compile Include="Operation\Polygonize\PolygonizeDirectedEdge.cs" />
+    <Compile Include="Operation\Polygonize\PolygonizeEdge.cs" />
+    <Compile Include="Operation\Polygonize\PolygonizeGraph.cs" />
+    <Compile Include="Operation\Polygonize\Polygonizer.cs" />
+    <Compile Include="Operation\Predicate\RectangleContains.cs" />
+    <Compile Include="Operation\Predicate\RectangleIntersects.cs" />
+    <Compile Include="Operation\Predicate\SegmentIntersectionTester.cs" />
+    <Compile Include="Operation\Relate\EdgeEndBuilder.cs" />
+    <Compile Include="Operation\Relate\EdgeEndBundle.cs" />
+    <Compile Include="Operation\Relate\EdgeEndBundleStar.cs" />
+    <Compile Include="Operation\Relate\RelateComputer.cs" />
+    <Compile Include="Operation\Relate\RelateNode.cs" />
+    <Compile Include="Operation\Relate\RelateNodeFactory.cs" />
+    <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
+    <Compile Include="Operation\Relate\RelateOp.cs" />
+    <Compile Include="Operation\Valid\ConnectedInteriorTester.cs" />
+    <Compile Include="Operation\Valid\ConsistentAreaTester.cs" />
+    <Compile Include="Operation\Valid\IsValidOp.cs" />
+    <Compile Include="Operation\Valid\QuadtreeNestedRingTester.cs" />
+    <Compile Include="Operation\Valid\RepeatedPointTester.cs" />
+    <Compile Include="Operation\Valid\ShellHoleIdentityException.cs" />
+    <Compile Include="Operation\Valid\SimpleNestedRingTester.cs" />
+    <Compile Include="Operation\Valid\SweeplineNestedRingTester.cs" />
+    <Compile Include="Operation\Valid\TopologyValidationError.cs" />
+    <Compile Include="Planargraph\Algorithm\ConnectedSubgraphFinder.cs" />
+    <Compile Include="Planargraph\DirectedEdge.cs" />
+    <Compile Include="Planargraph\DirectedEdgeStar.cs" />
+    <Compile Include="Planargraph\Edge.cs" />
+    <Compile Include="Planargraph\GraphComponent.cs" />
+    <Compile Include="Planargraph\Node.cs" />
+    <Compile Include="Planargraph\NodeMap.cs" />
+    <Compile Include="Planargraph\PlanarGraph.cs" />
+    <Compile Include="Planargraph\Subgraph.cs" />
+    <Compile Include="Precision\CommonBits.cs" />
+    <Compile Include="Precision\CommonBitsOp.cs" />
+    <Compile Include="Precision\CommonBitsRemover.cs" />
+    <Compile Include="Precision\EnhancedPrecisionOp.cs" />
+    <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
+    <Compile Include="ShouldNeverReachHereException.cs" />
+    <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
+    <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
+    <Compile Include="Simplify\LineSegmentIndex.cs" />
+    <Compile Include="Simplify\TaggedLineSegment.cs" />
+    <Compile Include="Simplify\TaggedLinesSimplifier.cs" />
+    <Compile Include="Simplify\TaggedLineString.cs" />
+    <Compile Include="Simplify\TaggedLineStringSimplifier.cs" />
+    <Compile Include="Simplify\TopologyPreservingSimplifier.cs" />
+    <Compile Include="Utilities\Assert.cs" />
+    <Compile Include="Utilities\AssertionFailedException.cs" />
+    <Compile Include="Utilities\CollectionUtil.cs" />
+    <Compile Include="Utilities\Global.cs" />
+    <Compile Include="Utilities\HexConverter.cs" />
+    <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
+    <Compile Include="Voronoi\FortuneVoronoi.cs" />
+    <Compile Include="Voronoi\HashSet.cs" />
+    <Compile Include="Voronoi\ToolBox.cs" />
+    <Compile Include="Voronoi\Vector2.cs" />
+    <Compile Include="Voronoi\VEvent.cs" />
+    <Compile Include="Voronoi\VNode.cs" />
+    <Compile Include="Voronoi\VoronoiEdge.cs" />
+    <Compile Include="Voronoi\VoronoiGraph.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TopologyText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TopologyText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagrams\ClassDiagram3.cd" />
+    <None Include="ClassDiagrams\DotSpatial_AbstractRtree.cd" />
+    <None Include="ClassDiagrams\DotSpatial_Coordinate.cd" />
+    <None Include="ClassDiagrams\DotSpatial_EdgeEnd.cd" />
+    <None Include="ClassDiagrams\DotSpatial_EdgeRing.cd" />
+    <None Include="ClassDiagrams\DotSpatial_EdgeEndStar.cd" />
+    <None Include="ClassDiagrams\DotSpatial_GraphComponent.cd" />
+    <None Include="ClassDiagrams\DotSpatial_GraphComponent_II.cd" />
+    <None Include="ClassDiagrams\DotSpatial_IGeometry.cd" />
+    <None Include="ClassDiagrams\DotSpatial_ISet.cd" />
+    <None Include="ClassDiagrams\DotSpatial_IBasicGeometry.cd" />
+    <None Include="ClassDiagrams\DotSpatial_ISet_T.cd" />
+    <None Include="ClassDiagrams\DotSpatial_GeometryGraphOperation.cd" />
+    <None Include="ClassDiagrams\DotSpatial_LineIntersector.cd" />
+    <None Include="ClassDiagrams\DotSpatial_NodeBase_II.cd" />
+    <None Include="ClassDiagrams\DotSpatial_PlanarGraph.cd" />
+    <None Include="ClassDiagrams\DotSpatial_ShortCircuitedGeometryVisitor.cd" />
+    <None Include="ClassDiagrams\DotSpatial_SinglePassNoder.cd" />
+    <None Include="ClassDiagrams\DotSpatial_VEvent.cd" />
+    <None Include="ClassDiagrams\DotSpatial_VNode.cd" />
+    <None Include="ClassDiagrams\DotSpatisl_NodeFactory.cd" />
+    <None Include="ClassDiagrams\Dot_Spatial_NodeBase_I.cd" />
+    <None Include="ClassDiagrams\DotSpatial_EdgeSetIntersector.cd" />
+    <None Include="ClassDiagrams\DotSpatial_EnumerableWrapper_T.cd" />
+    <None Include="ClassDiagrams\DotSpatial_LineSegment.cd" />
+    <None Include="ClassDiagrams\DotSpatial_MatrixD.cd" />
+    <None Include="ClassDiagrams\DotSpatial_PlanarGraph_II.cd" />
+    <None Include="package.nuspec" />
+    <None Include="DotSpatial.Topology.4.0.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
+      <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
+      <Name>DotSpatial.Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

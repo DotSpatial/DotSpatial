@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <description>$description$</description>
+    <owners />
+    <licenseUrl>http://dotspatial.codeplex.com/license</licenseUrl>
+    <projectUrl>http://dotspatial.codeplex.com/</projectUrl>
+    <iconUrl>http://download.codeplex.com/Download?ProjectName=dotspatial&amp;DownloadId=246554</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary />
+    <language>en-US</language>
+    <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
+    <dependencies>
+      <dependency id="DotSpatial.Controls" />
+      <dependency id="DotSpatial.Data" />
+      <dependency id="DotSpatial.Symbology" />
+      <dependency id="DotSpatial.Topology" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotSpatial.Topology.GeometriesGraph.DirectedEdge">
+    <Position X="23" Y="29.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ggAKAAEAAkgABAEAAACgAEAJAAgAIAAjAAAAAIPEAgA=</HashCode>
+      <FileName>GeometryGraph\DirectedEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotSpatial.Topology.GeometriesGraph.EdgeEnd">
+    <Position X="21.75" Y="22.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAFgBIAEAAABBwEABBAAAQEAAAABQAAAAACAAEAAAA=</HashCode>
+      <FileName>GeometryGraph\EdgeEnd.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotSpatial.Topology.Operation.Relate.EdgeEndBundle">
+    <Position X="20.5" Y="29.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAIBBAAAAEAQAAAEAAAAAAAAAAAAAEAEAA=</HashCode>
+      <FileName>Operation\Relate\EdgeEndBundle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
