@@ -5,7 +5,7 @@ using System.Drawing;
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using DotSpatial.Controls;
-using DotSpatial.MacControls;
+using DotSpatial.Controls.MonoMac;
 using DotSpatial.Topology;
 
 namespace MacDemoMap
@@ -13,7 +13,7 @@ namespace MacDemoMap
 	public partial class MainWindow : MonoMac.AppKit.NSWindow
 	{
 		private AppManager appManager;
-		private MacMap map = new MacMap();
+        private DotSpatial.Controls.MonoMac.Map map = new DotSpatial.Controls.MonoMac.Map();
 
 		#region Constructors
 
@@ -35,30 +35,38 @@ namespace MacDemoMap
 
 		public override void AwakeFromNib()
         {
-            //Map map = new Map ();
+            //Add table view for map
             NSTabView tabView = new NSTabView (new RectangleF (21, 5, 680, 451));
             tabView.AutoresizingMask = NSViewResizingMask.HeightSizable | NSViewResizingMask.WidthSizable;
             ContentView.AddSubview (tabView);
+
+            //Add map
 			NSTabViewItem item = new NSTabViewItem ();
 			item.Label = "Map";
             item.View = (NSView)map;
 			tabView.Add(item);
 			appManager = new DotSpatial.Controls.AppManager();
 			appManager.Map = map;
-			LoadProject.Activated += Load_Project;
-			panButton.Activated += ChangeFunctionMode;
-			zoomInButton.Activated += ChangeFunctionMode;
-			zoomOutButton.Activated += ChangeFunctionMode;
-			selectButton.Activated += ChangeFunctionMode;
-			deselectButton.Activated += ChangeFunctionMode;
 
+            //Create Main Menu
             Menu = new NSMenu ("MainMenu");
+            NSApplication.SharedApplication.MainMenu = Menu;
+
+            //Add AppMenu
             NSMenuItem menuItem = new NSMenuItem ("Application Menu");
             Menu.AddItem (menuItem);
-            NSMenu BlaBla = new NSMenu ("Application Menu");
-            menuItem.Submenu = BlaBla;
-            BlaBla.AddItem (new NSMenuItem ("Quit"));
-            NSApplication.SharedApplication.MainMenu = Menu;
+            NSMenu AppMenu = new NSMenu ("Application Menu");
+            menuItem.Submenu = AppMenu;
+            NSMenuItem quitMenuItem = new NSMenuItem ("Quit");
+            AppMenu.AddItem(quitMenuItem);
+
+            //Events
+            LoadProject.Activated += Load_Project;
+            panButton.Activated += ChangeFunctionMode;
+            zoomInButton.Activated += ChangeFunctionMode;
+            zoomOutButton.Activated += ChangeFunctionMode;
+            selectButton.Activated += ChangeFunctionMode;
+            deselectButton.Activated += ChangeFunctionMode;
 		}
 
 		public void Load_Project(Object sender, EventArgs e)
@@ -96,6 +104,11 @@ namespace MacDemoMap
 				map.MapFrame.ClearSelection(out env);
 			}
 		}
+
+        public void Quit_Clicked(Object sender, EventArgs e)
+        {
+            NSApplication.SharedApplication.Terminate(this);
+        }
 
 		#endregion
 	}

@@ -117,7 +117,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="IMapView.cs" />
     <Compile Include="IPreviewMap.cs" />
     <Compile Include="IPreviewMapHandler.cs" />
     <Compile Include="IUserControl.cs" />
@@ -192,13 +191,6 @@
     <Compile Include="IMapLabelLayer.cs" />
     <Compile Include="MapDrawTextArgs.cs" />
     <Compile Include="MapLabelLayer.cs" />
-    <Compile Include="MapCore.Windows.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <EmbeddedResource Include="MapCore.Windows.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MapCore.Windows.cs</DependentUpon>
-    </EmbeddedResource>
     <Compile Include="MapArgs.cs" />
     <Compile Include="MapDrawArgs.cs" />
     <Compile Include="MapFrame.cs" />
@@ -297,13 +289,21 @@
     <Compile Include="ZoomToCoordinatesDialog.Designer.cs">
       <DependentUpon>ZoomToCoordinatesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapCore.Windows.designer.cs">
-      <DependentUpon>MapCore.Windows.cs</DependentUpon>
-    </Compile>
     <Compile Include="MapCore.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Map.cs" />
+    <Compile Include="Map.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="Map.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Map.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Map.designer.cs">
+      <DependentUpon>Map.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IMapExtensions.cs" />
+    <Compile Include="IBasicMapExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MapFrameProjectionDialog.resx">

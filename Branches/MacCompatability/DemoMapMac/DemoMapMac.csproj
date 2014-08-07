@@ -59,7 +59,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="MonoMac">
-      <HintPath>..\DotSpatial.MacControls\MonoMac.dll</HintPath>
+      <HintPath>..\DotSpatial.Controls.MonoMac\MonoMac.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -113,10 +113,6 @@
       <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
       <Name>DotSpatial.Topology</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.MacControls\DotSpatial.MacControls.csproj">
-      <Project>{169E139D-AACE-44BD-A72E-C307EBD16DE5}</Project>
-      <Name>DotSpatial.MacControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
       <Project>{C1018695-3401-47A9-B195-ABD3A20C2489}</Project>
       <Name>DotSpatial.Data</Name>
@@ -128,6 +124,10 @@
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
       <Project>{01A845C6-D391-4258-81B0-C6ABF23D3364}</Project>
       <Name>DotSpatial.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Controls.MonoMac\DotSpatial.Controls.MonoMac.csproj">
+      <Project>{169E139D-AACE-44BD-A72E-C307EBD16DE5}</Project>
+      <Name>DotSpatial.Controls.MonoMac</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

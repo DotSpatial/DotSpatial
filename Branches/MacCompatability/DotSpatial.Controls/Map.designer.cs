@@ -28,7 +28,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A Map Component that can be dropped on a form
     /// </summary>
-    partial class MapCore
+    partial class Map
     {
         /// <summary>
         /// Required designer variable.
@@ -56,7 +56,7 @@ namespace DotSpatial.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapCore));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Map));
             this.SuspendLayout();
             //
             // Map

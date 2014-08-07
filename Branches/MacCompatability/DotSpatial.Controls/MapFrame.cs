@@ -1346,23 +1346,23 @@ namespace DotSpatial.Controls
                 ProjectionInfo result = _chosenProjection;
                 if (ProjectionModeDefine == ActionMode.Prompt || ProjectionModeDefine == ActionMode.PromptOnce)
                 {
-//                    var dlg = new UndefinedProjectionDialog
-//                    {
-//                        OriginalString = layer.DataSet.ProjectionString,
-//                        MapProjection = Projection,
-//                        LayerName = layer.DataSet.Name,
-//                    };
-//
-//                    if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
-//                    dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);
-//                    dlg.ShowDialog(Parent);
-//
-//                    if (dlg.AlwaysUse)
-//                    {
-//                        _chosenProjection = dlg.Result;
-//                        ProjectionModeDefine = ActionMode.Always;
-//                    }
-//                    result = dlg.Result;
+                    var dlg = new UndefinedProjectionDialog
+                    {
+                        OriginalString = layer.DataSet.ProjectionString,
+                        MapProjection = Projection,
+                        LayerName = layer.DataSet.Name,
+                    };
+
+                    if (_chosenProjection != null) dlg.SelectedCoordinateSystem = _chosenProjection;
+                    dlg.AlwaysUse = (ProjectionModeDefine == ActionMode.PromptOnce);
+                    dlg.ShowDialog ();
+
+                    if (dlg.AlwaysUse)
+                    {
+                        _chosenProjection = dlg.Result;
+                        ProjectionModeDefine = ActionMode.Always;
+                    }
+                    result = dlg.Result;
                 }
                 if (result != null)
                 {
@@ -1413,11 +1413,11 @@ namespace DotSpatial.Controls
         /// </summary>
         private void Projection_Click(object sender, EventArgs e)
         {
-//            //Launches a MapFrameProjectionDialog
-//            using (var dialog = new MapFrameProjectionDialog(this))
-//            {
-//                dialog.ShowDialog(Parent);
-//            }
+            //Launches a MapFrameProjectionDialog
+            using (var dialog = new MapFrameProjectionDialog(this))
+            {
+                dialog.ShowDialog();
+            }
         }
 
         #endregion Protected Methods

@@ -23,7 +23,7 @@ using System.Drawing;
 using MonoMac.Foundation;
 using DotSpatial.Data;
 
-namespace DotSpatial.Controls
+namespace DotSpatial.Controls.MonoMac
 {
     /// <summary>
     /// A MapFunction that can zoom the map using the scroll wheel.

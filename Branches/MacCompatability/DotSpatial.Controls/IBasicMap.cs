@@ -29,7 +29,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// IBasicMap
     /// </summary>
-    public interface IBasicMap : IMapView, ISelectable
+    public interface IBasicMap : ISelectable
     {
         #region Methods
 
@@ -65,25 +65,6 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <param name="clipRectangle"></param>
         void Invalidate(Rectangle clipRectangle);
-
-        /// <summary>
-        /// Instructs the map to update the specified clipRectangle by drawing it to the back buffer.
-        /// </summary>
-        /// <param name="clipRectangle"></param>
-        void RefreshMap(Rectangle clipRectangle);
-
-        /// <summary>
-        /// Instructs the map to change the perspective to include the entire drawing content, and
-        /// in the case of 3D maps, changes the perspective to look from directly overhead.
-        /// </summary>
-        void ZoomToMaxExtent();
-
-        /// <summary> 
-        /// //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
-        /// Gets the MaxExtents of current Map.
-        /// </summary>
-        Extent GetMaxExtent();
-
 
         #endregion
 
@@ -189,6 +170,15 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
+        /// Gets or sets the geographic extents to show in the view.
+        /// </summary>
+        Extent ViewExtents
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Map BackColor
         /// </summary>
         Color BackColor {
@@ -211,19 +201,6 @@ namespace DotSpatial.Controls
         {
             get;
         }
-
-        /// <summary>
-        /// Instructs the map to clear the layers.
-        /// </summary>
-        void ClearLayers();
-
-        /// <summary>
-        /// returns a functional list of the ILayer members.  This list will be
-        /// separate from the actual list stored, but contains a shallow copy
-        /// of the members, so the layers themselves can be accessed directly.
-        /// </summary>
-        /// <returns></returns>
-        List<ILayer> GetLayers();
 
         #endregion
     }

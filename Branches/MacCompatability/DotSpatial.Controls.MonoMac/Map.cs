@@ -1,28 +1,3 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Controls.dll
-// Description:  The Windows Forms user interface controls like the map, legend, toolbox, ribbon and others.
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Original Code is from MapWindow.dll version 6.0
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 7/25/2008 9:37:01 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// Name               |   Date             |         Comments
-//--------------------|--------------------|--------------------------------------------------------
-// Jiri Kadlec        |  2/18/2010         |  Added zoom out button and custom mouse cursors
-// Kyle Ellison       | 12/15/2010         |  Fixed Issue #190 (Deactivated MapFunctions still involved)
-// Eric Hullinger     | 12/28/2012         |  Resolved Issue (Unrestricted Zoom Out)
-// ********************************************************************************************************
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,122 +17,148 @@ using DotSpatial.Symbology;
 using DotSpatial.Topology;
 using Point = System.Drawing.Point;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
+using MonoMac.Foundation;
+using MonoMac.AppKit;
+using MonoMac.CoreGraphics;
 
-namespace DotSpatial.Controls
+namespace DotSpatial.Controls.MonoMac
 {
     /// <summary>
     /// The Map Control for 2D applications.
     /// </summary>
-    public partial class Map : UserControl, IMessageFilter, IMap
+    public class Map : NSView, IMap
     {
-        #region Windows Code
+        #region MonoMac Code
+
+        /// <summary>
+        /// Public event advertising the mouse down
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> GeoMouseDown;
+
+        /// <summary>
+        /// Public event advertising the mouse up
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> GeoMouseUp;
+
+        /// <summary>
+        /// Public event advertising the mouse up
+        /// </summary>
+        public event EventHandler<GeoMouseArgs> GeoScrollWheel;
+
+        /// <summary>
+        /// Public event advertising the mouse down
+        /// </summary>
+        public event EventHandler<KeyEventArgs> GeoKeyDown;
+
+        /// <summary>
+        /// Public event advertising the mouse up
+        /// </summary>
+        public event EventHandler<KeyEventArgs> GeoKeyUp;
+
+        private NSCursor _nsCursor = NSCursor.ArrowCursor;
+        private Color _backColor = Color.White;
+        private Rectangle _bounds = Rectangle.Empty;
 
         public Map()
         {
-            InitializeComponent();
-            Application.AddMessageFilter(this);
             _mapCore = new MapCore(this);
             Configure();
             MapFunctions.Add(new MapFunctionZoom (this));
+            OnSizeChanged (this, new EventArgs());
         }
 
-        /// <summary>
-        /// Handles the resizing in the case where the map uses docking, and therefore
-        /// needs to be updated whenever the form changes size.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnLoad(EventArgs e)
+        public void Invalidate()
         {
-            KeyUp += Map_KeyUp;
-            KeyDown += Map_KeyDown;
-
-            SizeChanged += OnSizeChanged;
-            _mapCore.oldSize = Size;
+            SetNeedsDisplayInRect(((NSView)this).Bounds);
         }
 
-        public bool PreFilterMessage(ref Message m) 
+        public void Invalidate(Rectangle clipRectangle)
         {
-            if (m.Msg == 0x0100)
-            {
-                if(ContainsFocus)
-                    OnKeyDown(new KeyEventArgs((Keys)m.WParam.ToInt32()));
-            }
-            else if (m.Msg == 0x0101)
-            {
-                if (ContainsFocus)
-                    OnKeyUp(new KeyEventArgs((Keys)m.WParam.ToInt32()));
-            }
-            return false;
+            SetNeedsDisplayInRect(new RectangleF(clipRectangle.X, 
+                Height - (clipRectangle.Height + clipRectangle.Y),
+                clipRectangle.Width, clipRectangle.Height));
         }
 
-        private void Map_KeyUp(object sender, KeyEventArgs e)
+        public Cursor Cursor {
+            get;
+            set;
+        }
+
+        public Point PointToScreen(Point position)
         {
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
-            {
-                tool.DoKeyUp(e);
-                if (e.Handled) break;
+            return Point.Empty;
+        }
+
+        public Point PointToClient(Point position)
+        {
+            return Point.Empty;
+        }
+
+        public int Left
+        {
+            get{
+                return 0;
             }
         }
 
-        private void Map_KeyDown(object sender, KeyEventArgs e)
+        public int Top
         {
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
-            {
-                tool.DoKeyDown(e);
-                if (e.Handled) break;
+            get{
+                return 0;
             }
         }
 
-        /// <inheritdoc />
-        protected override void OnDragEnter(DragEventArgs drgevent)
+        public Color BackColor
         {
-            drgevent.Effect = drgevent.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-            base.OnDragEnter(drgevent);
+            set{
+                _backColor = value;
+            }
+            get{
+                return _backColor;
+            }
         }
 
-        /// <inheritdoc />
-        protected override void OnDragDrop(DragEventArgs drgevent)
+        public Rectangle Bounds
         {
-            string[] s = (string[])drgevent.Data.GetData(DataFormats.FileDrop, false);
-            if (s == null)
-            {
-                base.OnDragDrop(drgevent);
-                return;
+            get{
+                _bounds.Height = (int)Frame.Height;
+                _bounds.Width = (int)Frame.Width;
+                _bounds.X = (int)Frame.X;
+                _bounds.Y = (int)(this.Superview.Bounds.Height - Frame.Y);
+                return _bounds;
             }
-            int i;
-            bool failed = false;
-            for (i = 0; i < s.Length; i++)
-            {
-                try
-                {
-                    AddLayer(s[i]);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                    // failed at least one effort
-                    failed = true;
-                }
+        }
+
+        public Rectangle ClientRectangle
+        {
+            get{
+                return new Rectangle (0, 0, Width, Height);
             }
-            if (failed)
-            {
-                MessageBox.Show(MessageStrings.Map_OnDragDrop_Invalid);
+        }
+
+        public int Height {
+            get{
+                return (int)((NSView)this).Bounds.Height;
+            }
+        }
+
+        public int Width {
+            get{
+                return (int)((NSView)this).Bounds.Width;
             }
         }
 
         /// <summary>
         /// Cursor hiding from designer
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override Cursor Cursor
-        {
-            get
-            {
-                return base.Cursor;
-            }
-            set
-            {
-                base.Cursor = value;
+        public NSCursor nsCursor {
+            get{return _nsCursor;}
+            set{
+                if (_nsCursor != value) {
+                    _nsCursor = value;
+                    if(Window != null)
+                        Window.InvalidateCursorRectsForView (this);
+                }
             }
         }
 
@@ -177,57 +178,37 @@ namespace DotSpatial.Controls
                 case FunctionMode.ZoomIn:
                     try
                     {
-                        MemoryStream ms = new MemoryStream(Images.cursorZoomIn);
-                        Cursor = new Cursor(ms);
+                        nsCursor = new NSCursor(ToNSImage(Images.cursorZoomIn), new PointF(6, 6));
                     }
                     catch
                     {
-                        Cursor = Cursors.Arrow;
+                        nsCursor = NSCursor.ArrowCursor;
                     }
                     break;
                 case FunctionMode.ZoomOut:
                     try
                     {
-                        MemoryStream ms = new MemoryStream(Images.cursorZoomOut);
-                        Cursor = new Cursor(ms);
+                        nsCursor = new NSCursor(ToNSImage(Images.cursorZoomOut), new PointF(16, 15));
                     }
                     catch
                     {
-                        Cursor = Cursors.Arrow;
+                        nsCursor = NSCursor.ArrowCursor;
                     }
                     break;
                 case FunctionMode.Info:
-                    Cursor = Cursors.Help;
+                    nsCursor = NSCursor.CrosshairCursor;
                     break;
                 case FunctionMode.Label:
-                    Cursor = Cursors.IBeam;
+                    nsCursor = NSCursor.IBeamCursor;
                     break;
                 case FunctionMode.None:
-                    Cursor = Cursors.Arrow;
+                    nsCursor = NSCursor.ArrowCursor;
                     break;
                 case FunctionMode.Pan:
-                    try
-                    {
-                        MemoryStream ms = new MemoryStream(Images.cursorHand);
-                        Cursor = new Cursor(ms);
-                    }
-                    catch
-                    {
-                        Cursor = Cursors.SizeAll;
-                        break;
-                    }
+                    nsCursor = NSCursor.ClosedHandCursor;
                     break;
-
                 case FunctionMode.Select:
-                    try
-                    {
-                        MemoryStream ms = new MemoryStream(Images.cursorSelect);
-                        Cursor = new Cursor(ms);
-                    }
-                    catch
-                    {
-                        Cursor = Cursors.Hand;
-                    }
+                    nsCursor = NSCursor.PointingHandCursor;
                     break;
                 }
 
@@ -253,149 +234,310 @@ namespace DotSpatial.Controls
             }
         }
 
+        public static NSImage ToNSImage(byte[] b)
+        {
+            NSData imageData = NSData.FromArray(b);
+            return new NSImage(imageData);
+        }
+
         /// <summary>
         /// This causes all of the data layers to re-draw themselves to the buffer, rather than just drawing
         /// the buffer itself like what happens during "Invalidate"
         /// </summary>
-        public override void Refresh()
+        public void Refresh()
         {
             MapFrame.Initialize();
-            base.Refresh();
             Invalidate();
         }
 
-        /// <summary>
-        /// Occurs when this control tries to paint the background.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPaintBackground(PaintEventArgs e)
+        public override void KeyUp(NSEvent theEvent)
         {
-            //This is done deliberately to prevent flicker.
-            //base.OnPaintBackground(e);
-        }
+            KeyEventArgs e = new KeyEventArgs(ToKeys(theEvent.KeyCode));
 
-        /// <summary>
-        /// Perform custom drawing
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            if (MapFrame.IsPanning) return;
-
-            var clip = e.ClipRectangle;
-            if (clip.IsEmpty) clip = ClientRectangle;
-
-            // if the area to paint is too small, there's nothing to paint.
-            // Added to fix http://dotspatial.codeplex.com/workitem/320
-            if (clip.Width < 1 || clip.Height < 1) return;
-
-            using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
-            using (var g = Graphics.FromImage(stencil))
+            foreach (IMapFunction tool in MapFunctions)
             {
-                using(var b = new SolidBrush(BackColor))
-                    g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
-
-                using (var m = new Matrix())
+                if (tool.Enabled)
                 {
-                    m.Translate(-clip.X, -clip.Y);
-                    g.Transform = m;
-
-                    Draw(g, e);
-
-                    var args = new MapDrawArgs(g, clip, MapFrame);
-                    foreach (var tool in MapFunctions.Where(_ => _.Enabled))
-                    {
-                        tool.Draw(args);
-                    }
-
-                    var pe = new PaintEventArgs(g, e.ClipRectangle);
-                    base.OnPaint(pe);
+                    tool.DoKeyUp(e);
                 }
-
-                e.Graphics.DrawImageUnscaled(stencil, clip.X, clip.Y);
             }
+
+            var handler = GeoKeyUp;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            base.KeyDown (theEvent);
         }
 
-        /// <summary>
-        /// Fires the DoMouseDoubleClick method on the ActiveTools
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        private Keys ToKeys(ushort KeyCode)
         {
-            var args = new GeoMouseArgs(e, this);
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            Keys key;
+            switch (KeyCode)
             {
-                tool.DoMouseDoubleClick(args);
-                if (args.Handled) break;
+            case (ushort)NSKey.UpArrow:
+                key = Keys.Up;
+                break;
+            case (ushort)NSKey.DownArrow:
+                key = Keys.Down;
+                break;
+            case (ushort)NSKey.LeftArrow:
+                key = Keys.Left;
+                break;
+            case (ushort)NSKey.RightArrow:
+                key = Keys.Right;
+                break;
+            case 126:
+                key = Keys.Up;
+                break;
+            case 125:
+                key = Keys.Down;
+                break;
+            case 123:
+                key = Keys.Left;
+                break;
+            case 124:
+                key = Keys.Right;
+                break;
+            case (ushort)NSKey.PageUp:
+                key = Keys.PageUp;
+                break;
+            case (ushort)NSKey.PageDown:
+                key = Keys.PageDown;
+                break;
+            case (ushort)NSKey.Home:
+                key = Keys.Home;
+                break;
+            case (ushort)NSKey.End:
+                key = Keys.End;
+                break;
+            case 116:
+                key = Keys.PageUp;
+                break;
+            case 121:
+                key = Keys.PageDown;
+                break;
+            case 115:
+                key = Keys.Home;
+                break;
+            case 119:
+                key = Keys.End;
+                break;
+            case (ushort)NSKey.Space:
+                key = Keys.Space;
+                break;
+            default:
+                key = Keys.None;
+                break;
             }
-
-            base.OnMouseDoubleClick(e);
+            return key;
         }
 
-        /// <summary>
-        /// Fires the OnMouseDown event on the Active Tools
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseDown(MouseEventArgs e)
+        public override void ResetCursorRects()
         {
-            var args = new GeoMouseArgs(e, this);
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            base.ResetCursorRects();
+            AddCursorRect(((NSView)this).Bounds, nsCursor);
+        }
+
+        public override bool AcceptsFirstResponder ()
+        {
+            return true;
+        }
+
+        public override void KeyDown(NSEvent theEvent)
+        {
+            KeyEventArgs e = new KeyEventArgs(ToKeys(theEvent.KeyCode));
+
+            foreach (IMapFunction tool in MapFunctions)
             {
-                tool.DoMouseDown(args);
-                if (args.Handled) break;
+                if (tool.Enabled)
+                {
+                    tool.DoKeyDown(e);
+                }
             }
 
-            base.OnMouseDown(e);
+            var handler = GeoKeyDown;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            base.KeyDown (theEvent);
         }
 
         /// <summary>
         /// Fires the OnMouseUp event on the Active Tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseUp(MouseEventArgs e)
+        public override void MouseUp(NSEvent theEvent)
         {
-            var args = new GeoMouseArgs(e, this);
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            var LocationInView = ConvertPointFromView (theEvent.LocationInWindow, null);
+            GeoMouseArgs e = new GeoMouseArgs(new MouseEventArgs (MouseButtons.Left, theEvent.ClickCount,
+                (int)LocationInView.X, (int)(Height - LocationInView.Y), 0), this);
+
+            foreach (IMapFunction tool in MapFunctions)
             {
-                tool.DoMouseUp(args);
-                if (args.Handled) break;
+                if (tool.Enabled)
+                {
+                    tool.DoMouseUp(e);
+                    if (e.Handled) break;
+                }
             }
 
-            base.OnMouseUp(e);
+            var handler = GeoMouseUp;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            base.MouseUp(theEvent);
+        }
+
+        /// <summary>
+        /// Fires the OnMouseDown event on the Active Tools
+        /// </summary>
+        /// <param name="e"></param>
+        public override void MouseDown(NSEvent theEvent)
+        {
+            var LocationInView = ConvertPointFromView (theEvent.LocationInWindow, null);
+            GeoMouseArgs e = new GeoMouseArgs(new MouseEventArgs (MouseButtons.Left, theEvent.ClickCount,
+                (int)LocationInView.X, (int)(Height - LocationInView.Y), 0), this);
+
+            foreach (IMapFunction tool in MapFunctions)
+            {
+                if (tool.Enabled)
+                {
+                    tool.DoMouseDown(e);
+                    if (e.Handled) break;
+                }
+            }
+
+            var handler = GeoMouseDown;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            base.MouseDown(theEvent);
         }
 
         /// <summary>
         /// Fires the OnMouseMove event on the Active Tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseMove(MouseEventArgs e)
+        public override void MouseDragged(NSEvent theEvent)
         {
-            var args = new GeoMouseArgs(e, this);
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            var LocationInView = ConvertPointFromView (theEvent.LocationInWindow, null);
+            GeoMouseArgs args = new GeoMouseArgs(new MouseEventArgs (MouseButtons.None, 0,
+                (int)LocationInView.X, (int)(Height - LocationInView.Y), 0), this);
+
+            foreach (IMapFunction tool in MapFunctions)
             {
-                tool.DoMouseMove(args);
-                if (args.Handled) break;
+                if (tool.Enabled)
+                {
+                    tool.DoMouseMove(args);
+                    if (args.Handled) break;
+                }
             }
 
             OnMouseMove(args);
 
-            base.OnMouseMove(e);
+            base.MouseDragged(theEvent);
         }
 
         /// <summary>
         /// Fires the OnMouseWheel event for the active tools
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseWheel(MouseEventArgs e)
+        public override void ScrollWheel(NSEvent theEvent) 
         {
-            var args = new GeoMouseArgs(e, this);
-            foreach (var tool in MapFunctions.Where(_ => _.Enabled))
+            var LocationInView = ConvertPointFromView (theEvent.LocationInWindow, null);
+            GeoMouseArgs e = new GeoMouseArgs(new MouseEventArgs(MouseButtons.None, 0, 
+                (int)LocationInView.X, (int)(Height - LocationInView.Y),
+                (int)(theEvent.DeltaY*10)), this);
+
+            foreach (IMapFunction tool in MapFunctions)
             {
-                tool.DoMouseWheel(args);
-                if (args.Handled) break;
+                if (tool.Enabled)
+                {
+                    tool.DoMouseWheel (e);
+                    if (e.Handled) break;
+                }
             }
 
-            base.OnMouseWheel(e);
+            var handler = GeoScrollWheel;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            base.ScrollWheel(theEvent);        
+        }
+
+        /// <summary>
+        /// Perform custom drawing
+        /// </summary>
+        /// <param name="e"></param>
+        public override void DrawRect(RectangleF dirtyRect)
+        {
+            if (MapFrame.IsPanning) return;
+            if(!InLiveResize && _mapCore.oldSize != Bounds.Size)
+                _mapCore.oldSize = Bounds.Size;
+
+            var context = NSGraphicsContext.CurrentContext.GraphicsPort;
+            Rectangle clip = new Rectangle((int)dirtyRect.X, 
+                (int)(Height - (dirtyRect.Height + dirtyRect.Y)), 
+                (int)dirtyRect.Width, (int)dirtyRect.Height);
+
+            if (dirtyRect.IsEmpty)
+                clip = ClientRectangle;
+
+            // if the area to paint is too small, there's nothing to paint.
+            // Added to fix http://dotspatial.codeplex.com/workitem/320
+            if (clip.Width < 1 || clip.Height < 1) return;
+
+            Bitmap stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(stencil);
+            g.CompositingMode = CompositingMode.SourceCopy;
+
+            Brush b = new SolidBrush(Color.White);
+            g.FillRectangle(b, clip);
+            b.Dispose();
+            Matrix m = new Matrix();
+            m.Translate(-clip.X, -clip.Y);
+            g.Transform = m;
+
+            PaintEventArgs e = new PaintEventArgs (g, clip);
+            Draw(g, e);
+
+            MapDrawArgs args = new MapDrawArgs(g, clip, MapFrame);
+            foreach (IMapFunction tool in MapFunctions)
+            {
+                if (tool.Enabled) tool.Draw(args);
+            }
+
+            g.Dispose();
+
+            if(dirtyRect.IsEmpty)
+                context.DrawImage(((NSView)this).Bounds, ToCGImage(stencil));
+            else
+                context.DrawImage(dirtyRect, ToCGImage(stencil));
+
+            stencil.Dispose();
+        }
+
+        public static CGImage ToCGImage(Image img) 
+        {
+            System.IO.MemoryStream s = new System.IO.MemoryStream();
+            img.Save(s, System.Drawing.Imaging.ImageFormat.Png);
+            byte[] b = s.ToArray();
+            CGDataProvider dp = new CGDataProvider(b,0,(int)s.Length);
+            s.Flush();
+            s.Close();
+            CGImage img2 = CGImage.FromPNG(dp,null,false,CGColorRenderingIntent.Default);
+            return img2;
+        }
+
+        public override void ViewDidEndLiveResize()
+        {
+            OnSizeChanged (this, new EventArgs());
+            base.ViewDidEndLiveResize ();
         }
 
         #endregion

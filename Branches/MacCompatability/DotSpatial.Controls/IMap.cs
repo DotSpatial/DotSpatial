@@ -35,46 +35,48 @@ namespace DotSpatial.Controls
     {
         #region Events
 
+
+        /// <summary>
+        /// Occurs after the map refreshes the image
+        /// </summary>
+        event EventHandler FinishedRefresh;
+
+        /// <summary>
+        /// Occurs when the map function mode has changed
+        /// </summary>
+        /// <remarks>Example of changing the function mode
+        /// is changing from zoom mode to select mode.</remarks>
+        event EventHandler FunctionModeChanged;
+
+        /// <summary>
+        /// Occurs after a resize event
+        /// </summary>
+        event EventHandler Resized;
+
         /// <summary>
         /// Occurs after a layer has been added to the mapframe, or any of the child groups of that mapframe.
         /// </summary>
         event EventHandler<LayerEventArgs> LayerAdded;
 
         /// <summary>
-        /// Occurs after the map is refreshed
+        /// Public event advertising the mouse movement
         /// </summary>
-        event EventHandler FinishedRefresh;
+        event EventHandler<GeoMouseArgs> GeoMouseMove;
 
         /// <summary>
-        /// Occurs after the map is resized
+        /// Fires after the view extents have been altered and the map has redrawn to the new extents.
+        /// This is an echo of the MapFrame.ViewExtentsChanged, so you only want one handler.
         /// </summary>
-        event EventHandler Resized;
+        event EventHandler<ExtentArgs> ViewExtentsChanged;
 
         /// <summary>
-        /// Occurs when the map function mode is changed
-        /// for example when function mode is changed from 'zoom' to 'select'
+        /// Occurs after the projection of the map has been changed
         /// </summary>
-        event EventHandler FunctionModeChanged;
-
-        ///// <summary>
-        ///// Occurs when an individual zone has finished drawing
-        ///// </summary>
-        //event EventHandler<ZoneEventArgs> FinishedDrawingZone;
+        event EventHandler ProjectionChanged;
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// If the specified function is already in the list of functions, this will properly test the yield style of various
-        /// map functions that are currently on and then activate the function.  If this function is not in the list, then
-        /// it will add it to the list.  If you need to control the position, then insert the function before using this
-        /// method to activate.  Be warned that calling "Activate" directly on your function will activate your function
-        /// but not disable any other functions.  You can set "Map.FunctionMode = FunctionModes.None" first, and then
-        /// specifically activate the function that you want.
-        /// </summary>
-        /// <param name="function">The MapFunction to activate, or add.</param>
-        void ActivateMapFunction(IMapFunction function);
 
         /// <summary>
         /// Adds a new layer to the map by using an open file dialog
@@ -95,68 +97,6 @@ namespace DotSpatial.Controls
         /// </summary>
         /// <returns>The newly opened IMapLayer</returns>
         new IMapLayer AddLayer();
-
-        /// <summary>
-        /// This will add a new label category that will only apply to the specified filter expression.  This will not remove any existing categories.
-        /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
-        /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
-        /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
-        /// <param name="name">The name of the category.</param>
-        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                       ILabelSymbolizer symbolizer, string name);
-
-        /// <summary>
-        /// This will add a new label category that will only apply to the specified filter expression.  This will not remove any existing categories.
-        /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
-        /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
-        /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
-        /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than this value, labels should appear.</param>
-        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                       ILabelSymbolizer symbolizer, double width);
-
-        /// <summary>
-        /// Gets the subset of layers that are specifically raster layers, allowing
-        /// you to control their symbology.
-        /// </summary>
-        /// <returns></returns>
-        IMapImageLayer[] GetImageLayers();
-
-        /// <summary>
-        /// Gets the subset of layers that are specifically raster layers, allowing
-        /// you to control their symbology.
-        /// </summary>
-        /// <returns></returns>
-        IMapRasterLayer[] GetRasterLayers();
-
-        /// <summary>
-        /// Gets a list of just the line layers (and not the general layers)
-        /// </summary>
-        /// <returns></returns>
-        IMapLineLayer[] GetLineLayers();
-
-        /// <summary>
-        /// Gets a list of just the polygon layers (and not the general layers)
-        /// </summary>
-        /// <returns></returns>
-        IMapPolygonLayer[] GetPolygonLayers();
-
-        /// <summary>
-        /// Gets a list of just the point layers (and not the general layers)
-        /// </summary>
-        /// <returns></returns>
-        IMapPointLayer[] GetPointLayers();
-
-        /// <summary>
-        /// Gets a list of just the feature layers regardless of whether they are lines, points, or polygons
-        /// </summary>
-        /// <returns>An array of IMapFeatureLayers</returns>
-        IMapFeatureLayer[] GetFeatureLayers();
 
         /// <summary>
         /// Allows a multi-select file dialog to add raster layers, applying a
@@ -201,13 +141,6 @@ namespace DotSpatial.Controls
         IMapImageLayer AddImageLayer();
 
         /// <summary>
-        /// Gets the MapFunction based on the string name
-        /// </summary>
-        /// <param name="name">The string name to find</param>
-        /// <returns>The MapFunction with the specified name</returns>
-        IMapFunction GetMapFunction(string name);
-
-        /// <summary>
         /// This causes all of the datalayers to re-draw themselves to the buffer, rather than just drawing
         /// the buffer itself like what happens during "Invalidate"
         /// </summary>
@@ -223,26 +156,6 @@ namespace DotSpatial.Controls
         ///
         /// </summary>
         void SaveLayer();
-
-        /// <summary>
-        /// Zooms in one notch, so that the scale becomes larger and the features become larger.
-        /// </summary>
-        void ZoomIn();
-
-        /// <summary>
-        /// Zooms out one notch so that the scale becomes smaller and the features become smaller.
-        /// </summary>
-        void ZoomOut();
-
-        /// <summary>
-        /// Zooms to the next extent of the map
-        /// </summary>
-        void ZoomToNext();
-
-        /// <summary>
-        /// Zooms to the previous extent of the map
-        /// </summary>
-        void ZoomToPrevious();
 
         #endregion
 
@@ -271,6 +184,12 @@ namespace DotSpatial.Controls
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         List<IMapFunction> MapFunctions
+        {
+            get;
+            set;
+        }
+
+        Dictionary<FunctionMode, IMapFunction> FunctionLookup
         {
             get;
             set;
