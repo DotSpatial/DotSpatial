@@ -182,7 +182,6 @@ namespace DotSpatial.Data
         public FeatureSet(IList<IFeature> inFeatures)
             : this()
         {
-            _dataTable = new DataTable();
             _dataTable.RowDeleted += DataTableRowDeleted;
 
             if (inFeatures.Count > 0)
@@ -210,6 +209,8 @@ namespace DotSpatial.Data
                 {
                     IFeature myFeature = f.Copy();
                     _features.Add(myFeature);
+                    if (myFeature.DataRow != null)
+                        _featureLookup.Add(myFeature.DataRow, myFeature);
                 }
 
                 _features.ResumeEvents();
@@ -295,7 +296,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Adds the FID values as a field called FID, but only if the FID field
-        /// does not already exist
+        /// does not already exist.
         /// </summary>
         public void AddFid()
         {
@@ -988,7 +989,7 @@ namespace DotSpatial.Data
                     {
                         continue;
                     }
-                  
+
                     result.Add(feature);
                     affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
                 }
@@ -1020,7 +1021,7 @@ namespace DotSpatial.Data
                     isTemp = true;
                 }
             }
-            
+
             DataRow[] rows = dt.Select(filterExpression);
             var result = rows.Select(dr => FeatureLookup[dr]).ToList();
             if (isTemp)
@@ -1089,25 +1090,20 @@ namespace DotSpatial.Data
         /// Retrieves a subset using exclusively the features matching the specified values.
         /// </summary>
         /// <param name="indices">
-        /// An integer list of indices to copy into the new FeatureSet
+        /// An integer list of indices to copy into the new FeatureSet.
         /// </param>
         /// <returns>
         /// A FeatureSet with the new items.
         /// </returns>
         public FeatureSet CopySubset(List<int> indices)
         {
-            FeatureSet copy = MemberwiseClone() as FeatureSet;
-            if (copy == null)
-            {
-                return null;
-            }
-
-            copy.Features = new FeatureList(copy);
+            List<IFeature> f = new List<IFeature>();
             foreach (int row in indices)
             {
-                copy.Features.Add(Features[row]);
+                f.Add(GetFeature(row));
             }
-            
+            FeatureSet copy = new FeatureSet(f);
+            copy.Projection = Projection.Copy();
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }
@@ -1205,7 +1201,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[]{});
+                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[] { });
             }
 
             var f = new Feature(geom)
@@ -1411,7 +1407,7 @@ namespace DotSpatial.Data
                 // It's a multi part
                 feature.BasicGeometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
             }
-            
+
             feature.ParentFeatureSet = this;
             feature.ShapeIndex = shape;
 
@@ -2331,7 +2327,7 @@ namespace DotSpatial.Data
             // implementation exists
             if (columns.All(c => c.ColumnName != "FID"))
             {
-                result.Columns.Add("FID", typeof (int));
+                result.Columns.Add("FID", typeof(int));
             }
 
             var fn = new HashSet<string>(fieldNames);
@@ -2342,8 +2338,8 @@ namespace DotSpatial.Data
                     result.Columns.Add(col);
                 }
             }
-            
-            for (int row = startIndex, i = 0; i < numRows && row <_dataTable.Rows.Count; row++, i++)
+
+            for (int row = startIndex, i = 0; i < numRows && row < _dataTable.Rows.Count; row++, i++)
             {
                 DataRow myRow = result.NewRow();
                 myRow["FID"] = row;
