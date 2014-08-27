@@ -55,7 +55,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// The existing labels, accessed for all map label layers, not just this instance
         /// </summary>
-        private  static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
+        private static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
         private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
@@ -290,13 +290,13 @@ namespace DotSpatial.Controls
                     drawFeature = (fid, feature) => DrawPolygonFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
                     break;
                 case FeatureType.Line:
-                    drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected,ExistingLabels);
+                    drawFeature = (fid, feature) => DrawLineFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
                     break;
                 case FeatureType.Point:
                     drawFeature = (fid, feature) => DrawPointFeature(e, g, feature, drawStates[fid].Category, drawStates[fid].Selected, ExistingLabels);
                     break;
                 default:
-                   return; // Can't draw something else
+                    return; // Can't draw something else
             }
 
             foreach (var category in Symbology.Categories)
@@ -498,6 +498,14 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Calculates the position of the polygon label.
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <param name="e"></param>
+        /// <param name="labelSize"></param>
+        /// <param name="symb"></param>
+        /// <returns></returns>
         private static RectangleF PlacePolygonLabel(IBasicGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
             IPolygon pg = Geometry.FromBasicGeometry(geom) as IPolygon;
@@ -515,12 +523,7 @@ namespace DotSpatial.Controls
                     c = geom.Envelope.Center();
                     break;
             }
-            if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
-            var lz = labelSize();
-            PointF adjustment = Position(symb, lz);
-            float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
-            float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            return new RectangleF(x, y, lz.Width, lz.Height);
+            return PlaceLabel(c, e, labelSize, symb);
         }
 
         /// <summary>
@@ -558,15 +561,29 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Creates the RectangleF for the label.
+        /// </summary>
+        /// <param name="c">Coordinate, where the label should be placed.</param>
+        /// <param name="e">MapArgs for calculating the position of the label on the output medium.</param>
+        /// <param name="labelSize">Function that calculates the labelSize.</param>
+        /// <param name="symb">ILabelSymbolizer to calculate the orientation based adjustment.</param>
+        /// <returns>Empty Rectangle if Coordinate is outside of the drawn extent, otherwise Rectangle needed to draw the label.</returns>
+        private static RectangleF PlaceLabel(Coordinate c, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
+        {
+            if (!e.GeographicExtents.Intersects(c)) return RectangleF.Empty;
+            var lz = labelSize();
+            PointF adjustment = Position(symb, lz);
+            float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + e.ImageRectangle.X + adjustment.X;
+            float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + e.ImageRectangle.Y + adjustment.Y;
+            return new RectangleF(x, y, lz.Width, lz.Height);
+        }
+
+
         private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb)
         {
             Coordinate c = f.GetBasicGeometryN(1).Coordinates[0];
-            if (e.GeographicExtents.Intersects(c) == false) return RectangleF.Empty;
-            var lz = labelSize();
-            PointF adjustment = Position(symb, lz);
-            float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
-            float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            return new RectangleF(x, y, lz.Width, lz.Height);
+            return PlaceLabel(c, e, labelSize, symb);
         }
 
         /// <summary>
@@ -574,7 +591,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public static void DrawLineFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
-            var symb = selected? category.SelectionSymbolizer : category.Symbolizer;
+            var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
             string txt = GetLabelText(f, category, symb);
@@ -630,13 +647,15 @@ namespace DotSpatial.Controls
             else
                 c = ls.Envelope.Center();
 
-            var lz = labelSize();
-            PointF adjustment = Position(symb, lz);
-            float x = Convert.ToSingle((c.X - e.MinX) * e.Dx) + adjustment.X;
-            float y = Convert.ToSingle((e.MaxY - c.Y) * e.Dy) + adjustment.Y;
-            return new RectangleF(x, y, lz.Width, lz.Height);
+            return PlaceLabel(c, e, labelSize, symb);
         }
 
+        /// <summary>
+        /// Calculates the adjustment of the the label's position based on the symbolizers orientation.
+        /// </summary>
+        /// <param name="symb">ILabelSymbolizer whose orientation should be considered.</param>
+        /// <param name="size">Size of the label.</param>
+        /// <returns>New label-position based on label-size and symbolizer-orientation.</returns>
         private static PointF Position(ILabelSymbolizer symb, SizeF size)
         {
             ContentAlignment orientation = symb.Orientation;
@@ -732,7 +751,7 @@ namespace DotSpatial.Controls
             // Draws the text halo
             if (symb.HaloEnabled && symb.HaloColor != Color.Transparent)
             {
-                using(var haloPen = new Pen(symb.HaloColor) {Width = 2, Alignment = PenAlignment.Outset})
+                using (var haloPen = new Pen(symb.HaloColor) { Width = 2, Alignment = PenAlignment.Outset })
                     g.DrawPath(haloPen, gp);
             }
 
@@ -789,7 +808,7 @@ namespace DotSpatial.Controls
         private static string GetLabelText(IFeature feature, ILabelCategory category, ILabelSymbolizer symb)
         {
             // Function which checks that text contains any expression
-            var exprCheck = (Func<string, bool>) delegate(string inStr)
+            var exprCheck = (Func<string, bool>)delegate(string inStr)
             {
                 if (String.IsNullOrEmpty(inStr)) return false;
                 const char symb1 = ']';
@@ -821,12 +840,12 @@ namespace DotSpatial.Controls
                     var curColumnReplacement = "[" + dc.ColumnName + "]";
 
                     // Check that this column used in expression
-                    if (!result.Contains(curColumnReplacement)) continue; 
+                    if (!result.Contains(curColumnReplacement)) continue;
 
                     var currValue = feature.DataRow[dc.ColumnName];
                     if (useFloatingFormat &&
-                        (dc.DataType == typeof (double) ||
-                        dc.DataType == typeof (float)))
+                        (dc.DataType == typeof(double) ||
+                        dc.DataType == typeof(float)))
                     {
                         try
                         {

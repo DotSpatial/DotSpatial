@@ -315,8 +315,8 @@ namespace DotSpatial.Controls
                 {
                     var pt = new[]
                     {
-                        (vertices[i*2] - minX)*dx,
-                        (maxY - vertices[i*2 + 1])*dy
+                        (vertices[i*2] - minX)*dx + args.ImageRectangle.X,
+                        (maxY - vertices[i*2 + 1])*dy + args.ImageRectangle.Y
                     };
                     points.Add(pt);
                 }
@@ -324,12 +324,11 @@ namespace DotSpatial.Controls
                 List<List<double[]>> multiLinestrings;
                 if (!shpx.Extent.Within(args.GeographicExtents))
                 {
-                    multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top,
-                                                                      clipRect.Right, clipRect.Bottom);
+                    multiLinestrings = CohenSutherland.ClipLinestring(points, clipRect.Left, clipRect.Top, clipRect.Right, clipRect.Bottom);
                 }
                 else
                 {
-                    multiLinestrings = new List<List<double[]>> {points};
+                    multiLinestrings = new List<List<double[]>> { points };
                 }
 
                 foreach (List<double[]> linestring in multiLinestrings)
@@ -611,8 +610,8 @@ namespace DotSpatial.Controls
                     if (double.IsNaN(vertices[i * 2]) || double.IsNaN(vertices[i * 2 + 1])) continue;
                     var pt = new Point
                     {
-                        X = Convert.ToInt32((vertices[i*2] - minX)*dx),
-                        Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
+                        X = Convert.ToInt32((vertices[i * 2] - minX) * dx),
+                        Y = Convert.ToInt32((maxY - vertices[i * 2 + 1]) * dy)
                     };
 
                     if (i == 0 || (pt.X != previousPoint.X || pt.Y != previousPoint.Y))

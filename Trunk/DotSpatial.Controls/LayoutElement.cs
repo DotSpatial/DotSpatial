@@ -266,28 +266,38 @@ namespace DotSpatial.Controls
                 RectangleF tempRect = this.Rectangle;
                 float width = (float)(this.Background.GetOutlineWidth() / 2.0D);
                 tempRect.Inflate(width, width);
+                if (printing)
+                {
+                    //Changed by jany_ 2014-08-20
+                    //normal ClipBounds are big enough for the whole outline to be painted
+                    //when printing ClipBounds get set to Rectangle -> parts of the Rectangle get printed outside of the Clip
+                    RectangleF clip = this.Rectangle;
+                    float w = (float)(this.Background.GetOutlineWidth()); 
+                    clip.Inflate(w, w);
+                    g.Clip = new Region(clip); 
+                }
 
                 //Makes sure the rectangle is big enough to draw
                 if (tempRect.Width > 0 && tempRect.Height > 0)
                 {
                     foreach (IPattern outlineSymbol in this.Background.Patterns)
                     {
-                        if (outlineSymbol.UseOutline == false)
+                        if (!outlineSymbol.UseOutline)
                             continue;
 
                         GraphicsPath gp = new GraphicsPath();
                         gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
-                        outlineSymbol.Outline.DrawPath(g, gp, 1D);
+                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
 
-                        gp = new GraphicsPath();
+                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
-                        outlineSymbol.Outline.DrawPath(g, gp, 1D);
+                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
 
-                        gp = new GraphicsPath();
+                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
-                        outlineSymbol.Outline.DrawPath(g, gp, 1D);
+                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
 
-                        gp = new GraphicsPath();
+                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
                         outlineSymbol.Outline.DrawPath(g, gp, 1D);
                         gp.Dispose();

@@ -198,8 +198,7 @@ namespace DotSpatial.Controls
         /// <param name="clipRectangles">If an entire chunk is drawn and an update is specified,
         ///  this clarifies the changed rectangles.</param>
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
-        public virtual void DrawFeatures(MapArgs args, List<IFeature> features,
-                                         List<Rectangle> clipRectangles, bool useChunks)
+        public virtual void DrawFeatures(MapArgs args, List<IFeature> features, List<Rectangle> clipRectangles, bool useChunks)
         {
             if (useChunks == false)
             {
@@ -425,12 +424,13 @@ namespace DotSpatial.Controls
             if (!DrawnStatesNeeded && !EditMode)
             {
                 IPolygonSymbolizer ps = Symbolizer;
+
                 g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
                 Extent catBounds = DataSet.Extent;
                 var bounds = new RectangleF
                 {
-                    X = Convert.ToSingle((catBounds.MinX - e.MinX)*e.Dx),
-                    Y = Convert.ToSingle((e.MaxY - catBounds.MaxY)*e.Dy)
+                    X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+                    Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
                 };
                 float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                 bounds.Width = r - bounds.X;
@@ -473,8 +473,8 @@ namespace DotSpatial.Controls
                         if (catBounds == null) catBounds = Extent;
                         var bounds = new RectangleF
                         {
-                            X = Convert.ToSingle((catBounds.MinX - e.MinX)*e.Dx),
-                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY)*e.Dy)
+                            X = Convert.ToSingle((catBounds.MinX - e.MinX) * e.Dx),
+                            Y = Convert.ToSingle((e.MaxY - catBounds.MaxY) * e.Dy)
                         };
                         float r = Convert.ToSingle((catBounds.MaxX - e.MinX) * e.Dx);
                         bounds.Width = r - bounds.X;
@@ -518,15 +518,15 @@ namespace DotSpatial.Controls
                     } // category
                 } // selectState
             }
-        
+
             if (e.Device == null) g.Dispose();
         }
 
         private void BuildPaths(MapArgs e, IEnumerable<int> indices, out List<GraphicsPath> paths)
         {
             paths = new List<GraphicsPath>();
-            Rectangle clipRect = ComputeClippingRectangle(e);
-            Extent drawExtents = e.PixelToProj(clipRect);
+            Extent drawExtents = e.GeographicExtents;
+            Rectangle clipRect = e.ProjToPixel(e.GeographicExtents);
             SoutherlandHodgman shClip = new SoutherlandHodgman(clipRect);
 
             List<GraphicsPath> graphPaths = new List<GraphicsPath>();
@@ -590,17 +590,17 @@ namespace DotSpatial.Controls
                     }
                     if (states[shp].Visible == false) continue;
                     ShapeRange shape = shapes[shp];
-					if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
+                    if (!shape.Extent.Intersects(e.GeographicExtents)) continue;
                     if (drawExtents.Contains(shape.Extent))
                     {
                         FastDrawnState state = states[shp];
-						if (!borders.ContainsKey(state)) continue;
+                        if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, null);
                     }
                     else
                     {
                         FastDrawnState state = states[shp];
-						if (!borders.ContainsKey(state)) continue;
+                        if (!borders.ContainsKey(state)) continue;
                         BuildPolygon(vertices, shapes[shp], borders[state], e, shClip);
                     }
                 }
@@ -687,7 +687,7 @@ namespace DotSpatial.Controls
                 }
 
                 borderPath.StartFigure();
-                borderPath.AddLines(intPoints);             
+                borderPath.AddLines(intPoints);
             }
         }
 
