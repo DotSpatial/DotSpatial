@@ -152,7 +152,7 @@ namespace DotSpatial.Data
 
             // Get the basic header information.
             ShapefileHeader header = new ShapefileHeader(fileName);
-            Extent = new Extent(new[] { header.Xmin, header.Ymin, header.Xmax, header.Ymax });
+            Extent = header.ToExtent();
             // Check to ensure that the fileName is the correct shape type
             if (header.ShapeType != ShapeType.MultiPoint &&
                  header.ShapeType != ShapeType.MultiPointM &&
