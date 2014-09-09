@@ -881,11 +881,7 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public void Save()
         {
-            if (!AttributesPopulated)
-            {
-                FillAttributes();
-            }
-
+            if (!AttributesPopulated) FillAttributes();
             SaveAs(Filename, true);
         }
 
@@ -970,10 +966,7 @@ namespace DotSpatial.Data
                 var shapes = ShapeIndices;
                 for (var shp = 0; shp < shapes.Count; shp++)
                 {
-                    if (!shapes[shp].Intersects(aoi))
-                    {
-                        continue;
-                    }
+                    if (!shapes[shp].Intersects(aoi)) continue;
 
                     var feature = GetFeature(shp);
                     affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
@@ -984,11 +977,7 @@ namespace DotSpatial.Data
             {
                 foreach (var feature in Features)
                 {
-                    if (!region.Intersects(feature.Envelope) ||
-                       !feature.Intersects(region.ToEnvelope()))
-                    {
-                        continue;
-                    }
+                    if (!region.Intersects(feature.Envelope) || !feature.Intersects(region.ToEnvelope())) continue;
 
                     result.Add(feature);
                     affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
@@ -1951,11 +1940,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_shapeIndices == null)
-                {
-                    OnInitializeVertices();
-                }
-
+                if (_shapeIndices == null) OnInitializeVertices();
                 return _shapeIndices;
             }
 
@@ -2180,7 +2165,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the features from the shape indices and vertex array
+        /// Calculates the features from the shape indices and vertex array.
         /// </summary>
         protected void FeaturesFromVertices()
         {
@@ -2452,10 +2437,7 @@ namespace DotSpatial.Data
                 // this should be all the coordinates, for all parts of the geometry.
                 IList<Coordinate> coords = f.Coordinates;
 
-                if (coords == null)
-                {
-                    continue;
-                }
+                if (coords == null) continue;
 
                 foreach (Coordinate c in coords)
                 {
@@ -2472,7 +2454,7 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Envelope) };
+                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Envelope), StartIndex = vIndex };
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 
@@ -2487,7 +2469,6 @@ namespace DotSpatial.Data
                     {
                         // Account for the Shell
                         prtx.NumVertices = bp.Shell.NumPoints;
-
                         vIndex += bp.Shell.NumPoints;
 
                         // The part range should be adjusted to no longer include the holes
@@ -2509,9 +2490,10 @@ namespace DotSpatial.Data
                         vIndex += numPoints;
                         prtx.NumVertices = numPoints;
                     }
-
                     shx.Parts.Add(prtx);
                 }
+                shx.NumParts = shx.Parts.Count;
+                shx.NumPoints = vIndex - shx.StartIndex; //Changed by jany_: has to be initialized to correctly paint multipoints 
             }
             _verticesAreValid = true;
         }
