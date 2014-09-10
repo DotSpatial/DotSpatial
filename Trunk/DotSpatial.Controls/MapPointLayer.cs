@@ -250,7 +250,7 @@ namespace DotSpatial.Controls
         /// <param name="useChunks">Boolean, if true, this will refresh the buffer in chunks.</param>
         public virtual void DrawFeatures(MapArgs args, List<int> indices, List<Rectangle> clipRectangles, bool useChunks)
         {
-            if (useChunks == false)
+            if (!useChunks)
             {
                 DrawFeatures(args, indices);
                 return;
@@ -355,7 +355,6 @@ namespace DotSpatial.Controls
         #endregion
 
         #region Private  Methods
-
         // This draws the individual point features
         private void DrawFeatures(MapArgs e, IEnumerable<int> indices)
         {
@@ -363,43 +362,22 @@ namespace DotSpatial.Controls
             Matrix origTransform = g.Transform;
             FeatureType featureType = DataSet.FeatureType;
 
-            double minX = e.MinX;
-            double maxY = e.MaxY;
-            double dx = e.Dx;
-            double dy = e.Dy;
-
             if (!DrawnStatesNeeded)
             {
                 if (Symbology == null || Symbology.Categories.Count == 0) return;
                 FastDrawnState state = new FastDrawnState(false, Symbology.Categories[0]);
                 IPointCategory pc = state.Category as IPointCategory;
-                IPointSymbolizer ps = null;
-                if (pc != null && pc.Symbolizer != null) ps = pc.Symbolizer;
+                if (pc == null) return;
+                IPointSymbolizer ps = pc.Symbolizer;
                 if (ps == null) return;
-                g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
                 double[] vertices = DataSet.Vertex;
+
                 foreach (int index in indices)
                 {
-                    if (DrawnStates != null && DrawnStates.Length > index)
-                    {
-                        if (!DrawnStates[index].Visible) continue;
-                    }
+                    if (DrawnStates != null && DrawnStates.Length > index && !DrawnStates[index].Visible) continue;
                     if (featureType == FeatureType.Point)
                     {
-                        var pt = new Point
-                        {
-                            X = Convert.ToInt32((vertices[index*2] - minX)*dx),
-                            Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
-                        };
-                        double scaleSize = 1;
-                        if (ps.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                        }
-                        Matrix shift = origTransform.Clone();
-                        shift.Translate(pt.X, pt.Y);
-                        g.Transform = shift;
-                        ps.Draw(g, scaleSize);
+                        DrawPoint(vertices[index * 2], vertices[index * 2 + 1], e, ps, g, origTransform);
                     }
                     else
                     {
@@ -407,20 +385,7 @@ namespace DotSpatial.Controls
                         ShapeRange range = DataSet.ShapeIndices[index];
                         for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                         {
-                            var pt = new Point
-                            {
-                                X = Convert.ToInt32((vertices[i*2] - minX)*dx),
-                                Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
-                            };
-                            double scaleSize = 1;
-                            if (ps.ScaleMode == ScaleMode.Geographic)
-                            {
-                                scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                            }
-                            Matrix shift = origTransform.Clone();
-                            shift.Translate(pt.X, pt.Y);
-                            g.Transform = shift;
-                            ps.Draw(g, scaleSize);
+                            DrawPoint(vertices[i * 2], vertices[i * 2 + 1], e, ps, g, origTransform);
                         }
                     }
                 }
@@ -429,85 +394,27 @@ namespace DotSpatial.Controls
             {
                 FastDrawnState[] states = DrawnStates;
                 double[] vertices = DataSet.Vertex;
-                foreach (IPointCategory category in Symbology.Categories)
+
+                foreach (int index in indices)
                 {
-                    if (category.Symbolizer == null) continue;
+                    FastDrawnState state = states[index];
+                    if (!state.Visible || state.Category == null) continue;
+                    IPointCategory pc = state.Category as IPointCategory;
+                    if (pc == null) continue;
 
-                    double scaleSize = 1;
-                    if (category.Symbolizer.ScaleMode == ScaleMode.Geographic)
+                    IPointSymbolizer ps = state.Selected ? pc.SelectionSymbolizer : pc.Symbolizer;
+                    if (ps == null) continue;
+
+                    if (featureType == FeatureType.Point)
                     {
-                        scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
+                        DrawPoint(vertices[index * 2], vertices[index * 2 + 1], e, ps, g, origTransform);
                     }
-                    Size2D size = category.Symbolizer.GetSize();
-                    if (size.Width * scaleSize < 1 || size.Height * scaleSize < 1) continue;
-
-                    Bitmap normalSymbol = new Bitmap((int)(size.Width * scaleSize) + 1, (int)(size.Height * scaleSize) + 1);
-                    Graphics bg = Graphics.FromImage(normalSymbol);
-                    bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    Matrix trans = bg.Transform;
-
-                    // keenedge:
-                    // added ' * scaleSize ' to fix a problme when ploted using ScaleMode=Geographic.   however, it still
-                    // appeared to be shifted up and left by 1 pixel so I also added the one pixel shift to the NW.
-                    // trans.Translate((float)size.Width / 2, (float)size.Height / 2);
-                    trans.Translate(((float)(size.Width * scaleSize) / 2 - 1), (float)(size.Height * scaleSize) / 2 - 1);
-                    bg.Transform = trans;
-                    category.Symbolizer.Draw(bg, 1);
-
-                    Size2D selSize = category.SelectionSymbolizer.GetSize();
-                    if (selSize.Width * scaleSize < 1 || selSize.Height * scaleSize < 1) continue;
-
-                    Bitmap selectedSymbol = new Bitmap((int)(selSize.Width * scaleSize + 1), (int)(selSize.Height * scaleSize + 1));
-                    Graphics sg = Graphics.FromImage(selectedSymbol);
-                    sg.SmoothingMode = category.SelectionSymbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    Matrix trans2 = sg.Transform;
-                    trans2.Translate((float)selSize.Width / 2, (float)selSize.Height / 2);
-                    sg.Transform = trans2;
-                    category.SelectionSymbolizer.Draw(sg, 1);
-
-                    foreach (int index in indices)
+                    else
                     {
-                        FastDrawnState state = states[index];
-                        if (!state.Visible) continue;
-                        if (state.Category == null) continue;
-                        IPointCategory pc = state.Category as IPointCategory;
-                        if (pc == null) continue;
-                        if (pc != category) continue;
-                        Bitmap bmp = normalSymbol;
-                        if (state.Selected)
+                        ShapeRange range = DataSet.ShapeIndices[index];
+                        for (int i = range.StartIndex; i <= range.EndIndex(); i++)
                         {
-                            bmp = selectedSymbol;
-                        }
-                        if (featureType == FeatureType.Point)
-                        {
-                            var pt = new Point
-                            {
-                                X = Convert.ToInt32((vertices[index*2] - minX)*dx),
-                                Y = Convert.ToInt32((maxY - vertices[index*2 + 1])*dy)
-                            };
-
-                            Matrix shift = origTransform.Clone();
-                            shift.Translate(pt.X, pt.Y);
-                            g.Transform = shift;
-
-                            g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
-                        }
-                        else
-                        {
-                            ShapeRange range = DataSet.ShapeIndices[index];
-                            for (int i = range.StartIndex; i <= range.EndIndex(); i++)
-                            {
-                                var pt = new Point
-                                {
-                                    X = Convert.ToInt32((vertices[i*2] - minX)*dx),
-                                    Y = Convert.ToInt32((maxY - vertices[i*2 + 1])*dy)
-                                };
-
-                                Matrix shift = origTransform.Clone();
-                                shift.Translate(pt.X, pt.Y);
-                                g.Transform = shift;
-                                g.DrawImageUnscaled(bmp, -bmp.Width / 2, -bmp.Height / 2);
-                            }
+                            DrawPoint(vertices[i * 2], vertices[i * 2 + 1], e, ps, g, origTransform);
                         }
                     }
                 }
@@ -522,61 +429,53 @@ namespace DotSpatial.Controls
         {
             Graphics g = e.Device ?? Graphics.FromImage(BackBuffer);
             Matrix origTransform = g.Transform;
-            double minX = e.MinX;
-            double maxY = e.MaxY;
-            double dx = e.Dx;
-            double dy = e.Dy;
             IDictionary<IFeature, IDrawnState> states = DrawingFilter.DrawnStates;
             if (states == null) return;
-            foreach (IPointCategory category in Symbology.Categories)
+
+            foreach (IFeature feature in features)
             {
-                foreach (IFeature feature in features)
+                if (!states.ContainsKey(feature)) continue;
+                IDrawnState ds = states[feature];
+                if (ds == null || !ds.IsVisible || ds.SchemeCategory == null) continue;
+
+                IPointCategory pc = ds.SchemeCategory as IPointCategory;
+                if (pc == null) continue;
+
+                IPointSymbolizer ps = ds.IsSelected ? pc.SelectionSymbolizer : pc.Symbolizer;
+                if (ps == null) continue;
+
+                foreach (Coordinate c in feature.Coordinates)
                 {
-                    if (states.ContainsKey(feature) == false) continue;
-                    IDrawnState ds = states[feature];
-                    if (ds == null) continue;
-                    if (!ds.IsVisible) continue;
-                    if (ds.SchemeCategory == null) continue;
-                    IPointCategory pc = ds.SchemeCategory as IPointCategory;
-                    if (pc == null) continue;
-                    if (pc != category) continue;
-                    IPointSymbolizer ps = pc.Symbolizer;
-                    if (ds.IsSelected)
-                    {
-                        ps = pc.SelectionSymbolizer;
-                    }
-                    if (ps == null) continue;
-                    g.SmoothingMode = ps.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                    foreach (Coordinate c in feature.Coordinates)
-                    {
-                        Point pt = new Point
-                                       {
-                                           X = Convert.ToInt32((c.X - minX) * dx),
-                                           Y = Convert.ToInt32((maxY - c.Y) * dy)
-                                       };
-                        double scaleSize = 1;
-                        if (ps.ScaleMode == ScaleMode.Geographic)
-                        {
-                            scaleSize = e.ImageRectangle.Width / e.GeographicExtents.Width;
-                        }
-                        Matrix shift = origTransform.Clone();
-                        shift.Translate(pt.X, pt.Y);
-                        g.Transform = shift;
-                        ps.Draw(g, scaleSize);
-                    }
+                    DrawPoint(c.X, c.Y, e, ps, g, origTransform);
                 }
             }
 
-            if (e.Device == null)
-            {
-                g.Dispose();
-            }
-            else
-            {
-                g.Transform = origTransform;
-            }
+            if (e.Device == null) g.Dispose();
+            else g.Transform = origTransform;
         }
 
+        /// <summary>
+        /// Draws a point at the given location.
+        /// </summary>
+        /// <param name="ptX">X-Coordinate of the point, that should be drawn.</param>
+        /// <param name="ptY">Y-Coordinate of the point, that should be drawn.</param>
+        /// <param name="e">MapArgs for calculating the scaleSize.</param>
+        /// <param name="ps">PointSymbolizer with which the point gets drawn.</param>
+        /// <param name="g">Graphics-Object that should be used by the PointSymbolizer.</param>
+        /// <param name="origTransform">The original transformation that is used to position the point.</param>
+        private void DrawPoint(double ptX, double ptY, MapArgs e, IPointSymbolizer ps, Graphics g, Matrix origTransform)
+        {
+            var pt = new Point
+            {
+                X = Convert.ToInt32((ptX - e.MinX) * e.Dx),
+                Y = Convert.ToInt32((e.MaxY - ptY) * e.Dy)
+            };
+            double scaleSize = ps.ScaleMode == ScaleMode.Geographic ? e.ImageRectangle.Width / e.GeographicExtents.Width : 1;
+            Matrix shift = origTransform.Clone();
+            shift.Translate(pt.X, pt.Y);
+            g.Transform = shift;
+            ps.Draw(g, scaleSize);
+        }
         #endregion
 
         #region Properties
