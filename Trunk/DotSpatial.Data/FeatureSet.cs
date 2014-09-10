@@ -283,6 +283,7 @@ namespace DotSpatial.Data
         private void FeaturesFeatureRemoved(object sender, FeatureEventArgs e)
         {
             _verticesAreValid = false;
+            ShapeIndices.Remove(e.Feature.ShapeIndex);
             _featureLookup.Remove(e.Feature.DataRow);
             if (FeatureRemoved != null)
             {
@@ -384,6 +385,10 @@ namespace DotSpatial.Data
 
                 Features.Add(addedFeature);
                 addedFeature.DataRow = AddAttributes(shape);
+
+                if (_features.EventsSuspended && addedFeature.DataRow != null) // Changed by jany_: If feature gets added while _features events are suspended _features and _featureLookup get out of sync
+                    _featureLookup[addedFeature.DataRow] = addedFeature;
+
                 if (!shape.Range.Extent.IsEmpty())
                 {
                     Extent.ExpandToInclude(new Extent(addedFeature.Envelope));
@@ -1616,21 +1621,21 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (IndexMode && (_features == null || _features.Count == 0))
+                if (_features == null || _features.Count == 0) //Changed by jany_: sometimes _features are empty when indexMode is false, so we have to load them then too
                 {
                     // People working with features like this probably want to see changes from the features themselves.
+                    IndexMode = true;
                     FeaturesFromVertices();
                     IndexMode = false;
                 }
-
                 return _features;
             }
 
             set
             {
-                OnIncludeFeatures(_features);
                 OnExcludeFeatures(_features);
                 _features = value;
+                OnIncludeFeatures(_features);
             }
         }
 
@@ -2178,6 +2183,7 @@ namespace DotSpatial.Data
                 // need to preserve event handler already attached to this feature list
                 _features.Clear();
                 _features.IncludeAttributes = false;
+                _featureLookup.Clear();
             }
 
             _features.SuspendEvents();
@@ -2190,6 +2196,7 @@ namespace DotSpatial.Data
                     // Don't force population if we haven't populated yet, but
                     // definitely assign the DataRow if it already exists.
                     _features[shp].DataRow = DataTable.Rows[shp];
+                    _featureLookup.Add(_features[shp].DataRow, _features[shp]); //Added by jany_: sync the _featureLookup
                 }
             }
 
