@@ -40,7 +40,7 @@ namespace DotSpatial.Data
             : base(FeatureType.Polygon)
         {
             Attributes = new AttributeTable();
-            Header = new ShapefileHeader {FileLength = 100, ShapeType = ShapeType.Polygon};
+            Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.Polygon };
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace DotSpatial.Data
             Filename = fileName;
             IndexMode = true;
             Header = new ShapefileHeader(fileName);
-           
+
             switch (Header.ShapeType)
             {
                 case ShapeType.PolygonM:
@@ -145,8 +145,17 @@ namespace DotSpatial.Data
         /// <param name="index">The integer index</param>
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetPolygon(index);
-            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            IFeature f;
+            if (!IndexMode)
+            {
+                f = Features[index];
+            }
+            else
+            {
+                f = GetPolygon(index);
+                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            }
+
             return f;
         }
 
@@ -420,7 +429,7 @@ namespace DotSpatial.Data
                 fid++;
                 offset += 4; // header bytes
             }
-            
+
             shpStream.Close();
             shxStream.Close();
             offset += contentLength;

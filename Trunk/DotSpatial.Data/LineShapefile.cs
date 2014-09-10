@@ -37,7 +37,7 @@ namespace DotSpatial.Data
         /// Creates a new instance of a LineShapefile for in-ram handling only.
         /// </summary>
         public LineShapefile()
-            :base(FeatureType.Line)
+            : base(FeatureType.Line)
         {
             Attributes = new AttributeTable();
             Header = new ShapefileHeader { FileLength = 100, ShapeType = ShapeType.PolyLine };
@@ -65,7 +65,7 @@ namespace DotSpatial.Data
             Filename = fileName;
             IndexMode = true;
             Header = new ShapefileHeader(fileName);
-            
+
             switch (Header.ShapeType)
             {
                 case ShapeType.PolyLineM:
@@ -145,14 +145,22 @@ namespace DotSpatial.Data
         /// <param name="index">The integer index</param>
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetLine(index);
-            if (f != null)
+            IFeature f;
+            if (!IndexMode)
             {
-                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+                f = Features[index];
+            }
+            else
+            {
+                f = GetLine(index);
+                if (f != null)
+                {
+                    f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+                }
             }
             return f;
         }
-        
+
 
         internal static void FillLines(string fileName, IProgressHandler progressHandler, Shapefile shapefile,
             FeatureType featureType)
@@ -230,11 +238,11 @@ namespace DotSpatial.Data
             };
             using (var reader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
             {
-                var boundsBytes = new byte[4*8];
+                var boundsBytes = new byte[4 * 8];
                 var bounds = new double[4];
                 for (int shp = 0; shp < numShapes; shp++)
                 {
-                    progressMeter.CurrentPercent = (int)(shp*50.0/numShapes);
+                    progressMeter.CurrentPercent = (int)(shp * 50.0 / numShapes);
 
                     // Read from the index file because some deleted records
                     // might still exist in the .shp file.
@@ -245,7 +253,7 @@ namespace DotSpatial.Data
                     {
                         RecordNumber = reader.ReadInt32(Endian.BigEndian),
                         ContentLength = reader.ReadInt32(Endian.BigEndian),
-                        ShapeType = (ShapeType) reader.ReadInt32(),
+                        ShapeType = (ShapeType)reader.ReadInt32(),
                         StartIndex = totalPointsCount
                     };
                     Debug.Assert(shape.RecordNumber == shp + 1);
@@ -272,9 +280,9 @@ namespace DotSpatial.Data
                     shapeIndices.Add(shape);
                 }
 
-                var vert = new double[totalPointsCount*2];
+                var vert = new double[totalPointsCount * 2];
                 var vertInd = 0;
-                
+
                 var parts = new int[totalPartsCount];
                 var partsInd = 0;
 
@@ -298,18 +306,18 @@ namespace DotSpatial.Data
                     var shape = shapeIndices[shp];
                     if (shape.ShapeType == ShapeType.NullShape) continue;
                     reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-                    reader.Seek(3*4 + 32 + 2*4, SeekOrigin.Current); // Skip first bytes
+                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes
 
                     // Read parts
                     var partsBytes = reader.ReadBytes(4 * shape.NumParts);
                     Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
-                    partsInd += 4*shape.NumParts;
+                    partsInd += 4 * shape.NumParts;
 
                     // Read points
-                    var pointsBytes = reader.ReadBytes(8*2*shape.NumPoints);
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints);
                     Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
-                    vertInd += 8*2*shape.NumPoints;
-                 
+                    vertInd += 8 * 2 * shape.NumPoints;
+
                     // Fill parts
                     shape.Parts.Capacity = shape.NumParts;
                     for (int part = 0; part < shape.NumParts; part++)
@@ -334,33 +342,33 @@ namespace DotSpatial.Data
                     {
                         case ShapeType.PolyLineM:
                         case ShapeType.PolygonM:
-                            if (shape.ContentLength*2 > 44 + 4*shape.NumParts + 16*shape.NumPoints)
+                            if (shape.ContentLength * 2 > 44 + 4 * shape.NumParts + 16 * shape.NumPoints)
                             {
-                                var mExt = (IExtentM) shape.Extent;
+                                var mExt = (IExtentM)shape.Extent;
                                 mExt.MinM = reader.ReadDouble();
                                 mExt.MaxM = reader.ReadDouble();
 
-                                var mBytes = reader.ReadBytes(8*shape.NumPoints);
+                                var mBytes = reader.ReadBytes(8 * shape.NumPoints);
                                 Buffer.BlockCopy(mBytes, 0, mArray, mArrayInd, mBytes.Length);
-                                mArrayInd += 8*shape.NumPoints;
+                                mArrayInd += 8 * shape.NumPoints;
                             }
                             break;
                         case ShapeType.PolyLineZ:
                         case ShapeType.PolygonZ:
-                            var zExt = (IExtentZ) shape.Extent;
+                            var zExt = (IExtentZ)shape.Extent;
                             zExt.MinZ = reader.ReadDouble();
                             zExt.MaxZ = reader.ReadDouble();
 
-                            var zBytes = reader.ReadBytes(8*shape.NumPoints);
+                            var zBytes = reader.ReadBytes(8 * shape.NumPoints);
                             Buffer.BlockCopy(zBytes, 0, zArray, zArrayInd, zBytes.Length);
                             zArrayInd += 8 * shape.NumPoints;
-                            
+
 
                             // These are listed as "optional" but there isn't a good indicator of how to
                             // determine if they were added.
                             // To handle the "optional" M values, check the contentLength for the feature.
                             // The content length does not include the 8-byte record header and is listed in 16-bit words.
-                            if (shape.ContentLength*2 > 60 + 4*shape.NumParts + 24*shape.NumPoints)
+                            if (shape.ContentLength * 2 > 60 + 4 * shape.NumParts + 24 * shape.NumPoints)
                             {
                                 goto case ShapeType.PolyLineM;
                             }
@@ -402,7 +410,7 @@ namespace DotSpatial.Data
                 Header.ShapeType = ShapeType.PolyLineZ;
             }
             HeaderSaveAs(fileName);
-            
+
             if (IndexMode)
             {
                 SaveAsIndexed(fileName);
@@ -429,7 +437,7 @@ namespace DotSpatial.Data
                     points.AddRange(bl.Coordinates);
                 }
                 contentLength += 2 * parts.Count;
-                
+
                 if (Header.ShapeType == ShapeType.PolyLine)
                 {
                     contentLength += points.Count * 8; // x, y
@@ -534,7 +542,7 @@ namespace DotSpatial.Data
             UpdateAttributes();
             SaveProjection();
         }
-        
+
         private void SaveAsIndexed(string fileName)
         {
             FileStream shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 10000000);
@@ -546,7 +554,7 @@ namespace DotSpatial.Data
             foreach (ShapeRange shape in ShapeIndices)
             {
                 offset += contentLength; // adding the previous content length from each loop calculates the word offset
-                
+
                 contentLength = 22;
                 contentLength += 2 * shape.Parts.Count;
 
@@ -628,7 +636,7 @@ namespace DotSpatial.Data
                 fid++;
                 offset += 4; // header bytes
             }
-            
+
             shpStream.Close();
             shxStream.Close();
 

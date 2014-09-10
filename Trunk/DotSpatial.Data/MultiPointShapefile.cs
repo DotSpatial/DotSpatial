@@ -61,8 +61,16 @@ namespace DotSpatial.Data
         /// <returns>An IFeature created from the shape at the specified offset</returns>
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetMultiPoint(index);
-            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            IFeature f;
+            if (!IndexMode)
+            {
+                f = Features[index];
+            }
+            else
+            {
+                f = GetMultiPoint(index);
+                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            }
             return f;
         }
 

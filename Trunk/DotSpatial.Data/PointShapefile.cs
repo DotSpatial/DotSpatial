@@ -154,7 +154,7 @@ namespace DotSpatial.Data
                     var contentLen = reader.ReadInt32(Endian.BigEndian);
                     Debug.Assert(contentLen == shapeHeaders[shp].ContentLength);
 
-                    var shapeType = (ShapeType) reader.ReadInt32();
+                    var shapeType = (ShapeType)reader.ReadInt32();
                     if (shapeType == ShapeType.NullShape)
                     {
                         if (m != null)
@@ -166,11 +166,11 @@ namespace DotSpatial.Data
 
                     // Read X
                     var ind = 4;
-                    vert[shp*2] = reader.ReadDouble();
+                    vert[shp * 2] = reader.ReadDouble();
                     ind += 8;
 
                     // Read Y
-                    vert[shp*2 + 1] = reader.ReadDouble();
+                    vert[shp * 2 + 1] = reader.ReadDouble();
                     ind += 8;
 
                     // Read Z
@@ -194,7 +194,7 @@ namespace DotSpatial.Data
                         }
                     }
 
-               fin:
+                fin:
                     var shape = new ShapeRange(FeatureType.Point)
                     {
                         RecordNumber = recordNumber,
@@ -204,9 +204,9 @@ namespace DotSpatial.Data
                         NumParts = 1
                     };
                     ShapeIndices.Add(shape);
-                    var part = new PartRange(vert, shp, 0, FeatureType.Point) {NumVertices = 1};
+                    var part = new PartRange(vert, shp, 0, FeatureType.Point) { NumVertices = 1 };
                     shape.Parts.Add(part);
-                    shape.Extent = new Extent(new[] {vert[shp*2], vert[shp*2 + 1], vert[shp*2], vert[shp*2 + 1]});
+                    shape.Extent = new Extent(new[] { vert[shp * 2], vert[shp * 2 + 1], vert[shp * 2], vert[shp * 2 + 1] });
 
                 }
             }
@@ -221,8 +221,16 @@ namespace DotSpatial.Data
         /// <inheritdoc />
         public override IFeature GetFeature(int index)
         {
-            IFeature f = GetPoint(index);
-            f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            IFeature f;
+            if (!IndexMode)
+            {
+                f = Features[index];
+            }
+            else
+            {
+                f = GetPoint(index);
+                f.DataRow = AttributesPopulated ? DataTable.Rows[index] : Attributes.SupplyPageOfData(index, 1).Rows[0];
+            }
             return f;
         }
 
@@ -236,7 +244,7 @@ namespace DotSpatial.Data
         {
             EnsureValidFileToSave(fileName, overwrite);
             Filename = fileName;
-            
+
             // Set Header.ShapeType before setting extent.
             // wordSize is the length of the byte representation in 16 bit words of a single shape, including header.
             int wordSize = 14; // 3 int(2) and 2 double(4)
@@ -317,7 +325,7 @@ namespace DotSpatial.Data
                     fid++;
                 }
             }
-            
+
             shpStream.Close();
             shxStream.Close();
 
