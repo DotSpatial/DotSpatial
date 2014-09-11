@@ -367,6 +367,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean that indicates whether or not the legend should draw the child LegendItems for this category.
         /// </summary>
+        [Serialize("IsExpanded")] 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool IsExpanded
         {

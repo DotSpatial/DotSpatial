@@ -722,6 +722,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the boolean that controls whether or not items from the layer can be selected
         /// </summary>
+        [Serialize("SelectionEnabled")] 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool SelectionEnabled
         {

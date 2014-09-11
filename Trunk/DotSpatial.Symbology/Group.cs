@@ -207,12 +207,14 @@ namespace DotSpatial.Symbology
                 IEnvelope layerArea;
                 if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
                 affectedArea.ExpandToInclude(layerArea);
-                if (somethingChanged)
-                {
-                    MapFrame.ResumeEvents();
-                    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
-                    return somethingChanged;
-                }
+				// removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
+                // added SelectPlugin enables user to choose the layers in which he wants to select features
+			    //if (somethingChanged)
+                //{
+                //    MapFrame.ResumeEvents();
+                //    OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
+                //    return somethingChanged;
+                //}
                 
             }
             MapFrame.ResumeEvents();

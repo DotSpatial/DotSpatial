@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84FD5045-5DE8-4950-A083-77789573F430}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatial.Plugins.SetSelectable</RootNamespace>
+    <AssemblyName>DotSpatial.Plugins.SetSelectable</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\Plugins\DotSpatial.Plugins.SetSelectable\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DGV_Select.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DGV_Select.Designer.cs">
+      <DependentUpon>DGV_Select.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalizationStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SetSelectablePlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DGV_Select.de.resx">
+      <DependentUpon>DGV_Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DGV_Select.resx">
+      <DependentUpon>DGV_Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LocalizationStrings.de-DE.resx" />
+    <EmbeddedResource Include="LocalizationStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizationStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select_all.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select_none.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\uncheckall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
+      <Project>{01a845c6-d391-4258-81b0-c6abf23d3364}</Project>
+      <Name>DotSpatial.Controls</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
+      <Project>{c1018695-3401-47a9-b195-abd3a20c2489}</Project>
+      <Name>DotSpatial.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Extensions\DotSpatial.Extensions.csproj">
+      <Project>{9108b04d-a3de-4981-b66f-496078d462fe}</Project>
+      <Name>DotSpatial.Extensions</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
+      <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
+      <Name>DotSpatial.Symbology</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
+      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
+      <Name>DotSpatial.Topology</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
