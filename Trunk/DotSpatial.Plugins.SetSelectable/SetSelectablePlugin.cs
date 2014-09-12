@@ -36,7 +36,7 @@ namespace DotSpatial.Plugins.SetSelectable
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             if (App.Legend != null) App.Legend.OrderChanged += Legend_OrderChanged;
 
-            foreach (Layer layer in App.Map.Layers)
+            foreach (ILayer layer in App.Map.Layers)
             {
                 AddLayer(layer);
             }
@@ -73,13 +73,14 @@ namespace DotSpatial.Plugins.SetSelectable
         private void AddLayer(ILayer addedLayer)
         {
             if (addedLayer == null) return;
-            if (addedLayer is IMapGroup)
+
+            var grp = addedLayer as IMapGroup;
+            if (grp != null)
             {
-                IMapGroup grp = (IMapGroup)addedLayer;
                 //handle layerAdded event separately for groups because map.layerAdded event doesn't fire for groups.
                 grp.LayerAdded += Map_LayerAdded;
                 grp.LayerRemoved += Map_LayerRemoved;
-                foreach (Layer layer in grp.Layers)
+                foreach (ILayer layer in grp.Layers)
                 {
                     AddLayer(layer);
                 }
@@ -104,7 +105,7 @@ namespace DotSpatial.Plugins.SetSelectable
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
             //This call is necessary because the LayerAdded event doesn't fire when a project is opened.
-            foreach (Layer layer in App.Map.Layers)
+            foreach (ILayer layer in App.Map.Layers)
             {
                 AddLayer(layer);
             }
