@@ -117,28 +117,117 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DGVC_Selectable.HeaderText" xml:space="preserve">
-    <value>Selektierbar</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>509, 252</value>
   </data>
-  <data name="DGVC_Count.HeaderText" xml:space="preserve">
-    <value>Anzahl</value>
+  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 23</value>
   </data>
-  <data name="DGVC_Unselect.HeaderText" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>S&amp;chließen</value>
   </data>
-  <data name="TSB_CheckAll.Text" xml:space="preserve">
-    <value>Alle Layer als selektierbar kennzeichnen.</value>
+  <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
+    <value>437, 252</value>
   </data>
-  <data name="TSB_CheckNone.Text" xml:space="preserve">
-    <value>Alle Layer als nicht selektierbar kennzeichnen.</value>
+  <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 23</value>
   </data>
-  <data name="TSB_SelectAll.Text" xml:space="preserve">
-    <value>Alle Feature der selektierbaren Layer selektieren.</value>
+  <data name="btnOk.Text" xml:space="preserve">
+    <value>&amp;Ok</value>
   </data>
-  <data name="TSB_SelectNone.Text" xml:space="preserve">
-    <value>Alle Feature der selektierbaren Layer deselektieren.</value>
+  <data name="btnApply.Location" type="System.Drawing.Point, System.Drawing">
+    <value>365, 252</value>
   </data>
-  <data name="DataGridViewImageColumn1.HeaderText" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+  <data name="btnApply.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 23</value>
+  </data>
+  <data name="btnApply.Text" xml:space="preserve">
+    <value>&amp;Anwenden</value>
+  </data>
+  <data name="lblEsriString.Text" xml:space="preserve">
+    <value>Esri String</value>
+  </data>
+  <data name="lblProj4String.Text" xml:space="preserve">
+    <value>Proj4 String</value>
+  </data>
+  <data name="tbMain.Text" xml:space="preserve">
+    <value>Derzeitige Kartenprojektion</value>
+  </data>
+  <data name="txtAuthorityCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 92</value>
+  </data>
+  <data name="txtAuthorityCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 20</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Berechtigungscode</value>
+  </data>
+  <data name="txtAuthority.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 66</value>
+  </data>
+  <data name="txtAuthority.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 20</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Berechtigung</value>
+  </data>
+  <data name="txtProjectionType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 40</value>
+  </data>
+  <data name="txtProjectionType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 20</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Projektionstyp</value>
+  </data>
+  <data name="txtName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 14</value>
+  </data>
+  <data name="txtName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 20</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="btnChange.Text" xml:space="preserve">
+    <value>Projektion &amp;ändern...</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABWq11Sp1lP
+        pFVLoFFOnlEAAAAAAABAk0Q9kEFCkEJKkkcAAAAAAAAAAAAAAAAAAABar2GGzY6EzIyDyolMoVIAAAAA
+        AABClkd6xoF2w3w5jT0AAAAAAAAAAAAAAAAAAABetGWIz5FWuWGFzY1ltWxMoVJJnk9drWN8x4N7xoE8
+        kEEAAAAAAAAAAAAAAAAAAABiuGqLz5WKz5JpwXKGzY6EzIyDy4qByohdu2Z+yIRAlEUAAAAAAAAAAAAA
+        AAAAAABlvG5iuGpywHqLz5NYu2RWumFTuF9RtltPtVmAyodcrGJElkg9kUI6jj8AAAAAAAAAAAAAAABj
+        uWuN0ZZdvGlau2ZYumNVuWBSt11ivWuByoh+yIV+yIQ+kkIAAAAAAAAAAAAAAABmvW+Q0plgv21evWpb
+        vGhZu2RWumFlv2+DzIuCyomAyohBlkYAAAAAAABwx3ptxHd8yYWT1JxlwXJiwG9fvmxdvWlau2aIz5Bm
+        tW1MoVJInU5FmUoAAAAAAABzy32Z2KOX16F5y4dpw3dlwnNkwXFnwnNmwHGLz5RTqVoAAAAAAAAAAAAA
+        AAAAAAB2zoCb2aaZ2KSY16KW16GV1Z6T1JyP0ZiM0JWKz5RXrV4AAAAAAAAAAAAAAAAAAAB50IN2zoF0
+        y35xyXtwxnmX16GT1Z1uvnRtu3FpuG1ltGkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4yn+X2KKN
+        0pePyIcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4zYKc2aeY2KJ4xnwAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACP0o11zYB0yn6azpAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAgw8AAIMP
+        AACADwAAgA8AAIABAADgAQAA4AEAAIABAACADwAAgA8AAIAPAAD4fwAA+H8AAPh/AAD//wAA
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Kartenprojektion</value>
+  </data>
+  <data name="tbDetails.Text" xml:space="preserve">
+    <value>Details</value>
   </data>
 </root>

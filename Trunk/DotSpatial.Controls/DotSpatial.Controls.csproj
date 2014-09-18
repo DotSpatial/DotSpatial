@@ -302,6 +302,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FeatureIdentifier.de-DE.resx">
+      <DependentUpon>FeatureIdentifier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm.de-DE.resx">
+      <DependentUpon>LayoutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBoxDialog.de-DE.resx">
+      <DependentUpon>ListBoxDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapFrameProjectionDialog.de-DE.resx">
+      <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MapFrameProjectionDialog.resx">
       <DependentUpon>MapFrameProjectionDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -375,6 +387,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MessageStrings.resx</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modeler.de-DE.resx">
+      <DependentUpon>Modeler.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modeler.resx">
       <DependentUpon>Modeler.cs</DependentUpon>
     </EmbeddedResource>
@@ -385,6 +400,9 @@
     <EmbeddedResource Include="ModelerForm.zh-CN.resx">
       <DependentUpon>ModelerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageSetupForm.de-DE.resx">
+      <DependentUpon>PageSetupForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PageSetupForm.resx">
       <DependentUpon>PageSetupForm.cs</DependentUpon>

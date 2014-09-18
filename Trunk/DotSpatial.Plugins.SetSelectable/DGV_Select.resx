@@ -173,7 +173,7 @@
     <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="DataGridViewImageColumn1.HeaderText" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>Clear selection</value>
   </data>
   <data name="&gt;&gt;TSB_CheckAll.Name" xml:space="preserve">
     <value>TSB_CheckAll</value>

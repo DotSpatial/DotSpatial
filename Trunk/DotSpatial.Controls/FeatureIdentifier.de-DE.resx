@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DGVC_Selectable.HeaderText" xml:space="preserve">
-    <value>Selektierbar</value>
-  </data>
-  <data name="DGVC_Count.HeaderText" xml:space="preserve">
-    <value>Anzahl</value>
-  </data>
-  <data name="DGVC_Unselect.HeaderText" xml:space="preserve">
-    <value>Auswahl aufheben</value>
-  </data>
-  <data name="TSB_CheckAll.Text" xml:space="preserve">
-    <value>Alle Layer als selektierbar kennzeichnen.</value>
-  </data>
-  <data name="TSB_CheckNone.Text" xml:space="preserve">
-    <value>Alle Layer als nicht selektierbar kennzeichnen.</value>
-  </data>
-  <data name="TSB_SelectAll.Text" xml:space="preserve">
-    <value>Alle Feature der selektierbaren Layer selektieren.</value>
-  </data>
-  <data name="TSB_SelectNone.Text" xml:space="preserve">
-    <value>Alle Feature der selektierbaren Layer deselektieren.</value>
-  </data>
-  <data name="DataGridViewImageColumn1.HeaderText" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Identifizieren</value>
   </data>
 </root>
