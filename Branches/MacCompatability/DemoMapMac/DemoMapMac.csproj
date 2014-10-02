@@ -58,8 +58,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="MonoMac">
-      <HintPath>..\DotSpatial.Controls.MonoMac\MonoMac.dll</HintPath>
+      <HintPath>..\DotSpatial.Mono\Resources\MonoMac.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,7 @@
     <Compile Include="AppDelegate.designer.cs">
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ToolBarDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib">

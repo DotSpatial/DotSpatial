@@ -11,7 +11,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="2" customClass="MainWindow">
+        <window title="DemoMap" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" frameAutosaveName="DemoMap" animationBehavior="default" id="2" customClass="MainWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="74" width="723" height="494"/>
@@ -20,19 +20,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="723" height="494"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" id="pkw-RE-2vf">
-                        <rect key="frame" x="22" y="456" width="118" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Load Project" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b1u-qM-CRt">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                    </button>
                     <button toolTip="Pan" verticalHuggingPriority="750" id="Kuj-fQ-K5A">
                         <rect key="frame" x="140" y="455" width="35" height="35"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="hand_16x16" imagePosition="only" alignment="center" borderStyle="border" inset="2" id="U7L-sl-dum">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
@@ -40,7 +32,7 @@
                         <rect key="frame" x="172" y="455" width="35" height="35"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="zoom_in_16x16" imagePosition="only" alignment="left" borderStyle="border" inset="2" id="Kut-cH-fd4">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
@@ -48,7 +40,7 @@
                         <rect key="frame" x="204" y="455" width="35" height="35"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="zoom_out_16x16" imagePosition="only" alignment="left" borderStyle="border" inset="2" id="pse-fK-HYj">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
@@ -56,7 +48,7 @@
                         <rect key="frame" x="236" y="455" width="35" height="35"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="select_16x16" imagePosition="only" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fzd-d9-Nmd">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
@@ -71,7 +63,6 @@
                 </subviews>
             </view>
             <connections>
-                <outlet property="LoadProject" destination="pkw-RE-2vf" id="Yo3-gh-SiW"/>
                 <outlet property="deselectButton" destination="akY-SB-ljd" id="YQN-ef-1Zb"/>
                 <outlet property="panButton" destination="Kuj-fQ-K5A" id="gae-bp-Npx"/>
                 <outlet property="selectButton" destination="zhc-eh-stH" id="44y-aN-9sf"/>

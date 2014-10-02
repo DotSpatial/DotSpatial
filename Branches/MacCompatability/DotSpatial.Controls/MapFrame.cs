@@ -1030,10 +1030,10 @@ namespace DotSpatial.Controls
             if (clipView.Width == 0 || clipView.Height == 0) return;
             try
             {
-                if(_buffer.Size == clip.Size)
-                    pe.Graphics.DrawImage(_buffer, clip, clipView, GraphicsUnit.Pixel);
-                else
+                if(_buffer.Size != clip.Size && clip.Location.IsEmpty)
                     pe.Graphics.DrawImageUnscaledAndClipped(_buffer, clip);
+                else
+                    pe.Graphics.DrawImage(_buffer, clip, clipView, GraphicsUnit.Pixel);
             }
             catch
             {

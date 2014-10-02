@@ -178,7 +178,8 @@ namespace DotSpatial.Controls.MonoMac
                 case FunctionMode.ZoomIn:
                     try
                     {
-                        nsCursor = new NSCursor(ToNSImage(Images.cursorZoomIn), new PointF(6, 6));
+                        MemoryStream ms = new MemoryStream(Images.cursorZoomIn);
+                        nsCursor = new NSCursor(NSImage.FromStream(ms), new PointF(6, 6));
                     }
                     catch
                     {
@@ -188,7 +189,8 @@ namespace DotSpatial.Controls.MonoMac
                 case FunctionMode.ZoomOut:
                     try
                     {
-                        nsCursor = new NSCursor(ToNSImage(Images.cursorZoomOut), new PointF(16, 15));
+                        MemoryStream ms = new MemoryStream(Images.cursorZoomOut);
+                        nsCursor = new NSCursor(NSImage.FromStream(ms), new PointF(16, 15));
                     }
                     catch
                     {
@@ -234,12 +236,6 @@ namespace DotSpatial.Controls.MonoMac
             }
         }
 
-        public static NSImage ToNSImage(byte[] b)
-        {
-            NSData imageData = NSData.FromArray(b);
-            return new NSImage(imageData);
-        }
-
         /// <summary>
         /// This causes all of the data layers to re-draw themselves to the buffer, rather than just drawing
         /// the buffer itself like what happens during "Invalidate"
@@ -267,7 +263,7 @@ namespace DotSpatial.Controls.MonoMac
             {
                 handler(this, e);
             }
-            base.KeyDown (theEvent);
+            base.KeyUp (theEvent);
         }
 
         private Keys ToKeys(ushort KeyCode)
@@ -522,7 +518,7 @@ namespace DotSpatial.Controls.MonoMac
             stencil.Dispose();
         }
 
-        public static CGImage ToCGImage(Image img) 
+        private CGImage ToCGImage(Image img) 
         {
             System.IO.MemoryStream s = new System.IO.MemoryStream();
             img.Save(s, System.Drawing.Imaging.ImageFormat.Png);
@@ -531,6 +527,8 @@ namespace DotSpatial.Controls.MonoMac
             s.Flush();
             s.Close();
             CGImage img2 = CGImage.FromPNG(dp,null,false,CGColorRenderingIntent.Default);
+            dp.Dispose ();
+            s.Dispose ();
             return img2;
         }
 

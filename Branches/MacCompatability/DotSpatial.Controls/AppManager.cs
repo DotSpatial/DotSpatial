@@ -609,6 +609,13 @@ namespace DotSpatial.Controls
             catalog.Catalogs.Add(new AssemblyCatalog(dataDll));
             Trace.WriteLine("Cataloging: " + dataDll.FullName);
 
+            if (Mono.Mono.IsRunningOnMonoMac()) {
+                var path = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "DotSpatial.Controls.MonoMac.dll");
+                Assembly MonoMacControlsDll = Assembly.LoadFrom(path);
+                catalog.Catalogs.Add(new AssemblyCatalog(MonoMacControlsDll));
+                Trace.WriteLine("Cataloging: " + MonoMacControlsDll.FullName);
+            }
+
             // Add all of the directories in ExtensionsDirectory, nested any number of levels.
             RefreshExtensions(catalog);
 
@@ -675,6 +682,14 @@ namespace DotSpatial.Controls
         private T GetRequiredImport<T>() where T : class
         {
             var imports = CompositionContainer.GetExportedValues<T>().ToList();
+
+            if (Mono.Mono.IsRunningOnMonoMac ())
+            {
+                // If monomac is running, skip default in current assembly
+                imports = imports
+                    .Where (_ => _.GetType ().Assembly != Assembly.GetExecutingAssembly ())
+                    .ToList ();
+            }
 
             if (imports.Count > 1)
             {

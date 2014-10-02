@@ -3,6 +3,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -21,7 +22,7 @@ namespace DotSpatial.Controls.Docking
 
         private DockStyle dock;
 
-        private Control innerControl;
+        private Object innerControl;
 
         private string key;
 
@@ -45,7 +46,7 @@ namespace DotSpatial.Controls.Docking
         /// <param name="caption">The caption.</param>
         /// <param name="innerControl">The inner control.</param>
         /// <param name="dock">The dock.</param>
-        public DockablePanel(string key, string caption, Control innerControl, DockStyle dock)
+        public DockablePanel(string key, string caption, Object innerControl, DockStyle dock)
         {
             Dock = dock;
             Key = key;
@@ -122,7 +123,7 @@ namespace DotSpatial.Controls.Docking
         /// <value>
         ///   The InnerControl.
         /// </value>
-        public Control InnerControl
+        public Object InnerControl
         {
             get
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using MonoMac.AppKit;
 
 namespace DotSpatial.Mono
 {
@@ -8,6 +9,19 @@ namespace DotSpatial.Mono
         {
             Type t = Type.GetType("Mono.Runtime");
             return (t != null);
+        }
+
+        public static bool IsRunningOnMonoMac()
+        {
+            try
+            {
+                var initTest = NSApplication.SharedApplication;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

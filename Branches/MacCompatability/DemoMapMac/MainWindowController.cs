@@ -6,7 +6,7 @@ using MonoMac.AppKit;
 
 namespace MacDemoMap
 {
-	public partial class MainWindowController : MonoMac.AppKit.NSWindowController
+    public partial class MainWindowController : NSWindowController
 	{
 		#region Constructors
 
@@ -32,6 +32,20 @@ namespace MacDemoMap
 		}
 
 		#endregion
+
+        public override void AwakeFromNib()
+        {
+            ShouldCascadeWindows = false;
+            WindowFrameAutosaveName = Window.FrameAutosaveName;
+            Window.WeakDelegate = this;
+        }
+
+        [Export("windowShouldClose:")]
+        public bool WindowShouldClose (NSObject sender)
+        {
+            NSApplication.SharedApplication.Hide (this);
+            return false;
+        }
 
 		//strongly typed window accessor
 		public new MainWindow Window {

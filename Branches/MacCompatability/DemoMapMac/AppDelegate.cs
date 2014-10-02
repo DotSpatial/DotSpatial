@@ -17,7 +17,7 @@ namespace MacDemoMap
 		public override void FinishedLaunching (NSObject notification)
 		{
 			mainWindowController = new MainWindowController ();
-			mainWindowController.Window.MakeKeyAndOrderFront (this);
+            mainWindowController.Window.MakeKeyAndOrderFront (this);
 		}
 	}
 }

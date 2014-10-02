@@ -1,12 +1,13 @@
 ﻿using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Controls.MonoMac;
 using DotSpatial.Controls.Docking;
 
 namespace DotSpatial.Plugins.SimpleMap
 {
     public class SimpleMapPlugin : Extension
     {
-        private Map _map;
+        private IMap _map;
 
         public SimpleMapPlugin()
         {
@@ -34,9 +35,17 @@ namespace DotSpatial.Plugins.SimpleMap
 
         private void ShowMap()
         {
-            _map = new Map {Text = "Map", Name = "map1", Legend = App.Legend};
+            if (!Mono.Mono.IsRunningOnMonoMac ())
+                _map = new DotSpatial.Controls.Map { Text = "Map", Name = "map1", Legend = App.Legend };
+            else
+                SetMap ();
             App.Map = _map;
             App.DockManager.Add(new DockablePanel("kMap", "Map", _map, DockStyle.Fill));
+        }
+
+        private void SetMap()
+        {
+            _map = new DotSpatial.Controls.MonoMac.Map { Legend = App.Legend };
         }
     }
 }

@@ -16,9 +16,6 @@ namespace MacDemoMap
 		MonoMac.AppKit.NSButton deselectButton { get; set; }
 
 		[Outlet]
-		MonoMac.AppKit.NSButton LoadProject { get; set; }
-
-		[Outlet]
 		MonoMac.AppKit.NSButton panButton { get; set; }
 
 		[Outlet]
@@ -35,11 +32,6 @@ namespace MacDemoMap
 			if (deselectButton != null) {
 				deselectButton.Dispose ();
 				deselectButton = null;
-			}
-
-			if (LoadProject != null) {
-				LoadProject.Dispose ();
-				LoadProject = null;
 			}
 
 			if (panButton != null) {

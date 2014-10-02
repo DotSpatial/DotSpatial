@@ -96,8 +96,8 @@ namespace DotSpatial.Controls
                           };
             tabPage.VisibleChanged += TabPageOnVisibleChanged;
 
-            panel.InnerControl.Dock = DockStyle.Fill;
-            tabPage.Controls.Add(panel.InnerControl);
+            ((Control)panel.InnerControl).Dock = DockStyle.Fill;
+            tabPage.Controls.Add(((Control)panel.InnerControl));
 
             _allTabs.Add(panel.Key, tabPage);
             tabControl.TabPages.Add(tabPage);

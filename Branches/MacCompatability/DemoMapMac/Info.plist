@@ -18,5 +18,9 @@
 	<string>NSApplication</string>
 	<key>CFBundleIconFile</key>
 	<string>DotSpatialGlobe.icns</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 </dict>
 </plist>
