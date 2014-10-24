@@ -53,15 +53,17 @@ namespace MacDemoMap
             appManager.DockManager.Add(new DockablePanel("kMap", "Map", map, DockStyle.Fill));
 
             // Add ToolBar
-            NSToolbar toolBar = new NSToolbar ("SpatialToolStrip");
-            Toolbar = toolBar;
-            toolBar.SizeMode = NSToolbarSizeMode.Small;
+            Toolbar = new NSToolbar ("SpatialToolStrip");
+            //Toolbar.SizeMode = NSToolbarSizeMode.Small;
+            Toolbar.Delegate = new ToolBarDelegate (map);
             //toolBar.DisplayMode = NSToolbarDisplayMode.Icon;
             //toolBar.ShowsBaselineSeparator = false;
-            toolBar.Delegate = new ToolBarDelegate (map);
 
             // Add Pan
-            toolBar.InsertItem("Pan", 0);
+            Toolbar.InsertItem("Pan", 0);
+            Toolbar.InsertItem ("Bla", 1);
+            Toolbar.InsertItem ("cool", 1);
+            Toolbar.SelectedItemIdentifier = "Pan";
 
             // Create Main Menu
             Menu = new NSMenu ("MainMenu");
@@ -89,6 +91,7 @@ namespace MacDemoMap
             zoomOutButton.Activated += ChangeFunctionMode;
             selectButton.Activated += ChangeFunctionMode;
             deselectButton.Activated += ChangeFunctionMode;
+            map.FunctionModeChanged += FunctionModeChanged;
 
             // Move buttons to Map
             panButton.RemoveFromSuperview ();
@@ -107,14 +110,6 @@ namespace MacDemoMap
             selectButton.Frame = new RectangleF (0, map.Height - 30*4 - 5, 35, 35);
             deselectButton.Frame = new RectangleF (0, map.Height - 30*5 - 5, 35, 35);
 		}
-
-        public NSToolbarItem WillBeInsertedIntoToolbar(NSToolbar toolbar, string itemIdentifier, bool flag)
-        {
-            var toolBarItemPan = new NSToolbarItem ("Pan") {Label = "Pan", ToolTip = "Pan", 
-                        PaletteLabel = "Pan", Image = NSImage.ImageNamed ("hand_32x32.png")};
-            toolBarItemPan.Activated += (Object sender, EventArgs e) => {map.FunctionMode = FunctionMode.Pan;};
-            return toolBarItemPan;
-        }
 
 		public void Load_Project(Object sender, EventArgs e)
 		{
@@ -139,24 +134,36 @@ namespace MacDemoMap
             // Pan
 			if (sender == panButton)
     			map.FunctionMode = FunctionMode.Pan;
-            else
-                panButton.State = NSCellStateValue.Off;
             // Zoom In
 			if (sender == zoomInButton)
     			map.FunctionMode = FunctionMode.ZoomIn;
-            else
-                zoomInButton.State = NSCellStateValue.Off;
             // Zoom Out
 			if (sender == zoomOutButton)
     			map.FunctionMode = FunctionMode.ZoomOut;
-            else
-                zoomOutButton.State = NSCellStateValue.Off;
             // Select
 			if (sender == selectButton)
     			map.FunctionMode = FunctionMode.Select;
+		}
+
+        public void FunctionModeChanged(Object sender, EventArgs e)
+        {
+            if (map.FunctionMode == FunctionMode.Pan)
+                panButton.State = NSCellStateValue.On;
+            else
+                panButton.State = NSCellStateValue.Off;
+            if (map.FunctionMode == FunctionMode.ZoomIn)
+                zoomInButton.State = NSCellStateValue.On;
+            else
+                zoomInButton.State = NSCellStateValue.Off;
+            if (map.FunctionMode == FunctionMode.ZoomOut)
+                zoomOutButton.State = NSCellStateValue.On;
+            else
+                zoomOutButton.State = NSCellStateValue.Off;
+            if (map.FunctionMode == FunctionMode.Select)
+                selectButton.State = NSCellStateValue.On;
             else
                 selectButton.State = NSCellStateValue.Off;
-		}
+        }
 
         public void Quit_Clicked(Object sender, EventArgs e)
         {

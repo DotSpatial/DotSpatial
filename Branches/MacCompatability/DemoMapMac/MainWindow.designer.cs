@@ -59,9 +59,5 @@ namespace MacDemoMap
 	[Register ("MainWindowController")]
 	partial class MainWindowController
 	{
-		
-		void ReleaseDesignerOutlets ()
-		{
-		}
 	}
 }
