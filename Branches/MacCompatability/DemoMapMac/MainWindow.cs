@@ -17,8 +17,8 @@ namespace MacDemoMap
 	{
 		private AppManager appManager;
         private DotSpatial.Controls.MonoMac.Map map = new DotSpatial.Controls.MonoMac.Map();
-        [System.ComponentModel.Composition.Export("Shell", typeof(NSView))]
-        private static NSView Shell;
+        [System.ComponentModel.Composition.Export("Shell", typeof(NSWindow))]
+        private static NSWindow Shell;
 
 		#region Constructors
 
@@ -44,7 +44,7 @@ namespace MacDemoMap
 		public override void AwakeFromNib()
         {
             // Set up DotSpatial
-            Shell = ContentView;
+            Shell = this;
             appManager = new AppManager();
             appManager.LoadExtensions ();
 

@@ -20,8 +20,8 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
         [Import]
         private AppManager App { get; set; }
 
-        [Import("Shell", typeof(NSView))]
-        private NSView Shell { get; set; }
+        [Import("Shell", typeof(NSWindow))]
+        private NSWindow Shell { get; set; }
 
         public int Priority { get { return 0; } }
 
@@ -44,7 +44,7 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
                 _dockManager.PanelRemoved += (sender, args) => RaiseDockableEvent(PanelRemoved, args);
                 _dockManager.PanelHidden += (sender, args) => RaiseDockableEvent(PanelHidden, args);
                 
-                Shell.AddSubview((NSSplitView)_dockManager);
+                Shell.ContentView.AddSubview((NSSplitView)_dockManager);
             }
         }
 

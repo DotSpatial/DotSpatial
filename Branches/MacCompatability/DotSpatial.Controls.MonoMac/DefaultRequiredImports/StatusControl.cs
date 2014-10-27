@@ -23,8 +23,8 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
         [Import]
         private AppManager App { get; set; }
 
-        [Import("Shell", typeof(NSView))]
-        private NSView Shell { get; set; }
+        [Import("Shell", typeof(NSWindow))]
+        private NSWindow Shell { get; set; }
 
         #region IStatusControl Members
         
@@ -65,7 +65,7 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
 
                 // adding the status strip control
                 _statusStrip = new SpatialStatusStrip();
-                Shell.AddSubview(_statusStrip);
+                Shell.ContentView.AddSubview(_statusStrip);
 
                 // adding initial status panel to the status strip control
                 Add(new ProgressStatusPanel());

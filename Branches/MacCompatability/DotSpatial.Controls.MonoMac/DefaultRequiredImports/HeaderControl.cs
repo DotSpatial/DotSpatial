@@ -20,8 +20,8 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
         [Import]
         private AppManager App { get; set; }
 
-        [Import("Shell", typeof(NSView))]
-        private NSView Shell { get; set; }
+        [Import("Shell", typeof(NSWindow))]
+        private NSWindow Shell { get; set; }
 
         public int Priority { get { return 1; } }
 
