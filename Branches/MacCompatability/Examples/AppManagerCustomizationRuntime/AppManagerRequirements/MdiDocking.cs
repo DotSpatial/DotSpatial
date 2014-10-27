@@ -91,7 +91,7 @@ namespace DotSpatial.Examples.AppManagerCustomizationRuntime.AppManagerRequireme
         /// <param name="panel"></param>
         public void Add(DockablePanel panel)
         {
-            Add(panel.Key, panel.Caption, panel.InnerControl, panel.Dock);
+            Add(panel.Key, panel.Caption, (Control)panel.InnerControl, panel.Dock);
             OnPanelAdded(new DockablePanelEventArgs(panel.Key));
         }
        
