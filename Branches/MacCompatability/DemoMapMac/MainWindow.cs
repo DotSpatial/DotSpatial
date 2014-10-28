@@ -54,7 +54,7 @@ namespace MacDemoMap
 
             // Add ToolBar
             Toolbar = new NSToolbar ("SpatialToolStrip");
-            //Toolbar.SizeMode = NSToolbarSizeMode.Small;
+            Toolbar.SizeMode = NSToolbarSizeMode.Small;
             Toolbar.Delegate = new ToolBarDelegate (map);
             //toolBar.DisplayMode = NSToolbarDisplayMode.Icon;
             //toolBar.ShowsBaselineSeparator = false;

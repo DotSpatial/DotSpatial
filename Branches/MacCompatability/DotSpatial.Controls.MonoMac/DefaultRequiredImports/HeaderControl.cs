@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using System.Linq;
-//using System.Windows.Forms;
 using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Header;
+using MenuBarHeaderControl = DotSpatial.Controls.MonoMac.Header.MenuBarHeaderControl;
 using DotSpatial.Extensions;
 using MonoMac.AppKit;
 
@@ -38,7 +38,7 @@ namespace DotSpatial.Controls.MonoMac.DefaultRequiredImports
             {
                 _isActivated = true;
 
-//                // Create stip of buttons
+//                // NSToolbar
 //                var container = new ToolStripPanel {Dock = DockStyle.Top};
 //                Shell.AddSubview(container);
 //

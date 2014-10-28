@@ -47,6 +47,7 @@
     <Compile Include="DefaultRequiredImports\StatusControl.cs" />
     <Compile Include="SpatialStatusStrip.cs" />
     <Compile Include="DefaultRequiredImports\HeaderControl.cs" />
+    <Compile Include="Header\MenuBarHeaderControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Data\DotSpatial.Data.csproj">
