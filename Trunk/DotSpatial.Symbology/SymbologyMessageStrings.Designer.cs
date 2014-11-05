@@ -61,7 +61,16 @@ namespace DotSpatial.Symbology {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating Shaded Relief.
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        internal static string Data {
+            get {
+                return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Creating Shaded Relief ähnelt.
         /// </summary>
         internal static string DesktopRasterExt_CreatingShadedRelief {
             get {

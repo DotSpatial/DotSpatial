@@ -137,7 +137,7 @@ namespace DotSpatial.Symbology
                                             new SymbologyMenuItem(SymbologyMessageStrings.SetDynamicVisibilityScale, SymbologyImages.ZoomScale,
                                                                   SetDynamicVisibility)
                                         };
-            SymbologyMenuItem mnuData = new SymbologyMenuItem("Data");
+            SymbologyMenuItem mnuData = new SymbologyMenuItem(SymbologyMessageStrings.Data);
             mnuData.MenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.ExportData, SymbologyImages.save, ExportDataClick));
             base.ContextMenuItems.Add(mnuData);
             base.ContextMenuItems.Add(new SymbologyMenuItem(SymbologyMessageStrings.Properties, SymbologyImages.color_scheme, ShowPropertiesClick));

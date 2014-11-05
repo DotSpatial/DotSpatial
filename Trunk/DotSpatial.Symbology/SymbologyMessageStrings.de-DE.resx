@@ -117,102 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DesktopRasterExt_CreatingShadedRelief" xml:space="preserve">
-    <value>Creating Shaded Relief</value>
-  </data>
-  <data name="LayerManager_FileTypeNotSupported" xml:space="preserve">
-    <value>The specified file type is not supported.</value>
-  </data>
-  <data name="DesktopRasterExt_PaintingHillshade" xml:space="preserve">
-    <value>Painting Hillshade To Bitmap</value>
-  </data>
-  <data name="LineFeatureTypeException" xml:space="preserve">
-    <value>An incompatible feature type was supplied and was not of type Line.</value>
-  </data>
-  <data name="PointFeatureTypeException" xml:space="preserve">
-    <value>An incompatible feature type was supplied and was not of type Point.</value>
-  </data>
-  <data name="PolygonFeatureTypeException" xml:space="preserve">
-    <value>An incompatible feature type was supplied and was not of type polygon.</value>
-  </data>
-  <data name="DesktopRasterExt_PaintingColorScheme" xml:space="preserve">
-    <value>Painting color scheme to bitmap.</value>
-  </data>
-  <data name="FileCantBeDeletedException_S" xml:space="preserve">
-    <value>The file %S can't be deleted, probably because it is currently in use by another application.</value>
-  </data>
-  <data name="NullLogException_S" xml:space="preserve">
-    <value>The argument %S cannot be null.</value>
-  </data>
-  <data name="LayerFrame_CreateGroup" xml:space="preserve">
-    <value>Create Group</value>
-  </data>
-  <data name="LayerFrame_Map_Layers" xml:space="preserve">
-    <value>Map Layers</value>
-  </data>
-  <data name="LayerFrame_RemoveMapFrame" xml:space="preserve">
-    <value>Remove Map Frame</value>
-  </data>
-  <data name="LayerFrame_ZoomToMapFrame" xml:space="preserve">
-    <value>Zoom to Map Frame</value>
-  </data>
-  <data name="RemoveLayer" xml:space="preserve">
-    <value>Remove Layer</value>
-    <comment>RemoveLayer description</comment>
-  </data>
-  <data name="ZoomToLayer" xml:space="preserve">
-    <value>Zoom to Layer</value>
-    <comment>ZoomToLayer description</comment>
-  </data>
-  <data name="SetDynamicVisibilityScale" xml:space="preserve">
-    <value>Set Dynamic Visibility Scale</value>
-    <comment>SetDynamicVisibilityScale description</comment>
-  </data>
   <data name="ExportData" xml:space="preserve">
-    <value>Export Data</value>
-    <comment>ExportData description</comment>
-  </data>
-  <data name="Properties" xml:space="preserve">
-    <value>Properties</value>
-    <comment>Properties description</comment>
+    <value>Daten exportieren</value>
   </data>
   <data name="FeatureLayer_Create_Layer_From_Selected_Features" xml:space="preserve">
-    <value>Create Layer from Selected Features</value>
-    <comment>Legend Context Menu: Create Layer from Selected Features</comment>
+    <value>Layer aus ausgewählten Features erstellen</value>
   </data>
   <data name="FeatureLayer_Join_Excel_File" xml:space="preserve">
-    <value>Join Excel file 'Data' Label</value>
-    <comment>Legend Context Menu:  Join Excel file Data Label</comment>
-  </data>
-  <data name="FeatureLayer_Labeling" xml:space="preserve">
-    <value>Labeling</value>
-    <comment>Legend Context Menu: Labeling</comment>
-  </data>
-  <data name="FeatureLayer_Label_Setup" xml:space="preserve">
-    <value>Label Setup</value>
-    <comment>Legend Context Menu: Label Setup</comment>
-  </data>
-  <data name="FeatureLayer_Selection" xml:space="preserve">
-    <value>Selection</value>
-    <comment>Legend Context Menu: Selection</comment>
-  </data>
-  <data name="FeatureLayer_Zoom_To_Selected" xml:space="preserve">
-    <value>Zoom to Selected Features</value>
-    <comment>Legend Context Menu:  Zoom to Selected Features</comment>
-  </data>
-  <data name="Layer_Properties" xml:space="preserve">
-    <value>Properties</value>
-    <comment>Layer Properties Context Menu Item</comment>
-  </data>
-  <data name="FeatureLayer_UnselectAll" xml:space="preserve">
-    <value>Unselect All</value>
-    <comment>Legend Context Menu: Selection - Unselect All</comment>
+    <value>Mit Excel-Datei verbinden</value>
   </data>
   <data name="FeatureLayer_SelectAll" xml:space="preserve">
-    <value>Select All</value>
-    <comment>Legend Context Menu: Selection - Select All</comment>
+    <value>Alle auswählen</value>
+  </data>
+  <data name="FeatureLayer_Selection" xml:space="preserve">
+    <value>Auswahl</value>
+  </data>
+  <data name="FeatureLayer_UnselectAll" xml:space="preserve">
+    <value>Nichts auswählen</value>
+  </data>
+  <data name="FeatureLayer_Zoom_To_Selected" xml:space="preserve">
+    <value>Auf Auswahl zoomen</value>
+  </data>
+  <data name="FileCantBeDeletedException_S" xml:space="preserve">
+    <value>Die Datei %S kann nicht gelöscht werden. Möglicherweise wird sie derzeit von einer anderen Anwendung verwendet.</value>
+  </data>
+  <data name="Layer_Properties" xml:space="preserve">
+    <value>Eigenschaften</value>
+  </data>
+  <data name="LayerFrame_CreateGroup" xml:space="preserve">
+    <value>Gruppen-Layer erstellen</value>
+  </data>
+  <data name="LayerManager_FileTypeNotSupported" xml:space="preserve">
+    <value>Der angegebene Dateityp wird nicht unterstützt.</value>
+  </data>
+  <data name="NullLogException_S" xml:space="preserve">
+    <value>Das Argument %S darf nicht null sein.</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>Eigenschaften</value>
+  </data>
+  <data name="RemoveLayer" xml:space="preserve">
+    <value>Layer entfernen</value>
+  </data>
+  <data name="ZoomToLayer" xml:space="preserve">
+    <value>Auf Layer zoomen</value>
+  </data>
+  <data name="FeatureLayer_Labeling" xml:space="preserve">
+    <value>Beschriftung</value>
+  </data>
+  <data name="LayerFrame_RemoveMapFrame" xml:space="preserve">
+    <value>Kartenrahmen entfernen</value>
+  </data>
+  <data name="LayerFrame_ZoomToMapFrame" xml:space="preserve">
+    <value>Auf Kartenrahmen zoomen</value>
+  </data>
+  <data name="LayerFrame_Map_Layers" xml:space="preserve">
+    <value>Karten-Layer</value>
+  </data>
+  <data name="FeatureLayer_Label_Setup" xml:space="preserve">
+    <value>Beschriftungs-Setup</value>
+  </data>
+  <data name="SetDynamicVisibilityScale" xml:space="preserve">
+    <value>Sichtbaren Maßstabsbereich festlegen</value>
+  </data>
+  <data name="PointFeatureTypeException" xml:space="preserve">
+    <value>Es wurde ein vom Typ Punkt abweichender Featuretyp bereitgestellt.</value>
+  </data>
+  <data name="PolygonFeatureTypeException" xml:space="preserve">
+    <value>Es wurde ein vom Typ Polygon abweichender Featuretyp bereitgestellt.</value>
+  </data>
+  <data name="LineFeatureTypeException" xml:space="preserve">
+    <value>Es wurde ein vom Typ Linie abweichender Featuretyp bereitgestellt.</value>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Data</value>
+    <value>Daten</value>
   </data>
 </root>
