@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using BruTile;
 using BruTile.Cache;
+using BruTile.Web;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Plugins.WebMap
@@ -27,7 +28,11 @@ namespace DotSpatial.Plugins.WebMap
             var ts = TileSource;
             if (ts == null) return null;
 
+            Bitmap bitMap = null;
             var zoomS = zoom.ToString(CultureInfo.InvariantCulture);
+            var extent = ToBrutileExtent(envelope);
+            var tileInfo = ts.Schema.GetTilesInView(extent, zoomS).FirstOrDefault();
+
             try
             {
                 var index = new TileIndex(x, y, zoomS);
@@ -35,20 +40,18 @@ namespace DotSpatial.Plugins.WebMap
                 var bytes = tc != null ? tc.Find(index) : null;
                 if (bytes == null)
                 {
-                    var extent = ToBrutileExtent(envelope);
-                    var tileInfo = ts.Schema.GetTilesInView(extent, zoomS).FirstOrDefault();
                     if (tileInfo == null)
                     {
                         return null;
                     }
                     tileInfo.Index = index;
                     bytes = ts.Provider.GetTile(tileInfo);
-                    var bm = new Bitmap(new MemoryStream(bytes));
+                    bitMap = new Bitmap(new MemoryStream(bytes));
                     if (tc != null)
                     {
                         tc.Add(index, bytes);
                     }
-                    return bm;
+                    return bitMap;
                 }
                 return new Bitmap(new MemoryStream(bytes));
             }
@@ -57,11 +60,40 @@ namespace DotSpatial.Plugins.WebMap
                 if (ex is WebException ||
                     ex is TimeoutException)
                 {
-                    return ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
+                    bitMap = ExceptionToBitmap(ex, TileSource.Schema.GetTileWidth(zoomS), TileSource.Schema.GetTileHeight(zoomS));
                 }
-                Debug.WriteLine(ex.Message);
+                else
+                    Debug.WriteLine(ex.Message);
             }
-            return null;
+
+            // Esri Hyro Base Map Fix, the server doesn't put image in the response header.
+            if (ts is ArcGisTileSource)
+            {
+                try
+                {
+                    string str = (ts as ArcGisTileSource).BaseUrl + "/tile/{zoom}/{y}/{x}";
+                    if (str != null)
+                    {
+                        if (!str.Contains("{key}"))
+                        {
+                            str = str.Replace("{zoom}", zoomS);
+                            str = str.Replace("{x}", x.ToString());
+                            str = str.Replace("{y}", y.ToString());
+
+                            Stream stream = (new WebClient()).OpenRead(str);
+                            if (stream != null)
+                            {
+                                bitMap = new Bitmap(stream);
+                            }
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                }
+            }
+
+            return bitMap;
         }
 
         protected static Extent ToBrutileExtent(IEnvelope extent)

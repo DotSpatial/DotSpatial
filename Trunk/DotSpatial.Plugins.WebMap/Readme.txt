@@ -1,2 +1,2 @@
-﻿Allow to view various web maps: google, osm, yahoo, wms.
-Brutile: used changeset 647001c23540 from official repo at https://brutile.codeplex.com/
+﻿Allow to view various web maps: google, osm, bing, wms.
+Brutile: used 0.10.1 from official repo at https://brutile.codeplex.com/

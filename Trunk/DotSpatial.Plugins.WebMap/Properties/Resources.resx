@@ -120,9 +120,6 @@
   <data name="BingHybrid" xml:space="preserve">
     <value>Bing Hybrid Map</value>
   </data>
-  <data name="GoogleSatellite" xml:space="preserve">
-    <value>Google Satellite</value>
-  </data>
   <data name="GoogleMap" xml:space="preserve">
     <value>Google Map</value>
   </data>
@@ -134,15 +131,6 @@
   </data>
   <data name="GoogleTerrain" xml:space="preserve">
     <value>Google Terrain</value>
-  </data>
-  <data name="YahooNormal" xml:space="preserve">
-    <value>Yahoo Map</value>
-  </data>
-  <data name="YahooHybrid" xml:space="preserve">
-    <value>Yahoo Hybrid</value>
-  </data>
-  <data name="YahooSatellite" xml:space="preserve">
-    <value>Yahoo Satellite</value>
   </data>
   <data name="BingAerial" xml:space="preserve">
     <value>Bing Aerial Map</value>
@@ -174,9 +162,6 @@
   </data>
   <data name="EsriHydroBaseMap" xml:space="preserve">
     <value>Esri Hydro Base Map</value>
-  </data>
-  <data name="EsriWorldHydroBasemap" xml:space="preserve">
-    <value>Esri World Hydro Overlay</value>
   </data>
   <data name="EsriWorldImagery" xml:space="preserve">
     <value>Esri World Imagery</value>

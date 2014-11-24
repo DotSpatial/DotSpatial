@@ -42,7 +42,7 @@ namespace DotSpatial.Plugins.WebMap
             {
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
-                    graphics.DrawString(ex.Message, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black),
+                    graphics.DrawString(ex.Message, new Font(FontFamily.GenericSansSerif, 14), new SolidBrush(Color.Black),
                         new RectangleF(0, 0, width, height));
                 }
 

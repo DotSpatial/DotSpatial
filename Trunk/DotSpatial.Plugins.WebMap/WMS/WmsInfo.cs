@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using BruTile.Web.Wms;
+using BruTile.Wms;
 using DotSpatial.Projections;
 
 namespace DotSpatial.Plugins.WebMap.WMS

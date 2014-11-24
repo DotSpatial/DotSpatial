@@ -11,7 +11,6 @@ using BruTile.Web;
 using DotSpatial.Plugins.WebMap.Configuration;
 using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.WMS;
-using DotSpatial.Plugins.WebMap.Yahoo;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -43,7 +42,6 @@ namespace DotSpatial.Plugins.WebMap
             else
             {
                 // Default services which used when config section not found
-                yield return Create(Resources.EsriWorldHydroBasemap);
                 yield return Create(Resources.EsriHydroBaseMap);
                 yield return Create(Resources.EsriWorldStreetMap);
                 yield return Create(Resources.EsriWorldImagery);
@@ -52,12 +50,8 @@ namespace DotSpatial.Plugins.WebMap
                 yield return Create(Resources.BingAerial);
                 yield return Create(Resources.BingHybrid);
                 yield return Create(Resources.GoogleMap);
-                yield return Create(Resources.GoogleSatellite);
                 yield return Create(Resources.GoogleLabels);
                 yield return Create(Resources.GoogleTerrain);
-                yield return Create(Resources.YahooNormal);
-                yield return Create(Resources.YahooSatellite);
-                yield return Create(Resources.YahooHybrid);
                 yield return Create(Resources.OpenStreetMap);
                 yield return Create(Resources.WMSMap);
             }
@@ -73,10 +67,6 @@ namespace DotSpatial.Plugins.WebMap
                     (() => new FileCache(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                             "TileCache", name), "", new TimeSpan(30, 0, 0, 0)));
 
-            if (servEq(Resources.EsriWorldHydroBasemap))
-            {
-                return new BrutileServiceProvider(name, TileSource.Create(KnownTileServers.EsriWorldHydroBasemap), fileCache());
-            }
             if (servEq(Resources.EsriHydroBaseMap))
             {
                 return new BrutileServiceProvider(name,
@@ -96,23 +86,19 @@ namespace DotSpatial.Plugins.WebMap
             }
             if (servEq(Resources.EsriWorldTopo))
             {
-                return new BrutileServiceProvider(name, TileSource.Create(KnownTileServers.EsriWorldTopo), fileCache());
+                return new BrutileServiceProvider(name, KnownTileSources.Create(KnownTileSource.EsriWorldTopo), fileCache());
             }
             if (servEq(Resources.BingHybrid))
             {
-                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Hybrid)), fileCache());
+                return new BrutileServiceProvider(name, KnownTileSources.Create(KnownTileSource.BingHybrid), fileCache());
             }
             if (servEq(Resources.BingAerial))
             {
-                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Aerial)), fileCache());
+                return new BrutileServiceProvider(name, KnownTileSources.Create(KnownTileSource.BingAerial), fileCache());
             }
             if (servEq(Resources.BingRoads))
             {
-                return new BrutileServiceProvider(name, new BingTileSource(new BingRequest(BingRequest.UrlBingStaging, String.Empty, BingMapType.Roads)), fileCache());
-            }
-            if (servEq(Resources.GoogleSatellite))
-            {
-                return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleSatellite), fileCache());
+                return new BrutileServiceProvider(name, KnownTileSources.Create(KnownTileSource.BingRoads), fileCache());
             }
             if (servEq(Resources.GoogleMap))
             {
@@ -126,21 +112,9 @@ namespace DotSpatial.Plugins.WebMap
             {
                 return new BrutileServiceProvider(name, new GoogleTileSource(GoogleMapType.GoogleTerrain), fileCache());
             }
-            if (servEq(Resources.YahooNormal))
-            {
-                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Normal), fileCache());
-            }
-            if (servEq(Resources.YahooSatellite))
-            {
-                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Satellite), fileCache());
-            }
-            if (servEq(Resources.YahooHybrid))
-            {
-                return new BrutileServiceProvider(name, new YahooTileSource(YahooMapType.Hybrid), fileCache());
-            }
             if (servEq(Resources.OpenStreetMap))
             {
-                return new BrutileServiceProvider(name, TileSource.Create(), fileCache());
+                return new BrutileServiceProvider(name, KnownTileSources.Create(), fileCache());
             }
             if (servEq(Resources.WMSMap))
             {

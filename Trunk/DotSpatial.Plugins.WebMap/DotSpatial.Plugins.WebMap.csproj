@@ -89,8 +89,6 @@
     </Compile>
     <Compile Include="WMS\WmsInfo.cs" />
     <Compile Include="WMS\WmsTileSource.cs" />
-    <Compile Include="Yahoo\YahooRequest.cs" />
-    <Compile Include="Yahoo\YahooTileSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotSpatial.Controls\DotSpatial.Controls.csproj">
@@ -145,10 +143,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Lib\BruTile.Desktop.dll" />
-    <None Include="Lib\BruTile.Desktop.pdb" />
-    <None Include="Lib\BruTile.dll" />
-    <None Include="Lib\BruTile.pdb" />
+    <Content Include="Lib\BruTile.Desktop.dll" />
+    <Content Include="Lib\BruTile.dll" />
     <Content Include="Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
