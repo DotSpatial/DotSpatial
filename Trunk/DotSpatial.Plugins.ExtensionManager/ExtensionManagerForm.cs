@@ -358,7 +358,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         {
             Search();
             uxSearch.Visible = false;
-            //uxClear.Location = new Point(291, 42);
             uxClear.Visible = true;
         }
 
@@ -373,7 +372,6 @@ namespace DotSpatial.Plugins.ExtensionManager
             {
                 Search();
                 uxSearch.Visible = false;
-                uxClear.Location = new Point(291, 42);
                 uxClear.Visible = true;
             }
         }

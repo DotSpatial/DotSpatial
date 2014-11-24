@@ -169,7 +169,9 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             foreach(var dependency in pack.Dependencies)
             {
-                if (!dependency.Id.Contains("Plugins"))
+                if (dependency.Id.Contains("SampleProjects"))
+                    result = true;
+                else if (!dependency.Id.Contains("Plugins"))
                 {
                     if (dependency.Id == AppName)
                     {
