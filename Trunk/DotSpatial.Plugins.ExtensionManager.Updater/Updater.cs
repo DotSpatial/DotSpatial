@@ -127,7 +127,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
 
                 try
                 {
-                    if (IsAdminRole() && i == 0)
+                    if (IsAdminRole() && i == 0 && !updates[i].ToLowerInvariant().Contains("plugins"))
                         UpdateApp(updates[i * 2], updates[i * 2 + 1]);
                     else
                         UpdatePackage(updates[i * 2], updates[i * 2 + 1]);
