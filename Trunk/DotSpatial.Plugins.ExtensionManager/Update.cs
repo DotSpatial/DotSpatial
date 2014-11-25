@@ -112,7 +112,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     updater.StartInfo.Arguments = '"' + System.Reflection.Assembly.GetEntryAssembly().Location + '"';
 
                     //elevate privelages if the app needs updating
-                    if (updateApp && !IsAdminRole() || DeleteRights())
+                    if (updateApp && !IsAdminRole())
                     {
                         updater.StartInfo.UseShellExecute = true;
                         updater.StartInfo.Verb = "runas";
@@ -121,21 +121,6 @@ namespace DotSpatial.Plugins.ExtensionManager
                     Environment.Exit(0);
                 }
                 catch (Exception e) { }
-            }
-        }
-
-        private bool DeleteRights()
-        {
-            try
-            {
-                // Attempt to get a list of security permissions from the folder. 
-                // This will raise an exception if the path is read only or do not have access to view the permissions. 
-                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(AppManager.AbsolutePathToExtensions);
-                return true;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
             }
         }
 
