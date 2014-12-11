@@ -938,6 +938,7 @@ namespace DotSpatial.Data
             result.ProgressHandler = ProgressHandler;
             result.Projection = Projection;
             result.Save();
+            Filename = result.Filename;
         }
 
         [Obsolete("Use Select(region) instead")] // Marked in 1.7
