@@ -354,6 +354,7 @@ namespace DotSpatial.Controls
             if (Symbology.Categories.All(_ => string.IsNullOrEmpty(_.Expression))) return;
 
             Graphics g = e.Device ?? Graphics.FromImage(_backBuffer);
+            Matrix origTransform = g.Transform;
 
             // Only draw features that are currently visible.
             if (DrawnStates == null || !DrawnStates.ContainsKey(features.First()))
@@ -428,6 +429,7 @@ namespace DotSpatial.Controls
             }
 
             if (e.Device == null) g.Dispose();
+            else g.Transform = origTransform;
         }
 
         private static bool Collides(RectangleF rectangle, IEnumerable<RectangleF> drawnRectangles)

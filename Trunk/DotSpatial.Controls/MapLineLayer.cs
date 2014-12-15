@@ -315,8 +315,8 @@ namespace DotSpatial.Controls
                 {
                     var pt = new[]
                     {
-                        (vertices[i*2] - minX)*dx + args.ImageRectangle.X,
-                        (maxY - vertices[i*2 + 1])*dy + args.ImageRectangle.Y
+                        (vertices[i*2] - minX)*dx ,
+                        (maxY - vertices[i*2 + 1])*dy 
                     };
                     points.Add(pt);
                 }
