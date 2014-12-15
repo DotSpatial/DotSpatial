@@ -130,7 +130,7 @@ namespace DotSpatial.Topology
         /// <param name="p">The Coordinate.</param>
         public Envelope(Coordinate p)
         {
-            DoInit(p, p.Copy());
+            DoInit(p.Copy(), p.Copy());
         }
 
         /// <summary>
