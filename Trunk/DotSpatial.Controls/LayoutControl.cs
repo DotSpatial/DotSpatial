@@ -755,6 +755,7 @@ namespace DotSpatial.Controls
                 }
                 Filename = fileName;
                 Invalidate();
+                OnSelectionChanged(EventArgs.Empty);
                 OnElementsChanged(EventArgs.Empty);
             }
         }
