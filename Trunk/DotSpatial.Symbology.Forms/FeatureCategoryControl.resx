@@ -119,10 +119,10 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="_cmbField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>328, 9</value>
+    <value>399, 8</value>
   </data>
   <data name="_cmbField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
+    <value>121, 24</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_cmbField.TabIndex" type="System.Int32, mscorlib">
@@ -148,10 +148,10 @@
     <value>NoControl</value>
   </data>
   <data name="_lblFieldName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 11</value>
+    <value>351, 10</value>
   </data>
   <data name="_lblFieldName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 13</value>
+    <value>42, 17</value>
   </data>
   <data name="_lblFieldName.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -177,19 +177,18 @@
   <data name="btnRamp.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
         RK5CYII=
 </value>
   </data>
@@ -197,7 +196,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnRamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>691, 3</value>
+    <value>747, 3</value>
   </data>
   <data name="btnRamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 40</value>
@@ -223,28 +222,28 @@
   <data name="cmdRefresh.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACQAAAAbCAYAAAAULC3gAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK+AAA
-        CvgBZiY8/QAAAwRJREFUWEe9161SHUEQhuFzCbkFZGQkt8AlYCMjI2ORSCQWiURikZHIWCQSucmzlZca
-        lj0/oepkqqaWM9M/X3/d0zNsNkca93e/pvOzm+n66uf0+Pg8HcnNYWYvftxPX89vp6en5+n25nH6/u1u
-        Oju9nqz/V3AAYAUIDH0+uZyn34Y1oMgcHVwpwkDOgTn5dDGnDUuA+L68vMxMXV4+zExao38Y/3+lRM9w
-        0TFqy5dBkxMOyHA2jtMvVzM48+HhaZYnC0ippbcTFAdRzEAFGhsMV7iAMRwrvuQ4ZcMeeXJSGDj61grk
-        HaARBEOMGgBlpIJVqJigE0uccWyQS4ecvb50yFV32ZgBLUFUByPlwDGO+orUPtaaRQ8IsNZHgIHz5YM8
-        OcEA5rvhqIrvZOT4TREMP8h3guiI1G/rjWqOwxEchugARMdv/nwFsKnyCSxzuw1QdcJQRVlBA7IcZQC7
-        ZkXMXz47FBvIKs4xFf4Gtr6ydCKasadUtNXPtmDsm0AClx1pnuvHpsXyGaiRhVJRpOUdO50QBnO2DUzr
-        7LGBYf5qHTOgfhAOVAA5wCADouE0AxkfT1InZx8grNMTNLvV8euRl78GoxQMwhXkWm2QIStScsa+lJEB
-        pL5Ft0BXAQWs1NV/6kfL6MnVlw4BVBZGhunX+WdQUlQtYaUogBgb275ULAGxK+WcNfgBwDTIvLvHuuhs
-        dtfUDgI0pizwawDHlKU79ic+KugOxOr9Fe0BEllzdDKytlYvHK4VfGu9lTokAl0FVD+q0fV2WbIwnqpY
-        8y014y2PAUxX8GzVHkrn1ts9+gLQpbcENLZ6e/TqWfbGE7uW0mqnW37ncwMrY4RjZNsKWtqqFVFLRW+m
-        ZauIybJx0IOsmzd6OyE9FZbAHIj6EIddAT0n6jHpdecdBIZQRhkokvHpscYUne615SN+fJL0LNlayNtQ
-        1hs63qVkmcKa4utNvSdsQN40wINp+iOoDsp5RdsJ7HHevfYvdj8s280uIrP/HA5l48OOdylWF+MtfxRH
-        g9Hf+Adbt0PyGE0AAAAASUVORK5CYII=
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK9gAA
+        CvYBwq9wAwAAAu5JREFUWEfF1KFSHFEQheF9hLwCMjKSV+ARsJGRkbFIJBKLRCKxyEhkLBKJnNQ3zF+5
+        THbDJFWQU3Vrdu7tPud0953dvRVub35MpydX0+XF9+n+/nFatv8Pzr7dTp9Pr6eHh8fp+up++vrlZjo5
+        vpzsv6s5BnSFCR36eHQ+L+9gjykxb26uERFJnJmjD2fz2HTJuefT09Mcd35+N3fSnviFahtUj7jqkNr3
+        RGgRISCG2IjjTxezOevu7mGOF8tIo5U3ix0CgVqMoAtaNxB72mcMcV3xFEcUhzPx4ohnTr69Clmkf2E0
+        4YkUGIpEMgEXVSfk1CVihEFcOeKc9ZQjDg+tOPaa8L6GfcRajzDoTqvqGWHW3mgwcxYN8eIYYWw2RCgT
+        ulHLCR+CeHGNhaDf9gMBhgiO5nRIDj053ul5itnpCmcCJFSB/UPItIWcuPxGuYYzZhVpiaHVwpOHHWcq
+        ZMBh8Nveej+ohohzTyJ4Gs8hFEOcuXgUM98fhzabZ+JjFxpFlTZ33ekLsbYYgjhw08Mx3x/oBTKVQeQ6
+        iEA1RCMI9jLO8BZDuipP0XjxW7MhyBAglQCCM7jvboBYZsTBFkOMKAqn3Apd7Lw0FBqdM0nGsw/iEGb4
+        NUNNIci17C92djsdQOSpK6AKJhqH0W3BaAifvHHEzjMBYugsVp5hTP0PEJdkFHXHGkeW+X0YDZXrfgR5
+        XWhGGVtsvISDZoqUwdYoMnZt3A+jUZzFBubs95HQXCy8RMIEBXmOlYVRpK55ylexZ/Cu0+s7Q4dxsYv8
+        76h9gUhf2wgkzCQsr/8se/s+kBFp4Ja7yO+HrowVjpUdgmrrmKqNgpju1sFQJy15i+yfocKIVKMKQLAW
+        AB8EM8w7l4PHPi7v/YWA/WI2IVKoEtUS7S9hDTlidIbgQjVDQf1XWRlfjrdB642vy9dI1iNMSCfWRvaB
+        kVfvzSGoFoEudWn7Au0xwtA/C/wtVGwMBC2d0omt3XgTdC/erxu73U/4B1u35WV3WwAAAABJRU5ErkJg
+        gg==
 </value>
   </data>
   <data name="cmdRefresh.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="cmdRefresh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>629, 3</value>
+    <value>685, 3</value>
   </data>
   <data name="cmdRefresh.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 40</value>
@@ -271,10 +270,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnExclude.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 145</value>
+    <value>22, 137</value>
   </data>
   <data name="btnExclude.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 23</value>
+    <value>206, 27</value>
   </data>
   <data name="btnExclude.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -304,10 +303,10 @@
     <value>NoControl</value>
   </data>
   <data name="radUniqueValues.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 9</value>
+    <value>104, 8</value>
   </data>
   <data name="radUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 17</value>
+    <value>121, 21</value>
   </data>
   <data name="radUniqueValues.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -337,10 +336,10 @@
     <value>NoControl</value>
   </data>
   <data name="radQuantities.Location" type="System.Drawing.Point, System.Drawing">
-    <value>202, 9</value>
+    <value>246, 8</value>
   </data>
   <data name="radQuantities.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
+    <value>93, 21</value>
   </data>
   <data name="radQuantities.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -367,7 +366,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 20</value>
+    <value>526, 20</value>
   </data>
   <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -394,7 +393,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>510, 20</value>
+    <value>566, 20</value>
   </data>
   <data name="btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -421,7 +420,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>550, 20</value>
+    <value>606, 20</value>
   </data>
   <data name="btnUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -448,7 +447,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>590, 20</value>
+    <value>646, 20</value>
   </data>
   <data name="btnDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 23</value>
@@ -472,10 +471,10 @@
     <value>7</value>
   </data>
   <data name="cmbNormField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 7</value>
+    <value>171, 10</value>
   </data>
   <data name="cmbNormField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
+    <value>121, 24</value>
   </data>
   <data name="cmbNormField.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -496,10 +495,10 @@
     <value>1</value>
   </data>
   <data name="nudSigFig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 103</value>
+    <value>171, 103</value>
   </data>
   <data name="nudSigFig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>51, 22</value>
   </data>
   <data name="nudSigFig.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -520,10 +519,10 @@
     <value>3</value>
   </data>
   <data name="cmbIntervalSnapping.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 72</value>
+    <value>171, 72</value>
   </data>
   <data name="cmbIntervalSnapping.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
+    <value>121, 24</value>
   </data>
   <data name="cmbIntervalSnapping.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -559,10 +558,10 @@
     <value>Value</value>
   </data>
   <data name="dgvStatistics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 10</value>
+    <value>298, 10</value>
   </data>
   <data name="dgvStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 158</value>
+    <value>239, 206</value>
   </data>
   <data name="dgvStatistics.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -582,6 +581,162 @@
   <data name="&gt;&gt;dgvStatistics.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="&gt;&gt;tabStatistics.Name" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.Parent" xml:space="preserve">
+    <value>tabScheme</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.Name" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.Parent" xml:space="preserve">
+    <value>tabScheme</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabScheme.Location" type="System.Drawing.Point, System.Drawing">
+    <value>260, 272</value>
+  </data>
+  <data name="tabScheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>551, 260</value>
+  </data>
+  <data name="tabScheme.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;tabScheme.Name" xml:space="preserve">
+    <value>tabScheme</value>
+  </data>
+  <data name="&gt;&gt;tabScheme.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabScheme.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabScheme.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblSigFig.Name" xml:space="preserve">
+    <value>lblSigFig</value>
+  </data>
+  <data name="&gt;&gt;lblSigFig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblSigFig.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;lblSigFig.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;cmbInterval.Name" xml:space="preserve">
+    <value>cmbInterval</value>
+  </data>
+  <data name="&gt;&gt;cmbInterval.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbInterval.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;cmbInterval.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;nudCategoryCount.Name" xml:space="preserve">
+    <value>nudCategoryCount</value>
+  </data>
+  <data name="&gt;&gt;nudCategoryCount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudCategoryCount.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;nudCategoryCount.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lblBreaks.Name" xml:space="preserve">
+    <value>lblBreaks</value>
+  </data>
+  <data name="&gt;&gt;lblBreaks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBreaks.Parent" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;lblBreaks.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="tabStatistics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="tabStatistics.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>543, 231</value>
+  </data>
+  <data name="tabStatistics.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabStatistics.Text" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.Name" xml:space="preserve">
+    <value>tabStatistics</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.Parent" xml:space="preserve">
+    <value>tabScheme</value>
+  </data>
+  <data name="&gt;&gt;tabStatistics.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -589,16 +744,16 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 10</value>
+    <value>19, 13</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
+    <value>132, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Normalization Field</value>
+    <value>Normalization Field:</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -619,10 +774,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblSigFig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 103</value>
+    <value>19, 108</value>
   </data>
   <data name="lblSigFig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
+    <value>112, 17</value>
   </data>
   <data name="lblSigFig.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -649,10 +804,10 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>30, 75</value>
+    <value>19, 75</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
+    <value>95, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -682,7 +837,7 @@
     <value>19, 41</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 13</value>
+    <value>109, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -712,10 +867,10 @@
     <value>Quantile</value>
   </data>
   <data name="cmbInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 41</value>
+    <value>171, 40</value>
   </data>
   <data name="cmbInterval.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
+    <value>121, 24</value>
   </data>
   <data name="cmbInterval.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -736,10 +891,10 @@
     <value>False</value>
   </data>
   <data name="nudCategoryCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 181</value>
+    <value>171, 179</value>
   </data>
   <data name="nudCategoryCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 20</value>
+    <value>51, 22</value>
   </data>
   <data name="nudCategoryCount.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -766,7 +921,7 @@
     <value>19, 181</value>
   </data>
   <data name="lblBreaks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+    <value>89, 17</value>
   </data>
   <data name="lblBreaks.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -786,32 +941,101 @@
   <data name="&gt;&gt;lblBreaks.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="tabStatistics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;lblColumns.Name" xml:space="preserve">
+    <value>lblColumns</value>
   </data>
-  <data name="tabStatistics.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+  <data name="&gt;&gt;lblColumns.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tabStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>486, 213</value>
+  <data name="&gt;&gt;lblColumns.Parent" xml:space="preserve">
+    <value>tabGraph</value>
   </data>
-  <data name="tabStatistics.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;lblColumns.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;nudColumns.Name" xml:space="preserve">
+    <value>nudColumns</value>
+  </data>
+  <data name="&gt;&gt;nudColumns.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudColumns.Parent" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;nudColumns.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tabStatistics.Text" xml:space="preserve">
-    <value>Statistics</value>
+  <data name="&gt;&gt;chkLog.Name" xml:space="preserve">
+    <value>chkLog</value>
   </data>
-  <data name="&gt;&gt;tabStatistics.Name" xml:space="preserve">
-    <value>tabStatistics</value>
+  <data name="&gt;&gt;chkLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabStatistics.Type" xml:space="preserve">
+  <data name="&gt;&gt;chkLog.Parent" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;chkLog.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;chkShowStd.Name" xml:space="preserve">
+    <value>chkShowStd</value>
+  </data>
+  <data name="&gt;&gt;chkShowStd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkShowStd.Parent" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;chkShowStd.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;chkShowMean.Name" xml:space="preserve">
+    <value>chkShowMean</value>
+  </data>
+  <data name="&gt;&gt;chkShowMean.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkShowMean.Parent" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;chkShowMean.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;breakSliderGraph1.Name" xml:space="preserve">
+    <value>breakSliderGraph1</value>
+  </data>
+  <data name="&gt;&gt;breakSliderGraph1.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;breakSliderGraph1.Parent" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;breakSliderGraph1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tabGraph.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="tabGraph.Size" type="System.Drawing.Size, System.Drawing">
+    <value>543, 231</value>
+  </data>
+  <data name="tabGraph.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tabGraph.Text" xml:space="preserve">
+    <value>Graph</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.Name" xml:space="preserve">
+    <value>tabGraph</value>
+  </data>
+  <data name="&gt;&gt;tabGraph.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabStatistics.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabGraph.Parent" xml:space="preserve">
     <value>tabScheme</value>
   </data>
-  <data name="&gt;&gt;tabStatistics.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tabGraph.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="lblColumns.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -820,10 +1044,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblColumns.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 194</value>
+    <value>9, 194</value>
   </data>
   <data name="lblColumns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 13</value>
+    <value>66, 17</value>
   </data>
   <data name="lblColumns.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -844,10 +1068,10 @@
     <value>0</value>
   </data>
   <data name="nudColumns.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 191</value>
+    <value>81, 192</value>
   </data>
   <data name="nudColumns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
+    <value>52, 22</value>
   </data>
   <data name="nudColumns.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -874,10 +1098,10 @@
     <value>NoControl</value>
   </data>
   <data name="chkLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>267, 193</value>
+    <value>267, 207</value>
   </data>
   <data name="chkLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 17</value>
+    <value>93, 21</value>
   </data>
   <data name="chkLog.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -907,10 +1131,10 @@
     <value>NoControl</value>
   </data>
   <data name="chkShowStd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 193</value>
+    <value>139, 207</value>
   </data>
   <data name="chkShowStd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 17</value>
+    <value>126, 21</value>
   </data>
   <data name="chkShowStd.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -940,10 +1164,10 @@
     <value>NoControl</value>
   </data>
   <data name="chkShowMean.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 193</value>
+    <value>397, 207</value>
   </data>
   <data name="chkShowMean.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
+    <value>103, 21</value>
   </data>
   <data name="chkShowMean.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -964,10 +1188,10 @@
     <value>4</value>
   </data>
   <data name="breakSliderGraph1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 3</value>
+    <value>12, 3</value>
   </data>
   <data name="breakSliderGraph1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>471, 180</value>
+    <value>517, 183</value>
   </data>
   <data name="breakSliderGraph1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -979,58 +1203,13 @@
     <value>breakSliderGraph1</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.BreakSliderGraph, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.Parent" xml:space="preserve">
     <value>tabGraph</value>
   </data>
   <data name="&gt;&gt;breakSliderGraph1.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="tabGraph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabGraph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>486, 213</value>
-  </data>
-  <data name="tabGraph.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabGraph.Text" xml:space="preserve">
-    <value>Graph</value>
-  </data>
-  <data name="&gt;&gt;tabGraph.Name" xml:space="preserve">
-    <value>tabGraph</value>
-  </data>
-  <data name="&gt;&gt;tabGraph.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabGraph.Parent" xml:space="preserve">
-    <value>tabScheme</value>
-  </data>
-  <data name="&gt;&gt;tabGraph.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabScheme.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 272</value>
-  </data>
-  <data name="tabScheme.Size" type="System.Drawing.Size, System.Drawing">
-    <value>494, 239</value>
-  </data>
-  <data name="tabScheme.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;tabScheme.Name" xml:space="preserve">
-    <value>tabScheme</value>
-  </data>
-  <data name="&gt;&gt;tabScheme.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabScheme.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabScheme.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="chkUseGradients.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1042,7 +1221,7 @@
     <value>20, 294</value>
   </data>
   <data name="chkUseGradients.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 17</value>
+    <value>121, 21</value>
   </data>
   <data name="chkUseGradients.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1061,6 +1240,39 @@
   </data>
   <data name="&gt;&gt;chkUseGradients.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <metadata name="colSymbol.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colValues.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colLegendText.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colCount.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="dgvCategories.Location" type="System.Drawing.Point, System.Drawing">
+    <value>260, 49</value>
+  </data>
+  <data name="dgvCategories.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 217</value>
+  </data>
+  <data name="dgvCategories.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;dgvCategories.Name" xml:space="preserve">
+    <value>dgvCategories</value>
+  </data>
+  <data name="&gt;&gt;dgvCategories.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvCategories.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;dgvCategories.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <metadata name="colSymbol.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1086,27 +1298,6 @@
   <data name="colCount.HeaderText" xml:space="preserve">
     <value>Count</value>
   </data>
-  <data name="dgvCategories.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 49</value>
-  </data>
-  <data name="dgvCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>491, 217</value>
-  </data>
-  <data name="dgvCategories.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;dgvCategories.Name" xml:space="preserve">
-    <value>dgvCategories</value>
-  </data>
-  <data name="&gt;&gt;dgvCategories.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgvCategories.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;dgvCategories.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="radCustom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1117,7 +1308,7 @@
     <value>20, 8</value>
   </data>
   <data name="radCustom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 17</value>
+    <value>76, 21</value>
   </data>
   <data name="radCustom.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1153,7 +1344,7 @@
     <value>20, 325</value>
   </data>
   <data name="angGradientAngle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 60</value>
+    <value>218, 97</value>
   </data>
   <data name="angGradientAngle.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1162,7 +1353,7 @@
     <value>angGradientAngle</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;angGradientAngle.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1183,7 +1374,7 @@
     <value>featureSizeRangeControl1</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.FeatureSizeRangeControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;featureSizeRangeControl1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1204,7 +1395,7 @@
     <value>tccColorRange</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.TabColorControl, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;tccColorRange.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1216,7 +1407,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 511</value>
+    <value>814, 535</value>
   </data>
   <data name="&gt;&gt;ttHelp.Name" xml:space="preserve">
     <value>ttHelp</value>

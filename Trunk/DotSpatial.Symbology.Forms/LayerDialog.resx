@@ -117,21 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnlContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pnlContent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 6</value>
-  </data>
-  <data name="pnlContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>778, 510</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnlContent.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="&gt;&gt;pnlContent.Name" xml:space="preserve">
     <value>pnlContent</value>
   </data>
@@ -144,15 +129,18 @@
   <data name="&gt;&gt;pnlContent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tabSymbology.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 25</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tabSymbology.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabSymbology.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 522</value>
+    <value>829, 546</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tabSymbology.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -178,7 +166,7 @@
     <value>3, 3</value>
   </data>
   <data name="propertyGrid1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>786, 516</value>
+    <value>823, 540</value>
   </data>
   <data name="propertyGrid1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -196,13 +184,13 @@
     <value>0</value>
   </data>
   <data name="tabDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 25</value>
   </data>
   <data name="tabDetails.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 522</value>
+    <value>829, 546</value>
   </data>
   <data name="tabDetails.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -229,7 +217,7 @@
     <value>0, 0</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>800, 548</value>
+    <value>837, 575</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -246,23 +234,35 @@
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="dialogButtons1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
+  <data name="pnlContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="dialogButtons1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>556, 0</value>
+  <data name="pnlContent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 6</value>
   </data>
-  <data name="dialogButtons1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 34</value>
+  <data name="pnlContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>815, 534</value>
   </data>
-  <data name="dialogButtons1.TabIndex" type="System.Int32, mscorlib">
+  <data name="pnlContent.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;pnlContent.Name" xml:space="preserve">
+    <value>pnlContent</value>
+  </data>
+  <data name="&gt;&gt;pnlContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlContent.Parent" xml:space="preserve">
+    <value>tabSymbology</value>
+  </data>
+  <data name="&gt;&gt;pnlContent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Name" xml:space="preserve">
     <value>dialogButtons1</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
   </data>
   <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -274,10 +274,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 548</value>
+    <value>0, 575</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>800, 34</value>
+    <value>837, 34</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -294,6 +294,30 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="dialogButtons1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="dialogButtons1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>593, 0</value>
+  </data>
+  <data name="dialogButtons1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>244, 34</value>
+  </data>
+  <data name="dialogButtons1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dialogButtons1.Name" xml:space="preserve">
+    <value>dialogButtons1</value>
+  </data>
+  <data name="&gt;&gt;dialogButtons1.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.DialogButtons, DotSpatial.Symbology.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;dialogButtons1.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;dialogButtons1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -301,7 +325,7 @@
     <value>31</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>800, 582</value>
+    <value>837, 609</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Layer Properties</value>

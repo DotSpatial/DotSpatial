@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>268, 217</value>
+    <value>255, 217</value>
   </data>
   <data name="lblMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>67, 19</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblMax.TabIndex" type="System.Int32, mscorlib">
@@ -154,10 +154,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="lblMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>268, 197</value>
+    <value>255, 190</value>
   </data>
   <data name="lblMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>67, 19</value>
   </data>
   <data name="lblMin.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -187,13 +187,13 @@
     <value>211, 217</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>41, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Ma&amp;ximum:</value>
+    <value>Ma&amp;x.:</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -211,16 +211,16 @@
     <value>True</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 197</value>
+    <value>211, 192</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 13</value>
+    <value>38, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Mi&amp;nimum:</value>
+    <value>Mi&amp;n.:</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -238,10 +238,10 @@
     <value>True</value>
   </data>
   <data name="lblFields.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
+    <value>4, 1</value>
   </data>
   <data name="lblFields.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+    <value>90, 17</value>
   </data>
   <data name="lblFields.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -265,10 +265,10 @@
     <value>True</value>
   </data>
   <data name="lblUniqueValues.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 4</value>
+    <value>211, 1</value>
   </data>
   <data name="lblUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 13</value>
+    <value>100, 17</value>
   </data>
   <data name="lblUniqueValues.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -292,10 +292,10 @@
     <value>True</value>
   </data>
   <data name="lblSelectPrecursor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 248</value>
+    <value>4, 244</value>
   </data>
   <data name="lblSelectPrecursor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 13</value>
+    <value>241, 17</value>
   </data>
   <data name="lblSelectPrecursor.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -663,11 +663,14 @@
   <data name="lbxUniqueValues.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbxUniqueValues.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbxUniqueValues.Location" type="System.Drawing.Point, System.Drawing">
     <value>214, 21</value>
   </data>
   <data name="lbxUniqueValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 160</value>
+    <value>108, 148</value>
   </data>
   <data name="lbxUniqueValues.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -684,11 +687,14 @@
   <data name="&gt;&gt;lbxUniqueValues.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
+  <data name="lbxFields.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbxFields.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 21</value>
   </data>
   <data name="lbxFields.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 121</value>
+    <value>161, 116</value>
   </data>
   <data name="lbxFields.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
