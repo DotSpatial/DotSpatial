@@ -461,6 +461,7 @@ namespace DotSpatial.Symbology
             }
 
             int index = DataSet.Features.IndexOf(feature);
+            if (index < 0) return null;
             return DrawnStates[index].Category;
         }
 
