@@ -397,6 +397,7 @@ namespace DotSpatial.Controls
 
                 foreach (int index in indices)
                 {
+                    if (index >= states.Length) break;
                     FastDrawnState state = states[index];
                     if (!state.Visible || state.Category == null) continue;
                     IPointCategory pc = state.Category as IPointCategory;
