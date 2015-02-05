@@ -94,6 +94,15 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets or sets the percentual position between line start and end at which the single decoration gets drawn.
+        /// </summary>
+        int PercentualPosition
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the offset distance measured to the left of the line in pixels.
         /// </summary>
         double Offset

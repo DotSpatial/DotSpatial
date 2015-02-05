@@ -344,18 +344,20 @@
   <data name="tabDash.Text" xml:space="preserve">
     <value>Vorlage</value>
   </data>
-  <data name="dblOffset.Caption" xml:space="preserve">
-    <value>Versatz:</value>
+  <data name="lblPercentualPosition.Location" type="System.Drawing.Point, System.Drawing">
+    <value>124, 161</value>
   </data>
-  <data name="dblOffset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 125</value>
+  <data name="lblPercentualPosition.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 13</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dblOffset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 0</value>
+  <data name="lblPercentualPosition.Text" xml:space="preserve">
+    <value>Prozentuale Position:</value>
   </data>
-  <data name="ccDecorations.ToolTip" xml:space="preserve">
-    <value>Listet die Dekorationen, wo die besten Dekoration zuletzt gezeichnet wird.</value>
+  <data name="nudPercentualPosition.Location" type="System.Drawing.Point, System.Drawing">
+    <value>245, 159</value>
+  </data>
+  <data name="nudPercentualPosition.ToolTip" xml:space="preserve">
+    <value>Prozentualer Abstand des einzigen Dekorationselementes zum Anfang der Linie.</value>
   </data>
   <data name="btnEdit.Location" type="System.Drawing.Point, System.Drawing">
     <value>396, 159</value>
@@ -365,9 +367,6 @@
   </data>
   <data name="btnEdit.Text" xml:space="preserve">
     <value>&amp;Bearbeiten</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>308, 9</value>
   </data>
   <data name="lblDecorationPreview.Location" type="System.Drawing.Point, System.Drawing">
     <value>311, 26</value>
@@ -432,9 +431,6 @@
   <data name="chkFlipAll.Text" xml:space="preserve">
     <value>&amp;Alle Dekorationen kippen</value>
   </data>
-  <data name="grpFlip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 53</value>
-  </data>
   <data name="grpFlip.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 63</value>
   </data>
@@ -443,6 +439,22 @@
   </data>
   <data name="grpFlip.ToolTip" xml:space="preserve">
     <value>Steuert, wie die Symbole gekippt werden.</value>
+  </data>
+  <data name="dblOffset.Caption" xml:space="preserve">
+    <value>Versatz:</value>
+  </data>
+  <data name="dblOffset.Location" type="System.Drawing.Point, System.Drawing">
+    <value>124, 122</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dblOffset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="dblOffset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 27</value>
+  </data>
+  <data name="ccDecorations.ToolTip" xml:space="preserve">
+    <value>Listet die Dekorationen, wo die besten Dekoration zuletzt gezeichnet wird.</value>
   </data>
   <data name="tabDecoration.Text" xml:space="preserve">
     <value>Liniendekorationen</value>
