@@ -648,6 +648,19 @@ namespace DotSpatial.Data
             return Geometry.FromBasicGeometry(self.BasicGeometry).Relate(other, intersectionPattern);
         }
 
+       /// <summary>
+       /// Rotates the BasicGeometry of the feature by the given radian angle around the given Origin.
+       /// </summary>
+       /// <param name="self">This feature.</param>
+       /// <param name="Origin">The coordinate the feature gets rotated around.</param>
+       /// <param name="radAngle">The rotation angle in radian.</param>
+        public static void Rotate(this IFeature self,Coordinate Origin,double radAngle)
+        {
+            IGeometry geo = Geometry.FromBasicGeometry(self.BasicGeometry);
+            geo.Rotate(Origin, radAngle);
+            self.BasicGeometry = geo;
+        }
+
         /// <summary>
         /// Creates a new Feature that has a geometry that is the symmetric difference between this feature and the specified feature.
         /// </summary>

@@ -427,6 +427,19 @@ namespace DotSpatial.Topology
             // the standpoint of drawing an offset.
         }
 
+        /// <summary>
+        /// Rotates the LineString by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the LineString gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, double radAngle)
+        {
+            for (int i = 0; i < _points.Count; i++)
+            {
+                base.RotateCoordinateRad(Origin, ref _points[i].X, ref _points[i].Y, radAngle);
+            }
+        }
+
         #endregion
 
         #region Properties

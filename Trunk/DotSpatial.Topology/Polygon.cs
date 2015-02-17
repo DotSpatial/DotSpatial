@@ -318,6 +318,21 @@ namespace DotSpatial.Topology
         {
             return _shell.EnvelopeInternal;
         }
+        
+        /// <summary>
+        /// Rotates the polygon by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the polygon gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, Double radAngle)
+        {
+            _shell.Rotate(Origin, radAngle);
+
+            foreach (var h in Holes)
+            {
+                h.Rotate(Origin, radAngle);
+            }
+        }
 
         /// <summary>
         ///

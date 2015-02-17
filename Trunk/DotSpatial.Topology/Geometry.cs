@@ -1244,6 +1244,13 @@ namespace DotSpatial.Topology
             }
         }
 
+        /// <summary>
+        /// Rotates the geometry by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public abstract void Rotate(Coordinate Origin, Double radAngle);
+
         #endregion
 
         /// <summary>
@@ -1435,6 +1442,21 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
+        /// Rotates the given coordinate by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="CoordX">X-value of the coordinate that gets rotated.</param>
+        /// <param name="CoordY">Y-value of the coordinate that gets rotated.</param>
+        /// <param name="RadAngle">Rotation angle in radian.</param>
+        protected void RotateCoordinateRad(Coordinate Origin, ref Double CoordX, ref Double CoordY, Double RadAngle)
+        {
+            Double x = Origin.X + (Math.Cos(RadAngle) * (CoordX - Origin.X) - Math.Sin(RadAngle) * (CoordY - Origin.Y));
+            Double y = Origin.Y + (Math.Sin(RadAngle) * (CoordX - Origin.X) + Math.Cos(RadAngle) * (CoordY - Origin.Y));
+            CoordX = x;
+            CoordY = y;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="coord"></param>
@@ -1448,6 +1470,8 @@ namespace DotSpatial.Topology
 
             return exemplar.Factory.CreatePoint(c);
         }
+
+
 
         /// <summary>
         /// Tests the specified IEnvelope for an intersection with this Geometry

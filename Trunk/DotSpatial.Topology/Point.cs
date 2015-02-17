@@ -344,6 +344,17 @@ namespace DotSpatial.Topology
             return false;
         }
 
+        /// <summary>
+        /// Rotates the point by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the point gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, double radAngle)
+        {
+            base.RotateCoordinateRad(Origin , ref this.Coordinate.X, ref this.Coordinate.Y, radAngle);
+        }
+
+
         #endregion
 
         #region Properties
