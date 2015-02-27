@@ -63,21 +63,34 @@ namespace DotSpatial.Symbology
         /// <param name="dash">The dash pattern to use</param>
         /// <param name="caps">The style of the start and end caps</param>
         public LineSymbolizer(Color fillColor, Color borderColor, double width, DashStyle dash, LineCap caps)
+            : this(fillColor, borderColor, width, dash, caps, caps) { }
+
+        /// <summary>
+        /// Creates a new set of cartographic lines that together form a line with a border.  Since a compound
+        /// pen is used, it is possible to use this to create a transparent line with just two border parts.
+        /// </summary>
+        /// <param name="fillColor">The fill color for the line</param>
+        /// <param name="borderColor">The border color of the line</param>
+        /// <param name="width">The width of the entire line</param>
+        /// <param name="dash">The dash pattern to use</param>
+        /// <param name="startCap">The style of the start cap</param>
+        /// <param name="endCap">The style of the end cap</param>
+        public LineSymbolizer(Color fillColor, Color borderColor, double width, DashStyle dash, LineCap startCap, LineCap endCap)
         {
             _strokes = new CopyList<IStroke>();
             ICartographicStroke bs = new CartographicStroke(borderColor)
                                          {
                                              Width = width,
-                                             StartCap = caps,
-                                             EndCap = caps,
+                                             StartCap = startCap,
+                                             EndCap = endCap,
                                              DashStyle = dash,
                                          };
             _strokes.Add(bs);
 
             ICartographicStroke cs = new CartographicStroke(fillColor)
                                          {
-                                             StartCap = caps,
-                                             EndCap = caps,
+                                             StartCap = startCap,
+                                             EndCap = endCap,
                                              DashStyle = dash,
                                              Width = width - 2,
                                          };
@@ -145,7 +158,7 @@ namespace DotSpatial.Symbology
         {
             foreach (var stroke in _strokes)
             {
-                using(var p = stroke.ToPen(1))
+                using (var p = stroke.ToPen(1))
                     g.DrawLine(p, new Point(target.X, target.Y + target.Height / 2), new Point(target.Right, target.Y + target.Height / 2));
             }
         }
@@ -160,7 +173,7 @@ namespace DotSpatial.Symbology
         {
             foreach (var stroke in _strokes)
             {
-                using(var p = stroke.ToPen(scaleWidth))
+                using (var p = stroke.ToPen(scaleWidth))
                     g.DrawPath(p, gp);
             }
         }
