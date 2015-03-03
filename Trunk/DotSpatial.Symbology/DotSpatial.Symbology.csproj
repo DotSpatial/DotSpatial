@@ -59,6 +59,7 @@
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="ColorCategoryEventArgs.cs" />
     <Compile Include="DynamicVisibilityEventArgs.cs" />
+    <Compile Include="Expression.cs" />
     <Compile Include="ExtentExtcs.cs" />
     <Compile Include="FeatureSetApplyEditArgs.cs" />
     <Compile Include="IColorCategoryActions.cs" />

@@ -211,8 +211,8 @@ namespace DotSpatial.Symbology.Forms
             // 
             // lbxFields
             // 
-            this.lbxFields.FormattingEnabled = true;
             resources.ApplyResources(this.lbxFields, "lbxFields");
+            this.lbxFields.FormattingEnabled = true;
             this.lbxFields.Name = "lbxFields";
             this.lbxFields.SelectedIndexChanged += new System.EventHandler(this.lbxFields_SelectedIndexChanged);
             this.lbxFields.DoubleClick += new System.EventHandler(this.lbxFields_DoubleClick);
@@ -233,6 +233,7 @@ namespace DotSpatial.Symbology.Forms
             // 
             // SQLQueryControl
             // 
+            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.btnNotNull);
             this.Controls.Add(this.btnNull);
             this.Controls.Add(this.lblMax);
@@ -259,7 +260,6 @@ namespace DotSpatial.Symbology.Forms
             this.Controls.Add(this.lbxUniqueValues);
             this.Controls.Add(this.lbxFields);
             this.Name = "SQLQueryControl";
-            resources.ApplyResources(this, "$this");
             this.ResumeLayout(false);
             this.PerformLayout();
 

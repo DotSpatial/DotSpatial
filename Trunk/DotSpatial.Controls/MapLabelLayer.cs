@@ -64,7 +64,6 @@ namespace DotSpatial.Controls
         private bool _isInitialized;
         private Image _stencil; // draw features to the stencil
         private static readonly Caches _caches = new Caches();
-
         #endregion
 
         #region Constructors
@@ -302,6 +301,7 @@ namespace DotSpatial.Controls
 
             foreach (var category in Symbology.Categories)
             {
+                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var catFeatures = new List<int>();
                 foreach (int fid in features)
                 {
@@ -386,6 +386,7 @@ namespace DotSpatial.Controls
 
             foreach (ILabelCategory category in Symbology.Categories)
             {
+                category.UpdateExpressionColumns(FeatureSet.DataTable.Columns);
                 var cat = category; // prevent access to unmodified closure problems
                 List<IFeature> catFeatures = new List<IFeature>();
                 foreach (IFeature f in features)
@@ -445,7 +446,7 @@ namespace DotSpatial.Controls
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category, symb);
+            string txt = category.CalculateExpression(f.DataRow, selected); 
             if (txt == null) return;
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
@@ -544,7 +545,7 @@ namespace DotSpatial.Controls
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category, symb);
+            string txt = category.CalculateExpression(f.DataRow, selected); 
             if (txt == null) return;
 
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
@@ -598,7 +599,7 @@ namespace DotSpatial.Controls
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = GetLabelText(f, category, symb);
+            string txt = category.CalculateExpression(f.DataRow, selected); 
             if (txt == null) return;
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
@@ -807,79 +808,6 @@ namespace DotSpatial.Controls
             gr.TranslateTransform(-cx, -cy, MatrixOrder.Append);
             gr.RotateTransform(angle, MatrixOrder.Append);
             gr.TranslateTransform(cx, cy, MatrixOrder.Append);
-        }
-
-        private static string GetLabelText(IFeature feature, ILabelCategory category, ILabelSymbolizer symb)
-        {
-            // Function which checks that text contains any expression
-            var exprCheck = (Func<string, bool>)delegate(string inStr)
-            {
-                if (String.IsNullOrEmpty(inStr)) return false;
-                const char symb1 = ']';
-                const char symb2 = '[';
-                bool s1 = false, s2 = false;
-                foreach (var t in inStr)
-                {
-                    if (t == symb1)
-                    {
-                        s1 = true;
-                        if (s1 && s2) return true;
-                    }
-                    else if (t == symb2)
-                    {
-                        s2 = true;
-                        if (s1 && s2) return true;
-                    }
-                }
-
-                return false;
-            };
-
-            var useFloatingFormat = !string.IsNullOrWhiteSpace(symb.FloatingFormat);
-            var result = category.Expression;
-            if (feature != null && exprCheck(result))
-            {
-                foreach (DataColumn dc in feature.DataRow.Table.Columns)
-                {
-                    var curColumnReplacement = "[" + dc.ColumnName + "]";
-
-                    // Check that this column used in expression
-                    if (!result.Contains(curColumnReplacement)) continue;
-
-                    var currValue = feature.DataRow[dc.ColumnName];
-                    if (useFloatingFormat &&
-                        (dc.DataType == typeof(double) ||
-                        dc.DataType == typeof(float)))
-                    {
-                        try
-                        {
-                            var dv = Convert.ToDouble(currValue);
-                            currValue = dv.ToString(symb.FloatingFormat);
-                        }
-                        catch (Exception)
-                        {
-                            currValue = SafeToString(currValue);
-                        }
-                    }
-                    else
-                    {
-                        currValue = SafeToString(currValue);
-                    }
-
-                    result = result.Replace(curColumnReplacement, (string)currValue);
-                    if (!exprCheck(result)) break; // result string does not contains any expressions, no need to iterate over columns
-                }
-            }
-            return result;
-        }
-
-        private static string SafeToString(object value)
-        {
-            if (value == null || value == DBNull.Value)
-            {
-                return string.Empty;
-            }
-            return value.ToString();
         }
 
         /// <summary>

@@ -127,14 +127,21 @@
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 31</value>
   </data>
-  <data name="lblSymbolGroups.Text" xml:space="preserve">
-    <value>&amp;Kategorien:</value>
-  </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 31</value>
   </data>
-  <data name="sqlExpression.Size" type="System.Drawing.Size, System.Drawing">
-    <value>397, 432</value>
+  <data name="tabs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 464</value>
+  </data>
+  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>569, 464</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+    <value>154</value>
+  </data>
+  <data name="lblSymbolGroups.Text" xml:space="preserve">
+    <value>&amp;Kategorien:</value>
   </data>
   <data name="tabExpression.Size" type="System.Drawing.Size, System.Drawing">
     <value>403, 438</value>
@@ -142,8 +149,23 @@
   <data name="tabExpression.Text" xml:space="preserve">
     <value>Ausdruck</value>
   </data>
+  <data name="sqlExpression.Size" type="System.Drawing.Size, System.Drawing">
+    <value>397, 432</value>
+  </data>
+  <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>403, 438</value>
+  </data>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>Grundlegende Eigenschaften</value>
+  </data>
   <data name="tbFloatingFormat.Size" type="System.Drawing.Size, System.Drawing">
     <value>297, 20</value>
+  </data>
+  <data name="grbLabelRotation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 93</value>
+  </data>
+  <data name="grbLabelRotation.Text" xml:space="preserve">
+    <value>Beschriftungsrotation</value>
   </data>
   <data name="cmbLabelAngleField.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 57</value>
@@ -158,16 +180,16 @@
     <value>Unterschiedliche Winkel</value>
   </data>
   <data name="rbIndividualAngle.ToolTip" xml:space="preserve">
-    <value>Wenn diese Option aktiviert ist, werden alle Labels gedrehten Indidually. Winkel muss in jede Spalte der Tabelle Attribute definiert werden.</value>
+    <value>Wenn diese Option aktiviert ist, werden alle Label individuell nach der angegebenen Spalte gedreht. In dieser muss für jedes Feature der entsprechende Winkel definiert sein.</value>
   </data>
   <data name="rbCommonAngle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
+    <value>125, 17</value>
   </data>
   <data name="rbCommonAngle.Text" xml:space="preserve">
-    <value>Gemeinsamen Winkel</value>
+    <value>Gemeinsamer Winkel</value>
   </data>
   <data name="rbCommonAngle.ToolTip" xml:space="preserve">
-    <value>Wenn diese Option aktiviert ist, werden alle Labels auf dem gleichen Winkel gedreht.</value>
+    <value>Wenn diese Option aktiviert ist, werden alle Label im gleichen Winkel gedreht.</value>
   </data>
   <data name="nudAngle.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 29</value>
@@ -175,41 +197,35 @@
   <data name="nudAngle.ToolTip" xml:space="preserve">
     <value>Wert des gemeinsamen Winkel.</value>
   </data>
-  <data name="grbLabelRotation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 93</value>
-  </data>
-  <data name="grbLabelRotation.Text" xml:space="preserve">
-    <value>Bezeichnung  Rotation</value>
-  </data>
   <data name="chkPrioritizeLow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>236, 250</value>
+    <value>203, 282</value>
   </data>
   <data name="chkPrioritizeLow.Size" type="System.Drawing.Size, System.Drawing">
     <value>164, 17</value>
   </data>
   <data name="chkPrioritizeLow.Text" xml:space="preserve">
-    <value>Niedrige Werte zu priorisieren</value>
+    <value>Niedrige Werte bevorzugen</value>
   </data>
   <data name="chkPrioritizeLow.ToolTip" xml:space="preserve">
     <value>Wenn diese Option aktiviert ist, werden niedrige Werte zuerst mit Kollisionsschutz, oder an der Spitze werden anders platziert.</value>
   </data>
   <data name="chkPreventCollision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 17</value>
+    <value>128, 17</value>
   </data>
   <data name="chkPreventCollision.Text" xml:space="preserve">
-    <value>Vermeidung von Kollisionen</value>
+    <value>Kollisionen vermeiden</value>
   </data>
   <data name="chkPreventCollision.ToolTip" xml:space="preserve">
     <value>Wenn diese Option nicht aktiviert ist, werden hohe Priorität Etiketten über niedrige Priorität Etiketten gezeichnet.  Wenn es aktiviert ist, wird nur die höhere Priorität-Bezeichnung der zwei überlappende Beschriftungen platziert werden.</value>
   </data>
   <data name="lblPriorityField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
+    <value>89, 13</value>
   </data>
   <data name="lblPriorityField.Text" xml:space="preserve">
-    <value>Feld "Priority"</value>
+    <value>Gewichtungsfeld:</value>
   </data>
   <data name="cmbPriorityField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 246</value>
+    <value>107, 246</value>
   </data>
   <data name="cmbPriorityField.ToolTip" xml:space="preserve">
     <value>Standardmäßig wird der FID verwendet, um Etiketten zu priorisieren.  Dadurch können die Werte aus einem Feld stattdessen verwendet werden.</value>
@@ -220,18 +236,17 @@
   <data name="chkBorder.Text" xml:space="preserve">
     <value>Rand:</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gpbFont.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="gpbFont.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 110</value>
+  </data>
+  <data name="gpbFont.Text" xml:space="preserve">
+    <value>Schriftart:</value>
   </data>
   <data name="lblFontColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
   </data>
   <data name="lblFontColor.Text" xml:space="preserve">
     <value>Schriftfarbe:</value>
-  </data>
-  <data name="sldFontOpacity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="sldFontOpacity.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 48</value>
@@ -254,17 +269,12 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Größe:</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ffcFamilyName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="ffcFamilyName.Size" type="System.Drawing.Size, System.Drawing">
     <value>305, 27</value>
-  </data>
-  <data name="gpbFont.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 110</value>
-  </data>
-  <data name="gpbFont.Text" xml:space="preserve">
-    <value>Schriftart:</value>
   </data>
   <data name="lblPreview.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -281,26 +291,11 @@
   <data name="chkBackgroundColor.Text" xml:space="preserve">
     <value>Hintergrundfarbe:</value>
   </data>
-  <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
     <value>403, 438</value>
   </data>
-  <data name="tabBasic.Text" xml:space="preserve">
-    <value>Grundlegende Eigenschaften</value>
-  </data>
-  <data name="grpOffset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 13</value>
-  </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>&amp; Y:</value>
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 13</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>&amp; X:</value>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>Erweiterte Eigenschaften</value>
   </data>
   <data name="grpOffset.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 73</value>
@@ -308,44 +303,47 @@
   <data name="grpOffset.Text" xml:space="preserve">
     <value>Versatz</value>
   </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Y:</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>X:</value>
+  </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 13</value>
+    <value>146, 13</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
-    <value>Bezeichnung Orientierung:</value>
+    <value>Ausrichtung der Beschriftung:</value>
   </data>
   <data name="chkHalo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 17</value>
+    <value>51, 17</value>
   </data>
   <data name="chkHalo.Text" xml:space="preserve">
-    <value>Verwendung &amp; Halo:</value>
+    <value>Halo:</value>
   </data>
   <data name="chkShadow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 17</value>
+    <value>134, 17</value>
   </data>
   <data name="chkShadow.Text" xml:space="preserve">
-    <value>Label Schatten zu verwenden:</value>
+    <value>Beschriftungsschatten:</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 13</value>
+    <value>164, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>Bezeichnung mehrteiligen &amp; Features:</value>
+    <value>Beschriftung mehrteiliger Feature:</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 13</value>
+    <value>62, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>Bezeichnung Platzierung &amp; Methode:</value>
+    <value>Platzierung:</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 13</value>
+    <value>162, 13</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Multi-Line Text &amp; Ausrichtung:</value>
-  </data>
-  <data name="cmbAlignment.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Ausrichtung mehrzeiligen Textes:</value>
   </data>
   <data name="cmbAlignment.Items" xml:space="preserve">
     <value>Links</value>
@@ -356,68 +354,32 @@
   <data name="cmbAlignment.Items2" xml:space="preserve">
     <value>Rechts</value>
   </data>
-  <data name="cmbAlignment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>188, 254</value>
-  </data>
-  <data name="cmbLabelingMethod.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="cmbLabelingMethod.Location" type="System.Drawing.Point, System.Drawing">
-    <value>188, 283</value>
-  </data>
-  <data name="cmbLabelParts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="cmbLabelParts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>188, 312</value>
-  </data>
-  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>389, 53</value>
   </data>
   <data name="clrHalo.Size" type="System.Drawing.Size, System.Drawing">
     <value>341, 21</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>389, 53</value>
-  </data>
-  <data name="gpbUseLabelShadow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 13</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>&amp; Y:</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 13</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>&amp; X:</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 13</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>&amp; Offset des Schattens:</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 13</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>&amp; Farbe des Schattens:</value>
-  </data>
   <data name="gpbUseLabelShadow.Size" type="System.Drawing.Size, System.Drawing">
     <value>389, 97</value>
   </data>
-  <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 438</value>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Y:</value>
   </data>
-  <data name="tabAdvanced.Text" xml:space="preserve">
-    <value>Erweiterte Eigenschaften</value>
+  <data name="label8.Text" xml:space="preserve">
+    <value>X:</value>
   </data>
-  <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>397, 432</value>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Versatz des Schattens:</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Schattenfarbe:</value>
   </data>
   <data name="tabMembers.Size" type="System.Drawing.Size, System.Drawing">
     <value>403, 438</value>
@@ -425,15 +387,8 @@
   <data name="tabMembers.Text" xml:space="preserve">
     <value>Mitglieder</value>
   </data>
-  <data name="tabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 464</value>
-  </data>
-  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>569, 464</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>154</value>
+  <data name="sqlMembers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>397, 432</value>
   </data>
   <data name="cmdOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>320, 51</value>
@@ -482,6 +437,6 @@
 </value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Bezeichnungen</value>
+    <value>Beschriftungskategorien bearbeiten</value>
   </data>
 </root>

@@ -106,6 +106,12 @@
     <Compile Include="DetailedLineSymbolControl.Designer.cs">
       <DependentUpon>DetailedLineSymbolControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExpressionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExpressionControl.Designer.cs">
+      <DependentUpon>ExpressionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterEventArgs.cs" />
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />
@@ -585,6 +591,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicVisibilityModeDialog.zh-CN.resx">
       <DependentUpon>DynamicVisibilityModeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExpressionControl.de-DE.resx">
+      <DependentUpon>ExpressionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExpressionControl.resx">
+      <DependentUpon>ExpressionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureCategoryControl.de-DE.resx">
       <DependentUpon>FeatureCategoryControl.cs</DependentUpon>

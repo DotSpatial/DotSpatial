@@ -229,18 +229,18 @@
     <value>Zeilen</value>
   </data>
   <data name="LabelSetup_Help1" xml:space="preserve">
-    <value>Jedes Symbol-Gruppe kann einen separaten String-Ausdruck definieren, der Attributwerte enthält.  Doppelklicken Sie Felder, um es dem Ausdruck hinzuzufügen.</value>
+    <value>In diesem Fenster können die Beschriftungskategorien des Layers bearbeitet werden. Wählen Sie dazu die zu bearbeitende Kategorie aus und ändern ihre Eigenschaften.</value>
   </data>
   <data name="LabelSetup_Help2" xml:space="preserve">
-    <value>Verwenden Sie die Registerkarte Mitglieder auf Design, die einem bestimmten Etikett ein Filterausdruck, der welche Funktionen einschränkt, zugewiesen werden.</value>
+    <value>Verwenden Sie die Registerkarte Mitglieder, um der ausgewählten Kategorie den Filterausdruck zuzuweisen, mit dem nur die Feature ausgewählt werden, die dieser Kategorie entsprechend beschriftet werden sollen.</value>
   </data>
   <data name="LabelSetup_Help3" xml:space="preserve">
-    <value>Verwenden Sie den Ausdruck-Registerkarte, um den Text zu entwerfen, der in eine Beschriftung angezeigt werden soll.  Felder mit Klammern wird durch reale Werte ersetzt.</value>
+    <value>Verwenden Sie die Ausdruck-Registerkarte, um den Text zu entwerfen, der in den Feature-Beschriftungen angezeigt werden soll. Felder mit Klammern werden durch reale Werte ersetzt.</value>
   </data>
   <data name="LabelSetup_Help4" xml:space="preserve">
-    <value>Jede Gruppe kann seine eigenen grundlegenden Design-Merkmale angeben.</value>
+    <value>Hier können die grundlegenden Eigenschaften der ausgewählten Kategorie bearbeitet werden.</value>
   </data>
   <data name="LabelSetup_Help5" xml:space="preserve">
-    <value>Jede Gruppe kann seine erweiterten Eigenschaften angeben.</value>
+    <value>Hier können die erweiterten Eigenschaften der ausgewählten Kategorie bearbeitet werden.</value>
   </data>
 </root>
