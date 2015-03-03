@@ -169,7 +169,25 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression..
+        ///   Sucht eine lokalisierte Zeichenfolge, die The layer was exported. ähnelt.
+        /// </summary>
+        internal static string FeatureLayerActions_FeaturesExported {
+            get {
+                return ResourceManager.GetString("FeatureLayerActions_FeaturesExported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you want to load the shapefile? ähnelt.
+        /// </summary>
+        internal static string FeatureLayerActions_LoadFeatures {
+            get {
+                return ResourceManager.GetString("FeatureLayerActions_LoadFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Each symbol group can define a separate string expression that includes attribute values.  Double click fields to add it to the expression. ähnelt.
         /// </summary>
         internal static string LabelSetup_Help1 {
             get {

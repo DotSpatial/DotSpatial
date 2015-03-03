@@ -243,4 +243,10 @@
   <data name="LabelSetup_Help5" xml:space="preserve">
     <value>Each group can specify its advanced characteristics.</value>
   </data>
+  <data name="FeatureLayerActions_FeaturesExported" xml:space="preserve">
+    <value>The layer was exported.</value>
+  </data>
+  <data name="FeatureLayerActions_LoadFeatures" xml:space="preserve">
+    <value>Do you want to load the shapefile?</value>
+  </data>
 </root>

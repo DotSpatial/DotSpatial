@@ -129,8 +129,8 @@ namespace DotSpatial.Symbology.Forms
 
                 fs.SaveAs(frmExport.Filename, true);
 
-                if (MessageBox.Show(Owner, "Do you want to load the shapefile?",
-                                    "The layer was exported.",
+                if (MessageBox.Show(Owner, SymbologyFormsMessageStrings.FeatureLayerActions_LoadFeatures,
+                                    SymbologyFormsMessageStrings.FeatureLayerActions_FeaturesExported,
                                     MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     LoadFeatureSetAsLayer(e, fs, Path.GetFileNameWithoutExtension(frmExport.Filename));
