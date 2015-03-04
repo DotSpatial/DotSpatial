@@ -93,7 +93,7 @@ namespace DotSpatial.Data
         /// <returns>the fileName of the world file</returns>
         public static string GenerateFilename(string imageFilename)
         {
-            string ext = Path.GetExtension(imageFilename);
+            string ext = Path.GetExtension(imageFilename).ToLower();
             string result = ".wld";
             switch (ext)
             {
