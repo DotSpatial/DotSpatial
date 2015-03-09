@@ -126,7 +126,7 @@ namespace DotSpatial.Symbology
             foreach (ILabelCategory category in Symbology.Categories)
             {
                 List<IFeature> features;
-                if (category.FilterExpression != null)
+                if (!string.IsNullOrWhiteSpace(category.FilterExpression))
                 {
                     features = FeatureSet.SelectByAttribute(category.FilterExpression);
                 }

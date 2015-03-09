@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Serialization", "DotSpatial.Serialization\DotSpatial.Serialization.csproj", "{9B692E11-0273-4331-9B15-1670093EDDBF}"
 EndProject
@@ -146,6 +146,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.ExtensionManager.Updater", "DotSpatial.Plugins.ExtensionManager.Updater\DotSpatial.Plugins.ExtensionManager.Updater.csproj", "{CE69E9FF-19B7-4082-8A6D-2E59340FAC52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SetSelectable", "DotSpatial.Plugins.SetSelectable\DotSpatial.Plugins.SetSelectable.csproj", "{84FD5045-5DE8-4950-A083-77789573F430}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBPlugin", "..\..\VBPlugin\VBPlugin.vbproj", "{41B02A34-C0E1-401E-9BAB-1BA01AA9923C}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -655,6 +657,10 @@ Global
 		{84FD5045-5DE8-4950-A083-77789573F430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84FD5045-5DE8-4950-A083-77789573F430}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84FD5045-5DE8-4950-A083-77789573F430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B02A34-C0E1-401E-9BAB-1BA01AA9923C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B02A34-C0E1-401E-9BAB-1BA01AA9923C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B02A34-C0E1-401E-9BAB-1BA01AA9923C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B02A34-C0E1-401E-9BAB-1BA01AA9923C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
