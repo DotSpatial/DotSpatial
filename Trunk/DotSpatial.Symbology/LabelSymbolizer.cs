@@ -197,6 +197,13 @@ namespace DotSpatial.Symbology
         public PointF DropShadowPixelOffset { get; set; }
 
         /// <summary>
+        /// Gets or sets format string used to draw float fields. E.g.:
+        /// #.##, 0.000. If empty - then format not used.
+        /// </summary>
+        [Serialize("FloatingFormat")]
+        public string FloatingFormat { get; set; }
+
+        /// <summary>
         /// Gets or sets the string font family name
         /// </summary>
         [Serialize("FontFamily")]
@@ -243,6 +250,18 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Serialize("LabelMethod")]
         public LabelPlacementMethod LabelPlacementMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the labeling method for line labels.
+        /// </summary>
+        [Serialize("LineLabelPlacementMethod")]
+        public LineLabelPlacementMethod LineLabelPlacementMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the orientation of line labels.
+        /// </summary>
+        [Serialize("LineOrientation")]
+        public LineOrientation LineOrientation { get; set; }
 
         /// <summary>
         /// Gets or sets the way features with multiple parts are labeled
@@ -293,11 +312,10 @@ namespace DotSpatial.Symbology
         public ScaleMode ScaleMode { get; set; }
 
         /// <summary>
-        /// Gets or sets format string used to draw float fields. E.g.:
-        /// #.##, 0.000. If empty - then format not used.
+        /// Gets or sets a boolean indicating whether or not the LineOrientation gets used.
         /// </summary>
-        [Serialize("FloatingFormat")]
-        public string FloatingFormat { get; set; }
+        [Serialize("UseLineOrientation")]
+        public bool UseLineOrientation { get; set; }
 
         #endregion
     }

@@ -124,7 +124,7 @@
     <value>An Höhe anpassen</value>
   </data>
   <data name="LayoutCmnuHor" xml:space="preserve">
-    <value>Horizontal ausrichten</value>
+    <value>Horizontal zentrieren</value>
   </data>
   <data name="LayoutCmnuLeft" xml:space="preserve">
     <value>Linksbündig</value>
@@ -136,7 +136,7 @@
     <value>Marge Fit</value>
   </data>
   <data name="LayoutCmnuRight" xml:space="preserve">
-    <value>Rechtsbündig ausrichten</value>
+    <value>Rechtsbündig</value>
   </data>
   <data name="LayoutCmnuSelectionAlignment" xml:space="preserve">
     <value>Auswahl-Ausrichtung</value>
@@ -148,7 +148,7 @@
     <value>Oben ausrichten</value>
   </data>
   <data name="LayoutCmnuVert" xml:space="preserve">
-    <value>Vertikal ausrichten</value>
+    <value>Vertikal zentrieren</value>
   </data>
   <data name="LayoutCmnuWidth" xml:space="preserve">
     <value>An Breite anpassen</value>
@@ -160,7 +160,7 @@
     <value>Fehler beim Speichern der Layout-Datei:</value>
   </data>
   <data name="LayoutFormTitle" xml:space="preserve">
-    <value>Seitenlayout</value>
+    <value>Drucklayout</value>
   </data>
   <data name="LayoutInsertMenuStripLegend" xml:space="preserve">
     <value>Legende einfügen</value>
@@ -187,7 +187,7 @@
     <value>Drucklayout laden</value>
   </data>
   <data name="LayoutMapToolStripMaxExtent" xml:space="preserve">
-    <value>Zoom in vollem Umfang alle Schichten anzeigen.</value>
+    <value>Auf maximale Ausdehnung der Karte zoomen.</value>
   </data>
   <data name="LayoutMapToolStripPan" xml:space="preserve">
     <value>Karte verschieben</value>
@@ -226,10 +226,10 @@
     <value>Neu</value>
   </data>
   <data name="LayoutMenuStripOpen" xml:space="preserve">
-    <value>Öffenen</value>
+    <value>Öffnen...</value>
   </data>
   <data name="LayoutMenuStripPrint" xml:space="preserve">
-    <value>Drucken</value>
+    <value>Drucken...</value>
   </data>
   <data name="LayoutMenuStripRefresh" xml:space="preserve">
     <value>Aktualisieren</value>
@@ -238,22 +238,22 @@
     <value>Speichern</value>
   </data>
   <data name="LayoutMenuStripSaveAs" xml:space="preserve">
-    <value>Speichern als</value>
+    <value>Speichern unter...</value>
   </data>
   <data name="LayoutMenuStripSelect" xml:space="preserve">
     <value>Auswählen</value>
   </data>
   <data name="LayoutMenuStripSelectAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>Alles auswählen</value>
   </data>
   <data name="LayoutMenuStripSelectConvert" xml:space="preserve">
     <value>In Bitmap konvertieren</value>
   </data>
   <data name="LayoutMenuStripSelectDelete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Ausgewählte Elemente löschen</value>
   </data>
   <data name="LayoutMenuStripSelectInvert" xml:space="preserve">
-    <value>Umkehren</value>
+    <value>Auswahl umkehren</value>
   </data>
   <data name="LayoutMenuStripSelectMoveDown" xml:space="preserve">
     <value>Nach unten</value>
@@ -262,13 +262,13 @@
     <value>Nach oben</value>
   </data>
   <data name="LayoutMenuStripSelectNone" xml:space="preserve">
-    <value>Keine</value>
+    <value>Auswahl aufheben</value>
   </data>
   <data name="LayoutMenuStripSelectPrinter" xml:space="preserve">
-    <value>Wählen Sie Drucker</value>
+    <value>Drucker auswählen...</value>
   </data>
   <data name="LayoutMenuStripShowMargin" xml:space="preserve">
-    <value>Zeigen Rand an</value>
+    <value>Seitenränder anzeigen</value>
   </data>
   <data name="LayoutMenuStripToolbars" xml:space="preserve">
     <value>Symbolleisten</value>
@@ -289,10 +289,10 @@
     <value>Zoom</value>
   </data>
   <data name="LayoutPageSetupTitle" xml:space="preserve">
-    <value>Seite einrichten</value>
+    <value>Seite einrichten...</value>
   </data>
   <data name="LayoutSaveDialogTitle" xml:space="preserve">
-    <value>Drucklayout speichern als..</value>
+    <value>Drucklayout speichern unter...</value>
   </data>
   <data name="LayoutSaveFirst" xml:space="preserve">
     <value>Möchten Sie das aktuelle Drucklayout speichern?</value>
@@ -307,7 +307,7 @@
     <value>Verkleinern</value>
   </data>
   <data name="LayouyCmnuMarginAlignment" xml:space="preserve">
-    <value>Randausgleich</value>
+    <value>Element zum Rand ausrichten</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
     <value>Koordinatensystem des Layers an Koordinatensystem der Map anpassen? Dies beeinträchtigt nicht die Quelldatei.</value>

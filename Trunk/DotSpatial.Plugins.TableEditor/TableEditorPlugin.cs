@@ -21,6 +21,10 @@ namespace DotSpatial.Plugins.TableEditor
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
             // TODO: if layers were loaded before this plugin, do something about adding them to the context menu.
             base.Activate();
+            foreach (ILayer l in App.Map.Layers)
+            {
+                AddContextMenuItems(l);
+            }
         }
 
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
