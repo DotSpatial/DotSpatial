@@ -249,4 +249,7 @@
   <data name="FeatureLayerActions_LoadFeatures" xml:space="preserve">
     <value>Do you want to load the shapefile?</value>
   </data>
+  <data name="ExpressionControl_EmptyExpression" xml:space="preserve">
+    <value>The expression is empty.</value>
+  </data>
 </root>

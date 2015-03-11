@@ -160,7 +160,16 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In order to specify a custom filter expression, the custom mode must be selected first..
+        ///   Sucht eine lokalisierte Zeichenfolge, die The expression is empty. ähnelt.
+        /// </summary>
+        internal static string ExpressionControl_EmptyExpression {
+            get {
+                return ResourceManager.GetString("ExpressionControl_EmptyExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die In order to specify a custom filter expression, the custom mode must be selected first. ähnelt.
         /// </summary>
         internal static string FeatureCategoryControl_CustomOnly {
             get {

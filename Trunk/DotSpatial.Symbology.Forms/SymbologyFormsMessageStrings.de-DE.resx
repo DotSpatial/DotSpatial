@@ -243,4 +243,7 @@
   <data name="LabelSetup_Help5" xml:space="preserve">
     <value>Hier können die erweiterten Eigenschaften der ausgewählten Kategorie bearbeitet werden.</value>
   </data>
+  <data name="ExpressionControl_EmptyExpression" xml:space="preserve">
+    <value>Der Ausdruck ist leer.</value>
+  </data>
 </root>

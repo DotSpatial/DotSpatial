@@ -115,6 +115,15 @@ namespace DotSpatial.Symbology {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The expression is empty. ähnelt.
+        /// </summary>
+        internal static string Expression_Empty {
+            get {
+                return ResourceManager.GetString("Expression_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The expression contains empty fields. ähnelt.
         /// </summary>
         internal static string Expression_EmptyField {

@@ -260,4 +260,7 @@
   <data name="Expression_ZeroDivision" xml:space="preserve">
     <value>Division by zero.</value>
   </data>
+  <data name="Expression_Empty" xml:space="preserve">
+    <value>The expression is empty.</value>
+  </data>
 </root>

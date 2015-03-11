@@ -131,7 +131,11 @@ namespace DotSpatial.Symbology.Forms
         public bool ValidateExpression()
         {
             if (string.IsNullOrWhiteSpace(rtbExpression.Text))
-                return true;
+            {
+                lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
+                lblResult.ForeColor = System.Drawing.Color.Red;
+                return false;
+            }
             var res = exp.ParseExpression(rtbExpression.Text);
             if (!res)
             {

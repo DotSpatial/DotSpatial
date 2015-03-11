@@ -237,4 +237,7 @@
   <data name="Expression_ZeroDivision" xml:space="preserve">
     <value>Division durch Null.</value>
   </data>
+  <data name="Expression_Empty" xml:space="preserve">
+    <value>Der Ausdruck ist leer.</value>
+  </data>
 </root>

@@ -82,6 +82,7 @@ namespace DotSpatial.Symbology
         /// <returns>The calculated expression.</returns>
         public string CalculateRowValue(DataRow row)
         {
+            if (IsEmpty()) return "";
             _errorMessage = "";
             if (!_valid && !_expChanged) return ReplaceFieldsOnly(row); //expression is invalid and hasn't changed => simply replace fields
 
@@ -121,6 +122,8 @@ namespace DotSpatial.Symbology
         /// <returns>True, if operations can be calculated.</returns>
         public bool IsValidOperation(ref string retVal, DataRow row = null)
         {
+            if (IsEmpty()) return false;
+
             _errorMessage = "";
             if (row == null) //no row -> use exampleValues
             {
@@ -795,6 +798,21 @@ namespace DotSpatial.Symbology
             }
 
             exponential = false; // +, - can be in the next position after e only
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the ExpressionString is empty.
+        /// </summary>
+        /// <returns>True, if ExpressionString is empty.</returns>
+        private bool IsEmpty()
+        {
+            if (string.IsNullOrWhiteSpace(_expressionString))
+            {
+                _errorMessage = SymbologyMessageStrings.Expression_Empty;
+                _valid = false;
+                return true;
+            }
             return false;
         }
 
