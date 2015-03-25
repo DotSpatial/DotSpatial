@@ -34,6 +34,13 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
+        /// Draws the line that is needed to show this lines legend symbol.
+        /// </summary>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="target">The rectangle that is used to calculate the lines position and size.</param>
+        void DrawLegendSymbol(Graphics g, Rectangle target);
+
+        /// <summary>
         /// Sequentially draws all of the strokes using the specified graphics path.
         /// </summary>
         /// <param name="g">The graphics device to draw to</param>

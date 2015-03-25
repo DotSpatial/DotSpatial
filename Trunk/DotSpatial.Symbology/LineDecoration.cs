@@ -195,6 +195,16 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Gets the size that is needed to draw this decoration with max. 2 symbols.
+        /// </summary>
+        public Size GetLegendSymbolSize()
+        {
+            Size size = _symbol.GetLegendSymbolSize();
+            if (NumSymbols >= 1) size.Width *= 2; //add space for the line between the decorations
+            return size;
+        }
+
+        /// <summary>
         /// Gets the length of the line between startpoint and endpoint.
         /// </summary>
         /// <param name="startPoint">Startpoint of the line.</param>

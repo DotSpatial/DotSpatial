@@ -150,10 +150,10 @@ namespace DotSpatial.Symbology
         #region Methods
 
         /// <summary>
-        /// Draws a line instead of a rectangle
+        /// Draws a line instead of a rectangle.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="target"></param>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="target">The rectangle that is used to calculate the lines position and size.</param>
         public override void Draw(Graphics g, Rectangle target)
         {
             foreach (var stroke in _strokes)
@@ -164,9 +164,30 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Draws the line that is needed to show this lines legend symbol.
+        /// </summary>
+        /// <param name="g">The graphics device to draw to.</param>
+        /// <param name="target">The rectangle that is used to calculate the lines position and size.</param>
+        public void DrawLegendSymbol(Graphics g, Rectangle target)
+        {
+            foreach (IStroke stroke in _strokes)
+            {
+                GraphicsPath p = new GraphicsPath();
+                p.AddLine(new Point(target.X, target.Y + target.Height / 2), new Point(target.Right, target.Y + target.Height / 2));
+
+                var cs = stroke as ICartographicStroke;
+                if (cs != null)
+                {
+                    cs.DrawLegendPath(g, p, 1);
+                }
+                else { stroke.DrawPath(g, p, 1); }
+            }
+        }
+
+        /// <summary>
         /// Sequentially draws all of the strokes using the specified graphics path.
         /// </summary>
-        /// <param name="g">The graphics device to draw to</param>
+        /// <param name="g">The graphics device to draw to.</param>
         /// <param name="gp">The graphics path that describes the pathway to draw</param>
         /// <param name="scaleWidth">The double scale width that when multiplied by the width gives a measure in pixels</param>
         public virtual void DrawPath(Graphics g, GraphicsPath gp, double scaleWidth)
@@ -203,6 +224,27 @@ namespace DotSpatial.Symbology
             {
                 ss.Color = fillColor;
             }
+        }
+
+        /// <summary>
+        /// Gets the Size that is needed to show this line in legend with max. 2 decorations.
+        /// </summary>
+        public override Size GetLegendSymbolSize()
+        {
+            Size size = new Size(16, 16); //default size for smaller lines
+            if (_strokes == null) return size;
+            foreach (var stroke in _strokes.OfType<ISimpleStroke>())
+            {
+                if (stroke.Width > size.Height) size.Height = (int)stroke.Width;
+            }
+
+            foreach (var stroke in _strokes.OfType<ICartographicStroke>())
+            {
+                Size s = stroke.GetLegendSymbolSize();
+                if (s.Width > size.Width) size.Width = s.Width;
+                if (s.Height > size.Height) size.Height = s.Height;
+            }
+            return size;
         }
 
         /// <summary>

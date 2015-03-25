@@ -141,6 +141,35 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
+        /// Draws the line with max. 2 decorations. Otherwise the legend line might show only decorations.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="path"></param>
+        /// <param name="scaleWidth"></param>
+        public void DrawLegendPath(Graphics g, GraphicsPath path, double scaleWidth)
+        {
+            base.DrawPath(g, path, scaleWidth); // draw the actual line
+            if (Decorations != null)
+            {
+                int temp = -1;
+                foreach (ILineDecoration decoration in Decorations)
+                {
+                    if (decoration.NumSymbols > 2)
+                    {
+                        temp = decoration.NumSymbols;
+                        decoration.NumSymbols = 2;
+                    }
+                    decoration.Draw(g, path, scaleWidth);
+                    if (temp > -1)
+                    {
+                        decoration.NumSymbols = temp;
+                        temp = -1;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Draws the actual path, overriding the base behavior to include markers.
         /// </summary>
         /// <param name="g"></param>
@@ -156,6 +185,21 @@ namespace DotSpatial.Symbology
                     decoration.Draw(g, path, scaleWidth);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the width and height that is needed to draw this stroke with max. 2 decorations.
+        /// </summary>
+        public Size GetLegendSymbolSize()
+        {
+            Size size = new Size(16, 16);
+            foreach (ILineDecoration decoration in Decorations)
+            {
+                Size s = decoration.GetLegendSymbolSize();
+                if (s.Height > size.Height) size.Height = s.Height;
+                if (s.Width > size.Width) size.Width = s.Width;
+            }
+            return size;
         }
 
         #endregion

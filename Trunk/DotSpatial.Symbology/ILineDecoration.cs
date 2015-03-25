@@ -39,6 +39,11 @@ namespace DotSpatial.Symbology
         /// <param name="scaleWidth">The double scale width for controling markers</param>
         void Draw(Graphics g, GraphicsPath path, double scaleWidth);
 
+        /// <summary>
+        /// Gets the size that is needed to draw this decoration with max. 2 symbols.
+        /// </summary>
+        Size GetLegendSymbolSize();
+
         #endregion
 
         #region Properties
