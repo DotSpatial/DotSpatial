@@ -117,46 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_btnOk.Location" type="System.Drawing.Point, System.Drawing">
+    <value>366, 106</value>
+  </data>
+  <data name="_btnOk.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
   <data name="_btnOk.Text" xml:space="preserve">
-    <value>确认</value>
+    <value>&amp;Speichern</value>
   </data>
-  <data name="_btnOk.ToolTip" xml:space="preserve">
-    <value />
+  <data name="_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>446, 106</value>
   </data>
-  <data name="_btnClose.Text" xml:space="preserve">
-    <value>关闭</value>
+  <data name="_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
   </data>
-  <data name="_btnClose.ToolTip" xml:space="preserve">
-    <value />
+  <data name="_btnCancel.Text" xml:space="preserve">
+    <value>A&amp;bbrechen</value>
   </data>
-  <data name="_dbxM.Caption" xml:space="preserve">
-    <value>M:</value>
+  <data name="_chkM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>212, 17</value>
   </data>
-  <data name="_dbxM.ToolTip" xml:space="preserve">
-    <value />
+  <data name="_chkM.Text" xml:space="preserve">
+    <value>Koordinaten werden &amp;M-Werte enthalten</value>
   </data>
-  <data name="_dbxZ.Caption" xml:space="preserve">
-    <value>Z:</value>
+  <data name="_chkZ.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 88</value>
   </data>
-  <data name="_dbxZ.ToolTip" xml:space="preserve">
-    <value />
+  <data name="_chkZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>210, 17</value>
   </data>
-  <data name="_dbxY.Caption" xml:space="preserve">
-    <value>Y:</value>
+  <data name="_chkZ.Text" xml:space="preserve">
+    <value>Koordinaten werden &amp;Z-Werte enthalten</value>
   </data>
-  <data name="_dbxY.ToolTip" xml:space="preserve">
-    <value />
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
   </data>
-  <data name="_dbxX.Caption" xml:space="preserve">
-    <value>X:</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Featuretyp</value>
   </data>
-  <data name="_dbxX.ToolTip" xml:space="preserve">
-    <value />
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Dateiname</value>
+  </data>
+  <data name="_btnSelectFilename.Text" xml:space="preserve">
+    <value>&amp;Auswählen</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>532, 137</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>坐标对话框</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
+    <value>Neuen Layer erstellen</value>
   </data>
 </root>

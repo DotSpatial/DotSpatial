@@ -34,6 +34,11 @@ namespace DotSpatial.Plugins.ShapeEditor
         private Button _btnOk;
         private CheckBox _chkM;
         private CheckBox _chkZ;
+        private Label label1;
+        private TextBox _tbFilename;
+        private Label label2;
+        private Button _btnSelectFilename;
+        private SaveFileDialog _sfdFilename;
         private ComboBox _cmbFeatureType;
 
         #region Windows Form Designer generated code
@@ -50,51 +55,88 @@ namespace DotSpatial.Plugins.ShapeEditor
             this._cmbFeatureType = new System.Windows.Forms.ComboBox();
             this._chkM = new System.Windows.Forms.CheckBox();
             this._chkZ = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this._tbFilename = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this._btnSelectFilename = new System.Windows.Forms.Button();
+            this._sfdFilename = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
-            //
+            // 
             // _btnOk
-            //
+            // 
             resources.ApplyResources(this._btnOk, "_btnOk");
             this._btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this._btnOk.Name = "_btnOk";
             this._btnOk.UseVisualStyleBackColor = true;
             this._btnOk.Click += new System.EventHandler(this.OkButton_Click);
-            //
+            // 
             // _btnCancel
-            //
+            // 
             resources.ApplyResources(this._btnCancel, "_btnCancel");
             this._btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.UseVisualStyleBackColor = true;
             this._btnCancel.Click += new System.EventHandler(this.CancelButton_Click);
-            //
+            // 
             // _cmbFeatureType
-            //
+            // 
             resources.ApplyResources(this._cmbFeatureType, "_cmbFeatureType");
+            this._cmbFeatureType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._cmbFeatureType.FormattingEnabled = true;
             this._cmbFeatureType.Items.AddRange(new object[] {
-                                                                 resources.GetString("_cmbFeatureType.Items"),
-                                                                 resources.GetString("_cmbFeatureType.Items1"),
-                                                                 resources.GetString("_cmbFeatureType.Items2"),
-                                                                 resources.GetString("_cmbFeatureType.Items3")});
+            resources.GetString("_cmbFeatureType.Items"),
+            resources.GetString("_cmbFeatureType.Items1"),
+            resources.GetString("_cmbFeatureType.Items2"),
+            resources.GetString("_cmbFeatureType.Items3")});
             this._cmbFeatureType.Name = "_cmbFeatureType";
-            //
+            // 
             // _chkM
-            //
+            // 
             resources.ApplyResources(this._chkM, "_chkM");
             this._chkM.Name = "_chkM";
             this._chkM.UseVisualStyleBackColor = true;
-            //
+            // 
             // _chkZ
-            //
+            // 
             resources.ApplyResources(this._chkZ, "_chkZ");
             this._chkZ.Name = "_chkZ";
             this._chkZ.UseVisualStyleBackColor = true;
-            //
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // _tbFilename
+            // 
+            resources.ApplyResources(this._tbFilename, "_tbFilename");
+            this._tbFilename.Name = "_tbFilename";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // _btnSelectFilename
+            // 
+            resources.ApplyResources(this._btnSelectFilename, "_btnSelectFilename");
+            this._btnSelectFilename.Name = "_btnSelectFilename";
+            this._btnSelectFilename.UseVisualStyleBackColor = true;
+            this._btnSelectFilename.Click += new System.EventHandler(this._btnSelectFilename_Click);
+            // 
+            // _sfdFilename
+            // 
+            this._sfdFilename.DefaultExt = "*.shp";
+            resources.ApplyResources(this._sfdFilename, "_sfdFilename");
+            // 
             // FeatureTypeDialog
-            //
+            // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._btnSelectFilename);
+            this.Controls.Add(this._tbFilename);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this._chkZ);
             this.Controls.Add(this._chkM);
             this.Controls.Add(this._cmbFeatureType);
@@ -104,8 +146,10 @@ namespace DotSpatial.Plugins.ShapeEditor
             this.MinimizeBox = false;
             this.Name = "FeatureTypeDialog";
             this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -161,6 +205,17 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
         }
 
+        /// <summary>
+        /// Gets the filename which should be used to save the layer to file.
+        /// </summary>
+        public String Filename
+        {
+            get
+            {
+                return _tbFilename.Text.Trim();
+            }
+        }
+
         #endregion
 
         #region Events
@@ -169,10 +224,10 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         #region Event Handlers
 
-        #endregion
-
         private void OkButton_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(_tbFilename.Text) && !_tbFilename.Text.ToLower().EndsWith(".shp"))
+                _tbFilename.Text += ".shp";
             Close();
         }
 
@@ -180,5 +235,17 @@ namespace DotSpatial.Plugins.ShapeEditor
         {
             Close();
         }
+
+        /// <summary>
+        /// Opens the SafeFileDialog and copys the selected filename to _tbFilename.
+        /// </summary>
+        private void _btnSelectFilename_Click(object sender, EventArgs e)
+        {
+            if (_sfdFilename.ShowDialog() == DialogResult.OK && !String.IsNullOrWhiteSpace(_sfdFilename.FileName))
+            {
+                _tbFilename.Text = _sfdFilename.FileName;
+            }
+        }
+        #endregion
     }
 }

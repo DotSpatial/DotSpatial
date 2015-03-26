@@ -234,11 +234,20 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (_geoMap.Projection != null) { fs.Projection = _geoMap.Projection; }
             fs.CoordinateType = dlg.CoordinateType;
             fs.IndexMode = false;
+            IMapFeatureLayer layer;
+            if (!String.IsNullOrWhiteSpace(dlg.Filename))
+            {
+                fs.SaveAs(dlg.Filename, true);
+                layer = (IMapFeatureLayer)_geoMap.Layers.Add(dlg.Filename);
+            }
+            else
+            {
+                layer = _geoMap.Layers.Add(fs);
+            }
 
-            IMapFeatureLayer layer = _geoMap.Layers.Add(fs);
             layer.EditMode = true;
             _geoMap.Layers.SelectedLayer = layer;
-            layer.LegendText = _geoMap.Layers.UnusedName("New Layer");
+            layer.LegendText = !String.IsNullOrEmpty(layer.DataSet.Name) ? layer.DataSet.Name : _geoMap.Layers.UnusedName("New Layer");
         }
 
         private void Layers_LayerSelected(object sender, LayerSelectedEventArgs e)
