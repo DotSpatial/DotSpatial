@@ -120,6 +120,7 @@ namespace DotSpatial.Controls
             if (tabPage == null) return;
 
             ((TabControl)tabPage.Parent).TabPages.Remove(tabPage);
+            _allTabs.Remove(key);
             tabPage.VisibleChanged -= TabPageOnVisibleChanged;
             OnPanelRemoved(new DockablePanelEventArgs(key));
         }
