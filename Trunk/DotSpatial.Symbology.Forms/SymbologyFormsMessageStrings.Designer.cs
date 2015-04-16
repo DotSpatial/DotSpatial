@@ -241,6 +241,22 @@ namespace DotSpatial.Symbology.Forms {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Categories must contain at least one category! ähnelt.
+        /// </summary>
+        internal static string LabelSetup_OneCategoryNeededErr {
+            get {
+                return ResourceManager.GetString("LabelSetup_OneCategoryNeededErr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unable to delete category ähnelt.
+        /// </summary>
+        internal static string LabelSetup_OneCategoryNeededErrCaption {
+            get {
+                return ResourceManager.GetString("LabelSetup_OneCategoryNeededErrCaption", resourceCulture);
+            }
+        }
         ///   Looks up a localized string similar to This feature is not yet supported for tables with more than 50, 000 rows..
         /// </summary>
         internal static string LargeEditsNotSupported {

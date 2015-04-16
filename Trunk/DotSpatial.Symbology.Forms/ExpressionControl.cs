@@ -29,6 +29,7 @@ namespace DotSpatial.Symbology.Forms
         private DataTable _table;
         private IAttributeSource _attributeSource;
         private Expression exp;
+        public Boolean allowEmptyExpression;
 
         /// <summary>
         /// Control to edit and validate expressions that can be used to label features.
@@ -132,9 +133,16 @@ namespace DotSpatial.Symbology.Forms
         {
             if (string.IsNullOrWhiteSpace(rtbExpression.Text))
             {
-                lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
-                lblResult.ForeColor = System.Drawing.Color.Red;
-                return false;
+                if (allowEmptyExpression)
+                {
+                    lblResult.Text = "";
+                    return true;
+                }
+                else {
+                    lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
+                    lblResult.ForeColor = System.Drawing.Color.Red;
+                    return false;
+                }
             }
             var res = exp.ParseExpression(rtbExpression.Text);
             if (!res)
