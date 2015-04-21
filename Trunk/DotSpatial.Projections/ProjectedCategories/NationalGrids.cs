@@ -347,8 +347,8 @@ namespace DotSpatial.Projections.ProjectedCategories
             CamacupaTM12SE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=12 +k=0.999600 +x_0=500000 +y_0=10000000 +ellps=clrk80 +units=m +no_defs ");
             CarthageTM11NE = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=9.900000000000002 +k=0.999600 +x_0=500000 +y_0=0 +a=6378249.2 +b=6356514.999904194 +units=m +no_defs ");
             CentreFrance = ProjectionInfo.FromProj4String("+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=-2.337229166666667 +k_0=0.99987742 +x_0=600000 +y_0=200000 +a=6378249.2 +b=6356514.999904194 +pm=2.337229166666667 +units=m +no_defs ");
-            CH1903LV03 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs ");
-            CH1903LV95 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +units=m +no_defs ");
+            CH1903LV03 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs ");
+            CH1903LV95 = ProjectionInfo.FromProj4String("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs ");
             ChosMalal1914Argentina2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=-90 +lon_0=-69 +k=1.000000 +x_0=2500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             ColombiaBogotaZone = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=4.599047222222222 +lon_0=-74.08091666666667 +k=1.000000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
             ColombiaEastZone = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=4.599047222222222 +lon_0=-68.08091666666667 +k=1.000000 +x_0=1000000 +y_0=1000000 +ellps=intl +units=m +no_defs ");
