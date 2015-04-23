@@ -134,11 +134,11 @@ namespace DotSpatial.Controls
             _oldSize = Size;
         }
 
-        public bool PreFilterMessage(ref Message m) 
+        public bool PreFilterMessage(ref Message m)
         {
             if (m.Msg == 0x0100)
             {
-                if(ContainsFocus)
+                if (ContainsFocus)
                     OnKeyDown(new KeyEventArgs((Keys)m.WParam.ToInt32()));
             }
             else if (m.Msg == 0x0101)
@@ -166,7 +166,7 @@ namespace DotSpatial.Controls
                 if (e.Handled) break;
             }
         }
-       
+
         private void Configure()
         {
             MapFrame = new MapFrame(this, new Extent(0, 0, 0, 0));
@@ -544,7 +544,7 @@ namespace DotSpatial.Controls
         public virtual IMapFeatureLayer AddFeatureLayer()
         {
             var vector = DataManager.DefaultDataManager.OpenVector();
-            return vector == null? null: Layers.Add(vector);
+            return vector == null ? null : Layers.Add(vector);
         }
 
         /// <summary>
@@ -566,7 +566,7 @@ namespace DotSpatial.Controls
         public virtual IMapImageLayer AddImageLayer()
         {
             var image = DataManager.DefaultDataManager.OpenImage();
-            return image == null? null : Layers.Add(image);
+            return image == null ? null : Layers.Add(image);
         }
 
         /// <summary>
@@ -624,16 +624,7 @@ namespace DotSpatial.Controls
         public void ZoomToMaxExtent()
         {
             // to prevent exception when zoom to map with one layer with one point
-            const double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                var newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                ViewExtents = newExtent;
-            }
-            else
-            {
-                ViewExtents = Extent;
-            }
+            ViewExtents = GetMaxExtent();
 
             IsZoomedToMaxExtent = true;
         }
@@ -933,7 +924,7 @@ namespace DotSpatial.Controls
                     IMapFunction newMode = _functionLookup[_functionMode];
                     ActivateMapFunction(newMode);
                     // Except for function mode "none" allow scrolling
-                   IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
+                    IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
                     ActivateMapFunction(scroll);
                 }
 
@@ -1224,7 +1215,7 @@ namespace DotSpatial.Controls
                     Invalidate(mapClip);
                 }
             }
-          
+
         }
 
         /// <summary>
@@ -1320,7 +1311,6 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomIn()
         {
-           
             MapFrame.ZoomIn();
         }
 
@@ -1329,7 +1319,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomOut()
         {
-            MapFrame.ZoomOut();  
+            MapFrame.ZoomOut();
         }
 
         /// <summary>
@@ -1376,7 +1366,7 @@ namespace DotSpatial.Controls
             using (var stencil = new Bitmap(clip.Width, clip.Height, PixelFormat.Format32bppArgb))
             using (var g = Graphics.FromImage(stencil))
             {
-                using(var b = new SolidBrush(BackColor))
+                using (var b = new SolidBrush(BackColor))
                     g.FillRectangle(b, new Rectangle(0, 0, stencil.Width, stencil.Height));
 
                 using (var m = new Matrix())
@@ -1506,7 +1496,7 @@ namespace DotSpatial.Controls
 
             var h = GeoMouseMove;
             if (h != null) h(this, args);
-            
+
             base.OnMouseMove(e);
         }
 
@@ -1525,7 +1515,7 @@ namespace DotSpatial.Controls
 
             base.OnMouseWheel(e);
         }
-       
+
         protected virtual void OnFinishedRefresh(EventArgs e)
         {
             var h = FinishedRefresh;
@@ -1548,16 +1538,22 @@ namespace DotSpatial.Controls
         /// <param name="args"></param>
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
-            var h = ViewExtentsChanged;
-            if (h != null) h(sender, args);
-
+            double minExt = 1e-7;
             var maxExtent = GetMaxExtent();
-            if (maxExtent.Width != 0 && maxExtent.Height != 0)
+            if ((maxExtent.Width != 0 && maxExtent.Height != 0) && (ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
             {
-                if ((ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
-                {
-                    ZoomToMaxExtent();
-                }
+                ZoomToMaxExtent();
+            }
+            else if (ViewExtents.Width < minExt || ViewExtents.Height < minExt)
+            {
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                ViewExtents = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2);
+            }
+            else
+            {
+                var h = ViewExtentsChanged;
+                if (h != null) h(sender, args);
             }
         }
 
