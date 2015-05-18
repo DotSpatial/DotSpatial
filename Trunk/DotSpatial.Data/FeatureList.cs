@@ -284,12 +284,14 @@ namespace DotSpatial.Data
 
         #endregion
 
-        private void IncludeFeature(IFeature item)
+        /// <summary>
+        /// Includes the Feature in the parents DataTable at the given index and raises the FeatureAdded event.
+        /// </summary>
+        /// <param name="item">Feature that gets included.</param>
+        /// <param name="index">Index, where the feature gets included. (-1 = add at the end)</param>
+        private void IncludeFeature(IFeature item, int index = -1)
         {
-            if (_list.Count == 1)
-            {
-                _parent.FeatureType = item.FeatureType;
-            }
+            if (_list.Count == 1) _parent.FeatureType = item.FeatureType;
             item.ParentFeatureSet = _parent;
             if (_includeAttributes)
             {
@@ -300,16 +302,22 @@ namespace DotSpatial.Data
                     {
                         string name = _parent.DataTable.Columns[col].ColumnName;
                         if (item.DataRow.Table.Columns.Contains(name)) //if the item happens to have a field with the same name, include the attribute.
-                        {
                             row[col] = item.DataRow[name];
-                        }
                     }
                 }
                 item.DataRow = row;
+                if (index == -1) //Moved this here because otherwise the datarow is still missing when other things react to the raised FeatureAdded event. (jany_ 2015-05-18)
+                    _parent.DataTable.Rows.Add(row);
+                else
+                    _parent.DataTable.Rows.InsertAt(row, index);
             }
             OnFeatureAdded(item);
         }
 
+        /// <summary>
+        /// Removes the given Feature from the parents DataTable and raises the FeatureRemoved event.
+        /// </summary>
+        /// <param name="item">Feature that gets excluded.</param>
         private void ExcludeFeature(IFeature item)
         {
             item.ParentFeatureSet = null;
@@ -432,8 +440,7 @@ namespace DotSpatial.Data
         public virtual void Insert(int index, IFeature item)
         {
             _list.Insert(index, item);
-            IncludeFeature(item);
-            if (_includeAttributes) _parent.DataTable.Rows.InsertAt(item.DataRow, index);
+            IncludeFeature(item, index);
         }
 
         /// <summary>
@@ -451,8 +458,7 @@ namespace DotSpatial.Data
             {
                 _list.Insert(indx, item);
                 indx++;
-                IncludeFeature(item);
-                if (_includeAttributes) _parent.DataTable.Rows.InsertAt(item.DataRow, indx);
+                IncludeFeature(item, indx);
             }
         }
 
@@ -684,8 +690,7 @@ namespace DotSpatial.Data
         public void Add(IFeature item)
         {
             _list.Add(item);
-            IncludeFeature(item);
-            if (_includeAttributes) _parent.DataTable.Rows.Add(item.DataRow);
+            IncludeFeature(item, -1);
         }
 
         /// <summary>
@@ -767,9 +772,7 @@ namespace DotSpatial.Data
                 // Don't add handlers if the items are already members of this list
                 ExcludeFeature(_list[index]);
                 _list[index] = value;
-                IncludeFeature(value);
-                if (_includeAttributes) _parent.DataTable.Rows.RemoveAt(index);
-                if (_includeAttributes) _parent.DataTable.Rows.InsertAt(value.DataRow, index);
+                IncludeFeature(value, index);
             }
         }
 
@@ -813,10 +816,7 @@ namespace DotSpatial.Data
         /// <param name="feature">The feature that was added.</param>
         protected virtual void OnFeatureAdded(IFeature feature)
         {
-            if (EventsSuspended == false)
-            {
-                if (FeatureAdded != null) FeatureAdded(this, new FeatureEventArgs(feature));
-            }
+            if (!EventsSuspended && FeatureAdded != null) FeatureAdded(this, new FeatureEventArgs(feature));
         }
 
         /// <summary>
@@ -826,10 +826,7 @@ namespace DotSpatial.Data
         /// <param name="feature">he feature that was removed</param>
         protected virtual void OnFeatureRemoved(IFeature feature)
         {
-            if (EventsSuspended == false)
-            {
-                if (FeatureRemoved != null) FeatureRemoved(this, new FeatureEventArgs(feature));
-            }
+            if (!EventsSuspended && FeatureRemoved != null) FeatureRemoved(this, new FeatureEventArgs(feature));
         }
 
         #endregion
