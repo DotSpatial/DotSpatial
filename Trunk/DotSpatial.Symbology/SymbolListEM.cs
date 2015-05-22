@@ -41,7 +41,7 @@ namespace DotSpatial.Symbology
             {
                 Size2D bsize = symbol.GetBoundingSize();
                 size.Width = Math.Max(size.Width, bsize.Width);
-                size.Height = Math.Max(size.Width, bsize.Height);
+                size.Height = Math.Max(size.Height, bsize.Height);
             }
             return size;
         }
