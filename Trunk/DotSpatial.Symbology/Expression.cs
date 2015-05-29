@@ -79,25 +79,29 @@ namespace DotSpatial.Symbology
         /// <summary>Uses the parsed expression to calculate the expression for the given row. If the expression is invalid only the Fields are replaced (This was the default action for expressions before DS 1.8).
         /// </summary>
         /// <param name="row">Row the expression gets calculated for.</param>
+        /// <param name="FID">FID value that is used to replace the FID field.</param>
         /// <returns>The calculated expression.</returns>
-        public string CalculateRowValue(DataRow row)
+        public string CalculateRowValue(DataRow row, int FID)
         {
             if (IsEmpty()) return "";
             _errorMessage = "";
-            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row); //expression is invalid and hasn't changed => simply replace fields
+            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, FID); //expression is invalid and hasn't changed => simply replace fields
 
             foreach (Element e in _variables)
             {
-                if (e.isField && row.Table.Columns.Contains(e.field.Name))
+                if (e.isField)
                 {
-                    e.setValue(row[e.field.Name]);
+                    if (e.field.Name.ToLower() == "fid")
+                    { e.setValue(FID); }
+                    else if (row.Table.Columns.Contains(e.field.Name))
+                    { e.setValue(row[e.field.Name]); }
                 }
             }
             ExpressionValue expval = Calculate();
             if (expval == null)
             {
                 _valid = false;
-                return ReplaceFieldsOnly(row);
+                return ReplaceFieldsOnly(row, FID);
             }
             else
             {
@@ -296,6 +300,7 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         private ExpressionValue Calculate()
         {
+            if (_parts.Count == 0) return null;
             //int operation, left, right;
             Operation operation = null;
             int partIndex = 0; // we begin from the inner most bracket
@@ -907,15 +912,22 @@ namespace DotSpatial.Symbology
                             int index = Convert.ToInt32(sub);
                             sub = _strings[index].TrimStart('[').TrimEnd(']');
 
-                            int fieldIndex = _fields.FindIndex(p => p.Name.ToLower() == sub.ToLower());
-                            if (fieldIndex < 0)
+                            if (sub.ToLower() == "fid")
                             {
-                                _errorMessage = SymbologyMessageStrings.Expression_FieldNotFound + sub;
-                                return false;
+                                element.field = new Field("fid", typeof(int));
+                            }
+                            else
+                            {
+                                int fieldIndex = _fields.FindIndex(p => p.Name.ToLower() == sub.ToLower());
+                                if (fieldIndex < 0)
+                                {
+                                    _errorMessage = SymbologyMessageStrings.Expression_FieldNotFound + sub;
+                                    return false;
+                                }
+                                element.field = _fields[fieldIndex];
                             }
                             element.isField = true;
                             element.type = tkElementType.etValue;
-                            element.field = _fields[fieldIndex];
                         }
                         else if (chr == 'p') //part replacer
                         {
@@ -1202,8 +1214,10 @@ namespace DotSpatial.Symbology
 
         /// <summary>Replaces only the Fields in invalid expressions. Before DS 1.8 this was the only thing that got replaced in expressions.
         /// </summary>
+        /// <param name="row">Datarow that contains the data used to replace the fields.</param>
+        /// <param name="FID">FID that is used to replace the FID field.</param>
         /// <returns>ExpressionString with replaced Fields.</returns>
-        private string ReplaceFieldsOnly(DataRow row)
+        private string ReplaceFieldsOnly(DataRow row, int FID)
         {
             if (_expressionString == null) return "";
             string s = _expressionString;
@@ -1214,7 +1228,12 @@ namespace DotSpatial.Symbology
             for (int i = matches.Count - 1; i >= 0; i--)
             {
                 string colName = matches[i].Value.Substring(1, matches[i].Length - 2);
-                if (row.Table.Columns.Contains(colName))
+
+                if (colName.ToLower() == "fid")
+                {
+                    s = s.Replace(matches[i].Value, SaveToString(FID));
+                }
+                else if (row.Table.Columns.Contains(colName))
                 {
                     s = s.Replace(matches[i].Value, SaveToString(row[colName]));
                 }

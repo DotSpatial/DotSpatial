@@ -451,7 +451,7 @@ namespace DotSpatial.Controls
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = category.CalculateExpression(f.DataRow, selected);
+            string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
             var angle = GetAngleToRotate(symb, f);
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
@@ -562,7 +562,7 @@ namespace DotSpatial.Controls
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = category.CalculateExpression(f.DataRow, selected);
+            string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
             var angle = GetAngleToRotate(symb, f);
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
@@ -624,14 +624,14 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Draws a label on a line with various different methods
+        /// Draws a label on a line with various different methods.
         /// </summary>
         public static void DrawLineFeature(MapArgs e, Graphics g, IFeature f, ILabelCategory category, bool selected, List<RectangleF> existingLabels)
         {
             var symb = selected ? category.SelectionSymbolizer : category.Symbolizer;
 
             //Gets the features text and calculate the label size
-            string txt = category.CalculateExpression(f.DataRow, selected);
+            string txt = category.CalculateExpression(f.DataRow, selected, f.Fid);
             if (txt == null) return;
 
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));

@@ -29,8 +29,7 @@ namespace DotSpatial.Symbology.Forms
         private DataTable _table;
         private IAttributeSource _attributeSource;
         private Expression exp;
-        public Boolean allowEmptyExpression;
-
+        
         /// <summary>
         /// Control to edit and validate expressions that can be used to label features.
         /// </summary>
@@ -41,6 +40,11 @@ namespace DotSpatial.Symbology.Forms
         }
 
         #region Properties
+        /// <summary>
+        /// Gets/Sets whether empty expressions are valid.
+        /// </summary>
+        public Boolean AllowEmptyExpression { get; set; }
+
         /// <summary>
         /// Setting this is an alternative to specifying the table.  This allows the
         /// query control to build a query using pages of data instead of the whole
@@ -133,12 +137,13 @@ namespace DotSpatial.Symbology.Forms
         {
             if (string.IsNullOrWhiteSpace(rtbExpression.Text))
             {
-                if (allowEmptyExpression)
+                if (AllowEmptyExpression)
                 {
                     lblResult.Text = "";
                     return true;
                 }
-                else {
+                else
+                {
                     lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
                     lblResult.ForeColor = System.Drawing.Color.Red;
                     return false;
@@ -172,6 +177,7 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void UpdateFields()
         {
+            bool hasFID = false;
             exp.ClearFields();
             dgvFields.SuspendLayout();
             dgvFields.Rows.Clear();
@@ -182,6 +188,8 @@ namespace DotSpatial.Symbology.Forms
                 {
                     exp.AddField(dc);
                     dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
+                    if (dc.ColumnName.ToLower() == "fid")
+                        hasFID = true;
                 }
             }
             else if (_table != null)
@@ -190,8 +198,12 @@ namespace DotSpatial.Symbology.Forms
                 {
                     exp.AddField(dc);
                     dgvFields.Rows.Add(dc.ColumnName, dc.DataType.ToString().Replace("System.", ""));
+                    if (dc.ColumnName.ToLower() == "fid")
+                        hasFID = true;
                 }
             }
+            if (!hasFID)
+                dgvFields.Rows.Add("FID", typeof(int).ToString().Replace("System.", ""));
             dgvFields.ResumeLayout();
         }
     }

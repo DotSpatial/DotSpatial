@@ -41,8 +41,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="row">Datarow the expression gets calculated for.</param>
         /// <param name="selected">Indicates whether the feature is selected.</param>
+        /// <param name="FID">The FID of the feature, the expression gets calculated for.</param>
         /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
-        string CalculateExpression(DataRow row, bool selected);
+        string CalculateExpression(DataRow row, bool selected, int FID);
 
         /// <summary>
         /// Updates the Expression-Object with the columns that exist inside the features that belong to this category. The will be used for calculating the expression.
