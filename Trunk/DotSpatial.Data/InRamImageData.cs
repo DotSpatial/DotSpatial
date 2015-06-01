@@ -129,28 +129,7 @@ namespace DotSpatial.Data
         /// </summary>
         public override void CopyBitmapToValues()
         {
-            Rectangle bnds = new Rectangle(0, 0, Width, Height);
-            BitmapData bData = null;
-            if (NumBands == 4)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            }
-
-            if (NumBands == 3)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            }
-
-            if (NumBands == 1)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format16bppGrayScale);
-            }
-
-            if (bData == null)
-            {
-                throw new ApplicationException("The specified number of bands is not supported.");
-            }
-
+            BitmapData bData = GetLockedBits();
             Stride = bData.Stride;
 
             Values = new byte[bData.Height * bData.Stride];
@@ -171,32 +150,35 @@ namespace DotSpatial.Data
             BytesPerPixel = source.BytesPerPixel;
         }
 
+        private BitmapData GetLockedBits()
+        {
+            Rectangle bnds = new Rectangle(0, 0, Width, Height);
+            BitmapData bData = null;
+            switch (NumBands)
+            {
+                case 4:
+                    bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+                    break;
+                case 3:
+                    bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                    break;
+                case 1:
+                    bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format16bppGrayScale);
+                    break;
+            }
+
+            if (bData == null)
+                throw new ApplicationException("The specified number of bands is not supported.");
+
+            return bData;
+        }
+
         /// <summary>
         /// Forces the image to copy values from the byte array format to the image format.
         /// </summary>
         public override void CopyValuesToBitmap()
         {
-            Rectangle bnds = new Rectangle(0, 0, Width, Height);
-            BitmapData bData = null;
-            if (NumBands == 4)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            }
-
-            if (NumBands == 3)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            }
-
-            if (NumBands == 1)
-            {
-                bData = _myImage.LockBits(bnds, ImageLockMode.ReadWrite, PixelFormat.Format16bppGrayScale);
-            }
-
-            if (bData == null)
-            {
-                throw new ApplicationException("The specified number of bands is not supported.");
-            }
+            BitmapData bData = GetLockedBits();
 
             Marshal.Copy(Values, 0, bData.Scan0, Values.Length);
             _myImage.UnlockBits(bData);
@@ -296,14 +278,10 @@ namespace DotSpatial.Data
         public override Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
             if (window.Width == 0 || window.Height == 0)
-            {
                 return null;
-            }
 
             Bitmap result = new Bitmap(window.Width, window.Height);
             Graphics g = Graphics.FromImage(result);
-
-            //
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
             double dx = (window.Width / envelope.Width);
@@ -384,10 +362,7 @@ namespace DotSpatial.Data
         {
             Filename = fileName;
             if (WorldFile != null)
-            {
                 WorldFile.Filename = WorldFile.GenerateFilename(fileName);
-            }
-
             Save();
         }
 
@@ -398,6 +373,7 @@ namespace DotSpatial.Data
         /// </param>
         public override void SetBitmap(Bitmap image)
         {
+            if (_myImage != null) _myImage.Dispose();
             _myImage = image;
         }
 
@@ -415,6 +391,8 @@ namespace DotSpatial.Data
 
             if (_myImage != null)
                 _myImage.Dispose();
+
+            base.Dispose(disposeManagedResources);
         }
 
         /// <summary>
@@ -459,7 +437,8 @@ namespace DotSpatial.Data
         /// <param name="bounds">Updates the world file.</param>
         protected override void OnBoundsChanged(IRasterBounds bounds)
         {
-            WorldFile.Affine = bounds.AffineCoefficients;
+            if (WorldFile != null && bounds != null)
+                WorldFile.Affine = bounds.AffineCoefficients;
         }
 
         /// <summary>
@@ -470,6 +449,7 @@ namespace DotSpatial.Data
         /// <param name="yOffset">The zero based integer row offset from the top</param>
         public override void WriteBlock(Bitmap value, int xOffset, int yOffset)
         {
+            if (value == null) throw new ArgumentNullException("value");
             using (Graphics g = Graphics.FromImage(_myImage))
             {
                 g.DrawImage(value, new Rectangle(xOffset, yOffset, value.Width, value.Height),

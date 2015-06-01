@@ -75,14 +75,10 @@ namespace DotSpatial.Data
         public Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
             if (window.Width == 0 || window.Height == 0)
-            {
                 return null;
-            }
 
             Bitmap result = new Bitmap(window.Width, window.Height);
             Graphics g = Graphics.FromImage(result);
-
-            //
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
             double dx = (window.Width / envelope.Width);
@@ -102,9 +98,7 @@ namespace DotSpatial.Data
             g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
             g.PixelOffsetMode = PixelOffsetMode.Half;
             if (m11 > 1 || m22 > 1)
-            {
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
-            }
 
             g.DrawImage(_myImage, new PointF(0, 0));
             g.Dispose();
@@ -144,5 +138,12 @@ namespace DotSpatial.Data
         {
             return new InRamImageData(_myImage, Bounds.Extent);
         }
+
+        protected override void Dispose(bool isDisposing)
+        {
+          if (_myImage != null)  _myImage.Dispose();
+            base.Dispose(isDisposing);
+        }
+
     }
 }

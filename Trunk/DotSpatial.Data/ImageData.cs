@@ -330,8 +330,8 @@ namespace DotSpatial.Data
         {
             // Bounds may be null when the image layer is being disposed.
             // We could probably skip calling this event in that case, but at any rate, we don't want to crash.
-            if (WorldFile != null && Bounds != null)
-                WorldFile.Affine = Bounds.AffineCoefficients;
+            if (WorldFile != null && bounds != null)
+                WorldFile.Affine = bounds.AffineCoefficients;
         }
 
         #endregion

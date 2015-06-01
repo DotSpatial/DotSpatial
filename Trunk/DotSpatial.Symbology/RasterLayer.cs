@@ -100,7 +100,7 @@ namespace DotSpatial.Symbology
             DataSet = raster;
             Symbolizer = new RasterSymbolizer(this);
         }
-      
+
 
         #endregion
 
@@ -150,7 +150,7 @@ namespace DotSpatial.Symbology
 
             IImageData result = DataManager.DefaultDataManager.CreateImage(fileName, rows, cols, false, progressHandler, bandType);
             int numBlocks = 1;
-            const int maxRC = 8000*8000;
+            const int maxRC = 8000 * 8000;
             if (rows * cols > maxRC)
             {
                 numBlocks = Convert.ToInt32(Math.Ceiling(maxRC / (double)cols));
@@ -343,13 +343,9 @@ namespace DotSpatial.Symbology
             set
             {
                 if (DataSet != null)
-                {
                     DataSet.Bounds = value;
-                }
                 if (BitmapGetter != null)
-                {
                     BitmapGetter.Bounds = value;
-                }
             }
         }
 
@@ -439,14 +435,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
-                        return DataSet.Bounds.Right();
-                    }
-                }
-                return 0;
+                return (DataSet != null && DataSet.Bounds != null) ? DataSet.Bounds.Right() : 0;
             }
         }
 
@@ -478,9 +467,7 @@ namespace DotSpatial.Symbology
             get
             {
                 if (DataSet != null)
-                {
                     return DataSet.Extent;
-                }
                 return null;
             }
         }
@@ -569,9 +556,7 @@ namespace DotSpatial.Symbology
             get
             {
                 if (base.LegendText == null && DataSet != null)
-                {
                     base.LegendText = DataSet.Name;
-                }
                 return base.LegendText;
             }
             set { base.LegendText = value; }
@@ -627,13 +612,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
-                        return DataSet.Bounds.Top();
-                    }
-                }
+                if (DataSet != null && DataSet.Bounds != null)
+                    return DataSet.Bounds.Top();
                 return 0;
             }
         }
@@ -731,13 +711,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
+                if (DataSet != null && DataSet.Bounds != null)
                         return DataSet.Bounds.Bottom();
-                    }
-                }
                 return 0;
             }
         }
@@ -750,13 +725,8 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet != null)
-                {
-                    if (DataSet.Bounds != null)
-                    {
+                if (DataSet != null && DataSet.Bounds != null)
                         return DataSet.Bounds.Left();
-                    }
-                }
                 return 0;
             }
         }
@@ -771,9 +741,7 @@ namespace DotSpatial.Symbology
         {
             var rla = RasterLayerActions;
             if (rla != null)
-            {
                 rla.ShowProperties(this);
-            }
             e.Handled = true;
         }
 

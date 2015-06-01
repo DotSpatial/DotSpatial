@@ -299,10 +299,8 @@ namespace DotSpatial.Data
                 }
             }
 
-            double test = Global.ToDouble(min);
-
             Value.Updated = false;
-            Minimum = test;
+            Minimum = Global.ToDouble(min); 
             Maximum = Global.ToDouble(max);
             Mean = total / count;
             NumValueCells = count;

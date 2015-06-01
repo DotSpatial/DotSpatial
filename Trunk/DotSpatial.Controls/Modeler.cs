@@ -492,7 +492,7 @@ namespace DotSpatial.Controls
                                      Shape = _dataShape,
                                      Name = name
                                  };
-            de.Name = par.ModelName != string.Empty ? par.ModelName : par.Name;
+            de.Name = string.IsNullOrEmpty(par.ModelName) ? par.Name : par.ModelName;
             AddElement(de, location);
             par.ModelName = de.Name;
             return de;

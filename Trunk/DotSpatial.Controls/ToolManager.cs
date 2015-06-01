@@ -41,7 +41,6 @@ namespace DotSpatial.Controls
         #region Constants and Fields
 
         private readonly ToolTip _toolTipTree;
-        private ILegend _legend;
         private ITool toolToExecute;
 
         #endregion
@@ -76,11 +75,11 @@ namespace DotSpatial.Controls
             get
             {
                 List<DataSetArray> dataSets = new List<DataSetArray>();
-                if (_legend != null)
+                if (Legend != null)
                 {
-                    for (int i = 0; i < _legend.RootNodes.Count; i++)
+                    for (int i = 0; i < Legend.RootNodes.Count; i++)
                     {
-                        dataSets.AddRange(populateDataSets(_legend.RootNodes[i] as IGroup));
+                        dataSets.AddRange(populateDataSets(Legend.RootNodes[i] as IGroup));
                     }
                 }
                 return dataSets;
@@ -98,21 +97,12 @@ namespace DotSpatial.Controls
                     if (ml.DataSet != null)
                     {
                         dataSets.Add(new DataSetArray(ml.LegendText, ml.DataSet));
-
-
                         IFeatureLayer fl = ml as IFeatureLayer;
-                        if (fl != null)
-                        {
-                            if (fl.Selection.Count > 0)
-                            {
-                                dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
-                            }
-                        }
+                        if (fl != null && fl.Selection.Count > 0)
+                            dataSets.Add(new DataSetArray(fl.LegendText + " - Current Selection", fl.Selection.ToFeatureSet()));
                     }
-                    if(ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
-                    {
+                    if (ml.GetType().Equals(Type.GetType("DotSpatial.Controls.MapGroup")))
                         dataSets.AddRange(populateDataSets(ml as IGroup));
-                    }
                 }
             }
             return dataSets;
@@ -122,14 +112,7 @@ namespace DotSpatial.Controls
         /// Gets or Sets the legend object. This is needed to automatically populate the list of data layers in tool dialogs.
         /// </summary>
         [Category("ToolManager Appearance"), Description("Gets or Sets the legend object. This is needed to automatically populate the list of data layers in tool dialogs.")]
-        public ILegend Legend
-        {
-            get { return _legend; }
-            set
-            {
-                _legend = value;
-            }
-        }
+        public ILegend Legend { get; set; }
 
         /// <summary>
         /// App is the current AppManager handle.
@@ -154,13 +137,9 @@ namespace DotSpatial.Controls
         public void OnImportsSatisfied()
         {
             if (InvokeRequired)
-            {
                 Invoke(new MethodInvoker(RefreshTree));
-            }
             else
-            {
                 RefreshTree();
-            }
         }
 
         /// <summary>
@@ -182,9 +161,7 @@ namespace DotSpatial.Controls
         {
             ITool tool = Tools.FirstOrDefault(t => t.AssemblyQualifiedName == name);
             if (tool != null)
-            {
                 tool.Initialize();
-            }
             return tool;
         }
 
@@ -197,7 +174,7 @@ namespace DotSpatial.Controls
             TreeNode selectedNode = SelectedNode;
             CollapseAll();
 
-            if (toolName == string.Empty || selectedNode == null)
+            if (string.IsNullOrEmpty(toolName) || selectedNode == null)
                 return;
 
             bool foundSelected = false;
@@ -229,7 +206,7 @@ namespace DotSpatial.Controls
         public void HighlightTool(string toolName)
         {
             CollapseAll();
-            if (toolName == string.Empty)
+            if (string.IsNullOrEmpty(toolName))
                 return;
 
             for (int i = 0; i < Nodes.Count; i++)
@@ -356,7 +333,7 @@ namespace DotSpatial.Controls
             bool result = false;
             try
             {
-               result = toolToExecute.Execute(progForm);
+                result = toolToExecute.Execute(progForm);
             }
             catch (Exception ex)
             {
@@ -391,7 +368,7 @@ namespace DotSpatial.Controls
                             }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Unable to add layer. Reason: " + ex.Message);
                     }
@@ -414,9 +391,9 @@ namespace DotSpatial.Controls
                 Extent ex = new Extent(-180, -90, 180, 90);
 
                 // it wasn't a category?
-                if (_legend != null)
+                if (Legend != null)
                 {
-                    IMapFrame mf = _legend.RootNodes[0] as IMapFrame;
+                    IMapFrame mf = Legend.RootNodes[0] as IMapFrame;
                     if (mf != null) ex = mf.ViewExtents;
                 }
 
