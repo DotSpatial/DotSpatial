@@ -235,6 +235,7 @@ namespace DotSpatial.Data
                 _progressHandler = null;
                 _progressMeter = null;
             }
+            base.Dispose(disposeManagedResources);
         }
 
         #endregion

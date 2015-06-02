@@ -136,21 +136,25 @@ namespace DotSpatial.Symbology
                 var Colors = _raster.CategoryColors();
                 if (Colors != null && Colors.Length > 0)
                 {   // Use colors that are built into the raster, e.g. GeoTIFF with palette
-                    var names = _raster.CategoryNames();
-                    bool overMaxCount;
-                    var uniqueValues = _raster.GetUniqueValues(Colors.Length, out overMaxCount);
                     _isElevation = false;
-                    for (int i = 0; i < Colors.Length; i++)
-                    {   //Only add colors to the legend if they appear in the layer
-                        //NLCD CategoryColors include 256 colors, but only 16 are valid
-                        if (uniqueValues.Contains(Convert.ToDouble(i)))
-                        {   // It seems buggy that using value i - 1 below works
-                            ICategory newCat = new ColorCategory(i - 1, Colors[i]);
-                            if (names != null && names.Length > i)
-                                newCat.LegendText = names[i];
-                            else
-                                newCat.LegendText = i.ToString();
+
+					//use all colors instead of unique colors because unique colors are not allways set/correct
+                    int lastColor = Colors[0].ToArgb(); //changed by jany_ 2015-06-02
+                    int firstNr = 0;
+
+					//group succeding values with the same color to the same category
+                    for (int i = 1; i < Colors.Length; i++)
+                    {
+                        int hash = Colors[i].ToArgb();
+                        if (hash != lastColor || i == Colors.Length - 1)
+                        {
+                            ICategory newCat = new ColorCategory(firstNr, i - 1, Colors[firstNr], Colors[firstNr]);
+                            newCat.Range.MaxIsInclusive = true;
+                            newCat.Range.MinIsInclusive = true;
+                            newCat.LegendText = firstNr.ToString();
                             Scheme.AddCategory(newCat);
+                            firstNr = i;
+                            lastColor = hash;
                         }
                     }
                 }

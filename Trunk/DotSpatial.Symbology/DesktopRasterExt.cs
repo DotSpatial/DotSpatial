@@ -58,7 +58,7 @@ namespace DotSpatial.Symbology
                 var r = raster.ToRaster<byte>();
                 getValue = (row, col) => r.Data[row][col];
             }
-            else if (raster.DataType == typeof (double))
+            else if (raster.DataType == typeof(double))
             {
                 var r = raster.ToRaster<double>();
                 getValue = (row, col) => r.Data[row][col];
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
             return CreateHillShadeT(raster, (row, col) => raster.Data[row][col], shadedRelief, progressMeter);
         }
 
-        private static float[][] CreateHillShadeT<T>(this IRaster raster, 
+        private static float[][] CreateHillShadeT<T>(this IRaster raster,
             Func<int, int, T> getValue,
             IShadedRelief shadedRelief, ProgressMeter progressMeter) where T : IEquatable<T>, IComparable<T>
         {
@@ -129,7 +129,7 @@ namespace DotSpatial.Symbology
                         }
                         else if (col >= numCols - 1)
                         {
-                            v1.Z = Convert.ToSingle(getValue(row,col - 1));        // 3 - 2
+                            v1.Z = Convert.ToSingle(getValue(row, col - 1));        // 3 - 2
                             v2.Z = Convert.ToSingle(getValue(row - 1, col));        // | /
                             v3.Z = Convert.ToSingle(getValue(row - 1, col - 1));    // 1   *
                         }
@@ -190,7 +190,7 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region DrawToBitmap
-        
+
 
         /// <summary>
         /// Creates a bitmap from this raster using the specified rasterSymbolizer
@@ -250,8 +250,8 @@ namespace DotSpatial.Symbology
         public static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm)
             where T : struct, IEquatable<T>, IComparable<T>
         {
-           DrawToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col],
-               i => rgbData[i], (i,b) => rgbData[i] = b, rasterSymbolizer, stride, pm);
+            DrawToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col],
+                i => rgbData[i], (i, b) => rgbData[i] = b, rasterSymbolizer, stride, pm);
 
             if (rasterSymbolizer.IsSmoothed)
             {
@@ -297,8 +297,8 @@ namespace DotSpatial.Symbology
             }
             else
             {
-               DrawToBitmapT(raster, raster.NoDataValue, (row, col) => raster.Value[row, col],
-                    i => rgbData[i], (i,b) => rgbData[i] = b, rasterSymbolizer, stride, pm);
+                DrawToBitmapT(raster, raster.NoDataValue, (row, col) => raster.Value[row, col],
+                     i => rgbData[i], (i, b) => rgbData[i] = b, rasterSymbolizer, stride, pm);
 
                 if (rasterSymbolizer.IsSmoothed)
                 {
@@ -307,8 +307,8 @@ namespace DotSpatial.Symbology
                 }
             }
         }
-        
-        private static void DrawToBitmap(IRaster raster, IRasterSymbolizer rasterSymbolizer,  IntPtr rgbData, int stride, ProgressMeter pm)
+
+        private static void DrawToBitmap(IRaster raster, IRasterSymbolizer rasterSymbolizer, IntPtr rgbData, int stride, ProgressMeter pm)
         {
             if (raster.DataType == typeof(int))
             {
@@ -342,11 +342,9 @@ namespace DotSpatial.Symbology
                 }
             }
         }
-        
-        private static void DrawToBitmapT<T>(IRaster raster,
-            T noData, Func<int, int, T> getValue,
-            Func<int, byte> getByte, Action<int, byte> setByte, 
-            IRasterSymbolizer rasterSymbolizer, int stride, ProgressMeter pm)
+
+        private static void DrawToBitmapT<T>(IRaster raster, T noData, Func<int, int, T> getValue, Func<int, byte> getByte,
+            Action<int, byte> setByte, IRasterSymbolizer rasterSymbolizer, int stride, ProgressMeter pm)
             where T : struct, IEquatable<T>, IComparable<T>
         {
             if (raster == null) throw new ArgumentNullException("raster");
@@ -357,10 +355,9 @@ namespace DotSpatial.Symbology
             if (rasterSymbolizer.ShadedRelief.IsUsed)
             {
                 pm.BaseMessage = "Calculating Shaded Relief";
-                hillshade = rasterSymbolizer.HillShade ??
-                            raster.CreateHillShadeT(getValue, rasterSymbolizer.ShadedRelief, pm);
+                hillshade = rasterSymbolizer.HillShade ?? raster.CreateHillShadeT(getValue, rasterSymbolizer.ShadedRelief, pm);
             }
-            
+
             pm.BaseMessage = "Calculating Colors";
             var sets = GetColorSets<T>(rasterSymbolizer.Scheme.Categories);
             var noDataColor = Argb.FromColor(rasterSymbolizer.NoDataColor);
@@ -389,22 +386,22 @@ namespace DotSpatial.Symbology
                         {
                             if (value.Equals(getValue(row - 1, col)))
                             {
-                                srcOffset = Offset(row - 1, col,stride);
+                                srcOffset = Offset(row - 1, col, stride);
                             }
                         }
                         if (srcOffset != null)
                         {
-                            argb = new Argb(getByte((int) srcOffset + 3),
-                                getByte((int) srcOffset + 2),
-                                getByte((int) srcOffset + 1),
-                                getByte((int) srcOffset));
+                            argb = new Argb(getByte((int)srcOffset + 3),
+                                getByte((int)srcOffset + 2),
+                                getByte((int)srcOffset + 1),
+                                getByte((int)srcOffset));
                         }
                         else
                         {
                             argb = GetColor(sets, value);
-                        }   
+                        }
                     }
-                  
+
                     if (hillshade != null)
                     {
                         if (hillshade[row][col] == -1 || float.IsNaN(hillshade[row][col]))
@@ -413,9 +410,9 @@ namespace DotSpatial.Symbology
                         }
                         else
                         {
-                            var red = (int) (argb.R*hillshade[row][col]);
-                            var green = (int) (argb.G*hillshade[row][col]);
-                            var blue = (int) (argb.B*hillshade[row][col]);
+                            var red = (int)(argb.R * hillshade[row][col]);
+                            var green = (int)(argb.G * hillshade[row][col]);
+                            var blue = (int)(argb.B * hillshade[row][col]);
                             argb = new Argb(argb.A, red, green, blue);
                         }
                     }
@@ -615,25 +612,17 @@ namespace DotSpatial.Symbology
                 if (c.Range.Maximum != null && c.Range.Maximum < testMax)
                 {
                     if (c.Range.Maximum < testMin)
-                    {
                         cs.Max = cs.Min;
-                    }
                     else
-                    {
                         cs.Max = (T)Convert.ChangeType(c.Range.Maximum.Value, typeof(T));
-                    }
                 }
 
                 if (c.Range.Minimum != null && c.Range.Minimum > testMin)
                 {
                     if (c.Range.Minimum > testMax)
-                    {
                         cs.Min = Global.MaximumValue<T>();
-                    }
                     else
-                    {
                         cs.Min = (T)Convert.ChangeType(c.Range.Minimum.Value, typeof(T));
-                    }
                 }
                 cs.MinInclusive = c.Range.MinIsInclusive;
                 cs.MaxInclusive = c.Range.MaxIsInclusive;
@@ -671,25 +660,17 @@ namespace DotSpatial.Symbology
                             ht = dVal;
                             if (ht < 1) ht = 1.0;
                             if (range > 1)
-                            {
                                 p = (Math.Pow(ht - lowVal, 2) / Math.Pow(range, 2));
-                            }
                             else
-                            {
                                 return set.Color;
-                            }
                             break;
                         case GradientModel.Logarithmic:
                             ht = dVal;
                             if (ht < 1) ht = 1.0;
                             if (range > 1.0 && ht - lowVal > 1.0)
-                            {
                                 p = Math.Log(ht - lowVal) / Math.Log(range);
-                            }
                             else
-                            {
                                 return set.Color;
-                            }
                             break;
                     }
 
@@ -742,9 +723,7 @@ namespace DotSpatial.Symbology
                 {
                     double val = raster.Value[row, col];
                     if (list.Contains(val) == false)
-                    {
                         list.Add(val);
-                    }
                 }
             }
             return list;
@@ -915,21 +894,17 @@ namespace DotSpatial.Symbology
                 // Checking for nulls
                 if (Max == null && Min == null) return true;
                 if (Min == null)
-                {
                     return MaxInclusive ? value.CompareTo(Max.Value) <= 0 : value.CompareTo(Max.Value) < 0;
-                }
                 if (Max == null)
-                {
                     return MinInclusive ? value.CompareTo(Min.Value) >= 0 : value.CompareTo(Min.Value) > 0;
-                }
 
                 // Normal checking
                 double cMax = value.CompareTo(Max.Value);
-                if (cMax > 1) return false;
-                if (!MaxInclusive && cMax == 0) return false;
+                if (cMax > 0 || (!MaxInclusive && cMax == 0)) return false; //value bigger than max or max excluded
+
                 double cMin = value.CompareTo(Min.Value);
-                if (cMin < 1) return false;
-                if (cMin == 0 && !MinInclusive) return false;
+                if (cMin < 0 || (cMin == 0 && !MinInclusive)) return false; //value smaller than min or min excluded
+
                 return true;
             }
         }
