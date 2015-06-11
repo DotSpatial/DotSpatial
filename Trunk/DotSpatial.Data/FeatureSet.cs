@@ -1785,24 +1785,24 @@ namespace DotSpatial.Data
         /// </param>
         public void RemoveShapesAt(IEnumerable<int> indices)
         {
+            List<int> remove = indices.ToList(); // moved by jany_ (2015-06-11) because in non index mode the features have to be removed from largest to smallest index
+            remove.Sort();
+            if (remove.Count == 0)
+                return;
+
             if (IndexMode == false)
             {
-                foreach (int index in indices)
+                for (int i = remove.Count - 1; i >= 0; i--)
                 {
-                    if (index < 0 || index >= _shapeIndices.Count)
+                    if (remove[i] < 0 || remove[i] >= _shapeIndices.Count)
                         continue;
-                    Features.RemoveAt(index);
+                    Features.RemoveAt(remove[i]);
                 }
                 InitializeVertices();
                 return;
             }
 
-            List<int> remove = indices.ToList();
-            remove.Sort();
-            if (remove.Count == 0)
-                return;
             List<int> remaining = new List<int>();
-
             for (int i = 0; i < _shapeIndices.Count; i++)
             {
                 if (remove.Count > 0 && remove[0] == i)
@@ -2155,7 +2155,7 @@ namespace DotSpatial.Data
             if (String.IsNullOrEmpty(toPath))
                 throw new ArgumentNullException("toPath");
 
-            if (Path.GetDirectoryName(toPath) == String.Empty)
+            if (string.IsNullOrEmpty(Path.GetDirectoryName(toPath)))
                 // it looks like we only have a file name.
                 return toPath;
 
