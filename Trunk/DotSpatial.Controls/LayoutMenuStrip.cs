@@ -30,7 +30,8 @@ namespace DotSpatial.Controls
     /// <summary>
     ///
     /// </summary>
-    [ToolboxItem(true)]
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class LayoutMenuStrip : MenuStrip
     {
         #region "Private Variables"

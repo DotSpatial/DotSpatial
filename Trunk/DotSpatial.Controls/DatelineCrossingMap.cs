@@ -34,6 +34,8 @@ namespace DotSpatial.Controls
     /// to 180 degrees, and the secondary frame takes over, shifted to -180 degrees to the required width.
     /// </summary>
     /// <remarks>Dateline crossing map works correctly only with WGS84 datum Mercator projection.</remarks>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class DatelineCrossingMap : Map
     {
         private readonly MapFrame _geoSlaveMapFrame;

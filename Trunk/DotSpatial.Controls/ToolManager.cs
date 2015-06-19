@@ -36,6 +36,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This class provides a ToolManager for loading tools from .dll's
     /// </summary>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class ToolManager : TreeView, IPartImportsSatisfiedNotification
     {
         #region Constants and Fields

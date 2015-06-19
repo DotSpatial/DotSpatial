@@ -30,7 +30,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is designed to automatically have add, subtract, up and down arrows for working with a simple collection of items.
     /// </summary>
-    [ToolboxItem(true)]
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class LayoutListBox : UserControl
     {
         #region ---------------- Class Variables

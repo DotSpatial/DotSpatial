@@ -36,8 +36,9 @@ namespace DotSpatial.Controls
     /// <summary>
     /// Preconfigured tool strip menu.
     /// </summary>
-    [ToolboxItem(true)]
-    [ToolboxBitmap(typeof(SpatialToolStrip), "SpatialToolStrip.ico")]
+    //This control will no longer be visible
+    [ToolboxItem(false)]
+   // [ToolboxBitmap(typeof(SpatialToolStrip), "SpatialToolStrip.ico")]
     public partial class SpatialToolStrip : ToolStrip
     {
         #region Private Variables

@@ -29,7 +29,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is a control that allows users to easilly modify the various aspects of many different layout components
     /// </summary>
-    [ToolboxItem(true)]
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class LayoutPropertyGrid : UserControl
     {
         private LayoutControl _layoutControl;

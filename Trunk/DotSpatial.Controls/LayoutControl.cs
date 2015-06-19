@@ -42,6 +42,8 @@ namespace DotSpatial.Controls
     ///<summary>
     /// The actual control controling the layout
     ///</summary>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public partial class LayoutControl : UserControl
     {
         #region ---------------- Class Variables

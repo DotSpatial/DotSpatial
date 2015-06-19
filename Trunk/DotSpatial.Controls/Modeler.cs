@@ -38,6 +38,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// A modeler form which allows users to create models with visual representations of tools
     /// </summary>
+    //This control will no longer be visible
+    [ToolboxItem(false)]
     public class Modeler : UserControl
     {
         #region ------------------- Class Variables
