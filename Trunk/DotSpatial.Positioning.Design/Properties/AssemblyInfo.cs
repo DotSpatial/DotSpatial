@@ -23,14 +23,16 @@ using System.Security;
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("DotSpatial Team")]
-[assembly: AssemblyCopyright("This source code has been released to the public domain.")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")]
 [assembly: AssemblyTrademark("")]
 
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning.Design")]
 [assembly: AssemblyTitle("DotSpatial.Positioning.Design")]
 
-[assembly: AssemblyVersion("1.7")]
+[assembly: AssemblyVersion("2.0")]
+[assembly: AssemblyInformationalVersion("2.0 Experimental Release")]
+[assembly: AssemblyFileVersion("2.0.1.0")]
 [assembly: AssemblyDescription("This assembly provides objects used to design geographic applications.")]
 
 /* This assembly contains language-specific resources.  Help the CLR find them. */

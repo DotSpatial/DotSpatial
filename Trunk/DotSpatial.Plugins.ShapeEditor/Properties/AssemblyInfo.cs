@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.ShapeEditor")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2009-2014")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -44,5 +44,6 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1bddbc5e-bb77-4e8e-8e0f-4a27ffe25274")]
 
-[assembly: AssemblyVersion("1.0.1185")]
-[assembly: AssemblyFileVersion("1.0.1185")]
+[assembly: AssemblyVersion("2.0")]
+[assembly: AssemblyInformationalVersion("2.0 Experimental Release")]
+[assembly: AssemblyFileVersion("2.0.1.0")]

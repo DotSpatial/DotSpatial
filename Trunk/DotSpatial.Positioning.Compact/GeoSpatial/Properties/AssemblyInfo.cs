@@ -13,7 +13,7 @@ using System.Runtime.ConstrainedExecution;
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("DotSpatial.Positioning")]
-[assembly: AssemblyCopyright("This source code has been released to the public domain.")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")]
 [assembly: AssemblyTrademark("")]
 
 /* These attributes will change for each assembly. */
@@ -24,6 +24,7 @@ using System.Runtime.ConstrainedExecution;
 #else
     [assembly: AssemblyTitle("DotSpatial.Positioning")]
 #endif
+
 
 /* The version of the assembly depends on the framework version.  Design-Time assemblies
  * have no revision number because that would require much code change for each release.
@@ -47,7 +48,10 @@ using System.Runtime.ConstrainedExecution;
 		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2002")]
 #else
 		// .NET Framework 1.1
-		[assembly: AssemblyVersion("2.0.1.*")]
+[assembly: AssemblyVersion("2.0")]
+[assembly: AssemblyInformationalVersion("2.0 Experimental Release")]
+[assembly: AssemblyFileVersion("2.0.1.0")]
+
 		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2003")]
 #endif
 

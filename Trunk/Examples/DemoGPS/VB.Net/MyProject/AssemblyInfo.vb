@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyConfiguration("Public Release")> 
 <Assembly: AssemblyCompany("DotSpatial.Positioning")> 
 <Assembly: AssemblyProduct("GPS Diagnostics")> 
-<Assembly: AssemblyCopyright("This utility is released to the public domain.")> 
+<Assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: AssemblyCulture("")> 
 
@@ -33,5 +33,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.1.*")> 
-<Assembly: AssemblyFileVersion("1.0.1.0")> 
+<Assembly: AssemblyVersion("2.0")> 
+<Assembly: AssemblyInformationalVersion("2.0 Experimental Release")> 
+<Assembly: AssemblyFileVersion("2.0.1.0")> 

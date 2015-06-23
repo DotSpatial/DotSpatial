@@ -14,7 +14,7 @@ Imports System.Runtime.InteropServices
             "See http://www.gnu.org/copyleft/gpl.html for details. Primary wrapper developer: Allen Anselmo")> 
 <Assembly: AssemblyCompany("DotSpatial Team")> 
 <Assembly: AssemblyProduct("Watershed Delineation")> 
-<Assembly: AssemblyCopyright("Copyright © DotSpatial Team 2011")> 
+<Assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -33,5 +33,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("2.0")> 
+<Assembly: AssemblyInformationalVersion("2.0 Experimental Release")> 
+<Assembly: AssemblyFileVersion("2.0.1.0")> 
