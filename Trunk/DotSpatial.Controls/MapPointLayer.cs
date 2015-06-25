@@ -36,7 +36,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// This is a specialized FeatureLayer that specifically handles point drawing
     /// </summary>
-    public class MapPointLayer : PointLayer, IMapPointLayer
+    public class MapPointLayer : PointLayer, IMapPointLayer, ISupportChunksDrawing
     {
         #region Events
 
@@ -545,6 +545,12 @@ namespace DotSpatial.Controls
             IFeatureLayer fl = LayerManager.DefaultLayerManager.OpenVectorLayer(fileName);
             return fl as MapPointLayer;
         }
+
+        #endregion
+        #region ISupportChunksDrawing implementation
+
+        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
+        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
 
         #endregion
     }

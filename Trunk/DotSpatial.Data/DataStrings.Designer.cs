@@ -185,13 +185,35 @@ namespace DotSpatial.Data {
                 return ResourceManager.GetString("FileNotLines_S", resourceCulture);
             }
         }
-        
+
+        ///   Looks up a localized string similar to The fileName %S contains a feature type other than multipoints..
+        /// </summary>
+        internal static string FileNotMultipoints_S
+        {
+            get
+            {
+                return ResourceManager.GetString("FileNotMultipoints_S", resourceCulture);
+            }
+        }
+
+        /// <summary>
         /// <summary>
         ///   Looks up a localized string similar to The fileName %S contains a feature type other than points..
         /// </summary>
         internal static string FileNotPoints_S {
             get {
                 return ResourceManager.GetString("FileNotPoints_S", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The fileName %S contains a feature type other than polygons..
+        /// </summary>
+        internal static string FileNotPolygons_S
+        {
+            get
+            {
+                return ResourceManager.GetString("FileNotPolygons_S", resourceCulture);
             }
         }
         

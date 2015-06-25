@@ -33,7 +33,7 @@ using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
 {
-    public class MapLineLayer : LineLayer, IMapLineLayer
+    public class MapLineLayer : LineLayer, IMapLineLayer, ISupportChunksDrawing
     {
         #region Events
 
@@ -627,6 +627,13 @@ namespace DotSpatial.Controls
                 graphPath.AddLines(partPoints.ToArray());
             }
         }
+
+        #endregion
+
+        #region ISupportChunksDrawing implementation
+
+        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
+        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
 
         #endregion
     }
