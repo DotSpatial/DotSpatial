@@ -1243,7 +1243,7 @@ namespace DotSpatial.Projections
                 return true;
             }
 
-            int iStart = esriString.IndexOf(@""",", StringComparison.Ordinal);
+            int iStart = esriString.IndexOf(@""+",", StringComparison.Ordinal);
             Name = esriString.Substring(8, iStart - 8);
             int iEnd = esriString.IndexOf("PARAMETER", StringComparison.Ordinal);
             string gcs;
@@ -1277,8 +1277,8 @@ namespace DotSpatial.Projections
 
             if (esriString.Contains("PROJECTION"))
             {
-                iStart = esriString.IndexOf("PROJECTION", StringComparison.Ordinal) + 12;
-                iEnd = esriString.IndexOf("]", iStart, StringComparison.Ordinal) - 1;
+                iStart = esriString.IndexOf("PROJECTION") + 11;
+                iEnd = esriString.IndexOf("]", iStart);
                 string projection = esriString.Substring(iStart, iEnd - iStart);
 
                 Transform = TransformManager.DefaultTransformManager.GetProjection(projection);

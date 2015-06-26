@@ -141,8 +141,9 @@ namespace DotSpatial.Projections.Transforms
         /// </summary>
         /// <param name="name">The string name for the trnasform eg. Transverse_Mercator</param>
         /// <returns>The ITransform that has the matching Esri wkt name</returns>
-        public ITransform GetProjection(string name)
-        {
+        public ITransform GetProjection(string NName)
+        {            
+            string name = NName.Trim(new char[] { ' ', '*', '.', '"', '/' });
             foreach (ITransform transform in _transforms)
             {
                 string[] esriNames = transform.Name.Split(';');
