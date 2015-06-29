@@ -280,8 +280,8 @@ namespace DotSpatial.Data
             if (window.Width == 0 || window.Height == 0)
                 return null;
 
-            Bitmap result = new Bitmap(window.Width, window.Height);
-            Graphics g = Graphics.FromImage(result);
+            if (Bounds == null || Bounds.Extent == null || Bounds.Extent.IsEmpty())
+                return null;
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
             double dx = (window.Width / envelope.Width);
@@ -298,15 +298,29 @@ namespace DotSpatial.Data
             float t = (float)(a[3] - .5 * (a[4] + a[5])); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
-            g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
-            g.PixelOffsetMode = PixelOffsetMode.Half;
-            if (m11 > 1 || m22 > 1)
-            {
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-            }
 
-            g.DrawImage(_myImage, new PointF(0, 0));
-            g.Dispose();
+            Bitmap tempResult = null;
+            Bitmap result = null;
+            Graphics g = null;
+            try
+            {
+                tempResult = new Bitmap(window.Width, window.Height);
+                g = Graphics.FromImage(tempResult);
+                g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
+                g.PixelOffsetMode = PixelOffsetMode.Half;
+                if (m11 > 1 || m22 > 1)
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                if (!g.VisibleClipBounds.IsEmpty)
+                    g.DrawImage(_myImage, new PointF(0, 0));
+                result = tempResult;
+                tempResult = null;
+            }
+            catch (OverflowException) { } //Raised by g.DrawImage if the new images extent is to small
+            finally
+            {
+                if (tempResult != null) tempResult.Dispose();
+                if (g != null) g.Dispose();
+            }
             return result;
         }
 
@@ -423,12 +437,24 @@ namespace DotSpatial.Data
         /// <returns>A Bitmap that is xSize, ySize.</returns>
         public override Bitmap ReadBlock(int xOffset, int yOffset, int xSize, int ySize)
         {
-            Bitmap bmp = new Bitmap(xSize, ySize);
-            using (Graphics g = Graphics.FromImage(bmp))
+            Bitmap tempResult = null;
+            Bitmap Result = null;
+            try
             {
-                g.DrawImage(_myImage, 0, 0, new Rectangle(xOffset, yOffset, xSize, ySize), GraphicsUnit.Pixel);
+                tempResult = new Bitmap(xSize, ySize);
+                using (Graphics g = Graphics.FromImage(tempResult))
+                {
+                    g.DrawImage(_myImage, 0, 0, new Rectangle(xOffset, yOffset, xSize, ySize), GraphicsUnit.Pixel);
+                }
+                Result = tempResult;
+                tempResult = null;
             }
-            return bmp;
+            finally
+            {
+                if (tempResult != null)
+                    tempResult.Dispose();
+            }
+            return Result;
         }
 
         /// <summary>

@@ -352,8 +352,10 @@ namespace DotSpatial.Controls
 
             for (int i = 0; i < numBounds; i++)
             {
-                Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]);
-                if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                using (Bitmap bmp = BitmapGetter.GetBitmap(regions[i], clipRectangles[i]))
+                {
+                    if (bmp != null) g.DrawImage(bmp, clipRectangles[i]);
+                }
             }
             if (args.Device == null) g.Dispose();
         }

@@ -27,7 +27,7 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-   public class MapImageLayer : ImageLayer, IMapImageLayer
+    public class MapImageLayer : ImageLayer, IMapImageLayer
     {
         #region Events
 
@@ -42,7 +42,7 @@ namespace DotSpatial.Controls
         #region Private Variables
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-       private Color transparent;
+        private Color transparent;
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage)
             : base(baseImage)
         {
-            
+
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotSpatial.Controls
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(baseImage, container)
         {
-         
+
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace DotSpatial.Controls
         {
             this.transparent = transparent;
         }
-       
+
 
         #endregion
 
@@ -95,9 +95,9 @@ namespace DotSpatial.Controls
         {
             base.OnDataSetChanged(value);
 
-            BufferRectangle = value == null? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
-            BufferExtent = value == null? null : value.Bounds.Extent;
-            MyExtent =  value == null? null : value.Extent;
+            BufferRectangle = value == null ? Rectangle.Empty : new Rectangle(0, 0, value.Width, value.Height);
+            BufferExtent = value == null ? null : value.Bounds.Extent;
+            MyExtent = value == null ? null : value.Extent;
             OnFinishedLoading();
         }
 
@@ -133,30 +133,30 @@ namespace DotSpatial.Controls
             set { _backBuffer = value; }
         }
 
-       /// <summary>
-       /// Gets the current buffer.
-       /// </summary>
-       public Image Buffer { get; set; }
+        /// <summary>
+        /// Gets the current buffer.
+        /// </summary>
+        public Image Buffer { get; set; }
 
-       /// <summary>
-       /// Gets or sets the geographic region represented by the buffer
-       /// Calling Initialize will set this automatically.
-       /// </summary>
-       public Extent BufferExtent { get; set; }
+        /// <summary>
+        /// Gets or sets the geographic region represented by the buffer
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        public Extent BufferExtent { get; set; }
 
-       /// <summary>
-       /// Gets or sets the rectangle in pixels to use as the back buffer.
-       /// Calling Initialize will set this automatically.
-       /// </summary>
-       public Rectangle BufferRectangle { get; set; }
+        /// <summary>
+        /// Gets or sets the rectangle in pixels to use as the back buffer.
+        /// Calling Initialize will set this automatically.
+        /// </summary>
+        public Rectangle BufferRectangle { get; set; }
 
-       /// <summary>
-       /// Gets or sets whether the image layer is initialized
-       /// </summary>
-       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-       public new bool IsInitialized { get; set; }
+        /// <summary>
+        /// Gets or sets whether the image layer is initialized
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool IsInitialized { get; set; }
 
-       #endregion
+        #endregion
 
         #region Protected Methods
 
@@ -171,7 +171,7 @@ namespace DotSpatial.Controls
                 BufferChanged(this, new ClipArgs(clipRectangles));
             }
         }
-     
+
         #endregion
 
         #region Private Methods
@@ -210,19 +210,14 @@ namespace DotSpatial.Controls
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;
                 if (r.Height > 2 * clipRectangles[i].Height) r.Height = 2 * clipRectangles[i].Height;
                 Extent env = regions[i].Reproportion(clipRectangles[i], r);
-                Bitmap bmp;
-                try
+                using (Bitmap bmp = DataSet.GetBitmap(env, r))
                 {
-                    bmp = DataSet.GetBitmap(env, r);
-                    if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
+                    if (bmp != null)
+                    {
+                        if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
+                        g.DrawImage(bmp, r);
+                    }
                 }
-                catch
-                {
-                    continue;
-                }
-                if (bmp == null) continue;
-                g.DrawImage(bmp, r);
-                bmp.Dispose();
             }
             if (args.Device == null) g.Dispose();
         }
