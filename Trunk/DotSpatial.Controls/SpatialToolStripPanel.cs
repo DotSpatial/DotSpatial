@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace DotSpatial.Controls
 {
