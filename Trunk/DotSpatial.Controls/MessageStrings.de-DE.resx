@@ -319,4 +319,55 @@
   <data name="MapLayers" xml:space="preserve">
     <value>Kartenebenen</value>
   </data>
+  <data name="Add_Layer" xml:space="preserve">
+    <value>Layer hinzufügen...</value>
+  </data>
+  <data name="DecimalCountInvalid" xml:space="preserve">
+    <value>Dies sollte eine ganze Zahl zwischen 0 und 15 sein.</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Alles abwählen</value>
+  </data>
+  <data name="DiscardChanges" xml:space="preserve">
+    <value>Änderungen verwerfen?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ErrorWhileWhileActivating" xml:space="preserve">
+    <value>Fehler bei der Aktivierung von {0}.</value>
+  </data>
+  <data name="Expression" xml:space="preserve">
+    <value>Ausdruck</value>
+  </data>
+  <data name="FeaturesAll" xml:space="preserve">
+    <value>Alle Features</value>
+  </data>
+  <data name="FeaturesSelected" xml:space="preserve">
+    <value>Ausgewählte Features</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>&amp;Datei</value>
+  </data>
+  <data name="File_Exit" xml:space="preserve">
+    <value>&amp;Beenden</value>
+  </data>
+  <data name="File_New" xml:space="preserve">
+    <value>&amp;Neu</value>
+  </data>
+  <data name="File_Open" xml:space="preserve">
+    <value>Ö&amp;ffnen...</value>
+  </data>
+  <data name="File_Print" xml:space="preserve">
+    <value>Drucklayout...</value>
+  </data>
+  <data name="File_Save" xml:space="preserve">
+    <value>&amp;Speichern</value>
+  </data>
+  <data name="File_SaveAs" xml:space="preserve">
+    <value>Speichern &amp;unter...</value>
+  </data>
+  <data name="FileExists_S" xml:space="preserve">
+    <value>Die Datei %S existiert bereits. Soll sie überschrieben werden?</value>
+  </data>
 </root>

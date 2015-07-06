@@ -776,7 +776,7 @@
     <value>Loading Plugins</value>
   </data>
   <data name="ErrorWhileWhileActivating" xml:space="preserve">
-    <value>Error while while activating {0}.</value>
+    <value>Error while activating {0}.</value>
   </data>
   <data name="ClearAllDataAndStartANewMap" xml:space="preserve">
     <value>Start a new Project?</value>

@@ -457,7 +457,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while while activating {0}..
+        ///   Looks up a localized string similar to Error while activating {0}..
         /// </summary>
         internal static string ErrorWhileWhileActivating {
             get {
@@ -1537,7 +1537,7 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 视图.
+        ///   Looks up a localized string similar to Legend.
         /// </summary>
         internal static string Legend {
             get {
