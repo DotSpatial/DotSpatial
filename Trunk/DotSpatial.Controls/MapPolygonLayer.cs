@@ -32,7 +32,7 @@ using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {
-    public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer, ISupportChunksDrawing
+    public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
         #region Events
 
@@ -693,8 +693,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
+       
 
     }
   }

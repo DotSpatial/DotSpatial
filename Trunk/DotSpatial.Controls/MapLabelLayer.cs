@@ -38,7 +38,7 @@ namespace DotSpatial.Controls
     /// <summary>
     /// GeoLabelLayer
     /// </summary>
-    public class MapLabelLayer : LabelLayer, IMapLabelLayer, ISupportChunksDrawing
+    public class MapLabelLayer : LabelLayer, IMapLabelLayer
     {
         #region Events
 
@@ -1048,13 +1048,6 @@ namespace DotSpatial.Controls
         protected virtual void OnStartDrawing()
         {
         }
-
-        #region ISupportChunksDrawing implementation
-
-        int ISupportChunksDrawing.ChunkSize { get { return ChunkSize; } }
-        void ISupportChunksDrawing.OnBufferChanged(List<Rectangle> clipRectangles) { OnBufferChanged(clipRectangles); }
-
-        #endregion
 
         private class Caches
         {
