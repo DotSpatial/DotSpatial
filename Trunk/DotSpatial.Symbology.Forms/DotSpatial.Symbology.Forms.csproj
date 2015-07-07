@@ -47,7 +47,9 @@
     <AssemblyOriginatorKeyFile>DotSpatial.Symbology.Forms.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Extensions, Version=1.7.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c" />
+    <Reference Include="DotSpatial.Extensions, Version=1.7.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="DotSpatial.Modeling.Forms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Debug\DotSpatial.Modeling.Forms.dll</HintPath>
@@ -132,6 +134,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RasterCategoryControl.Designer.cs">
+      <DependentUpon>RasterCategoryControl.cs</DependentUpon>
     </Compile>
     <Compile Include="RasterLayerActions.cs" />
     <Compile Include="RenameFieldDialog.cs">
