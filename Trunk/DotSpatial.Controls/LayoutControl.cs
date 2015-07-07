@@ -40,24 +40,24 @@ using DotSpatial.Topology;
 namespace DotSpatial.Controls
 {
     ///<summary>
-    /// The actual control controling the layout
+    /// The actual control controling the layout.
     ///</summary>
     //This control will no longer be visible
     [ToolboxItem(false)]
     public partial class LayoutControl : UserControl
     {
-        #region ---------------- Class Variables
+        #region Class Variables
 
         //The list of all the layout elements currently loaded (Item 0 is drawn last)
         private readonly List<LayoutElement> _layoutElements = new List<LayoutElement>();
         private readonly List<LayoutElement> _selectedLayoutElements = new List<LayoutElement>();
-        
+
         private SmoothingMode _drawingQuality;
         private LayoutElement _elementToAddWithMouse;
         private string _fileName;
         private PointF _lastMousePoint;
         private Map _mapControl;
-        
+
         private RectangleF _mouseBox;
         private MouseMode _mouseMode;
         private PointF _mouseStartPoint;
@@ -69,32 +69,37 @@ namespace DotSpatial.Controls
         private Bitmap _resizeTempBitmap;
         private bool _showMargin;
         private bool _suppressLEinvalidate;
-        
+
         private float _zoom;                //The zoom of the paper
 
         /// <summary>
-        /// This fires after a element if added or removed
+        /// This fires after a element was added or removed.
         /// </summary>
         public event EventHandler ElementsChanged;
 
         /// <summary>
-        /// This fires after the selection has changed
+        /// This fires after a layout was loaded from file.
+        /// </summary>
+        public event EventHandler LayoutLoaded;
+
+        /// <summary>
+        /// This fires after the selection has changed.
         /// </summary>
         public event EventHandler SelectionChanged;
 
         /// <summary>
-        /// Thie fires when the zoom of the layout changes
+        /// This fires when the zoom of the layout changes.
         /// </summary>
         public event EventHandler ZoomChanged;
 
         /// <summary>
-        /// This fires when the projects file name is changed
+        /// This fires when the projects file name is changed.
         /// </summary>
         public event EventHandler FilenameChanged;
 
-        #endregion ---------------- Class Variables
+        #endregion Class Variables
 
-        #region ---------------- Internal Properties
+        #region Internal Properties
 
         /// <summary>
         /// Gets the list of layoutElements currently selected in the project
@@ -104,9 +109,9 @@ namespace DotSpatial.Controls
             get { return _selectedLayoutElements; }
         }
 
-        #endregion ---------------- Internal Properties
+        #endregion Internal Properties
 
-        #region ---------------- Public Properties
+        #region Public Properties
 
         /// <summary>
         /// Gets the list of layoutElements currently loaded in the project
@@ -282,9 +287,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion ---------------- Public Properties
+        #endregion Public Properties
 
-        #region ---------------- Private Properties
+        #region Private Properties
 
         /// <summary>
         /// Gets the width of the paper in 1/100 of an inch
@@ -316,9 +321,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion ---------------- Private Properties
+        #endregion Private Properties
 
-        #region ---------------- Internal Methods
+        #region Internal Methods
 
         private int GetPaperHeight()
         {
@@ -409,9 +414,9 @@ namespace DotSpatial.Controls
             OnSelectionChanged(EventArgs.Empty);
         }
 
-        #endregion ---------------- Internal Methods
+        #endregion Internal Methods
 
-        #region ---------------- Public Methods
+        #region Public Methods
 
         /// <summary>
         /// This is the constructor, it makes a LayoutControl
@@ -498,17 +503,17 @@ namespace DotSpatial.Controls
         {
             public static T FromString<T>(string s)
             {
-                return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromInvariantString(s);
+                return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(s);
             }
 
             public static string ToString<T>(T item)
             {
-                return TypeDescriptor.GetConverter(typeof (T)).ConvertToInvariantString(item);
+                return TypeDescriptor.GetConverter(typeof(T)).ConvertToInvariantString(item);
             }
 
             public static T EnumFromString<T>(string s)
             {
-                return (T) Enum.Parse(typeof (T), s);
+                return (T)Enum.Parse(typeof(T), s);
             }
         }
 
@@ -626,7 +631,7 @@ namespace DotSpatial.Controls
                         var innerChild = child.ChildNodes[0];
                         if (loadList[i] is LayoutBitmap)
                         {
-                            var lb = (LayoutBitmap) loadList[i];
+                            var lb = (LayoutBitmap)loadList[i];
 
                             lb.Filename = innerChild.Attributes["Filename"].Value;
                             if (innerChild.Attributes["BitmapData"] != null)
@@ -700,7 +705,7 @@ namespace DotSpatial.Controls
                             if (lr != null)
                             {
                                 //This code is to load legacy layouts that had properties for the color/outline of rectangles
-                                if (innerChild.Attributes["Color"] != null && 
+                                if (innerChild.Attributes["Color"] != null &&
                                     innerChild.Attributes["BackColor"] != null &&
                                     innerChild.Attributes["OutlineWidth"] != null)
                                 {
@@ -759,6 +764,7 @@ namespace DotSpatial.Controls
                 Invalidate();
                 OnSelectionChanged(EventArgs.Empty);
                 OnElementsChanged(EventArgs.Empty);
+                OnLayoutLoaded(EventArgs.Empty);
             }
         }
 
@@ -794,7 +800,8 @@ namespace DotSpatial.Controls
                 {
                     SaveLayout(sfd.FileName);
                 }
-            }else if (!string.IsNullOrEmpty(Filename))
+            }
+            else if (!string.IsNullOrEmpty(Filename))
             {
                 SaveLayout(Filename);
             }
@@ -848,7 +855,7 @@ namespace DotSpatial.Controls
             //     outputBitmap.SetResolution(PPI, PPI);
             //     outputBitmap.graphicsUnit = graphicsUnits.Display;
 
-            using(var outputBitmap = new Bitmap(PaperWidth, PaperHeight))
+            using (var outputBitmap = new Bitmap(PaperWidth, PaperHeight))
             using (var g = Graphics.FromImage(outputBitmap))
             {
                 var paperRect = new RectangleF(0F, 0F, PaperWidth, PaperHeight);
@@ -1039,7 +1046,7 @@ namespace DotSpatial.Controls
         /// </summary>
         public void Print()
         {
-            var pd = new PrintDocument {PrinterSettings = _printerSettings};
+            var pd = new PrintDocument { PrinterSettings = _printerSettings };
             pd.PrintPage += PrintPage;
             pd.Print();
         }
@@ -1549,9 +1556,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        #endregion ---------------- Public Methods
+        #endregion Public Methods
 
-        #region ---------------- Private Methods
+        #region Private Methods
 
         /// <summary>
         /// Converts a point in screen coordinants to paper coordinants in 1/100 of an inch
@@ -1704,9 +1711,9 @@ namespace DotSpatial.Controls
             return Edge.None;
         }
 
-        #endregion ---------------- Private Methods
+        #endregion Private Methods
 
-        #region ---------------- Drawing code
+        #region Drawing code
 
         /// <summary>
         /// Drawing code
@@ -1861,9 +1868,9 @@ namespace DotSpatial.Controls
         {
         }
 
-        #endregion ---------------- Drawing code
+        #endregion Drawing code
 
-        #region ---------------- Event Handlers
+        #region Event Handlers
 
         /// <summary>
         /// This gets fired when one of the layoutElements gets invalidated
@@ -1877,8 +1884,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Fires whenever the LayoutControl is resized
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void LayoutControl_Resize(object sender, EventArgs e)
         {
             var paperTLPixel = PaperToScreen(new PointF(0, 0));
@@ -1914,8 +1919,6 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This fires when the vscrollbar is moved
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             _paperLocation.Y = _paperLocation.Y + (e.OldValue - e.NewValue);
@@ -1925,15 +1928,15 @@ namespace DotSpatial.Controls
         /// <summary>
         /// This fires when the hscrollbar is moved
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void hScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             _paperLocation.X = _paperLocation.X + (e.OldValue - e.NewValue);
             Invalidate();
         }
 
-        //This does stuff when a key is pressed
+        /// <summary>
+        /// This allows elements to be refreshed, deleted by key press.
+        /// </summary>
         private void LayoutControl_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -2094,9 +2097,9 @@ namespace DotSpatial.Controls
 
                     case MouseMode.InsertNewElement:
                         if (_mouseBox.Width == 0)
-                            _mouseBox.Width = 200;
+                            _mouseBox.Width = _elementToAddWithMouse.Rectangle.Width != 0 ? _elementToAddWithMouse.Rectangle.Width : 200;
                         if (_mouseBox.Height == 0)
-                            _mouseBox.Height = 100;
+                            _mouseBox.Height = _elementToAddWithMouse.Rectangle.Height != 0 ? _elementToAddWithMouse.Rectangle.Height : 100;
                         if (_mouseBox.Width < 0)
                         {
                             _mouseBox.X = _mouseBox.X + _mouseBox.Width;
@@ -2295,13 +2298,18 @@ namespace DotSpatial.Controls
                                 break;
                         }
                     }
+                    else
+                    {
+                        _resizeSelectedEdge = Edge.None;
+                        Cursor = Cursors.Default;
+                    }
                     break;
             }
         }
 
-        #endregion ---------------- Event Handlers
+        #endregion Event Handlers
 
-        #region ---------------- Event Triggers
+        #region Event Triggers
 
         /// <summary>
         /// Calls this to indicate the fileName has been changed
@@ -2341,12 +2349,15 @@ namespace DotSpatial.Controls
                 }
             }
 
+            if (_selectedLayoutElements.Count == 0 && (_mouseMode == MouseMode.ResizeSelected || _mouseMode == MouseMode.MoveSelection))
+                _mouseMode = MouseMode.Default;
+
             if (SelectionChanged != null)
                 SelectionChanged(this, e);
         }
 
         /// <summary>
-        /// Call this to indicate elements were added or removed
+        /// Call this to indicate elements were added or removed.
         /// </summary>
         /// <param name="e"></param>
         private void OnElementsChanged(EventArgs e)
@@ -2355,9 +2366,19 @@ namespace DotSpatial.Controls
                 ElementsChanged(this, e);
         }
 
-        #endregion ---------------- Event Triggers
+        /// <summary>
+        /// Call this to indicate that a layout was loaded from file.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnLayoutLoaded(EventArgs e)
+        {
+            if (LayoutLoaded != null)
+                LayoutLoaded(this, e);
+        }
 
-        #region ---------------- Context Menu
+        #endregion Event Triggers
+
+        #region Context Menu
 
         private void cMnuMoveUp_Click(object sender, EventArgs e)
         {
@@ -2458,6 +2479,6 @@ namespace DotSpatial.Controls
             AlignElements(_selectedLayoutElements, Alignment.Vertical, true);
         }
 
-        #endregion ---------------- Context Menu
+        #endregion Context Menu
     }
 }
