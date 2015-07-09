@@ -277,11 +277,8 @@ namespace DotSpatial.Data
         /// </returns>
         public override Bitmap GetBitmap(Extent envelope, Rectangle window)
         {
-            if (window.Width == 0 || window.Height == 0)
-                return null;
-
-            if (Bounds == null || Bounds.Extent == null || Bounds.Extent.IsEmpty())
-                return null;
+            if (_myImage == null || window.Width == 0 || window.Height == 0) return null;
+            if (Bounds == null || Bounds.Extent == null || Bounds.Extent.IsEmpty()) return null;
 
             // Gets the scaling factor for converting from geographic to pixel coordinates
             double dx = (window.Width / envelope.Width);

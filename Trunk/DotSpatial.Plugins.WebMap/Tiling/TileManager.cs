@@ -40,20 +40,20 @@ namespace DotSpatial.Plugins.WebMap.Tiling
             var btmRightTileXY = TileCalculator.LatLongToTileXY(mapBottomRight, zoom);
 
             var tileMatrix = new Bitmap[(int)(btmRightTileXY.X - topLeftTileXY.X) + 1, (int)(btmRightTileXY.Y - topLeftTileXY.Y) + 1];
-            var po = new ParallelOptions {MaxDegreeOfParallelism = -1};
-            Parallel.For((int) topLeftTileXY.Y, (int) btmRightTileXY.Y + 1, po,
-                         (y, loopState) => Parallel.For((int) topLeftTileXY.X, (int) btmRightTileXY.X + 1, po,
+            var po = new ParallelOptions { MaxDegreeOfParallelism = -1 };
+            Parallel.For((int)topLeftTileXY.Y, (int)btmRightTileXY.Y + 1, po,
+                         (y, loopState) => Parallel.For((int)topLeftTileXY.X, (int)btmRightTileXY.X + 1, po,
                                            (x, loopState2) =>
+                                           {
+                                               if (bw.CancellationPending)
                                                {
-                                                   if (bw.CancellationPending)
-                                                   {
-                                                       loopState.Stop();
-                                                       loopState2.Stop();
-                                                       return;
-                                                   }
-                                                   var currEnv = GetTileEnvelope(x, y, zoom);
-                                                   tileMatrix[x - (int)topLeftTileXY.X, y - (int)topLeftTileXY.Y] = GetTile(x, y, currEnv, zoom);
+                                                   loopState.Stop();
+                                                   loopState2.Stop();
+                                                   return;
                                                }
+                                               var currEnv = GetTileEnvelope(x, y, zoom);
+                                               tileMatrix[x - (int)topLeftTileXY.X, y - (int)topLeftTileXY.Y] = GetTile(x, y, currEnv, zoom);
+                                           }
                                   ));
 
             return new Tiles(tileMatrix,
@@ -72,13 +72,10 @@ namespace DotSpatial.Plugins.WebMap.Tiling
         private static Envelope GetTileEnvelope(int x, int y, int zoom)
         {
             var currTopLeftPixXY = TileCalculator.TileXYToTopLeftPixelXY(x, y);
-            var currTopLeftCoord = TileCalculator.PixelXYToLatLong((int)currTopLeftPixXY.X,
-                                                (int)currTopLeftPixXY.Y, zoom);
+            var currTopLeftCoord = TileCalculator.PixelXYToLatLong((int)currTopLeftPixXY.X, (int)currTopLeftPixXY.Y, zoom);
 
-            var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x,
-                                                                              y);
-            var currBtmRightCoord = TileCalculator.PixelXYToLatLong((int)currBtmRightPixXY.X,
-                                                (int)currBtmRightPixXY.Y, zoom);
+            var currBtmRightPixXY = TileCalculator.TileXYToBottomRightPixelXY(x, y);
+            var currBtmRightCoord = TileCalculator.PixelXYToLatLong((int)currBtmRightPixXY.X, (int)currBtmRightPixXY.Y, zoom);
             return new Envelope(currTopLeftCoord, currBtmRightCoord);
         }
 
