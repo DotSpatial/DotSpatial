@@ -114,7 +114,7 @@ namespace DotSpatial.Data
             {
                 ReadPolygonShape(shape);
             }
-            
+
         }
 
         /// <summary>
@@ -414,6 +414,7 @@ namespace DotSpatial.Data
             if (_basicGeometry == null) return;
             _basicGeometry.UpdateEnvelope();
             _envelope = _basicGeometry.Envelope;
+            if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
         /// <summary>
@@ -562,7 +563,7 @@ namespace DotSpatial.Data
         /// </summary>
         public int ContentLength
         {
-            get { return ShapeIndex != null? ShapeIndex.ContentLength : 0; }
+            get { return ShapeIndex != null ? ShapeIndex.ContentLength : 0; }
             set
             {
                 // nothing
@@ -670,12 +671,10 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (!_parentFeatureSet.AttributesPopulated)
+                if (_parentFeatureSet.IndexMode || !_parentFeatureSet.AttributesPopulated)
                 {
-                    return RecordNumber - 1;
-                    // -1 because RecordNumber for shapefiles is 1-based.
+                    return RecordNumber - 1; // -1 because RecordNumber for shapefiles is 1-based.
                     // todo: The better will be remove RecordNumber from public interface to avoid ±1 issues.
-
                 }
                 return _parentFeatureSet.Features.IndexOf(this);
             }
@@ -756,7 +755,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
-        /// feature.  If the Vertices have not yet been defined, this will be null.
+        /// feature. If the Vertices have not yet been defined, this will be null.
         /// </summary>
         public ShapeRange ShapeIndex { get; set; }
 

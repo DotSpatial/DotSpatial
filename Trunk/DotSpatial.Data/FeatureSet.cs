@@ -1920,16 +1920,12 @@ namespace DotSpatial.Data
         {
             Projections.Reproject.ReprojectPoints(Vertex, Z, Projection, targetProjection, 0, Vertex.Length / 2);
             if (!IndexMode)
-            {
                 UpdateCoordinates();
-            }
 
             foreach (ShapeRange shape in ShapeIndices)
             {
                 foreach (PartRange part in shape.Parts)
-                {
                     part.Vertices = Vertex;
-                }
             }
 
             UpdateExtent();
