@@ -206,7 +206,7 @@ namespace DotSpatial.Controls
 
             return res;
         }
-      
+
 
         /// <summary>
         /// Adds the raster to layer collection
@@ -290,6 +290,16 @@ namespace DotSpatial.Controls
         public void Insert(int index, IMapLayer item)
         {
             base.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Moves the given layer to the given position.
+        /// </summary>
+        /// <param name="layer">Layer that gets moved.</param>
+        /// <param name="newPosition">Position, the layer is moved to.</param>
+        public void Move(IMapLayer layer, int newPosition)
+        {
+            base.Move(layer, newPosition);
         }
 
         /// <summary>

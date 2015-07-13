@@ -96,6 +96,16 @@ namespace DotSpatial.Symbology
             base.OnExclude(item);
         }
 
+        /// <summary>
+        /// Occurs when layer was moved.
+        /// </summary>
+        /// <param name="item">Layer that was moved.</param>
+        /// <param name="newPosition">Position the layer was moved to.</param>
+        protected override void OnMoved(ILayer item, int newPosition)
+        {
+            base.OnMoved(item, newPosition);
+        }
+
         #endregion
 
         #region Properties

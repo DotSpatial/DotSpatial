@@ -49,6 +49,11 @@ namespace DotSpatial.Symbology
         public event EventHandler<LayerEventArgs> LayerAdded;
 
         /// <summary>
+        /// Occurs when a layer is moved.
+        /// </summary>
+        public event EventHandler<LayerMovedEventArgs> LayerMoved;
+
+        /// <summary>
         /// Occurs when a layer is removed from this item.
         /// </summary>
         public event EventHandler<LayerEventArgs> LayerRemoved;
@@ -234,6 +239,12 @@ namespace DotSpatial.Symbology
             OnLayerAdded(this, new LayerEventArgs(item));
         }
 
+        protected override void OnMoved(T item, int newPosition)
+        {
+            base.OnListChanged();
+            OnLayerMoved(this, new LayerMovedEventArgs(item, newPosition));
+        }
+
         /// <summary>
         /// Removes the extended event listeners once a layer is removed from this list.
         /// </summary>
@@ -263,7 +274,20 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Fires the LayerRemoved event
+        /// Fires the LayerMoved event.
+        /// </summary>
+        /// <param name="sender">The layer that was moved.</param>
+        /// <param name="e">LayerEventArgs</param>
+        protected virtual void OnLayerMoved(object sender, LayerMovedEventArgs e)
+        {
+            if (EventsSuspended) return;
+
+            var h = LayerMoved;
+            if (h != null) h(sender, e);
+        }
+
+        /// <summary>
+        /// Fires the LayerRemoved event.
         /// </summary>
         /// <param name="item"></param>
         protected virtual void OnLayerRemoved(T item)
@@ -349,7 +373,7 @@ namespace DotSpatial.Symbology
         protected virtual void OnLayerAdded(object sender, LayerEventArgs e)
         {
             if (EventsSuspended) return;
-            
+
             var h = LayerAdded;
             if (h != null) h(sender, e);
         }

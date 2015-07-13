@@ -79,6 +79,7 @@
     <Compile Include="ITextSymbolGroup.cs" />
     <Compile Include="ItemEventArgs.cs" />
     <Compile Include="LabelLayerEventArgs.cs" />
+    <Compile Include="LayerMovedEventArgs.cs" />
     <Compile Include="Position2DConverter.cs" />
     <Compile Include="RasterLayerEventArgs.cs" />
     <Compile Include="Size2DConverter.cs" />

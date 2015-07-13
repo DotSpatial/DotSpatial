@@ -30,16 +30,8 @@ namespace DotSpatial.Plugins.SetSelectable
         {
             _DGV_Selection = new DGV_Select();
             App.DockManager.Add(new DockablePanel("kSetSelectable", LocalizationStrings.PanelHeader, _DGV_Selection, DockStyle.Left));
-
-            App.Map.LayerAdded += Map_LayerAdded;
-            App.Map.MapFrame.LayerRemoved += Map_LayerRemoved;
             App.SerializationManager.Deserializing += SerializationManager_Deserializing;
-            if (App.Legend != null) App.Legend.OrderChanged += Legend_OrderChanged;
-
-            foreach (ILayer layer in App.Map.Layers)
-            {
-                AddLayer(layer);
-            }
+            AttachLayerAddedEvents();
             base.Activate();
         }
 
@@ -53,10 +45,27 @@ namespace DotSpatial.Plugins.SetSelectable
         }
 
         /// <summary>
+        /// Attaches the LayerAdded/LayerRemoved events to the groups and the map.
+        /// </summary>
+        private void AttachLayerAddedEvents()
+        {
+            App.Map.Layers.LayerMoved += Layers_LayerMoved;
+            App.Map.LayerAdded += Map_LayerAdded;
+            App.Map.MapFrame.LayerRemoved += Map_LayerRemoved;
+            if (App.Legend != null) App.Legend.OrderChanged += Legend_OrderChanged;
+
+            foreach (ILayer layer in App.Map.Layers)
+            {
+                AddLayer(layer);
+            }
+        }
+
+        /// <summary>
         /// Detaches the LayerAdded/LayerRemoved events from the groups.
         /// </summary>
         private void DetachLayerAddedEvents()
         {
+            App.Map.Layers.LayerMoved -= Layers_LayerMoved;
             App.Map.LayerAdded -= Map_LayerAdded;
             App.Map.MapFrame.LayerRemoved -= Map_LayerRemoved;
             foreach (IGroup grp in App.Map.MapFrame.GetAllGroups())
@@ -104,11 +113,16 @@ namespace DotSpatial.Plugins.SetSelectable
         /// </summary>
         private void SerializationManager_Deserializing(object sender, SerializingEventArgs e)
         {
-            //This call is necessary because the LayerAdded event doesn't fire when a project is opened.
-            foreach (ILayer layer in App.Map.Layers)
-            {
-                AddLayer(layer);
-            }
+            DetachLayerAddedEvents();
+            AttachLayerAddedEvents();
+        }
+
+        /// <summary>
+        /// Moves the given layer to the new position inside DGV_Selection.
+        /// </summary>
+        private void Layers_LayerMoved(object sender, LayerMovedEventArgs e)
+        {
+            _DGV_Selection.MoveLayer(e.Layer, e.NewPosition);
         }
 
         /// <summary>

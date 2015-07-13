@@ -44,10 +44,40 @@ namespace DotSpatial.Plugins.SetSelectable
             if (mLayer != null)
             {
                 mLayer.SelectionChanged += SelectionChanged;
-                if (!_layers.Exists(f => object.ReferenceEquals(f.Layer, mLayer)))
-                    _layers.Insert(0, new LayerSelection(mLayer));
+                LayerSelection layerSelection = _layers.FirstOrDefault(f => object.ReferenceEquals(f.Layer, mLayer));
+                if (layerSelection != null)
+                    _layers.Remove(layerSelection);
+                else
+                    layerSelection = new LayerSelection(mLayer);
+                _layers.Insert(0, layerSelection);
+
                 ChangeDataSource();
             }
+        }
+
+        /// <summary>
+        /// Moves the given layer to the new position.
+        /// </summary>
+        /// <param name="layer">Layer that gets moved.</param>
+        /// <param name="newPosition">Position  the layer gets moved to.</param>
+        public void MoveLayer(ILayer layer, int newPosition)
+        {
+            IFeatureLayer mLayer = layer as IFeatureLayer;
+            if (mLayer == null) return;
+
+            int index = _layers.FindIndex(f => object.ReferenceEquals(f.Layer, mLayer));
+            if (index < 0 || index == newPosition) return;
+
+            LayerSelection old = _layers[index];
+            _layers.RemoveAt(index);
+
+            if (_layers.Count <= newPosition) //hinter der Liste
+                _layers.Add(old);
+            else if (newPosition < 0) //vor der liste
+                _layers.Insert(0, old);
+            else
+                _layers.Insert(newPosition, old); //irgendwo innerhalb
+            ChangeDataSource();
         }
 
         /// <summary>
@@ -76,23 +106,24 @@ namespace DotSpatial.Plugins.SetSelectable
         public void MoveLayers(IMapLayerCollection collection)
         {
             int reverseI = 0; //position in layers is reverse to position in collection
+            bool Moved = false;
             for (int i = collection.Count - 1; i >= 0; i--)
             {
                 IFeatureLayer mLayer = collection[i] as IFeatureLayer;
                 if (mLayer != null)
                 {
                     int index = _layers.FindIndex(f => object.ReferenceEquals(f.Layer, mLayer));
-
                     if (index != reverseI)
                     {
                         var layer = _layers[index];
                         _layers.Remove(layer);
                         _layers.Insert(reverseI, layer);
+                        Moved = true;
                     }
                     reverseI += 1; //non-FeatureLayers get ignored
                 }
             }
-            ChangeDataSource();
+            if (Moved) ChangeDataSource();
         }
 
         /// <summary>
