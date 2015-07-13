@@ -740,7 +740,9 @@
     <value>Home</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
-    <value>Reproject map layer to match the map coordinate system? This will not affect the source file.</value>
+    <value>The layer "{0}" uses projection "{1}" while the map uses projection "{2}". 
+
+Reproject the layer to match the map coordinate system? This will not affect the source file.</value>
   </data>
   <data name="Map_OnDragDrop_Invalid" xml:space="preserve">
     <value>One or more of the files was not a valid data type for the map.</value>

@@ -310,7 +310,9 @@
     <value>Alinhamento de margem</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
-    <value>Reproject camada de mapa para coincidir com o sistema de coordenadas do mapa? Isso não afetará o arquivo de origem.</value>
+    <value>The layer "{0}" uses projection "{1}" while the map uses projection "{2}". 
+
+Reproject camada de mapa para coincidir com o sistema de coordenadas do mapa? Isso não afetará o arquivo de origem.</value>
   </data>
   <data name="MapFrame_Projection" xml:space="preserve">
     <value>Projeção</value>

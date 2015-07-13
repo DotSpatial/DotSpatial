@@ -310,7 +310,9 @@
     <value>Element zum Rand ausrichten</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
-    <value>Koordinatensystem des Layers an Koordinatensystem der Map anpassen? Dies beeinträchtigt nicht die Quelldatei.</value>
+    <value>Der Layer "{0}" verwendet das Koordinatensystem "{1}" während die Map das Koordinatensystem "{2}" verwendet. 
+
+Soll das Koordinatensystem des Layers an das Koordinatensystem der Map angepasst werden? Dies beeinträchtigt nicht die Quelldatei.</value>
     <comment>Reproject map layer to match the map coordinate system? This will not affect the source file.</comment>
   </data>
   <data name="MapFrame_Projection" xml:space="preserve">

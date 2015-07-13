@@ -163,7 +163,9 @@
     <value>Layout di stampa</value>
   </data>
   <data name="MapFrame_GlcLayerAdded_ProjectionMismatch" xml:space="preserve">
-    <value>Riprogettazione livello mappa per abbinare il sistema di coordinate della mappa? Questo non influenzerà il file di origine.</value>
+    <value>The layer "{0}" uses projection "{1}" while the map uses projection "{2}". 
+
+Riprogettazione livello mappa per abbinare il sistema di coordinate della mappa? Questo non influenzerà il file di origine.</value>
   </data>
   <data name="MapFrame_Projection" xml:space="preserve">
     <value>Proiezione</value>

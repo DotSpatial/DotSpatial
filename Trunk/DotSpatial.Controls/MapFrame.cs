@@ -115,7 +115,7 @@ namespace DotSpatial.Controls
             }
             _backBuffer = CreateBuffer();
             Layers = new MapLayerCollection(this);
-           
+
             base.IsSelected = true;  // by default allow the map frame to be selected
 
             //add properties context menu item
@@ -254,7 +254,7 @@ namespace DotSpatial.Controls
                     former = l;
                     l.IsSelected = false;
                 }
-           } 
+            }
             if (former == null && IsSelected)
             {
                 former = this;
@@ -344,7 +344,7 @@ namespace DotSpatial.Controls
 
             if (_buffer != null && _buffer != _backBuffer) _buffer.Dispose();
             _buffer = _backBuffer;
-            if(setView)
+            if (setView)
                 _view = _backView;
             bufferDevice.Clip = new Region(ImageRectangle);
             gp.Dispose();
@@ -939,7 +939,7 @@ namespace DotSpatial.Controls
                 {
                     var old_view = _view;
                     _view = value;
-                    var args = new ViewChangedEventArgs {OldView = old_view, NewView = _view};
+                    var args = new ViewChangedEventArgs { OldView = old_view, NewView = _view };
                     h(this, args);
                 }
                 else
@@ -987,7 +987,7 @@ namespace DotSpatial.Controls
         }
 
         #endregion Properties
-         
+
         #region Protected Methods
 
         /// <summary>
@@ -1258,8 +1258,7 @@ namespace DotSpatial.Controls
         {
             IMapLayer layer = e.Layer as IMapLayer;
             if (layer == null) return;
-            if (!ExtentsInitialized || ViewExtents == null || ViewExtents.IsEmpty() ||
-                ViewExtents.Width == 0 || View.Height == 0)
+            if (!ExtentsInitialized || ViewExtents == null || ViewExtents.IsEmpty() || ViewExtents.Width == 0 || View.Height == 0)
             {
                 ExtentsInitialized = true;
                 Extent desired = e.Layer.Extent;
@@ -1305,7 +1304,7 @@ namespace DotSpatial.Controls
             var bReproject = false;
             if (ProjectionModeReproject == ActionMode.Prompt || ProjectionModeReproject == ActionMode.PromptOnce)
             {
-                string message = MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch;
+    			string message = String.Format(MessageStrings.MapFrame_GlcLayerAdded_ProjectionMismatch, layer.DataSet.Name, layer.Projection.Name, Projection.Name);
                 if (ProjectionModeReproject == ActionMode.PromptOnce)
                 {
                     message =
@@ -1332,6 +1331,11 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Prompts the user to define the projection of the given layer, if it doesn't not have one.
+        /// </summary>
+        /// <param name="layer">Layer whose projection gets checked.</param>
+        /// <returns>True if the layer doesn't have a projection.</returns>
         private bool DefineProjection(IMapLayer layer)
         {
             if (layer.DataSet.Projection == null || layer.DataSet.Projection.Transform == null)
