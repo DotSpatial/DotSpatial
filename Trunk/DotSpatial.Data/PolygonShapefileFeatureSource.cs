@@ -102,23 +102,23 @@ namespace DotSpatial.Data
                 IBasicPolygon pg = feature.GetBasicGeometryN(iPart) as IBasicPolygon;
                 if (pg == null) continue;
                 var bl = pg.Shell;
-                var coords = bl.Coordinates;
+                IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                if (CgAlgorithms.IsCounterClockwise(coords))
+                if (CgAlgorithms.IsCounterClockwise(bl.Coordinates))
                 {
                     // Exterior rings need to be clockwise
-                    coords.Reverse();
+                    coords = coords.Reverse();
                 }
 
                 points.AddRange(coords);
                 foreach (IBasicLineString hole in pg.Holes)
                 {
                     parts.Add(points.Count);
-                    var holeCoords = hole.Coordinates;
-                    if (CgAlgorithms.IsCounterClockwise(holeCoords) == false)
+                    IEnumerable<Coordinate> holeCoords = hole.Coordinates;
+                    if (!CgAlgorithms.IsCounterClockwise(hole.Coordinates))
                     {
                         // Interior rings need to be counter-clockwise
-                        holeCoords.Reverse();
+                        holeCoords = holeCoords.Reverse();
                     }
                     points.AddRange(holeCoords);
                 }

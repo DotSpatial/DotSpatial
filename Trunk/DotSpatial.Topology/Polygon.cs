@@ -318,7 +318,7 @@ namespace DotSpatial.Topology
         {
             return _shell.EnvelopeInternal;
         }
-        
+
         /// <summary>
         /// Rotates the polygon by the given radian angle around the Origin.
         /// </summary>
@@ -350,11 +350,11 @@ namespace DotSpatial.Topology
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             List<Coordinate> result = new List<Coordinate>();
             for (int i = 0; i < uniqueCoordinates.Length; i++)
-                result.Add(ring.Coordinates[i]);
+                result.Add(uniqueCoordinates[i]);
             result.Add(uniqueCoordinates[0].Copy());
             ring.Coordinates = result;
             if (CgAlgorithms.IsCounterClockwise(ring.Coordinates) == clockwise)
-                ring.Coordinates.Reverse();
+                ring.Coordinates = ring.Coordinates.Reverse().ToList();
         }
 
         #endregion

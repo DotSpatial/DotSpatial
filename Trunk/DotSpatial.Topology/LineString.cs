@@ -316,7 +316,7 @@ namespace DotSpatial.Topology
                 if (!_points[i].Equals(_points[j]))
                 {
                     if (_points[i].CompareTo(_points[j]) > 0)
-                        _points.Reverse();
+                        _points = _points.Reverse().ToList();
                     return;
                 }
             }

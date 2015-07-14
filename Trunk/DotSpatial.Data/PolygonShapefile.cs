@@ -208,12 +208,12 @@ namespace DotSpatial.Data
                     IBasicPolygon pg = f.GetBasicGeometryN(iPart) as IBasicPolygon;
                     if (pg == null) continue;
                     IBasicLineString bl = pg.Shell;
-                    IList<Coordinate> coords = bl.Coordinates;
+                    IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                    if (CgAlgorithms.IsCounterClockwise(coords))
+                    if (CgAlgorithms.IsCounterClockwise(bl.Coordinates))
                     {
                         // Exterior rings need to be clockwise
-                        coords.Reverse();
+                        coords = coords.Reverse();
                     }
 
                     foreach (Coordinate coord in coords)
@@ -223,11 +223,11 @@ namespace DotSpatial.Data
                     foreach (IBasicLineString hole in pg.Holes)
                     {
                         parts.Add(points.Count);
-                        IList<Coordinate> holeCoords = hole.Coordinates;
-                        if (CgAlgorithms.IsCounterClockwise(holeCoords) == false)
+                        IEnumerable<Coordinate> holeCoords = hole.Coordinates;
+                        if (!CgAlgorithms.IsCounterClockwise(hole.Coordinates))
                         {
                             // Interior rings need to be counter-clockwise
-                            holeCoords.Reverse();
+                            holeCoords = holeCoords.Reverse();
                         }
                         foreach (Coordinate coord in holeCoords)
                         {

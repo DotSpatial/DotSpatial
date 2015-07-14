@@ -107,7 +107,7 @@ namespace DotSpatial.Topology
         /// <param name="direction">If false, the array is added in reverse order.</param>
         public virtual void Add(IEnumerable<Coordinate> coords, bool allowRepeated, bool direction)
         {
-            if (!direction) coords.Reverse();
+            if (!direction) coords = coords.Reverse();
             DoAddRange(coords, allowRepeated);
         }
 
