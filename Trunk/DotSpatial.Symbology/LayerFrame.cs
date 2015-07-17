@@ -182,17 +182,14 @@ namespace DotSpatial.Symbology
         private void ZoomToMapFrame_Click(object sender, EventArgs e)
         {
             // work item #42
-            // to prevent exception when zoom to layer with one single point
-            double eps = 1e-7;
-            if (Extent.Width < eps || Extent.Height < eps)
-            {
-                Extent newExtent = new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps);
-                ViewExtents = newExtent;
-            }
-            else
-            {
-                ViewExtents = Extent;
-            }
+            // to prevent exception when zoom to map with one layer with one point
+            const double eps = 1e-7;
+            var maxExtent = Extent.Width < eps || Extent.Height < eps
+                ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
+                : Extent;
+            maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84
+
+            ViewExtents = maxExtent;
         }
 
         #endregion

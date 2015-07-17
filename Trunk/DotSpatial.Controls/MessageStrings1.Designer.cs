@@ -691,6 +691,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        internal static string File_Options {
+            get {
+                return ResourceManager.GetString("File_Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print Layout....
         /// </summary>
         internal static string File_Print {

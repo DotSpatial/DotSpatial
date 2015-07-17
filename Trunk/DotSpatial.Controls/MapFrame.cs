@@ -629,7 +629,7 @@ namespace DotSpatial.Controls
         /// <param name="ext"></param>
         protected override void OnExtentsChanged(Extent ext)
         {
-            if (ext.X == -180 && ext.Y == 90) { return; }
+            if (ext.IsEmpty() || (ext.X == -180 && ext.Y == 90)) { return; }
             if (_isZoomingNextOrPrevious)
             {
                 // reset the flag for the next extents change
@@ -642,7 +642,7 @@ namespace DotSpatial.Controls
                 // Might be called too freqently in some case.
                 if (ViewExtents != _previousExtents.Peek())
                 {
-                    if (_lastExtent != null)
+                    if (_lastExtent != null && _lastExtent != ext) //changed by jany_ (2015-07-17) we don't want to jump between the views with the same extent
                         _previousExtents.Push(_lastExtent);
 
                     _lastExtent = ext;

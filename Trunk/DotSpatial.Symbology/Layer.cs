@@ -388,12 +388,12 @@ namespace DotSpatial.Symbology
         #region Protected Methods
 
         /// <summary>
-        /// Fires the zoom to layer event
+        /// Fires the zoom to layer event.
         /// </summary>
         protected virtual void OnZoomToLayer()
         {
             var h = ZoomToLayer;
-            if (h != null)
+            if (h != null && !Extent.IsEmpty()) // changed by jany_ (2015-07-17) zooming to an empty layer makes no sense
             {
                 h(this, new EnvelopeArgs(Extent.ToEnvelope()));
             }

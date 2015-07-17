@@ -282,8 +282,7 @@ namespace DotSpatial.Controls
         /// category.</param>
         /// <param name="name">The name of the category.</param>
         [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, string name)
+        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, string name)
         {
             featureLayer.AddLabels(expression, filterExpression, symbolizer, name);
         }
@@ -301,8 +300,7 @@ namespace DotSpatial.Controls
         /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than
         /// this value, labels should appear.</param>
         [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                              ILabelSymbolizer symbolizer, double width)
+        public void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression, ILabelSymbolizer symbolizer, double width)
         {
             featureLayer.AddLabels(expression, filterExpression, symbolizer, width);
         }
@@ -623,26 +621,28 @@ namespace DotSpatial.Controls
         /// </summary>
         public void ZoomToMaxExtent()
         {
-             // to prevent exception when zoom to map with one layer with one point	
-            ViewExtents = GetMaxExtent();
-
+            // to prevent exception when zoom to map with one layer with one point
+            ViewExtents = GetMaxExtent(true);
             IsZoomedToMaxExtent = true;
         }
 
         //  Added by Eric Hullinger 12/28/2012 for use in preventing zooming out too far.
         /// <summary> 
-        /// Gets the MaxExtent Window of the current Map
+        /// Gets the MaxExtent Window of the current Map.
         /// </summary>
-        public Extent GetMaxExtent()
+        /// <param name="expand">Indicates whether the extent should be expanded by 10% to satisfy issue 84 (Expand target envelope by 10%). </param>
+        public Extent GetMaxExtent(bool expand = false)
         {
             // to prevent exception when zoom to map with one layer with one point
             const double eps = 1e-7;
             var maxExtent = Extent.Width < eps || Extent.Height < eps
                 ? new Extent(Extent.MinX - eps, Extent.MinY - eps, Extent.MaxX + eps, Extent.MaxY + eps)
                 : Extent;
+
+            if (expand) maxExtent.ExpandBy(maxExtent.Width / 10, maxExtent.Height / 10); // work item #84 (Expand target envelope by 10%)
+
             return maxExtent;
         }
-
 
         /// <summary>
         /// This activates the labels for the specified feature layer that will be the specified expression
@@ -1238,6 +1238,12 @@ namespace DotSpatial.Controls
             return _geoMapFrame != null ? _geoMapFrame.GetAllGroups() : null;
         }
 
+        /// <summary>
+        /// This allows to zoom out farther than the extent of the map. This is useful if we have only layers with small extents and want to look at them from farther out.
+        /// </summary>
+        [Serialize("ZoomOutFartherThanMaxExtent")]
+        public bool ZoomOutFartherThanMaxExtent { get; set; }
+
         #endregion
 
         #region Protected Methods
@@ -1390,7 +1396,6 @@ namespace DotSpatial.Controls
             }
         }
 
-
         /// <summary>
         /// Captures an image of whatever the contents of the back buffer would be at the size of the screen.
         /// </summary>
@@ -1532,23 +1537,41 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Fires the ViewExtentsChanged event.
+        /// Fires the ViewExtentsChanged event. Corrects the ViewExtent if it is smaller than 1e-7. If ZoomOutFartherThanMaxExtent is set, it corrects the 
+        /// ViewExtent if it is bigger then 1e+9. Otherwise it corrects the ViewExtent if it is bigger than the Maps extent + 10%.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         protected virtual void OnViewExtentsChanged(object sender, ExtentArgs args)
         {
             double minExt = 1e-7;
-            var maxExtent = GetMaxExtent();
-            if ((maxExtent.Width != 0 && maxExtent.Height != 0) && (ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
-            {
+            double maxExt = 1e+9; //if we can zoom out farther than the maps extent we don't zoom out farther than this
+            var maxExtent = GetMaxExtent(true);
+            if (Math.Max(maxExtent.Height, maxExtent.Width) > maxExt) maxExt = Math.Max(maxExtent.Height, maxExtent.Width); // make sure maxExtent isn't bigger than maxExt
+
+            if (!ZoomOutFartherThanMaxExtent && (maxExtent.Width != 0 && maxExtent.Height != 0) && (ViewExtents.Width > (maxExtent.Width + 1)) && (ViewExtents.Height > (maxExtent.Height + 1)))
+            { // we only want to zoom out to the maps extent
                 ZoomToMaxExtent();
             }
-            else if (ViewExtents.Width < minExt || ViewExtents.Height < minExt)
+            else if (ZoomOutFartherThanMaxExtent && ViewExtents.Width > maxExt) // we want to zoom out farther than the maps extent and the width is bigger than maxExt
             {
                 double x = ViewExtents.Center.X;
                 double y = ViewExtents.Center.Y;
-                ViewExtents = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2);
+                double add = (maxExt / 2) - minExt;
+                ViewExtents = new Extent(x - add, y - 100, x + add, y + 100); // resizes the width to stay below maxExt
+            }
+            else if (ZoomOutFartherThanMaxExtent && ViewExtents.Height > maxExt) // we want to zoom out farther than the maps extent and the height is bigger than maxExt
+            {
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                double add = (maxExt / 2) - minExt;
+                ViewExtents = new Extent(x - 100, y - add, x + 100, y + add); // resizes the height to stay below maxExt
+            }
+            else if (ViewExtents.Width < minExt || ViewExtents.Height < minExt) // the current height or width is smaller than minExt
+            {
+                double x = ViewExtents.Center.X;
+                double y = ViewExtents.Center.Y;
+                ViewExtents = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
             }
             else
             {

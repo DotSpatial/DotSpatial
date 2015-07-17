@@ -123,10 +123,7 @@ namespace DotSpatial.Data
             // Do this once, and then we can re-use it for each other part.
             foreach (Vertex point in this)
             {
-                if (ext.MaxX < point.X) ext.MaxX = point.X;
-                if (ext.MinX > point.X) ext.MinX = point.X;
-                if (ext.MinY > point.Y) ext.MinY = point.Y;
-                if (ext.MaxY < point.Y) ext.MaxY = point.Y;
+                ext.ExpandToInclude(point.X, point.Y);
             }
             return ext;
         }

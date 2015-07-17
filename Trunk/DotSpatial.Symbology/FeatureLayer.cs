@@ -186,7 +186,7 @@ namespace DotSpatial.Symbology
                 _drawnStatesNeeded = value;
             }
         }
-        
+
 
         /// <summary>
         /// Zooms to the envelope of the selected features.
@@ -272,7 +272,7 @@ namespace DotSpatial.Symbology
             OnApplyScheme(Symbology);
             Invalidate();
         }
-        
+
         private void JoinExcel(object sender, EventArgs e)
         {
             var fla = FeatureLayerActions;
@@ -281,7 +281,7 @@ namespace DotSpatial.Symbology
                 fla.ExcelJoin(DataSet);
             }
         }
-       
+
         private void LabelExtentsClick(object sender, EventArgs e)
         {
             if (_labelLayer == null)
@@ -305,7 +305,7 @@ namespace DotSpatial.Symbology
             OnItemChanged();
             OnSelectionChanged();
         }
-        
+
         private void SelectionToLayerClick(object sender, EventArgs e)
         {
             IFeatureLayer newLayer;
@@ -321,7 +321,7 @@ namespace DotSpatial.Symbology
                 newLayer.LegendText = LegendText + " selection";
             }
         }
-        
+
         private void SelectionZoomClick(object sender, EventArgs e)
         {
             ZoomToSelectedFeatures();
@@ -520,8 +520,7 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// The invert selection.
         /// </returns>
-        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode,
-                                             out IEnvelope affectedArea)
+        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
             {
@@ -595,19 +594,14 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// Boolean, true if items were selected.
         /// </returns>
-        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode,
-                                    out IEnvelope affectedArea)
+        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
-            {
                 AssignFastDrawnStates();
-            }
 
             IEnvelope region = tolerant;
             if (DataSet.FeatureType == FeatureType.Polygon)
-            {
                 region = strict;
-            }
 
             affectedArea = _selection.Envelope;
 
@@ -1377,12 +1371,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (DataSet == null || DataSet.Extent == null || DataSet.Extent.IsEmpty())
-                {
-                    return new Extent();
-                }
-
-                return DataSet.Extent;
+                return DataSet == null ? new Extent() : DataSet.Extent;
             }
         }
 
@@ -1658,7 +1647,7 @@ namespace DotSpatial.Symbology
         {
             UnselectByAttribute(e.Expression);
         }
-        
+
         private void DataSetFeatureAdded(object sender, FeatureEventArgs e)
         {
             if (_drawingFilter == null)
@@ -1673,7 +1662,7 @@ namespace DotSpatial.Symbology
 
             _drawingFilter.DrawnStates.Add(e.Feature, new DrawnState(Symbology.GetCategories().First(), false, 0, true));
         }
-       
+
         private void DataSetFeatureRemoved(object sender, FeatureEventArgs e)
         {
             if (_drawingFilter == null)
@@ -1683,7 +1672,7 @@ namespace DotSpatial.Symbology
 
             _drawingFilter.DrawnStates.Remove(e.Feature);
         }
-        
+
         private void SchemeItemChanged(object sender, EventArgs e)
         {
             OnItemChanged(sender);
@@ -2142,7 +2131,7 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region EventHandlers
-       
+
         private void LabelSetupClick(object sender, EventArgs e)
         {
             var result = new HandledEventArgs(false);
@@ -2166,7 +2155,7 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-        
+
         protected override void Dispose(bool disposeManagedResources)
         {
             if (disposeManagedResources)

@@ -372,4 +372,7 @@ Soll das Koordinatensystem des Layers an das Koordinatensystem der Map angepasst
   <data name="FileExists_S" xml:space="preserve">
     <value>Die Datei %S existiert bereits. Soll sie überschrieben werden?</value>
   </data>
+  <data name="File_Options" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
 </root>

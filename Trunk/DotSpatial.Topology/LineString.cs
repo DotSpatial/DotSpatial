@@ -637,7 +637,7 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Gets a boolean that is true if any part of this LineString intersects with itself
+        /// Gets a boolean that is false if any part of this LineString intersects with itself.
         /// </summary>
         public override bool IsSimple
         {

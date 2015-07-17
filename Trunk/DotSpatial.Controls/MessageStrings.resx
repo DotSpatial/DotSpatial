@@ -921,4 +921,7 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="Zoom_To_Layer" xml:space="preserve">
     <value>Zoom To Layer</value>
   </data>
+  <data name="File_Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
 </root>

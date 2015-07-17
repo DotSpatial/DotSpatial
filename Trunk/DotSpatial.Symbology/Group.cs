@@ -359,7 +359,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// The envelope that contains all of the layers for this data frame.  Essentially this would be
+        /// The envelope that contains all of the layers for this data frame. Essentially this would be
         /// the extents to use if you want to zoom to the world view.
         /// </summary>
         public override Extent Extent
@@ -372,16 +372,12 @@ namespace DotSpatial.Symbology
                 {
                     foreach (ILayer layer in layers)
                     {
-                        if (layer.Extent != null)
+                        if (layer.Extent != null && !layer.Extent.IsEmpty()) // changed by jany (2015-07-17) don't add extents of empty layers, because they cause a wrong overall extent 
                         {
                             if (ext == null)
-                            {
                                 ext = (Extent)layer.Extent.Clone();
-                            }
                             else
-                            {
                                 ext.ExpandToInclude(layer.Extent);
-                            }
                         }
                     }
                 }

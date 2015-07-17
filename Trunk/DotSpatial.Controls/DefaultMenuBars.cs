@@ -71,6 +71,7 @@ namespace DotSpatial.Controls
             header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Save, SaveProject_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 15, SmallImage = Images.disk_16x16, LargeImage = Images.disk_32x32, });
             header.Add(new SimpleActionItem(FileMenuKey, Msg.File_SaveAs, SaveProjectAs_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 20, SmallImage = Images.save_as_16x16, LargeImage = Images.save_as_32x32, ToolTipText = Msg.FileSaveAsToolTip });
 
+            header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Options, Options_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 25 });
             header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Print, PrintLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 40, SmallImage = Images.printer_16x16, LargeImage = Images.printer_32x32 });
 
             header.Add(new SimpleActionItem(FileMenuKey, Msg.File_Reset_Layout, ResetLayout_Click) { GroupCaption = HeaderControl.ApplicationMenuKey, SortOrder = 200, SmallImage = Images.layout_delete_16x16, LargeImage = Images.layout_delete_32x32 });
@@ -205,6 +206,14 @@ namespace DotSpatial.Controls
             }
         }
 
+        /// <summary>
+        /// Shows the options dialog.
+        /// </summary>
+        private void Options_Click(object sender, EventArgs e)
+        {
+            using (OptionsForm form = new OptionsForm(App.Map))
+            { form.ShowDialog(); }
+        }
 
         /// <summary>
         /// Set the function mode to pan so user can move it with a mouse. 
@@ -222,7 +231,7 @@ namespace DotSpatial.Controls
         private void PrintLayout_Click(object sender, EventArgs e)
         {
             // In Mono show the dialog only if printers installed else show error message.
-            if (Mono.Mono.IsRunningOnMono() )
+            if (Mono.Mono.IsRunningOnMono())
             {
                 if (!new PrinterSettings().IsValid)
                 {

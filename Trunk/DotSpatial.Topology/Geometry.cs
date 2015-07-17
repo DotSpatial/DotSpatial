@@ -1471,8 +1471,6 @@ namespace DotSpatial.Topology
             return exemplar.Factory.CreatePoint(c);
         }
 
-
-
         /// <summary>
         /// Tests the specified IEnvelope for an intersection with this Geometry
         /// </summary>

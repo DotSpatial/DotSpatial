@@ -1575,7 +1575,7 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (MyExtent == null)
+                if (MyExtent == null || MyExtent.IsEmpty())
                 {
                     UpdateExtent();
                 }
@@ -1963,8 +1963,8 @@ namespace DotSpatial.Data
             {
                 if (Features == null || Features.Count <= 0)
                 {
-                    MyExtent = new Extent(-180, -90, 180, 90);
-                    return;
+                     // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
+                    return; 
                 }
 
                 foreach (IFeature feature in Features)
@@ -1977,7 +1977,7 @@ namespace DotSpatial.Data
             {
                 if (_shapeIndices == null || _shapeIndices.Count == 0)
                 {
-                    MyExtent = new Extent(-180, -90, 180, 90);
+                    // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
                     return;
                 }
 

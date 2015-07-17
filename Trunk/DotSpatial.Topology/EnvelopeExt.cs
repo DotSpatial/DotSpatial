@@ -558,7 +558,7 @@ namespace DotSpatial.Topology
             int numDimensions = Math.Min(self.NumOrdinates, p.NumOrdinates);
             for (int i = 0; i < numDimensions; i++)
             {
-                if (p[i] < self.Minimum[i] || p[i] > self.Maximum[i]) return false;
+                if (!(p[i] >= self.Minimum[i] && p[i] <= self.Maximum[i])) return false;
             }
             return true;
         }
