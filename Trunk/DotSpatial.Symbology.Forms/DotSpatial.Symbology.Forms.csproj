@@ -117,6 +117,12 @@
     <Compile Include="FilterEventArgs.cs" />
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />
+    <Compile Include="ImageCategoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageCategoryControl.Designer.cs">
+      <DependentUpon>ImageCategoryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageLayerActions.cs" />
     <Compile Include="LabelSetup.Designer.cs">
       <DependentUpon>LabelSetup.cs</DependentUpon>
@@ -620,6 +626,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FeatureSizeRangeControl.pt-BR.resx">
       <DependentUpon>FeatureSizeRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageCategoryControl.resx">
+      <DependentUpon>ImageCategoryControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="JoinDialog.zh-CN.resx">
       <DependentUpon>JoinDialog.cs</DependentUpon>

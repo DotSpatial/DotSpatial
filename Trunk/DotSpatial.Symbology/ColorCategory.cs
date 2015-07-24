@@ -134,7 +134,7 @@ namespace DotSpatial.Symbology
             var result = new HandledEventArgs(false);
             OnEditItem(result);
             if (result.Handled) return;
-            
+
             var cca = ColorCategoryActions;
             if (cca != null)
             {
@@ -280,6 +280,32 @@ namespace DotSpatial.Symbology
             set
             {
                 _lowColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity for the low color. This was added to save opacity to dspx.
+        /// </summary>
+        [Serialize("LowColorOpacity")]
+        public float LowColorOpacity
+        {
+            get { return _lowColor.GetOpacity(); }
+            set
+            {
+                _lowColor = _lowColor.ToTransparent(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the opacity for the high color. This was added to save opacity to dspx.
+        /// </summary>
+        [Serialize("HighColorOpacity")]
+        public float HighColorOpacity
+        {
+            get { return _highColor.GetOpacity(); }
+            set
+            {
+                _highColor = _highColor.ToTransparent(value);
             }
         }
 

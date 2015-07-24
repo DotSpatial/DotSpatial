@@ -27,6 +27,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using DotSpatial.Projections;
 using OSGeo.GDAL;
+using System.IO;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
@@ -54,6 +55,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         {
             _dataset = fromDataset;
             base.Filename = name;
+            base.Name = Path.GetFileNameWithoutExtension(name);
             ReadHeader();
             int numBands = _dataset.RasterCount;
             if (numBands == 1)
@@ -79,6 +81,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _dataset = fromDataset;
             _band = fromBand;
             base.Filename = fileName;
+            base.Name = Path.GetFileNameWithoutExtension(fileName);
             ReadHeader();
         }
 

@@ -35,10 +35,8 @@ namespace DotSpatial.Symbology.Forms
         /// <param name="e"></param>
         public void ShowProperties(IImageLayer e)
         {
-            using (var dlg = new PropertyDialog())
+            using (var dlg = new LayerDialog(e,new ImageCategoryControl()))
             {
-                dlg.PropertyGrid.SelectedObject = e.Copy();
-                dlg.OriginalObject = e;
                 ShowDialog(dlg);
             }
         }

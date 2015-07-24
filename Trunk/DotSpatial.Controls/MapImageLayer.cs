@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using System.Drawing.Imaging;
 
 namespace DotSpatial.Controls
 {
@@ -59,10 +60,7 @@ namespace DotSpatial.Controls
         /// Creates a new instance of GeoImageLayer
         /// </summary>
         public MapImageLayer(IImageData baseImage)
-            : base(baseImage)
-        {
-
-        }
+            : base(baseImage) { }
 
         /// <summary>
         /// Creates a new instance of a GeoImageLayer
@@ -70,10 +68,7 @@ namespace DotSpatial.Controls
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="container">The Layers collection that keeps track of the image layer</param>
         public MapImageLayer(IImageData baseImage, ICollection<ILayer> container)
-            : base(baseImage, container)
-        {
-
-        }
+            : base(baseImage, container) { }
 
         /// <summary>
         /// Creates a new instance of a GeoImageLayer
@@ -85,7 +80,6 @@ namespace DotSpatial.Controls
         {
             this.transparent = transparent;
         }
-
 
         #endregion
 
@@ -210,14 +204,33 @@ namespace DotSpatial.Controls
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;
                 if (r.Height > 2 * clipRectangles[i].Height) r.Height = 2 * clipRectangles[i].Height;
                 Extent env = regions[i].Reproportion(clipRectangles[i], r);
-                using (Bitmap bmp = DataSet.GetBitmap(env, r))
+                Bitmap bmp = null;
+                try
                 {
-                    if (bmp != null)
-                    {
-                        if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
-                        g.DrawImage(bmp, r);
-                    }
+                    bmp = DataSet.GetBitmap(env, r);
+                    if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
                 }
+                catch
+                {
+                    if (bmp != null) bmp.Dispose();
+                    continue;
+                }
+                if (bmp == null) continue;
+
+                if (this.Symbolizer != null && this.Symbolizer.Opacity < 1)
+                {
+                    ColorMatrix matrix = new ColorMatrix(); //draws the image not completely opaque
+                    matrix.Matrix33 = Symbolizer.Opacity;
+                    ImageAttributes attributes = new ImageAttributes();
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                    attributes.Dispose();
+                }
+                else
+                {
+                    g.DrawImage(bmp, r);
+                }
+                bmp.Dispose();
             }
             if (args.Device == null) g.Dispose();
         }

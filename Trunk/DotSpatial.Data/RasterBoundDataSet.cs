@@ -87,9 +87,7 @@ namespace DotSpatial.Data
         public override void Reproject(ProjectionInfo targetProjection)
         {
             if (CanReproject == false) return;
-            double[] aff = Projections.Reproject.ReprojectAffine(Bounds.AffineCoefficients, Bounds.NumRows,
-                                                                 Bounds.NumColumns,
-                                                                 Projection, targetProjection);
+            double[] aff = Projections.Reproject.ReprojectAffine(Bounds.AffineCoefficients, Bounds.NumRows, Bounds.NumColumns, Projection, targetProjection);
             Bounds.AffineCoefficients = aff;
         }
 

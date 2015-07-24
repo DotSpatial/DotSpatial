@@ -38,7 +38,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Use the closest point to the centroid that is in the feature.
         /// </summary>
-        InteriorPoint,
+        InteriorPoint
     }
 
     public enum LineOrientation
@@ -52,11 +52,10 @@ namespace DotSpatial.Symbology
         /// Orientation of the line label is perpendicular to the line at the PlacementPosition.
         /// </summary>
         Perpendicular
-
     }
 
     /// <summary>
-    /// Methode used to calculate the placement of line labels.
+    /// Methods used to calculate the placement of line labels.
     /// </summary>
     public enum LineLabelPlacementMethod
     {
@@ -64,14 +63,17 @@ namespace DotSpatial.Symbology
         /// Uses the longest segment of the LineString.
         /// </summary>
         LongestSegment,
+
         /// <summary>
         /// Uses the first segment of the LineString.
         /// </summary>
         FirstSegment,
+
         /// <summary>
         /// Uses the middle segment of the LineString.
         /// </summary>
         MiddleSegment,
+
         /// <summary>
         /// Uses the last segment of the LineString.
         /// </summary>
@@ -79,7 +81,7 @@ namespace DotSpatial.Symbology
     }
 
     /// <summary>
-    /// Determins if all parts should be labeled or just the largest
+    /// Determines if all parts should be labeled or just the largest.
     /// </summary>
     public enum PartLabelingMethod
     {

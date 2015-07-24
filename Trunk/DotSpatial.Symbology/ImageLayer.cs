@@ -44,6 +44,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public ImageLayer()
         {
+            Symbolizer = new ImageSymbolizer();
         }
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace DotSpatial.Symbology
         /// <param name="fileName"></param>
         public ImageLayer(string fileName)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName);
         }
 
@@ -65,6 +67,7 @@ namespace DotSpatial.Symbology
         public ImageLayer(string fileName, IProgressHandler progressHandler, ICollection<ILayer> container)
             : base(container)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
         }
 
@@ -76,6 +79,7 @@ namespace DotSpatial.Symbology
         /// <param name="progressHandler">The progressHandler</param>
         public ImageLayer(string fileName, IProgressHandler progressHandler)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = DataManager.DefaultDataManager.OpenImage(fileName, progressHandler);
         }
 
@@ -84,6 +88,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         public ImageLayer(IImageData baseImage)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = baseImage;
         }
 
@@ -95,9 +100,9 @@ namespace DotSpatial.Symbology
         public ImageLayer(IImageData baseImage, ICollection<ILayer> container)
             : base(container)
         {
+            Symbolizer = new ImageSymbolizer();
             DataSet = baseImage;
         }
-    
 
         #endregion
 
@@ -145,10 +150,17 @@ namespace DotSpatial.Symbology
         /// Gets or sets a class that has some basic parameters that control how the image layer
         /// is drawn.
         /// </summary>
+        [Browsable(false)]
+        [ShallowCopy]
+        [Serialize("Symbolizer")]
         public IImageSymbolizer Symbolizer
         {
             get { return _symbolizer; }
-            set { _symbolizer = value; }
+            set
+            {
+                _symbolizer = value;
+                OnItemChanged();
+            }
         }
 
         /// <summary>
