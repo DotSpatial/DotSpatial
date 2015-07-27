@@ -114,6 +114,9 @@
     <Compile Include="ExpressionControl.Designer.cs">
       <DependentUpon>ExpressionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FeatureCategoryControl.Designer.cs">
+      <DependentUpon>FeatureCategoryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterEventArgs.cs" />
     <Compile Include="ICategoryControl.cs" />
     <Compile Include="IIWin32WindowOwner.cs" />

@@ -660,13 +660,13 @@ namespace DotSpatial.Symbology
                 if (lst.Contains(val)) continue;
                 if (val.ToString() != "[NULL]") lst.Add(val);
             }
-            
+
             lst.Sort(); // breaks if a value is null.
             List<Break> result = new List<Break>();
             if (containsNull) result.Add(new Break("[NULL]"));
             foreach (object item in lst)
             {
-                result.Add(new Break(item.ToString()));
+                result.Add(new Break(String.Format(CultureInfo.InvariantCulture, "{0}", item))); // Changed by jany_ (2015-07-27) use InvariantCulture because this is used in Datatable.Select in FeatureCategoryControl and causes error when german localization is used
             }
             return result;
         }
@@ -915,7 +915,7 @@ namespace DotSpatial.Symbology
                 AddCategory(cat);
                 result.Add(c, item);
             }
-       
+
             return result;
         }
 
