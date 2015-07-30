@@ -40,6 +40,16 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         public bool DoSnapping { get; set; }
 
+        private IFeature _snappedFeature;
+
+        /// <summary>
+        /// Feature the computed snappedCoord belongs to.
+        /// </summary>
+        public IFeature SnappedFeature
+        {
+            get { return _snappedFeature; }
+        }
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -106,16 +116,17 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     foreach (Coordinate c in feat.Coordinates)
                     {
-                        // If the mouse envelope contains the current coordinate, we found a
-                        // snap location.
+                        // If the mouse envelope contains the current coordinate, we found a snap location.
                         if (env.Contains(c))
                         {
                             snappedCoord = c;
+                            _snappedFeature = feat;
                             return true;
                         }
                     }
                 }
             }
+            _snappedFeature = null;
             return false;
         }
 
