@@ -71,7 +71,10 @@ namespace DotSpatial.Data
         private Encoding _encoding;
         private DateTime _updateDate;
         private BinaryWriter _writer;
-
+        /// <summary>
+        /// Indicates that the Fill methode is called from inside itself.
+        /// </summary>
+        private bool _isFilling;
         #endregion
 
         #region Constructors
@@ -112,7 +115,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public DataTable SupplyPageOfData(int lowerPageBoundary, int rowsPerPage)
         {
-            using(var myReader = GetBinaryReader())
+            using (var myReader = GetBinaryReader())
             {
                 FileInfo fi = new FileInfo(_fileName);
 
@@ -158,7 +161,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public object[] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, string fieldName)
         {
-            using(var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
+            using (var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
             {
                 FileInfo fi = new FileInfo(_fileName);
 
@@ -202,7 +205,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public object[,] SupplyPageOfData(int lowerPageBoundary, int rowsPerPage, IEnumerable<string> fieldNames)
         {
-            using(var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
+            using (var myStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
             {
                 var fi = new FileInfo(_fileName);
 
@@ -305,7 +308,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public DataTable GetAttributes(IEnumerable<int> rowNumbers)
         {
-            using(var myReader = GetBinaryReader())
+            using (var myReader = GetBinaryReader())
             {
                 FileInfo fi = new FileInfo(_fileName);
 
@@ -388,7 +391,7 @@ namespace DotSpatial.Data
             {
                 WriteHeader(bw);
                 int rawRow = GetFileIndex(_numRecords - 1);
-                bw.BaseStream.Seek(_headerLength + _recordLength*rawRow, SeekOrigin.Begin);
+                bw.BaseStream.Seek(_headerLength + _recordLength * rawRow, SeekOrigin.Begin);
                 byte[] blank = new byte[_recordLength];
                 _writer.Write(blank); // the deleted flag
             }
@@ -627,11 +630,11 @@ namespace DotSpatial.Data
             if (columnValue == null || columnValue is DBNull)
                 WriteSpaces(_columns[fld].Length);
             else if (columnValue is decimal)
-                _writer.Write(ncs[fld].ToChar((decimal) columnValue));
+                _writer.Write(ncs[fld].ToChar((decimal)columnValue));
             else if (columnValue is double)
             {
                 //Write((double)columnValue, _columns[fld].Length, _columns[fld].DecimalCount);
-                char[] test = ncs[fld].ToChar((double) columnValue);
+                char[] test = ncs[fld].ToChar((double)columnValue);
                 _writer.Write(test);
             }
             else if (columnValue is float)
@@ -640,26 +643,26 @@ namespace DotSpatial.Data
                 Field currentField = _columns[fld];
                 if (currentField.TypeCharacter == 'F')
                 {
-                    string val = ((float) columnValue).ToString();
+                    string val = ((float)columnValue).ToString();
                     Write(val, currentField.Length);
                 }
                 else
                 {
-                    char[] test = ncs[fld].ToChar((float) columnValue);
+                    char[] test = ncs[fld].ToChar((float)columnValue);
                     _writer.Write(test);
                 }
             }
             else if (columnValue is int || columnValue is short || columnValue is long || columnValue is byte)
                 Write(Convert.ToInt64(columnValue), _columns[fld].Length, _columns[fld].DecimalCount);
             else if (columnValue is bool)
-                Write((bool) columnValue);
+                Write((bool)columnValue);
             else if (columnValue is string)
             {
                 int length = _columns[fld].Length;
-                Write((string) columnValue, length);
+                Write((string)columnValue, length);
             }
             else if (columnValue is DateTime)
-                WriteDate((DateTime) columnValue);
+                WriteDate((DateTime)columnValue);
             else
                 Write(columnValue.ToString(), _columns[fld].Length);
         }
@@ -731,7 +734,7 @@ namespace DotSpatial.Data
 
             _attributesPopulated = false; // we had a file, but have not read the dbf content into memory yet.
             _dataTable = new DataTable();
-            
+
             using (var myReader = GetBinaryReader())
             {
                 ReadTableHeader(myReader); // based on the header, set up the fields information etc.
@@ -782,7 +785,7 @@ namespace DotSpatial.Data
             var fi = new FileInfo(_fileName);
 
             // Encoding appears to be ASCII, not Unicode
-            if ((int) fi.Length == _headerLength)
+            if ((int)fi.Length == _headerLength)
             {
                 // The file is empty, so we are done here
                 return;
@@ -790,8 +793,8 @@ namespace DotSpatial.Data
 
             if (_hasDeletedRecords)
             {
-                int length = (int) (fi.Length - _headerLength - 1);
-                int recordCount = length/_recordLength;
+                int length = (int)(fi.Length - _headerLength - 1);
+                int recordCount = length / _recordLength;
                 _offsets = new long[_numRecords];
                 int j = 0; // undeleted index
                 using (var myReader = GetBinaryReader())
@@ -799,10 +802,10 @@ namespace DotSpatial.Data
                     for (int i = 0; i <= recordCount; i++)
                     {
                         // seek to byte
-                        myReader.BaseStream.Seek(_headerLength + 1 + i*_recordLength, SeekOrigin.Begin);
+                        myReader.BaseStream.Seek(_headerLength + 1 + i * _recordLength, SeekOrigin.Begin);
                         var cb = myReader.ReadByte();
                         if (cb != '*')
-                            _offsets[j] = i*_recordLength;
+                            _offsets[j] = i * _recordLength;
                         j++;
                         if (j == _numRecords) break;
                     }
@@ -827,8 +830,10 @@ namespace DotSpatial.Data
         /// <param name="numRows">In the event that the dbf file is not found, this indicates how many blank rows should exist in the attribute Table.</param>
         public void Fill(int numRows)
         {
+            if (_isFilling) return; // Changed by jany_ (2015-07-30) don't load again because the fill methode is called from inside the fill methode and we'd get a datatable that is filled with twice the existing records
+            _attributesPopulated = false;
             _dataTable.Rows.Clear(); // if we have already loaded data, clear the data.
-
+            _isFilling = true;
             if (File.Exists(_fileName) == false)
             {
                 _numRecords = numRows;
@@ -849,10 +854,11 @@ namespace DotSpatial.Data
 
             if (!_loaded) GetRowOffsets();
             ProgressMeter = new ProgressMeter(ProgressHandler, "Reading from DBF Table...", _numRecords);
-            if (_numRecords < 10000000) ProgressMeter.StepPercent = 5;
-            if (_numRecords < 5000000) ProgressMeter.StepPercent = 10;
-            if (_numRecords < 100000) ProgressMeter.StepPercent = 50;
             if (_numRecords < 10000) ProgressMeter.StepPercent = 100;
+            else if (_numRecords < 100000) ProgressMeter.StepPercent = 50;
+            else if (_numRecords < 5000000) ProgressMeter.StepPercent = 10;
+            else if (_numRecords < 10000000) ProgressMeter.StepPercent = 5;
+
             _dataTable.BeginLoadData();
             // Reading the Table elements as well as the shapes in a single progress loop.
             using (var myReader = GetBinaryReader())
@@ -881,9 +887,10 @@ namespace DotSpatial.Data
             }
             ProgressMeter.Reset();
             _dataTable.EndLoadData();
-            
+
             _attributesPopulated = true;
             OnAttributesFilled();
+            _isFilling = false;
         }
 
         /// <summary>
@@ -964,7 +971,11 @@ namespace DotSpatial.Data
             }
         }
 
-        // Tests to see if the list of columns contains the specified name or not.
+        /// <summary>
+        ///  Tests to see if the list of columns contains the specified name or not.
+        /// </summary>
+        /// <param name="name">Name of the column we're looking for.</param>
+        /// <returns>True, if the column exists.</returns>
         private bool ColumnNameExists(string name)
         {
             return _columns.Any(fld => fld.ColumnName == name);
@@ -1068,7 +1079,7 @@ namespace DotSpatial.Data
             // Note this replaces padding suggested at http://www.mapwindow.org/phorum/read.php?13,16820
 
             char[] characters = text.ToCharArray();
-           
+
             int totalBytes = 0;
             for (int i = 0; i < characters.Length; i++)
             {
@@ -1084,7 +1095,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            if(totalBytes < length)
+            if (totalBytes < length)
             {
                 WriteSpaces(length - totalBytes);
             }
@@ -1286,7 +1297,7 @@ namespace DotSpatial.Data
                         // Ignore invalid or out of range dates
                         tempObject = DBNull.Value;
                     }
-                    
+
                     break;
 
                 case 'F':
@@ -1741,7 +1752,7 @@ namespace DotSpatial.Data
         /// </summary>
         public byte LanguageDriverId
         {
-            get 
+            get
             {
                 return _ldid;
             }
@@ -1767,14 +1778,8 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_attributesPopulated == false)
-                {
-                    if (!string.IsNullOrEmpty(Filename))
-                    {
-                        Fill(_numRecords);
-                    }
-                }
-
+                if (!_attributesPopulated && !string.IsNullOrEmpty(Filename))
+                    Fill(_numRecords);
                 return _dataTable;
             }
 

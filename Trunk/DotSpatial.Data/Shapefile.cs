@@ -408,11 +408,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// reads the attributes from the specified attribute Table.
+        /// Reads the attributes from the specified attribute Table.
         /// </summary>
         public override void FillAttributes()
         {
-            _attributeTable.Fill(NumRows());
+            _attributeTable.AttributesPopulated = false; // attributeTable.Table fills itself if attributes are not populated
             DataTable = _attributeTable.Table;
             base.AttributesPopulated = true;
             // Link the data rows to the vectors in this object
@@ -610,7 +610,6 @@ namespace DotSpatial.Data
                 return result;
             }
         }
-        
 
         /// <summary>
         /// Ensures that the attribute Table will have information that matches the current Table of attribute information
