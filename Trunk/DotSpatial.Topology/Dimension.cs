@@ -27,8 +27,7 @@ using System;
 namespace DotSpatial.Topology
 {
     /// <summary>
-    /// Class containing static methods for conversions
-    /// between Dimension values and characters.
+    /// Class containing static methods for conversions between Dimension values and characters.
     /// </summary>
     public class Dimension
     {
