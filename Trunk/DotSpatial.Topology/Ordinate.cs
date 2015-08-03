@@ -47,6 +47,6 @@ namespace DotSpatial.Topology
         /// <summary>
         /// M Ordinate = 3.
         /// </summary>
-        M = 3,
+        M = 3
     }
 }

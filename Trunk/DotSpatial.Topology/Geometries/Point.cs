@@ -351,7 +351,7 @@ namespace DotSpatial.Topology
         /// <param name="radAngle">Rotation angle in radian.</param>
         public override void Rotate(Coordinate Origin, double radAngle)
         {
-            base.RotateCoordinateRad(Origin , ref this.Coordinate.X, ref this.Coordinate.Y, radAngle);
+            RotateCoordinateRad(Origin , ref Coordinate.X, ref Coordinate.Y, radAngle);
         }
 
 
