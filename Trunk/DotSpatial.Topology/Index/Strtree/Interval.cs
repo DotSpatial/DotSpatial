@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geoapi.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -30,16 +31,22 @@ namespace DotSpatial.Topology.Index.Strtree
     /// <summary>
     /// A contiguous portion of 1D-space. Used internally by SIRtree.
     /// </summary>
-    public class Interval
+    public class Interval : IIntersectable<Interval>, IExpandable<Interval>
     {
-        private double max;
-        private double min;
+        #region Fields
+
+        private double _max;
+        private double _min;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="other"></param>
-        public Interval(Interval other) : this(other.min, other.max) { }
+        public Interval(Interval other) : this(other._min, other._max) { }
 
         /// <summary>
         ///
@@ -49,19 +56,40 @@ namespace DotSpatial.Topology.Index.Strtree
         public Interval(double min, double max)
         {
             Assert.IsTrue(min <= max);
-            this.min = min;
-            this.max = max;
+            _min = min;
+            _max = max;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual double Centre
+        public double Centre
         {
             get
             {
-                return (min + max) / 2;
+                return (_min + _max) / 2;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public override bool Equals(object o) 
+        {
+            if (!(o is Interval))             
+                return false;            
+            Interval other = (Interval) o;
+            return _min == other._min && _max == other._max;
         }
 
         /// <summary>
@@ -69,10 +97,10 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="other"></param>
         /// <returns><c>this</c></returns>
-        public virtual Interval ExpandToInclude(Interval other)
+        public Interval ExpandedBy(Interval other)
         {
-            max = Math.Max(max, other.max);
-            min = Math.Min(min, other.min);
+            _max = Math.Max(_max, other._max);
+            _min = Math.Min(_min, other._min);
             return this;
         }
 
@@ -80,32 +108,32 @@ namespace DotSpatial.Topology.Index.Strtree
         ///
         /// </summary>
         /// <param name="other"></param>
-        /// <returns></returns>
-        public virtual bool Intersects(Interval other)
+        /// <returns><c>this</c></returns>
+        public void ExpandToInclude(Interval other)
         {
-            return !(other.min > max || other.max < min);
+            _max = Math.Max(_max, other._max);
+            _min = Math.Min(_min, other._min);
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        public override bool Equals(object o)
-        {
-            if (!(o is Interval))
-                return false;
-            Interval other = (Interval)o;
-            return min == other.min && max == other.max;
-        }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Intersects(Interval other)
+        {
+            return !(other._min > _max || other._max < _min);
+        }
+
+        #endregion
     }
 }

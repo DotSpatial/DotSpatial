@@ -22,18 +22,19 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System;
+using System.Collections.Generic;
+using DotSpatial.Topology.Index.Bintree;
 
 namespace DotSpatial.Topology.Index.Quadtree
 {
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-    public abstract class NodeBase
+    [Serializable]
+    public abstract class NodeBase<T>
     {
-        #region Private Variables
-
-        private IList _items = new ArrayList();
+        #region Fields
 
         /// <summary>
         /// subquads are numbered as follows:
@@ -41,17 +42,143 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// --+--
         /// 0 | 1
         /// </summary>
-        private Node[] _subnode = new Node[4];
+        protected Node<T>[] Subnode = new Node<T>[4];
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private List<T> _items = new List<T>();
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                int subSize = 0;
+                for (int i = 0; i < 4; i++)
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
+                return subSize + _items.Count;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Depth
+        {
+            get
+            {
+                int maxSubDepth = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Subnode[i] != null)
+                    {
+                        int sqd = Subnode[i].Depth;
+                        if (sqd > maxSubDepth)
+                            maxSubDepth = sqd;
+                    }
+                }
+                return maxSubDepth + 1;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool HasChildren
+        {
+            get
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Subnode[i] != null)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool HasItems
+        {
+            get
+            {
+                return _items.Count != 0;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                bool isEmpty = _items.Count == 0;
+                for (int i = 0; i < 4; i++)
+                    if (Subnode[i] != null)
+                        if (!Subnode[i].IsEmpty)
+                            isEmpty = false;
+                return isEmpty;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public bool IsPrunable
+        {
+            get
+            {
+                return !(HasChildren || HasItems);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NodeCount
+        {
+            get
+            {
+                int subSize = 0;
+                for (int i = 0; i < 4; i++)
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
+                return subSize + 1;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<T> Items
+        {
+            get
+            {
+                return _items;
+            }
+            protected set { _items = (List<T>)value; }
+        }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Adds a new item to this node.
+        /// 
         /// </summary>
-        /// <param name="item">The item to add to this node</param>
-        public virtual void Add(object item)
+        /// <param name="item"></param>
+        public void Add(T item)
         {
             _items.Add(item);
         }
@@ -61,71 +188,89 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// </summary>
         /// <param name="resultItems">IList for adding items.</param>
         /// <returns>Parameter IList with <c>this</c> items.</returns>
-        public virtual IList AddAllItems(ref IList resultItems)
+        public IList<T> AddAllItems(ref IList<T> resultItems)
         {
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(this.items);
-            foreach (object o in _items)
+            foreach (T o in _items)
                 resultItems.Add(o);
             for (int i = 0; i < 4; i++)
-                if (_subnode[i] != null)
-                    _subnode[i].AddAllItems(ref resultItems);
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItems(ref resultItems);
             return resultItems;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public virtual void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList resultItems)
+        public void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList<T> resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            // resultItems.addAll(items);
-            foreach (object o in _items)
+            foreach (T o in _items)
                 resultItems.Add(o);
 
             for (int i = 0; i < 4; i++)
-                if (_subnode[i] != null)
-                    _subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);
         }
 
-        /// <summary>
+        /// <summary> 
+        /// Gets the index of the subquad that wholly contains the given envelope.
+        /// If none does, returns -1.
+        /// </summary>
+        /// <returns>The index of the subquad that wholly contains the given envelope <br/>
+        /// or -1 if no subquad wholly contains the envelope</returns>
+        public static int GetSubnodeIndex(Envelope env, double centreX, double centreY)
+        {
+            int subnodeIndex = -1;
+            if (env.Minimum.X >= centreX)
+            {
+                if (env.Minimum.Y >= centreY) subnodeIndex = 3;
+                if (env.Maximum.Y <= centreY) subnodeIndex = 1;
+            }
+            if (env.Maximum.X <= centreX)
+            {
+                if (env.Minimum.Y >= centreY) subnodeIndex = 2;
+                if (env.Maximum.Y <= centreY) subnodeIndex = 0;
+            }
+            return subnodeIndex;
+        }
+
+        /// <summary> 
         /// Removes a single item from this subtree.
         /// </summary>
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public virtual bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(Envelope itemEnv, T item)
         {
             // use envelope to restrict nodes scanned
-            if (!IsSearchMatch(itemEnv))
-                return false;
+            if (!IsSearchMatch(itemEnv)) return false;
 
             bool found = false;
             for (int i = 0; i < 4; i++)
             {
-                if (_subnode[i] != null)
+                if (Subnode[i] != null)
                 {
-                    found = _subnode[i].Remove(itemEnv, item);
+                    found = Subnode[i].Remove(itemEnv, item);
                     if (found)
                     {
                         // trim subtree if empty
-                        if (_subnode[i].IsPrunable)
-                            _subnode[i] = null;
+                        if (Subnode[i].IsPrunable) Subnode[i] = null;
                         break;
                     }
                 }
             }
 
             // if item was found lower down, don't need to search for it here
-            if (found)
-                return true;
+            if (found) return true;
 
             // otherwise, try and remove the item from the list of items in this node
             if (_items.Contains(item))
@@ -141,211 +286,36 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public virtual void Visit(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Visit(Envelope searchEnv, IItemVisitor<T> visitor)
         {
-            if (!IsSearchMatch(searchEnv))
-                return;
+            if (!IsSearchMatch(searchEnv)) return;
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            VisitItems(visitor);
+            VisitItems(searchEnv, visitor);
 
             for (int i = 0; i < 4; i++)
-                if (_subnode[i] != null)
-                    _subnode[i].Visit(searchEnv, visitor);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Because more than one item can be stored in each node, this returns the total count of
-        /// items contained by this node and its child nodes.
-        /// </summary>
-        public virtual int Count
-        {
-            get
-            {
-                int subSize = 0;
-                for (int i = 0; i < 4; i++)
-                    if (_subnode[i] != null)
-                        subSize += _subnode[i].Count;
-                return subSize + _items.Count;
-            }
+                if (Subnode[i] != null)
+                    Subnode[i].Visit(searchEnv, visitor);
         }
 
         /// <summary>
-        /// Gets an integer representing how deem the deepest child of this node extends.
+        /// 
         /// </summary>
-        public virtual int Depth
-        {
-            get
-            {
-                int maxSubDepth = 0;
-                for (int i = 0; i < 4; i++)
-                {
-                    if (_subnode[i] != null)
-                    {
-                        int sqd = _subnode[i].Depth;
-                        if (sqd > maxSubDepth)
-                            maxSubDepth = sqd;
-                    }
-                }
-                return maxSubDepth + 1;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the array of 4 nodes represnting the spatial quadrants being used as children
-        /// 2 | 3
-        /// --+--
-        /// 0 | 1
-        /// </summary>
-        public Node[] Nodes
-        {
-            get { return _subnode; }
-            set { _subnode = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whehter or not this node links to any nodes below it in the tree
-        /// </summary>
-        public virtual bool HasChildren
-        {
-            get
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    if (_subnode[i] != null)
-                        return true;
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Each node can store multiple items.  This tests whether or not there are items in this node.
-        /// </summary>
-        public virtual bool HasItems
-        {
-            get
-            {
-                // return !items.IsEmpty;
-                if (_items.Count == 0)
-                    return false;
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// If this node has no childern or items, then it can be pruned
-        /// </summary>
-        public virtual bool IsPrunable
-        {
-            get
-            {
-                return !(HasChildren || HasItems);
-            }
-        }
-
-        /// <summary>
-        /// If this node has an item, or if any of the children of this node has an item, then this is false.
-        /// </summary>
-        public virtual bool IsEmpty
-        {
-            get
-            {
-                bool isEmpty = true;
-                // if (!items.isEmpty())
-                if (_items.Count != 0)
-                    isEmpty = false;
-                for (int i = 0; i < 4; i++)
-                    if (_subnode[i] != null)
-                        if (!_subnode[i].IsEmpty)
-                            isEmpty = false;
-                return isEmpty;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the list of items that are stored in this node
-        /// </summary>
-        public virtual IList Items
-        {
-            get { return _items; }
-            set { _items = value; }
-        }
-
-        /// <summary>
-        /// Gets an integer representing this node and the count of all of the children in its subnodes
-        /// </summary>
-        public virtual int NodeCount
-        {
-            get
-            {
-                int subSize = 0;
-                for (int i = 0; i < 4; i++)
-                    if (_subnode[i] != null)
-                        subSize += _subnode[i].NodeCount;
-                return subSize + 1;
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected abstract bool IsSearchMatch(Envelope searchEnv);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        protected abstract bool IsSearchMatch(IEnvelope searchEnv);
-
-        #endregion
-
-        #region Private Functions
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="visitor"></param>
-        private void VisitItems(IItemVisitor visitor)
+        private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
-            for (IEnumerator i = _items.GetEnumerator(); i.MoveNext(); )
+            for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )
                 visitor.VisitItem(i.Current);
-        }
-
-        #endregion
-
-        #region Static
-
-        /// <summary>
-        /// Returns the index of the subquad that wholly contains the given envelope.
-        /// If none does, returns -1.
-        /// </summary>
-        /// <param name="env"></param>
-        /// <param name="centre"></param>
-        public static int GetSubnodeIndex(IEnvelope env, Coordinate centre)
-        {
-            int subnodeIndex = -1;
-            if (env.Minimum.X >= centre.X)
-            {
-                if (env.Minimum.Y >= centre.Y)
-                    subnodeIndex = 3;
-                if (env.Maximum.Y <= centre.Y)
-                    subnodeIndex = 1;
-            }
-            if (env.Maximum.X <= centre.X)
-            {
-                if (env.Minimum.Y >= centre.Y)
-                    subnodeIndex = 2;
-                if (env.Maximum.Y <= centre.Y)
-                    subnodeIndex = 0;
-            }
-            return subnodeIndex;
         }
 
         #endregion

@@ -30,36 +30,31 @@ namespace DotSpatial.Topology.Index.Chain
     /// </summary>
     public class MonotoneChainOverlapAction
     {
-        private Envelope _tempEnv1 = new Envelope();
-        private Envelope _tempEnv2 = new Envelope();
+        #region Fields
 
         /// <summary>
         /// This envelope is used during the MonotoneChain search process.
         /// </summary>
-        public Envelope TempEnv1
-        {
-            get { return _tempEnv1; }
-            set { _tempEnv1 = value; }
-        }
+        public Envelope TempEnv1 = new Envelope();
 
         /// <summary>
-        /// This envelope is used during the MonotoneChain search process.
+        /// This envelope is used during the MonotoneChain search process. 
         /// </summary>
-        public Envelope TempEnv2
-        {
-            get { return _tempEnv2; }
-            set { _tempEnv2 = value; }
-        }
+        public Envelope TempEnv2 = new Envelope();
 
         /// <summary>
         /// One overlapping segment.
         /// </summary>
-        protected LineSegment OverlapSeg1 { get; set; }
+        protected LineSegment OverlapSeg1 = new LineSegment();
 
         /// <summary>
         /// The other overlapping segment.
         /// </summary>
-        protected LineSegment OverlapSeg2 { get; set; }
+        protected LineSegment OverlapSeg2 = new LineSegment();
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This function can be overridden if the original chains are needed.
@@ -70,8 +65,8 @@ namespace DotSpatial.Topology.Index.Chain
         /// <param name="start2">The index of the start of the overlapping segment from mc2.</param>
         public virtual void Overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
         {
-            OverlapSeg1 = mc1.GetLineSegment(start1);
-            OverlapSeg2 = mc2.GetLineSegment(start2);
+            mc1.GetLineSegment(start1, ref OverlapSeg1);
+            mc2.GetLineSegment(start2, ref OverlapSeg2);
             Overlap(OverlapSeg1, OverlapSeg2);
         }
 
@@ -82,5 +77,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// <param name="seg1"></param>
         /// <param name="seg2"></param>
         public virtual void Overlap(LineSegment seg1, LineSegment seg2) { }
+
+        #endregion
     }
 }

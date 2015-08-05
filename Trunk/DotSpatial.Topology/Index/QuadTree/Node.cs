@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Quadtree
@@ -31,48 +32,44 @@ namespace DotSpatial.Topology.Index.Quadtree
     /// items which have a spatial extent corresponding to the node's position
     /// in the quadtree.
     /// </summary>
-    public class Node : NodeBase
+    [Serializable]
+    public class Node<T> : NodeBase<T>
     {
-        private readonly Coordinate _centre;
-        private readonly IEnvelope _env;
+        #region Fields
+
+        //private readonly Coordinate _centre;
+        private readonly double _centreX, _centreY;
         private readonly int _level;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="env"></param>
         /// <param name="level"></param>
-        public Node(IEnvelope env, int level)
+        public Node(Envelope env, int level)
         {
-            _env = env;
+            Envelope = env;
             _level = level;
-            _centre = new Coordinate();
-            _centre.X = (env.Minimum.X + env.Maximum.X) / 2;
-            _centre.Y = (env.Minimum.Y + env.Maximum.Y) / 2;
+            _centreX = (env.Minimum.X + env.Maximum.X) / 2;
+            _centreY = (env.Minimum.Y + env.Maximum.Y) / 2;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual IEnvelope Envelope
-        {
-            get
-            {
-                return _env;
-            }
-        }
+        public Envelope Envelope { get; private set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="env"></param>
-        /// <returns></returns>
-        public static Node CreateNode(IEnvelope env)
-        {
-            Key key = new Key(env);
-            Node node = new Node(key.Envelope, key.Level);
-            return node;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -80,14 +77,14 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
         /// <returns></returns>
-        public static Node CreateExpanded(Node node, IEnvelope addEnv)
+        public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
         {
             Envelope expandEnv = new Envelope(addEnv);
             if (node != null)
-                expandEnv.ExpandToInclude(node._env);
+                expandEnv.ExpandToInclude(node.Envelope);
 
-            Node largerNode = CreateNode(expandEnv);
-            if (node != null)
+            var largerNode = CreateNode(expandEnv);
+            if (node != null) 
                 largerNode.InsertNode(node);
             return largerNode;
         }
@@ -95,31 +92,13 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
-        /// <param name="searchEnv"></param>
+        /// <param name="env"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(IEnvelope searchEnv)
+        public static Node<T> CreateNode(Envelope env)
         {
-            return _env.Intersects(searchEnv);
-        }
-
-        /// <summary>
-        /// Returns the subquad containing the envelope.
-        /// Creates the subquad if
-        /// it does not already exist.
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        public virtual Node GetNode(IEnvelope searchEnv)
-        {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
-            // if subquadIndex is -1 searchEnv is not contained in a subquad
-            if (subnodeIndex != -1)
-            {
-                // create the quad if it does not exist
-                Node node = GetSubnode(subnodeIndex);
-                // recursively search the found/created quad
-                return node.GetNode(searchEnv);
-            }
-            return this;
+            Key key = new Key(env);
+            var node = new Node<T>(key.Envelope, key.Level);
+            return node;
         }
 
         /// <summary>
@@ -127,18 +106,39 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public virtual NodeBase Find(IEnvelope searchEnv)
+        public NodeBase<T> Find(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             if (subnodeIndex == -1)
                 return this;
-            if (Nodes[subnodeIndex] != null)
+            if (Subnode[subnodeIndex] != null) 
             {
                 // query lies in subquad, so search it
-                Node node = Nodes[subnodeIndex];
+                var node = Subnode[subnodeIndex];
                 return node.Find(searchEnv);
             }
             // no existing subquad, so return this one anyway
+            return this;
+        }
+
+        /// <summary> 
+        /// Returns the subquad containing the envelope <paramref name="searchEnv"/>.
+        /// Creates the subquad if
+        /// it does not already exist.
+        /// </summary>
+        /// <param name="searchEnv">The envelope to search for</param>
+        /// <returns>The subquad containing the search envelope.</returns>
+        public Node<T> GetNode(Envelope searchEnv)
+        {
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
+            // if subquadIndex is -1 searchEnv is not contained in a subquad
+            if (subnodeIndex != -1) 
+            {
+                // create the quad if it does not exist
+                var node = GetSubnode(subnodeIndex);
+                // recursively search the found/created quad
+                return node.GetNode(searchEnv);
+            }
             return this;
         }
 
@@ -146,32 +146,30 @@ namespace DotSpatial.Topology.Index.Quadtree
         ///
         /// </summary>
         /// <param name="node"></param>
-        public virtual void InsertNode(Node node)
+        public void InsertNode(Node<T> node)
         {
-            Assert.IsTrue(_env == null || _env.Contains(node.Envelope));
-            int index = GetSubnodeIndex(node._env, _centre);
-            if (node._level == _level - 1)
-                Nodes[index] = node;
-            else
+            Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));        
+            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);        
+            if (node._level == _level - 1)             
+                Subnode[index] = node;                    
+            else 
             {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
-                Node childNode = CreateSubnode(index);
+                var childNode = CreateSubnode(index);
                 childNode.InsertNode(node);
-                Nodes[index] = childNode;
+                Subnode[index] = childNode;
             }
         }
 
         /// <summary>
-        /// Get the subquad for the index.
-        /// If it doesn't exist, create it.
+        ///
         /// </summary>
-        /// <param name="index"></param>
-        private Node GetSubnode(int index)
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected override bool IsSearchMatch(Envelope searchEnv)
         {
-            if (Nodes[index] == null)
-                Nodes[index] = CreateSubnode(index);
-            return Nodes[index];
+            return Envelope.Intersects(searchEnv);
         }
 
         /// <summary>
@@ -179,7 +177,7 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        private Node CreateSubnode(int index)
+        private Node<T> CreateSubnode(int index)
         {
             // create a new subquad in the appropriate quadrant
             double minx = 0.0;
@@ -190,35 +188,49 @@ namespace DotSpatial.Topology.Index.Quadtree
             switch (index)
             {
                 case 0:
-                    minx = _env.Minimum.X;
-                    maxx = _centre.X;
-                    miny = _env.Minimum.Y;
-                    maxy = _centre.Y;
+                    minx = Envelope.Minimum.X;
+                    maxx = _centreX;
+                    miny = Envelope.Minimum.Y;
+                    maxy = _centreY;
                     break;
                 case 1:
-                    minx = _centre.X;
-                    maxx = _env.Maximum.X;
-                    miny = _env.Minimum.Y;
-                    maxy = _centre.Y;
+                    minx = _centreX;
+                    maxx = Envelope.Maximum.X;
+                    miny = Envelope.Minimum.Y;
+                    maxy = _centreY;
                     break;
                 case 2:
-                    minx = _env.Minimum.X;
-                    maxx = _centre.X;
-                    miny = _centre.Y;
-                    maxy = _env.Maximum.Y;
+                    minx = Envelope.Minimum.X;
+                    maxx = _centreX;
+                    miny = _centreY;
+                    maxy = Envelope.Maximum.Y;
                     break;
                 case 3:
-                    minx = _centre.X;
-                    maxx = _env.Maximum.X;
-                    miny = _centre.Y;
-                    maxy = _env.Maximum.Y;
+                    minx = _centreX;
+                    maxx = Envelope.Maximum.X;
+                    miny = _centreY;
+                    maxy = Envelope.Maximum.Y;
                     break;
                 default:
                     break;
             }
             Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
-            Node node = new Node(sqEnv, _level - 1);
+            var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }
+
+        /// <summary>
+        /// Get the subquad for the index.
+        /// If it doesn't exist, create it.
+        /// </summary>
+        /// <param name="index"></param>
+        private Node<T> GetSubnode(int index)
+        {
+            if (Subnode[index] == null) 
+                Subnode[index] = CreateSubnode(index);            
+            return Subnode[index];
+        }
+
+        #endregion
     }
 }

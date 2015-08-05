@@ -28,11 +28,15 @@ namespace DotSpatial.Topology.Index.Sweepline
     /// </summary>
     public interface ISweepLineOverlapAction
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="s0"></param>
         /// <param name="s1"></param>
         void Overlap(SweepLineInterval s0, SweepLineInterval s1);
+
+        #endregion
     }
 }

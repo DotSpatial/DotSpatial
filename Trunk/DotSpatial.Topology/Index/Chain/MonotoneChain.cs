@@ -26,44 +26,64 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Index.Chain
 {
-    /// <summary>
+    /// <summary> 
     /// MonotoneChains are a way of partitioning the segments of a linestring to
     /// allow for fast searching of intersections.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// They have the following properties:
-    /// the segments within a monotone chain will never intersect each other
-    /// the envelope of any contiguous subset of the segments in a monotone chain
-    /// is equal to the envelope of the endpoints of the subset.
+    /// <list>
+    /// <item>the segments within a monotone chain never intersect each other</item>
+    /// <item>the envelope of any contiguous subset of the segments in a monotone chain
+    /// is equal to the envelope of the endpoints of the subset.</item>
+    /// </list>
+    /// </para>
+    /// <para>
     /// Property 1 means that there is no need to test pairs of segments from within
-    /// the same monotone chain for intersection.
-    /// Property 2 allows
+    /// the same monotone chain for intersection.</para>
+    /// <para>Property 2 allows an efficient 
     /// binary search to be used to find the intersection points of two monotone chains.
     /// For many types of real-world data, these properties eliminate a large number of
-    /// segment comparisons, producing substantial speed gains.
+    /// segment comparisons, producing substantial speed gains.</para>
+    /// <para>
     /// One of the goals of this implementation of MonotoneChains is to be
     /// as space and time efficient as possible. One design choice that aids this
     /// is that a MonotoneChain is based on a subarray of a list of points.
     /// This means that new arrays of points (potentially very large) do not
-    /// have to be allocated.
+    /// have to be allocated.</para>
+    /// <para>
     /// MonotoneChains support the following kinds of queries:
-    /// Envelope select: determine all the segments in the chain which
-    /// intersect a given envelope.
-    /// Overlap: determine all the pairs of segments in two chains whose
-    /// envelopes overlap.
+    /// <list type="Table">
+    /// <item>Envelope select</item><description>determine all the segments in the chain which
+    /// intersect a given envelope.</description>
+    /// <item>Overlap</item><description>determine all the pairs of segments in two chains whose
+    /// envelopes overlap.</description>
+    /// </list>
+    /// </para>
+    /// <para>
     /// This implementation of MonotoneChains uses the concept of internal iterators
+    /// (<see cref="MonotoneChainSelectAction"/> and <see cref="MonotoneChainOverlapAction"/>)
     /// to return the resultsets for the above queries.
     /// This has time and space advantages, since it
     /// is not necessary to build lists of instantiated objects to represent the segments
     /// returned by the query.
-    /// However, it does mean that the queries are not thread-safe.
-    /// </summary>
+    /// Queries made in this manner are thread-safe.
+    /// </para>
+    ///</remarks>
     public class MonotoneChain
     {
+        #region Fields
+
         private readonly object _context;  // user-defined information
         private readonly int _end;
         private readonly IList<Coordinate> _pts;
         private readonly int _start;
         private Envelope _env;
-        private int _id;                 // useful for optimizing chain comparisons
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -80,68 +100,18 @@ namespace DotSpatial.Topology.Index.Chain
             _context = context;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int Id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        ///
+        /// Gets the chain's context
         /// </summary>
         public virtual object Context
         {
             get
             {
                 return _context;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Envelope Envelope
-        {
-            get
-            {
-                if (_env == null)
-                {
-                    Coordinate p0 = _pts[_start];
-                    Coordinate p1 = _pts[_end];
-                    _env = new Envelope(p0, p1);
-                }
-                return _env;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int StartIndex
-        {
-            get
-            {
-                return _start;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int EndIndex
-        {
-            get
-            {
-                return _end;
             }
         }
 
@@ -162,67 +132,101 @@ namespace DotSpatial.Topology.Index.Chain
         }
 
         /// <summary>
-        /// Gets a copy of the line segment located at the specified index.
+        /// Gets the end index of the underlying linestring
         /// </summary>
-        /// <param name="index"></param>
-        public virtual LineSegment GetLineSegment(int index)
+        public virtual int EndIndex
         {
-            return new LineSegment(_pts[index], _pts[index + 1]);
+            get
+            {
+                return _end;
+            }
         }
 
         /// <summary>
+        /// Gets the chain's envelope
+        /// </summary>
+        public virtual Envelope Envelope
+        {
+            get
+            {
+                if (_env == null)
+                {
+                    Coordinate p0 = _pts[_start];
+                    Coordinate p1 = _pts[_end];
+                    _env = new Envelope(p0, p1);
+                }
+                return _env;
+            }
+        }
+
+        /// <summary>
+        /// Gets the start index
+        /// </summary>
+        public virtual int StartIndex
+        {
+            get
+            {
+                return _start;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Id
+        /// </summary>
+        public int Id { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Determine all the line segments in two chains which may overlap, and process them.
+        /// </summary>
+        /// <remarks>
+        /// The monotone chain search algorithm attempts to optimize 
+        /// performance by not calling the overlap action on chain segments
+        /// which it can determine do not overlap.
+        /// However, it *may* call the overlap action on segments
+        /// which do not actually interact.
+        /// This saves on the overhead of checking intersection
+        /// each time, since clients may be able to do this more efficiently.
+        /// </remarks>
+        /// <param name="mc">The monotone chain</param>
+        /// <param name="mco">The overlap action to execute on selected segments</param>
+        public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
+        {
+            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
+        }
+
+        /// <summary>
+        /// Gets the line segment starting at <paramref name="index"/>
+        /// </summary>
+        /// <param name="index">The index of the segment</param>
+        /// <param name="ls">The line segment to extract to</param>
+        public void GetLineSegment(int index, ref LineSegment ls)
+        {
+            ls.P0 = _pts[index];
+            ls.P1 = _pts[index + 1];
+        }
+
+        /// <summary> 
         /// Determine all the line segments in the chain whose envelopes overlap
         /// the searchEnvelope, and process them.
         /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="mcs"></param>
-        public virtual void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
+        /// <remarks>
+        /// The monotone chain search algorithm attempts to optimize 
+        /// performance by not calling the select action on chain segments
+        /// which it can determine are not in the search envelope.
+        /// However, it *may* call the select action on segments
+        /// which do not intersect the search envelope.
+        /// This saves on the overhead of checking envelope intersection
+        /// each time, since clients may be able to do this more efficiently.
+        /// </remarks>
+        /// <param name="searchEnv">The search envelope</param>
+        /// <param name="mcs">The select action to execute on selected segments</param>
+        public void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, _start, _end, mcs);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="start0"></param>
-        /// <param name="end0"></param>
-        /// <param name="mcs"></param>
-        private void ComputeSelect(IEnvelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
-        {
-            Coordinate p0 = _pts[start0];
-            Coordinate p1 = _pts[end0];
-            mcs.TempEnv1.Init(p0, p1);
-
-            // terminating condition for the recursion
-            if (end0 - start0 == 1)
-            {
-                mcs.Select(this, start0);
-                return;
-            }
-            // nothing to do if the envelopes don't overlap
-            if (!searchEnv.Intersects(mcs.TempEnv1))
-                return;
-
-            // the chains overlap, so split each in half and iterate  (binary search)
-            int mid = (start0 + end0) / 2;
-
-            // Assert: mid != start or end (since we checked above for end - start <= 1)
-            // check terminating conditions before recursing
-            if (start0 < mid)
-                ComputeSelect(searchEnv, start0, mid, mcs);
-            if (mid < end0)
-                ComputeSelect(searchEnv, mid, end0, mcs);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="mco"></param>
-        public virtual void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
-        {
-            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
         }
 
         /// <summary>
@@ -274,5 +278,41 @@ namespace DotSpatial.Topology.Index.Chain
                     ComputeOverlaps(mid0, end0, mc, mid1, end1, mco);
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <param name="start0"></param>
+        /// <param name="end0"></param>
+        /// <param name="mcs"></param>
+        private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
+        {
+            Coordinate p0 = _pts[start0];
+            Coordinate p1 = _pts[end0];
+            mcs.TempEnv1.Init(p0, p1);
+
+            // terminating condition for the recursion
+            if (end0 - start0 == 1)
+            {
+                mcs.Select(this, start0);
+                return;
+            }
+            // nothing to do if the envelopes don't overlap
+            if (!searchEnv.Intersects(mcs.TempEnv1))
+                return;
+
+            // the chains overlap, so split each in half and iterate  (binary search)
+            int mid = (start0 + end0) / 2;
+
+            // Assert: mid != start or end (since we checked above for end - start <= 1)
+            // check terminating conditions before recursing
+            if (start0 < mid)
+                ComputeSelect(searchEnv, start0, mid, mcs);
+            if (mid < end0)
+                ComputeSelect(searchEnv, mid, end0, mcs);
+        }
+
+        #endregion
     }
 }

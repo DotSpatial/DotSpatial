@@ -31,7 +31,34 @@ namespace DotSpatial.Topology.Index.Sweepline
     /// </summary>
     public class SweepLineEvent : IComparable
     {
-        #region SweepLineEventType enum
+        #region Fields
+
+        private readonly SweepLineEventType _eventType;
+        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
+        private readonly SweepLineInterval _sweepInt;
+        private readonly double _xValue;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="insertEvent"></param>
+        /// <param name="sweepInt"></param>
+        public SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
+        {
+            _xValue = x;
+            _insertEvent = insertEvent;
+            _eventType = insertEvent != null ? SweepLineEventType.Delete : SweepLineEventType.Insert;
+            _sweepInt = sweepInt;
+        }
+
+        #endregion
+
+        #region Enums
 
         /// <summary>
         ///
@@ -51,35 +78,27 @@ namespace DotSpatial.Topology.Index.Sweepline
 
         #endregion
 
-        private readonly SweepLineEventType _eventType;
-        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
-
-        private readonly SweepLineInterval _sweepInt;
-        private readonly double _xValue;
-        private int _deleteEventIndex;
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="insertEvent"></param>
-        /// <param name="sweepInt"></param>
-        public SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
+        public virtual SweepLineEvent InsertEvent
         {
-            _xValue = x;
-            _insertEvent = insertEvent;
-            _eventType = insertEvent != null ? SweepLineEventType.Delete : SweepLineEventType.Insert;
-            _sweepInt = sweepInt;
+            get
+            {
+                return _insertEvent;
+            }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsInsert
+        public virtual SweepLineInterval Interval
         {
             get
             {
-                return _insertEvent == null;
+                return _sweepInt;
             }
         }
 
@@ -97,41 +116,22 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual SweepLineEvent InsertEvent
+        public virtual bool IsInsert
         {
             get
             {
-                return _insertEvent;
+                return _insertEvent == null;
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int DeleteEventIndex
-        {
-            get
-            {
-                return _deleteEventIndex;
-            }
-            set
-            {
-                _deleteEventIndex = value;
-            }
-        }
+        public int DeleteEventIndex { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual SweepLineInterval Interval
-        {
-            get
-            {
-                return _sweepInt;
-            }
-        }
+        #endregion
 
-        #region IComparable Members
+        #region Methods
 
         /// <summary>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.

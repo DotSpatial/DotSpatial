@@ -34,10 +34,16 @@ namespace DotSpatial.Topology.Index.Bintree
     /// </summary>
     public class Key
     {
+        #region Fields
+
         // auxiliary data which is derived from the key for use in computation
         private Interval _interval;
         private int _level;
         private double _pt;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -48,14 +54,18 @@ namespace DotSpatial.Topology.Index.Bintree
             ComputeKey(interval);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
-        public virtual double Point
+        public virtual Interval Interval
         {
             get
             {
-                return _pt;
+                return _interval;
             }
         }
 
@@ -73,25 +83,17 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
-        public virtual Interval Interval
+        public virtual double Point
         {
             get
             {
-                return _interval;
+                return _pt;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <returns></returns>
-        public static int ComputeLevel(Interval interval)
-        {
-            double dx = interval.Width;
-            int level = DoubleBits.GetExponent(dx) + 1;
-            return level;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
@@ -114,6 +116,18 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        public static int ComputeLevel(Interval interval)
+        {
+            double dx = interval.Width;
+            int level = DoubleBits.GetExponent(dx) + 1;
+            return level;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="level"></param>
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
@@ -122,5 +136,7 @@ namespace DotSpatial.Topology.Index.Bintree
             _pt = Math.Floor(itemInterval.Min / size) * size;
             _interval.Init(_pt, _pt + size);
         }
+
+        #endregion
     }
 }

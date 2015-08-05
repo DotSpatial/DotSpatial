@@ -22,49 +22,59 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geoapi.Geometries;
+
 namespace DotSpatial.Topology.Index.Strtree
 {
     /// <summary>
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
     /// AbstractSTRtree.
     /// </summary>
-    public class ItemBoundable : IBoundable
+    public class ItemBoundable<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
-        private readonly object _bounds;
-        private readonly object _item;
+        #region Fields
+
+        private readonly T _bounds;
+        private readonly TItem _item;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="item"></param>
-        public ItemBoundable(object bounds, object item)
+        public ItemBoundable(T bounds, TItem item) 
         {
             _bounds = bounds;
             _item = item;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual object Item
-        {
-            get
-            {
-                return _item;
-            }
-        }
+        #endregion
 
-        #region IBoundable Members
+        #region Properties
 
         /// <summary>
-        ///
+        /// The bounds
         /// </summary>
-        public virtual object Bounds
+        public T Bounds 
         {
             get
             {
                 return _bounds;
+            }
+        }
+
+        /// <summary>
+        /// The item
+        /// </summary>
+        public TItem Item
+        {
+            get
+            {
+                return _item;
             }
         }
 

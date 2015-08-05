@@ -30,29 +30,42 @@ namespace DotSpatial.Topology.Index.Chain
     /// </summary>
     public class MonotoneChainSelectAction
     {
+        #region Fields
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public LineSegment SelectedSegment = new LineSegment();
+
         /// <summary>
         /// These envelopes are used during the MonotoneChain search process.
         /// </summary>
         public Envelope TempEnv1 = new Envelope();
 
-        private LineSegment _selectedSegment;
+        #endregion
 
-        /// <summary>
-        /// This function can be overridden if the original chain is needed.
+        #region Methods
+
+        /// <summary> 
+        /// This method is overridden to process a segment 
+        /// in the context of the parent chain.
         /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="start"></param>
-        public virtual void Select(MonotoneChain mc, int start)
+        /// <param name="mc">The parent chain</param>
+        /// <param name="startIndex">The index of the start vertex of the segment being processed</param>
+        public virtual void Select(MonotoneChain mc, int startIndex)
         {
-            _selectedSegment = mc.GetLineSegment(start);
-            Select(_selectedSegment);
+            mc.GetLineSegment(startIndex, ref SelectedSegment);
+            // call this routine in case select(segmenet) was overridden
+            Select(SelectedSegment);
         }
 
         /// <summary>
-        /// This is a convenience function which can be overridden to obtain the actual
+        /// This is a convenience method which can be overridden to obtain the actual
         /// line segment which is selected.
         /// </summary>
         /// <param name="seg"></param>
         public virtual void Select(LineSegment seg) { }
+
+        #endregion
     }
 }

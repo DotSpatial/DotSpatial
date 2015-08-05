@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Index.Sweepline
 {
@@ -32,11 +32,16 @@ namespace DotSpatial.Topology.Index.Sweepline
     /// </summary>
     public class SweepLineIndex
     {
-        private readonly ArrayList _events = new ArrayList();
-        private bool _indexBuilt;
+        #region Fields
 
+        private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
+        private bool _indexBuilt;
         // statistics information
         private int _nOverlaps;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -47,6 +52,23 @@ namespace DotSpatial.Topology.Index.Sweepline
             SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
             _events.Add(insertEvent);
             _events.Add(new SweepLineEvent(sweepInt.Max, insertEvent, sweepInt));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="action"></param>
+        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
+        {
+            _nOverlaps = 0;
+            BuildIndex();
+
+            for (int i = 0; i < _events.Count; i++)
+            {
+                SweepLineEvent ev = _events[i];
+                if (ev.IsInsert)               
+                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
+            }
         }
 
         /// <summary>
@@ -61,28 +83,11 @@ namespace DotSpatial.Topology.Index.Sweepline
             _events.Sort();
             for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
-                if (ev.IsDelete)
-                    ev.InsertEvent.DeleteEventIndex = i;
+                SweepLineEvent ev = _events[i];
+                if (ev.IsDelete)                
+                    ev.InsertEvent.DeleteEventIndex = i;                
             }
             _indexBuilt = true;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="action"></param>
-        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
-        {
-            _nOverlaps = 0;
-            BuildIndex();
-
-            for (int i = 0; i < _events.Count; i++)
-            {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
-                if (ev.IsInsert)
-                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);
-            }
         }
 
         /// <summary>
@@ -101,7 +106,7 @@ namespace DotSpatial.Topology.Index.Sweepline
              */
             for (int i = start; i < end; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsInsert)
                 {
                     SweepLineInterval s1 = ev.Interval;
@@ -110,5 +115,7 @@ namespace DotSpatial.Topology.Index.Sweepline
                 }
             }
         }
+
+        #endregion
     }
 }

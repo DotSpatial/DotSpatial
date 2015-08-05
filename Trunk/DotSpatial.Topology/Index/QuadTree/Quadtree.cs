@@ -23,33 +23,43 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
+using DotSpatial.Topology.Index.Bintree;
 
 namespace DotSpatial.Topology.Index.Quadtree
 {
     /// <summary>
-    /// A Quadtree is a spatial index structure for efficient querying
-    /// of 2D rectangles.  If other kinds of spatial objects
-    /// need to be indexed they can be represented by their
-    /// envelopes
-    /// The quadtree structure is used to provide a primary filter
-    /// for range rectangle queries.  The Query() method returns a list of
-    /// all objects which may intersect the query rectangle.  Notice that
-    /// it may return objects which do not in fact intersect.
-    /// A secondary filter is required to test for exact intersection.
-    /// Of course, this secondary filter may consist of other tests besides
-    /// intersection, such as testing other kinds of spatial relationships.
+    /// A Quadtree is a spatial index structure for efficient range querying
+    /// of items bounded by 2D rectangles.<br/>
+    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
+    /// Any type of object can also be indexed, as long as it has an extent that can be 
+    /// represented by an <see cref="Envelope"/>.
+    /// <para/>
+    /// This Quadtree index provides a <b>primary filter</b>
+    /// for range rectangle queries.  The various query methods return a list of
+    /// all items which <i>may</i> intersect the query rectangle.  Note that
+    /// it may thus return items which do <b>not</b> in fact intersect the query rectangle.
+    /// A secondary filter is required to test for actual intersection 
+    /// between the query rectangle and the envelope of each candidate item. 
+    /// The secondary filter may be performed explicitly, 
+    /// or it may be provided implicitly by subsequent operations executed on the items 
+    /// (for instance, if the index query is followed by computing a spatial predicate 
+    /// between the query geometry and tree items, 
+    /// the envelope intersection check is performed automatically.
+    /// <para/>
     /// This implementation does not require specifying the extent of the inserted
     /// items beforehand.  It will automatically expand to accomodate any extent
     /// of dataset.
+    /// <para/>
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
-    /// following the usage of Samet and others.
+    /// following the terminology usage of Samet and others.
     /// </summary>
-    public class Quadtree : ISpatialIndex
+    [System.Serializable]
+    public class Quadtree<T> : ISpatialIndex<T>
     {
-        /// <summary>
-        /// Root of Quadtree
-        /// </summary>
-        protected readonly Root Root;
+        #region Fields
+
+        private readonly Root<T> _root;
 
         /// <summary>
         /// minExtent is the minimum envelope extent of all items
@@ -61,100 +71,61 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// </summary>
         private double _minExtent = 1.0;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Constructs a Quadtree with zero items.
         /// </summary>
         public Quadtree()
         {
-            Root = new Root();
+            _root = new Root<T>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Returns the number of items in the tree.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return _root != null ? _root.Count : 0;
+            }
         }
 
         /// <summary>
         /// Returns the number of levels in the tree.
         /// </summary>
-        public virtual int Depth
+        public int Depth
         {
             get
             {
                 //I don't think it's possible for root to be null. Perhaps we should
                 //remove the check. [Jon Aquino]
                 //Or make an assertion [Jon Aquino 10/29/2003]
-                if (Root != null)
-                    return Root.Depth;
-                return 0;
+                return _root != null ? _root.Depth : 0;
             }
         }
 
         /// <summary>
-        /// Returns the number of items in the tree.
+        /// Tests whether the index contains any items.
         /// </summary>
-        public virtual int Count
+        public bool IsEmpty
         {
             get
             {
-                if (Root != null)
-                    return Root.Count;
-                return 0;
+                return _root == null;
             }
         }
 
-        #region ISpatialIndex Members
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="itemEnv"></param>
-        /// <param name="item"></param>
-        public virtual void Insert(IEnvelope itemEnv, object item)
-        {
-            CollectStats(itemEnv);
-            IEnvelope insertEnv = EnsureExtent(itemEnv, _minExtent);
-            Root.Insert(insertEnv, item);
-        }
-
-        /// <summary>
-        /// Removes a single item from the tree.
-        /// </summary>
-        /// <param name="itemEnv">The Envelope of the item to remove.</param>
-        /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was found.</returns>
-        public virtual bool Remove(IEnvelope itemEnv, object item)
-        {
-            IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
-            return Root.Remove(posEnv, item);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        public virtual IList Query(IEnvelope searchEnv)
-        {
-            /*
-            * the items that are matched are the items in quads which
-            * overlap the search envelope
-            */
-            var visitor = new ArrayListVisitor();
-            Query(searchEnv, visitor);
-            return visitor.Items;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="visitor"></param>
-        public virtual void Query(IEnvelope searchEnv, IItemVisitor visitor)
-        {
-            /*
-            * the items that are matched are the items in quads which
-            * overlap the search envelope
-            */
-            Root.Visit(searchEnv, visitor);
-        }
-
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Ensure that the envelope for the inserted item has non-zero extents.
@@ -162,7 +133,7 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="minExtent"></param>
-        public static IEnvelope EnsureExtent(IEnvelope itemEnv, double minExtent)
+        public static Envelope EnsureExtent(Envelope itemEnv, double minExtent)
         {
             //The names "ensureExtent" and "minExtent" are misleading -- sounds like
             //this method ensures that the extents are greater than minExtent.
@@ -171,7 +142,7 @@ namespace DotSpatial.Topology.Index.Quadtree
             double minx = itemEnv.Minimum.X;
             double maxx = itemEnv.Maximum.X;
             double miny = itemEnv.Minimum.Y;
-            double maxy = itemEnv.Maximum.Y;
+            double maxy = itemEnv.Maximum.Y;            
             // has a non-zero extent
             if (minx != maxx && miny != maxy)
                 return itemEnv;
@@ -190,28 +161,102 @@ namespace DotSpatial.Topology.Index.Quadtree
         }
 
         /// <summary>
-        /// Return a list of all items in the Quadtree.
-        /// </summary>
-        public virtual IList QueryAll()
-        {
-            IList foundItems = new ArrayList();
-            Root.AddAllItems(ref foundItems);
-            return foundItems;
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="itemEnv"></param>
-        private void CollectStats(IRectangle itemEnv)
+        /// <param name="item"></param>
+        public void Insert(Envelope itemEnv, T item)
+        {
+            CollectStats(itemEnv);
+            Envelope insertEnv = EnsureExtent(itemEnv, _minExtent);
+            _root.Insert(insertEnv, item);
+        }
+
+        /// <summary>
+        /// Queries the tree and returns items which may lie in the given search envelope.
+        /// </summary>
+        /// <remarks>
+        /// Precisely, the items that are returned are all items in the tree 
+        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// Note that some items with non-intersecting envelopes may be returned as well;
+        /// the client is responsible for filtering these out.
+        /// In most situations there will be many items in the tree which do not
+        /// intersect the search envelope and which are not returned - thus
+        /// providing improved performance over a simple linear scan.    
+        /// </remarks>
+        /// <param name="searchEnv">The envelope of the desired query area.</param>
+        /// <returns>A List of items which may intersect the search envelope</returns>
+        public IList<T> Query(Envelope searchEnv)
+        {
+            /*
+            * the items that are matched are the items in quads which
+            * overlap the search envelope
+            */
+            ArrayListVisitor<T> visitor = new ArrayListVisitor<T>();
+            Query(searchEnv, visitor);
+            return visitor.Items;
+        }
+
+        /// <summary>
+        /// Queries the tree and visits items which may lie in the given search envelope.
+        /// </summary>
+        /// <remarks>
+        /// Precisely, the items that are visited are all items in the tree 
+        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// Note that some items with non-intersecting envelopes may be visited as well;
+        /// the client is responsible for filtering these out.
+        /// In most situations there will be many items in the tree which do not
+        /// intersect the search envelope and which are not visited - thus
+        /// providing improved performance over a simple linear scan.    
+        /// </remarks>
+        /// <param name="searchEnv">The envelope of the desired query area.</param>
+        /// <param name="visitor">A visitor object which is passed the visited items</param>
+        public void Query(Envelope searchEnv, IItemVisitor<T> visitor)
+        {
+            /*
+            * the items that are matched are the items in quads which
+            * overlap the search envelope
+            */
+            _root.Visit(searchEnv, visitor);
+        }
+
+        /// <summary>
+        /// Return a list of all items in the Quadtree.
+        /// </summary>
+        public IList<T> QueryAll()
+        {
+            IList<T> foundItems = new List<T>();
+            _root.AddAllItems(ref foundItems);
+            return foundItems;
+        }
+
+        /// <summary> 
+        /// Removes a single item from the tree.
+        /// </summary>
+        /// <param name="itemEnv">The Envelope of the item to be removed.</param>
+        /// <param name="item">The item to remove.</param>
+        /// <returns><c>true</c> if the item was found (and thus removed).</returns>
+        public bool Remove(Envelope itemEnv, T item)
+        {
+            Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
+            return _root.Remove(posEnv, item);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemEnv"></param>
+        private void CollectStats(Envelope itemEnv)
         {
             double delX = itemEnv.Width;
             if (delX < _minExtent && delX > 0.0)
-                _minExtent = delX;
+            _minExtent = delX;
 
-            double delY = itemEnv.Width;
+            double delY = itemEnv.Height;
             if (delY < _minExtent && delY > 0.0)
-                _minExtent = delY;
+            _minExtent = delY;
         }
+
+        #endregion
     }
 }

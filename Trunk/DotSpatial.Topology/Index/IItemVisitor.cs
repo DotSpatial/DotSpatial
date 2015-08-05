@@ -27,12 +27,16 @@ namespace DotSpatial.Topology.Index
     /// <summary>
     /// A visitor for items in an index.
     /// </summary>
-    public interface IItemVisitor
+    public interface IItemVisitor<T>
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="item"></param>
-        void VisitItem(object item);
+        void VisitItem(T item);
+
+        #endregion
     }
 }

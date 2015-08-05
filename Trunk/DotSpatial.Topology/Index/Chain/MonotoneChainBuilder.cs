@@ -22,42 +22,25 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Index.Chain
 {
-    /// <summary>
-    /// A MonotoneChainBuilder implements static functions
-    /// to determine the monotone chains in a sequence of points.
+    /// <summary> 
+    /// Constructs <see cref="MonotoneChain"/>s
+    /// for sequences of <see cref="Coordinate"/>s.
     /// </summary>
-    public class MonotoneChainBuilder
+    public static class MonotoneChainBuilder
     {
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private MonotoneChainBuilder() { }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static int[] ToIntArray(IList list)
-        {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)
-                array[i] = (int)list[i];
-            return array;
-        }
+        #region Methods
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public static IList GetChains(IList<Coordinate> pts)
+        public static IList<MonotoneChain> GetChains(IList<Coordinate> pts)
         {
             return GetChains(pts, null);
         }
@@ -68,11 +51,11 @@ namespace DotSpatial.Topology.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="context"></param>
-        public static IList GetChains(IList<Coordinate> pts, object context)
+        public static IList<MonotoneChain> GetChains(IList<Coordinate> pts, object context)
         {
-            IList mcList = new ArrayList();
-            int[] startIndex = GetChainStartIndices(pts);
-            for (int i = 0; i < startIndex.Length - 1; i++)
+            var mcList = new List<MonotoneChain>();
+            var startIndex = GetChainStartIndices(pts);
+            for (var i = 0; i < startIndex.Length - 1; i++)
             {
                 MonotoneChain mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
                 mcList.Add(mc);
@@ -91,8 +74,7 @@ namespace DotSpatial.Topology.Index.Chain
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
-            IList startIndexList = new ArrayList();
-            startIndexList.Add(start);
+            var startIndexList = new List<int> {start};
             do
             {
                 int last = FindChainEnd(pts, start);
@@ -102,32 +84,60 @@ namespace DotSpatial.Topology.Index.Chain
             while (start < pts.Count - 1);
 
             // copy list to an array of ints, for efficiency
-            int[] startIndex = ToIntArray(startIndexList);
-            return startIndex;
+            return startIndexList.ToArray();
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="start"></param>
-        /// <returns>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static int[] ToIntArray(IList<int> list)
+        {
+            int[] array = new int[list.Count];
+            for (int i = 0; i < array.Length; i++)            
+                array[i] = list[i];            
+            return array;
+        }
+
+        /// <summary>
+        /// Finds the index of the last point in a monotone chain starting at a given point.
+        /// Any repeated points (0-length segments) will be included in the monotone chain returned.
+        /// </summary>
+        /// <param name="pts">The coordinates</param>
+        /// <param name="start">The start index</param>
+        /// <returns> 
         /// The index of the last point in the monotone chain starting at <c>start</c>.
         /// </returns>
         private static int FindChainEnd(IList<Coordinate> pts, int start)
         {
-            // determine quadrant for chain
-            int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
+            int safeStart = start;
+            // skip any zero-length segments at the start of the sequence
+            // (since they cannot be used to establish a quadrant)
+            while (safeStart < pts.Count - 1 && pts[safeStart].Equals2D(pts[safeStart + 1]))
+            {
+                safeStart++;
+            }
+            // check if there are NO non-zero-length segments
+            if (safeStart >= pts.Count - 1) return pts.Count - 1;
+            
+            // determine overall quadrant for chain (which is the starting quadrant)
+            int chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
             int last = start + 1;
             while (last < pts.Count)
             {
-                // compute quadrant for next possible segment in chain
-                int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
-                if (quad != chainQuad)
-                    break;
+                // skip zero-length segments, but include them in the chain
+                if (!pts[last - 1].Equals2D(pts[last]))
+                {
+                    // compute quadrant for next possible segment in chain
+                    int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                    if (quad != chainQuad) break;
+                }
                 last++;
             }
             return last - 1;
         }
+
+        #endregion
     }
 }

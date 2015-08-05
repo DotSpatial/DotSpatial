@@ -29,9 +29,15 @@ namespace DotSpatial.Topology.Index.Sweepline
     /// </summary>
     public class SweepLineInterval
     {
+        #region Fields
+
         private readonly object _item;
         private readonly double _max;
         private readonly double _min;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -53,10 +59,14 @@ namespace DotSpatial.Topology.Index.Sweepline
             _item = item;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
-        public virtual double Min { get { return _min; } }
+        public virtual object Item { get { return _item; } }
 
         /// <summary>
         ///
@@ -66,6 +76,8 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual object Item { get { return _item; } }
+        public virtual double Min { get { return _min; } }
+
+        #endregion
     }
 }

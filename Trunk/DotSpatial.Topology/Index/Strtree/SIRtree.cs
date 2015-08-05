@@ -24,6 +24,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DotSpatial.Topology.Geoapi.Geometries;
 
 namespace DotSpatial.Topology.Index.Strtree
 {
@@ -33,10 +35,16 @@ namespace DotSpatial.Topology.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class SiRtree : AbstractStRtree
+    public class SiRtree<TItem> : AbstractStRtree<Interval, TItem> 
     {
-        private readonly IComparer _comparator = new AnnonymousComparerImpl();
-        private readonly IIntersectsOp _intersectsOp = new AnonymousIntersectsOpImpl();
+        #region Fields
+
+        private static readonly IComparer<IBoundable<Interval, TItem>> Comparator = new AnnonymousComparerImpl();
+        private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs an SIRtree with the default (10) node capacity.
@@ -49,6 +57,10 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         public SiRtree(int nodeCapacity) : base(nodeCapacity) { }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -56,19 +68,13 @@ namespace DotSpatial.Topology.Index.Strtree
         {
             get
             {
-                return _intersectsOp;
+                return IntersectsOperation;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        protected override AbstractNode CreateNode(int level)
-        {
-            return new AnonymousAbstractNodeImpl(level);
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
@@ -76,16 +82,16 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <param name="item"></param>
-        public virtual void Insert(double x1, double x2, object item)
+        public void Insert(double x1, double x2, TItem item) 
         {
-            base.Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
+            Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
 
         /// <summary>
         /// Returns items whose bounds intersect the given value.
         /// </summary>
         /// <param name="x"></param>
-        public virtual IList Query(double x)
+        public IList<TItem> Query(double x) 
         {
             return Query(x, x);
         }
@@ -95,97 +101,91 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="x1">Possibly equal to x2.</param>
         /// <param name="x2">Possibly equal to x1.</param>
-        public virtual IList Query(double x1, double x2)
+        public IList<TItem> Query(double x1, double x2) 
         {
-            return base.Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+            return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        protected override AbstractNode<Interval, TItem> CreateNode(int level) 
+        {                
+            return new AnonymousAbstractNodeImpl(level);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        protected override IComparer GetComparer()
+        protected override IComparer<IBoundable<Interval, TItem>> GetComparer() 
         {
-            return _comparator;
+            return Comparator;
         }
 
-        #region Nested type: AnnonymousComparerImpl
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        private class AnnonymousComparerImpl : IComparer
+        #region Classes
+
+        private class AnnonymousComparerImpl : IComparer<IBoundable<Interval, TItem>>
         {
-            #region IComparer Members
+            #region Methods
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-            public int Compare(object o1, object o2)
+            public int Compare(IBoundable<Interval, TItem> o1, IBoundable<Interval, TItem> o2)
             {
-                return new SiRtree().CompareDoubles(((Interval)((IBoundable)o1).Bounds).Centre,
-                                                    ((Interval)((IBoundable)o2).Bounds).Centre);
+                var c1 = o1.Bounds.Centre;
+                var c2 = o2.Bounds.Centre;
+                return c1.CompareTo(c2);
             }
 
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: AnonymousAbstractNodeImpl
-
-        /// <summary>
-        ///
-        /// </summary>
-        private class AnonymousAbstractNodeImpl : AbstractNode
+        private class AnonymousAbstractNodeImpl : AbstractNode<Interval, TItem>
         {
+            #region Constructors
+
             /// <summary>
             ///
             /// </summary>
             /// <param name="nodeCapacity"></param>
             public AnonymousAbstractNodeImpl(int nodeCapacity) : base(nodeCapacity) { }
 
+            #endregion
+
+            #region Methods
+
             /// <summary>
             ///
             /// </summary>
             /// <returns></returns>
-            protected override object ComputeBounds()
+            protected override Interval ComputeBounds()
             {
                 Interval bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext(); )
+                //var bounds = Interval.Create();
+                foreach (var childBoundable in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable)i.Current;
                     if (bounds == null)
-                        bounds = new Interval((Interval)childBoundable.Bounds);
-                    else bounds.ExpandToInclude((Interval)childBoundable.Bounds);
+                         bounds = new Interval(childBoundable.Bounds);
+                    else 
+                        bounds.ExpandToInclude(childBoundable.Bounds);
+                    //bounds = bounds.ExpandedByInterval((Interval) childBoundable.Bounds);
                 }
                 return bounds;
             }
+
+            #endregion
         }
 
-        #endregion
-
-        #region Nested type: AnonymousIntersectsOpImpl
-
-        /// <summary>
-        ///
-        /// </summary>
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            #region IIntersectsOp Members
+            #region Methods
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="aBounds"></param>
-            /// <param name="bBounds"></param>
-            /// <returns></returns>
-            public bool Intersects(object aBounds, object bBounds)
+            public bool Intersects(Interval aBounds, Interval bBounds) 
             {
-                return ((Interval)aBounds).Intersects((Interval)bBounds);
+                return aBounds.Intersects(bBounds);
             }
 
             #endregion

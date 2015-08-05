@@ -22,21 +22,30 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Index
 {
+    public class ArrayListVisitor : ArrayListVisitor<object>
+    {}
+
     /// <summary>
     ///
     /// </summary>
-    public class ArrayListVisitor : IItemVisitor
+    public class ArrayListVisitor<T> : IItemVisitor<T>
     {
-        private readonly ArrayList _items = new ArrayList();
+        #region Fields
+
+        private readonly List<T> _items = new List<T>();
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual ArrayList Items
+        public IList<T> Items
         {
             get
             {
@@ -44,13 +53,15 @@ namespace DotSpatial.Topology.Index
             }
         }
 
-        #region IItemVisitor Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="item"></param>
-        public virtual void VisitItem(object item)
+        public void VisitItem(T item)
         {
             _items.Add(item);
         }

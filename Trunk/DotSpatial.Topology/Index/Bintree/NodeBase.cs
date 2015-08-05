@@ -22,72 +22,26 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Index.Bintree
 {
     /// <summary>
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-    public abstract class NodeBase
+    [Serializable]
+    public abstract class NodeBase<T>
     {
-        #region Private Variables
-
-        private readonly IList _items = new ArrayList();
+        #region Fields
 
         /// <summary>
         /// Subnodes are numbered as follows:
         /// 0 | 1
         /// </summary>
-        private Node[] _subnode = new Node[2];
+        protected Node<T>[] Subnode = new Node<T>[2];
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Adds the specified object to the items list for this node.  This will not affect child nodes.
-        /// </summary>
-        /// <param name="item">The object item to add to the list.</param>
-        public virtual void Add(object item)
-        {
-            _items.Add(item);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        public virtual IList AddAllItems(IList items)
-        {
-            // items.addAll(this.items);
-            foreach (object o in _items)
-                items.Add(o);
-            for (int i = 0; i < 2; i++)
-                if (_subnode[i] != null)
-                    _subnode[i].AddAllItems(items);
-            return items;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="resultItems"></param>
-        /// <returns></returns>
-        public virtual IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
-        {
-            if (!IsSearchMatch(interval))
-                return _items;
-            // resultItems.addAll(items);
-            foreach (object o in _items)
-                resultItems.Add(o);
-            for (int i = 0; i < 2; i++)
-                if (_subnode[i] != null)
-                    _subnode[i].AddAllItemsFromOverlapping(interval, resultItems);
-            return _items;
-        }
+        private IList<T> _items = new List<T>();
 
         #endregion
 
@@ -102,8 +56,8 @@ namespace DotSpatial.Topology.Index.Bintree
             {
                 int subSize = 0;
                 for (int i = 0; i < 2; i++)
-                    if (_subnode[i] != null)
-                        subSize += _subnode[i].Count;
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
                 return subSize + _items.Count;
             }
         }
@@ -118,9 +72,9 @@ namespace DotSpatial.Topology.Index.Bintree
                 int maxSubDepth = 0;
                 for (int i = 0; i < 2; i++)
                 {
-                    if (_subnode[i] != null)
+                    if (Subnode[i] != null)
                     {
-                        int sqd = _subnode[i].Depth;
+                        int sqd = Subnode[i].Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -130,52 +84,111 @@ namespace DotSpatial.Topology.Index.Bintree
         }
 
         /// <summary>
-        /// Gets a list of all the items currently stored in this node.  This does not include
-        /// any items from child nodes.
+        /// Gets whether this node has any children
         /// </summary>
-        public virtual IList Items
+        public bool HasChildren
         {
-            get { return _items; }
+            get
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (Subnode[i] != null)
+                        return true;
+                }
+                return false;
+            }
         }
 
         /// <summary>
-        /// Gets the count of this node plus all of the child nodes
+        /// 
         /// </summary>
-        public virtual int NodeCount
+        public bool HasItems { get { return _items.Count != 0; }
+        }
+
+        /// <summary>
+        /// Gets whether this node is prunable
+        /// </summary>
+        public bool IsPrunable
+        {
+            get { return !(HasChildren || HasItems); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NodeCount
         {
             get
             {
                 int subCount = 0;
                 for (int i = 0; i < 2; i++)
-                    if (_subnode[i] != null)
-                        subCount += _subnode[i].NodeCount;
+                    if (Subnode[i] != null)
+                        subCount += Subnode[i].NodeCount;
                 return subCount + 1;
             }
         }
 
         /// <summary>
-        /// Gets the array of all the sub-nodes below this node.
+        /// 
         /// </summary>
-        public virtual Node[] Nodes
+        public IList<T> Items
         {
-            get { return _subnode; }
-            protected set { _subnode = value; }
+            get
+            {
+                return _items;
+            }
+            protected set { _items = value; }
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Methods
+
+        /// <summary>
+        /// Adds the specified object to the items list for this node.  This will not affect child nodes.
+        /// </summary>
+        /// <param name="item">The object item to add to the list.</param>
+        public void Add(T item)
+        {
+            _items.Add(item);
+        }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="interval"></param>
+        /// <param name="items"></param>
         /// <returns></returns>
-        protected abstract bool IsSearchMatch(Interval interval);
+        public IList<T> AddAllItems(IList<T> items)
+        {
+            // items.addAll(this.items);
+            foreach (T o in _items)
+                items.Add(o);
+            for (int i = 0; i < 2; i++)
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItems(items);
+            return items;
+        }
 
-        #endregion
+        /// <summary>
+        /// Adds items in the tree which potentially overlap the query interval
+        /// to the given collection.
+        /// If the query interval is <tt>null</tt>, add all items in the tree.
+        /// </summary>
+        /// <param name="interval">A query interval, or <c>null</c></param>
+        /// <param name="resultItems">The candidate items found</param>
+        public void AddAllItemsFromOverlapping(Interval interval, ICollection<T> resultItems)
+        {
+            if (interval != null && !IsSearchMatch(interval))
+                return;
 
-        #region Static
+            // some of these may not actually overlap - this is allowed by the bintree contract
+            //resultItems.AddAll(items);
+            foreach (T o in _items)
+                resultItems.Add(o);
+
+            if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);
+            if (Subnode[1] != null) Subnode[1].AddAllItemsFromOverlapping(interval, resultItems);
+        }
 
         /// <summary>
         /// Returns the index of the subnode that wholely contains the given interval.
@@ -192,6 +205,48 @@ namespace DotSpatial.Topology.Index.Bintree
                 subnodeIndex = 0;
             return subnodeIndex;
         }
+
+        /// <summary>
+        /// Removes a single item from this subtree.
+        /// </summary>
+        /// <param name="itemInterval">The envelope containing the item</param>
+        /// <param name="item">The item to remove</param>
+        /// <returns><c>true</c> if the item was found and removed</returns>
+        public bool Remove(Interval itemInterval, T item)
+        {
+            // use interval to restrict nodes scanned
+            if (!IsSearchMatch(itemInterval))
+                return false;
+
+            bool found = false;
+            for (int i = 0; i < 2; i++)
+            {
+                if (Subnode[i] != null)
+                {
+                    found = Subnode[i].Remove(itemInterval, item);
+                    if (found)
+                    {
+                        // trim subtree if empty
+                        if (Subnode[i].IsPrunable)
+                            Subnode[i] = null;
+                        break;
+                    }
+                }
+            }
+            // if item was found lower down, don't need to search for it here
+            if (found) return true;
+
+            // otherwise, try and remove the item from the list of items in this node
+            found = _items.Remove(item);
+            return found;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        protected abstract bool IsSearchMatch(Interval interval);
 
         #endregion
     }

@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Quadtree
@@ -31,17 +32,24 @@ namespace DotSpatial.Topology.Index.Quadtree
     /// It is centred at the origin,
     /// and does not have a defined extent.
     /// </summary>
-    public class Root : NodeBase
+    [Serializable]
+    public class Root<T> : NodeBase<T>
     {
+        #region Fields
+
         // the singleton root quad is centred at the origin.
         private static readonly Coordinate Origin = new Coordinate(0.0, 0.0);
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public virtual void Insert(IEnvelope itemEnv, object item)
+        public void Insert(Envelope itemEnv, T item)
         {
-            int index = GetSubnodeIndex(itemEnv, Origin);
+            int index = GetSubnodeIndex(itemEnv, Origin.X, Origin.Y);
             // if index is -1, itemEnv must cross the X or Y axis.
             if (index == -1)
             {
@@ -52,21 +60,31 @@ namespace DotSpatial.Topology.Index.Quadtree
             * the item must be contained in one quadrant, so insert it into the
             * tree for that quadrant (which may not yet exist)
             */
-            Node node = Nodes[index];
+            var node = Subnode[index];
             /*
             *  If the subquad doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
             if (node == null || !node.Envelope.Contains(itemEnv))
             {
-                Node largerNode = Node.CreateExpanded(node, itemEnv);
-                Nodes[index] = largerNode;
+                var largerNode = Node<T>.CreateExpanded(node, itemEnv);
+                Subnode[index] = largerNode;
             }
             /*
             * At this point we have a subquad which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(Nodes[index], itemEnv, item);
+            InsertContained(Subnode[index], itemEnv, item);            
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected override bool IsSearchMatch(Envelope searchEnv)
+        {
+            return true;
         }
 
         /// <summary>
@@ -74,7 +92,7 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private static void InsertContained(Node tree, IEnvelope itemEnv, object item)
+        private static void InsertContained(Node<T> tree, Envelope itemEnv, T item)
         {
             Assert.IsTrue(tree.Envelope.Contains(itemEnv));
             /*
@@ -83,22 +101,14 @@ namespace DotSpatial.Topology.Index.Quadtree
             * the smallest existing quad containing the query
             */
             bool isZeroX = IntervalSize.IsZeroWidth(itemEnv.Minimum.X, itemEnv.Maximum.X);
-            bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.Minimum.X, itemEnv.Maximum.X);
-            NodeBase node;
+            bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.Minimum.Y, itemEnv.Maximum.Y);
+            NodeBase<T> node;
             if (isZeroX || isZeroY)
                 node = tree.Find(itemEnv);
             else node = tree.GetNode(itemEnv);
             node.Add(item);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        protected override bool IsSearchMatch(IEnvelope searchEnv)
-        {
-            return true;
-        }
+        #endregion
     }
 }

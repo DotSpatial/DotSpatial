@@ -37,15 +37,21 @@ namespace DotSpatial.Topology.Index.Quadtree
     /// </summary>
     public static class IntervalSize
     {
-        /// <summary>
+        #region Constant Fields
+
+        /// <summary> 
         /// This value is chosen to be a few powers of 2 less than the
         /// number of bits available in the double representation (i.e. 53).
         /// This should allow enough extra precision for simple computations to be correct,
         /// at least for comparison purposes.
         /// </summary>
-        public const int MIN_BINARY_EXPONENT = -50;
+        public const int MinBinaryExponent = -50;
 
-        /// <summary>
+        #endregion
+
+        #region Methods
+
+        /// <summary> 
         /// Computes whether the interval [min, max] is effectively zero width.
         /// I.e. the width of the interval is so much less than the
         /// location of the interval that the midpoint of the interval cannot be
@@ -54,12 +60,13 @@ namespace DotSpatial.Topology.Index.Quadtree
         public static bool IsZeroWidth(double min, double max)
         {
             double width = max - min;
-            if (width == 0.0)
-                return true;
+            if (width == 0.0) return true;
             double maxAbs = Math.Max(Math.Abs(min), Math.Abs(max));
             double scaledInterval = width / maxAbs;
             int level = DoubleBits.GetExponent(scaledInterval);
-            return level <= MIN_BINARY_EXPONENT;
+            return level <= MinBinaryExponent;
         }
+
+        #endregion
     }
 }

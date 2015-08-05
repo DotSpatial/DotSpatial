@@ -23,26 +23,33 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Index.Bintree
 {
-    /// <summary>
-    /// An <c>BinTree</c> (or "Binary Interval Tree")
-    /// is a 1-dimensional version of a quadtree.
-    /// It indexes 1-dimensional intervals (which of course may
-    /// be the projection of 2-D objects on an axis).
-    /// It supports range searching
-    /// (where the range may be a single point).
-    /// This implementation does not require specifying the extent of the inserted
-    /// items beforehand.  It will automatically expand to accomodate any extent
-    /// of dataset.
-    /// This index is different to the Interval Tree of Edelsbrunner
-    /// or the Segment Tree of Bentley.
-    /// </summary>
-    public class Bintree
-    {
-        private readonly Root _root;
+    public class BinTree : Bintree<object>
+    {}
 
+    /// <summary>
+    /// An <c>BinTree</c> (or "Binary Interval Tree") is a 1-dimensional version of a quadtree.
+    /// It indexes 1-dimensional intervals (which may be the projection of 2-D objects on an axis).
+    /// It supports range searching (where the range may be a single point).
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This structure is dynamic - new items can be added at any time, and it will support deletion of items 
+    /// (although this is not currently implemented).
+    /// </para>
+    /// <para>
+    /// This implementation does not require specifying the extent of the inserted
+    /// items beforehand. It will automatically expand to accomodate any extent of dataset.</para>
+    /// <para>This index is different to the Interval Tree of Edelsbrunner or the Segment Tree of Bentley.</para>
+    /// </remarks>
+    public class Bintree<T>
+    {
+        #region Fields
+
+        private readonly Root<T> _root;
         /*
         * Statistics:
         * minExtent is the minimum extent of all items
@@ -54,37 +61,41 @@ namespace DotSpatial.Topology.Index.Bintree
         **/
         private double _minExtent = 1.0;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
         public Bintree()
         {
-            _root = new Root();
+            _root = new Root<T>();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int Depth
+        public int Count
         {
             get
             {
-                if (_root != null)
-                    return _root.Depth;
-                return 0;
+                return _root != null ? _root.Count : 0;
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int Count
+        public int Depth
         {
             get
             {
-                if (_root != null)
-                    return _root.Count;
-                return 0;
+                return _root != null ? _root.Depth : 0;
             }
         }
 
@@ -92,15 +103,17 @@ namespace DotSpatial.Topology.Index.Bintree
         /// Compute the total number of nodes in the tree.
         /// </summary>
         /// <returns>The number of nodes in the tree.</returns>
-        public virtual int NodeSize
+        public int NodeSize
         {
             get
             {
-                if (_root != null)
-                    return _root.NodeCount;
-                return 0;
+                return _root != null ? _root.NodeCount : 0;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Ensure that the Interval for the inserted item has non-zero extents.
@@ -111,8 +124,7 @@ namespace DotSpatial.Topology.Index.Bintree
             double min = itemInterval.Min;
             double max = itemInterval.Max;
             // has a non-zero extent
-            if (min != max)
-                return itemInterval;
+            if (min != max) return itemInterval;
             // pad extent
             if (min == max)
             {
@@ -125,22 +137,10 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
-        /// <param name="itemInterval"></param>
-        /// <param name="item"></param>
-        public virtual void Insert(Interval itemInterval, object item)
-        {
-            CollectStats(itemInterval);
-            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
-            _root.Insert(insertInterval, item);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            IList foundItems = new ArrayList();
+            IList<T> foundItems = new List<T>();
             _root.AddAllItems(foundItems);
             return foundItems.GetEnumerator();
         }
@@ -148,40 +148,69 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
+        /// <param name="itemInterval"></param>
+        /// <param name="item"></param>
+        public void Insert(Interval itemInterval, T item)
+        {
+            CollectStats(itemInterval);
+            var insertInterval = EnsureExtent(itemInterval, _minExtent);            
+            _root.Insert(insertInterval, item);            
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public virtual IList Query(double x)
+        public IList<T> Query(double x)
         {
             return Query(new Interval(x, x));
         }
 
         /// <summary>
-        /// min and max may be the same value.
+        /// Queries the tree to find all candidate items which 
+        /// may overlap the query interval.
+        /// If the query interval is <tt>null</tt>, all items in the tree are found.
+        /// <c>min</c> and <c>max</c> may be the same value.
         /// </summary>
         /// <param name="interval"></param>
-        public virtual IList Query(Interval interval)
+        public IList<T> Query(Interval interval)
         {
             /*
              * the items that are matched are all items in intervals
              * which overlap the query interval
              */
-            IList foundItems = new ArrayList();
+            IList<T> foundItems = new List<T>();
             Query(interval, foundItems);
             return foundItems;
         }
 
         /// <summary>
-        ///
+        /// Adds items in the tree which potentially overlap the query interval
+        /// to the given collection.
+        /// If the query interval is <c>null</c>, add all items in the tree.
         /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="foundItems"></param>
-        public virtual void Query(Interval interval, IList foundItems)
+        /// <param name="interval">A query interval, or <c>null</c></param>
+        /// <param name="foundItems">The candidate items found</param>
+        public void Query(Interval interval, ICollection<T> foundItems)
         {
             _root.AddAllItemsFromOverlapping(interval, foundItems);
         }
 
         /// <summary>
-        ///
+        /// Removes a single item from the tree.
+        /// </summary>
+        /// <param name="itemInterval">itemEnv the Envelope of the item to be removed</param>
+        /// <param name="item">the item to remove</param>
+        /// <returns><c>true</c> if the item was found (and thus removed)</returns>
+        public bool Remove(Interval itemInterval, T item)
+        {
+            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
+            return _root.Remove(insertInterval, item);
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="interval"></param>
         private void CollectStats(Interval interval)
@@ -190,5 +219,7 @@ namespace DotSpatial.Topology.Index.Bintree
             if (del < _minExtent && del > 0.0)
                 _minExtent = del;
         }
+
+        #endregion
     }
 }

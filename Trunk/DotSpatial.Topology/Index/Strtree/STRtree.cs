@@ -24,6 +24,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DotSpatial.Topology.Geoapi.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -39,38 +41,63 @@ namespace DotSpatial.Topology.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class StRtree : AbstractStRtree, ISpatialIndex
+    public class StRtree<TItem> : AbstractStRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
+        #region Constant Fields
+
+        private const int DefaultNodeCapacity = 10;
+
+        #endregion
+
+        #region Fields
+
+        private static readonly IIntersectsOp IntersectsOperation = new AnonymousIntersectsOpImpl();
+        private static readonly AnonymousXComparerImpl XComparer = new AnonymousXComparerImpl();
+        private static readonly AnonymousYComparerImpl YComparer = new AnonymousYComparerImpl();
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public StRtree() : this(10) { }
+        public StRtree() : this(DefaultNodeCapacity)
+        {
+        }
 
         /// <summary>
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public StRtree(int nodeCapacity) : base(nodeCapacity) { }
+        /// <remarks>The minimum recommended capacity setting is 4.</remarks>
+        public StRtree(int nodeCapacity) :
+            base(nodeCapacity)
+        {
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
         protected override IIntersectsOp IntersectsOp
         {
-            get
-            {
-                return new AnonymousIntersectsOpImpl();
-            }
+            get { return IntersectsOperation; }
         }
 
-        #region ISpatialIndex Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public virtual void Insert(IEnvelope itemEnv, object item)
+        public new void Insert(Envelope itemEnv, TItem item)
         {
             if (itemEnv.IsNull)
                 return;
@@ -78,10 +105,65 @@ namespace DotSpatial.Topology.Index.Strtree
         }
 
         /// <summary>
+        /// Finds the two nearest items in the tree, 
+        /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// </summary>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree</param>
+        /// <returns>The pair of the nearest items</returns>
+        public TItem[] NearestNeighbour(IItemDistance<Envelope, TItem> itemDist)
+        {
+            var bp = new BoundablePair<TItem>(Root, Root, itemDist);
+            return NearestNeighbour(bp);
+        }
+
+        /// <summary>
+        /// Finds the item in this tree which is nearest to the given <paramref name="item"/>, 
+        /// using <see cref="IItemDistance{Envelope,TItem}"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// <para/>
+        /// The query <paramref name="item"/> does <b>not</b> have to be 
+        /// contained in the tree, but it does 
+        /// have to be compatible with the <paramref name="itemDist"/> 
+        /// distance metric. 
+        /// </summary>
+        /// <param name="env">The envelope of the query item</param>
+        /// <param name="item">The item to find the nearest neighbour of</param>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
+        /// <returns>The nearest item in this tree</returns>
+        public TItem NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist)
+        {
+            var bnd = new ItemBoundable<Envelope, TItem>(env, item);
+            var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
+            return NearestNeighbour(bp)[0];
+        }
+
+        /// <summary>
+        /// Finds the two nearest items from this tree 
+        /// and another tree,
+        /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// The result value is a pair of items, 
+        /// the first from this tree and the second
+        /// from the argument tree.
+        /// </summary>
+        /// <param name="tree">Another tree</param>
+        /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
+        /// <returns>The pair of the nearest items, one from each tree</returns>
+        public TItem[] NearestNeighbour(StRtree<TItem> tree, IItemDistance<Envelope, TItem> itemDist)
+        {
+            var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
+            return NearestNeighbour(bp);
+        }
+
+        /// <summary>
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public virtual IList Query(IEnvelope searchEnv)
+        public new IList<TItem> Query(Envelope searchEnv)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -93,7 +175,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public virtual void Query(IEnvelope searchEnv, IItemVisitor visitor)
+        public new void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -106,12 +188,92 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public virtual bool Remove(IEnvelope itemEnv, object item)
+        public new bool Remove(Envelope itemEnv, TItem item)
         {
             return base.Remove(itemEnv, item);
         }
 
-        #endregion
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        protected override AbstractNode<Envelope, TItem> CreateNode(int level)
+        {
+            return new AnonymousAbstractNodeImpl(level);
+        }
+
+        /// <summary>
+        /// Creates the parent level for the given child level. First, orders the items
+        /// by the x-values of the midpoints, and groups them into vertical slices.
+        /// For each slice, orders the items by the y-values of the midpoints, and
+        /// group them into runs of size M (the node capacity). For each run, creates
+        /// a new (parent) node.
+        /// </summary>
+        /// <param name="childBoundables"></param>
+        /// <param name="newLevel"></param>
+        protected override IList<IBoundable<Envelope, TItem>> CreateParentBoundables(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
+        {
+            Assert.IsTrue(childBoundables.Count != 0);
+            var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
+            var sortedChildBoundables = new List<IBoundable<Envelope, TItem>>(childBoundables);
+            sortedChildBoundables.Sort(XComparer);
+            var verticalSlices = VerticalSlices(sortedChildBoundables,
+                                                    (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
+            var tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+            return tempList;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="childBoundables"></param>
+        /// <param name="newLevel"></param>
+        /// <returns></returns>
+        protected IList<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
+        {
+            return base.CreateParentBoundables(childBoundables, newLevel);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override IComparer<IBoundable<Envelope, TItem>> GetComparer()
+        {
+            return YComparer;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
+        /// <param name="sliceCount"></param>
+        protected IList<IBoundable<Envelope, TItem>>[] VerticalSlices(IList<IBoundable<Envelope, TItem>> childBoundables, int sliceCount)
+        {
+            var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
+            var slices = new IList<IBoundable<Envelope, TItem>>[sliceCount];
+            var i = childBoundables.GetEnumerator();
+            for (var j = 0; j < sliceCount; j++)
+            {
+                slices[j] = new List<IBoundable<Envelope, TItem>>();
+                var boundablesAddedToSlice = 0;
+                /* 
+                 *          Diego Guidi says:
+                 *          the line below introduce an error: 
+                 *          the first element at the iteration (not the first) is lost! 
+                 *          This is simply a different implementation of Iteration in .NET against Java
+                 */
+                // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
+                while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
+                {
+                    var childBoundable = i.Current;
+                    slices[j].Add(childBoundable);
+                    boundablesAddedToSlice++;
+                }
+            }
+            return slices;
+        }
 
         /// <summary>
         ///
@@ -129,9 +291,9 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private static double CentreX(IEnvelope e)
+        private static double CentreX(Envelope e)
         {
-            return Avg(e.Minimum.X, e.Maximum.X);
+            return Avg(e.MinX, e.MaxX);
         }
 
         /// <summary>
@@ -139,30 +301,9 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private static double CentreY(IEnvelope e)
+        private static double CentreY(Envelope e)
         {
-            return Avg(e.Minimum.Y, e.Maximum.Y);
-        }
-
-        /// <summary>
-        /// Creates the parent level for the given child level. First, orders the items
-        /// by the x-values of the midpoints, and groups them into vertical slices.
-        /// For each slice, orders the items by the y-values of the midpoints, and
-        /// group them into runs of size M (the node capacity). For each run, creates
-        /// a new (parent) node.
-        /// </summary>
-        /// <param name="childBoundables"></param>
-        /// <param name="newLevel"></param>
-        protected override IList CreateParentBoundables(IList childBoundables, int newLevel)
-        {
-            Assert.IsTrue(childBoundables.Count != 0);
-            int minLeafCount = (int)Math.Ceiling((childBoundables.Count / (double)NodeCapacity));
-            ArrayList sortedChildBoundables = new ArrayList(childBoundables);
-            sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
-            IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
-                (int)Math.Ceiling(Math.Sqrt(minLeafCount)));
-            IList tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
-            return tempList;
+            return Avg(e.MinY, e.MaxY);
         }
 
         /// <summary>
@@ -171,205 +312,163 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <param name="verticalSlices"></param>
         /// <param name="newLevel"></param>
         /// <returns></returns>
-        private IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, int newLevel)
+        private List<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlices(IList<IBoundable<Envelope, TItem>>[] verticalSlices, int newLevel)
         {
             Assert.IsTrue(verticalSlices.Length > 0);
-            IList parentBoundables = new ArrayList();
+            var parentBoundables = new List<IBoundable<Envelope, TItem>>();
             for (int i = 0; i < verticalSlices.Length; i++)
             {
-                IList tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
-                foreach (object o in tempList)
+                var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
+                foreach (var o in tempList)
                     parentBoundables.Add(o);
             }
             return parentBoundables;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="childBoundables"></param>
-        /// <param name="newLevel"></param>
-        /// <returns></returns>
-        protected virtual IList CreateParentBoundablesFromVerticalSlice(IList childBoundables, int newLevel)
+        private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
-            return base.CreateParentBoundables(childBoundables, newLevel);
+            return NearestNeighbour(initBndPair, Double.PositiveInfinity);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
-        /// <param name="sliceCount"></param>
-        protected virtual IList[] VerticalSlices(IList childBoundables, int sliceCount)
+        private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance)
         {
-            int sliceCapacity = (int)Math.Ceiling(childBoundables.Count / (double)sliceCount);
-            IList[] slices = new IList[sliceCount];
-            IEnumerator i = childBoundables.GetEnumerator();
-            for (int j = 0; j < sliceCount; j++)
+            var distanceLowerBound = maxDistance;
+            BoundablePair<TItem> minPair = null;
+
+            // initialize internal structures
+            var priQ = new PriorityQueue<BoundablePair<TItem>>();
+
+            // initialize queue
+            priQ.Add(initBndPair);
+
+            while (!priQ.IsEmpty() && distanceLowerBound > 0.0)
             {
-                slices[j] = new ArrayList();
-                int boundablesAddedToSlice = 0;
-                /*
-                 *          Diego Guidi says:
-                 *          the line below introduce an error:
-                 *          the first element at the iteration (not the first) is lost!
-                 *          This is simply a different implementation of Iteration in .NET against Java
+                // pop head of queue and expand one side of pair
+                var bndPair = priQ.Poll();
+                var currentDistance = bndPair.Distance; //bndPair.GetDistance();
+
+                /**
+                 * If the distance for the first node in the queue
+                 * is >= the current minimum distance, all other nodes
+                 * in the queue must also have a greater distance.
+                 * So the current minDistance must be the true minimum,
+                 * and we are done.
                  */
-                // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
-                while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
+                if (currentDistance >= distanceLowerBound)
+                    break;
+
+                /**
+                 * If the pair members are leaves
+                 * then their distance is the exact lower bound.
+                 * Update the distanceLowerBound to reflect this
+                 * (which must be smaller, due to the test 
+                 * immediately prior to this). 
+                 */
+                if (bndPair.IsLeaves)
                 {
-                    IBoundable childBoundable = (IBoundable)i.Current;
-                    slices[j].Add(childBoundable);
-                    boundablesAddedToSlice++;
+                    // assert: currentDistance < minimumDistanceFound
+                    distanceLowerBound = currentDistance;
+                    minPair = bndPair;
+                }
+                else
+                {
+                    // testing - does allowing a tolerance improve speed?
+                    // Ans: by only about 10% - not enough to matter
+                    /*
+                    double maxDist = bndPair.getMaximumDistance();
+                    if (maxDist * .99 < lastComputedDistance) 
+                      return;
+                    //*/
+
+                    /**
+                     * Otherwise, expand one side of the pair,
+                     * (the choice of which side to expand is heuristically determined) 
+                     * and insert the new expanded pairs into the queue
+                     */
+                    bndPair.ExpandToQueue(priQ, distanceLowerBound);
                 }
             }
-            return slices;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        protected override AbstractNode CreateNode(int level)
-        {
-            return new AnonymousAbstractNodeImpl(level);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer GetComparer()
-        {
-            return new AnonymousYComparerImpl(this);
-        }
-
-        #region Nested type: AnonymousAbstractNodeImpl
-
-        /// <summary>
-        ///
-        /// </summary>
-        private class AnonymousAbstractNodeImpl : AbstractNode
-        {
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="nodeCapacity"></param>
-            public AnonymousAbstractNodeImpl(int nodeCapacity) : base(nodeCapacity) { }
-
-            /// <summary>
-            ///
-            /// </summary>
-            /// <returns></returns>
-            protected override object ComputeBounds()
-            {
-                Envelope bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext(); )
-                {
-                    IBoundable childBoundable = (IBoundable)i.Current;
-                    if (bounds == null)
-                        bounds = new Envelope((Envelope)childBoundable.Bounds);
-                    else bounds.ExpandToInclude((Envelope)childBoundable.Bounds);
-                }
-                return bounds;
-            }
+            if (minPair != null)
+            // done - return items with min distance
+            return new[]
+                       {
+                           ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(0)).Item,
+                           ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(1)).Item
+                       };
+            return null;
         }
 
         #endregion
 
-        #region Nested type: AnonymousIntersectsOpImpl
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
+        private class AnonymousAbstractNodeImpl : AbstractNode<Envelope, TItem>
+        {
+            #region Constructors
+
+            public AnonymousAbstractNodeImpl(int nodeCapacity) :
+                base(nodeCapacity)
+            {
+            }
+
+            #endregion
+
+            #region Methods
+
+            protected override Envelope ComputeBounds()
+            {
+                /*Envelope*/var bounds = new Envelope() /*= null*/;
+                foreach (var childBoundable in ChildBoundables)
+                {
+                    /*
+                    if (bounds == null)
+                        bounds = new Envelope(childBoundable.Bounds);
+                    else */
+                        bounds.ExpandToInclude(childBoundable.Bounds);
+                }
+                //return bounds;
+                return bounds.IsNull ? null : bounds;
+            }
+
+            #endregion
+        }
+
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            #region IIntersectsOp Members
+            #region Methods
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="aBounds"></param>
-            /// <param name="bBounds"></param>
-            /// <returns></returns>
-            public bool Intersects(object aBounds, object bBounds)
+            public bool Intersects(Envelope aBounds, Envelope bBounds)
             {
-                return ((Envelope)aBounds).Intersects((Envelope)bBounds);
+                return aBounds.Intersects(bBounds);
             }
 
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: AnonymousXComparerImpl
-
-        /// <summary>
-        ///
-        /// </summary>
-        private class AnonymousXComparerImpl : IComparer
+        private class AnonymousXComparerImpl : Comparer<IBoundable<Envelope, TItem>>
         {
-            private readonly StRtree _container;
+            #region Methods
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="container"></param>
-            public AnonymousXComparerImpl(StRtree container)
+            public override int Compare(IBoundable<Envelope, TItem> o1, IBoundable<Envelope, TItem> o2)
             {
-                _container = container;
-            }
-
-            #region IComparer Members
-
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-            public int Compare(object o1, object o2)
-            {
-                return _container.CompareDoubles(CentreX((Envelope)((IBoundable)o1).Bounds),
-                                                 CentreX((Envelope)((IBoundable)o2).Bounds));
+                return CompareDoubles(CentreX(o1.Bounds),
+                                      CentreX(o2.Bounds));
             }
 
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: AnonymousYComparerImpl
-
-        /// <summary>
-        ///
-        /// </summary>
-        private class AnonymousYComparerImpl : IComparer
+        private class AnonymousYComparerImpl : Comparer<IBoundable<Envelope, TItem>>
         {
-            private readonly StRtree _container;
+            #region Methods
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="container"></param>
-            public AnonymousYComparerImpl(StRtree container)
+            public override int Compare(IBoundable<Envelope, TItem> o1, IBoundable<Envelope, TItem> o2)
             {
-                _container = container;
-            }
-
-            #region IComparer Members
-
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-            public int Compare(object o1, object o2)
-            {
-                return _container.CompareDoubles(CentreY((Envelope)((IBoundable)o1).Bounds),
-                                                 CentreY((Envelope)((IBoundable)o2).Bounds));
+                return CompareDoubles(CentreY(o1.Bounds),
+                                      CentreY(o2.Bounds));
             }
 
             #endregion

@@ -29,10 +29,14 @@ namespace DotSpatial.Topology.Index
     /// </summary>
     public interface IIndexVisitor
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="item"></param>
         void VisitItem(object item);
+
+        #endregion
     }
 }

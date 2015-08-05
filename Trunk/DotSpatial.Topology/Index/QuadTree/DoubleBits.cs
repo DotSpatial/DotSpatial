@@ -38,13 +38,23 @@ namespace DotSpatial.Topology.Index.Quadtree
     /// </summary>
     public class DoubleBits
     {
+        #region Constant Fields
+
         /// <summary>
         ///
         /// </summary>
-        public const int EXPONENT_BIAS = 1023;
+        public const int ExponentBias = 1023;
+
+        #endregion
+
+        #region Fields
 
         private readonly double _x;
         private long _xBits;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -56,21 +66,14 @@ namespace DotSpatial.Topology.Index.Quadtree
             _xBits = BitConverter.DoubleToInt64Bits(x);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual double Double
-        {
-            get
-            {
-                return BitConverter.Int64BitsToDouble(_xBits);
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public virtual int BiasedExponent
+        public int BiasedExponent
         {
             get
             {
@@ -81,28 +84,40 @@ namespace DotSpatial.Topology.Index.Quadtree
         }
 
         /// <summary>
-        /// Determines the exponent for the number.
+        ///
         /// </summary>
-        public virtual int Exponent
+        public double Double
         {
             get
             {
-                return BiasedExponent - EXPONENT_BIAS;
+                return BitConverter.Int64BitsToDouble(_xBits);
             }
         }
 
         /// <summary>
+        /// Determines the exponent for the number.
+        /// </summary>
+        public int Exponent
+        {
+            get
+            {
+                return BiasedExponent - ExponentBias;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         ///
         /// </summary>
-        /// <param name="exp"></param>
+        /// <param name="i"></param>
         /// <returns></returns>
-        public static double PowerOf2(int exp)
+        public int GetBit(int i)
         {
-            if (exp > 1023 || exp < -1022)
-                throw new ArgumentException("Exponent out of bounds");
-            long expBias = exp + EXPONENT_BIAS;
-            long bits = expBias << 52;
-            return BitConverter.Int64BitsToDouble(bits);
+            long mask = (1L << i);
+            return (_xBits & mask) != 0 ? 1 : 0;
         }
 
         /// <summary>
@@ -114,6 +129,84 @@ namespace DotSpatial.Topology.Index.Quadtree
         {
             DoubleBits db = new DoubleBits(d);
             return db.Exponent;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="d1"></param>
+        /// <param name="d2"></param>
+        /// <returns></returns>
+        public static double MaximumCommonMantissa(double d1, double d2)
+        {
+            if (d1 == 0.0 || d2 == 0.0) return 0.0;
+
+            DoubleBits db1 = new DoubleBits(d1);
+            DoubleBits db2 = new DoubleBits(d2);
+
+            if (db1.Exponent != db2.Exponent) return 0.0;
+
+            int maxCommon = db1.NumCommonMantissaBits(db2);
+            db1.ZeroLowerBits(64 - (12 + maxCommon));
+            return db1.Double;
+        }
+
+        /// <summary>
+        /// This computes the number of common most-significant bits in the mantissa.
+        /// It does not count the hidden bit, which is always 1.
+        /// It does not determine whether the numbers have the same exponent - if they do
+        /// not, the value computed by this function is meaningless.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns> The number of common most-significant mantissa bits.</returns>
+        public int NumCommonMantissaBits(DoubleBits db)
+        {
+            for (int i = 0; i < 52; i++)
+                if (GetBit(i) != db.GetBit(i)) return i;
+            return 52;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public static double PowerOf2(int exp)
+        {
+            if (exp > 1023 || exp < -1022)
+                throw new ArgumentException("Exponent out of bounds");
+            long expBias = exp + ExponentBias;
+            long bits = expBias << 52;
+            return BitConverter.Int64BitsToDouble(bits);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string ToBinaryString(double d)
+        {
+            DoubleBits db = new DoubleBits(d);
+            return db.ToString();
+        }
+
+        /// <summary>
+        /// A representation of the Double bits formatted for easy readability.
+        /// </summary>
+        public override string ToString()
+        {
+            string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
+
+            // 64 zeroes!
+            string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
+            string padStr = zero64 + numStr;
+            string bitStr = padStr.Substring(padStr.Length - 64);
+            string str = bitStr.Substring(0, 1) + "  "
+                + bitStr.Substring(1, 12) + "(" + Exponent + ") "
+                + bitStr.Substring(12)
+                + " [ " + _x + " ]";
+            return str;
         }
 
         /// <summary>
@@ -131,92 +224,14 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static string ToBinaryString(double d)
-        {
-            DoubleBits db = new DoubleBits(d);
-            return db.ToString();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="d1"></param>
-        /// <param name="d2"></param>
-        /// <returns></returns>
-        public static double MaximumCommonMantissa(double d1, double d2)
-        {
-            if (d1 == 0.0 || d2 == 0.0)
-                return 0.0;
-
-            DoubleBits db1 = new DoubleBits(d1);
-            DoubleBits db2 = new DoubleBits(d2);
-
-            if (db1.Exponent != db2.Exponent)
-                return 0.0;
-
-            int maxCommon = db1.NumCommonMantissaBits(db2);
-            db1.ZeroLowerBits(64 - (12 + maxCommon));
-            return db1.Double;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="nBits"></param>
-        public virtual void ZeroLowerBits(int nBits)
+        public void ZeroLowerBits(int nBits)
         {
             long invMask = (1L << nBits) - 1L;
             long mask = ~invMask;
             _xBits &= mask;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public virtual int GetBit(int i)
-        {
-            long mask = (1L << i);
-            return (_xBits & mask) != 0 ? 1 : 0;
-        }
-
-        /// <summary>
-        /// This computes the number of common most-significant bits in the mantissa.
-        /// It does not count the hidden bit, which is always 1.
-        /// It does not determine whether the numbers have the same exponent - if they do
-        /// not, the value computed by this function is meaningless.
-        /// </summary>
-        /// <param name="db"></param>
-        /// <returns> The number of common most-significant mantissa bits.</returns>
-        public virtual int NumCommonMantissaBits(DoubleBits db)
-        {
-            for (int i = 0; i < 52; i++)
-            {
-                if (GetBit(i) != db.GetBit(i))
-                    return i;
-            }
-            return 52;
-        }
-
-        /// <summary>
-        /// A representation of the Double bits formatted for easy readability.
-        /// </summary>
-        public override string ToString()
-        {
-            string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
-
-            // 64 zeroes!
-            const string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
-            string padStr = zero64 + numStr;
-            string bitStr = padStr.Substring(padStr.Length - 64);
-            string str = bitStr.Substring(0, 1) + "  "
-                + bitStr.Substring(1, 12) + "(" + Exponent + ") "
-                + bitStr.Substring(12)
-                + " [ " + _x + " ]";
-            return str;
-        }
+        #endregion
     }
 }
