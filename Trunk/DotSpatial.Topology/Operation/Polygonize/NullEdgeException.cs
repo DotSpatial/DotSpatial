@@ -31,6 +31,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class NullEdgeException : Exception
     {
+        #region Constructors
+
         /// <summary>
         /// An exception for when the directed edge was null
         /// </summary>
@@ -38,5 +40,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
             : base(TopologyText.NullEdgeException)
         {
         }
+
+        #endregion
     }
 }

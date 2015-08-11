@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -35,37 +36,15 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class SimpleSweepLineIntersector : EdgeSetIntersector
     {
-        private readonly ArrayList _events = new ArrayList();
+        #region Fields
 
+        private readonly ArrayList _events = new ArrayList();
         // statistics information
         int _nOverlaps;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edges"></param>
-        /// <param name="si"></param>
-        /// <param name="testAllSegments"></param>
-        public override void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments)
-        {
-            if (testAllSegments)
-                Add(edges, null);
-            else Add(edges);
-            ComputeIntersections(si);
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edges0"></param>
-        /// <param name="edges1"></param>
-        /// <param name="si"></param>
-        public override void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si)
-        {
-            Add(edges0, edges0);
-            Add(edges1, edges1);
-            ComputeIntersections(si);
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -113,19 +92,30 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// Because Delete Events have a link to their corresponding Insert event,
-        /// it is possible to compute exactly the range of events which must be
-        /// compared to a given Insert event object.
+        ///
         /// </summary>
-        private void PrepareEvents()
+        /// <param name="edges"></param>
+        /// <param name="si"></param>
+        /// <param name="testAllSegments"></param>
+        public override void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments)
         {
-            _events.Sort();
-            for (int i = 0; i < _events.Count; i++)
-            {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
-                if (ev.IsDelete)
-                    ev.InsertEvent.DeleteEventIndex = i;
-            }
+            if (testAllSegments)
+                Add(edges, null);
+            else Add(edges);
+            ComputeIntersections(si);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="edges0"></param>
+        /// <param name="edges1"></param>
+        /// <param name="si"></param>
+        public override void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si)
+        {
+            Add(edges0, edges0);
+            Add(edges1, edges1);
+            ComputeIntersections(si);
         }
 
         /// <summary>
@@ -142,6 +132,22 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
                 SweepLineEvent ev = (SweepLineEvent)_events[i];
                 if (ev.IsInsert)
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev, si);
+            }
+        }
+
+        /// <summary>
+        /// Because Delete Events have a link to their corresponding Insert event,
+        /// it is possible to compute exactly the range of events which must be
+        /// compared to a given Insert event object.
+        /// </summary>
+        private void PrepareEvents()
+        {
+            _events.Sort();
+            for (int i = 0; i < _events.Count; i++)
+            {
+                SweepLineEvent ev = (SweepLineEvent)_events[i];
+                if (ev.IsDelete)
+                    ev.InsertEvent.DeleteEventIndex = i;
             }
         }
 
@@ -172,5 +178,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
                 }
             }
         }
+
+        #endregion
     }
 }

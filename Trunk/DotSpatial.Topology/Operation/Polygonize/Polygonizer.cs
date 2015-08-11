@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Polygonize
 {
@@ -42,7 +43,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class Polygonizer
     {
-        #region Private Variables
+        #region Fields
 
         private readonly PolygonizeGraph _graph = new PolygonizeGraph(new GeometryFactory());
         private readonly LineStringAdder _lineStringAdder; // Default adder
@@ -55,6 +56,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
 
         #endregion
 
+        #region Constructors
+
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
         /// as the input <c>Geometry</c>s.
@@ -63,6 +66,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
         {
             _lineStringAdder = new LineStringAdder(this);
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Compute and returns the list of polygons formed by the polygonization.
@@ -73,22 +80,6 @@ namespace DotSpatial.Topology.Operation.Polygonize
             {
                 Polygonize();
                 return _polyList;
-            }
-        }
-
-        /// <summary>
-        /// Compute and returns the list of dangling lines found during polygonization.
-        /// </summary>
-        public virtual IList Dangles
-        {
-            get
-            {
-                Polygonize();
-                return _dangles;
-            }
-            protected set
-            {
-                _dangles = value;
             }
         }
 
@@ -109,6 +100,22 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
+        /// Compute and returns the list of dangling lines found during polygonization.
+        /// </summary>
+        public virtual IList Dangles
+        {
+            get
+            {
+                Polygonize();
+                return _dangles;
+            }
+            protected set
+            {
+                _dangles = value;
+            }
+        }
+
+        /// <summary>
         /// Compute and returns the list of lines forming invalid rings found during polygonization.
         /// </summary>
         public virtual IList InvalidRingLines
@@ -123,6 +130,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 _invalidRingLines = value;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Add a collection of geometries to be polygonized.
@@ -150,6 +161,66 @@ namespace DotSpatial.Topology.Operation.Polygonize
         public virtual void Add(IGeometry g)
         {
             g.Apply(_lineStringAdder);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="holeList"></param>
+        /// <param name="shellList"></param>
+        private static void AssignHolesToShells(IEnumerable holeList, IList shellList)
+        {
+            for (IEnumerator i = holeList.GetEnumerator(); i.MoveNext(); )
+            {
+                EdgeRing holeEr = (EdgeRing)i.Current;
+                AssignHoleToShell(holeEr, shellList);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="holeEr"></param>
+        /// <param name="shellList"></param>
+        private static void AssignHoleToShell(EdgeRing holeEr, IList shellList)
+        {
+            EdgeRing shell = EdgeRing.FindEdgeRingContaining(holeEr, shellList);
+            if (shell != null)
+                shell.AddHole(holeEr.Ring);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="edgeRingList"></param>
+        private void FindShellsAndHoles(IEnumerable edgeRingList)
+        {
+            _holeList = new ArrayList();
+            _shellList = new ArrayList();
+            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
+            {
+                EdgeRing er = (EdgeRing)i.Current;
+                if (er.IsHole)
+                    _holeList.Add(er);
+                else _shellList.Add(er);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="edgeRingList"></param>
+        /// <param name="validEdgeRingList"></param>
+        /// <param name="invalidRingList"></param>
+        private static void FindValidRings(IEnumerable edgeRingList, IList validEdgeRingList, IList invalidRingList)
+        {
+            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
+            {
+                EdgeRing er = (EdgeRing)i.Current;
+                if (er.IsValid)
+                    validEdgeRingList.Add(er);
+                else invalidRingList.Add(er.LineString);
+            }
         }
 
         /// <summary>
@@ -183,64 +254,6 @@ namespace DotSpatial.Topology.Operation.Polygonize
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edgeRingList"></param>
-        /// <param name="validEdgeRingList"></param>
-        /// <param name="invalidRingList"></param>
-        private static void FindValidRings(IEnumerable edgeRingList, IList validEdgeRingList, IList invalidRingList)
-        {
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeRing er = (EdgeRing)i.Current;
-                if (er.IsValid)
-                    validEdgeRingList.Add(er);
-                else invalidRingList.Add(er.LineString);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edgeRingList"></param>
-        private void FindShellsAndHoles(IEnumerable edgeRingList)
-        {
-            _holeList = new ArrayList();
-            _shellList = new ArrayList();
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeRing er = (EdgeRing)i.Current;
-                if (er.IsHole)
-                    _holeList.Add(er);
-                else _shellList.Add(er);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="holeList"></param>
-        /// <param name="shellList"></param>
-        private static void AssignHolesToShells(IEnumerable holeList, IList shellList)
-        {
-            for (IEnumerator i = holeList.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeRing holeEr = (EdgeRing)i.Current;
-                AssignHoleToShell(holeEr, shellList);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="holeEr"></param>
-        /// <param name="shellList"></param>
-        private static void AssignHoleToShell(EdgeRing holeEr, IList shellList)
-        {
-            EdgeRing shell = EdgeRing.FindEdgeRingContaining(holeEr, shellList);
-            if (shell != null)
-                shell.AddHole(holeEr.Ring);
-        }
+        #endregion
     }
 }

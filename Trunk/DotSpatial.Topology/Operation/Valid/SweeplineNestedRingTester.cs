@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Index.Sweepline;
 using DotSpatial.Topology.Utilities;
@@ -38,10 +39,16 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class SweeplineNestedRingTester
     {
+        #region Fields
+
         private readonly GeometryGraph _graph;  // used to find non-node vertices
         private readonly IList _rings = new ArrayList();
         private Coordinate _nestedPt;
         private SweepLineIndex _sweepLine;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -51,6 +58,10 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             _graph = graph;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -63,6 +74,10 @@ namespace DotSpatial.Topology.Operation.Valid
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -70,18 +85,6 @@ namespace DotSpatial.Topology.Operation.Valid
         public virtual void Add(LinearRing ring)
         {
             _rings.Add(ring);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsNonNested()
-        {
-            BuildIndex();
-            OverlapAction action = new OverlapAction(this);
-            _sweepLine.ComputeOverlaps(action);
-            return action.IsNonNested;
         }
 
         /// <summary>
@@ -122,15 +125,35 @@ namespace DotSpatial.Topology.Operation.Valid
             return false;
         }
 
-        #region Nested type: OverlapAction
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsNonNested()
+        {
+            BuildIndex();
+            OverlapAction action = new OverlapAction(this);
+            _sweepLine.ComputeOverlaps(action);
+            return action.IsNonNested;
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         public class OverlapAction : ISweepLineOverlapAction
         {
+            #region Fields
+
             private readonly SweeplineNestedRingTester _container;
             bool _isNonNested = true;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -140,6 +163,10 @@ namespace DotSpatial.Topology.Operation.Valid
             {
                 _container = container;
             }
+
+            #endregion
+
+            #region Properties
 
             /// <summary>
             ///
@@ -152,7 +179,9 @@ namespace DotSpatial.Topology.Operation.Valid
                 }
             }
 
-            #region ISweepLineOverlapAction Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///

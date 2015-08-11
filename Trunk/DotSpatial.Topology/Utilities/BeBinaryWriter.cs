@@ -42,6 +42,8 @@ namespace DotSpatial.Topology.Utilities
     /// </remarks>
     public class BeBinaryWriter : BinaryWriter
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -65,6 +67,10 @@ namespace DotSpatial.Topology.Utilities
         /// <exception cref="T:System.ArgumentException">
         /// The stream does not support writing, or the stream is already closed. </exception>
         public BeBinaryWriter(Stream output, Encoding encoding) : base(output, encoding) { }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Writes a two-byte signed integer to the current stream using BigEndian encoding
@@ -189,5 +195,7 @@ namespace DotSpatial.Topology.Utilities
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

@@ -37,6 +37,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public abstract class EdgeSetIntersector
     {
+        #region Methods
+
         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,
         /// allowing client to choose whether self-intersections are computed.
@@ -50,5 +52,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// Computes all mutual intersections between two sets of edges.
         /// </summary>
         public abstract void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si);
+
+        #endregion
     }
 }

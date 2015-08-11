@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Noding;
 using DotSpatial.Topology.Operation.Overlay;
@@ -42,13 +43,33 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public class BufferBuilder
     {
+        #region Fields
+
         private readonly EdgeList _edgeList = new EdgeList();
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
-
         private IGeometryFactory _geomFact;
         private PlanarGraph _graph;
         private int _quadrantSegments = OffsetCurveBuilder.DEFAULT_QUADRANT_SEGMENTS;
         private PrecisionModel _workingPrecisionModel;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual BufferStyle EndCapStyle
+        {
+            get
+            {
+                return _endCapStyle;
+            }
+            set
+            {
+                _endCapStyle = value;
+            }
+        }
 
         /// <summary>
         /// Gets/Sets the number of segments used to approximate a angle fillet.
@@ -83,35 +104,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual BufferStyle EndCapStyle
-        {
-            get
-            {
-                return _endCapStyle;
-            }
-            set
-            {
-                _endCapStyle = value;
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Compute the change in depth as an edge is crossed from R to L.
-        /// </summary>
-        /// <param name="label"></param>
-        private static int DepthDelta(Label label)
-        {
-            LocationType lLoc = label.GetLocation(0, PositionType.Left);
-            LocationType rLoc = label.GetLocation(0, PositionType.Right);
-            if (lLoc == LocationType.Interior && rLoc == LocationType.Exterior)
-                return 1;
-            if (lLoc == LocationType.Exterior && rLoc == LocationType.Interior)
-                return -1;
-            return 0;
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -153,17 +148,26 @@ namespace DotSpatial.Topology.Operation.Buffer
         }
 
         /// <summary>
-        ///
+        /// Completes the building of the input subgraphs by depth-labelling them,
+        /// and adds them to the <see cref="PolygonBuilder" />.
+        /// The subgraph list must be sorted in rightmost-coordinate order.
         /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <returns></returns>
-        private static INoder GetNoder(PrecisionModel precisionModel)
+        /// <param name="subgraphList">The subgraphs to build.</param>
+        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
+        private static void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
         {
-            // otherwise use a fast (but non-robust) noder
-            LineIntersector li = new RobustLineIntersector();
-            li.PrecisionModel = precisionModel;
-            McIndexNoder noder = new McIndexNoder(new IntersectionAdder(li));
-            return noder;
+            IList processedGraphs = new ArrayList();
+            foreach (object obj in subgraphList)
+            {
+                BufferSubgraph subgraph = (BufferSubgraph)obj;
+                Coordinate p = subgraph.RightMostCoordinate;
+                SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
+                int outsideDepth = locater.GetDepth(p);
+                subgraph.ComputeDepth(outsideDepth);
+                subgraph.FindResultEdges();
+                processedGraphs.Add(subgraph);
+                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
+            }
         }
 
         /// <summary>
@@ -184,6 +188,60 @@ namespace DotSpatial.Topology.Operation.Buffer
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
             }
+        }
+
+        private static IList CreateSubgraphs(PlanarGraph graph)
+        {
+            ArrayList subgraphList = new ArrayList();
+            foreach (object obj in graph.Nodes)
+            {
+                Node node = (Node)obj;
+                if (!node.IsVisited)
+                {
+                    BufferSubgraph subgraph = new BufferSubgraph();
+                    subgraph.Create(node);
+                    subgraphList.Add(subgraph);
+                }
+            }
+
+            /*
+             * Sort the subgraphs in descending order of their rightmost coordinate.
+             * This ensures that when the Polygons for the subgraphs are built,
+             * subgraphs for shells will have been built before the subgraphs for
+             * any holes they contain.
+             */
+            subgraphList.Sort();
+            subgraphList.Reverse();
+            return subgraphList;
+        }
+
+        /// <summary>
+        /// Compute the change in depth as an edge is crossed from R to L.
+        /// </summary>
+        /// <param name="label"></param>
+        private static int DepthDelta(Label label)
+        {
+            LocationType lLoc = label.GetLocation(0, PositionType.Left);
+            LocationType rLoc = label.GetLocation(0, PositionType.Right);
+            if (lLoc == LocationType.Interior && rLoc == LocationType.Exterior)
+                return 1;
+            if (lLoc == LocationType.Exterior && rLoc == LocationType.Interior)
+                return -1;
+            return 0;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="precisionModel"></param>
+        /// <returns></returns>
+        private static INoder GetNoder(PrecisionModel precisionModel)
+        {
+            // otherwise use a fast (but non-robust) noder
+            LineIntersector li = new RobustLineIntersector();
+            li.PrecisionModel = precisionModel;
+            McIndexNoder noder = new McIndexNoder(new IntersectionAdder(li));
+            return noder;
         }
 
         /// <summary>
@@ -228,52 +286,6 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        private static IList CreateSubgraphs(PlanarGraph graph)
-        {
-            ArrayList subgraphList = new ArrayList();
-            foreach (object obj in graph.Nodes)
-            {
-                Node node = (Node)obj;
-                if (!node.IsVisited)
-                {
-                    BufferSubgraph subgraph = new BufferSubgraph();
-                    subgraph.Create(node);
-                    subgraphList.Add(subgraph);
-                }
-            }
-
-            /*
-             * Sort the subgraphs in descending order of their rightmost coordinate.
-             * This ensures that when the Polygons for the subgraphs are built,
-             * subgraphs for shells will have been built before the subgraphs for
-             * any holes they contain.
-             */
-            subgraphList.Sort();
-            subgraphList.Reverse();
-            return subgraphList;
-        }
-
-        /// <summary>
-        /// Completes the building of the input subgraphs by depth-labelling them,
-        /// and adds them to the <see cref="PolygonBuilder" />.
-        /// The subgraph list must be sorted in rightmost-coordinate order.
-        /// </summary>
-        /// <param name="subgraphList">The subgraphs to build.</param>
-        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private static void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
-        {
-            IList processedGraphs = new ArrayList();
-            foreach (object obj in subgraphList)
-            {
-                BufferSubgraph subgraph = (BufferSubgraph)obj;
-                Coordinate p = subgraph.RightMostCoordinate;
-                SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
-                int outsideDepth = locater.GetDepth(p);
-                subgraph.ComputeDepth(outsideDepth);
-                subgraph.FindResultEdges();
-                processedGraphs.Add(subgraph);
-                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
-            }
-        }
+        #endregion
     }
 }

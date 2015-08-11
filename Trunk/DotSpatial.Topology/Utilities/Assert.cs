@@ -31,31 +31,16 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class Assert
     {
+        #region Constructors
+
         /// <summary>
         /// Only static methods!
         /// </summary>
         private Assert() { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="assertion"></param>
-        public static void IsTrue(bool assertion)
-        {
-            IsTrue(assertion, null);
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="assertion"></param>
-        /// <param name="message"></param>
-        public static void IsTrue(bool assertion, string message)
-        {
-            if (assertion) return;
-            if (message == null) throw new AssertionFailedException();
-            throw new AssertionFailedException(message);
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -79,5 +64,28 @@ namespace DotSpatial.Topology.Utilities
                 throw new AssertionFailedException("Expected " + expectedValue + " but encountered "
                             + actualValue + (message != null ? ": " + message : String.Empty));
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="assertion"></param>
+        public static void IsTrue(bool assertion)
+        {
+            IsTrue(assertion, null);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="assertion"></param>
+        /// <param name="message"></param>
+        public static void IsTrue(bool assertion, string message)
+        {
+            if (assertion) return;
+            if (message == null) throw new AssertionFailedException();
+            throw new AssertionFailedException(message);
+        }
+
+        #endregion
     }
 }

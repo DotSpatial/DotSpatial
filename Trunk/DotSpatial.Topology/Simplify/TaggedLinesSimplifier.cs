@@ -32,9 +32,15 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class TaggedLinesSimplifier
     {
+        #region Fields
+
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private double _distanceTolerance;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets/Sets the distance tolerance for the simplification.
@@ -53,6 +59,10 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Simplify a collection of <c>TaggedLineString</c>s.
         /// </summary>
@@ -69,5 +79,7 @@ namespace DotSpatial.Topology.Simplify
                 tlss.Simplify((TaggedLineString)i.Current);
             }
         }
+
+        #endregion
     }
 }

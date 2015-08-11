@@ -31,10 +31,6 @@ namespace DotSpatial.Topology
     /// </summary>
     public class Matrix4 : MatrixD, IMatrix4
     {
-        #region Private Variables
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -47,6 +43,18 @@ namespace DotSpatial.Topology
             Values[1, 1] = 1;
             Values[2, 2] = 1;
             Values[3, 3] = 1;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static Matrix4 Identity
+        {
+            get { return new Matrix4(); }
         }
 
         #endregion
@@ -84,34 +92,6 @@ namespace DotSpatial.Topology
         {
             Matrix4 rot = RotationZ(degrees);
             return Multiply(rot) as IMatrix4;
-        }
-
-        /// <summary>
-        /// Translates the matrix by the specified amount in each of the directions
-        /// by multiplying by a translation matrix created from the specified values.
-        /// </summary>
-        /// <param name="x">The translation in the X coordinate</param>
-        /// <param name="y">The translation in the Y coordinate</param>
-        /// <param name="z">The translation in the Z coordinate</param>
-        /// <returns></returns>
-        public IMatrix4 Translate(double x, double y, double z)
-        {
-            Matrix4 tran = Translation(x, y, z);
-            return Multiply(tran) as IMatrix4;
-        }
-
-        #endregion
-
-        #region Properties
-
-        #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        public static Matrix4 Identity
-        {
-            get { return new Matrix4(); }
         }
 
         /// <summary>
@@ -166,6 +146,20 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
+        /// Translates the matrix by the specified amount in each of the directions
+        /// by multiplying by a translation matrix created from the specified values.
+        /// </summary>
+        /// <param name="x">The translation in the X coordinate</param>
+        /// <param name="y">The translation in the Y coordinate</param>
+        /// <param name="z">The translation in the Z coordinate</param>
+        /// <returns></returns>
+        public IMatrix4 Translate(double x, double y, double z)
+        {
+            Matrix4 tran = Translation(x, y, z);
+            return Multiply(tran) as IMatrix4;
+        }
+
+        /// <summary>
         /// Creates a 4 x 4 matrix where all the values represent an identity matrix except
         /// that the bottom row has been set to be the translation values.  The result is
         /// that if a 3D vector is transformed by this matrix, the last row will
@@ -184,5 +178,7 @@ namespace DotSpatial.Topology
             vals[3, 2] = z;
             return result;
         }
+
+        #endregion
     }
 }

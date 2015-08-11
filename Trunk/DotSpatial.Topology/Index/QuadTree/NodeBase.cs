@@ -24,9 +24,9 @@
 
 using System;
 using System.Collections.Generic;
-using DotSpatial.Topology.Index.Bintree;
+using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
@@ -243,6 +243,13 @@ namespace DotSpatial.Topology.Index.Quadtree
             return subnodeIndex;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected abstract bool IsSearchMatch(Envelope searchEnv);
+
         /// <summary> 
         /// Removes a single item from this subtree.
         /// </summary>
@@ -298,13 +305,6 @@ namespace DotSpatial.Topology.Index.Quadtree
                 if (Subnode[i] != null)
                     Subnode[i].Visit(searchEnv, visitor);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        protected abstract bool IsSearchMatch(Envelope searchEnv);
 
         /// <summary>
         ///

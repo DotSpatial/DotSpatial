@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Operation.Distance
 {
     /// <summary>
@@ -34,15 +36,25 @@ namespace DotSpatial.Topology.Operation.Distance
     /// </summary>
     public class GeometryLocation
     {
+        #region Constant Fields
+
         /// <summary>
         /// Special value of segment-index for locations inside area geometries. These
         /// locations do not have an associated segment index.
         /// </summary>
         public const int INSIDE_AREA = -1;
 
+        #endregion
+
+        #region Fields
+
         private readonly IGeometry _component;
         private readonly Coordinate _pt;
         private readonly int _segIndex;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the
@@ -63,6 +75,21 @@ namespace DotSpatial.Topology.Operation.Distance
         /// </summary>
         public GeometryLocation(IGeometry component, Coordinate pt) : this(component, INSIDE_AREA, pt) { }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Returns the location.
+        /// </summary>
+        public virtual Coordinate Coordinate
+        {
+            get
+            {
+                return _pt;
+            }
+        }
+
         /// <summary>
         /// Returns the point associated with this location.
         /// </summary>
@@ -71,6 +98,17 @@ namespace DotSpatial.Topology.Operation.Distance
             get
             {
                 return _component;
+            }
+        }
+
+        /// <summary>
+        /// Returns whether this GeometryLocation represents a point inside an area point.
+        /// </summary>
+        public virtual bool IsInsideArea
+        {
+            get
+            {
+                return _segIndex == INSIDE_AREA;
             }
         }
 
@@ -86,26 +124,6 @@ namespace DotSpatial.Topology.Operation.Distance
             }
         }
 
-        /// <summary>
-        /// Returns the location.
-        /// </summary>
-        public virtual Coordinate Coordinate
-        {
-            get
-            {
-                return _pt;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether this GeometryLocation represents a point inside an area point.
-        /// </summary>
-        public virtual bool IsInsideArea
-        {
-            get
-            {
-                return _segIndex == INSIDE_AREA;
-            }
-        }
+        #endregion
     }
 }

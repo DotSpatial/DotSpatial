@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.GeometriesGraph
@@ -33,7 +34,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public abstract class GraphComponent
     {
-        #region Private Variables
+        #region Fields
 
         private bool _isCovered;
         private bool _isCoveredSet;
@@ -42,6 +43,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         private Label _label;
 
         #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -57,18 +60,50 @@ namespace DotSpatial.Topology.GeometriesGraph
             _label = inLabel;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
-        public virtual Label Label
+        public virtual bool IsCoveredSet
         {
             get
             {
-                return _label;
+                return _isCoveredSet;
+            }
+        }
+
+        /// <summary>
+        /// An isolated component is one that does not intersect or touch any other
+        /// component.  This is the case if the label has valid locations for
+        /// only a single Geometry.
+        /// </summary>
+        /// <returns><c>true</c> if this component is isolated.</returns>
+        public abstract bool IsIsolated { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns>
+        /// A coordinate in this component (or null, if there are none).
+        /// </returns>
+        public abstract Coordinate Coordinate { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual bool IsCovered
+        {
+            get
+            {
+                return _isCovered;
             }
             set
             {
-                _label = value;
+                _isCovered = value;
+                _isCoveredSet = true;
             }
         }
 
@@ -90,33 +125,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsCovered
-        {
-            get
-            {
-                return _isCovered;
-            }
-            set
-            {
-                _isCovered = value;
-                _isCoveredSet = true;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual bool IsCoveredSet
-        {
-            get
-            {
-                return _isCoveredSet;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         public virtual bool IsVisited
         {
             get
@@ -132,18 +140,21 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <returns>
-        /// A coordinate in this component (or null, if there are none).
-        /// </returns>
-        public abstract Coordinate Coordinate { get; set; }
+        public virtual Label Label
+        {
+            get
+            {
+                return _label;
+            }
+            set
+            {
+                _label = value;
+            }
+        }
 
-        /// <summary>
-        /// An isolated component is one that does not intersect or touch any other
-        /// component.  This is the case if the label has valid locations for
-        /// only a single Geometry.
-        /// </summary>
-        /// <returns><c>true</c> if this component is isolated.</returns>
-        public abstract bool IsIsolated { get; }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Compute the contribution to an IM for this component.
@@ -160,5 +171,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             Assert.IsTrue(Label.GeometryCount >= 2, "found partial label");
             ComputeIm(im);
         }
+
+        #endregion
     }
 }

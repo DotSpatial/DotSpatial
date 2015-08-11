@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -55,6 +56,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class GeometryTransformer
     {
+        #region Constant Fields
+
+        /// <summary>
+        /// <c>true</c> if the type of the input should be preserved.
+        /// </summary>
+        private const bool PRESERVE_TYPE = false;
+
         /*
         * Possible extensions:
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
@@ -66,10 +74,9 @@ namespace DotSpatial.Topology.Utilities
         /// </summary>
         private const bool PRUNE_EMPTY_GEOMETRY = true;
 
-        /// <summary>
-        /// <c>true</c> if the type of the input should be preserved.
-        /// </summary>
-        private const bool PRESERVE_TYPE = false;
+        #endregion
+
+        #region Fields
 
         /// <summary>
         ///
@@ -77,6 +84,10 @@ namespace DotSpatial.Topology.Utilities
         private readonly GeometryFactory _factory = Geometry.DefaultFactory;
 
         private IGeometry _inputGeom;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -87,6 +98,31 @@ namespace DotSpatial.Topology.Utilities
             {
                 return _inputGeom;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Convenience method which provides statndard way of copying {CoordinateSequence}s
+        /// </summary>
+        /// <param name="seq">The sequence to copy.</param>
+        /// <returns>A deep copy of the sequence.</returns>
+        protected virtual IList<Coordinate> Copy(IList<Coordinate> seq)
+        {
+            return seq.CloneList();
+        }
+
+        /// <summary>
+        /// Convenience method which provides standard way of
+        /// creating a <c>CoordinateSequence</c>.
+        /// </summary>
+        /// <param name="coords">The coordinate array to copy.</param>
+        /// <returns>A coordinate sequence for the array.</returns>
+        protected virtual ICoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
+        {
+            return _factory.CoordinateSequenceFactory.Create(coords);
         }
 
         /// <summary>
@@ -118,27 +154,6 @@ namespace DotSpatial.Topology.Utilities
         }
 
         /// <summary>
-        /// Convenience method which provides standard way of
-        /// creating a <c>CoordinateSequence</c>.
-        /// </summary>
-        /// <param name="coords">The coordinate array to copy.</param>
-        /// <returns>A coordinate sequence for the array.</returns>
-        protected virtual ICoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
-        {
-            return _factory.CoordinateSequenceFactory.Create(coords);
-        }
-
-        /// <summary>
-        /// Convenience method which provides statndard way of copying {CoordinateSequence}s
-        /// </summary>
-        /// <param name="seq">The sequence to copy.</param>
-        /// <returns>A deep copy of the sequence.</returns>
-        protected virtual IList<Coordinate> Copy(IList<Coordinate> seq)
-        {
-            return seq.CloneList();
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="coords"></param>
@@ -153,28 +168,19 @@ namespace DotSpatial.Topology.Utilities
         ///
         /// </summary>
         /// <param name="geom"></param>
+        /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual IGeometry TransformPoint(IPoint geom)
-        {
-            return _factory.CreatePoint(TransformCoordinates(geom.Coordinates, geom)[0]);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
-        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom)
+        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
         {
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformPoint((Point)geom.GetGeometryN(i));
+                IGeometry transformGeom = Transform(geom.GetGeometryN(i));
                 if (transformGeom == null) continue;
-                if (transformGeom.IsEmpty) continue;
+                if (PRUNE_EMPTY_GEOMETRY && transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
             }
-            return _factory.BuildGeometry(transGeomList);
+            return _factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(transGeomList));
         }
 
         /// <summary>
@@ -225,6 +231,52 @@ namespace DotSpatial.Topology.Utilities
         ///
         /// </summary>
         /// <param name="geom"></param>
+        /// <returns></returns>
+        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom)
+        {
+            ArrayList transGeomList = new ArrayList();
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                IGeometry transformGeom = TransformPoint((Point)geom.GetGeometryN(i));
+                if (transformGeom == null) continue;
+                if (transformGeom.IsEmpty) continue;
+                transGeomList.Add(transformGeom);
+            }
+            return _factory.BuildGeometry(transGeomList);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <returns></returns>
+        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom)
+        {
+            ArrayList transGeomList = new ArrayList();
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                IGeometry transformGeom = TransformPolygon((Polygon)geom.GetGeometryN(i), geom);
+                if (transformGeom == null) continue;
+                if (transformGeom.IsEmpty) continue;
+                transGeomList.Add(transformGeom);
+            }
+            return _factory.BuildGeometry(transGeomList);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <returns></returns>
+        protected virtual IGeometry TransformPoint(IPoint geom)
+        {
+            return _factory.CreatePoint(TransformCoordinates(geom.Coordinates, geom)[0]);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
         protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
@@ -256,41 +308,6 @@ namespace DotSpatial.Topology.Utilities
             return _factory.BuildGeometry(components);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
-        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom)
-        {
-            ArrayList transGeomList = new ArrayList();
-            for (int i = 0; i < geom.NumGeometries; i++)
-            {
-                IGeometry transformGeom = TransformPolygon((Polygon)geom.GetGeometryN(i), geom);
-                if (transformGeom == null) continue;
-                if (transformGeom.IsEmpty) continue;
-                transGeomList.Add(transformGeom);
-            }
-            return _factory.BuildGeometry(transGeomList);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
-        {
-            ArrayList transGeomList = new ArrayList();
-            for (int i = 0; i < geom.NumGeometries; i++)
-            {
-                IGeometry transformGeom = Transform(geom.GetGeometryN(i));
-                if (transformGeom == null) continue;
-                if (PRUNE_EMPTY_GEOMETRY && transformGeom.IsEmpty) continue;
-                transGeomList.Add(transformGeom);
-            }
-            return _factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(transGeomList));
-        }
+        #endregion
     }
 }

@@ -31,6 +31,8 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class AssertionFailedException : ApplicationException
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -42,5 +44,7 @@ namespace DotSpatial.Topology.Utilities
         /// </summary>
         /// <param name="message"></param>
         public AssertionFailedException(string message) : base(message) { }
+
+        #endregion
     }
 }

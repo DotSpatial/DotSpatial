@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -31,8 +32,14 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class Node : GraphComponent
     {
+        #region Fields
+
         private Coordinate _coord; // Only non-null if this node is precise.
         private EdgeEndStar _edges;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -44,6 +51,21 @@ namespace DotSpatial.Topology.GeometriesGraph
             _coord = coord;
             _edges = edges;
             base.Label = new Label(0, LocationType.Null);
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a boolean that is true if this node is isolated
+        /// </summary>
+        public override bool IsIsolated
+        {
+            get
+            {
+                return (Label.GeometryCount == 1);
+            }
         }
 
         /// <summary>
@@ -64,22 +86,9 @@ namespace DotSpatial.Topology.GeometriesGraph
             protected set { _edges = value; }
         }
 
-        /// <summary>
-        /// Gets a boolean that is true if this node is isolated
-        /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return (Label.GeometryCount == 1);
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Basic nodes do not compute IMs.
-        /// </summary>
-        /// <param name="im"></param>
-        public override void ComputeIm(IntersectionMatrix im) { }
+        #region Methods
 
         /// <summary>
         /// Add the edge to the list of edges at this node.
@@ -90,6 +99,33 @@ namespace DotSpatial.Topology.GeometriesGraph
             // Assert: start pt of e is equal to node point
             _edges.Insert(e);
             e.Node = this;
+        }
+
+        /// <summary>
+        /// Basic nodes do not compute IMs.
+        /// </summary>
+        /// <param name="im"></param>
+        public override void ComputeIm(IntersectionMatrix im) { }
+
+        /// <summary>
+        /// The location for a given eltIndex for a node will be one
+        /// of { Null, Interior, Boundary }.
+        /// A node may be on both the boundary and the interior of a point;
+        /// in this case, the rule is that the node is considered to be in the boundary.
+        /// The merged location is the maximum of the two input values.
+        /// </summary>
+        /// <param name="label2"></param>
+        /// <param name="eltIndex"></param>
+        public virtual LocationType ComputeMergedLocation(Label label2, int eltIndex)
+        {
+            LocationType loc = Label.GetLocation(eltIndex);
+            if (!label2.IsNull(eltIndex))
+            {
+                LocationType nLoc = label2.GetLocation(eltIndex);
+                if (loc != LocationType.Boundary)
+                    loc = nLoc;
+            }
+            return loc;
         }
 
         /// <summary>
@@ -160,24 +196,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// The location for a given eltIndex for a node will be one
-        /// of { Null, Interior, Boundary }.
-        /// A node may be on both the boundary and the interior of a point;
-        /// in this case, the rule is that the node is considered to be in the boundary.
-        /// The merged location is the maximum of the two input values.
+        ///
         /// </summary>
-        /// <param name="label2"></param>
-        /// <param name="eltIndex"></param>
-        public virtual LocationType ComputeMergedLocation(Label label2, int eltIndex)
+        /// <returns></returns>
+        public override string ToString()
         {
-            LocationType loc = Label.GetLocation(eltIndex);
-            if (!label2.IsNull(eltIndex))
-            {
-                LocationType nLoc = label2.GetLocation(eltIndex);
-                if (loc != LocationType.Boundary)
-                    loc = nLoc;
-            }
-            return loc;
+            return _coord + " " + _edges;
         }
 
         /// <summary>
@@ -189,13 +213,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             outstream.WriteLine("node " + _coord + " lbl: " + Label);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return _coord + " " + _edges;
-        }
+        #endregion
     }
 }

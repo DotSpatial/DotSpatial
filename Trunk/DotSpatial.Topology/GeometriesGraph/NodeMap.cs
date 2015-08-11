@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -32,8 +33,14 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class NodeMap
     {
+        #region Fields
+
         private readonly NodeFactory _nodeFact;
         private readonly IDictionary _nodeMap = new SortedList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -44,6 +51,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             _nodeFact = nodeFact;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -53,6 +64,23 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 return new ArrayList(_nodeMap.Values);
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds a node for the start point of this EdgeEnd
+        /// (if one does not already exist in this map).
+        /// Adds the EdgeEnd to the (possibly new) node.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void Add(EdgeEnd e)
+        {
+            Coordinate p = e.Coordinate;
+            Node n = AddNode(p);
+            n.Add(e);
         }
 
         /// <summary>
@@ -87,19 +115,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             return node;
         }
 
-        /// <summary>
-        /// Adds a node for the start point of this EdgeEnd
-        /// (if one does not already exist in this map).
-        /// Adds the EdgeEnd to the (possibly new) node.
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void Add(EdgeEnd e)
-        {
-            Coordinate p = e.Coordinate;
-            Node n = AddNode(p);
-            n.Add(e);
-        }
-
         /// <returns>
         /// The node if found; null otherwise.
         /// </returns>
@@ -107,15 +122,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual Node Find(Coordinate coord)
         {
             return (Node)_nodeMap[coord];
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
         }
 
         /// <summary>
@@ -138,6 +144,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
@@ -147,5 +162,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 n.Write(outstream);
             }
         }
+
+        #endregion
     }
 }

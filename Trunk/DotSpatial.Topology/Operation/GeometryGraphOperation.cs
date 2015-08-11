@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation
@@ -32,12 +33,18 @@ namespace DotSpatial.Topology.Operation
     /// </summary>
     public class GeometryGraphOperation
     {
+        #region Fields
+
         /// <summary>
         /// The operation args into an array so they can be accessed by index.
         /// </summary>
         protected readonly GeometryGraph[] Arg;
 
         private LineIntersector _li = new RobustLineIntersector();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -66,25 +73,9 @@ namespace DotSpatial.Topology.Operation
             Arg[0] = new GeometryGraph(0, g0);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        protected LineIntersector LineIntersector
-        {
-            get
-            {
-                return _li;
-            }
-            set
-            {
-                _li = value;
-            }
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        protected PrecisionModel ResultPrecisionModel { get; set; }
+        #region Properties
 
         /// <summary>
         ///
@@ -105,11 +96,37 @@ namespace DotSpatial.Topology.Operation
         /// <summary>
         ///
         /// </summary>
+        protected LineIntersector LineIntersector
+        {
+            get
+            {
+                return _li;
+            }
+            set
+            {
+                _li = value;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        protected PrecisionModel ResultPrecisionModel { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public IGeometry GetArgGeometry(int i)
         {
             return Arg[i].Geometry;
         }
+
+        #endregion
     }
 }

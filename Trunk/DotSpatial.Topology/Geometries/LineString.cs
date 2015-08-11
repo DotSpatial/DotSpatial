@@ -28,7 +28,7 @@ using System.Linq;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Operation;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>LineString</c>.
@@ -36,7 +36,7 @@ namespace DotSpatial.Topology
     [Serializable]
     public class LineString : Geometry, ILineString
     {
-        #region Variables
+        #region Fields
 
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -168,303 +168,7 @@ namespace DotSpatial.Topology
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        /// Applys a given ICoordinateFilter to this LineString
-        /// </summary>
-        /// <param name="filter"></param>
-        public override void Apply(ICoordinateFilter filter)
-        {
-            foreach (Coordinate c in _points)
-            {
-                filter.Filter(c);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
-        public override void Apply(IGeometryFilter filter)
-        {
-            filter.Filter(this);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
-        public override void Apply(IGeometryComponentFilter filter)
-        {
-            filter.Filter(this);
-        }
-
-        /// <summary>
-        /// Performs a CompareTo opperation assuming that the specified object is a LineString
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        public override int CompareToSameClass(object o)
-        {
-            LineString line = o as LineString;
-            // MD - optimized implementation
-            int i = 0;
-            int j = 0;
-            if (line != null)
-            {
-                while (i < _points.Count && j < line._points.Count)
-                {
-                    int comparison = _points[i].CompareTo(line._points[j]);
-                    if (comparison != 0)
-                        return comparison;
-                    i++;
-                    j++;
-                }
-            }
-            if (i < _points.Count)
-                return 1;
-            if (line != null)
-            {
-                if (j < line._points.Count)
-                    return -1;
-            }
-            return 0;
-        }
-
-        /// <summary>
-        /// Tests the coordinates of this LineString against another geometry and returns true if they are identical.
-        /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
-        {
-            if (!IsEquivalentClass(other))
-                return false;
-
-            LineString otherLineString = (LineString)other;
-            if (_points.Count != otherLineString._points.Count)
-                return false;
-
-            for (int i = 0; i < _points.Count; i++)
-                if (!Equal(new Coordinate(_points[i]), otherLineString._points[i], tolerance))
-                    return false;
-            return true;
-        }
-
-        /// <summary>
-        /// Given the specified test point, this checks each segment, and will
-        /// return the closest point on the specified segment.
-        /// </summary>
-        /// <param name="testPoint">The point to test.</param>
-        /// <returns></returns>
-        public override Coordinate ClosestPoint(Coordinate testPoint)
-        {
-            Coordinate closest = Coordinate;
-            double dist = double.MaxValue;
-            for (int i = 0; i < _points.Count - 1; i++)
-            {
-                LineSegment s = new LineSegment(_points[i], _points[i + 1]);
-                Coordinate temp = s.ClosestPoint(testPoint);
-                double tempDist = testPoint.Distance(temp);
-                if (tempDist < dist)
-                {
-                    dist = tempDist;
-                    closest = temp;
-                }
-            }
-            return closest;
-        }
-
-        /// <summary>
-        /// Returns the N'th point as an Implementation of IPoint.  The specific
-        /// implementation is just the DotSpatial.Geometries.Point
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public virtual IPoint GetPointN(int n)
-        {
-            return new Point(_points[n]);
-        }
-
-        /// <summary>
-        /// Returns true if the given point is a vertex of this <c>LineString</c>.
-        /// </summary>
-        /// <param name="pt">The <c>Coordinate</c> to check.</param>
-        /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public virtual bool IsCoordinate(Coordinate pt)
-        {
-            Coordinate coord = new Coordinate(pt);
-            for (int i = 0; i < _points.Count; i++)
-                if (coord == _points[i])
-                    return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Normalizes a <c>LineString</c>.  A normalized linestring
-        /// has the first point which is not equal to it's reflected point
-        /// less than the reflected point.
-        /// </summary>
-        public override void Normalize()
-        {
-            for (int i = 0; i < _points.Count / 2; i++)
-            {
-                int j = _points.Count - 1 - i;
-                // skip equal points on both ends
-                if (!_points[i].Equals(_points[j]))
-                {
-                    if (_points[i].CompareTo(_points[j]) > 0)
-                        _points = _points.Reverse().ToList();
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
-        /// </summary>
-        /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public virtual ILineString Reverse()
-        {
-            List<Coordinate> result = Coordinates.CloneList();
-            result.Reverse();
-            return new LineString(result);
-        }
-
-        /// <summary>
-        /// Returns the Envelope of this LineString
-        /// </summary>
-        /// <returns>An IEnvelope interface for the envelope containing this LineString</returns>
-        protected override IEnvelope ComputeEnvelopeInternal()
-        {
-            if (IsEmpty)
-                return new Envelope();
-
-            //Convert to array, then access array directly, to avoid the function-call overhead
-            //of calling Getter millions of times. ToArray may be inefficient for
-            //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-
-            double minx = _points[0].X;
-            double miny = _points[0].Y;
-            double maxx = _points[0].X;
-            double maxy = _points[0].Y;
-            for (int i = 1; i < _points.Count; i++)
-            {
-                minx = minx < _points[i].X ? minx : _points[i].X;
-                maxx = maxx > _points[i].X ? maxx : _points[i].X;
-                miny = miny < _points[i].Y ? miny : _points[i].Y;
-                maxy = maxy > _points[i].Y ? maxy : _points[i].Y;
-            }
-            return new Envelope(minx, maxx, miny, maxy);
-        }
-
-        /// <summary>
-        /// Returns a copy of this ILineString
-        /// </summary>
-        protected override void OnCopy(Geometry copy)
-        {
-            base.OnCopy(copy);
-            LineString ls = copy as LineString;
-            if (ls == null) return;
-            ls.Coordinates = new List<Coordinate>();
-            foreach (Coordinate coordinate in _points)
-            {
-                ls.Coordinates.Add(coordinate);
-            }
-        }
-
-        /// <summary>
-        /// Returns the Nth coordinate of the coordinate sequence making up this LineString
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public virtual Coordinate GetCoordinateN(int n)
-        {
-            return _points[n];
-        }
-
-        /// <summary>
-        /// Tests other and returns true if other is a LineString
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        protected override bool IsEquivalentClass(IGeometry other)
-        {
-            return other is LineString;
-        }
-
-        /// <summary>
-        /// Calculates a new linestring representing a linestring that is offset by
-        /// distance to the left.  Negative distances will be to the right.  The final
-        /// LineString may be shorter or longer than the original.  Left is determined
-        /// by the vector direction of the segment between the 0th and 1st points.
-        /// Outside bends will be circular curves, rather than extended angles.
-        /// </summary>
-        /// <param name="distance">The double distance to create the offset LineString</param>
-        /// <returns>A valid ILineString interface created from calculations performed on this LineString</returns>
-        public ILineString Offset(double distance)
-        {
-            if (distance == 0) return this.Copy();
-
-            throw new NotImplementedException("This is not yet implemented");
-
-            // The problem with drawing it segment by segment is that segments further down can
-            // interfere with the propper pathway.  Trying to clip the boundary of the buffer instead.
-
-            // The problem with doing a buffer is that you are always left with an outer polygon,
-            // and complex shapes will produce "unioned" buffer results that are incorrect from
-            // the standpoint of drawing an offset.
-        }
-
-        /// <summary>
-        /// Rotates the LineString by the given radian angle around the Origin.
-        /// </summary>
-        /// <param name="Origin">Coordinate the LineString gets rotated around.</param>
-        /// <param name="radAngle">Rotation angle in radian.</param>
-        public override void Rotate(Coordinate Origin, double radAngle)
-        {
-            for (int i = 0; i < _points.Count; i++)
-            {
-                base.RotateCoordinateRad(Origin, ref _points[i].X, ref _points[i].Y, radAngle);
-            }
-        }
-
-        #endregion
-
         #region Properties
-
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Gets the integer count of the number of points in this LineString
-        /// </summary>
-        /// <value></value>
-        public virtual int Count
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ICoordinate that exists at the Nth index
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public virtual Coordinate this[int n]
-        {
-            get
-            {
-                return _points[n];
-            }
-            set
-            {
-                _points[n] = value;
-            }
-        }
 
         /// <summary>
         /// Gets the value of the angle between the <see cref="StartPoint" />
@@ -487,38 +191,6 @@ namespace DotSpatial.Topology
             }
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Gets a MultiPoint geometry that contains the StartPoint and Endpoint
-        /// </summary>
-        public override IGeometry Boundary
-        {
-            get
-            {
-                if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                if (IsClosed)
-                    return MultiPoint.Empty;
-                return Factory.CreateMultiPoint(new[] { StartPoint.Coordinate, EndPoint.Coordinate });
-            }
-        }
-
-        /// <summary>
-        /// Gets False if the LineString is closed, or Point (0) otherwise, representing the endpoints
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                {
-                    return DimensionType.False;
-                }
-                return DimensionType.Point;
-            }
-        }
-
         /// <summary>
         /// Gets the 0th coordinate
         /// </summary>
@@ -531,33 +203,17 @@ namespace DotSpatial.Topology
             }
         }
 
-        /// <summary>
-        /// Gets a System.Array of the coordinates
-        /// </summary>
-        public override IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return _points;
-            }
-            set
-            {
-                if (value.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
-                {
-                    _points = value.ToList();
-                }
-                else { _points = value; }
-            }
-        }
+        /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Gets the dimensionality of a Curve(1)
+        /// Gets the integer count of the number of points in this LineString
         /// </summary>
-        public override DimensionType Dimension
+        /// <value></value>
+        public virtual int Count
         {
             get
             {
-                return DimensionType.Curve;
+                return _points.Count;
             }
         }
 
@@ -682,6 +338,354 @@ namespace DotSpatial.Topology
                     return null;
                 }
                 return GetPointN(0);
+            }
+        }
+
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Gets a MultiPoint geometry that contains the StartPoint and Endpoint
+        /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                if (IsEmpty)
+                    return Factory.CreateGeometryCollection(null);
+                if (IsClosed)
+                    return MultiPoint.Empty;
+                return Factory.CreateMultiPoint(new[] { StartPoint.Coordinate, EndPoint.Coordinate });
+            }
+        }
+
+        /// <summary>
+        /// Gets False if the LineString is closed, or Point (0) otherwise, representing the endpoints
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                if (IsClosed)
+                {
+                    return DimensionType.False;
+                }
+                return DimensionType.Point;
+            }
+        }
+
+        /// <summary>
+        /// Gets a System.Array of the coordinates
+        /// </summary>
+        public override IList<Coordinate> Coordinates
+        {
+            get
+            {
+                return _points;
+            }
+            set
+            {
+                if (value.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
+                {
+                    _points = value.ToList();
+                }
+                else { _points = value; }
+            }
+        }
+
+        /// <summary>
+        /// Gets the dimensionality of a Curve(1)
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Curve;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Gets the ICoordinate that exists at the Nth index
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public virtual Coordinate this[int n]
+        {
+            get
+            {
+                return _points[n];
+            }
+            set
+            {
+                _points[n] = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Applys a given ICoordinateFilter to this LineString
+        /// </summary>
+        /// <param name="filter"></param>
+        public override void Apply(ICoordinateFilter filter)
+        {
+            foreach (Coordinate c in _points)
+            {
+                filter.Filter(c);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filter"></param>
+        public override void Apply(IGeometryFilter filter)
+        {
+            filter.Filter(this);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filter"></param>
+        public override void Apply(IGeometryComponentFilter filter)
+        {
+            filter.Filter(this);
+        }
+
+        /// <summary>
+        /// Given the specified test point, this checks each segment, and will
+        /// return the closest point on the specified segment.
+        /// </summary>
+        /// <param name="testPoint">The point to test.</param>
+        /// <returns></returns>
+        public override Coordinate ClosestPoint(Coordinate testPoint)
+        {
+            Coordinate closest = Coordinate;
+            double dist = double.MaxValue;
+            for (int i = 0; i < _points.Count - 1; i++)
+            {
+                LineSegment s = new LineSegment(_points[i], _points[i + 1]);
+                Coordinate temp = s.ClosestPoint(testPoint);
+                double tempDist = testPoint.Distance(temp);
+                if (tempDist < dist)
+                {
+                    dist = tempDist;
+                    closest = temp;
+                }
+            }
+            return closest;
+        }
+
+        /// <summary>
+        /// Performs a CompareTo opperation assuming that the specified object is a LineString
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public override int CompareToSameClass(object o)
+        {
+            LineString line = o as LineString;
+            // MD - optimized implementation
+            int i = 0;
+            int j = 0;
+            if (line != null)
+            {
+                while (i < _points.Count && j < line._points.Count)
+                {
+                    int comparison = _points[i].CompareTo(line._points[j]);
+                    if (comparison != 0)
+                        return comparison;
+                    i++;
+                    j++;
+                }
+            }
+            if (i < _points.Count)
+                return 1;
+            if (line != null)
+            {
+                if (j < line._points.Count)
+                    return -1;
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns the Envelope of this LineString
+        /// </summary>
+        /// <returns>An IEnvelope interface for the envelope containing this LineString</returns>
+        protected override IEnvelope ComputeEnvelopeInternal()
+        {
+            if (IsEmpty)
+                return new Envelope();
+
+            //Convert to array, then access array directly, to avoid the function-call overhead
+            //of calling Getter millions of times. ToArray may be inefficient for
+            //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
+
+            double minx = _points[0].X;
+            double miny = _points[0].Y;
+            double maxx = _points[0].X;
+            double maxy = _points[0].Y;
+            for (int i = 1; i < _points.Count; i++)
+            {
+                minx = minx < _points[i].X ? minx : _points[i].X;
+                maxx = maxx > _points[i].X ? maxx : _points[i].X;
+                miny = miny < _points[i].Y ? miny : _points[i].Y;
+                maxy = maxy > _points[i].Y ? maxy : _points[i].Y;
+            }
+            return new Envelope(minx, maxx, miny, maxy);
+        }
+
+        /// <summary>
+        /// Tests the coordinates of this LineString against another geometry and returns true if they are identical.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public override bool EqualsExact(IGeometry other, double tolerance)
+        {
+            if (!IsEquivalentClass(other))
+                return false;
+
+            LineString otherLineString = (LineString)other;
+            if (_points.Count != otherLineString._points.Count)
+                return false;
+
+            for (int i = 0; i < _points.Count; i++)
+                if (!Equal(new Coordinate(_points[i]), otherLineString._points[i], tolerance))
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Returns the Nth coordinate of the coordinate sequence making up this LineString
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public virtual Coordinate GetCoordinateN(int n)
+        {
+            return _points[n];
+        }
+
+        /// <summary>
+        /// Returns the N'th point as an Implementation of IPoint.  The specific
+        /// implementation is just the DotSpatial.Geometries.Point
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public virtual IPoint GetPointN(int n)
+        {
+            return new Point(_points[n]);
+        }
+
+        /// <summary>
+        /// Returns true if the given point is a vertex of this <c>LineString</c>.
+        /// </summary>
+        /// <param name="pt">The <c>Coordinate</c> to check.</param>
+        /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
+        public virtual bool IsCoordinate(Coordinate pt)
+        {
+            Coordinate coord = new Coordinate(pt);
+            for (int i = 0; i < _points.Count; i++)
+                if (coord == _points[i])
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Tests other and returns true if other is a LineString
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        protected override bool IsEquivalentClass(IGeometry other)
+        {
+            return other is LineString;
+        }
+
+        /// <summary>
+        /// Normalizes a <c>LineString</c>.  A normalized linestring
+        /// has the first point which is not equal to it's reflected point
+        /// less than the reflected point.
+        /// </summary>
+        public override void Normalize()
+        {
+            for (int i = 0; i < _points.Count / 2; i++)
+            {
+                int j = _points.Count - 1 - i;
+                // skip equal points on both ends
+                if (!_points[i].Equals(_points[j]))
+                {
+                    if (_points[i].CompareTo(_points[j]) > 0)
+                        _points = _points.Reverse().ToList();
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates a new linestring representing a linestring that is offset by
+        /// distance to the left.  Negative distances will be to the right.  The final
+        /// LineString may be shorter or longer than the original.  Left is determined
+        /// by the vector direction of the segment between the 0th and 1st points.
+        /// Outside bends will be circular curves, rather than extended angles.
+        /// </summary>
+        /// <param name="distance">The double distance to create the offset LineString</param>
+        /// <returns>A valid ILineString interface created from calculations performed on this LineString</returns>
+        public ILineString Offset(double distance)
+        {
+            if (distance == 0) return this.Copy();
+
+            throw new NotImplementedException("This is not yet implemented");
+
+            // The problem with drawing it segment by segment is that segments further down can
+            // interfere with the propper pathway.  Trying to clip the boundary of the buffer instead.
+
+            // The problem with doing a buffer is that you are always left with an outer polygon,
+            // and complex shapes will produce "unioned" buffer results that are incorrect from
+            // the standpoint of drawing an offset.
+        }
+
+        /// <summary>
+        /// Returns a copy of this ILineString
+        /// </summary>
+        protected override void OnCopy(Geometry copy)
+        {
+            base.OnCopy(copy);
+            LineString ls = copy as LineString;
+            if (ls == null) return;
+            ls.Coordinates = new List<Coordinate>();
+            foreach (Coordinate coordinate in _points)
+            {
+                ls.Coordinates.Add(coordinate);
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
+        /// </summary>
+        /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
+        public virtual ILineString Reverse()
+        {
+            List<Coordinate> result = Coordinates.CloneList();
+            result.Reverse();
+            return new LineString(result);
+        }
+
+        /// <summary>
+        /// Rotates the LineString by the given radian angle around the Origin.
+        /// </summary>
+        /// <param name="Origin">Coordinate the LineString gets rotated around.</param>
+        /// <param name="radAngle">Rotation angle in radian.</param>
+        public override void Rotate(Coordinate Origin, double radAngle)
+        {
+            for (int i = 0; i < _points.Count; i++)
+            {
+                base.RotateCoordinateRad(Origin, ref _points[i].X, ref _points[i].Y, radAngle);
             }
         }
 

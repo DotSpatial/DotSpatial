@@ -21,18 +21,22 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// A type specific Geometry collection that deals with ILineStrings
     /// </summary>
     public interface IMultiLineString : IGeometryCollection
     {
+        #region Indexers
+
         /// <summary>
         /// Changes the default indexer to assume that the members are ILineString instead of simply IGeometry
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         new ILineString this[int index] { get; }
+
+        #endregion
     }
 }

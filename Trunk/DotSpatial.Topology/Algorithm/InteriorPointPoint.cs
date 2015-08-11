@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -33,9 +34,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class InteriorPointPoint
     {
+        #region Fields
+
         private readonly Coordinate _centroid;
         private Coordinate _interiorPoint = Coordinate.Empty;
         private double _minDistance = Double.MaxValue;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -47,6 +54,10 @@ namespace DotSpatial.Topology.Algorithm
             Add(g);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -57,6 +68,10 @@ namespace DotSpatial.Topology.Algorithm
                 return _interiorPoint;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Tests the point(s) defined by a Geometry for the best inside point.
@@ -88,5 +103,7 @@ namespace DotSpatial.Topology.Algorithm
                 _minDistance = dist;
             }
         }
+
+        #endregion
     }
 }

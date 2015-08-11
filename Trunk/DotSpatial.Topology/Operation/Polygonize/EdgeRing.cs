@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 
 namespace DotSpatial.Topology.Operation.Polygonize
@@ -35,14 +36,18 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class EdgeRing
     {
+        #region Fields
+
         private readonly IList _deList = new ArrayList();
         private readonly IGeometryFactory _factory;
         private IList _holes;
-
         // cache the following data for efficiency
         private ILinearRing _ring;
-
         private IList<Coordinate> _ringPts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -52,6 +57,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
         {
             _factory = factory;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Tests whether this ring is a hole.
@@ -64,6 +73,35 @@ namespace DotSpatial.Topology.Operation.Polygonize
             get
             {
                 return CgAlgorithms.IsCounterClockwise(Ring.Coordinates);
+            }
+        }
+
+        /// <summary>
+        /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
+        /// </summary>
+        public virtual bool IsValid
+        {
+            get
+            {
+                EnsureCoordinates();
+                if (_ringPts.Count <= 3)
+                    return false;
+                EnsureRing();
+                return _ring.IsValid;
+            }
+        }
+
+        /// <summary>
+        /// Gets the coordinates for this ring as a <c>LineString</c>.
+        /// Used to return the coordinates in this ring
+        /// as a valid point, when it has been detected that the ring is topologically
+        /// invalid.
+        /// </summary>
+        public virtual ILineString LineString
+        {
+            get
+            {
+                return _factory.CreateLineString(Coordinates);
             }
         }
 
@@ -87,17 +125,16 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
+        /// Returns this ring as a LinearRing, or null if an Exception occurs while
+        /// creating it (such as a topology problem). Details of problems are written to
+        /// standard output.
         /// </summary>
-        public virtual bool IsValid
+        public virtual ILinearRing Ring
         {
             get
             {
-                EnsureCoordinates();
-                if (_ringPts.Count <= 3)
-                    return false;
                 EnsureRing();
-                return _ring.IsValid;
+                return _ring;
             }
         }
 
@@ -114,32 +151,67 @@ namespace DotSpatial.Topology.Operation.Polygonize
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Gets the coordinates for this ring as a <c>LineString</c>.
-        /// Used to return the coordinates in this ring
-        /// as a valid point, when it has been detected that the ring is topologically
-        /// invalid.
+        /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
-        public virtual ILineString LineString
+        /// <param name="de">The DirectedEdge to add.</param>
+        public virtual void Add(DirectedEdge de)
         {
-            get
+            _deList.Add(de);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <param name="isForward"></param>
+        /// <param name="coordList"></param>
+        private static void AddEdge(IList<Coordinate> coords, bool isForward, CoordinateList coordList)
+        {
+            if (isForward)
             {
-                return _factory.CreateLineString(Coordinates);
+                for (int i = 0; i < coords.Count; i++)
+                    coordList.Add(coords[i], false);
+            }
+            else
+            {
+                for (int i = coords.Count - 1; i >= 0; i--)
+                    coordList.Add(coords[i], false);
             }
         }
 
         /// <summary>
-        /// Returns this ring as a LinearRing, or null if an Exception occurs while
-        /// creating it (such as a topology problem). Details of problems are written to
-        /// standard output.
+        /// Adds a hole to the polygon formed by this ring.
         /// </summary>
-        public virtual ILinearRing Ring
+        /// <param name="hole">The LinearRing forming the hole.</param>
+        public virtual void AddHole(ILinearRing hole)
         {
-            get
+            if (_holes == null)
+                _holes = new ArrayList();
+            _holes.Add(hole);
+        }
+
+        private void EnsureCoordinates()
+        {
+            if (_ringPts != null) return;
+            CoordinateList coordList = new CoordinateList();
+            for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext(); )
             {
-                EnsureRing();
-                return _ring;
+                DirectedEdge de = (DirectedEdge)i.Current;
+                PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
+                AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
             }
+            _ringPts = coordList;
+        }
+
+        private void EnsureRing()
+        {
+            if (_ring != null) return;
+            _ring = _factory.CreateLinearRing(Coordinates);
         }
 
         /// <summary>
@@ -187,6 +259,21 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
+        /// Tests whether a given point is in an array of points.
+        /// Uses a value-based test.
+        /// </summary>
+        /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
+        /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
+        /// <returns><c>true</c> if the point is in the array.</returns>
+        public static bool IsInList(Coordinate pt, IList<Coordinate> pts)
+        {
+            for (int i = 0; i < pts.Count; i++)
+                if (new Coordinate(pt).Equals(pts[i]))
+                    return true;
+            return false;
+        }
+
+        /// <summary>
         /// Finds a point in a list of points which is not contained in another list of points.
         /// </summary>
         /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
@@ -203,78 +290,6 @@ namespace DotSpatial.Topology.Operation.Polygonize
             return null;
         }
 
-        /// <summary>
-        /// Tests whether a given point is in an array of points.
-        /// Uses a value-based test.
-        /// </summary>
-        /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
-        /// <returns><c>true</c> if the point is in the array.</returns>
-        public static bool IsInList(Coordinate pt, IList<Coordinate> pts)
-        {
-            for (int i = 0; i < pts.Count; i++)
-                if (new Coordinate(pt).Equals(pts[i]))
-                    return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Adds a DirectedEdge which is known to form part of this ring.
-        /// </summary>
-        /// <param name="de">The DirectedEdge to add.</param>
-        public virtual void Add(DirectedEdge de)
-        {
-            _deList.Add(de);
-        }
-
-        /// <summary>
-        /// Adds a hole to the polygon formed by this ring.
-        /// </summary>
-        /// <param name="hole">The LinearRing forming the hole.</param>
-        public virtual void AddHole(ILinearRing hole)
-        {
-            if (_holes == null)
-                _holes = new ArrayList();
-            _holes.Add(hole);
-        }
-
-        private void EnsureCoordinates()
-        {
-            if (_ringPts != null) return;
-            CoordinateList coordList = new CoordinateList();
-            for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext(); )
-            {
-                DirectedEdge de = (DirectedEdge)i.Current;
-                PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
-                AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
-            }
-            _ringPts = coordList;
-        }
-
-        private void EnsureRing()
-        {
-            if (_ring != null) return;
-            _ring = _factory.CreateLinearRing(Coordinates);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="isForward"></param>
-        /// <param name="coordList"></param>
-        private static void AddEdge(IList<Coordinate> coords, bool isForward, CoordinateList coordList)
-        {
-            if (isForward)
-            {
-                for (int i = 0; i < coords.Count; i++)
-                    coordList.Add(coords[i], false);
-            }
-            else
-            {
-                for (int i = coords.Count - 1; i >= 0; i--)
-                    coordList.Add(coords[i], false);
-            }
-        }
+        #endregion
     }
 }

@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph.Index;
 
 namespace DotSpatial.Topology.GeometriesGraph
@@ -36,6 +37,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class Edge : GraphComponent
     {
+        #region Fields
+
         private readonly Depth _depth = new Depth();
         private readonly EdgeIntersectionList _eiList;
         private int _depthDelta;   // the change in area depth from the R to Curve side of this edge
@@ -44,6 +47,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         private MonotoneChainEdge _mce;
         private string _name;
         private IList<Coordinate> _pts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -64,44 +71,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="pts"></param>
         public Edge(IList<Coordinate> pts) : this(pts, null) { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual IList<Coordinate> Points
-        {
-            get
-            {
-                return _pts;
-            }
-            set
-            {
-                _pts = value;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int NumPoints
+        public virtual Edge CollapsedEdge
         {
             get
             {
-                return _pts.Count;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
+                Coordinate[] newPts = new Coordinate[2];
+                newPts[0] = Points[0];
+                newPts[1] = Points[1];
+                Edge newe = new Edge(newPts, Label.ToLineLabel(Label));
+                return newe;
             }
         }
 
@@ -119,18 +104,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate Coordinate
+        public virtual Depth Depth
         {
             get
             {
-                return Points.Count > 0 ? Points[0] : Coordinate.Empty;
+                return _depth;
             }
-            set
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual EdgeIntersectionList EdgeIntersectionList
+        {
+            get
             {
-                if (Points.Count > 0)
-                {
-                    Points[0] = value;
-                }
+                return _eiList;
             }
         }
 
@@ -149,68 +138,6 @@ namespace DotSpatial.Topology.GeometriesGraph
                         _env.ExpandToInclude(Points[i]);
                 }
                 return _env;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Depth Depth
-        {
-            get
-            {
-                return _depth;
-            }
-        }
-
-        /// <summary>
-        /// The depthDelta is the change in depth as an edge is crossed from R to L.
-        /// </summary>
-        /// <returns>The change in depth as the edge is crossed from R to L.</returns>
-        public virtual int DepthDelta
-        {
-            get
-            {
-                return _depthDelta;
-            }
-            set
-            {
-                _depthDelta = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int MaximumSegmentIndex
-        {
-            get
-            {
-                return Points.Count - 1;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual EdgeIntersectionList EdgeIntersectionList
-        {
-            get
-            {
-                return _eiList;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual MonotoneChainEdge MonotoneChainEdge
-        {
-            get
-            {
-                if (_mce == null)
-                    _mce = new MonotoneChainEdge(this);
-                return _mce;
             }
         }
 
@@ -246,15 +173,80 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Edge CollapsedEdge
+        public override bool IsIsolated
         {
             get
             {
-                Coordinate[] newPts = new Coordinate[2];
-                newPts[0] = Points[0];
-                newPts[1] = Points[1];
-                Edge newe = new Edge(newPts, Label.ToLineLabel(Label));
-                return newe;
+                return _isIsolated;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual int MaximumSegmentIndex
+        {
+            get
+            {
+                return Points.Count - 1;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual MonotoneChainEdge MonotoneChainEdge
+        {
+            get
+            {
+                if (_mce == null)
+                    _mce = new MonotoneChainEdge(this);
+                return _mce;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual int NumPoints
+        {
+            get
+            {
+                return _pts.Count;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override Coordinate Coordinate
+        {
+            get
+            {
+                return Points.Count > 0 ? Points[0] : Coordinate.Empty;
+            }
+            set
+            {
+                if (Points.Count > 0)
+                {
+                    Points[0] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The depthDelta is the change in depth as an edge is crossed from R to L.
+        /// </summary>
+        /// <returns>The change in depth as the edge is crossed from R to L.</returns>
+        public virtual int DepthDelta
+        {
+            get
+            {
+                return _depthDelta;
+            }
+            set
+            {
+                _depthDelta = value;
             }
         }
 
@@ -276,50 +268,62 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public override bool IsIsolated
+        public virtual string Name
         {
             get
             {
-                return _isIsolated;
+                return _name;
             }
-        }
-
-        /// <summary>
-        /// Updates an IM from the label for an edge.
-        /// Handles edges from both L and A geometries.
-        /// </summary>
-        /// <param name="label"></param>
-        /// <param name="im"></param>
-        public static void UpdateIm(Label label, IntersectionMatrix im)
-        {
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.On), label.GetLocation(1, PositionType.On), DimensionType.Curve);
-            if (!label.IsArea()) return;
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Left), label.GetLocation(1, PositionType.Left), DimensionType.Surface);
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), DimensionType.Surface);
+            set
+            {
+                _name = value;
+            }
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public virtual Coordinate GetCoordinate(int i)
+        public virtual IList<Coordinate> Points
         {
-            return Points[i];
+            get
+            {
+                return _pts;
+            }
+            set
+            {
+                _pts = value;
+            }
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator ==(Edge obj1, Edge obj2)
+        {
+            return Equals(obj1, obj2);
         }
 
         /// <summary>
-        /// Adds EdgeIntersections for one or both
-        /// intersections found for a segment of an edge to the edge intersection list.
+        ///
         /// </summary>
-        /// <param name="li"></param>
-        /// <param name="segmentIndex"></param>
-        /// <param name="geomIndex"></param>
-        public virtual void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator !=(Edge obj1, Edge obj2)
         {
-            for (int i = 0; i < li.IntersectionNum; i++)
-                AddIntersection(li, segmentIndex, geomIndex, i);
+            return !(obj1 == obj2);
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Add an EdgeIntersection for intersection intIndex.
@@ -352,6 +356,19 @@ namespace DotSpatial.Topology.GeometriesGraph
                 // Add the intersection point to edge intersection list.
                 EdgeIntersectionList.Add(intPt, normalizedSegmentIndex, dist);
             }
+        }
+
+        /// <summary>
+        /// Adds EdgeIntersections for one or both
+        /// intersections found for a segment of an edge to the edge intersection list.
+        /// </summary>
+        /// <param name="li"></param>
+        /// <param name="segmentIndex"></param>
+        /// <param name="geomIndex"></param>
+        public virtual void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+        {
+            for (int i = 0; i < li.IntersectionNum; i++)
+                AddIntersection(li, segmentIndex, geomIndex, i);
         }
 
         /// <summary>
@@ -410,23 +427,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
+        /// <param name="i"></param>
         /// <returns></returns>
-        public static bool operator ==(Edge obj1, Edge obj2)
+        public virtual Coordinate GetCoordinate(int i)
         {
-            return Equals(obj1, obj2);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
-        public static bool operator !=(Edge obj1, Edge obj2)
-        {
-            return !(obj1 == obj2);
+            return Points[i];
         }
 
         /// <summary>
@@ -450,6 +455,38 @@ namespace DotSpatial.Topology.GeometriesGraph
                 if (!Points[i].Equals2D(e.Points[i]))
                     return false;
             return true;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("edge " + _name + ": ");
+            sb.Append("LINESTRING (");
+            for (int i = 0; i < Points.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append(Points[i].X + " " + Points[i].Y);
+            }
+            sb.Append(")  " + Label + " " + _depthDelta);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Updates an IM from the label for an edge.
+        /// Handles edges from both L and A geometries.
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="im"></param>
+        public static void UpdateIm(Label label, IntersectionMatrix im)
+        {
+            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.On), label.GetLocation(1, PositionType.On), DimensionType.Curve);
+            if (!label.IsArea()) return;
+            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Left), label.GetLocation(1, PositionType.Left), DimensionType.Surface);
+            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), DimensionType.Surface);
         }
 
         /// <summary>
@@ -480,22 +517,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             outstream.WriteLine(String.Empty);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("edge " + _name + ": ");
-            sb.Append("LINESTRING (");
-            for (int i = 0; i < Points.Count; i++)
-            {
-                if (i > 0) sb.Append(",");
-                sb.Append(Points[i].X + " " + Points[i].Y);
-            }
-            sb.Append(")  " + Label + " " + _depthDelta);
-            return sb.ToString();
-        }
+        #endregion
     }
 }

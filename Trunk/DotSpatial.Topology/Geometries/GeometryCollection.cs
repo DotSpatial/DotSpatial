@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>GeometryCollection</c>.
@@ -35,6 +35,8 @@ namespace DotSpatial.Topology
     [Serializable]
     public class GeometryCollection : Geometry, IGeometryCollection
     {
+        #region Fields
+
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
@@ -44,6 +46,10 @@ namespace DotSpatial.Topology
         /// Internal representation of this <c>GeometryCollection</c>.
         /// </summary>
         private IGeometry[] _geometries;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -59,23 +65,6 @@ namespace DotSpatial.Topology
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public GeometryCollection(IGeometry[] inGeometries) : this(inGeometries, DefaultFactory) { }
-
-        /// <summary>
-        /// This should only be used by derived classes because it does not actually set the geometries
-        /// </summary>
-        protected GeometryCollection()
-            : base(DefaultFactory)
-        {
-        }
-
-        /// <summary>
-        /// This should only be used by derived classes because it does not actually set the geometries
-        /// </summary>
-        /// <param name="factory">Specifies the factory that should be used when creating shapes in this multigeometry</param>
-        protected GeometryCollection(IGeometryFactory factory)
-            : base(factory)
-        {
-        }
 
         /// <summary>
         ///
@@ -171,7 +160,40 @@ namespace DotSpatial.Topology
             }
         }
 
-        #region IGeometryCollection Members
+        /// <summary>
+        /// This should only be used by derived classes because it does not actually set the geometries
+        /// </summary>
+        protected GeometryCollection()
+            : base(DefaultFactory)
+        {
+        }
+
+        /// <summary>
+        /// This should only be used by derived classes because it does not actually set the geometries
+        /// </summary>
+        /// <param name="factory">Specifies the factory that should be used when creating shapes in this multigeometry</param>
+        protected GeometryCollection(IGeometryFactory factory)
+            : base(factory)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Returns the area of this <c>GeometryCollection</c>.
+        /// </summary>
+        public override double Area
+        {
+            get
+            {
+                double area = 0.0;
+                for (int i = 0; i < _geometries.Length; i++)
+                    area += _geometries[i].Area;
+                return area;
+            }
+        }
 
         /// <summary>
         ///
@@ -183,6 +205,155 @@ namespace DotSpatial.Topology
                 if (IsEmpty)
                     return null;
                 return _geometries[0].Coordinate;
+            }
+        }
+
+        /* BEGIN ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
+        /// </summary>
+        public virtual int Count
+        {
+            get
+            {
+                return _geometries.Length;
+            }
+        }
+
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Gets the Envelope that envelops this GeometryCollection
+        /// </summary>
+        public new IEnvelope Envelope
+        {
+            get
+            {
+                IEnvelope env = new Envelope();
+                // Enlarge the envelope to include all of the smaller envelopes
+                for (int i = 0; i < NumGeometries; i++)
+                {
+                    env.ExpandToInclude(Geometries[i].Envelope);
+                }
+                return env;
+            }
+        }
+
+        /// <summary>
+        /// Uses an Enumeration to clarify the type of geometry
+        /// </summary>
+        public override string GeometryType
+        {
+            get
+            {
+                return "GeometryCollection";
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override bool IsEmpty
+        {
+            get
+            {
+                for (int i = 0; i < _geometries.Length; i++)
+                    if (!_geometries[i].IsEmpty)
+                        return false;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Return <c>true</c> if all features in collection are of the same type.
+        /// </summary>
+        public bool IsHomogeneous
+        {
+            get
+            {
+                IGeometry baseGeom = _geometries[0];
+                for (int i = 1; i < _geometries.Length; i++)
+                    if (baseGeom.GetType() != _geometries[i].GetType())
+                        return false;
+                return true;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override bool IsSimple
+        {
+            get
+            {
+                CheckNotGeometryCollection(this);
+                throw new ShouldNeverReachHereException();
+            }
+        }
+
+        /// <summary>
+        /// Returns the length of this <c>GeometryCollection</c>.
+        /// </summary>
+        public override double Length
+        {
+            get
+            {
+                double sum = 0.0;
+                for (int i = 0; i < _geometries.Length; i++)
+                    sum += (_geometries[i]).Length;
+                return sum;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override int NumGeometries
+        {
+            get
+            {
+                return _geometries.Length;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override int NumPoints
+        {
+            get
+            {
+                int numPoints = 0;
+                for (int i = 0; i < _geometries.Length; i++)
+                    numPoints += ((Geometry)_geometries[i]).NumPoints;
+                return numPoints;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                CheckNotGeometryCollection(this);
+                throw new ShouldNeverReachHereException();
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                DimensionType dimension = DimensionType.False;
+                for (int i = 0; i < _geometries.Length; i++)
+                    dimension = (DimensionType)Math.Max((int)dimension, (int)((Geometry)_geometries[i]).BoundaryDimension);
+                return dimension;
             }
         }
 
@@ -219,43 +390,6 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Given the specified test point, this checks each segment, and will
-        /// return the closest point on the specified segment.
-        /// </summary>
-        /// <param name="testPoint">The point to test.</param>
-        /// <returns></returns>
-        public override Coordinate ClosestPoint(Coordinate testPoint)
-        {
-            // For a point outside the polygon, it must be closer to the shell than
-            // any holes.
-            Coordinate closest = null;
-            double dist = double.MaxValue;
-            foreach (IGeometry geometry in Geometries)
-            {
-                Coordinate temp = geometry.ClosestPoint(testPoint);
-                double tempDist = testPoint.Distance(temp);
-                if (tempDist >= dist) continue;
-                dist = tempDist;
-                closest = temp;
-            }
-            return closest;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                for (int i = 0; i < _geometries.Length; i++)
-                    if (!_geometries[i].IsEmpty)
-                        return false;
-                return true;
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         public override DimensionType Dimension
@@ -272,155 +406,36 @@ namespace DotSpatial.Topology
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                DimensionType dimension = DimensionType.False;
-                for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (DimensionType)Math.Max((int)dimension, (int)((Geometry)_geometries[i]).BoundaryDimension);
-                return dimension;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override int NumGeometries
-        {
-            get
-            {
-                return _geometries.Length;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public override IGeometry GetGeometryN(int n)
-        {
-            return _geometries[n];
-        }
-
-        /// <summary>
-        /// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
-        /// If there is only one geometry, this will return this object.
-        /// </summary>
-        /// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
-        /// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
-        public override IBasicGeometry GetBasicGeometryN(int index)
-        {
-            return _geometries[index];
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         public virtual IGeometry[] Geometries
         {
             get { return _geometries; }
             set { _geometries = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override int NumPoints
-        {
-            get
-            {
-                int numPoints = 0;
-                for (int i = 0; i < _geometries.Length; i++)
-                    numPoints += ((Geometry)_geometries[i]).NumPoints;
-                return numPoints;
-            }
-        }
+        #endregion
+
+        #region Indexers
 
         /// <summary>
-        /// Uses an Enumeration to clarify the type of geometry
+        /// Returns the iTh element in the collection.
         /// </summary>
-        public override string GeometryType
-        {
-            get
-            {
-                return "GeometryCollection";
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                CheckNotGeometryCollection(this);
-                throw new ShouldNeverReachHereException();
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override IGeometry Boundary
-        {
-            get
-            {
-                CheckNotGeometryCollection(this);
-                throw new ShouldNeverReachHereException();
-            }
-        }
-
-        /// <summary>
-        /// Returns the area of this <c>GeometryCollection</c>.
-        /// </summary>
-        public override double Area
-        {
-            get
-            {
-                double area = 0.0;
-                for (int i = 0; i < _geometries.Length; i++)
-                    area += _geometries[i].Area;
-                return area;
-            }
-        }
-
-        /// <summary>
-        /// Returns the length of this <c>GeometryCollection</c>.
-        /// </summary>
-        public override double Length
-        {
-            get
-            {
-                double sum = 0.0;
-                for (int i = 0; i < _geometries.Length; i++)
-                    sum += (_geometries[i]).Length;
-                return sum;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
+        /// <param name="i"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public virtual IGeometry this[int i]
         {
-            if (!IsEquivalentClass(other))
-                return false;
-
-            GeometryCollection otherCollection = (GeometryCollection)other;
-            if (_geometries.Length != otherCollection.Geometries.Length)
-                return false;
-
-            for (int i = 0; i < _geometries.Length; i++)
-                if (!((Geometry)_geometries[i]).EqualsExact(otherCollection.Geometries[i], tolerance))
-                    return false;
-            return true;
+            get
+            {
+                return _geometries[i];
+            }
+            set
+            {
+                _geometries[i] = value;
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -455,13 +470,26 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        ///
+        /// Given the specified test point, this checks each segment, and will
+        /// return the closest point on the specified segment.
         /// </summary>
-        public override void Normalize()
+        /// <param name="testPoint">The point to test.</param>
+        /// <returns></returns>
+        public override Coordinate ClosestPoint(Coordinate testPoint)
         {
-            for (int i = 0; i < _geometries.Length; i++)
-                _geometries[i].Normalize();
-            Array.Sort(_geometries);
+            // For a point outside the polygon, it must be closer to the shell than
+            // any holes.
+            Coordinate closest = null;
+            double dist = double.MaxValue;
+            foreach (IGeometry geometry in Geometries)
+            {
+                Coordinate temp = geometry.ClosestPoint(testPoint);
+                double tempDist = testPoint.Distance(temp);
+                if (tempDist >= dist) continue;
+                dist = tempDist;
+                closest = temp;
+            }
+            return closest;
         }
 
         /// <summary>
@@ -477,18 +505,47 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Return <c>true</c> if all features in collection are of the same type.
+        ///
         /// </summary>
-        public bool IsHomogeneous
+        /// <returns></returns>
+        protected override IEnvelope ComputeEnvelopeInternal()
         {
-            get
-            {
-                IGeometry baseGeom = _geometries[0];
-                for (int i = 1; i < _geometries.Length; i++)
-                    if (baseGeom.GetType() != _geometries[i].GetType())
-                        return false;
-                return true;
-            }
+            Envelope envelope = new Envelope();
+            for (int i = 0; i < _geometries.Length; i++)
+                envelope.ExpandToInclude(_geometries[i].EnvelopeInternal);
+            return envelope;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public override bool EqualsExact(IGeometry other, double tolerance)
+        {
+            if (!IsEquivalentClass(other))
+                return false;
+
+            GeometryCollection otherCollection = (GeometryCollection)other;
+            if (_geometries.Length != otherCollection.Geometries.Length)
+                return false;
+
+            for (int i = 0; i < _geometries.Length; i++)
+                if (!((Geometry)_geometries[i]).EqualsExact(otherCollection.Geometries[i], tolerance))
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        /// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
+        /// If there is only one geometry, this will return this object.
+        /// </summary>
+        /// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
+        /// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
+        public override IBasicGeometry GetBasicGeometryN(int index)
+        {
+            return _geometries[index];
         }
 
         /// <summary>
@@ -505,55 +562,24 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Returns the iTh element in the collection.
+        ///
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="n"></param>
         /// <returns></returns>
-        public virtual IGeometry this[int i]
+        public override IGeometry GetGeometryN(int n)
         {
-            get
-            {
-                return _geometries[i];
-            }
-            set
-            {
-                _geometries[i] = value;
-            }
+            return _geometries[n];
         }
-
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
+        ///
         /// </summary>
-        public virtual int Count
+        public override void Normalize()
         {
-            get
-            {
-                return _geometries.Length;
-            }
+            for (int i = 0; i < _geometries.Length; i++)
+                _geometries[i].Normalize();
+            Array.Sort(_geometries);
         }
-
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Gets the Envelope that envelops this GeometryCollection
-        /// </summary>
-        public new IEnvelope Envelope
-        {
-            get
-            {
-                IEnvelope env = new Envelope();
-                // Enlarge the envelope to include all of the smaller envelopes
-                for (int i = 0; i < NumGeometries; i++)
-                {
-                    env.ExpandToInclude(Geometries[i].Envelope);
-                }
-                return env;
-            }
-        }
-
-        #endregion
 
         /// <summary>
         /// Handles the duplication process for geometry collections
@@ -565,18 +591,6 @@ namespace DotSpatial.Topology
             gc._geometries = new Geometry[_geometries.Length];
             for (int i = 0; i < _geometries.Length; i++)
                 gc._geometries[i] = (Geometry)_geometries[i].Clone();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal()
-        {
-            Envelope envelope = new Envelope();
-            for (int i = 0; i < _geometries.Length; i++)
-                envelope.ExpandToInclude(_geometries[i].EnvelopeInternal);
-            return envelope;
         }
 
         /// <summary>
@@ -599,7 +613,9 @@ namespace DotSpatial.Topology
             }
         }
 
-        #region Nested type: Enumerator
+        #endregion
+
+        #region Classes
 
         /// <summary>
         /// Iterates over all <c>Geometry</c>'s in a <c>GeometryCollection</c>.
@@ -611,6 +627,8 @@ namespace DotSpatial.Topology
         /// </summary>
         public class Enumerator : IEnumerator
         {
+            #region Fields
+
             /// <summary>
             /// The number of <c>Geometry</c>s in the the <c>GeometryCollection</c>.
             /// </summary>
@@ -640,6 +658,10 @@ namespace DotSpatial.Topology
             /// </summary>
             Enumerator _subcollectionEnumerator;
 
+            #endregion
+
+            #region Constructors
+
             /// <summary>
             /// Constructs an iterator over the given <c>GeometryCollection</c>.
             /// </summary>
@@ -655,26 +677,9 @@ namespace DotSpatial.Topology
                 _max = parent.NumGeometries;
             }
 
-            #region IEnumerator Members
+            #endregion
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <returns></returns>
-            public virtual bool MoveNext()
-            {
-                if (_atStart)
-                    return true;
-                if (_subcollectionEnumerator != null)
-                {
-                    if (_subcollectionEnumerator.MoveNext())
-                        return true;
-                    _subcollectionEnumerator = null;
-                }
-                if (_index >= _max)
-                    return false;
-                return true;
-            }
+            #region Properties
 
             /// <summary>
             ///
@@ -707,6 +712,29 @@ namespace DotSpatial.Topology
                     }
                     return obj;
                 }
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            ///
+            /// </summary>
+            /// <returns></returns>
+            public virtual bool MoveNext()
+            {
+                if (_atStart)
+                    return true;
+                if (_subcollectionEnumerator != null)
+                {
+                    if (_subcollectionEnumerator.MoveNext())
+                        return true;
+                    _subcollectionEnumerator = null;
+                }
+                if (_index >= _max)
+                    return false;
+                return true;
             }
 
             /// <summary>

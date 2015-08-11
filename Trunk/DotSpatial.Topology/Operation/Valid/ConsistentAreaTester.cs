@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.GeometriesGraph.Index;
 using DotSpatial.Topology.Operation.Relate;
@@ -41,12 +42,17 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class ConsistentAreaTester
     {
+        #region Fields
+
         private readonly GeometryGraph _geomGraph;
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly RelateNodeGraph _nodeGraph = new RelateNodeGraph();
-
         // the intersection point found (if any)
         private Coordinate _invalidPoint;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -55,6 +61,43 @@ namespace DotSpatial.Topology.Operation.Valid
         public ConsistentAreaTester(GeometryGraph geomGraph)
         {
             _geomGraph = geomGraph;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Checks for two duplicate rings in an area.
+        /// Duplicate rings are rings that are topologically equal
+        /// (that is, which have the same sequence of points up to point order).
+        /// If the area is topologically consistent (determined by calling the
+        /// <c>isNodeConsistentArea</c>,
+        /// duplicate rings can be found by checking for EdgeBundles which contain more than one EdgeEnd.
+        /// (This is because topologically consistent areas cannot have two rings sharing
+        /// the same line segment, unless the rings are equal).
+        /// The start point of one of the equal rings will be placed in invalidPoint.
+        /// Returns <c>true</c> if this area Geometry is topologically consistent but has two duplicate rings.
+        /// </summary>
+        public virtual bool HasDuplicateRings
+        {
+            get
+            {
+                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+                {
+                    RelateNode node = (RelateNode)nodeIt.Current;
+                    for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
+                    {
+                        EdgeEndBundle eeb = (EdgeEndBundle)i.Current;
+                        if (eeb.EdgeEnds.Count > 1)
+                        {
+                            _invalidPoint = eeb.Edge.GetCoordinate(0);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
         }
 
         /// <summary>
@@ -111,37 +154,6 @@ namespace DotSpatial.Topology.Operation.Valid
             }
         }
 
-        /// <summary>
-        /// Checks for two duplicate rings in an area.
-        /// Duplicate rings are rings that are topologically equal
-        /// (that is, which have the same sequence of points up to point order).
-        /// If the area is topologically consistent (determined by calling the
-        /// <c>isNodeConsistentArea</c>,
-        /// duplicate rings can be found by checking for EdgeBundles which contain more than one EdgeEnd.
-        /// (This is because topologically consistent areas cannot have two rings sharing
-        /// the same line segment, unless the rings are equal).
-        /// The start point of one of the equal rings will be placed in invalidPoint.
-        /// Returns <c>true</c> if this area Geometry is topologically consistent but has two duplicate rings.
-        /// </summary>
-        public virtual bool HasDuplicateRings
-        {
-            get
-            {
-                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
-                {
-                    RelateNode node = (RelateNode)nodeIt.Current;
-                    for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
-                    {
-                        EdgeEndBundle eeb = (EdgeEndBundle)i.Current;
-                        if (eeb.EdgeEnds.Count > 1)
-                        {
-                            _invalidPoint = eeb.Edge.GetCoordinate(0);
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        }
+        #endregion
     }
 }

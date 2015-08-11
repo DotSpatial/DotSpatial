@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
@@ -34,8 +35,14 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class RepeatedPointTester
     {
+        #region Fields
+
         // save the repeated coord found (if any)
         private Coordinate _repeatedCoord;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -46,6 +53,28 @@ namespace DotSpatial.Topology.Operation.Valid
             {
                 return _repeatedCoord;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="coord"></param>
+        /// <returns></returns>
+        public virtual bool HasRepeatedPoint(IList<Coordinate> coord)
+        {
+            for (int i = 1; i < coord.Count; i++)
+            {
+                if (coord[i - 1].Equals(coord[i]))
+                {
+                    _repeatedCoord = coord[i];
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -66,24 +95,6 @@ namespace DotSpatial.Topology.Operation.Valid
             if (g is GeometryCollection)
                 return HasRepeatedPoint((IGeometryCollection)g);
             throw new NotSupportedException(g.GetType().FullName);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
-        public virtual bool HasRepeatedPoint(IList<Coordinate> coord)
-        {
-            for (int i = 1; i < coord.Count; i++)
-            {
-                if (coord[i - 1].Equals(coord[i]))
-                {
-                    _repeatedCoord = coord[i];
-                    return true;
-                }
-            }
-            return false;
         }
 
         /// <summary>
@@ -116,5 +127,7 @@ namespace DotSpatial.Topology.Operation.Valid
             }
             return false;
         }
+
+        #endregion
     }
 }

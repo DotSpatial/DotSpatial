@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -32,8 +33,14 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class OrientedCoordinateArray : IComparable
     {
+        #region Fields
+
         private readonly bool _orientation;
         private readonly IList<Coordinate> _pts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a new <see cref="OrientedCoordinateArray" />}
@@ -46,37 +53,9 @@ namespace DotSpatial.Topology.Noding
             _orientation = Orientation(pts);
         }
 
-        #region IComparable Members
-
-        /// <summary>
-        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <returns>
-        /// -1 this one is smaller, or
-        ///  0 the two objects are equal, or
-        ///  1 this one is greater.
-        /// </returns>
-        public int CompareTo(object o1)
-        {
-            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
-            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
-        }
-
         #endregion
 
-        /// <summary>
-        /// Computes the canonical orientation for a coordinate array.
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <returns>
-        /// <c>true</c> if the points are oriented forwards, or
-        /// <c>false</c>if the points are oriented in reverse.
-        /// </returns>
-        private static bool Orientation(IList<Coordinate> pts)
-        {
-            return CoordinateArrays.IncreasingDirection(pts) == 1;
-        }
+        #region Methods
 
         private static int CompareOriented(IList<Coordinate> pts1, bool orientation1, IList<Coordinate> pts2, bool orientation2)
         {
@@ -105,5 +84,35 @@ namespace DotSpatial.Topology.Noding
                     return 0;
             }
         }
+
+        /// <summary>
+        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <returns>
+        /// -1 this one is smaller, or
+        ///  0 the two objects are equal, or
+        ///  1 this one is greater.
+        /// </returns>
+        public int CompareTo(object o1)
+        {
+            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
+        }
+
+        /// <summary>
+        /// Computes the canonical orientation for a coordinate array.
+        /// </summary>
+        /// <param name="pts"></param>
+        /// <returns>
+        /// <c>true</c> if the points are oriented forwards, or
+        /// <c>false</c>if the points are oriented in reverse.
+        /// </returns>
+        private static bool Orientation(IList<Coordinate> pts)
+        {
+            return CoordinateArrays.IncreasingDirection(pts) == 1;
+        }
+
+        #endregion
     }
 }

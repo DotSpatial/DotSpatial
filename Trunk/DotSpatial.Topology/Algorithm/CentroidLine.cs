@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -34,8 +35,14 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class CentroidLine
     {
+        #region Fields
+
         private readonly Coordinate _centSum = new Coordinate(0D, 0D, 0D, 0D);
         private double _totalLength;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -50,6 +57,10 @@ namespace DotSpatial.Topology.Algorithm
                 return cent;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds the linestring(s) defined by a Geometry to the centroid total.
@@ -87,5 +98,7 @@ namespace DotSpatial.Topology.Algorithm
                 _centSum.Y += segmentLen * midy;
             }
         }
+
+        #endregion
     }
 }

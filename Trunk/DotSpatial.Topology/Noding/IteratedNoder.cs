@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -39,14 +40,24 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class IteratedNoder : INoder
     {
+        #region Constant Fields
+
         /// <summary>
         ///
         /// </summary>
         public const int MAX_ITERATIONS = 5;
 
+        #endregion
+
+        #region Fields
+
         private readonly LineIntersector _li;
         private int _maxIter = MAX_ITERATIONS;
         private IList _nodedSegStrings;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IteratedNoder"/> class.
@@ -57,6 +68,10 @@ namespace DotSpatial.Topology.Noding
             _li = new RobustLineIntersector();
             _li.PrecisionModel = pm;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets/Sets the maximum number of noding iterations performed before
@@ -75,17 +90,9 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        #region INoder Members
+        #endregion
 
-        /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
-        /// </summary>
-        /// <returns></returns>
-        public IList GetNodedSubstrings()
-        {
-            return _nodedSegStrings;
-        }
+        #region Methods
 
         /// <summary>
         /// Fully nodes a list of <see cref="SegmentString" />s, i.e. peforms noding iteratively
@@ -120,7 +127,15 @@ namespace DotSpatial.Topology.Noding
             while (lastNodesCreated > 0);
         }
 
-        #endregion
+        /// <summary>
+        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
+        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// </summary>
+        /// <returns></returns>
+        public IList GetNodedSubstrings()
+        {
+            return _nodedSegStrings;
+        }
 
         /// <summary>
         /// Node the input segment strings once
@@ -136,5 +151,7 @@ namespace DotSpatial.Topology.Noding
             _nodedSegStrings = noder.GetNodedSubstrings();
             numInteriorIntersections[0] = si.NumInteriorIntersections;
         }
+
+        #endregion
     }
 }

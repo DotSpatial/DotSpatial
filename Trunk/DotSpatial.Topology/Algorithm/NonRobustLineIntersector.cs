@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -31,76 +32,67 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class NonRobustLineIntersector : LineIntersector
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns>
-        /// <c>true</c> if both numbers are positive or if both numbers are negative,
-        /// <c>false</c> if both numbers are zero.
-        /// </returns>
-        public static bool IsSameSignAndNonZero(double a, double b)
-        {
-            if (a == 0 || b == 0)
-                return false;
-            return (a < 0 && b < 0) || (a > 0 && b > 0);
-        }
+        #region Methods
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
+        /// <param name="p3"></param>
+        /// <param name="p4"></param>
+        /// <returns></returns>
+        private IntersectionType ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
-            /*
-            *  Coefficients of line eqns.
-            */
+            Coordinate q3;
+            Coordinate q4;
+            double t3;
+            double t4;
+            const double r1 = 0;
+            const double r2 = 1;
+            double r3 = RParameter(p1, p2, p3);
+            double r4 = RParameter(p1, p2, p4);
 
-            /*
-            *  'Sign' values
-            */
-
-            IsProper = false;
-
-            /*
-            *  Compute a1, b1, c1, where line joining points 1 and 2
-            *  is "a1 x  +  b1 y  +  c1  =  0".
-            */
-            double a1 = p2.Y - p1.Y;
-            double b1 = p1.X - p2.X;
-            double c1 = p2.X * p1.Y - p1.X * p2.Y;
-
-            /*
-            *  Compute r3 and r4.
-            */
-            double r = a1 * p.X + b1 * p.Y + c1;
-
-            // if r != 0 the point does not lie on the line
-            if (r != 0)
+            // make sure p3-p4 is in same direction as p1-p2
+            if (r3 < r4)
             {
-                Result = IntersectionType.NoIntersection;
-                return;
+                q3 = new Coordinate(p3);
+                t3 = r3;
+                q4 = new Coordinate(p4);
+                t4 = r4;
+            }
+            else
+            {
+                q3 = new Coordinate(p4);
+                t3 = r4;
+                q4 = new Coordinate(p3);
+                t4 = r3;
             }
 
-            // Point lies on line - check to see whether it lies in line segment.
+            // check for no intersection
+            if (t3 > r2 || t4 < r1)
+                return IntersectionType.NoIntersection;
 
-            double dist = RParameter(p1, p2, p);
-            if (dist < 0.0 || dist > 1.0)
+            // check for single point intersection
+            if (q4 == p1)
             {
-                Result = IntersectionType.NoIntersection;
-                return;
+                PointA = p1;
+                return IntersectionType.PointIntersection;
+            }
+            if (q3 == p2)
+            {
+                PointA = p2;
+                return IntersectionType.PointIntersection;
             }
 
-            IsProper = true;
-            if (p.Equals(p1) || p.Equals(p2))
-            {
-                IsProper = false;
-            }
+            // intersection MUST be a segment - compute endpoints
+            PointA = p1;
+            if (t3 > r1) PointA = q3;
 
-            Result = IntersectionType.PointIntersection;
+            PointB = p2;
+            if (t4 < r2) PointB = q4;
+
+            return IntersectionType.Collinear;
         }
 
         /// <summary>
@@ -200,62 +192,73 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        /// <param name="p3"></param>
-        /// <param name="p4"></param>
-        /// <returns></returns>
-        private IntersectionType ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
+        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            Coordinate q3;
-            Coordinate q4;
-            double t3;
-            double t4;
-            const double r1 = 0;
-            const double r2 = 1;
-            double r3 = RParameter(p1, p2, p3);
-            double r4 = RParameter(p1, p2, p4);
+            /*
+            *  Coefficients of line eqns.
+            */
 
-            // make sure p3-p4 is in same direction as p1-p2
-            if (r3 < r4)
-            {
-                q3 = new Coordinate(p3);
-                t3 = r3;
-                q4 = new Coordinate(p4);
-                t4 = r4;
-            }
-            else
-            {
-                q3 = new Coordinate(p4);
-                t3 = r4;
-                q4 = new Coordinate(p3);
-                t4 = r3;
-            }
+            /*
+            *  'Sign' values
+            */
 
-            // check for no intersection
-            if (t3 > r2 || t4 < r1)
-                return IntersectionType.NoIntersection;
+            IsProper = false;
 
-            // check for single point intersection
-            if (q4 == p1)
+            /*
+            *  Compute a1, b1, c1, where line joining points 1 and 2
+            *  is "a1 x  +  b1 y  +  c1  =  0".
+            */
+            double a1 = p2.Y - p1.Y;
+            double b1 = p1.X - p2.X;
+            double c1 = p2.X * p1.Y - p1.X * p2.Y;
+
+            /*
+            *  Compute r3 and r4.
+            */
+            double r = a1 * p.X + b1 * p.Y + c1;
+
+            // if r != 0 the point does not lie on the line
+            if (r != 0)
             {
-                PointA = p1;
-                return IntersectionType.PointIntersection;
-            }
-            if (q3 == p2)
-            {
-                PointA = p2;
-                return IntersectionType.PointIntersection;
+                Result = IntersectionType.NoIntersection;
+                return;
             }
 
-            // intersection MUST be a segment - compute endpoints
-            PointA = p1;
-            if (t3 > r1) PointA = q3;
+            // Point lies on line - check to see whether it lies in line segment.
 
-            PointB = p2;
-            if (t4 < r2) PointB = q4;
+            double dist = RParameter(p1, p2, p);
+            if (dist < 0.0 || dist > 1.0)
+            {
+                Result = IntersectionType.NoIntersection;
+                return;
+            }
 
-            return IntersectionType.Collinear;
+            IsProper = true;
+            if (p.Equals(p1) || p.Equals(p2))
+            {
+                IsProper = false;
+            }
+
+            Result = IntersectionType.PointIntersection;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>
+        /// <c>true</c> if both numbers are positive or if both numbers are negative,
+        /// <c>false</c> if both numbers are zero.
+        /// </returns>
+        public static bool IsSameSignAndNonZero(double a, double b)
+        {
+            if (a == 0 || b == 0)
+                return false;
+            return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
 
         /// <summary>
@@ -278,5 +281,7 @@ namespace DotSpatial.Topology.Algorithm
 
             return r;
         }
+
+        #endregion
     }
 }

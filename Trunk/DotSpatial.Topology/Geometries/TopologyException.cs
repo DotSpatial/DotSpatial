@@ -24,14 +24,20 @@
 
 using System;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Indicates an invalid or inconsistent topological situation encountered during processing
     /// </summary>
     public class TopologyException : ApplicationException
     {
+        #region Fields
+
         private readonly Coordinate _pt;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -50,6 +56,10 @@ namespace DotSpatial.Topology
             _pt = new Coordinate(pt);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -60,6 +70,10 @@ namespace DotSpatial.Topology
                 return _pt;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -73,5 +87,7 @@ namespace DotSpatial.Topology
                 return msg + " [ " + pt + " ]";
             return msg;
         }
+
+        #endregion
     }
 }

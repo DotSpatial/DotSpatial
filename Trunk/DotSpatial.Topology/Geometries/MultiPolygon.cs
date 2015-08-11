@@ -25,7 +25,7 @@
 using System;
 using System.Collections;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
@@ -33,10 +33,16 @@ namespace DotSpatial.Topology
     [Serializable]
     public class MultiPolygon : GeometryCollection, IMultiPolygon
     {
+        #region Fields
+
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
         public static new readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -95,27 +101,18 @@ namespace DotSpatial.Topology
         /// <param name="factory"></param>
         public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }
 
-        #region IMultiPolygon Members
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        ///
+        /// Always Polygon
         /// </summary>
-        public override DimensionType Dimension
+        public override FeatureType FeatureType
         {
             get
             {
-                return DimensionType.Surface;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                return DimensionType.Curve;
+                return FeatureType.Polygon;
             }
         }
 
@@ -127,17 +124,6 @@ namespace DotSpatial.Topology
             get
             {
                 return "MultiPolygon";
-            }
-        }
-
-        /// <summary>
-        /// Always Polygon
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Polygon;
             }
         }
 
@@ -175,6 +161,32 @@ namespace DotSpatial.Topology
         /// <summary>
         ///
         /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                return DimensionType.Curve;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Surface;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
@@ -184,8 +196,6 @@ namespace DotSpatial.Topology
                 return false;
             return base.EqualsExact(other, tolerance);
         }
-
-        #endregion
 
         /// <summary>
         /// Presuming that the specified basic geometry describes a MultiPolygon, this will perform the necessary
@@ -223,5 +233,7 @@ namespace DotSpatial.Topology
 
             return new MultiPolygon(polygonArray);
         }
+
+        #endregion
     }
 }

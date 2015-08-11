@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Algorithm
 {
     /// <summary>
@@ -29,11 +31,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public interface IPointInRing
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
         bool IsInside(Coordinate pt);
+
+        #endregion
     }
 }

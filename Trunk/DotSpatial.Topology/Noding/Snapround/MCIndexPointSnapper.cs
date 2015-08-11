@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
 using DotSpatial.Topology.Index.Chain;
 using DotSpatial.Topology.Index.Strtree;
@@ -34,7 +35,13 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// </summary>
     public class McIndexPointSnapper
     {
+        #region Fields
+
         private readonly StRtree _index;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="McIndexPointSnapper"/> class.
@@ -44,6 +51,10 @@ namespace DotSpatial.Topology.Noding.Snapround
         {
             _index = (StRtree)index;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Snaps (nodes) all interacting segments to this hot pixel.
@@ -73,17 +84,25 @@ namespace DotSpatial.Topology.Noding.Snapround
             return Snap(hotPixel, null, -1);
         }
 
-        #region Nested type: HotPixelSnapAction
+        #endregion
+
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         public class HotPixelSnapAction : MonotoneChainSelectAction
         {
+            #region Fields
+
             private readonly HotPixel _hotPixel;
             private readonly SegmentString _parentEdge;
             private readonly int _vertexIndex;
             private bool _isNodeAdded;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             /// Initializes a new instance of the <see cref="HotPixelSnapAction"/> class.
@@ -98,6 +117,10 @@ namespace DotSpatial.Topology.Noding.Snapround
                 _vertexIndex = vertexIndex;
             }
 
+            #endregion
+
+            #region Properties
+
             /// <summary>
             ///
             /// </summary>
@@ -108,6 +131,10 @@ namespace DotSpatial.Topology.Noding.Snapround
                     return _isNodeAdded;
                 }
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -123,19 +150,23 @@ namespace DotSpatial.Topology.Noding.Snapround
                         return;
                 _isNodeAdded = SimpleSnapRounder.AddSnappedNode(_hotPixel, ss, startIndex);
             }
+
+            #endregion
         }
-
-        #endregion
-
-        #region Nested type: QueryVisitor
 
         /// <summary>
         ///
         /// </summary>
         private class QueryVisitor : IItemVisitor
         {
+            #region Fields
+
             readonly HotPixelSnapAction _action;
             readonly Envelope _env;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -148,7 +179,9 @@ namespace DotSpatial.Topology.Noding.Snapround
                 _action = action;
             }
 
-            #region IItemVisitor Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             /// </summary>

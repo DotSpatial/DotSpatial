@@ -34,6 +34,8 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public interface ISegmentIntersector
     {
+        #region Methods
+
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> interface to process
@@ -44,5 +46,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
         void ProcessIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1);
+
+        #endregion
     }
 }

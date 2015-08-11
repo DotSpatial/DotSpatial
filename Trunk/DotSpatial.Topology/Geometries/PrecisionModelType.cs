@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// The types of Precision Model which NTS supports.

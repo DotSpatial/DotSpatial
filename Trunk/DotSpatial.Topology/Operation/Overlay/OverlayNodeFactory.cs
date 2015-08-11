@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Overlay
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class OverlayNodeFactory : NodeFactory
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -41,5 +44,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         {
             return new Node(coord, new DirectedEdgeStar());
         }
+
+        #endregion
     }
 }

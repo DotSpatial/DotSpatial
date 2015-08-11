@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Operation.Relate
 {
     /// <summary>
@@ -29,7 +31,13 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class RelateOp : GeometryGraphOperation
     {
+        #region Fields
+
         private readonly RelateComputer _relate;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -42,6 +50,10 @@ namespace DotSpatial.Topology.Operation.Relate
             _relate = new RelateComputer(Arg);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -52,6 +64,10 @@ namespace DotSpatial.Topology.Operation.Relate
                 return _relate.ComputeIm();
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -65,5 +81,7 @@ namespace DotSpatial.Topology.Operation.Relate
             IntersectionMatrix im = relOp.IntersectionMatrix;
             return im;
         }
+
+        #endregion
     }
 }

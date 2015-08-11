@@ -116,6 +116,17 @@ namespace DotSpatial.Topology.Index.Bintree
         #region Methods
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interval"></param>
+        private void CollectStats(Interval interval)
+        {
+            double del = interval.Width;
+            if (del < _minExtent && del > 0.0)
+                _minExtent = del;
+        }
+
+        /// <summary>
         /// Ensure that the Interval for the inserted item has non-zero extents.
         /// Use the current minExtent to pad it, if necessary.
         /// </summary>
@@ -207,17 +218,6 @@ namespace DotSpatial.Topology.Index.Bintree
         {
             Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
             return _root.Remove(insertInterval, item);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
-        private void CollectStats(Interval interval)
-        {
-            double del = interval.Width;
-            if (del < _minExtent && del > 0.0)
-                _minExtent = del;
         }
 
         #endregion

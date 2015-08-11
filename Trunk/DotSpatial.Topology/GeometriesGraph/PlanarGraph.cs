@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -44,7 +45,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class PlanarGraph
     {
-        #region Private Variables
+        #region Fields
 
         private readonly IList _edgeEndList = new ArrayList();
         private IList _edges = new ArrayList();
@@ -69,6 +70,47 @@ namespace DotSpatial.Topology.GeometriesGraph
         public PlanarGraph()
         {
             _nodes = new NodeMap(new NodeFactory());
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a list of edge ends
+        /// </summary>
+        public virtual IList EdgeEnds
+        {
+            get
+            {
+                return _edgeEndList;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the actual values contained in the nodes
+        /// </summary>
+        public virtual IList NodeValues
+        {
+            get { return new ArrayList(_nodes.Values); }
+        }
+
+        /// <summary>
+        /// Gets or sets the list of edges.
+        /// </summary>
+        public IList Edges
+        {
+            get { return _edges; }
+            set { _edges = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the NodeMap for this graph
+        /// </summary>
+        public virtual NodeMap Nodes
+        {
+            get { return _nodes; }
+            set { _nodes = value; }
         }
 
         #endregion
@@ -138,23 +180,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// Returns the EdgeEnd which has edge e as its base edge
-        /// (MD 18 Feb 2002 - this should return a pair of edges).
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual EdgeEnd FindEdgeEnd(Edge e)
-        {
-            for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeEnd ee = (EdgeEnd)i.Current;
-                if (ee.Edge == e)
-                    return ee;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Returns the edge whose first two coordinates are p0 and p1.
         /// </summary>
         /// <param name="p0"></param>
@@ -168,6 +193,23 @@ namespace DotSpatial.Topology.GeometriesGraph
                 IList<Coordinate> eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the EdgeEnd which has edge e as its base edge
+        /// (MD 18 Feb 2002 - this should return a pair of edges).
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
+        public virtual EdgeEnd FindEdgeEnd(Edge e)
+        {
+            for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext(); )
+            {
+                EdgeEnd ee = (EdgeEnd)i.Current;
+                if (ee.Edge == e)
+                    return ee;
             }
             return null;
         }
@@ -197,18 +239,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public virtual IEnumerator GetEdgeEnumerator()
         {
-            return _nodes.GetEnumerator();
+            return _edges.GetEnumerator();
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public virtual IEnumerator GetNodeEnumerator()
         {
-            return _edges.GetEnumerator();
+            return _nodes.GetEnumerator();
         }
 
         /// <summary>
@@ -221,17 +263,20 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// Link the DirectedEdges at the nodes of the graph.
-        /// This allows clients to link only a subset of nodes in the graph, for
-        /// efficiency (because they know that only a subset is of interest).
+        ///
         /// </summary>
-        public virtual void LinkResultDirectedEdges()
+        /// <param name="geomIndex"></param>
+        /// <param name="coord"></param>
+        /// <returns></returns>
+        public virtual bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
-            for (IEnumerator nodeit = _nodes.GetEnumerator(); nodeit.MoveNext(); )
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
-            }
+            Node node = _nodes.Find(coord);
+            if (node == null)
+                return false;
+            Label label = node.Label;
+            if (label != null && label.GetLocation(geomIndex) == LocationType.Boundary)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -245,6 +290,35 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 Node node = (Node)nodeit.Current;
                 ((DirectedEdgeStar)node.Edges).LinkAllDirectedEdges();
+            }
+        }
+
+        /// <summary>
+        /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.
+        /// This allows clients to link only a subset of nodes in the graph, for
+        /// efficiency (because they know that only a subset is of interest).
+        /// </summary>
+        /// <param name="nodes"></param>
+        public static void LinkResultDirectedEdges(IList nodes)
+        {
+            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); )
+            {
+                Node node = (Node)nodeit.Current;
+                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
+            }
+        }
+
+        /// <summary>
+        /// Link the DirectedEdges at the nodes of the graph.
+        /// This allows clients to link only a subset of nodes in the graph, for
+        /// efficiency (because they know that only a subset is of interest).
+        /// </summary>
+        public virtual void LinkResultDirectedEdges()
+        {
+            for (IEnumerator nodeit = _nodes.GetEnumerator(); nodeit.MoveNext(); )
+            {
+                Node node = (Node)nodeit.Current;
+                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
             }
         }
 
@@ -278,83 +352,6 @@ namespace DotSpatial.Topology.GeometriesGraph
                 Edge e = (Edge)_edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
-            }
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a list of edge ends
-        /// </summary>
-        public virtual IList EdgeEnds
-        {
-            get
-            {
-                return _edgeEndList;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the list of edges.
-        /// </summary>
-        public IList Edges
-        {
-            get { return _edges; }
-            set { _edges = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the NodeMap for this graph
-        /// </summary>
-        public virtual NodeMap Nodes
-        {
-            get { return _nodes; }
-            set { _nodes = value; }
-        }
-
-        /// <summary>
-        /// Gets a list of the actual values contained in the nodes
-        /// </summary>
-        public virtual IList NodeValues
-        {
-            get { return new ArrayList(_nodes.Values); }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="coord"></param>
-        /// <returns></returns>
-        public virtual bool IsBoundaryNode(int geomIndex, Coordinate coord)
-        {
-            Node node = _nodes.Find(coord);
-            if (node == null)
-                return false;
-            Label label = node.Label;
-            if (label != null && label.GetLocation(geomIndex) == LocationType.Boundary)
-                return true;
-            return false;
-        }
-
-        #endregion
-
-        #region Static
-
-        /// <summary>
-        /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.
-        /// This allows clients to link only a subset of nodes in the graph, for
-        /// efficiency (because they know that only a subset is of interest).
-        /// </summary>
-        /// <param name="nodes"></param>
-        public static void LinkResultDirectedEdges(IList nodes)
-        {
-            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); )
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
             }
         }
 

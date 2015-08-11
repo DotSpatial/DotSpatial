@@ -24,7 +24,7 @@
 
 using System;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Represents a line segment defined by two <c>Coordinate</c>s.
@@ -38,11 +38,12 @@ namespace DotSpatial.Topology
     /// </summary>
     public interface ILineSegment : IComparable, ILineSegmentBase
     {
-        /// <summary>
-        /// Computes the length of the line segment.
-        /// </summary>
-        /// <returns>The length of the line segment.</returns>
-        double Length
+        #region Properties
+
+        /// <returns>
+        /// The angle this segment makes with the x-axis (in radians).
+        /// </returns>
+        double Angle
         {
             get;
         }
@@ -65,65 +66,36 @@ namespace DotSpatial.Topology
             get;
         }
 
-        /// <returns>
-        /// The angle this segment makes with the x-axis (in radians).
-        /// </returns>
-        double Angle
+        /// <summary>
+        /// Computes the length of the line segment.
+        /// </summary>
+        /// <returns>The length of the line segment.</returns>
+        double Length
         {
             get;
         }
 
-        /// <summary>
-        /// Returns an ICoordinate for the point specified by index i.
-        /// </summary>
-        /// <param name="i">Integer point index.  0 returns the first point, 1 returns the second.</param>
-        /// <returns>ICoordinate</returns>
-        Coordinate GetCoordinate(int i);
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Sets the two coordinates to match the coordinates in the specified ILineSegment
+        /// Computes the closest point on this line segment to another point.
         /// </summary>
-        /// <param name="ls"></param>
-        void SetCoordinates(ILineSegmentBase ls);
-
-        /// <summary>
-        /// Sets the two coordinates of this ILineString based on the ICoordinate
-        /// values passed.
-        /// </summary>
-        /// <param name="p0">An ICoordinate that specifies the startpoint of the segment</param>
-        /// <param name="p1">An ICoordinate that specifies the location of the endpoint of the segment</param>
-        void SetCoordinates(Coordinate p0, Coordinate p1);
-
-        /// <summary>
-        /// Determines the orientation of a LineSegment relative to this segment.
-        /// The concept of orientation is specified as follows:
-        /// Given two line segments A and L,
-        /// A is to the left of a segment L if A lies wholly in the
-        /// closed half-plane lying to the left of L
-        /// A is to the right of a segment L if A lies wholly in the
-        /// closed half-plane lying to the right of L
-        /// otherwise, A has indeterminate orientation relative to L. This
-        /// happens if A is collinear with L or if A crosses the line determined by L.
-        /// </summary>
-        /// <param name="seg">The <c>LineSegment</c> to compare.</param>
+        /// <param name="p">The point to find the closest point to.</param>
         /// <returns>
-        /// 1 if <c>seg</c> is to the left of this segment,
-        /// -1 if <c>seg</c> is to the right of this segment,
-        /// 0 if <c>seg</c> has indeterminate orientation relative to this segment.
+        /// A Coordinate which is the closest point on the line segment to the point p.
         /// </returns>
-        int OrientationIndex(ILineSegmentBase seg);
+        Coordinate ClosestPoint(Coordinate p);
 
         /// <summary>
-        /// Reverses the direction of the line segment.
+        /// Computes the closest points on a line segment.
         /// </summary>
-        void Reverse();
-
-        /// <summary>
-        /// Puts the line segment into a normalized form.
-        /// This is useful for using line segments in maps and indexes when
-        /// topological equality rather than exact equality is desired.
-        /// </summary>
-        void Normalize();
+        /// <param name="line"></param>
+        /// <returns>
+        /// A pair of Coordinates which are the closest points on the line segments.
+        /// </returns>
+        Coordinate[] ClosestPoints(ILineSegmentBase line);
 
         /// <summary>
         /// Computes the distance between this line segment and another one.
@@ -146,55 +118,25 @@ namespace DotSpatial.Topology
         double DistancePerpendicular(Coordinate p);
 
         /// <summary>
-        /// Compute the projection factor for the projection of the point p
-        /// onto this <c>LineSegment</c>. The projection factor is the constant k
-        /// by which the vector for this segment must be multiplied to
-        /// equal the vector for the projection of p.
+        /// Returns <c>true</c> if <c>other</c> is
+        /// topologically equal to this LineSegment (e.g. irrespective
+        /// of orientation).
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        double ProjectionFactor(Coordinate p);
-
-        /// <summary>
-        /// Compute the projection of a point onto the line determined
-        /// by this line segment.
-        /// Notice that the projected point
-        /// may lie outside the line segment.  If this is the case,
-        /// the projection factor will lie outside the range [0.0, 1.0].
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        Coordinate Project(Coordinate p);
-
-        /// <summary>
-        /// Project a line segment onto this line segment and return the resulting
-        /// line segment.  The returned line segment will be a subset of
-        /// the target line line segment.  This subset may be null, if
-        /// the segments are oriented in such a way that there is no projection.
-        /// Notice that the returned line may have zero length (i.e. the same endpoints).
-        /// This can happen for instance if the lines are perpendicular to one another.
-        /// </summary>
-        /// <param name="seg">The line segment to project.</param>
-        /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
-        ILineSegment Project(ILineSegmentBase seg);
-
-        /// <summary>
-        /// Computes the closest point on this line segment to another point.
-        /// </summary>
-        /// <param name="p">The point to find the closest point to.</param>
+        /// <param name="other">
+        /// A <c>LineSegment</c> with which to do the comparison.
+        /// </param>
         /// <returns>
-        /// A Coordinate which is the closest point on the line segment to the point p.
+        /// <c>true</c> if <c>other</c> is a <c>LineSegment</c>
+        /// with the same values for the x and y ordinates.
         /// </returns>
-        Coordinate ClosestPoint(Coordinate p);
+        bool EqualsTopologically(ILineSegmentBase other);
 
         /// <summary>
-        /// Computes the closest points on a line segment.
+        /// Returns an ICoordinate for the point specified by index i.
         /// </summary>
-        /// <param name="line"></param>
-        /// <returns>
-        /// A pair of Coordinates which are the closest points on the line segments.
-        /// </returns>
-        Coordinate[] ClosestPoints(ILineSegmentBase line);
+        /// <param name="i">Integer point index.  0 returns the first point, 1 returns the second.</param>
+        /// <returns>ICoordinate</returns>
+        Coordinate GetCoordinate(int i);
 
         /// <summary>
         /// Computes an intersection point between two segments, if there is one.
@@ -223,23 +165,89 @@ namespace DotSpatial.Topology
         bool Intersects(Envelope inEnvelope);
 
         /// <summary>
-        /// Returns <c>true</c> if <c>other</c> is
-        /// topologically equal to this LineSegment (e.g. irrespective
-        /// of orientation).
+        /// Puts the line segment into a normalized form.
+        /// This is useful for using line segments in maps and indexes when
+        /// topological equality rather than exact equality is desired.
         /// </summary>
-        /// <param name="other">
-        /// A <c>LineSegment</c> with which to do the comparison.
-        /// </param>
+        void Normalize();
+
+        /// <summary>
+        /// Determines the orientation of a LineSegment relative to this segment.
+        /// The concept of orientation is specified as follows:
+        /// Given two line segments A and L,
+        /// A is to the left of a segment L if A lies wholly in the
+        /// closed half-plane lying to the left of L
+        /// A is to the right of a segment L if A lies wholly in the
+        /// closed half-plane lying to the right of L
+        /// otherwise, A has indeterminate orientation relative to L. This
+        /// happens if A is collinear with L or if A crosses the line determined by L.
+        /// </summary>
+        /// <param name="seg">The <c>LineSegment</c> to compare.</param>
         /// <returns>
-        /// <c>true</c> if <c>other</c> is a <c>LineSegment</c>
-        /// with the same values for the x and y ordinates.
+        /// 1 if <c>seg</c> is to the left of this segment,
+        /// -1 if <c>seg</c> is to the right of this segment,
+        /// 0 if <c>seg</c> has indeterminate orientation relative to this segment.
         /// </returns>
-        bool EqualsTopologically(ILineSegmentBase other);
+        int OrientationIndex(ILineSegmentBase seg);
+
+        /// <summary>
+        /// Compute the projection of a point onto the line determined
+        /// by this line segment.
+        /// Notice that the projected point
+        /// may lie outside the line segment.  If this is the case,
+        /// the projection factor will lie outside the range [0.0, 1.0].
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        Coordinate Project(Coordinate p);
+
+        /// <summary>
+        /// Project a line segment onto this line segment and return the resulting
+        /// line segment.  The returned line segment will be a subset of
+        /// the target line line segment.  This subset may be null, if
+        /// the segments are oriented in such a way that there is no projection.
+        /// Notice that the returned line may have zero length (i.e. the same endpoints).
+        /// This can happen for instance if the lines are perpendicular to one another.
+        /// </summary>
+        /// <param name="seg">The line segment to project.</param>
+        /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
+        ILineSegment Project(ILineSegmentBase seg);
+
+        /// <summary>
+        /// Compute the projection factor for the projection of the point p
+        /// onto this <c>LineSegment</c>. The projection factor is the constant k
+        /// by which the vector for this segment must be multiplied to
+        /// equal the vector for the projection of p.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        double ProjectionFactor(Coordinate p);
+
+        /// <summary>
+        /// Reverses the direction of the line segment.
+        /// </summary>
+        void Reverse();
+
+        /// <summary>
+        /// Sets the two coordinates to match the coordinates in the specified ILineSegment
+        /// </summary>
+        /// <param name="ls"></param>
+        void SetCoordinates(ILineSegmentBase ls);
+
+        /// <summary>
+        /// Sets the two coordinates of this ILineString based on the ICoordinate
+        /// values passed.
+        /// </summary>
+        /// <param name="p0">An ICoordinate that specifies the startpoint of the segment</param>
+        /// <param name="p1">An ICoordinate that specifies the location of the endpoint of the segment</param>
+        void SetCoordinates(Coordinate p0, Coordinate p1);
 
         /// <summary>
         /// Returns Well Known Text for a LineString with just 2 points
         /// </summary>
         /// <returns>String: Well Known Text</returns>
         string ToString();
+
+        #endregion
     }
 }

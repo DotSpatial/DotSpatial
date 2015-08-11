@@ -31,6 +31,8 @@ namespace DotSpatial.Topology.Voronoi
     /// </summary>
     public class VoronoiGraph
     {
+        #region Fields
+
         /// <summary>
         /// The collection of VoronoiEdges.  The Left and Right points are from the
         /// original set of points that are bisected by the edge.  The A and B
@@ -42,5 +44,7 @@ namespace DotSpatial.Topology.Voronoi
         /// The vertices that join the voronoi polygon edges (not the original points)
         /// </summary>
         public readonly HashSet<Vector2> Vertices = new HashSet<Vector2>();
+
+        #endregion
     }
 }

@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -41,13 +42,18 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class MinimumDiameter
     {
+        #region Fields
+
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
-
         private LineSegment _minBaseSeg = new LineSegment();
         private int _minPtIndex;
         private double _minWidth;
         private Coordinate _minWidthPt = new Coordinate(0, 0, 0, 0);
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Compute a minimum diameter for a giver <c>Geometry</c>.
@@ -70,44 +76,9 @@ namespace DotSpatial.Topology.Algorithm
             _isConvex = isConvex;
         }
 
-        /// <summary>
-        /// Gets the length of the minimum diameter of the input Geometry.
-        /// </summary>
-        /// <returns>The length of the minimum diameter.</returns>
-        public virtual double Length
-        {
-            get
-            {
-                ComputeMinimumDiameter();
-                return _minWidth;
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
-        /// </summary>
-        /// <returns>A coordinate forming one end of the minimum diameter.</returns>
-        public virtual Coordinate WidthCoordinate
-        {
-            get
-            {
-                ComputeMinimumDiameter();
-                return _minWidthPt;
-            }
-        }
-
-        /// <summary>
-        /// Gets the segment forming the base of the minimum diameter.
-        /// </summary>
-        /// <returns>The segment forming the base of the minimum diameter.</returns>
-        public virtual ILineString SupportingSegment
-        {
-            get
-            {
-                ComputeMinimumDiameter();
-                return _inputGeom.Factory.CreateLineString(new[] { _minBaseSeg.P0, _minBaseSeg.P1 });
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets a <c>LineString</c> which is a minimum diameter.
@@ -125,6 +96,70 @@ namespace DotSpatial.Topology.Algorithm
 
                 Coordinate basePt = new Coordinate(_minBaseSeg.Project(_minWidthPt));
                 return _inputGeom.Factory.CreateLineString(new[] { basePt, _minWidthPt });
+            }
+        }
+
+        /// <summary>
+        /// Gets the length of the minimum diameter of the input Geometry.
+        /// </summary>
+        /// <returns>The length of the minimum diameter.</returns>
+        public virtual double Length
+        {
+            get
+            {
+                ComputeMinimumDiameter();
+                return _minWidth;
+            }
+        }
+
+        /// <summary>
+        /// Gets the segment forming the base of the minimum diameter.
+        /// </summary>
+        /// <returns>The segment forming the base of the minimum diameter.</returns>
+        public virtual ILineString SupportingSegment
+        {
+            get
+            {
+                ComputeMinimumDiameter();
+                return _inputGeom.Factory.CreateLineString(new[] { _minBaseSeg.P0, _minBaseSeg.P1 });
+            }
+        }
+
+        /// <summary>
+        /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
+        /// </summary>
+        /// <returns>A coordinate forming one end of the minimum diameter.</returns>
+        public virtual Coordinate WidthCoordinate
+        {
+            get
+            {
+                ComputeMinimumDiameter();
+                return _minWidthPt;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Compute the width information for a ring of <c>Coordinate</c>s.
+        /// Leaves the width information in the instance variables.
+        /// </summary>
+        /// <param name="pts"></param>
+        private void ComputeConvexRingMinDiameter(IList<Coordinate> pts)
+        {
+            // for each segment in the ring
+            _minWidth = Double.MaxValue;
+            int currMaxIndex = 1;
+
+            LineSegment seg = new LineSegment();
+            // compute the max distance for all segments in the ring, and pick the minimum
+            for (int i = 0; i < pts.Count - 1; i++)
+            {
+                seg.P0 = pts[i];
+                seg.P1 = pts[i + 1];
+                currMaxIndex = FindMaxPerpDistance(pts, seg, currMaxIndex);
             }
         }
 
@@ -181,27 +216,6 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        /// Compute the width information for a ring of <c>Coordinate</c>s.
-        /// Leaves the width information in the instance variables.
-        /// </summary>
-        /// <param name="pts"></param>
-        private void ComputeConvexRingMinDiameter(IList<Coordinate> pts)
-        {
-            // for each segment in the ring
-            _minWidth = Double.MaxValue;
-            int currMaxIndex = 1;
-
-            LineSegment seg = new LineSegment();
-            // compute the max distance for all segments in the ring, and pick the minimum
-            for (int i = 0; i < pts.Count - 1; i++)
-            {
-                seg.P0 = pts[i];
-                seg.P1 = pts[i + 1];
-                currMaxIndex = FindMaxPerpDistance(pts, seg, currMaxIndex);
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="pts"></param>
@@ -246,5 +260,7 @@ namespace DotSpatial.Topology.Algorithm
             if (index >= pts.Count) index = 0;
             return index;
         }
+
+        #endregion
     }
 }

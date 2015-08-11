@@ -36,10 +36,16 @@ namespace DotSpatial.Topology.Precision
     /// </summary>
     public class CommonBits
     {
+        #region Fields
+
         private long _commonBits;
         private int _commonMantissaBitsCount = 53;
         private long _commonSignExp;
         private bool _isFirst = true;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -52,64 +58,9 @@ namespace DotSpatial.Topology.Precision
             }
         }
 
-        /// <summary>
-        /// Computes the bit pattern for the sign and exponent of a
-        /// double-precision number.
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns>The bit pattern for the sign and exponent.</returns>
-        public static long SignExpBits(long num)
-        {
-            return num >> 52;
-        }
+        #endregion
 
-        /// <summary>
-        /// This computes the number of common most-significant bits in the mantissas
-        /// of two double-precision numbers.
-        /// It does not count the hidden bit, which is always 1.
-        /// It does not determine whether the numbers have the same exponent - if they do
-        /// not, the value computed by this function is meaningless.
-        /// </summary>
-        /// <param name="num1"></param>
-        /// /// <param name="num2"></param>
-        /// <returns>The number of common most-significant mantissa bits.</returns>
-        public static int NumCommonMostSigMantissaBits(long num1, long num2)
-        {
-            int count = 0;
-            for (int i = 52; i >= 0; i--)
-            {
-                if (GetBit(num1, i) != GetBit(num2, i))
-                    return count;
-                count++;
-            }
-            return 52;
-        }
-
-        /// <summary>
-        /// Zeroes the lower n bits of a bitstring.
-        /// </summary>
-        /// <param name="bits">The bitstring to alter.</param>
-        /// <param name="nBits">the number of bits to zero.</param>
-        /// <returns>The zeroed bitstring.</returns>
-        public static long ZeroLowerBits(long bits, int nBits)
-        {
-            long invMask = (1L << nBits) - 1L;
-            long mask = ~invMask;
-            long zeroed = bits & mask;
-            return zeroed;
-        }
-
-        /// <summary>
-        /// Extracts the i'th bit of a bitstring.
-        /// </summary>
-        /// <param name="bits">The bitstring to extract from.</param>
-        /// <param name="i">The bit to extract.</param>
-        /// <returns>The value of the extracted bit.</returns>
-        public static int GetBit(long bits, int i)
-        {
-            long mask = (1L << i);
-            return (bits & mask) != 0 ? 1 : 0;
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -137,6 +88,51 @@ namespace DotSpatial.Topology.Precision
         }
 
         /// <summary>
+        /// Extracts the i'th bit of a bitstring.
+        /// </summary>
+        /// <param name="bits">The bitstring to extract from.</param>
+        /// <param name="i">The bit to extract.</param>
+        /// <returns>The value of the extracted bit.</returns>
+        public static int GetBit(long bits, int i)
+        {
+            long mask = (1L << i);
+            return (bits & mask) != 0 ? 1 : 0;
+        }
+
+        /// <summary>
+        /// This computes the number of common most-significant bits in the mantissas
+        /// of two double-precision numbers.
+        /// It does not count the hidden bit, which is always 1.
+        /// It does not determine whether the numbers have the same exponent - if they do
+        /// not, the value computed by this function is meaningless.
+        /// </summary>
+        /// <param name="num1"></param>
+        /// /// <param name="num2"></param>
+        /// <returns>The number of common most-significant mantissa bits.</returns>
+        public static int NumCommonMostSigMantissaBits(long num1, long num2)
+        {
+            int count = 0;
+            for (int i = 52; i >= 0; i--)
+            {
+                if (GetBit(num1, i) != GetBit(num2, i))
+                    return count;
+                count++;
+            }
+            return 52;
+        }
+
+        /// <summary>
+        /// Computes the bit pattern for the sign and exponent of a
+        /// double-precision number.
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns>The bit pattern for the sign and exponent.</returns>
+        public static long SignExpBits(long num)
+        {
+            return num >> 52;
+        }
+
+        /// <summary>
         /// A representation of the Double bits formatted for easy readability
         /// </summary>
         /// <param name="bits"></param>
@@ -151,5 +147,21 @@ namespace DotSpatial.Topology.Precision
                          + bitStr.Substring(12) + " [ " + x + " ]";
             return str;
         }
+
+        /// <summary>
+        /// Zeroes the lower n bits of a bitstring.
+        /// </summary>
+        /// <param name="bits">The bitstring to alter.</param>
+        /// <param name="nBits">the number of bits to zero.</param>
+        /// <returns>The zeroed bitstring.</returns>
+        public static long ZeroLowerBits(long bits, int nBits)
+        {
+            long invMask = (1L << nBits) - 1L;
+            long mask = ~invMask;
+            long zeroed = bits & mask;
+            return zeroed;
+        }
+
+        #endregion
     }
 }

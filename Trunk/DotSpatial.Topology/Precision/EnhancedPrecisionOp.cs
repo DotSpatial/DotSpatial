@@ -22,6 +22,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Precision
 {
@@ -31,61 +32,32 @@ namespace DotSpatial.Topology.Precision
     /// </summary>
     public class EnhancedPrecisionOp
     {
+        #region Constructors
+
         /// <summary>
         /// Only static methods!
         /// </summary>
         private EnhancedPrecisionOp() { }
 
-        /// <summary>
-        /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
-        /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry.</param>
-        /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
-        public static IGeometry Intersection(IGeometry geom0, IGeometry geom1)
-        {
-            ApplicationException originalEx;
-            try
-            {
-                IGeometry result = geom0.Intersection(geom1);
-                return result;
-            }
-            catch (ApplicationException ex)
-            {
-                originalEx = ex;
-            }
-            /*
-             * If we are here, the original op encountered a precision problem
-             * (or some other problem).  Retry the operation with
-             * enhanced precision to see if it succeeds
-             */
-            try
-            {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEp = cbo.Intersection(geom0, geom1);
-                // check that result is a valid point after the reshift to orginal precision
-                if (!resultEp.IsValid)
-                    throw originalEx;
-                return resultEp;
-            }
-            catch (ApplicationException)
-            {
-                throw originalEx;
-            }
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
+        /// Computes the buffer of a <c>Geometry</c>, using enhanced precision.
+        /// This method should no longer be necessary, since the buffer algorithm
+        /// now is highly robust.
         /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry.</param>
-        /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
-        public static IGeometry Union(IGeometry geom0, IGeometry geom1)
+        /// <param name="geom">The first Geometry.</param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
+        [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
+        public static IGeometry Buffer(Geometry geom, double distance)
         {
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom0.Union(geom1);
+                Geometry result = (Geometry)geom.Buffer(distance);
                 return result;
             }
             catch (ApplicationException ex)
@@ -100,11 +72,11 @@ namespace DotSpatial.Topology.Precision
             try
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEp = cbo.Union(geom0, geom1);
+                IGeometry resultEP = cbo.Buffer(geom, distance);
                 // check that result is a valid point after the reshift to orginal precision
-                if (!resultEp.IsValid)
+                if (!resultEP.IsValid)
                     throw originalEx;
-                return resultEp;
+                return resultEP;
             }
             catch (ApplicationException)
             {
@@ -151,6 +123,44 @@ namespace DotSpatial.Topology.Precision
         }
 
         /// <summary>
+        /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
+        /// </summary>
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry.</param>
+        /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
+        public static IGeometry Intersection(IGeometry geom0, IGeometry geom1)
+        {
+            ApplicationException originalEx;
+            try
+            {
+                IGeometry result = geom0.Intersection(geom1);
+                return result;
+            }
+            catch (ApplicationException ex)
+            {
+                originalEx = ex;
+            }
+            /*
+             * If we are here, the original op encountered a precision problem
+             * (or some other problem).  Retry the operation with
+             * enhanced precision to see if it succeeds
+             */
+            try
+            {
+                CommonBitsOp cbo = new CommonBitsOp(true);
+                IGeometry resultEp = cbo.Intersection(geom0, geom1);
+                // check that result is a valid point after the reshift to orginal precision
+                if (!resultEp.IsValid)
+                    throw originalEx;
+                return resultEp;
+            }
+            catch (ApplicationException)
+            {
+                throw originalEx;
+            }
+        }
+
+        /// <summary>
         /// Computes the set-theoretic symmetric difference of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
         /// <param name="geom0">The first Geometry.</param>
@@ -189,20 +199,17 @@ namespace DotSpatial.Topology.Precision
         }
 
         /// <summary>
-        /// Computes the buffer of a <c>Geometry</c>, using enhanced precision.
-        /// This method should no longer be necessary, since the buffer algorithm
-        /// now is highly robust.
+        /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
-        /// <param name="geom">The first Geometry.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
-        [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
-        public static IGeometry Buffer(Geometry geom, double distance)
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry.</param>
+        /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
+        public static IGeometry Union(IGeometry geom0, IGeometry geom1)
         {
             ApplicationException originalEx;
             try
             {
-                Geometry result = (Geometry)geom.Buffer(distance);
+                IGeometry result = geom0.Union(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -217,16 +224,18 @@ namespace DotSpatial.Topology.Precision
             try
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Buffer(geom, distance);
+                IGeometry resultEp = cbo.Union(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
-                if (!resultEP.IsValid)
+                if (!resultEp.IsValid)
                     throw originalEx;
-                return resultEP;
+                return resultEp;
             }
             catch (ApplicationException)
             {
                 throw originalEx;
             }
         }
+
+        #endregion
     }
 }

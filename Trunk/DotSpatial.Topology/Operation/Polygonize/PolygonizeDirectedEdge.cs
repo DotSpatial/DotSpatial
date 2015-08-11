@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 
 namespace DotSpatial.Topology.Operation.Polygonize
@@ -33,9 +34,15 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class PolygonizeDirectedEdge : DirectedEdge
     {
+        #region Fields
+
         private EdgeRing _edgeRing;
         private long _label = -1;
         private PolygonizeDirectedEdge _next;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a directed edge connecting the <c>from</c> node to the
@@ -53,6 +60,22 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// </param>
         public PolygonizeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
             : base(from, to, directionPt, edgeDirection) { }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Returns the ring of directed edges that this directed edge is
+        /// a member of, or null if the ring has not been set.
+        /// </summary>
+        public virtual bool IsInRing
+        {
+            get
+            {
+                return Ring != null;
+            }
+        }
 
         /// <summary>
         /// Returns the identifier attached to this directed edge.
@@ -87,18 +110,6 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        /// Returns the ring of directed edges that this directed edge is
-        /// a member of, or null if the ring has not been set.
-        /// </summary>
-        public virtual bool IsInRing
-        {
-            get
-            {
-                return Ring != null;
-            }
-        }
-
-        /// <summary>
         /// Gets/Sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>
@@ -113,5 +124,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 _edgeRing = value;
             }
         }
+
+        #endregion
     }
 }

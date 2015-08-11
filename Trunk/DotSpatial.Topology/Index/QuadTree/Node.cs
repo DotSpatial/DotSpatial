@@ -23,9 +23,10 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// Represents a node of a <c>Quadtree</c>.  Nodes contain
@@ -102,77 +103,6 @@ namespace DotSpatial.Topology.Index.Quadtree
         }
 
         /// <summary>
-        /// Returns the smallest <i>existing</i>
-        /// node containing the envelope.
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        public NodeBase<T> Find(Envelope searchEnv)
-        {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
-            if (subnodeIndex == -1)
-                return this;
-            if (Subnode[subnodeIndex] != null) 
-            {
-                // query lies in subquad, so search it
-                var node = Subnode[subnodeIndex];
-                return node.Find(searchEnv);
-            }
-            // no existing subquad, so return this one anyway
-            return this;
-        }
-
-        /// <summary> 
-        /// Returns the subquad containing the envelope <paramref name="searchEnv"/>.
-        /// Creates the subquad if
-        /// it does not already exist.
-        /// </summary>
-        /// <param name="searchEnv">The envelope to search for</param>
-        /// <returns>The subquad containing the search envelope.</returns>
-        public Node<T> GetNode(Envelope searchEnv)
-        {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
-            // if subquadIndex is -1 searchEnv is not contained in a subquad
-            if (subnodeIndex != -1) 
-            {
-                // create the quad if it does not exist
-                var node = GetSubnode(subnodeIndex);
-                // recursively search the found/created quad
-                return node.GetNode(searchEnv);
-            }
-            return this;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="node"></param>
-        public void InsertNode(Node<T> node)
-        {
-            Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));        
-            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);        
-            if (node._level == _level - 1)             
-                Subnode[index] = node;                    
-            else 
-            {
-                // the quad is not a direct child, so make a new child quad to contain it
-                // and recursively insert the quad
-                var childNode = CreateSubnode(index);
-                childNode.InsertNode(node);
-                Subnode[index] = childNode;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        protected override bool IsSearchMatch(Envelope searchEnv)
-        {
-            return Envelope.Intersects(searchEnv);
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="index"></param>
@@ -220,6 +150,47 @@ namespace DotSpatial.Topology.Index.Quadtree
         }
 
         /// <summary>
+        /// Returns the smallest <i>existing</i>
+        /// node containing the envelope.
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        public NodeBase<T> Find(Envelope searchEnv)
+        {
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
+            if (subnodeIndex == -1)
+                return this;
+            if (Subnode[subnodeIndex] != null) 
+            {
+                // query lies in subquad, so search it
+                var node = Subnode[subnodeIndex];
+                return node.Find(searchEnv);
+            }
+            // no existing subquad, so return this one anyway
+            return this;
+        }
+
+        /// <summary> 
+        /// Returns the subquad containing the envelope <paramref name="searchEnv"/>.
+        /// Creates the subquad if
+        /// it does not already exist.
+        /// </summary>
+        /// <param name="searchEnv">The envelope to search for</param>
+        /// <returns>The subquad containing the search envelope.</returns>
+        public Node<T> GetNode(Envelope searchEnv)
+        {
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
+            // if subquadIndex is -1 searchEnv is not contained in a subquad
+            if (subnodeIndex != -1) 
+            {
+                // create the quad if it does not exist
+                var node = GetSubnode(subnodeIndex);
+                // recursively search the found/created quad
+                return node.GetNode(searchEnv);
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Get the subquad for the index.
         /// If it doesn't exist, create it.
         /// </summary>
@@ -229,6 +200,36 @@ namespace DotSpatial.Topology.Index.Quadtree
             if (Subnode[index] == null) 
                 Subnode[index] = CreateSubnode(index);            
             return Subnode[index];
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="node"></param>
+        public void InsertNode(Node<T> node)
+        {
+            Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));        
+            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);        
+            if (node._level == _level - 1)             
+                Subnode[index] = node;                    
+            else 
+            {
+                // the quad is not a direct child, so make a new child quad to contain it
+                // and recursively insert the quad
+                var childNode = CreateSubnode(index);
+                childNode.InsertNode(node);
+                Subnode[index] = childNode;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected override bool IsSearchMatch(Envelope searchEnv)
+        {
+            return Envelope.Intersects(searchEnv);
         }
 
         #endregion

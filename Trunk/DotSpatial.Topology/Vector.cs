@@ -23,6 +23,8 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology
 {
@@ -168,13 +170,6 @@ namespace DotSpatial.Topology
             Z = mat.Values[0, 2];
         }
 
-        private void RemoveNan()
-        {
-            if (double.IsNaN(X)) X = 0;
-            if (double.IsNaN(Y)) Y = 0;
-            if (double.IsNaN(Z)) Z = 0;
-        }
-
         #endregion
 
         #region Properties
@@ -293,11 +288,117 @@ namespace DotSpatial.Topology
 
         #endregion
 
+        #region Operators
+
+        /// <summary>
+        /// Adds the vectors U and V using vector addition, which adds the corresponding components
+        /// </summary>
+        /// <param name="u">One vector to be added</param>
+        /// <param name="v">A second vector to be added</param>
+        /// <returns>The sum of the vectors</returns>
+        public static Vector operator +(Vector u, Vector v)
+        {
+            return new Vector(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
+        }
+
+        /// <summary>
+        /// Tests equality of the X, Y, and Z members.
+        /// </summary>
+        /// <param name="u">The left hand side vector to test for equality.</param>
+        /// <param name="v">The right hand side vector to test for equality.</param>
+        /// <returns>Returns true if X, Y and Z are equal.</returns>
+        public static bool operator ==(Vector u, Vector v)
+        {
+            if (u.X == v.X && u.Y == v.Y && u.Z == v.Z) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the Cross Product of two vectors U and V
+        /// </summary>
+        /// <param name="u">Vector, the first input vector</param>
+        /// <param name="v">Vector, the second input vector</param>
+        /// <returns>A Vector containing the cross product of U and V</returns>
+        public static Vector operator ^(Vector u, Vector v)
+        {
+            Vector result = new Vector();
+            result.X = (u.Y * v.Z - u.Z * v.Y);
+            result.Y = (u.Z * v.X - u.X * v.Z);
+            result.Z = (u.X * v.Y - u.Y * v.X);
+            return result;
+        }
+
+        /// <summary>
+        /// Tests inequality of the X, Y and Z members.
+        /// </summary>
+        /// <param name="u">The left hand side vector to test inequality for.</param>
+        /// <param name="v">The right hand side vector to test inequality for</param>
+        /// <returns>Returns true if X, Y and Z are equal</returns>
+        public static bool operator !=(Vector u, Vector v)
+        {
+            if (u.X == v.X && u.Y == v.Y && u.Z == v.Z) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Returns the Inner Product also known as the dot product of two vectors, U and V
+        /// </summary>
+        /// <param name="u">The input vector</param>
+        /// <param name="v">The vector to take the inner product against U</param>
+        /// <returns>a Double containing the dot product of U and V</returns>
+        public static double operator *(Vector u, Vector v)
+        {
+            return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
+        }
+
+        /// <summary>
+        /// Multiplies the vectors U and V using vector multiplication,
+        /// which adds the corresponding components
+        /// </summary>
+        /// <param name="scalar">A scalar to multpy to the vector</param>
+        /// <param name="v">A vector to be multiplied</param>
+        /// <returns>The scalar product for the vectors</returns>
+        public static Vector operator *(double scalar, Vector v)
+        {
+            return new Vector(v.X * scalar, v.Y * scalar, v.Z * scalar);
+        }
+
+        /// <summary>
+        /// Multiplies each component of vector U by the Scalar value
+        /// </summary>
+        /// <param name="u">A vector representing the vector to be multiplied</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        public static Vector operator *(Vector u, double scalar)
+        {
+            return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
+        }
+
+        /// <summary>
+        /// Subtracts Vector V from Vector U
+        /// </summary>
+        /// <param name="u">A Vector to subtract from</param>
+        /// <param name="v">A Vector to subtract</param>
+        /// <returns>The Vector difference U - V</returns>
+        public static Vector operator -(Vector u, Vector v)
+        {
+            return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
+        }
+
+        #endregion
+
         #region Methods
 
-        #region Non Static Methods
-
-        #region -------------------- Add ---------------------------------
+        /// <summary>
+        /// Adds the vectors U and V using vector addition, which adds the corresponding components
+        /// </summary>
+        /// <param name="u">One vector to be added</param>
+        /// <param name="v">A second vector to be added</param>
+        /// <returns></returns>
+        public static Vector Add(Vector u, Vector v)
+        {
+            return new Vector(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
+        }
 
         /// <summary>
         /// Adds each of the elements of V to the elements of this vector
@@ -309,7 +410,146 @@ namespace DotSpatial.Topology
             return new Vector(X + v.X, Y + v.Y, Z + v.Z);
         }
 
-        #endregion
+        /// <summary>
+        /// Returns the cross product of this vector with the specified vector V
+        /// </summary>
+        /// <param name="v">The vector to perform a cross product against</param>
+        /// <returns>A vector result from the inner product</returns>
+        public Vector Cross(Vector v)
+        {
+            Vector result = new Vector();
+            result.X = (Y * v.Z - Z * v.Y);
+            result.Y = (Z * v.X - X * v.Z);
+            result.Z = (X * v.Y - Y * v.X);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the Cross Product of two vectors U and V
+        /// </summary>
+        /// <param name="u">Vector, the first input vector</param>
+        /// <param name="v">Vector, the second input vector</param>
+        /// <returns>A Vector containing the cross product of U and V</returns>
+        public static Vector CrossProduct(Vector u, Vector v)
+        {
+            Vector result = new Vector();
+            result.X = (u.Y * v.Z - u.Z * v.Y);
+            result.Y = (u.Z * v.X - u.X * v.Z);
+            result.Z = (u.X * v.Y - u.Y * v.X);
+            return result;
+        }
+
+        /// <summary>
+        /// Multiplies each component of vector U by the Scalar value
+        /// </summary>
+        /// <param name="u">A vector representing the vector to be multiplied</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        public static Vector Divide(Vector u, double scalar)
+        {
+            if (scalar == 0) throw new ArgumentException("Divisor cannot be 0.");
+            return new Vector(u.X / scalar, u.Y / scalar, u.Z / scalar);
+        }
+
+        /// <summary>
+        /// Returns the dot product of this vector with V2
+        /// </summary>
+        /// <param name="v">The vector to perform an inner product against</param>
+        /// <returns>A Double result from the inner product</returns>
+        public double Dot(Vector v)
+        {
+            return X * v.X + Y * v.Y + Z * v.Z;
+        }
+
+        /// <summary>
+        /// Returns the Inner Product also known as the dot product of two vectors, U and V
+        /// </summary>
+        /// <param name="u">The input vector</param>
+        /// <param name="v">The vector to take the inner product against U</param>
+        /// <returns>a Double containing the dot product of U and V</returns>
+        public static double DotProduct(Vector u, Vector v)
+        {
+            return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
+        }
+
+        /// <summary>
+        /// Override  for definition of equality for vectors
+        /// </summary>
+        /// <param name="v">A vector to compare with</param>
+        /// <returns>true if the X, Y, and Z coordinates are all equal</returns>
+        public bool Equals(Vector v)
+        {
+            if ((X == v.X) && (Y == v.Y) && (Z == v.Z)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Checks first to make sure that both objects are vectors.  If they are,
+        /// then it checks to determine whether or not the X, Y and Z values are equal.
+        /// </summary>
+        /// <param name="vect">The object to test against</param>
+        /// <returns></returns>
+        public override bool Equals(object vect)
+        {
+            if (vect.GetType() == typeof(Vector))
+            {
+                Vector v = (Vector)vect;
+                return (X == v.X) && (Y == v.Y) && (Z == v.Z);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the hash code.. or something
+        /// </summary>
+        /// <returns>A hash code I guess</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        /// <summary>
+        /// Compares the values of each element, and if all the elements are equal, returns true.
+        /// </summary>
+        /// <param name="v">The vector to compare against this vector.</param>
+        /// <returns>Boolean, true if all the elements have the same value.</returns>
+        public bool Intersects(Vector v)
+        {
+            if ((X == v.X) && (Y == v.Y) && (Z == v.Z)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Multiplies each component of vector U by the Scalar value
+        /// </summary>
+        /// <param name="u">A vector representing the vector to be multiplied</param>
+        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
+        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
+        public static Vector Multiply(Vector u, double scalar)
+        {
+            return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
+        }
+
+        /// <summary>
+        /// Returns the scalar product of this vector against a scalar
+        /// </summary>
+        /// <param name="scalar">Double, a value to multiply against all the members of this vector</param>
+        /// <returns>A vector multiplied by the scalar</returns>
+        public Vector Multiply(double scalar)
+        {
+            return new Vector(X * scalar, Y * scalar, Z * scalar);
+        }
+
+        /// <summary>
+        /// Non-static version of taking the square distance for a vector
+        /// </summary>
+        /// <param name="u">The vector to find the square of the distance of</param>
+        /// <returns>Double, the square of the distance</returns>
+        public static double Norm2(Vector u)
+        {
+            double n2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
+            return n2;
+        }
 
         /// <summary>
         /// Returns the square of the distance of the vector without taking the square root
@@ -319,6 +559,28 @@ namespace DotSpatial.Topology
         public double Norm2()
         {
             return X * X + Y * Y + Z * Z;
+        }
+
+        /// <summary>
+        /// Normalizes the vector.
+        /// </summary>
+        public void Normalize()
+        {
+            // Chris M 2/4/2007
+            double length = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
+            if (length <= 0)
+                return;
+
+            X = X / length;
+            Y = Y / length;
+            Z = Z / length;
+        }
+
+        private void RemoveNan()
+        {
+            if (double.IsNaN(X)) X = 0;
+            if (double.IsNaN(Y)) Y = 0;
+            if (double.IsNaN(Z)) Z = 0;
         }
 
         /// <summary>
@@ -358,22 +620,24 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Assuming the vector starts at the origin of 0, 0, 0, this function returns
-        /// a Point representing the tip of the vector.
+        /// Subtracts Vector V from Vector U
         /// </summary>
-        public IPoint ToPoint()
+        /// <param name="u">A Vector to subtract from</param>
+        /// <param name="v">A Vector to subtract</param>
+        /// <returns>The Vector difference U - V</returns>
+        public static Vector Subtract(Vector u, Vector v)
         {
-            return new Point(X, Y, Z);
+            return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
         }
 
         /// <summary>
-        /// Returns a new segment from this vector, where the StartPoint is 0, 0, 0
-        /// and the End Point is the tip of this vector
+        /// Subtracts each element of V from each element of this vector
         /// </summary>
-        /// <returns></returns>
-        public ILineSegment ToLineSegment()
+        /// <param name="v">Vector, the vector to subtract from this vector</param>
+        /// <returns>A vector result from the subtraction</returns>
+        public Vector Subtract(Vector v)
         {
-            return new LineSegment(new Coordinate(0, 0, 0), ToCoordinate());
+            return new Vector(X - v.X, Y - v.Y, Z - v.Z);
         }
 
         /// <summary>
@@ -386,20 +650,13 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Transforms a point that has 3 dimensions by multiplying it by the
-        /// specified 3 x 3 matrix in the upper left, but treats the
-        /// bottom row as supplying the translation coordinates.
+        /// Returns a new segment from this vector, where the StartPoint is 0, 0, 0
+        /// and the End Point is the tip of this vector
         /// </summary>
-        /// <param name="transformMatrix"></param>
         /// <returns></returns>
-        public Vector TransformCoordinate(IMatrix4 transformMatrix)
+        public ILineSegment ToLineSegment()
         {
-            IMatrixD m = ToMatrix();
-            IMatrixD res = m.Multiply(transformMatrix);
-            // the output vector will have the coordinates arranged in
-            // columns rather than rows.
-            double[,] results = res.Values;
-            return new Vector(results[0, 0], results[0, 1], results[0, 2]);
+            return new LineSegment(new Coordinate(0, 0, 0), ToCoordinate());
         }
 
         /// <summary>
@@ -419,366 +676,31 @@ namespace DotSpatial.Topology
             return mat;
         }
 
-        #region -------------------- Subtract --------------------------------
-
         /// <summary>
-        /// Subtracts each element of V from each element of this vector
+        /// Assuming the vector starts at the origin of 0, 0, 0, this function returns
+        /// a Point representing the tip of the vector.
         /// </summary>
-        /// <param name="v">Vector, the vector to subtract from this vector</param>
-        /// <returns>A vector result from the subtraction</returns>
-        public Vector Subtract(Vector v)
+        public IPoint ToPoint()
         {
-            return new Vector(X - v.X, Y - v.Y, Z - v.Z);
-        }
-
-        #endregion
-
-        #region -------------------- NORMALIZE ----------------------------
-
-        /// <summary>
-        /// Normalizes the vector.
-        /// </summary>
-        public void Normalize()
-        {
-            // Chris M 2/4/2007
-            double length = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
-            if (length <= 0)
-                return;
-
-            X = X / length;
-            Y = Y / length;
-            Z = Z / length;
-        }
-
-        #endregion
-
-        #region -------------------- CROSS --------------------------------
-
-        /// <summary>
-        /// Returns the cross product of this vector with the specified vector V
-        /// </summary>
-        /// <param name="v">The vector to perform a cross product against</param>
-        /// <returns>A vector result from the inner product</returns>
-        public Vector Cross(Vector v)
-        {
-            Vector result = new Vector();
-            result.X = (Y * v.Z - Z * v.Y);
-            result.Y = (Z * v.X - X * v.Z);
-            result.Z = (X * v.Y - Y * v.X);
-            return result;
-        }
-
-        #endregion
-
-        #region -------------------- DOT ---------------------------------
-
-        /// <summary>
-        /// Returns the dot product of this vector with V2
-        /// </summary>
-        /// <param name="v">The vector to perform an inner product against</param>
-        /// <returns>A Double result from the inner product</returns>
-        public double Dot(Vector v)
-        {
-            return X * v.X + Y * v.Y + Z * v.Z;
-        }
-
-        #endregion
-
-        #region -------------------- IS EQUAL TO---------------------------
-
-        /// <summary>
-        /// Compares the values of each element, and if all the elements are equal, returns true.
-        /// </summary>
-        /// <param name="v">The vector to compare against this vector.</param>
-        /// <returns>Boolean, true if all the elements have the same value.</returns>
-        public bool Intersects(Vector v)
-        {
-            if ((X == v.X) && (Y == v.Y) && (Z == v.Z)) return true;
-            return false;
+            return new Point(X, Y, Z);
         }
 
         /// <summary>
-        /// Override  for definition of equality for vectors
+        /// Transforms a point that has 3 dimensions by multiplying it by the
+        /// specified 3 x 3 matrix in the upper left, but treats the
+        /// bottom row as supplying the translation coordinates.
         /// </summary>
-        /// <param name="v">A vector to compare with</param>
-        /// <returns>true if the X, Y, and Z coordinates are all equal</returns>
-        public bool Equals(Vector v)
-        {
-            if ((X == v.X) && (Y == v.Y) && (Z == v.Z)) return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Checks first to make sure that both objects are vectors.  If they are,
-        /// then it checks to determine whether or not the X, Y and Z values are equal.
-        /// </summary>
-        /// <param name="vect">The object to test against</param>
+        /// <param name="transformMatrix"></param>
         /// <returns></returns>
-        public override bool Equals(object vect)
+        public Vector TransformCoordinate(IMatrix4 transformMatrix)
         {
-            if (vect.GetType() == typeof(Vector))
-            {
-                Vector v = (Vector)vect;
-                return (X == v.X) && (Y == v.Y) && (Z == v.Z);
-            }
-            return false;
+            IMatrixD m = ToMatrix();
+            IMatrixD res = m.Multiply(transformMatrix);
+            // the output vector will have the coordinates arranged in
+            // columns rather than rows.
+            double[,] results = res.Values;
+            return new Vector(results[0, 0], results[0, 1], results[0, 2]);
         }
-
-        /// <summary>
-        /// Returns the hash code.. or something
-        /// </summary>
-        /// <returns>A hash code I guess</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        #endregion
-
-        #region -------------------- MULTIPLY --------------------------------
-
-        /// <summary>
-        /// Returns the scalar product of this vector against a scalar
-        /// </summary>
-        /// <param name="scalar">Double, a value to multiply against all the members of this vector</param>
-        /// <returns>A vector multiplied by the scalar</returns>
-        public Vector Multiply(double scalar)
-        {
-            return new Vector(X * scalar, Y * scalar, Z * scalar);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Static Methods
-
-        #region -------------------- ADD VECTORS -------------------------
-
-        /// <summary>
-        /// Adds the vectors U and V using vector addition, which adds the corresponding components
-        /// </summary>
-        /// <param name="u">One vector to be added</param>
-        /// <param name="v">A second vector to be added</param>
-        /// <returns></returns>
-        public static Vector Add(Vector u, Vector v)
-        {
-            return new Vector(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
-        }
-
-        #endregion
-
-        #region -------------------- CROSS PRODUCT ------------------------
-
-        /// <summary>
-        /// Returns the Cross Product of two vectors U and V
-        /// </summary>
-        /// <param name="u">Vector, the first input vector</param>
-        /// <param name="v">Vector, the second input vector</param>
-        /// <returns>A Vector containing the cross product of U and V</returns>
-        public static Vector CrossProduct(Vector u, Vector v)
-        {
-            Vector result = new Vector();
-            result.X = (u.Y * v.Z - u.Z * v.Y);
-            result.Y = (u.Z * v.X - u.X * v.Z);
-            result.Z = (u.X * v.Y - u.Y * v.X);
-            return result;
-        }
-
-        #endregion
-
-        #region -------------------- DIVIDE VECTORS ----------------------
-
-        /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
-        /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
-        public static Vector Divide(Vector u, double scalar)
-        {
-            if (scalar == 0) throw new ArgumentException("Divisor cannot be 0.");
-            return new Vector(u.X / scalar, u.Y / scalar, u.Z / scalar);
-        }
-
-        #endregion
-
-        #region -------------------- DOT PRODUCT --------------------------
-
-        /// <summary>
-        /// Returns the Inner Product also known as the dot product of two vectors, U and V
-        /// </summary>
-        /// <param name="u">The input vector</param>
-        /// <param name="v">The vector to take the inner product against U</param>
-        /// <returns>a Double containing the dot product of U and V</returns>
-        public static double DotProduct(Vector u, Vector v)
-        {
-            return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
-        }
-
-        /// <summary>
-        /// Non-static version of taking the square distance for a vector
-        /// </summary>
-        /// <param name="u">The vector to find the square of the distance of</param>
-        /// <returns>Double, the square of the distance</returns>
-        public static double Norm2(Vector u)
-        {
-            double n2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
-            return n2;
-        }
-
-        #endregion
-
-        #region -------------------- MULTIPLY VECTORS --------------------
-
-        /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
-        /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
-        public static Vector Multiply(Vector u, double scalar)
-        {
-            return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
-        }
-
-        #endregion
-
-        #region -------------------- SUBTRACT VECTORS --------------------
-
-        /// <summary>
-        /// Subtracts Vector V from Vector U
-        /// </summary>
-        /// <param name="u">A Vector to subtract from</param>
-        /// <param name="v">A Vector to subtract</param>
-        /// <returns>The Vector difference U - V</returns>
-        public static Vector Subtract(Vector u, Vector v)
-        {
-            return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Static Operators
-
-        #region -------------------- ADD VECTORS -------------------------
-
-        /// <summary>
-        /// Adds the vectors U and V using vector addition, which adds the corresponding components
-        /// </summary>
-        /// <param name="u">One vector to be added</param>
-        /// <param name="v">A second vector to be added</param>
-        /// <returns>The sum of the vectors</returns>
-        public static Vector operator +(Vector u, Vector v)
-        {
-            return new Vector(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
-        }
-
-        /// <summary>
-        /// Tests equality of the X, Y, and Z members.
-        /// </summary>
-        /// <param name="u">The left hand side vector to test for equality.</param>
-        /// <param name="v">The right hand side vector to test for equality.</param>
-        /// <returns>Returns true if X, Y and Z are equal.</returns>
-        public static bool operator ==(Vector u, Vector v)
-        {
-            if (u.X == v.X && u.Y == v.Y && u.Z == v.Z) return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Tests inequality of the X, Y and Z members.
-        /// </summary>
-        /// <param name="u">The left hand side vector to test inequality for.</param>
-        /// <param name="v">The right hand side vector to test inequality for</param>
-        /// <returns>Returns true if X, Y and Z are equal</returns>
-        public static bool operator !=(Vector u, Vector v)
-        {
-            if (u.X == v.X && u.Y == v.Y && u.Z == v.Z) return false;
-            return true;
-        }
-
-        #endregion
-
-        #region -------------------- CROSS PRODUCT ------------------------
-
-        /// <summary>
-        /// Returns the Cross Product of two vectors U and V
-        /// </summary>
-        /// <param name="u">Vector, the first input vector</param>
-        /// <param name="v">Vector, the second input vector</param>
-        /// <returns>A Vector containing the cross product of U and V</returns>
-        public static Vector operator ^(Vector u, Vector v)
-        {
-            Vector result = new Vector();
-            result.X = (u.Y * v.Z - u.Z * v.Y);
-            result.Y = (u.Z * v.X - u.X * v.Z);
-            result.Z = (u.X * v.Y - u.Y * v.X);
-            return result;
-        }
-
-        #endregion
-
-        #region -------------------- DOT PRODUCT --------------------------
-
-        /// <summary>
-        /// Returns the Inner Product also known as the dot product of two vectors, U and V
-        /// </summary>
-        /// <param name="u">The input vector</param>
-        /// <param name="v">The vector to take the inner product against U</param>
-        /// <returns>a Double containing the dot product of U and V</returns>
-        public static double operator *(Vector u, Vector v)
-        {
-            return (u.X * v.X) + (u.Y * v.Y) + (u.Z * v.Z);
-        }
-
-        #endregion
-
-        #region -------------------- MULTIPLY VECTORS --------------------
-
-        /// <summary>
-        /// Multiplies the vectors U and V using vector multiplication,
-        /// which adds the corresponding components
-        /// </summary>
-        /// <param name="scalar">A scalar to multpy to the vector</param>
-        /// <param name="v">A vector to be multiplied</param>
-        /// <returns>The scalar product for the vectors</returns>
-        public static Vector operator *(double scalar, Vector v)
-        {
-            return new Vector(v.X * scalar, v.Y * scalar, v.Z * scalar);
-        }
-
-        /// <summary>
-        /// Multiplies each component of vector U by the Scalar value
-        /// </summary>
-        /// <param name="u">A vector representing the vector to be multiplied</param>
-        /// <param name="scalar">Double, the scalar value to mulitiply the vector components by</param>
-        /// <returns>A Vector representing the vector product of vector U and the Scalar</returns>
-        public static Vector operator *(Vector u, double scalar)
-        {
-            return new Vector(u.X * scalar, u.Y * scalar, u.Z * scalar);
-        }
-
-        #endregion
-
-        #region -------------------- SUBTRACT VECTORS --------------------
-
-        /// <summary>
-        /// Subtracts Vector V from Vector U
-        /// </summary>
-        /// <param name="u">A Vector to subtract from</param>
-        /// <param name="v">A Vector to subtract</param>
-        /// <returns>The Vector difference U - V</returns>
-        public static Vector operator -(Vector u, Vector v)
-        {
-            return new Vector(u.X - v.X, u.Y - v.Y, u.Z - v.Z);
-        }
-
-        #endregion
-
-        #endregion
 
         #endregion
     }

@@ -25,7 +25,6 @@
 using System.Collections;
 using DotSpatial.Topology.Index;
 using DotSpatial.Topology.Index.Chain;
-using DotSpatial.Topology.Index.Quadtree;
 using DotSpatial.Topology.Index.Strtree;
 
 namespace DotSpatial.Topology.Noding
@@ -39,11 +38,17 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class McIndexNoder : SinglePassNoder
     {
+        #region Fields
+
         private readonly ISpatialIndex _index = new StRtree();
         private readonly IList _monoChains = new ArrayList();
         private int _idCounter;
-        private int _nOverlaps; // statistics
         private IList _nodedSegStrings;
+        private int _nOverlaps; // statistics
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="McIndexNoder"/> class.
@@ -57,16 +62,9 @@ namespace DotSpatial.Topology.Noding
         public McIndexNoder(ISegmentIntersector segInt)
             : base(segInt) { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public IList MonotoneChains
-        {
-            get
-            {
-                return _monoChains;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -80,13 +78,34 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        ///
         /// </summary>
-        /// <returns></returns>
-        public override IList GetNodedSubstrings()
+        public IList MonotoneChains
         {
-            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
+            get
+            {
+                return _monoChains;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="segStr"></param>
+        private void Add(SegmentString segStr)
+        {
+            IList segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
+            foreach (object obj in segChains)
+            {
+                MonotoneChain mc = (MonotoneChain)obj;
+                mc.Id = _idCounter++;
+                _index.Insert(mc.Envelope, mc);
+                _monoChains.Add(mc);
+            }
         }
 
         /// <summary>
@@ -101,6 +120,16 @@ namespace DotSpatial.Topology.Noding
             foreach (object obj in inputSegStrings)
                 Add((SegmentString)obj);
             IntersectChains();
+        }
+
+        /// <summary>
+        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
+        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// </summary>
+        /// <returns></returns>
+        public override IList GetNodedSubstrings()
+        {
+            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>
@@ -129,30 +158,22 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="segStr"></param>
-        private void Add(SegmentString segStr)
-        {
-            IList segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach (object obj in segChains)
-            {
-                MonotoneChain mc = (MonotoneChain)obj;
-                mc.Id = _idCounter++;
-                _index.Insert(mc.Envelope, mc);
-                _monoChains.Add(mc);
-            }
-        }
+        #endregion
 
-        #region Nested type: SegmentOverlapAction
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         public class SegmentOverlapAction : MonotoneChainOverlapAction
         {
+            #region Fields
+
             private readonly ISegmentIntersector _si;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             /// Initializes a new instance of the <see cref="SegmentOverlapAction"/> class.
@@ -162,6 +183,10 @@ namespace DotSpatial.Topology.Noding
             {
                 _si = si;
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -176,6 +201,8 @@ namespace DotSpatial.Topology.Noding
                 SegmentString ss2 = (SegmentString)mc2.Context;
                 _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
+
+            #endregion
         }
 
         #endregion

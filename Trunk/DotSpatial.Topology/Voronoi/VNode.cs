@@ -25,9 +25,15 @@ namespace DotSpatial.Topology.Voronoi
 {
     internal abstract class VNode
     {
+        #region Fields
+
         private VNode _left;
         private VNode _parent;
         private VNode _right;
+
+        #endregion
+
+        #region Properties
 
         private VNode Left
         {
@@ -37,6 +43,12 @@ namespace DotSpatial.Topology.Voronoi
                 _left = value;
                 value.Parent = this;
             }
+        }
+
+        private VNode Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
         }
 
         private VNode Right
@@ -49,68 +61,51 @@ namespace DotSpatial.Topology.Voronoi
             }
         }
 
-        private VNode Parent
+        #endregion
+
+        #region Methods
+
+        public static VCircleEvent CircleCheckDataNode(VDataNode n, double ys)
         {
-            get { return _parent; }
-            set { _parent = value; }
+            VDataNode l = LeftDataNode(n);
+            VDataNode r = RightDataNode(n);
+            if (l == null || r == null || l.DataPoint == r.DataPoint || l.DataPoint == n.DataPoint || n.DataPoint == r.DataPoint)
+                return null;
+            if (MathTools.Ccw(l.DataPoint.X, l.DataPoint.Y, n.DataPoint.X, n.DataPoint.Y, r.DataPoint.X, r.DataPoint.Y, false) <= 0)
+                return null;
+            Vector2 center = Fortune.CircumCircleCenter(l.DataPoint, n.DataPoint, r.DataPoint);
+            VCircleEvent vc = new VCircleEvent();
+            vc.NodeN = n;
+            vc.NodeL = l;
+            vc.NodeR = r;
+            vc.Center = center;
+            vc.Valid = true;
+            if (vc.Y >= ys)
+                return vc;
+            return null;
         }
 
-        private void Replace(VNode childOld, VNode childNew)
+        public static void CleanUpTree(VNode root)
         {
-            if (Left == childOld)
-                Left = childNew;
-            else if (Right == childOld)
-                Right = childNew;
-            else throw new Exception("Child not found!");
-            childOld.Parent = null;
-        }
-
-        private static VDataNode LeftDataNode(VNode current)
-        {
-            VNode c = current;
-            //1. Up
-            do
+            if (root is VDataNode)
+                return;
+            VEdgeNode ve = root as VEdgeNode;
+            if (ve != null)
             {
-                if (c.Parent == null)
-                    return null;
-                if (c.Parent.Left == c)
+                while (ve.Edge.VVertexB == Fortune.VVUnkown)
                 {
-                    c = c.Parent;
-                    continue;
+                    ve.Edge.AddVertex(Fortune.VVInfinite);
                 }
-                c = c.Parent;
-                break;
-            } while (true);
-            //2. One Left
-            c = c.Left;
-            //3. Down
-            while (c.Right != null)
-                c = c.Right;
-            return (VDataNode)c; // Cast statt 'as' damit eine Exception kommt
-        }
-
-        private static VDataNode RightDataNode(VNode current)
-        {
-            VNode c = current;
-            //1. Up
-            do
-            {
-                if (c.Parent == null)
-                    return null;
-                if (c.Parent.Right == c)
+                if (ve.Flipped)
                 {
-                    c = c.Parent;
-                    continue;
+                    Vector2 t = ve.Edge.LeftData;
+                    ve.Edge.LeftData = ve.Edge.RightData;
+                    ve.Edge.RightData = t;
                 }
-                c = c.Parent;
-                break;
-            } while (true);
-            //2. One Right
-            c = c.Right;
-            //3. Down
-            while (c.Left != null)
-                c = c.Left;
-            return (VDataNode)c; // Cast statt 'as' damit eine Exception kommt
+                ve.Edge.Done = true;
+            }
+            CleanUpTree(root.Left);
+            CleanUpTree(root.Right);
         }
 
         private static VEdgeNode EdgeToRightDataNode(VNode current)
@@ -146,59 +141,28 @@ namespace DotSpatial.Topology.Voronoi
             } while (true);
         }
 
-        /// <summary>
-        /// Will return the new root (unchanged except in start-up)
-        /// </summary>
-        public static VNode ProcessDataEvent(VDataEvent e, VNode root, VoronoiGraph vg, double ys, out VDataNode[] circleCheckList)
+        private static VDataNode LeftDataNode(VNode current)
         {
-            if (root == null)
+            VNode c = current;
+            //1. Up
+            do
             {
-                root = new VDataNode(e.DataPoint);
-                circleCheckList = new[] { (VDataNode)root };
-                return root;
-            }
-            //1. Find the node to be replaced
-            VNode c = FindDataNode(root, ys, e.DataPoint.X);
-            //2. Create the subtree (ONE Edge, but two VEdgeNodes)
-            VoronoiEdge ve = new VoronoiEdge();
-            ve.LeftData = ((VDataNode)c).DataPoint;
-            ve.RightData = e.DataPoint;
-            ve.VVertexA = Fortune.VVUnkown;
-            ve.VVertexB = Fortune.VVUnkown;
-            vg.Edges.Add(ve);
-
-            VNode subRoot;
-            if (Math.Abs(ve.LeftData.Y - ve.RightData.Y) < 1e-10)
-            {
-                if (ve.LeftData.X < ve.RightData.X)
+                if (c.Parent == null)
+                    return null;
+                if (c.Parent.Left == c)
                 {
-                    subRoot = new VEdgeNode(ve, false);
-                    subRoot.Left = new VDataNode(ve.LeftData);
-                    subRoot.Right = new VDataNode(ve.RightData);
+                    c = c.Parent;
+                    continue;
                 }
-                else
-                {
-                    subRoot = new VEdgeNode(ve, true);
-                    subRoot.Left = new VDataNode(ve.RightData);
-                    subRoot.Right = new VDataNode(ve.LeftData);
-                }
-                circleCheckList = new[] { (VDataNode)subRoot.Left, (VDataNode)subRoot.Right };
-            }
-            else
-            {
-                subRoot = new VEdgeNode(ve, false);
-                subRoot.Left = new VDataNode(ve.LeftData);
-                subRoot.Right = new VEdgeNode(ve, true);
-                subRoot.Right.Left = new VDataNode(ve.RightData);
-                subRoot.Right.Right = new VDataNode(ve.LeftData);
-                circleCheckList = new[] { (VDataNode)subRoot.Left, (VDataNode)subRoot.Right.Left, (VDataNode)subRoot.Right.Right };
-            }
-
-            //3. Apply subtree
-            if (c.Parent == null)
-                return subRoot;
-            c.Parent.Replace(c, subRoot);
-            return root;
+                c = c.Parent;
+                break;
+            } while (true);
+            //2. One Left
+            c = c.Left;
+            //3. Down
+            while (c.Right != null)
+                c = c.Right;
+            return (VDataNode)c; // Cast statt 'as' damit eine Exception kommt
         }
 
         public static VNode ProcessCircleEvent(VCircleEvent e, VNode root, VoronoiGraph vg, out VDataNode[] circleCheckList)
@@ -258,64 +222,126 @@ namespace DotSpatial.Topology.Voronoi
             return root;
         }
 
-        public static VCircleEvent CircleCheckDataNode(VDataNode n, double ys)
+        /// <summary>
+        /// Will return the new root (unchanged except in start-up)
+        /// </summary>
+        public static VNode ProcessDataEvent(VDataEvent e, VNode root, VoronoiGraph vg, double ys, out VDataNode[] circleCheckList)
         {
-            VDataNode l = LeftDataNode(n);
-            VDataNode r = RightDataNode(n);
-            if (l == null || r == null || l.DataPoint == r.DataPoint || l.DataPoint == n.DataPoint || n.DataPoint == r.DataPoint)
-                return null;
-            if (MathTools.Ccw(l.DataPoint.X, l.DataPoint.Y, n.DataPoint.X, n.DataPoint.Y, r.DataPoint.X, r.DataPoint.Y, false) <= 0)
-                return null;
-            Vector2 center = Fortune.CircumCircleCenter(l.DataPoint, n.DataPoint, r.DataPoint);
-            VCircleEvent vc = new VCircleEvent();
-            vc.NodeN = n;
-            vc.NodeL = l;
-            vc.NodeR = r;
-            vc.Center = center;
-            vc.Valid = true;
-            if (vc.Y >= ys)
-                return vc;
-            return null;
+            if (root == null)
+            {
+                root = new VDataNode(e.DataPoint);
+                circleCheckList = new[] { (VDataNode)root };
+                return root;
+            }
+            //1. Find the node to be replaced
+            VNode c = FindDataNode(root, ys, e.DataPoint.X);
+            //2. Create the subtree (ONE Edge, but two VEdgeNodes)
+            VoronoiEdge ve = new VoronoiEdge();
+            ve.LeftData = ((VDataNode)c).DataPoint;
+            ve.RightData = e.DataPoint;
+            ve.VVertexA = Fortune.VVUnkown;
+            ve.VVertexB = Fortune.VVUnkown;
+            vg.Edges.Add(ve);
+
+            VNode subRoot;
+            if (Math.Abs(ve.LeftData.Y - ve.RightData.Y) < 1e-10)
+            {
+                if (ve.LeftData.X < ve.RightData.X)
+                {
+                    subRoot = new VEdgeNode(ve, false);
+                    subRoot.Left = new VDataNode(ve.LeftData);
+                    subRoot.Right = new VDataNode(ve.RightData);
+                }
+                else
+                {
+                    subRoot = new VEdgeNode(ve, true);
+                    subRoot.Left = new VDataNode(ve.RightData);
+                    subRoot.Right = new VDataNode(ve.LeftData);
+                }
+                circleCheckList = new[] { (VDataNode)subRoot.Left, (VDataNode)subRoot.Right };
+            }
+            else
+            {
+                subRoot = new VEdgeNode(ve, false);
+                subRoot.Left = new VDataNode(ve.LeftData);
+                subRoot.Right = new VEdgeNode(ve, true);
+                subRoot.Right.Left = new VDataNode(ve.RightData);
+                subRoot.Right.Right = new VDataNode(ve.LeftData);
+                circleCheckList = new[] { (VDataNode)subRoot.Left, (VDataNode)subRoot.Right.Left, (VDataNode)subRoot.Right.Right };
+            }
+
+            //3. Apply subtree
+            if (c.Parent == null)
+                return subRoot;
+            c.Parent.Replace(c, subRoot);
+            return root;
         }
 
-        public static void CleanUpTree(VNode root)
+        private void Replace(VNode childOld, VNode childNew)
         {
-            if (root is VDataNode)
-                return;
-            VEdgeNode ve = root as VEdgeNode;
-            if (ve != null)
-            {
-                while (ve.Edge.VVertexB == Fortune.VVUnkown)
-                {
-                    ve.Edge.AddVertex(Fortune.VVInfinite);
-                }
-                if (ve.Flipped)
-                {
-                    Vector2 t = ve.Edge.LeftData;
-                    ve.Edge.LeftData = ve.Edge.RightData;
-                    ve.Edge.RightData = t;
-                }
-                ve.Edge.Done = true;
-            }
-            CleanUpTree(root.Left);
-            CleanUpTree(root.Right);
+            if (Left == childOld)
+                Left = childNew;
+            else if (Right == childOld)
+                Right = childNew;
+            else throw new Exception("Child not found!");
+            childOld.Parent = null;
         }
+
+        private static VDataNode RightDataNode(VNode current)
+        {
+            VNode c = current;
+            //1. Up
+            do
+            {
+                if (c.Parent == null)
+                    return null;
+                if (c.Parent.Right == c)
+                {
+                    c = c.Parent;
+                    continue;
+                }
+                c = c.Parent;
+                break;
+            } while (true);
+            //2. One Right
+            c = c.Right;
+            //3. Down
+            while (c.Left != null)
+                c = c.Left;
+            return (VDataNode)c; // Cast statt 'as' damit eine Exception kommt
+        }
+
+        #endregion
     }
 
     internal class VDataNode : VNode
     {
+        #region Fields
+
         public readonly Vector2 DataPoint;
+
+        #endregion
+
+        #region Constructors
 
         public VDataNode(Vector2 dp)
         {
             DataPoint = dp;
         }
+
+        #endregion
     }
 
     internal class VEdgeNode : VNode
     {
+        #region Fields
+
         public readonly VoronoiEdge Edge;
         public readonly bool Flipped;
+
+        #endregion
+
+        #region Constructors
 
         public VEdgeNode(VoronoiEdge e, bool flipped)
         {
@@ -323,11 +349,17 @@ namespace DotSpatial.Topology.Voronoi
             Flipped = flipped;
         }
 
+        #endregion
+
+        #region Methods
+
         public double Cut(double ys, double x)
         {
             if (!Flipped)
                 return x - Fortune.ParabolicCut(Edge.LeftData.X, Edge.LeftData.Y, Edge.RightData.X, Edge.RightData.Y, ys);
             return x - Fortune.ParabolicCut(Edge.RightData.X, Edge.RightData.Y, Edge.LeftData.X, Edge.LeftData.Y, ys);
         }
+
+        #endregion
     }
 }

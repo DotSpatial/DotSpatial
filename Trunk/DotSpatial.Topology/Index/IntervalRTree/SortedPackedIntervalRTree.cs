@@ -21,32 +21,33 @@ namespace DotSpatial.Topology.Index.IntervalRTree
     /// </remarks>
     public class SortedPackedIntervalRTree<T>
     {
-        private readonly object _leavesLock = new object();
+        #region Fields
+
         private readonly List<IntervalRTreeNode<T>> _leaves = new List<IntervalRTreeNode<T>>();
+        private readonly object _leavesLock = new object();
         private volatile IntervalRTreeNode<T> _root;
 
-        ///<summary>
-        /// Adds an item to the index which is associated with the given interval
-        ///</summary>
-        /// <param name="min">The lower bound of the item interval</param>
-        /// <param name="max">The upper bound of the item interval</param>
-        /// <param name="item">The item to insert</param>
-        /// <exception cref="InvalidOperationException">if the index has already been queried</exception>
-        public void Insert(double min, double max, T item)
-        {
-            if (_root != null)
-                throw new InvalidOperationException("Index cannot be added to once it has been queried");
-            _leaves.Add(new IntervalRTreeLeafNode<T>(min, max, item));
-        }
+        #endregion
 
-        private void Init()
+        #region Methods
+
+        private static void BuildLevel(IList<IntervalRTreeNode<T>> src, IList<IntervalRTreeNode<T>> dest, ref int level)
         {
-            //1st check
-            if (_root != null) return;
-            lock (_leavesLock)
+            level++;
+            dest.Clear();
+            for (int i = 0; i < src.Count; i += 2)
             {
-                //2nd check
-                if (_root == null) _root = BuildTree();
+                var n1 = src[i];
+                var n2 = (i + 1 < src.Count) ? src[i] : null;
+                if (n2 == null)
+                {
+                    dest.Add(n1);
+                }
+                else
+                {
+                    var node = new IntervalRTreeBranchNode<T>(src[i], src[i + 1]);
+                    dest.Add(node);
+                }
             }
         }
 
@@ -72,24 +73,29 @@ namespace DotSpatial.Topology.Index.IntervalRTree
             }
         }
 
-        private static void BuildLevel(IList<IntervalRTreeNode<T>> src, IList<IntervalRTreeNode<T>> dest, ref int level)
+        private void Init()
         {
-            level++;
-            dest.Clear();
-            for (int i = 0; i < src.Count; i += 2)
+            //1st check
+            if (_root != null) return;
+            lock (_leavesLock)
             {
-                var n1 = src[i];
-                var n2 = (i + 1 < src.Count) ? src[i] : null;
-                if (n2 == null)
-                {
-                    dest.Add(n1);
-                }
-                else
-                {
-                    var node = new IntervalRTreeBranchNode<T>(src[i], src[i + 1]);
-                    dest.Add(node);
-                }
+                //2nd check
+                if (_root == null) _root = BuildTree();
             }
+        }
+
+        ///<summary>
+        /// Adds an item to the index which is associated with the given interval
+        ///</summary>
+        /// <param name="min">The lower bound of the item interval</param>
+        /// <param name="max">The upper bound of the item interval</param>
+        /// <param name="item">The item to insert</param>
+        /// <exception cref="InvalidOperationException">if the index has already been queried</exception>
+        public void Insert(double min, double max, T item)
+        {
+            if (_root != null)
+                throw new InvalidOperationException("Index cannot be added to once it has been queried");
+            _leaves.Add(new IntervalRTreeLeafNode<T>(min, max, item));
         }
 
         ///<summary>
@@ -105,5 +111,6 @@ namespace DotSpatial.Topology.Index.IntervalRTree
             _root.Query(min, max, visitor);
         }
 
+        #endregion
     }
 }

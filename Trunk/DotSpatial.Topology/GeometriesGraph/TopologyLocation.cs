@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -44,7 +45,13 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class TopologyLocation
     {
+        #region Fields
+
         private LocationType[] _location;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -94,37 +101,9 @@ namespace DotSpatial.Topology.GeometriesGraph
                 _location[i] = gl._location[i];
         }
 
-        /// <summary>
-        /// Get calls Get(Positions posIndex),
-        /// Set calls SetLocation(Positions locIndex, Locations locValue)
-        /// </summary>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public virtual LocationType this[PositionType posIndex]
-        {
-            get
-            {
-                return Get(posIndex);
-            }
-            set
-            {
-                SetLocation(posIndex, value);
-            }
-        }
+        #endregion
 
-        /// <returns>
-        /// <c>true</c> if all locations are Null.
-        /// </returns>
-        public virtual bool IsNull
-        {
-            get
-            {
-                for (int i = 0; i < _location.Length; i++)
-                    if (_location[i] != LocationType.Null)
-                        return false;
-                return true;
-            }
-        }
+        #region Properties
 
         /// <returns>
         /// <c>true</c> if any locations are Null.
@@ -162,14 +141,69 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
+        /// <returns>
+        /// <c>true</c> if all locations are Null.
+        /// </returns>
+        public virtual bool IsNull
+        {
+            get
+            {
+                for (int i = 0; i < _location.Length; i++)
+                    if (_location[i] != LocationType.Null)
+                        return false;
+                return true;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Get calls Get(Positions posIndex),
+        /// Set calls SetLocation(Positions locIndex, Locations locValue)
+        /// </summary>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public virtual LocationType this[PositionType posIndex]
+        {
+            get
+            {
+                return Get(posIndex);
+            }
+            set
+            {
+                SetLocation(posIndex, value);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
-        /// <param name="size"></param>
-        private void Init(int size)
+        /// <param name="loc"></param>
+        /// <returns></returns>
+        public virtual bool AllPositionsEqual(LocationType loc)
         {
-            _location = new LocationType[size];
-            SetAllLocations(LocationType.Null);
+            for (int i = 0; i < _location.Length; i++)
+                if (_location[i] != loc)
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual void Flip()
+        {
+            if (_location.Length <= 1)
+                return;
+            LocationType temp = _location[(int)PositionType.Left];
+            _location[(int)PositionType.Left] = _location[(int)PositionType.Right];
+            _location[(int)PositionType.Right] = temp;
         }
 
         /// <summary>
@@ -188,6 +222,25 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        /// <returns></returns>
+        public virtual LocationType[] GetLocations()
+        {
+            return _location;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="size"></param>
+        private void Init(int size)
+        {
+            _location = new LocationType[size];
+            SetAllLocations(LocationType.Null);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="le"></param>
         /// <param name="locIndex"></param>
         /// <returns></returns>
@@ -197,15 +250,23 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Merge updates only the Null attributes of this object
+        /// with the attributes of another.
         /// </summary>
-        public virtual void Flip()
+        public virtual void Merge(TopologyLocation gl)
         {
-            if (_location.Length <= 1)
-                return;
-            LocationType temp = _location[(int)PositionType.Left];
-            _location[(int)PositionType.Left] = _location[(int)PositionType.Right];
-            _location[(int)PositionType.Right] = temp;
+            // if the src is an Area label & and the dest is not, increase the dest to be an Area
+            if (gl._location.Length > _location.Length)
+            {
+                LocationType[] newLoc = new LocationType[3];
+                newLoc[(int)PositionType.On] = _location[(int)PositionType.On];
+                newLoc[(int)PositionType.Left] = LocationType.Null;
+                newLoc[(int)PositionType.Right] = LocationType.Null;
+                _location = newLoc;
+            }
+            for (int i = 0; i < _location.Length; i++)
+                if (_location[i] == LocationType.Null && i < gl._location.Length)
+                    _location[i] = gl._location[i];
         }
 
         /// <summary>
@@ -251,15 +312,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
-        public virtual LocationType[] GetLocations()
-        {
-            return _location;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
@@ -283,39 +335,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="loc"></param>
-        /// <returns></returns>
-        public virtual bool AllPositionsEqual(LocationType loc)
-        {
-            for (int i = 0; i < _location.Length; i++)
-                if (_location[i] != loc)
-                    return false;
-            return true;
-        }
-
-        /// <summary>
-        /// Merge updates only the Null attributes of this object
-        /// with the attributes of another.
-        /// </summary>
-        public virtual void Merge(TopologyLocation gl)
-        {
-            // if the src is an Area label & and the dest is not, increase the dest to be an Area
-            if (gl._location.Length > _location.Length)
-            {
-                LocationType[] newLoc = new LocationType[3];
-                newLoc[(int)PositionType.On] = _location[(int)PositionType.On];
-                newLoc[(int)PositionType.Left] = LocationType.Null;
-                newLoc[(int)PositionType.Right] = LocationType.Null;
-                _location = newLoc;
-            }
-            for (int i = 0; i < _location.Length; i++)
-                if (_location[i] == LocationType.Null && i < gl._location.Length)
-                    _location[i] = gl._location[i];
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
@@ -327,5 +346,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 sb.Append(Location.ToLocationSymbol(_location[(int)PositionType.Right]));
             return sb.ToString();
         }
+
+        #endregion
     }
 }

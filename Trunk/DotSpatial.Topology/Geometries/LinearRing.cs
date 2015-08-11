@@ -24,9 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>LinearRing</c>.
@@ -37,6 +36,8 @@ namespace DotSpatial.Topology
     [Serializable]
     public class LinearRing : LineString, ILinearRing
     {
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance of a linear ring where the enumerable collection of
         /// coordinates represents the set of coordinates to add to the ring.
@@ -68,7 +69,22 @@ namespace DotSpatial.Topology
         {
         }
 
-        #region ILinearRing Members
+        #endregion
+
+        #region Properties
+
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// This will always contain Line, even if it is technically empty
+        /// </summary>
+        public override FeatureType FeatureType
+        {
+            get
+            {
+                return FeatureType.Line;
+            }
+        }
 
         /// <summary>
         /// Geometry Type
@@ -97,20 +113,9 @@ namespace DotSpatial.Topology
             }
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// This will always contain Line, even if it is technically empty
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Line;
-            }
-        }
-
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Correct constructions with non-closed sequences.
@@ -125,5 +130,7 @@ namespace DotSpatial.Topology
             if (Coordinates.Count >= 1 && Coordinates.Count < 3)
                 throw new ArgumentException("Number of points must be 0 or >= 3");
         }
+
+        #endregion
     }
 }

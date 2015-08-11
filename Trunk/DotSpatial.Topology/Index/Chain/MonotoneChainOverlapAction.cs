@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Index.Chain
 {
     /// <summary>

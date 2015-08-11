@@ -24,6 +24,7 @@
 
 using System;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Chain;
 
 namespace DotSpatial.Topology.Noding
@@ -38,25 +39,29 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {
-        /**
-         * These variables keep track of what types of intersections were
-         * found during ALL edges that have been intersected.
-         */
-        private readonly LineIntersector _li;
+        #region Fields
 
         /// <summary>
         ///
         /// </summary>
         public int NumInteriorIntersections;
 
+        /**
+         * These variables keep track of what types of intersections were
+         * found during ALL edges that have been intersected.
+         */
+        private readonly LineIntersector _li;
         private bool _hasInterior;
-
         private bool _hasIntersection;
         private bool _hasProper;
         private bool _hasProperInterior;
         private int _numIntersections;
         private int _numProperIntersections;
         private int _numTests;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntersectionAdder"/> class.
@@ -67,14 +72,19 @@ namespace DotSpatial.Topology.Noding
             _li = li;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        ///
+        /// An interior intersection is an intersection which is
+        /// in the interior of some segment.
         /// </summary>
-        public LineIntersector LineIntersector
+        public bool HasInteriorIntersection
         {
             get
             {
-                return _li;
+                return _hasInterior;
             }
         }
 
@@ -86,6 +96,18 @@ namespace DotSpatial.Topology.Noding
             get
             {
                 return _hasIntersection;
+            }
+        }
+
+        /// <summary>
+        /// A proper interior intersection is a proper intersection which is not
+        /// contained in the set of boundary nodes set for this <see cref="ISegmentIntersector" />.
+        /// </summary>
+        public bool HasProperInteriorIntersection
+        {
+            get
+            {
+                return _hasProperInterior;
             }
         }
 
@@ -105,30 +127,60 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        /// A proper interior intersection is a proper intersection which is not
-        /// contained in the set of boundary nodes set for this <see cref="ISegmentIntersector" />.
+        ///
         /// </summary>
-        public bool HasProperInteriorIntersection
+        public LineIntersector LineIntersector
         {
             get
             {
-                return _hasProperInterior;
+                return _li;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="i1"></param>
+        /// <param name="i2"></param>
+        /// <returns></returns>
+        private static bool IsAdjacentSegments(int i1, int i2)
+        {
+            return Math.Abs(i1 - i2) == 1;
         }
 
         /// <summary>
-        /// An interior intersection is an intersection which is
-        /// in the interior of some segment.
+        /// A trivial intersection is an apparent self-intersection which in fact
+        /// is simply the point shared by adjacent line segments.
+        /// Notice that closed edges require a special check for the point shared by the beginning and end segments.
         /// </summary>
-        public bool HasInteriorIntersection
+        /// <param name="e0"></param>
+        /// <param name="segIndex0"></param>
+        /// <param name="e1"></param>
+        /// <param name="segIndex1"></param>
+        /// <returns></returns>
+        private bool IsTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
         {
-            get
+            if (e0 == e1)
             {
-                return _hasInterior;
+                if (_li.IntersectionNum == 1)
+                {
+                    if (IsAdjacentSegments(segIndex0, segIndex1))
+                        return true;
+                    if (e0.IsClosed)
+                    {
+                        int maxSegIndex = e0.Count - 1;
+                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
+                            return true;
+                    }
+                }
             }
+            return false;
         }
-
-        #region ISegmentIntersector Members
 
         /// <summary>
         /// This method is called by clients
@@ -175,46 +227,5 @@ namespace DotSpatial.Topology.Noding
         }
 
         #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i1"></param>
-        /// <param name="i2"></param>
-        /// <returns></returns>
-        private static bool IsAdjacentSegments(int i1, int i2)
-        {
-            return Math.Abs(i1 - i2) == 1;
-        }
-
-        /// <summary>
-        /// A trivial intersection is an apparent self-intersection which in fact
-        /// is simply the point shared by adjacent line segments.
-        /// Notice that closed edges require a special check for the point shared by the beginning and end segments.
-        /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        /// <returns></returns>
-        private bool IsTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
-        {
-            if (e0 == e1)
-            {
-                if (_li.IntersectionNum == 1)
-                {
-                    if (IsAdjacentSegments(segIndex0, segIndex1))
-                        return true;
-                    if (e0.IsClosed)
-                    {
-                        int maxSegIndex = e0.Count - 1;
-                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
-                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
-                            return true;
-                    }
-                }
-            }
-            return false;
-        }
     }
 }

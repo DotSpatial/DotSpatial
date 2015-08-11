@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class SegmentNode : IComparable
     {
+        #region Fields
+
         /// <summary>
         ///
         /// </summary>
@@ -44,6 +47,10 @@ namespace DotSpatial.Topology.Noding
 
         private readonly bool _isInterior;
         private readonly OctantDirection _segmentOctant = OctantDirection.Null;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNode"/> class.
@@ -60,6 +67,10 @@ namespace DotSpatial.Topology.Noding
             _isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -72,7 +83,9 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        #region IComparable Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// </summary>
@@ -93,8 +106,6 @@ namespace DotSpatial.Topology.Noding
                 return 0;
             return SegmentPointComparator.Compare(_segmentOctant, Coordinate, other.Coordinate);
         }
-
-        #endregion
 
         /// <summary>
         ///
@@ -119,5 +130,7 @@ namespace DotSpatial.Topology.Noding
             outstream.Write(Coordinate);
             outstream.Write(" seg # = " + SegmentIndex);
         }
+
+        #endregion
     }
 }

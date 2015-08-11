@@ -27,6 +27,8 @@ namespace DotSpatial.Topology
     /// </summary>
     public class UnsupportedGeometryException : Exception
     {
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance of the unsupported geometry exception
         /// </summary>
@@ -34,5 +36,7 @@ namespace DotSpatial.Topology
             : base(TopologyText.UnsupportedGeometryException)
         {
         }
+
+        #endregion
     }
 }

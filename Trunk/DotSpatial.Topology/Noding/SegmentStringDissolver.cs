@@ -39,8 +39,14 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class SegmentStringDissolver
     {
+        #region Fields
+
         private readonly ISegmentStringMerger _merger;
         private readonly IDictionary _ocaMap = new SortedList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
@@ -57,6 +63,36 @@ namespace DotSpatial.Topology.Noding
         public SegmentStringDissolver()
             : this(null) { }
 
+        #endregion
+
+        #region Interfaces
+
+        /// <summary>
+        ///
+        /// </summary>
+        public interface ISegmentStringMerger
+        {
+            #region Methods
+
+            /// <summary>
+            /// Updates the context data of a <see cref="SegmentString" />
+            /// when an identical (up to orientation) one is found during dissolving.
+            /// </summary>
+            /// <param name="mergeTarget">The segment string to update.</param>
+            /// <param name="ssToMerge">The segment string being dissolved.</param>
+            /// <param name="isSameOrientation">
+            /// <c>true</c> if the strings are in the same direction,
+            /// <c>false</c> if they are opposite.
+            /// </param>
+            void Merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets the collection of dissolved (i.e. unique) <see cref="SegmentString" />s
         /// </summary>
@@ -68,15 +104,9 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        /// <summary>
-        /// Dissolve all <see cref="SegmentString" />s in the input <see cref="ICollection"/>.
-        /// </summary>
-        /// <param name="segStrings"></param>
-        public void Dissolve(ICollection segStrings)
-        {
-            foreach (object obj in segStrings)
-                Dissolve((SegmentString)obj);
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -86,6 +116,16 @@ namespace DotSpatial.Topology.Noding
         private void Add(OrientedCoordinateArray oca, SegmentString segString)
         {
             _ocaMap.Add(oca, segString);
+        }
+
+        /// <summary>
+        /// Dissolve all <see cref="SegmentString" />s in the input <see cref="ICollection"/>.
+        /// </summary>
+        /// <param name="segStrings"></param>
+        public void Dissolve(ICollection segStrings)
+        {
+            foreach (object obj in segStrings)
+                Dissolve((SegmentString)obj);
         }
 
         /// <summary>
@@ -116,26 +156,6 @@ namespace DotSpatial.Topology.Noding
         private SegmentString FindMatching(OrientedCoordinateArray oca)
         {
             return (SegmentString)_ocaMap[oca];
-        }
-
-        #region Nested type: ISegmentStringMerger
-
-        /// <summary>
-        ///
-        /// </summary>
-        public interface ISegmentStringMerger
-        {
-            /// <summary>
-            /// Updates the context data of a <see cref="SegmentString" />
-            /// when an identical (up to orientation) one is found during dissolving.
-            /// </summary>
-            /// <param name="mergeTarget">The segment string to update.</param>
-            /// <param name="ssToMerge">The segment string being dissolved.</param>
-            /// <param name="isSameOrientation">
-            /// <c>true</c> if the strings are in the same direction,
-            /// <c>false</c> if they are opposite.
-            /// </param>
-            void Merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
         }
 
         #endregion

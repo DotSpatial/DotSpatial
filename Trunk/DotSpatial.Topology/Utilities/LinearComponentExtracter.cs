@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -31,7 +32,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class LinearComponentExtracter : IGeometryComponentFilter
     {
+        #region Fields
+
         private readonly IList _lines;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
@@ -42,7 +49,9 @@ namespace DotSpatial.Topology.Utilities
             _lines = lines;
         }
 
-        #region IGeometryComponentFilter Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -53,8 +62,6 @@ namespace DotSpatial.Topology.Utilities
             if (geom is LineString)
                 _lines.Add(geom);
         }
-
-        #endregion
 
         /// <summary>
         /// Extracts the linear components from a single point.
@@ -70,5 +77,7 @@ namespace DotSpatial.Topology.Utilities
             geom.Apply(new LinearComponentExtracter(lines));
             return lines;
         }
+
+        #endregion
     }
 }

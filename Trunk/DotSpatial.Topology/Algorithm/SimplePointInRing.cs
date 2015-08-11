@@ -22,6 +22,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -31,10 +32,16 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class SimplePointInRing : IPointInRing
     {
+        #region Fields
+
         /// <summary>
         ///
         /// </summary>
         private readonly IList<Coordinate> _pts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -45,7 +52,9 @@ namespace DotSpatial.Topology.Algorithm
             _pts = ring.Coordinates;
         }
 
-        #region IPointInRing Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///

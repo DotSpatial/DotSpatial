@@ -28,6 +28,8 @@ namespace DotSpatial.Topology
     /// </summary>
     public static class EnumerableExt
     {
+        #region Methods
+
         /// <summary>
         /// cycles through any strong typed collection where the type implements ICLoneable
         /// and clones each member, inserting that member into the new list.
@@ -63,5 +65,7 @@ namespace DotSpatial.Topology
             }
             return (T)obj;
         }
+
+        #endregion
     }
 }

@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using System.Text;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.GeometriesGraph
@@ -41,25 +42,23 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class EdgeEnd : IComparable
     {
+        #region Fields
+
         private double _dx, _dy;      // the direction vector for this edge from its starting point
 
         /// <summary>
         /// The parent edge of this edge end.
         /// </summary>
         private Edge _edge;
+
         private Label _label;
         private Node _node;          // the node this edge end originates at
         private Coordinate _p0, _p1;  // points of initial line segment
         private int _quadrant;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inEdge"></param>
-        protected EdgeEnd(Edge inEdge)
-        {
-            _edge = inEdge;
-        }
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -86,20 +85,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Edge Edge
+        /// <param name="inEdge"></param>
+        protected EdgeEnd(Edge inEdge)
         {
-            get { return _edge; }
-            protected set { _edge = value; }
+            _edge = inEdge;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Label Label
-        {
-            get { return _label; }
-            protected set { _label = value; }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -120,17 +114,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             get
             {
                 return _p1;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int Quadrant
-        {
-            get
-            {
-                return _quadrant;
             }
         }
 
@@ -159,6 +142,35 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        public virtual int Quadrant
+        {
+            get
+            {
+                return _quadrant;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Edge Edge
+        {
+            get { return _edge; }
+            protected set { _edge = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Label Label
+        {
+            get { return _label; }
+            protected set { _label = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public virtual Node Node
         {
             get
@@ -171,40 +183,9 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
-        #region IComparable Members
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public virtual int CompareTo(object obj)
-        {
-            EdgeEnd e = (EdgeEnd)obj;
-            return CompareDirection(e);
-        }
-
         #endregion
 
-        private void DoInit(Coordinate p0, Coordinate p1)
-        {
-            _p0 = p0;
-            _p1 = p1;
-            _dx = p1.X - p0.X;
-            _dy = p1.Y - p0.Y;
-            _quadrant = QuadrantOp.Quadrant(_dx, _dy);
-            Assert.IsTrue(!(_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        protected virtual void Init(Coordinate p0, Coordinate p1)
-        {
-            DoInit(p0, p1);
-        }
+        #region Methods
 
         /// <summary>
         /// Implements the total order relation:
@@ -233,21 +214,39 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual int CompareTo(object obj)
+        {
+            EdgeEnd e = (EdgeEnd)obj;
+            return CompareDirection(e);
+        }
+
+        /// <summary>
         /// Subclasses should override this if they are using labels
         /// </summary>
         public virtual void ComputeLabel() { }
 
+        private void DoInit(Coordinate p0, Coordinate p1)
+        {
+            _p0 = p0;
+            _p1 = p1;
+            _dx = p1.X - p0.X;
+            _dy = p1.Y - p0.Y;
+            _quadrant = QuadrantOp.Quadrant(_dx, _dy);
+            Assert.IsTrue(!(_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
+        }
+
         /// <summary>
         ///
         /// </summary>
-        /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        protected virtual void Init(Coordinate p0, Coordinate p1)
         {
-            double angle = Math.Atan2(_dy, _dx);
-            string fullname = GetType().FullName;
-            int lastDotPos = fullname.LastIndexOf('.');
-            string name = fullname.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + Label);
+            DoInit(p0, p1);
         }
 
         /// <summary>
@@ -264,5 +263,20 @@ namespace DotSpatial.Topology.GeometriesGraph
             sb.Append((']'));
             return sb.ToString();
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="outstream"></param>
+        public virtual void Write(StreamWriter outstream)
+        {
+            double angle = Math.Atan2(_dy, _dx);
+            string fullname = GetType().FullName;
+            int lastDotPos = fullname.LastIndexOf('.');
+            string name = fullname.Substring(lastDotPos + 1);
+            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + Label);
+        }
+
+        #endregion
     }
 }

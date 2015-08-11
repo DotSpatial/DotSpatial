@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Operation;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Models a collection of <c>Point</c>s.
@@ -34,10 +34,16 @@ namespace DotSpatial.Topology
     [Serializable]
     public class MultiPoint : GeometryCollection, IMultiPoint
     {
+        #region Fields
+
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
         public static new readonly IMultiPoint Empty = new MultiPoint(new Point[] { });
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -71,40 +77,9 @@ namespace DotSpatial.Topology
         /// <param name="points"></param>
         public MultiPoint(IEnumerable<ICoordinate> points) : base(CastPoints(points), DefaultFactory) { }
 
-        #region IMultiPoint Members
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                return DimensionType.Point;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                return DimensionType.False;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPoint";
-            }
-        }
+        #region Properties
 
         /// <inheritdoc />
         public override FeatureType FeatureType
@@ -118,11 +93,11 @@ namespace DotSpatial.Topology
         /// <summary>
         ///
         /// </summary>
-        public override IGeometry Boundary
+        public override string GeometryType
         {
             get
             {
-                return Factory.CreateGeometryCollection(null);
+                return "MultiPoint";
             }
         }
 
@@ -151,15 +126,39 @@ namespace DotSpatial.Topology
         /// <summary>
         ///
         /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override IGeometry Boundary
         {
-            if (!IsEquivalentClass(other))
-                return false;
-            return base.EqualsExact(other, tolerance);
+            get
+            {
+                return Factory.CreateGeometryCollection(null);
+            }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                return DimensionType.False;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Point;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         /// Gets or sets the point that resides at the specified index
@@ -179,6 +178,8 @@ namespace DotSpatial.Topology
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Converts an array of point interface variables into local points.
@@ -215,6 +216,19 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public override bool EqualsExact(IGeometry other, double tolerance)
+        {
+            if (!IsEquivalentClass(other))
+                return false;
+            return base.EqualsExact(other, tolerance);
+        }
+
+        /// <summary>
         /// Returns the <c>Coordinate</c> at the given position.
         /// </summary>
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
@@ -224,5 +238,7 @@ namespace DotSpatial.Topology
         {
             return ((Point)Geometries[n]).Coordinate;
         }
+
+        #endregion
     }
 }

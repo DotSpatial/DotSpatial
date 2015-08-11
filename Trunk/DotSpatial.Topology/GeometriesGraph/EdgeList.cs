@@ -25,8 +25,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
-using DotSpatial.Topology.Index.Quadtree;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -36,6 +36,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class EdgeList
     {
+        #region Fields
+
         private readonly IList _edges = new ArrayList();
 
         /// <summary>
@@ -47,6 +49,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         private readonly ISpatialIndex _index = new Quadtree();
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -57,6 +63,10 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return _edges;
             }
         }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         ///
@@ -71,14 +81,9 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
-        /// <summary>
-        /// Remove the selected Edge element from the list if present.
-        /// </summary>
-        /// <param name="e">Edge element to remove from list</param>
-        public virtual void Remove(Edge e)
-        {
-            _edges.Remove(e);
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Insert an edge unless it is already in the list.
@@ -98,6 +103,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); )
                 Add((Edge)i.Current);
+        }
+
+        /// <summary>
+        /// If the edge e is already in the list, return its index.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns>
+        /// Index, if e is already in the list,
+        /// -1 otherwise.
+        /// </returns>
+        public virtual int FindEdgeIndex(Edge e)
+        {
+            for (int i = 0; i < _edges.Count; i++)
+                if (_edges[i].Equals(e))
+                    return i;
+            return -1;
         }
 
         // <FIX> fast lookup for edges
@@ -125,15 +146,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _edges.GetEnumerator();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public virtual Edge Get(int i)
@@ -142,19 +154,21 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// If the edge e is already in the list, return its index.
+        ///
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns>
-        /// Index, if e is already in the list,
-        /// -1 otherwise.
-        /// </returns>
-        public virtual int FindEdgeIndex(Edge e)
+        /// <returns></returns>
+        public virtual IEnumerator GetEnumerator()
         {
-            for (int i = 0; i < _edges.Count; i++)
-                if (_edges[i].Equals(e))
-                    return i;
-            return -1;
+            return _edges.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Remove the selected Edge element from the list if present.
+        /// </summary>
+        /// <param name="e">Edge element to remove from list</param>
+        public virtual void Remove(Edge e)
+        {
+            _edges.Remove(e);
         }
 
         /// <summary>
@@ -181,5 +195,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
             outstream.Write(")  ");
         }
+
+        #endregion
     }
 }

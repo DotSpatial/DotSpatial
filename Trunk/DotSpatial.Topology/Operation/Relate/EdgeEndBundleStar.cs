@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -34,6 +35,8 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class EdgeEndBundleStar : EdgeEndStar
     {
+        #region Methods
+
         /// <summary>
         /// Insert a EdgeEnd in order in the list.
         /// If there is an existing EdgeStubBundle which is parallel, the EdgeEnd is
@@ -65,5 +68,7 @@ namespace DotSpatial.Topology.Operation.Relate
                 esb.UpdateIm(im);
             }
         }
+
+        #endregion
     }
 }

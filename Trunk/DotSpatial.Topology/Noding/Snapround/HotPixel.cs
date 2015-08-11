@@ -24,6 +24,7 @@
 
 using System;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Noding.Snapround
@@ -37,22 +38,19 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// </summary>
     public class HotPixel
     {
+        #region Fields
+
         private readonly Coordinate[] _corner = new Coordinate[4];
         private readonly LineIntersector _li;
-
         private readonly Coordinate _originalPt;
-
         private readonly Coordinate _p0Scaled;
         private readonly Coordinate _p1Scaled;
         private readonly Coordinate _pt;
-
         private readonly double _scaleFactor;
-
         private double _maxx;
         private double _maxy;
         private double _minx;
         private double _miny;
-
         /*
          * The corners of the hot pixel, in the order:
          *  10
@@ -60,6 +58,10 @@ namespace DotSpatial.Topology.Noding.Snapround
          */
 
         private Envelope _safeEnv;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel"/> class.
@@ -82,6 +84,10 @@ namespace DotSpatial.Topology.Noding.Snapround
             InitCorners(_pt);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -91,6 +97,21 @@ namespace DotSpatial.Topology.Noding.Snapround
             {
                 return _originalPt;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="pScaled"></param>
+        private void CopyScaled(Coordinate p, Coordinate pScaled)
+        {
+            pScaled.X = Scale(p.X);
+            pScaled.Y = Scale(p.Y);
         }
 
         /// <summary>
@@ -129,16 +150,6 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// <summary>
         ///
         /// </summary>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        private double Scale(double val)
-        {
-            return Math.Round(val * _scaleFactor);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
@@ -150,17 +161,6 @@ namespace DotSpatial.Topology.Noding.Snapround
             CopyScaled(p0, _p0Scaled);
             CopyScaled(p1, _p1Scaled);
             return IntersectsScaled(_p0Scaled, _p1Scaled);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="pScaled"></param>
-        private void CopyScaled(Coordinate p, Coordinate pScaled)
-        {
-            pScaled.X = Scale(p.X);
-            pScaled.Y = Scale(p.Y);
         }
 
         /// <summary>
@@ -226,5 +226,17 @@ namespace DotSpatial.Topology.Noding.Snapround
 
             return false;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        private double Scale(double val)
+        {
+            return Math.Round(val * _scaleFactor);
+        }
+
+        #endregion
     }
 }

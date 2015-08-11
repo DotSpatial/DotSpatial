@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
 
@@ -36,10 +37,27 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public sealed class RightmostEdgeFinder
     {
+        #region Fields
+
         private Coordinate _minCoord;
         private DirectedEdge _minDe;
         private int _minIndex = -1;
         private DirectedEdge _orientedDe;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///
+        /// </summary>
+        public Coordinate Coordinate
+        {
+            get
+            {
+                return _minCoord;
+            }
+        }
 
         /// <summary>
         ///
@@ -52,14 +70,27 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
-        public Coordinate Coordinate
+        /// <param name="de"></param>
+        private void CheckForRightmostCoordinate(DirectedEdge de)
         {
-            get
+            IList<Coordinate> coord = de.Edge.Coordinates;
+            for (int i = 0; i < coord.Count - 1; i++)
             {
-                return _minCoord;
+                // only check vertices which are the start or end point of a non-horizontal segment
+                // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost must have a non-horiz segment adjacent to it
+                if (_minCoord == null || coord[i].X > _minCoord.X)
+                {
+                    _minDe = de;
+                    _minIndex = i;
+                    _minCoord = coord[i];
+                }
             }
         }
 
@@ -146,26 +177,6 @@ namespace DotSpatial.Topology.Operation.Buffer
         ///
         /// </summary>
         /// <param name="de"></param>
-        private void CheckForRightmostCoordinate(DirectedEdge de)
-        {
-            IList<Coordinate> coord = de.Edge.Coordinates;
-            for (int i = 0; i < coord.Count - 1; i++)
-            {
-                // only check vertices which are the start or end point of a non-horizontal segment
-                // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost must have a non-horiz segment adjacent to it
-                if (_minCoord == null || coord[i].X > _minCoord.X)
-                {
-                    _minDe = de;
-                    _minIndex = i;
-                    _minCoord = coord[i];
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="de"></param>
         /// <param name="index"></param>
         /// <returns></returns>
         private PositionType GetRightmostSide(DirectedEdge de, int index)
@@ -204,5 +215,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
             return pos;
         }
+
+        #endregion
     }
 }

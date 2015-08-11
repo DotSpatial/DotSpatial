@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -32,12 +33,18 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class RelateNode : Node
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
         public RelateNode(Coordinate coord, EdgeEndStar edges) : base(coord, edges) { }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Update the IM with the contribution for this component.
@@ -56,5 +63,7 @@ namespace DotSpatial.Topology.Operation.Relate
         {
             ((EdgeEndBundleStar)Edges).UpdateIm(im);
         }
+
+        #endregion
     }
 }

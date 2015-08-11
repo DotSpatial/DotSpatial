@@ -24,6 +24,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph.Index;
 using DotSpatial.Topology.Utilities;
 
@@ -34,6 +35,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class GeometryGraph : PlanarGraph
     {
+        #region Fields
+
         private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
 
         /// <summary>
@@ -44,7 +47,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         private readonly IDictionary _lineEdgeMap = new Hashtable();
 
         private readonly IGeometry _parentGeom;
-
         private ICollection _boundaryNodes;
         private bool _hasTooFewPoints;
         private Coordinate _invalidPoint;
@@ -54,6 +56,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// whether nodes are in the boundary or not
         /// </summary>
         private bool _useBoundaryDeterminationRule;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -66,6 +72,36 @@ namespace DotSpatial.Topology.GeometriesGraph
             _parentGeom = parentGeom;
             if (parentGeom != null)
                 Add(parentGeom);
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual ICollection BoundaryNodes
+        {
+            get
+            {
+                if (_boundaryNodes == null)
+                {
+                    _boundaryNodes = Nodes.GetBoundaryNodes(_argIndex);
+                }
+                return _boundaryNodes;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual IGeometry Geometry
+        {
+            get
+            {
+                return _parentGeom;
+            }
         }
 
         /// <summary>
@@ -90,107 +126,9 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual IGeometry Geometry
-        {
-            get
-            {
-                return _parentGeom;
-            }
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual ICollection BoundaryNodes
-        {
-            get
-            {
-                if (_boundaryNodes == null)
-                {
-                    _boundaryNodes = Nodes.GetBoundaryNodes(_argIndex);
-                }
-                return _boundaryNodes;
-            }
-        }
-
-        /// <summary>
-        /// This method implements the Boundary Determination Rule
-        /// for determining whether
-        /// a component (node or edge) that appears multiple times in elements
-        /// of a MultiGeometry is in the boundary or the interior of the Geometry.
-        /// The SFS uses the "Mod-2 Rule", which this function implements.
-        /// An alternative (and possibly more intuitive) rule would be
-        /// the "At Most One Rule":
-        /// isInBoundary = (componentCount == 1)
-        /// </summary>
-        public static bool IsInBoundary(int boundaryCount)
-        {
-            // the "Mod-2 Rule"
-            return boundaryCount % 2 == 1;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="boundaryCount"></param>
-        /// <returns></returns>
-        public static LocationType DetermineBoundary(int boundaryCount)
-        {
-            return IsInBoundary(boundaryCount) ? LocationType.Boundary : LocationType.Interior;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        private static EdgeSetIntersector CreateEdgeSetIntersector()
-        {
-            // various options for computing intersections, from slowest to fastest
-            return new SimpleMcSweepLineIntersector();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual Coordinate[] GetBoundaryPoints()
-        {
-            ICollection coll = BoundaryNodes;
-            Coordinate[] pts = new Coordinate[coll.Count];
-            int i = 0;
-            for (IEnumerator it = coll.GetEnumerator(); it.MoveNext(); )
-            {
-                Node node = (Node)it.Current;
-                pts[i++] = (Coordinate)node.Coordinate.Clone();
-            }
-            return pts;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
-        public virtual Edge FindEdge(ILineString line)
-        {
-            return (Edge)_lineEdgeMap[line];
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edgelist"></param>
-        public virtual void ComputeSplitEdges(IList edgelist)
-        {
-            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
-                e.EdgeIntersectionList.AddSplitEdges(edgelist);
-            }
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -230,49 +168,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// The left and right topological location arguments assume that the ring is oriented CW.
-        /// If the ring is in the opposite orientation,
-        /// the left and right locations must be interchanged.
+        /// Add an Edge computed externally.  The label on the Edge is assumed
+        /// to be correct.
         /// </summary>
-        /// <param name="lr"></param>
-        /// <param name="cwLeft"></param>
-        /// <param name="cwRight"></param>
-        private void AddPolygonRing(IBasicGeometry lr, LocationType cwLeft, LocationType cwRight)
+        /// <param name="e"></param>
+        public virtual void AddEdge(Edge e)
         {
-            IList<Coordinate> coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
-            if (coord.Count < 4)
-            {
-                _hasTooFewPoints = true;
-                _invalidPoint = coord[0];
-                return;
-            }
-            LocationType left = cwLeft;
-            LocationType right = cwRight;
-            if (CgAlgorithms.IsCounterClockwise(coord))
-            {
-                left = cwRight;
-                right = cwLeft;
-            }
-            Edge e = new Edge(coord, new Label(_argIndex, LocationType.Boundary, left, right));
-            _lineEdgeMap.Add(lr, e);
             InsertEdge(e);
+            IList<Coordinate> coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(_argIndex, coord[0], LocationType.Boundary);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        private void AddPolygon(Polygon p)
-        {
-            AddPolygonRing(p.ExteriorRing, LocationType.Exterior, LocationType.Interior);
-
-            for (int i = 0; i < p.NumHoles; i++)
-                // Holes are topologically labelled opposite to the shell, since
-                // the interior of the polygon lies on their opposite side
-                // (on the left, if the hole is oriented CW)
-                AddPolygonRing(p.GetInteriorRingN(i), LocationType.Interior, LocationType.Exterior);
+            InsertPoint(_argIndex, coord[coord.Count - 1], LocationType.Boundary);
         }
 
         /// <summary>
@@ -307,20 +213,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// Add an Edge computed externally.  The label on the Edge is assumed
-        /// to be correct.
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void AddEdge(Edge e)
-        {
-            InsertEdge(e);
-            IList<Coordinate> coord = e.Coordinates;
-            // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(_argIndex, coord[0], LocationType.Boundary);
-            InsertPoint(_argIndex, coord[coord.Count - 1], LocationType.Boundary);
-        }
-
-        /// <summary>
         /// Add a point computed externally.  The point is assumed to be a
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
@@ -328,6 +220,105 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void AddPoint(Coordinate pt)
         {
             InsertPoint(_argIndex, pt, LocationType.Interior);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        private void AddPolygon(Polygon p)
+        {
+            AddPolygonRing(p.ExteriorRing, LocationType.Exterior, LocationType.Interior);
+
+            for (int i = 0; i < p.NumHoles; i++)
+                // Holes are topologically labelled opposite to the shell, since
+                // the interior of the polygon lies on their opposite side
+                // (on the left, if the hole is oriented CW)
+                AddPolygonRing(p.GetInteriorRingN(i), LocationType.Interior, LocationType.Exterior);
+        }
+
+        /// <summary>
+        /// The left and right topological location arguments assume that the ring is oriented CW.
+        /// If the ring is in the opposite orientation,
+        /// the left and right locations must be interchanged.
+        /// </summary>
+        /// <param name="lr"></param>
+        /// <param name="cwLeft"></param>
+        /// <param name="cwRight"></param>
+        private void AddPolygonRing(IBasicGeometry lr, LocationType cwLeft, LocationType cwRight)
+        {
+            IList<Coordinate> coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
+            if (coord.Count < 4)
+            {
+                _hasTooFewPoints = true;
+                _invalidPoint = coord[0];
+                return;
+            }
+            LocationType left = cwLeft;
+            LocationType right = cwRight;
+            if (CgAlgorithms.IsCounterClockwise(coord))
+            {
+                left = cwRight;
+                right = cwLeft;
+            }
+            Edge e = new Edge(coord, new Label(_argIndex, LocationType.Boundary, left, right));
+            _lineEdgeMap.Add(lr, e);
+            InsertEdge(e);
+            // insert the endpoint as a node, to mark that it is on the boundary
+            InsertPoint(_argIndex, coord[0], LocationType.Boundary);
+        }
+
+        /// <summary>
+        /// Add a node for a self-intersection.
+        /// If the node is a potential boundary node (e.g. came from an edge which
+        /// is a boundary) then insert it as a potential boundary node.
+        /// Otherwise, just add it as a regular node.
+        /// </summary>
+        /// <param name="argIndex"></param>
+        /// <param name="coord"></param>
+        /// <param name="loc"></param>
+        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, LocationType loc)
+        {
+            // if this node is already a boundary node, don't change it
+            if (IsBoundaryNode(argIndex, coord))
+                return;
+            if (loc == LocationType.Boundary && _useBoundaryDeterminationRule)
+                InsertBoundaryPoint(argIndex, coord);
+            else InsertPoint(argIndex, coord, loc);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="argIndex"></param>
+        private void AddSelfIntersectionNodes(int argIndex)
+        {
+            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
+            {
+                Edge e = (Edge)i.Current;
+                LocationType eLoc = e.Label.GetLocation(argIndex);
+                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                {
+                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
+                    AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
+                }
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="li"></param>
+        /// <param name="includeProper"></param>
+        /// <returns></returns>
+        public virtual SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
+        {
+            SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
+            si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
+            EdgeSetIntersector esi = CreateEdgeSetIntersector();
+            esi.ComputeIntersections(Edges, g.Edges, si);
+            return si;
         }
 
         /// <summary>
@@ -354,32 +345,61 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="li"></param>
-        /// <param name="includeProper"></param>
-        /// <returns></returns>
-        public virtual SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
+        /// <param name="edgelist"></param>
+        public virtual void ComputeSplitEdges(IList edgelist)
         {
-            SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
-            si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
-            EdgeSetIntersector esi = CreateEdgeSetIntersector();
-            esi.ComputeIntersections(Edges, g.Edges, si);
-            return si;
+            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
+            {
+                Edge e = (Edge)i.Current;
+                e.EdgeIntersectionList.AddSplitEdges(edgelist);
+            }
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="argIndex"></param>
-        /// <param name="coord"></param>
-        /// <param name="onLocation"></param>
-        private void InsertPoint(int argIndex, Coordinate coord, LocationType onLocation)
+        /// <returns></returns>
+        private static EdgeSetIntersector CreateEdgeSetIntersector()
         {
-            Node n = Nodes.AddNode(coord);
-            Label lbl = n.Label;
-            if (lbl == null)
-                n.Label = new Label(argIndex, onLocation);
-            else lbl.SetLocation(argIndex, onLocation);
+            // various options for computing intersections, from slowest to fastest
+            return new SimpleMcSweepLineIntersector();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="boundaryCount"></param>
+        /// <returns></returns>
+        public static LocationType DetermineBoundary(int boundaryCount)
+        {
+            return IsInBoundary(boundaryCount) ? LocationType.Boundary : LocationType.Interior;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public virtual Edge FindEdge(ILineString line)
+        {
+            return (Edge)_lineEdgeMap[line];
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual Coordinate[] GetBoundaryPoints()
+        {
+            ICollection coll = BoundaryNodes;
+            Coordinate[] pts = new Coordinate[coll.Count];
+            int i = 0;
+            for (IEnumerator it = coll.GetEnumerator(); it.MoveNext(); )
+            {
+                Node node = (Node)it.Current;
+                pts[i++] = (Coordinate)node.Coordinate.Clone();
+            }
+            return pts;
         }
 
         /// <summary>
@@ -412,37 +432,33 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="argIndex"></param>
-        private void AddSelfIntersectionNodes(int argIndex)
+        /// <param name="coord"></param>
+        /// <param name="onLocation"></param>
+        private void InsertPoint(int argIndex, Coordinate coord, LocationType onLocation)
         {
-            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
-                LocationType eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
-                {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
-                    AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
-                }
-            }
+            Node n = Nodes.AddNode(coord);
+            Label lbl = n.Label;
+            if (lbl == null)
+                n.Label = new Label(argIndex, onLocation);
+            else lbl.SetLocation(argIndex, onLocation);
         }
 
         /// <summary>
-        /// Add a node for a self-intersection.
-        /// If the node is a potential boundary node (e.g. came from an edge which
-        /// is a boundary) then insert it as a potential boundary node.
-        /// Otherwise, just add it as a regular node.
+        /// This method implements the Boundary Determination Rule
+        /// for determining whether
+        /// a component (node or edge) that appears multiple times in elements
+        /// of a MultiGeometry is in the boundary or the interior of the Geometry.
+        /// The SFS uses the "Mod-2 Rule", which this function implements.
+        /// An alternative (and possibly more intuitive) rule would be
+        /// the "At Most One Rule":
+        /// isInBoundary = (componentCount == 1)
         /// </summary>
-        /// <param name="argIndex"></param>
-        /// <param name="coord"></param>
-        /// <param name="loc"></param>
-        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, LocationType loc)
+        public static bool IsInBoundary(int boundaryCount)
         {
-            // if this node is already a boundary node, don't change it
-            if (IsBoundaryNode(argIndex, coord))
-                return;
-            if (loc == LocationType.Boundary && _useBoundaryDeterminationRule)
-                InsertBoundaryPoint(argIndex, coord);
-            else InsertPoint(argIndex, coord, loc);
+            // the "Mod-2 Rule"
+            return boundaryCount % 2 == 1;
         }
+
+        #endregion
     }
 }

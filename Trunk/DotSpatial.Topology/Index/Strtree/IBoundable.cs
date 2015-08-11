@@ -21,13 +21,19 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // ********************************************************************************************************
+
+using System;
+
 namespace DotSpatial.Topology.Index.Strtree
 {
     /// <summary>
     /// A spatial object in an AbstractSTRtree.
     /// </summary>
+    [Obsolete]
     public interface IBoundable
     {
+        #region Properties
+
         /// <summary>
         /// Returns a representation of space that encloses this Boundable, preferably
         /// not much bigger than this Boundable's boundary yet fast to test for intersection
@@ -39,5 +45,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// (for other subclasses of AbstractSTRtree).
         /// </returns>
         object Bounds { get; }
+
+        #endregion
     }
 }

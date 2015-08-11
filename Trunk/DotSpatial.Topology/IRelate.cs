@@ -21,6 +21,9 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
+
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology
 {
     /// <summary>
@@ -29,6 +32,8 @@ namespace DotSpatial.Topology
     /// </summary>
     public interface IRelate
     {
+        #region Methods
+
         /// Contains
         /// <summary>
         /// Returns true if other.within(this) returns true.
@@ -170,5 +175,7 @@ namespace DotSpatial.Topology
         /// <param name="geom">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
         bool Within(IGeometry geom);
+
+        #endregion
     }
 }

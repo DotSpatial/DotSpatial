@@ -23,9 +23,10 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// QuadRoot is the root of a single Quadtree.
@@ -78,16 +79,6 @@ namespace DotSpatial.Topology.Index.Quadtree
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
-        protected override bool IsSearchMatch(Envelope searchEnv)
-        {
-            return true;
-        }
-
-        /// <summary>
         /// Insert an item which is known to be contained in the tree rooted at
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
@@ -107,6 +98,16 @@ namespace DotSpatial.Topology.Index.Quadtree
                 node = tree.Find(itemEnv);
             else node = tree.GetNode(itemEnv);
             node.Add(item);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <returns></returns>
+        protected override bool IsSearchMatch(Envelope searchEnv)
+        {
+            return true;
         }
 
         #endregion

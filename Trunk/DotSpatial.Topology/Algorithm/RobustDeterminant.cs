@@ -45,6 +45,8 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class RobustDeterminant
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -338,5 +340,7 @@ namespace DotSpatial.Topology.Algorithm
                 }
             }
         }
+
+        #endregion
     }
 }

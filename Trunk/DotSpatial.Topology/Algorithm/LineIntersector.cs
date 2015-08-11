@@ -24,6 +24,7 @@
 
 using System;
 using System.Text;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Algorithm
@@ -39,6 +40,8 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public abstract class LineIntersector
     {
+        #region Fields
+
         private Coordinate[,] _inputLines = new Coordinate[2, 2];
 
         /// <summary>
@@ -58,6 +61,10 @@ namespace DotSpatial.Topology.Algorithm
 
         private IntersectionType _result;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -68,22 +75,67 @@ namespace DotSpatial.Topology.Algorithm
             _result = 0;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the first intersection coordinate, if any.
+        /// Tests whether the input geometries intersect.
         /// </summary>
-        protected Coordinate PointA
+        /// <returns><c>true</c> if the input geometries intersect.</returns>
+        public virtual bool HasIntersection
         {
-            get { return _intPt[0]; }
-            set { _intPt[0] = value; }
+            get
+            {
+                return _result != IntersectionType.NoIntersection;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the second intersection coordiante, if any.
+        /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
         /// </summary>
-        protected Coordinate PointB
+        public virtual int IntersectionNum
         {
-            get { return _intPt[0]; }
-            set { _intPt[0] = value; }
+            get
+            {
+                return (int)_result;
+            }
+        }
+
+        /// <summary>
+        /// Gets the array of intersection points
+        /// </summary>
+        public Coordinate[] IntersectionPoints
+        {
+            get
+            {
+                return _intPt;
+            }
+            protected set
+            {
+                _intPt = value;
+            }
+        }
+
+        /// <summary>
+        /// Tests whether an intersection is proper.
+        /// The intersection between two line segments is considered proper if
+        /// they intersect in a single point in the interior of both segments
+        /// (e.g. the intersection is a single point and is not equal to any of the endpoints).
+        /// The intersection between a point and a line segment is considered proper
+        /// if the point lies in the interior of the segment (e.g. is not equal to either of the endpoints).
+        /// </summary>
+        /// <returns><c>true</c>  if the intersection is proper.</returns>
+        public virtual bool IsProper
+        {
+            get
+            {
+                return HasIntersection && _isProper;
+            }
+            protected set
+            {
+                _isProper = value;
+            }
         }
 
         /// <summary>
@@ -113,6 +165,74 @@ namespace DotSpatial.Topology.Algorithm
                 _precisionModel = value;
             }
         }
+
+        /// <summary>
+        /// This is true if the intersection forms a line
+        /// </summary>
+        protected virtual bool IsCollinear
+        {
+            get
+            {
+                return _result == IntersectionType.Collinear;
+            }
+        }
+
+        /// <summary>
+        /// Gets Whether this is both propper and has an intersection
+        /// </summary>
+        protected virtual bool IsEndPoint
+        {
+            get
+            {
+                return HasIntersection && !_isProper;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a two dimensional array of coordinates representing the input lines for the calculation
+        /// </summary>
+        protected Coordinate[,] InputLines
+        {
+            get
+            {
+                return _inputLines;
+            }
+            set
+            {
+                _inputLines = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the first intersection coordinate, if any.
+        /// </summary>
+        protected Coordinate PointA
+        {
+            get { return _intPt[0]; }
+            set { _intPt[0] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the second intersection coordiante, if any.
+        /// </summary>
+        protected Coordinate PointB
+        {
+            get { return _intPt[0]; }
+            set { _intPt[0] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the integer result
+        /// </summary>
+        protected IntersectionType Result
+        {
+            get { return _result; }
+            set { _result = value; }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Computes the "edge distance" of an intersection point p along a segment.
@@ -157,21 +277,14 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        /// This function is non-robust, since it may compute the square of large numbers.
-        /// Currently not sure how to improve this.
+        ///
         /// </summary>
-        /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
+        /// <param name="q1"></param>
+        /// <param name="q2"></param>
         /// <returns></returns>
-        public static double NonRobustComputeEdgeDistance(Coordinate p, Coordinate p1, Coordinate p2)
-        {
-            double dx = p.X - p1.X;
-            double dy = p.Y - p1.Y;
-            double dist = Math.Sqrt(dx * dx + dy * dy);   // dummy value
-            Assert.IsTrue(!(dist == 0.0 && !p.Equals(p1)), "Invalid distance calculation");
-            return dist;
-        }
+        public abstract IntersectionType ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
 
         /// <summary>
         /// Compute the intersection of a point p and the line p1-p2.
@@ -198,30 +311,61 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q1"></param>
-        /// <param name="q2"></param>
-        /// <returns></returns>
-        public abstract IntersectionType ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
+        protected virtual void ComputeIntLineIndex()
+        {
+            if (_intLineIndex == null)
+            {
+                _intLineIndex = new int[2, 2];
+                ComputeIntLineIndex(0);
+                ComputeIntLineIndex(1);
+            }
+        }
 
         /// <summary>
-        ///
+        /// Computes the integer line index of the specified integer segment index.
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        /// <param name="segmentIndex">The integer index of the segment.</param>
+        protected virtual void ComputeIntLineIndex(int segmentIndex)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(_inputLines[0, 0]).Append("-");
-            sb.Append(_inputLines[0, 1]).Append(" ");
-            sb.Append(_inputLines[1, 0]).Append("-");
-            sb.Append(_inputLines[1, 1]).Append(" : ");
+            double dist0 = GetEdgeDistance(segmentIndex, 0);
+            double dist1 = GetEdgeDistance(segmentIndex, 1);
+            if (dist0 > dist1)
+            {
+                _intLineIndex[segmentIndex, 0] = 0;
+                _intLineIndex[segmentIndex, 1] = 1;
+            }
+            else
+            {
+                _intLineIndex[segmentIndex, 0] = 1;
+                _intLineIndex[segmentIndex, 1] = 0;
+            }
+        }
 
-            if (IsEndPoint) sb.Append(" endpoint");
-            if (_isProper) sb.Append(" proper");
-            if (IsCollinear) sb.Append(" collinear");
+        /// <summary>
+        /// Computes the "edge distance" of an intersection point along the specified input line segment.
+        /// </summary>
+        /// <param name="segmentIndex">The integer segment index from 0 to 1.</param>
+        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
+        /// <returns>The edge distance of the intersection point.</returns>
+        public virtual double GetEdgeDistance(int segmentIndex, int intIndex)
+        {
+            double dist = ComputeEdgeDistance(_intPt[intIndex], _inputLines[segmentIndex, 0], _inputLines[segmentIndex, 1]);
+            return dist;
+        }
 
-            return sb.ToString();
+        /// <summary>
+        /// Computes the index of the intIndex'th intersection point in the direction of
+        /// a specified input line segment, and returns the integer index.
+        /// </summary>
+        /// <param name="segmentIndex">The integer segment index from 0 to 1.</param>
+        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
+        /// <returns>
+        /// The integer index of the intersection point along the segment (0 or 1).
+        /// </returns>
+        public virtual int GetIndexAlongSegment(int segmentIndex, int intIndex)
+        {
+            ComputeIntLineIndex();
+            return _intLineIndex[segmentIndex, intIndex];
         }
 
         /// <summary>
@@ -235,31 +379,19 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        ///
+        /// Computes the coordinate of the intIndex'th intersection point in the direction of
+        /// a specified input line segment.
         /// </summary>
-        protected virtual void ComputeIntLineIndex()
+        /// <param name="segmentIndex">The segment index from 0 to 1.</param>
+        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
+        /// <returns>
+        /// The coordinate of the intIndex'th intersection point in the direction of the specified input line segment.
+        /// </returns>
+        public virtual Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex)
         {
-            if (_intLineIndex == null)
-            {
-                _intLineIndex = new int[2, 2];
-                ComputeIntLineIndex(0);
-                ComputeIntLineIndex(1);
-            }
-        }
-
-        /// <summary>
-        /// Test whether a point is a intersection point of two line segments.
-        /// Notice that if the intersection is a line segment, this method only tests for
-        /// equality with the endpoints of the intersection segment.
-        /// It does not return true if the input point is internal to the intersection segment.
-        /// </summary>
-        /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
-        public virtual bool IsIntersection(Coordinate pt)
-        {
-            for (int i = 0; i < (int)_result; i++)
-                if (new Coordinate(_intPt[i]).Equals2D(pt))
-                    return true;
-            return false;
+            // lazily compute int line array
+            ComputeIntLineIndex();
+            return new Coordinate(_intPt[_intLineIndex[segmentIndex, intIndex]]);
         }
 
         /// <summary>
@@ -296,173 +428,54 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        /// Computes the coordinate of the intIndex'th intersection point in the direction of
-        /// a specified input line segment.
+        /// Test whether a point is a intersection point of two line segments.
+        /// Notice that if the intersection is a line segment, this method only tests for
+        /// equality with the endpoints of the intersection segment.
+        /// It does not return true if the input point is internal to the intersection segment.
         /// </summary>
-        /// <param name="segmentIndex">The segment index from 0 to 1.</param>
-        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
-        /// <returns>
-        /// The coordinate of the intIndex'th intersection point in the direction of the specified input line segment.
-        /// </returns>
-        public virtual Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex)
+        /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
+        public virtual bool IsIntersection(Coordinate pt)
         {
-            // lazily compute int line array
-            ComputeIntLineIndex();
-            return new Coordinate(_intPt[_intLineIndex[segmentIndex, intIndex]]);
+            for (int i = 0; i < (int)_result; i++)
+                if (new Coordinate(_intPt[i]).Equals2D(pt))
+                    return true;
+            return false;
         }
 
         /// <summary>
-        /// Computes the index of the intIndex'th intersection point in the direction of
-        /// a specified input line segment, and returns the integer index.
+        /// This function is non-robust, since it may compute the square of large numbers.
+        /// Currently not sure how to improve this.
         /// </summary>
-        /// <param name="segmentIndex">The integer segment index from 0 to 1.</param>
-        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
-        /// <returns>
-        /// The integer index of the intersection point along the segment (0 or 1).
-        /// </returns>
-        public virtual int GetIndexAlongSegment(int segmentIndex, int intIndex)
+        /// <param name="p"></param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public static double NonRobustComputeEdgeDistance(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            ComputeIntLineIndex();
-            return _intLineIndex[segmentIndex, intIndex];
-        }
-
-        /// <summary>
-        /// Computes the integer line index of the specified integer segment index.
-        /// </summary>
-        /// <param name="segmentIndex">The integer index of the segment.</param>
-        protected virtual void ComputeIntLineIndex(int segmentIndex)
-        {
-            double dist0 = GetEdgeDistance(segmentIndex, 0);
-            double dist1 = GetEdgeDistance(segmentIndex, 1);
-            if (dist0 > dist1)
-            {
-                _intLineIndex[segmentIndex, 0] = 0;
-                _intLineIndex[segmentIndex, 1] = 1;
-            }
-            else
-            {
-                _intLineIndex[segmentIndex, 0] = 1;
-                _intLineIndex[segmentIndex, 1] = 0;
-            }
-        }
-
-        /// <summary>
-        /// Computes the "edge distance" of an intersection point along the specified input line segment.
-        /// </summary>
-        /// <param name="segmentIndex">The integer segment index from 0 to 1.</param>
-        /// <param name="intIndex">The integer intersection index from 0 to 1.</param>
-        /// <returns>The edge distance of the intersection point.</returns>
-        public virtual double GetEdgeDistance(int segmentIndex, int intIndex)
-        {
-            double dist = ComputeEdgeDistance(_intPt[intIndex], _inputLines[segmentIndex, 0], _inputLines[segmentIndex, 1]);
+            double dx = p.X - p1.X;
+            double dy = p.Y - p1.Y;
+            double dist = Math.Sqrt(dx * dx + dy * dy);   // dummy value
+            Assert.IsTrue(!(dist == 0.0 && !p.Equals(p1)), "Invalid distance calculation");
             return dist;
         }
 
-        #region Properties
-
         /// <summary>
-        /// Tests whether the input geometries intersect.
+        ///
         /// </summary>
-        /// <returns><c>true</c> if the input geometries intersect.</returns>
-        public virtual bool HasIntersection
+        /// <returns></returns>
+        public override string ToString()
         {
-            get
-            {
-                return _result != IntersectionType.NoIntersection;
-            }
-        }
+            StringBuilder sb = new StringBuilder();
+            sb.Append(_inputLines[0, 0]).Append("-");
+            sb.Append(_inputLines[0, 1]).Append(" ");
+            sb.Append(_inputLines[1, 0]).Append("-");
+            sb.Append(_inputLines[1, 1]).Append(" : ");
 
-        /// <summary>
-        /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
-        /// </summary>
-        public virtual int IntersectionNum
-        {
-            get
-            {
-                return (int)_result;
-            }
-        }
+            if (IsEndPoint) sb.Append(" endpoint");
+            if (_isProper) sb.Append(" proper");
+            if (IsCollinear) sb.Append(" collinear");
 
-        /// <summary>
-        /// Gets the array of intersection points
-        /// </summary>
-        public Coordinate[] IntersectionPoints
-        {
-            get
-            {
-                return _intPt;
-            }
-            protected set
-            {
-                _intPt = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a two dimensional array of coordinates representing the input lines for the calculation
-        /// </summary>
-        protected Coordinate[,] InputLines
-        {
-            get
-            {
-                return _inputLines;
-            }
-            set
-            {
-                _inputLines = value;
-            }
-        }
-
-        /// <summary>
-        /// This is true if the intersection forms a line
-        /// </summary>
-        protected virtual bool IsCollinear
-        {
-            get
-            {
-                return _result == IntersectionType.Collinear;
-            }
-        }
-
-        /// <summary>
-        /// Gets Whether this is both propper and has an intersection
-        /// </summary>
-        protected virtual bool IsEndPoint
-        {
-            get
-            {
-                return HasIntersection && !_isProper;
-            }
-        }
-
-        /// <summary>
-        /// Tests whether an intersection is proper.
-        /// The intersection between two line segments is considered proper if
-        /// they intersect in a single point in the interior of both segments
-        /// (e.g. the intersection is a single point and is not equal to any of the endpoints).
-        /// The intersection between a point and a line segment is considered proper
-        /// if the point lies in the interior of the segment (e.g. is not equal to either of the endpoints).
-        /// </summary>
-        /// <returns><c>true</c>  if the intersection is proper.</returns>
-        public virtual bool IsProper
-        {
-            get
-            {
-                return HasIntersection && _isProper;
-            }
-            protected set
-            {
-                _isProper = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the integer result
-        /// </summary>
-        protected IntersectionType Result
-        {
-            get { return _result; }
-            set { _result = value; }
+            return sb.ToString();
         }
 
         #endregion

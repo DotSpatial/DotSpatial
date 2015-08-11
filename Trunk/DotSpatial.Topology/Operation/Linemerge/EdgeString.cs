@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Linemerge
 {
@@ -32,9 +33,15 @@ namespace DotSpatial.Topology.Operation.Linemerge
     /// </summary>
     public class EdgeString
     {
+        #region Fields
+
         private readonly IList _directedEdges = new ArrayList();
         private readonly IGeometryFactory _factory;
         private Coordinate[] _coordinates;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
@@ -45,6 +52,10 @@ namespace DotSpatial.Topology.Operation.Linemerge
         {
             _factory = factory;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -75,6 +86,10 @@ namespace DotSpatial.Topology.Operation.Linemerge
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Adds a directed edge which is known to form part of this line.
         /// </summary>
@@ -91,5 +106,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         {
             return _factory.CreateLineString(Coordinates);
         }
+
+        #endregion
     }
 }

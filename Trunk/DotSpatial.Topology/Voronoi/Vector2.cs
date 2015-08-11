@@ -25,6 +25,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Voronoi
 {
@@ -33,6 +34,8 @@ namespace DotSpatial.Topology.Voronoi
     /// </summary>
     public struct Vector2
     {
+        #region Fields
+
         /// <summary>
         /// This double controls the test for equality so that values that
         /// are smaller than this value will be considered equal.
@@ -48,6 +51,10 @@ namespace DotSpatial.Topology.Voronoi
         /// The y coordinate
         /// </summary>
         public readonly double Y;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a vector by reading a long array of vertices and assigning the vector based on that
@@ -70,6 +77,10 @@ namespace DotSpatial.Topology.Voronoi
             Y = x[1];
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets the dot product of this vector with itself
         /// </summary>
@@ -78,86 +89,19 @@ namespace DotSpatial.Topology.Voronoi
             get { return this * this; }
         }
 
-        /// <summary>
-        /// Transforms the vector into a coordinate with an x and y value
-        /// </summary>
-        /// <returns></returns>
-        public Coordinate ToCoordinate()
-        {
-            return new Coordinate(X, Y);
-        }
+        #endregion
+
+        #region Operators
 
         /// <summary>
-        /// True if any of the double values is not a number
+        /// Calculates the vector sum of these two vectors
         /// </summary>
-        public bool ContainsNan()
+        /// <param name="a">One vector to add</param>
+        /// <param name="b">The second vector to add</param>
+        /// <returns>The vector sum of the specified vectors</returns>
+        public static Vector2 operator +(Vector2 a, Vector2 b)
         {
-            if (double.IsNaN(X)) return true;
-            if (double.IsNaN(Y)) return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Convert the vector into a reconstructable string representation
-        /// </summary>
-        /// <returns>A string from which the vector can be rebuilt</returns>
-        public override string ToString()
-        {
-            return "(" + X + "," + Y + ")";
-        }
-
-        /// <summary>
-        /// Compares this vector with another one
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            Vector2 b = (Vector2)obj;
-            return TolerantEqual(X, b.X) && TolerantEqual(Y, b.Y);
-        }
-
-        /// <summary>
-        /// Calculates the euclidean distance from this cell to another
-        /// </summary>
-        /// <returns>Vector2 stuff</returns>
-        public double Distance(Vector2 other)
-        {
-            double dx = X - other.X;
-            double dy = Y - other.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        private static bool TolerantEqual(double a, double b)
-        {
-            // both being NaN counts as equal
-            if (double.IsNaN(a) && double.IsNaN(b)) return true;
-
-            // If one is NaN but the other isn't, then the vector is not equal
-            if (double.IsNaN(a) || double.IsNaN(b)) return false;
-
-            // Allow the default, operating system controlled equality check for two doubles
-            if (Tolerance == 0) return a == b;
-
-            // If a tolerance has been specified, check equality using that tolerance level.
-            return Math.Abs(a - b) <= Tolerance;
-        }
-
-        /// <summary>
-        /// Retrieves a hashcode that is dependent on the elements
-        /// </summary>
-        /// <returns>The hashcode</returns>
-        public override int GetHashCode()
-        {
-            return X.GetHashCode() * Y.GetHashCode();
-        }
-
-        /// <summary>
-        /// Get the scalar product of two vectors
-        /// </summary>
-        public static double operator *(Vector2 a, Vector2 b)
-        {
-            return a.X * b.X + a.Y * b.Y;
+            return new Vector2(a.X + b.X, a.Y + b.Y);
         }
 
         /// <summary>
@@ -183,25 +127,11 @@ namespace DotSpatial.Topology.Voronoi
         }
 
         /// <summary>
-        /// Calculates the vector sum of these two vectors
+        /// Get the scalar product of two vectors
         /// </summary>
-        /// <param name="a">One vector to add</param>
-        /// <param name="b">The second vector to add</param>
-        /// <returns>The vector sum of the specified vectors</returns>
-        public static Vector2 operator +(Vector2 a, Vector2 b)
+        public static double operator *(Vector2 a, Vector2 b)
         {
-            return new Vector2(a.X + b.X, a.Y + b.Y);
-        }
-
-        /// <summary>
-        /// Calculates the vector sum of these two vectors
-        /// </summary>
-        /// <param name="a">One vector to add</param>
-        /// <param name="b">The second vector to add</param>
-        /// <returns>The vector sum of the specified vectors</returns>
-        public static Vector2 operator -(Vector2 a, Vector2 b)
-        {
-            return new Vector2(a.X - b.X, a.Y - b.Y);
+            return a.X * b.X + a.Y * b.Y;
         }
 
         /// <summary>
@@ -225,5 +155,96 @@ namespace DotSpatial.Topology.Voronoi
         {
             return new Vector2(a.X * scale, a.Y * scale);
         }
+
+        /// <summary>
+        /// Calculates the vector sum of these two vectors
+        /// </summary>
+        /// <param name="a">One vector to add</param>
+        /// <param name="b">The second vector to add</param>
+        /// <returns>The vector sum of the specified vectors</returns>
+        public static Vector2 operator -(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.X - b.X, a.Y - b.Y);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// True if any of the double values is not a number
+        /// </summary>
+        public bool ContainsNan()
+        {
+            if (double.IsNaN(X)) return true;
+            if (double.IsNaN(Y)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Calculates the euclidean distance from this cell to another
+        /// </summary>
+        /// <returns>Vector2 stuff</returns>
+        public double Distance(Vector2 other)
+        {
+            double dx = X - other.X;
+            double dy = Y - other.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        /// <summary>
+        /// Compares this vector with another one
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            Vector2 b = (Vector2)obj;
+            return TolerantEqual(X, b.X) && TolerantEqual(Y, b.Y);
+        }
+
+        /// <summary>
+        /// Retrieves a hashcode that is dependent on the elements
+        /// </summary>
+        /// <returns>The hashcode</returns>
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() * Y.GetHashCode();
+        }
+
+        /// <summary>
+        /// Transforms the vector into a coordinate with an x and y value
+        /// </summary>
+        /// <returns></returns>
+        public Coordinate ToCoordinate()
+        {
+            return new Coordinate(X, Y);
+        }
+
+        private static bool TolerantEqual(double a, double b)
+        {
+            // both being NaN counts as equal
+            if (double.IsNaN(a) && double.IsNaN(b)) return true;
+
+            // If one is NaN but the other isn't, then the vector is not equal
+            if (double.IsNaN(a) || double.IsNaN(b)) return false;
+
+            // Allow the default, operating system controlled equality check for two doubles
+            if (Tolerance == 0) return a == b;
+
+            // If a tolerance has been specified, check equality using that tolerance level.
+            return Math.Abs(a - b) <= Tolerance;
+        }
+
+        /// <summary>
+        /// Convert the vector into a reconstructable string representation
+        /// </summary>
+        /// <returns>A string from which the vector can be rebuilt</returns>
+        public override string ToString()
+        {
+            return "(" + X + "," + Y + ")";
+        }
+
+        #endregion
     }
 }

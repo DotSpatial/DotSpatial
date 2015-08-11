@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -91,6 +92,8 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public static class Octant
     {
+        #region Methods
+
         /// <summary>
         /// Returns the octant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
@@ -135,5 +138,7 @@ namespace DotSpatial.Topology.Noding
                 throw new ArgumentException("Cannot compute the octant for two identical points " + p0);
             return GetOctant(dx, dy);
         }
+
+        #endregion
     }
 }

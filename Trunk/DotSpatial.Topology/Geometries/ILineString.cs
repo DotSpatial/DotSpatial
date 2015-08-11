@@ -21,17 +21,20 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// This adds the basic functionality of a
     /// </summary>
     public interface ILineString : IGeometry, IBasicLineString
     {
+        #region Properties
+
         /// <summary>
-        /// Gets a topologically complete IPoint for the first coordinate
+        /// Returns the value of the angle between the <see cref="StartPoint" />
+        /// and the <see cref="EndPoint" />.
         /// </summary>
-        IPoint StartPoint { get; }
+        double Angle { get; }
 
         /// <summary>
         /// Gets a topologically complete IPoint for the last coordinate
@@ -51,10 +54,13 @@ namespace DotSpatial.Topology
         bool IsRing { get; }
 
         /// <summary>
-        /// Returns the value of the angle between the <see cref="StartPoint" />
-        /// and the <see cref="EndPoint" />.
+        /// Gets a topologically complete IPoint for the first coordinate
         /// </summary>
-        double Angle { get; }
+        IPoint StartPoint { get; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Retrieves a topologically complete IPoint for the n'th coordinate in the
@@ -65,16 +71,18 @@ namespace DotSpatial.Topology
         IPoint GetPointN(int n);
 
         /// <summary>
-        /// Returns an ILineString that has its coordinates completely reversed
-        /// </summary>
-        /// <returns></returns>
-        ILineString Reverse();
-
-        /// <summary>
         /// Returns true if the given point is a vertex of this <c>LineString</c>.
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         bool IsCoordinate(Coordinate pt);
+
+        /// <summary>
+        /// Returns an ILineString that has its coordinates completely reversed
+        /// </summary>
+        /// <returns></returns>
+        ILineString Reverse();
+
+        #endregion
     }
 }

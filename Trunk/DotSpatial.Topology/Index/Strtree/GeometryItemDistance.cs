@@ -1,5 +1,5 @@
 using System;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.Strtree
 {

@@ -29,18 +29,15 @@ namespace DotSpatial.Topology
     /// </summary>
     public interface IMatrix
     {
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// Performs the matrix multiplication against the specified matrix
+        /// Gets the number of columns
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
-        IMatrix Multiply(IMatrix matrix);
-
-        #endregion
-
-        #region Properties
+        int NumColumns
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the number of rows
@@ -50,13 +47,16 @@ namespace DotSpatial.Topology
             get;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Gets the number of columns
+        /// Performs the matrix multiplication against the specified matrix
         /// </summary>
-        int NumColumns
-        {
-            get;
-        }
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        IMatrix Multiply(IMatrix matrix);
 
         #endregion
     }

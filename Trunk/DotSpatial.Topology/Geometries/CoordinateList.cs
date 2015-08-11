@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Serialization;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// A list of Coordinates, which may
@@ -35,6 +35,8 @@ namespace DotSpatial.Topology
     /// </summary>
     public class CoordinateList : BaseList<Coordinate>, ICloneable
     {
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance of a coordiante list
         /// </summary>
@@ -83,21 +85,9 @@ namespace DotSpatial.Topology
             }
         }
 
-        #region ICloneable Members
-
-        /// <summary>
-        /// Returns a deep copy of this collection.
-        /// </summary>
-        /// <returns>The copied object.</returns>
-        public object Clone()
-        {
-            CoordinateList copy = new CoordinateList();
-            foreach (Coordinate c in this)
-                copy.Add(c.Copy());
-            return copy;
-        }
-
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Add an array of coordinates.
@@ -130,6 +120,27 @@ namespace DotSpatial.Topology
         {
             // don't add duplicate coordinates
             DoAdd(coord, allowRepeated);
+        }
+
+        /// <summary>
+        /// Returns a deep copy of this collection.
+        /// </summary>
+        /// <returns>The copied object.</returns>
+        public object Clone()
+        {
+            CoordinateList copy = new CoordinateList();
+            foreach (Coordinate c in this)
+                copy.Add(c.Copy());
+            return copy;
+        }
+
+        /// <summary>
+        /// Ensure this coordList is a ring, by adding the start point if necessary.
+        /// </summary>
+        public virtual void CloseRing()
+        {
+            if (Count > 0)
+                Add(this[0], false);
         }
 
         /// <summary>
@@ -167,15 +178,6 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Ensure this coordList is a ring, by adding the start point if necessary.
-        /// </summary>
-        public virtual void CloseRing()
-        {
-            if (Count > 0)
-                Add(this[0], false);
-        }
-
-        /// <summary>
         /// Returns the Coordinates in this collection.
         /// </summary>
         /// <returns>Coordinater as <c>Coordinate[]</c> array.</returns>
@@ -183,5 +185,7 @@ namespace DotSpatial.Topology
         {
             return InnerList.ToArray();
         }
+
+        #endregion
     }
 }

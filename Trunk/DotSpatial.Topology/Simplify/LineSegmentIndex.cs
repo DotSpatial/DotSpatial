@@ -24,8 +24,8 @@
 
 using System;
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
-using DotSpatial.Topology.Index.Quadtree;
 
 namespace DotSpatial.Topology.Simplify
 {
@@ -34,7 +34,13 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class LineSegmentIndex
     {
+        #region Fields
+
         private readonly Quadtree _index = new Quadtree();
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -62,15 +68,6 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        /// <param name="seg"></param>
-        public virtual void Remove(LineSegment seg)
-        {
-            _index.Remove(new Envelope(seg.P0, seg.P1), seg);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
         public virtual IList Query(LineSegment querySeg)
@@ -83,6 +80,17 @@ namespace DotSpatial.Topology.Simplify
 
             return itemsFound;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="seg"></param>
+        public virtual void Remove(LineSegment seg)
+        {
+            _index.Remove(new Envelope(seg.P0, seg.P1), seg);
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -90,9 +98,15 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class LineSegmentVisitor : IItemVisitor
     {
+        #region Fields
+
         // MD - only seems to make about a 10% difference in overall time.
         private readonly ArrayList _items = new ArrayList();
         private readonly LineSegment _querySeg;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -102,6 +116,10 @@ namespace DotSpatial.Topology.Simplify
         {
             _querySeg = querySeg;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -114,7 +132,9 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
-        #region IItemVisitor Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///

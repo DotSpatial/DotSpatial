@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -35,6 +36,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class SimpleEdgeSetIntersector : EdgeSetIntersector
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -90,5 +93,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
                 for (int i1 = 0; i1 < pts1.Count - 1; i1++)
                     si.AddIntersections(e0, i0, e1, i1);
         }
+
+        #endregion
     }
 }

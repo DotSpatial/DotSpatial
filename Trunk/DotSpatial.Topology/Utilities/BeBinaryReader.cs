@@ -41,6 +41,8 @@ namespace DotSpatial.Topology.Utilities
     /// </remarks>
     public class BeBinaryReader : BinaryReader
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BeBinaryReader"/> class.
         /// </summary>
@@ -55,6 +57,43 @@ namespace DotSpatial.Topology.Utilities
         /// <exception cref="T:System.ArgumentNullException">encoding is null. </exception>
         /// <exception cref="T:System.ArgumentException">The stream does not support reading, the stream is null, or the stream is already closed. </exception>
         public BeBinaryReader(Stream input, Encoding encoding) : base(input, encoding) { }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override decimal ReadDecimal()
+        {
+            byte[] byteArray = new byte[16];
+            int iBytesRead = Read(byteArray, 0, 16);
+            Debug.Assert(iBytesRead == 16);
+
+            Array.Reverse(byteArray);
+            MemoryStream ms = new MemoryStream(byteArray);
+            BinaryReader br = new BinaryReader(ms);
+            return br.ReadDecimal();
+        }
+
+        /// <summary>
+        /// Reads an 8-byte floating point value from the current stream using big endian encoding
+        /// and advances the current position of the stream by eight bytes.
+        /// </summary>
+        /// <returns>
+        /// An 8-byte floating point value read from the current stream.
+        /// </returns>
+        /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
+        public override double ReadDouble()
+        {
+            byte[] byteArray = new byte[8];
+            int iBytesRead = Read(byteArray, 0, 8);
+            Debug.Assert(iBytesRead == 8);
+
+            Array.Reverse(byteArray);
+            return BitConverter.ToDouble(byteArray, 0);
+        }
 
         /// <summary>
         /// Reads a 2-byte signed integer from the current stream using big endian encoding
@@ -199,37 +238,6 @@ namespace DotSpatial.Topology.Utilities
             return BitConverter.ToSingle(byteArray, 0);
         }
 
-        /// <summary>
-        /// Reads an 8-byte floating point value from the current stream using big endian encoding
-        /// and advances the current position of the stream by eight bytes.
-        /// </summary>
-        /// <returns>
-        /// An 8-byte floating point value read from the current stream.
-        /// </returns>
-        /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
-        public override double ReadDouble()
-        {
-            byte[] byteArray = new byte[8];
-            int iBytesRead = Read(byteArray, 0, 8);
-            Debug.Assert(iBytesRead == 8);
-
-            Array.Reverse(byteArray);
-            return BitConverter.ToDouble(byteArray, 0);
-        }
-
-        /// <inheritdoc />
-        public override decimal ReadDecimal()
-        {
-            byte[] byteArray = new byte[16];
-            int iBytesRead = Read(byteArray, 0, 16);
-            Debug.Assert(iBytesRead == 16);
-
-            Array.Reverse(byteArray);
-            MemoryStream ms = new MemoryStream(byteArray);
-            BinaryReader br = new BinaryReader(ms);
-            return br.ReadDecimal();
-        }
+        #endregion
     }
 }

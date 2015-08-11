@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.KDTree
 {
@@ -183,29 +184,6 @@ namespace DotSpatial.Topology.Index.KDTree
             return result;
         }
 
-        /// <summary>
-        /// Performs a range search of the points in the index. 
-        /// </summary>
-        /// <param name="queryEnv">The range rectangle to query</param>
-        /// <returns>A collection of the KdNodes found</returns>
-        public ICollection<KdNode<T>> Query(Envelope queryEnv)
-        {
-            //KdNode<T> last = null;
-            ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
-            QueryNode(_root, _last, queryEnv, true, result);
-            return result;
-        }
-
-        /// <summary>
-        /// Performs a range search of the points in the index.
-        /// </summary>
-        /// <param name="queryEnv">The range rectangle to query</param>
-        /// <param name="result">A collection to accumulate the result nodes into</param>
-        public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
-        {
-            QueryNode(_root, _last, queryEnv, true, result);
-        }
-
         private static void NearestNeighbor(KdNode<T> currentNode, KdNode<T> bottomNode,
             Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
         {
@@ -243,6 +221,29 @@ namespace DotSpatial.Topology.Index.KDTree
                 }
                 break;
             }
+        }
+
+        /// <summary>
+        /// Performs a range search of the points in the index. 
+        /// </summary>
+        /// <param name="queryEnv">The range rectangle to query</param>
+        /// <returns>A collection of the KdNodes found</returns>
+        public ICollection<KdNode<T>> Query(Envelope queryEnv)
+        {
+            //KdNode<T> last = null;
+            ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
+            QueryNode(_root, _last, queryEnv, true, result);
+            return result;
+        }
+
+        /// <summary>
+        /// Performs a range search of the points in the index.
+        /// </summary>
+        /// <param name="queryEnv">The range rectangle to query</param>
+        /// <param name="result">A collection to accumulate the result nodes into</param>
+        public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
+        {
+            QueryNode(_root, _last, queryEnv, true, result);
         }
 
         private static void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode, Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)

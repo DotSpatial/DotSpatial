@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.IO;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Planargraph
@@ -39,7 +40,7 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class DirectedEdge : GraphComponent, IComparable
     {
-        #region Private Variables
+        #region Fields
 
         private readonly double _angle;
         private readonly bool _edgeDirection;
@@ -52,6 +53,8 @@ namespace DotSpatial.Topology.Planargraph
         private DirectedEdge _sym;  // optional
 
         #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a DirectedEdge connecting the <c>from</c> node to the
@@ -80,20 +83,77 @@ namespace DotSpatial.Topology.Planargraph
             _angle = Math.Atan2(dy, dx);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Returns this DirectedEdge's parent Edge, or null if it has none.
-        /// Associates this DirectedEdge with an Edge (possibly null, indicating no associated
-        /// Edge).
+        /// Returns the angle that the start of this DirectedEdge makes with the
+        /// positive x-axis, in radians.
         /// </summary>
-        public virtual Edge Edge
+        public virtual double Angle
         {
             get
             {
-                return _parentEdge;
+                return _angle;
             }
-            set
+        }
+
+        /// <summary>
+        /// Returns the coordinate of the from-node.
+        /// </summary>
+        public virtual Coordinate Coordinate
+        {
+            get
             {
-                _parentEdge = value;
+                return _from.Coordinate;
+            }
+        }
+
+        /// <summary>
+        /// Returns whether the direction of the parent Edge (if any) is the same as that
+        /// of this Directed Edge.
+        /// </summary>
+        public virtual bool EdgeDirection
+        {
+            get
+            {
+                return _edgeDirection;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point to which an imaginary line is drawn from the from-node to
+        /// specify this DirectedEdge's orientation.
+        /// </summary>
+        public virtual Coordinate EndPoint
+        {
+            get
+            {
+                return _p1;
+            }
+        }
+
+        /// <summary>
+        /// Returns the node from which this DirectedEdge leaves.
+        /// </summary>
+        public virtual Node FromNode
+        {
+            get
+            {
+                return _from;
+            }
+        }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        /// <value></value>
+        public override bool IsRemoved
+        {
+            get
+            {
+                return _parentEdge == null;
             }
         }
 
@@ -122,41 +182,6 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Returns a point to which an imaginary line is drawn from the from-node to
-        /// specify this DirectedEdge's orientation.
-        /// </summary>
-        public virtual Coordinate EndPoint
-        {
-            get
-            {
-                return _p1;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether the direction of the parent Edge (if any) is the same as that
-        /// of this Directed Edge.
-        /// </summary>
-        public virtual bool EdgeDirection
-        {
-            get
-            {
-                return _edgeDirection;
-            }
-        }
-
-        /// <summary>
-        /// Returns the node from which this DirectedEdge leaves.
-        /// </summary>
-        public virtual Node FromNode
-        {
-            get
-            {
-                return _from;
-            }
-        }
-
-        /// <summary>
         /// Returns the node to which this DirectedEdge goes.
         /// </summary>
         public virtual Node ToNode
@@ -168,25 +193,19 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Returns the coordinate of the from-node.
+        /// Returns this DirectedEdge's parent Edge, or null if it has none.
+        /// Associates this DirectedEdge with an Edge (possibly null, indicating no associated
+        /// Edge).
         /// </summary>
-        public virtual Coordinate Coordinate
+        public virtual Edge Edge
         {
             get
             {
-                return _from.Coordinate;
+                return _parentEdge;
             }
-        }
-
-        /// <summary>
-        /// Returns the angle that the start of this DirectedEdge makes with the
-        /// positive x-axis, in radians.
-        /// </summary>
-        public virtual double Angle
-        {
-            get
+            set
             {
-                return _angle;
+                _parentEdge = value;
             }
         }
 
@@ -208,57 +227,9 @@ namespace DotSpatial.Topology.Planargraph
             }
         }
 
-        /// <summary>
-        /// Tests whether this component has been removed from its containing graph.
-        /// </summary>
-        /// <value></value>
-        public override bool IsRemoved
-        {
-            get
-            {
-                return _parentEdge == null;
-            }
-        }
-
-        #region IComparable Members
-
-        /// <summary>
-        /// Returns 1 if this DirectedEdge has a greater angle with the
-        /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
-        /// Using the obvious algorithm of simply computing the angle is not robust,
-        /// since the angle calculation is susceptible to roundoff. A robust algorithm
-        /// is:
-        /// first compare the quadrants. If the quadrants are different, it it
-        /// trivial to determine which vector is "greater".
-        /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCgAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
-        /// function can be used to decide the relative orientation of the vectors.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public virtual int CompareTo(Object obj)
-        {
-            DirectedEdge de = (DirectedEdge)obj;
-            return CompareDirection(de);
-        }
-
         #endregion
 
-        /// <summary>
-        /// Returns a List containing the parent Edge (possibly null) for each of the given
-        /// DirectedEdges.
-        /// </summary>
-        /// <param name="dirEdges"></param>
-        /// <returns></returns>
-        public static IList ToEdges(IList dirEdges)
-        {
-            IList edges = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
-            {
-                edges.Add(((DirectedEdge)i.Current).Edge);
-            }
-            return edges;
-        }
+        #region Methods
 
         /// <summary>
         /// Returns 1 if this DirectedEdge has a greater angle with the
@@ -288,15 +259,23 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Writes a detailed string representation of this DirectedEdge to the given PrintStream.
+        /// Returns 1 if this DirectedEdge has a greater angle with the
+        /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
+        /// Using the obvious algorithm of simply computing the angle is not robust,
+        /// since the angle calculation is susceptible to roundoff. A robust algorithm
+        /// is:
+        /// first compare the quadrants. If the quadrants are different, it it
+        /// trivial to determine which vector is "greater".
+        /// if the vectors lie in the same quadrant, the robust
+        /// <c>RobustCgAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
-        /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual int CompareTo(Object obj)
         {
-            string className = GetType().FullName;
-            int lastDotPos = className.LastIndexOf('.');
-            string name = className.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle);
+            DirectedEdge de = (DirectedEdge)obj;
+            return CompareDirection(de);
         }
 
         /// <summary>
@@ -309,6 +288,22 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
+        /// Returns a List containing the parent Edge (possibly null) for each of the given
+        /// DirectedEdges.
+        /// </summary>
+        /// <param name="dirEdges"></param>
+        /// <returns></returns>
+        public static IList ToEdges(IList dirEdges)
+        {
+            IList edges = new ArrayList();
+            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
+            {
+                edges.Add(((DirectedEdge)i.Current).Edge);
+            }
+            return edges;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
@@ -316,5 +311,19 @@ namespace DotSpatial.Topology.Planargraph
         {
             return "DirectedEdge: " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle;
         }
+
+        /// <summary>
+        /// Writes a detailed string representation of this DirectedEdge to the given PrintStream.
+        /// </summary>
+        /// <param name="outstream"></param>
+        public virtual void Write(StreamWriter outstream)
+        {
+            string className = GetType().FullName;
+            int lastDotPos = className.LastIndexOf('.');
+            string name = className.Substring(lastDotPos + 1);
+            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle);
+        }
+
+        #endregion
     }
 }

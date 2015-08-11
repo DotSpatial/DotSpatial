@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 
 namespace DotSpatial.Topology.Operation.Linemerge
@@ -35,6 +36,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
     /// </summary>
     public class LineMergeGraph : PlanarGraph
     {
+        #region Methods
+
         /// <summary>
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge.
@@ -72,5 +75,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
             }
             return node;
         }
+
+        #endregion
     }
 }

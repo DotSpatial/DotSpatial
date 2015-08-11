@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class WkbWriter
     {
+        #region Constant Fields
+
         /// <summary>
         /// Standard byte size for each complex point.
         /// Each complex point (LineString, Polygon, ...) contains:
@@ -40,7 +43,15 @@ namespace DotSpatial.Topology.Utilities
         /// </summary>
         protected const int INIT_COUNT = 5;
 
+        #endregion
+
+        #region Fields
+
         private readonly ByteOrder _encodingType;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
@@ -56,192 +67,9 @@ namespace DotSpatial.Topology.Utilities
             _encodingType = encodingType;
         }
 
-        /// <summary>
-        /// Writes a WKB representation of a given point.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        public virtual byte[] Write(IGeometry geometry)
-        {
-            byte[] bytes = GetBytes(geometry);
-            Write(geometry, new MemoryStream(bytes));
-            return bytes;
-        }
+        #endregion
 
-        /// <summary>
-        /// Writes a WKB representation of a given point.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="stream"></param>
-        public virtual void Write(IGeometry geometry, Stream stream)
-        {
-            BinaryWriter writer = null;
-            try
-            {
-                if (_encodingType == ByteOrder.LittleEndian)
-                    writer = new BinaryWriter(stream);
-                else writer = new BeBinaryWriter(stream);
-                Write(geometry, writer);
-            }
-            finally
-            {
-                if (writer != null)
-                    writer.Close();
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IGeometry geometry, BinaryWriter writer)
-        {
-            if (geometry is IPoint)
-                Write(geometry as IPoint, writer);
-            else if (geometry is ILineString)
-                Write(geometry as ILineString, writer);
-            else if (geometry is IPolygon)
-                Write(geometry as IPolygon, writer);
-            else if (geometry is IMultiPoint)
-                Write(geometry as IMultiPoint, writer);
-            else if (geometry is IMultiLineString)
-                Write(geometry as IMultiLineString, writer);
-            else if (geometry is IMultiPolygon)
-                Write(geometry as IMultiPolygon, writer);
-            else if (geometry is IGeometryCollection)
-                Write(geometry as IGeometryCollection, writer);
-            else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
-        }
-
-        /// <summary>
-        /// Writes LittleIndian ByteOrder.
-        /// </summary>
-        /// <param name="writer"></param>
-        protected virtual void WriteByteOrder(BinaryWriter writer)
-        {
-            writer.Write((byte)_encodingType);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IPoint point, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.Point);
-            Write(point.Coordinate, writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lineString"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(ILineString lineString, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.LineString);
-            writer.Write(lineString.NumPoints);
-            for (int i = 0; i < lineString.Coordinates.Count; i++)
-                Write(lineString.Coordinates[i], writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IPolygon polygon, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.Polygon);
-            writer.Write(polygon.NumHoles + 1);
-            Write(polygon.Shell, writer);
-            for (int i = 0; i < polygon.NumHoles; i++)
-                Write(polygon.Holes[i], writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiPoint"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IMultiPoint multiPoint, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.MultiPoint);
-            writer.Write(multiPoint.NumGeometries);
-            for (int i = 0; i < multiPoint.NumGeometries; i++)
-                Write(multiPoint.Geometries[i] as Point, writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiLineString"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IMultiLineString multiLineString, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.MultiLineString);
-            writer.Write(multiLineString.NumGeometries);
-            for (int i = 0; i < multiLineString.NumGeometries; i++)
-                Write(multiLineString.Geometries[i] as LineString, writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiPolygon"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.MultiPolygon);
-            writer.Write(multiPolygon.NumGeometries);
-            for (int i = 0; i < multiPolygon.NumGeometries; i++)
-                Write(multiPolygon.Geometries[i] as Polygon, writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomCollection"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(IGeometryCollection geomCollection, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);
-            writer.Write((int)WkbGeometryType.GeometryCollection);
-            writer.Write(geomCollection.NumGeometries);
-            for (int i = 0; i < geomCollection.NumGeometries; i++)
-                Write(geomCollection.Geometries[i], writer);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="coordinate"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(Coordinate coordinate, BinaryWriter writer)
-        {
-            writer.Write(coordinate.X);
-            writer.Write(coordinate.Y);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ring"></param>
-        /// <param name="writer"></param>
-        protected virtual void Write(ILinearRing ring, BinaryWriter writer)
-        {
-            writer.Write(ring.NumPoints);
-            for (int i = 0; i < ring.Coordinates.Count; i++)
-                Write(ring.Coordinates[i], writer);
-        }
+        #region Methods
 
         /// <summary>
         /// Sets corrent length for Byte Stream.
@@ -384,5 +212,194 @@ namespace DotSpatial.Topology.Utilities
         {
             return 21;
         }
+
+        /// <summary>
+        /// Writes a WKB representation of a given point.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        public virtual byte[] Write(IGeometry geometry)
+        {
+            byte[] bytes = GetBytes(geometry);
+            Write(geometry, new MemoryStream(bytes));
+            return bytes;
+        }
+
+        /// <summary>
+        /// Writes a WKB representation of a given point.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <param name="stream"></param>
+        public virtual void Write(IGeometry geometry, Stream stream)
+        {
+            BinaryWriter writer = null;
+            try
+            {
+                if (_encodingType == ByteOrder.LittleEndian)
+                    writer = new BinaryWriter(stream);
+                else writer = new BeBinaryWriter(stream);
+                Write(geometry, writer);
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IGeometry geometry, BinaryWriter writer)
+        {
+            if (geometry is IPoint)
+                Write(geometry as IPoint, writer);
+            else if (geometry is ILineString)
+                Write(geometry as ILineString, writer);
+            else if (geometry is IPolygon)
+                Write(geometry as IPolygon, writer);
+            else if (geometry is IMultiPoint)
+                Write(geometry as IMultiPoint, writer);
+            else if (geometry is IMultiLineString)
+                Write(geometry as IMultiLineString, writer);
+            else if (geometry is IMultiPolygon)
+                Write(geometry as IMultiPolygon, writer);
+            else if (geometry is IGeometryCollection)
+                Write(geometry as IGeometryCollection, writer);
+            else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IPoint point, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.Point);
+            Write(point.Coordinate, writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lineString"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(ILineString lineString, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.LineString);
+            writer.Write(lineString.NumPoints);
+            for (int i = 0; i < lineString.Coordinates.Count; i++)
+                Write(lineString.Coordinates[i], writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IPolygon polygon, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.Polygon);
+            writer.Write(polygon.NumHoles + 1);
+            Write(polygon.Shell, writer);
+            for (int i = 0; i < polygon.NumHoles; i++)
+                Write(polygon.Holes[i], writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiPoint"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IMultiPoint multiPoint, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.MultiPoint);
+            writer.Write(multiPoint.NumGeometries);
+            for (int i = 0; i < multiPoint.NumGeometries; i++)
+                Write(multiPoint.Geometries[i] as Point, writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiLineString"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IMultiLineString multiLineString, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.MultiLineString);
+            writer.Write(multiLineString.NumGeometries);
+            for (int i = 0; i < multiLineString.NumGeometries; i++)
+                Write(multiLineString.Geometries[i] as LineString, writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiPolygon"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.MultiPolygon);
+            writer.Write(multiPolygon.NumGeometries);
+            for (int i = 0; i < multiPolygon.NumGeometries; i++)
+                Write(multiPolygon.Geometries[i] as Polygon, writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomCollection"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(IGeometryCollection geomCollection, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);
+            writer.Write((int)WkbGeometryType.GeometryCollection);
+            writer.Write(geomCollection.NumGeometries);
+            for (int i = 0; i < geomCollection.NumGeometries; i++)
+                Write(geomCollection.Geometries[i], writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(Coordinate coordinate, BinaryWriter writer)
+        {
+            writer.Write(coordinate.X);
+            writer.Write(coordinate.Y);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ring"></param>
+        /// <param name="writer"></param>
+        protected virtual void Write(ILinearRing ring, BinaryWriter writer)
+        {
+            writer.Write(ring.NumPoints);
+            for (int i = 0; i < ring.Coordinates.Count; i++)
+                Write(ring.Coordinates[i], writer);
+        }
+
+        /// <summary>
+        /// Writes LittleIndian ByteOrder.
+        /// </summary>
+        /// <param name="writer"></param>
+        protected virtual void WriteByteOrder(BinaryWriter writer)
+        {
+            writer.Write((byte)_encodingType);
+        }
+
+        #endregion
     }
 }

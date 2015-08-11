@@ -22,9 +22,10 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -39,6 +40,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
     /// </summary>
+    [Serializable]
     public abstract class AbstractStRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
     {
@@ -171,6 +173,34 @@ namespace DotSpatial.Topology.Index.Strtree
 
         #region Methods
 
+        protected IList<IBoundable<T, TItem>> BoundablesAtLevel(int level)
+        {
+            var boundables = new List<IBoundable<T, TItem>>();
+            BoundablesAtLevel(level, _root, boundables);
+            return boundables;
+        }
+
+        private static void BoundablesAtLevel(int level, AbstractNode<T, TItem> top, ICollection<IBoundable<T, TItem>>  boundables)
+        {
+            Assert.IsTrue(level > -2);
+            if (top.Level == level)
+            {
+                boundables.Add(top);
+                return;
+            }
+            foreach (var boundable in top.ChildBoundables )
+            {
+                if (boundable is AbstractNode<T, TItem>)
+                    BoundablesAtLevel(level, (AbstractNode<T, TItem>)boundable, boundables);
+                else
+                {
+                    Assert.IsTrue(boundable is ItemBoundable<T, TItem>);
+                    if (level == -1)
+                        boundables.Add(boundable);
+                }
+            }
+        }
+
         /// <summary>
         /// Creates parent nodes, grandparent nodes, and so forth up to the root
         /// node, for the data that has been inserted into the tree. Can only be
@@ -197,33 +227,25 @@ namespace DotSpatial.Topology.Index.Strtree
                 }
         }
 
-        /// <summary>
-        /// Gets a tree structure (as a nested list) 
-        /// corresponding to the structure of the items and nodes in this tree.
-        /// The returned Lists contain either Object items, 
-        /// or Lists which correspond to subtrees of the tree
-        /// Subtrees which do not contain any items are not included.
-        /// Builds the tree if necessary.
-        /// </summary>
-        /// <returns>a List of items and/or Lists</returns>
-        public IList ItemsTree()
-        {
-            Build();
-
-            var valuesTree = ItemsTree(_root);
-            return valuesTree ?? new List<object>();
-        }
-
-        protected IList<IBoundable<T, TItem>> BoundablesAtLevel(int level)
-        {
-            var boundables = new List<IBoundable<T, TItem>>();
-            BoundablesAtLevel(level, _root, boundables);
-            return boundables;
-        }
-
         protected static int CompareDoubles(double a, double b)
         {
             return a.CompareTo(b);
+        }
+
+        /// <summary>
+        /// Creates the levels higher than the given level.
+        /// </summary>
+        /// <param name="boundablesOfALevel">The level to build on.</param>
+        /// <param name="level">the level of the Boundables, or -1 if the boundables are item
+        /// boundables (that is, below level 0).</param>
+        /// <returns>The root, which may be a ParentNode or a LeafNode.</returns>
+        private AbstractNode<T, TItem> CreateHigherLevels(IList<IBoundable<T, TItem>>  boundablesOfALevel, int level)
+        {
+            Assert.IsTrue(boundablesOfALevel.Count != 0);
+            var parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
+            if (parentBoundables.Count == 1)
+                return (AbstractNode<T, TItem>)parentBoundables[0];
+            return CreateHigherLevels(parentBoundables, level + 1);
         }
 
         /// <summary>
@@ -292,6 +314,44 @@ namespace DotSpatial.Topology.Index.Strtree
             _itemBoundables.Add(new ItemBoundable<T, TItem>(bounds, item));
         }
 
+        /// <summary>
+        /// Gets a tree structure (as a nested list) 
+        /// corresponding to the structure of the items and nodes in this tree.
+        /// The returned Lists contain either Object items, 
+        /// or Lists which correspond to subtrees of the tree
+        /// Subtrees which do not contain any items are not included.
+        /// Builds the tree if necessary.
+        /// </summary>
+        /// <returns>a List of items and/or Lists</returns>
+        public IList ItemsTree()
+        {
+            Build();
+
+            var valuesTree = ItemsTree(_root);
+            return valuesTree ?? new List<object>();
+        }
+
+        private static IList ItemsTree(AbstractNode<T, TItem> node)
+        {
+            var valuesTreeForNode = new List<object>();
+
+            foreach (var childBoundable in node.ChildBoundables)
+            {
+                if (childBoundable is AbstractNode<T, TItem>)
+                {
+                    var valuesTreeForChild = ItemsTree((AbstractNode<T, TItem>)childBoundable);
+                    // only add if not null (which indicates an item somewhere in this tree
+                    if (valuesTreeForChild != null)
+                        valuesTreeForNode.Add(valuesTreeForChild);
+                }
+                else if (childBoundable is ItemBoundable<T, TItem>)
+                    valuesTreeForNode.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
+                else Assert.ShouldNeverReachHere();
+            }
+            
+            return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
+        }
+
         protected AbstractNode<T, TItem> LastNode(IList<IBoundable<T, TItem>>  nodes)
         {
             return (AbstractNode<T, TItem>)nodes[nodes.Count - 1];
@@ -325,76 +385,6 @@ namespace DotSpatial.Topology.Index.Strtree
                 Query(searchBounds, _root, visitor);
         }
 
-        /// <summary>
-        /// Removes an item from the tree.
-        /// (Builds the tree, if necessary.)
-        /// </summary>
-        /// <param name="searchBounds"></param>
-        /// <param name="item"></param>
-        protected bool Remove(T searchBounds, TItem item)
-        {
-            Build();
-            return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
-        }
-
-        private static void BoundablesAtLevel(int level, AbstractNode<T, TItem> top, ICollection<IBoundable<T, TItem>>  boundables)
-        {
-            Assert.IsTrue(level > -2);
-            if (top.Level == level)
-            {
-                boundables.Add(top);
-                return;
-            }
-            foreach (var boundable in top.ChildBoundables )
-            {
-                if (boundable is AbstractNode<T, TItem>)
-                    BoundablesAtLevel(level, (AbstractNode<T, TItem>)boundable, boundables);
-                else
-                {
-                    Assert.IsTrue(boundable is ItemBoundable<T, TItem>);
-                    if (level == -1)
-                        boundables.Add(boundable);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates the levels higher than the given level.
-        /// </summary>
-        /// <param name="boundablesOfALevel">The level to build on.</param>
-        /// <param name="level">the level of the Boundables, or -1 if the boundables are item
-        /// boundables (that is, below level 0).</param>
-        /// <returns>The root, which may be a ParentNode or a LeafNode.</returns>
-        private AbstractNode<T, TItem> CreateHigherLevels(IList<IBoundable<T, TItem>>  boundablesOfALevel, int level)
-        {
-            Assert.IsTrue(boundablesOfALevel.Count != 0);
-            var parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
-            if (parentBoundables.Count == 1)
-                return (AbstractNode<T, TItem>)parentBoundables[0];
-            return CreateHigherLevels(parentBoundables, level + 1);
-        }
-
-        private static IList ItemsTree(AbstractNode<T, TItem> node)
-        {
-            var valuesTreeForNode = new List<object>();
-
-            foreach (var childBoundable in node.ChildBoundables)
-            {
-                if (childBoundable is AbstractNode<T, TItem>)
-                {
-                    var valuesTreeForChild = ItemsTree((AbstractNode<T, TItem>)childBoundable);
-                    // only add if not null (which indicates an item somewhere in this tree
-                    if (valuesTreeForChild != null)
-                        valuesTreeForNode.Add(valuesTreeForChild);
-                }
-                else if (childBoundable is ItemBoundable<T, TItem>)
-                    valuesTreeForNode.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
-                else Assert.ShouldNeverReachHere();
-            }
-            
-            return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
-        }
-
         private void Query(T searchBounds, AbstractNode<T, TItem> node, IList<TItem> matches)
         {
             foreach (var childBoundable in node.ChildBoundables)
@@ -422,6 +412,18 @@ namespace DotSpatial.Topology.Index.Strtree
                     visitor.VisitItem(((ItemBoundable<T, TItem>)childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
             }
+        }
+
+        /// <summary>
+        /// Removes an item from the tree.
+        /// (Builds the tree, if necessary.)
+        /// </summary>
+        /// <param name="searchBounds"></param>
+        /// <param name="item"></param>
+        protected bool Remove(T searchBounds, TItem item)
+        {
+            Build();
+            return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
         }
 
         private bool Remove(T searchBounds, AbstractNode<T, TItem> node, TItem item)

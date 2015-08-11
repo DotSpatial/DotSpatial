@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Simplify
@@ -43,9 +44,15 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class TopologyPreservingSimplifier
     {
+        #region Fields
+
         private readonly IGeometry _inputGeom;
         private readonly TaggedLinesSimplifier _lineSimplifier = new TaggedLinesSimplifier();
         private IDictionary _lineStringMap;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -55,6 +62,10 @@ namespace DotSpatial.Topology.Simplify
         {
             _inputGeom = inputGeom;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -71,18 +82,9 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="distanceTolerance"></param>
-        /// <returns></returns>
-        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
-        {
-            TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
-            tss.DistanceTolerance = distanceTolerance;
-            return tss.GetResultGeometry();
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -97,14 +99,35 @@ namespace DotSpatial.Topology.Simplify
             return result;
         }
 
-        #region Nested type: LineStringMapBuilderFilter
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <param name="distanceTolerance"></param>
+        /// <returns></returns>
+        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
+        {
+            TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
+            tss.DistanceTolerance = distanceTolerance;
+            return tss.GetResultGeometry();
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         private class LineStringMapBuilderFilter : IGeometryComponentFilter
         {
+            #region Fields
+
             private readonly TopologyPreservingSimplifier _container;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -115,7 +138,9 @@ namespace DotSpatial.Topology.Simplify
                 _container = container;
             }
 
-            #region IGeometryComponentFilter Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -138,16 +163,18 @@ namespace DotSpatial.Topology.Simplify
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: LineStringTransformer
-
         /// <summary>
         ///
         /// </summary>
         private class LineStringTransformer : GeometryTransformer
         {
+            #region Fields
+
             private readonly TopologyPreservingSimplifier _container;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -157,6 +184,10 @@ namespace DotSpatial.Topology.Simplify
             {
                 _container = container;
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -174,6 +205,8 @@ namespace DotSpatial.Topology.Simplify
                 // for anything else (e.g. points) just copy the coordinates
                 return base.TransformCoordinates(coords, parent);
             }
+
+            #endregion
         }
 
         #endregion

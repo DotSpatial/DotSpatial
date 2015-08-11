@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -46,16 +47,13 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class RelateNodeGraph
     {
+        #region Fields
+
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
-        {
-            return _nodes.GetEnumerator();
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -131,6 +129,15 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <summary>
         ///
         /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator GetNodeEnumerator()
+        {
+            return _nodes.GetEnumerator();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="ee"></param>
         public virtual void InsertEdgeEnds(IList ee)
         {
@@ -140,5 +147,7 @@ namespace DotSpatial.Topology.Operation.Relate
                 _nodes.Add(e);
             }
         }
+
+        #endregion
     }
 }

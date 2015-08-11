@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -33,8 +34,14 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class UniqueCoordinateArrayFilter : ICoordinateFilter
     {
+        #region Fields
+
         private readonly ArrayList _list = new ArrayList();
         private readonly ISet<Coordinate> _table = new SortedSet<Coordinate>();
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
@@ -47,7 +54,9 @@ namespace DotSpatial.Topology.Utilities
             }
         }
 
-        #region ICoordinateFilter Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///

@@ -22,8 +22,9 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -37,6 +38,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
+    [Serializable]
     public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
         #region Fields

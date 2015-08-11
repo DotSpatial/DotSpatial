@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Index.Quadtree;
+using DotSpatial.Topology.Index.QuadTree;
 
 namespace DotSpatial.Topology.Index.Bintree
 {
@@ -96,6 +96,18 @@ namespace DotSpatial.Topology.Index.Bintree
         #region Methods
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="itemInterval"></param>
+        private void ComputeInterval(int level, Interval itemInterval)
+        {
+            double size = DoubleBits.PowerOf2(level);
+            _pt = Math.Floor(itemInterval.Min / size) * size;
+            _interval.Init(_pt, _pt + size);
+        }
+
+        /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
@@ -123,18 +135,6 @@ namespace DotSpatial.Topology.Index.Bintree
             double dx = interval.Width;
             int level = DoubleBits.GetExponent(dx) + 1;
             return level;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="itemInterval"></param>
-        private void ComputeInterval(int level, Interval itemInterval)
-        {
-            double size = DoubleBits.PowerOf2(level);
-            _pt = Math.Floor(itemInterval.Min / size) * size;
-            _interval.Init(_pt, _pt + size);
         }
 
         #endregion

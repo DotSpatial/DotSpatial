@@ -1,5 +1,5 @@
 using System;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -113,6 +113,22 @@ namespace DotSpatial.Topology.Index.Strtree
             return 0;
         }
 
+        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
+                            PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
+        {
+            var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
+            foreach (var child in children)
+            {
+                var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
+                // only add to queue if this pair might contain the closest points
+                // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
+                if (bp.Distance < minDistance)
+                {
+                    priQ.Add(bp);
+                }
+            }
+        }
+
         /// <summary>
         /// For a pair which is not a leaf (i.e. has at least one composite boundable)
         /// computes a list of new pairs from the expansion of the larger boundable.
@@ -162,27 +178,6 @@ namespace DotSpatial.Topology.Index.Strtree
             return i == 0 ? _boundable1 : _boundable2;
         }
 
-        public static bool IsComposite(IBoundable<Envelope, TItem> item)
-        {
-            return (item is AbstractNode<Envelope, TItem>);
-        }
-
-        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
-                            PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
-        {
-            var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
-            foreach (var child in children)
-            {
-                var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
-                // only add to queue if this pair might contain the closest points
-                // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
-                if (bp.Distance < minDistance)
-                {
-                    priQ.Add(bp);
-                }
-            }
-        }
-
         /// <summary>
         /// Computes the distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.
         /// The boundables are either composites or leaves.
@@ -200,6 +195,11 @@ namespace DotSpatial.Topology.Index.Strtree
             }
             // otherwise compute distance between bounds of boundables
             return _boundable1.Bounds.Distance(_boundable2.Bounds);
+        }
+
+        public static bool IsComposite(IBoundable<Envelope, TItem> item)
+        {
+            return (item is AbstractNode<Envelope, TItem>);
         }
 
         #endregion

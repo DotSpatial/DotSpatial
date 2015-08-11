@@ -29,6 +29,19 @@ namespace DotSpatial.Topology
     /// </summary>
     public interface IMatrixD : IMatrix
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the values for this matrix of double precision coordinates
+        /// </summary>
+        double[,] Values
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -44,19 +57,6 @@ namespace DotSpatial.Topology
         /// <param name="matrix"></param>
         /// <returns></returns>
         IMatrixD Multiply(IMatrixD matrix);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the values for this matrix of double precision coordinates
-        /// </summary>
-        double[,] Values
-        {
-            get;
-            set;
-        }
 
         #endregion
     }

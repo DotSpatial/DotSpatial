@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Index.Chain
@@ -34,6 +35,44 @@ namespace DotSpatial.Topology.Index.Chain
     public static class MonotoneChainBuilder
     {
         #region Methods
+
+        /// <summary>
+        /// Finds the index of the last point in a monotone chain starting at a given point.
+        /// Any repeated points (0-length segments) will be included in the monotone chain returned.
+        /// </summary>
+        /// <param name="pts">The coordinates</param>
+        /// <param name="start">The start index</param>
+        /// <returns> 
+        /// The index of the last point in the monotone chain starting at <c>start</c>.
+        /// </returns>
+        private static int FindChainEnd(IList<Coordinate> pts, int start)
+        {
+            int safeStart = start;
+            // skip any zero-length segments at the start of the sequence
+            // (since they cannot be used to establish a quadrant)
+            while (safeStart < pts.Count - 1 && pts[safeStart].Equals2D(pts[safeStart + 1]))
+            {
+                safeStart++;
+            }
+            // check if there are NO non-zero-length segments
+            if (safeStart >= pts.Count - 1) return pts.Count - 1;
+            
+            // determine overall quadrant for chain (which is the starting quadrant)
+            int chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
+            int last = start + 1;
+            while (last < pts.Count)
+            {
+                // skip zero-length segments, but include them in the chain
+                if (!pts[last - 1].Equals2D(pts[last]))
+                {
+                    // compute quadrant for next possible segment in chain
+                    int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                    if (quad != chainQuad) break;
+                }
+                last++;
+            }
+            return last - 1;
+        }
 
         /// <summary>
         ///
@@ -98,44 +137,6 @@ namespace DotSpatial.Topology.Index.Chain
             for (int i = 0; i < array.Length; i++)            
                 array[i] = list[i];            
             return array;
-        }
-
-        /// <summary>
-        /// Finds the index of the last point in a monotone chain starting at a given point.
-        /// Any repeated points (0-length segments) will be included in the monotone chain returned.
-        /// </summary>
-        /// <param name="pts">The coordinates</param>
-        /// <param name="start">The start index</param>
-        /// <returns> 
-        /// The index of the last point in the monotone chain starting at <c>start</c>.
-        /// </returns>
-        private static int FindChainEnd(IList<Coordinate> pts, int start)
-        {
-            int safeStart = start;
-            // skip any zero-length segments at the start of the sequence
-            // (since they cannot be used to establish a quadrant)
-            while (safeStart < pts.Count - 1 && pts[safeStart].Equals2D(pts[safeStart + 1]))
-            {
-                safeStart++;
-            }
-            // check if there are NO non-zero-length segments
-            if (safeStart >= pts.Count - 1) return pts.Count - 1;
-            
-            // determine overall quadrant for chain (which is the starting quadrant)
-            int chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
-            int last = start + 1;
-            while (last < pts.Count)
-            {
-                // skip zero-length segments, but include them in the chain
-                if (!pts[last - 1].Equals2D(pts[last]))
-                {
-                    // compute quadrant for next possible segment in chain
-                    int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
-                    if (quad != chainQuad) break;
-                }
-                last++;
-            }
-            return last - 1;
         }
 
         #endregion

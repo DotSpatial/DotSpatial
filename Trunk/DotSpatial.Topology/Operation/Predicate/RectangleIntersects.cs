@@ -28,6 +28,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Predicate
@@ -41,6 +42,8 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     public class RectangleIntersects
     {
+        #region Constant Fields
+
         /// <summary>
         /// Crossover size at which brute-force intersection scanning
         /// is slower than indexed intersection detection.
@@ -49,8 +52,16 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// </summary>
         public const int MAXIMUM_SCAN_SEGMENT_COUNT = 200;
 
-        private readonly IEnvelope _rectEnv;
+        #endregion
+
+        #region Fields
+
         private readonly IPolygon _rectangle;
+        private readonly IEnvelope _rectEnv;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Create a new intersects computer for a rectangle.
@@ -61,6 +72,10 @@ namespace DotSpatial.Topology.Operation.Predicate
             _rectangle = rectangle;
             _rectEnv = rectangle.EnvelopeInternal;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -103,6 +118,8 @@ namespace DotSpatial.Topology.Operation.Predicate
 
             return false;
         }
+
+        #endregion
     }
 
     /// <summary>
@@ -110,8 +127,14 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     internal class EnvelopeIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
+        #region Fields
+
         private readonly IEnvelope _rectEnv;
         private bool _intersects;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -122,11 +145,24 @@ namespace DotSpatial.Topology.Operation.Predicate
             _rectEnv = rectEnv;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
         public bool Intersects() { return _intersects; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override bool IsDone()
+        {
+            return _intersects;
+        }
 
         /// <summary>
         ///
@@ -164,14 +200,7 @@ namespace DotSpatial.Topology.Operation.Predicate
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override bool IsDone()
-        {
-            return _intersects;
-        }
+        #endregion
     }
 
     /// <summary>
@@ -179,9 +208,15 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     internal class ContainsPointVisitor : ShortCircuitedGeometryVisitor
     {
+        #region Fields
+
         private readonly IEnvelope _rectEnv;
         private readonly IList<Coordinate> _rectSeq;
         private bool _containsPoint;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -193,11 +228,24 @@ namespace DotSpatial.Topology.Operation.Predicate
             _rectEnv = rectangle.EnvelopeInternal;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
         public bool ContainsPoint() { return _containsPoint; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override bool IsDone()
+        {
+            return _containsPoint;
+        }
 
         /// <summary>
         ///
@@ -223,14 +271,7 @@ namespace DotSpatial.Topology.Operation.Predicate
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override bool IsDone()
-        {
-            return _containsPoint;
-        }
+        #endregion
     }
 
     /// <summary>
@@ -238,10 +279,16 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     internal class LineIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
+        #region Fields
+
+        private readonly IPolygon _rectangle;
         private readonly IEnvelope _rectEnv;
         private readonly IList<Coordinate> _rectSeq;
-        private readonly IPolygon _rectangle;
         private bool _intersects;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -254,29 +301,9 @@ namespace DotSpatial.Topology.Operation.Predicate
             _rectEnv = rectangle.EnvelopeInternal;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public bool Intersects() { return _intersects; }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        protected override void Visit(IGeometry geom)
-        {
-            IEnvelope elementEnv = geom.EnvelopeInternal;
-            if (!_rectEnv.Intersects(elementEnv))
-                return;
-            // check if general relate algorithm should be used, since it's faster for large inputs
-            if (geom.NumPoints > RectangleIntersects.MAXIMUM_SCAN_SEGMENT_COUNT)
-            {
-                _intersects = _rectangle.Relate(geom).IsIntersects();
-                return;
-            }
-            ComputeSegmentIntersection(geom);
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -300,9 +327,35 @@ namespace DotSpatial.Topology.Operation.Predicate
         ///
         /// </summary>
         /// <returns></returns>
+        public bool Intersects() { return _intersects; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         protected override bool IsDone()
         {
             return _intersects;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geom"></param>
+        protected override void Visit(IGeometry geom)
+        {
+            IEnvelope elementEnv = geom.EnvelopeInternal;
+            if (!_rectEnv.Intersects(elementEnv))
+                return;
+            // check if general relate algorithm should be used, since it's faster for large inputs
+            if (geom.NumPoints > RectangleIntersects.MAXIMUM_SCAN_SEGMENT_COUNT)
+            {
+                _intersects = _rectangle.Relate(geom).IsIntersects();
+                return;
+            }
+            ComputeSegmentIntersection(geom);
+        }
+
+        #endregion
     }
 }

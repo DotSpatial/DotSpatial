@@ -34,6 +34,8 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public interface INoder
     {
+        #region Methods
+
         /// <summary>
         /// Computes the noding for a collection of <see cref="SegmentString" />s.
         /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
@@ -48,5 +50,7 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <returns></returns>
         IList GetNodedSubstrings();
+
+        #endregion
     }
 }

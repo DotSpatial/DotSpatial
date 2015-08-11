@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -31,6 +32,8 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class RelateNodeFactory : NodeFactory
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -40,5 +43,7 @@ namespace DotSpatial.Topology.Operation.Relate
         {
             return new RelateNode(coord, new EdgeEndBundleStar());
         }
+
+        #endregion
     }
 }

@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Precision
 {
     /// <summary>
@@ -34,8 +36,14 @@ namespace DotSpatial.Topology.Precision
     /// </summary>
     public class CommonBitsOp
     {
+        #region Fields
+
         private readonly bool _returnToOriginalPrecision = true;
         private CommonBitsRemover _cbr;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a new instance of class, which reshifts result <c>Geometry</c>s.
@@ -52,54 +60,9 @@ namespace DotSpatial.Topology.Precision
             _returnToOriginalPrecision = returnToOriginalPrecision;
         }
 
-        /// <summary>
-        /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
-        /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry.</param>
-        /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
-        public virtual IGeometry Intersection(IGeometry geom0, IGeometry geom1)
-        {
-            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Intersection(geom[1]));
-        }
+        #endregion
 
-        /// <summary>
-        /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
-        /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry.</param>
-        /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
-        public virtual IGeometry Union(IGeometry geom0, IGeometry geom1)
-        {
-            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Union(geom[1]));
-        }
-
-        /// <summary>
-        /// Computes the set-theoretic difference of two <c>Geometry</c>s, using enhanced precision.
-        /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry, to be subtracted from the first.</param>
-        /// <returns>The Geometry representing the set-theoretic difference of the input Geometries.</returns>
-        public virtual IGeometry Difference(IGeometry geom0, IGeometry geom1)
-        {
-            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Difference(geom[1]));
-        }
-
-        /// <summary
-        /// > Computes the set-theoretic symmetric difference of two geometries,
-        /// using enhanced precision.
-        /// </summary>
-        /// <param name="geom0">The first Geometry.</param>
-        /// <param name="geom1">The second Geometry.</param>
-        /// <returns>The Geometry representing the set-theoretic symmetric difference of the input Geometries.</returns>
-        public virtual IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
-        {
-            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].SymmetricDifference(geom[1]));
-        }
+        #region Methods
 
         /// <summary>
         /// Computes the buffer a point, using enhanced precision.
@@ -126,6 +89,30 @@ namespace DotSpatial.Topology.Precision
             if (_returnToOriginalPrecision)
                 _cbr.AddCommonBits(result);
             return result;
+        }
+
+        /// <summary>
+        /// Computes the set-theoretic difference of two <c>Geometry</c>s, using enhanced precision.
+        /// </summary>
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry, to be subtracted from the first.</param>
+        /// <returns>The Geometry representing the set-theoretic difference of the input Geometries.</returns>
+        public virtual IGeometry Difference(IGeometry geom0, IGeometry geom1)
+        {
+            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
+            return ComputeResultPrecision(geom[0].Difference(geom[1]));
+        }
+
+        /// <summary>
+        /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
+        /// </summary>
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry.</param>
+        /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
+        public virtual IGeometry Intersection(IGeometry geom0, IGeometry geom1)
+        {
+            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
+            return ComputeResultPrecision(geom[0].Intersection(geom[1]));
         }
 
         /// <summary>
@@ -162,5 +149,32 @@ namespace DotSpatial.Topology.Precision
             geom[1] = _cbr.RemoveCommonBits((Geometry)geom1.Clone());
             return geom;
         }
+
+        /// <summary
+        /// > Computes the set-theoretic symmetric difference of two geometries,
+        /// using enhanced precision.
+        /// </summary>
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry.</param>
+        /// <returns>The Geometry representing the set-theoretic symmetric difference of the input Geometries.</returns>
+        public virtual IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
+        {
+            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
+            return ComputeResultPrecision(geom[0].SymmetricDifference(geom[1]));
+        }
+
+        /// <summary>
+        /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
+        /// </summary>
+        /// <param name="geom0">The first Geometry.</param>
+        /// <param name="geom1">The second Geometry.</param>
+        /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
+        public virtual IGeometry Union(IGeometry geom0, IGeometry geom1)
+        {
+            IGeometry[] geom = RemoveCommonBits(geom0, geom1);
+            return ComputeResultPrecision(geom[0].Union(geom[1]));
+        }
+
+        #endregion
     }
 }

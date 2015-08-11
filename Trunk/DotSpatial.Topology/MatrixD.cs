@@ -31,7 +31,7 @@ namespace DotSpatial.Topology
     /// </summary>
     public class MatrixD : IMatrixD
     {
-        #region Private Variables
+        #region Fields
 
         private int _m;
         private int _n;
@@ -75,6 +75,56 @@ namespace DotSpatial.Topology
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the number of rows
+        /// </summary>
+        public int M
+        {
+            get { return _m; }
+        }
+
+        /// <summary>
+        /// Gets the number of columns
+        /// </summary>
+        public int N
+        {
+            get { return _n; }
+        }
+
+        /// <summary>
+        /// Gets the number of columns
+        /// </summary>
+        public int NumColumns
+        {
+            get { return _n; }
+        }
+
+        /// <summary>
+        /// Gets the number of rows
+        /// </summary>
+        public int NumRows
+        {
+            get { return _m; }
+        }
+
+        /// <summary>
+        /// Gets or sets the values for this matrix
+        /// </summary>
+        public double[,] Values
+        {
+            get { return _values; }
+            set
+            {
+                _values = value;
+                _m = _values.GetLength(0);
+                _n = _values.GetLength(1);
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -105,13 +155,6 @@ namespace DotSpatial.Topology
             return new MatrixD(vals);
         }
 
-        IMatrix IMatrix.Multiply(IMatrix inMatrix)
-        {
-            IMatrixD mat = inMatrix as IMatrixD;
-            if (mat == null) throw new ArgumentException("Invalid Matrix provided for inMatrix");
-            return Multiply(mat);
-        }
-
         /// <summary>
         /// Multiplies this matrix by the specified scalar value.
         /// </summary>
@@ -130,54 +173,11 @@ namespace DotSpatial.Topology
             return new MatrixD(vals);
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the number of rows
-        /// </summary>
-        public int M
+        IMatrix IMatrix.Multiply(IMatrix inMatrix)
         {
-            get { return _m; }
-        }
-
-        /// <summary>
-        /// Gets the number of columns
-        /// </summary>
-        public int N
-        {
-            get { return _n; }
-        }
-
-        /// <summary>
-        /// Gets the number of rows
-        /// </summary>
-        public int NumRows
-        {
-            get { return _m; }
-        }
-
-        /// <summary>
-        /// Gets the number of columns
-        /// </summary>
-        public int NumColumns
-        {
-            get { return _n; }
-        }
-
-        /// <summary>
-        /// Gets or sets the values for this matrix
-        /// </summary>
-        public double[,] Values
-        {
-            get { return _values; }
-            set
-            {
-                _values = value;
-                _m = _values.GetLength(0);
-                _n = _values.GetLength(1);
-            }
+            IMatrixD mat = inMatrix as IMatrixD;
+            if (mat == null) throw new ArgumentException("Invalid Matrix provided for inMatrix");
+            return Multiply(mat);
         }
 
         #endregion

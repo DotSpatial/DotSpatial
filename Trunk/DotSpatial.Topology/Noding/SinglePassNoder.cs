@@ -33,7 +33,13 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public abstract class SinglePassNoder : INoder
     {
+        #region Fields
+
         private ISegmentIntersector _segInt;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
@@ -48,6 +54,10 @@ namespace DotSpatial.Topology.Noding
         {
             _segInt = segInt;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets/sets the <see cref="ISegmentIntersector" /> to use with this noder.
@@ -68,7 +78,9 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        #region INoder Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Computes the noding for a collection of <see cref="SegmentString"/>s.

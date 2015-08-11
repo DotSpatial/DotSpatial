@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -31,7 +32,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class PolygonExtracter : IGeometryFilter
     {
+        #region Fields
+
         private readonly IList _comps;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
@@ -42,7 +49,9 @@ namespace DotSpatial.Topology.Utilities
             _comps = comps;
         }
 
-        #region IGeometryFilter Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -53,8 +62,6 @@ namespace DotSpatial.Topology.Utilities
             if (geom is Polygon)
                 _comps.Add(geom);
         }
-
-        #endregion
 
         /// <summary>
         /// Returns the Polygon components from a single point.
@@ -69,5 +76,7 @@ namespace DotSpatial.Topology.Utilities
             geom.Apply(new PolygonExtracter(comps));
             return comps;
         }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -33,40 +34,26 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public static class NonRobustCgAlgorithms
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="ring"></param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="q"></param>
         /// <returns></returns>
-        public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
+        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            int i;		    // point index; i1 = i-1 mod n
-            int crossings = 0;	// number of edge/ray crossings
-            int nPts = ring.Length;
+            double dx1 = p2.X - p1.X;
+            double dy1 = p2.Y - p1.Y;
+            double dx2 = q.X - p2.X;
+            double dy2 = q.Y - p2.Y;
+            double det = dx1 * dy2 - dx2 * dy1;
 
-            /* For each line edge l = (i-1, i), see if it crosses ray from test point in positive x direction. */
-            for (i = 1; i < nPts; i++)
-            {
-                int i1 = i - 1;		    // point index; i1 = i-1 mod n
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i1];
-                double x1 = p1.X - p.X;
-                double y1 = p1.Y - p.Y;
-                double x2 = p2.X - p.X;
-                double y2 = p2.Y - p.Y;
-
-                if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
-                {
-                    /* e straddles x axis, so compute intersection. */
-                    double xInt = (x1 * y2 - x2 * y1) / (y2 - y1);		    // x intersection of e with ray
-                    /* crosses ray if strictly positive intersection. */
-                    if (0.0 < xInt) crossings++;
-                }
-            }
-
-            /* p is inside if an odd number of crossings. */
-            return (crossings % 2) == 1;
+            if (det > 0.0) return 1;
+            if (det < 0.0) return -1;
+            return 0;
         }
 
         /// <summary>
@@ -149,21 +136,39 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q"></param>
+        /// <param name="p"></param>
+        /// <param name="ring"></param>
         /// <returns></returns>
-        public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
+        public static bool IsPointInRing(Coordinate p, Coordinate[] ring)
         {
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dx2 = q.X - p2.X;
-            double dy2 = q.Y - p2.Y;
-            double det = dx1 * dy2 - dx2 * dy1;
+            int i;		    // point index; i1 = i-1 mod n
+            int crossings = 0;	// number of edge/ray crossings
+            int nPts = ring.Length;
 
-            if (det > 0.0) return 1;
-            if (det < 0.0) return -1;
-            return 0;
+            /* For each line edge l = (i-1, i), see if it crosses ray from test point in positive x direction. */
+            for (i = 1; i < nPts; i++)
+            {
+                int i1 = i - 1;		    // point index; i1 = i-1 mod n
+                Coordinate p1 = ring[i];
+                Coordinate p2 = ring[i1];
+                double x1 = p1.X - p.X;
+                double y1 = p1.Y - p.Y;
+                double x2 = p2.X - p.X;
+                double y2 = p2.Y - p.Y;
+
+                if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
+                {
+                    /* e straddles x axis, so compute intersection. */
+                    double xInt = (x1 * y2 - x2 * y1) / (y2 - y1);		    // x intersection of e with ray
+                    /* crosses ray if strictly positive intersection. */
+                    if (0.0 < xInt) crossings++;
+                }
+            }
+
+            /* p is inside if an odd number of crossings. */
+            return (crossings % 2) == 1;
         }
+
+        #endregion
     }
 }

@@ -25,11 +25,14 @@ namespace DotSpatial.Topology.Voronoi
 {
     internal abstract class VEvent : IComparable
     {
-        public abstract double Y { get; }
+        #region Properties
 
+        public abstract double Y { get; }
         protected abstract double X { get; }
 
-        #region IComparable Members
+        #endregion
+
+        #region Methods
 
         public int CompareTo(object obj)
         {
@@ -44,12 +47,22 @@ namespace DotSpatial.Topology.Voronoi
 
     internal class VDataEvent : VEvent
     {
+        #region Fields
+
         public readonly Vector2 DataPoint;
+
+        #endregion
+
+        #region Constructors
 
         public VDataEvent(Vector2 dp)
         {
             DataPoint = dp;
         }
+
+        #endregion
+
+        #region Properties
 
         public override double Y
         {
@@ -66,15 +79,23 @@ namespace DotSpatial.Topology.Voronoi
                 return DataPoint.X;
             }
         }
+
+        #endregion
     }
 
     internal class VCircleEvent : VEvent
     {
+        #region Fields
+
         public Vector2 Center;
         public VDataNode NodeL;
         public VDataNode NodeN;
         public VDataNode NodeR;
         public bool Valid = true;
+
+        #endregion
+
+        #region Properties
 
         public override double Y
         {
@@ -91,5 +112,7 @@ namespace DotSpatial.Topology.Voronoi
                 return Center.X;
             }
         }
+
+        #endregion
     }
 }

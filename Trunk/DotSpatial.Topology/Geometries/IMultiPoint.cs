@@ -21,13 +21,15 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// A type specific MultiGeometry that specifically uses points
     /// </summary>
     public interface IMultiPoint : IGeometryCollection
     {
+        #region Indexers
+
         /// <summary>
         /// Gets or sets the point that resides at the specified index
         /// </summary>
@@ -38,5 +40,7 @@ namespace DotSpatial.Topology
             get;
             set;
         }
+
+        #endregion
     }
 }

@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Utilities
 {
     /// <summary>
@@ -30,7 +32,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor
     {
+        #region Fields
+
         private bool _isDone;
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -57,13 +65,15 @@ namespace DotSpatial.Topology.Utilities
         /// <summary>
         ///
         /// </summary>
-        /// <param name="element"></param>
-        protected abstract void Visit(IGeometry element);
+        /// <returns></returns>
+        protected abstract bool IsDone();
 
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
-        protected abstract bool IsDone();
+        /// <param name="element"></param>
+        protected abstract void Visit(IGeometry element);
+
+        #endregion
     }
 }

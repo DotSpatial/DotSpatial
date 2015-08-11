@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Precision
@@ -41,9 +42,15 @@ namespace DotSpatial.Topology.Precision
     /// </summary>
     public class SimpleGeometryPrecisionReducer
     {
+        #region Fields
+
         private readonly PrecisionModel _newPrecisionModel;
         private bool _changePrecisionModel;
         private bool _removeCollapsed = true;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -52,6 +59,28 @@ namespace DotSpatial.Topology.Precision
         public SimpleGeometryPrecisionReducer(PrecisionModel pm)
         {
             _newPrecisionModel = pm;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
+        /// will be changed to be the PrecisionModel supplied to
+        /// specify the reduction.
+        /// The default is to not change the precision model.
+        /// </summary>
+        public virtual bool ChangePrecisionModel
+        {
+            get
+            {
+                return _changePrecisionModel;
+            }
+            set
+            {
+                _changePrecisionModel = value;
+            }
         }
 
         /// <summary>
@@ -71,23 +100,9 @@ namespace DotSpatial.Topology.Precision
             }
         }
 
-        /// <summary>
-        /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
-        /// will be changed to be the PrecisionModel supplied to
-        /// specify the reduction.
-        /// The default is to not change the precision model.
-        /// </summary>
-        public virtual bool ChangePrecisionModel
-        {
-            get
-            {
-                return _changePrecisionModel;
-            }
-            set
-            {
-                _changePrecisionModel = value;
-            }
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -109,14 +124,22 @@ namespace DotSpatial.Topology.Precision
             return geomEdit.Edit(geom, new PrecisionReducerCoordinateOperation(this));
         }
 
-        #region Nested type: PrecisionReducerCoordinateOperation
+        #endregion
+
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         private class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
         {
+            #region Fields
+
             private readonly SimpleGeometryPrecisionReducer _container;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -126,6 +149,10 @@ namespace DotSpatial.Topology.Precision
             {
                 _container = container;
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -178,6 +205,8 @@ namespace DotSpatial.Topology.Precision
                 // ok to return shorter coordinate array
                 return noRepeatedCoords.ToList();
             }
+
+            #endregion
         }
 
         #endregion

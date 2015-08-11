@@ -33,13 +33,6 @@ namespace DotSpatial.Topology
         #region Methods
 
         /// <summary>
-        /// Specifies amount to rotate
-        /// </summary>
-        /// <param name="degrees"></param>
-        /// <returns></returns>
-        IMatrix4 RotateZ(double degrees);
-
-        /// <summary>
         /// Multiplies the current matrix by a rotation matrix corresponding
         /// to the specified angle to create rotation in the Z direction.
         /// </summary>
@@ -56,6 +49,13 @@ namespace DotSpatial.Topology
         IMatrix4 RotateY(double degrees);
 
         /// <summary>
+        /// Specifies amount to rotate
+        /// </summary>
+        /// <param name="degrees"></param>
+        /// <returns></returns>
+        IMatrix4 RotateZ(double degrees);
+
+        /// <summary>
         /// Translates the matrix by the specified amount in each of the directions
         /// by multiplying by a translation matrix created from the specified values.
         /// </summary>
@@ -64,10 +64,6 @@ namespace DotSpatial.Topology
         /// <param name="z">The translation in the Z coordinate</param>
         /// <returns></returns>
         IMatrix4 Translate(double x, double y, double z);
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

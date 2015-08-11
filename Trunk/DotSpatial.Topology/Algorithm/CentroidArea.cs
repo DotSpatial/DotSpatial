@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -38,9 +39,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class CentroidArea
     {
+        #region Fields
+
         private readonly Coordinate _cg3 = new Coordinate(0, 0, 0, 0);              // partial centroid sum
         private double _areasum2;                            // Partial area sum
         private Coordinate _basePt;                       // the point all triangles are based at
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -66,6 +73,10 @@ namespace DotSpatial.Topology.Algorithm
                 _basePt = value;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds the area defined by a Geometry to the centroid total.
@@ -116,9 +127,9 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="pts"></param>
-        private void AddShell(IList<Coordinate> pts)
+        private void AddHole(IList<Coordinate> pts)
         {
-            bool isPositiveArea = !CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = CgAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
         }
@@ -127,9 +138,9 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="pts"></param>
-        private void AddHole(IList<Coordinate> pts)
+        private void AddShell(IList<Coordinate> pts)
         {
-            bool isPositiveArea = CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = !CgAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
         }
@@ -153,6 +164,15 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
+        /// Returns twice the signed area of the triangle p1-p2-p3,
+        /// positive if a, b, c are oriented Ccw, and negative if cw.
+        /// </summary>
+        private static double Area2(Coordinate p1, Coordinate p2, Coordinate p3)
+        {
+            return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
+        }
+
+        /// <summary>
         /// Returns three times the centroid of the triangle p1-p2-p3.
         /// The factor of 3 is
         /// left in to permit division to be avoided until later.
@@ -165,13 +185,6 @@ namespace DotSpatial.Topology.Algorithm
             return;
         }
 
-        /// <summary>
-        /// Returns twice the signed area of the triangle p1-p2-p3,
-        /// positive if a, b, c are oriented Ccw, and negative if cw.
-        /// </summary>
-        private static double Area2(Coordinate p1, Coordinate p2, Coordinate p3)
-        {
-            return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
-        }
+        #endregion
     }
 }

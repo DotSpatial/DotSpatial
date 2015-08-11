@@ -33,7 +33,13 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class EdgeNodingValidator
     {
+        #region Fields
+
         private readonly NodingValidator _nv;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -42,6 +48,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         public EdgeNodingValidator(IEnumerable edges)
         {
             _nv = new NodingValidator(ToSegmentStrings(edges));
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual void CheckValid()
+        {
+            _nv.CheckValid();
         }
 
         /// <summary>
@@ -61,12 +79,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             return segStrings;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual void CheckValid()
-        {
-            _nv.CheckValid();
-        }
+        #endregion
     }
 }

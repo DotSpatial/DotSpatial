@@ -25,8 +25,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
-using DotSpatial.Topology.Index.Quadtree;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Valid
@@ -38,11 +38,17 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class QuadtreeNestedRingTester
     {
+        #region Fields
+
         private readonly GeometryGraph _graph;  // used to find non-node vertices
         private readonly IList _rings = new ArrayList();
         private readonly Envelope _totalEnv = new Envelope();
         private Coordinate _nestedPt;
         private Quadtree _quadtree;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -52,6 +58,10 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             _graph = graph;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -64,6 +74,10 @@ namespace DotSpatial.Topology.Operation.Valid
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -72,6 +86,21 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             _rings.Add(ring);
             _totalEnv.ExpandToInclude(ring.EnvelopeInternal);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void BuildQuadtree()
+        {
+            _quadtree = new Quadtree();
+
+            for (int i = 0; i < _rings.Count; i++)
+            {
+                LinearRing ring = (LinearRing)_rings[i];
+                IEnvelope env = ring.EnvelopeInternal;
+                _quadtree.Insert(env, ring);
+            }
         }
 
         /// <summary>
@@ -111,19 +140,6 @@ namespace DotSpatial.Topology.Operation.Valid
             return true;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildQuadtree()
-        {
-            _quadtree = new Quadtree();
-
-            for (int i = 0; i < _rings.Count; i++)
-            {
-                LinearRing ring = (LinearRing)_rings[i];
-                IEnvelope env = ring.EnvelopeInternal;
-                _quadtree.Insert(env, ring);
-            }
-        }
+        #endregion
     }
 }

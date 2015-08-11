@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Bintree;
 using DotSpatial.Topology.Index.Chain;
 
@@ -36,10 +37,16 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public sealed class McPointInRing : IPointInRing
     {
+        #region Fields
+
         private readonly Interval _interval = new Interval();
         private readonly ILinearRing _ring;
         private int _crossings;  // number of segment/ray crossings
         private Bintree _tree;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -51,7 +58,29 @@ namespace DotSpatial.Topology.Algorithm
             BuildIndex();
         }
 
-        #region IPointInRing Members
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void BuildIndex()
+        {
+            _tree = new Bintree();
+
+            IList<Coordinate> pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
+            IList mcList = MonotoneChainBuilder.GetChains(pts);
+
+            for (int i = 0; i < mcList.Count; i++)
+            {
+                MonotoneChain mc = (MonotoneChain)mcList[i];
+                Envelope mcEnv = mc.Envelope;
+                _interval.Min = mcEnv.Minimum.Y;
+                _interval.Max = mcEnv.Maximum.Y;
+                _tree.Insert(_interval, mc);
+            }
+        }
 
         /// <summary>
         ///
@@ -81,39 +110,6 @@ namespace DotSpatial.Topology.Algorithm
             if ((_crossings % 2) == 1)
                 return true;
             return false;
-        }
-
-        #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildIndex()
-        {
-            _tree = new Bintree();
-
-            IList<Coordinate> pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
-            IList mcList = MonotoneChainBuilder.GetChains(pts);
-
-            for (int i = 0; i < mcList.Count; i++)
-            {
-                MonotoneChain mc = (MonotoneChain)mcList[i];
-                Envelope mcEnv = mc.Envelope;
-                _interval.Min = mcEnv.Minimum.Y;
-                _interval.Max = mcEnv.Maximum.Y;
-                _tree.Insert(_interval, mc);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="rayEnv"></param>
-        /// <param name="mcSelecter"></param>
-        /// <param name="mc"></param>
-        private static void TestMonotoneChain(IEnvelope rayEnv, MonotoneChainSelectAction mcSelecter, MonotoneChain mc)
-        {
-            mc.Select(rayEnv, mcSelecter);
         }
 
         /// <summary>
@@ -148,15 +144,34 @@ namespace DotSpatial.Topology.Algorithm
             }
         }
 
-        #region Nested type: McSelecter
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rayEnv"></param>
+        /// <param name="mcSelecter"></param>
+        /// <param name="mc"></param>
+        private static void TestMonotoneChain(IEnvelope rayEnv, MonotoneChainSelectAction mcSelecter, MonotoneChain mc)
+        {
+            mc.Select(rayEnv, mcSelecter);
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         private class McSelecter : MonotoneChainSelectAction
         {
+            #region Fields
+
             private readonly McPointInRing _container;
             private readonly Coordinate _p = Coordinate.Empty;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -169,6 +184,10 @@ namespace DotSpatial.Topology.Algorithm
                 _p = p;
             }
 
+            #endregion
+
+            #region Methods
+
             /// <summary>
             ///
             /// </summary>
@@ -177,6 +196,8 @@ namespace DotSpatial.Topology.Algorithm
             {
                 _container.TestLineSegment(_p, ls);
             }
+
+            #endregion
         }
 
         #endregion

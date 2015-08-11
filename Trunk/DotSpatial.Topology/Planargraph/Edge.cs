@@ -33,6 +33,8 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class Edge : GraphComponent
     {
+        #region Constructors
+
         /// <summary>
         /// Constructs an Edge whose DirectedEdges are not yet set. Be sure to call
         /// <c>SetDirectedEdges(DirectedEdge, DirectedEdge)</c>.
@@ -51,10 +53,9 @@ namespace DotSpatial.Topology.Planargraph
             SetDirectedEdges(de0, de1);
         }
 
-        /// <summary>
-        /// The two DirectedEdges associated with this Edge.
-        /// </summary>
-        protected DirectedEdge[] DirEdge { get; set; }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
@@ -84,21 +85,13 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Initializes this Edge's two DirectedEdges, and for each DirectedEdge: sets the
-        /// Edge, sets the symmetric DirectedEdge, and adds this Edge to its from-Node.
+        /// The two DirectedEdges associated with this Edge.
         /// </summary>
-        /// <param name="de0"></param>
-        /// <param name="de1"></param>
-        public void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
-        {
-            DirEdge = new[] { de0, de1, };
-            de0.Edge = this;
-            de1.Edge = this;
-            de0.Sym = de1;
-            de1.Sym = de0;
-            de0.FromNode.AddOutEdge(de0);
-            de1.FromNode.AddOutEdge(de1);
-        }
+        protected DirectedEdge[] DirEdge { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Returns one of the DirectedEdges associated with this Edge.
@@ -152,67 +145,23 @@ namespace DotSpatial.Topology.Planargraph
             DirEdge = null;
         }
 
-        /*
-
         /// <summary>
-        ///
+        /// Initializes this Edge's two DirectedEdges, and for each DirectedEdge: sets the
+        /// Edge, sets the symmetric DirectedEdge, and adds this Edge to its from-Node.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
+        /// <param name="de0"></param>
+        /// <param name="de1"></param>
+        public void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
         {
-            if (obj == null)
-                return false;
-            if (!(obj is Edge))
-                return false;
-            if (!base.Equals(obj))
-                return false;
-
-            if (Object.ReferenceEquals(this, obj))
-                return true;
-
-            Edge other = obj as Edge;
-            for (int i = 0; i < dirEdge.Length; i++)
-                if (dirEdge[i] != other.dirEdge[i])
-                    return false;
-            return true;
+            DirEdge = new[] { de0, de1, };
+            de0.Edge = this;
+            de1.Edge = this;
+            de0.Sym = de1;
+            de1.Sym = de0;
+            de0.FromNode.AddOutEdge(de0);
+            de1.FromNode.AddOutEdge(de1);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            int result = 29 * base.GetHashCode();
-            result += 14 + 29 * dirEdge.Length.GetHashCode();
-            for (int i = 0; i < dirEdge.Length; i++)
-                result += 14 + 29 * dirEdge.GetHashCode();
-            return result;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator ==(Edge o1, Edge o2)
-        {
-            return Object.Equals(o1, o2);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator !=(Edge o1, Edge o2)
-        {
-            return !(o1 == o2);
-        }
-
-        */
+        #endregion
     }
 }

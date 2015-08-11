@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Operation.Polygonize
 {
     /// <summary>
@@ -29,7 +31,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class LineStringAdder : IGeometryComponentFilter
     {
-        #region Private Variables
+        #region Fields
 
         private readonly Polygonizer _container;
 

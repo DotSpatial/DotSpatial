@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.Chain
 {
@@ -199,37 +200,6 @@ namespace DotSpatial.Topology.Index.Chain
         }
 
         /// <summary>
-        /// Gets the line segment starting at <paramref name="index"/>
-        /// </summary>
-        /// <param name="index">The index of the segment</param>
-        /// <param name="ls">The line segment to extract to</param>
-        public void GetLineSegment(int index, ref LineSegment ls)
-        {
-            ls.P0 = _pts[index];
-            ls.P1 = _pts[index + 1];
-        }
-
-        /// <summary> 
-        /// Determine all the line segments in the chain whose envelopes overlap
-        /// the searchEnvelope, and process them.
-        /// </summary>
-        /// <remarks>
-        /// The monotone chain search algorithm attempts to optimize 
-        /// performance by not calling the select action on chain segments
-        /// which it can determine are not in the search envelope.
-        /// However, it *may* call the select action on segments
-        /// which do not intersect the search envelope.
-        /// This saves on the overhead of checking envelope intersection
-        /// each time, since clients may be able to do this more efficiently.
-        /// </remarks>
-        /// <param name="searchEnv">The search envelope</param>
-        /// <param name="mcs">The select action to execute on selected segments</param>
-        public void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
-        {
-            ComputeSelect(searchEnv, _start, _end, mcs);
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="start0"></param>
@@ -311,6 +281,37 @@ namespace DotSpatial.Topology.Index.Chain
                 ComputeSelect(searchEnv, start0, mid, mcs);
             if (mid < end0)
                 ComputeSelect(searchEnv, mid, end0, mcs);
+        }
+
+        /// <summary>
+        /// Gets the line segment starting at <paramref name="index"/>
+        /// </summary>
+        /// <param name="index">The index of the segment</param>
+        /// <param name="ls">The line segment to extract to</param>
+        public void GetLineSegment(int index, ref LineSegment ls)
+        {
+            ls.P0 = _pts[index];
+            ls.P1 = _pts[index + 1];
+        }
+
+        /// <summary> 
+        /// Determine all the line segments in the chain whose envelopes overlap
+        /// the searchEnvelope, and process them.
+        /// </summary>
+        /// <remarks>
+        /// The monotone chain search algorithm attempts to optimize 
+        /// performance by not calling the select action on chain segments
+        /// which it can determine are not in the search envelope.
+        /// However, it *may* call the select action on segments
+        /// which do not intersect the search envelope.
+        /// This saves on the overhead of checking envelope intersection
+        /// each time, since clients may be able to do this more efficiently.
+        /// </remarks>
+        /// <param name="searchEnv">The search envelope</param>
+        /// <param name="mcs">The select action to execute on selected segments</param>
+        public void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
+        {
+            ComputeSelect(searchEnv, _start, _end, mcs);
         }
 
         #endregion

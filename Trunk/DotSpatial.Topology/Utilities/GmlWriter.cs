@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -36,8 +37,14 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class GmlWriter
     {
-        private const int INIT_VALUE = 100;
+        #region Constant Fields
+
         private const int COORD_SIZE = 100;
+        private const int INIT_VALUE = 100;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -48,6 +55,144 @@ namespace DotSpatial.Topology.Utilities
             {
                 return Global.GetNfi();
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Sets corrent length for Byte Stream.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected virtual byte[] GetBytes(IGeometry geometry)
+        {
+            if (geometry is IPoint)
+                return new byte[SetByteStreamLength(geometry as Point)];
+            if (geometry is ILineString)
+                return new byte[SetByteStreamLength(geometry as LineString)];
+            if (geometry is IPolygon)
+                return new byte[SetByteStreamLength(geometry as Polygon)];
+            if (geometry is IMultiPoint)
+                return new byte[SetByteStreamLength(geometry as MultiPoint)];
+            if (geometry is IMultiLineString)
+                return new byte[SetByteStreamLength(geometry as MultiLineString)];
+            if (geometry is IMultiPolygon)
+                return new byte[SetByteStreamLength(geometry as MultiPolygon)];
+            if (geometry is IGeometryCollection)
+                return new byte[SetByteStreamLength(geometry as GeometryCollection)];
+            throw new ArgumentException("ShouldNeverReachHere");
+        }
+
+        /// <summary>
+        /// Sets corrent length for Byte Stream.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(Geometry geometry)
+        {
+            if (geometry is Point)
+                return SetByteStreamLength(geometry as Point);
+            if (geometry is LineString)
+                return SetByteStreamLength(geometry as LineString);
+            if (geometry is Polygon)
+                return SetByteStreamLength(geometry as Polygon);
+            if (geometry is MultiPoint)
+                return SetByteStreamLength(geometry as MultiPoint);
+            if (geometry is MultiLineString)
+                return SetByteStreamLength(geometry as MultiLineString);
+            if (geometry is MultiPolygon)
+                return SetByteStreamLength(geometry as MultiPolygon);
+            if (geometry is GeometryCollection)
+                return SetByteStreamLength(geometry as GeometryCollection);
+            throw new ArgumentException("ShouldNeverReachHere");
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geometryCollection"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(GeometryCollection geometryCollection)
+        {
+            int count = INIT_VALUE;
+            foreach (Geometry g in geometryCollection.Geometries)
+                count += SetByteStreamLength(g);
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiPolygon"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(MultiPolygon multiPolygon)
+        {
+            int count = INIT_VALUE;
+            foreach (Polygon p in multiPolygon.Geometries)
+                count += SetByteStreamLength(p);
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiLineString"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(MultiLineString multiLineString)
+        {
+            int count = INIT_VALUE;
+            foreach (LineString ls in multiLineString.Geometries)
+                count += SetByteStreamLength(ls);
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="multiPoint"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(MultiPoint multiPoint)
+        {
+            int count = INIT_VALUE;
+            foreach (Point p in multiPoint.Geometries)
+                count += SetByteStreamLength(p);
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(Polygon polygon)
+        {
+            int count = INIT_VALUE;
+            count += polygon.NumPoints * COORD_SIZE;
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lineString"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(LineString lineString)
+        {
+            int count = INIT_VALUE;
+            count += lineString.NumPoints * COORD_SIZE;
+            return count;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        protected virtual int SetByteStreamLength(Point point)
+        {
+            return INIT_VALUE + COORD_SIZE;
         }
 
         /// <summary>
@@ -255,138 +400,6 @@ namespace DotSpatial.Topology.Utilities
             writer.WriteEndElement();
         }
 
-        /// <summary>
-        /// Sets corrent length for Byte Stream.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected virtual byte[] GetBytes(IGeometry geometry)
-        {
-            if (geometry is IPoint)
-                return new byte[SetByteStreamLength(geometry as Point)];
-            if (geometry is ILineString)
-                return new byte[SetByteStreamLength(geometry as LineString)];
-            if (geometry is IPolygon)
-                return new byte[SetByteStreamLength(geometry as Polygon)];
-            if (geometry is IMultiPoint)
-                return new byte[SetByteStreamLength(geometry as MultiPoint)];
-            if (geometry is IMultiLineString)
-                return new byte[SetByteStreamLength(geometry as MultiLineString)];
-            if (geometry is IMultiPolygon)
-                return new byte[SetByteStreamLength(geometry as MultiPolygon)];
-            if (geometry is IGeometryCollection)
-                return new byte[SetByteStreamLength(geometry as GeometryCollection)];
-            throw new ArgumentException("ShouldNeverReachHere");
-        }
-
-        /// <summary>
-        /// Sets corrent length for Byte Stream.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(Geometry geometry)
-        {
-            if (geometry is Point)
-                return SetByteStreamLength(geometry as Point);
-            if (geometry is LineString)
-                return SetByteStreamLength(geometry as LineString);
-            if (geometry is Polygon)
-                return SetByteStreamLength(geometry as Polygon);
-            if (geometry is MultiPoint)
-                return SetByteStreamLength(geometry as MultiPoint);
-            if (geometry is MultiLineString)
-                return SetByteStreamLength(geometry as MultiLineString);
-            if (geometry is MultiPolygon)
-                return SetByteStreamLength(geometry as MultiPolygon);
-            if (geometry is GeometryCollection)
-                return SetByteStreamLength(geometry as GeometryCollection);
-            throw new ArgumentException("ShouldNeverReachHere");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geometryCollection"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(GeometryCollection geometryCollection)
-        {
-            int count = INIT_VALUE;
-            foreach (Geometry g in geometryCollection.Geometries)
-                count += SetByteStreamLength(g);
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiPolygon"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(MultiPolygon multiPolygon)
-        {
-            int count = INIT_VALUE;
-            foreach (Polygon p in multiPolygon.Geometries)
-                count += SetByteStreamLength(p);
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiLineString"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(MultiLineString multiLineString)
-        {
-            int count = INIT_VALUE;
-            foreach (LineString ls in multiLineString.Geometries)
-                count += SetByteStreamLength(ls);
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="multiPoint"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(MultiPoint multiPoint)
-        {
-            int count = INIT_VALUE;
-            foreach (Point p in multiPoint.Geometries)
-                count += SetByteStreamLength(p);
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="polygon"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(Polygon polygon)
-        {
-            int count = INIT_VALUE;
-            count += polygon.NumPoints * COORD_SIZE;
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lineString"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(LineString lineString)
-        {
-            int count = INIT_VALUE;
-            count += lineString.NumPoints * COORD_SIZE;
-            return count;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
-        protected virtual int SetByteStreamLength(Point point)
-        {
-            return INIT_VALUE + COORD_SIZE;
-        }
+        #endregion
     }
 }

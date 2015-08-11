@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -35,7 +36,13 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class EdgeEndBundle : EdgeEnd
     {
+        #region Fields
+
         private readonly IList _edgeEnds = new ArrayList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -46,6 +53,10 @@ namespace DotSpatial.Topology.Operation.Relate
         {
             Insert(e);
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -58,25 +69,9 @@ namespace DotSpatial.Topology.Operation.Relate
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _edgeEnds.GetEnumerator();
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        public void Insert(EdgeEnd e)
-        {
-            // Assert: start point is the same
-            // Assert: direction is the same
-            _edgeEnds.Add(e);
-        }
+        #region Methods
 
         /// <summary>
         /// This computes the overall edge label for the set of
@@ -157,16 +152,6 @@ namespace DotSpatial.Topology.Operation.Relate
         }
 
         /// <summary>
-        /// Compute the labelling for each side
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        private void ComputeLabelSides(int geomIndex)
-        {
-            ComputeLabelSide(geomIndex, PositionType.Left);
-            ComputeLabelSide(geomIndex, PositionType.Right);
-        }
-
-        /// <summary>
         /// To compute the summary label for a side, the algorithm is:
         /// FOR all edges
         /// IF any edge's location is Interior for the side, side location = Interior
@@ -199,6 +184,36 @@ namespace DotSpatial.Topology.Operation.Relate
         }
 
         /// <summary>
+        /// Compute the labelling for each side
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        private void ComputeLabelSides(int geomIndex)
+        {
+            ComputeLabelSide(geomIndex, PositionType.Left);
+            ComputeLabelSide(geomIndex, PositionType.Right);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator GetEnumerator()
+        {
+            return _edgeEnds.GetEnumerator();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="e"></param>
+        public void Insert(EdgeEnd e)
+        {
+            // Assert: start point is the same
+            // Assert: direction is the same
+            _edgeEnds.Add(e);
+        }
+
+        /// <summary>
         /// Update the IM with the contribution for the computed label for the EdgeStubs.
         /// </summary>
         /// <param name="im"></param>
@@ -221,5 +236,7 @@ namespace DotSpatial.Topology.Operation.Relate
                 outstream.WriteLine();
             }
         }
+
+        #endregion
     }
 }

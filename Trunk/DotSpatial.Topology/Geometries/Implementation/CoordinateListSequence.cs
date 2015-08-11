@@ -25,14 +25,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries.Implementation
 {
     /// <summary>
     /// An ICoordinateSequence based on a list instead of an array.
     /// </summary>
     public class CoordinateListSequence : ICoordinateSequence
     {
-        #region Variables
+        #region Fields
 
         private List<Coordinate> _internalList;
         private int _versionID;
@@ -94,11 +94,64 @@ namespace DotSpatial.Topology
             Configure(list);
         }
 
-        // Do configuration here
-        private void Configure(List<Coordinate> inCoords)
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets an integer representing the number of ICoordinates currently stored in this list
+        /// </summary>
+        public int Count
         {
-            _internalList = inCoords;
-            _versionID = 0;
+            get { return _internalList.Count; }
+        }
+
+        /// <summary>
+        /// This always returns 0
+        /// </summary>
+        public int Dimension
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// The CoordinateListSequence is not readonly
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// This only works as long as an enumeration is not used on the CoordinateListSequence.
+        /// Since ICoordinateSequence does not support a GetEnumerator object, as long as you
+        /// are using an ICoordinateSequence interface, VersionID should work.
+        /// </summary>
+        public int VersionID
+        {
+            get { return _versionID; }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Direct accessor to an ICoordinate
+        /// </summary>
+        /// <param name="index">An integer index in this array sequence</param>
+        /// <returns>An ICoordinate for the specified index</returns>
+        public virtual Coordinate this[int index]
+        {
+            get
+            {
+                return _internalList[index];
+            }
+            set
+            {
+                _internalList[index] = value;
+                IncrementVersion();
+            }
         }
 
         #endregion
@@ -131,6 +184,13 @@ namespace DotSpatial.Topology
         public object Clone()
         {
             return new CoordinateListSequence(_internalList);
+        }
+
+        // Do configuration here
+        private void Configure(List<Coordinate> inCoords)
+        {
+            _internalList = inCoords;
+            _versionID = 0;
         }
 
         /// <summary>
@@ -198,6 +258,24 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
+        /// Increments the version with the understanding that we are using integers.  If the user
+        /// uses too many version, it will cycle around.  The statistical odds of accidentally
+        /// reaching the same value as a previous version should be small enough to prevent
+        /// conflicts.
+        /// </summary>
+        private void IncrementVersion()
+        {
+            if (_versionID == int.MaxValue)
+            {
+                _versionID = int.MinValue;
+            }
+            else
+            {
+                _versionID++;
+            }
+        }
+
+        /// <summary>
         /// Removes the specified ICoordinate from the list.
         /// </summary>
         /// <param name="item">An ICoordinate that should be removed from the list</param>
@@ -236,79 +314,5 @@ namespace DotSpatial.Topology
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets an integer representing the number of ICoordinates currently stored in this list
-        /// </summary>
-        public int Count
-        {
-            get { return _internalList.Count; }
-        }
-
-        /// <summary>
-        /// This always returns 0
-        /// </summary>
-        public int Dimension
-        {
-            get { return 0; }
-        }
-
-        /// <summary>
-        /// The CoordinateListSequence is not readonly
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Direct accessor to an ICoordinate
-        /// </summary>
-        /// <param name="index">An integer index in this array sequence</param>
-        /// <returns>An ICoordinate for the specified index</returns>
-        public virtual Coordinate this[int index]
-        {
-            get
-            {
-                return _internalList[index];
-            }
-            set
-            {
-                _internalList[index] = value;
-                IncrementVersion();
-            }
-        }
-
-        /// <summary>
-        /// This only works as long as an enumeration is not used on the CoordinateListSequence.
-        /// Since ICoordinateSequence does not support a GetEnumerator object, as long as you
-        /// are using an ICoordinateSequence interface, VersionID should work.
-        /// </summary>
-        public int VersionID
-        {
-            get { return _versionID; }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Increments the version with the understanding that we are using integers.  If the user
-        /// uses too many version, it will cycle around.  The statistical odds of accidentally
-        /// reaching the same value as a previous version should be small enough to prevent
-        /// conflicts.
-        /// </summary>
-        private void IncrementVersion()
-        {
-            if (_versionID == int.MaxValue)
-            {
-                _versionID = int.MinValue;
-            }
-            else
-            {
-                _versionID++;
-            }
-        }
     }
 }

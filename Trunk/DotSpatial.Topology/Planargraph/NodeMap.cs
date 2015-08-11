@@ -22,6 +22,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -30,7 +31,13 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class NodeMap
     {
+        #region Fields
+
         private readonly IDictionary _nodeMap = new SortedList();
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Returns the Nodes in this NodeMap, sorted in ascending order
@@ -44,6 +51,10 @@ namespace DotSpatial.Topology.Planargraph
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Adds a node to the map, replacing any that is already at that location.
         /// </summary>
@@ -55,18 +66,6 @@ namespace DotSpatial.Topology.Planargraph
             bool contains = _nodeMap.Contains(key);
             if (!contains) _nodeMap.Add(key, n);
             return n;
-        }
-
-        /// <summary>
-        /// Removes the Node at the given location, and returns it (or null if no Node was there).
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public virtual Node Remove(Coordinate pt)
-        {
-            Node node = (Node)_nodeMap[pt];
-            _nodeMap.Remove(pt);
-            return node;
         }
 
         /// <summary>
@@ -87,5 +86,19 @@ namespace DotSpatial.Topology.Planargraph
         {
             return _nodeMap.Values.GetEnumerator();
         }
+
+        /// <summary>
+        /// Removes the Node at the given location, and returns it (or null if no Node was there).
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        public virtual Node Remove(Coordinate pt)
+        {
+            Node node = (Node)_nodeMap[pt];
+            _nodeMap.Remove(pt);
+            return node;
+        }
+
+        #endregion
     }
 }

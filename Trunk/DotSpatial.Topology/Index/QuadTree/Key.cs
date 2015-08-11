@@ -23,8 +23,9 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// A Key is a unique identifier for a node in a quadtree.
@@ -33,12 +34,6 @@ namespace DotSpatial.Topology.Index.Quadtree
     /// </summary>
     public class Key
     {
-        #region Fields
-
-        // auxiliary data which is derived from the key for use in computation
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -106,6 +101,19 @@ namespace DotSpatial.Topology.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
+        /// <param name="level"></param>
+        /// <param name="itemEnv"></param>
+        private void ComputeKey(int level, Envelope itemEnv)
+        {
+            double quadSize = DoubleBits.PowerOf2(level);
+            Point.X = Math.Floor(itemEnv.Minimum.X / quadSize) * quadSize;
+            Point.Y = Math.Floor(itemEnv.Minimum.Y / quadSize) * quadSize;
+            Envelope = new Envelope(Point.X, Point.X + quadSize, Point.Y, Point.Y + quadSize);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
         public static int ComputeQuadLevel(Envelope env)
@@ -115,19 +123,6 @@ namespace DotSpatial.Topology.Index.Quadtree
             double dMax = dx > dy ? dx : dy;
             int level = DoubleBits.GetExponent(dMax) + 1;
             return level;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="itemEnv"></param>
-        private void ComputeKey(int level, Envelope itemEnv)
-        {
-            double quadSize = DoubleBits.PowerOf2(level);
-            Point.X = Math.Floor(itemEnv.Minimum.X / quadSize) * quadSize;
-            Point.Y = Math.Floor(itemEnv.Minimum.Y / quadSize) * quadSize;
-            Envelope = new Envelope(Point.X, Point.X + quadSize, Point.Y, Point.Y + quadSize);
         }
 
         #endregion

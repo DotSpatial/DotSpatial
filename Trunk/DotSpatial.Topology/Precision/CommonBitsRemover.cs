@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Precision
 {
     /// <summary>
@@ -29,8 +31,14 @@ namespace DotSpatial.Topology.Precision
     /// </summary>
     public class CommonBitsRemover
     {
+        #region Fields
+
         private readonly CommonCoordinateFilter _ccFilter = new CommonCoordinateFilter();
         private Coordinate _commonCoord;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
@@ -43,6 +51,10 @@ namespace DotSpatial.Topology.Precision
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Add a point to the set of geometries whose common bits are
         /// being computed.  After this method has executed the
@@ -54,6 +66,18 @@ namespace DotSpatial.Topology.Precision
         {
             geom.Apply(_ccFilter);
             _commonCoord = _ccFilter.CommonCoordinate;
+        }
+
+        /// <summary>
+        /// Adds the common coordinate bits back into a Geometry.
+        /// The coordinates of the Geometry are changed.
+        /// </summary>
+        /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
+        public virtual void AddCommonBits(IGeometry geom)
+        {
+            Translater trans = new Translater(_commonCoord);
+            geom.Apply(trans);
+            geom.GeometryChanged();
         }
 
         /// <summary>
@@ -75,27 +99,23 @@ namespace DotSpatial.Topology.Precision
             return geom;
         }
 
-        /// <summary>
-        /// Adds the common coordinate bits back into a Geometry.
-        /// The coordinates of the Geometry are changed.
-        /// </summary>
-        /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
-        public virtual void AddCommonBits(IGeometry geom)
-        {
-            Translater trans = new Translater(_commonCoord);
-            geom.Apply(trans);
-            geom.GeometryChanged();
-        }
+        #endregion
 
-        #region Nested type: CommonCoordinateFilter
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         public class CommonCoordinateFilter : ICoordinateFilter
         {
+            #region Fields
+
             private readonly CommonBits _commonBitsX = new CommonBits();
             private readonly CommonBits _commonBitsY = new CommonBits();
+
+            #endregion
+
+            #region Properties
 
             /// <summary>
             ///
@@ -108,7 +128,9 @@ namespace DotSpatial.Topology.Precision
                 }
             }
 
-            #region ICoordinateFilter Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -123,16 +145,18 @@ namespace DotSpatial.Topology.Precision
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: Translater
-
         /// <summary>
         ///
         /// </summary>
         private class Translater : ICoordinateFilter
         {
+            #region Fields
+
             private readonly Coordinate _trans;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -143,7 +167,9 @@ namespace DotSpatial.Topology.Precision
                 _trans = trans;
             }
 
-            #region ICoordinateFilter Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///

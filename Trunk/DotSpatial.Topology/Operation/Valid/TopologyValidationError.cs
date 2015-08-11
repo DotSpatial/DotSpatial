@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class TopologyValidationError
     {
+        #region Fields
+
         // Notice: modified for "safe" assembly in Sql 2005
         // Added readonly!
 
@@ -56,6 +59,10 @@ namespace DotSpatial.Topology.Operation.Valid
         private readonly TopologyValidationErrorType _errorType;
         private readonly Coordinate _pt;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -73,6 +80,10 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <param name="errorType"></param>
         public TopologyValidationError(TopologyValidationErrorType errorType) : this(errorType, null) { }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -107,6 +118,10 @@ namespace DotSpatial.Topology.Operation.Valid
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -115,6 +130,8 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             return Message + " at or near point " + _pt;
         }
+
+        #endregion
     }
 
     /// <summary>

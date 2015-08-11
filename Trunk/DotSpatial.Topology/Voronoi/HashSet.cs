@@ -34,27 +34,13 @@ namespace DotSpatial.Topology.Voronoi
     /// </summary>
     public class HashSet<T> : ICollection<T>
     {
+        #region Fields
+
         readonly Dictionary<T, T> _h = new Dictionary<T, T>();
 
-        #region ICollection<T> Members
+        #endregion
 
-        ///<summary>
-        /// Adds the specified object to the hash set collection
-        ///</summary>
-        ///<param name="item">The object to add</param>
-        public void Add(T item)
-        {
-            _h.Add(item, item);
-        }
-
-        /// <summary>
-        /// Gets the enumerator of the items in the set
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _h.Keys.GetEnumerator();
-        }
+        #region Properties
 
         /// <summary>
         /// Gets the integer count of members in this set
@@ -68,13 +54,24 @@ namespace DotSpatial.Topology.Voronoi
         }
 
         /// <summary>
-        /// Copies the members of this hash set to the specified array, starting at the specified index
+        /// These sets can be modified
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="index"></param>
-        public void CopyTo(T[] array, int index)
+        public bool IsReadOnly
         {
-            _h.Keys.CopyTo(array, index);
+            get { return false; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        ///<summary>
+        /// Adds the specified object to the hash set collection
+        ///</summary>
+        ///<param name="item">The object to add</param>
+        public void Add(T item)
+        {
+            _h.Add(item, item);
         }
 
         /// <summary>
@@ -96,11 +93,27 @@ namespace DotSpatial.Topology.Voronoi
         }
 
         /// <summary>
-        /// These sets can be modified
+        /// Copies the members of this hash set to the specified array, starting at the specified index
         /// </summary>
-        public bool IsReadOnly
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        public void CopyTo(T[] array, int index)
         {
-            get { return false; }
+            _h.Keys.CopyTo(array, index);
+        }
+
+        /// <summary>
+        /// Gets the enumerator of the items in the set
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _h.Keys.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _h.Keys.GetEnumerator();
         }
 
         /// <summary>
@@ -111,11 +124,6 @@ namespace DotSpatial.Topology.Voronoi
         public bool Remove(T item)
         {
             return _h.Remove(item);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _h.Keys.GetEnumerator();
         }
 
         #endregion

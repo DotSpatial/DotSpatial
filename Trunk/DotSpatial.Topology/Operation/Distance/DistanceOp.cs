@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Distance
@@ -44,20 +45,17 @@ namespace DotSpatial.Topology.Operation.Distance
     /// </summary>
     public class DistanceOp
     {
+        #region Fields
+
         private readonly IGeometry[] _geom;
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly double _terminateDistance;
         private double _minDistance = Double.MaxValue;
         private GeometryLocation[] _minDistanceLocation;
 
-        /// <summary>
-        /// Constructs a <see cref="DistanceOp" />  that computes the distance and closest points between
-        /// the two specified geometries.
-        /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
-        private DistanceOp(IGeometry g0, IGeometry g1)
-            : this(g0, g1, 0) { }
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a <see cref="DistanceOp" /> that computes the distance and closest points between
@@ -75,28 +73,27 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        /// Compute the distance between the closest points of two geometries.
-        /// </summary>
-        /// <param name="g0">A <c>Geometry</c>.</param>
-        /// <param name="g1">Another <c>Geometry</c>.</param>
-        /// <returns>The distance between the geometries.</returns>
-        public static double Distance(IGeometry g0, IGeometry g1)
-        {
-            DistanceOp distOp = new DistanceOp(g0, g1);
-            return distOp.Distance();
-        }
-
-        /// <summary>
-        /// Test whether two geometries lie within a given distance of each other.
+        /// Constructs a <see cref="DistanceOp" />  that computes the distance and closest points between
+        /// the two specified geometries.
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
-        public static bool IsWithinDistance(IGeometry g0, IGeometry g1, double distance)
+        private DistanceOp(IGeometry g0, IGeometry g1)
+            : this(g0, g1, 0) { }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Report the locations of the closest points in the input geometries.
+        /// The locations are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of {GeometryLocation}s for the closest points.</returns>
+        public virtual GeometryLocation[] ClosestLocations()
         {
-            DistanceOp distOp = new DistanceOp(g0, g1, distance);
-            return distOp.Distance() <= distance;
+            ComputeMinDistance();
+            return _minDistanceLocation;
         }
 
         /// <summary>
@@ -113,16 +110,6 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        /// Report the distance between the closest points on the input geometries.
-        /// </summary>
-        /// <returns>The distance between the geometries.</returns>
-        public virtual double Distance()
-        {
-            ComputeMinDistance();
-            return _minDistance;
-        }
-
-        /// <summary>
         /// Report the coordinates of the closest points in the input geometries.
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
@@ -133,53 +120,6 @@ namespace DotSpatial.Topology.Operation.Distance
             Coordinate[] closestPts = new[] { _minDistanceLocation[0].Coordinate,
                                                          _minDistanceLocation[1].Coordinate };
             return closestPts;
-        }
-
-        /// <summary>
-        /// Report the locations of the closest points in the input geometries.
-        /// The locations are presented in the same order as the input Geometries.
-        /// </summary>
-        /// <returns>A pair of {GeometryLocation}s for the closest points.</returns>
-        public virtual GeometryLocation[] ClosestLocations()
-        {
-            ComputeMinDistance();
-            return _minDistanceLocation;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="locGeom"></param>
-        /// <param name="flip"></param>
-        private void UpdateMinDistance(GeometryLocation[] locGeom, bool flip)
-        {
-            // if not set then don't update
-            if (locGeom[0] == null)
-                return;
-            if (flip)
-            {
-                _minDistanceLocation[0] = locGeom[1];
-                _minDistanceLocation[1] = locGeom[0];
-            }
-            else
-            {
-                _minDistanceLocation[0] = locGeom[0];
-                _minDistanceLocation[1] = locGeom[1];
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void ComputeMinDistance()
-        {
-            if (_minDistanceLocation != null)
-                return;
-            _minDistanceLocation = new GeometryLocation[2];
-            ComputeContainmentDistance();
-            if (_minDistance <= _terminateDistance)
-                return;
-            ComputeLineDistance();
         }
 
         /// <summary>
@@ -298,68 +238,15 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <summary>
         ///
         /// </summary>
-        /// <param name="lines0"></param>
-        /// <param name="lines1"></param>
-        /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLines(IList lines0, IList lines1, GeometryLocation[] locGeom)
+        private void ComputeMinDistance()
         {
-            for (int i = 0; i < lines0.Count; i++)
-            {
-                LineString line0 = (LineString)lines0[i];
-                for (int j = 0; j < lines1.Count; j++)
-                {
-                    LineString line1 = (LineString)lines1[j];
-                    ComputeMinDistance(line0, line1, locGeom);
-                    if (_minDistance <= _terminateDistance) return;
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="points0"></param>
-        /// <param name="points1"></param>
-        /// <param name="locGeom"></param>
-        private void ComputeMinDistancePoints(IList points0, IList points1, GeometryLocation[] locGeom)
-        {
-            for (int i = 0; i < points0.Count; i++)
-            {
-                Point pt0 = (Point)points0[i];
-                for (int j = 0; j < points1.Count; j++)
-                {
-                    Point pt1 = (Point)points1[j];
-                    double dist = pt0.Coordinate.Distance(pt1.Coordinate);
-                    if (dist < _minDistance)
-                    {
-                        _minDistance = dist;
-                        // this is wrong - need to determine closest points on both segments!!!
-                        locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
-                        locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
-                    }
-                    if (_minDistance <= _terminateDistance) return;
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lines"></param>
-        /// <param name="points"></param>
-        /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLinesPoints(IList lines, IList points, GeometryLocation[] locGeom)
-        {
-            for (int i = 0; i < lines.Count; i++)
-            {
-                LineString line = (LineString)lines[i];
-                for (int j = 0; j < points.Count; j++)
-                {
-                    Point pt = (Point)points[j];
-                    ComputeMinDistance(line, pt, locGeom);
-                    if (_minDistance <= _terminateDistance) return;
-                }
-            }
+            if (_minDistanceLocation != null)
+                return;
+            _minDistanceLocation = new GeometryLocation[2];
+            ComputeContainmentDistance();
+            if (_minDistance <= _terminateDistance)
+                return;
+            ComputeLineDistance();
         }
 
         /// <summary>
@@ -421,5 +308,131 @@ namespace DotSpatial.Topology.Operation.Distance
                 if (_minDistance <= _terminateDistance) return;
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lines0"></param>
+        /// <param name="lines1"></param>
+        /// <param name="locGeom"></param>
+        private void ComputeMinDistanceLines(IList lines0, IList lines1, GeometryLocation[] locGeom)
+        {
+            for (int i = 0; i < lines0.Count; i++)
+            {
+                LineString line0 = (LineString)lines0[i];
+                for (int j = 0; j < lines1.Count; j++)
+                {
+                    LineString line1 = (LineString)lines1[j];
+                    ComputeMinDistance(line0, line1, locGeom);
+                    if (_minDistance <= _terminateDistance) return;
+                }
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <param name="points"></param>
+        /// <param name="locGeom"></param>
+        private void ComputeMinDistanceLinesPoints(IList lines, IList points, GeometryLocation[] locGeom)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                LineString line = (LineString)lines[i];
+                for (int j = 0; j < points.Count; j++)
+                {
+                    Point pt = (Point)points[j];
+                    ComputeMinDistance(line, pt, locGeom);
+                    if (_minDistance <= _terminateDistance) return;
+                }
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="points0"></param>
+        /// <param name="points1"></param>
+        /// <param name="locGeom"></param>
+        private void ComputeMinDistancePoints(IList points0, IList points1, GeometryLocation[] locGeom)
+        {
+            for (int i = 0; i < points0.Count; i++)
+            {
+                Point pt0 = (Point)points0[i];
+                for (int j = 0; j < points1.Count; j++)
+                {
+                    Point pt1 = (Point)points1[j];
+                    double dist = pt0.Coordinate.Distance(pt1.Coordinate);
+                    if (dist < _minDistance)
+                    {
+                        _minDistance = dist;
+                        // this is wrong - need to determine closest points on both segments!!!
+                        locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
+                        locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
+                    }
+                    if (_minDistance <= _terminateDistance) return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compute the distance between the closest points of two geometries.
+        /// </summary>
+        /// <param name="g0">A <c>Geometry</c>.</param>
+        /// <param name="g1">Another <c>Geometry</c>.</param>
+        /// <returns>The distance between the geometries.</returns>
+        public static double Distance(IGeometry g0, IGeometry g1)
+        {
+            DistanceOp distOp = new DistanceOp(g0, g1);
+            return distOp.Distance();
+        }
+
+        /// <summary>
+        /// Report the distance between the closest points on the input geometries.
+        /// </summary>
+        /// <returns>The distance between the geometries.</returns>
+        public virtual double Distance()
+        {
+            ComputeMinDistance();
+            return _minDistance;
+        }
+
+        /// <summary>
+        /// Test whether two geometries lie within a given distance of each other.
+        /// </summary>
+        /// <param name="g0"></param>
+        /// <param name="g1"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public static bool IsWithinDistance(IGeometry g0, IGeometry g1, double distance)
+        {
+            DistanceOp distOp = new DistanceOp(g0, g1, distance);
+            return distOp.Distance() <= distance;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="locGeom"></param>
+        /// <param name="flip"></param>
+        private void UpdateMinDistance(GeometryLocation[] locGeom, bool flip)
+        {
+            // if not set then don't update
+            if (locGeom[0] == null)
+                return;
+            if (flip)
+            {
+                _minDistanceLocation[0] = locGeom[1];
+                _minDistanceLocation[1] = locGeom[0];
+            }
+            else
+            {
+                _minDistanceLocation[0] = locGeom[0];
+                _minDistanceLocation[1] = locGeom[1];
+            }
+        }
+
+        #endregion
     }
 }

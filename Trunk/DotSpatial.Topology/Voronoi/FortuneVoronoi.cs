@@ -37,15 +37,18 @@ namespace DotSpatial.Topology.Voronoi
     ///</summary>
     public abstract class Fortune
     {
+        #region Fields
+
+        /// <summary>
+        /// Represents an infinite vector location
+        /// </summary>
+        public static readonly Vector2 VVInfinite = new Vector2(double.PositiveInfinity, double.PositiveInfinity);
+
         ///<summary>
         /// The default definition of a coordinate that uses double.NaN to clarify
         /// that no value has yet been assigned to this vector.
         ///</summary>
         public static readonly Vector2 VVUnkown = new Vector2(double.NaN, double.NaN);
-        /// <summary>
-        /// Represents an infinite vector location
-        /// </summary>
-        public static readonly Vector2 VVInfinite = new Vector2(double.PositiveInfinity, double.PositiveInfinity);
 
         /// <summary>
         /// Boolean, true if the cleanup method should be called.  This is unnecessary, for
@@ -54,30 +57,9 @@ namespace DotSpatial.Topology.Voronoi
         /// </summary>
         public static bool DoCleanup;
 
-        internal static double ParabolicCut(double x1, double y1, double x2, double y2, double ys)
-        {
-            if (x1 == x2 && y1 == y2)
-            {
-                throw new ArgumentException("Identical datapoints are not allowed!");
-            }
+        #endregion
 
-            if (y1 == ys && y2 == ys) return (x1 + x2) / 2;
-            if (y1 == ys) return x1;
-            if (y2 == ys) return x2;
-            double a1 = 1 / (2 * (y1 - ys));
-            double a2 = 1 / (2 * (y2 - ys));
-            if (a1 == a2) return (x1 + x2) / 2;
-            double root = Math.Sqrt(-8 * a1 * x1 * a2 * x2 - 2 * a1 * y1 + 2 * a1 * y2 + 4 * a1 * a2 * x2 * x2 + 2 * a2 * y1 + 4 * a2 * a1 * x1 * x1 - 2 * a2 * y2);
-            double xs1 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 + 2 * root);
-            double xs2 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 - 2 * root);
-            if (xs1 > xs2)
-            {
-                double h = xs1;
-                xs1 = xs2;
-                xs2 = h;
-            }
-            return y1 >= y2 ? xs2 : xs1;
-        }
+        #region Methods
 
         internal static Vector2 CircumCircleCenter(Vector2 a, Vector2 b, Vector2 c)
         {
@@ -263,5 +245,32 @@ namespace DotSpatial.Topology.Voronoi
             }
             return vgErg;
         }
+
+        internal static double ParabolicCut(double x1, double y1, double x2, double y2, double ys)
+        {
+            if (x1 == x2 && y1 == y2)
+            {
+                throw new ArgumentException("Identical datapoints are not allowed!");
+            }
+
+            if (y1 == ys && y2 == ys) return (x1 + x2) / 2;
+            if (y1 == ys) return x1;
+            if (y2 == ys) return x2;
+            double a1 = 1 / (2 * (y1 - ys));
+            double a2 = 1 / (2 * (y2 - ys));
+            if (a1 == a2) return (x1 + x2) / 2;
+            double root = Math.Sqrt(-8 * a1 * x1 * a2 * x2 - 2 * a1 * y1 + 2 * a1 * y2 + 4 * a1 * a2 * x2 * x2 + 2 * a2 * y1 + 4 * a2 * a1 * x1 * x1 - 2 * a2 * y2);
+            double xs1 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 + 2 * root);
+            double xs2 = 0.5 / (2 * a1 - 2 * a2) * (4 * a1 * x1 - 4 * a2 * x2 - 2 * root);
+            if (xs1 > xs2)
+            {
+                double h = xs1;
+                xs1 = xs2;
+                xs2 = h;
+            }
+            return y1 >= y2 ? xs2 : xs1;
+        }
+
+        #endregion
     }
 }

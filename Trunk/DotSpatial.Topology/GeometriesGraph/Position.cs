@@ -56,6 +56,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class Position
     {
+        #region Methods
+
         /// <summary>
         /// Returns Positions.Left if the position is Positions.Right,
         /// Positions.Right if the position is Left, or the position
@@ -70,5 +72,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return PositionType.Left;
             return position;
         }
+
+        #endregion
     }
 }

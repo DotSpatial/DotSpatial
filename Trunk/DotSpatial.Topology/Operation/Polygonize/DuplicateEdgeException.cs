@@ -31,6 +31,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class DuplicateEdgeException : Exception
     {
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance of the Duplicate Edge Exception
         /// </summary>
@@ -38,5 +40,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
             : base(TopologyText.DuplicateEdgeException)
         {
         }
+
+        #endregion
     }
 }

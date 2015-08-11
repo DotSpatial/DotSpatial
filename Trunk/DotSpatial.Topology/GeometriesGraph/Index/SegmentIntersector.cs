@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -33,21 +34,26 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class SegmentIntersector
     {
-        private readonly bool _includeProper;
-        private readonly LineIntersector _li;
-        private readonly bool _recordIsolated;
+        #region Fields
 
         /// <summary>
         /// Testing only.
         /// </summary>
         public int NumTests;
 
+        private readonly bool _includeProper;
+        private readonly LineIntersector _li;
+        private readonly bool _recordIsolated;
         private ICollection[] _bdyNodes;
         private bool _hasIntersection;
         private bool _hasProper;
         private bool _hasProperInterior;
         private int _numIntersections;
         private Coordinate _properIntersectionPoint;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -62,16 +68,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             _recordIsolated = recordIsolated;
         }
 
-        /// <returns>
-        /// The proper intersection point, or <c>null</c> if none was found.
-        /// </returns>
-        public virtual Coordinate ProperIntersectionPoint
-        {
-            get
-            {
-                return _properIntersectionPoint;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -81,6 +80,18 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             get
             {
                 return _hasIntersection;
+            }
+        }
+
+        /// <summary>
+        /// A proper interior intersection is a proper intersection which is not
+        /// contained in the set of boundary nodes set for this SegmentIntersector.
+        /// </summary>
+        public virtual bool HasProperInteriorIntersection
+        {
+            get
+            {
+                return _hasProperInterior;
             }
         }
 
@@ -99,70 +110,20 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             }
         }
 
-        /// <summary>
-        /// A proper interior intersection is a proper intersection which is not
-        /// contained in the set of boundary nodes set for this SegmentIntersector.
-        /// </summary>
-        public virtual bool HasProperInteriorIntersection
+        /// <returns>
+        /// The proper intersection point, or <c>null</c> if none was found.
+        /// </returns>
+        public virtual Coordinate ProperIntersectionPoint
         {
             get
             {
-                return _hasProperInterior;
+                return _properIntersectionPoint;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i1"></param>
-        /// <param name="i2"></param>
-        /// <returns></returns>
-        public static bool IsAdjacentSegments(int i1, int i2)
-        {
-            return Math.Abs(i1 - i2) == 1;
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="bdyNodes0"></param>
-        /// <param name="bdyNodes1"></param>
-        public virtual void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
-        {
-            _bdyNodes = new ICollection[2];
-            _bdyNodes[0] = bdyNodes0;
-            _bdyNodes[1] = bdyNodes1;
-        }
-
-        /// <summary>
-        /// A trivial intersection is an apparent self-intersection which in fact
-        /// is simply the point shared by adjacent line segments.
-        /// Notice that closed edges require a special check for the point shared by the beginning
-        /// and end segments.
-        /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        private bool IsTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
-        {
-            if (ReferenceEquals(e0, e1))
-            {
-                if (_li.IntersectionNum == 1)
-                {
-                    if (IsAdjacentSegments(segIndex0, segIndex1))
-                        return true;
-                    if (e0.IsClosed)
-                    {
-                        int maxSegIndex = e0.NumPoints - 1;
-                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
-                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
-                            return true;
-                    }
-                }
-            }
-            return false;
-        }
+        #region Methods
 
         /// <summary>
         /// This method is called by clients of the EdgeIntersector class to test for and add
@@ -223,6 +184,17 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
+        /// <param name="i1"></param>
+        /// <param name="i2"></param>
+        /// <returns></returns>
+        public static bool IsAdjacentSegments(int i1, int i2)
+        {
+            return Math.Abs(i1 - i2) == 1;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
@@ -254,5 +226,49 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             }
             return false;
         }
+
+        /// <summary>
+        /// A trivial intersection is an apparent self-intersection which in fact
+        /// is simply the point shared by adjacent line segments.
+        /// Notice that closed edges require a special check for the point shared by the beginning
+        /// and end segments.
+        /// </summary>
+        /// <param name="e0"></param>
+        /// <param name="segIndex0"></param>
+        /// <param name="e1"></param>
+        /// <param name="segIndex1"></param>
+        private bool IsTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
+        {
+            if (ReferenceEquals(e0, e1))
+            {
+                if (_li.IntersectionNum == 1)
+                {
+                    if (IsAdjacentSegments(segIndex0, segIndex1))
+                        return true;
+                    if (e0.IsClosed)
+                    {
+                        int maxSegIndex = e0.NumPoints - 1;
+                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="bdyNodes0"></param>
+        /// <param name="bdyNodes1"></param>
+        public virtual void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
+        {
+            _bdyNodes = new ICollection[2];
+            _bdyNodes[0] = bdyNodes0;
+            _bdyNodes[1] = bdyNodes1;
+        }
+
+        #endregion
     }
 }

@@ -24,7 +24,7 @@
 
 using System;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.
@@ -64,9 +64,7 @@ namespace DotSpatial.Topology
     [Serializable]
     public class PrecisionModel : IComparable
     {
-        private const int FLOATING_PRECISION_DIGITS = 16;
-        private const int FLOATING_SINGLE_PRECISION_DIGITS = 6;
-        private const int FIXED_PRECISION_DIGITS = 1;
+        #region Constant Fields
 
         /// <summary>
         /// The maximum precise value representable in a double. Since IEE754
@@ -74,6 +72,14 @@ namespace DotSpatial.Topology
         /// 2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
         /// </summary>
         public const double MAXIMUM_PRECISE_VALUE = 9007199254740992.0;
+
+        private const int FIXED_PRECISION_DIGITS = 1;
+        private const int FLOATING_PRECISION_DIGITS = 16;
+        private const int FLOATING_SINGLE_PRECISION_DIGITS = 6;
+
+        #endregion
+
+        #region Fields
 
         /// <summary>
         /// The type of PrecisionModel this represents.
@@ -84,6 +90,10 @@ namespace DotSpatial.Topology
         /// The scale factor which determines the number of decimal places in fixed precision.
         /// </summary>
         private double _scale;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a <c>PrecisionModel</c> with a default precision
@@ -137,6 +147,10 @@ namespace DotSpatial.Topology
             _scale = pm._scale;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Tests whether the precision model supports floating point.
         /// </summary>
@@ -176,27 +190,6 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Returns the multiplying factor used to obtain a precise coordinate.
-        /// This method is private because PrecisionModel is intended to
-        /// be an immutable (value) type.
-        /// </summary>
-        /// <returns>
-        /// the amount by which to multiply a coordinate after subtracting
-        /// the offset.
-        /// </returns>
-        public virtual double Scale
-        {
-            get
-            {
-                return _scale;
-            }
-            set
-            {
-                _scale = Math.Abs(value);
-            }
-        }
-
-        /// <summary>
         /// Returns the x-offset used to obtain a precise coordinate.
         /// </summary>
         /// <returns>
@@ -229,7 +222,56 @@ namespace DotSpatial.Topology
             }
         }
 
-        #region IComparable Members
+        /// <summary>
+        /// Returns the multiplying factor used to obtain a precise coordinate.
+        /// This method is private because PrecisionModel is intended to
+        /// be an immutable (value) type.
+        /// </summary>
+        /// <returns>
+        /// the amount by which to multiply a coordinate after subtracting
+        /// the offset.
+        /// </returns>
+        public virtual double Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                _scale = Math.Abs(value);
+            }
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator ==(PrecisionModel obj1, PrecisionModel obj2)
+        {
+            return Equals(obj1, obj2);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator !=(PrecisionModel obj1, PrecisionModel obj2)
+        {
+            return !(obj1 == obj2);
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Compares this <c>PrecisionModel</c> object with the specified object for order.
@@ -256,7 +298,20 @@ namespace DotSpatial.Topology
             return (sigDigits).CompareTo(otherSigDigits);
         }
 
-        #endregion
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public override bool Equals(object other)
+        {
+            if (other == null)
+                return false;
+            if (!(other is PrecisionModel))
+                return false;
+            PrecisionModel otherPrecisionModel = (PrecisionModel)other;
+            return _modelType == otherPrecisionModel._modelType && _scale == otherPrecisionModel._scale;
+        }
 
         /// <summary>
         /// Return HashCode.
@@ -273,6 +328,73 @@ namespace DotSpatial.Topology
         public virtual PrecisionModelType GetPrecisionModelType()
         {
             return _modelType;
+        }
+
+        /// <summary>
+        /// Rounds a numeric value to the PrecisionModel grid.
+        /// Symmetric Arithmetic Rounding is used, to provide
+        /// uniform rounding behaviour no matter where the number is
+        /// on the number line.
+        /// </summary>
+        /// <param name="val"></param>
+        public virtual double MakePrecise(double val)
+        {
+            if (_modelType == PrecisionModelType.FloatingSingle)
+            {
+                float floatSingleVal = (float)val;
+                return floatSingleVal;
+            }
+            if (_modelType == PrecisionModelType.Fixed)
+                // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
+                // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
+                return Math.Floor((val * _scale) + 0.5d) / _scale;
+            return val;     // modelType == FLOATING - no rounding necessary
+        }
+
+        /// <summary>
+        /// Rounds a Coordinate to the PrecisionModel grid.
+        /// </summary>
+        /// <param name="coord"></param>
+        public virtual void MakePrecise(Coordinate coord)
+        {
+            // optimization for full precision
+            if (_modelType == PrecisionModelType.Floating)
+                return;
+
+            coord.X = MakePrecise(coord.X);
+            coord.Y = MakePrecise(coord.Y);
+
+            //MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
+        }
+
+        /// <summary>
+        /// Returns the external representation of <c>internal</c>.
+        /// </summary>
+        /// <param name="cinternal">The original coordinate.</param>
+        /// <returns>
+        /// The coordinate whose values will be changed to the
+        /// external representation of <c>internal</c>.
+        /// </returns>
+        [Obsolete("No longer needed, since internal representation is same as external representation")]
+        public virtual Coordinate ToExternal(Coordinate cinternal)
+        {
+            Coordinate cexternal = new Coordinate(cinternal);
+            return cexternal;
+        }
+
+        /// <summary>
+        /// Sets <c>external</c> to the external representation of <c>internal</c>.
+        /// </summary>
+        /// <param name="cinternal">The original coordinate.</param>
+        /// <param name="cexternal">
+        /// The coordinate whose values will be changed to the
+        /// external representation of <c>internal</c>.
+        /// </param>
+        [Obsolete("No longer needed, since internal representation is same as external representation")]
+        public virtual void ToExternal(Coordinate cinternal, Coordinate cexternal)
+        {
+            cexternal.X = cinternal.X;
+            cexternal.Y = cinternal.Y;
         }
 
         /// <summary>
@@ -316,73 +438,6 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
-        /// Returns the external representation of <c>internal</c>.
-        /// </summary>
-        /// <param name="cinternal">The original coordinate.</param>
-        /// <returns>
-        /// The coordinate whose values will be changed to the
-        /// external representation of <c>internal</c>.
-        /// </returns>
-        [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public virtual Coordinate ToExternal(Coordinate cinternal)
-        {
-            Coordinate cexternal = new Coordinate(cinternal);
-            return cexternal;
-        }
-
-        /// <summary>
-        /// Sets <c>external</c> to the external representation of <c>internal</c>.
-        /// </summary>
-        /// <param name="cinternal">The original coordinate.</param>
-        /// <param name="cexternal">
-        /// The coordinate whose values will be changed to the
-        /// external representation of <c>internal</c>.
-        /// </param>
-        [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public virtual void ToExternal(Coordinate cinternal, Coordinate cexternal)
-        {
-            cexternal.X = cinternal.X;
-            cexternal.Y = cinternal.Y;
-        }
-
-        /// <summary>
-        /// Rounds a numeric value to the PrecisionModel grid.
-        /// Symmetric Arithmetic Rounding is used, to provide
-        /// uniform rounding behaviour no matter where the number is
-        /// on the number line.
-        /// </summary>
-        /// <param name="val"></param>
-        public virtual double MakePrecise(double val)
-        {
-            if (_modelType == PrecisionModelType.FloatingSingle)
-            {
-                float floatSingleVal = (float)val;
-                return floatSingleVal;
-            }
-            if (_modelType == PrecisionModelType.Fixed)
-                // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
-                // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor((val * _scale) + 0.5d) / _scale;
-            return val;     // modelType == FLOATING - no rounding necessary
-        }
-
-        /// <summary>
-        /// Rounds a Coordinate to the PrecisionModel grid.
-        /// </summary>
-        /// <param name="coord"></param>
-        public virtual void MakePrecise(Coordinate coord)
-        {
-            // optimization for full precision
-            if (_modelType == PrecisionModelType.Floating)
-                return;
-
-            coord.X = MakePrecise(coord.X);
-            coord.Y = MakePrecise(coord.Y);
-
-            //MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
@@ -398,41 +453,6 @@ namespace DotSpatial.Topology
             return description;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        public override bool Equals(object other)
-        {
-            if (other == null)
-                return false;
-            if (!(other is PrecisionModel))
-                return false;
-            PrecisionModel otherPrecisionModel = (PrecisionModel)other;
-            return _modelType == otherPrecisionModel._modelType && _scale == otherPrecisionModel._scale;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
-        public static bool operator ==(PrecisionModel obj1, PrecisionModel obj2)
-        {
-            return Equals(obj1, obj2);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
-        public static bool operator !=(PrecisionModel obj1, PrecisionModel obj2)
-        {
-            return !(obj1 == obj2);
-        }
+        #endregion
     }
 }

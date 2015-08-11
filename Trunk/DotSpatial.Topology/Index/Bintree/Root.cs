@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using DotSpatial.Topology.Index.Quadtree;
+using DotSpatial.Topology.Index.QuadTree;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Bintree
@@ -80,15 +80,6 @@ namespace DotSpatial.Topology.Index.Bintree
         }
 
         /// <summary>
-        /// The root node matches all searches.
-        /// </summary>
-        /// <param name="interval"></param>
-        protected override bool IsSearchMatch(Interval interval)
-        {
-            return true;
-        }
-
-        /// <summary>
         /// Insert an item which is known to be contained in the tree rooted at
         /// the given Node.  Lower levels of the tree will be created
         /// if necessary to hold the item.
@@ -110,6 +101,15 @@ namespace DotSpatial.Topology.Index.Bintree
                 node = tree.Find(itemInterval);
             else node = tree.GetNode(itemInterval);
             node.Add(item);
+        }
+
+        /// <summary>
+        /// The root node matches all searches.
+        /// </summary>
+        /// <param name="interval"></param>
+        protected override bool IsSearchMatch(Interval interval)
+        {
+            return true;
         }
 
         #endregion

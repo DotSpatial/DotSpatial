@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.GeometriesGraph
 {
     /// <summary>
@@ -30,12 +32,22 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class Depth
     {
+        #region Constant Fields
+
         /// <summary>
         ///
         /// </summary>
         private const int NULL = -1;
 
+        #endregion
+
+        #region Fields
+
         private readonly int[,] _depth = new int[2, 3];
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -47,6 +59,10 @@ namespace DotSpatial.Topology.GeometriesGraph
                 for (int j = 0; j < 3; j++)
                     _depth[i, j] = NULL;
         }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         /// Calls GetDepth and SetDepth.
@@ -63,6 +79,44 @@ namespace DotSpatial.Topology.GeometriesGraph
             set
             {
                 SetDepth(geomIndex, posIndex, value);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <param name="location"></param>
+        public virtual void Add(int geomIndex, PositionType posIndex, LocationType location)
+        {
+            if (location == LocationType.Interior)
+                _depth[geomIndex, (int)posIndex]++;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lbl"></param>
+        public virtual void Add(Label lbl)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 1; j < 3; j++)
+                {
+                    LocationType loc = lbl.GetLocation(i, (PositionType)j);
+                    if (loc == LocationType.Exterior || loc == LocationType.Interior)
+                    {
+                        // initialize depth if it is null, otherwise add this location value
+                        if (IsNull(i, (PositionType)j))
+                            _depth[i, j] = DepthAtLocation(loc);
+                        else _depth[i, j] += DepthAtLocation(loc);
+                    }
+                }
             }
         }
 
@@ -83,11 +137,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual int GetDepth(int geomIndex, PositionType posIndex)
+        public virtual int GetDelta(int geomIndex)
         {
-            return _depth[geomIndex, (int)posIndex];
+            return _depth[geomIndex, (int)PositionType.Right] - _depth[geomIndex, (int)PositionType.Left];
         }
 
         /// <summary>
@@ -95,10 +148,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
-        /// <param name="depthValue"></param>
-        public virtual void SetDepth(int geomIndex, PositionType posIndex, int depthValue)
+        /// <returns></returns>
+        public virtual int GetDepth(int geomIndex, PositionType posIndex)
         {
-            _depth[geomIndex, (int)posIndex] = depthValue;
+            return _depth[geomIndex, (int)posIndex];
         }
 
         /// <summary>
@@ -112,18 +165,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             if (_depth[geomIndex, (int)posIndex] <= 0)
                 return LocationType.Exterior;
             return LocationType.Interior;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public virtual void Add(int geomIndex, PositionType posIndex, LocationType location)
-        {
-            if (location == LocationType.Interior)
-                _depth[geomIndex, (int)posIndex]++;
         }
 
         /// <summary>
@@ -164,38 +205,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lbl"></param>
-        public virtual void Add(Label lbl)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 1; j < 3; j++)
-                {
-                    LocationType loc = lbl.GetLocation(i, (PositionType)j);
-                    if (loc == LocationType.Exterior || loc == LocationType.Interior)
-                    {
-                        // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (PositionType)j))
-                            _depth[i, j] = DepthAtLocation(loc);
-                        else _depth[i, j] += DepthAtLocation(loc);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public virtual int GetDelta(int geomIndex)
-        {
-            return _depth[geomIndex, (int)PositionType.Right] - _depth[geomIndex, (int)PositionType.Left];
-        }
-
-        /// <summary>
         /// Normalize the depths for each point, if they are non-null.
         /// A normalized depth
         /// has depth values in the set { 0, 1 }.
@@ -228,11 +237,24 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <param name="depthValue"></param>
+        public virtual void SetDepth(int geomIndex, PositionType posIndex, int depthValue)
+        {
+            _depth[geomIndex, (int)posIndex] = depthValue;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
             return "A: " + _depth[0, 1] + ", " + _depth[0, 2]
                  + " B: " + _depth[1, 1] + ", " + _depth[1, 2];
         }
+
+        #endregion
     }
 }

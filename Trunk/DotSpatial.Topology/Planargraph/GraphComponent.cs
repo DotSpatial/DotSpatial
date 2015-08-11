@@ -40,44 +40,54 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public abstract class GraphComponent
     {
-        #region Private variables
+        #region Fields
 
         private bool _isMarked;
         private bool _isVisited;
 
         #endregion
 
-        #region Static
+        #region Properties
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.IsVisited" /> state
-        /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
+        /// Tests whether this component has been removed from its containing graph.
         /// </summary>
-        /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="visited">The state to set the <see cref="GraphComponent.IsVisited" /> flag to.</param>
-        public static void SetVisited(IEnumerator i, bool visited)
+        public abstract bool IsRemoved { get; }
+
+        /// <summary>
+        /// Tests if a component has been marked at some point during the processing
+        /// involving this graph.
+        /// </summary>
+        public virtual bool IsMarked
         {
-            while (i.MoveNext())
+            get
             {
-                GraphComponent comp = (GraphComponent)i.Current;
-                comp.IsVisited = visited;
+                return _isMarked;
+            }
+            set
+            {
+                _isMarked = true;
             }
         }
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.IsMarked" /> state
-        /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
+        /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>
-        /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="marked">The state to set the <see cref="GraphComponent.IsMarked" /> flag to.</param>
-        public static void SetMarked(IEnumerator i, bool marked)
+        public virtual bool IsVisited
         {
-            while (i.MoveNext())
+            get
             {
-                GraphComponent comp = (GraphComponent)i.Current;
-                comp.IsMarked = marked;
+                return _isVisited;
+            }
+            set
+            {
+                _isVisited = true;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Finds the first <see cref="GraphComponent" />
@@ -98,107 +108,36 @@ namespace DotSpatial.Topology.Planargraph
             return null;
         }
 
+        /// <summary>
+        /// Sets the <see cref="GraphComponent.IsMarked" /> state
+        /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
+        /// </summary>
+        /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
+        /// <param name="marked">The state to set the <see cref="GraphComponent.IsMarked" /> flag to.</param>
+        public static void SetMarked(IEnumerator i, bool marked)
+        {
+            while (i.MoveNext())
+            {
+                GraphComponent comp = (GraphComponent)i.Current;
+                comp.IsMarked = marked;
+            }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="GraphComponent.IsVisited" /> state
+        /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
+        /// </summary>
+        /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
+        /// <param name="visited">The state to set the <see cref="GraphComponent.IsVisited" /> flag to.</param>
+        public static void SetVisited(IEnumerator i, bool visited)
+        {
+            while (i.MoveNext())
+            {
+                GraphComponent comp = (GraphComponent)i.Current;
+                comp.IsVisited = visited;
+            }
+        }
+
         #endregion
-
-        /// <summary>
-        /// Tests if a component has been visited during the course of a graph algorithm.
-        /// </summary>
-        public virtual bool IsVisited
-        {
-            get
-            {
-                return _isVisited;
-            }
-            set
-            {
-                _isVisited = true;
-            }
-        }
-
-        /// <summary>
-        /// Tests if a component has been marked at some point during the processing
-        /// involving this graph.
-        /// </summary>
-        public virtual bool IsMarked
-        {
-            get
-            {
-                return _isMarked;
-            }
-            set
-            {
-                _isMarked = true;
-            }
-        }
-
-        /// <summary>
-        /// Tests whether this component has been removed from its containing graph.
-        /// </summary>
-        public abstract bool IsRemoved { get; }
-
-        /*
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            if (!(obj is GraphComponent))
-                return false;
-            if (!base.Equals(obj))
-                return false;
-
-            if (Object.ReferenceEquals(this, obj))
-                return true;
-
-            GraphComponent other = obj as GraphComponent;
-            if (IsMarked != other.IsMarked)
-                return false;
-            if (IsVisited != other.IsVisited)
-                return false;
-            if (IsRemoved != other.IsRemoved)
-                return false;
-            return true;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            int result = 29 * IsMarked.GetHashCode();
-            result += 14 + 29 * IsVisited.GetHashCode();
-            result += 14 + 29 * IsRemoved.GetHashCode();
-            return result;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator ==(GraphComponent o1, GraphComponent o2)
-        {
-            return Object.Equals(o1, o2);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator !=(GraphComponent o1, GraphComponent o2)
-        {
-            return !(o1 == o2);
-        }
-
-        */
     }
 }

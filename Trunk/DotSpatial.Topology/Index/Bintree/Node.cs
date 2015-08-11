@@ -103,6 +103,34 @@ namespace DotSpatial.Topology.Index.Bintree
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        private Node<T> CreateSubnode(int index)
+        {
+            // create a new subnode in the appropriate interval
+            double min = 0.0;
+            double max = 0.0;
+
+            switch (index)
+            {
+                case 0:
+                    min = _interval.Min;
+                    max = _centre;
+                    break;
+                case 1:
+                    min = _centre;
+                    max = _interval.Max;
+                    break;
+            }
+            var subInt = new Interval(min, max);
+            //var subInt = Interval.Create(min, max);
+            var node = new Node<T>(subInt, _level - 1);
+            return node;
+        }
+
+        /// <summary>
         /// Returns the smallest existing
         /// node containing the envelope.
         /// </summary>
@@ -143,6 +171,17 @@ namespace DotSpatial.Topology.Index.Bintree
         }
 
         /// <summary>
+        /// Get the subnode for the index.
+        /// If it doesn't exist, create it.
+        /// </summary>
+        private Node<T> GetSubnode(int index)
+        {
+            if (Subnode[index] == null)
+                Subnode[index] = CreateSubnode(index);
+            return Subnode[index];
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="node"></param>
@@ -170,45 +209,6 @@ namespace DotSpatial.Topology.Index.Bintree
         protected override bool IsSearchMatch(Interval itemInterval)
         {
             return itemInterval.Overlaps(_interval);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private Node<T> CreateSubnode(int index)
-        {
-            // create a new subnode in the appropriate interval
-            double min = 0.0;
-            double max = 0.0;
-
-            switch (index)
-            {
-                case 0:
-                    min = _interval.Min;
-                    max = _centre;
-                    break;
-                case 1:
-                    min = _centre;
-                    max = _interval.Max;
-                    break;
-            }
-            var subInt = new Interval(min, max);
-            //var subInt = Interval.Create(min, max);
-            var node = new Node<T>(subInt, _level - 1);
-            return node;
-        }
-
-        /// <summary>
-        /// Get the subnode for the index.
-        /// If it doesn't exist, create it.
-        /// </summary>
-        private Node<T> GetSubnode(int index)
-        {
-            if (Subnode[index] == null)
-                Subnode[index] = CreateSubnode(index);
-            return Subnode[index];
         }
 
         #endregion

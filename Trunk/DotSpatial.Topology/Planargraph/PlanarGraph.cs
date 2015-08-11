@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -39,7 +40,7 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public abstract class PlanarGraph
     {
-        #region Private Variables
+        #region Fields
 
         private readonly IList _edges = new ArrayList();
         private readonly NodeMap _nodeMap = new NodeMap();
@@ -47,13 +48,17 @@ namespace DotSpatial.Topology.Planargraph
 
         #endregion
 
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the IList of directed edges
+        /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
-        public virtual IList DirectedEdges
+        public virtual IList Edges
         {
-            get { return _dirEdges; }
-            protected set { _dirEdges = value; }
+            get
+            {
+                return _edges;
+            }
         }
 
         /// <summary>
@@ -68,25 +73,17 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Returns the Edges that have been added to this PlanarGraph.
+        /// Gets or sets the IList of directed edges
         /// </summary>
-        public virtual IList Edges
+        public virtual IList DirectedEdges
         {
-            get
-            {
-                return _edges;
-            }
+            get { return _dirEdges; }
+            protected set { _dirEdges = value; }
         }
 
-        /// <summary>
-        /// Returns the Node at the given location, or null if no Node was there.
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public virtual Node FindNode(Coordinate pt)
-        {
-            return _nodeMap.Find(pt);
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds a node to the map, replacing any that is already at that location.
@@ -122,12 +119,30 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Returns an IEnumerator over the Nodes in this PlanarGraph.
+        /// Returns the Node at the given location, or null if no Node was there.
         /// </summary>
+        /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public virtual Node FindNode(Coordinate pt)
         {
-            return _nodeMap.GetEnumerator();
+            return _nodeMap.Find(pt);
+        }
+
+        /// <summary>
+        /// Returns all Nodes with the given number of Edges around it.
+        /// </summary>
+        /// <param name="degree"></param>
+        /// <returns></returns>
+        public virtual IList FindNodesOfDegree(int degree)
+        {
+            IList nodesFound = new ArrayList();
+            for (IEnumerator i = GetNodeEnumerator(); i.MoveNext(); )
+            {
+                Node node = (Node)i.Current;
+                if (node.Degree == degree)
+                    nodesFound.Add(node);
+            }
+            return nodesFound;
         }
 
         /// <summary>
@@ -148,6 +163,15 @@ namespace DotSpatial.Topology.Planargraph
         public virtual IEnumerator GetEdgeEnumerator()
         {
             return _edges.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an IEnumerator over the Nodes in this PlanarGraph.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerator GetNodeEnumerator()
+        {
+            return _nodeMap.GetEnumerator();
         }
 
         /// <summary>
@@ -210,21 +234,6 @@ namespace DotSpatial.Topology.Planargraph
             node.Remove();
         }
 
-        /// <summary>
-        /// Returns all Nodes with the given number of Edges around it.
-        /// </summary>
-        /// <param name="degree"></param>
-        /// <returns></returns>
-        public virtual IList FindNodesOfDegree(int degree)
-        {
-            IList nodesFound = new ArrayList();
-            for (IEnumerator i = GetNodeEnumerator(); i.MoveNext(); )
-            {
-                Node node = (Node)i.Current;
-                if (node.Degree == degree)
-                    nodesFound.Add(node);
-            }
-            return nodesFound;
-        }
+        #endregion
     }
 }

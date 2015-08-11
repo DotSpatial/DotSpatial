@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Predicate
 {
@@ -35,32 +36,19 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     public class SegmentIntersectionTester
     {
+        #region Fields
+
         // for purposes of intersection testing, don't need to set precision model
         private readonly LineIntersector _li = new RobustLineIntersector();
-
         private bool _hasIntersection;
         private Coordinate _pt00;
         private Coordinate _pt01;
         private Coordinate _pt10;
         private Coordinate _pt11;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="seq"></param>
-        /// <param name="lines"></param>
-        /// <returns></returns>
-        public bool HasIntersectionWithLineStrings(IList<Coordinate> seq, IList lines)
-        {
-            for (IEnumerator i = lines.GetEnumerator(); i.MoveNext(); )
-            {
-                LineString line = (LineString)i.Current;
-                HasIntersection(seq, line.Coordinates);
-                if (_hasIntersection)
-                    break;
-            }
-            return _hasIntersection;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -84,5 +72,25 @@ namespace DotSpatial.Topology.Operation.Predicate
             }
             return;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="seq"></param>
+        /// <param name="lines"></param>
+        /// <returns></returns>
+        public bool HasIntersectionWithLineStrings(IList<Coordinate> seq, IList lines)
+        {
+            for (IEnumerator i = lines.GetEnumerator(); i.MoveNext(); )
+            {
+                LineString line = (LineString)i.Current;
+                HasIntersection(seq, line.Coordinates);
+                if (_hasIntersection)
+                    break;
+            }
+            return _hasIntersection;
+        }
+
+        #endregion
     }
 }

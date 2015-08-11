@@ -22,7 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using DotSpatial.Topology.Geoapi.Geometries;
+using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.Strtree
 {
@@ -30,6 +31,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
     /// AbstractSTRtree.
     /// </summary>
+    [Serializable]
     public class ItemBoundable<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
         #region Fields

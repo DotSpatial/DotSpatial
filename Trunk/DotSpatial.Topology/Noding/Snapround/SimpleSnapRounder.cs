@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding.Snapround
 {
@@ -44,9 +45,15 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// </summary>
     public class SimpleSnapRounder : INoder
     {
+        #region Fields
+
         private readonly LineIntersector _li;
         private readonly double _scaleFactor;
         private IList _nodedSegStrings;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSnapRounder"/> class.
@@ -59,16 +66,29 @@ namespace DotSpatial.Topology.Noding.Snapround
             _scaleFactor = pm.Scale;
         }
 
-        #region INoder Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Adds a new node (equal to the snap pt) to the segment
+        /// if the segment passes through the hot pixel.
         /// </summary>
+        /// <param name="hotPix"></param>
+        /// <param name="segStr"></param>
+        /// <param name="segIndex"></param>
         /// <returns></returns>
-        public IList GetNodedSubstrings()
+        public static bool AddSnappedNode(HotPixel hotPix, SegmentString segStr, int segIndex)
         {
-            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
+            Coordinate p0 = segStr.GetCoordinate(segIndex);
+            Coordinate p1 = segStr.GetCoordinate(segIndex + 1);
+
+            if (hotPix.Intersects(p0, p1))
+            {
+                segStr.AddIntersection(hotPix.Coordinate, segIndex);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -81,36 +101,6 @@ namespace DotSpatial.Topology.Noding.Snapround
         {
             _nodedSegStrings = inputSegmentStrings;
             SnapRound(inputSegmentStrings, _li);
-        }
-
-        #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="li"></param>
-        private void SnapRound(IList segStrings, LineIntersector li)
-        {
-            IList intersections = FindInteriorIntersections(segStrings, li);
-            ComputeSnaps(segStrings, intersections);
-            ComputeVertexSnaps(segStrings);
-        }
-
-        /// <summary>
-        /// Computes all interior intersections in the collection of <see cref="SegmentString" />s,
-        /// and returns their <see cref="Coordinate" />s.
-        /// Does NOT node the segStrings.
-        /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="li"></param>
-        /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
-        private static IList FindInteriorIntersections(IList segStrings, LineIntersector li)
-        {
-            IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
-            SinglePassNoder noder = new McIndexNoder(intFinderAdder);
-            noder.ComputeNodes(segStrings);
-            return intFinderAdder.InteriorIntersections;
         }
 
         /// <summary>
@@ -190,24 +180,43 @@ namespace DotSpatial.Topology.Noding.Snapround
         }
 
         /// <summary>
-        /// Adds a new node (equal to the snap pt) to the segment
-        /// if the segment passes through the hot pixel.
+        /// Computes all interior intersections in the collection of <see cref="SegmentString" />s,
+        /// and returns their <see cref="Coordinate" />s.
+        /// Does NOT node the segStrings.
         /// </summary>
-        /// <param name="hotPix"></param>
-        /// <param name="segStr"></param>
-        /// <param name="segIndex"></param>
-        /// <returns></returns>
-        public static bool AddSnappedNode(HotPixel hotPix, SegmentString segStr, int segIndex)
+        /// <param name="segStrings"></param>
+        /// <param name="li"></param>
+        /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
+        private static IList FindInteriorIntersections(IList segStrings, LineIntersector li)
         {
-            Coordinate p0 = segStr.GetCoordinate(segIndex);
-            Coordinate p1 = segStr.GetCoordinate(segIndex + 1);
-
-            if (hotPix.Intersects(p0, p1))
-            {
-                segStr.AddIntersection(hotPix.Coordinate, segIndex);
-                return true;
-            }
-            return false;
+            IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
+            SinglePassNoder noder = new McIndexNoder(intFinderAdder);
+            noder.ComputeNodes(segStrings);
+            return intFinderAdder.InteriorIntersections;
         }
+
+        /// <summary>
+        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
+        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// </summary>
+        /// <returns></returns>
+        public IList GetNodedSubstrings()
+        {
+            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="segStrings"></param>
+        /// <param name="li"></param>
+        private void SnapRound(IList segStrings, LineIntersector li)
+        {
+            IList intersections = FindInteriorIntersections(segStrings, li);
+            ComputeSnaps(segStrings, intersections);
+            ComputeVertexSnaps(segStrings);
+        }
+
+        #endregion
     }
 }

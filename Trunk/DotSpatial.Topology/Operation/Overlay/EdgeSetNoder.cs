@@ -37,8 +37,14 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class EdgeSetNoder
     {
+        #region Fields
+
         private readonly IList _inputEdges = new ArrayList();
         private readonly LineIntersector _li;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -48,6 +54,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         {
             _li = li;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -71,6 +81,10 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -81,5 +95,7 @@ namespace DotSpatial.Topology.Operation.Overlay
             foreach (object obj in edges)
                 _inputEdges.Add(obj);
         }
+
+        #endregion
     }
 }

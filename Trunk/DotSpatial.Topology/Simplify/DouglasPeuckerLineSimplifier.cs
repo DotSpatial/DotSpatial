@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Simplify
 {
@@ -32,10 +33,16 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class DouglasPeuckerLineSimplifier
     {
+        #region Fields
+
         private readonly IList<Coordinate> _pts;
         private readonly LineSegment _seg = new LineSegment();
         private double _distanceTolerance;
         private bool[] _usePt;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -45,6 +52,10 @@ namespace DotSpatial.Topology.Simplify
         {
             _pts = pts;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -108,5 +119,7 @@ namespace DotSpatial.Topology.Simplify
                 SimplifySection(maxIndex, j);
             }
         }
+
+        #endregion
     }
 }

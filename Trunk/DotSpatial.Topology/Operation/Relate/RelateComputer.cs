@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.GeometriesGraph.Index;
 using DotSpatial.Topology.Utilities;
@@ -43,11 +44,17 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class RelateComputer
     {
+        #region Fields
+
         private readonly GeometryGraph[] _arg;     // the arg(s) of the operation
         private readonly ArrayList _isolatedEdges = new ArrayList();
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
         private readonly PointLocator _ptLocator = new PointLocator();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -56,6 +63,31 @@ namespace DotSpatial.Topology.Operation.Relate
         public RelateComputer(GeometryGraph[] arg)
         {
             _arg = arg;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// If the Geometries are disjoint, we need to enter their dimension and
+        /// boundary dimension in the Ext rows in the IM
+        /// </summary>
+        /// <param name="im"></param>
+        private void ComputeDisjointIm(IIntersectionMatrix im)
+        {
+            IGeometry ga = _arg[0].Geometry;
+            if (!ga.IsEmpty)
+            {
+                im.Set(LocationType.Interior, LocationType.Exterior, ga.Dimension);
+                im.Set(LocationType.Boundary, LocationType.Exterior, ga.BoundaryDimension);
+            }
+            IGeometry gb = _arg[1].Geometry;
+            if (!gb.IsEmpty)
+            {
+                im.Set(LocationType.Exterior, LocationType.Interior, gb.Dimension);
+                im.Set(LocationType.Exterior, LocationType.Boundary, gb.BoundaryDimension);
+            }
         }
 
         /// <summary>
@@ -128,15 +160,31 @@ namespace DotSpatial.Topology.Operation.Relate
         }
 
         /// <summary>
-        ///
+        /// Insert nodes for all intersections on the edges of a Geometry.
+        /// Label the created nodes the same as the edge label if they do not already have a label.
+        /// This allows nodes created by either self-intersections or
+        /// mutual intersections to be labelled.
+        /// Endpoint nodes will already be labelled from when they were inserted.
         /// </summary>
-        /// <param name="ee"></param>
-        private void InsertEdgeEnds(IEnumerable ee)
+        /// <param name="argIndex"></param>
+        private void ComputeIntersectionNodes(int argIndex)
         {
-            for (IEnumerator i = ee.GetEnumerator(); i.MoveNext(); )
+            for (IEnumerator i = _arg[argIndex].GetEdgeEnumerator(); i.MoveNext(); )
             {
-                EdgeEnd e = (EdgeEnd)i.Current;
-                _nodes.Add(e);
+                Edge e = (Edge)i.Current;
+                LocationType eLoc = e.Label.GetLocation(argIndex);
+                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                {
+                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
+                    RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
+                    if (eLoc == LocationType.Boundary)
+                        n.SetLabelBoundary(argIndex);
+                    else
+                    {
+                        if (n.Label.IsNull(argIndex))
+                            n.SetLabel(argIndex, LocationType.Interior);
+                    }
+                }
             }
         }
 
@@ -234,52 +282,93 @@ namespace DotSpatial.Topology.Operation.Relate
         }
 
         /// <summary>
-        /// Insert nodes for all intersections on the edges of a Geometry.
-        /// Label the created nodes the same as the edge label if they do not already have a label.
-        /// This allows nodes created by either self-intersections or
-        /// mutual intersections to be labelled.
-        /// Endpoint nodes will already be labelled from when they were inserted.
+        ///
         /// </summary>
-        /// <param name="argIndex"></param>
-        private void ComputeIntersectionNodes(int argIndex)
+        /// <param name="ee"></param>
+        private void InsertEdgeEnds(IEnumerable ee)
         {
-            for (IEnumerator i = _arg[argIndex].GetEdgeEnumerator(); i.MoveNext(); )
+            for (IEnumerator i = ee.GetEnumerator(); i.MoveNext(); )
             {
-                Edge e = (Edge)i.Current;
-                LocationType eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                EdgeEnd e = (EdgeEnd)i.Current;
+                _nodes.Add(e);
+            }
+        }
+
+        /// <summary>
+        /// Label an isolated edge of a graph with its relationship to the target point.
+        /// If the target has dim 2 or 1, the edge can either be in the interior or the exterior.
+        /// If the target has dim 0, the edge must be in the exterior.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="targetIndex"></param>
+        /// <param name="target"></param>
+        private void LabelIsolatedEdge(GraphComponent e, int targetIndex, IGeometry target)
+        {
+            // this won't work for GeometryCollections with both dim 2 and 1 geoms
+            if (target.Dimension > 0)
+            {
+                // since edge is not in boundary, may not need the full generality of PointLocator?
+                // Possibly should use ptInArea locator instead?  We probably know here
+                // that the edge does not touch the bdy of the target Geometry
+                LocationType loc = _ptLocator.Locate(e.Coordinate, target);
+                e.Label.SetAllLocations(targetIndex, loc);
+            }
+            else e.Label.SetAllLocations(targetIndex, LocationType.Exterior);
+        }
+
+        /// <summary>
+        /// Processes isolated edges by computing their labelling and adding them
+        /// to the isolated edges list.
+        /// Isolated edges are guaranteed not to touch the boundary of the target (since if they
+        /// did, they would have caused an intersection to be computed and hence would
+        /// not be isolated).
+        /// </summary>
+        /// <param name="thisIndex"></param>
+        /// <param name="targetIndex"></param>
+        private void LabelIsolatedEdges(int thisIndex, int targetIndex)
+        {
+            for (IEnumerator ei = _arg[thisIndex].GetEdgeEnumerator(); ei.MoveNext(); )
+            {
+                Edge e = (Edge)ei.Current;
+                if (e.IsIsolated)
                 {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
-                    RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
-                    if (eLoc == LocationType.Boundary)
-                        n.SetLabelBoundary(argIndex);
-                    else
-                    {
-                        if (n.Label.IsNull(argIndex))
-                            n.SetLabel(argIndex, LocationType.Interior);
-                    }
+                    LabelIsolatedEdge(e, targetIndex, _arg[targetIndex].Geometry);
+                    _isolatedEdges.Add(e);
                 }
             }
         }
 
         /// <summary>
-        /// If the Geometries are disjoint, we need to enter their dimension and
-        /// boundary dimension in the Ext rows in the IM
+        /// Label an isolated node with its relationship to the target point.
         /// </summary>
-        /// <param name="im"></param>
-        private void ComputeDisjointIm(IIntersectionMatrix im)
+        /// <param name="n"></param>
+        /// <param name="targetIndex"></param>
+        private void LabelIsolatedNode(GraphComponent n, int targetIndex)
         {
-            IGeometry ga = _arg[0].Geometry;
-            if (!ga.IsEmpty)
+            LocationType loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
+            n.Label.SetAllLocations(targetIndex, loc);
+        }
+
+        /// <summary>
+        /// Isolated nodes are nodes whose labels are incomplete
+        /// (e.g. the location for one Geometry is null).
+        /// This is the case because nodes in one graph which don't intersect
+        /// nodes in the other are not completely labelled by the initial process
+        /// of adding nodes to the nodeList.
+        /// To complete the labelling we need to check for nodes that lie in the
+        /// interior of edges, and in the interior of areas.
+        /// </summary>
+        private void LabelIsolatedNodes()
+        {
+            foreach (Node n in _nodes)
             {
-                im.Set(LocationType.Interior, LocationType.Exterior, ga.Dimension);
-                im.Set(LocationType.Boundary, LocationType.Exterior, ga.BoundaryDimension);
-            }
-            IGeometry gb = _arg[1].Geometry;
-            if (!gb.IsEmpty)
-            {
-                im.Set(LocationType.Exterior, LocationType.Interior, gb.Dimension);
-                im.Set(LocationType.Exterior, LocationType.Boundary, gb.BoundaryDimension);
+                Label label = n.Label;
+                // isolated nodes should always have at least one point in their label
+                Assert.IsTrue(label.GeometryCount > 0, "node with empty label found");
+                if (n.IsIsolated)
+                {
+                    LabelIsolatedNode(n, label.IsNull(0) ? 0 : 1);
+                }
             }
         }
 
@@ -314,82 +403,6 @@ namespace DotSpatial.Topology.Operation.Relate
             }
         }
 
-        /// <summary>
-        /// Processes isolated edges by computing their labelling and adding them
-        /// to the isolated edges list.
-        /// Isolated edges are guaranteed not to touch the boundary of the target (since if they
-        /// did, they would have caused an intersection to be computed and hence would
-        /// not be isolated).
-        /// </summary>
-        /// <param name="thisIndex"></param>
-        /// <param name="targetIndex"></param>
-        private void LabelIsolatedEdges(int thisIndex, int targetIndex)
-        {
-            for (IEnumerator ei = _arg[thisIndex].GetEdgeEnumerator(); ei.MoveNext(); )
-            {
-                Edge e = (Edge)ei.Current;
-                if (e.IsIsolated)
-                {
-                    LabelIsolatedEdge(e, targetIndex, _arg[targetIndex].Geometry);
-                    _isolatedEdges.Add(e);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Label an isolated edge of a graph with its relationship to the target point.
-        /// If the target has dim 2 or 1, the edge can either be in the interior or the exterior.
-        /// If the target has dim 0, the edge must be in the exterior.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="targetIndex"></param>
-        /// <param name="target"></param>
-        private void LabelIsolatedEdge(GraphComponent e, int targetIndex, IGeometry target)
-        {
-            // this won't work for GeometryCollections with both dim 2 and 1 geoms
-            if (target.Dimension > 0)
-            {
-                // since edge is not in boundary, may not need the full generality of PointLocator?
-                // Possibly should use ptInArea locator instead?  We probably know here
-                // that the edge does not touch the bdy of the target Geometry
-                LocationType loc = _ptLocator.Locate(e.Coordinate, target);
-                e.Label.SetAllLocations(targetIndex, loc);
-            }
-            else e.Label.SetAllLocations(targetIndex, LocationType.Exterior);
-        }
-
-        /// <summary>
-        /// Isolated nodes are nodes whose labels are incomplete
-        /// (e.g. the location for one Geometry is null).
-        /// This is the case because nodes in one graph which don't intersect
-        /// nodes in the other are not completely labelled by the initial process
-        /// of adding nodes to the nodeList.
-        /// To complete the labelling we need to check for nodes that lie in the
-        /// interior of edges, and in the interior of areas.
-        /// </summary>
-        private void LabelIsolatedNodes()
-        {
-            foreach (Node n in _nodes)
-            {
-                Label label = n.Label;
-                // isolated nodes should always have at least one point in their label
-                Assert.IsTrue(label.GeometryCount > 0, "node with empty label found");
-                if (n.IsIsolated)
-                {
-                    LabelIsolatedNode(n, label.IsNull(0) ? 0 : 1);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Label an isolated node with its relationship to the target point.
-        /// </summary>
-        /// <param name="n"></param>
-        /// <param name="targetIndex"></param>
-        private void LabelIsolatedNode(GraphComponent n, int targetIndex)
-        {
-            LocationType loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
-            n.Label.SetAllLocations(targetIndex, loc);
-        }
+        #endregion
     }
 }

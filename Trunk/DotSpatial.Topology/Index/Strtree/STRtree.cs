@@ -25,7 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -41,6 +41,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
+    [Serializable]
     public class StRtree<TItem> : AbstractStRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
         #region Constant Fields
@@ -91,6 +92,107 @@ namespace DotSpatial.Topology.Index.Strtree
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static double Avg(double a, double b)
+        {
+            return (a + b) / 2d;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private static double CentreX(Envelope e)
+        {
+            return Avg(e.MinX, e.MaxX);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private static double CentreY(Envelope e)
+        {
+            return Avg(e.MinY, e.MaxY);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        protected override AbstractNode<Envelope, TItem> CreateNode(int level)
+        {
+            return new AnonymousAbstractNodeImpl(level);
+        }
+
+        /// <summary>
+        /// Creates the parent level for the given child level. First, orders the items
+        /// by the x-values of the midpoints, and groups them into vertical slices.
+        /// For each slice, orders the items by the y-values of the midpoints, and
+        /// group them into runs of size M (the node capacity). For each run, creates
+        /// a new (parent) node.
+        /// </summary>
+        /// <param name="childBoundables"></param>
+        /// <param name="newLevel"></param>
+        protected override IList<IBoundable<Envelope, TItem>> CreateParentBoundables(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
+        {
+            Assert.IsTrue(childBoundables.Count != 0);
+            var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
+            var sortedChildBoundables = new List<IBoundable<Envelope, TItem>>(childBoundables);
+            sortedChildBoundables.Sort(XComparer);
+            var verticalSlices = VerticalSlices(sortedChildBoundables,
+                                                    (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
+            var tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+            return tempList;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="childBoundables"></param>
+        /// <param name="newLevel"></param>
+        /// <returns></returns>
+        protected IList<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
+        {
+            return base.CreateParentBoundables(childBoundables, newLevel);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="verticalSlices"></param>
+        /// <param name="newLevel"></param>
+        /// <returns></returns>
+        private List<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlices(IList<IBoundable<Envelope, TItem>>[] verticalSlices, int newLevel)
+        {
+            Assert.IsTrue(verticalSlices.Length > 0);
+            var parentBoundables = new List<IBoundable<Envelope, TItem>>();
+            for (int i = 0; i < verticalSlices.Length; i++)
+            {
+                var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
+                foreach (var o in tempList)
+                    parentBoundables.Add(o);
+            }
+            return parentBoundables;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override IComparer<IBoundable<Envelope, TItem>> GetComparer()
+        {
+            return YComparer;
+        }
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
@@ -157,172 +259,6 @@ namespace DotSpatial.Topology.Index.Strtree
         {
             var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);
-        }
-
-        /// <summary>
-        /// Returns items whose bounds intersect the given envelope.
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        public new IList<TItem> Query(Envelope searchEnv)
-        {
-            //Yes this method does something. It specifies that the bounds is an
-            //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
-            return base.Query(searchEnv);
-        }
-
-        /// <summary>
-        /// Returns items whose bounds intersect the given envelope.
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="visitor"></param>
-        public new void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
-        {
-            //Yes this method does something. It specifies that the bounds is an
-            //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
-            base.Query(searchEnv, visitor);
-        }
-
-        /// <summary>
-        /// Removes a single item from the tree.
-        /// </summary>
-        /// <param name="itemEnv">The Envelope of the item to remove.</param>
-        /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was found.</returns>
-        public new bool Remove(Envelope itemEnv, TItem item)
-        {
-            return base.Remove(itemEnv, item);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        protected override AbstractNode<Envelope, TItem> CreateNode(int level)
-        {
-            return new AnonymousAbstractNodeImpl(level);
-        }
-
-        /// <summary>
-        /// Creates the parent level for the given child level. First, orders the items
-        /// by the x-values of the midpoints, and groups them into vertical slices.
-        /// For each slice, orders the items by the y-values of the midpoints, and
-        /// group them into runs of size M (the node capacity). For each run, creates
-        /// a new (parent) node.
-        /// </summary>
-        /// <param name="childBoundables"></param>
-        /// <param name="newLevel"></param>
-        protected override IList<IBoundable<Envelope, TItem>> CreateParentBoundables(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
-        {
-            Assert.IsTrue(childBoundables.Count != 0);
-            var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
-            var sortedChildBoundables = new List<IBoundable<Envelope, TItem>>(childBoundables);
-            sortedChildBoundables.Sort(XComparer);
-            var verticalSlices = VerticalSlices(sortedChildBoundables,
-                                                    (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
-            var tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
-            return tempList;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="childBoundables"></param>
-        /// <param name="newLevel"></param>
-        /// <returns></returns>
-        protected IList<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
-        {
-            return base.CreateParentBoundables(childBoundables, newLevel);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer<IBoundable<Envelope, TItem>> GetComparer()
-        {
-            return YComparer;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
-        /// <param name="sliceCount"></param>
-        protected IList<IBoundable<Envelope, TItem>>[] VerticalSlices(IList<IBoundable<Envelope, TItem>> childBoundables, int sliceCount)
-        {
-            var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
-            var slices = new IList<IBoundable<Envelope, TItem>>[sliceCount];
-            var i = childBoundables.GetEnumerator();
-            for (var j = 0; j < sliceCount; j++)
-            {
-                slices[j] = new List<IBoundable<Envelope, TItem>>();
-                var boundablesAddedToSlice = 0;
-                /* 
-                 *          Diego Guidi says:
-                 *          the line below introduce an error: 
-                 *          the first element at the iteration (not the first) is lost! 
-                 *          This is simply a different implementation of Iteration in .NET against Java
-                 */
-                // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
-                while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
-                {
-                    var childBoundable = i.Current;
-                    slices[j].Add(childBoundable);
-                    boundablesAddedToSlice++;
-                }
-            }
-            return slices;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private static double Avg(double a, double b)
-        {
-            return (a + b) / 2d;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        private static double CentreX(Envelope e)
-        {
-            return Avg(e.MinX, e.MaxX);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        private static double CentreY(Envelope e)
-        {
-            return Avg(e.MinY, e.MaxY);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="verticalSlices"></param>
-        /// <param name="newLevel"></param>
-        /// <returns></returns>
-        private List<IBoundable<Envelope, TItem>> CreateParentBoundablesFromVerticalSlices(IList<IBoundable<Envelope, TItem>>[] verticalSlices, int newLevel)
-        {
-            Assert.IsTrue(verticalSlices.Length > 0);
-            var parentBoundables = new List<IBoundable<Envelope, TItem>>();
-            for (int i = 0; i < verticalSlices.Length; i++)
-            {
-                var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
-                foreach (var o in tempList)
-                    parentBoundables.Add(o);
-            }
-            return parentBoundables;
         }
 
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
@@ -398,13 +334,76 @@ namespace DotSpatial.Topology.Index.Strtree
             return null;
         }
 
-        #endregion
+        /// <summary>
+        /// Returns items whose bounds intersect the given envelope.
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        public new IList<TItem> Query(Envelope searchEnv)
+        {
+            //Yes this method does something. It specifies that the bounds is an
+            //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
+            return base.Query(searchEnv);
+        }
 
-        #region Classes
+        /// <summary>
+        /// Returns items whose bounds intersect the given envelope.
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <param name="visitor"></param>
+        public new void Query(Envelope searchEnv, IItemVisitor<TItem> visitor)
+        {
+            //Yes this method does something. It specifies that the bounds is an
+            //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
+            base.Query(searchEnv, visitor);
+        }
+
+        /// <summary>
+        /// Removes a single item from the tree.
+        /// </summary>
+        /// <param name="itemEnv">The Envelope of the item to remove.</param>
+        /// <param name="item">The item to remove.</param>
+        /// <returns><c>true</c> if the item was found.</returns>
+        public new bool Remove(Envelope itemEnv, TItem item)
+        {
+            return base.Remove(itemEnv, item);
+        }
 
         /// <summary>
         ///
         /// </summary>
+        /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
+        /// <param name="sliceCount"></param>
+        protected IList<IBoundable<Envelope, TItem>>[] VerticalSlices(IList<IBoundable<Envelope, TItem>> childBoundables, int sliceCount)
+        {
+            var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
+            var slices = new IList<IBoundable<Envelope, TItem>>[sliceCount];
+            var i = childBoundables.GetEnumerator();
+            for (var j = 0; j < sliceCount; j++)
+            {
+                slices[j] = new List<IBoundable<Envelope, TItem>>();
+                var boundablesAddedToSlice = 0;
+                /* 
+                 *          Diego Guidi says:
+                 *          the line below introduce an error: 
+                 *          the first element at the iteration (not the first) is lost! 
+                 *          This is simply a different implementation of Iteration in .NET against Java
+                 */
+                // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
+                while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
+                {
+                    var childBoundable = i.Current;
+                    slices[j].Add(childBoundable);
+                    boundablesAddedToSlice++;
+                }
+            }
+            return slices;
+        }
+
+        #endregion
+
+        #region Classes
+
+        [Serializable]
         private class AnonymousAbstractNodeImpl : AbstractNode<Envelope, TItem>
         {
             #region Constructors

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Precision;
 
 namespace DotSpatial.Topology.Operation.Buffer
@@ -49,9 +50,15 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public class BufferOp
     {
+        #region Constant Fields
+
         // Notice: modified for "safe" assembly in Sql 2005
         // Const added!
         private const int MAX_PRECISION_DIGITS = 12;
+
+        #endregion
+
+        #region Fields
 
         private readonly IGeometry _argGeom;
         private double _distance;
@@ -59,6 +66,10 @@ namespace DotSpatial.Topology.Operation.Buffer
         private int _quadrantSegments = OffsetCurveBuilder.DEFAULT_QUADRANT_SEGMENTS;
         private IGeometry _resultGeometry;
         private TopologyException _saveException;   // debugging only
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a buffer computation for the given point.
@@ -68,6 +79,10 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             _argGeom = g;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Specifies the end cap endCapStyle of the generated buffer.
@@ -101,31 +116,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        /// <summary>
-        /// Compute a reasonable scale factor to limit the precision of
-        /// a given combination of Geometry and buffer distance.
-        /// The scale factor is based on a heuristic.
-        /// </summary>
-        /// <param name="g">The Geometry being buffered.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="maxPrecisionDigits">The mzx # of digits that should be allowed by
-        /// the precision determined by the computed scale factor.</param>
-        /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
-        private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
-        {
-            IEnvelope env = g.EnvelopeInternal;
-            double envSize = Math.Max(env.Height, env.Width);
-            double expandByDistance = distance > 0.0 ? distance : 0.0;
-            double bufEnvSize = envSize + 2 * expandByDistance;
+        #endregion
 
-            // the smallest power of 10 greater than the buffer envelope
-            int bufEnvLog10 = (int)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
-            int minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
-
-            // scale factor is inverse of min Unit size, so flip sign of exponent
-            double scaleFactor = Math.Pow(10.0, -minUnitLog10);
-            return scaleFactor;
-        }
+        #region Methods
 
         /// <summary>
         /// Computes the buffer of a point for a given buffer distance.
@@ -193,27 +186,42 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <summary>
         ///
         /// </summary>
-        /// <param name="distance"></param>
-        /// <returns></returns>
-        public virtual IGeometry GetResultGeometry(double distance)
+        /// <param name="precisionDigits"></param>
+        private void BufferFixedPrecision(int precisionDigits)
         {
-            _distance = distance;
-            ComputeGeometry();
-            return _resultGeometry;
+            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
+
+            PrecisionModel fixedPm = new PrecisionModel(sizeBasedScaleFactor);
+
+            // don't change the precision model of the Geometry, just reduce the precision
+            SimpleGeometryPrecisionReducer reducer = new SimpleGeometryPrecisionReducer(fixedPm);
+            IGeometry reducedGeom = reducer.Reduce(_argGeom);
+
+            BufferBuilder bufBuilder = new BufferBuilder();
+            bufBuilder.WorkingPrecisionModel = fixedPm;
+            bufBuilder.QuadrantSegments = _quadrantSegments;
+
+            // this may throw an exception, if robustness errors are encountered
+            _resultGeometry = bufBuilder.Buffer(reducedGeom, _distance);
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="quadrantSegments"></param>
-        /// <returns></returns>
-        public virtual IGeometry GetResultGeometry(double distance, int quadrantSegments)
+        private void BufferOriginalPrecision()
         {
-            _distance = distance;
-            QuadrantSegments = quadrantSegments;
-            ComputeGeometry();
-            return _resultGeometry;
+            try
+            {
+                BufferBuilder bufBuilder = new BufferBuilder();
+                bufBuilder.QuadrantSegments = _quadrantSegments;
+                bufBuilder.EndCapStyle = _endCapStyle;
+                _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
+            }
+            catch (TopologyException ex)
+            {
+                _saveException = ex;
+                // don't propagate the exception - it will be detected by fact that resultGeometry is null
+            }
         }
 
         /// <summary>
@@ -248,42 +256,55 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <summary>
         ///
         /// </summary>
-        private void BufferOriginalPrecision()
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public virtual IGeometry GetResultGeometry(double distance)
         {
-            try
-            {
-                BufferBuilder bufBuilder = new BufferBuilder();
-                bufBuilder.QuadrantSegments = _quadrantSegments;
-                bufBuilder.EndCapStyle = _endCapStyle;
-                _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
-            }
-            catch (TopologyException ex)
-            {
-                _saveException = ex;
-                // don't propagate the exception - it will be detected by fact that resultGeometry is null
-            }
+            _distance = distance;
+            ComputeGeometry();
+            return _resultGeometry;
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="precisionDigits"></param>
-        private void BufferFixedPrecision(int precisionDigits)
+        /// <param name="distance"></param>
+        /// <param name="quadrantSegments"></param>
+        /// <returns></returns>
+        public virtual IGeometry GetResultGeometry(double distance, int quadrantSegments)
         {
-            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
-
-            PrecisionModel fixedPm = new PrecisionModel(sizeBasedScaleFactor);
-
-            // don't change the precision model of the Geometry, just reduce the precision
-            SimpleGeometryPrecisionReducer reducer = new SimpleGeometryPrecisionReducer(fixedPm);
-            IGeometry reducedGeom = reducer.Reduce(_argGeom);
-
-            BufferBuilder bufBuilder = new BufferBuilder();
-            bufBuilder.WorkingPrecisionModel = fixedPm;
-            bufBuilder.QuadrantSegments = _quadrantSegments;
-
-            // this may throw an exception, if robustness errors are encountered
-            _resultGeometry = bufBuilder.Buffer(reducedGeom, _distance);
+            _distance = distance;
+            QuadrantSegments = quadrantSegments;
+            ComputeGeometry();
+            return _resultGeometry;
         }
+
+        /// <summary>
+        /// Compute a reasonable scale factor to limit the precision of
+        /// a given combination of Geometry and buffer distance.
+        /// The scale factor is based on a heuristic.
+        /// </summary>
+        /// <param name="g">The Geometry being buffered.</param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <param name="maxPrecisionDigits">The mzx # of digits that should be allowed by
+        /// the precision determined by the computed scale factor.</param>
+        /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
+        private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
+        {
+            IEnvelope env = g.EnvelopeInternal;
+            double envSize = Math.Max(env.Height, env.Width);
+            double expandByDistance = distance > 0.0 ? distance : 0.0;
+            double bufEnvSize = envSize + 2 * expandByDistance;
+
+            // the smallest power of 10 greater than the buffer envelope
+            int bufEnvLog10 = (int)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
+            int minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
+
+            // scale factor is inverse of min Unit size, so flip sign of exponent
+            double scaleFactor = Math.Pow(10.0, -minUnitLog10);
+            return scaleFactor;
+        }
+
+        #endregion
     }
 }

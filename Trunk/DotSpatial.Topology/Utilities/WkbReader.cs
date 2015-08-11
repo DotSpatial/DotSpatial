@@ -23,6 +23,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -31,7 +32,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class WkbReader
     {
+        #region Fields
+
         private IGeometryFactory factory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>.
@@ -47,6 +54,10 @@ namespace DotSpatial.Topology.Utilities
             this.factory = factory;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
@@ -54,6 +65,10 @@ namespace DotSpatial.Topology.Utilities
         {
             get { return factory; }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -142,119 +157,6 @@ namespace DotSpatial.Topology.Utilities
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual ILinearRing ReadRing(BinaryReader reader)
-        {
-            int numPoints = reader.ReadInt32();
-            Coordinate[] coordinates = new Coordinate[numPoints];
-            for (int i = 0; i < numPoints; i++)
-                coordinates[i] = ReadCoordinate(reader);
-            return Factory.CreateLinearRing(coordinates);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadPoint(BinaryReader reader)
-        {
-            return Factory.CreatePoint(ReadCoordinate(reader));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadLineString(BinaryReader reader)
-        {
-            int numPoints = reader.ReadInt32();
-            Coordinate[] coordinates = new Coordinate[numPoints];
-            for (int i = 0; i < numPoints; i++)
-                coordinates[i] = ReadCoordinate(reader);
-            return Factory.CreateLineString(coordinates);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadPolygon(BinaryReader reader)
-        {
-            int numRings = reader.ReadInt32();
-            ILinearRing exteriorRing = ReadRing(reader);
-            ILinearRing[] interiorRings = new LinearRing[numRings - 1];
-            for (int i = 0; i < numRings - 1; i++)
-                interiorRings[i] = ReadRing(reader);
-            return Factory.CreatePolygon(exteriorRing, interiorRings);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadMultiPoint(BinaryReader reader)
-        {
-            int numGeometries = reader.ReadInt32();
-            Point[] points = new Point[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
-            {
-                ReadByteOrder(reader);
-                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
-                if (geometryType != WkbGeometryType.Point)
-                    throw new ArgumentException("Point feature expected");
-                points[i] = ReadPoint(reader) as Point;
-            }
-            return Factory.CreateMultiPoint(points);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadMultiLineString(BinaryReader reader)
-        {
-            int numGeometries = reader.ReadInt32();
-            LineString[] strings = new LineString[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
-            {
-                ReadByteOrder(reader);
-                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
-                if (geometryType != WkbGeometryType.LineString)
-                    throw new ArgumentException("LineString feature expected");
-                strings[i] = ReadLineString(reader) as LineString;
-            }
-            return Factory.CreateMultiLineString(strings);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected virtual IGeometry ReadMultiPolygon(BinaryReader reader)
-        {
-            int numGeometries = reader.ReadInt32();
-            Polygon[] polygons = new Polygon[numGeometries];
-            for (int i = 0; i < numGeometries; i++)
-            {
-                ReadByteOrder(reader);
-                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
-                if (geometryType != WkbGeometryType.Polygon)
-                    throw new ArgumentException("Polygon feature expected");
-                polygons[i] = ReadPolygon(reader) as Polygon;
-            }
-            return Factory.CreateMultiPolygon(polygons);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
         protected virtual IGeometry ReadGeometryCollection(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
@@ -293,5 +195,120 @@ namespace DotSpatial.Topology.Utilities
             }
             return Factory.CreateGeometryCollection(geometries);
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadLineString(BinaryReader reader)
+        {
+            int numPoints = reader.ReadInt32();
+            Coordinate[] coordinates = new Coordinate[numPoints];
+            for (int i = 0; i < numPoints; i++)
+                coordinates[i] = ReadCoordinate(reader);
+            return Factory.CreateLineString(coordinates);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadMultiLineString(BinaryReader reader)
+        {
+            int numGeometries = reader.ReadInt32();
+            LineString[] strings = new LineString[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+            {
+                ReadByteOrder(reader);
+                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
+                if (geometryType != WkbGeometryType.LineString)
+                    throw new ArgumentException("LineString feature expected");
+                strings[i] = ReadLineString(reader) as LineString;
+            }
+            return Factory.CreateMultiLineString(strings);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadMultiPoint(BinaryReader reader)
+        {
+            int numGeometries = reader.ReadInt32();
+            Point[] points = new Point[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+            {
+                ReadByteOrder(reader);
+                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
+                if (geometryType != WkbGeometryType.Point)
+                    throw new ArgumentException("Point feature expected");
+                points[i] = ReadPoint(reader) as Point;
+            }
+            return Factory.CreateMultiPoint(points);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadMultiPolygon(BinaryReader reader)
+        {
+            int numGeometries = reader.ReadInt32();
+            Polygon[] polygons = new Polygon[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+            {
+                ReadByteOrder(reader);
+                WkbGeometryType geometryType = (WkbGeometryType)reader.ReadInt32();
+                if (geometryType != WkbGeometryType.Polygon)
+                    throw new ArgumentException("Polygon feature expected");
+                polygons[i] = ReadPolygon(reader) as Polygon;
+            }
+            return Factory.CreateMultiPolygon(polygons);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadPoint(BinaryReader reader)
+        {
+            return Factory.CreatePoint(ReadCoordinate(reader));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual IGeometry ReadPolygon(BinaryReader reader)
+        {
+            int numRings = reader.ReadInt32();
+            ILinearRing exteriorRing = ReadRing(reader);
+            ILinearRing[] interiorRings = new LinearRing[numRings - 1];
+            for (int i = 0; i < numRings - 1; i++)
+                interiorRings[i] = ReadRing(reader);
+            return Factory.CreatePolygon(exteriorRing, interiorRings);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        protected virtual ILinearRing ReadRing(BinaryReader reader)
+        {
+            int numPoints = reader.ReadInt32();
+            Coordinate[] coordinates = new Coordinate[numPoints];
+            for (int i = 0; i < numPoints; i++)
+                coordinates[i] = ReadCoordinate(reader);
+            return Factory.CreateLinearRing(coordinates);
+        }
+
+        #endregion
     }
 }

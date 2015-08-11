@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Relate
@@ -34,6 +35,8 @@ namespace DotSpatial.Topology.Operation.Relate
     /// </summary>
     public class EdgeEndBuilder
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -86,6 +89,33 @@ namespace DotSpatial.Topology.Operation.Relate
         }
 
         /// <summary>
+        /// Create a StubEdge for the edge after the intersection eiCurr.
+        /// The next intersection is provided
+        /// in case it is the endpoint for the stub edge.
+        /// Otherwise, the next point from the parent edge will be the endpoint.
+        /// eiCurr will always be an EdgeIntersection, but eiNext may be null.
+        /// </summary>
+        /// <param name="edge"></param>
+        /// <param name="l"></param>
+        /// <param name="eiCurr"></param>
+        /// <param name="eiNext"></param>
+        public virtual void CreateEdgeEndForNext(Edge edge, IList l, EdgeIntersection eiCurr, EdgeIntersection eiNext)
+        {
+            int iNext = eiCurr.SegmentIndex + 1;
+            // if there is no next edge there is nothing to do
+            if (iNext >= edge.NumPoints && eiNext == null)
+                return;
+
+            Coordinate pNext = edge.GetCoordinate(iNext);
+            // if the next intersection is in the same segment as the current, use it as the endpoint
+            if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
+                pNext = eiNext.Coordinate;
+
+            EdgeEnd e = new EdgeEnd(edge, eiCurr.Coordinate, pNext, new Label(edge.Label));
+            l.Add(e);
+        }
+
+        /// <summary>
         /// Create a EdgeStub for the edge before the intersection eiCurr.
         /// The previous intersection is provided
         /// in case it is the endpoint for the stub edge.
@@ -118,31 +148,6 @@ namespace DotSpatial.Topology.Operation.Relate
             l.Add(e);
         }
 
-        /// <summary>
-        /// Create a StubEdge for the edge after the intersection eiCurr.
-        /// The next intersection is provided
-        /// in case it is the endpoint for the stub edge.
-        /// Otherwise, the next point from the parent edge will be the endpoint.
-        /// eiCurr will always be an EdgeIntersection, but eiNext may be null.
-        /// </summary>
-        /// <param name="edge"></param>
-        /// <param name="l"></param>
-        /// <param name="eiCurr"></param>
-        /// <param name="eiNext"></param>
-        public virtual void CreateEdgeEndForNext(Edge edge, IList l, EdgeIntersection eiCurr, EdgeIntersection eiNext)
-        {
-            int iNext = eiCurr.SegmentIndex + 1;
-            // if there is no next edge there is nothing to do
-            if (iNext >= edge.NumPoints && eiNext == null)
-                return;
-
-            Coordinate pNext = edge.GetCoordinate(iNext);
-            // if the next intersection is in the same segment as the current, use it as the endpoint
-            if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
-                pNext = eiNext.Coordinate;
-
-            EdgeEnd e = new EdgeEnd(edge, eiCurr.Coordinate, pNext, new Label(edge.Label));
-            l.Add(e);
-        }
+        #endregion
     }
 }

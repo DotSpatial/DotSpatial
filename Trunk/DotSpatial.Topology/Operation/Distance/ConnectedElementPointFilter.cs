@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Distance
 {
@@ -34,7 +35,13 @@ namespace DotSpatial.Topology.Operation.Distance
     /// </summary>
     public class ConnectedElementPointFilter : IGeometryFilter
     {
+        #region Fields
+
         private readonly IList _pts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -45,7 +52,9 @@ namespace DotSpatial.Topology.Operation.Distance
             _pts = pts;
         }
 
-        #region IGeometryFilter Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -56,8 +65,6 @@ namespace DotSpatial.Topology.Operation.Distance
             if (geom is Point || geom is LineString || geom is Polygon)
                 _pts.Add(geom.Coordinate);
         }
-
-        #endregion
 
         /// <summary>
         /// Returns a list containing a Coordinate from each Polygon, LineString, and Point
@@ -70,5 +77,7 @@ namespace DotSpatial.Topology.Operation.Distance
             geom.Apply(new ConnectedElementPointFilter(pts));
             return pts;
         }
+
+        #endregion
     }
 }

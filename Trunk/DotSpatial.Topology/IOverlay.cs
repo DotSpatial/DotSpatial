@@ -22,6 +22,8 @@
 // |                      |            |
 // *********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology
 {
     /// <summary>
@@ -29,6 +31,8 @@ namespace DotSpatial.Topology
     /// </summary>
     public interface IOverlay
     {
+        #region Methods
+
         /// Difference
         /// <summary>
         /// Returns a <c>Geometry</c> representing the points making up this
@@ -67,5 +71,7 @@ namespace DotSpatial.Topology
         /// <param name="geom">The <c>Geometry</c> with which to compute the union.</param>
         /// <returns>A set combining the points of this <c>Geometry</c> and the points of <c>other</c>.</returns>
         IGeometry Union(IGeometry geom);
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Strtree;
 
 namespace DotSpatial.Topology.Algorithm
@@ -32,9 +33,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class SiRtreePointInRing : IPointInRing
     {
+        #region Fields
+
         private readonly LinearRing _ring;
         private int _crossings;  // number of segment/ray crossings
         private SiRtree _sirTree;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -46,7 +53,24 @@ namespace DotSpatial.Topology.Algorithm
             BuildIndex();
         }
 
-        #region IPointInRing Members
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void BuildIndex()
+        {
+            _sirTree = new SiRtree();
+            IList<Coordinate> pts = _ring.Coordinates;
+            for (int i = 1; i < pts.Count; i++)
+            {
+                if (pts[i - 1].Equals(pts[i])) { continue; }
+                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
+                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
+            }
+        }
 
         /// <summary>
         ///
@@ -72,23 +96,6 @@ namespace DotSpatial.Topology.Algorithm
             if ((_crossings % 2) == 1)
                 return true;
             return false;
-        }
-
-        #endregion
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildIndex()
-        {
-            _sirTree = new SiRtree();
-            IList<Coordinate> pts = _ring.Coordinates;
-            for (int i = 1; i < pts.Count; i++)
-            {
-                if (pts[i - 1].Equals(pts[i])) { continue; }
-                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
-            }
         }
 
         /// <summary>
@@ -122,5 +129,7 @@ namespace DotSpatial.Topology.Algorithm
                     _crossings++;
             }
         }
+
+        #endregion
     }
 }

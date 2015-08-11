@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -34,7 +35,13 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class SimpleNoder : SinglePassNoder
     {
+        #region Fields
+
         private IList _nodedSegStrings;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleNoder"/> class.
@@ -48,14 +55,22 @@ namespace DotSpatial.Topology.Noding
         public SimpleNoder(ISegmentIntersector segInt)
             : base(segInt) { }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        ///
         /// </summary>
-        /// <returns></returns>
-        public override IList GetNodedSubstrings()
+        /// <param name="e0"></param>
+        /// <param name="e1"></param>
+        private void ComputeIntersects(SegmentString e0, SegmentString e1)
         {
-            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
+            IList<Coordinate> pts0 = e0.Coordinates;
+            IList<Coordinate> pts1 = e1.Coordinates;
+            for (int i0 = 0; i0 < pts0.Count - 1; i0++)
+                for (int i1 = 0; i1 < pts1.Count - 1; i1++)
+                    SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
         }
 
         /// <summary>
@@ -79,17 +94,15 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        ///
+        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
+        /// The <see cref="SegmentString"/>s have the same context as their parent.
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="e1"></param>
-        private void ComputeIntersects(SegmentString e0, SegmentString e1)
+        /// <returns></returns>
+        public override IList GetNodedSubstrings()
         {
-            IList<Coordinate> pts0 = e0.Coordinates;
-            IList<Coordinate> pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Count - 1; i0++)
-                for (int i1 = 0; i1 < pts1.Count - 1; i1++)
-                    SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
+            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Overlay
@@ -32,8 +33,14 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class PointBuilder
     {
+        #region Fields
+
         private readonly IGeometryFactory _geometryFactory;
         private readonly OverlayOp _op;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -45,6 +52,10 @@ namespace DotSpatial.Topology.Operation.Overlay
             _op = op;
             _geometryFactory = geometryFactory;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -104,5 +115,7 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
             return nonCoveredPointList;
         }
+
+        #endregion
     }
 }

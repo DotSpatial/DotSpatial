@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -39,10 +40,15 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
+        #region Fields
+
         private Coordinate _coordinate;
         private double _dist;
-
         private int _segmentIndex;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -57,6 +63,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             _dist = dist;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// The point of intersection.
         /// </summary>
@@ -69,21 +79,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             set
             {
                 _coordinate = value;
-            }
-        }
-
-        /// <summary>
-        /// The index of the containing line segment in the parent edge.
-        /// </summary>
-        public virtual int SegmentIndex
-        {
-            get
-            {
-                return _segmentIndex;
-            }
-            set
-            {
-                _segmentIndex = value;
             }
         }
 
@@ -102,20 +97,24 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
-        #region IComparable Members
-
         /// <summary>
-        ///
+        /// The index of the containing line segment in the parent edge.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public virtual int CompareTo(object obj)
+        public virtual int SegmentIndex
         {
-            EdgeIntersection other = (EdgeIntersection)obj;
-            return Compare(other.SegmentIndex, other.Distance);
+            get
+            {
+                return _segmentIndex;
+            }
+            set
+            {
+                _segmentIndex = value;
+            }
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -136,6 +135,17 @@ namespace DotSpatial.Topology.GeometriesGraph
             if (Distance < dist)
                 return -1;
             return Distance > dist ? 1 : 0;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public virtual int CompareTo(object obj)
+        {
+            EdgeIntersection other = (EdgeIntersection)obj;
+            return Compare(other.SegmentIndex, other.Distance);
         }
 
         /// <summary>
@@ -162,5 +172,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             outstream.Write(" seg # = " + SegmentIndex);
             outstream.WriteLine(" dist = " + Distance);
         }
+
+        #endregion
     }
 }

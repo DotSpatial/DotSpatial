@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Simplify
 {
     /// <summary>
@@ -31,8 +33,14 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class TaggedLineSegment : LineSegment
     {
+        #region Fields
+
         private readonly int _index;
         private readonly IGeometry _parent;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -55,16 +63,9 @@ namespace DotSpatial.Topology.Simplify
         /// <param name="p1"></param>
         public TaggedLineSegment(Coordinate p0, Coordinate p1) : this(p0, p1, null, -1) { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual IGeometry Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -76,5 +77,18 @@ namespace DotSpatial.Topology.Simplify
                 return _index;
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual IGeometry Parent
+        {
+            get
+            {
+                return _parent;
+            }
+        }
+
+        #endregion
     }
 }

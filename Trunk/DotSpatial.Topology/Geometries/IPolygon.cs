@@ -22,17 +22,14 @@
 // |                      |            |
 // *********************************************************************************************************
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Full powered topology style Polygon
     /// </summary>
     public interface IPolygon : IGeometry, IBasicPolygon
     {
-        /// <summary>
-        /// Gets the <see cref="ILinearRing">ILinearRing</see> for the Exterior Ring.
-        /// </summary>
-        new ILinearRing Shell { get; }
+        #region Properties
 
         /// <summary>
         /// Gets the System.Array of <see cref="ILinearRing">ILinearRing</see>s that make up the holes in the polygon.
@@ -40,10 +37,21 @@ namespace DotSpatial.Topology
         new ILinearRing[] Holes { get; }
 
         /// <summary>
+        /// Gets the <see cref="ILinearRing">ILinearRing</see> for the Exterior Ring.
+        /// </summary>
+        new ILinearRing Shell { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Gets a specific <see cref="ILinearRing">ILinearRing</see> identified by the 0 based index n
         /// </summary>
         /// <param name="n">A 0 based integer index enumerating the rings</param>
         /// <returns><see cref="ILinearRing">ILinearRing</see> outlining the n'th hole in the polygon</returns>
         ILineString GetInteriorRingN(int n);
+
+        #endregion
     }
 }

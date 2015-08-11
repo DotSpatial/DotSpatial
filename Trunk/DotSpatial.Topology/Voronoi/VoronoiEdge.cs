@@ -35,10 +35,7 @@ namespace DotSpatial.Topology.Voronoi
     /// </summary>
     public class VoronoiEdge
     {
-        /// <summary>
-        /// An internal boolean for tracking some cleanup operations
-        /// </summary>
-        internal bool Done;
+        #region Fields
 
         /// <summary>
         /// The other original point in the dataset
@@ -61,38 +58,13 @@ namespace DotSpatial.Topology.Voronoi
         public Vector2 VVertexB = Fortune.VVUnkown;
 
         /// <summary>
-        /// Boolean, true if both the VertexA and VertexB are infinite vectors
+        /// An internal boolean for tracking some cleanup operations
         /// </summary>
-        public bool IsInfinite
-        {
-            get { return VVertexA == Fortune.VVInfinite && VVertexB == Fortune.VVInfinite; }
-        }
+        internal bool Done;
 
-        /// <summary>
-        /// Indicates that one of the voronoi vertices for this edge is known, but no
-        /// intersection is found to bound the other edge, and it should extend to the
-        /// bounding box.
-        /// </summary>
-        public bool IsPartlyInfinite
-        {
-            get { return VVertexA == Fortune.VVInfinite || VVertexB == Fortune.VVInfinite; }
-        }
+        #endregion
 
-        /// <summary>
-        /// In the case where the line is infinite, this will return the
-        /// center between the left and right data points.
-        /// </summary>
-        public Vector2 FixedPoint
-        {
-            get
-            {
-                if (IsInfinite)
-                    return (LeftData + RightData) * 0.5;
-                if (VVertexA != Fortune.VVInfinite)
-                    return VVertexA;
-                return VVertexB;
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Calculates a vector direction that indicates the direction of this
@@ -119,6 +91,40 @@ namespace DotSpatial.Topology.Voronoi
         }
 
         /// <summary>
+        /// In the case where the line is infinite, this will return the
+        /// center between the left and right data points.
+        /// </summary>
+        public Vector2 FixedPoint
+        {
+            get
+            {
+                if (IsInfinite)
+                    return (LeftData + RightData) * 0.5;
+                if (VVertexA != Fortune.VVInfinite)
+                    return VVertexA;
+                return VVertexB;
+            }
+        }
+
+        /// <summary>
+        /// Boolean, true if both the VertexA and VertexB are infinite vectors
+        /// </summary>
+        public bool IsInfinite
+        {
+            get { return VVertexA == Fortune.VVInfinite && VVertexB == Fortune.VVInfinite; }
+        }
+
+        /// <summary>
+        /// Indicates that one of the voronoi vertices for this edge is known, but no
+        /// intersection is found to bound the other edge, and it should extend to the
+        /// bounding box.
+        /// </summary>
+        public bool IsPartlyInfinite
+        {
+            get { return VVertexA == Fortune.VVInfinite || VVertexB == Fortune.VVInfinite; }
+        }
+
+        /// <summary>
         /// Calculates the length of this edge
         /// </summary>
         public double Length
@@ -130,6 +136,10 @@ namespace DotSpatial.Topology.Voronoi
                 return VVertexA.Distance(VVertexB);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         ///<summary>
         /// Adds VertexA and VertexB sequentially, so that if VertexA is defined,
@@ -145,5 +155,7 @@ namespace DotSpatial.Topology.Voronoi
                 VVertexB = v;
             else throw new Exception("Tried to add third vertex!");
         }
+
+        #endregion
     }
 }

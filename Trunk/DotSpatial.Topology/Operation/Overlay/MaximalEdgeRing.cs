@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Overlay
@@ -41,6 +42,8 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class MaximalEdgeRing : EdgeRing
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -49,41 +52,9 @@ namespace DotSpatial.Topology.Operation.Overlay
         public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
             : base(start, geometryFactory) { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="de"></param>
-        /// <returns></returns>
-        public override DirectedEdge GetNext(DirectedEdge de)
-        {
-            return de.Next;
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="de"></param>
-        /// <param name="er"></param>
-        public override void SetEdgeRing(DirectedEdge de, EdgeRing er)
-        {
-            de.EdgeRing = er;
-        }
-
-        /// <summary>
-        /// For all nodes in this EdgeRing,
-        /// link the DirectedEdges at the node to form minimalEdgeRings
-        /// </summary>
-        public virtual void LinkDirectedEdgesForMinimalEdgeRings()
-        {
-            DirectedEdge de = StartDe;
-            do
-            {
-                Node node = de.Node;
-                ((DirectedEdgeStar)node.Edges).LinkMinimalDirectedEdges(this);
-                de = de.Next;
-            }
-            while (de != StartDe);
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -105,5 +76,43 @@ namespace DotSpatial.Topology.Operation.Overlay
             while (de != StartDe);
             return minEdgeRings;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="de"></param>
+        /// <returns></returns>
+        public override DirectedEdge GetNext(DirectedEdge de)
+        {
+            return de.Next;
+        }
+
+        /// <summary>
+        /// For all nodes in this EdgeRing,
+        /// link the DirectedEdges at the node to form minimalEdgeRings
+        /// </summary>
+        public virtual void LinkDirectedEdgesForMinimalEdgeRings()
+        {
+            DirectedEdge de = StartDe;
+            do
+            {
+                Node node = de.Node;
+                ((DirectedEdgeStar)node.Edges).LinkMinimalDirectedEdges(this);
+                de = de.Next;
+            }
+            while (de != StartDe);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="de"></param>
+        /// <param name="er"></param>
+        public override void SetEdgeRing(DirectedEdge de, EdgeRing er)
+        {
+            de.EdgeRing = er;
+        }
+
+        #endregion
     }
 }

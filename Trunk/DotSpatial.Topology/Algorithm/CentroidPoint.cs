@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Algorithm
 {
     /// <summary>
@@ -31,8 +33,14 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class CentroidPoint
     {
+        #region Fields
+
         private readonly Coordinate _centSum = new Coordinate();
         private int _ptCount;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -47,6 +55,10 @@ namespace DotSpatial.Topology.Algorithm
                 return cent;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds the point(s) defined by a Geometry to the centroid total.
@@ -77,5 +89,7 @@ namespace DotSpatial.Topology.Algorithm
             _centSum.X += pt.X;
             _centSum.Y += pt.Y;
         }
+
+        #endregion
     }
 }

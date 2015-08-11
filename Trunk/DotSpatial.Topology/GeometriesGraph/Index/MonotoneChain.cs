@@ -28,8 +28,14 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class MonotoneChain
     {
+        #region Fields
+
         private readonly int _chainIndex;
         private readonly MonotoneChainEdge _mce;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -42,6 +48,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             _chainIndex = chainIndex;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
@@ -51,5 +61,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         {
             _mce.ComputeIntersectsForChain(_chainIndex, mc._mce, mc._chainIndex, si);
         }
+
+        #endregion
     }
 }

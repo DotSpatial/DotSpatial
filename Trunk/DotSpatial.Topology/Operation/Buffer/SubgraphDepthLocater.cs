@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Buffer
@@ -38,8 +39,14 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public class SubgraphDepthLocater
     {
+        #region Fields
+
         private readonly LineSegment _seg = new LineSegment();
         private readonly IList _subgraphs;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -50,21 +57,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             _subgraphs = subgraphs;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public virtual int GetDepth(Coordinate p)
-        {
-            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
-            // if no segments on stabbing line subgraph must be outside all others.
-            if (stabbedSegments.Count == 0)
-                return 0;
-            stabbedSegments.Sort();
-            DepthSegment ds = (DepthSegment)stabbedSegments[0];
-            return ds.LeftDepth;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Finds all non-horizontal segments intersecting the stabbing line.
@@ -150,7 +145,25 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        #region Nested type: DepthSegment
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public virtual int GetDepth(Coordinate p)
+        {
+            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
+            // if no segments on stabbing line subgraph must be outside all others.
+            if (stabbedSegments.Count == 0)
+                return 0;
+            stabbedSegments.Sort();
+            DepthSegment ds = (DepthSegment)stabbedSegments[0];
+            return ds.LeftDepth;
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         /// A segment from a directed edge which has been assigned a depth value
@@ -158,8 +171,14 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </summary>
         private class DepthSegment : IComparable
         {
+            #region Fields
+
             private readonly int _leftDepth;
             private readonly LineSegment _upwardSeg;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -173,6 +192,10 @@ namespace DotSpatial.Topology.Operation.Buffer
                 _leftDepth = depth;
             }
 
+            #endregion
+
+            #region Properties
+
             /// <summary>
             ///
             /// </summary>
@@ -181,7 +204,9 @@ namespace DotSpatial.Topology.Operation.Buffer
                 get { return _leftDepth; }
             }
 
-            #region IComparable Members
+            #endregion
+
+            #region Methods
 
             /// <summary>
             /// Defines a comparision operation on DepthSegments
@@ -219,8 +244,6 @@ namespace DotSpatial.Topology.Operation.Buffer
                 return CompareX(_upwardSeg, other._upwardSeg);
             }
 
-            #endregion
-
             /// <summary>
             /// Compare two collinear segments for left-most ordering.
             /// If segs are vertical, use vertical ordering for comparison.
@@ -236,6 +259,8 @@ namespace DotSpatial.Topology.Operation.Buffer
                 int compare0 = seg0.P0.CompareTo(seg1.P0);
                 return compare0 != 0 ? compare0 : seg0.P1.CompareTo(seg1.P1);
             }
+
+            #endregion
         }
 
         #endregion

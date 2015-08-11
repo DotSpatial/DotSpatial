@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Algorithm
@@ -36,8 +37,49 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class PointLocator
     {
+        #region Fields
+
         private bool _isIn;            // true if the point lies in or on any Geometry element
         private int _numBoundaries;    // the number of sub-elements whose boundaries the point lies in
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="geom"></param>
+        private void ComputeLocation(Coordinate p, IGeometry geom)
+        {
+            if (geom is ILineString)
+                UpdateLocationInfo(Locate(p, geom));
+            else if (geom is IPolygon)
+                UpdateLocationInfo(Locate(p, geom));
+            else if (geom is IMultiLineString)
+            {
+                IMultiLineString ml = (IMultiLineString)geom;
+                foreach (ILineString l in ml.Geometries)
+                    UpdateLocationInfo(Locate(p, l));
+            }
+            else if (geom is IMultiPolygon)
+            {
+                IMultiPolygon mpoly = (IMultiPolygon)geom;
+                foreach (IPolygon poly in mpoly.Geometries)
+                    UpdateLocationInfo(Locate(p, poly));
+            }
+            else if (geom is IGeometryCollection)
+            {
+                IEnumerator geomi = new GeometryCollection.Enumerator((IGeometryCollection)geom);
+                while (geomi.MoveNext())
+                {
+                    IGeometry g2 = (IGeometry)geomi.Current;
+                    if (g2 != geom)
+                        ComputeLocation(p, g2);
+                }
+            }
+        }
 
         /// <summary>
         /// Convenience method to test a point for intersection with a Geometry
@@ -79,53 +121,6 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="p"></param>
-        /// <param name="geom"></param>
-        private void ComputeLocation(Coordinate p, IGeometry geom)
-        {
-            if (geom is ILineString)
-                UpdateLocationInfo(Locate(p, geom));
-            else if (geom is IPolygon)
-                UpdateLocationInfo(Locate(p, geom));
-            else if (geom is IMultiLineString)
-            {
-                IMultiLineString ml = (IMultiLineString)geom;
-                foreach (ILineString l in ml.Geometries)
-                    UpdateLocationInfo(Locate(p, l));
-            }
-            else if (geom is IMultiPolygon)
-            {
-                IMultiPolygon mpoly = (IMultiPolygon)geom;
-                foreach (IPolygon poly in mpoly.Geometries)
-                    UpdateLocationInfo(Locate(p, poly));
-            }
-            else if (geom is IGeometryCollection)
-            {
-                IEnumerator geomi = new GeometryCollection.Enumerator((IGeometryCollection)geom);
-                while (geomi.MoveNext())
-                {
-                    IGeometry g2 = (IGeometry)geomi.Current;
-                    if (g2 != geom)
-                        ComputeLocation(p, g2);
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="loc"></param>
-        private void UpdateLocationInfo(LocationType loc)
-        {
-            if (loc == LocationType.Interior)
-                _isIn = true;
-            if (loc == LocationType.Boundary)
-                _numBoundaries++;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
         /// <param name="l"></param>
         /// <returns></returns>
         private static LocationType LocateInLineString(Coordinate p, ILineString l)
@@ -135,22 +130,6 @@ namespace DotSpatial.Topology.Algorithm
                 if (p.Equals(pt[0]) || p.Equals(pt[pt.Count - 1]))
                     return LocationType.Boundary;
             if (CgAlgorithms.IsOnLine(p, pt))
-                return LocationType.Interior;
-            return LocationType.Exterior;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="ring"></param>
-        /// <returns></returns>
-        private static LocationType LocateInPolygonRing(Coordinate p, IBasicGeometry ring)
-        {
-            // can this test be folded into IsPointInRing?
-            if (CgAlgorithms.IsOnLine(p, ring.Coordinates))
-                return LocationType.Boundary;
-            if (CgAlgorithms.IsPointInRing(p, ring.Coordinates))
                 return LocationType.Interior;
             return LocationType.Exterior;
         }
@@ -182,5 +161,35 @@ namespace DotSpatial.Topology.Algorithm
             }
             return LocationType.Interior;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="ring"></param>
+        /// <returns></returns>
+        private static LocationType LocateInPolygonRing(Coordinate p, IBasicGeometry ring)
+        {
+            // can this test be folded into IsPointInRing?
+            if (CgAlgorithms.IsOnLine(p, ring.Coordinates))
+                return LocationType.Boundary;
+            if (CgAlgorithms.IsPointInRing(p, ring.Coordinates))
+                return LocationType.Interior;
+            return LocationType.Exterior;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="loc"></param>
+        private void UpdateLocationInfo(LocationType loc)
+        {
+            if (loc == LocationType.Interior)
+                _isIn = true;
+            if (loc == LocationType.Boundary)
+                _numBoundaries++;
+        }
+
+        #endregion
     }
 }

@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Strtree

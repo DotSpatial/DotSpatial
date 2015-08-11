@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Operation.Overlay;
 using DotSpatial.Topology.Operation.Polygonize;
@@ -44,12 +45,17 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class ConnectedInteriorTester
     {
-        private readonly GeometryGraph _geomGraph;
-        private readonly GeometryFactory _geometryFactory = new GeometryFactory();
+        #region Fields
 
+        private readonly GeometryFactory _geometryFactory = new GeometryFactory();
+        private readonly GeometryGraph _geomGraph;
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
         private Coordinate _disconnectedRingcoord;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -60,6 +66,10 @@ namespace DotSpatial.Topology.Operation.Valid
             _geomGraph = geomGraph;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -69,6 +79,36 @@ namespace DotSpatial.Topology.Operation.Valid
             {
                 return _disconnectedRingcoord;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
+        /// (Minimal Edgerings must be used, because only they are guaranteed to provide
+        /// a correct isHole computation).
+        /// </summary>
+        /// <param name="dirEdges"></param>
+        /// <returns></returns>
+        private IList BuildEdgeRings(IList dirEdges)
+        {
+            IList edgeRings = new ArrayList();
+            foreach (DirectedEdge de in dirEdges)
+            {
+                // if this edge has not yet been processed
+                if (de.IsInResult && de.EdgeRing == null)
+                {
+                    MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
+
+                    er.LinkDirectedEdgesForMinimalEdgeRings();
+                    IList minEdgeRings = er.BuildMinimalRings();
+                    foreach (object o in minEdgeRings)
+                        edgeRings.Add(o);
+                }
+            }
+            return edgeRings;
         }
 
         /// <summary>
@@ -83,6 +123,42 @@ namespace DotSpatial.Topology.Operation.Valid
                 if (!c.Equals(pt))
                     return c;
             return null;
+        }
+
+        /// <summary>
+        /// Check if any shell ring has an unvisited edge.
+        /// A shell ring is a ring which is not a hole and which has the interior
+        /// of the parent area on the RHS.
+        /// (Notice that there may be non-hole rings with the interior on the LHS,
+        /// since the interior of holes will also be polygonized into CW rings
+        /// by the <c>LinkAllDirectedEdges()</c> step).
+        /// </summary>
+        /// <param name="edgeRings"></param>
+        /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
+        private bool HasUnvisitedShellEdge(IList edgeRings)
+        {
+            for (int i = 0; i < edgeRings.Count; i++)
+            {
+                EdgeRing er = (EdgeRing)edgeRings[i];
+                if (er.IsHole) continue;
+                IList edges = er.Edges;
+                DirectedEdge de = (DirectedEdge)edges[0];
+                // don't check CW rings which are holes
+                if (de.Label.GetLocation(0, PositionType.Right) != LocationType.Interior) continue;
+
+                // must have a CW ring which surrounds the INT of the area, so check all
+                // edges have been visited
+                for (int j = 0; j < edges.Count; j++)
+                {
+                    de = (DirectedEdge)edges[j];
+                    if (!de.IsVisited)
+                    {
+                        _disconnectedRingcoord = de.Coordinate;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -129,54 +205,6 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
-        /// (Minimal Edgerings must be used, because only they are guaranteed to provide
-        /// a correct isHole computation).
-        /// </summary>
-        /// <param name="dirEdges"></param>
-        /// <returns></returns>
-        private IList BuildEdgeRings(IList dirEdges)
-        {
-            IList edgeRings = new ArrayList();
-            foreach (DirectedEdge de in dirEdges)
-            {
-                // if this edge has not yet been processed
-                if (de.IsInResult && de.EdgeRing == null)
-                {
-                    MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
-
-                    er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IList minEdgeRings = er.BuildMinimalRings();
-                    foreach (object o in minEdgeRings)
-                        edgeRings.Add(o);
-                }
-            }
-            return edgeRings;
-        }
-
-        /// <summary>
-        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.
-        /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
-        /// this indicates a disconnected interior.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="graph"></param>
-        private static void VisitShellInteriors(IGeometry g, PlanarGraph graph)
-        {
-            if (g is Polygon)
-            {
-                Polygon p = (Polygon)g;
-                VisitInteriorRing(p.Shell, graph);
-            }
-            if (g is MultiPolygon)
-            {
-                MultiPolygon mp = (MultiPolygon)g;
-                foreach (Polygon p in mp.Geometries)
-                    VisitInteriorRing(p.Shell, graph);
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="ring"></param>
@@ -219,39 +247,27 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        /// Check if any shell ring has an unvisited edge.
-        /// A shell ring is a ring which is not a hole and which has the interior
-        /// of the parent area on the RHS.
-        /// (Notice that there may be non-hole rings with the interior on the LHS,
-        /// since the interior of holes will also be polygonized into CW rings
-        /// by the <c>LinkAllDirectedEdges()</c> step).
+        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.
+        /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
+        /// this indicates a disconnected interior.
         /// </summary>
-        /// <param name="edgeRings"></param>
-        /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
-        private bool HasUnvisitedShellEdge(IList edgeRings)
+        /// <param name="g"></param>
+        /// <param name="graph"></param>
+        private static void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            for (int i = 0; i < edgeRings.Count; i++)
+            if (g is Polygon)
             {
-                EdgeRing er = (EdgeRing)edgeRings[i];
-                if (er.IsHole) continue;
-                IList edges = er.Edges;
-                DirectedEdge de = (DirectedEdge)edges[0];
-                // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, PositionType.Right) != LocationType.Interior) continue;
-
-                // must have a CW ring which surrounds the INT of the area, so check all
-                // edges have been visited
-                for (int j = 0; j < edges.Count; j++)
-                {
-                    de = (DirectedEdge)edges[j];
-                    if (!de.IsVisited)
-                    {
-                        _disconnectedRingcoord = de.Coordinate;
-                        return true;
-                    }
-                }
+                Polygon p = (Polygon)g;
+                VisitInteriorRing(p.Shell, graph);
             }
-            return false;
+            if (g is MultiPolygon)
+            {
+                MultiPolygon mp = (MultiPolygon)g;
+                foreach (Polygon p in mp.Geometries)
+                    VisitInteriorRing(p.Shell, graph);
+            }
         }
+
+        #endregion
     }
 }

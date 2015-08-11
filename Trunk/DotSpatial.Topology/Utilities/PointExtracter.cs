@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -31,7 +32,13 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class PointExtracter : IGeometryFilter
     {
+        #region Fields
+
         private readonly IList _pts;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a PointExtracterFilter with a list in which to store Points found.
@@ -42,7 +49,9 @@ namespace DotSpatial.Topology.Utilities
             _pts = pts;
         }
 
-        #region IGeometryFilter Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -53,8 +62,6 @@ namespace DotSpatial.Topology.Utilities
             if (geom is Point)
                 _pts.Add(geom);
         }
-
-        #endregion
 
         /// <summary>
         /// Returns the Point components from a single point.
@@ -69,5 +76,7 @@ namespace DotSpatial.Topology.Utilities
             geom.Apply(new PointExtracter(pts));
             return pts;
         }
+
+        #endregion
     }
 }

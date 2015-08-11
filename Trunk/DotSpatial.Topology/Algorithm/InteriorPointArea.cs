@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Algorithm
 {
     /// <summary>
@@ -37,9 +39,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class InteriorPointArea
     {
+        #region Fields
+
         private readonly IGeometryFactory _factory;
         private Coordinate _interiorPoint = Coordinate.Empty;
         private double _maxWidth;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -50,6 +58,10 @@ namespace DotSpatial.Topology.Algorithm
             _factory = g.Factory;
             Add(g);
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -62,16 +74,9 @@ namespace DotSpatial.Topology.Algorithm
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private static double Avg(double a, double b)
-        {
-            return (a + b) / 2.0;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Tests the interior vertices (if any)
@@ -113,6 +118,41 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static double Avg(double a, double b)
+        {
+            return (a + b) / 2.0;
+        }
+
+        /// <summary>
+        /// Returns the centre point of the envelope.
+        /// </summary>
+        /// <param name="envelope">The envelope to analyze.</param>
+        /// <returns> The centre of the envelope.</returns>
+        public virtual Coordinate Centre(IEnvelope envelope)
+        {
+            return new Coordinate(Avg(envelope.Minimum.X, envelope.Maximum.X), Avg(envelope.Minimum.Y, envelope.Maximum.Y));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected virtual ILineString HorizontalBisector(IGeometry geometry)
+        {
+            IEnvelope envelope = geometry.EnvelopeInternal;
+
+            // Assert: for areas, minx <> maxx
+            double avgY = Avg(envelope.Minimum.Y, envelope.Maximum.Y);
+            return _factory.CreateLineString(new[] { new Coordinate(envelope.Minimum.X, avgY), new Coordinate(envelope.Maximum.X, avgY) });
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="geometry"></param>
         /// <returns>
         /// If point is a collection, the widest sub-point; otherwise,
@@ -142,28 +182,6 @@ namespace DotSpatial.Topology.Algorithm
             return widestGeometry;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected virtual ILineString HorizontalBisector(IGeometry geometry)
-        {
-            IEnvelope envelope = geometry.EnvelopeInternal;
-
-            // Assert: for areas, minx <> maxx
-            double avgY = Avg(envelope.Minimum.Y, envelope.Maximum.Y);
-            return _factory.CreateLineString(new[] { new Coordinate(envelope.Minimum.X, avgY), new Coordinate(envelope.Maximum.X, avgY) });
-        }
-
-        /// <summary>
-        /// Returns the centre point of the envelope.
-        /// </summary>
-        /// <param name="envelope">The envelope to analyze.</param>
-        /// <returns> The centre of the envelope.</returns>
-        public virtual Coordinate Centre(IEnvelope envelope)
-        {
-            return new Coordinate(Avg(envelope.Minimum.X, envelope.Maximum.X), Avg(envelope.Minimum.Y, envelope.Maximum.Y));
-        }
+        #endregion
     }
 }

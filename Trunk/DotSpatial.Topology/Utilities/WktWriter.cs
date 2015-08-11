@@ -26,6 +26,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -42,18 +43,405 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class WktWriter
     {
+        #region Constant Fields
+
         private const int WKT_WRITER_INDENT = 2;
+
+        #endregion
+
+        #region Fields
+
         private NumberFormatInfo _formatter;
         private bool _isFormatted;
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Generates the WKT for a <c>Point</c>.
+        /// Converts a <c>Coordinate</c> to Point format, then appends
+        /// it to the writer.
         /// </summary>
-        /// <param name="p0">The point coordinate.</param>
-        /// <returns></returns>
-        public static String ToPoint(Coordinate p0)
+        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// The <c>PrecisionModel</c> to use to convert
+        /// from a precise coordinate to an external coordinate.
+        private void AppendCoordinate(Coordinate coordinate, TextWriter writer)
         {
-            return "POINT ( " + p0.X + " " + p0.Y + " )";
+            writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
+        }
+
+        /// <summary>
+        /// Converts a <c>GeometryCollection</c> to GeometryCollection
+        /// Tagged Text format, then appends it to the writer.
+        /// </summary>
+        /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, int level,
+                                                        TextWriter writer)
+        {
+            writer.Write("GEOMETRYCOLLECTION ");
+            AppendGeometryCollectionText(geometryCollection, level, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>GeometryCollection</c> to GeometryCollectionText
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)
+        {
+            if (geometryCollection.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                int level2 = level;
+                writer.Write("(");
+                for (int i = 0; i < geometryCollection.NumGeometries; i++)
+                {
+                    if (i > 0)
+                    {
+                        writer.Write(", ");
+                        level2 = level + 1;
+                    }
+                    AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>Geometry</c> to &lt;Geometry Tagged Text format,
+        /// then appends it to the writer.
+        /// </summary>
+        /// <param name="geometry">/he <c>Geometry</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">/he output writer to append to.</param>
+        private void AppendGeometryTaggedText(IGeometry geometry, int level, TextWriter writer)
+        {
+            Indent(level, writer);
+
+            if (geometry is Point)
+            {
+                Point point = (Point)geometry;
+                AppendPointTaggedText(point.Coordinate, writer);
+            }
+            else if (geometry is ILinearRing)
+                AppendLinearRingTaggedText((ILinearRing)geometry, level, writer);
+            else if (geometry is ILineString)
+                AppendLineStringTaggedText((ILineString)geometry, level, writer);
+            else if (geometry is IPolygon)
+                AppendPolygonTaggedText((IPolygon)geometry, level, writer);
+            else if (geometry is IMultiPoint)
+                AppendMultiPointTaggedText((IMultiPoint)geometry, writer);
+            else if (geometry is IMultiLineString)
+                AppendMultiLineStringTaggedText((IMultiLineString)geometry, level, writer);
+            else if (geometry is IMultiPolygon)
+                AppendMultiPolygonTaggedText((IMultiPolygon)geometry, level, writer);
+            else if (geometry is IGeometryCollection)
+                AppendGeometryCollectionTaggedText((IGeometryCollection)geometry, level, writer);
+            else throw new UnsupportedGeometryException();
+        }
+
+        /// <summary>
+        /// Converts a <c>LinearRing</c> to &lt;LinearRing Tagged Text
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="linearRing">The <c>LinearRing</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
+        {
+            writer.Write("LINEARRING ");
+            AppendLineStringText(linearRing, level, false, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>LineString</c> to &lt;LineString Tagged Text
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="lineString">The <c>LineString</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendLineStringTaggedText(IBasicLineString lineString, int level, TextWriter writer)
+        {
+            writer.Write("LINESTRING ");
+            AppendLineStringText(lineString, level, false, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>LineString</c> to &lt;LineString Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="lineString">The <c>LineString</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="doIndent"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendLineStringText(IBasicLineString lineString, int level, bool doIndent, TextWriter writer)
+        {
+            if (lineString.Coordinates.Count == 0)
+                writer.Write("EMPTY");
+            else
+            {
+                if (doIndent) Indent(level, writer);
+                writer.Write("(");
+                for (int i = 0; i < lineString.NumPoints; i++)
+                {
+                    if (i > 0)
+                    {
+                        writer.Write(", ");
+                        if (i % 10 == 0) Indent(level + 2, writer);
+                    }
+                    AppendCoordinate(lineString.Coordinates[i], writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiLineString</c> to MultiLineString Tagged
+        /// Text format, then appends it to the writer.
+        /// </summary>
+        /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, int level, TextWriter writer)
+        {
+            writer.Write("MULTILINESTRING ");
+            AppendMultiLineStringText(multiLineString, level, false, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiLineString</c> to &lt;MultiLineString Text
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="indentFirst"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst,
+                                               TextWriter writer)
+        {
+            if (multiLineString.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                int level2 = level;
+                bool doIndent = indentFirst;
+                writer.Write("(");
+                for (int i = 0; i < multiLineString.NumGeometries; i++)
+                {
+                    if (i > 0)
+                    {
+                        writer.Write(", ");
+                        level2 = level + 1;
+                        doIndent = true;
+                    }
+                    AppendLineStringText((LineString)multiLineString.GetGeometryN(i), level2, doIndent, writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiPoint</c> to &lt;MultiPoint Tagged Text
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="multipoint">The <c>MultiPoint</c> to process.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiPointTaggedText(IMultiPoint multipoint, TextWriter writer)
+        {
+            writer.Write("MULTIPOINT ");
+            AppendMultiPointText(multipoint, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiPoint</c> to &lt;MultiPoint Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="multiPoint">The <c>MultiPoint</c> to process.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiPointText(IGeometry multiPoint, TextWriter writer)
+        {
+            if (multiPoint.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                writer.Write("(");
+                for (int i = 0; i < multiPoint.NumGeometries; i++)
+                {
+                    if (i > 0) writer.Write(", ");
+                    AppendCoordinate(((Point)multiPoint.GetGeometryN(i)).Coordinate, writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiPolygon</c> to MultiPolygon Tagged Text
+        /// format, then appends it to the writer.
+        /// </summary>
+        /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, int level, TextWriter writer)
+        {
+            writer.Write("MULTIPOLYGON ");
+            AppendMultiPolygonText(multiPolygon, level, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiPolygon</c> to &lt;MultiPolygon Text format,
+        /// then appends it to the writer.
+        /// </summary>
+        /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)
+        {
+            if (multiPolygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                int level2 = level;
+                bool doIndent = false;
+                writer.Write("(");
+                for (int i = 0; i < multiPolygon.NumGeometries; i++)
+                {
+                    if (i > 0)
+                    {
+                        writer.Write(", ");
+                        level2 = level + 1;
+                        doIndent = true;
+                    }
+                    AppendPolygonText((Polygon)multiPolygon.GetGeometryN(i), level2, doIndent, writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>Coordinate</c> to Point Tagged Text format,
+        /// then appends it to the writer.
+        /// </summary>
+        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendPointTaggedText(Coordinate coordinate, TextWriter writer)
+        {
+            writer.Write("POINT ");
+            AppendPointText(coordinate, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>Coordinate</c> to Point Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendPointText(Coordinate coordinate, TextWriter writer)
+        {
+            if (coordinate == null)
+                writer.Write("EMPTY");
+            else
+            {
+                writer.Write("(");
+                AppendCoordinate(coordinate, writer);
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>Polygon</c> to Polygon Tagged Text format,
+        /// then appends it to the writer.
+        /// </summary>
+        /// <param name="polygon">The <c>Polygon</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendPolygonTaggedText(IPolygon polygon, int level, TextWriter writer)
+        {
+            writer.Write("POLYGON ");
+            AppendPolygonText(polygon, level, false, writer);
+        }
+
+        /// <summary>
+        /// Converts a <c>Polygon</c> to Polygon Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="polygon">The <c>Polygon</c> to process.</param>
+        /// <param name="level"></param>
+        /// <param name="indentFirst"></param>
+        /// <param name="writer">The output writer to append to.</param>
+        private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
+        {
+            if (polygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
+            {
+                if (indentFirst) Indent(level, writer);
+                writer.Write("(");
+                AppendLineStringText(polygon.Shell, level, false, writer);
+                for (int i = 0; i < polygon.NumHoles; i++)
+                {
+                    writer.Write(", ");
+                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
+                }
+                writer.Write(")");
+            }
+        }
+
+        /// <summary>
+        /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
+        /// with a sufficient number of decimal places.
+        /// </summary>
+        /// <param name="precisionModel">
+        /// The <c>PrecisionModel</c> used to determine
+        /// the number of decimal places to write.
+        /// </param>
+        /// <returns>
+        /// A <c>NumberFormatInfo</c> that write <c>double</c>
+        /// s without scientific notation.
+        /// </returns>
+        private static NumberFormatInfo CreateFormatter(PrecisionModel precisionModel)
+        {
+            // the default number of decimal places is 16, which is sufficient
+            // to accomodate the maximum precision of a double.
+            int decimalPlaces = precisionModel.MaximumSignificantDigits;
+            // specify decimal separator explicitly to avoid problems in other locales
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+            nfi.NumberDecimalDigits = decimalPlaces;
+            nfi.NumberGroupSeparator = String.Empty;
+            nfi.NumberGroupSizes = new int[] { };
+            return nfi;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="writer"></param>
+        private void Indent(int level, TextWriter writer)
+        {
+            if (!_isFormatted || level <= 0) return;
+            writer.Write("\n");
+            writer.Write(StringOfChar(' ', WKT_WRITER_INDENT * level));
+        }
+
+        /// <summary>
+        /// Returns a <c>String</c> of repeated characters.
+        /// </summary>
+        /// <param name="ch">The character to repeat.</param>
+        /// <param name="count">The number of times to repeat the character.</param>
+        /// <returns>A <c>string</c> of characters.</returns>
+        public static string StringOfChar(char ch, int count)
+        {
+            StringBuilder buf = new StringBuilder();
+            for (int i = 0; i < count; i++)
+                buf.Append(ch);
+            return buf.ToString();
         }
 
         /// <summary>
@@ -93,43 +481,13 @@ namespace DotSpatial.Topology.Utilities
         }
 
         /// <summary>
-        /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
-        /// with a sufficient number of decimal places.
+        /// Generates the WKT for a <c>Point</c>.
         /// </summary>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> used to determine
-        /// the number of decimal places to write.
-        /// </param>
-        /// <returns>
-        /// A <c>NumberFormatInfo</c> that write <c>double</c>
-        /// s without scientific notation.
-        /// </returns>
-        private static NumberFormatInfo CreateFormatter(PrecisionModel precisionModel)
+        /// <param name="p0">The point coordinate.</param>
+        /// <returns></returns>
+        public static String ToPoint(Coordinate p0)
         {
-            // the default number of decimal places is 16, which is sufficient
-            // to accomodate the maximum precision of a double.
-            int decimalPlaces = precisionModel.MaximumSignificantDigits;
-            // specify decimal separator explicitly to avoid problems in other locales
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-            nfi.NumberDecimalDigits = decimalPlaces;
-            nfi.NumberGroupSeparator = String.Empty;
-            nfi.NumberGroupSizes = new int[] { };
-            return nfi;
-        }
-
-        /// <summary>
-        /// Returns a <c>String</c> of repeated characters.
-        /// </summary>
-        /// <param name="ch">The character to repeat.</param>
-        /// <param name="count">The number of times to repeat the character.</param>
-        /// <returns>A <c>string</c> of characters.</returns>
-        public static string StringOfChar(char ch, int count)
-        {
-            StringBuilder buf = new StringBuilder();
-            for (int i = 0; i < count; i++)
-                buf.Append(ch);
-            return buf.ToString();
+            return "POINT ( " + p0.X + " " + p0.Y + " )";
         }
 
         /// <summary>
@@ -195,173 +553,6 @@ namespace DotSpatial.Topology.Utilities
         }
 
         /// <summary>
-        /// Converts a <c>Geometry</c> to &lt;Geometry Tagged Text format,
-        /// then appends it to the writer.
-        /// </summary>
-        /// <param name="geometry">/he <c>Geometry</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">/he output writer to append to.</param>
-        private void AppendGeometryTaggedText(IGeometry geometry, int level, TextWriter writer)
-        {
-            Indent(level, writer);
-
-            if (geometry is Point)
-            {
-                Point point = (Point)geometry;
-                AppendPointTaggedText(point.Coordinate, writer);
-            }
-            else if (geometry is ILinearRing)
-                AppendLinearRingTaggedText((ILinearRing)geometry, level, writer);
-            else if (geometry is ILineString)
-                AppendLineStringTaggedText((ILineString)geometry, level, writer);
-            else if (geometry is IPolygon)
-                AppendPolygonTaggedText((IPolygon)geometry, level, writer);
-            else if (geometry is IMultiPoint)
-                AppendMultiPointTaggedText((IMultiPoint)geometry, writer);
-            else if (geometry is IMultiLineString)
-                AppendMultiLineStringTaggedText((IMultiLineString)geometry, level, writer);
-            else if (geometry is IMultiPolygon)
-                AppendMultiPolygonTaggedText((IMultiPolygon)geometry, level, writer);
-            else if (geometry is IGeometryCollection)
-                AppendGeometryCollectionTaggedText((IGeometryCollection)geometry, level, writer);
-            else throw new UnsupportedGeometryException();
-        }
-
-        /// <summary>
-        /// Converts a <c>Coordinate</c> to Point Tagged Text format,
-        /// then appends it to the writer.
-        /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendPointTaggedText(Coordinate coordinate, TextWriter writer)
-        {
-            writer.Write("POINT ");
-            AppendPointText(coordinate, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>LineString</c> to &lt;LineString Tagged Text
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="lineString">The <c>LineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringTaggedText(IBasicLineString lineString, int level, TextWriter writer)
-        {
-            writer.Write("LINESTRING ");
-            AppendLineStringText(lineString, level, false, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>LinearRing</c> to &lt;LinearRing Tagged Text
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="linearRing">The <c>LinearRing</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
-        {
-            writer.Write("LINEARRING ");
-            AppendLineStringText(linearRing, level, false, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>Polygon</c> to Polygon Tagged Text format,
-        /// then appends it to the writer.
-        /// </summary>
-        /// <param name="polygon">The <c>Polygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendPolygonTaggedText(IPolygon polygon, int level, TextWriter writer)
-        {
-            writer.Write("POLYGON ");
-            AppendPolygonText(polygon, level, false, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiPoint</c> to &lt;MultiPoint Tagged Text
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="multipoint">The <c>MultiPoint</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPointTaggedText(IMultiPoint multipoint, TextWriter writer)
-        {
-            writer.Write("MULTIPOINT ");
-            AppendMultiPointText(multipoint, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiLineString</c> to MultiLineString Tagged
-        /// Text format, then appends it to the writer.
-        /// </summary>
-        /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, int level, TextWriter writer)
-        {
-            writer.Write("MULTILINESTRING ");
-            AppendMultiLineStringText(multiLineString, level, false, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiPolygon</c> to MultiPolygon Tagged Text
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, int level, TextWriter writer)
-        {
-            writer.Write("MULTIPOLYGON ");
-            AppendMultiPolygonText(multiPolygon, level, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>GeometryCollection</c> to GeometryCollection
-        /// Tagged Text format, then appends it to the writer.
-        /// </summary>
-        /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, int level,
-                                                        TextWriter writer)
-        {
-            writer.Write("GEOMETRYCOLLECTION ");
-            AppendGeometryCollectionText(geometryCollection, level, writer);
-        }
-
-        /// <summary>
-        /// Converts a <c>Coordinate</c> to Point Text format, then
-        /// appends it to the writer.
-        /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendPointText(Coordinate coordinate, TextWriter writer)
-        {
-            if (coordinate == null)
-                writer.Write("EMPTY");
-            else
-            {
-                writer.Write("(");
-                AppendCoordinate(coordinate, writer);
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>Coordinate</c> to Point format, then appends
-        /// it to the writer.
-        /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        private void AppendCoordinate(Coordinate coordinate, TextWriter writer)
-        {
-            writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
-        }
-
-        /// <summary>
         /// Converts a <see cref="double" /> to a <see cref="string" />,
         /// not in scientific notation.
         /// </summary>
@@ -376,183 +567,6 @@ namespace DotSpatial.Topology.Utilities
             return d.ToString("N", _formatter);
         }
 
-        /// <summary>
-        /// Converts a <c>LineString</c> to &lt;LineString Text format, then
-        /// appends it to the writer.
-        /// </summary>
-        /// <param name="lineString">The <c>LineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="doIndent"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringText(IBasicLineString lineString, int level, bool doIndent, TextWriter writer)
-        {
-            if (lineString.Coordinates.Count == 0)
-                writer.Write("EMPTY");
-            else
-            {
-                if (doIndent) Indent(level, writer);
-                writer.Write("(");
-                for (int i = 0; i < lineString.NumPoints; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        if (i % 10 == 0) Indent(level + 2, writer);
-                    }
-                    AppendCoordinate(lineString.Coordinates[i], writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>Polygon</c> to Polygon Text format, then
-        /// appends it to the writer.
-        /// </summary>
-        /// <param name="polygon">The <c>Polygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="indentFirst"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
-        {
-            if (polygon.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                if (indentFirst) Indent(level, writer);
-                writer.Write("(");
-                AppendLineStringText(polygon.Shell, level, false, writer);
-                for (int i = 0; i < polygon.NumHoles; i++)
-                {
-                    writer.Write(", ");
-                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiPoint</c> to &lt;MultiPoint Text format, then
-        /// appends it to the writer.
-        /// </summary>
-        /// <param name="multiPoint">The <c>MultiPoint</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPointText(IGeometry multiPoint, TextWriter writer)
-        {
-            if (multiPoint.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                writer.Write("(");
-                for (int i = 0; i < multiPoint.NumGeometries; i++)
-                {
-                    if (i > 0) writer.Write(", ");
-                    AppendCoordinate(((Point)multiPoint.GetGeometryN(i)).Coordinate, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiLineString</c> to &lt;MultiLineString Text
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="indentFirst"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst,
-                                               TextWriter writer)
-        {
-            if (multiLineString.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                int level2 = level;
-                bool doIndent = indentFirst;
-                writer.Write("(");
-                for (int i = 0; i < multiLineString.NumGeometries; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        level2 = level + 1;
-                        doIndent = true;
-                    }
-                    AppendLineStringText((LineString)multiLineString.GetGeometryN(i), level2, doIndent, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>MultiPolygon</c> to &lt;MultiPolygon Text format,
-        /// then appends it to the writer.
-        /// </summary>
-        /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)
-        {
-            if (multiPolygon.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                int level2 = level;
-                bool doIndent = false;
-                writer.Write("(");
-                for (int i = 0; i < multiPolygon.NumGeometries; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        level2 = level + 1;
-                        doIndent = true;
-                    }
-                    AppendPolygonText((Polygon)multiPolygon.GetGeometryN(i), level2, doIndent, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>GeometryCollection</c> to GeometryCollectionText
-        /// format, then appends it to the writer.
-        /// </summary>
-        /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)
-        {
-            if (geometryCollection.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                int level2 = level;
-                writer.Write("(");
-                for (int i = 0; i < geometryCollection.NumGeometries; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        level2 = level + 1;
-                    }
-                    AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="writer"></param>
-        private void Indent(int level, TextWriter writer)
-        {
-            if (!_isFormatted || level <= 0) return;
-            writer.Write("\n");
-            writer.Write(StringOfChar(' ', WKT_WRITER_INDENT * level));
-        }
+        #endregion
     }
 }

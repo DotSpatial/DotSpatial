@@ -21,12 +21,11 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// specifically for handling
     /// </summary>
     public interface IMultiPolygon : IGeometryCollection
-    {
-    }
+    {}
 }

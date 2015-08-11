@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries.Implementation
 {
     /// <summary>
     /// The <c>ICoordinateSequence</c> implementation that <c>Geometry</c>s use by default.
@@ -38,94 +38,7 @@ namespace DotSpatial.Topology
     [Serializable]
     public class CoordinateArraySequence : ICoordinateSequence
     {
-        /// <summary>
-        /// Increments the version with the understanding that we are using integers.  If the user
-        /// uses too many version, it will cycle around.  The statistical odds of accidentally
-        /// reaching the same value as a previous version should be small enough to prevent
-        /// conflicts.
-        /// </summary>
-        private void IncrementVersion()
-        {
-            if (_versionId == int.MaxValue)
-            {
-                _versionId = int.MinValue;
-            }
-            else
-            {
-                _versionId += 1;
-            }
-        }
-
-        #region Nested type: Enumerator
-
-        /// <summary>
-        /// CoordinateArraySequenceEnumerator
-        /// </summary>
-        public class Enumerator : IEnumerator<Coordinate>
-        {
-            #region Private Variables
-
-            readonly IEnumerator _baseEnumerator;
-
-            #endregion
-
-            #region Constructors
-
-            /// <summary>
-            /// Creates a new instance of CoordinateArraySequenceEnumerator
-            /// </summary>
-            public Enumerator(IEnumerator inBaseEnumerator)
-            {
-                _baseEnumerator = inBaseEnumerator;
-            }
-
-            #endregion
-
-            #region IEnumerator<Coordinate> Members
-
-            /// <summary>
-            /// Gets the current member
-            /// </summary>
-            public Coordinate Current
-            {
-                get { return _baseEnumerator.Current as Coordinate; }
-            }
-
-            object IEnumerator.Current
-            {
-                get { return _baseEnumerator.Current; }
-            }
-
-            /// <summary>
-            /// Does nothing
-            /// </summary>
-            public void Dispose()
-            {
-            }
-
-            /// <summary>
-            /// Advances the enumerator to the next member
-            /// </summary>
-            /// <returns></returns>
-            public bool MoveNext()
-            {
-                return _baseEnumerator.MoveNext();
-            }
-
-            /// <summary>
-            /// Resets the enumerator to the original position
-            /// </summary>
-            public void Reset()
-            {
-                _baseEnumerator.Reset();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Private Variables
+        #region Fields
 
         private Coordinate[] _coordinates;
         private int _versionId;
@@ -215,11 +128,72 @@ namespace DotSpatial.Topology
             Configure(coords);
         }
 
-        // This is called by all of the constructors to try to reduce redundancy
-        private void Configure(Coordinate[] inCoords)
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Returns the length of the coordinate sequence.
+        /// </summary>
+        public virtual int Count
         {
-            _coordinates = inCoords;
-            _versionId = 0;
+            get
+            {
+                return _coordinates.Length;
+            }
+        }
+
+        /// <summary>
+        /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
+        /// </summary>
+        /// <value></value>
+        public virtual int Dimension
+        {
+            get
+            {
+                return 3;
+            }
+        }
+
+        /// <summary>
+        /// CoordinateArraySequences are not ReadOnly
+        /// </summary>
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Every time a member is added to, subtracted from, or edited in the sequence,
+        /// this VersionID is incremented.  This doesn't uniquely separate this sequence
+        /// from other sequences, but rather acts as a way to rapidly track if changes
+        /// have occured against a cached version.
+        /// </summary>
+        public int VersionID
+        {
+            get { return _versionId; }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        /// <summary>
+        /// Direct accessor to an ICoordinate
+        /// </summary>
+        /// <param name="index">An integer index in this array sequence</param>
+        /// <returns>An ICoordinate for the specified index</returns>
+        public virtual Coordinate this[int index]
+        {
+            get
+            {
+                return _coordinates[index];
+            }
+            set
+            {
+                _coordinates[index] = value;
+                IncrementVersion();
+            }
         }
 
         #endregion
@@ -250,6 +224,25 @@ namespace DotSpatial.Topology
         }
 
         /// <summary>
+        /// Creates a deep copy of the object.
+        /// </summary>
+        /// <returns>The deep copy.</returns>
+        public virtual object Clone()
+        {
+            Coordinate[] cloneCoordinates = new Coordinate[Count];
+            for (int i = 0; i < _coordinates.Length; i++)
+                cloneCoordinates[i] = new Coordinate(_coordinates[i]);
+            return new CoordinateArraySequence(cloneCoordinates);
+        }
+
+        // This is called by all of the constructors to try to reduce redundancy
+        private void Configure(Coordinate[] inCoords)
+        {
+            _coordinates = inCoords;
+            _versionId = 0;
+        }
+
+        /// <summary>
         /// Tests to see if the array contains the specified item
         /// </summary>
         /// <param name="item">the ICoordinate to test</param>
@@ -261,18 +254,6 @@ namespace DotSpatial.Topology
                 if (coord == item) return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Creates a deep copy of the object.
-        /// </summary>
-        /// <returns>The deep copy.</returns>
-        public virtual object Clone()
-        {
-            Coordinate[] cloneCoordinates = new Coordinate[Count];
-            for (int i = 0; i < _coordinates.Length; i++)
-                cloneCoordinates[i] = new Coordinate(_coordinates[i]);
-            return new CoordinateArraySequence(cloneCoordinates);
         }
 
         /// <summary>
@@ -337,6 +318,24 @@ namespace DotSpatial.Topology
                 case Ordinate.Z: return _coordinates[index].Z;
                 default:
                     return Double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Increments the version with the understanding that we are using integers.  If the user
+        /// uses too many version, it will cycle around.  The statistical odds of accidentally
+        /// reaching the same value as a previous version should be small enough to prevent
+        /// conflicts.
+        /// </summary>
+        private void IncrementVersion()
+        {
+            if (_versionId == int.MaxValue)
+            {
+                _versionId = int.MinValue;
+            }
+            else
+            {
+                _versionId += 1;
             }
         }
 
@@ -428,66 +427,75 @@ namespace DotSpatial.Topology
 
         #endregion
 
-        #region Properties
+        #region Classes
 
         /// <summary>
-        /// Returns the length of the coordinate sequence.
+        /// CoordinateArraySequenceEnumerator
         /// </summary>
-        public virtual int Count
+        public class Enumerator : IEnumerator<Coordinate>
         {
-            get
+            #region Fields
+
+            readonly IEnumerator _baseEnumerator;
+
+            #endregion
+
+            #region Constructors
+
+            /// <summary>
+            /// Creates a new instance of CoordinateArraySequenceEnumerator
+            /// </summary>
+            public Enumerator(IEnumerator inBaseEnumerator)
             {
-                return _coordinates.Length;
+                _baseEnumerator = inBaseEnumerator;
             }
-        }
 
-        /// <summary>
-        /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
-        /// </summary>
-        /// <value></value>
-        public virtual int Dimension
-        {
-            get
+            #endregion
+
+            #region Properties
+
+            /// <summary>
+            /// Gets the current member
+            /// </summary>
+            public Coordinate Current
             {
-                return 3;
+                get { return _baseEnumerator.Current as Coordinate; }
             }
-        }
 
-        /// <summary>
-        /// CoordinateArraySequences are not ReadOnly
-        /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Direct accessor to an ICoordinate
-        /// </summary>
-        /// <param name="index">An integer index in this array sequence</param>
-        /// <returns>An ICoordinate for the specified index</returns>
-        public virtual Coordinate this[int index]
-        {
-            get
+            object IEnumerator.Current
             {
-                return _coordinates[index];
+                get { return _baseEnumerator.Current; }
             }
-            set
-            {
-                _coordinates[index] = value;
-                IncrementVersion();
-            }
-        }
 
-        /// <summary>
-        /// Every time a member is added to, subtracted from, or edited in the sequence,
-        /// this VersionID is incremented.  This doesn't uniquely separate this sequence
-        /// from other sequences, but rather acts as a way to rapidly track if changes
-        /// have occured against a cached version.
-        /// </summary>
-        public int VersionID
-        {
-            get { return _versionId; }
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Does nothing
+            /// </summary>
+            public void Dispose()
+            {
+            }
+
+            /// <summary>
+            /// Advances the enumerator to the next member
+            /// </summary>
+            /// <returns></returns>
+            public bool MoveNext()
+            {
+                return _baseEnumerator.MoveNext();
+            }
+
+            /// <summary>
+            /// Resets the enumerator to the original position
+            /// </summary>
+            public void Reset()
+            {
+                _baseEnumerator.Reset();
+            }
+
+            #endregion
         }
 
         #endregion

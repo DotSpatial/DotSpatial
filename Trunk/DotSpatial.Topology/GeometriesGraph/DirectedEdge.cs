@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -31,7 +32,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class DirectedEdge : EdgeEnd
     {
-        #region Private Variables
+        #region Fields
 
         /// <summary>
         /// The depth of each side (position) of this edge.
@@ -40,12 +41,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         private readonly int[] _depth = { 0, -999, -999 };
 
         private EdgeRing _edgeRing;  // the EdgeRing that this edge is part of
-
         private bool _isForward;
         private bool _isInResult;
         private bool _isVisited;
         private EdgeRing _minEdgeRing;  // the MinimalEdgeRing that this edge is part of
-
         private DirectedEdge _next;  // the next edge in the edge ring for the polygon containing this edge
         private DirectedEdge _nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
         private DirectedEdge _sym; // the symmetric edge
@@ -75,6 +74,158 @@ namespace DotSpatial.Topology.GeometriesGraph
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Obtains the chaing in depth
+        /// </summary>
+        public virtual int DepthDelta
+        {
+            get
+            {
+                int depthDelta = Edge.DepthDelta;
+                if (!_isForward)
+                    depthDelta = -depthDelta;
+                return depthDelta;
+            }
+        }
+
+        /// <summary>
+        /// This is an interior Area edge if
+        /// its label is an Area label for both Geometries
+        /// and for each Geometry both sides are in the interior.
+        /// </summary>
+        /// <returns><c>true</c> if this is an interior Area edge.</returns>
+        public virtual bool IsInteriorAreaEdge
+        {
+            get
+            {
+                bool isInteriorAreaEdge = true;
+                for (int i = 0; i < 2; i++)
+                {
+                    if (!(Label.IsArea(i)
+                          && Label.GetLocation(i, PositionType.Left) == LocationType.Interior
+                          && Label.GetLocation(i, PositionType.Right) == LocationType.Interior))
+                    {
+                        isInteriorAreaEdge = false;
+                    }
+                }
+                return isInteriorAreaEdge;
+            }
+        }
+
+        /// <summary>
+        /// This edge is a line edge if
+        /// at least one of the labels is a line label
+        /// any labels which are not line labels have all Locations = Exterior.
+        /// </summary>
+        public virtual bool IsLineEdge
+        {
+            get
+            {
+                bool isLine = Label.IsLine(0) || Label.IsLine(1);
+                bool isExteriorIfArea0 =
+                    !Label.IsArea(0) || Label.AllPositionsEqual(0, LocationType.Exterior);
+                bool isExteriorIfArea1 =
+                    !Label.IsArea(1) || Label.AllPositionsEqual(1, LocationType.Exterior);
+                return isLine && isExteriorIfArea0 && isExteriorIfArea1;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the EdgeRing
+        /// </summary>
+        public virtual EdgeRing EdgeRing
+        {
+            get { return _edgeRing; }
+            set { _edgeRing = value; }
+        }
+
+        /// <summary>
+        /// Gets a boolean indicating whether this edge is directed forward
+        /// </summary>
+        public virtual bool IsForward
+        {
+            get { return _isForward; }
+            protected set { _isForward = value; }
+        }
+
+        /// <summary>
+        /// Gets a boolean that is true if this edge is in the result
+        /// </summary>
+        public virtual bool IsInResult
+        {
+            get { return _isInResult; }
+            set { _isInResult = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a boolean that is true if this edge has been visited
+        /// </summary>
+        public virtual bool IsVisited
+        {
+            get { return _isVisited; }
+            set { _isVisited = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum Edge Ring
+        /// </summary>
+        public virtual EdgeRing MinEdgeRing
+        {
+            get { return _minEdgeRing; }
+            set { _minEdgeRing = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the next directed edge relative to this directed edge
+        /// </summary>
+        public virtual DirectedEdge Next
+        {
+            get { return _next; }
+            set { _next = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a directed edge for Next Min
+        /// </summary>
+        public virtual DirectedEdge NextMin
+        {
+            get { return _nextMin; }
+            set { _nextMin = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual DirectedEdge Sym
+        {
+            get { return _sym; }
+            set { _sym = value; }
+        }
+
+        /// <summary>
+        /// VisitedEdge get property returns <c>true</c> if bot Visited
+        /// and Sym.Visited are <c>true</c>.
+        /// VisitedEdge set property marks both DirectedEdges attached to a given Edge.
+        /// This is used for edges corresponding to lines, which will only
+        /// appear oriented in a single direction in the result.
+        /// </summary>
+        public virtual bool VisitedEdge
+        {
+            get
+            {
+                return _isVisited && _sym.IsVisited;
+            }
+            set
+            {
+                _isVisited = value;
+                _sym.IsVisited = value;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -85,6 +236,19 @@ namespace DotSpatial.Topology.GeometriesGraph
             Label = new Label(Edge.Label);
             if (!_isForward)
                 Label.Flip();
+        }
+
+        /// <summary>
+        /// Computes the factor for the change in depth when moving from one location to another.
+        /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
+        /// </summary>
+        public static int DepthFactor(LocationType currLocation, LocationType nextLocation)
+        {
+            if (currLocation == LocationType.Exterior && nextLocation == LocationType.Interior)
+                return 1;
+            if (currLocation == LocationType.Interior && nextLocation == LocationType.Exterior)
+                return -1;
+            return 0;
         }
 
         /// <summary>
@@ -162,175 +326,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             if (_isForward)
                 Edge.Write(outstream);
             else Edge.WriteReverse(outstream);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Obtains the chaing in depth
-        /// </summary>
-        public virtual int DepthDelta
-        {
-            get
-            {
-                int depthDelta = Edge.DepthDelta;
-                if (!_isForward)
-                    depthDelta = -depthDelta;
-                return depthDelta;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the EdgeRing
-        /// </summary>
-        public virtual EdgeRing EdgeRing
-        {
-            get { return _edgeRing; }
-            set { _edgeRing = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whether this edge is directed forward
-        /// </summary>
-        public virtual bool IsForward
-        {
-            get { return _isForward; }
-            protected set { _isForward = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean that is true if this edge is in the result
-        /// </summary>
-        public virtual bool IsInResult
-        {
-            get { return _isInResult; }
-            set { _isInResult = value; }
-        }
-
-        /// <summary>
-        /// This is an interior Area edge if
-        /// its label is an Area label for both Geometries
-        /// and for each Geometry both sides are in the interior.
-        /// </summary>
-        /// <returns><c>true</c> if this is an interior Area edge.</returns>
-        public virtual bool IsInteriorAreaEdge
-        {
-            get
-            {
-                bool isInteriorAreaEdge = true;
-                for (int i = 0; i < 2; i++)
-                {
-                    if (!(Label.IsArea(i)
-                          && Label.GetLocation(i, PositionType.Left) == LocationType.Interior
-                          && Label.GetLocation(i, PositionType.Right) == LocationType.Interior))
-                    {
-                        isInteriorAreaEdge = false;
-                    }
-                }
-                return isInteriorAreaEdge;
-            }
-        }
-
-        /// <summary>
-        /// This edge is a line edge if
-        /// at least one of the labels is a line label
-        /// any labels which are not line labels have all Locations = Exterior.
-        /// </summary>
-        public virtual bool IsLineEdge
-        {
-            get
-            {
-                bool isLine = Label.IsLine(0) || Label.IsLine(1);
-                bool isExteriorIfArea0 =
-                    !Label.IsArea(0) || Label.AllPositionsEqual(0, LocationType.Exterior);
-                bool isExteriorIfArea1 =
-                    !Label.IsArea(1) || Label.AllPositionsEqual(1, LocationType.Exterior);
-                return isLine && isExteriorIfArea0 && isExteriorIfArea1;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a boolean that is true if this edge has been visited
-        /// </summary>
-        public virtual bool IsVisited
-        {
-            get { return _isVisited; }
-            set { _isVisited = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the minimum Edge Ring
-        /// </summary>
-        public virtual EdgeRing MinEdgeRing
-        {
-            get { return _minEdgeRing; }
-            set { _minEdgeRing = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the next directed edge relative to this directed edge
-        /// </summary>
-        public virtual DirectedEdge Next
-        {
-            get { return _next; }
-            set { _next = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a directed edge for Next Min
-        /// </summary>
-        public virtual DirectedEdge NextMin
-        {
-            get { return _nextMin; }
-            set { _nextMin = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual DirectedEdge Sym
-        {
-            get { return _sym; }
-            set { _sym = value; }
-        }
-
-        /// <summary>
-        /// VisitedEdge get property returns <c>true</c> if bot Visited
-        /// and Sym.Visited are <c>true</c>.
-        /// VisitedEdge set property marks both DirectedEdges attached to a given Edge.
-        /// This is used for edges corresponding to lines, which will only
-        /// appear oriented in a single direction in the result.
-        /// </summary>
-        public virtual bool VisitedEdge
-        {
-            get
-            {
-                return _isVisited && _sym.IsVisited;
-            }
-            set
-            {
-                _isVisited = value;
-                _sym.IsVisited = value;
-            }
-        }
-
-        #endregion
-
-        #region Static
-
-        /// <summary>
-        /// Computes the factor for the change in depth when moving from one location to another.
-        /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
-        /// </summary>
-        public static int DepthFactor(LocationType currLocation, LocationType nextLocation)
-        {
-            if (currLocation == LocationType.Exterior && nextLocation == LocationType.Interior)
-                return 1;
-            if (currLocation == LocationType.Interior && nextLocation == LocationType.Exterior)
-                return -1;
-            return 0;
         }
 
         #endregion

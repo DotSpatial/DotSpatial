@@ -21,7 +21,7 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // ********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Represents a planar triangle, and provides methods for calculating various
@@ -29,7 +29,13 @@ namespace DotSpatial.Topology
     /// </summary>
     public class Triangle
     {
+        #region Fields
+
         private Coordinate _p0, _p1, _p2;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -44,32 +50,9 @@ namespace DotSpatial.Topology
             _p2 = p2;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Coordinate P2
-        {
-            get { return _p2; }
-            set { _p2 = value; }
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Coordinate P1
-        {
-            get { return _p1; }
-            set { _p1 = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual Coordinate P0
-        {
-            get { return _p0; }
-            set { _p0 = value; }
-        }
+        #region Properties
 
         /// <summary>
         /// The inCentre of a triangle is the point which is equidistant
@@ -94,5 +77,34 @@ namespace DotSpatial.Topology
                 return new Coordinate(inCentreX, inCentreY);
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Coordinate P0
+        {
+            get { return _p0; }
+            set { _p0 = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Coordinate P1
+        {
+            get { return _p1; }
+            set { _p1 = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Coordinate P2
+        {
+            get { return _p2; }
+            set { _p2 = value; }
+        }
+
+        #endregion
     }
 }

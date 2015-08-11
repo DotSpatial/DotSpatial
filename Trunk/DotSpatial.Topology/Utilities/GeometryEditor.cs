@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -56,10 +57,16 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class GeometryEditor
     {
+        #region Fields
+
         /// <summary>
         /// The factory used to create the modified Geometry.
         /// </summary>
         private IGeometryFactory _factory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a new GeometryEditor object which will create
@@ -76,6 +83,36 @@ namespace DotSpatial.Topology.Utilities
         {
             _factory = factory;
         }
+
+        #endregion
+
+        #region Interfaces
+
+        /// <summary>
+        /// A interface which specifies an edit operation for Geometries.
+        /// </summary>
+        public interface IGeometryEditorOperation
+        {
+            #region Methods
+
+            /// <summary>
+            /// Edits a Geometry by returning a new Geometry with a modification.
+            /// The returned Geometry might be the same as the Geometry passed in.
+            /// </summary>
+            /// <param name="geometry">The Geometry to modify.</param>
+            /// <param name="factory">
+            /// The factory with which to construct the modified Geometry
+            /// (may be different to the factory of the input point).
+            /// </param>
+            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
+            IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Edit the input <c>Geometry</c> with the given edit operation.
@@ -99,35 +136,6 @@ namespace DotSpatial.Topology.Utilities
             if (geometry is LineString)
                 return operation.Edit(geometry, _factory);
             throw new UnsupportedGeometryException();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="operation"></param>
-        /// <returns></returns>
-        private IPolygon EditPolygon(IGeometry polygon, IGeometryEditorOperation operation)
-        {
-            Polygon newPolygon = (Polygon)operation.Edit(polygon, _factory);
-            if (newPolygon.IsEmpty)
-                //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-                return newPolygon;
-
-            LinearRing shell = (LinearRing)Edit(newPolygon.Shell, operation);
-            if (shell.IsEmpty)
-                //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-                return _factory.CreatePolygon(null, null);
-
-            ArrayList holes = new ArrayList();
-            for (int i = 0; i < newPolygon.NumHoles; i++)
-            {
-                LinearRing hole = (LinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
-                if (hole.IsEmpty) continue;
-                holes.Add(hole);
-            }
-
-            return _factory.CreatePolygon(shell, (LinearRing[])holes.ToArray(typeof(LinearRing)));
         }
 
         /// <summary>
@@ -160,7 +168,38 @@ namespace DotSpatial.Topology.Utilities
             return _factory.CreateGeometryCollection((Geometry[])geometries.ToArray(typeof(Geometry)));
         }
 
-        #region Nested type: CoordinateOperation
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        private IPolygon EditPolygon(IGeometry polygon, IGeometryEditorOperation operation)
+        {
+            Polygon newPolygon = (Polygon)operation.Edit(polygon, _factory);
+            if (newPolygon.IsEmpty)
+                //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
+                return newPolygon;
+
+            LinearRing shell = (LinearRing)Edit(newPolygon.Shell, operation);
+            if (shell.IsEmpty)
+                //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
+                return _factory.CreatePolygon(null, null);
+
+            ArrayList holes = new ArrayList();
+            for (int i = 0; i < newPolygon.NumHoles; i++)
+            {
+                LinearRing hole = (LinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
+                if (hole.IsEmpty) continue;
+                holes.Add(hole);
+            }
+
+            return _factory.CreatePolygon(shell, (LinearRing[])holes.ToArray(typeof(LinearRing)));
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         /// A GeometryEditorOperation which modifies the coordinate list of a <c>Geometry</c>.
@@ -168,7 +207,7 @@ namespace DotSpatial.Topology.Utilities
         /// </summary>
         public abstract class CoordinateOperation : IGeometryEditorOperation
         {
-            #region IGeometryEditorOperation Members
+            #region Methods
 
             /// <summary>
             ///
@@ -193,8 +232,6 @@ namespace DotSpatial.Topology.Utilities
                 return geometry;
             }
 
-            #endregion
-
             /// <summary>
             /// Edits the array of <c>Coordinate</c>s from a <c>Geometry</c>.
             /// </summary>
@@ -202,28 +239,8 @@ namespace DotSpatial.Topology.Utilities
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
             public abstract IList<Coordinate> Edit(IList<Coordinate> coordinates, IGeometry geometry);
-        }
 
-        #endregion
-
-        #region Nested type: IGeometryEditorOperation
-
-        /// <summary>
-        /// A interface which specifies an edit operation for Geometries.
-        /// </summary>
-        public interface IGeometryEditorOperation
-        {
-            /// <summary>
-            /// Edits a Geometry by returning a new Geometry with a modification.
-            /// The returned Geometry might be the same as the Geometry passed in.
-            /// </summary>
-            /// <param name="geometry">The Geometry to modify.</param>
-            /// <param name="factory">
-            /// The factory with which to construct the modified Geometry
-            /// (may be different to the factory of the input point).
-            /// </param>
-            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
+            #endregion
         }
 
         #endregion

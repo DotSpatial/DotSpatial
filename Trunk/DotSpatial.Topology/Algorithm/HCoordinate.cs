@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -31,9 +32,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class HCoordinate
     {
+        #region Fields
+
         private double _w;
         private double _x;
         private double _y;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -81,6 +88,31 @@ namespace DotSpatial.Topology.Algorithm
             _w = p1._x * p2._y - p2._x * p1._y;
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Coordinate Coordinate
+        {
+            get
+            {
+                return new Coordinate(GetX(), GetY());
+            }
+        }
+
+        /// <summary>
+        /// Direct access to w private field
+        /// </summary>
+        [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
+        protected virtual double W
+        {
+            get { return _w; }
+            set { _w = value; }
+        }
+
         /// <summary>
         /// Direct access to x private field
         /// </summary>
@@ -101,25 +133,32 @@ namespace DotSpatial.Topology.Algorithm
             set { _y = value; }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Direct access to w private field
+        ///
         /// </summary>
-        [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
-        protected virtual double W
+        /// <returns></returns>
+        public virtual double GetX()
         {
-            get { return _w; }
-            set { _w = value; }
+            double a = _x / _w;
+            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
+                throw new NotRepresentableException();
+            return a;
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Coordinate
+        /// <returns></returns>
+        public virtual double GetY()
         {
-            get
-            {
-                return new Coordinate(GetX(), GetY());
-            }
+            double a = _y / _w;
+            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
+                throw new NotRepresentableException();
+            return a;
         }
 
         /// <summary>
@@ -145,28 +184,6 @@ namespace DotSpatial.Topology.Algorithm
             return intPt;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual double GetX()
-        {
-            double a = _x / _w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
-                throw new NotRepresentableException();
-            return a;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual double GetY()
-        {
-            double a = _y / _w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
-                throw new NotRepresentableException();
-            return a;
-        }
+        #endregion
     }
 }

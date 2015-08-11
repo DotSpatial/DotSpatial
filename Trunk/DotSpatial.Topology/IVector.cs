@@ -21,6 +21,9 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // *********************************************************************************************************
+
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology
 {
     /// <summary>
@@ -79,59 +82,11 @@ namespace DotSpatial.Topology
         #region Methods
 
         /// <summary>
-        /// Transforms a point that has 3 dimensions by multiplying it by the
-        /// specified 3 x 3 matrix in the upper left, but treats the
-        /// bottom row as supplying the translation coordinates.
+        /// Adds each of the elements of V to the elements of this vector
         /// </summary>
-        /// <param name="transformMatrix"></param>
-        /// <returns></returns>
-        IVector TransformCoordinate(IMatrix4 transformMatrix);
-
-        /// <summary>
-        /// Rotations and transformations work by applying matrix mathematics,
-        /// so this creates a 1 x 4 version of this vector.  The 4th value
-        /// is always 1, and allows for the translation terms to work.
-        /// </summary>
-        /// <returns></returns>
-        IMatrixD ToMatrix();
-
-        /// <summary>
-        /// Returns the square of the distance of the vector without taking the square root
-        /// This is the same as doting the vector with itself
-        /// </summary>
-        /// <returns>Double, the square of the distance between the vectors</returns>
-        double Norm2();
-
-        /// <summary>
-        /// Assuming the vector starts at the origin of 0, 0, 0, this function returns
-        /// a Point representing the tip of the vector.
-        /// </summary>
-        IPoint ToPoint();
-
-        /// <summary>
-        /// Converts this vector to a coordinate by assuming that the X, Y and Z values
-        /// are the X, Y and Z values of the locaiton.
-        /// </summary>
-        /// <returns>An ICoordinate</returns>
-        Coordinate ToCoordinate();
-
-        /// <summary>
-        /// Returns a new segment from this vector, where the StartPoint is 0, 0, 0
-        /// and the End Point is the tip of this vector
-        /// </summary>
-        /// <returns>An implementation of ILineSegment</returns>
-        ILineSegment ToLineSegment();
-
-        #region -------------------- NORMALIZE ----------------------------
-
-        /// <summary>
-        /// Normalizes the vector.
-        /// </summary>
-        void Normalize();
-
-        #endregion
-
-        #region -------------------- CROSS --------------------------------
+        /// <param name="v">Vector, the vector to add to this vector</param>
+        /// <returns>A vector result from the addition</returns>
+        IVector Add(IVector v);
 
         /// <summary>
         /// Returns the cross product of this vector with the specified vector V
@@ -140,10 +95,6 @@ namespace DotSpatial.Topology
         /// <returns>A vector result from the inner product</returns>
         IVector Cross(IVector v);
 
-        #endregion
-
-        #region -------------------- DOT ---------------------------------
-
         /// <summary>
         /// Returns the dot product of this vector with V2
         /// </summary>
@@ -151,9 +102,12 @@ namespace DotSpatial.Topology
         /// <returns>A Double result from the inner product</returns>
         double Dot(IVector v);
 
-        #endregion
-
-        #region -------------------- IS EQUAL TO---------------------------
+        /// <summary>
+        /// Override  for definition of equality for vectors
+        /// </summary>
+        /// <param name="v">A vector to compare with</param>
+        /// <returns>true if the X, Y, and Z coordinates are all equal</returns>
+        bool Equals(IVector v);
 
         /// <summary>
         /// Compares the values of each element, and if all the elements are equal, returns true.
@@ -163,44 +117,23 @@ namespace DotSpatial.Topology
         bool Intersects(IVector v);
 
         /// <summary>
-        /// Override  for definition of equality for vectors
-        /// </summary>
-        /// <param name="v">A vector to compare with</param>
-        /// <returns>true if the X, Y, and Z coordinates are all equal</returns>
-        bool Equals(IVector v);
-
-        #endregion
-
-        #region -------------------- SUBTRACT --------------------------------
-
-        /// <summary>
-        /// Subtracts each element of V from each element of this vector
-        /// </summary>
-        /// <param name="v">Vector, the vector to subtract from this vector</param>
-        /// <returns>A vector result from the subtraction</returns>
-        IVector Subtract(IVector v);
-
-        #endregion
-
-        #region -------------------- ADD ---------------------------------
-
-        /// <summary>
-        /// Adds each of the elements of V to the elements of this vector
-        /// </summary>
-        /// <param name="v">Vector, the vector to add to this vector</param>
-        /// <returns>A vector result from the addition</returns>
-        IVector Add(IVector v);
-
-        #endregion
-
-        #region -------------------- MULTIPLY --------------------------------
-
-        /// <summary>
         /// Returns the scalar product of this vector against a scalar
         /// </summary>
         /// <param name="scalar">Double, a value to multiply against all the members of this vector</param>
         /// <returns>A vector multiplied by the scalar</returns>
         IVector Multiply(double scalar);
+
+        /// <summary>
+        /// Returns the square of the distance of the vector without taking the square root
+        /// This is the same as doting the vector with itself
+        /// </summary>
+        /// <returns>Double, the square of the distance between the vectors</returns>
+        double Norm2();
+
+        /// <summary>
+        /// Normalizes the vector.
+        /// </summary>
+        void Normalize();
 
         /// <summary>
         /// Rotates the vector about the X axis as though the tail of the vector were at the origin
@@ -223,7 +156,49 @@ namespace DotSpatial.Topology
         /// <returns>A new IVector that has been rotated</returns>
         IVector RotateZ(double degrees);
 
-        #endregion
+        /// <summary>
+        /// Subtracts each element of V from each element of this vector
+        /// </summary>
+        /// <param name="v">Vector, the vector to subtract from this vector</param>
+        /// <returns>A vector result from the subtraction</returns>
+        IVector Subtract(IVector v);
+
+        /// <summary>
+        /// Converts this vector to a coordinate by assuming that the X, Y and Z values
+        /// are the X, Y and Z values of the locaiton.
+        /// </summary>
+        /// <returns>An ICoordinate</returns>
+        Coordinate ToCoordinate();
+
+        /// <summary>
+        /// Returns a new segment from this vector, where the StartPoint is 0, 0, 0
+        /// and the End Point is the tip of this vector
+        /// </summary>
+        /// <returns>An implementation of ILineSegment</returns>
+        ILineSegment ToLineSegment();
+
+        /// <summary>
+        /// Rotations and transformations work by applying matrix mathematics,
+        /// so this creates a 1 x 4 version of this vector.  The 4th value
+        /// is always 1, and allows for the translation terms to work.
+        /// </summary>
+        /// <returns></returns>
+        IMatrixD ToMatrix();
+
+        /// <summary>
+        /// Assuming the vector starts at the origin of 0, 0, 0, this function returns
+        /// a Point representing the tip of the vector.
+        /// </summary>
+        IPoint ToPoint();
+
+        /// <summary>
+        /// Transforms a point that has 3 dimensions by multiplying it by the
+        /// specified 3 x 3 matrix in the upper left, but treats the
+        /// bottom row as supplying the translation coordinates.
+        /// </summary>
+        /// <param name="transformMatrix"></param>
+        /// <returns></returns>
+        IVector TransformCoordinate(IMatrix4 transformMatrix);
 
         #endregion
     }

@@ -44,20 +44,7 @@ namespace DotSpatial.Topology.Utilities
 
         #endregion
 
-        /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and returns the results in a new <see cref="IList" />.
-        /// </summary>
-        /// <param name="coll"></param>
-        /// <param name="func"></param>
-        /// <returns></returns>
-        public static IList Transform(ICollection coll, GenericMethod<object> func)
-        {
-            IList result = new ArrayList();
-            foreach (object obj in coll)
-                result.Add(func(obj));
-            return result;
-        }
+        #region Methods
 
         /// <summary>
         /// Executes a function on each item in a <see cref="ICollection" />
@@ -87,5 +74,22 @@ namespace DotSpatial.Topology.Utilities
                     result.Add(obj);
             return result;
         }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="ICollection" />
+        /// and returns the results in a new <see cref="IList" />.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IList Transform(ICollection coll, GenericMethod<object> func)
+        {
+            IList result = new ArrayList();
+            foreach (object obj in coll)
+                result.Add(func(obj));
+            return result;
+        }
+
+        #endregion
     }
 }

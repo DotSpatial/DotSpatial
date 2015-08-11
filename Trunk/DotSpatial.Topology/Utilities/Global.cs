@@ -31,6 +31,8 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public sealed class Global
     {
+        #region Fields
+
         /*
          *  HACK: for SQLCLR integration i does avoid to use static members,
          *        i try to use readonly members and singleton implementations...
@@ -39,10 +41,18 @@ namespace DotSpatial.Topology.Utilities
         private static readonly Global _global = new Global();
         private readonly NumberFormatInfo _nfi;
 
+        #endregion
+
+        #region Constructors
+
         private Global()
         {
             _nfi = new NumberFormatInfo { NumberDecimalSeparator = "." };
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -52,5 +62,7 @@ namespace DotSpatial.Topology.Utilities
         {
             return _global._nfi;
         }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class DirectedEdgeStar
     {
+        #region Fields
+
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.
         /// </summary>
@@ -39,25 +42,9 @@ namespace DotSpatial.Topology.Planargraph
 
         private bool _sorted;
 
-        /// <summary>
-        /// The underlying list of outgoing Directed Edges
-        /// </summary>
-        protected IList OutEdges
-        {
-            get { return _outEdges; }
-            set { _outEdges = value; }
-        }
+        #endregion
 
-        /// <summary>
-        /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
-        /// </summary>
-        public virtual int Degree
-        {
-            get
-            {
-                return _outEdges.Count;
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Returns the coordinate for the node at wich this star is based.
@@ -75,6 +62,17 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
+        /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
+        /// </summary>
+        public virtual int Degree
+        {
+            get
+            {
+                return _outEdges.Count;
+            }
+        }
+
+        /// <summary>
         /// Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
         public virtual IList Edges
@@ -87,6 +85,19 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
+        /// The underlying list of outgoing Directed Edges
+        /// </summary>
+        protected IList OutEdges
+        {
+            get { return _outEdges; }
+            set { _outEdges = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Adds a new member to this DirectedEdgeStar.
         /// </summary>
         /// <param name="de"></param>
@@ -97,34 +108,12 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Drops a member of this DirectedEdgeStar.
-        /// </summary>
-        /// <param name="de"></param>
-        public virtual void Remove(DirectedEdge de)
-        {
-            _outEdges.Remove(de);
-        }
-
-        /// <summary>
         /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
         public virtual IEnumerator GetEnumerator()
         {
             SortEdges();
             return _outEdges.GetEnumerator();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void SortEdges()
-        {
-            if (!_sorted)
-            {
-                ArrayList list = (ArrayList)_outEdges;
-                list.Sort();
-                _sorted = true;
-            }
         }
 
         /// <summary>
@@ -189,5 +178,29 @@ namespace DotSpatial.Topology.Planargraph
             int i = GetIndex(dirEdge);
             return (DirectedEdge)_outEdges[GetIndex(i + 1)];
         }
+
+        /// <summary>
+        /// Drops a member of this DirectedEdgeStar.
+        /// </summary>
+        /// <param name="de"></param>
+        public virtual void Remove(DirectedEdge de)
+        {
+            _outEdges.Remove(de);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void SortEdges()
+        {
+            if (!_sorted)
+            {
+                ArrayList list = (ArrayList)_outEdges;
+                list.Sort();
+                _sorted = true;
+            }
+        }
+
+        #endregion
     }
 }

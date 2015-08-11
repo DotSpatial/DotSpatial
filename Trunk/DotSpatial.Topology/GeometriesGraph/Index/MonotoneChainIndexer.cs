@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -44,17 +45,25 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class MonotoneChainIndexer
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static int[] ToIntArray(IList list)
+        #region Methods
+
+        /// <returns>
+        /// The index of the last point in the monotone chain.
+        /// </returns>
+        private static int FindChainEnd(IList<Coordinate> pts, int start)
         {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)
-                array[i] = Convert.ToInt32(list[i]);
-            return array;
+            // determine quadrant for chain
+            int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
+            int last = start + 1;
+            while (last < pts.Count)
+            {
+                // compute quadrant for next possible segment in chain
+                int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                if (quad != chainQuad)
+                    break;
+                last++;
+            }
+            return last - 1;
         }
 
         /// <summary>
@@ -80,23 +89,19 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             return startIndex;
         }
 
-        /// <returns>
-        /// The index of the last point in the monotone chain.
-        /// </returns>
-        private static int FindChainEnd(IList<Coordinate> pts, int start)
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static int[] ToIntArray(IList list)
         {
-            // determine quadrant for chain
-            int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
-            int last = start + 1;
-            while (last < pts.Count)
-            {
-                // compute quadrant for next possible segment in chain
-                int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
-                if (quad != chainQuad)
-                    break;
-                last++;
-            }
-            return last - 1;
+            int[] array = new int[list.Count];
+            for (int i = 0; i < array.Length; i++)
+                array[i] = Convert.ToInt32(list[i]);
+            return array;
         }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Diagnostics;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -31,28 +32,60 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
+        #region Methods
+
         /// <summary>
         ///
         /// </summary>
-        /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
+        /// <param name="q1"></param>
+        /// <param name="q2"></param>
+        /// <returns></returns>
+        private IntersectionType ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            IsProper = false;
-            // do between check first, since it is faster than the orientation test
-            if (Envelope.Intersects(p1, p2, p))
+            bool p1Q1P2 = Envelope.Intersects(p1, p2, q1);
+            bool p1Q2P2 = Envelope.Intersects(p1, p2, q2);
+            bool q1P1Q2 = Envelope.Intersects(q1, q2, p1);
+            bool q1P2Q2 = Envelope.Intersects(q1, q2, p2);
+
+            if (p1Q1P2 && p1Q2P2)
             {
-                if ((CgAlgorithms.OrientationIndex(p1, p2, p) == 0) && (CgAlgorithms.OrientationIndex(p2, p1, p) == 0))
-                {
-                    IsProper = true;
-                    if (p.Equals(p1) || p.Equals(p2))
-                        IsProper = false;
-                    Result = IntersectionType.PointIntersection;
-                    return;
-                }
+                IntersectionPoints[0] = q1;
+                IntersectionPoints[1] = q2;
+                return IntersectionType.Collinear;
             }
-            Result = IntersectionType.NoIntersection;
+            if (q1P1Q2 && q1P2Q2)
+            {
+                IntersectionPoints[0] = p1;
+                IntersectionPoints[1] = p2;
+                return IntersectionType.Collinear;
+            }
+            if (p1Q1P2 && q1P1Q2)
+            {
+                IntersectionPoints[0] = q1;
+                IntersectionPoints[1] = p1;
+                return q1.Equals(p1) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
+            }
+            if (p1Q1P2 && q1P2Q2)
+            {
+                IntersectionPoints[0] = q1;
+                IntersectionPoints[1] = p2;
+                return q1.Equals(p2) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
+            }
+            if (p1Q2P2 && q1P1Q2)
+            {
+                IntersectionPoints[0] = q2;
+                IntersectionPoints[1] = p1;
+                return q2.Equals(p1) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
+            }
+            if (p1Q2P2 && q1P2Q2)
+            {
+                IntersectionPoints[0] = q2;
+                IntersectionPoints[1] = p2;
+                return q2.Equals(p2) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
+            }
+            return IntersectionType.NoIntersection;
         }
 
         /// <summary>
@@ -121,55 +154,25 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        /// <param name="q1"></param>
-        /// <param name="q2"></param>
-        /// <returns></returns>
-        private IntersectionType ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            bool p1Q1P2 = Envelope.Intersects(p1, p2, q1);
-            bool p1Q2P2 = Envelope.Intersects(p1, p2, q2);
-            bool q1P1Q2 = Envelope.Intersects(q1, q2, p1);
-            bool q1P2Q2 = Envelope.Intersects(q1, q2, p2);
-
-            if (p1Q1P2 && p1Q2P2)
+            IsProper = false;
+            // do between check first, since it is faster than the orientation test
+            if (Envelope.Intersects(p1, p2, p))
             {
-                IntersectionPoints[0] = q1;
-                IntersectionPoints[1] = q2;
-                return IntersectionType.Collinear;
+                if ((CgAlgorithms.OrientationIndex(p1, p2, p) == 0) && (CgAlgorithms.OrientationIndex(p2, p1, p) == 0))
+                {
+                    IsProper = true;
+                    if (p.Equals(p1) || p.Equals(p2))
+                        IsProper = false;
+                    Result = IntersectionType.PointIntersection;
+                    return;
+                }
             }
-            if (q1P1Q2 && q1P2Q2)
-            {
-                IntersectionPoints[0] = p1;
-                IntersectionPoints[1] = p2;
-                return IntersectionType.Collinear;
-            }
-            if (p1Q1P2 && q1P1Q2)
-            {
-                IntersectionPoints[0] = q1;
-                IntersectionPoints[1] = p1;
-                return q1.Equals(p1) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
-            }
-            if (p1Q1P2 && q1P2Q2)
-            {
-                IntersectionPoints[0] = q1;
-                IntersectionPoints[1] = p2;
-                return q1.Equals(p2) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
-            }
-            if (p1Q2P2 && q1P1Q2)
-            {
-                IntersectionPoints[0] = q2;
-                IntersectionPoints[1] = p1;
-                return q2.Equals(p1) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
-            }
-            if (p1Q2P2 && q1P2Q2)
-            {
-                IntersectionPoints[0] = q2;
-                IntersectionPoints[1] = p2;
-                return q2.Equals(p2) ? IntersectionType.PointIntersection : IntersectionType.Collinear;
-            }
-            return IntersectionType.NoIntersection;
+            Result = IntersectionType.NoIntersection;
         }
 
         /// <summary>
@@ -237,6 +240,49 @@ namespace DotSpatial.Topology.Algorithm
         ///// <summary>
         /////
         ///// </summary>
+        ///// <param name="x1"></param>
+        ///// <param name="x2"></param>
+        ///// <param name="x3"></param>
+        ///// <param name="x4"></param>
+        ///// <returns></returns>
+        //private double SmallestInAbsValue(double x1, double x2, double x3, double x4)
+        //{
+        //    double x = x1;
+        //    double xabs = Math.Abs(x);
+        //    if (Math.Abs(x2) < xabs)
+        //    {
+        //        x = x2;
+        //        xabs = Math.Abs(x2);
+        //    }
+        //    if (Math.Abs(x3) < xabs)
+        //    {
+        //        x = x3;
+        //        xabs = Math.Abs(x3);
+        //    }
+        //    if (Math.Abs(x4) < xabs)
+        //        x = x4;
+        //    return x;
+        //}
+
+        /// <summary>
+        /// Test whether a point lies in the envelopes of both input segments.
+        /// A correctly computed intersection point should return <c>true</c>
+        /// for this test.
+        /// Since this test is for debugging purposes only, no attempt is
+        /// made to optimize the envelope test.
+        /// </summary>
+        /// <param name="intPt"></param>
+        /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
+        private bool IsInSegmentEnvelopes(Coordinate intPt)
+        {
+            Envelope env0 = new Envelope(InputLines[0, 0], InputLines[0, 1]);
+            Envelope env1 = new Envelope(InputLines[1, 0], InputLines[1, 1]);
+            return env0.Contains(intPt) && env1.Contains(intPt);
+        }
+
+        ///// <summary>
+        /////
+        ///// </summary>
         ///// <param name="n1"></param>
         ///// <param name="n2"></param>
         ///// <param name="n3"></param>
@@ -290,47 +336,6 @@ namespace DotSpatial.Topology.Algorithm
             n11.X -= normPt.X; n11.Y -= normPt.Y;
         }
 
-        ///// <summary>
-        /////
-        ///// </summary>
-        ///// <param name="x1"></param>
-        ///// <param name="x2"></param>
-        ///// <param name="x3"></param>
-        ///// <param name="x4"></param>
-        ///// <returns></returns>
-        //private double SmallestInAbsValue(double x1, double x2, double x3, double x4)
-        //{
-        //    double x = x1;
-        //    double xabs = Math.Abs(x);
-        //    if (Math.Abs(x2) < xabs)
-        //    {
-        //        x = x2;
-        //        xabs = Math.Abs(x2);
-        //    }
-        //    if (Math.Abs(x3) < xabs)
-        //    {
-        //        x = x3;
-        //        xabs = Math.Abs(x3);
-        //    }
-        //    if (Math.Abs(x4) < xabs)
-        //        x = x4;
-        //    return x;
-        //}
-
-        /// <summary>
-        /// Test whether a point lies in the envelopes of both input segments.
-        /// A correctly computed intersection point should return <c>true</c>
-        /// for this test.
-        /// Since this test is for debugging purposes only, no attempt is
-        /// made to optimize the envelope test.
-        /// </summary>
-        /// <param name="intPt"></param>
-        /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
-        private bool IsInSegmentEnvelopes(Coordinate intPt)
-        {
-            Envelope env0 = new Envelope(InputLines[0, 0], InputLines[0, 1]);
-            Envelope env1 = new Envelope(InputLines[1, 0], InputLines[1, 1]);
-            return env0.Contains(intPt) && env1.Contains(intPt);
-        }
+        #endregion
     }
 }

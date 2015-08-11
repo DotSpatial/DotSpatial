@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -37,6 +38,8 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class Node : GraphComponent
     {
+        #region Fields
+
         /// <summary>
         /// The collection of DirectedEdges that leave this Node.
         /// </summary>
@@ -46,6 +49,10 @@ namespace DotSpatial.Topology.Planargraph
         /// The location of this Node.
         /// </summary>
         private Coordinate _location;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a Node with the given location.
@@ -64,6 +71,10 @@ namespace DotSpatial.Topology.Planargraph
             DeStar = deStar;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
@@ -72,17 +83,6 @@ namespace DotSpatial.Topology.Planargraph
             get
             {
                 return _location;
-            }
-        }
-
-        /// <summary>
-        /// Returns the collection of DirectedEdges that leave this Node.
-        /// </summary>
-        public virtual DirectedEdgeStar OutEdges
-        {
-            get
-            {
-                return DeStar;
             }
         }
 
@@ -110,6 +110,30 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
+        /// Returns the collection of DirectedEdges that leave this Node.
+        /// </summary>
+        public virtual DirectedEdgeStar OutEdges
+        {
+            get
+            {
+                return DeStar;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds an outgoing DirectedEdge to this Node.
+        /// </summary>
+        /// <param name="de"></param>
+        public virtual void AddOutEdge(DirectedEdge de)
+        {
+            DeStar.Add(de);
+        }
+
+        /// <summary>
         /// Returns all Edges that connect the two nodes (which are assumed to be different).
         /// </summary>
         /// <param name="node0"></param>
@@ -125,15 +149,6 @@ namespace DotSpatial.Topology.Planargraph
                 edges0.Remove(edge);
             }
             return edges0;
-        }
-
-        /// <summary>
-        /// Adds an outgoing DirectedEdge to this Node.
-        /// </summary>
-        /// <param name="de"></param>
-        public virtual void AddOutEdge(DirectedEdge de)
-        {
-            DeStar.Add(de);
         }
 
         /// <summary>
@@ -163,5 +178,7 @@ namespace DotSpatial.Topology.Planargraph
         {
             return "NODE: " + _location.ToString() + ": " + Degree;
         }
+
+        #endregion
     }
 }

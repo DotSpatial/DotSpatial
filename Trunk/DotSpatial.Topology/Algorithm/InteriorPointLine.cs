@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -38,9 +39,15 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class InteriorPointLine
     {
+        #region Fields
+
         private readonly Coordinate _centroid;
         private Coordinate _interiorPoint;
         private double _minDistance = Double.MaxValue;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -55,6 +62,10 @@ namespace DotSpatial.Topology.Algorithm
                 AddEndpoints(g);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -66,33 +77,21 @@ namespace DotSpatial.Topology.Algorithm
             }
         }
 
-        /// <summary>
-        /// Tests the interior vertices (if any)
-        /// defined by a linear Geometry for the best inside point.
-        /// If a Geometry is not of dimension 1 it is not tested.
-        /// </summary>
-        /// <param name="geom">The point to add.</param>
-        private void AddInterior(IGeometry geom)
-        {
-            if (geom is ILineString)
-                AddInterior(geom.Coordinates);
-            else if (geom is GeometryCollection)
-            {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
-                    AddInterior(geometry);
-            }
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="pts"></param>
-        private void AddInterior(IEnumerable<Coordinate> pts)
+        /// <param name="point"></param>
+        private void Add(Coordinate point)
         {
-            foreach (Coordinate pt in pts)
+            double dist = point.Distance(_centroid);
+            if (dist < _minDistance)
             {
-                Add(pt);
+                _interiorPoint = new Coordinate(point);
+                _minDistance = dist;
             }
         }
 
@@ -125,17 +124,35 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        ///
+        /// Tests the interior vertices (if any)
+        /// defined by a linear Geometry for the best inside point.
+        /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
-        /// <param name="point"></param>
-        private void Add(Coordinate point)
+        /// <param name="geom">The point to add.</param>
+        private void AddInterior(IGeometry geom)
         {
-            double dist = point.Distance(_centroid);
-            if (dist < _minDistance)
+            if (geom is ILineString)
+                AddInterior(geom.Coordinates);
+            else if (geom is GeometryCollection)
             {
-                _interiorPoint = new Coordinate(point);
-                _minDistance = dist;
+                GeometryCollection gc = (GeometryCollection)geom;
+                foreach (Geometry geometry in gc.Geometries)
+                    AddInterior(geometry);
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="pts"></param>
+        private void AddInterior(IEnumerable<Coordinate> pts)
+        {
+            foreach (Coordinate pt in pts)
+            {
+                Add(pt);
+            }
+        }
+
+        #endregion
     }
 }

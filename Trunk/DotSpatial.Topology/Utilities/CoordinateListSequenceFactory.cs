@@ -24,6 +24,8 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Geometries.Implementation;
 
 namespace DotSpatial.Topology.Utilities
 {
@@ -33,12 +35,16 @@ namespace DotSpatial.Topology.Utilities
     [Serializable]
     public sealed class CoordinateListSequenceFactory : ICoordinateSequenceFactory
     {
+        #region Fields
+
         /// <summary>
         /// Creates an instance of the CoordinateListSequenceFactory
         /// </summary>
         public static readonly CoordinateListSequenceFactory Instance = new CoordinateListSequenceFactory();
 
-        #region ICoordinateSequenceFactory Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).
@@ -69,8 +75,6 @@ namespace DotSpatial.Topology.Utilities
             return new CoordinateListSequence(coordinate);
         }
 
-        #endregion
-
         /// <summary>
         ///
         /// </summary>
@@ -80,5 +84,7 @@ namespace DotSpatial.Topology.Utilities
         {
             return new CoordinateListSequence(coordSeq);
         }
+
+        #endregion
     }
 }

@@ -22,6 +22,7 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -33,27 +34,16 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class SimplePointInAreaLocator
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
         private SimplePointInAreaLocator() { }
 
-        /// <summary>
-        /// Locate is the main location function.  It handles both single-element
-        /// and multi-element Geometries.  The algorithm for multi-element Geometries
-        /// is more complex, since it has to take into account the boundaryDetermination rule.
-        /// </summary>
-        /// <param name="p">The coordinate to locate.</param>
-        /// <param name="geom">The Geometry to locate the coordinate in.</param>
-        public static LocationType Locate(Coordinate p, IGeometry geom)
-        {
-            if (geom.IsEmpty)
-                return LocationType.Exterior;
+        #endregion
 
-            if (ContainsPoint(p, geom))
-                return LocationType.Interior;
-            return LocationType.Exterior;
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -102,5 +92,24 @@ namespace DotSpatial.Topology.Algorithm
             }
             return true;
         }
+
+        /// <summary>
+        /// Locate is the main location function.  It handles both single-element
+        /// and multi-element Geometries.  The algorithm for multi-element Geometries
+        /// is more complex, since it has to take into account the boundaryDetermination rule.
+        /// </summary>
+        /// <param name="p">The coordinate to locate.</param>
+        /// <param name="geom">The Geometry to locate the coordinate in.</param>
+        public static LocationType Locate(Coordinate p, IGeometry geom)
+        {
+            if (geom.IsEmpty)
+                return LocationType.Exterior;
+
+            if (ContainsPoint(p, geom))
+                return LocationType.Interior;
+            return LocationType.Exterior;
+        }
+
+        #endregion
     }
 }

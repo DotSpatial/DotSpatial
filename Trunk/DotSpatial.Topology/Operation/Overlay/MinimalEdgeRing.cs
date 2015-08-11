@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Operation.Overlay
@@ -33,6 +34,8 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class MinimalEdgeRing : EdgeRing
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -40,6 +43,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="geometryFactory"></param>
         public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
             : base(start, geometryFactory) { }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -60,5 +67,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         {
             de.MinEdgeRing = er;
         }
+
+        #endregion
     }
 }

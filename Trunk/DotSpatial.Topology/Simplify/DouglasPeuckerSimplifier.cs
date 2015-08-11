@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Simplify
@@ -40,8 +41,14 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class DouglasPeuckerSimplifier
     {
+        #region Fields
+
         private readonly Geometry _inputGeom;
         private double _distanceTolerance;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -51,6 +58,10 @@ namespace DotSpatial.Topology.Simplify
         {
             _inputGeom = inputGeom;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -67,6 +78,19 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual IGeometry GetResultGeometry()
+        {
+            return (new DpTransformer(this)).Transform(_inputGeom);
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -80,23 +104,22 @@ namespace DotSpatial.Topology.Simplify
             return tss.GetResultGeometry();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual IGeometry GetResultGeometry()
-        {
-            return (new DpTransformer(this)).Transform(_inputGeom);
-        }
+        #endregion
 
-        #region Nested type: DpTransformer
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         private class DpTransformer : GeometryTransformer
         {
+            #region Fields
+
             private readonly DouglasPeuckerSimplifier _container;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -107,42 +130,9 @@ namespace DotSpatial.Topology.Simplify
                 _container = container;
             }
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="coords"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
-            protected override IList<Coordinate> TransformCoordinates(IList<Coordinate> coords, IGeometry parent)
-            {
-                return DouglasPeuckerLineSimplifier.Simplify(coords, _container.DistanceTolerance);
-            }
+            #endregion
 
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="geom"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
-            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
-            {
-                IGeometry roughGeom = base.TransformPolygon(geom, parent);
-                // don't try and correct if the parent is going to do this
-                if (parent is MultiPolygon)
-                    return roughGeom;
-                return CreateValidArea(roughGeom);
-            }
-
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="geom"></param>
-            /// <returns></returns>
-            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom)
-            {
-                IGeometry roughGeom = base.TransformMultiPolygon(geom);
-                return CreateValidArea(roughGeom);
-            }
+            #region Methods
 
             /// <summary>
             /// Creates a valid area point from one that possibly has
@@ -160,6 +150,45 @@ namespace DotSpatial.Topology.Simplify
             {
                 return roughAreaGeom.Buffer(0.0);
             }
+
+            /// <summary>
+            ///
+            /// </summary>
+            /// <param name="coords"></param>
+            /// <param name="parent"></param>
+            /// <returns></returns>
+            protected override IList<Coordinate> TransformCoordinates(IList<Coordinate> coords, IGeometry parent)
+            {
+                return DouglasPeuckerLineSimplifier.Simplify(coords, _container.DistanceTolerance);
+            }
+
+            /// <summary>
+            ///
+            /// </summary>
+            /// <param name="geom"></param>
+            /// <returns></returns>
+            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom)
+            {
+                IGeometry roughGeom = base.TransformMultiPolygon(geom);
+                return CreateValidArea(roughGeom);
+            }
+
+            /// <summary>
+            ///
+            /// </summary>
+            /// <param name="geom"></param>
+            /// <param name="parent"></param>
+            /// <returns></returns>
+            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
+            {
+                IGeometry roughGeom = base.TransformPolygon(geom, parent);
+                // don't try and correct if the parent is going to do this
+                if (parent is MultiPolygon)
+                    return roughGeom;
+                return CreateValidArea(roughGeom);
+            }
+
+            #endregion
         }
 
         #endregion

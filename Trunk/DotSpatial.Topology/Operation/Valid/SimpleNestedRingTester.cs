@@ -25,6 +25,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
 
@@ -37,9 +38,15 @@ namespace DotSpatial.Topology.Operation.Valid
     /// </summary>
     public class SimpleNestedRingTester
     {
+        #region Fields
+
         private readonly GeometryGraph _graph;  // used to find non-node vertices
         private readonly IList _rings = new ArrayList();
         private Coordinate _nestedPt;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -49,6 +56,10 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             _graph = graph;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -60,6 +71,10 @@ namespace DotSpatial.Topology.Operation.Valid
                 return _nestedPt;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -103,5 +118,7 @@ namespace DotSpatial.Topology.Operation.Valid
             }
             return true;
         }
+
+        #endregion
     }
 }

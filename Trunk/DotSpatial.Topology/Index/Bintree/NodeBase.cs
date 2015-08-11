@@ -207,6 +207,13 @@ namespace DotSpatial.Topology.Index.Bintree
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        protected abstract bool IsSearchMatch(Interval interval);
+
+        /// <summary>
         /// Removes a single item from this subtree.
         /// </summary>
         /// <param name="itemInterval">The envelope containing the item</param>
@@ -240,13 +247,6 @@ namespace DotSpatial.Topology.Index.Bintree
             found = _items.Remove(item);
             return found;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <returns></returns>
-        protected abstract bool IsSearchMatch(Interval interval);
 
         #endregion
     }

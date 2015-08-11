@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.GeometriesGraph
 {
     /// <summary>
@@ -29,6 +31,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class NodeFactory
     {
+        #region Methods
+
         /// <summary>
         /// The basic node constructor does not allow for incident edges.
         /// </summary>
@@ -37,5 +41,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             return new Node(coord, null);
         }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -42,6 +43,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class MonotoneChainEdge
     {
+        #region Fields
+
         private readonly Edge _e;
         // these envelopes are created once and reused
         private readonly Envelope _env1 = new Envelope();
@@ -50,6 +53,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private readonly int[] _startIndex;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -62,6 +69,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             MonotoneChainIndexer mcb = new MonotoneChainIndexer();
             _startIndex = mcb.GetChainStartIndices(_pts);
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -85,29 +96,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="chainIndex"></param>
-        /// <returns></returns>
-        public virtual double GetMinX(int chainIndex)
-        {
-            double x1 = _pts[_startIndex[chainIndex]].X;
-            double x2 = _pts[_startIndex[chainIndex + 1]].X;
-            return x1 < x2 ? x1 : x2;
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="chainIndex"></param>
-        /// <returns></returns>
-        public virtual double GetMaxX(int chainIndex)
-        {
-            double x1 = _pts[_startIndex[chainIndex]].X;
-            double x2 = _pts[_startIndex[chainIndex + 1]].X;
-            return x1 > x2 ? x1 : x2;
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -189,5 +180,31 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
                     ComputeIntersectsForChain(mid0, end0, mce, mid1, end1, ei);
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="chainIndex"></param>
+        /// <returns></returns>
+        public virtual double GetMaxX(int chainIndex)
+        {
+            double x1 = _pts[_startIndex[chainIndex]].X;
+            double x2 = _pts[_startIndex[chainIndex + 1]].X;
+            return x1 > x2 ? x1 : x2;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="chainIndex"></param>
+        /// <returns></returns>
+        public virtual double GetMinX(int chainIndex)
+        {
+            double x1 = _pts[_startIndex[chainIndex]].X;
+            double x2 = _pts[_startIndex[chainIndex + 1]].X;
+            return x1 < x2 ? x1 : x2;
+        }
+
+        #endregion
     }
 }

@@ -21,12 +21,11 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 // ********************************************************************************************************
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// A closed, non-self intersecting Linestring
     /// </summary>
     public interface ILinearRing : ILineString
-    {
-    }
+    {}
 }

@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.IO;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -32,9 +33,15 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class EdgeIntersectionList
     {
+        #region Fields
+
         // a list of EdgeIntersections
         private readonly Edge _edge;  // the parent edge
         private readonly IDictionary _nodeMap = new SortedList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -44,6 +51,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             _edge = edge;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -55,6 +66,10 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return _nodeMap.Count;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds an intersection into the list, if it isn't already there.
@@ -71,30 +86,6 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return;
             _nodeMap.Add(eiNew, eiNew);
             return;
-        }
-
-        /// <summary>
-        /// Returns an iterator of EdgeIntersections.
-        /// </summary>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public virtual bool IsIntersection(Coordinate pt)
-        {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
-                if (ei.Coordinate.Equals(pt))
-                    return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -163,6 +154,30 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
+        /// Returns an iterator of EdgeIntersections.
+        /// </summary>
+        public virtual IEnumerator GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        public virtual bool IsIntersection(Coordinate pt)
+        {
+            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            {
+                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                if (ei.Coordinate.Equals(pt))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="outstream"></param>
@@ -175,5 +190,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 ei.Write(outstream);
             }
         }
+
+        #endregion
     }
 }

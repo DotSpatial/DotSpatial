@@ -25,7 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geoapi.Geometries;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.Strtree
 {
@@ -77,6 +77,25 @@ namespace DotSpatial.Topology.Index.Strtree
         #region Methods
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        protected override AbstractNode<Interval, TItem> CreateNode(int level) 
+        {                
+            return new AnonymousAbstractNodeImpl(level);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        protected override IComparer<IBoundable<Interval, TItem>> GetComparer() 
+        {
+            return Comparator;
+        }
+
+        /// <summary>
         /// Inserts an item having the given bounds into the tree.
         /// </summary>
         /// <param name="x1"></param>
@@ -104,25 +123,6 @@ namespace DotSpatial.Topology.Index.Strtree
         public IList<TItem> Query(double x1, double x2) 
         {
             return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        protected override AbstractNode<Interval, TItem> CreateNode(int level) 
-        {                
-            return new AnonymousAbstractNodeImpl(level);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer<IBoundable<Interval, TItem>> GetComparer() 
-        {
-            return Comparator;
         }
 
         #endregion

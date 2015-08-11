@@ -31,9 +31,13 @@ namespace DotSpatial.Topology.Algorithm
     /// </summary>
     public class NotRepresentableException : ApplicationException
     {
+        #region Constructors
+
         /// <summary>
         ///
         /// </summary>
         public NotRepresentableException() : base("Projective point not representable on the Cartesian plane.") { }
+
+        #endregion
     }
 }

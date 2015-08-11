@@ -31,15 +31,21 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// </summary>
     public class SweepLineEvent : IComparable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        public const int INSERT = 1;
+        #region Constant Fields
 
         /// <summary>
         ///
         /// </summary>
         public const int DELETE = 2;
+
+        /// <summary>
+        ///
+        /// </summary>
+        public const int INSERT = 1;
+
+        #endregion
+
+        #region Fields
 
         private readonly int _eventType;
         private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
@@ -47,6 +53,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         private readonly double _xValue;
         private int _deleteEventIndex;
         private object _edgeSet;    // used for red-blue intersection detection
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -66,29 +76,18 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             _obj = obj;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual object EdgeSet
-        {
-            get
-            {
-                return _edgeSet;
-            }
-            set
-            {
-                _edgeSet = value;
-            }
-        }
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsInsert
+        public SweepLineEvent InsertEvent
         {
             get
             {
-                return _insertEvent == null;
+                return _insertEvent;
             }
         }
 
@@ -106,11 +105,22 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public SweepLineEvent InsertEvent
+        public virtual bool IsInsert
         {
             get
             {
-                return _insertEvent;
+                return _insertEvent == null;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual object Object
+        {
+            get
+            {
+                return _obj;
             }
         }
 
@@ -132,15 +142,21 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual object Object
+        public virtual object EdgeSet
         {
             get
             {
-                return _obj;
+                return _edgeSet;
+            }
+            set
+            {
+                _edgeSet = value;
             }
         }
 
-        #region IComparable Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.

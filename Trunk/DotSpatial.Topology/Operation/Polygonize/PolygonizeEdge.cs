@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 
 namespace DotSpatial.Topology.Operation.Polygonize
@@ -31,7 +32,13 @@ namespace DotSpatial.Topology.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge : Edge
     {
+        #region Fields
+
         private readonly LineString _line;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -41,6 +48,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
         {
             _line = line;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -52,5 +63,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 return _line;
             }
         }
+
+        #endregion
     }
 }

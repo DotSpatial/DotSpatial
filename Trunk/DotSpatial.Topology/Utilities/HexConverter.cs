@@ -31,10 +31,16 @@ namespace DotSpatial.Topology.Utilities
     /// </summary>
     public class HexConverter
     {
+        #region Constructors
+
         /// <summary>
         /// Only static methods!
         /// </summary>
         private HexConverter() { }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Convert the given numeric value (passed as string) of the base specified by <c>baseIn</c>
@@ -119,5 +125,7 @@ namespace DotSpatial.Topology.Utilities
             }
             return result;
         }
+
+        #endregion
     }
 }

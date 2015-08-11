@@ -24,6 +24,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.GeometriesGraph.Index;
 
@@ -38,6 +39,74 @@ namespace DotSpatial.Topology.Operation
     /// </summary>
     public class IsSimpleOp
     {
+        #region Methods
+
+        /// <summary>
+        /// Add an endpoint to the map, creating an entry for it if none exists.
+        /// </summary>
+        /// <param name="endPoints"></param>
+        /// <param name="p"></param>
+        /// <param name="isClosed"></param>
+        private static void AddEndpoint(IDictionary endPoints, Coordinate p, bool isClosed)
+        {
+            EndpointInfo eiInfo = (EndpointInfo)endPoints[p];
+            if (eiInfo == null)
+            {
+                eiInfo = new EndpointInfo(p);
+                endPoints.Add(p, eiInfo);
+            }
+            eiInfo.AddEndpoint(isClosed);
+        }
+
+        /// <summary>
+        /// Test that no edge intersection is the
+        /// endpoint of a closed line.  To check this we compute the
+        /// degree of each endpoint. The degree of endpoints of closed lines
+        /// must be exactly 2.
+        /// </summary>
+        /// <param name="graph"></param>
+        private static bool HasClosedEndpointIntersection(GeometryGraph graph)
+        {
+            IDictionary endPoints = new SortedList();
+            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
+            {
+                Edge e = (Edge)i.Current;
+                bool isClosed = e.IsClosed;
+                Coordinate p0 = e.GetCoordinate(0);
+                AddEndpoint(endPoints, p0, isClosed);
+                Coordinate p1 = e.GetCoordinate(e.NumPoints - 1);
+                AddEndpoint(endPoints, p1, isClosed);
+            }
+            for (IEnumerator i = endPoints.Values.GetEnumerator(); i.MoveNext(); )
+            {
+                EndpointInfo eiInfo = (EndpointInfo)i.Current;
+                if (eiInfo.IsClosed && eiInfo.Degree != 2)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// For all edges, check if there are any intersections which are NOT at an endpoint.
+        /// The Geometry is not simple if there are intersections not at endpoints.
+        /// </summary>
+        /// <param name="graph"></param>
+        private static bool HasNonEndpointIntersection(GeometryGraph graph)
+        {
+            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
+            {
+                Edge e = (Edge)i.Current;
+                int maxSegmentIndex = e.MaximumSegmentIndex;
+                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                {
+                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
+                    if (!ei.IsEndPoint(maxSegmentIndex))
+                        return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -97,82 +166,24 @@ namespace DotSpatial.Topology.Operation
             return true;
         }
 
-        /// <summary>
-        /// For all edges, check if there are any intersections which are NOT at an endpoint.
-        /// The Geometry is not simple if there are intersections not at endpoints.
-        /// </summary>
-        /// <param name="graph"></param>
-        private static bool HasNonEndpointIntersection(GeometryGraph graph)
-        {
-            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
-                int maxSegmentIndex = e.MaximumSegmentIndex;
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
-                {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
-                    if (!ei.IsEndPoint(maxSegmentIndex))
-                        return true;
-                }
-            }
-            return false;
-        }
+        #endregion
 
-        /// <summary>
-        /// Test that no edge intersection is the
-        /// endpoint of a closed line.  To check this we compute the
-        /// degree of each endpoint. The degree of endpoints of closed lines
-        /// must be exactly 2.
-        /// </summary>
-        /// <param name="graph"></param>
-        private static bool HasClosedEndpointIntersection(GeometryGraph graph)
-        {
-            IDictionary endPoints = new SortedList();
-            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
-                bool isClosed = e.IsClosed;
-                Coordinate p0 = e.GetCoordinate(0);
-                AddEndpoint(endPoints, p0, isClosed);
-                Coordinate p1 = e.GetCoordinate(e.NumPoints - 1);
-                AddEndpoint(endPoints, p1, isClosed);
-            }
-            for (IEnumerator i = endPoints.Values.GetEnumerator(); i.MoveNext(); )
-            {
-                EndpointInfo eiInfo = (EndpointInfo)i.Current;
-                if (eiInfo.IsClosed && eiInfo.Degree != 2)
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Add an endpoint to the map, creating an entry for it if none exists.
-        /// </summary>
-        /// <param name="endPoints"></param>
-        /// <param name="p"></param>
-        /// <param name="isClosed"></param>
-        private static void AddEndpoint(IDictionary endPoints, Coordinate p, bool isClosed)
-        {
-            EndpointInfo eiInfo = (EndpointInfo)endPoints[p];
-            if (eiInfo == null)
-            {
-                eiInfo = new EndpointInfo(p);
-                endPoints.Add(p, eiInfo);
-            }
-            eiInfo.AddEndpoint(isClosed);
-        }
-
-        #region Nested type: EndpointInfo
+        #region Classes
 
         /// <summary>
         ///
         /// </summary>
         public class EndpointInfo
         {
+            #region Fields
+
             private int _degree;
             private bool _isClosed;
             private Coordinate _pt;
+
+            #endregion
+
+            #region Constructors
 
             /// <summary>
             ///
@@ -185,13 +196,17 @@ namespace DotSpatial.Topology.Operation
                 _degree = 0;
             }
 
+            #endregion
+
+            #region Properties
+
             /// <summary>
             ///
             /// </summary>
-            public virtual Coordinate Point
+            public virtual int Degree
             {
-                get { return _pt; }
-                set { _pt = value; }
+                get { return _degree; }
+                set { _degree = value; }
             }
 
             /// <summary>
@@ -206,11 +221,15 @@ namespace DotSpatial.Topology.Operation
             /// <summary>
             ///
             /// </summary>
-            public virtual int Degree
+            public virtual Coordinate Point
             {
-                get { return _degree; }
-                set { _degree = value; }
+                get { return _pt; }
+                set { _pt = value; }
             }
+
+            #endregion
+
+            #region Methods
 
             /// <summary>
             ///
@@ -221,6 +240,8 @@ namespace DotSpatial.Topology.Operation
                 Degree++;
                 IsClosed |= isClosed;
             }
+
+            #endregion
         }
 
         #endregion

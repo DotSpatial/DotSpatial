@@ -22,11 +22,10 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology.Index.Bintree;
+using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying
@@ -126,6 +125,21 @@ namespace DotSpatial.Topology.Index.Quadtree
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemEnv"></param>
+        private void CollectStats(Envelope itemEnv)
+        {
+            double delX = itemEnv.Width;
+            if (delX < _minExtent && delX > 0.0)
+            _minExtent = delX;
+
+            double delY = itemEnv.Height;
+            if (delY < _minExtent && delY > 0.0)
+            _minExtent = delY;
+        }
 
         /// <summary>
         /// Ensure that the envelope for the inserted item has non-zero extents.
@@ -240,21 +254,6 @@ namespace DotSpatial.Topology.Index.Quadtree
         {
             Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
             return _root.Remove(posEnv, item);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemEnv"></param>
-        private void CollectStats(Envelope itemEnv)
-        {
-            double delX = itemEnv.Width;
-            if (delX < _minExtent && delX > 0.0)
-            _minExtent = delX;
-
-            double delY = itemEnv.Height;
-            if (delY < _minExtent && delY > 0.0)
-            _minExtent = delY;
         }
 
         #endregion

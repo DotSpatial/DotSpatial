@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Index.KDTree
 {
     /// <summary>
@@ -67,21 +69,6 @@ namespace DotSpatial.Topology.Index.KDTree
         #region Properties
 
         /// <summary>
-        /// Gets the location of this node
-        /// </summary>
-        public Coordinate Coordinate { get; private set; }
-
-        /// <summary>
-        /// Gets the number of inserted points that are coincident at this location.
-        /// </summary>
-        public int Count { get; private set; }
-
-        /// <summary>
-        /// Gets the user data object associated with this node.
-        /// </summary>
-        public T Data { get; private set; }
-
-        /// <summary>
         /// Gets whether more than one point with this value have been inserted (up to the tolerance)
         /// </summary>
         /// <returns></returns>
@@ -105,6 +92,21 @@ namespace DotSpatial.Topology.Index.KDTree
         {
             get { return Coordinate.Y; }
         }
+
+        /// <summary>
+        /// Gets the location of this node
+        /// </summary>
+        public Coordinate Coordinate { get; private set; }
+
+        /// <summary>
+        /// Gets the number of inserted points that are coincident at this location.
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// Gets the user data object associated with this node.
+        /// </summary>
+        public T Data { get; private set; }
 
         /// <summary>
         /// Gets or sets the left node of the tree

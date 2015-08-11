@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Noding;
 
@@ -37,10 +38,16 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public class OffsetCurveSetBuilder
     {
+        #region Fields
+
         private readonly OffsetCurveBuilder _curveBuilder;
         private readonly IList _curveList = new ArrayList();
         private readonly double _distance;
         private readonly IGeometry _inputGeom;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -55,49 +62,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             _curveBuilder = curveBuilder;
         }
 
-        /// <summary>
-        /// Computes the set of raw offset curves for the buffer.
-        /// Each offset curve has an attached {Label} indicating
-        /// its left and right location.
-        /// </summary>
-        /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
-        public virtual IList GetCurves()
-        {
-            Add(_inputGeom);
-            return _curveList;
-        }
+        #endregion
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lineList"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
-        private void AddCurves(IEnumerable lineList, LocationType leftLoc, LocationType rightLoc)
-        {
-            for (IEnumerator i = lineList.GetEnumerator(); i.MoveNext(); )
-            {
-                AddCurve(i.Current as IList<Coordinate>, leftLoc, rightLoc);
-            }
-        }
-
-        /// <summary>
-        /// Creates a {SegmentString} for a coordinate list which is a raw offset curve,
-        /// and adds it to the list of buffer curves.
-        /// The SegmentString is tagged with a Label giving the topology of the curve.
-        /// The curve may be oriented in either direction.
-        /// If the curve is oriented CW, the locations will be:
-        /// Left: Location.Exterior.
-        /// Right: Location.Interior.
-        /// </summary>
-        private void AddCurve(IList<Coordinate> coord, LocationType leftLoc, LocationType rightLoc)
-        {
-            // don't add null curves!
-            if (coord.Count < 2) return;
-            // add the edge for a coordinate list which is a raw offset curve
-            SegmentString e = new SegmentString(coord, new Label(0, LocationType.Boundary, leftLoc, rightLoc));
-            _curveList.Add(e);
-        }
+        #region Methods
 
         /// <summary>
         ///
@@ -131,15 +98,35 @@ namespace DotSpatial.Topology.Operation.Buffer
         }
 
         /// <summary>
-        /// Add a Point to the graph.
+        /// Creates a {SegmentString} for a coordinate list which is a raw offset curve,
+        /// and adds it to the list of buffer curves.
+        /// The SegmentString is tagged with a Label giving the topology of the curve.
+        /// The curve may be oriented in either direction.
+        /// If the curve is oriented CW, the locations will be:
+        /// Left: Location.Exterior.
+        /// Right: Location.Interior.
         /// </summary>
-        /// <param name="p"></param>
-        private void AddPoint(IPoint p)
+        private void AddCurve(IList<Coordinate> coord, LocationType leftLoc, LocationType rightLoc)
         {
-            if (_distance <= 0.0) return;
-            IList<Coordinate> coord = p.Coordinates;
-            IList lineList = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurves(lineList, LocationType.Exterior, LocationType.Interior);
+            // don't add null curves!
+            if (coord.Count < 2) return;
+            // add the edge for a coordinate list which is a raw offset curve
+            SegmentString e = new SegmentString(coord, new Label(0, LocationType.Boundary, leftLoc, rightLoc));
+            _curveList.Add(e);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lineList"></param>
+        /// <param name="leftLoc"></param>
+        /// <param name="rightLoc"></param>
+        private void AddCurves(IEnumerable lineList, LocationType leftLoc, LocationType rightLoc)
+        {
+            for (IEnumerator i = lineList.GetEnumerator(); i.MoveNext(); )
+            {
+                AddCurve(i.Current as IList<Coordinate>, leftLoc, rightLoc);
+            }
         }
 
         /// <summary>
@@ -150,6 +137,18 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             if (_distance <= 0.0) return;
             IList<Coordinate> coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            IList lineList = _curveBuilder.GetLineCurve(coord, _distance);
+            AddCurves(lineList, LocationType.Exterior, LocationType.Interior);
+        }
+
+        /// <summary>
+        /// Add a Point to the graph.
+        /// </summary>
+        /// <param name="p"></param>
+        private void AddPoint(IPoint p)
+        {
+            if (_distance <= 0.0) return;
+            IList<Coordinate> coord = p.Coordinates;
             IList lineList = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurves(lineList, LocationType.Exterior, LocationType.Interior);
         }
@@ -223,6 +222,18 @@ namespace DotSpatial.Topology.Operation.Buffer
         }
 
         /// <summary>
+        /// Computes the set of raw offset curves for the buffer.
+        /// Each offset curve has an attached {Label} indicating
+        /// its left and right location.
+        /// </summary>
+        /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
+        public virtual IList GetCurves()
+        {
+            Add(_inputGeom);
+            return _curveList;
+        }
+
+        /// <summary>
         /// The ringCoord is assumed to contain no repeated points.
         /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
         /// In this case it has no area, and hence has a minimum diameter of 0.
@@ -281,5 +292,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             double distToCentre = CgAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }
+
+        #endregion
     }
 }

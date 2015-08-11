@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
 
@@ -35,12 +36,17 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class LineBuilder
     {
-        private readonly IGeometryFactory _geometryFactory;
+        #region Fields
 
+        private readonly IGeometryFactory _geometryFactory;
         private readonly IList _lineEdgesList = new ArrayList();
         private readonly OverlayOp _op;
         private readonly PointLocator _ptLocator;
         private readonly IList _resultLineList = new ArrayList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -54,6 +60,10 @@ namespace DotSpatial.Topology.Operation.Overlay
             _geometryFactory = geometryFactory;
             _ptLocator = ptLocator;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -71,72 +81,17 @@ namespace DotSpatial.Topology.Operation.Overlay
         }
 
         /// <summary>
-        /// Find and mark L edges which are "covered" by the result area (if any).
-        /// L edges at nodes which also have A edges can be checked by checking
-        /// their depth at that node.
-        /// L edges at nodes which do not have A edges can be checked by doing a
-        /// point-in-polygon test with the previously computed result areas.
-        /// </summary>
-        private void FindCoveredLineEdges()
-        {
-            // first set covered for all L edges at nodes which have A edges too
-            IEnumerator nodeit = _op.Graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).FindCoveredLineEdges();
-            }
-
-            /*
-             * For all Curve edges which weren't handled by the above,
-             * use a point-in-poly test to determine whether they are covered
-             */
-            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
-            {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                Edge e = de.Edge;
-                if (de.IsLineEdge && !e.IsCoveredSet)
-                {
-                    bool isCovered = _op.IsCoveredByA(de.Coordinate);
-                    e.IsCovered = isCovered;
-                }
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="opCode"></param>
-        private void CollectLines(SpatialFunction opCode)
+        private void BuildLines(SpatialFunction opCode)
         {
-            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            for (IEnumerator it = _lineEdgesList.GetEnumerator(); it.MoveNext(); )
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                CollectLineEdge(de, opCode, _lineEdgesList);
-                CollectBoundaryTouchEdge(de, opCode, _lineEdgesList);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="de"></param>
-        /// <param name="opCode"></param>
-        /// <param name="edges"></param>
-        public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
-        {
-            Label label = de.Label;
-            Edge e = de.Edge;
-            // include Curve edges which are in the result
-            if (de.IsLineEdge)
-            {
-                if (!de.IsVisited && OverlayOp.IsResultOfOp(label, opCode) && !e.IsCovered)
-                {
-                    edges.Add(e);
-                    de.VisitedEdge = true;
-                }
+                Edge e = (Edge)it.Current;
+                ILineString line = _geometryFactory.CreateLineString(e.Coordinates);
+                _resultLineList.Add(line);
+                e.IsInResult = true;
             }
         }
 
@@ -176,16 +131,82 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
+        /// <param name="de"></param>
         /// <param name="opCode"></param>
-        private void BuildLines(SpatialFunction opCode)
+        /// <param name="edges"></param>
+        public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
         {
-            for (IEnumerator it = _lineEdgesList.GetEnumerator(); it.MoveNext(); )
+            Label label = de.Label;
+            Edge e = de.Edge;
+            // include Curve edges which are in the result
+            if (de.IsLineEdge)
             {
-                Edge e = (Edge)it.Current;
-                ILineString line = _geometryFactory.CreateLineString(e.Coordinates);
-                _resultLineList.Add(line);
-                e.IsInResult = true;
+                if (!de.IsVisited && OverlayOp.IsResultOfOp(label, opCode) && !e.IsCovered)
+                {
+                    edges.Add(e);
+                    de.VisitedEdge = true;
+                }
             }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opCode"></param>
+        private void CollectLines(SpatialFunction opCode)
+        {
+            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
+            while (it.MoveNext())
+            {
+                DirectedEdge de = (DirectedEdge)it.Current;
+                CollectLineEdge(de, opCode, _lineEdgesList);
+                CollectBoundaryTouchEdge(de, opCode, _lineEdgesList);
+            }
+        }
+
+        /// <summary>
+        /// Find and mark L edges which are "covered" by the result area (if any).
+        /// L edges at nodes which also have A edges can be checked by checking
+        /// their depth at that node.
+        /// L edges at nodes which do not have A edges can be checked by doing a
+        /// point-in-polygon test with the previously computed result areas.
+        /// </summary>
+        private void FindCoveredLineEdges()
+        {
+            // first set covered for all L edges at nodes which have A edges too
+            IEnumerator nodeit = _op.Graph.Nodes.GetEnumerator();
+            while (nodeit.MoveNext())
+            {
+                Node node = (Node)nodeit.Current;
+                ((DirectedEdgeStar)node.Edges).FindCoveredLineEdges();
+            }
+
+            /*
+             * For all Curve edges which weren't handled by the above,
+             * use a point-in-poly test to determine whether they are covered
+             */
+            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
+            while (it.MoveNext())
+            {
+                DirectedEdge de = (DirectedEdge)it.Current;
+                Edge e = de.Edge;
+                if (de.IsLineEdge && !e.IsCoveredSet)
+                {
+                    bool isCovered = _op.IsCoveredByA(de.Coordinate);
+                    e.IsCovered = isCovered;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Label an isolated node with its relationship to the target point.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="targetIndex"></param>
+        private void LabelIsolatedLine(Edge e, int targetIndex)
+        {
+            LocationType loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
+            e.Label.SetLocation(targetIndex, loc);
         }
 
         /// <summary>
@@ -208,15 +229,6 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
         }
 
-        /// <summary>
-        /// Label an isolated node with its relationship to the target point.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="targetIndex"></param>
-        private void LabelIsolatedLine(Edge e, int targetIndex)
-        {
-            LocationType loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
-            e.Label.SetLocation(targetIndex, loc);
-        }
+        #endregion
     }
 }

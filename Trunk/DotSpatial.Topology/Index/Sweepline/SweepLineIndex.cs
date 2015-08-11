@@ -55,23 +55,6 @@ namespace DotSpatial.Topology.Index.Sweepline
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="action"></param>
-        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
-        {
-            _nOverlaps = 0;
-            BuildIndex();
-
-            for (int i = 0; i < _events.Count; i++)
-            {
-                SweepLineEvent ev = _events[i];
-                if (ev.IsInsert)               
-                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
-            }
-        }
-
-        /// <summary>
         /// Because Delete Events have a link to their corresponding Insert event,
         /// it is possible to compute exactly the range of events which must be
         /// compared to a given Insert event object.
@@ -88,6 +71,23 @@ namespace DotSpatial.Topology.Index.Sweepline
                     ev.InsertEvent.DeleteEventIndex = i;                
             }
             _indexBuilt = true;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="action"></param>
+        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
+        {
+            _nOverlaps = 0;
+            BuildIndex();
+
+            for (int i = 0; i < _events.Count; i++)
+            {
+                SweepLineEvent ev = _events[i];
+                if (ev.IsInsert)               
+                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
+            }
         }
 
         /// <summary>

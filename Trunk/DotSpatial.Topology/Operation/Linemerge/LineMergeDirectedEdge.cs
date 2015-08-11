@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 using DotSpatial.Topology.Utilities;
 
@@ -32,6 +33,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
     /// </summary>
     public class LineMergeDirectedEdge : DirectedEdge
     {
+        #region Constructors
+
         /// <summary>
         /// Constructs a LineMergeDirectedEdge connecting the <c>from</c> node to the <c>to</c> node.
         /// </summary>
@@ -47,6 +50,10 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// </param>
         public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
             : base(from, to, directionPt, edgeDirection) { }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Returns the directed edge that starts at this directed edge's end point, or null
@@ -64,5 +71,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
                 return (LineMergeDirectedEdge)ToNode.OutEdges.Edges[0];
             }
         }
+
+        #endregion
     }
 }

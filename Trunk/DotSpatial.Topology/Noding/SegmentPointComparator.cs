@@ -22,6 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using DotSpatial.Topology.Geometries;
+
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
@@ -33,6 +35,8 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class SegmentPointComparator
     {
+        #region Methods
+
         /// <summary>
         ///  Compares two <see cref="Coordinate" />s for their relative position along a segment
         /// lying in the specified <see cref="Octant" />.
@@ -79,21 +83,6 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="x1"></param>
-        /// <returns></returns>
-        public static int RelativeSign(double x0, double x1)
-        {
-            if (x0 < x1)
-                return -1;
-            if (x0 > x1)
-                return 1;
-            return 0;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="compareSign0"></param>
         /// <param name="compareSign1"></param>
         /// <returns></returns>
@@ -109,5 +98,22 @@ namespace DotSpatial.Topology.Noding
                 return 1;
             return 0;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="x0"></param>
+        /// <param name="x1"></param>
+        /// <returns></returns>
+        public static int RelativeSign(double x0, double x1)
+        {
+            if (x0 < x1)
+                return -1;
+            if (x0 > x1)
+                return 1;
+            return 0;
+        }
+
+        #endregion
     }
 }

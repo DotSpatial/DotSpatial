@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Chain;
 
 namespace DotSpatial.Topology.Noding
@@ -34,8 +35,14 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public class IntersectionFinderAdder : ISegmentIntersector
     {
+        #region Fields
+
         private readonly IList _interiorIntersections;
         private readonly LineIntersector _li;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
@@ -46,6 +53,10 @@ namespace DotSpatial.Topology.Noding
             _li = li;
             _interiorIntersections = new ArrayList();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -58,7 +69,9 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        #region ISegmentIntersector Members
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// This method is called by clients

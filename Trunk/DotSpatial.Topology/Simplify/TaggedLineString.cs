@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Simplify
 {
@@ -32,10 +33,16 @@ namespace DotSpatial.Topology.Simplify
     /// </summary>
     public class TaggedLineString
     {
+        #region Fields
+
         private readonly int _minimumSize;
         private readonly LineString _parentLine;
         private readonly IList _resultSegs = new ArrayList();
         private TaggedLineSegment[] _segs;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -54,6 +61,10 @@ namespace DotSpatial.Topology.Simplify
             _minimumSize = minimumSize;
             Init();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -122,6 +133,56 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="seg"></param>
+        public virtual void AddToResult(LineSegment seg)
+        {
+            _resultSegs.Add(seg);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual ILinearRing AsLinearRing()
+        {
+            return _parentLine.Factory.CreateLinearRing(ExtractCoordinates(_resultSegs));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual ILineString AsLineString()
+        {
+            return _parentLine.Factory.CreateLineString(ExtractCoordinates(_resultSegs));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="segs"></param>
+        /// <returns></returns>
+        private static Coordinate[] ExtractCoordinates(IList segs)
+        {
+            Coordinate[] pts = new Coordinate[segs.Count + 1];
+            LineSegment seg = null;
+            for (int i = 0; i < segs.Count; i++)
+            {
+                seg = (LineSegment)segs[i];
+                pts[i] = seg.P0;
+            }
+            // add last point
+            if (seg != null) pts[pts.Length - 1] = seg.P1;
+            return pts;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -147,50 +208,6 @@ namespace DotSpatial.Topology.Simplify
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="seg"></param>
-        public virtual void AddToResult(LineSegment seg)
-        {
-            _resultSegs.Add(seg);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual ILineString AsLineString()
-        {
-            return _parentLine.Factory.CreateLineString(ExtractCoordinates(_resultSegs));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual ILinearRing AsLinearRing()
-        {
-            return _parentLine.Factory.CreateLinearRing(ExtractCoordinates(_resultSegs));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="segs"></param>
-        /// <returns></returns>
-        private static Coordinate[] ExtractCoordinates(IList segs)
-        {
-            Coordinate[] pts = new Coordinate[segs.Count + 1];
-            LineSegment seg = null;
-            for (int i = 0; i < segs.Count; i++)
-            {
-                seg = (LineSegment)segs[i];
-                pts[i] = seg.P0;
-            }
-            // add last point
-            if (seg != null) pts[pts.Length - 1] = seg.P1;
-            return pts;
-        }
+        #endregion
     }
 }

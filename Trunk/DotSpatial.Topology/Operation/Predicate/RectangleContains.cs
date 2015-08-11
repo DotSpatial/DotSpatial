@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Predicate
 {
@@ -34,7 +35,13 @@ namespace DotSpatial.Topology.Operation.Predicate
     /// </summary>
     public class RectangleContains
     {
+        #region Fields
+
         private readonly IEnvelope _rectEnv;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Create a new contains computer for two geometries.
@@ -44,6 +51,10 @@ namespace DotSpatial.Topology.Operation.Predicate
         {
             _rectEnv = rectangle.EnvelopeInternal;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///
@@ -97,40 +108,6 @@ namespace DotSpatial.Topology.Operation.Predicate
         }
 
         /// <summary>
-        /// Given any valid implementation of ICoordinate, which
-        /// will basically provide an X, Y or Z values, this will determine
-        /// if the rectangle contains the point.
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        private bool IsPointContainedInBoundary(Coordinate pt)
-        {
-            // we already know that the point is contained in the rectangle envelope
-            if (!(pt.X == _rectEnv.Minimum.X || pt.X == _rectEnv.Maximum.X))
-                return false;
-            if (!(pt.Y == _rectEnv.Minimum.Y || pt.Y == _rectEnv.Maximum.Y))
-                return false;
-            return true;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
-        private bool IsLineStringContainedInBoundary(IBasicGeometry line)
-        {
-            IList<Coordinate> seq = line.Coordinates;
-
-            for (int i = 0; i < seq.Count - 1; i++)
-            {
-                if (!IsLineSegmentContainedInBoundary(seq[i], seq[i + 1]))
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="p0"></param>
@@ -160,5 +137,41 @@ namespace DotSpatial.Topology.Operation.Predicate
              */
             return false;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private bool IsLineStringContainedInBoundary(IBasicGeometry line)
+        {
+            IList<Coordinate> seq = line.Coordinates;
+
+            for (int i = 0; i < seq.Count - 1; i++)
+            {
+                if (!IsLineSegmentContainedInBoundary(seq[i], seq[i + 1]))
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Given any valid implementation of ICoordinate, which
+        /// will basically provide an X, Y or Z values, this will determine
+        /// if the rectangle contains the point.
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        private bool IsPointContainedInBoundary(Coordinate pt)
+        {
+            // we already know that the point is contained in the rectangle envelope
+            if (!(pt.X == _rectEnv.Minimum.X || pt.X == _rectEnv.Maximum.X))
+                return false;
+            if (!(pt.Y == _rectEnv.Minimum.Y || pt.Y == _rectEnv.Maximum.Y))
+                return false;
+            return true;
+        }
+
+        #endregion
     }
 }

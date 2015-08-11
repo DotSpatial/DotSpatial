@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
 
@@ -39,10 +40,16 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// </summary>
     public class BufferSubgraph : IComparable
     {
+        #region Fields
+
         private readonly IList _dirEdgeList = new ArrayList();
         private readonly RightmostEdgeFinder _finder;
         private readonly IList _nodes = new ArrayList();
         private Coordinate _rightMostCoord;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -51,6 +58,10 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             _finder = new RightmostEdgeFinder();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -85,55 +96,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        #region IComparable Members
-
-        /// <summary>
-        /// BufferSubgraphs are compared on the x-value of their rightmost Coordinate.
-        /// This defines a partial ordering on the graphs such that:
-        /// g1 >= g2 - Ring(g2) does not contain Ring(g1)
-        /// where Polygon(g) is the buffer polygon that is built from g.
-        /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
-        /// be built before holes.
-        /// </summary>
-        public virtual int CompareTo(Object o)
-        {
-            BufferSubgraph graph = (BufferSubgraph)o;
-            if (RightMostCoordinate.X < graph.RightMostCoordinate.X)
-                return -1;
-            if (RightMostCoordinate.X > graph.RightMostCoordinate.X)
-                return 1;
-            return 0;
-        }
-
         #endregion
 
-        /// <summary>
-        /// Creates the subgraph consisting of all edges reachable from this node.
-        /// Finds the edges in the graph and the rightmost coordinate.
-        /// </summary>
-        /// <param name="node">A node to start the graph traversal from.</param>
-        public virtual void Create(Node node)
-        {
-            AddReachable(node);
-            _finder.FindEdge(_dirEdgeList);
-            _rightMostCoord = _finder.Coordinate;
-        }
-
-        /// <summary>
-        /// Adds all nodes and edges reachable from this node to the subgraph.
-        /// Uses an explicit stack to avoid a large depth of recursion.
-        /// </summary>
-        /// <param name="startNode">A node known to be in the subgraph.</param>
-        private void AddReachable(Node startNode)
-        {
-            Stack nodeStack = new Stack();
-            nodeStack.Push(startNode);
-            while (nodeStack.Count != 0)
-            {
-                Node node = (Node)nodeStack.Pop();
-                Add(node, nodeStack);
-            }
-        }
+        #region Methods
 
         /// <summary>
         /// Adds the argument node and all its out edges to the subgraph
@@ -161,6 +126,22 @@ namespace DotSpatial.Topology.Operation.Buffer
         }
 
         /// <summary>
+        /// Adds all nodes and edges reachable from this node to the subgraph.
+        /// Uses an explicit stack to avoid a large depth of recursion.
+        /// </summary>
+        /// <param name="startNode">A node known to be in the subgraph.</param>
+        private void AddReachable(Node startNode)
+        {
+            Stack nodeStack = new Stack();
+            nodeStack.Push(startNode);
+            while (nodeStack.Count != 0)
+            {
+                Node node = (Node)nodeStack.Pop();
+                Add(node, nodeStack);
+            }
+        }
+
+        /// <summary>
         ///
         /// </summary>
         private void ClearVisitedEdges()
@@ -170,6 +151,24 @@ namespace DotSpatial.Topology.Operation.Buffer
                 DirectedEdge de = (DirectedEdge)it.Current;
                 de.IsVisited = false;
             }
+        }
+
+        /// <summary>
+        /// BufferSubgraphs are compared on the x-value of their rightmost Coordinate.
+        /// This defines a partial ordering on the graphs such that:
+        /// g1 >= g2 - Ring(g2) does not contain Ring(g1)
+        /// where Polygon(g) is the buffer polygon that is built from g.
+        /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
+        /// be built before holes.
+        /// </summary>
+        public virtual int CompareTo(Object o)
+        {
+            BufferSubgraph graph = (BufferSubgraph)o;
+            if (RightMostCoordinate.X < graph.RightMostCoordinate.X)
+                return -1;
+            if (RightMostCoordinate.X > graph.RightMostCoordinate.X)
+                return 1;
+            return 0;
         }
 
         /// <summary>
@@ -268,6 +267,18 @@ namespace DotSpatial.Topology.Operation.Buffer
         }
 
         /// <summary>
+        /// Creates the subgraph consisting of all edges reachable from this node.
+        /// Finds the edges in the graph and the rightmost coordinate.
+        /// </summary>
+        /// <param name="node">A node to start the graph traversal from.</param>
+        public virtual void Create(Node node)
+        {
+            AddReachable(node);
+            _finder.FindEdge(_dirEdgeList);
+            _rightMostCoord = _finder.Coordinate;
+        }
+
+        /// <summary>
         /// Find all edges whose depths indicates that they are in the result area(s).
         /// Since we want polygon shells to be
         /// oriented CW, choose dirEdges with the interior of the result on the RHS.
@@ -292,5 +303,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                     de.IsInResult = true;
             }
         }
+
+        #endregion
     }
 }

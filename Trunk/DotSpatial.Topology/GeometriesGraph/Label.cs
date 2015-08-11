@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System.Text;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -48,7 +49,13 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class Label
     {
+        #region Fields
+
         private readonly TopologyLocation[] _elt = new TopologyLocation[2];
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Construct a Label with a single location for both Geometries.
@@ -125,6 +132,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             _elt[1] = new TopologyLocation(lbl._elt[1]);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///
         /// </summary>
@@ -141,17 +152,19 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Converts a Label to a Line label (that is, one with no side Locations).
+        ///
         /// </summary>
-        /// <param name="label">Label to convert.</param>
-        /// <returns>Label as Line label.</returns>
-        public static Label ToLineLabel(Label label)
+        /// <param name="geomIndex"></param>
+        /// <param name="loc"></param>
+        /// <returns></returns>
+        public virtual bool AllPositionsEqual(int geomIndex, LocationType loc)
         {
-            Label lineLabel = new Label(LocationType.Null);
-            for (int i = 0; i < 2; i++)
-                lineLabel.SetLocation(i, label.GetLocation(i));
-            return lineLabel;
+            return _elt[geomIndex].AllPositionsEqual(loc);
         }
 
         /// <summary>
@@ -188,21 +201,76 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public virtual void SetLocation(int geomIndex, PositionType posIndex, LocationType location)
+        /// <returns></returns>
+        public virtual bool IsAnyNull(int geomIndex)
         {
-            _elt[geomIndex].SetLocation(posIndex, location);
+            return _elt[geomIndex].IsAnyNull;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsArea()
+        {
+            return _elt[0].IsArea || _elt[1].IsArea;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public virtual void SetLocation(int geomIndex, LocationType location)
+        /// <returns></returns>
+        public virtual bool IsArea(int geomIndex)
         {
-            _elt[geomIndex].SetLocation(PositionType.On, location);
+            return _elt[geomIndex].IsArea;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="lbl"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
+        public virtual bool IsEqualOnSide(Label lbl, int side)
+        {
+            return _elt[0].IsEqualOnSide(lbl._elt[0], side)
+                && _elt[1].IsEqualOnSide(lbl._elt[1], side);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <returns></returns>
+        public virtual bool IsLine(int geomIndex)
+        {
+            return _elt[geomIndex].IsLine;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <returns></returns>
+        public virtual bool IsNull(int geomIndex)
+        {
+            return _elt[geomIndex].IsNull;
+        }
+
+        /// <summary>
+        /// Merge this label with another one.
+        /// Merging updates any null attributes of this label with the attributes from lbl.
+        /// </summary>
+        /// <param name="lbl"></param>
+        public virtual void Merge(Label lbl)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (_elt[i] == null && lbl._elt[i] != null)
+                    _elt[i] = new TopologyLocation(lbl._elt[i]);
+                else _elt[i].Merge(lbl._elt[i]);
+            }
         }
 
         /// <summary>
@@ -236,90 +304,24 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        /// Merge this label with another one.
-        /// Merging updates any null attributes of this label with the attributes from lbl.
+        ///
         /// </summary>
-        /// <param name="lbl"></param>
-        public virtual void Merge(Label lbl)
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <param name="location"></param>
+        public virtual void SetLocation(int geomIndex, PositionType posIndex, LocationType location)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                if (_elt[i] == null && lbl._elt[i] != null)
-                    _elt[i] = new TopologyLocation(lbl._elt[i]);
-                else _elt[i].Merge(lbl._elt[i]);
-            }
+            _elt[geomIndex].SetLocation(posIndex, location);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public virtual bool IsNull(int geomIndex)
+        /// <param name="location"></param>
+        public virtual void SetLocation(int geomIndex, LocationType location)
         {
-            return _elt[geomIndex].IsNull;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public virtual bool IsAnyNull(int geomIndex)
-        {
-            return _elt[geomIndex].IsAnyNull;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsArea()
-        {
-            return _elt[0].IsArea || _elt[1].IsArea;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public virtual bool IsArea(int geomIndex)
-        {
-            return _elt[geomIndex].IsArea;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public virtual bool IsLine(int geomIndex)
-        {
-            return _elt[geomIndex].IsLine;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lbl"></param>
-        /// <param name="side"></param>
-        /// <returns></returns>
-        public virtual bool IsEqualOnSide(Label lbl, int side)
-        {
-            return _elt[0].IsEqualOnSide(lbl._elt[0], side)
-                && _elt[1].IsEqualOnSide(lbl._elt[1], side);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="loc"></param>
-        /// <returns></returns>
-        public virtual bool AllPositionsEqual(int geomIndex, LocationType loc)
-        {
-            return _elt[geomIndex].AllPositionsEqual(loc);
+            _elt[geomIndex].SetLocation(PositionType.On, location);
         }
 
         /// <summary>
@@ -330,6 +332,19 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             if (_elt[geomIndex].IsArea)
                 _elt[geomIndex] = new TopologyLocation(_elt[geomIndex].GetLocations()[0]);
+        }
+
+        /// <summary>
+        /// Converts a Label to a Line label (that is, one with no side Locations).
+        /// </summary>
+        /// <param name="label">Label to convert.</param>
+        /// <returns>Label as Line label.</returns>
+        public static Label ToLineLabel(Label label)
+        {
+            Label lineLabel = new Label(LocationType.Null);
+            for (int i = 0; i < 2; i++)
+                lineLabel.SetLocation(i, label.GetLocation(i));
+            return lineLabel;
         }
 
         /// <summary>
@@ -351,5 +366,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
             return sb.ToString();
         }
+
+        #endregion
     }
 }

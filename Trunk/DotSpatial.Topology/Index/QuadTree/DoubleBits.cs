@@ -25,7 +25,7 @@
 using System;
 using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// DoubleBits manipulates Double numbers

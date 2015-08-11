@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -36,57 +37,16 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class QuadrantOp
     {
+        #region Constructors
+
         /// <summary>
         /// Only static methods!
         /// </summary>
         private QuadrantOp() { }
 
-        /// <summary>
-        /// Returns the quadrant of a directed line segment (specified as x and y
-        /// displacements, which cannot both be 0).
-        /// </summary>
-        /// <param name="dx"></param>
-        /// <param name="dy"></param>
-        public static int Quadrant(double dx, double dy)
-        {
-            if (dx == 0.0 && dy == 0.0)
-                throw new ArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
-            if (dx >= 0)
-            {
-                return dy >= 0 ? 0 : 3;
-            }
-            return dy >= 0 ? 1 : 2;
-        }
+        #endregion
 
-        /// <summary>
-        /// Returns the quadrant of a directed line segment from p0 to p1.
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        public static int Quadrant(Coordinate p0, Coordinate p1)
-        {
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
-            if (dx == 0.0 && dy == 0.0)
-                throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
-            return Quadrant(dx, dy);
-        }
-
-        /// <summary>
-        /// Returns true if the quadrants are 1 and 3, or 2 and 4.
-        /// </summary>
-        /// <param name="quad1"></param>
-        /// <param name="quad2"></param>
-        public static bool IsOpposite(int quad1, int quad2)
-        {
-            if (quad1 == quad2)
-                return false;
-            int diff = (quad1 - quad2 + 4) % 4;
-            // if quadrants are not adjacent, they are opposite
-            if (diff == 2)
-                return true;
-            return false;
-        }
+        #region Methods
 
         /// <summary>
         /// Returns the right-hand quadrant of the halfplane defined by the two quadrants,
@@ -135,5 +95,54 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             return quad == 0 || quad == 1;
         }
+
+        /// <summary>
+        /// Returns true if the quadrants are 1 and 3, or 2 and 4.
+        /// </summary>
+        /// <param name="quad1"></param>
+        /// <param name="quad2"></param>
+        public static bool IsOpposite(int quad1, int quad2)
+        {
+            if (quad1 == quad2)
+                return false;
+            int diff = (quad1 - quad2 + 4) % 4;
+            // if quadrants are not adjacent, they are opposite
+            if (diff == 2)
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the quadrant of a directed line segment (specified as x and y
+        /// displacements, which cannot both be 0).
+        /// </summary>
+        /// <param name="dx"></param>
+        /// <param name="dy"></param>
+        public static int Quadrant(double dx, double dy)
+        {
+            if (dx == 0.0 && dy == 0.0)
+                throw new ArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
+            if (dx >= 0)
+            {
+                return dy >= 0 ? 0 : 3;
+            }
+            return dy >= 0 ? 1 : 2;
+        }
+
+        /// <summary>
+        /// Returns the quadrant of a directed line segment from p0 to p1.
+        /// </summary>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        public static int Quadrant(Coordinate p0, Coordinate p1)
+        {
+            double dx = p1.X - p0.X;
+            double dy = p1.Y - p0.Y;
+            if (dx == 0.0 && dy == 0.0)
+                throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
+            return Quadrant(dx, dy);
+        }
+
+        #endregion
     }
 }

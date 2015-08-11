@@ -38,6 +38,8 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class Subgraph
     {
+        #region Fields
+
         /// <summary>
         ///
         /// </summary>
@@ -58,6 +60,10 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         protected readonly PlanarGraph ParentGraph;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Creates a new subgraph of the given <see cref="PlanarGraph" />.
         /// </summary>
@@ -67,14 +73,9 @@ namespace DotSpatial.Topology.Planargraph
             ParentGraph = parentGraph;
         }
 
-        /// <summary>
-        ///  Gets the <see cref="PlanarGraph" /> which this subgraph is part of.
-        /// </summary>
-        /// <returns></returns>
-        public virtual PlanarGraph GetParent()
-        {
-            return ParentGraph;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds an <see cref="Edge" /> to the subgraph.
@@ -93,6 +94,16 @@ namespace DotSpatial.Topology.Planargraph
 
             NodeMap.Add(e.GetDirEdge(0).FromNode);
             NodeMap.Add(e.GetDirEdge(1).FromNode);
+        }
+
+        /// <summary>
+        /// Tests whether an <see cref="Edge" /> is contained in this subgraph.
+        /// </summary>
+        /// <param name="e">The <see cref="Edge" /> to test.</param>
+        /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
+        public virtual bool Contains(Edge e)
+        {
+            return Edges.Contains(e);
         }
 
         /// <summary>
@@ -125,13 +136,14 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Tests whether an <see cref="Edge" /> is contained in this subgraph.
+        ///  Gets the <see cref="PlanarGraph" /> which this subgraph is part of.
         /// </summary>
-        /// <param name="e">The <see cref="Edge" /> to test.</param>
-        /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
-        public virtual bool Contains(Edge e)
+        /// <returns></returns>
+        public virtual PlanarGraph GetParent()
         {
-            return Edges.Contains(e);
+            return ParentGraph;
         }
+
+        #endregion
     }
 }

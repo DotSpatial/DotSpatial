@@ -27,17 +27,23 @@ using System.Linq;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Operation;
 
-namespace DotSpatial.Topology
+namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
+        #region Fields
+
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
         public static new readonly IMultiLineString Empty = new MultiLineString();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructs a multiLineString from the list of IBasicLineStrings, creating new full geometries where necessary.
@@ -112,6 +118,33 @@ namespace DotSpatial.Topology
         {
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Always returns FeatureTypes.Line
+        /// </summary>
+        public override FeatureType FeatureType
+        {
+            get
+            {
+                return FeatureType.Line;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <value></value>
+        public override string GeometryType
+        {
+            get
+            {
+                return "MultiLineString";
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
@@ -126,46 +159,6 @@ namespace DotSpatial.Topology
                     if (!((LineString)Geometries[i]).IsClosed)
                         return false;
                 return true;
-            }
-        }
-
-        #region IMultiLineString Members
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value></value>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                return DimensionType.Curve;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value></value>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                    return DimensionType.False;
-                return DimensionType.Point;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value></value>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiLineString";
             }
         }
 
@@ -200,26 +193,32 @@ namespace DotSpatial.Topology
         /// <summary>
         ///
         /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
-        {
-            if (!IsEquivalentClass(other))
-                return false;
-            return base.EqualsExact(other, tolerance);
-        }
-
-        /// <summary>
-        /// Always returns FeatureTypes.Line
-        /// </summary>
-        public override FeatureType FeatureType
+        /// <value></value>
+        public override DimensionType BoundaryDimension
         {
             get
             {
-                return FeatureType.Line;
+                if (IsClosed)
+                    return DimensionType.False;
+                return DimensionType.Point;
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <value></value>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Curve;
+            }
+        }
+
+        #endregion
+
+        #region Indexers
 
         /// <summary>
         /// Gets the ILineString that corresponds to the specified index
@@ -240,6 +239,21 @@ namespace DotSpatial.Topology
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public override bool EqualsExact(IGeometry other, double tolerance)
+        {
+            if (!IsEquivalentClass(other))
+                return false;
+            return base.EqualsExact(other, tolerance);
+        }
+
         /// <summary>
         /// Creates a <see cref="MultiLineString" /> in the reverse order to this object.
         /// Both the order of the component LineStrings
@@ -254,5 +268,7 @@ namespace DotSpatial.Topology
                 revLines[nLines - 1 - i] = new LineString(((ILineString)Geometries[i]).Reverse());
             return Factory.CreateMultiLineString(revLines);
         }
+
+        #endregion
     }
 }

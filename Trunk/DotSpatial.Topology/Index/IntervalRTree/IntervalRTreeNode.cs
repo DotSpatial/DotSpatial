@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.IO;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.IntervalRTree
 {
@@ -31,16 +33,16 @@ namespace DotSpatial.Topology.Index.IntervalRTree
 
         #region Methods
 
+        protected bool Intersects(double queryMin, double queryMax)
+        {
+            return (!(Min > queryMax || Max < queryMin));
+        }
+
         public abstract void Query(double queryMin, double queryMax, IItemVisitor<T> visitor);
 
         public override string ToString()
         {
             return WktWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
-        }
-
-        protected bool Intersects(double queryMin, double queryMax)
-        {
-            return (!(Min > queryMax || Max < queryMin));
         }
 
         #endregion

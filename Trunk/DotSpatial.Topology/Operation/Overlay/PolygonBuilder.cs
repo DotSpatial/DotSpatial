@@ -24,6 +24,7 @@
 
 using System.Collections;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Utilities;
 
@@ -35,8 +36,14 @@ namespace DotSpatial.Topology.Operation.Overlay
     /// </summary>
     public class PolygonBuilder
     {
+        #region Fields
+
         private readonly IGeometryFactory _geometryFactory;
         private readonly IList _shellList = new ArrayList();
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///
@@ -46,6 +53,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         {
             _geometryFactory = geometryFactory;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///
@@ -58,6 +69,10 @@ namespace DotSpatial.Topology.Operation.Overlay
                 return resultPolyList;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Add a complete graph.
@@ -146,6 +161,82 @@ namespace DotSpatial.Topology.Operation.Overlay
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="shellList"></param>
+        /// <returns></returns>
+        private IList ComputePolygons(IEnumerable shellList)
+        {
+            IList resultPolyList = new ArrayList();
+            // add Polygons for all shells
+            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            {
+                EdgeRing er = (EdgeRing)it.Current;
+                IPolygon poly = er.ToPolygon(_geometryFactory);
+                resultPolyList.Add(poly);
+            }
+            return resultPolyList;
+        }
+
+        /// <summary>
+        /// Checks the current set of shells (with their associated holes) to
+        /// see if any of them contain the point.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public virtual bool ContainsPoint(Coordinate p)
+        {
+            for (IEnumerator it = _shellList.GetEnumerator(); it.MoveNext(); )
+            {
+                EdgeRing er = (EdgeRing)it.Current;
+                if (er.ContainsPoint(p))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
+        /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
+        /// The algorithm used depends on the fact that:
+        /// ring A contains ring B iff envelope(ring A) contains envelope(ring B).
+        /// This routine is only safe to use if the chosen point of the hole
+        /// is known to be properly contained in a shell
+        /// (which is guaranteed to be the case if the hole does not touch its shell).
+        /// </summary>
+        /// <param name="testEr"></param>
+        /// <param name="shellList"></param>
+        /// <returns>Containing EdgeRing, if there is one, OR
+        /// null if no containing EdgeRing is found.</returns>
+        private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable shellList)
+        {
+            ILinearRing teString = testEr.LinearRing;
+            IEnvelope testEnv = teString.EnvelopeInternal;
+            Coordinate testPt = teString.Coordinates[0];
+
+            EdgeRing minShell = null;
+            IEnvelope minEnv = null;
+            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            {
+                EdgeRing tryShell = (EdgeRing)it.Current;
+                ILinearRing tryRing = tryShell.LinearRing;
+                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                if (minShell != null)
+                    minEnv = minShell.LinearRing.EnvelopeInternal;
+                bool isContained = false;
+                if (tryEnv.Contains(testEnv) && CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
+                    isContained = true;
+                // check if this new containing ring is smaller than the current minimum ring
+                if (isContained)
+                {
+                    if (minShell == null || minEnv.Contains(tryEnv))
+                        minShell = tryShell;
+                }
+            }
+            return minShell;
+        }
+
+        /// <summary>
         /// This method takes a list of MinimalEdgeRings derived from a MaximalEdgeRing,
         /// and tests whether they form a Polygon.  This is the case if there is a single shell
         /// in the list.  In this case the shell is returned.
@@ -167,6 +258,34 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
             Assert.IsTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
             return shell;
+        }
+
+        /// <summary>
+        /// This method determines finds a containing shell for all holes
+        /// which have not yet been assigned to a shell.
+        /// These "free" holes should
+        /// all be properly contained in their parent shells, so it is safe to use the
+        /// <c>findEdgeRingContaining</c> method.
+        /// (This is the case because any holes which are NOT
+        /// properly contained (i.e. are connected to their
+        /// parent shell) would have formed part of a MaximalEdgeRing
+        /// and been handled in a previous step).
+        /// </summary>
+        /// <param name="shellList"></param>
+        /// <param name="freeHoleList"></param>
+        private static void PlaceFreeHoles(IEnumerable shellList, IEnumerable freeHoleList)
+        {
+            for (IEnumerator it = freeHoleList.GetEnumerator(); it.MoveNext(); )
+            {
+                EdgeRing hole = (EdgeRing)it.Current;
+                // only place this hole if it doesn't yet have a shell
+                if (hole.Shell == null)
+                {
+                    EdgeRing shell = FindEdgeRingContaining(hole, shellList);
+                    Assert.IsTrue(shell != null, "unable to assign hole to a shell");
+                    hole.Shell = shell;
+                }
+            }
         }
 
         /// <summary>
@@ -212,108 +331,6 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
         }
 
-        /// <summary>
-        /// This method determines finds a containing shell for all holes
-        /// which have not yet been assigned to a shell.
-        /// These "free" holes should
-        /// all be properly contained in their parent shells, so it is safe to use the
-        /// <c>findEdgeRingContaining</c> method.
-        /// (This is the case because any holes which are NOT
-        /// properly contained (i.e. are connected to their
-        /// parent shell) would have formed part of a MaximalEdgeRing
-        /// and been handled in a previous step).
-        /// </summary>
-        /// <param name="shellList"></param>
-        /// <param name="freeHoleList"></param>
-        private static void PlaceFreeHoles(IEnumerable shellList, IEnumerable freeHoleList)
-        {
-            for (IEnumerator it = freeHoleList.GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeRing hole = (EdgeRing)it.Current;
-                // only place this hole if it doesn't yet have a shell
-                if (hole.Shell == null)
-                {
-                    EdgeRing shell = FindEdgeRingContaining(hole, shellList);
-                    Assert.IsTrue(shell != null, "unable to assign hole to a shell");
-                    hole.Shell = shell;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
-        /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
-        /// The algorithm used depends on the fact that:
-        /// ring A contains ring B iff envelope(ring A) contains envelope(ring B).
-        /// This routine is only safe to use if the chosen point of the hole
-        /// is known to be properly contained in a shell
-        /// (which is guaranteed to be the case if the hole does not touch its shell).
-        /// </summary>
-        /// <param name="testEr"></param>
-        /// <param name="shellList"></param>
-        /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
-        private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable shellList)
-        {
-            ILinearRing teString = testEr.LinearRing;
-            IEnvelope testEnv = teString.EnvelopeInternal;
-            Coordinate testPt = teString.Coordinates[0];
-
-            EdgeRing minShell = null;
-            IEnvelope minEnv = null;
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeRing tryShell = (EdgeRing)it.Current;
-                ILinearRing tryRing = tryShell.LinearRing;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
-                if (minShell != null)
-                    minEnv = minShell.LinearRing.EnvelopeInternal;
-                bool isContained = false;
-                if (tryEnv.Contains(testEnv) && CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
-                    isContained = true;
-                // check if this new containing ring is smaller than the current minimum ring
-                if (isContained)
-                {
-                    if (minShell == null || minEnv.Contains(tryEnv))
-                        minShell = tryShell;
-                }
-            }
-            return minShell;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="shellList"></param>
-        /// <returns></returns>
-        private IList ComputePolygons(IEnumerable shellList)
-        {
-            IList resultPolyList = new ArrayList();
-            // add Polygons for all shells
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeRing er = (EdgeRing)it.Current;
-                IPolygon poly = er.ToPolygon(_geometryFactory);
-                resultPolyList.Add(poly);
-            }
-            return resultPolyList;
-        }
-
-        /// <summary>
-        /// Checks the current set of shells (with their associated holes) to
-        /// see if any of them contain the point.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public virtual bool ContainsPoint(Coordinate p)
-        {
-            for (IEnumerator it = _shellList.GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeRing er = (EdgeRing)it.Current;
-                if (er.ContainsPoint(p))
-                    return true;
-            }
-            return false;
-        }
+        #endregion
     }
 }
