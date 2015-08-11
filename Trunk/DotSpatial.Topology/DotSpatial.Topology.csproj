@@ -86,6 +86,10 @@
     <DocumentationFile>..\bin\Release\DotSpatial.Topology.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Debug\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -110,6 +114,7 @@
     <Compile Include="Algorithm\Match\HausdorffSimilarityMeasure.cs" />
     <Compile Include="Algorithm\Match\ISimilarityMeasure.cs" />
     <Compile Include="Algorithm\Match\SimilarityMeasureCombiner.cs" />
+    <Compile Include="Algorithm\RayCrossingCounter.cs" />
     <Compile Include="CoordinateSystems\AxisInfo.cs" />
     <Compile Include="CoordinateSystems\AxisOrientationEnum.cs" />
     <Compile Include="CoordinateSystems\CRSBase.cs" />
@@ -156,14 +161,23 @@
     <Compile Include="Geometries\DimensionType.cs" />
     <Compile Include="FeatureType.cs" />
     <Compile Include="Algorithm\Angle.cs" />
+    <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
     <Compile Include="Geometries\IBoundable.cs" />
+    <Compile Include="Geometries\ICoordinateSequenceFilter.cs" />
     <Compile Include="Geometries\ICurve.cs" />
+    <Compile Include="Geometries\IExpandable.cs" />
+    <Compile Include="Geometries\IIntersectable.cs" />
     <Compile Include="Geometries\ILineal.cs" />
     <Compile Include="Geometries\IPolygonal.cs" />
+    <Compile Include="Geometries\IPrecisionModel.cs" />
     <Compile Include="Geometries\IPuntal.cs" />
     <Compile Include="Geometries\ISurface.cs" />
     <Compile Include="Geometries\OgcGeometryType.cs" />
     <Compile Include="Geometries\Ordinates.cs" />
+    <Compile Include="Geometries\OridinatesUtility.cs" />
+    <Compile Include="GeometryServiceProvider.cs" />
+    <Compile Include="ICoordinateSystemServices.cs" />
+    <Compile Include="IGeometryServices.cs" />
     <Compile Include="Index\IntervalRTree\IntervalRTreeBranchNode.cs" />
     <Compile Include="Index\IntervalRTree\IntervalRTreeLeafNode.cs" />
     <Compile Include="Index\IntervalRTree\IntervalRTreeNode.cs" />
@@ -189,16 +203,28 @@
     <Compile Include="IO\WKTFileReader.cs" />
     <Compile Include="IO\WKTReader.cs" />
     <Compile Include="IO\WKTWriter.cs" />
+    <Compile Include="Noding\BasicSegmentString.cs" />
+    <Compile Include="Noding\FastNodingValidator.cs" />
+    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
+    <Compile Include="Noding\INodableSegmentString.cs" />
+    <Compile Include="Noding\InteriorIntersectionFinder.cs" />
+    <Compile Include="Noding\InteriorIntersectionFinderAdder.cs" />
+    <Compile Include="Noding\ISegmentString.cs" />
+    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\NodedSegmentString.cs" />
+    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
+    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentStringUtil.cs" />
+    <Compile Include="Noding\SimpleSegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\Snapround\GeometryNoder.cs" />
     <Compile Include="Operation\Buffer\BufferStyle.cs" />
     <Compile Include="Geometries\PrecisionModelType.cs" />
     <Compile Include="Geometries\LocationType.cs" />
     <Compile Include="Geometries\Ordinate.cs" />
-    <Compile Include="Utilities\BeBinaryReader.cs" />
-    <Compile Include="Utilities\BeBinaryWriter.cs" />
-    <Compile Include="Utilities\ByteOrder.cs" />
     <Compile Include="Geometries\Coordinate.cs" />
     <Compile Include="Geometries\CoordinateArrays.cs" />
     <Compile Include="Geometries\Implementation\CoordinateArraySequence.cs" />
+    <Compile Include="Utilities\AlternativePriorityQueue.cs" />
     <Compile Include="Utilities\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateF.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
@@ -212,6 +238,8 @@
     <Compile Include="EnumerableExt.cs" />
     <Compile Include="InsufficientDimensionsException.cs" />
     <Compile Include="FloatVector3.cs" />
+    <Compile Include="Utilities\PriorityQueue.cs" />
+    <Compile Include="Utilities\PriorityQueueNode.cs" />
     <Compile Include="Utilities\RToolsUtil\CharBuffer.cs" />
     <Compile Include="Utilities\RToolsUtil\CharToken.cs" />
     <Compile Include="Utilities\RToolsUtil\CharTypeBits.cs" />
@@ -225,12 +253,10 @@
     <Compile Include="Utilities\RToolsUtil\StringToken.cs" />
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
-    <Compile Include="Utilities\WkbReader.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="GeometryCollectionNotSupportedException.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
-    <Compile Include="Utilities\GmlWriter.cs" />
     <Compile Include="Geometries\IBasicGeometry.cs" />
     <Compile Include="Geometries\IBasicLineString.cs" />
     <Compile Include="Geometries\IBasicPoint.cs" />
@@ -322,9 +348,6 @@
     <Compile Include="Utilities\ShortCircuitedGeometryVisitor.cs" />
     <Compile Include="UnsupportedGeometryException.cs" />
     <Compile Include="Vector.cs" />
-    <Compile Include="Utilities\WkbGeometryType.cs" />
-    <Compile Include="Utilities\WkbWriter.cs" />
-    <Compile Include="Utilities\WktWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopologyText.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -403,7 +426,6 @@
     <Compile Include="Noding\SegmentNode.cs" />
     <Compile Include="Noding\SegmentNodeList.cs" />
     <Compile Include="Noding\SegmentPointComparator.cs" />
-    <Compile Include="Noding\SegmentString.cs" />
     <Compile Include="Noding\SegmentStringDissolver.cs" />
     <Compile Include="Noding\SimpleNoder.cs" />
     <Compile Include="Noding\SinglePassNoder.cs" />

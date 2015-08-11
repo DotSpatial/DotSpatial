@@ -23,7 +23,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
@@ -31,7 +30,7 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
-    /// Validates that a collection of <see cref="SegmentString" />s is correctly noded.
+    /// Validates that a collection of <see cref="ISegmentString" />s is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class NodingValidator
@@ -39,17 +38,17 @@ namespace DotSpatial.Topology.Noding
         #region Fields
 
         private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly IList _segStrings;
+        private readonly IList<ISegmentString> _segStrings;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NodingValidator"/> class.
+        /// Creates a new validator for the given collection of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
-        public NodingValidator(IList segStrings)
+        public NodingValidator(IList<ISegmentString> segStrings)
         {
             _segStrings = segStrings;
         }
@@ -59,26 +58,27 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
-        ///
+        /// Checks whether the supplied segment strings are correctly noded.
+        /// Throws an exception if they are not.
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
+        public void CheckValid()
+        {
+            CheckEndPtVertexIntersections();
+            CheckInteriorIntersections();
+            CheckCollapses();
+        }
+
         private static void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             if (p0.Equals(p2))
-                throw new Exception("found non-noded collapse at: " + p0 + ", " + p1 + " " + p2);
+                throw new ApplicationException(string.Format(TopologyText.NodingValidator_FoundNonNodedCollapse, p0, p1, p2));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ss"></param>
-        private static void CheckCollapses(SegmentString ss)
+        private static void CheckCollapses(ISegmentString ss)
         {
-            IList<Coordinate> pts = ss.Coordinates;
-            for (int i = 0; i < pts.Count - 2; i++)
-                CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);
+            var pts = ss.Coordinates;
+            for (var i = 0; i < pts.Count - 2; i++)
+                CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);            
         }
 
         /// <summary>
@@ -86,27 +86,18 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         private void CheckCollapses()
         {
-            foreach (object obj in _segStrings)
-            {
-                SegmentString ss = (SegmentString)obj;
-                CheckCollapses(ss);
-            }
+            foreach (ISegmentString ss in _segStrings)
+                CheckCollapses(ss);            
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="testPt"></param>
-        /// <param name="segStrings"></param>
-        private static void CheckEndPtVertexIntersections(Coordinate testPt, IList segStrings)
+        private static void CheckEndPtVertexIntersections(Coordinate testPt, IEnumerable<ISegmentString> segStrings)
         {
-            foreach (object obj in segStrings)
+            foreach (ISegmentString ss in segStrings)
             {
-                SegmentString ss = (SegmentString)obj;
-                IList<Coordinate> pts = ss.Coordinates;
-                for (int j = 1; j < pts.Count - 1; j++)
+                var pts = ss.Coordinates;
+                for (var j = 1; j < pts.Count - 1; j++)
                     if (pts[j].Equals(testPt))
-                        throw new Exception("found endpt/interior pt intersection at index " + j + " :pt " + testPt);
+                        throw new ApplicationException(string.Format(TopologyText.NodingValidator_FoundEndPointInteriorPointIntersection, j, testPt));                
             }
         }
 
@@ -116,10 +107,9 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         private void CheckEndPtVertexIntersections()
         {
-            foreach (object obj in _segStrings)
+            foreach(ISegmentString ss in _segStrings)
             {
-                SegmentString ss = (SegmentString)obj;
-                IList<Coordinate> pts = ss.Coordinates;
+                var pts = ss.Coordinates;
                 CheckEndPtVertexIntersections(pts[0], _segStrings);
                 CheckEndPtVertexIntersections(pts[pts.Count - 1], _segStrings);
             }
@@ -130,63 +120,33 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            foreach (object obj0 in _segStrings)
-            {
-                SegmentString ss0 = (SegmentString)obj0;
-                foreach (object obj1 in _segStrings)
-                {
-                    SegmentString ss1 = (SegmentString)obj1;
+            foreach (ISegmentString ss0 in _segStrings)
+                foreach (ISegmentString ss1 in _segStrings)
                     CheckInteriorIntersections(ss0, ss1);
-                }
-            }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ss0"></param>
-        /// <param name="ss1"></param>
-        private void CheckInteriorIntersections(SegmentString ss0, SegmentString ss1)
+        private void CheckInteriorIntersections(ISegmentString ss0, ISegmentString ss1)
         {
-            IList<Coordinate> pts0 = ss0.Coordinates;
-            IList<Coordinate> pts1 = ss1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Count - 1; i0++)
-                for (int i1 = 0; i1 < pts1.Count - 1; i1++)
-                    CheckInteriorIntersections(ss0, i0, ss1, i1);
+            var pts0 = ss0.Coordinates;
+            var pts1 = ss1.Coordinates;
+            for (var i0 = 0; i0 < pts0.Count - 1; i0++)
+                for (var i1 = 0; i1 < pts1.Count - 1; i1++)
+                    CheckInteriorIntersections(ss0, i0, ss1, i1);            
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        private void CheckInteriorIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+        private void CheckInteriorIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
         {
-            if (e0 == e1 && segIndex0 == segIndex1)
-                return;
+            if (e0 == e1 && segIndex0 == segIndex1) return;
 
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
-            if (_li.HasIntersection)
-                if (_li.IsProper || HasInteriorIntersection(_li, p00, p01) || HasInteriorIntersection(_li, p10, p11))
-                    throw new Exception("found non-noded intersection at " + p00 + "-" + p01
-                                               + " and " + p10 + "-" + p11);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public void CheckValid()
-        {
-            CheckEndPtVertexIntersections();
-            CheckInteriorIntersections();
-            CheckCollapses();
+            if (!_li.HasIntersection) return;
+            if (_li.IsProper || HasInteriorIntersection(_li, p00, p01) || HasInteriorIntersection(_li, p10, p11))
+                throw new ApplicationException(string.Format(TopologyText.NodingValidator_FoundNonNodedIntersection, p00, p01, p10, p11));
         }
 
         /// <summary>
@@ -198,11 +158,10 @@ namespace DotSpatial.Topology.Noding
         /// <returns><c>true</c> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
         private static bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
         {
-            for (int i = 0; i < li.IntersectionNum; i++)
+            for (var i = 0; i < li.IntersectionNum; i++)
             {
-                Coordinate intPt = li.GetIntersection(i);
-                if (!(intPt.Equals(p0) || intPt.Equals(p1)))
-                    return true;
+                var intPt = li.GetIntersection(i);
+                if (!(intPt.Equals(p0) || intPt.Equals(p1))) return true;
             }
             return false;
         }

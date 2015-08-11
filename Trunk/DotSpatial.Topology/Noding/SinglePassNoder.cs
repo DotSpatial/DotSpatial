@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -33,12 +33,6 @@ namespace DotSpatial.Topology.Noding
     /// </summary>
     public abstract class SinglePassNoder : INoder
     {
-        #region Fields
-
-        private ISegmentIntersector _segInt;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -52,7 +46,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="segInt">The <see cref="ISegmentIntersector" /> to use.</param>
         protected SinglePassNoder(ISegmentIntersector segInt)
         {
-            _segInt = segInt;
+            SegmentIntersector = segInt;
         }
 
         #endregion
@@ -66,36 +60,26 @@ namespace DotSpatial.Topology.Noding
         /// simply record the presence of intersections.
         /// However, some <see cref="INoder" />s may require that intersections be added.
         /// </summary>
-        public ISegmentIntersector SegmentIntersector
-        {
-            get
-            {
-                return _segInt;
-            }
-            set
-            {
-                _segInt = value;
-            }
-        }
+        public ISegmentIntersector SegmentIntersector { get; set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Computes the noding for a collection of <see cref="SegmentString"/>s.
-        /// Some Noders may add all these nodes to the input <see cref="SegmentString"/>s;
+        /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
+        /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings"></param>
-        public abstract void ComputeNodes(IList segStrings);
+        public abstract void ComputeNodes(IList<ISegmentString> segStrings);
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public abstract IList GetNodedSubstrings();
+        public abstract IList<ISegmentString> GetNodedSubstrings();
 
         #endregion
     }

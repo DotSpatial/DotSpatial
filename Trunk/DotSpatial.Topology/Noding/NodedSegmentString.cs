@@ -23,10 +23,11 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Geometries.Implementation;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -35,20 +36,12 @@ namespace DotSpatial.Topology.Noding
     /// The line segments are represented by an array of <see cref="Coordinate" />s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
-    /// <see cref="SegmentString" />s can carry a context object, which is useful
+    /// <see cref="NodedSegmentString" />s can carry a context object, which is useful
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
     /// </summary>
-    public class SegmentString
+    public class NodedSegmentString : INodableSegmentString
     {
-        #region Fields
-
-        private readonly SegmentNodeList _nodeList;
-        private readonly IList<Coordinate> _pts;
-        private object _data;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -56,12 +49,12 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public SegmentString(IList<Coordinate> pts, Object data)
+        public NodedSegmentString(IList<Coordinate> pts, object data)
         {
-            _nodeList = new SegmentNodeList(this);
+            NodeList = new SegmentNodeList(this);
 
-            _pts = pts;
-            _data = data;
+            Coordinates = pts;
+            Context = data;
         }
 
         #endregion
@@ -71,24 +64,10 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
-        public IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return _pts;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <value></value>
         public int Count
         {
-            get
-            {
-                return _pts.Count;
-            }
+            get { return Coordinates.Count; }
         }
 
         /// <summary>
@@ -96,35 +75,39 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         public bool IsClosed
         {
-            get
-            {
-                return _pts[0].Equals(_pts[_pts.Count - 1]);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public SegmentNodeList NodeList
-        {
-            get
-            {
-                return _nodeList;
-            }
+            get{return Coordinates[0].Equals2D(Coordinates[Coordinates.Count - 1]);}
         }
 
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
         /// </summary>
-        public object Data
+        public object Context { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public IList<Coordinate> Coordinates { get; private set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public SegmentNodeList NodeList { get; private set; }
+
+        #endregion
+
+        #region Indexers
+
+        public LineSegment this[int index]
         {
             get
             {
-                return _data;
+                if (index < 0 || index >= Count)
+                    throw new ArgumentOutOfRangeException("index", index, TopologyText.NodedSegmentString_WrongParameterSize);
+                return new LineSegment(Coordinates[index], Coordinates[index + 1]);
             }
             set
             {
-                _data = value;
+                throw new NotSupportedException(TopologyText.NodedSegmentString_UnsupportedSettingLinesegments);
             }
         }
 
@@ -135,13 +118,14 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         /// Add an <see cref="SegmentNode" /> for intersection intIndex.
         /// An intersection that falls exactly on a vertex
-        /// of the <see cref="SegmentString" /> is normalized
+        /// of the <see cref="NodedSegmentString" /> is normalized
         /// to use the higher of the two possible segmentIndexes.
         /// </summary>
         /// <param name="li"></param>
         /// <param name="segmentIndex"></param>
+        /// <param name="geomIndex"></param>
         /// <param name="intIndex"></param>
-        public void AddIntersection(LineIntersector li, int segmentIndex, int intIndex)
+        public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
             Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
@@ -157,9 +141,9 @@ namespace DotSpatial.Topology.Noding
             int normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
             int nextSegIndex = normalizedSegmentIndex + 1;
-            if (nextSegIndex < _pts.Count)
+            if (nextSegIndex < Coordinates.Count)
             {
-                Coordinate nextPt = _pts[nextSegIndex];
+                Coordinate nextPt = Coordinates[nextSegIndex];
 
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -168,7 +152,7 @@ namespace DotSpatial.Topology.Noding
             }
 
             // Add the intersection point to edge intersection list.
-            _nodeList.Add(intPt, normalizedSegmentIndex);
+            NodeList.Add(intPt, normalizedSegmentIndex);
         }
 
         /// <summary>
@@ -177,10 +161,11 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="li"></param>
         /// <param name="segmentIndex"></param>
-        public void AddIntersections(LineIntersector li, int segmentIndex)
+        /// <param name="geomIndex"></param>
+        public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
             for (int i = 0; i < li.IntersectionNum; i++)
-                AddIntersection(li, segmentIndex, i);
+                AddIntersection(li, segmentIndex, geomIndex, i);
         }
 
         /// <summary>
@@ -190,48 +175,53 @@ namespace DotSpatial.Topology.Noding
         /// <returns></returns>
         public Coordinate GetCoordinate(int i)
         {
-            return _pts[i];
+            return Coordinates[i];
         }
 
         /// <summary>
-        ///
+        /// Gets the <see cref="ISegmentString"/>s which result from splitting this string at node points.
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <returns></returns>
-        public static IList GetNodedSubstrings(IList segStrings)
+        /// <param name="segStrings">A collection of NodedSegmentStrings</param>
+        /// <returns>A collection of NodedSegmentStrings representing the substrings</returns>
+        public static IList<ISegmentString> GetNodedSubstrings(IList<ISegmentString> segStrings)
         {
-            IList resultEdgelist = new ArrayList();
+            IList<ISegmentString> resultEdgelist = new List<ISegmentString>();
             GetNodedSubstrings(segStrings, resultEdgelist);
             return resultEdgelist;
         }
 
         /// <summary>
-        ///
+        /// Adds the noded <see cref="ISegmentString"/>s which result from splitting this string at node points.
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="resultEdgelist"></param>
-        public static void GetNodedSubstrings(IList segStrings, IList resultEdgelist)
+        /// <param name="segStrings">A collection of NodedSegmentStrings</param>
+        /// <param name="resultEdgelist">A list which will collect the NodedSegmentStrings representing the substrings</param>
+        public static void GetNodedSubstrings(IList<ISegmentString> segStrings, IList<ISegmentString> resultEdgelist)
         {
-            foreach (object obj in segStrings)
-            {
-                SegmentString ss = (SegmentString)obj;
+            foreach (NodedSegmentString ss in segStrings.Cast<NodedSegmentString>())
                 ss.NodeList.AddSplitEdges(resultEdgelist);
-            }
         }
 
         /// <summary>
         ///  Gets the octant of the segment starting at vertex <c>index</c>.
         /// </summary>
         /// <param name="index">
-        /// The index of the vertex starting the segment.
+        /// The index of the vertex starting the segment.  
         /// Must not be the last index in the vertex list
         /// </param>
         /// <returns>The octant of the segment at the vertex</returns>
         public OctantDirection GetSegmentOctant(int index)
         {
-            if (index == _pts.Count - 1)
-                return OctantDirection.Null;
-            return Octant.GetOctant(GetCoordinate(index), GetCoordinate(index + 1));
+            return index == Coordinates.Count - 1 ? OctantDirection.Null : SafeOctant(GetCoordinate(index), GetCoordinate(index + 1));
+        }
+
+        public override string ToString()
+        {
+            return WktWriter.ToLineString(new CoordinateArraySequence(Coordinates));
+        }
+
+        private static OctantDirection SafeOctant(Coordinate p0, Coordinate p1)
+        {
+            return p0.Equals2D(p1) ? OctantDirection.Zero : Octant.GetOctant(p0, p1);
         }
 
         #endregion

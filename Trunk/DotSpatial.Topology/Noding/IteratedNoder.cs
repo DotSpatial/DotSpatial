@@ -23,14 +23,15 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString" />s completely.
-    /// The set of <see cref="SegmentString" />s is fully noded;
+    /// Nodes a set of <see cref="ISegmentString" />s completely.
+    /// The set of <see cref="ISegmentString" />s is fully noded;
     /// i.e. noding is repeated until no further intersections are detected.
     /// <para>
     /// Iterated noding using a <see cref="PrecisionModelType.Floating" /> precision model is not guaranteed to converge,
@@ -45,15 +46,15 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
-        public const int MAX_ITERATIONS = 5;
+        public const int MaxIterations = 5;
 
         #endregion
 
         #region Fields
 
         private readonly LineIntersector _li;
-        private int _maxIter = MAX_ITERATIONS;
-        private IList _nodedSegStrings;
+        private int _maxIter = MaxIterations;
+        private IList<ISegmentString> _nodedSegStrings;
 
         #endregion
 
@@ -63,10 +64,9 @@ namespace DotSpatial.Topology.Noding
         /// Initializes a new instance of the <see cref="IteratedNoder"/> class.
         /// </summary>
         /// <param name="pm"></param>
-        public IteratedNoder(PrecisionModel pm)
+        public IteratedNoder(IPrecisionModel pm)
         {
-            _li = new RobustLineIntersector();
-            _li.PrecisionModel = pm;
+            _li = new RobustLineIntersector {PrecisionModel = pm};
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         /// Gets/Sets the maximum number of noding iterations performed before
         /// the noding is aborted. Experience suggests that this should rarely need to be changed
-        /// from the default. The default is <see cref="MAX_ITERATIONS" />.
+        /// from the default. The default is <see cref="MaxIterations" />.
         /// </summary>
         public int MaximumIterations
         {
@@ -95,13 +95,13 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
-        /// Fully nodes a list of <see cref="SegmentString" />s, i.e. peforms noding iteratively
+        /// Fully nodes a list of <see cref="ISegmentString" />s, i.e. peforms noding iteratively
         /// until no intersections are found between segments.
         /// Maintains labelling of edges correctly through the noding.
         /// </summary>
         /// <param name="segStrings">A collection of SegmentStrings to be noded.</param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
-        public void ComputeNodes(IList segStrings)
+        public void ComputeNodes(IList<ISegmentString> segStrings)    
         {
             int[] numInteriorIntersections = new int[1];
             _nodedSegStrings = segStrings;
@@ -128,13 +128,13 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public IList GetNodedSubstrings()
-        {
-            return _nodedSegStrings;
+        public IList<ISegmentString> GetNodedSubstrings() 
+        { 
+            return _nodedSegStrings; 
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="numInteriorIntersections"></param>
-        private void Node(IList segStrings, int[] numInteriorIntersections)
+        private void Node(IList<ISegmentString> segStrings, int[] numInteriorIntersections)
         {
             IntersectionAdder si = new IntersectionAdder(_li);
             McIndexNoder noder = new McIndexNoder(si);

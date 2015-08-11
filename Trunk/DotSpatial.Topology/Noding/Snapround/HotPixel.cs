@@ -25,7 +25,6 @@
 using System;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Noding.Snapround
 {
@@ -38,6 +37,12 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// </summary>
     public class HotPixel
     {
+        #region Constant Fields
+
+        private const double SafeEnvelopeExpansionFactor = 0.75d;
+
+        #endregion
+
         #region Fields
 
         private readonly Coordinate[] _corner = new Coordinate[4];
@@ -56,7 +61,6 @@ namespace DotSpatial.Topology.Noding.Snapround
          *  10
          *  23
          */
-
         private Envelope _safeEnv;
 
         #endregion
@@ -66,15 +70,19 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel"/> class.
         /// </summary>
-        /// <param name="pt"></param>
-        /// <param name="scaleFactor"></param>
-        /// <param name="li"></param>
+        /// <param name="pt">The coordinate at the center of the hot pixel</param>
+        /// <param name="scaleFactor">The scale factor determining the pixel size</param>
+        /// <param name="li">THe intersector to use for testing intersection with line segments</param>
         public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
         {
             _originalPt = pt;
             _pt = pt;
             _scaleFactor = scaleFactor;
             _li = li;
+
+            if (scaleFactor <= 0d)
+                throw new ArgumentException("Scale factor must be non-zero");
+
             if (scaleFactor != 1.0)
             {
                 _pt = new Coordinate(Scale(pt.X), Scale(pt.Y));
@@ -89,7 +97,7 @@ namespace DotSpatial.Topology.Noding.Snapround
         #region Properties
 
         /// <summary>
-        ///
+        /// Gets the coordinate this hot pixel is based at.
         /// </summary>
         public Coordinate Coordinate
         {
@@ -103,26 +111,40 @@ namespace DotSpatial.Topology.Noding.Snapround
 
         #region Methods
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="pScaled"></param>
-        private void CopyScaled(Coordinate p, Coordinate pScaled)
+        ///<summary>
+        /// Adds a new node (equal to the snap pt) to the specified segment
+        /// if the segment passes through the hot pixel
+        ///</summary>
+        /// <param name="segStr"></param>
+        /// <param name="segIndex"></param>
+        /// <returns><c>true</c> if a node was added to the segment</returns>
+        public bool AddSnappedNode(INodableSegmentString segStr, int segIndex)
         {
-            pScaled.X = Scale(p.X);
-            pScaled.Y = Scale(p.Y);
+            var coords = segStr.Coordinates;
+            var p0 = coords[segIndex];
+            var p1 = coords[segIndex + 1];
+
+            if (Intersects(p0, p1))
+            {
+                //System.out.println("snapped: " + snapPt);
+                //System.out.println("POINT (" + snapPt.x + " " + snapPt.y + ")");
+                segStr.AddIntersection(Coordinate, segIndex);
+
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
         /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
+        /// The envelope returned will be larger than the exact envelope of the pixel.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An envelope which contains the pixel</returns>
         public Envelope GetSafeEnvelope()
         {
             if (_safeEnv == null)
             {
-                double safeTolerance = 0.75 / _scaleFactor;
+                double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
                 _safeEnv = new Envelope(_originalPt.X - safeTolerance, _originalPt.X + safeTolerance,
                                        _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
             }
@@ -130,29 +152,12 @@ namespace DotSpatial.Topology.Noding.Snapround
         }
 
         /// <summary>
-        ///
+        /// Tests whether the line segment (p0-p1)
+        /// intersects this hot pixel.
         /// </summary>
-        /// <param name="pt"></param>
-        private void InitCorners(Coordinate pt)
-        {
-            const double tolerance = 0.5;
-            _minx = pt.X - tolerance;
-            _maxx = pt.X + tolerance;
-            _miny = pt.Y - tolerance;
-            _maxy = pt.Y + tolerance;
-
-            _corner[0] = new Coordinate(_maxx, _maxy);
-            _corner[1] = new Coordinate(_minx, _maxy);
-            _corner[2] = new Coordinate(_minx, _miny);
-            _corner[3] = new Coordinate(_maxx, _miny);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns></returns>
+        /// <param name="p0">The first coordinate of the line segment to test</param>
+        /// <param name="p1">The second coordinate of the line segment to test</param>
+        /// <returns>true if the line segment intersects this hot pixel.</returns>
         public bool Intersects(Coordinate p0, Coordinate p1)
         {
             if (_scaleFactor == 1.0)
@@ -181,20 +186,74 @@ namespace DotSpatial.Topology.Noding.Snapround
             if (isOutsidePixelEnv)
                 return false;
             bool intersects = IntersectsToleranceSquare(p0, p1);
-            Assert.IsTrue(!intersects, "Found bad envelope test");
+            //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
             return intersects;
+        }
+
+        /// <summary>
+        /// Tests whether the line segment (p0-p1)
+        /// intersects this hot pixel.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="pScaled"></param>
+        private void CopyScaled(Coordinate p, Coordinate pScaled)
+        {
+            pScaled.X = Scale(p.X);
+            pScaled.Y = Scale(p.Y);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="pt"></param>
+        private void InitCorners(Coordinate pt)
+        {
+            const double tolerance = 0.5;
+            _minx = pt.X - tolerance;
+            _maxx = pt.X + tolerance;
+            _miny = pt.Y - tolerance;
+            _maxy = pt.Y + tolerance;
+
+            _corner[0] = new Coordinate(_maxx, _maxy);
+            _corner[1] = new Coordinate(_minx, _maxy);
+            _corner[2] = new Coordinate(_minx, _miny);
+            _corner[3] = new Coordinate(_maxx, _miny);
+        }
+
+        /// <summary>
+        /// Test whether the given segment intersects
+        /// the closure of this hot pixel.
+        /// This is NOT the test used in the standard snap-rounding
+        /// algorithm, which uses the partially closed tolerance square instead.
+        /// This routine is provided for testing purposes only.
+        /// </summary>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        /// <returns></returns>
+        private bool IntersectsPixelClosure(Coordinate p0, Coordinate p1)
+        {
+            _li.ComputeIntersection(p0, p1, _corner[0], _corner[1]);
+            if (_li.HasIntersection) return true;
+            _li.ComputeIntersection(p0, p1, _corner[1], _corner[2]);
+            if (_li.HasIntersection) return true;
+            _li.ComputeIntersection(p0, p1, _corner[2], _corner[3]);
+            if (_li.HasIntersection) return true;
+            _li.ComputeIntersection(p0, p1, _corner[3], _corner[0]);
+            if (_li.HasIntersection) return true;
+            return false;
         }
 
         /// <summary>
         /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
         /// Because the tolerance square point set is partially open (along the
         /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.  However, it
-        /// can take advantage of the fact that because the hot pixel edges
-        /// do not lie on the coordinate grid.  It is sufficient to check
-        /// if there is at least one of:
-        ///  - a proper intersection with the segment and any hot pixel edge.
-        ///  - an intersection between the segment and both the left and bottom edges.
+        /// simply checking for any intersection.  
+        /// However, it can take advantage of the fact that the hot pixel edges
+        /// do not lie on the coordinate grid. 
+        /// It is sufficient to check if any of the following occur:
+        ///  - a proper intersection between the segment and any hot pixel edge.
+        ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges
+        /// (which detects the case where the segment intersects the bottom left hot pixel corner).
         ///  - an intersection between a segment endpoint and the hot pixel coordinate.
         /// </summary>
         /// <param name="p0"></param>

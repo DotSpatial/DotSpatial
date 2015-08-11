@@ -46,7 +46,7 @@ namespace DotSpatial.Topology.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry
         /// </returns>
-        public Location Locate(Coordinate p)
+        public LocationType Locate(Coordinate p)
         {
             RayCrossingCounter rcc = new RayCrossingCounter(p);
 

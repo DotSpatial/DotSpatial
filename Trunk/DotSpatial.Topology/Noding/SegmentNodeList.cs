@@ -23,21 +23,23 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
-    /// A list of the <see cref="SegmentNode" />s present along a noded <see cref="SegmentString"/>.
+    /// A list of the <see cref="SegmentNode" />s present along a noded <see cref="ISegmentString"/>.
     /// </summary>
-    public class SegmentNodeList : IEnumerable
+    public class SegmentNodeList : IEnumerable<object>
     {
         #region Fields
 
-        private readonly SegmentString _edge;  // the parent edge
-        private readonly IDictionary _nodeMap = new SortedList();
+        private readonly NodedSegmentString _edge;  // the parent edge
+        private readonly IDictionary<SegmentNode, object> _nodeMap = new OrderedDictionary<SegmentNode, object>();
 
         #endregion
 
@@ -47,7 +49,7 @@ namespace DotSpatial.Topology.Noding
         /// Initializes a new instance of the <see cref="SegmentNodeList"/> class.
         /// </summary>
         /// <param name="edge">The edge.</param>
-        public SegmentNodeList(SegmentString edge)
+        public SegmentNodeList(NodedSegmentString edge)
         {
             _edge = edge;
         }
@@ -60,12 +62,9 @@ namespace DotSpatial.Topology.Noding
         ///
         /// </summary>
         /// <value></value>
-        public SegmentString Edge
+        public NodedSegmentString Edge 
         {
-            get
-            {
-                return _edge;
-            }
+            get { return _edge; }
         }
 
         #endregion
@@ -78,19 +77,71 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
-        public void Add(Coordinate intPt, int segmentIndex)
+        /// <returns>The SegmentIntersection found or added.</returns>
+        public SegmentNode Add(Coordinate intPt, int segmentIndex)
         {
-            SegmentNode eiNew = new SegmentNode(_edge, intPt, segmentIndex, _edge.GetSegmentOctant(segmentIndex));
-            SegmentNode ei = (SegmentNode)_nodeMap[eiNew];
-            if (ei != null)
+            var eiNew = new SegmentNode(_edge, intPt, segmentIndex, _edge.GetSegmentOctant(segmentIndex));
+            object eiObj;
+            if (_nodeMap.TryGetValue(eiNew, out eiObj))
             {
+                var ei = (SegmentNode)eiObj;
                 // debugging sanity check
-                Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");
-                return;
+                Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");               
+                return ei;
             }
             // node does not exist, so create it
             _nodeMap.Add(eiNew, eiNew);
-            return;
+            return eiNew;
+        }
+
+        /// <summary>
+        /// Creates new edges for all the edges that the intersections in this
+        /// list split the parent edge into.
+        /// Adds the edges to the provided argument list
+        /// (this is so a single list can be used to accumulate all split edges
+        /// for a set of <see cref="ISegmentString" />s).
+        /// </summary>
+        /// <param name="edgeList"></param>
+        public void AddSplitEdges(IList<ISegmentString> edgeList)
+        {
+            // ensure that the list has entries for the first and last point of the edge
+            AddEndPoints();
+            AddCollapsedNodes();
+
+            // there should always be at least two entries in the list, since the endpoints are nodes
+            var ie = GetEnumerator();
+	        ie.MoveNext();            
+            var eiPrev = (SegmentNode) ie.Current;
+            while (ie.MoveNext())
+            {
+                var ei = (SegmentNode)ie.Current;
+                var newEdge = CreateSplitEdge(eiPrev, ei);
+                edgeList.Add(newEdge);
+                eiPrev = ei;
+            }
+        }
+
+        /// <summary>
+        /// Returns an iterator of SegmentNodes.
+        /// </summary>
+        /// <returns>An iterator of SegmentNodes.</returns>
+        public IEnumerator<object>GetEnumerator() 
+        { 
+            return _nodeMap.Values.GetEnumerator(); 
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="outstream"></param>
+        public void Write(StreamWriter outstream)
+        {
+            outstream.Write("Intersections:");
+            foreach (object obj in this)
+            {
+                SegmentNode ei = (SegmentNode)obj;
+                ei.Write(outstream);
+            }
         }
 
         /// <summary>
@@ -102,17 +153,14 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         private void AddCollapsedNodes()
         {
-            IList collapsedVertexIndexes = new ArrayList();
+            IList<int> collapsedVertexIndexes = new List<int>();
 
             FindCollapsesFromInsertedNodes(collapsedVertexIndexes);
             FindCollapsesFromExistingVertices(collapsedVertexIndexes);
 
             // node the collapses
-            foreach (object obj in collapsedVertexIndexes)
-            {
-                int vertexIndex = (int)obj;
+            foreach(var vertexIndex in collapsedVertexIndexes)
                 Add(_edge.GetCoordinate(vertexIndex), vertexIndex);
-            }
         }
 
         /// <summary>
@@ -126,35 +174,6 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        /// Creates new edges for all the edges that the intersections in this
-        /// list split the parent edge into.
-        /// Adds the edges to the provided argument list
-        /// (this is so a single list can be used to accumulate all split edges
-        /// for a set of <see cref="SegmentString" />s).
-        /// </summary>
-        /// <param name="edgeList"></param>
-        public void AddSplitEdges(IList edgeList)
-        {
-            // ensure that the list has entries for the first and last point of the edge
-            AddEndPoints();
-            AddCollapsedNodes();
-
-            IEnumerator ie = GetEnumerator();
-            ie.MoveNext();
-
-            // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)ie.Current;
-            while (ie.MoveNext())
-            {
-                SegmentNode ei = (SegmentNode)ie.Current;
-                SegmentString newEdge = CreateSplitEdge(eiPrev, ei);
-                edgeList.Add(newEdge);
-                eiPrev = ei;
-            }
-            // CheckSplitEdgesCorrectness(testingSplitEdges);
-        }
-
-        /// <summary>
         ///  Create a new "split edge" with the section of points between
         /// (and including) the two intersections.
         /// The label for the new edge is the same as the label for the parent edge.
@@ -162,27 +181,27 @@ namespace DotSpatial.Topology.Noding
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
         /// <returns></returns>
-        private SegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
+        ISegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
         {
-            int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
-            Coordinate lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
+            var lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
             // if the last intersection point is not equal to the its segment start pt, add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            bool useIntPt1 = ei1.IsInterior || !ei1.Coordinate.Equals2D(lastSegStartPt);
-            if (!useIntPt1)
+            var useIntPt1 = ei1.IsInterior || !ei1.Coordinate.Equals2D(lastSegStartPt);
+            if(!useIntPt1)
                 npts--;
 
-            Coordinate[] pts = new Coordinate[npts];
-            int ipt = 0;
+            var pts = new Coordinate[npts];
+            var ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
-            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
-                pts[ipt++] = _edge.GetCoordinate(i);
-            if (useIntPt1)
+            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+                pts[ipt++] = _edge.GetCoordinate(i);            
+            if (useIntPt1) 
                 pts[ipt] = ei1.Coordinate;
 
-            return new SegmentString(pts, _edge.Data);
+            return new NodedSegmentString(pts, _edge.Context);
         }
 
         /// <summary>
@@ -195,9 +214,9 @@ namespace DotSpatial.Topology.Noding
         private static bool FindCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
         {
             // only looking for equal nodes
-            if (!ei0.Coordinate.Equals2D(ei1.Coordinate))
+            if (!ei0.Coordinate.Equals2D(ei1.Coordinate)) 
                 return false;
-            int numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
+            var numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
             if (!ei1.IsInterior)
                 numVerticesBetween--;
             // if there is a single vertex between the two equal nodes, this is a collapse
@@ -214,14 +233,15 @@ namespace DotSpatial.Topology.Noding
         /// which are pre-existing in the vertex list.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromExistingVertices(IList collapsedVertexIndexes)
+        private void FindCollapsesFromExistingVertices(IList<int> collapsedVertexIndexes)
         {
-            for (int i = 0; i < _edge.Count - 2; i++)
+            for (var i = 0; i < _edge.Count - 2; i++)
             {
-                Coordinate p0 = _edge.GetCoordinate(i);
-                Coordinate p2 = _edge.GetCoordinate(i + 2);
+                var p0 = _edge.GetCoordinate(i);
+                //var p1 = _edge.GetCoordinate(i + 1);
+                var p2 = _edge.GetCoordinate(i + 2);
                 if (p0.Equals2D(p2))    // add base of collapse as node
-                    collapsedVertexIndexes.Add(i + 1);
+                    collapsedVertexIndexes.Add(i + 1);                
             }
         }
 
@@ -233,74 +253,60 @@ namespace DotSpatial.Topology.Noding
         /// the vertex must be added as a node as well.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromInsertedNodes(IList collapsedVertexIndexes)
+        private void FindCollapsesFromInsertedNodes(IList<int> collapsedVertexIndexes)
         {
-            int[] collapsedVertexIndex = new int[1];
-
-            IEnumerator ie = GetEnumerator();
-            ie.MoveNext();
+            var collapsedVertexIndex = new int[1];
+            
+	        var ie = GetEnumerator();
+	        ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)ie.Current;
+            var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode)ie.Current;
-                bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
+                var ei = (SegmentNode) ie.Current;
+                var isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
                 if (isCollapsed)
                     collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
                 eiPrev = ei;
             }
         }
 
-        /// <summary>
-        /// Returns an iterator of SegmentNodes.
-        /// </summary>
-        /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return _nodeMap.Values.GetEnumerator();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
-        {
-            outstream.Write("Intersections:");
-            foreach (object obj in this)
-            {
-                SegmentNode ei = (SegmentNode)obj;
-                ei.Write(outstream);
-            }
+            return GetEnumerator();
         }
 
         #endregion
     }
 
     /// <summary>
-    /// INCOMPLETE!!!
+    /// 
     /// </summary>
-    internal class NodeVertexIterator : IEnumerator
+    class NodeVertexIterator : IEnumerator<object>
     {
         #region Fields
 
-        private readonly SegmentString _edge;
-        private readonly IEnumerator _nodeIt;
-        private readonly SegmentNodeList _nodeList;
+        private readonly IEnumerator<object> _nodeIt;
         private SegmentNode _currNode;
         private int _currSegIndex;
+        private ISegmentString _edge;
         private SegmentNode _nextNode;
+        private SegmentNodeList _nodeList;
 
         #endregion
 
         #region Constructors
 
-        private NodeVertexIterator(SegmentNodeList nodeList)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nodeList"></param>
+        NodeVertexIterator(SegmentNodeList nodeList)
         {
             _nodeList = nodeList;
             _edge = nodeList.Edge;
-            _nodeIt = nodeList.GetEnumerator();
+            _nodeIt = nodeList.GetEnumerator();            
         }
 
         #endregion
@@ -308,45 +314,26 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         /// <summary>
-        /// Ottiene l'elemento corrente dell'insieme.
+        /// 
         /// </summary>
-        /// <value></value>
-        /// <returns>Elemento corrente nell'insieme.</returns>
-        /// <exception cref="T:System.InvalidOperationException">L'enumeratore è posizionato prima del primo elemento o dopo l'ultimo elemento dell'insieme. </exception>
         public object Current
         {
-            get
-            {
-                return _currNode;
-            }
-        }
-
-        public int CurrSegIndex
-        {
-            get { return _currSegIndex; }
-        }
-
-        public SegmentString Edge
-        {
-            get { return _edge; }
-        }
-
-        public SegmentNodeList NodeList
-        {
-            get { return _nodeList; }
+            get  { return _currNode; }
         }
 
         #endregion
 
         #region Methods
 
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
+
         /// <summary>
-        /// Consente di spostare l'enumeratore all'elemento successivo dell'insieme.
+        /// 
         /// </summary>
-        /// <returns>
-        /// true se l'enumeratore è stato spostato correttamente in avanti in corrispondenza dell'elemento successivo; false se l'enumeratore ha raggiunto la fine dell'insieme.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">L'insieme è stato modificato dopo la creazione dell'enumeratore. </exception>
+        /// <returns></returns>
         public bool MoveNext()
         {
             if (_currNode == null)
@@ -356,8 +343,9 @@ namespace DotSpatial.Topology.Noding
                 ReadNextNode();
                 return true;
             }
+
             // check for trying to read too far
-            if (_nextNode == null)
+            if (_nextNode == null) 
                 return false;
 
             if (_nextNode.SegmentIndex == _currNode.SegmentIndex)
@@ -370,15 +358,9 @@ namespace DotSpatial.Topology.Noding
 
             if (_nextNode.SegmentIndex > _currNode.SegmentIndex)
             {
+
             }
             return false;
-        }
-
-        private void ReadNextNode()
-        {
-            if (_nodeIt.MoveNext())
-                _nextNode = (SegmentNode)_nodeIt.Current;
-            else _nextNode = null;
         }
 
         /// <summary>
@@ -392,12 +374,21 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
-        /// Imposta l'enumeratore sulla propria posizione iniziale, ovvero prima del primo elemento nell'insieme.
+        /// 
         /// </summary>
-        /// <exception cref="T:System.InvalidOperationException">L'insieme è stato modificato dopo la creazione dell'enumeratore. </exception>
         public void Reset()
         {
-            _nodeIt.Reset();
+            _nodeIt.Reset();            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ReadNextNode()
+        {
+            if (_nodeIt.MoveNext())
+                 _nextNode = (SegmentNode) _nodeIt.Current;
+            else _nextNode = null;
         }
 
         #endregion

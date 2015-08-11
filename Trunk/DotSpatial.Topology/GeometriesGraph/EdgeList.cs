@@ -22,11 +22,11 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Index;
+using DotSpatial.Topology.Noding;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -38,16 +38,12 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private readonly IList _edges = new ArrayList();
+        private readonly List<Edge> _edges = new List<Edge>();
 
         /// <summary>
         /// An index of the edges, for fast lookup.
-        /// a Quadtree is used, because this index needs to be dynamic
-        /// (e.g. allow insertions after queries).
-        /// An alternative would be to use an ordered set based on the values
-        /// of the edge coordinates.
         /// </summary>
-        private readonly ISpatialIndex _index = new Quadtree();
+        private readonly OrderedDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
 
         #endregion
 
@@ -56,7 +52,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IList Edges
+        public virtual IList<Edge> Edges
         {
             get
             {
@@ -92,17 +88,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void Add(Edge e)
         {
             _edges.Add(e);
-            _index.Insert(e.Envelope, e);
+            var oca = new OrientedCoordinateArray(e.Coordinates);
+            _ocaMap.Add(oca, e);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="edgeColl"></param>
-        public virtual void AddAll(ICollection edgeColl)
+        public virtual void AddAll(IEnumerable<Edge> edgeColl)
         {
-            for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); )
-                Add((Edge)i.Current);
+            for (var i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
+                Add(i.Current);
         }
 
         /// <summary>
@@ -115,32 +112,28 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </returns>
         public virtual int FindEdgeIndex(Edge e)
         {
-            for (int i = 0; i < _edges.Count; i++)
-                if (_edges[i].Equals(e))
-                    return i;
+            for (var i = 0; i < _edges.Count; i++)
+                if ((_edges[i]).Equals(e))
+                    return i;            
             return -1;
         }
 
-        // <FIX> fast lookup for edges
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
         /// </summary>
         /// <param name="e"></param>
-        /// <returns>
+        /// <returns>  
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
         public virtual Edge FindEqualEdge(Edge e)
         {
-            ICollection testEdges = _index.Query(e.Envelope);
-            for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext(); )
-            {
-                Edge testEdge = (Edge)i.Current;
-                if (testEdge.Equals(e))
-                    return testEdge;
-            }
-            return null;
+            var oca = new OrientedCoordinateArray(e.Coordinates);
+            // will return null if no edge matches
+            Edge matchEdge;
+            _ocaMap.TryGetValue(oca, out matchEdge);
+            return matchEdge; 
         }
 
         /// <summary>
@@ -150,16 +143,16 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual Edge Get(int i)
         {
-            return (Edge)_edges[i];
+            return _edges[i]; 
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _edges.GetEnumerator();
+        public virtual IEnumerator<Edge> GetEnumerator() 
+        { 
+            return _edges.GetEnumerator(); 
         }
 
         /// <summary>

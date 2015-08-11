@@ -23,7 +23,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
@@ -35,6 +34,12 @@ namespace DotSpatial.Topology.Noding
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
+    /// <para>
+    /// Clients should be aware that rescaling can involve loss of precision,
+    /// which can cause zero-length line segments to be created.
+    /// These in turn can cause problems when used to build a planar graph.
+    /// This situation should be checked for and collapsed segments removed if necessary.
+    /// </para>
     /// </summary>
     public class ScaledNoder : INoder
     {
@@ -65,7 +70,8 @@ namespace DotSpatial.Topology.Noding
         /// <param name="scaleFactor"></param>
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
-        public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY)
+        [Obsolete("Do not use offsetX and offsetY")]
+        public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY) 
         {
             _offsetX = offsetX;
             _offsetY = offsetY;
@@ -82,8 +88,8 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
-        private bool IsIntegerPrecision
-        {
+        public bool IsIntegerPrecision
+        { 
             get
             {
                 return _scaleFactor == 1.0;
@@ -98,10 +104,10 @@ namespace DotSpatial.Topology.Noding
         ///
         /// </summary>
         /// <param name="inputSegStrings"></param>
-        public void ComputeNodes(IList inputSegStrings)
+        public void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
-            IList intSegStrings = inputSegStrings;
-            if (_isScaled)
+            IList<ISegmentString> intSegStrings = inputSegStrings;
+            if(_isScaled)
                 intSegStrings = Scale(inputSegStrings);
             _noder.ComputeNodes(intSegStrings);
         }
@@ -110,26 +116,22 @@ namespace DotSpatial.Topology.Noding
         ///
         /// </summary>
         /// <returns></returns>
-        public IList GetNodedSubstrings()
+        public IList<ISegmentString> GetNodedSubstrings()
         {
-            IList splitSS = _noder.GetNodedSubstrings();
+            IList<ISegmentString> splitSegStrings = _noder.GetNodedSubstrings();
             if (_isScaled)
-                Rescale(splitSS);
-            return splitSS;
+                Rescale(splitSegStrings);
+            return splitSegStrings;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="segStrings"></param>
-        private void Rescale(ICollection segStrings)
+        private void Rescale(IList<ISegmentString> segStrings)
         {
-            CollectionUtil.Apply(segStrings, delegate(object obj)
-            {
-                SegmentString ss = (SegmentString)obj;
-                Rescale(ss.Coordinates);
-                return null;
-            });
+            CollectionUtil.Apply(segStrings,
+                ss => { Rescale(ss.Coordinates); return null; } );                                           
         }
 
         /// <summary>
@@ -138,7 +140,16 @@ namespace DotSpatial.Topology.Noding
         /// <param name="pts"></param>
         private void Rescale(IList<Coordinate> pts)
         {
-            for (int i = 0; i < pts.Count; i++)
+            Coordinate p0 = null;
+            Coordinate p1 = null;
+
+            if (pts.Length == 2)
+            {
+                p0 = new Coordinate(pts[0]);
+                p1 = new Coordinate(pts[1]);
+            }
+
+            for (int i = 0; i < pts.Length; i++) 
             {
                 pts[i].X = pts[i].X / _scaleFactor + _offsetX;
                 pts[i].Y = pts[i].Y / _scaleFactor + _offsetY;
@@ -150,13 +161,10 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <returns></returns>
-        private IList Scale(ICollection segStrings)
+        private IList<ISegmentString> Scale(IList<ISegmentString> segStrings)
         {
-            return CollectionUtil.Transform(segStrings, delegate(object obj)
-            {
-                SegmentString ss = (SegmentString)obj;
-                return new SegmentString(Scale(ss.Coordinates), ss.Data);
-            });
+            return CollectionUtil.Transform<ISegmentString, ISegmentString>(segStrings, 
+                ss => ((ISegmentString)new NodedSegmentString(Scale(ss.Coordinates), ss.Context)));
         }
 
         /// <summary>
@@ -169,8 +177,10 @@ namespace DotSpatial.Topology.Noding
             Coordinate[] roundPts = new Coordinate[pts.Count];
             for (int i = 0; i < pts.Count; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
-                                             Math.Round((pts[i].Y - _offsetY) * _scaleFactor));
-            return roundPts;
+                                             Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
+                                             pts[i].Z);
+            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            return roundPtsNoDup;
         }
 
         #endregion

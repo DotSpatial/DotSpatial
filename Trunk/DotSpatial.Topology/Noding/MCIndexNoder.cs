@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Index;
 using DotSpatial.Topology.Index.Chain;
 using DotSpatial.Topology.Index.Strtree;
@@ -30,20 +30,20 @@ using DotSpatial.Topology.Index.Strtree;
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString" />s using a index based
+    /// Nodes a set of <see cref="ISegmentString" />s using a index based
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
-    /// envelope (range) queries efficiently (such as a <see cref="Quadtree" />
-    /// or <see cref="StRtree" />.
+    /// envelope (range) queries efficiently (such as a <c>Quadtree</c>"
+    /// or <see cref="StRtree{TItem}" />.
     /// </summary>
     public class McIndexNoder : SinglePassNoder
     {
         #region Fields
 
-        private readonly ISpatialIndex _index = new StRtree();
-        private readonly IList _monoChains = new ArrayList();
+        private readonly ISpatialIndex<MonotoneChain> _index = new StRtree<MonotoneChain>();
+        private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
         private int _idCounter;
-        private IList _nodedSegStrings;
+        private IList<ISegmentString> _nodedSegStrings;
         private int _nOverlaps; // statistics
 
         #endregion
@@ -69,23 +69,17 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
-        public ISpatialIndex Index
+        public ISpatialIndex<MonotoneChain> Index
         {
-            get
-            {
-                return _index;
-            }
+            get { return _index; }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public IList MonotoneChains
+        public IList<MonotoneChain> MonotoneChains
         {
-            get
-            {
-                return _monoChains;
-            }
+            get { return _monoChains; }
         }
 
         #endregion
@@ -93,43 +87,42 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
+        /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
+        /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
+        /// others may only add some or none at all.
+        /// </summary>
+        /// <param name="inputSegStrings"></param>
+        public override void ComputeNodes(IList<ISegmentString> inputSegStrings)
+        {
+            _nodedSegStrings = inputSegStrings;
+            foreach(var obj in inputSegStrings)
+                Add(obj);            
+            IntersectChains();            
+        }
+
+        /// <summary>
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
+        /// </summary>
+        /// <returns></returns>
+        public override IList<ISegmentString> GetNodedSubstrings()
+        {
+            return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="segStr"></param>
-        private void Add(SegmentString segStr)
+        private void Add(ISegmentString segStr)
         {
-            IList segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach (object obj in segChains)
+            var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
+            foreach (var mc in segChains) 
             {
-                MonotoneChain mc = (MonotoneChain)obj;
                 mc.Id = _idCounter++;
                 _index.Insert(mc.Envelope, mc);
                 _monoChains.Add(mc);
             }
-        }
-
-        /// <summary>
-        /// Computes the noding for a collection of <see cref="SegmentString"/>s.
-        /// Some Noders may add all these nodes to the input <see cref="SegmentString"/>s;
-        /// others may only add some or none at all.
-        /// </summary>
-        /// <param name="inputSegStrings"></param>
-        public override void ComputeNodes(IList inputSegStrings)
-        {
-            _nodedSegStrings = inputSegStrings;
-            foreach (object obj in inputSegStrings)
-                Add((SegmentString)obj);
-            IntersectChains();
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
-        /// </summary>
-        /// <returns></returns>
-        public override IList GetNodedSubstrings()
-        {
-            return SegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>
@@ -138,13 +131,12 @@ namespace DotSpatial.Topology.Noding
         private void IntersectChains()
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
-            foreach (object obj in _monoChains)
+            foreach(var obj in _monoChains) 
             {
-                MonotoneChain queryChain = (MonotoneChain)obj;
-                IList overlapChains = _index.Query(queryChain.Envelope);
-                foreach (object j in overlapChains)
+                var queryChain = obj;
+                var overlapChains = _index.Query(queryChain.Envelope);
+                foreach(var testChain in overlapChains)
                 {
-                    MonotoneChain testChain = (MonotoneChain)j;
                     /*
                      * following test makes sure we only compare each pair of chains once
                      * and that we don't compare a chain to itself
@@ -154,6 +146,10 @@ namespace DotSpatial.Topology.Noding
                         queryChain.ComputeOverlaps(testChain, overlapAction);
                         _nOverlaps++;
                     }
+                    // short-circuit if possible
+                    if (SegmentIntersector.IsDone)
+                        return;
+
                 }
             }
         }
@@ -197,8 +193,8 @@ namespace DotSpatial.Topology.Noding
             /// <param name="start2"></param>
             public override void Overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
             {
-                SegmentString ss1 = (SegmentString)mc1.Context;
-                SegmentString ss2 = (SegmentString)mc2.Context;
+                var ss1 = (ISegmentString) mc1.Context;
+                var ss2 = (ISegmentString) mc2.Context;
                 _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
 

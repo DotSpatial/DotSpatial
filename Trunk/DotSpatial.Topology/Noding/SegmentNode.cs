@@ -29,24 +29,19 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Noding
 {
     /// <summary>
-    /// Represents an intersection point between two <see cref="SegmentString" />s.
+    /// Represents an intersection point between two <see cref="ISegmentString" />s.
     /// </summary>
     public class SegmentNode : IComparable
     {
         #region Fields
 
         /// <summary>
-        ///
+        /// the index of the containing line segment in the parent edge
         /// </summary>
-        public readonly Coordinate Coordinate;   // the point of intersection
+        public readonly int SegmentIndex;
 
-        /// <summary>
-        ///
-        /// </summary>
-        public readonly int SegmentIndex;   // the index of the containing line segment in the parent edge
-
-        private readonly bool _isInterior;
-        private readonly OctantDirection _segmentOctant = OctantDirection.Null;
+        private readonly OctantDirection _segmentOctant;
+        private readonly INodableSegmentString _segString;
 
         #endregion
 
@@ -59,12 +54,14 @@ namespace DotSpatial.Topology.Noding
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="segmentOctant"></param>
-        public SegmentNode(SegmentString segString, Coordinate coord, int segmentIndex, OctantDirection segmentOctant)
+        public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, OctantDirection segmentOctant)
         {
-            Coordinate = new Coordinate(coord);
+            Coordinate = null;
+            _segString = segString;
+            Coordinate = new Coordinate(coord.X, coord.Y, coord.Z);
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
-            _isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
+            IsInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
         }
 
         #endregion
@@ -72,16 +69,15 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         /// <summary>
-        ///
+        /// Gets the <see cref="Coordinate"/> giving the location of this node.
+        /// </summary>
+        public Coordinate Coordinate { get; private set; }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <returns></returns>
-        public bool IsInterior
-        {
-            get
-            {
-                return _isInterior;
-            }
-        }
+        public bool IsInterior { get; private set; }
 
         #endregion
 
@@ -91,19 +87,16 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>
-        /// -1 this SegmentNode is located before the argument location, or
-        ///  0 this SegmentNode is at the argument location, or
-        ///  1 this SegmentNode is located after the argument location.
+        /// -1 this SegmentNode is located before the argument location;<br/>
+        ///  0 this SegmentNode is at the argument location;<br/>
+        ///  1 this SegmentNode is located after the argument location.   
         /// </returns>
         public int CompareTo(object obj)
         {
-            SegmentNode other = (SegmentNode)obj;
-            if (SegmentIndex < other.SegmentIndex)
-                return -1;
-            if (SegmentIndex > other.SegmentIndex)
-                return 1;
-            if (Coordinate.Equals2D(other.Coordinate))
-                return 0;
+            var other = (SegmentNode)obj;
+            if (SegmentIndex < other.SegmentIndex) return -1;
+            if (SegmentIndex > other.SegmentIndex) return 1;
+            if (Coordinate.Equals2D(other.Coordinate)) return 0;
             return SegmentPointComparator.Compare(_segmentOctant, Coordinate, other.Coordinate);
         }
 
@@ -114,11 +107,8 @@ namespace DotSpatial.Topology.Noding
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && !_isInterior)
-                return true;
-            if (SegmentIndex == maxSegmentIndex)
-                return true;
-            return false;
+            if (SegmentIndex == 0 && !IsInterior) return true;
+            return SegmentIndex == maxSegmentIndex;
         }
 
         /// <summary>

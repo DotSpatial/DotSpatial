@@ -57,6 +57,21 @@ namespace DotSpatial.Topology.Noding
 
         #region Methods
 
+        /// <summary>
+        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <returns>
+        /// -1 this one is smaller;<br/>
+        ///  0 the two objects are equal;<br/>
+        ///  1 this one is greater.
+        /// </returns>
+        public int CompareTo(object o1)
+        {
+            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
+        }
+
         private static int CompareOriented(IList<Coordinate> pts1, bool orientation1, IList<Coordinate> pts2, bool orientation2)
         {
             int dir1 = orientation1 ? 1 : -1;
@@ -80,24 +95,9 @@ namespace DotSpatial.Topology.Noding
                     return -1;
                 if (!done1 && done2)
                     return 1;
-                if (done1)
+                if(done1 && done2) 
                     return 0;
             }
-        }
-
-        /// <summary>
-        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <returns>
-        /// -1 this one is smaller, or
-        ///  0 the two objects are equal, or
-        ///  1 this one is greater.
-        /// </returns>
-        public int CompareTo(object o1)
-        {
-            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
-            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
 
         /// <summary>
@@ -105,8 +105,8 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="pts"></param>
         /// <returns>
-        /// <c>true</c> if the points are oriented forwards, or
-        /// <c>false</c>if the points are oriented in reverse.
+        /// <c>true</c> if the points are oriented forwards <br/>
+        /// or <c>false</c>if the points are oriented in reverse.
         /// </returns>
         private static bool Orientation(IList<Coordinate> pts)
         {

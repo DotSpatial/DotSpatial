@@ -30,14 +30,14 @@ using DotSpatial.Topology.Index.Strtree;
 namespace DotSpatial.Topology.Noding.Snapround
 {
     /// <summary>
-    /// "Snaps" all <see cref="SegmentString" />s in a <see cref="ISpatialIndex" /> containing
+    /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
     /// <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
     /// </summary>
     public class McIndexPointSnapper
     {
         #region Fields
 
-        private readonly StRtree _index;
+        private readonly StRtree<MonotoneChain> _index;
 
         #endregion
 
@@ -47,9 +47,9 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// Initializes a new instance of the <see cref="McIndexPointSnapper"/> class.
         /// </summary>
         /// <param name="index"></param>
-        public McIndexPointSnapper(ISpatialIndex index)
+        public McIndexPointSnapper(ISpatialIndex<MonotoneChain> index)
         {
-            _index = (StRtree)index;
+            _index = (StRtree<MonotoneChain>)index;
         }
 
         #endregion
@@ -64,21 +64,24 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// </summary>
         /// <param name="hotPixel">The hot pixel to snap to.</param>
         /// <param name="parentEdge">The edge containing the vertex, if applicable, or <c>null</c>.</param>
-        /// <param name="vertexIndex"></param>
+        /// <param name="hotPixelVertexIndex"></param>
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
-        public bool Snap(HotPixel hotPixel, SegmentString parentEdge, int vertexIndex)
+        public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
         {
             Envelope pixelEnv = hotPixel.GetSafeEnvelope();
-            HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
+            var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
             _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;
         }
 
         /// <summary>
-        ///
+        /// Snaps (nodes) all interacting segments to this hot pixel.
+        /// The hot pixel may represent a vertex of an edge,
+        /// in which case this routine uses the optimization
+        /// of not noding the vertex itself
         /// </summary>
-        /// <param name="hotPixel"></param>
-        /// <returns></returns>
+        /// <param name="hotPixel">The hot pixel to snap to.</param>
+        /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel)
         {
             return Snap(hotPixel, null, -1);
@@ -96,9 +99,9 @@ namespace DotSpatial.Topology.Noding.Snapround
             #region Fields
 
             private readonly HotPixel _hotPixel;
-            private readonly SegmentString _parentEdge;
-            private readonly int _vertexIndex;
-            private bool _isNodeAdded;
+            // is -1 if hotPixel is not a vertex
+            private readonly int _hotPixelVertexIndex;
+            private readonly ISegmentString _parentEdge;
 
             #endregion
 
@@ -109,12 +112,12 @@ namespace DotSpatial.Topology.Noding.Snapround
             /// </summary>
             /// <param name="hotPixel"></param>
             /// <param name="parentEdge"></param>
-            /// <param name="vertexIndex"></param>
-            public HotPixelSnapAction(HotPixel hotPixel, SegmentString parentEdge, int vertexIndex)
+            /// <param name="hotPixelVertexIndex"></param>
+            public HotPixelSnapAction(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
             {
                 _hotPixel = hotPixel;
                 _parentEdge = parentEdge;
-                _vertexIndex = vertexIndex;
+                _hotPixelVertexIndex = hotPixelVertexIndex;
             }
 
             #endregion
@@ -124,13 +127,7 @@ namespace DotSpatial.Topology.Noding.Snapround
             /// <summary>
             ///
             /// </summary>
-            public bool IsNodeAdded
-            {
-                get
-                {
-                    return _isNodeAdded;
-                }
-            }
+            public bool IsNodeAdded { get; private set; }
 
             #endregion
 
@@ -143,12 +140,19 @@ namespace DotSpatial.Topology.Noding.Snapround
             /// <param name="startIndex"></param>
             public override void Select(MonotoneChain mc, int startIndex)
             {
-                SegmentString ss = (SegmentString)mc.Context;
-                // don't snap a vertex to itself
-                if (_parentEdge != null)
-                    if (ss == _parentEdge && startIndex == _vertexIndex)
-                        return;
-                _isNodeAdded = SimpleSnapRounder.AddSnappedNode(_hotPixel, ss, startIndex);
+                var ss = (INodableSegmentString)mc.Context;
+                /**
+                 * Check to avoid snapping a hotPixel vertex to the same vertex.
+                 * This method is called for segments which intersects the 
+                 * hot pixel,
+                 * so need to check if either end of the segment is equal to the hot pixel
+                 * and if so, do not snap.
+                 * 
+                 * Sep 22 2012 - MD - currently do need to snap to every vertex,
+                 * since otherwise the testCollapse1 test in SnapRoundingTest fails.
+                 */
+                if (_parentEdge != null && ss == _parentEdge && startIndex == _hotPixelVertexIndex) return;
+                IsNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
             }
 
             #endregion
@@ -157,7 +161,7 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// <summary>
         ///
         /// </summary>
-        private class QueryVisitor : IItemVisitor
+        private class QueryVisitor : IItemVisitor<MonotoneChain>
         {
             #region Fields
 
@@ -186,9 +190,9 @@ namespace DotSpatial.Topology.Noding.Snapround
             /// <summary>
             /// </summary>
             /// <param name="item"></param>
-            public void VisitItem(object item)
+            public void VisitItem(MonotoneChain item)
             {
-                MonotoneChain testChain = (MonotoneChain)item;
+                var testChain = item;
                 testChain.Select(_env, _action);
             }
 

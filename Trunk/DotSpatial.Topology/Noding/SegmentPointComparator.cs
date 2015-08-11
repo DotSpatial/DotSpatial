@@ -38,15 +38,15 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
-        ///  Compares two <see cref="Coordinate" />s for their relative position along a segment
+        /// Compares two <see cref="Coordinate" />s for their relative position along a segment
         /// lying in the specified <see cref="Octant" />.
         /// </summary>
         /// <param name="octant"></param>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns>
-        /// -1 if node0 occurs first, or
-        ///  0 if the two nodes are equal, or
+        /// -1 if node0 occurs first, or<br/>
+        ///  0 if the two nodes are equal, or <br/>
         ///  1 if node1 occurs first.
         /// </returns>
         public static int Compare(OctantDirection octant, Coordinate p0, Coordinate p1)
@@ -83,6 +83,21 @@ namespace DotSpatial.Topology.Noding
         /// <summary>
         ///
         /// </summary>
+        /// <param name="x0"></param>
+        /// <param name="x1"></param>
+        /// <returns></returns>
+        public static int RelativeSign(double x0, double x1)
+        {
+            if (x0 < x1)
+                return -1;
+            if (x0 > x1)
+                return 1;
+            return 0;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="compareSign0"></param>
         /// <param name="compareSign1"></param>
         /// <returns></returns>
@@ -95,21 +110,6 @@ namespace DotSpatial.Topology.Noding
             if (compareSign1 < 0)
                 return -1;
             if (compareSign1 > 0)
-                return 1;
-            return 0;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="x1"></param>
-        /// <returns></returns>
-        public static int RelativeSign(double x0, double x1)
-        {
-            if (x0 < x1)
-                return -1;
-            if (x0 > x1)
                 return 1;
             return 0;
         }

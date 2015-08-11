@@ -22,10 +22,10 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
+using DotSpatial.Topology.Index.QuadTree;
 
 namespace DotSpatial.Topology.Simplify
 {
@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.Simplify
     {
         #region Fields
 
-        private readonly Quadtree _index = new Quadtree();
+        private readonly ISpatialIndex<LineSegment>_index = new Quadtree<LineSegment>();
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace DotSpatial.Topology.Simplify
         public virtual void Add(TaggedLineString line)
         {
             TaggedLineSegment[] segs = line.Segments;
-            for (int i = 0; i < segs.Length - 1; i++)
+            for (int i = 0; i < segs.Length; i++) 
             {
                 TaggedLineSegment seg = segs[i];
                 Add(seg);
@@ -70,13 +70,13 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
-        public virtual IList Query(LineSegment querySeg)
+        public IList<LineSegment> Query(LineSegment querySeg)
         {
             Envelope env = new Envelope(querySeg.P0, querySeg.P1);
 
             LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
             _index.Query(env, visitor);
-            IList itemsFound = visitor.Items;
+            IList<LineSegment> itemsFound = visitor.Items;        
 
             return itemsFound;
         }
@@ -96,12 +96,12 @@ namespace DotSpatial.Topology.Simplify
     /// <summary>
     /// ItemVisitor subclass to reduce volume of query results.
     /// </summary>
-    public class LineSegmentVisitor : IItemVisitor
+    public class LineSegmentVisitor : IItemVisitor<LineSegment>
     {
         #region Fields
 
+        private readonly IList<LineSegment> _items = new List<LineSegment>();
         // MD - only seems to make about a 10% difference in overall time.
-        private readonly ArrayList _items = new ArrayList();
         private readonly LineSegment _querySeg;
 
         #endregion
@@ -124,7 +124,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual ArrayList Items
+        public IList<LineSegment> Items 
         {
             get
             {
@@ -140,11 +140,11 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="item"></param>
-        public virtual void VisitItem(Object item)
+        public void VisitItem(LineSegment item)
         {
-            LineSegment seg = (LineSegment)item;
+            LineSegment seg = item;
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
-                _items.Add(item);
+                _items.Add(seg);
         }
 
         #endregion

@@ -22,11 +22,12 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
+using DotSpatial.Topology.Index;
+using DotSpatial.Topology.Index.QuadTree;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Valid
@@ -41,10 +42,10 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Fields
 
         private readonly GeometryGraph _graph;  // used to find non-node vertices
-        private readonly IList _rings = new ArrayList();
+        private readonly IList<ILinearRing> _rings = new List<ILinearRing>();
         private readonly Envelope _totalEnv = new Envelope();
         private Coordinate _nestedPt;
-        private Quadtree _quadtree;
+        private ISpatialIndex<ILinearRing> _quadtree;
 
         #endregion
 
@@ -82,25 +83,10 @@ namespace DotSpatial.Topology.Operation.Valid
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(LinearRing ring)
+        public virtual void Add(ILinearRing ring)
         {
             _rings.Add(ring);
             _totalEnv.ExpandToInclude(ring.EnvelopeInternal);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildQuadtree()
-        {
-            _quadtree = new Quadtree();
-
-            for (int i = 0; i < _rings.Count; i++)
-            {
-                LinearRing ring = (LinearRing)_rings[i];
-                IEnvelope env = ring.EnvelopeInternal;
-                _quadtree.Insert(env, ring);
-            }
         }
 
         /// <summary>
@@ -113,14 +99,14 @@ namespace DotSpatial.Topology.Operation.Valid
 
             for (int i = 0; i < _rings.Count; i++)
             {
-                LinearRing innerRing = (LinearRing)_rings[i];
-                IList<Coordinate> innerRingPts = innerRing.Coordinates;
+                ILinearRing innerRing = _rings[i];
+                Coordinate[] innerRingPts = innerRing.Coordinates;
 
-                IList results = _quadtree.Query(innerRing.EnvelopeInternal);
+                var results = _quadtree.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
-                    LinearRing searchRing = (LinearRing)results[j];
-                    IList<Coordinate> searchRingPts = searchRing.Coordinates;
+                    ILinearRing searchRing = results[j];
+                    Coordinate[] searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
@@ -138,6 +124,21 @@ namespace DotSpatial.Topology.Operation.Valid
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void BuildQuadtree()
+        {
+            _quadtree = new Quadtree<ILinearRing>();
+
+            for (int i = 0; i < _rings.Count; i++)
+            {
+                ILinearRing ring = _rings[i];
+                Envelope env = ring.EnvelopeInternal;
+                _quadtree.Insert(env, ring);
+            }
         }
 
         #endregion

@@ -21,7 +21,6 @@
 //
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Strtree;
@@ -35,9 +34,9 @@ namespace DotSpatial.Topology.Algorithm
     {
         #region Fields
 
-        private readonly LinearRing _ring;
+        private readonly ILinearRing _ring;
         private int _crossings;  // number of segment/ray crossings
-        private SiRtree _sirTree;
+        private SiRtree<LineSegment> _sirTree;
 
         #endregion
 
@@ -47,7 +46,7 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public SiRtreePointInRing(LinearRing ring)
+        public SiRtreePointInRing(ILinearRing ring)
         {
             _ring = ring;
             BuildIndex();
@@ -60,21 +59,6 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        private void BuildIndex()
-        {
-            _sirTree = new SiRtree();
-            IList<Coordinate> pts = _ring.Coordinates;
-            for (int i = 1; i < pts.Count; i++)
-            {
-                if (pts[i - 1].Equals(pts[i])) { continue; }
-                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
         public bool IsInside(Coordinate pt)
@@ -82,20 +66,28 @@ namespace DotSpatial.Topology.Algorithm
             _crossings = 0;
 
             // test all segments intersected by vertical ray at pt
-            IList segs = _sirTree.Query(pt.Y);
-
-            for (IEnumerator i = segs.GetEnumerator(); i.MoveNext(); )
-            {
-                LineSegment seg = (LineSegment)i.Current;
+            var segs = _sirTree.Query(pt.Y);
+            foreach (var seg in segs)
                 TestLineSegment(pt, seg);
-            }
+            
+            // p is inside if number of crossings is odd.
+            return (_crossings % 2) == 1;
+        }
 
-            /*
-            *  p is inside if number of crossings is odd.
-            */
-            if ((_crossings % 2) == 1)
-                return true;
-            return false;
+        /// <summary>
+        ///
+        /// </summary>
+        private void BuildIndex()
+        {
+            _sirTree = new SiRtree<LineSegment>();
+            IList<Coordinate> pts = _ring.Coordinates;
+            for (int i = 1; i < pts.Count; i++)
+            {
+                if (pts[i - 1].Equals(pts[i])) continue;
+
+                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
+                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
+            }
         }
 
         /// <summary>
@@ -105,9 +97,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="seg"></param>
         private void TestLineSegment(Coordinate p, ILineSegmentBase seg)
         {
-            /*
-            *  Test if segment crosses ray from test point in positive x direction.
-            */
+            // Test if segment crosses ray from test point in positive x direction.
             Coordinate p1 = seg.P0;
             Coordinate p2 = seg.P1;
             double x1 = p1.X - p.X;
@@ -117,16 +107,11 @@ namespace DotSpatial.Topology.Algorithm
 
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
-                /*
-                *  segment straddles x axis, so compute intersection.
-                */
+                // segment straddles x axis, so compute intersection.
                 double xInt = RobustDeterminant.SignOfDet2X2(x1, y1, x2, y2) / (y2 - y1);  // x intersection of segment with ray
 
-                /*
-                *  crosses ray if strictly positive intersection.
-                */
-                if (0.0 < xInt)
-                    _crossings++;
+                // crosses ray if strictly positive intersection.
+                if (0.0 < xInt) _crossings++;
             }
         }
 

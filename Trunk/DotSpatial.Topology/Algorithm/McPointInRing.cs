@@ -23,7 +23,6 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Bintree;
@@ -42,7 +41,7 @@ namespace DotSpatial.Topology.Algorithm
         private readonly Interval _interval = new Interval();
         private readonly ILinearRing _ring;
         private int _crossings;  // number of segment/ray crossings
-        private Bintree _tree;
+        private Bintree<MonotoneChain> _tree;
 
         #endregion
 
@@ -67,17 +66,16 @@ namespace DotSpatial.Topology.Algorithm
         /// </summary>
         private void BuildIndex()
         {
-            _tree = new Bintree();
+            _tree = new Bintree<MonotoneChain>();
 
             IList<Coordinate> pts = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
-            IList mcList = MonotoneChainBuilder.GetChains(pts);
+            IList<MonotoneChain> mcList = MonotoneChainBuilder.GetChains(pts);
 
-            for (int i = 0; i < mcList.Count; i++)
+            foreach (MonotoneChain mc in mcList)
             {
-                MonotoneChain mc = (MonotoneChain)mcList[i];
-                Envelope mcEnv = mc.Envelope;
-                _interval.Min = mcEnv.Minimum.Y;
-                _interval.Max = mcEnv.Maximum.Y;
+                var mcEnv = mc.Envelope;
+                _interval.Min = mcEnv.MinY;
+                _interval.Max = mcEnv.MaxY;
                 _tree.Insert(_interval, mc);
             }
         }
@@ -95,14 +93,11 @@ namespace DotSpatial.Topology.Algorithm
             Envelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             _interval.Min = pt.Y;
             _interval.Max = pt.Y;
-            IList segs = _tree.Query(_interval);
+            IList<MonotoneChain> segs = _tree.Query(_interval);
 
-            McSelecter mcSelecter = new McSelecter(this, pt);
-            for (IEnumerator i = segs.GetEnumerator(); i.MoveNext(); )
-            {
-                MonotoneChain mc = (MonotoneChain)i.Current;
+            MCSelecter mcSelecter = new MCSelecter(this, pt);
+            foreach (MonotoneChain mc in segs)
                 TestMonotoneChain(rayEnv, mcSelecter, mc);
-            }
 
             /*
             *  p is inside if number of crossings is odd.
@@ -150,7 +145,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
         /// <param name="mc"></param>
-        private static void TestMonotoneChain(IEnvelope rayEnv, MonotoneChainSelectAction mcSelecter, MonotoneChain mc)
+        private static void TestMonotoneChain(Envelope rayEnv, McSelecter mcSelecter, MonotoneChain mc)
         {
             mc.Select(rayEnv, mcSelecter);
         }
@@ -167,7 +162,7 @@ namespace DotSpatial.Topology.Algorithm
             #region Fields
 
             private readonly McPointInRing _container;
-            private readonly Coordinate _p = Coordinate.Empty;
+            private readonly Coordinate _p;
 
             #endregion
 
