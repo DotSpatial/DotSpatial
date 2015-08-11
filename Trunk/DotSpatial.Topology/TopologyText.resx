@@ -189,4 +189,34 @@
   <data name="UnsupportedGeometryException" xml:space="preserve">
     <value>Unsupported Geometry classes should be caught in the GeometryEditorOperation.</value>
   </data>
+  <data name="NodedSegmentString_WrongParameterSize" xml:space="preserve">
+    <value>Parameter must be greater than or equal to 0 and less than TotalItemCount.</value>
+  </data>
+  <data name="NodedSegmentString_UnsupportedSettingLinesegments" xml:space="preserve">
+    <value>Setting line segments in a ISegmentString not supported.</value>
+  </data>
+  <data name="WktWriter_WrongOutputDimension" xml:space="preserve">
+    <value>Output dimension must be in the range [2, 3]</value>
+  </data>
+  <data name="WktWriter_NegativeTabCount" xml:space="preserve">
+    <value>Tab count must be positive</value>
+  </data>
+  <data name="NodingValidator_FoundNonNodedIntersection" xml:space="preserve">
+    <value>found non-noded intersection at {0}-{1} and {2}-{3}</value>
+  </data>
+  <data name="NodingValidator_FoundEndPointInteriorPointIntersection" xml:space="preserve">
+    <value>found endpoint/interior point intersection at index {0} :pt {1}</value>
+  </data>
+  <data name="NodingValidator_FoundNonNodedCollapse" xml:space="preserve">
+    <value>found non-noded collapse at: {0}, {1} {2}</value>
+  </data>
+  <data name="FastNodingValidator_NoIntersectionFound" xml:space="preserve">
+    <value>no intersections found</value>
+  </data>
+  <data name="FastNodingValidator_FoundNonNodedIntersection" xml:space="preserve">
+    <value>found non-noded intersection between {0} and {1} </value>
+  </data>
+  <data name="CharBuffer_IndexToBig" xml:space="preserve">
+    <value>Tail index greater than capacity</value>
+  </data>
 </root>
