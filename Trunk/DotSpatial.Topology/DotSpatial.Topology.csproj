@@ -203,6 +203,13 @@
     <Compile Include="IO\WKTFileReader.cs" />
     <Compile Include="IO\WKTReader.cs" />
     <Compile Include="IO\WKTWriter.cs" />
+    <Compile Include="Mathematics\DoubleDouble.cs" />
+    <Compile Include="Mathematics\MathUtil.cs" />
+    <Compile Include="Mathematics\Matrix.cs" />
+    <Compile Include="Mathematics\Plane3D.cs" />
+    <Compile Include="Mathematics\Vector2D.cs" />
+    <Compile Include="Mathematics\Vector3D.cs" />
+    <Compile Include="Mathematics\VectorMath.cs" />
     <Compile Include="Noding\BasicSegmentString.cs" />
     <Compile Include="Noding\FastNodingValidator.cs" />
     <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
@@ -566,7 +573,6 @@
   <ItemGroup>
     <Folder Include="Geometries\Prepared\" />
     <Folder Include="Geometries\Utilities\" />
-    <Folder Include="Mathematics\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
