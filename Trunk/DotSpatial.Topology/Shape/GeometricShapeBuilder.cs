@@ -25,7 +25,7 @@ namespace DotSpatial.Topology.Shape
 
         public Coordinate Centre
         {
-            get { return _extent.Centre; }
+            get { return _extent.Center(); }
         }
 
         public double Diameter

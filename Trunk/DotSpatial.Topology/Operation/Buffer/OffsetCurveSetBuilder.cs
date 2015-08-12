@@ -117,7 +117,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             // don't add null or trivial curves!
             if (coord == null || coord.Count < 2) return;
             // add the edge for a coordinate list which is a raw offset curve
-            var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
+            var e = new NodedSegmentString(coord, new Label(0, LocationType.Boundary, leftLoc, rightLoc));
             _curveList.Add(e);
         }
 
@@ -132,7 +132,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurve(curve, Location.Exterior, Location.Interior);
+            AddCurve(curve, LocationType.Exterior, LocationType.Interior);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 return;
             var coord = p.Coordinates;
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurve(curve, Location.Exterior, Location.Interior);
+            AddCurve(curve, LocationType.Exterior, LocationType.Interior);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         private bool IsTriangleErodedCompletely(IList<Coordinate> triangleCoord, double bufferDistance)
         {
             Triangle tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
-            Coordinate inCentre = tri.InCentre;
+            Coordinate inCentre = tri.InCentre();
             double distToCentre = CgAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }

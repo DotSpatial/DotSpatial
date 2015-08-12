@@ -24,18 +24,37 @@
 
 namespace DotSpatial.Topology.Geometries
 {
-    /// <summary>
-    /// A Dimensionally Extended Nine-Intersection Model (DE-9IM) matrix. This class
-    /// can used to represent both computed DE-9IM's (like 212FF1FF2) as well as
-    /// patterns for matching them (like T*T******).
-    /// Methods are provided to:
-    /// Set and query the elements of the matrix in a convenient fashion
-    /// convert to and from the standard string representation (specified in
-    /// SFS Section 2.1.13.2).
-    /// Test to see if a matrix matches a given pattern string.
-    /// For a description of the DE-9IM, see the <see href="http://www.opengis.org/techno/specs.htm"/>OpenGIS Simple Features
-    /// Specification for SQL.
+    /// <summary>  
+    /// Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// DE-9IM matrices (such as "212FF1FF2")
+    /// specify the topological relationship between two <see cref="IGeometry"/>s. 
+    /// This class can also represent matrix patterns (such as "T*T******")
+    /// which are used for matching instances of DE-9IM matrices.
+    /// </para>
+    /// <para>
+    /// Methods are provided to:
+    /// <list type="Bullet">
+    /// <item>Set and query the elements of the matrix in a convenient fashion.</item>
+    /// <item>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</item>
+    /// <item>Test to see if a matrix matches a given pattern string.</item>
+    /// </list>
+    /// </para>
+    /// For a description of the DE-9IM and the spatial predicates derived from it, see the <i>
+    /// <see href="http://www.opengis.org/techno/specs.htm">OGC 99-049 OpenGIS Simple Features Specification for SQL.</see></i> as well as 
+    /// <i>OGC 06-103r4 OpenGIS 
+    /// Implementation Standard for Geographic information - 
+    /// Simple feature access - Part 1: Common architecture</i>
+    /// (which provides some further details on certain predicate specifications).
+    /// <para>
+    /// The entries of the matrix are defined by the constants in the <see cref="Dimension"/> enum.
+    /// The indices of the matrix represent the topological locations 
+    /// that occur in a geometry (Interior, Boundary, Exterior).  
+    /// These are provided as constants in the <see cref="Location"/> enum.
+    /// </para>
+    /// </remarks>
     public interface IIntersectionMatrix
     {
         #region Methods
@@ -69,6 +88,13 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <returns><c>true</c> if the first <c>Geometry</c> contains the second.</returns>
         bool IsContains();
+
+        /// <summary>
+        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is <c>T*F**F***</c>
+        /// or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>
+        /// </summary>
+        /// <returns><c>true</c> if the first <see cref="IGeometry"/> is covered by the second</returns>
+        bool IsCoveredBy();
 
         /// <summary>
         /// Returns <c>true</c> if this <c>IntersectionMatrix</c> is <c>T*****FF*</c>

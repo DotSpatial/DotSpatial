@@ -339,6 +339,29 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        public double MinX
+        {
+            get { return _min.X; }
+            set { _min.X = value; } 
+        }
+        public double MaxX
+        {
+            get { return _max.X; }
+            set { _max.X = value; }
+        }
+
+        public double MinY
+        {
+            get { return _min.Y; }
+            set { _min.Y = value; }
+        }
+        public double MaxY
+        {
+            get { return _max.Y; }
+            set { _max.Y = value; }
+        }
+
+
         #endregion
 
         #region Methods

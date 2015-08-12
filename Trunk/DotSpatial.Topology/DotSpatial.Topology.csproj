@@ -169,7 +169,9 @@
     <Compile Include="FeatureType.cs" />
     <Compile Include="Algorithm\Angle.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
+    <Compile Include="Geometries\GeometryComponentFilter.cs" />
     <Compile Include="Geometries\IBoundable.cs" />
+    <Compile Include="Geometries\ICoordinateBuffer.cs" />
     <Compile Include="Geometries\ICoordinateSequenceFilter.cs" />
     <Compile Include="Geometries\ICurve.cs" />
     <Compile Include="Geometries\IExpandable.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="Geometries\IPrecisionModel.cs" />
     <Compile Include="Geometries\IPuntal.cs" />
     <Compile Include="Geometries\ISurface.cs" />
+    <Compile Include="Geometries\OctogonalEnvelope.cs" />
     <Compile Include="Geometries\OgcCompliantGeometryFactory.cs" />
     <Compile Include="Geometries\OgcGeometryType.cs" />
     <Compile Include="Geometries\Ordinates.cs" />
