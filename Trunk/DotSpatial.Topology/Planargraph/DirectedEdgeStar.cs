@@ -22,8 +22,9 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -38,7 +39,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.
         /// </summary>
-        private IList _outEdges = new ArrayList();
+        private readonly BigList<DirectedEdge> _outEdges = new BigList<DirectedEdge>();
 
         private bool _sorted;
 
@@ -53,11 +54,9 @@ namespace DotSpatial.Topology.Planargraph
         {
             get
             {
-                IEnumerator it = GetEnumerator();
-                if (!it.MoveNext())
+                if (_outEdges.Count == 0 || _outEdges[0] == null)
                     return null;
-                DirectedEdge e = (DirectedEdge)it.Current;
-                return e.Coordinate;
+                return _outEdges[0].Coordinate;
             }
         }
 
@@ -75,22 +74,13 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public virtual IList Edges
+        public IList<DirectedEdge> Edges
         {
             get
             {
                 SortEdges();
                 return _outEdges;
             }
-        }
-
-        /// <summary>
-        /// The underlying list of outgoing Directed Edges
-        /// </summary>
-        protected IList OutEdges
-        {
-            get { return _outEdges; }
-            set { _outEdges = value; }
         }
 
         #endregion
@@ -101,8 +91,8 @@ namespace DotSpatial.Topology.Planargraph
         /// Adds a new member to this DirectedEdgeStar.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void Add(DirectedEdge de)
-        {
+        public void Add(DirectedEdge de)
+        {            
             _outEdges.Add(de);
             _sorted = false;
         }
@@ -110,8 +100,8 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
-        {
+        public IEnumerator<DirectedEdge> GetEnumerator()
+        {            
             SortEdges();
             return _outEdges.GetEnumerator();
         }
@@ -127,7 +117,7 @@ namespace DotSpatial.Topology.Planargraph
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = (DirectedEdge)_outEdges[i];
+                DirectedEdge de = _outEdges[i];
                 if (de.Edge == edge)
                     return i;
             }
@@ -145,7 +135,7 @@ namespace DotSpatial.Topology.Planargraph
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = (DirectedEdge)_outEdges[i];
+                DirectedEdge de = _outEdges[i];
                 if (de == dirEdge)
                     return i;
             }
@@ -161,22 +151,34 @@ namespace DotSpatial.Topology.Planargraph
         public virtual int GetIndex(int i)
         {
             int modi = i % _outEdges.Count;
-            //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003]
-            if (modi < 0)
+            //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
+            if (modi < 0) 
                 modi += _outEdges.Count;
             return modi;
         }
 
+        ///<summary>
+        /// Returns the <see cref="DirectedEdge"/> on the right-hand (CW) 
+        /// side of the given <see cref="DirectedEdge"/>
+        /// (which must be a member of this DirectedEdgeStar).
+        /// </summary>
+        public DirectedEdge GetNextCWEdge(DirectedEdge dirEdge)
+        {
+            int i = GetIndex(dirEdge);
+            return _outEdges[GetIndex(i - 1)];
+        }
+
         /// <summary>
-        /// Returns the DirectedEdge on the left-hand side of the given DirectedEdge (which
-        /// must be a member of this DirectedEdgeStar).
+        /// Returns the <see cref="DirectedEdge"/> on the left-hand 
+        /// side of the given <see cref="DirectedEdge"/> 
+        /// (which  must be a member of this DirectedEdgeStar). 
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
         public virtual DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
             int i = GetIndex(dirEdge);
-            return (DirectedEdge)_outEdges[GetIndex(i + 1)];
+            return _outEdges[GetIndex(i + 1)];
         }
 
         /// <summary>
@@ -195,9 +197,8 @@ namespace DotSpatial.Topology.Planargraph
         {
             if (!_sorted)
             {
-                ArrayList list = (ArrayList)_outEdges;
-                list.Sort();
-                _sorted = true;
+                _outEdges.Sort();
+                _sorted = true;                
             }
         }
 

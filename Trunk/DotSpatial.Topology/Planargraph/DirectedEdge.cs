@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
@@ -42,14 +42,13 @@ namespace DotSpatial.Topology.Planargraph
     {
         #region Fields
 
+        protected Node From;
+        protected Coordinate P0;
+        protected Coordinate P1;
+        protected Edge ParentEdge;
+        protected Node To;
         private readonly double _angle;
-        private readonly bool _edgeDirection;
-        private readonly Node _from;
-        private readonly Coordinate _p0;
-        private readonly Coordinate _p1;
         private readonly int _quadrant;
-        private readonly Node _to;
-        private Edge _parentEdge;
         private DirectedEdge _sym;  // optional
 
         #endregion
@@ -60,25 +59,25 @@ namespace DotSpatial.Topology.Planargraph
         /// Constructs a DirectedEdge connecting the <c>from</c> node to the
         /// <c>to</c> node.
         /// </summary>
-        /// <param name="inFrom"></param>
-        /// <param name="inTo"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <param name="directionPt">
         /// Specifies this DirectedEdge's direction (given by an imaginary
         /// line from the <c>from</c> node to <c>directionPt</c>).
         /// </param>
-        /// <param name="inEdgeDirection">
+        /// <param name="edgeDirection">
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public DirectedEdge(Node inFrom, Node inTo, Coordinate directionPt, bool inEdgeDirection)
+        public DirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
         {
-            _from = inFrom;
-            _to = inTo;
-            _edgeDirection = inEdgeDirection;
-            _p0 = _from.Coordinate;
-            _p1 = directionPt;
-            double dx = _p1.X - _p0.X;
-            double dy = _p1.Y - _p0.Y;
+            From = from;
+            To = to;
+            EdgeDirection = edgeDirection;
+            P0 = from.Coordinate;
+            P1 = directionPt;
+            double dx = P1.X - P0.X;
+            double dy = P1.Y - P0.Y;
             _quadrant = QuadrantOp.Quadrant(dx, dy);
             _angle = Math.Atan2(dy, dx);
         }
@@ -93,10 +92,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         public virtual double Angle
         {
-            get
-            {
-                return _angle;
-            }
+            get { return _angle; }
         }
 
         /// <summary>
@@ -104,45 +100,24 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         public virtual Coordinate Coordinate
         {
-            get
-            {
-                return _from.Coordinate;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether the direction of the parent Edge (if any) is the same as that
-        /// of this Directed Edge.
-        /// </summary>
-        public virtual bool EdgeDirection
-        {
-            get
-            {
-                return _edgeDirection;
-            }
+            get { return From.Coordinate; }
         }
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public virtual Coordinate EndPoint
+        public Coordinate DirectionPt
         {
-            get
-            {
-                return _p1;
-            }
+            get { return P1; }
         }
 
         /// <summary>
         /// Returns the node from which this DirectedEdge leaves.
         /// </summary>
-        public virtual Node FromNode
+        public Node FromNode
         {
-            get
-            {
-                return _from;
-            }
+            get { return From; }
         }
 
         /// <summary>
@@ -151,45 +126,24 @@ namespace DotSpatial.Topology.Planargraph
         /// <value></value>
         public override bool IsRemoved
         {
-            get
-            {
-                return _parentEdge == null;
-            }
+            get { return ParentEdge == null; }
         }
 
         /// <summary>
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public virtual int Quadrant
+        public int Quadrant
         {
-            get
-            {
-                return _quadrant;
-            }
-        }
-
-        /// <summary>
-        /// returns a point representing the starting point for a line being drawn
-        /// in order to indicate the directed edges vector direction.
-        /// </summary>
-        public virtual Coordinate StartPoint
-        {
-            get
-            {
-                return _p0;
-            }
+            get { return _quadrant; }
         }
 
         /// <summary>
         /// Returns the node to which this DirectedEdge goes.
         /// </summary>
-        public virtual Node ToNode
+        public Node ToNode
         {
-            get
-            {
-                return _to;
-            }
+            get { return To; }
         }
 
         /// <summary>
@@ -197,17 +151,18 @@ namespace DotSpatial.Topology.Planargraph
         /// Associates this DirectedEdge with an Edge (possibly null, indicating no associated
         /// Edge).
         /// </summary>
-        public virtual Edge Edge
+        public Edge Edge
         {
-            get
-            {
-                return _parentEdge;
-            }
-            set
-            {
-                _parentEdge = value;
-            }
+            get { return ParentEdge; }
+            set { ParentEdge = value; }
+
         }
+
+        /// <summary>
+        /// Returns whether the direction of the parent Edge (if any) is the same as that
+        /// of this Directed Edge.
+        /// </summary>
+        public bool EdgeDirection { get; protected set; }
 
         /// <summary>
         /// Returns the symmetric DirectedEdge -- the other DirectedEdge associated with
@@ -215,16 +170,10 @@ namespace DotSpatial.Topology.Planargraph
         /// Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
         /// direction.
         /// </summary>
-        public virtual DirectedEdge Sym
+        public DirectedEdge Sym
         {
-            get
-            {
-                return _sym;
-            }
-            set
-            {
-                _sym = value;
-            }
+            get { return _sym;  }
+            set { _sym = value; }
         }
 
         #endregion
@@ -250,12 +199,11 @@ namespace DotSpatial.Topology.Planargraph
             // if the rays are in different quadrants, determining the ordering is trivial
             if (_quadrant > e.Quadrant)
                 return 1;
-            if (_quadrant < e.Quadrant)
+            if (_quadrant < e.Quadrant) 
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            int i = CgAlgorithms.ComputeOrientation(e.StartPoint, e.EndPoint, _p1);
-            return i;
+            return CgAlgorithms.ComputeOrientation(e.P0, e.P1, P1);            
         }
 
         /// <summary>
@@ -284,7 +232,7 @@ namespace DotSpatial.Topology.Planargraph
         internal void Remove()
         {
             _sym = null;
-            _parentEdge = null;
+            ParentEdge = null;
         }
 
         /// <summary>
@@ -293,23 +241,17 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
-        public static IList ToEdges(IList dirEdges)
+        public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
-            IList edges = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
-            {
-                edges.Add(((DirectedEdge)i.Current).Edge);
-            }
+            IList<Edge> edges = new List<Edge>();
+            foreach (DirectedEdge directedEdge in dirEdges)
+                edges.Add(directedEdge.ParentEdge);
             return edges;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
-        {
-            return "DirectedEdge: " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle;
+        {            
+            return "DirectedEdge: " + P0 + " - " + P1 + " " + _quadrant + ":" + _angle;
         }
 
         /// <summary>
@@ -321,7 +263,7 @@ namespace DotSpatial.Topology.Planargraph
             string className = GetType().FullName;
             int lastDotPos = className.LastIndexOf('.');
             string name = className.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle);
+            outstream.Write("  " + name + ": " + P0 + " - " + P1 + " " + _quadrant + ":" + _angle);
         }
 
         #endregion

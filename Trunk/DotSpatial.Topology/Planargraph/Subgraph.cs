@@ -22,8 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -43,22 +43,22 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         ///
         /// </summary>
-        protected readonly IList<DirectedEdge> DirEdges = new List<DirectedEdge>();
+        protected IList<DirectedEdge> DirEdges = new List<DirectedEdge>();
 
         /// <summary>
         ///
         /// </summary>
-        protected readonly ISet<Edge> Edges = new HashSet<Edge>();
+        protected Set<Edge> Edges = new Set<Edge>();
 
         /// <summary>
         ///
         /// </summary>
-        protected readonly NodeMap NodeMap = new NodeMap();
+        protected NodeMap NodeMap = new NodeMap();
 
         /// <summary>
         ///
         /// </summary>
-        protected readonly PlanarGraph ParentGraph;
+        protected PlanarGraph ParentGraph;
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <param name="parentGraph"></param>
         public Subgraph(PlanarGraph parentGraph)
         {
-            ParentGraph = parentGraph;
+            this.ParentGraph = parentGraph;
         }
 
         #endregion
@@ -84,16 +84,16 @@ namespace DotSpatial.Topology.Planargraph
         /// <param name="e">The <see cref="Edge" /> to add.</param>
         public virtual void Add(Edge e)
         {
-            if (Edges.Contains(e))
+            if (Edges.Contains(e))  
                 return;
 
             Edges.Add(e);
 
             DirEdges.Add(e.GetDirEdge(0));
             DirEdges.Add(e.GetDirEdge(1));
-
+            
             NodeMap.Add(e.GetDirEdge(0).FromNode);
-            NodeMap.Add(e.GetDirEdge(1).FromNode);
+            NodeMap.Add(e.GetDirEdge(1).FromNode);            
         }
 
         /// <summary>
@@ -103,34 +103,34 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
         public virtual bool Contains(Edge e)
         {
-            return Edges.Contains(e);
+            return Edges.Contains(e); 
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="DirectedEdge" />s in this graph,
+        /// Returns an <see cref="IEnumerator{DirectedEdge}" /> over the <see cref="DirectedEdge" />s in this graph,
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetDirEdgeEnumerator()
-        {
-            return DirEdges.GetEnumerator();
+        public virtual IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
+        { 
+            return DirEdges.GetEnumerator(); 
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="Edge" />s in this graph,
+        /// Returns an <see cref="IEnumerator{Edge}" /> over the <see cref="Edge" />s in this graph,
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public virtual IEnumerator<Edge> GetEdgeEnumerator()
         {
             return Edges.GetEnumerator();
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerator" /> over the <see cref="Node" />s in this graph.
+        /// Returns an <see cref="IEnumerator{Node}" /> over the <see cref="Node" />s in this graph.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public virtual IEnumerator<Node> GetNodeEnumerator()
         {
             return NodeMap.GetEnumerator();
         }

@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Planargraph
@@ -42,43 +42,40 @@ namespace DotSpatial.Topology.Planargraph
     {
         #region Fields
 
-        private readonly IList _edges = new ArrayList();
-        private readonly NodeMap _nodeMap = new NodeMap();
-        private IList _dirEdges = new ArrayList();
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IList<DirectedEdge> DirEdges = new List<DirectedEdge>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected NodeMap NodeMap = new NodeMap();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private IList<Edge> _edges = new List<Edge>();
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Returns the Edges that have been added to this PlanarGraph.
-        /// </summary>
-        public virtual IList Edges
-        {
-            get
-            {
-                return _edges;
-            }
-        }
-
-        /// <summary>
         /// Returns the Nodes in this PlanarGraph.
         /// </summary>
-        public virtual ICollection Nodes
+        public ICollection<Node> Nodes
         {
-            get
-            {
-                return _nodeMap.Values;
-            }
+            get { return NodeMap.Values; }
         }
 
         /// <summary>
-        /// Gets or sets the IList of directed edges
+        /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
-        public virtual IList DirectedEdges
+        public IList<Edge> Edges
         {
-            get { return _dirEdges; }
-            protected set { _dirEdges = value; }
+            get { return _edges; }
+            protected set { _edges = value; }
         }
 
         #endregion
@@ -90,9 +87,10 @@ namespace DotSpatial.Topology.Planargraph
         /// Only subclasses can add Nodes, to ensure Nodes are of the right type.
         /// </summary>
         /// <param name="node"></param>
+        /// <returns>The added node.</returns>
         protected virtual void Add(Node node)
         {
-            _nodeMap.Add(node);
+            NodeMap.Add(node);
         }
 
         /// <summary>
@@ -115,17 +113,19 @@ namespace DotSpatial.Topology.Planargraph
         /// <param name="dirEdge"></param>
         protected virtual void Add(DirectedEdge dirEdge)
         {
-            _dirEdges.Add(dirEdge);
+            DirEdges.Add(dirEdge);
         }
 
         /// <summary>
-        /// Returns the Node at the given location, or null if no Node was there.
+        /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <value>null</value> if no <see cref="Node"/> was there.
         /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
+        /// <param name="pt">The location</param>
+        /// <returns>The node found<br/>
+        /// or <c>null</c> if this graph contains no node at the location
+        /// </returns>
         public virtual Node FindNode(Coordinate pt)
         {
-            return _nodeMap.Find(pt);
+            return NodeMap.Find(pt);
         }
 
         /// <summary>
@@ -133,26 +133,25 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="degree"></param>
         /// <returns></returns>
-        public virtual IList FindNodesOfDegree(int degree)
+        public virtual IList<Node> FindNodesOfDegree(int degree)
         {
-            IList nodesFound = new ArrayList();
-            for (IEnumerator i = GetNodeEnumerator(); i.MoveNext(); )
+            IList<Node> nodesFound = new List<Node>();
+            foreach (var node in NodeMap.Values )
             {
-                Node node = (Node)i.Current;
                 if (node.Degree == degree)
                     nodesFound.Add(node);
             }
             return nodesFound;
         }
 
-        /// <summary>
+        /// <summary> 
         /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetDirEdgeEnumerator()
-        {
-            return _dirEdges.GetEnumerator();
+        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
+        {            
+            return DirEdges.GetEnumerator();          
         }
 
         /// <summary>
@@ -160,23 +159,23 @@ namespace DotSpatial.Topology.Planargraph
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return _edges.GetEnumerator();
+            return _edges.GetEnumerator(); 
         }
 
         /// <summary>
         /// Returns an IEnumerator over the Nodes in this PlanarGraph.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
-        {
-            return _nodeMap.GetEnumerator();
+        public IEnumerator<Node> GetNodeEnumerator()
+        {            
+            return NodeMap.GetEnumerator();          
         }
 
         /// <summary>
         /// Removes an Edge and its associated DirectedEdges from their from-Nodes and
-        /// from this PlanarGraph. Notice: This method does not remove the Nodes associated
+        /// from this PlanarGraph. Note: This method does not remove the Nodes associated
         /// with the Edge, even if the removal of the Edge reduces the degree of a
         /// Node to zero.
         /// </summary>
@@ -189,21 +188,22 @@ namespace DotSpatial.Topology.Planargraph
             edge.Remove();
         }
 
-        /// <summary>
-        /// Removes DirectedEdge from its from-Node and from this PlanarGraph. Notice:
-        /// This method does not remove the Nodes associated with the DirectedEdge,
-        /// even if the removal of the DirectedEdge reduces the degree of a Node to
-        /// zero.
+        /// <summary> 
+        /// Removes a <see cref="DirectedEdge"/> from its from-<see cref="Node"/> and from this PlanarGraph.
         /// </summary>
+        /// <remarks>
+        /// This method does not remove the <see cref="Node"/>s associated with the DirectedEdge,
+        /// even if the removal of the DirectedEdge reduces the degree of a Node to zero.
+        /// </remarks>
         /// <param name="de"></param>
         public virtual void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
             if (sym != null)
                 sym.Sym = null;
-            de.FromNode.OutEdges.Remove(de);
+            de.FromNode.Remove(de);
             de.Remove();
-            _dirEdges.Remove(de);
+            DirEdges.Remove(de);
         }
 
         /// <summary>
@@ -214,23 +214,22 @@ namespace DotSpatial.Topology.Planargraph
         public virtual void Remove(Node node)
         {
             // unhook all directed edges
-            IList outEdges = node.OutEdges.Edges;
-            for (IEnumerator i = outEdges.GetEnumerator(); i.MoveNext(); )
+            IList<DirectedEdge> outEdges = node.OutEdges.Edges;
+            foreach (DirectedEdge de in outEdges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 DirectedEdge sym = de.Sym;
                 // remove the diredge that points to this node
-                if (sym != null)
+                if (sym != null) 
                     Remove(sym);
                 // remove this diredge from the graph collection
-                _dirEdges.Remove(de);
+                DirEdges.Remove(de);
 
                 Edge edge = de.Edge;
-                if (edge != null)
-                    _edges.Remove(edge);
+                if (edge != null)                
+                    _edges.Remove(edge);                
             }
             // remove the node from the graph
-            _nodeMap.Remove(node.Coordinate);
+            NodeMap.Remove(node.Coordinate);
             node.Remove();
         }
 

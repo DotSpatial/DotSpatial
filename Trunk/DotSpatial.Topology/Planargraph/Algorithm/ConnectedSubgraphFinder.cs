@@ -22,8 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
-using DotSpatial.Topology.Operation.Polygonize;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Planargraph.Algorithm
 {
@@ -41,12 +40,12 @@ namespace DotSpatial.Topology.Planargraph.Algorithm
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the ConnectedSubgraphFinder class.
+        /// Initializes a new instance of the <see cref="ConnectedSubgraphFinder"/> class.
         /// </summary>
         /// <param name="graph">The <see cref="PlanarGraph" />.</param>
         public ConnectedSubgraphFinder(PlanarGraph graph)
         {
-            _graph = graph;
+            this._graph = graph;
         }
 
         #endregion
@@ -59,16 +58,14 @@ namespace DotSpatial.Topology.Planargraph.Algorithm
         /// <param name="node"></param>
         /// <param name="nodeStack"></param>
         /// <param name="subgraph"></param>
-        private static void AddEdges(Node node, Stack nodeStack, Subgraph subgraph)
+        private static void AddEdges(Node node, Stack<Node> nodeStack, Subgraph subgraph)
         {
-            node.IsVisited = true;
-            IEnumerator i = node.OutEdges.GetEnumerator();
-            while (i.MoveNext())
+            node.Visited = true;
+            foreach (DirectedEdge de in node.OutEdges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 subgraph.Add(de.Edge);
                 Node toNode = de.ToNode;
-                if (!toNode.IsVisited)
+                if (!toNode.IsVisited) 
                     nodeStack.Push(toNode);
             }
         }
@@ -79,13 +76,13 @@ namespace DotSpatial.Topology.Planargraph.Algorithm
         /// </summary>
         /// <param name="startNode"></param>
         /// <param name="subgraph"></param>
-        private static void AddReachable(Node startNode, Subgraph subgraph)
+        private void AddReachable(Node startNode, Subgraph subgraph)
         {
-            Stack nodeStack = new Stack();
+            Stack<Node> nodeStack = new Stack<Node>();
             nodeStack.Push(startNode);
-            while (!(nodeStack.Count == 0))
+            while (nodeStack.Count != 0)
             {
-                Node node = (Node)nodeStack.Pop();
+                Node node = nodeStack.Pop();
                 AddEdges(node, nodeStack, subgraph);
             }
         }
@@ -97,23 +94,17 @@ namespace DotSpatial.Topology.Planargraph.Algorithm
             return subgraph;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public virtual IList GetConnectedSubgraphs()
+        public IList<Subgraph> GetConnectedSubgraphs()
         {
-            IList subgraphs = new ArrayList();
-
+            IList<Subgraph> subgraphs = new List<Subgraph>();
             GraphComponent.SetVisited(_graph.GetNodeEnumerator(), false);
-            IEnumerator ienum = _graph.GetEdgeEnumerator();
-            while (ienum.MoveNext())
+            IEnumerator<Edge> ienum = _graph.GetEdgeEnumerator();
+            while(ienum.MoveNext())
             {
-                Edge e = ienum.Current as Edge;
-                if (e == null) throw new NullEdgeException();
+                Edge e = ienum.Current;
                 Node node = e.GetDirEdge(0).FromNode;
                 if (!node.IsVisited)
-                    subgraphs.Add(FindSubgraph(node));
+                    subgraphs.Add(FindSubgraph(node));                
             }
             return subgraphs;
         }

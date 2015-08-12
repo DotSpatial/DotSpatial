@@ -35,7 +35,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
     {
         #region Fields
 
-        private readonly LineString _line;
+        private readonly ILineString _line;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// Constructs a LineMergeEdge with vertices given by the specified LineString.
         /// </summary>
         /// <param name="line"></param>
-        public LineMergeEdge(LineString line)
+        public LineMergeEdge(ILineString line)
         {
             _line = line;
         }
@@ -57,7 +57,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public virtual LineString Line
+        public virtual ILineString Line
         {
             get
             {

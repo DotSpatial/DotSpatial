@@ -22,10 +22,9 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DotSpatial.Topology.Geometries;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Planargraph
 {
@@ -43,12 +42,12 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// The collection of DirectedEdges that leave this Node.
         /// </summary>
-        protected readonly DirectedEdgeStar DeStar;
+        protected DirectedEdgeStar DeStar;
 
         /// <summary>
         /// The location of this Node.
         /// </summary>
-        private Coordinate _location;
+        protected Coordinate Pt;
 
         #endregion
 
@@ -57,18 +56,18 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Constructs a Node with the given location.
         /// </summary>
-        /// <param name="location"></param>
-        public Node(Coordinate location) : this(location, new DirectedEdgeStar()) { }
+        /// <param name="pt"></param>
+        public Node(Coordinate pt) : this(pt, new DirectedEdgeStar()) { }
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="pt"></param>
         /// <param name="deStar"></param>
-        public Node(Coordinate location, DirectedEdgeStar deStar)
+        public Node(Coordinate pt, DirectedEdgeStar deStar)
         {
-            _location = location;
-            DeStar = deStar;
+            this.Pt = pt;
+            this.DeStar = deStar;
         }
 
         #endregion
@@ -78,11 +77,11 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
-                return _location;
+                return Pt;
             }
         }
 
@@ -105,7 +104,7 @@ namespace DotSpatial.Topology.Planargraph
         {
             get
             {
-                return _location == null;
+                return Pt == null;
             }
         }
 
@@ -139,16 +138,13 @@ namespace DotSpatial.Topology.Planargraph
         /// <param name="node0"></param>
         /// <param name="node1"></param>
         /// <returns></returns>
-        public static IList GetEdgesBetween(Node node0, Node node1)
+        public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
-            var edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            var edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-            var toRemove = edges1.Cast<Edge>().Where(edges0.Contains).ToList();
-            foreach (var edge in toRemove)
-            {
-                edges0.Remove(edge);
-            }
-            return edges0;
+            IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
+            var commonEdges = new Set<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
+            IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
+            commonEdges.RemoveMany(Utilities.Caster.Cast<DirectedEdge>(edges1));
+            return new List<DirectedEdge>(commonEdges);
         }
 
         /// <summary>
@@ -162,21 +158,29 @@ namespace DotSpatial.Topology.Planargraph
             return DeStar.GetIndex(edge);
         }
 
+        ///<summary>
+        /// Removes a <see cref="DirectedEdge"/> incident on this node. Does not change the state of the directed edge.
+        ///</summary>
+        public void Remove(DirectedEdge de)
+        {
+            DeStar.Remove(de);
+        }
+
         /// <summary>
         /// Removes this node from its containing graph.
         /// </summary>
         internal void Remove()
         {
-            _location = null;
+            Pt = null;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return "NODE: " + _location.ToString() + ": " + Degree;
+            return "NODE: " + Pt + ": " + Degree;
         }
 
         #endregion

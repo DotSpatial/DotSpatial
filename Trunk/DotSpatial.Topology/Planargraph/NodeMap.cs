@@ -21,34 +21,40 @@
 //
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Planargraph
 {
     /// <summary>
-    /// A map of <c>Node</c>s, indexed by the coordinate of the node.
-    /// </summary>
+    /// A map of <see cref="Node">nodes</see>, indexed by the coordinate of the node.
+    /// </summary>   
     public class NodeMap
     {
         #region Fields
 
-        private readonly IDictionary _nodeMap = new SortedList();
+        private readonly IDictionary<Coordinate, Node> _nodeMap = new OrderedDictionary<Coordinate, Node>();
 
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// Returns the number of Nodes in this NodeMap.
+        /// </summary>
+        public int Count
+        {
+            get { return _nodeMap.Count; }
+        }
+
+        /// <summary>
         /// Returns the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public virtual ICollection Values
+        public ICollection<Node> Values
         {
-            get
-            {
-                return _nodeMap.Values;
-            }
+            get { return _nodeMap.Values; }
         }
 
         #endregion
@@ -62,9 +68,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns>The added node.</returns>
         public virtual Node Add(Node n)
         {
-            Coordinate key = n.Coordinate;
-            bool contains = _nodeMap.Contains(key);
-            if (!contains) _nodeMap.Add(key, n);
+            _nodeMap[n.Coordinate] = n;            
             return n;
         }
 
@@ -75,14 +79,17 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns></returns>
         public virtual Node Find(Coordinate coord)
         {
-            return (Node)_nodeMap[coord];
+            Node res;
+            if (_nodeMap.TryGetValue(coord, out res))
+                return res;
+            return null; 
         }
 
         /// <summary>
         /// Returns an Iterator over the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
+        public virtual IEnumerator<Node> GetEnumerator()
         {
             return _nodeMap.Values.GetEnumerator();
         }
@@ -94,7 +101,9 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns></returns>
         public virtual Node Remove(Coordinate pt)
         {
-            Node node = (Node)_nodeMap[pt];
+            if (!_nodeMap.ContainsKey(pt))
+                return null;
+            Node node = _nodeMap[pt];
             _nodeMap.Remove(pt);
             return node;
         }

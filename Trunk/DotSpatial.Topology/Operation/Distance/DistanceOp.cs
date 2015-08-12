@@ -23,11 +23,10 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Utilities;
+using DotSpatial.Topology.Geometries.Utilities;
 
 namespace DotSpatial.Topology.Operation.Distance
 {
@@ -58,6 +57,15 @@ namespace DotSpatial.Topology.Operation.Distance
         #region Constructors
 
         /// <summary>
+        /// Constructs a <see cref="DistanceOp" />  that computes the distance and closest points between
+        /// the two specified geometries.
+        /// </summary>
+        /// <param name="g0"></param>
+        /// <param name="g1"></param>
+        public DistanceOp(IGeometry g0, IGeometry g1) 
+        : this(g0, g1, 0) { }
+
+        /// <summary>
         /// Constructs a <see cref="DistanceOp" /> that computes the distance and closest points between
         /// the two specified geometries.
         /// </summary>
@@ -66,20 +74,9 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
         public DistanceOp(IGeometry g0, IGeometry g1, double terminateDistance)
         {
-            _geom = new Geometry[2];
-            _geom[0] = g0;
-            _geom[1] = g1;
+            _geom = new[] { g0, g1 };            
             _terminateDistance = terminateDistance;
         }
-
-        /// <summary>
-        /// Constructs a <see cref="DistanceOp" />  that computes the distance and closest points between
-        /// the two specified geometries.
-        /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
-        private DistanceOp(IGeometry g0, IGeometry g1)
-            : this(g0, g1, 0) { }
 
         #endregion
 
@@ -89,11 +86,11 @@ namespace DotSpatial.Topology.Operation.Distance
         /// Report the locations of the closest points in the input geometries.
         /// The locations are presented in the same order as the input Geometries.
         /// </summary>
-        /// <returns>A pair of {GeometryLocation}s for the closest points.</returns>
-        public virtual GeometryLocation[] ClosestLocations()
+        /// <returns>A pair of <see cref="GeometryLocation"/>s for the closest points.</returns>
+        [Obsolete("Renamed to NearestLocations")]
+        public GeometryLocation[] ClosestLocations()
         {
-            ComputeMinDistance();
-            return _minDistanceLocation;
+            return NearestLocations();
         }
 
         /// <summary>
@@ -103,10 +100,10 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
+        [Obsolete("Renamed to NearestPoints")]
         public static Coordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
         {
-            DistanceOp distOp = new DistanceOp(g0, g1);
-            return distOp.ClosestPoints();
+            return NearestPoints(g0, g1);
         }
 
         /// <summary>
@@ -114,105 +111,85 @@ namespace DotSpatial.Topology.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
-        public virtual Coordinate[] ClosestPoints()
+        [Obsolete("Renamed to NearestPoints")]
+        public Coordinate[] ClosestPoints()
         {
-            ComputeMinDistance();
-            Coordinate[] closestPts = new[] { _minDistanceLocation[0].Coordinate,
-                                                         _minDistanceLocation[1].Coordinate };
-            return closestPts;
+            return NearestPoints();
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         private void ComputeContainmentDistance()
         {
-            IList polys0 = PolygonExtracter.GetPolygons(_geom[0]);
-            IList polys1 = PolygonExtracter.GetPolygons(_geom[1]);
+            var locPtPoly = new GeometryLocation[2];
+            ComputeContainmentDistance(0, locPtPoly);
+            if (_minDistance <= _terminateDistance) return;
+            ComputeContainmentDistance(1, locPtPoly);
+        }
 
-            GeometryLocation[] locPtPoly = new GeometryLocation[2];
-            // test if either point is wholely inside the other
-            if (polys1.Count > 0)
+        private void ComputeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
+        {
+            int locationsIndex = 1 - polyGeomIndex;
+            var polys = PolygonExtracter.GetPolygons(_geom[polyGeomIndex]);
+            if (polys.Count > 0)
             {
-                IList insideLocs0 = ConnectedElementLocationFilter.GetLocations(_geom[0]);
-                ComputeInside(insideLocs0, polys1, locPtPoly);
+                var insideLocs = ConnectedElementLocationFilter.GetLocations(_geom[locationsIndex]);
+                ComputeContainmentDistance(insideLocs, polys, locPtPoly);
                 if (_minDistance <= _terminateDistance)
                 {
-                    _minDistanceLocation[0] = locPtPoly[0];
-                    _minDistanceLocation[1] = locPtPoly[1];
-                    return;
-                }
-            }
-            if (polys0.Count > 0)
-            {
-                IList insideLocs1 = ConnectedElementLocationFilter.GetLocations(_geom[1]);
-                ComputeInside(insideLocs1, polys0, locPtPoly);
-                if (_minDistance <= _terminateDistance)
-                {
-                    // flip locations, since we are testing geom 1 VS geom 0
-                    _minDistanceLocation[0] = locPtPoly[1];
-                    _minDistanceLocation[1] = locPtPoly[0];
-                    return;
+                    // this assigment is determined by the order of the args in the computeInside call above
+                    _minDistanceLocation[locationsIndex] = locPtPoly[0];
+                    _minDistanceLocation[polyGeomIndex] = locPtPoly[1];
                 }
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="locs"></param>
-        /// <param name="polys"></param>
-        /// <param name="locPtPoly"></param>
-        private void ComputeInside(IList locs, IList polys, GeometryLocation[] locPtPoly)
+        private void ComputeContainmentDistance(IList<GeometryLocation> locs, ICollection<IGeometry> polys, GeometryLocation[] locPtPoly)
         {
             for (int i = 0; i < locs.Count; i++)
             {
-                GeometryLocation loc = (GeometryLocation)locs[i];
-                for (int j = 0; j < polys.Count; j++)
+                GeometryLocation loc = locs[i];
+                foreach (IPolygon t in polys)
                 {
-                    Polygon poly = (Polygon)polys[j];
-                    ComputeInside(loc, poly, locPtPoly);
-                    if (_minDistance <= _terminateDistance)
-                        return;
+                    ComputeContainmentDistance(loc, t, locPtPoly);
+                    if (_minDistance <= _terminateDistance) return;
                 }
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ptLoc"></param>
-        /// <param name="poly"></param>
-        /// <param name="locPtPoly"></param>
-        private void ComputeInside(GeometryLocation ptLoc, IGeometry poly, GeometryLocation[] locPtPoly)
+        private void ComputeContainmentDistance(GeometryLocation ptLoc,
+            IPolygon poly,
+            GeometryLocation[] locPtPoly)
         {
-            Coordinate pt = ptLoc.Coordinate;
-            if (LocationType.Exterior == _ptLocator.Locate(pt, poly)) return;
-            _minDistance = 0.0;
-            locPtPoly[0] = ptLoc;
-            GeometryLocation locPoly = new GeometryLocation(poly, pt);
-            locPtPoly[1] = locPoly;
-            return;
+            var pt = ptLoc.Coordinate;
+            // if pt is not in exterior, distance to geom is 0
+            if (LocationType.Exterior != _ptLocator.Locate(pt, poly))
+            {
+                _minDistance = 0.0;
+                locPtPoly[0] = ptLoc;
+                locPtPoly[1] = new GeometryLocation(poly, pt);
+            }
         }
 
         /// <summary>
-        ///
+        /// Computes distance between facets (lines and points) of input geometries.
         /// </summary>
-        private void ComputeLineDistance()
+        private void ComputeFacetDistance()
         {
-            GeometryLocation[] locGeom = new GeometryLocation[2];
+            var locGeom = new GeometryLocation[2];
 
             /*
              * Geometries are not wholely inside, so compute distance from lines and points
              * of one to lines and points of the other
              */
-            IList lines0 = LinearComponentExtracter.GetLines(_geom[0]);
-            IList lines1 = LinearComponentExtracter.GetLines(_geom[1]);
+            var lines0 = LinearComponentExtracter.GetLines(_geom[0]);
+            var lines1 = LinearComponentExtracter.GetLines(_geom[1]);
 
-            IList pts0 = PointExtracter.GetPoints(_geom[0]);
-            IList pts1 = PointExtracter.GetPoints(_geom[1]);
+            var pts0 = PointExtracter.GetPoints(_geom[0]);
+            var pts1 = PointExtracter.GetPoints(_geom[1]);
 
-            // bail whenever minDistance goes to zero, since it can't get any less
+            // exit whenever minDistance goes LE than terminateDistance
             ComputeMinDistanceLines(lines0, lines1, locGeom);
             UpdateMinDistance(locGeom, false);
             if (_minDistance <= _terminateDistance) return;
@@ -236,7 +213,7 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         private void ComputeMinDistance()
         {
@@ -246,36 +223,37 @@ namespace DotSpatial.Topology.Operation.Distance
             ComputeContainmentDistance();
             if (_minDistance <= _terminateDistance)
                 return;
-            ComputeLineDistance();
+            ComputeFacetDistance();
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="line0"></param>
         /// <param name="line1"></param>
         /// <param name="locGeom"></param>
         private void ComputeMinDistance(ILineString line0, ILineString line1, GeometryLocation[] locGeom)
         {
-            if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > _minDistance) return;
-            IList<Coordinate> coord0 = line0.Coordinates;
-            IList<Coordinate> coord1 = line1.Coordinates;
+            if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > _minDistance) 
+                return;
+            var coord0 = line0.Coordinates;
+            var coord1 = line1.Coordinates;
             // brute force approach!
-            for (int i = 0; i < coord0.Count - 1; i++)
+            for (var i = 0; i < coord0.Count - 1; i++)
             {
-                for (int j = 0; j < coord1.Count - 1; j++)
+                for (var j = 0; j < coord1.Count - 1; j++)
                 {
-                    double dist = CgAlgorithms.DistanceLineLine(
+                    var dist = CgAlgorithms.DistanceLineLine(
                                                     coord0[i], coord0[i + 1],
                                                     coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
-                        LineSegment seg0 = new LineSegment(coord0[i], coord0[i + 1]);
-                        LineSegment seg1 = new LineSegment(coord1[j], coord1[j + 1]);
-                        Coordinate[] closestPt = seg0.ClosestPoints(seg1);
-                        locGeom[0] = new GeometryLocation(line0, i, new Coordinate(closestPt[0]));
-                        locGeom[1] = new GeometryLocation(line1, j, new Coordinate(closestPt[1]));
+                        var seg0 = new LineSegment(coord0[i], coord0[i + 1]);
+                        var seg1 = new LineSegment(coord1[j], coord1[j + 1]);
+                        var closestPt = seg0.ClosestPoints(seg1);
+                        locGeom[0] = new GeometryLocation(line0, i, closestPt[0]);
+                        locGeom[1] = new GeometryLocation(line1, j, closestPt[1]);
                     }
                     if (_minDistance <= _terminateDistance) return;
                 }
@@ -283,15 +261,15 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="line"></param>
         /// <param name="pt"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(ILineString line, Point pt, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(ILineString line, IPoint pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > _minDistance) return;
-            IList<Coordinate> coord0 = line.Coordinates;
+            var coord0 = line.Coordinates;
             Coordinate coord = pt.Coordinate;
             // brute force approach!
             for (int i = 0; i < coord0.Count - 1; i++)
@@ -301,28 +279,27 @@ namespace DotSpatial.Topology.Operation.Distance
                 {
                     _minDistance = dist;
                     LineSegment seg = new LineSegment(coord0[i], coord0[i + 1]);
-                    Coordinate segClosestPoint = new Coordinate(seg.ClosestPoint(coord));
+                    Coordinate segClosestPoint = seg.ClosestPoint(coord);
                     locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
                     locGeom[1] = new GeometryLocation(pt, 0, coord);
                 }
-                if (_minDistance <= _terminateDistance) return;
+                if (_minDistance <= _terminateDistance) 
+                    return;
             }
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="lines0"></param>
         /// <param name="lines1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLines(IList lines0, IList lines1, GeometryLocation[] locGeom)
+        private void ComputeMinDistanceLines(IEnumerable<IGeometry> lines0, ICollection<IGeometry> lines1, GeometryLocation[] locGeom)
         {
-            for (int i = 0; i < lines0.Count; i++)
+            foreach (ILineString line0 in lines0)
             {
-                LineString line0 = (LineString)lines0[i];
-                for (int j = 0; j < lines1.Count; j++)
+                foreach (ILineString line1 in lines1)
                 {
-                    LineString line1 = (LineString)lines1[j];
                     ComputeMinDistance(line0, line1, locGeom);
                     if (_minDistance <= _terminateDistance) return;
                 }
@@ -330,19 +307,17 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="points"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLinesPoints(IList lines, IList points, GeometryLocation[] locGeom)
+        private void ComputeMinDistanceLinesPoints(IEnumerable<IGeometry> lines, ICollection<IGeometry> points, GeometryLocation[] locGeom)
         {
-            for (int i = 0; i < lines.Count; i++)
+            foreach (ILineString line in lines)
             {
-                LineString line = (LineString)lines[i];
-                for (int j = 0; j < points.Count; j++)
+                foreach (IPoint pt in points)
                 {
-                    Point pt = (Point)points[j];
                     ComputeMinDistance(line, pt, locGeom);
                     if (_minDistance <= _terminateDistance) return;
                 }
@@ -350,24 +325,21 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="points0"></param>
         /// <param name="points1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistancePoints(IList points0, IList points1, GeometryLocation[] locGeom)
+        private void ComputeMinDistancePoints(IEnumerable<IGeometry> points0, ICollection<IGeometry> points1, GeometryLocation[] locGeom)
         {
-            for (int i = 0; i < points0.Count; i++)
+            foreach (IPoint pt0 in points0)
             {
-                Point pt0 = (Point)points0[i];
-                for (int j = 0; j < points1.Count; j++)
+                foreach (IPoint pt1 in points1)
                 {
-                    Point pt1 = (Point)points1[j];
-                    double dist = pt0.Coordinate.Distance(pt1.Coordinate);
+                    var dist = pt0.Coordinate.Distance(pt1.Coordinate);
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
-                        // this is wrong - need to determine closest points on both segments!!!
                         locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
                         locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
                     }
@@ -391,9 +363,15 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <summary>
         /// Report the distance between the closest points on the input geometries.
         /// </summary>
-        /// <returns>The distance between the geometries.</returns>
-        public virtual double Distance()
+        /// <returns>The distance between the geometries<br/>
+        /// or <value>0</value> if either input geometry is empty.</returns>
+        /// <exception cref="ApplicationException"> if either input geometry is null</exception>
+        public double Distance()
         {
+            if (_geom[0] == null || _geom[1] == null)
+                throw new ApplicationException("null geometries are not supported");
+            if (_geom[0].IsEmpty || _geom[1].IsEmpty)
+                return 0.0;
             ComputeMinDistance();
             return _minDistance;
         }
@@ -412,14 +390,61 @@ namespace DotSpatial.Topology.Operation.Distance
         }
 
         /// <summary>
-        ///
+        /// Report the locations of the nearest points in the input geometries.
+        /// The locations are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of <see cref="GeometryLocation"/>s for the nearest points.</returns>
+        public GeometryLocation[] NearestLocations()
+        {
+            ComputeMinDistance();
+            return _minDistanceLocation;
+        }
+
+        /// <summary>
+        /// Compute the the closest points of two geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <param name="g0">A <c>Geometry</c>.</param>
+        /// <param name="g1">Another <c>Geometry</c>.</param>
+        /// <returns>The closest points in the geometries.</returns>
+        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
+        {
+            DistanceOp distOp = new DistanceOp(g0, g1);
+            return distOp.NearestPoints();
+        }
+
+        /// <summary>
+        /// Report the coordinates of the nearest points in the input geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of <c>Coordinate</c>s of the nearest points.</returns>
+        public Coordinate[] NearestPoints()
+        {
+            ComputeMinDistance();
+            var nearestPts = new[] { _minDistanceLocation[0].Coordinate, 
+                                     _minDistanceLocation[1].Coordinate };
+            return nearestPts;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dist"></param>
+        private void UpdateMinDistance(double dist)
+        {
+            if (dist < _minDistance)
+                _minDistance = dist;
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="locGeom"></param>
         /// <param name="flip"></param>
         private void UpdateMinDistance(GeometryLocation[] locGeom, bool flip)
         {
             // if not set then don't update
-            if (locGeom[0] == null)
+            if (locGeom[0] == null) 
                 return;
             if (flip)
             {

@@ -33,6 +33,15 @@ namespace DotSpatial.Topology.Planargraph
     /// </summary>
     public class Edge : GraphComponent
     {
+        #region Fields
+
+        /// <summary>
+        /// The two DirectedEdges associated with this Edge. 
+        /// </summary>
+        protected DirectedEdge[] DirEdge;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -69,26 +78,6 @@ namespace DotSpatial.Topology.Planargraph
             }
         }
 
-        /// <summary>
-        /// The line sequencer class seems to need to se this directly
-        /// </summary>
-        public new bool IsVisited
-        {
-            get
-            {
-                return base.IsVisited;
-            }
-            set
-            {
-                base.IsVisited = value;
-            }
-        }
-
-        /// <summary>
-        /// The two DirectedEdges associated with this Edge.
-        /// </summary>
-        protected DirectedEdge[] DirEdge { get; set; }
-
         #endregion
 
         #region Methods
@@ -98,7 +87,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="i">0 or 1.</param>
         /// <returns></returns>
-        public virtual DirectedEdge GetDirEdge(int i)
+        public DirectedEdge GetDirEdge(int i)
         {
             return DirEdge[i];
         }
@@ -111,9 +100,9 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns></returns>
         public virtual DirectedEdge GetDirEdge(Node fromNode)
         {
-            if (DirEdge[0].FromNode == fromNode)
+            if (DirEdge[0].FromNode == fromNode) 
                 return DirEdge[0];
-            if (DirEdge[1].FromNode == fromNode)
+            if (DirEdge[1].FromNode == fromNode) 
                 return DirEdge[1];
             // node not found
             // possibly should throw an exception here?
@@ -128,9 +117,9 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns></returns>
         public virtual Node GetOppositeNode(Node node)
         {
-            if (DirEdge[0].FromNode == node)
+            if (DirEdge[0].FromNode == node) 
                 return DirEdge[0].ToNode;
-            if (DirEdge[1].FromNode == node)
+            if (DirEdge[1].FromNode == node) 
                 return DirEdge[1].ToNode;
             // node not found
             // possibly should throw an exception here?

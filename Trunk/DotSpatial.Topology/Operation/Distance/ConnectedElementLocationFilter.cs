@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Distance
@@ -31,24 +31,24 @@ namespace DotSpatial.Topology.Operation.Distance
     /// A ConnectedElementPointFilter extracts a single point
     /// from each connected element in a Geometry
     /// (e.g. a polygon, linestring or point)
-    /// and returns them in a list. The elements of the list are
+    /// and returns them in a list. The elements of the list are 
     /// <c>com.vividsolutions.jts.operation.distance.GeometryLocation</c>s.
     /// </summary>
     public class ConnectedElementLocationFilter : IGeometryFilter
     {
         #region Fields
 
-        private readonly IList _locations;
+        private readonly IList<GeometryLocation> _locations;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="locations"></param>
-        private ConnectedElementLocationFilter(IList locations)
+        ConnectedElementLocationFilter(IList<GeometryLocation> locations)
         {
             _locations = locations;
         }
@@ -58,24 +58,24 @@ namespace DotSpatial.Topology.Operation.Distance
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="geom"></param>
         public virtual void Filter(IGeometry geom)
         {
-            if (geom is Point || geom is LineString || geom is Polygon)
+            if (geom is IPoint || geom is ILineString || geom is IPolygon)
                 _locations.Add(new GeometryLocation(geom, 0, geom.Coordinate));
         }
 
         /// <summary>
         /// Returns a list containing a point from each Polygon, LineString, and Point
         /// found inside the specified point. Thus, if the specified point is
-        /// not a GeometryCollection, an empty list will be returned. The elements of the list
+        /// not a GeometryCollection, an empty list will be returned. The elements of the list 
         /// are <c>com.vividsolutions.jts.operation.distance.GeometryLocation</c>s.
         /// </summary>
-        public static IList GetLocations(IGeometry geom)
+        public static IList<GeometryLocation> GetLocations(IGeometry geom)
         {
-            IList locations = new ArrayList();
+            var locations = new List<GeometryLocation>();
             geom.Apply(new ConnectedElementLocationFilter(locations));
             return locations;
         }

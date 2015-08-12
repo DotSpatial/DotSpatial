@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 using DotSpatial.Topology.Utilities;
@@ -30,60 +30,34 @@ using DotSpatial.Topology.Utilities;
 namespace DotSpatial.Topology.Operation.Linemerge
 {
     /// <summary>
-    /// Sews together a set of fully noded LineStrings. Sewing stops at nodes of degree 1
+    /// Sews together a set of fully noded LineStrings.
+    /// </summary>
+    /// <remarks>
+    /// <para> Sewing stops at nodes of degree 1
     /// or 3 or more -- the exception is an isolated loop, which only has degree-2 nodes,
     /// in which case a node is simply chosen as a starting point. The direction of each
     /// merged LineString will be that of the majority of the LineStrings from which it
-    /// was derived.
-    /// Any dimension of Geometry is handled -- the constituent linework is extracted to
+    /// was derived.</para>
+    /// <para>
+    /// Any dimension of Geometry is handled -- the constituent linework is extracted to 
     /// form the edges. The edges must be correctly noded; that is, they must only meet
     /// at their endpoints.  The LineMerger will still run on incorrectly noded input
-    /// but will not form polygons from incorrected noded edges.
-    /// </summary>
+    /// but will not form polygons from incorrected noded edges.</para>
+    /// <para>
+    /// <b>NOTE:</b>once merging has been performed, no more</para>
+    /// </remarks>
     public class LineMerger
     {
         #region Fields
 
         private readonly LineMergeGraph _graph = new LineMergeGraph();
-        private IList _edgeStrings;
+        private List<EdgeString> _edgeStrings;
         private IGeometryFactory _factory;
-        private IList _mergedLineStrings;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Returns the LineStrings built by the merging process.
-        /// </summary>
-        public virtual IList MergedLineStrings
-        {
-            get
-            {
-                Merge();
-                return _mergedLineStrings;
-            }
-        }
+        private List<IGeometry> _mergedLineStrings;
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Adds a collection of Geometries to be processed. May be called multiple times.
-        /// Any dimension of Geometry may be added; the constituent linework will be
-        /// extracted.
-        /// </summary>
-        /// <param name="geometries"></param>
-        public virtual void Add(IList geometries)
-        {
-            IEnumerator i = geometries.GetEnumerator();
-            while (i.MoveNext())
-            {
-                Geometry geometry = (Geometry)i.Current;
-                Add(geometry);
-            }
-        }
 
         /// <summary>
         /// Adds a Geometry to be processed. May be called multiple times.
@@ -91,26 +65,39 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public virtual void Add(Geometry geometry)
-        {
+        public void Add(IGeometry geometry)
+        {            
             geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
         }
 
         /// <summary>
-        ///
+        /// Adds a collection of Geometries to be processed. May be called multiple times.
+        /// Any dimension of Geometry may be added; the constituent linework will be
+        /// extracted.
+        /// </summary>
+        /// <param name="geometries"></param>
+        public void Add(IEnumerable<IGeometry> geometries)
+        {
+            _mergedLineStrings = null;
+            foreach (IGeometry geometry in geometries)
+                Add(geometry);
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="lineString"></param>
-        private void Add(LineString lineString)
+        private void Add(ILineString lineString) 
         {
-            if (_factory == null)
-                _factory = lineString.Factory;
+            if (_factory == null) 
+                _factory = lineString.Factory;            
             _graph.AddEdge(lineString);
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        private void BuildEdgeStringsForIsolatedLoops()
+        private void BuildEdgeStringsForIsolatedLoops() 
         {
             BuildEdgeStringsForUnprocessedNodes();
         }
@@ -118,16 +105,14 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <summary>
         ///
         /// </summary>
-        private void BuildEdgeStringsForNonDegree2Nodes()
+        private void BuildEdgeStringsForNonDegree2Nodes() 
         {
-            IEnumerator i = _graph.Nodes.GetEnumerator();
-            while (i.MoveNext())
+            foreach (Node node in _graph.Nodes)
             {
-                Node node = (Node)i.Current;
-                if (node.Degree != 2)
-                {
+                if (node.Degree != 2) 
+                { 
                     BuildEdgeStringsStartingAt(node);
-                    node.IsMarked = true;
+                    node.Marked = true;
                 }
             }
         }
@@ -145,15 +130,13 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForUnprocessedNodes()
         {
-            IEnumerator i = _graph.Nodes.GetEnumerator();
-            while (i.MoveNext())
+            foreach (Node node in _graph.Nodes)
             {
-                Node node = (Node)i.Current;
-                if (!node.IsMarked)
-                {
+                if (!node.IsMarked) 
+                { 
                     Assert.IsTrue(node.Degree == 2);
                     BuildEdgeStringsStartingAt(node);
-                    node.IsMarked = true;
+                    node.Marked = true;
                 }
             }
         }
@@ -164,10 +147,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <param name="node"></param>
         private void BuildEdgeStringsStartingAt(Node node)
         {
-            IEnumerator i = node.OutEdges.GetEnumerator();
-            while (i.MoveNext())
+            foreach (LineMergeDirectedEdge directedEdge in node.OutEdges)
             {
-                LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge)i.Current;
                 if (directedEdge.Edge.IsMarked)
                     continue;
                 _edgeStrings.Add(BuildEdgeStringStartingWith(directedEdge));
@@ -186,29 +167,41 @@ namespace DotSpatial.Topology.Operation.Linemerge
             do
             {
                 edgeString.Add(current);
-                current.Edge.IsMarked = true;
-                current = current.Next;
+                current.Edge.Marked = true;
+                current = current.Next;      
             }
             while (current != null && current != start);
             return edgeString;
         }
 
         /// <summary>
-        ///
+        /// Returns the LineStrings built by the merging process.
+        /// </summary>
+        /// <returns></returns>
+        public IList<IGeometry> GetMergedLineStrings() 
+        {
+            Merge();
+            return _mergedLineStrings;
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         private void Merge()
         {
             if (_mergedLineStrings != null)
                 return;
-            _edgeStrings = new ArrayList();
+
+            // reset marks (this allows incremental processing)
+            GraphComponent.SetMarked(_graph.GetNodeEnumerator(), false);
+            GraphComponent.SetMarked(_graph.GetEdgeEnumerator(), false);
+
+            _edgeStrings = new List<EdgeString>();
             BuildEdgeStringsForObviousStartNodes();
             BuildEdgeStringsForIsolatedLoops();
-            _mergedLineStrings = new ArrayList();
-            for (IEnumerator i = _edgeStrings.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeString edgeString = (EdgeString)i.Current;
+            _mergedLineStrings = new List<IGeometry>();
+            foreach (EdgeString edgeString in _edgeStrings)
                 _mergedLineStrings.Add(edgeString.ToLineString());
-            }
         }
 
         #endregion
@@ -247,8 +240,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
             /// <param name="component"></param>
             public void Filter(IGeometry component)
             {
-                if (component is LineString)
-                    _container.Add((LineString)component);
+                if (component is ILineString)
+                    _container.Add((ILineString) component);
             }
 
             #endregion
