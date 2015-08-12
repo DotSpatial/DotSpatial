@@ -279,6 +279,11 @@
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\OffsetSegmentGenerator.cs" />
     <Compile Include="Operation\Buffer\OffsetSegmentString.cs" />
+    <Compile Include="Shape\Fractal\KochSnowflakeBuilder.cs" />
+    <Compile Include="Shape\Fractal\SierpinskiCarpetBuilder.cs" />
+    <Compile Include="Shape\GeometricShapeBuilder.cs" />
+    <Compile Include="Shape\Random\RandomPointsBuilder.cs" />
+    <Compile Include="Shape\Random\RandomPointsInGridBuilder.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
     <Compile Include="Triangulate\ConstraintEnforcementException.cs" />
@@ -659,7 +664,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometries\Prepared\" />
-    <Folder Include="Shape\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Triangulate\QuadEdge\QuadEdgeSummary.xml" />
