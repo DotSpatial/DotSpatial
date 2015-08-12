@@ -25,45 +25,52 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Geometries.Implementation;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Supplies a set of utility methods for building Geometry objects from lists
-    /// of Coordinates.
-    /// </summary>
+    /// Supplies a set of utility methods for building Geometry objects 
+    /// from lists of Coordinates.
+    /// </summary>            
+    /// <remarks>
+    /// Note that the factory constructor methods do <b>not</b> change the input coordinates in any way.
+    /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
+    /// It is assumed that input Coordinates meet the given precision.
+    /// </remarks>
     [Serializable]
     public class GeometryFactory : IGeometryFactory
     {
         #region Fields
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating" />.
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
-        private static GeometryFactory _default = new GeometryFactory();
+        public static readonly IGeometryFactory Default = new GeometryFactory();
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
         /// </summary>
-        private static GeometryFactory _fixed = new GeometryFactory(new PrecisionModel(PrecisionModelType.Fixed));
+        public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModelType.Fixed));
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
-        private static GeometryFactory _floating = new GeometryFactory();
+        public static readonly IGeometryFactory Floating = Default;
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
         /// </summary>
-        private static GeometryFactory _floatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModelType.FloatingSingle));
+        public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModelType.FloatingSingle));
 
         private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
-        private readonly PrecisionModel _precisionModel;
+        private readonly IPrecisionModel _precisionModel;
         private readonly int _srid;
 
         #endregion
@@ -73,12 +80,8 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
-        /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <param name="srid"></param>
-        /// <param name="coordinateSequenceFactory"></param>
-        public GeometryFactory(PrecisionModel precisionModel, int srid,
-                               ICoordinateSequenceFactory coordinateSequenceFactory)
+        /// </summary>        
+        public GeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
@@ -114,9 +117,8 @@ namespace DotSpatial.Topology.Geometries
         /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
         /// spatial-reference ID of 0.
         /// </summary>
-        /// <param name="coordinateSequenceFactory"></param>
-        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
-            : this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
+        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) :
+            this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -124,8 +126,8 @@ namespace DotSpatial.Topology.Geometries
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel)
-            : this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
+        public GeometryFactory(IPrecisionModel precisionModel) :
+            this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -134,8 +136,8 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel, int srid)
-            : this(precisionModel, srid, GetDefaultCoordinateSequenceFactory()) { }
+        public GeometryFactory(IPrecisionModel precisionModel, int srid) :
+            this(precisionModel, srid, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -148,35 +150,20 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        /// A default IGeometryFactory.
-        /// </summary>
-        public static IGeometryFactory Default
-        {
-            get { return _default; }
-            set { _default = new GeometryFactory(value); }
-        }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual ICoordinateSequenceFactory CoordinateSequenceFactory
         {
-            get
-            {
-                return _coordinateSequenceFactory;
-            }
+            get { return _coordinateSequenceFactory; }
         }
 
         /// <summary>
         /// Returns the PrecisionModel that Geometries created by this factory
         /// will be associated with.
         /// </summary>
-        public virtual PrecisionModelType PrecisionModel
+        public IPrecisionModel PrecisionModel
         {
-            get
-            {
-                return _precisionModel.GetPrecisionModelType();
-            }
+            get { return _precisionModel; }
         }
 
         /// <summary>
@@ -184,37 +171,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public virtual int Srid
         {
-            get
-            {
-                return _srid;
-            }
-        }
-
-        /// <summary>
-        /// Returns the Fixed geometry factory
-        /// </summary>
-        public IGeometryFactory Fixed
-        {
-            get { return _fixed; }
-            set { _fixed = new GeometryFactory(value); }
-        }
-
-        /// <summary>
-        /// The floating IGeometryFactory
-        /// </summary>
-        public IGeometryFactory Floating
-        {
-            get { return _floating; }
-            set { _floating = new GeometryFactory(value); }
-        }
-
-        /// <summary>
-        /// A floating Single IGeometryFactory
-        /// </summary>
-        public IGeometryFactory FloatingSingle
-        {
-            get { return _floatingSingle; }
-            set { _floatingSingle = new GeometryFactory(value); }
+            get { return _srid; }
         }
 
         #endregion
@@ -225,21 +182,19 @@ namespace DotSpatial.Topology.Geometries
         /// Build an appropriate <c>Geometry</c>, <c>MultiGeometry</c>, or
         /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
         /// it.
-        /// <example>
+        /// </summary>
         ///  If <c>geomList</c> contains a single <c>Polygon</c>,
-        /// the <c>Polygon</c> is returned.
+        /// the <c>Polygon</c> is returned.<br/>
         ///  If <c>geomList</c> contains several <c>Polygon</c>s, a
-        /// <c>MultiPolygon</c> is returned.
+        /// <c>MultiPolygon</c> is returned.<br/>
         ///  If <c>geomList</c> contains some <c>Polygon</c>s and
         /// some <c>LineString</c>s, a <c>GeometryCollection</c> is
-        /// returned.
+        /// returned.<br/>
         ///  If <c>geomList</c> is empty, an empty <c>GeometryCollection</c>
         /// is returned.
-        /// Notice that this method does not "flatten" Geometries in the input, and hence if
+        /// Note that this method does not "flatten" Geometries in the input, and hence if
         /// any MultiGeometries are contained in the input a GeometryCollection containing
         /// them will be returned.
-        /// </example>
-        /// </summary>
         /// <param name="geomList">The <c>Geometry</c>s to combine.</param>
         /// <returns>A <c>Geometry</c> of the "smallest", "most type-specific" class that can contain the elements of <c>geomList</c>.</returns>
         public virtual IGeometry BuildGeometry(IList geomList)
@@ -286,18 +241,28 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
+        /// Creates a deep copy of the input <see cref="IGeometry"/>.
+        /// The <see cref="ICoordinateSequenceFactory"/> defined for this factory
+        /// is used to copy the <see cref="ICoordinateSequence"/>s
+        /// of the input geometry.
+        /// <para/>
+        /// This is a convenient way to change the <tt>CoordinateSequence</tt>
+        /// used to represent a geometry, or to change the 
+        /// factory used for a geometry.
+        /// <para/>
+        /// <see cref="IGeometry.Clone()"/> can also be used to make a deep copy,
+        /// but it does not allow changing the CoordinateSequence type.
         /// </summary>
-        /// <param name="g"></param>
-        /// <returns>
-        /// A clone of g based on a CoordinateSequence created by this
-        /// GeometryFactory's CoordinateSequenceFactory.
-        /// </returns>
+        /// <param name="g">The geometry</param>
+        /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
+        /// <seealso cref="IGeometry.Clone"/>
         public virtual IGeometry CreateGeometry(IGeometry g)
         {
-            // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
+            // NOTE: don't move lambda to a separate variable!
+            //       make a variable and you've broke WinPhone build.       
+            var operation = new GeometryEditor.CoordinateSequenceOperation((x, y) => _coordinateSequenceFactory.Create(x));
             GeometryEditor editor = new GeometryEditor(this);
-            return editor.Edit(g, new AnonymousCoordinateOperationImpl());
+            return editor.Edit(g, operation);
         }
 
         /// <summary>
@@ -316,9 +281,22 @@ namespace DotSpatial.Topology.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public virtual ILinearRing CreateLinearRing(IList<Coordinate> coordinates)
+        public virtual ILinearRing CreateLinearRing(IEnumerable<Coordinate> coordinates)
         {
             return new LinearRing(coordinates);
+        }
+
+        /// <summary> 
+        /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence
+        /// creates an empty LinearRing. The points must form a closed and simple
+        /// linestring. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
+        /// <returns>A <see cref="ILinearRing"/> object</returns>
+        /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
+        public ILinearRing CreateLinearRing(ICoordinateSequence coordinates)
+        {
+            return new LinearRing(coordinates, this);
         }
 
         /// <summary>
@@ -328,6 +306,17 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns></returns>
         public virtual ILineString CreateLineString(IList<Coordinate> coordinates)
+        {
+            return new LineString(coordinates, this);
+        }
+
+        /// <summary>
+        /// Creates a LineString using the given CoordinateSequence.
+        /// A null or empty CoordinateSequence creates an empty LineString.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
+        /// <returns>A <see cref="ILineString"/> object</returns>
+        public ILineString CreateLineString(ICoordinateSequence coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -363,6 +352,11 @@ namespace DotSpatial.Topology.Geometries
             return new MultiPoint(point, this);
         }
 
+        public IMultiPoint CreateMultiPoint(IEnumerable<IPoint> point)
+        {
+            return new MultiPoint(point, this);
+        }
+
         /// <summary>
         /// Creates an object that implements DotSpatial.Geometries.IMultiPoint from an array of objects that implement DotSpatial.Geometries.ICoordinate
         /// </summary>
@@ -373,11 +367,12 @@ namespace DotSpatial.Topology.Geometries
             return new MultiPoint(coordinates);
         }
 
-        /// <summary>
-        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty MultiPoint.
+        /// <summary> 
+        /// Creates a <see cref="IMultiPoint"/> using the given CoordinateSequence.
+        /// A null or empty CoordinateSequence will create an empty MultiPoint.
         /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        /// <param name="coordinates">A CoordinateSequence (possibly empty), or <c>null</c>.</param>
+        /// <returns>A <see cref="IMultiPoint"/> object</returns>
         public virtual IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
         {
             if (coordinates == null)
@@ -385,9 +380,12 @@ namespace DotSpatial.Topology.Geometries
 
             List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
-                points.Add(CreatePoint(coordinates[i]));
-
-            return new MultiPoint(points.ToArray());
+            {
+                ICoordinateSequence seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
+                CoordinateSequences.Copy(coordinates, i, seq, 0, 1);
+                points.Add(CreatePoint(seq));
+            }
+            return CreateMultiPoint(points.ToArray());
         }
 
         /// <summary>
@@ -397,6 +395,7 @@ namespace DotSpatial.Topology.Geometries
         /// Specification for SQL.
         /// </summary>
         /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
+        /// <returns>A <see cref="IMultiPolygon"/> object</returns>
         public virtual IMultiPolygon CreateMultiPolygon(IPolygon[] polygons)
         {
             return new MultiPolygon(polygons, this);
@@ -412,6 +411,11 @@ namespace DotSpatial.Topology.Geometries
             return new Point(coordinate, this);
         }
 
+        public IPoint CreatePoint(ICoordinateSequence coordinates)
+        {
+            return new Point(coordinates, this);
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -420,7 +424,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public static IPoint CreatePointFromInternalCoord(Coordinate coord, IGeometry exemplar)
         {
-            new PrecisionModel(exemplar.PrecisionModel).MakePrecise(coord);
+            exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);
         }
 
@@ -436,18 +440,58 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="holes">
         /// The inner boundaries of the new <c>Polygon</c>, or
         /// <c>null</c> or empty <c>LinearRing</c> s if
-        /// the empty point is to be created.
+        /// the empty point is to be created.        
         /// </param>
-        /// <returns></returns>
+        /// <returns>A <see cref="IPolygon"/> object</returns>
         public virtual IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
         {
             return new Polygon(shell, holes, this);
         }
 
         /// <summary>
-        ///
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>A <see cref="IPolygon"/> object</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+        public virtual IPolygon CreatePolygon(ICoordinateSequence coordinates)
+        {
+            return CreatePolygon(CreateLinearRing(coordinates));
+        }
+
+        public virtual IPolygon CreatePolygon(IEnumerable<Coordinate> coordinates)
+        {
+            return CreatePolygon(CreateLinearRing(coordinates));
+        }
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>A <see cref="IPolygon"/> object</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+        public virtual IPolygon CreatePolygon(Coordinate[] coordinates)
+        {
+            return CreatePolygon(CreateLinearRing(coordinates));
+        }
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="shell">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>the created Polygon</returns>
+        /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
+        public virtual IPolygon CreatePolygon(ILinearRing shell)
+        {
+            return CreatePolygon(shell, null);
+        }
+
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
             return CoordinateArraySequenceFactory.Instance;
@@ -477,6 +521,16 @@ namespace DotSpatial.Topology.Geometries
             if (envelope.Minimum.X == envelope.Maximum.X && envelope.Minimum.Y == envelope.Maximum.Y)
                 return CreatePoint(new Coordinate(envelope.Minimum.X, envelope.Minimum.Y));
 
+            // vertical or horizontal line?
+            if (envelope.Minimum.X == envelope.Maximum.X
+                    || envelope.Minimum.Y == envelope.Maximum.Y)
+            {
+                return CreateLineString(new[] 
+                    {
+                        new Coordinate(envelope.Minimum.X, envelope.Minimum.Y),
+                        new Coordinate(envelope.Maximum.X, envelope.Maximum.Y)
+                    });
+            }
             return CreatePolygon(
                 CreateLinearRing(new[]
                                      {

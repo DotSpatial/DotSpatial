@@ -143,13 +143,13 @@ namespace DotSpatial.Topology.Noding
             Coordinate p0 = null;
             Coordinate p1 = null;
 
-            if (pts.Length == 2)
+            if (pts.Count == 2)
             {
                 p0 = new Coordinate(pts[0]);
                 p1 = new Coordinate(pts[1]);
             }
 
-            for (int i = 0; i < pts.Length; i++) 
+            for (int i = 0; i < pts.Count; i++) 
             {
                 pts[i].X = pts[i].X / _scaleFactor + _offsetX;
                 pts[i].Y = pts[i].Y / _scaleFactor + _offsetY;

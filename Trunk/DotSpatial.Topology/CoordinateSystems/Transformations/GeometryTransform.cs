@@ -27,10 +27,10 @@ namespace DotSpatial.Topology.CoordinateSystems.Transformations
 			if (box == null) return null;
 
             var corners = new double[4][];
-            corners[0] = transform.Transform(ToArray(box.MinX, box.MinY)); //LL
-            corners[1] = transform.Transform(ToArray(box.MaxX, box.MaxY)); //UR
-            corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
-            corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
+            corners[0] = transform.Transform(ToArray(box.Minimum.X, box.Minimum.Y)); //LL
+            corners[1] = transform.Transform(ToArray(box.Maximum.X, box.Maximum.Y)); //UR
+            corners[2] = transform.Transform(ToArray(box.Minimum.X, box.Maximum.Y)); //UL
+            corners[3] = transform.Transform(ToArray(box.Maximum.X, box.Minimum.Y)); //LR
 
 			var result = new Envelope();
             foreach (var p in corners)

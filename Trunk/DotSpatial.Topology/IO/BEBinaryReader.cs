@@ -25,7 +25,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.IO
 {

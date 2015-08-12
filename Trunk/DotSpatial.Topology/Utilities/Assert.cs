@@ -29,61 +29,47 @@ namespace DotSpatial.Topology.Utilities
     /// <summary>
     /// A utility for making programming assertions.
     /// </summary>
-    public class Assert
+    public static class Assert
     {
-        #region Constructors
-
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private Assert() { }
-
-        #endregion
-
         #region Methods
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="expectedValue"></param>
-        /// <param name="actualValue"></param>
         public static void IsEquals(Object expectedValue, Object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="expectedValue"></param>
-        /// <param name="actualValue"></param>
-        /// <param name="message"></param>
         public static void IsEquals(Object expectedValue, Object actualValue, string message)
         {
-            if (!actualValue.Equals(expectedValue))
-                throw new AssertionFailedException("Expected " + expectedValue + " but encountered "
-                            + actualValue + (message != null ? ": " + message : String.Empty));
+            if (actualValue.Equals(expectedValue))
+                return;
+            string s = message != null ? ": " + message : String.Empty;
+            string format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
+            throw new AssertionFailedException(format);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="assertion"></param>
         public static void IsTrue(bool assertion)
         {
             IsTrue(assertion, null);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="assertion"></param>
-        /// <param name="message"></param>
         public static void IsTrue(bool assertion, string message)
         {
             if (assertion) return;
-            if (message == null) throw new AssertionFailedException();
+            if (message == null)
+                throw new AssertionFailedException();
             throw new AssertionFailedException(message);
+        }
+
+        public static void ShouldNeverReachHere()
+        {
+            ShouldNeverReachHere(null);
+        }
+
+        public static void ShouldNeverReachHere(string message)
+        {
+            string s = (message != null ? ": " + message : String.Empty);
+            string format = String.Format("Should never reach here{0}", s);
+            throw new AssertionFailedException(format);
         }
 
         #endregion

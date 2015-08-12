@@ -32,13 +32,13 @@ namespace DotSpatial.Topology.Geometries
     /// Defines a rectangular region of the 2D coordinate plane.
     /// It is often used to represent the bounding box of a <c>Geometry</c>,
     /// e.g. the minimum and maximum x and y values of the <c>Coordinate</c>s.
-    /// Notice that Envelopes support infinite or half-infinite regions, by using the values of
+    /// Note that Envelopes support infinite or half-infinite regions, by using the values of
     /// <c>Double.PositiveInfinity</c> and <c>Double.NegativeInfinity</c>.
     /// When Envelope objects are created or initialized,
     /// the supplies extent values are automatically sorted into the correct order.
     /// </summary>
     [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Envelope : IEnvelope
+    public class Envelope : IEnvelope, IEquatable<Envelope>, IComparable<Envelope>, IIntersectable<Envelope>, IExpandable<Envelope>
     {
         #region Fields
 
@@ -584,6 +584,21 @@ namespace DotSpatial.Topology.Geometries
             OnEnvelopeChanged();
         }
 
+        public bool Equals(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Intersects(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Generates a string form of this envelope.
         /// </summary>
@@ -601,5 +616,15 @@ namespace DotSpatial.Topology.Geometries
         }
 
         #endregion
+
+        public void ExpandToInclude(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Envelope ExpandedBy(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

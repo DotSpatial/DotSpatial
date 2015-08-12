@@ -27,7 +27,7 @@ namespace DotSpatial.Topology.IO
     /// <summary>
     /// WkbGeometryTypes
     /// </summary>
-    public enum WKBGeometryType
+    public enum WKBGeometryTypes
     {
         /// <summary>
         /// Point.

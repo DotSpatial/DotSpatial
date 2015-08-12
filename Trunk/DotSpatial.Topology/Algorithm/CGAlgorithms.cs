@@ -24,7 +24,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Mathematics;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -39,32 +41,32 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
-        public const int CLOCKWISE = -1;
+        public const int Clockwise = -1;
 
         /// <summary>
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
-        public const int COLLINEAR = 0;
+        public const int Collinear = 0;
 
         /// <summary>
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
-        public const int COUNTER_CLOCKWISE = 1;
+        public const int CounterClockwise = 1;
 
         /// <summary>
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
-        public const int LEFT = COUNTER_CLOCKWISE;
+        public const int Left = CounterClockwise;
 
-        /// <summary>
+        /// <summary> 
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
-        public const int RIGHT = CLOCKWISE;
+        public const int Right = Clockwise;
 
         /// <summary>
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
-        public const int STRAIGHT = COLLINEAR;
+        public const int Straight = Collinear;
 
         #endregion
 
@@ -75,22 +77,22 @@ namespace DotSpatial.Topology.Algorithm
         /// The orientation of a point relative to a directed line segment indicates
         /// which way you turn to get to q after travelling from p1 to p2.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q"></param>
-        /// <returns>
+        /// <param name="p1">The first vertex of the line segment</param>
+        /// <param name="p2">The second vertex of the line segment</param>
+        /// <param name="q">The point to compute the relative orientation of</param>
+        /// <returns> 
         /// 1 if q is counter-clockwise from p1-p2,
-        /// -1 if q is clockwise from p1-p2,
-        /// 0 if q is collinear with p1-p2-
+        /// or -1 if q is clockwise from p1-p2,
+        /// or 0 if q is collinear with p1-p2
         /// </returns>
         public static int ComputeOrientation(Coordinate p1, Coordinate p2, Coordinate q)
         {
             return OrientationIndex(p1, p2, q);
         }
 
-        /// <summary>
+        /// <summary> 
         /// Computes the distance from a line segment AB to a line segment CD.
-        /// Notice: NON-ROBUST!
+        /// Note: NON-ROBUST!
         /// </summary>
         /// <param name="a">A point of one line.</param>
         /// <param name="b">The second point of the line (must be different to A).</param>
@@ -100,10 +102,8 @@ namespace DotSpatial.Topology.Algorithm
         public static double DistanceLineLine(Coordinate a, Coordinate b, Coordinate c, Coordinate d)
         {
             // check for zero-length segments
-            if (a.Equals(b))
-                return DistancePointLine(a, c, d);
-            if (c.Equals(d))
-                return DistancePointLine(d, a, b);
+            if (a.Equals(b)) return DistancePointLine(a, c, d);
+            if (c.Equals(d)) return DistancePointLine(d, a, b);
 
             // AB and CD are line segments
             /* from comp.graphics.algo
@@ -128,34 +128,42 @@ namespace DotSpatial.Topology.Algorithm
 		            If the numerator in eqn 1 is also zero, AB & CD are collinear.
 
 	        */
-            double rTop = (a.Y - c.Y) * (d.X - c.X) - (a.X - c.X) * (d.Y - c.Y);
-            double rBot = (b.X - a.X) * (d.Y - c.Y) - (b.Y - a.Y) * (d.X - c.X);
+            bool noIntersection = false;
+            if (!Envelope.Intersects(a, b, c, d))
+                noIntersection = true;
+            else
+            {
+                double denom = (b.X - a.X) * (d.Y - c.Y) - (b.Y - a.Y) * (d.X - c.X);
 
-            double sTop = (a.Y - c.Y) * (b.X - a.X) - (a.X - c.X) * (b.Y - a.Y);
-            double sBot = (b.X - a.X) * (d.Y - c.Y) - (b.Y - a.Y) * (d.X - c.X);
+                if (denom == 0)
+                    noIntersection = true;
+                else
+                {
+                    double rNum = (a.Y - c.Y) * (d.X - c.X) - (a.X - c.X) * (d.Y - c.Y);
+                    double sNum = (a.Y - c.Y) * (b.X - a.X) - (a.X - c.X) * (b.Y - a.Y);
 
-            if ((rBot == 0) || (sBot == 0))
-                return Math.Min(DistancePointLine(a, c, d),
-                        Math.Min(DistancePointLine(b, c, d),
-                        Math.Min(DistancePointLine(c, a, b),
-                        DistancePointLine(d, a, b))));
+                    double s = sNum / denom;
+                    double r = rNum / denom;
 
-            double s = sTop / sBot;
-            double r = rTop / rBot;
-
-            if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
-                //no intersection
-                return Math.Min(DistancePointLine(a, c, d),
-                        Math.Min(DistancePointLine(b, c, d),
-                        Math.Min(DistancePointLine(c, a, b),
-                        DistancePointLine(d, a, b))));
-
-            return 0.0; //intersection exists
+                    if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
+                        noIntersection = true;
+                }
+            }
+            if (noIntersection)
+            {
+                return MathUtil.Min(
+                      DistancePointLine(a, c, d),
+                      DistancePointLine(b, c, d),
+                      DistancePointLine(c, a, b),
+                      DistancePointLine(d, a, b));
+            }
+            // segments intersect
+            return 0.0;
         }
 
-        /// <summary>
+        /// <summary> 
         /// Computes the distance from a point p to a line segment AB.
-        /// Notice: NON-ROBUST!
+        /// Note: NON-ROBUST!
         /// </summary>
         /// <param name="p">The point to compute the distance for.</param>
         /// <param name="a">One point of the line.</param>
@@ -163,9 +171,8 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns> The distance from p to line segment AB.</returns>
         public static double DistancePointLine(Coordinate p, Coordinate a, Coordinate b)
         {
-            // if start == end, then use pt distance
-            if (a.Equals(b))
-                return p.Distance(a);
+            // if start = end, then just compute distance to one of the endpoints
+            if (a.Equals(b)) return p.Distance(a);
 
             // otherwise use comp.graphics.algorithms Frequently Asked Questions method
             /*(1)     	      AC dot AB
@@ -180,9 +187,8 @@ namespace DotSpatial.Topology.Algorithm
 		                0<r<1 Point is interior to AB
 	        */
 
-            double r = ((p.X - a.X) * (b.X - a.X) + (p.Y - a.Y) * (b.Y - a.Y))
-                        /
-                        ((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y));
+            double len2 = ((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y));
+            double r = ((p.X - a.X) * (b.X - a.X) + (p.Y - a.Y) * (b.Y - a.Y)) / len2;
 
             if (r <= 0.0) return p.Distance(a);
             if (r >= 1.0) return p.Distance(b);
@@ -193,13 +199,35 @@ namespace DotSpatial.Topology.Algorithm
 		             	                Curve^2
 
 		                Then the distance from C to Point = |s|*Curve.
+      
+                        This is the same calculation as {@link #distancePointLinePerpendicular}.
+                        Unrolled here for performance.
 	        */
 
-            double s = ((a.Y - p.Y) * (b.X - a.X) - (a.X - p.X) * (b.Y - a.Y))
-                        /
-                        ((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y));
+            double s = ((a.Y - p.Y) * (b.X - a.X) - (a.X - p.X) * (b.Y - a.Y)) / len2;
+            return Math.Abs(s) * Math.Sqrt(len2);
+        }
 
-            return Math.Abs(s) * Math.Sqrt(((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y)));
+        /// <summary>
+        /// Computes the distance from a point to a sequence of line segments.
+        /// </summary>
+        /// <param name="p">A point</param>
+        /// <param name="line">A sequence of contiguous line segments defined by their vertices</param>
+        /// <returns>The minimum distance between the point and the line segments</returns>
+        /// <exception cref="ArgumentException">If there are too few points to make up a line (at least one?)</exception>
+        public static double DistancePointLine(Coordinate p, IList<Coordinate> line)
+        {
+            if (line.Count == 0)
+                throw new ArgumentException("Line array must contain at least one vertex");
+
+            // this handles the case of length = 1
+            double minDistance = p.Distance(line[0]);
+            for (int i = 0; i < line.Count - 1; i++)
+            {
+                double dist = DistancePointLine(p, line[i], line[i + 1]);
+                if (dist < minDistance) minDistance = dist;
+            }
+            return minDistance;
         }
 
         /// <summary>
@@ -220,28 +248,32 @@ namespace DotSpatial.Topology.Algorithm
 
                         Then the distance from C to Point = |s|*Curve.
             */
-
-            double s = ((a.Y - p.Y) * (b.X - a.X) - (a.X - p.X) * (b.Y - a.Y))
-                        /
-                        ((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y));
-
-            return Math.Abs(s) * Math.Sqrt(((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y)));
+            double len2 = ((b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y));
+            double s = ((a.Y - p.Y) * (b.X - a.X) - (a.X - p.X) * (b.Y - a.Y)) / len2;
+            return Math.Abs(s) * Math.Sqrt(len2);
         }
 
         /// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
-        /// The list of points is assumed to have the first and last points equal.
-        /// This will handle coordinate lists which contain repeated points.
-        /// This algorithm is only guaranteed to work with valid rings.
-        /// If the ring is invalid (e.g. self-crosses or touches),
-        /// the computed result may not be correct.
         /// </summary>>
-        /// <param name="ring"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// <list type="Bullet">
+        /// <item>The list of points is assumed to have the first and last points equal.</item>
+        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// </list>
+        /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
+        /// </remarks>
+        /// <param name="ring">An array of <see cref="Coordinate"/>s froming a ring</param>
+        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
         public static bool IsCounterClockwise(IList<Coordinate> ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Count - 1;
+
+            // sanity check
+            if (nPts < 3)
+                throw new ArgumentException("Ring has fewer than 4 points, so orientation cannot be determined");
 
             // find highest point
             Coordinate hiPt = ring[0];
@@ -280,8 +312,7 @@ namespace DotSpatial.Topology.Algorithm
              * (including the case where the input array has fewer than 4 elements),
              * or it contains coincident line segments.
              */
-            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next))
-                return false;
+            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next)) return false;
 
             int disc = ComputeOrientation(prev, new Coordinate(hiPt), next);
 
@@ -305,15 +336,31 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         /// <summary>
-        /// Test whether a point lies on the line segments defined by a
+        /// Computes whether a ring defined by a coordinate sequence is oriented counter-clockwise.
+        /// </summary>>
+        /// <remarks>
+        /// <list type="Bullet">
+        /// <item>The list of points is assumed to have the first and last points equal.</item>
+        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// </list>
+        /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
+        /// </remarks>
+        /// <param name="ring">A coordinate sequence froming a ring</param>
+        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
+        /// <exception cref="ArgumentException">If there are too few points to determine orientation (&lt;4)</exception>
+        public static bool IsCounterClockwise(ICoordinateSequence ring)
+        {
+            return IsCounterClockwise(ring.ToList());
+        }
+
+        /// <summary> 
+        /// Tests whether a point lies on the line segments defined by a
         /// list of coordinates.
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pt"></param>
-        /// <returns>
-        /// <c>true</c> true if
-        /// the point is a vertex of the line or lies in the interior of a line
-        /// segment in the linestring.
+        /// <returns>true if the point is a vertex of the line
+        /// or lies in the interior of a line segment in the linestring
         /// </returns>
         public static bool IsOnLine(Coordinate p, IList<Coordinate> pt)
         {
@@ -341,61 +388,56 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns><c>true</c> if p is inside ring.</returns>
         public static bool IsPointInRing(Coordinate p, IList<Coordinate> ring)
         {
-            int i;
-            int crossings = 0;  // number of segment/ray crossings
-            int nPts = ring.Count;
+            return LocatePointInRing(p, ring) != LocationType.Exterior;
 
-            /*
-            *  For each segment l = (i-1, i), see if it crosses ray from test point in positive x direction.
-            */
-            for (i = 1; i < nPts; i++)
-            {
-                int i1 = i - 1;             // point index; i1 = i-1
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i1];
-                double x1 = p1.X - p.X;          // translated coordinates
-                double y1 = p1.Y - p.Y;
-                double x2 = p2.X - p.X;
-                double y2 = p2.Y - p.Y;
-
-                if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
-                {
-                    /*
-                    *  segment straddles x axis, so compute intersection.
-                    */
-                    double xInt = RobustDeterminant.SignOfDet2X2(x1, y1, x2, y2) / (y2 - y1);        // x intersection of segment with ray
-
-                    /*
-                    *  crosses ray if strictly positive intersection.
-                    */
-                    if (0.0 < xInt)
-                        crossings++;
-                }
-            }
-
-            /*
-            *  p is inside if number of crossings is odd.
-            */
-            if ((crossings % 2) == 1)
-                return true;
-            return false;
         }
 
         /// <summary>
         /// Computes the length of a linestring specified by a sequence of points.
         /// </summary>
-        /// <param name="pts">The points specifying the linestring.</param>
-        /// <returns>The length of the linestring.</returns>
-        public static double Length(IList<Coordinate> pts)
+        /// <param name="pts">The points specifying the linestring</param>
+        /// <returns>The length of the linestring</returns>
+        public static double Length(ICoordinateSequence pts)
         {
-            if (pts.Count < 1)
-                return 0.0;
+            // optimized for processing CoordinateSequences
+            int n = pts.Count;
+            if (n <= 1) return 0.0;
 
-            double sum = 0.0;
-            for (int i = 1; i < pts.Count; i++)
-                sum += pts[i].Distance(pts[i - 1]);
+            double len = 0.0;
 
-            return sum;
+            Coordinate p = pts.GetCoordinate(0);
+            double x0 = p.X;
+            double y0 = p.Y;
+
+            for (int i = 1; i < n; i++)
+            {
+                p = pts.GetCoordinate(i);
+                double x1 = p.X;
+                double y1 = p.Y;
+                double dx = x1 - x0;
+                double dy = y1 - y0;
+
+                len += Math.Sqrt(dx * dx + dy * dy);
+
+                x0 = x1;
+                y0 = y1;
+            }
+            return len;
+        }
+
+        ///<summary>
+        /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
+        ///</summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>This method does <i>not</i> first check the point against the envelope of the ring.</para>
+        /// </remarks>
+        /// <param name="p">Point to check for ring inclusion</param>
+        /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
+        /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
+        public static LocationType LocatePointInRing(Coordinate p, IList<Coordinate> ring)
+        {
+            return RayCrossingCounter.LocatePointInRing(p, ring);
         }
 
         /// <summary>
@@ -412,45 +454,106 @@ namespace DotSpatial.Topology.Algorithm
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            // travelling along p1->p2, turn counter clockwise to get to q return 1,
-            // travelling along p1->p2, turn clockwise to get to q return -1,
-            // p1, p2 and q are colinear return 0.
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dx2 = q.X - p2.X;
-            double dy2 = q.Y - p2.Y;
-            return RobustDeterminant.SignOfDet2X2(dx1, dy1, dx2, dy2);
+            /**
+             * MD - 9 Aug 2010
+             * It seems that the basic algorithm is slightly orientation dependent,
+             * when computing the orientation of a point very close to a line.
+             * This is possibly due to the arithmetic in the translation to the origin.
+             * 
+             * For instance, the following situation produces identical results 
+             * in spite of the inverse orientation of the line segment:
+             * 
+             * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
+             * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
+             * 
+             * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556);
+             * int orient = orientationIndex(p0, p1, p);
+             * int orientInv = orientationIndex(p1, p0, p);
+
+             * A way to force consistent results is to normalize the orientation of the vector
+             * using the following code.
+             * However, this may make the results of orientationIndex inconsistent
+             * through the triangle of points, so it's not clear this is 
+             * an appropriate patch.
+             * 
+             */
+            return CgAlgorithmsDoubleDouble.OrientationIndex(p1, p2, q);
         }
 
         /// <summary>
-        /// Returns the signed area for a ring.  The area is positive if the ring is oriented CW.
+        /// Computes the signed area for a ring.
+        /// <remarks>
+        /// <para>
+        /// The signed area is
+        /// </para>  
+        /// <list type="Table">
+        /// <item>positive</item><description>if the ring is oriented CW</description>
+        /// <item>negative</item><description>if the ring is oriented CCW</description>
+        /// <item>zero</item><description>if the ring is degenerate or flat</description>
+        /// </list>
+        /// </remarks>
         /// </summary>
-        /// <param name="ring"></param>
-        /// <returns>Area in Meters (by default) when using projected coordinates.</returns>
+        /// <param name="ring">The coordinates of the ring</param>
+        /// <returns>The signed area of the ring</returns>
         public static double SignedArea(IList<Coordinate> ring)
         {
-            if (ring.Count < 3)
-                return 0.0;
+            if (ring.Count < 3) return 0.0;
 
             double sum = 0.0;
-            for (int i = 0; i < ring.Count - 1; i++)
+            /**
+             * Based on the Shoelace formula.
+             * http://en.wikipedia.org/wiki/Shoelace_formula
+             */
+            double x0 = ring[0].X;
+            for (int i = 1; i < ring.Count - 1; i++)
             {
-                double bx = ring[i].X;
-                double by = ring[i].Y;
-                double cx = ring[i + 1].X;
-                double cy = ring[i + 1].Y;
-                sum += (bx + cx) * (cy - by);
+                double x = ring[i].X - x0;
+                double y1 = ring[i + 1].Y;
+                double y2 = ring[i - 1].Y;
+                sum += x * (y2 - y1);
             }
+            return sum / 2.0;
+        }
 
-            // wrap the last point to the first if needed.
-            Coordinate lastCoordinate = ring[ring.Count - 1];
-            Coordinate firstCoordinate = ring[0];
-            if (firstCoordinate.X != lastCoordinate.X && firstCoordinate.Y != lastCoordinate.Y)
+        /// <summary>
+        /// Computes the signed area for a ring.
+        /// <remarks>
+        /// <para>
+        /// The signed area is
+        /// </para>  
+        /// <list type="Table">
+        /// <item>positive</item><description>if the ring is oriented CW</description>
+        /// <item>negative</item><description>if the ring is oriented CCW</description>
+        /// <item>zero</item><description>if the ring is degenerate or flat</description>
+        /// </list>
+        /// </remarks>
+        /// </summary>
+        /// <param name="ring">The coordinates forming the ring</param>
+        /// <returns>The signed area of the ring</returns>
+        public static double SignedArea(ICoordinateSequence ring)
+        {
+            int n = ring.Count;
+            if (n < 3) return 0.0;
+            /**
+             * Based on the Shoelace formula.
+             * http://en.wikipedia.org/wiki/Shoelace_formula
+             */
+            Coordinate p0 = new Coordinate();
+            Coordinate p1 = ring.GetCoordinate(0);
+            Coordinate p2 = ring.GetCoordinate(1);
+            double x0 = p1.X;
+            p2.X -= x0;
+            double sum = 0.0;
+            for (int i = 1; i < n - 1; i++)
             {
-                sum += (lastCoordinate.X + firstCoordinate.X) * (firstCoordinate.Y - lastCoordinate.Y);
+                p0.Y = p1.Y;
+                p1.X = p2.X;
+                p1.Y = p2.Y;
+                p2 = ring.GetCoordinate(i + 1);
+                p2.X -= x0;
+                sum += p1.X * (p0.Y - p2.Y);
             }
-
-            return -sum / 2.0;
+            return sum / 2.0;
         }
 
         #endregion

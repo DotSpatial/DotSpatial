@@ -22,8 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSpatial.Topology.Geometries.Implementation
 {
@@ -35,7 +35,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
         #region Fields
 
         private List<Coordinate> _internalList;
-        private int _versionID;
 
         #endregion
 
@@ -47,9 +46,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="coordinate"></param>
         public CoordinateListSequence(Coordinate coordinate)
         {
-            List<Coordinate> list = new List<Coordinate>();
-            list.Add(coordinate);
-            Configure(list);
+            _internalList = new List<Coordinate> { coordinate };
         }
 
         /// <summary>
@@ -57,7 +54,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         public CoordinateListSequence()
         {
-            Configure(new List<Coordinate>());
+            _internalList = new List<Coordinate>();
         }
 
         /// <summary>
@@ -67,17 +64,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Otherwise, a List is created and shallow copies of each coordinate is added.</param>
         public CoordinateListSequence(IEnumerable<Coordinate> coordinates)
         {
-            List<Coordinate> list = coordinates as List<Coordinate>;
-            if (list == null)
-            {
-                list = new List<Coordinate>();
-                foreach (Coordinate c in coordinates)
-                {
-                    list.Add(c);
-                }
-            }
-
-            Configure(list);
+            _internalList = coordinates as List<Coordinate> ?? coordinates.ToList();
         }
 
         /// <summary>
@@ -91,7 +78,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
             {
                 list.Add(sequence[i].Clone() as Coordinate);
             }
-            Configure(list);
+            _internalList = list;
         }
 
         #endregion
@@ -114,22 +101,14 @@ namespace DotSpatial.Topology.Geometries.Implementation
             get { return 0; }
         }
 
+        public Ordinates Ordinates { get; private set; }
+
         /// <summary>
         /// The CoordinateListSequence is not readonly
         /// </summary>
         public bool IsReadOnly
         {
             get { return false; }
-        }
-
-        /// <summary>
-        /// This only works as long as an enumeration is not used on the CoordinateListSequence.
-        /// Since ICoordinateSequence does not support a GetEnumerator object, as long as you
-        /// are using an ICoordinateSequence interface, VersionID should work.
-        /// </summary>
-        public int VersionID
-        {
-            get { return _versionID; }
         }
 
         #endregion
@@ -150,7 +129,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             set
             {
                 _internalList[index] = value;
-                IncrementVersion();
             }
         }
 
@@ -165,7 +143,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public void Add(Coordinate item)
         {
             _internalList.Add(item);
-            IncrementVersion();
         }
 
         /// <summary>
@@ -174,7 +151,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public void Clear()
         {
             _internalList = new List<Coordinate>();
-            IncrementVersion();
         }
 
         /// <summary>
@@ -184,13 +160,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public object Clone()
         {
             return new CoordinateListSequence(_internalList);
-        }
-
-        // Do configuration here
-        private void Configure(List<Coordinate> inCoords)
-        {
-            _internalList = inCoords;
-            _versionID = 0;
         }
 
         /// <summary>
@@ -231,6 +200,45 @@ namespace DotSpatial.Topology.Geometries.Implementation
         }
 
         /// <summary>
+        /// Returns (possibly a copy of) the ith Coordinate in this collection.
+        /// Whether or not the Coordinate returned is the actual underlying
+        /// Coordinate or merely a copy depends on the implementation.
+        /// Note that in the future the semantics of this method may change
+        /// to guarantee that the Coordinate returned is always a copy. Callers are
+        /// advised not to assume that they can modify a CoordinateSequence by
+        /// modifying the Coordinate returned by this method.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public Coordinate GetCoordinate(int i)
+        {
+            return _internalList[i];
+        }
+
+        /// <summary>
+        /// Copies the ordinate values of the coordinate at the given index to coord.
+        /// </summary>
+        /// <param name="index">Index of the coordinate whose ordinates should be copied.</param>
+        /// <param name="coord">Coordinate the values get copied to.</param>
+        public void GetCoordinate(int index, Coordinate coord)
+        {
+            coord = _internalList[index].Copy();
+        }
+
+        /// <summary>
+        /// Returns a copy of the i'th coordinate in this sequence.
+        /// This method optimizes the situation where the caller is
+        /// going to make a copy anyway - if the implementation
+        /// has already created a new Coordinate object, no further copy is needed.
+        /// </summary>
+        /// <param name="i">The index of the coordinate to retrieve.</param>
+        /// <returns>A copy of the i'th coordinate in the sequence</returns>
+        public Coordinate GetCoordinateCopy(int i)
+        {
+            return _internalList[i].Copy();
+        }
+
+        /// <summary>
         /// Obtains an enumerator for cycling through the list.  BEWARE!  This
         /// will return an underlying list enumerator, and so code that uses
         /// a foreach process or an enumerator will bypass the Version incrementing code.
@@ -241,38 +249,46 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return _internalList.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _internalList.GetEnumerator();
-        }
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return _internalList.GetEnumerator();
+        //}
 
         /// <summary>
-        /// Gets a specific X, Y or Z value depending on the index specified and the ordinate specified
+        /// Returns the ordinate of a coordinate in this sequence.
+        /// Ordinate indices 0 and 1 are assumed to be X and Y.
+        /// Ordinate indices greater than 1 have user-defined semantics
+        /// (for instance, they may contain other dimensions or measure values).         
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="ordinate"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// If the sequence does not provide value for the required ordinate, the implementation <b>must not</b> throw an exception, it should return <see cref="Coordinate.NullOrdinate"/>.
+        /// </remarks>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+        /// <returns>The ordinate value, or <see cref="Coordinate.NullOrdinate"/> if the sequence does not provide values for <paramref name="ordinate"/>"/></returns>       
         public double GetOrdinate(int index, Ordinate ordinate)
         {
-            return _internalList[index].Z;
+            return _internalList[index][ordinate];
         }
 
         /// <summary>
-        /// Increments the version with the understanding that we are using integers.  If the user
-        /// uses too many version, it will cycle around.  The statistical odds of accidentally
-        /// reaching the same value as a previous version should be small enough to prevent
-        /// conflicts.
+        /// Returns ordinate X (0) of the specified coordinate.
         /// </summary>
-        private void IncrementVersion()
+        /// <param name="index"></param>
+        /// <returns>The value of the X ordinate in the index'th coordinate.</returns>
+        public double GetX(int index)
         {
-            if (_versionID == int.MaxValue)
-            {
-                _versionID = int.MinValue;
-            }
-            else
-            {
-                _versionID++;
-            }
+            return _internalList[index].X;
+        }
+
+        /// <summary>
+        /// Returns ordinate Y (1) of the specified coordinate.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>The value of the Y ordinate in the index'th coordinate.</returns>
+        public double GetY(int index)
+        {
+            return _internalList[index].Y;
         }
 
         /// <summary>
@@ -282,26 +298,32 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>Boolean, true if the item was successfully removed.</returns>
         public bool Remove(Coordinate item)
         {
-            IncrementVersion();
             return _internalList.Remove(item);
         }
 
         /// <summary>
-        /// Sets a specific X, Y or Z value depending on the index specified and the ordinate specified
+        /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="ordinate"></param>
-        /// <param name="value"></param>
+        /// <returns>A reversed version of this sequence</returns>
+        public ICoordinateSequence Reversed()
+        {
+            List<Coordinate> l = _internalList.CloneList();
+            l.Reverse();
+            return new CoordinateListSequence(l);
+        }
+
+        /// <summary>
+        /// Sets the value for a given ordinate of a coordinate in this sequence.       
+        /// </summary>
+        /// <remarks>
+        /// If the sequence can't store the ordinate value, the implementation <b>must not</b> throw an exception, it should simply ignore the call.
+        /// </remarks>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+        /// <param name="value">The new ordinate value.</param>       
         public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
-            switch (ordinate)
-            {
-                case Ordinate.X: _internalList[index].X = value; break;
-                case Ordinate.Y: _internalList[index].Y = value; break;
-                case Ordinate.Z: _internalList[index].Z = value; break;
-                case Ordinate.M: _internalList[index].M = value; break;
-            }
-            IncrementVersion();
+            _internalList[index][ordinate] = value;
         }
 
         /// <summary>

@@ -180,6 +180,20 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        /// <summary>
+        /// Gets/Sets <other>Coordinate</other>s (x,y,z) values.
+        /// </summary>
+        public Coordinate CoordinateValue
+        {
+            get { return this; }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+            }
+        }
+
         #endregion
 
         #region Indexers
@@ -552,6 +566,25 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Computes a hash code for a double value, using the algorithm from
+        /// Joshua Bloch's book <i>Effective Java"</i>.
+        /// </summary>
+        /// <param name="value">A hashcode for the double value</param>
+        public static int GetHashCode(double value)
+        {
+            /*
+             * From the java language specification, it says:
+             *
+             * The value of n>>>s is n right-shifted s bit positions with zero-extension.
+             * If n is positive, then the result is the same as that of n>>s; if n is
+             * negative, the result is equal to that of the expression (n>>s)+(2<<~s) if
+             * the type of the left-hand operand is int
+             */
+            long f = BitConverter.DoubleToInt64Bits(value);
+            return (int)(f ^ (f >> 32));
+        }
+
+        /// <summary>
         /// Gets a hashcode for this coordinate.
         /// </summary>
         /// <returns>A hashcode for this coordinate.</returns>
@@ -564,25 +597,6 @@ namespace DotSpatial.Topology.Geometries
             if (!double.IsNaN(Z)) result = 37 * result + GetHashCode(Z);
             // ReSharper restore NonReadonlyFieldInGetHashCode
             return result;
-        }
-
-        /// <summary>
-        /// Computes a hash code for a double value, using the algorithm from
-        /// Joshua Bloch's book <i>Effective Java"</i>.
-        /// </summary>
-        /// <param name="value">A hashcode for the double value</param>
-        private static int GetHashCode(double value)
-        {
-            /*
-             * From the java language specification, it says:
-             *
-             * The value of n>>>s is n right-shifted s bit positions with zero-extension.
-             * If n is positive, then the result is the same as that of n>>s; if n is
-             * negative, the result is equal to that of the expression (n>>s)+(2<<~s) if
-             * the type of the left-hand operand is int
-             */
-            long f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f ^ (f >> 32));
         }
 
         /// <summary>

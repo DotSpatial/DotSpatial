@@ -42,7 +42,7 @@ namespace DotSpatial.Topology.Algorithm.Distance
         {
             var coords = line.Coordinates;
             var tempSegment = new LineSegment();
-            for (var i = 0; i < coords.Length - 1; i++)
+            for (var i = 0; i < coords.Count - 1; i++)
             {
                 tempSegment.SetCoordinates(coords[i], coords[i + 1]);
                 // this is somewhat inefficient - could do better

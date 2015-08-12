@@ -25,8 +25,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -34,68 +32,30 @@ namespace DotSpatial.Topology.Operation.Buffer
 {
     /// <summary>
     /// Computes the raw offset curve for a
-    /// single <c>Geometry</c> component (ring, line or point).
+    /// single <see cref="IGeometry"/> component (ring, line or point).
     /// A raw offset curve line is not noded -
     /// it may contain self-intersections (and usually will).
     /// The final buffer polygon is computed by forming a topological graph
     /// of all the noded raw curves and tracing outside contours.
-    /// The points in the raw curve are rounded to the required precision model.
+    /// The points in the raw curve are rounded
+    /// to a given <see cref="IPrecisionModel"/>.
     /// </summary>
     public class OffsetCurveBuilder
     {
-        #region Constant Fields
-
-        /// <summary>
-        /// The default number of facets into which to divide a fillet of 90 degrees.
-        /// A value of 8 gives less than 2% max error in the buffer distance.
-        /// For a max error smaller of 1%, use QS = 12
-        /// </summary>
-        public const int DEFAULT_QUADRANT_SEGMENTS = 8;
-
-        #endregion
-
         #region Fields
 
-        /*
-        * The angle quantum with which to approximate a fillet curve
-        * (based on the input # of quadrant segments)
-        */
-        private readonly double _filletAngleQuantum;
-        private readonly LineIntersector _li;
-        private readonly LineSegment _offset0 = new LineSegment();
-        private readonly LineSegment _offset1 = new LineSegment();
-        private readonly PrecisionModel _precisionModel;
-        private readonly LineSegment _seg0 = new LineSegment();
-        private readonly LineSegment _seg1 = new LineSegment();
+        private readonly IBufferParameters _bufParams;
+        private readonly IPrecisionModel _precisionModel;
         private double _distance;
-        private BufferStyle _endCapStyle = BufferStyle.CapRound;
-        private IList<Coordinate> _ptList;
-        private Coordinate _s0, _s1, _s2;
-        private PositionType _side = 0;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="precisionModel"></param>
-        public OffsetCurveBuilder(PrecisionModel precisionModel) : this(precisionModel, DEFAULT_QUADRANT_SEGMENTS) { }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <param name="quadrantSegments"></param>
-        public OffsetCurveBuilder(PrecisionModel precisionModel, int quadrantSegments)
+        public OffsetCurveBuilder(IPrecisionModel precisionModel,IBufferParameters bufParams)
         {
             _precisionModel = precisionModel;
-            // compute intersections in full precision, to provide accuracy
-            // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector();
-            int limitedQuadSegs = quadrantSegments < 1 ? 1 : quadrantSegments;
-            _filletAngleQuantum = Math.PI / 2.0 / limitedQuadSegs;
+            _bufParams = bufParams;
         }
 
         #endregion
@@ -103,433 +63,258 @@ namespace DotSpatial.Topology.Operation.Buffer
         #region Properties
 
         /// <summary>
-        ///
+        /// Gets the buffer parameters being used to generate the curve.
         /// </summary>
-        public virtual BufferStyle EndCapStyle
+        public IBufferParameters BufferParameters
         {
-            get
-            {
-                return _endCapStyle;
-            }
-            set
-            {
-                _endCapStyle = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private IList<Coordinate> Coordinates
-        {
-            get
-            {
-                // check that points are a ring - add the startpoint again if they are not
-                if (_ptList.Count > 1)
-                {
-                    Coordinate start = _ptList.First();
-                    Coordinate end = _ptList.Last();
-                    if (!start.Equals(end))
-                        AddPt(start);
-                }
-                return _ptList;
-            }
+            get { return _bufParams; }
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Adds a CW circle around a point.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="distance"></param>
-        private void AddCircle(Coordinate p, double distance)
+        private void ComputeLineBufferCurve(Coordinate[] inputPts, OffsetSegmentGenerator segGen)
         {
-            // add start point
-            Coordinate pt = new Coordinate(p.X + distance, p.Y);
-            AddPt(pt);
-            AddFillet(p, 0.0, 2.0 * Math.PI, -1, distance);
+            var distTol = SimplifyTolerance(_distance);
+
+            //--------- compute points for left side of line
+            // Simplify the appropriate side of the line before generating
+            var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
+            // MD - used for testing only (to eliminate simplification)
+            //    Coordinate[] simp1 = inputPts;
+
+            var n1 = simp1.Length - 1;
+            segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+            for (int i = 2; i <= n1; i++)
+            {
+                segGen.AddNextSegment(simp1[i], true);
+            }
+            segGen.AddLastSegment();
+            // add line cap for end of line
+            segGen.AddLineEndCap(simp1[n1 - 1], simp1[n1]);
+
+            //---------- compute points for right side of line
+            // Simplify the appropriate side of the line before generating
+            var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
+            // MD - used for testing only (to eliminate simplification)
+            //    Coordinate[] simp2 = inputPts;
+            var n2 = simp2.Length - 1;
+
+            // since we are traversing line in opposite order, offset position is still LEFT
+            segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+            for (var i = n2 - 2; i >= 0; i--)
+            {
+                segGen.AddNextSegment(simp2[i], true);
+            }
+            segGen.AddLastSegment();
+            // add line cap for start of line
+            segGen.AddLineEndCap(simp2[1], simp2[0]);
+
+            segGen.CloseRing();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p">Base point of curve.</param>
-        /// <param name="p0">Start point of fillet curve.</param>
-        /// <param name="p1">Endpoint of fillet curve.</param>
-        /// <param name="direction"></param>
-        /// <param name="distance"></param>
-        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double distance)
+        private void ComputeOffsetCurve(Coordinate[] inputPts, Boolean isRightSide, OffsetSegmentGenerator segGen)
         {
-            double dx0 = p0.X - p.X;
-            double dy0 = p0.Y - p.Y;
-            double startAngle = Math.Atan2(dy0, dx0);
-            double dx1 = p1.X - p.X;
-            double dy1 = p1.Y - p.Y;
-            double endAngle = Math.Atan2(dy1, dx1);
+            var distTol = SimplifyTolerance(_distance);
 
-            if (direction == CgAlgorithms.CLOCKWISE)
+            if (isRightSide)
             {
-                if (startAngle <= endAngle)
-                    startAngle += 2.0 * Math.PI;
-            }
-            else
-            {
-                // direction == CounterClockwise
-                if (startAngle >= endAngle)
-                    startAngle -= 2.0 * Math.PI;
-            }
+                //---------- compute points for right side of line
+                // Simplify the appropriate side of the line before generating
+                var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
+                // MD - used for testing only (to eliminate simplification)
+                // Coordinate[] simp2 = inputPts;
+                var n2 = simp2.Length - 1;
 
-            AddPt(p0);
-            AddFillet(p, startAngle, endAngle, direction, distance);
-            AddPt(p1);
-        }
-
-        /// <summary>
-        /// Adds points for a fillet.  The start and end point for the fillet are not added -
-        /// the caller must add them if required.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="startAngle"></param>
-        /// <param name="endAngle"></param>
-        /// <param name="direction">Is -1 for a CW angle, 1 for a CCW angle.</param>
-        /// <param name="distance"></param>
-        private void AddFillet(Coordinate p, double startAngle, double endAngle, int direction, double distance)
-        {
-            int directionFactor = direction == CgAlgorithms.CLOCKWISE ? -1 : 1;
-
-            double totalAngle = Math.Abs(startAngle - endAngle);
-            int nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
-
-            if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
-
-            // choose angle increment so that each segment has equal length
-            const double initAngle = 0.0;
-            double currAngleInc = totalAngle / nSegs;
-
-            double currAngle = initAngle;
-            Coordinate pt = new Coordinate();
-            while (currAngle < totalAngle)
-            {
-                double angle = startAngle + directionFactor * currAngle;
-                pt.X = p.X + distance * Math.Cos(angle);
-                pt.Y = p.Y + distance * Math.Sin(angle);
-                AddPt(pt);
-                currAngle += currAngleInc;
-            }
-        }
-
-        /// <summary>
-        /// Add last offset point.
-        /// </summary>
-        private void AddLastSegment()
-        {
-            AddPt(_offset1.P1);
-        }
-
-        /// <summary>
-        /// Add an end cap around point p1, terminating a line segment coming from p0.
-        /// </summary>
-        private void AddLineEndCap(Coordinate p0, Coordinate p1)
-        {
-            LineSegment seg = new LineSegment(p0, p1);
-
-            LineSegment offsetL = new LineSegment();
-            ComputeOffsetSegment(seg, PositionType.Left, _distance, offsetL);
-            LineSegment offsetR = new LineSegment();
-            ComputeOffsetSegment(seg, PositionType.Right, _distance, offsetR);
-
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
-            double angle = Math.Atan2(dy, dx);
-
-            switch (_endCapStyle)
-            {
-                case BufferStyle.CapRound:
-                    // add offset seg points with a fillet between them
-                    AddPt(offsetL.P1);
-                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CgAlgorithms.CLOCKWISE, _distance);
-                    AddPt(offsetR.P1);
-                    break;
-                case BufferStyle.CapButt:
-                    // only offset segment points are added
-                    AddPt(offsetL.P1);
-                    AddPt(offsetR.P1);
-                    break;
-                case BufferStyle.CapSquare:
-                    // add a square defined by extensions of the offset segment endpoints
-                    Coordinate squareCapSideOffset = new Coordinate();
-                    squareCapSideOffset.X = Math.Abs(_distance) * Math.Cos(angle);
-                    squareCapSideOffset.Y = Math.Abs(_distance) * Math.Sin(angle);
-
-                    Coordinate squareCapLOffset = new Coordinate(
-                        offsetL.P1.X + squareCapSideOffset.X,
-                        offsetL.P1.Y + squareCapSideOffset.Y);
-                    Coordinate squareCapROffset = new Coordinate(
-                        offsetR.P1.X + squareCapSideOffset.X,
-                        offsetR.P1.Y + squareCapSideOffset.Y);
-                    AddPt(squareCapLOffset);
-                    AddPt(squareCapROffset);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="addStartPoint"></param>
-        private void AddNextSegment(Coordinate p, bool addStartPoint)
-        {
-            // s0-s1-s2 are the coordinates of the previous segment and the current one
-            _s0 = _s1;
-            _s1 = _s2;
-            _s2 = p;
-            _seg0.SetCoordinates(_s0, _s1);
-            ComputeOffsetSegment(_seg0, _side, _distance, _offset0);
-            _seg1.SetCoordinates(_s1, _s2);
-            ComputeOffsetSegment(_seg1, _side, _distance, _offset1);
-
-            // do nothing if points are equal
-            if (_s1.Equals(_s2)) return;
-
-            int orientation = CgAlgorithms.ComputeOrientation(_s0, _s1, _s2);
-            bool outsideTurn =
-                (orientation == CgAlgorithms.CLOCKWISE && _side == PositionType.Left)
-            || (orientation == CgAlgorithms.COUNTER_CLOCKWISE && _side == PositionType.Right);
-
-            if (orientation == 0)
-            {
-                // lines are collinear
-                _li.ComputeIntersection(_s0, _s1, _s1, _s2);
-                int numInt = _li.IntersectionNum;
-                /*
-                * if numInt is < 2, the lines are parallel and in the same direction.
-                * In this case the point can be ignored, since the offset lines will also be
-                * parallel.
-                */
-                if (numInt >= 2)
-                    /*
-                    * segments are collinear but reversing.  Have to add an "end-cap" fillet
-                    * all the way around to other direction
-                    * This case should ONLY happen for LineStrings, so the orientation is always CW.
-                    * (Polygons can never have two consecutive segments which are parallel but reversed,
-                    * because that would be a self intersection.
-                    */
-                    AddFillet(_s1, _offset0.P1, _offset1.P0, CgAlgorithms.CLOCKWISE, _distance);
-            }
-            else if (outsideTurn)
-            {
-                // add a fillet to connect the endpoints of the offset segments
-                if (addStartPoint)
-                    AddPt(_offset0.P1);
-                AddFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
-                AddPt(_offset1.P0);
-            }
-            else
-            {
-                // inside turn
-                /*
-                 * add intersection point of offset segments (if any)
-                 */
-                _li.ComputeIntersection(_offset0.P0, _offset0.P1, _offset1.P0, _offset1.P1);
-                if (_li.HasIntersection)
-                    AddPt(_li.GetIntersection(0));
-                else
+                // since we are traversing line in opposite order, offset position is still LEFT
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+                segGen.AddFirstSegment();
+                for (var i = n2 - 2; i >= 0; i--)
                 {
-                    /*
-                    * If no intersection, it means the angle is so small and/or the offset so large
-                    * that the offsets segments don't intersect.
-                    * In this case we must add a offset joining curve to make sure the buffer line
-                    * is continuous and tracks the buffer correctly around the corner.
-                    * Notice that the joining curve won't appear in the final buffer.
-                    *
-                    * The intersection test above is vulnerable to robustness errors;
-                    * i.e. it may be that the offsets should intersect very close to their
-                    * endpoints, but don't due to rounding.  To handle this situation
-                    * appropriately, we use the following test:
-                    * If the offset points are very close, don't add a joining curve
-                    * but simply use one of the offset points
-                    */
-                    if (new Coordinate(_offset0.P1).Distance(_offset1.P0) < _distance / 1000.0)
-                        AddPt(_offset0.P1);
-                    else
-                    {
-                        // add endpoint of this segment offset
-                        AddPt(_offset0.P1);
-                        // <FIX> MD - add in centre point of corner, to make sure offset closer lines have correct topology
-                        AddPt(_s1);
-                        AddPt(_offset1.P0);
-                    }
+                    segGen.AddNextSegment(simp2[i], true);
                 }
             }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="pt"></param>
-        private void AddPt(Coordinate pt)
-        {
-            Coordinate bufPt = new Coordinate(pt);
-            _precisionModel.MakePrecise(bufPt);
-            // don't add duplicate points
-            Coordinate lastPt = null;
-            if (_ptList.Count >= 1)
-                lastPt = _ptList.Last();
-            if (lastPt != null && bufPt.Equals(lastPt)) return;
-            _ptList.Add(bufPt);
-        }
-
-        /// <summary>
-        /// Adds a CW square around a point
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="distance"></param>
-        private void AddSquare(Coordinate p, double distance)
-        {
-            // add start point
-            AddPt(new Coordinate(p.X + distance, p.Y + distance));
-            AddPt(new Coordinate(p.X + distance, p.Y - distance));
-            AddPt(new Coordinate(p.X - distance, p.Y - distance));
-            AddPt(new Coordinate(p.X - distance, p.Y + distance));
-            AddPt(new Coordinate(p.X + distance, p.Y + distance));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void ClosePts()
-        {
-            if (_ptList.Count < 1) return;
-            Coordinate startPt = new Coordinate(_ptList[0]);
-            Coordinate lastPt = _ptList[_ptList.Count - 1];
-            if (startPt.Equals(lastPt)) return;
-            _ptList.Add(startPt);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inputPts"></param>
-        private void ComputeLineBufferCurve(IList<Coordinate> inputPts)
-        {
-            int n = inputPts.Count - 1;
-
-            // compute points for left side of line
-            InitSideSegments(inputPts[0], inputPts[1], PositionType.Left);
-            for (int i = 2; i <= n; i++)
-                AddNextSegment(inputPts[i], true);
-            AddLastSegment();
-            // add line cap for end of line
-            AddLineEndCap(inputPts[n - 1], inputPts[n]);
-
-            // compute points for right side of line
-            InitSideSegments(inputPts[n], inputPts[n - 1], PositionType.Left);
-            for (int i = n - 2; i >= 0; i--)
-                AddNextSegment(inputPts[i], true);
-            AddLastSegment();
-
-            // add line cap for start of line
-            AddLineEndCap(inputPts[1], inputPts[0]);
-            ClosePts();
-        }
-
-        /// <summary>
-        /// Compute an offset segment for an input segment on a given side and at a given distance.
-        /// The offset points are computed in full double precision, for accuracy.
-        /// </summary>
-        /// <param name="seg">The segment to offset.</param>
-        /// <param name="side">The side of the segment the offset lies on.</param>
-        /// <param name="distance">The offset distance.</param>
-        /// <param name="offset">The points computed for the offset segment.</param>
-        private static void ComputeOffsetSegment(ILineSegmentBase seg, PositionType side, double distance, ILineSegmentBase offset)
-        {
-            int sideSign = side == PositionType.Left ? 1 : -1;
-            double dx = seg.P1.X - seg.P0.X;
-            double dy = seg.P1.Y - seg.P0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
-            // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = sideSign * distance * dx / len;
-            double uy = sideSign * distance * dy / len;
-            offset.P0.X = seg.P0.X - uy;
-            offset.P0.Y = seg.P0.Y + ux;
-            offset.P1.X = seg.P1.X - uy;
-            offset.P1.Y = seg.P1.Y + ux;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inputPts"></param>
-        /// <param name="side"></param>
-        private void ComputeRingBufferCurve(IList<Coordinate> inputPts, PositionType side)
-        {
-            int n = inputPts.Count - 1;
-            InitSideSegments(inputPts[n - 1], inputPts[0], side);
-            for (int i = 1; i <= n; i++)
+            else
             {
-                bool addStartPoint = i != 1;
-                AddNextSegment(inputPts[i], addStartPoint);
+                //--------- compute points for left side of line
+                // Simplify the appropriate side of the line before generating
+                var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
+                // MD - used for testing only (to eliminate simplification)
+                // Coordinate[] simp1 = inputPts;
+
+                var n1 = simp1.Length - 1;
+                segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+                segGen.AddFirstSegment();
+                for (var i = 2; i <= n1; i++)
+                {
+                    segGen.AddNextSegment(simp1[i], true);
+                }
             }
-            ClosePts();
+            segGen.AddLastSegment();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
-        private static IList<Coordinate> CopyCoordinates(IEnumerable<Coordinate> pts)
+        private void ComputePointCurve(Coordinate pt, OffsetSegmentGenerator segGen)
         {
-            return pts.CloneList();
+            switch (_bufParams.EndCapStyle)
+            {
+                case EndCapStyle.Round:
+                    segGen.CreateCircle(pt);
+                    break;
+                case EndCapStyle.Square:
+                    segGen.CreateSquare(pt);
+                    break;
+                // otherwise curve is empty (e.g. for a butt cap);
+            }
+        }
+
+        private void ComputeRingBufferCurve(Coordinate[] inputPts, PositionType side, OffsetSegmentGenerator segGen)
+        {
+            // simplify input line to improve performance
+            var distTol = SimplifyTolerance(_distance);
+            // ensure that correct side is simplified
+            if (side == PositionType.Right)
+                distTol = -distTol;
+            var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
+            // MD - used for testing only (to eliminate simplification)
+            // Coordinate[] simp = inputPts;
+
+            var n = simp.length - 1;
+            segGen.InitSideSegments(simp[n - 1], simp[0], side);
+            for (var i = 1; i <= n; i++)
+            {
+                var addStartPoint = i != 1;
+                segGen.AddNextSegment(simp[i], addStartPoint);
+            }
+            segGen.CloseRing();
+        }
+
+        private void ComputeSingleSidedBufferCurve(Coordinate[] inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
+        {
+            var distTol = SimplifyTolerance(_distance);
+
+            if (isRightSide)
+            {
+                // add original line
+                segGen.AddSegments(inputPts, true);
+
+                //---------- compute points for right side of line
+                // Simplify the appropriate side of the line before generating
+                var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
+                // MD - used for testing only (to eliminate simplification)
+                // Coordinate[] simp2 = inputPts;
+                var n2 = simp2.Length - 1;
+
+                // since we are traversing line in opposite order, offset position is still LEFT
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+                segGen.AddFirstSegment();
+                for (var i = n2 - 2; i >= 0; i--)
+                {
+                    segGen.AddNextSegment(simp2[i], true);
+                }
+            }
+            else
+            {
+                // add original line
+                segGen.AddSegments(inputPts, false);
+
+                //--------- compute points for left side of line
+                // Simplify the appropriate side of the line before generating
+                var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
+                // MD - used for testing only (to eliminate simplification)
+                //      Coordinate[] simp1 = inputPts;
+
+                var n1 = simp1.Length - 1;
+                segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+                segGen.AddFirstSegment();
+                for (var i = 2; i <= n1; i++)
+                {
+                    segGen.AddNextSegment(simp1[i], true);
+                }
+            }
+            segGen.AddLastSegment();
+            segGen.CloseRing();
+        }
+
+        private static Coordinate[] CopyCoordinates(Coordinate[] pts)
+        {
+            var copy = new Coordinate[pts.Length];
+            for (int i = 0; i < copy.Length; i++)
+            {
+                copy[i] = new Coordinate(pts[i]);
+            }
+            return copy;
         }
 
         /// <summary>
-        /// This method handles single points as well as lines.
-        /// Lines are assumed to not be closed (the function will not
+        /// This method handles single points as well as LineStrings.
+        /// LineStrings are assumed <b>not</b> to be closed (the function will not
         /// fail for closed lines, but will generate superfluous line caps).
         /// </summary>
-        /// <param name="inputPts"></param>
-        /// <param name="distance"></param>
-        /// <returns> A List of Coordinate[].</returns>
+        /// <param name="inputPts">The vertices of the line to offset</param>
+        /// <param name="distance">The offset distance</param>
+        /// <returns>A Coordinate array representing the curve <br/>
+        /// or <c>null</c> if the curve is empty
+        /// </returns>
         public virtual IList GetLineCurve(IList<Coordinate> inputPts, double distance)
         {
-            IList lineList = new ArrayList();
+            _distance = distance;
+
             // a zero or negative width buffer of a line/point is empty
-            if (distance <= 0.0)
-                return lineList;
-            Init(distance);
+            if (distance < 0.0 && !_bufParams.IsSingleSided) return null;
+            if (distance == 0.0) return null;
+
+            double posDistance = Math.Abs(distance);
+            var segGen = GetSegmentGenerator(posDistance);
             if (inputPts.Count <= 1)
             {
-                switch (_endCapStyle)
-                {
-                    case BufferStyle.CapRound:
-                        AddCircle(inputPts[0], distance);
-                        break;
-                    case BufferStyle.CapSquare:
-                        AddSquare(inputPts[0], distance);
-                        break;
-                    default:
-                        // default is for buffer to be empty (e.g. for a butt line cap);
-                        break;
-                }
+                ComputePointCurve(inputPts[0], segGen);
             }
-            else ComputeLineBufferCurve(inputPts);
-            IList<Coordinate> lineCoord = Coordinates;
-            lineList.Add(lineCoord);
-            return lineList;
+            else
+            {
+                if (_bufParams.IsSingleSided)
+                {
+                    var isRightSide = distance < 0.0;
+                    ComputeSingleSidedBufferCurve(inputPts, isRightSide, segGen);
+                }
+                else
+                    ComputeLineBufferCurve(inputPts, segGen);
+            }
+
+            var lineCoord = segGen.GetCoordinates();
+            return lineCoord;
+        }
+
+        public Coordinate[] GetOffsetCurve(Coordinate[] inputPts, double distance)
+        {
+            _distance = distance;
+
+            // a zero width offset curve is empty
+            if (distance == 0.0) return null;
+
+            var isRightSide = distance < 0.0;
+            double posDistance = Math.Abs(distance);
+            OffsetSegmentGenerator segGen = GetSegmentGenerator(posDistance);
+            if (inputPts.Length <= 1)
+            {
+                ComputePointCurve(inputPts[0], segGen);
+            }
+            else
+            {
+                ComputeOffsetCurve(inputPts, isRightSide, segGen);
+            }
+            Coordinate[] curvePts = segGen.GetCoordinates();
+            // for right side line is traversed in reverse direction, so have to reverse generated line
+            if (isRightSide)
+                CoordinateArrays.Reverse(curvePts);
+            return curvePts;
         }
 
         /// <summary>
         /// This method handles the degenerate cases of single points and lines,
         /// as well as rings.
         /// </summary>
-        /// <returns>A List of Coordinate[].</returns>
+        /// <returns>A List of Coordinate or <c>null</c> if the curve is empty.</returns>
         public virtual IList GetRingCurve(IList<Coordinate> inputPts, PositionType side, double distance)
         {
             IList lineList = new ArrayList();
@@ -542,36 +327,25 @@ namespace DotSpatial.Topology.Operation.Buffer
                 lineList.Add(CopyCoordinates(inputPts));
                 return lineList;
             }
-            ComputeRingBufferCurve(inputPts, side);
-            lineList.Add(Coordinates);
-            return lineList;
+            OffsetSegmentGenerator segGen = GetSegmentGenerator(distance);
+            ComputeRingBufferCurve(inputPts, side, segGen);
+            return segGen.GetCoordinates();
+        }
+
+        private OffsetSegmentGenerator GetSegmentGenerator(double distance)
+        {
+            return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
         }
 
         /// <summary>
-        ///
+        /// Computes the distance tolerance to use during input line simplification.
         /// </summary>
-        /// <param name="distance"></param>
-        private void Init(double distance)
-        {
-            _distance = distance;
-            //maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
-            _ptList = new List<Coordinate>();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="s1"></param>
-        /// <param name="s2"></param>
-        /// <param name="side"></param>
-        private void InitSideSegments(Coordinate s1, Coordinate s2, PositionType side)
-        {
-            _s1 = s1;
-            _s2 = s2;
-            _side = side;
-            _seg1.SetCoordinates(s1, s2);
-            ComputeOffsetSegment(_seg1, side, _distance, _offset1);
-        }
+        /// <param name="bufDistance">The buffer distance</param>
+        /// <returns>The simplification tolerance</returns>
+        private double SimplifyTolerance(double bufDistance)
+       {
+           return bufDistance * _bufParams.SimplifyFactor;
+       }
 
         #endregion
     }

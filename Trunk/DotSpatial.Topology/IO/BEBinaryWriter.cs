@@ -26,7 +26,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.IO
 {
@@ -46,12 +45,12 @@ namespace DotSpatial.Topology.IO
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         public BEBinaryWriter() { }
 
         /// <summary>
-        /// Initializes a new instance of the class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         /// <param name="output">The supplied stream.</param>
         /// <exception cref="T:System.ArgumentNullException">output is null. </exception>
@@ -60,7 +59,7 @@ namespace DotSpatial.Topology.IO
         public BEBinaryWriter(Stream output) : base(output) { }
 
         /// <summary>
-        /// Initializes a new instance of the class.
+        /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         /// <param name="output">The supplied stream.</param>
         /// <param name="encoding">The character encoding.</param>

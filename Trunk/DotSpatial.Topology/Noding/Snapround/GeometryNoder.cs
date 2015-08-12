@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.Noding.Snapround
 
             var segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(pm);
-            INoder sr = new MCIndexSnapRounder(_pm);
+            INoder sr = new McIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 

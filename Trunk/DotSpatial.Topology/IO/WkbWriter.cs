@@ -414,7 +414,7 @@ namespace DotSpatial.Topology.IO
             var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             var count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
-            count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
+            count += 4 * (geometry.NumHoles + 1);   // Index parts
             count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
             return count;
         }
@@ -560,9 +560,6 @@ namespace DotSpatial.Topology.IO
         /// <param name="writer"></param>
         protected void Write(ILinearRing ring, BinaryWriter writer)
         {
-            //writer.Write(ring.NumPoints);
-            //for (int i = 0; i < ring.Coordinates.Length; i++)
-            //    Write(ring.Coordinates[i], writer);
             Write(ring.CoordinateSequence, true, writer);
         }
 
@@ -573,15 +570,11 @@ namespace DotSpatial.Topology.IO
         /// <param name="writer"></param>
         protected void Write(IPolygon polygon, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, polygon);
-            //if (Double.IsNaN(polygon.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
-            writer.Write(polygon.NumInteriorRings + 1);
-            Write(polygon.ExteriorRing as ILinearRing, writer);
-            for (int i = 0; i < polygon.NumInteriorRings; i++)
-                Write(polygon.InteriorRings[i] as ILinearRing, writer);
+            writer.Write(polygon.NumHoles + 1);
+            Write(polygon.Shell as ILinearRing, writer);
+            for (int i = 0; i < polygon.NumHoles; i++)
+                Write(polygon.Holes[i] as ILinearRing, writer);
         }
 
         /// <summary>
@@ -591,11 +584,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="writer"></param>
         protected void Write(IMultiPoint multiPoint, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPoint);
-            //if (Double.IsNaN(multiPoint.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
             for (var i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);

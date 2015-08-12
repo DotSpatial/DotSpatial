@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -230,13 +231,12 @@ namespace DotSpatial.Topology.IO.KML
         /// <remarks>
         /// 2D and 3D aware. Terminates the coordinate output with a newline.
         /// </remarks>
-        private void Write(Coordinate[] coords, int level,
-            StringBuilder sb)
+        private void Write(IList<Coordinate> coords, int level, StringBuilder sb)
         {
             StartLine("<coordinates>", level, sb);
 
             bool isNewLine = false;
-            for (int i = 0; i < coords.Length; i++)
+            for (int i = 0; i < coords.Count; i++)
             {
                 if (i > 0)
                     sb.Append(TupleSeparator);
@@ -250,7 +250,7 @@ namespace DotSpatial.Topology.IO.KML
                 Write(coords[i], sb);
 
                 // break output lines to prevent them from getting too long
-                if ((i + 1) % MaxCoordinatesPerLine == 0 && i < coords.Length - 1)
+                if ((i + 1) % MaxCoordinatesPerLine == 0 && i < coords.Count - 1)
                 {
                     sb.Append("\n");
                     isNewLine = true;

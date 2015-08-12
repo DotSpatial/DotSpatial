@@ -59,22 +59,22 @@ namespace DotSpatial.Topology.IO
         /// </summary>
         public WKBReader() : this(GeometryServiceProvider.Instance) { }
 
-        /// <summary>
-        /// Initialize reader with the given <c>GeometryFactory</c>.
-        /// </summary>
-        /// <param name="factory"></param>
-        [Obsolete]
-        public WKBReader(IGeometryFactory factory)
-        {
-            _geometryServices = GeometryServiceProvider.Instance;
+        ///// <summary>
+        ///// Initialize reader with the given <c>GeometryFactory</c>.
+        ///// </summary>
+        ///// <param name="factory"></param>
+        //[Obsolete]
+        //public WKBReader(IGeometryFactory factory)
+        //{
+        //    _geometryServices = GeometryServiceProvider.Instance;
 
-            _factory = factory;
-            _sequenceFactory = factory.CoordinateSequenceFactory;
-            _precisionModel = factory.PrecisionModel;
+        //    _factory = factory;
+        //    _sequenceFactory = factory.CoordinateSequenceFactory;
+        //    _precisionModel = factory.PrecisionModel;
 
-            HandleSRID = true;
-            HandleOrdinates = AllowedOrdinates;
-        }
+        //    HandleSRID = true;
+        //    HandleOrdinates = AllowedOrdinates;
+        //}
 
         public WKBReader(IGeometryServices services)
         {
@@ -119,18 +119,30 @@ namespace DotSpatial.Topology.IO
         /// </summary>
         public bool RepairRings { get { return _isStrict; } set { _isStrict = value; } }
 
-        ///// <summary>
-        ///// The <see cref="IGeometry"/> builder.
-        ///// </summary>
-        //[Obsolete]
-        //protected IGeometryFactory Factory
-        //{
-        //    get { return _factory; }
-        //}
-
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Function to determine whether an ordinate should be handled or not.
+        /// </summary>
+        /// <param name="ordinate"></param>
+        /// <returns></returns>
+        private bool HandleOrdinate(Ordinate ordinate)
+        {
+            switch (ordinate)
+            {
+                case Ordinate.X:
+                case Ordinate.Y:
+                    return true;
+                case Ordinate.M:
+                    return (HandleOrdinates & Ordinates.M) != Ordinates.None;
+                case Ordinate.Z:
+                    return (HandleOrdinates & Ordinates.Z) != Ordinates.None;
+                default:
+                    return false;
+            }
+        }
 
         ///<summary>
         /// Converts a hexadecimal string to a byte array.
@@ -154,6 +166,39 @@ namespace DotSpatial.Topology.IO
                 bytes[i] = (byte)((nib1 << 4) + (byte)nib0);
             }
             return bytes;
+        }
+
+        private static int HexToInt(char hex)
+        {
+            switch (hex)
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    return hex - '0';
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
+                    return hex - 'A' + 10;
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
+                case 'f':
+                    return hex - 'a' + 10;
+            }
+            throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
         /// <summary>
@@ -264,6 +309,15 @@ namespace DotSpatial.Topology.IO
                 default:
                     throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        private void ReadByteOrder(BinaryReader reader)
+        {
+            reader.ReadByte();
         }
 
         /// <summary>
@@ -430,6 +484,45 @@ namespace DotSpatial.Topology.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
+        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
+        {
+            uint type = reader.ReadUInt32();
+            //Determine coordinate system
+            if ((type & (0x80000000 | 0x40000000)) == (0x80000000 | 0x40000000))
+                coordinateSystem = CoordinateSystem.XYZM;
+            else if ((type & 0x80000000) == 0x80000000)
+                coordinateSystem = CoordinateSystem.XYZ;
+            else if ((type & 0x40000000) == 0x40000000)
+                coordinateSystem = CoordinateSystem.XYM;
+            else
+                coordinateSystem = CoordinateSystem.XY;
+
+            //Has SRID
+            if ((type & 0x20000000) != 0)
+                srid = reader.ReadInt32();
+            else
+                srid = -1;
+
+            if (!HandleSRID) srid = -1;
+
+            //Get cs from prefix
+            uint ordinate = (type & 0xffff) / 1000;
+            switch (ordinate)
+            {
+                case 1:
+                    coordinateSystem = CoordinateSystem.XYZ;
+                    break;
+                case 2:
+                    coordinateSystem = CoordinateSystem.XYM;
+                    break;
+                case 3:
+                    coordinateSystem = CoordinateSystem.XYZM;
+                    break;
+            }
+
+            return (WKBGeometryTypes)((type & 0xffff) % 1000);
+        }
+
         /// <summary>
         /// Reads a <see cref="ILinearRing"/> geometry.
         /// </summary>
@@ -569,108 +662,6 @@ namespace DotSpatial.Topology.IO
                     interiorRings[i] = ReadLinearRing(reader, cs, srid);
             }
             return factory.CreatePolygon(exteriorRing, interiorRings);
-        }
-
-        /// <summary>
-        /// Function to determine whether an ordinate should be handled or not.
-        /// </summary>
-        /// <param name="ordinate"></param>
-        /// <returns></returns>
-        private bool HandleOrdinate(Ordinate ordinate)
-        {
-            switch (ordinate)
-            {
-                case Ordinate.X:
-                case Ordinate.Y:
-                    return true;
-                case Ordinate.M:
-                    return (HandleOrdinates & Ordinates.M) != Ordinates.None;
-                case Ordinate.Z:
-                    return (HandleOrdinates & Ordinates.Z) != Ordinates.None;
-                default:
-                    return false;
-            }
-        }
-
-        private static int HexToInt(char hex)
-        {
-            switch (hex)
-            {
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    return hex - '0';
-                case 'A':
-                case 'B':
-                case 'C':
-                case 'D':
-                case 'E':
-                case 'F':
-                    return hex - 'A' + 10;
-                case 'a':
-                case 'b':
-                case 'c':
-                case 'd':
-                case 'e':
-                case 'f':
-                    return hex - 'a' + 10;
-            }
-            throw new ArgumentException("Invalid hex digit: " + hex);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        private void ReadByteOrder(BinaryReader reader)
-        {
-            reader.ReadByte();
-        }
-
-        private WKBGeometryType ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
-        {
-            uint type = reader.ReadUInt32();
-            //Determine coordinate system
-            if ((type & (0x80000000 | 0x40000000)) == (0x80000000 | 0x40000000))
-                coordinateSystem = CoordinateSystem.XYZM;
-            else if ((type & 0x80000000) == 0x80000000)
-                coordinateSystem = CoordinateSystem.XYZ;
-            else if ((type & 0x40000000) == 0x40000000)
-                coordinateSystem = CoordinateSystem.XYM;
-            else
-                coordinateSystem = CoordinateSystem.XY;
-
-            //Has SRID
-            if ((type & 0x20000000) != 0)
-                srid = reader.ReadInt32();
-            else
-                srid = -1;
-
-            if (!HandleSRID) srid = -1;
-
-            //Get cs from prefix
-            uint ordinate = (type & 0xffff) / 1000;
-            switch (ordinate)
-            {
-                case 1:
-                    coordinateSystem = CoordinateSystem.XYZ;
-                    break;
-                case 2:
-                    coordinateSystem = CoordinateSystem.XYM;
-                    break;
-                case 3:
-                    coordinateSystem = CoordinateSystem.XYZM;
-                    break;
-            }
-
-            return (WKBGeometryTypes)((type & 0xffff) % 1000);
         }
 
         /// <summary>

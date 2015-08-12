@@ -418,9 +418,9 @@ namespace DotSpatial.Topology.Algorithm
 
                 int orient = CgAlgorithms.ComputeOrientation(o, p, q);
 
-                if (orient == CgAlgorithms.COUNTER_CLOCKWISE)
+                if (orient == CgAlgorithms.CounterClockwise)
                     return 1;
-                if (orient == CgAlgorithms.CLOCKWISE)
+                if (orient == CgAlgorithms.Clockwise)
                     return -1;
 
                 // points are collinear - check distance

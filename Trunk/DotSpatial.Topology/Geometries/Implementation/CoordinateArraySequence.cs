@@ -30,18 +30,28 @@ using System.Text;
 namespace DotSpatial.Topology.Geometries.Implementation
 {
     /// <summary>
-    /// The <c>ICoordinateSequence</c> implementation that <c>Geometry</c>s use by default.
-    /// In this implementation, Coordinates returned by ToArray and Coordinate are live --
+    /// A <see cref="ICoordinateSequence"/> backed by an array of <see cref="Coordinate"/>s.
+    /// This is the implementation that <see cref="IGeometry"/>s use by default.
+    /// <para/>
+    /// Coordinates returned by <see cref="ToCoordinateArray"/>, <see cref="GetCoordinate(int)"/> and <see cref="GetCoordinate(int, Coordinate)"/> are live --
     /// modifications to them are actually changing the
     /// CoordinateSequence's underlying data.
+    /// A dimension may be specified for the coordinates in the sequence,
+    /// which may be 2 or 3.
+    /// The actual coordinates will always have 3 ordinates,
+    /// but the dimension is useful as metadata in some situations. 
     /// </summary>
     [Serializable]
     public class CoordinateArraySequence : ICoordinateSequence
     {
         #region Fields
 
-        private Coordinate[] _coordinates;
-        private int _versionId;
+        protected Coordinate[] Coordinates;
+        /**
+         * The actual dimension of the coordinates in the sequence.
+         * Allowable values are 2 or 3.
+         */
+        private readonly int _dimension = 3;
 
         #endregion
 
@@ -51,10 +61,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Creates a new array sequence dimensioned with exactly 1 coordinate that is empty.
         /// </summary>
         public CoordinateArraySequence()
-        {
-            Coordinate[] coords = new Coordinate[1];
-            coords[0] = new Coordinate();
-            Configure(coords);
+        { //TODO check whether this can be removed
+            Coordinates = new Coordinate[1];
+            Coordinates[0] = new Coordinate();
         }
 
         /// <summary>
@@ -62,10 +71,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinate">The ICoordinate to use when constructing this sequence</param>
         public CoordinateArraySequence(Coordinate coordinate)
-        {
-            Coordinate[] coords = new Coordinate[1];
-            coords[0] = coordinate;
-            Configure(coords);
+        {//TODO check whether this can be removed
+            Coordinates = new Coordinate[1];
+            Coordinates[0] = coordinate;
         }
 
         /// <summary>
@@ -73,29 +81,39 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates">The existing list whose members will be copied to the array.</param>
         public CoordinateArraySequence(IEnumerable<Coordinate> coordinates)
-        {
+        {//TODO check whether this can be removed
             List<Coordinate> listcoords = new List<Coordinate>();
             foreach (Coordinate c in coordinates)
             {
                 listcoords.Add(c);
             }
-            Coordinate[] coords = listcoords.ToArray();
-            Configure(coords);
+            Coordinates = listcoords.ToArray();
         }
 
         /// <summary>
-        /// Constructs a sequence based on the given array (the array is not copied).
+        /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.
+        /// The coordinate dimension is 3
         /// </summary>
+        /// <remarks>
+        /// The array is not copied.
+        /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
-        public CoordinateArraySequence(Coordinate[] coordinates)
+        public CoordinateArraySequence(Coordinate[] coordinates) 
+            : this(coordinates, 3) { }
+
+        /// <summary>
+        /// Constructs a sequence based on the given array 
+        /// of <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <remarks>The Array is not copied</remarks>
+        /// <param name="coordinates">The coordinate array that will be referenced.</param>
+        /// <param name="dimension">The dimension of the coordinates</param>
+        public CoordinateArraySequence(Coordinate[] coordinates, int dimension)
         {
-            Coordinate[] coords = coordinates;
+            Coordinates = coordinates;
+            _dimension = dimension;
             if (coordinates == null)
-            {
-                coords = new Coordinate[1];
-                coords[0] = new Coordinate();
-            }
-            Configure(coords);
+                Coordinates = new Coordinate[0];
         }
 
         /// <summary>
@@ -103,29 +121,39 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         public CoordinateArraySequence(int size)
+            : this(size, 3) { }
+
+        /// <summary>
+        /// Constructs a sequence of a given <paramref name="size"/>, populated 
+        /// with new <see cref="Coordinate"/>s of the given <paramref name="dimension"/>.
+        /// </summary>
+        /// <param name="size">The size of the sequence to create.</param>
+        /// <param name="dimension">the dimension of the coordinates</param>
+        public CoordinateArraySequence(int size, int dimension)
         {
-            Coordinate[] coords = new Coordinate[size];
-
-            for (int i = 0; i < size; i++)
-            {
-                coords[i] = new Coordinate();
-            }
-
-            Configure(coords);
+            Coordinates = new Coordinate[size];
+            _dimension = dimension;
+            for (var i = 0; i < size; i++)
+                Coordinates[i] = new Coordinate();
         }
 
         /// <summary>
-        /// Constructs a sequence based on the given array (the array is not copied).
+        /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="coordSeq">The coordinate array that will be referenced.</param>
+        /// <param name="coordSeq">The coordinate sequence that will be copied</param>
         public CoordinateArraySequence(ICoordinateSequence coordSeq)
         {
-            Coordinate[] coords = coordSeq != null ? new Coordinate[coordSeq.Count] : new Coordinate[0];
-            for (int i = 0; i < coords.Length; i++)
+            if (coordSeq == null)
             {
-                if (coordSeq != null) coords[i] = coordSeq[i].Clone() as Coordinate;
+                Coordinates = new Coordinate[0];
+                return;
             }
-            Configure(coords);
+
+            _dimension = coordSeq.Dimension;
+            Coordinates = new Coordinate[coordSeq.Count];
+
+            for (var i = 0; i < Coordinates.Length; i++) 
+                Coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
 
         #endregion
@@ -139,7 +167,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             get
             {
-                return _coordinates.Length;
+                return Coordinates.Length;
             }
         }
 
@@ -151,27 +179,18 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             get
             {
-                return 3;
+                return _dimension;
             }
         }
 
-        /// <summary>
-        /// CoordinateArraySequences are not ReadOnly
-        /// </summary>
-        public virtual bool IsReadOnly
+        public Ordinates Ordinates
         {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Every time a member is added to, subtracted from, or edited in the sequence,
-        /// this VersionID is incremented.  This doesn't uniquely separate this sequence
-        /// from other sequences, but rather acts as a way to rapidly track if changes
-        /// have occured against a cached version.
-        /// </summary>
-        public int VersionID
-        {
-            get { return _versionId; }
+            get
+            {
+                return _dimension == 3 
+                    ? Ordinates.XYZ 
+                    : Ordinates.XY;
+            }
         }
 
         #endregion
@@ -184,16 +203,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="index">An integer index in this array sequence</param>
         /// <returns>An ICoordinate for the specified index</returns>
         public virtual Coordinate this[int index]
-        {
+        {//TODO check for remove
             get
             {
-                return _coordinates[index];
+                return Coordinates[index];
             }
             set
             {
-                _coordinates[index] = value;
-                IncrementVersion();
-            }
+                Coordinates[index] = value;
+                }
         }
 
         #endregion
@@ -206,21 +224,19 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="item"></param>
         public virtual void Add(Coordinate item)
-        {
-            Coordinate[] copy = new Coordinate[_coordinates.Length + 1];
-            _coordinates.CopyTo(copy, 0);
-            copy[_coordinates.Length] = item;
-            IncrementVersion();
+        {//TODO check for remove
+            Coordinate[] copy = new Coordinate[Coordinates.Length + 1];
+            Coordinates.CopyTo(copy, 0);
+            copy[Coordinates.Length] = item;
         }
 
         /// <summary>
         /// Clears the array, reducing the measure to 1 empty coordinate.
         /// </summary>
         public virtual void Clear()
-        {
-            _coordinates = new Coordinate[1];
-            _coordinates[0] = new Coordinate();
-            IncrementVersion();
+        {//TODO check for remove
+            Coordinates = new Coordinate[1];
+            Coordinates[0] = new Coordinate();
         }
 
         /// <summary>
@@ -229,18 +245,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>The deep copy.</returns>
         public virtual object Clone()
         {
-            Coordinate[] cloneCoordinates = new Coordinate[Count];
-            for (int i = 0; i < _coordinates.Length; i++)
-                cloneCoordinates[i] = new Coordinate(_coordinates[i]);
+            Coordinate[] cloneCoordinates = GetClonedCoordinates();
             return new CoordinateArraySequence(cloneCoordinates);
         }
 
-        // This is called by all of the constructors to try to reduce redundancy
-        private void Configure(Coordinate[] inCoords)
-        {
-            _coordinates = inCoords;
-            _versionId = 0;
-        }
+
 
         /// <summary>
         /// Tests to see if the array contains the specified item
@@ -249,7 +258,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>True if the value is in the array.</returns>
         public virtual bool Contains(Coordinate item)
         {
-            foreach (Coordinate coord in _coordinates)
+            foreach (Coordinate coord in Coordinates)
             {
                 if (coord == item) return true;
             }
@@ -263,7 +272,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="arrayIndex">The starting index</param>
         public virtual void CopyTo(Coordinate[] array, int arrayIndex)
         {
-            _coordinates.CopyTo(array, arrayIndex);
+            Coordinates.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -276,34 +285,73 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public virtual IEnvelope ExpandEnvelope(IEnvelope env)
         {
             IEnvelope cEnv = env.Copy();
-            for (int i = 0; i < _coordinates.Length; i++)
-            {
-                cEnv.ExpandToInclude(_coordinates[i]);
-            }
+            for (int i = 0; i < Coordinates.Length; i++)
+                cEnv.ExpandToInclude(Coordinates[i]);
             return cEnv;
         }
 
         /// <summary>
-        /// Returns an enumerator object for cycling through each of the various members of the array.
-        /// BEWARE!  This will bypass the VersionID code.  Since ICoordinateSequence does not contain
-        /// the GetEnumerator methods, using an ICoordinateSequence should safely advance the version
-        /// during changes.
+        /// 
         /// </summary>
-        /// <returns>An Enumerator for this array.</returns>
-        public virtual IEnumerator<Coordinate> GetEnumerator()
+        /// <returns></returns>
+        protected Coordinate[] GetClonedCoordinates() 
         {
-            return new Enumerator(_coordinates.GetEnumerator());
+            Coordinate[] cloneCoordinates = new Coordinate[Count];
+            for (int i = 0; i < Coordinates.Length; i++) 
+                cloneCoordinates[i] = (Coordinate) Coordinates[i].Clone();
+            return cloneCoordinates;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Get the Coordinate with index i.
+        /// </summary>
+        /// <param name="i">The index of the coordinate.</param>
+        /// <returns>The requested Coordinate instance.</returns>
+        public Coordinate GetCoordinate(int i) 
         {
-            return _coordinates.GetEnumerator();
+            return Coordinates[i];
         }
+
+        /// <summary>
+        /// Copies the i'th coordinate in the sequence to the supplied Coordinate.
+        /// </summary>
+        /// <param name="index">The index of the coordinate to copy.</param>
+        /// <param name="coord">A Coordinate to receive the value.</param>
+        public void GetCoordinate(int index, Coordinate coord) 
+        {
+            coord.X = Coordinates[index].X;
+            coord.Y = Coordinates[index].Y;
+            coord.Z = Coordinates[index].Z;
+        }
+
+        /// <summary>
+        /// Get a copy of the Coordinate with index i.
+        /// </summary>
+        /// <param name="i">The index of the coordinate.</param>
+        /// <returns>A copy of the requested Coordinate.</returns>
+        public virtual Coordinate GetCoordinateCopy(int i) 
+        {
+            return new Coordinate(Coordinates[i]);
+        }
+
+        ///// <summary>
+        ///// Returns an enumerator object for cycling through each of the various members of the array.
+        ///// </summary>
+        ///// <returns>An Enumerator for this array.</returns>
+        //public virtual IEnumerator<Coordinate> GetEnumerator()
+        //{ //TODO check for remove
+        //    return new Enumerator(_coordinates.GetEnumerator());
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{//TODO check for remove
+        //    return _coordinates.GetEnumerator();
+        //}
 
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
-        /// Ordinates indices greater than 1 have user-defined semantics
+        /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
@@ -313,30 +361,49 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             switch (ordinate)
             {
-                case Ordinate.X: return _coordinates[index].X;
-                case Ordinate.Y: return _coordinates[index].Y;
-                case Ordinate.Z: return _coordinates[index].Z;
+                case Ordinate.X:  
+                    return Coordinates[index].X;
+                case Ordinate.Y:  
+                    return Coordinates[index].Y;
+                case Ordinate.Z:  
+                    return Coordinates[index].Z;
                 default:
                     return Double.NaN;
             }
         }
 
         /// <summary>
-        /// Increments the version with the understanding that we are using integers.  If the user
-        /// uses too many version, it will cycle around.  The statistical odds of accidentally
-        /// reaching the same value as a previous version should be small enough to prevent
-        /// conflicts.
+        /// Returns ordinate X (0) of the specified coordinate.
         /// </summary>
-        private void IncrementVersion()
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the X ordinate in the index'th coordinate.
+        /// </returns>
+        public double GetX(int index) 
         {
-            if (_versionId == int.MaxValue)
+            return Coordinates[index].X;
+        }
+
+        /// <summary>
+        /// Returns ordinate Y (1) of the specified coordinate.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the Y ordinate in the index'th coordinate.
+        /// </returns>
+        public double GetY(int index) 
+        {
+            return Coordinates[index].Y;
+        }
+
+        public ICoordinateSequence Reversed()
+        {
+            var coordinates = new Coordinate[Count];
+            for (var i = 0; i < Count; i++ )
             {
-                _versionId = int.MinValue;
+                coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
             }
-            else
-            {
-                _versionId += 1;
-            }
+            return new CoordinateArraySequence(coordinates);
         }
 
         /// <summary>
@@ -346,13 +413,13 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="item">The item to remove.</param>
         /// <returns>Boolean, true if a match was found and an item was removed, false otherwise.</returns>
         public virtual bool Remove(Coordinate item)
-        {
-            Coordinate[] copy = new Coordinate[_coordinates.Length - 1];
+        { //todo kontrollieren, ob es entfernt werden muss, da in nts nicht enthalten
+            Coordinate[] copy = new Coordinate[Coordinates.Length - 1];
             bool result = false;
-            for (int i = 0; i < _coordinates.Length; i++)
+            for (int i = 0; i < Coordinates.Length; i++)
             {
                 // Only remove the first item that matches
-                if (item == _coordinates[i] && result == false)
+                if (item == Coordinates[i] && result == false)
                 {
                     // We found the first match
                     result = true;
@@ -362,15 +429,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
                     if (result)
                     {
                         // index is one off because we have removed a member
-                        copy[i - 1] = _coordinates[i];
+                        copy[i - 1] = Coordinates[i];
                     }
                     else
                     {
-                        copy[i] = _coordinates[i];
+                        copy[i] = Coordinates[i];
                     }
                 }
             }
-            if (result) _coordinates = copy;
+            if (result) Coordinates = copy;
             return result;
         }
 
@@ -384,23 +451,25 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             switch (ordinate)
             {
-                case Ordinate.X: _coordinates[index].X = value; break;
-                case Ordinate.Y: _coordinates[index].Y = value; break;
-                case Ordinate.Z: _coordinates[index].Z = value; break;
-                case Ordinate.M: _coordinates[index].M = value; break;
-                default:
-                    throw new ArgumentException("invalid ordinate index: " + ordinate);
+                case Ordinate.X:  
+                    Coordinates[index].X = value;
+                    break;
+                case Ordinate.Y: 
+                    Coordinates[index].Y = value;
+                    break;
+                case Ordinate.Z: 
+                    Coordinates[index].Z = value;
+                    break;
             }
-            IncrementVersion();
         }
 
         /// <summary>
-        ///This method exposes the internal Array of Coordinate Objects.
+        ///This method exposes the internal Array of Coordinate Objects.       
         /// </summary>
         /// <returns></returns>
         public virtual Coordinate[] ToCoordinateArray()
         {
-            return _coordinates;
+            return Coordinates;
         }
 
         /// <summary>
@@ -409,93 +478,20 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns></returns>
         public override string ToString()
         {
-            if (_coordinates.Length > 0)
+            if (Coordinates.Length > 0) 
             {
-                StringBuilder strBuf = new StringBuilder(17 * _coordinates.Length);
+                StringBuilder strBuf = new StringBuilder(17 * Coordinates.Length);
                 strBuf.Append('(');
-                strBuf.Append(_coordinates[0]);
-                for (int i = 1; i < _coordinates.Length; i++)
+                strBuf.Append(Coordinates[0]);
+                for (int i = 1; i < Coordinates.Length; i++) 
                 {
                     strBuf.Append(", ");
-                    strBuf.Append(_coordinates[i]);
+                    strBuf.Append(Coordinates[i]);
                 }
                 strBuf.Append(')');
                 return strBuf.ToString();
-            }
-            return "()";
-        }
-
-        #endregion
-
-        #region Classes
-
-        /// <summary>
-        /// CoordinateArraySequenceEnumerator
-        /// </summary>
-        public class Enumerator : IEnumerator<Coordinate>
-        {
-            #region Fields
-
-            readonly IEnumerator _baseEnumerator;
-
-            #endregion
-
-            #region Constructors
-
-            /// <summary>
-            /// Creates a new instance of CoordinateArraySequenceEnumerator
-            /// </summary>
-            public Enumerator(IEnumerator inBaseEnumerator)
-            {
-                _baseEnumerator = inBaseEnumerator;
-            }
-
-            #endregion
-
-            #region Properties
-
-            /// <summary>
-            /// Gets the current member
-            /// </summary>
-            public Coordinate Current
-            {
-                get { return _baseEnumerator.Current as Coordinate; }
-            }
-
-            object IEnumerator.Current
-            {
-                get { return _baseEnumerator.Current; }
-            }
-
-            #endregion
-
-            #region Methods
-
-            /// <summary>
-            /// Does nothing
-            /// </summary>
-            public void Dispose()
-            {
-            }
-
-            /// <summary>
-            /// Advances the enumerator to the next member
-            /// </summary>
-            /// <returns></returns>
-            public bool MoveNext()
-            {
-                return _baseEnumerator.MoveNext();
-            }
-
-            /// <summary>
-            /// Resets the enumerator to the original position
-            /// </summary>
-            public void Reset()
-            {
-                _baseEnumerator.Reset();
-            }
-
-            #endregion
+            } 
+            else return "()";
         }
 
         #endregion

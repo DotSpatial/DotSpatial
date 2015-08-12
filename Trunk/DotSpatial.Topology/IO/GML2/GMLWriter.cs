@@ -378,10 +378,10 @@ namespace DotSpatial.Topology.IO.GML2
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="writer"></param>        
-        protected void WriteCoordinates(Coordinate[] coordinates, XmlTextWriter writer)
+        protected void WriteCoordinates(IList<Coordinate> coordinates, XmlTextWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
-            var elements = new List<string>(coordinates.Length);
+            var elements = new List<string>(coordinates.Count);
             foreach (var coordinate in coordinates)
                 elements.Add(string.Format(NumberFormatter, "{0},{1}", coordinate.X, coordinate.Y));
 

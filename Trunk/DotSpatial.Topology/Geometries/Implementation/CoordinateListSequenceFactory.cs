@@ -33,27 +33,23 @@ namespace DotSpatial.Topology.Utilities
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
     [Serializable]
-    public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
+    public sealed class CoordinateListSequenceFactory : ICoordinateSequenceFactory
     {
         #region Fields
 
         /// <summary>
-        /// This appears to be part of a singleton for a coordinate array sequence factory
+        /// Creates an instance of the CoordinateListSequenceFactory
         /// </summary>
-        public static readonly CoordinateArraySequenceFactory Instance = new CoordinateArraySequenceFactory();
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        ///
-        /// </summary>
-        private CoordinateArraySequenceFactory() { }
+        public static readonly CoordinateListSequenceFactory Instance = new CoordinateListSequenceFactory();
 
         #endregion
 
         #region Methods
+
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZM; }
+        }
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).
@@ -62,26 +58,31 @@ namespace DotSpatial.Topology.Utilities
         /// <returns></returns>
         public ICoordinateSequence Create(IEnumerable<Coordinate> coordinates)
         {
-            return new CoordinateArraySequence(coordinates);
+            return new CoordinateListSequence(coordinates);
         }
 
         /// <summary>
-        /// Constructs a new coordinate sequence using a single coordinate.
+        ///
         /// </summary>
-        /// <param name="coord">A single coordinate to be used in a coordinate sequence factory.</param>
-        /// <returns>A valid ICoordinateSequence.</returns>
-        public ICoordinateSequence Create(Coordinate coord)
-        {
-            return new CoordinateArraySequence(coord);
-        }
-
-        /// <summary>
-        /// Constructs either an array with 1 member or an empty list, depending on the implementation.
-        /// </summary>
-        /// <returns>A new seqeunce</returns>
+        /// <returns></returns>
         public ICoordinateSequence Create()
         {
-            return new CoordinateArraySequence();
+            return new CoordinateListSequence();
+        }
+
+        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates a new CoordinateListSequence and populates it with a single coordinate.
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        public ICoordinateSequence Create(Coordinate coordinate)
+        {
+            return new CoordinateListSequence(coordinate);
         }
 
         /// <summary>
@@ -91,7 +92,12 @@ namespace DotSpatial.Topology.Utilities
         /// <returns></returns>
         public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
-            return new CoordinateArraySequence(coordSeq);
+            return new CoordinateListSequence(coordSeq);
+        }
+
+        public ICoordinateSequence Create(int size, int dimension)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

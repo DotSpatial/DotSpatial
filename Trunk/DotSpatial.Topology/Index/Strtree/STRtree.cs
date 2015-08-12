@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <returns></returns>
         private static double CentreX(Envelope e)
         {
-            return Avg(e.MinX, e.MaxX);
+            return Avg(e.Minimum.X, e.Maximum.X);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <returns></returns>
         private static double CentreY(Envelope e)
         {
-            return Avg(e.MinY, e.MaxY);
+            return Avg(e.Minimum.Y, e.Maximum.Y);
         }
 
         /// <summary>

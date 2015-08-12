@@ -23,125 +23,108 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Noding;
 using DotSpatial.Topology.Operation.Overlay;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Buffer
 {
-    /// <summary>
-    /// Builds the buffer point for a given input point and precision model.
+    ///<summary>
+    /// Builds the buffer geometry for a given input geometry and precision model.
     /// Allows setting the level of approximation for circular arcs,
     /// and the precision model in which to carry out the computation.
-    /// When computing buffers in floating point double-precision
+    ///</summary>
+    /// <remarks>
+    /// When computing buffers in floating point double-precision 
     /// it can happen that the process of iterated noding can fail to converge (terminate).
-    /// In this case a TopologyException will be thrown.
+    /// In this case a <see cref="TopologyException"/> will be thrown.
     /// Retrying the computation in a fixed precision
     /// can produce more robust results.
-    /// </summary>
-    public class BufferBuilder
+    /// </remarks>
+    internal class BufferBuilder
     {
         #region Fields
 
+        private readonly IBufferParameters _bufParams;
         private readonly EdgeList _edgeList = new EdgeList();
-        private BufferStyle _endCapStyle = BufferStyle.CapRound;
         private IGeometryFactory _geomFact;
         private PlanarGraph _graph;
-        private int _quadrantSegments = OffsetCurveBuilder.DEFAULT_QUADRANT_SEGMENTS;
-        private PrecisionModel _workingPrecisionModel;
+        private IPrecisionModel _workingPrecisionModel;
+
+        #endregion
+
+        #region Constructors
+
+        ///<summary>Creates a new BufferBuilder</summary>
+        public BufferBuilder(IBufferParameters bufParams)
+        {
+            _bufParams = bufParams;
+        }
 
         #endregion
 
         #region Properties
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual BufferStyle EndCapStyle
-        {
-            get
-            {
-                return _endCapStyle;
-            }
-            set
-            {
-                _endCapStyle = value;
-            }
-        }
+        ///<summary>
+        /// Sets the <see cref="INoder"/> to use during noding.
+        /// This allows choosing fast but non-robust noding, or slower
+        /// but robust noding.
+        ///</summary>
+        public INoder Noder { get; set; }
 
-        /// <summary>
-        /// Gets/Sets the number of segments used to approximate a angle fillet.
-        /// </summary>
-        public virtual int QuadrantSegments
-        {
-            get
-            {
-                return _quadrantSegments;
-            }
-            set
-            {
-                _quadrantSegments = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets/Sets the precision model to use during the curve computation and noding,
+        ///<summary>
+        /// Sets the precision model to use during the curve computation and noding, 
         /// if it is different to the precision model of the Geometry.
+        ///</summary>
+        ///<remarks>
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
-        /// </summary>
-        public virtual PrecisionModel WorkingPrecisionModel
+        ///</remarks>
+        public virtual IPrecisionModel WorkingPrecisionModel
         {
-            get
-            {
-                return _workingPrecisionModel;
-            }
-            set
-            {
-                _workingPrecisionModel = value;
-            }
+            get { return _workingPrecisionModel; }
+            set { _workingPrecisionModel = value; }
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            PrecisionModel precisionModel = _workingPrecisionModel ?? new PrecisionModel(g.PrecisionModel);
+            IPrecisionModel precisionModel = _workingPrecisionModel ?? (IPrecisionModel) g.PrecisionModel;
 
             // factory must be the same as the one used by the input
             _geomFact = g.Factory;
 
-            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, _quadrantSegments);
-            curveBuilder.EndCapStyle = _endCapStyle;
+            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
+
             OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
-            IList bufferSegStrList = curveSetBuilder.GetCurves();
+            IList<ISegmentString> bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (bufferSegStrList.Count <= 0)
             {
-                IGeometry emptyGeom = _geomFact.CreateGeometryCollection(new Geometry[0]);
-                return emptyGeom;
+                return CreateEmptyResultGeometry();
             }
 
             ComputeNodedEdges(bufferSegStrList, precisionModel);
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
 
-            IList subgraphList = CreateSubgraphs(_graph);
+            IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
             PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
             IList resultPolyList = polyBuilder.Polygons;
+
+            // just in case...
+            if (resultPolyList.Count <= 0)
+                return CreateEmptyResultGeometry();
 
             IGeometry resultGeom = _geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
@@ -149,53 +132,77 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         /// <summary>
         /// Completes the building of the input subgraphs by depth-labelling them,
-        /// and adds them to the <see cref="PolygonBuilder" />.
-        /// The subgraph list must be sorted in rightmost-coordinate order.
+        /// and adds them to the PolygonBuilder.
         /// </summary>
-        /// <param name="subgraphList">The subgraphs to build.</param>
-        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private static void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
+        /// <remarks>
+        /// The subgraph list must be sorted in rightmost-coordinate order.
+        /// </remarks>
+        /// <param name="subgraphList"> the subgraphs to build</param>
+        /// <param name="polyBuilder"> the PolygonBuilder which will build the final polygons</param>
+        private static void BuildSubgraphs(IEnumerable<BufferSubgraph> subgraphList, PolygonBuilder polyBuilder)
         {
-            IList processedGraphs = new ArrayList();
-            foreach (object obj in subgraphList)
+            List<BufferSubgraph> processedGraphs = new List<BufferSubgraph>();
+            foreach (BufferSubgraph subgraph in subgraphList)
             {
-                BufferSubgraph subgraph = (BufferSubgraph)obj;
                 Coordinate p = subgraph.RightMostCoordinate;
                 SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
                 int outsideDepth = locater.GetDepth(p);
                 subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
-                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
+                polyBuilder.Add(new List<EdgeEnd>(
+                    Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="bufferSegStrList"></param>
-        /// <param name="precisionModel"></param>
-        private void ComputeNodedEdges(IList bufferSegStrList, PrecisionModel precisionModel)
+        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, IPrecisionModel precisionModel)
         {
             INoder noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
             IList nodedSegStrings = noder.GetNodedSubstrings();
 
-            foreach (object obj in nodedSegStrings)
+            foreach (object segStr in nodedSegStrings)
             {
-                SegmentString segStr = (SegmentString)obj;
-                Label oldLabel = (Label)segStr.Data;
+                var pts = segStr.Coordinates;
+                if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
+                    continue;
+
+                Label oldLabel = (Label)segStr.Context;
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
-                InsertEdge(edge);
+
+                InsertUniqueEdge(edge);
             }
         }
 
-        private static IList CreateSubgraphs(PlanarGraph graph)
+        private static IGeometry ConvertSegStrings(IEnumerator<ISegmentString> it)
         {
-            ArrayList subgraphList = new ArrayList();
-            foreach (object obj in graph.Nodes)
+            GeometryFactory fact = new GeometryFactory();
+            List<IGeometry> lines = new List<IGeometry>();
+            while (it.MoveNext())
             {
-                Node node = (Node)obj;
+                ISegmentString ss = it.Current;
+                ILineString line = fact.CreateLineString(ss.Coordinates);
+                lines.Add(line);
+            }
+            return fact.BuildGeometry(lines);
+        }
+
+        ///<summary>
+        /// Gets the standard result for an empty buffer.
+        /// Since buffer always returns a polygonal result, this is chosen to be an empty polygon.
+        ///</summary>
+        /// <returns>The empty result geometry</returns>
+        private IGeometry CreateEmptyResultGeometry()
+        {
+            IGeometry emptyGeom = _geomFact.CreatePolygon(null, null);
+            return emptyGeom;
+        }
+
+        private static IEnumerable<BufferSubgraph> CreateSubgraphs(PlanarGraph graph)
+        {
+            List<BufferSubgraph> subgraphList = new List<BufferSubgraph>();
+            foreach (Node node in graph.Nodes)
+            {
                 if (!node.IsVisited)
                 {
                     BufferSubgraph subgraph = new BufferSubgraph();
@@ -203,7 +210,6 @@ namespace DotSpatial.Topology.Operation.Buffer
                     subgraphList.Add(subgraph);
                 }
             }
-
             /*
              * Sort the subgraphs in descending order of their rightmost coordinate.
              * This ensures that when the Polygons for the subgraphs are built,
@@ -230,17 +236,12 @@ namespace DotSpatial.Topology.Operation.Buffer
             return 0;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <returns></returns>
-        private static INoder GetNoder(PrecisionModel precisionModel)
+        private INoder GetNoder(IPrecisionModel precisionModel)
         {
+            if (Noder != null) return Noder;
+
             // otherwise use a fast (but non-robust) noder
-            LineIntersector li = new RobustLineIntersector();
-            li.PrecisionModel = precisionModel;
-            McIndexNoder noder = new McIndexNoder(new IntersectionAdder(li));
+            var noder = new McIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
             return noder;
         }
 
@@ -250,7 +251,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// with the existing edge.
         /// </summary>
         /// <param name="e"></param>
-        protected void InsertEdge(Edge e)
+        protected void InsertUniqueEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup

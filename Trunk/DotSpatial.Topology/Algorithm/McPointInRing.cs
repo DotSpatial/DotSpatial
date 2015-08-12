@@ -74,8 +74,8 @@ namespace DotSpatial.Topology.Algorithm
             foreach (MonotoneChain mc in mcList)
             {
                 var mcEnv = mc.Envelope;
-                _interval.Min = mcEnv.MinY;
-                _interval.Max = mcEnv.MaxY;
+                _interval.Min = mcEnv.Minimum.Y;
+                _interval.Max = mcEnv.Maximum.Y;
                 _tree.Insert(_interval, mc);
             }
         }
@@ -95,7 +95,7 @@ namespace DotSpatial.Topology.Algorithm
             _interval.Max = pt.Y;
             IList<MonotoneChain> segs = _tree.Query(_interval);
 
-            MCSelecter mcSelecter = new MCSelecter(this, pt);
+            McSelecter mcSelecter = new McSelecter(this, pt);
             foreach (MonotoneChain mc in segs)
                 TestMonotoneChain(rayEnv, mcSelecter, mc);
 

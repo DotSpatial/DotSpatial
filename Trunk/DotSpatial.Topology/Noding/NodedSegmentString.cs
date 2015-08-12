@@ -28,6 +28,7 @@ using System.Linq;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Geometries.Implementation;
+using DotSpatial.Topology.IO;
 
 namespace DotSpatial.Topology.Noding
 {
@@ -216,7 +217,7 @@ namespace DotSpatial.Topology.Noding
 
         public override string ToString()
         {
-            return WktWriter.ToLineString(new CoordinateArraySequence(Coordinates));
+            return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
 
         private static OctantDirection SafeOctant(Coordinate p0, Coordinate p1)
