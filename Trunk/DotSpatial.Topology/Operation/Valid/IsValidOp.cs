@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
@@ -40,11 +41,11 @@ namespace DotSpatial.Topology.Operation.Valid
     {
         #region Fields
 
-        private readonly Geometry _parentGeometry;  // the base Geometry to be validated
+        private readonly IGeometry _parentGeometry;  // the base Geometry to be validated
         /**
-         * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the Esri SDE model).
+         * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
          */
-        private bool _isSelfTouchingRingFormingHoleValid;
+        private bool isChecked = false;
         private TopologyValidationError _validErr;
 
         #endregion
@@ -52,10 +53,10 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="parentGeometry"></param>
-        public IsValidOp(Geometry parentGeometry)
+        public IsValidOp(IGeometry parentGeometry)
         {
             _parentGeometry = parentGeometry;
         }
@@ -65,7 +66,8 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Properties
 
         /// <summary>
-        ///
+        /// Computes the validity of the geometry,
+        /// and returns <tt>true</tt> if it is valid.
         /// </summary>
         public virtual bool IsValid
         {
@@ -77,8 +79,12 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        ///
+        /// Computes the validity of the geometry,
+        /// and if not valid returns the validation error for the geometry,
+        /// or null if the geometry is valid.
         /// </summary>
+        /// <returns>The validation error, if the geometry is invalid <br/>
+        /// or <value>null</value> if the geometry is valid</returns>
         public virtual TopologyValidationError ValidationError
         {
             get
@@ -112,17 +118,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </para>
         /// </summary>
         /// <value>States whether geometry with this condition is valid.</value>
-        public bool IsSelfTouchingRingFormingHoleValid
-        {
-            get
-            {
-                return _isSelfTouchingRingFormingHoleValid;
-            }
-            set
-            {
-                _isSelfTouchingRingFormingHoleValid = value;
-            }
-        }
+        public bool IsSelfTouchingRingFormingHoleValid { get; set; }
 
         #endregion
 
@@ -146,9 +142,9 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             CheckClosedRing(poly.Shell);
             if (_validErr != null) return;
-            foreach (LineString ls in poly.Holes)
+            foreach (ILinearRing hole in poly.Holes)
             {
-                CheckClosedRing((LinearRing)ls);
+                CheckClosedRing(hole);
                 if (_validErr != null) return;
             }
         }
@@ -180,7 +176,6 @@ namespace DotSpatial.Topology.Operation.Valid
             if (cat.HasDuplicateRings)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrorType.DuplicateRings, cat.InvalidPoint);
-                return;
             }
         }
 
@@ -201,7 +196,7 @@ namespace DotSpatial.Topology.Operation.Valid
             IPointInRing pir = new McPointInRing(shell);
             for (int i = 0; i < p.NumHoles; i++)
             {
-                LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
+                ILinearRing hole = p.Holes[i];
                 Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
                 /*
@@ -209,16 +204,16 @@ namespace DotSpatial.Topology.Operation.Valid
                  * split the polygon into disconnected interiors.
                  * This will be caught by a subsequent check.
                  */
-                if (holePt == null)
+                if (holePt == null) 
                     return;
 
                 bool outside = !pir.IsInside(holePt);
-                if (outside)
+                if(outside)
                 {
                     _validErr = new TopologyValidationError(TopologyValidationErrorType.HoleOutsideShell, holePt);
                     return;
                 }
-            }
+            }            
         }
 
         /// <summary>
@@ -233,12 +228,13 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         private void CheckHolesNotNested(IPolygon p, GeometryGraph graph)
         {
-            QuadtreeNestedRingTester nestedTester = new QuadtreeNestedRingTester(graph);
-            foreach (LinearRing innerHole in p.Holes)
+            var nestedTester = new IndexedNestedRingTester(graph);
+            foreach (ILinearRing innerHole in p.Holes)
                 nestedTester.Add(innerHole);
             bool isNonNested = nestedTester.IsNonNested();
             if (!isNonNested)
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.NestedHoles, nestedTester.NestedPoint);
+                _validErr = new TopologyValidationError(TopologyValidationErrorType.NestedHoles, 
+                    nestedTester.NestedPoint);        
         }
 
         /// <summary>
@@ -279,10 +275,10 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
-            var nodeSet = new HashSet<Coordinate>();
+            Set<Coordinate> nodeSet = new Set<Coordinate>();    
             bool isFirst = true;
-            foreach (EdgeIntersection ei in eiList)
-            {
+            foreach(EdgeIntersection ei in eiList)
+            {                
                 if (isFirst)
                 {
                     isFirst = false;
@@ -293,27 +289,27 @@ namespace DotSpatial.Topology.Operation.Valid
                     _validErr = new TopologyValidationError(TopologyValidationErrorType.RingSelfIntersection, ei.Coordinate);
                     return;
                 }
-                nodeSet.Add(ei.Coordinate);
+                else nodeSet.Add(ei.Coordinate);
             }
         }
 
         /// <summary>
         /// Check that there is no ring which self-intersects (except of course at its endpoints).
         /// This is required by OGC topology rules (but not by other models
-        /// such as Esri SDE, which allow inverted shells and exverted holes).
+        /// such as ESRI SDE, which allow inverted shells and exverted holes).
         /// </summary>
         /// <param name="graph"></param>
         private void CheckNoSelfIntersectingRings(GeometryGraph graph)
         {
             for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
             {
-                Edge e = (Edge)i.Current;
+                Edge e = (Edge) i.Current;
                 CheckNoSelfIntersectingRing(e.EdgeIntersectionList);
                 if (_validErr != null) return;
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// This routine checks to see if a shell is properly contained in a hole.
         /// It assumes that the edges of the shell and hole do not
         /// properly intersect.
@@ -325,7 +321,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <c>null</c> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
-        private static Coordinate CheckShellInsideHole(LinearRing shell, LinearRing hole, GeometryGraph graph)
+        private Coordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)
         {
             IList<Coordinate> shellPts = shell.Coordinates;
             IList<Coordinate> holePts = hole.Coordinates;
@@ -335,14 +331,16 @@ namespace DotSpatial.Topology.Operation.Valid
             if (shellPt != null)
             {
                 bool insideHole = CgAlgorithms.IsPointInRing(shellPt, holePts);
-                if (!insideHole) return shellPt;
+                if (!insideHole) return shellPt;                
             }
             Coordinate holePt = FindPointNotNode(holePts, shell, graph);
             // if point is on hole but not shell, check that the hole is outside the shell
             if (holePt != null)
             {
                 bool insideShell = CgAlgorithms.IsPointInRing(holePt, shellPts);
-                return insideShell ? holePt : null;
+                if (insideShell) 
+                    return holePt;
+                return null;
             }
             throw new ShellHoleIdentityException();
         }
@@ -355,11 +353,11 @@ namespace DotSpatial.Topology.Operation.Valid
         /// E.g. they cannot partially overlap (this has been previously checked by
         /// <c>CheckRelateConsistency</c>).
         /// </summary>
-        private void CheckShellNotNested(LinearRing shell, Polygon p, GeometryGraph graph)
+        private void CheckShellNotNested(ILinearRing shell, IPolygon p, GeometryGraph graph)
         {
             IList<Coordinate> shellPts = shell.Coordinates;
             // test if shell is inside polygon shell
-            LinearRing polyShell = (LinearRing)p.ExteriorRing;
+            ILinearRing polyShell = p.Shell;
             IList<Coordinate> polyPts = polyShell.Coordinates;
             Coordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon
@@ -382,7 +380,7 @@ namespace DotSpatial.Topology.Operation.Valid
             Coordinate badNestedPt = null;
             for (int i = 0; i < p.NumHoles; i++)
             {
-                LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
+                ILinearRing hole = p.Holes[i];
                 badNestedPt = CheckShellInsideHole(shell, hole, graph);
                 if (badNestedPt == null) return;
             }
@@ -398,102 +396,152 @@ namespace DotSpatial.Topology.Operation.Valid
         /// This routine relies on the fact that while polygon shells may touch at one or
         /// more vertices, they cannot touch at ALL vertices.
         /// </summary>
-        private void CheckShellsNotNested(IGeometry mp, GeometryGraph graph)
-        {
+        private void CheckShellsNotNested(IMultiPolygon mp, GeometryGraph graph)
+        {            
             for (int i = 0; i < mp.NumGeometries; i++)
-            {
-                Polygon p = (Polygon)mp.GetGeometryN(i);
-                LinearRing shell = (LinearRing)p.ExteriorRing;
+            {                
+                IPolygon p = (IPolygon) mp.GetGeometryN(i);
+                ILinearRing shell = p.Shell;
                 for (int j = 0; j < mp.NumGeometries; j++)
-                {
+                {                    
                     if (i == j)
                         continue;
-                    Polygon p2 = (Polygon)mp.GetGeometryN(j);
+                    IPolygon p2 = (IPolygon) mp.GetGeometryN(j);                    
                     CheckShellNotNested(shell, p2, graph);
                     if (_validErr != null) return;
-                }
-            }
+                }                
+            }         
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="graph"></param>
         private void CheckTooFewPoints(GeometryGraph graph)
         {
             if (graph.HasTooFewPoints)
             {
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.TooFewPoints, graph.InvalidPoint);
-                return;
+                _validErr = new TopologyValidationError(TopologyValidationErrorType.TooFewPoints,
+                    graph.InvalidPoint);
             }
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="g"></param>
         private void CheckValid(IGeometry g)
         {
+            if(isChecked) 
+                return;
+            
             _validErr = null;
 
-            if (g.IsEmpty) return;
-            CheckValidCoordinates(g);
-            if (g is ILineString)
-                CheckValidLineString(g);
-            ILinearRing r = g as ILinearRing;
-            if (r != null) CheckValidRing(r);
-            IPolygon p = g as IPolygon;
-            if (p != null) CheckValidPolygon(p);
-            IMultiPolygon mp = g as IMultiPolygon;
-            if (mp != null) CheckValidMultipolygon(mp);
-            else
-            {
-                IGeometryCollection gc = g as IGeometryCollection;
-                if (gc != null) CheckValidCollection(gc);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="gc"></param>
-        private void CheckValidCollection(IGeometryCollection gc)
-        {
-            foreach (Geometry g in gc.Geometries)
-            {
-                CheckValid(g);
-                if (_validErr != null) return;
-            }
+            if (g.IsEmpty) return;            
+            
+            if (g is IPoint) 
+                CheckValid((IPoint) g);            
+            else if (g is IMultiPoint) 
+                CheckValid((IMultiPoint) g);
+            else if (g is ILinearRing) // LineString also handles LinearRings
+                CheckValid((ILinearRing) g);
+            else if (g is ILineString) 
+                CheckValid((ILineString) g);
+            else if (g is IPolygon) 
+                CheckValid((IPolygon) g);
+            else if (g is IMultiPolygon) 
+                CheckValid((IMultiPolygon) g);
+            else if (g is IGeometryCollection)
+                CheckValid((IGeometryCollection) g);
+            else throw new NotSupportedException(g.GetType().FullName);
         }
 
         /// <summary>
         /// Checks validity of a Point.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValidCoordinates(IBasicGeometry g)
+        private void CheckValid(IPoint g)
         {
             CheckInvalidCoordinates(g.Coordinates);
         }
 
         /// <summary>
-        /// Checks validity of a LineString.
+        /// Checks validity of a MultiPoint.
+        /// </summary>
+        /// <param name="g"></param>
+        private void CheckValid(IMultiPoint g)
+        {
+            CheckInvalidCoordinates(g.Coordinates);
+        }
+
+        /// <summary>
+        /// Checks validity of a LineString.  
         /// Almost anything goes for lineStrings!
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValidLineString(IGeometry g)
+        private void CheckValid(ILineString g)
         {
+            CheckInvalidCoordinates(g.Coordinates);
+            if (_validErr != null) return;
             GeometryGraph graph = new GeometryGraph(0, g);
             CheckTooFewPoints(graph);
         }
 
         /// <summary>
-        ///
+        /// Checks validity of a LinearRing.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValidMultipolygon(IMultiPolygon g)
+        private void CheckValid(ILinearRing g)
         {
-            foreach (Polygon p in g.Geometries)
+            CheckInvalidCoordinates(g.Coordinates);
+            if (_validErr != null) return;
+            CheckClosedRing(g);
+            if (_validErr != null) return;
+
+            GeometryGraph graph = new GeometryGraph(0, g);
+            CheckTooFewPoints(graph);
+            if (_validErr != null) return;
+            LineIntersector li = new RobustLineIntersector();
+            graph.ComputeSelfNodes(li, true);
+            CheckNoSelfIntersectingRings(graph);
+        }
+
+        /// <summary>
+        /// Checks the validity of a polygon and sets the validErr flag.
+        /// </summary>
+        /// <param name="g"></param>
+        private void CheckValid(IPolygon g)
+        {
+            CheckInvalidCoordinates(g);
+            if (_validErr != null) return;
+            CheckClosedRings(g);
+            if (_validErr != null) return;
+
+            GeometryGraph graph = new GeometryGraph(0, g);
+            CheckTooFewPoints(graph);
+            if (_validErr != null) return;
+            CheckConsistentArea(graph);
+            if (_validErr != null) return;
+            if (!IsSelfTouchingRingFormingHoleValid)
             {
+                CheckNoSelfIntersectingRings(graph);
+                if (_validErr != null) return;
+            }
+            CheckHolesInShell(g, graph);
+            if (_validErr != null) return;
+            CheckHolesNotNested(g, graph);
+            if (_validErr != null) return;
+            CheckConnectedInteriors(graph);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="g"></param>
+        private void CheckValid(IMultiPolygon g)
+        {
+            foreach(IPolygon p in g.Geometries)
+            {                                                
                 CheckInvalidCoordinates(p);
                 if (_validErr != null) return;
                 CheckClosedRings(p);
@@ -510,13 +558,13 @@ namespace DotSpatial.Topology.Operation.Valid
                 CheckNoSelfIntersectingRings(graph);
                 if (_validErr != null) return;
             }
-            foreach (Polygon p in g.Geometries)
-            {
+            foreach(IPolygon p in g.Geometries)
+            {                
                 CheckHolesInShell(p, graph);
                 if (_validErr != null) return;
             }
-            foreach (Polygon p in g.Geometries)
-            {
+            foreach (IPolygon p in g.Geometries)
+            {                                
                 CheckHolesNotNested(p, graph);
                 if (_validErr != null) return;
             }
@@ -526,41 +574,16 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        /// Checks the validity of a polygon and sets the validErr flag.
+        /// 
         /// </summary>
-        /// <param name="g"></param>
-        private void CheckValidPolygon(IPolygon g)
+        /// <param name="gc"></param>
+        private void CheckValid(IGeometryCollection gc)
         {
-            CheckClosedRings(g);
-            if (_validErr != null) return;
-
-            GeometryGraph graph = new GeometryGraph(0, g);
-            CheckConsistentArea(graph);
-            if (_validErr != null) return;
-            if (!IsSelfTouchingRingFormingHoleValid)
-            {
-                CheckNoSelfIntersectingRings(graph);
+            foreach(IGeometry g in gc.Geometries)
+            {                
+                CheckValid(g);
                 if (_validErr != null) return;
             }
-            CheckHolesInShell(g, graph);
-            if (_validErr != null) return;
-            CheckHolesNotNested(g, graph);
-            if (_validErr != null) return;
-            CheckConnectedInteriors(graph);
-        }
-
-        /// <summary>
-        /// Checks validity of a LinearRing.
-        /// </summary>
-        /// <param name="g"></param>
-        private void CheckValidRing(ILinearRing g)
-        {
-            CheckClosedRing(g);
-            if (_validErr != null) return;
-            GeometryGraph graph = new GeometryGraph(0, g);
-            LineIntersector li = new RobustLineIntersector();
-            graph.ComputeSelfNodes(li, true);
-            CheckNoSelfIntersectingRings(graph);
         }
 
         /// <summary>
@@ -578,9 +601,9 @@ namespace DotSpatial.Topology.Operation.Valid
             // find a point in the testCoords which is not a node of the searchRing
             EdgeIntersectionList eiList = searchEdge.EdgeIntersectionList;
             // somewhat inefficient - is there a better way? (Use a node map, for instance?)
-            foreach (Coordinate pt in testCoords)
-                if (!eiList.IsIntersection(pt))
-                    return pt;
+            foreach(Coordinate pt in testCoords)
+                if(!eiList.IsIntersection(pt))
+                    return pt;            
             return null;
         }
 
@@ -593,13 +616,13 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <returns><c>true</c> if the coordinate is valid.</returns>
         public static bool IsValidCoordinate(Coordinate coord)
         {
-            if (Double.IsNaN(coord.X))
+            if (Double.IsNaN(coord.X))      
                 return false;
-            if (Double.IsInfinity(coord.X))
+            if (Double.IsInfinity(coord.X)) 
                 return false;
-            if (Double.IsNaN(coord.Y))
+            if (Double.IsNaN(coord.Y))      
                 return false;
-            if (Double.IsInfinity(coord.Y))
+            if (Double.IsInfinity(coord.Y)) 
                 return false;
             return true;
         }

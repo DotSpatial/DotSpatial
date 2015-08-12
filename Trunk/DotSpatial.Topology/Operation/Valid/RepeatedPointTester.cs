@@ -28,7 +28,7 @@ using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
-    /// <summary>
+    /// <summary> 
     /// Implements the appropriate checks for repeated points
     /// (consecutive identical coordinates) as defined in the
     /// NTS spec.
@@ -45,7 +45,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual Coordinate Coordinate
         {
@@ -60,7 +60,27 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Methods
 
         /// <summary>
-        ///
+        /// 
+        /// </summary>
+        /// <param name="g"></param>
+        /// <returns></returns>
+        public bool HasRepeatedPoint(IGeometry g)
+        {
+            if (g.IsEmpty)  return false;
+            if (g is IPoint) return false;
+            else if (g is IMultiPoint) return false;
+            // LineString also handles LinearRings
+            else if (g is ILineString) 
+                return HasRepeatedPoint((g).Coordinates);
+            else if (g is IPolygon)
+                return HasRepeatedPoint((IPolygon) g);
+            else if (g is IGeometryCollection) 
+                return HasRepeatedPoint((IGeometryCollection) g);
+            else  throw new NotSupportedException(g.GetType().FullName);
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
@@ -78,27 +98,7 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        protected virtual bool HasRepeatedPoint(IGeometry g)
-        {
-            if (g.IsEmpty) return false;
-            if (g is Point) return false;
-            if (g is MultiPoint) return false;
-            // LineString also handles LinearRings
-            if (g is LineString)
-                return HasRepeatedPoint(g.Coordinates);
-            if (g is Polygon)
-                return HasRepeatedPoint((IPolygon)g);
-            if (g is GeometryCollection)
-                return HasRepeatedPoint((IGeometryCollection)g);
-            throw new NotSupportedException(g.GetType().FullName);
-        }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -107,13 +107,13 @@ namespace DotSpatial.Topology.Operation.Valid
             if (HasRepeatedPoint(p.Shell.Coordinates))
                 return true;
             for (int i = 0; i < p.NumHoles; i++)
-                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates))
-                    return true;
+                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates)) 
+                    return true;            
             return false;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="gc"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace DotSpatial.Topology.Operation.Valid
             for (int i = 0; i < gc.NumGeometries; i++)
             {
                 IGeometry g = gc.GetGeometryN(i);
-                if (HasRepeatedPoint(g))
+                if (HasRepeatedPoint(g)) 
                     return true;
             }
             return false;

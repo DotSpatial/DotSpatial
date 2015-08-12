@@ -49,7 +49,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="graph"></param>
         public SimpleNestedRingTester(GeometryGraph graph)
@@ -62,7 +62,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual Coordinate NestedPoint
         {
@@ -77,28 +77,28 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(LinearRing ring)
+        public virtual void Add(ILinearRing ring)
         {
             _rings.Add(ring);
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         public virtual bool IsNonNested()
         {
-            for (int i = 0; i < _rings.Count; i++)
+            for (int i = 0; i < _rings.Count; i++) 
             {
-                LinearRing innerRing = (LinearRing)_rings[i];
+                ILinearRing innerRing = (ILinearRing) _rings[i];
                 IList<Coordinate> innerRingPts = innerRing.Coordinates;
 
-                for (int j = 0; j < _rings.Count; j++)
+                for (int j = 0; j < _rings.Count; j++) 
                 {
-                    LinearRing searchRing = (LinearRing)_rings[j];
+                    ILinearRing searchRing = (ILinearRing) _rings[j];
                     IList<Coordinate> searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;

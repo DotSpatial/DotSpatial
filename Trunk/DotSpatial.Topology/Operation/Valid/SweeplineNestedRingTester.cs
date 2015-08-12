@@ -45,13 +45,12 @@ namespace DotSpatial.Topology.Operation.Valid
         private readonly IList _rings = new ArrayList();
         private Coordinate _nestedPt;
         private SweepLineIndex _sweepLine;
-
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="graph"></param>
         public SweeplineNestedRingTester(GeometryGraph graph)
@@ -64,13 +63,13 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual Coordinate NestedPoint
         {
             get
             {
-                return _nestedPt;
+                return _nestedPt; 
             }
         }
 
@@ -79,23 +78,23 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(LinearRing ring)
+        public virtual void Add(ILinearRing ring)
         {
             _rings.Add(ring);
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         private void BuildIndex()
         {
             _sweepLine = new SweepLineIndex();
-            for (int i = 0; i < _rings.Count; i++)
+            for (int i = 0; i < _rings.Count; i++) 
             {
-                LinearRing ring = (LinearRing)_rings[i];
+                ILinearRing ring = (ILinearRing) _rings[i];
                 IEnvelope env = ring.EnvelopeInternal;
                 SweepLineInterval sweepInt = new SweepLineInterval(env.Minimum.X, env.Maximum.X, ring);
                 _sweepLine.Add(sweepInt);
@@ -103,7 +102,7 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="innerRing"></param>
         /// <param name="searchRing"></param>
@@ -117,16 +116,16 @@ namespace DotSpatial.Topology.Operation.Valid
             Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
             bool isInside = CgAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
-            if (isInside)
+            if (isInside) 
             {
-                _nestedPt = new Coordinate(innerRingPt);
+                _nestedPt = innerRingPt;
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         public virtual bool IsNonNested()
@@ -142,7 +141,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Classes
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public class OverlapAction : ISweepLineOverlapAction
         {
@@ -156,7 +155,7 @@ namespace DotSpatial.Topology.Operation.Valid
             #region Constructors
 
             /// <summary>
-            ///
+            /// 
             /// </summary>
             /// <param name="container"></param>
             public OverlapAction(SweeplineNestedRingTester container)
@@ -169,13 +168,13 @@ namespace DotSpatial.Topology.Operation.Valid
             #region Properties
 
             /// <summary>
-            ///
+            /// 
             /// </summary>
             public virtual bool IsNonNested
             {
-                get
-                {
-                    return _isNonNested;
+                get 
+                { 
+                    return _isNonNested; 
                 }
             }
 
@@ -184,15 +183,15 @@ namespace DotSpatial.Topology.Operation.Valid
             #region Methods
 
             /// <summary>
-            ///
+            /// 
             /// </summary>
             /// <param name="s0"></param>
             /// <param name="s1"></param>
             public virtual void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
-                LinearRing innerRing = (LinearRing)s0.Item;
-                LinearRing searchRing = (LinearRing)s1.Item;
-                if (innerRing == searchRing)
+                ILinearRing innerRing = (ILinearRing) s0.Item;
+                ILinearRing searchRing = (ILinearRing) s1.Item;
+                if (innerRing == searchRing) 
                     return;
                 if (_container.IsInside(innerRing, searchRing))
                     _isNonNested = false;

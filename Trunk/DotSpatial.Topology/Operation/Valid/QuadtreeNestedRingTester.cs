@@ -52,7 +52,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="graph"></param>
         public QuadtreeNestedRingTester(GeometryGraph graph)
@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual Coordinate NestedPoint
         {
@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Operation.Valid
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="ring"></param>
         public virtual void Add(ILinearRing ring)
@@ -90,7 +90,22 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        ///
+        /// 
+        /// </summary>
+        private void BuildQuadtree()
+        {
+            _quadtree = new Quadtree<ILinearRing>();
+
+            for (int i = 0; i < _rings.Count; i++)
+            {
+                ILinearRing ring = _rings[i];
+                IEnvelope env = ring.EnvelopeInternal;
+                _quadtree.Insert(env, ring);
+            }
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <returns></returns>
         public virtual bool IsNonNested()
@@ -100,13 +115,13 @@ namespace DotSpatial.Topology.Operation.Valid
             for (int i = 0; i < _rings.Count; i++)
             {
                 ILinearRing innerRing = _rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                var innerRingPts = innerRing.Coordinates;
 
                 var results = _quadtree.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
                     ILinearRing searchRing = results[j];
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    var searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
@@ -124,21 +139,6 @@ namespace DotSpatial.Topology.Operation.Valid
                 }
             }
             return true;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildQuadtree()
-        {
-            _quadtree = new Quadtree<ILinearRing>();
-
-            for (int i = 0; i < _rings.Count; i++)
-            {
-                ILinearRing ring = _rings[i];
-                Envelope env = ring.EnvelopeInternal;
-                _quadtree.Insert(env, ring);
-            }
         }
 
         #endregion

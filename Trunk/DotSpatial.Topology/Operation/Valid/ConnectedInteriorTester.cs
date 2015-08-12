@@ -92,9 +92,9 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
-        private IList BuildEdgeRings(IList dirEdges)
+        private IList<EdgeRing> BuildEdgeRings(IEnumerable<EdgeEnd> dirEdges)
         {
-            IList edgeRings = new ArrayList();
+            IList<EdgeRing> edgeRings = new List<EdgeRing>();
             foreach (DirectedEdge de in dirEdges)
             {
                 // if this edge has not yet been processed
@@ -103,8 +103,8 @@ namespace DotSpatial.Topology.Operation.Valid
                     MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
 
                     er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IList minEdgeRings = er.BuildMinimalRings();
-                    foreach (object o in minEdgeRings)
+                    IList<EdgeRing> minEdgeRings = er.BuildMinimalRings();
+                    foreach(EdgeRing o in minEdgeRings)
                         edgeRings.Add(o);
                 }
             }
@@ -117,7 +117,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <param name="coord"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private static Coordinate FindDifferentPoint(IEnumerable<Coordinate> coord, Coordinate pt)
+        public static Coordinate FindDifferentPoint(IEnumerable<Coordinate> coord, Coordinate pt)
         {
             foreach (Coordinate c in coord)
                 if (!c.Equals(pt))
@@ -129,28 +129,28 @@ namespace DotSpatial.Topology.Operation.Valid
         /// Check if any shell ring has an unvisited edge.
         /// A shell ring is a ring which is not a hole and which has the interior
         /// of the parent area on the RHS.
-        /// (Notice that there may be non-hole rings with the interior on the LHS,
+        /// (Note that there may be non-hole rings with the interior on the LHS,
         /// since the interior of holes will also be polygonized into CW rings
         /// by the <c>LinkAllDirectedEdges()</c> step).
         /// </summary>
         /// <param name="edgeRings"></param>
         /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
-        private bool HasUnvisitedShellEdge(IList edgeRings)
+        private bool HasUnvisitedShellEdge(IList<EdgeRing> edgeRings)
         {
             for (int i = 0; i < edgeRings.Count; i++)
             {
-                EdgeRing er = (EdgeRing)edgeRings[i];
+                EdgeRing er = edgeRings[i];
                 if (er.IsHole) continue;
-                IList edges = er.Edges;
-                DirectedEdge de = (DirectedEdge)edges[0];
+                IList<DirectedEdge> edges = er.Edges;
+                DirectedEdge de = edges[0];
                 // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, PositionType.Right) != LocationType.Interior) continue;
+                if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
 
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
                 for (int j = 0; j < edges.Count; j++)
                 {
-                    de = (DirectedEdge)edges[j];
+                    de = edges[j];
                     if (!de.IsVisited)
                     {
                         _disconnectedRingcoord = de.Coordinate;
@@ -162,13 +162,13 @@ namespace DotSpatial.Topology.Operation.Valid
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         public bool IsInteriorsConnected()
         {
             // node the edges, in case holes touch the shell
-            IList splitEdges = new ArrayList();
+            IList<Edge> splitEdges = new List<Edge>();
             _geomGraph.ComputeSplitEdges(splitEdges);
 
             // form the edges into rings
@@ -176,12 +176,12 @@ namespace DotSpatial.Topology.Operation.Valid
             graph.AddEdges(splitEdges);
             SetInteriorEdgesInResult(graph);
             graph.LinkResultDirectedEdges();
-            IList edgeRings = BuildEdgeRings(graph.EdgeEnds);
+            IList<EdgeRing> edgeRings = BuildEdgeRings(graph.EdgeEnds);
             /*
              * Mark all the edges for the edgeRings corresponding to the shells
-             * of the input polygons.  Notice only ONE ring gets marked for each shell.
+             * of the input polygons. Note only ONE ring gets marked for each shell.
              */
-            VisitShellInteriors(_geomGraph.Geometry, graph);
+            VisitShellInteriors(this._geomGraph.Geometry, graph);
 
             /*
              * If there are any unvisited shell edges
@@ -199,9 +199,9 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <param name="graph"></param>
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
-            foreach (DirectedEdge de in graph.EdgeEnds)
-                if (de.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
-                    de.IsInResult = true;
+            foreach (DirectedEdge de in graph.EdgeEnds)               
+                if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                    de.InResult = true;
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="graph"></param>
-        private static void VisitInteriorRing(IBasicGeometry ring, PlanarGraph graph)
+        private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
             IList<Coordinate> pts = ring.Coordinates;
             Coordinate pt0 = pts[0];
@@ -233,37 +233,37 @@ namespace DotSpatial.Topology.Operation.Valid
         ///
         /// </summary>
         /// <param name="start"></param>
-        private static void VisitLinkedDirectedEdges(DirectedEdge start)
+        protected void VisitLinkedDirectedEdges(DirectedEdge start)
         {
             DirectedEdge startDe = start;
             DirectedEdge de = start;
             do
             {
                 if (de == null) throw new NullEdgeException();
-                de.IsVisited = true;
+                de.Visited = true;
                 de = de.Next;
             }
             while (de != startDe);
         }
 
         /// <summary>
-        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.
+        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.  
         /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
         /// this indicates a disconnected interior.
         /// </summary>
         /// <param name="g"></param>
         /// <param name="graph"></param>
-        private static void VisitShellInteriors(IGeometry g, PlanarGraph graph)
+        private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            if (g is Polygon)
+            if (g is IPolygon) 
             {
-                Polygon p = (Polygon)g;
+                IPolygon p = (IPolygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
-            if (g is MultiPolygon)
+            if (g is IMultiPolygon) 
             {
-                MultiPolygon mp = (MultiPolygon)g;
-                foreach (Polygon p in mp.Geometries)
+                IMultiPolygon mp = (IMultiPolygon) g;
+                foreach (IPolygon p in mp.Geometries) 
                     VisitInteriorRing(p.Shell, graph);
             }
         }

@@ -31,7 +31,7 @@ using DotSpatial.Topology.Operation.Relate;
 
 namespace DotSpatial.Topology.Operation.Valid
 {
-    /// <summary>
+    /// <summary> 
     /// Checks that a {GeometryGraph} representing an area
     /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
@@ -40,27 +40,27 @@ namespace DotSpatial.Topology.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester
+    public class ConsistentAreaTester 
     {
         #region Fields
 
-        private readonly GeometryGraph _geomGraph;
-        private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly RelateNodeGraph _nodeGraph = new RelateNodeGraph();
+        private readonly GeometryGraph geomGraph;
+        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
         // the intersection point found (if any)
-        private Coordinate _invalidPoint;
+        private Coordinate invalidPoint;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConsistentAreaTester(GeometryGraph geomGraph)
         {
-            _geomGraph = geomGraph;
+            this.geomGraph = geomGraph;
         }
 
         #endregion
@@ -83,15 +83,15 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode)nodeIt.Current;
+                    RelateNode node = (RelateNode) nodeIt.Current;
                     for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
                     {
-                        EdgeEndBundle eeb = (EdgeEndBundle)i.Current;
+                        EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
-                            _invalidPoint = eeb.Edge.GetCoordinate(0);
+                            invalidPoint = eeb.Edge.GetCoordinate(0);
                             return true;
                         }
                     }
@@ -102,17 +102,17 @@ namespace DotSpatial.Topology.Operation.Valid
 
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
-        /// </summary>
+        /// </summary>        
         public virtual Coordinate InvalidPoint
         {
             get
             {
-                return _invalidPoint;
+                return invalidPoint;
             }
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public virtual bool IsNodeConsistentArea
         {
@@ -122,13 +122,13 @@ namespace DotSpatial.Topology.Operation.Valid
                 * To fully check validity, it is necessary to
                 * compute ALL intersections, including self-intersections within a single edge.
                 */
-                SegmentIntersector intersector = _geomGraph.ComputeSelfNodes(_li, true);
+                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true);
                 if (intersector.HasProperIntersection)
                 {
-                    _invalidPoint = intersector.ProperIntersectionPoint;
+                    invalidPoint = intersector.ProperIntersectionPoint;
                     return false;
                 }
-                _nodeGraph.Build(_geomGraph);
+                nodeGraph.Build(geomGraph);
                 return IsNodeEdgeAreaLabelsConsistent;
             }
         }
@@ -141,12 +141,12 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode)nodeIt.Current;
-                    if (!node.Edges.IsAreaLabelsConsistent)
+                    RelateNode node = (RelateNode) nodeIt.Current;
+                    if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
-                        _invalidPoint = (Coordinate)node.Coordinate.Clone();
+                        invalidPoint = (Coordinate) node.Coordinate.Clone();
                         return false;
                     }
                 }

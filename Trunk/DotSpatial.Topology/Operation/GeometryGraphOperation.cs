@@ -29,7 +29,7 @@ using DotSpatial.Topology.GeometriesGraph;
 namespace DotSpatial.Topology.Operation
 {
     /// <summary>
-    /// The base class for operations that require <c>GeometryGraph</c>s.
+    /// The base class for operations that require <see cref="GeometryGraph"/>s.
     /// </summary>
     public class GeometryGraphOperation
     {
@@ -38,7 +38,12 @@ namespace DotSpatial.Topology.Operation
         /// <summary>
         /// The operation args into an array so they can be accessed by index.
         /// </summary>
-        protected readonly GeometryGraph[] Arg;
+        protected GeometryGraph[] arg;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IPrecisionModel resultPrecisionModel;
 
         private LineIntersector _li = new RobustLineIntersector();
 
@@ -47,30 +52,36 @@ namespace DotSpatial.Topology.Operation
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         public GeometryGraphOperation(IGeometry g0, IGeometry g1)
+            :this(g0, g1, BoundaryNodeRules.OgcSfsBoundaryRule /*BoundaryNodeRules.EndpointBoundaryRule*/)
+        {}
+
+        public GeometryGraphOperation(IGeometry g0, IGeometry g1, IBoundaryNodeRule boundaryNodeRule)
         {
             // use the most precise model for the result
-            ComputationPrecision = g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0 ? new PrecisionModel(g0.PrecisionModel) : new PrecisionModel(g1.PrecisionModel);
+            if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
+                 ComputationPrecision = g0.PrecisionModel;
+            else ComputationPrecision = g1.PrecisionModel;
 
-            Arg = new GeometryGraph[2];
-            Arg[0] = new GeometryGraph(0, g0);
-            Arg[1] = new GeometryGraph(1, g1);
+            arg = new GeometryGraph[2];
+            arg[0] = new GeometryGraph(0, g0, boundaryNodeRule);
+            arg[1] = new GeometryGraph(1, g1, boundaryNodeRule);
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="g0"></param>
-        public GeometryGraphOperation(IGeometry g0)
+        public GeometryGraphOperation(IGeometry g0) 
         {
-            ComputationPrecision = new PrecisionModel(g0.PrecisionModel);
+            ComputationPrecision = g0.PrecisionModel;
 
-            Arg = new GeometryGraph[1];
-            Arg[0] = new GeometryGraph(0, g0);
+            arg = new GeometryGraph[1];
+            arg[0] = new GeometryGraph(0, g0);;
         }
 
         #endregion
@@ -78,25 +89,25 @@ namespace DotSpatial.Topology.Operation
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        protected PrecisionModel ComputationPrecision
+        protected IPrecisionModel ComputationPrecision
         {
             get
             {
-                return ResultPrecisionModel;
+                return resultPrecisionModel;
             }
             set
             {
-                ResultPrecisionModel = value;
-                LineIntersector.PrecisionModel = ResultPrecisionModel;
+                resultPrecisionModel = value;
+                lineIntersector.PrecisionModel = resultPrecisionModel;
             }
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        protected LineIntersector LineIntersector
+        protected LineIntersector lineIntersector
         {
             get
             {
@@ -106,25 +117,21 @@ namespace DotSpatial.Topology.Operation
             {
                 _li = value;
             }
-        }
 
-        /// <summary>
-        ///
-        /// </summary>
-        protected PrecisionModel ResultPrecisionModel { get; set; }
+        }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public IGeometry GetArgGeometry(int i)
         {
-            return Arg[i].Geometry;
+            return arg[i].Geometry; 
         }
 
         #endregion
