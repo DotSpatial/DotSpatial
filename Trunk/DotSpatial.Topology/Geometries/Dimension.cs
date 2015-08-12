@@ -29,11 +29,39 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// Class containing static methods for conversions between Dimension values and characters.
     /// </summary>
-    public class Dimension
+    public static class Dimension
     {
-        #region Constructors
+        #region Constant Fields
 
-        private Dimension() { }
+        /// <summary>
+        /// Symbol for the A (dimension 2) pattern matrix entry
+        /// </summary>
+        public const char SymA = '2';
+
+        /// <summary>
+        /// Symbol for the DONTCARE pattern matrix entry
+        /// </summary>
+        public const char SymDontcare = '*';
+
+        /// <summary>
+        /// Symbol for the FALSE pattern matrix entry
+        /// </summary>
+        public const char SymFalse = 'F';
+
+        /// <summary>
+        /// Symbol for the L (dimension 1) pattern matrix entry
+        /// </summary>
+        public const char SymL = '1';
+
+        /// <summary>
+        /// Symbol for the P (dimension 0) pattern matrix entry
+        /// </summary>
+        public const char SymP = '0';
+
+        /// <summary>
+        /// Symbol for the TRUE pattern matrix entry
+        /// </summary>
+        public const char SymTrue = 'T';
 
         #endregion
 
@@ -52,17 +80,17 @@ namespace DotSpatial.Topology.Geometries
             switch (dimensionValue)
             {
                 case DimensionType.False:
-                    return 'F';
+                    return SymFalse;
                 case DimensionType.True:
-                    return 'T';
+                    return SymTrue;
                 case DimensionType.Dontcare:
-                    return '*';
+                    return SymDontcare;
                 case DimensionType.Point:
-                    return '0';
+                    return SymP;
                 case DimensionType.Curve:
-                    return '1';
+                    return SymL;
                 case DimensionType.Surface:
-                    return '2';
+                    return SymA;
                 default:
                     throw new ArgumentOutOfRangeException("Unknown dimension value: " + dimensionValue);
             }
@@ -80,17 +108,17 @@ namespace DotSpatial.Topology.Geometries
         {
             switch (Char.ToUpper(dimensionSymbol))
             {
-                case 'F':
+                case SymFalse:
                     return DimensionType.False;
-                case 'T':
+                case SymTrue:
                     return DimensionType.True;
-                case '*':
+                case SymDontcare:
                     return DimensionType.Dontcare;
-                case '0':
+                case SymP:
                     return DimensionType.Point;
-                case '1':
+                case SymL:
                     return DimensionType.Curve;
-                case '2':
+                case SymA:
                     return DimensionType.Surface;
                 default:
                     throw new ArgumentOutOfRangeException("Unknown dimension symbol: " + dimensionSymbol);

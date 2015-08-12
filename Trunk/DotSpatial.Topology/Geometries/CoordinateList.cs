@@ -69,7 +69,7 @@ namespace DotSpatial.Topology.Geometries
                 Coordinate last = null;
                 foreach (var coord in coords)
                 {
-                    if(null != last)
+                    if (null != last)
                     {
                         if (last.Equals2D(coord))
                             continue;
@@ -88,6 +88,26 @@ namespace DotSpatial.Topology.Geometries
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Adds a section of an array of coordinates to the list.
+        /// </summary>
+        /// <param name="coord">The coordinates</param>
+        /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed</param>
+        /// <param name="start">The index to start from</param>
+        /// <param name="end">The index to add up to but not including</param>
+        /// <returns>true (as by general collection contract)</returns>
+        public bool Add(Coordinate[] coord, bool allowRepeated, int start, int end)
+        {
+            int inc = 1;
+            if (start > end) inc = -1;
+
+            for (int i = start; i != end; i += inc)
+            {
+                Add(coord[i], allowRepeated);
+            }
+            return true;
+        }
 
         /// <summary>
         /// Add an array of coordinates.
@@ -116,10 +136,57 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="coord">Coordinate to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
-        public virtual void Add(Coordinate coord, bool allowRepeated)
+        public virtual bool Add(Coordinate coord, bool allowRepeated)
         {
             // don't add duplicate coordinates
-            DoAdd(coord, allowRepeated);
+            return DoAdd(coord, allowRepeated);
+        }
+
+
+        /// <summary>
+        /// Inserts the specified coordinate at the specified position in this list.
+        /// </summary>
+        /// <param name="i">The position at which to insert</param>
+        /// <param name="coord">the coordinate to insert</param>
+        /// <param name="allowRepeated">if set to false, repeated coordinates are collapsed</param>
+        public void Add(int i, Coordinate coord, bool allowRepeated)
+        {
+            // don't add duplicate coordinates
+            if (!allowRepeated)
+            {
+                int size = Count;
+                if (size > 0)
+                {
+                    if (i > 0)
+                    {
+                        Coordinate prev = this[i - 1];
+                        if (prev.Equals2D(coord)) return;
+                    }
+                    if (i < size)
+                    {
+                        Coordinate next = this[i];
+                        if (next.Equals2D(coord)) return;
+                    }
+                }
+            }
+            Insert(i, coord);
+        }
+
+        /// <summary>
+        /// Add an array of coordinates.
+        /// </summary>
+        /// <param name="coll">Coordinates collection to be inserted.</param>
+        /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
+        /// <returns>Return true if at least one element has added (IList not empty).</returns>
+        public bool AddAll(IList<Coordinate> coll, bool allowRepeated)
+        {
+            bool isChanged = false;
+            foreach (Coordinate c in coll)
+            {
+                if (Add(c, allowRepeated))
+                    isChanged = true;
+            }
+            return isChanged;
         }
 
         /// <summary>
@@ -148,19 +215,15 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="allowRepeated"></param>
-        protected void DoAdd(Coordinate coord, bool allowRepeated)
+        protected bool DoAdd(Coordinate coord, bool allowRepeated)
         {
-            if (!allowRepeated)
+            if (!allowRepeated && Count >= 1)
             {
-                if (Count >= 1)
-                {
-                    Coordinate last = this[Count - 1];
-                    if (last.Equals2D(coord))
-                        return;
-                }
+                Coordinate last = this[Count - 1];
+                if (last.Equals2D(coord)) return false;
             }
             Add(coord);
-            return;
+            return true;
         }
 
         /// <summary>
@@ -175,6 +238,16 @@ namespace DotSpatial.Topology.Geometries
             {
                 DoAdd(coord, allowRepeated);
             }
+        }
+
+        /// <summary>
+        /// Returns the coordinate at specified index.
+        /// </summary>
+        /// <param name="i">Coordinate index.</param>
+        /// <return>Coordinate specified.</return>
+        public Coordinate GetCoordinate(int i)
+        {
+            return InnerList[i];
         }
 
         /// <summary>

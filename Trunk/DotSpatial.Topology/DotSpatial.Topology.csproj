@@ -180,6 +180,8 @@
     <Compile Include="Geometries\Implementation\DotSpatialAffineCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Implementation\PackedCoordinateSequence.cs" />
     <Compile Include="Geometries\Implementation\PackedCoordinateSequenceFactory.cs" />
+    <Compile Include="Geometries\IMultiCurve.cs" />
+    <Compile Include="Geometries\IMultiSurface.cs" />
     <Compile Include="Geometries\IPolygonal.cs" />
     <Compile Include="Geometries\IPrecisionModel.cs" />
     <Compile Include="Geometries\IPuntal.cs" />

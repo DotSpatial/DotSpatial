@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Mathematics;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -44,7 +45,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>New Coordinate array.</returns>
         public static Coordinate[] AtLeastNCoordinatesOrNothing(int n, Coordinate[] c)
         {
-            return (c.Length >= n) ? (c) : (new Coordinate[] { });
+            return c.Length >= n ? c : new Coordinate[] { };
         }
 
         /// <summary>
@@ -89,6 +90,40 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Creates a deep copy of a given section of a source <see cref="Coordinate"/> array into a destination Coordinate array.
+        /// The destination array must be an appropriate size to receive the copied coordinates.
+        /// </summary>
+        /// <param name="src">An array of Coordinates</param>
+        /// <param name="srcStart">The index to start copying from</param>
+        /// <param name="dest">The array to receive the deep-copied coordinates</param>
+        /// <param name="destStart">The destination index to start copying to</param>
+        /// <param name="length">The number of items to copy</param>
+        public static void CopyDeep(Coordinate[] src, int srcStart, Coordinate[] dest, int destStart, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                Coordinate c = new Coordinate(src[srcStart + i]);
+                dest[destStart + i] = c;
+            }
+        }
+
+        /// <summary>
+        /// Computes the <see cref="Envelope"/> of the coordinates.
+        /// </summary>
+        /// <param name="coordinates">the <see cref="Coordinate"/> array to scan.</param>
+        /// <returns>the <see cref="Envelope"/> of the <paramref name="coordinates"/>.</returns>
+        public static Envelope Envelope(Coordinate[] coordinates)
+        {
+            Envelope env = new Envelope();
+            for (int i = 0; i < coordinates.Length; i++)
+            {
+                Coordinate c = coordinates[i];
+                env.ExpandToInclude(c);
+            }
+            return env;
+        }
+
+        /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
         /// equal (as compared using Coordinate.Equals).
         /// </summary>
@@ -111,13 +146,13 @@ namespace DotSpatial.Topology.Geometries
 
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="IComparer" />
+        /// equal, using a user-defined <see cref="System.Collections.IComparer" /> 
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
         /// <param name="coord2">Another array of <see cref="Coordinate" />s.</param>
         /// <param name="coordinateComparer">
-        ///  A <see cref="IComparer" /> for <see cref="Coordinate" />s.
+        /// A <see cref="System.Collections.IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
         public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,
@@ -129,7 +164,6 @@ namespace DotSpatial.Topology.Geometries
                 return false;
             if (coord1.Length != coord2.Length)
                 return false;
-            // for (int i = 0; i < coord1.Length; i++)
             if (coordinateComparer.Compare(coord1, coord2) != 0)
                 return false;
             return true;
@@ -138,6 +172,9 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Extracts a subsequence of the input <see cref="Coordinate" /> array
         /// from indices <paramref name="start" /> to <paramref name="end"/> (inclusive).
+        /// The input indices are clamped to the array size;
+        /// If the end index is less than the start index,
+        /// the extracted array will be empty.
         /// </summary>
         /// <param name="pts">The input array.</param>
         /// <param name="start">The index of the start of the subsequence to extract.</param>
@@ -145,16 +182,22 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>A subsequence of the input array.</returns>
         public static Coordinate[] Extract(Coordinate[] pts, int start, int end)
         {
-            // Code using FLC features
-            int len = end - start + 1;
-            Coordinate[] extractPts = new Coordinate[len];
-            Array.Copy(pts, start, extractPts, 0, len);
+            start = MathUtil.Clamp(start, 0, pts.Length);
+            end = MathUtil.Clamp(end, -1, pts.Length);
 
-            /* Original JTS code
-            int iPts = 0;
-            for (int i = start; i <= end; i++)
-                extractPts[iPts++] = pts[i];
-            */
+            int npts = end - start + 1;
+            if (end < 0)
+                npts = 0;
+            if (start >= pts.Length)
+                npts = 0;
+            if (end < start)
+                npts = 0;
+
+            Coordinate[] extractPts = new Coordinate[npts];
+            if (npts == 0)
+                return extractPts;
+
+            Array.Copy(pts, start, extractPts, 0, npts);
             return extractPts;
         }
 
@@ -217,6 +260,26 @@ namespace DotSpatial.Topology.Geometries
             return -1;
         }
 
+        /**
+         * Extracts the coordinates which intersect an {@link Envelope}.
+         * 
+         * @param coordinates the coordinates to scan
+         * @param env the envelope to intersect with
+         * @return an array of the coordinates which intersect the envelope
+         */
+
+        public static Coordinate[] Intersection(Coordinate[] coordinates, Envelope env)
+        {
+            CoordinateList coordList = new CoordinateList();
+            for (int i = 0; i < coordinates.Length; i++)
+            {
+                Coordinate c = coordinates[i];
+                if (env.Intersects(c))
+                    coordList.Add(c, true);
+            }
+            return coordList.ToCoordinateArray();
+        }
+
         /// <summary>
         /// Determines whether two <see cref="Coordinate" /> arrays of equal length
         /// are equal in opposite directions.
@@ -237,11 +300,25 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
+        /// Self-intersection is not checked.
+        /// </summary>
+        /// <param name="pts">An array of Coordinates</param>
+        /// <returns>true if the coordinate form a ring.</returns>
+        public static bool IsRing(Coordinate[] pts)
+        {
+            if (pts.Length < 4)
+                return false;
+            if (!pts[0].Equals2D(pts[pts.Length - 1]))
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Returns the minimum coordinate, using the usual lexicographic comparison.
         /// </summary>
         /// <param name="coordinates">Array to search.</param>
         /// <returns>The minimum coordinate in the array, found using <c>CompareTo</c>.</returns>
-        /// <seeaalso cref="Coordinate.CompareTo"/>
         public static Coordinate MinCoordinate(Coordinate[] coordinates)
         {
             Coordinate minCoord = null;
@@ -252,13 +329,13 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s
+        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s 
         /// which is not contained in another list of <see cref="Coordinate "/>s.
         /// </summary>
         /// <param name="testPts">The <see cref="Coordinate" />s to test.</param>
         /// <param name="pts">An array of <see cref="Coordinate" />s to test the input points against.</param>
         /// <returns>
-        /// A <see cref="Coordinate" /> from <paramref name="testPts" />
+        /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
@@ -270,6 +347,22 @@ namespace DotSpatial.Topology.Geometries
                     return testPt;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Collapses a coordinate array to remove all null elements.
+        /// </summary>
+        /// <param name="coord">The coordinate array to collapse</param>
+        /// <returns>An Array containing only non-null elements</returns>
+        public static Coordinate[] RemoveNull(Coordinate[] coord)
+        {
+            List<Coordinate> coordinateList = new List<Coordinate>(coord.Length);
+            foreach (Coordinate coordinate in coord)
+            {
+                if (coordinate != null)
+                    coordinateList.Add(coordinate);
+            }
+            return coordinateList.ToArray();
         }
 
         /// <summary>
@@ -293,19 +386,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="coord">Array of Coordinates.</param>
         public static void Reverse(Coordinate[] coord)
         {
-            // This implementation uses FCL capabilities
             Array.Reverse(coord);
-
-            /* Old code from JTS
-            int last = coord.Length - 1;
-            int mid = last / 2;
-            for (int i = 0; i <= mid; i++)
-            {
-                Coordinate tmp = coord[i];
-                coord[i] = coord[last - i];
-                coord[last - i] = tmp;
-            }
-            */
         }
 
         /// <summary>
@@ -325,16 +406,16 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="IList" /> of
+        /// Converts the given <see cref="System.Collections.ICollection" /> of 
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
         /// <returns></returns>
         /// <exception cref="InvalidCastException">
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
         /// </exception>
         [Obsolete("Use generic method instead")]
-        public static Coordinate[] ToCoordinateArray(IList coordList)
+        public static Coordinate[] ToCoordinateArray(ICollection coordList)
         {
             List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
             foreach (Coordinate coord in coordList)
@@ -343,12 +424,12 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="IList" /> of
+        /// Converts the given <see cref="ICollection{T}" /> of 
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
         /// <returns></returns>
-        public static Coordinate[] ToCoordinateArray(IList<Coordinate> coordList)
+        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
         {
             List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
             foreach (Coordinate coord in coordList)
@@ -366,7 +447,7 @@ namespace DotSpatial.Topology.Geometries
         /// they will compare as equal under this ordering.
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
-        /// </summary>
+        /// </summary>        
         public class BidirectionalComparator : IComparer<Coordinate[]>
         {
             #region Methods

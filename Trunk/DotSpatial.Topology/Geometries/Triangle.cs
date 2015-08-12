@@ -471,6 +471,56 @@ namespace DotSpatial.Topology.Geometries
             return new HCoordinate(l1, l2);
         }
 
+        ///<summary>
+        /// Computes the signed 2D area of a triangle.
+        ///</summary>
+        /// <remarks>
+        /// <para>
+        /// The area value is positive if the triangle is oriented CW,
+        /// and negative if it is oriented CCW.
+        /// </para>
+        /// <para>
+        /// The signed area value can be used to determine point orientation, but 
+        /// the implementation in this method is susceptible to round-off errors.  
+        /// Use <see cref="CGAlgorithms.OrientationIndex"/> for robust orientation
+        /// calculation.
+        /// </para>
+        /// </remarks>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The area of the triangle</returns>
+        /// <seealso cref="Area"/>
+        /// <seealso cref="CGAlgorithms.OrientationIndex"/>
+
+        public static double SignedArea(Coordinate a, Coordinate b, Coordinate c)
+        {
+            /*
+             * Uses the formula 1/2 * | u x v |
+             * where
+             * 	u,v are the side vectors of the triangle
+             *  x is the vector cross-product
+             * For 2D vectors, this formual simplifies to the expression below
+             */
+            return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
+        }
+
+        /// <summary>
+        /// Computes the signed 2D area of this triangle. The area value is positive if
+        /// the triangle is oriented CW, and negative if it is oriented CCW.
+        /// <para/>
+        /// The signed area value can be used to determine point orientation, but the
+        /// implementation in this method is susceptible to round-off errors. Use
+        /// <see cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        /// for robust orientation calculation.
+        /// </summary>
+        /// <returns>The signed 2D area of this triangle</returns>
+        /// <seealso cref="CGAlgorithms.OrientationIndex(Coordinate, Coordinate, Coordinate)"/>
+        public double SignedArea()
+        {
+            return SignedArea(_p0, _p1, _p2);
+        }
+
         #endregion
     }
 }

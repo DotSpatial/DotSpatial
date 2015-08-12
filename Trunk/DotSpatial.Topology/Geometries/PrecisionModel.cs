@@ -227,10 +227,7 @@ namespace DotSpatial.Topology.Geometries
         [Obsolete("Offsets are no longer used")]
         public virtual double OffsetY
         {
-            get
-            {
-                return 0;
-			}
+            get { return 0; }
         }
 
         ///// <summary>
