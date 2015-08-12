@@ -164,9 +164,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             int orientation = CgAlgorithms.ComputeOrientation(_minCoord, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
-            if (pPrev.Y < _minCoord.Y && pNext.Y < _minCoord.Y && orientation == CgAlgorithms.COUNTER_CLOCKWISE)
+            if (pPrev.Y < _minCoord.Y && pNext.Y < _minCoord.Y && orientation == CgAlgorithms.CounterClockwise)
                 usePrev = true;
-            else if (pPrev.Y > _minCoord.Y && pNext.Y > _minCoord.Y && orientation == CgAlgorithms.CLOCKWISE)
+            else if (pPrev.Y > _minCoord.Y && pNext.Y > _minCoord.Y && orientation == CgAlgorithms.Clockwise)
                 usePrev = true;
             // if both segments are on the same side, do nothing - either is safe
             // to select as a rightmost segment

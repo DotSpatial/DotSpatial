@@ -27,6 +27,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.IO;
+using DotSpatial.Topology.IO.GML2;
 using DotSpatial.Topology.Operation.Buffer;
 using DotSpatial.Topology.Operation.Distance;
 using DotSpatial.Topology.Operation.Overlay;
@@ -1392,7 +1394,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public virtual byte[] ToBinary()
         {
-            WkbWriter writer = new WkbWriter();
+            WKBWriter writer = new WKBWriter();
             return writer.Write(this);
         }
 
@@ -1403,7 +1405,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public virtual XmlReader ToGmlFeature()
         {
-            GmlWriter writer = new GmlWriter();
+            GMLWriter writer = new GMLWriter();
             return writer.Write(this);
         }
 
@@ -1430,7 +1432,7 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         public virtual string ToText()
         {
-            WktWriter writer = new WktWriter();
+            WKTWriter writer = new WKTWriter();
             return writer.Write(this);
         }
 

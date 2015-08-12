@@ -162,9 +162,9 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
                 offset = deltaY * 10.0;
             }
 
-            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env.MaxY + offset);
-            _frameVertex[1] = new Vertex(env.MinX - offset, env.MinY - offset);
-            _frameVertex[2] = new Vertex(env.MaxX + offset, env.MinY - offset);
+            _frameVertex[0] = new Vertex((env.Maximum.X + env.Minimum.X) / 2.0, env.Maximum.Y + offset);
+            _frameVertex[1] = new Vertex(env.Minimum.X - offset, env.Minimum.Y - offset);
+            _frameVertex[2] = new Vertex(env.Maximum.X + offset, env.Minimum.Y - offset);
 
             _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1].Coordinate);
             _frameEnv.ExpandToInclude(_frameVertex[2].Coordinate);

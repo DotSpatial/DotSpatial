@@ -69,8 +69,8 @@ namespace DotSpatial.Topology.Geometries.Utilities
             double armMaxLen = armRatio * radius;
             double insideRadius = (1 - armRatio) * radius;
 
-            double centreX = env.MinX + radius;
-            double centreY = env.MinY + radius;
+            double centreX = env.Minimum.X + radius;
+            double centreY = env.Minimum.Y + radius;
 
             Coordinate[] pts = new Coordinate[NumPoints + 1];
             int iPt = 0;

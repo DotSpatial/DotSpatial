@@ -335,7 +335,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             if (!p0.Equals(ep0))
                 return false;
-            return CgAlgorithms.ComputeOrientation(p0, p1, ep1) == CgAlgorithms.COLLINEAR &&
+            return CgAlgorithms.ComputeOrientation(p0, p1, ep1) == CgAlgorithms.Collinear &&
                    QuadrantOp.Quadrant(p0, p1) == QuadrantOp.Quadrant(ep0, ep1);
         }
 

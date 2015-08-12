@@ -133,7 +133,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
 
                 // skip if stabbing ray is right of the segment
-                if (CgAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CgAlgorithms.RIGHT) continue;
+                if (CgAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CgAlgorithms.Right) continue;
 
                 // stabbing line cuts this segment, so record it
                 int depth = dirEdge.GetDepth(PositionType.Left);

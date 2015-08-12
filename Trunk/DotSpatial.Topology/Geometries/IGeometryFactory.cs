@@ -27,49 +27,30 @@ using System.Collections.Generic;
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Factory for Geometry stuff
+    /// Supplies a set of utility methods for building Geometry objects 
+    /// from lists of Coordinates.
     /// </summary>
     public interface IGeometryFactory
     {
         #region Properties
 
         /// <summary>
-        /// CoordinateSequenceFactory that can manufacture a coordinate sequence
+        /// Gets the coordinate sequence factory to use when creating geometries.
         /// </summary>
         ICoordinateSequenceFactory CoordinateSequenceFactory { get; }
 
         /// <summary>
-        ///
+        /// Gets the PrecisionModel that Geometries created by this factory
+        /// will be associated with.
         /// </summary>
-        PrecisionModelType PrecisionModel
-        {
-            get;
-        }
+        IPrecisionModel PrecisionModel { get; }
 
         /// <summary>
-        ///
+        /// Gets the spatial reference id to assign when creating geometries
         /// </summary>
         int Srid
         {
             get;
-        }
-
-        /// <summary>
-        /// Floating reference
-        /// </summary>
-        IGeometryFactory Floating
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        IGeometryFactory FloatingSingle
-        {
-            get;
-            set;
         }
 
         #endregion
@@ -105,14 +86,31 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="coordinates">An array of objects that implement ICoordinate</param>
         /// <returns>An object that implements DotSpatial.Geometries.ILinearRing</returns>
-        ILinearRing CreateLinearRing(IList<Coordinate> coordinates);
+        ILinearRing CreateLinearRing(IEnumerable<Coordinate> coordinates);
 
-        /// <summary>
-        /// Creates an object that implements DotSpatial.Geometries.ILineString from an array of objects that implement DotSpatial.Geometries.ICoordinate
+        /// <summary> 
+        /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
+        /// create an empty LinearRing. The points must form a closed and simple
+        /// linestring. Consecutive points must not be equal.
         /// </summary>
-        /// <param name="coordinates">An array of objects that implement DotSpatial.Geometries.ICoordinate</param>
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        ILinearRing CreateLinearRing(ICoordinateSequence coordinates);
+
+        /// <summary> 
+        /// Creates a LineString using the given Coordinates; a null or empty array will
+        /// create an empty LineString. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns>A DotSpatial.Geometries.ILineString</returns>
         ILineString CreateLineString(IList<Coordinate> coordinates);
+
+        /// <summary> 
+        /// Creates a LineString using the given Coordinates; a null or empty array will
+        /// create an empty LineString. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        /// <returns>A LineString</returns>
+        ILineString CreateLineString(ICoordinateSequence coordinates);
 
         /// <summary>
         /// Creates a new object that implements DotSpatial.Geometries.MultiLineString
@@ -136,20 +134,46 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>An object that implements DotSpatial.Geometries.IMultiPoint</returns>
         IMultiPoint CreateMultiPoint(IEnumerable<Coordinate> coordinates);
 
-        /// <summary>
-        /// Creates an object that implements DotSpatial.Geometries.IMultiPolygon from an array of
-        /// objects that implement DotSpatial.Geometries.IPolygon
+        /// <summary> 
+        /// Creates a <see cref="IMultiPoint"/> using the given Points.
+        /// A null or empty array will  create an empty MultiPoint.
         /// </summary>
-        /// <param name="polygons">An Array of objects that implement DotSpatial.Geometries.IPolygon</param>
+        /// <param name="point">An array (without null elements), or an empty array, or <c>null</c>.</param>
+        /// <returns>A <see cref="IMultiPoint"/> object</returns>
+        IMultiPoint CreateMultiPoint(IEnumerable<IPoint> point);
+
+        /// <summary> 
+        /// Creates a <see cref="IMultiPoint"/> using the given CoordinateSequence.
+        /// A null or empty CoordinateSequence will create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence (possibly empty), or <c>null</c>.</param>
+        IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates);
+
+        /// <summary>
+        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
+        /// will create an empty Polygon. The polygons must conform to the
+        /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
+        /// Specification for SQL.
+        /// </summary>
+        /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
         /// <returns>An object that implements DotSpatial.Geometries.IMultiPolygon</returns>
         IMultiPolygon CreateMultiPolygon(IPolygon[] polygons);
 
         /// <summary>
-        /// Method to produce a point given a coordinate
+        /// Creates a Point using the given Coordinate; a null Coordinate will create
+        /// an empty Geometry.
         /// </summary>
-        /// <param name="coord">An object that implements DotSpatial.Geometries.ICoordinate</param>
+        /// <param name="coordinate">The coordinate</param>
         /// <returns>An object that implements DotSpatial.Geometries.IPoint</returns>
-        IPoint CreatePoint(Coordinate coord);
+        IPoint CreatePoint(Coordinate coordinate);
+
+        /// <summary>
+        /// Creates a <c>Point</c> using the given <c>CoordinateSequence</c>; a null or empty
+        /// CoordinateSequence will create an empty Point.
+        /// </summary>
+        /// <param name="coordinates">The coordiante sequence.</param>
+        /// <returns>A Point</returns>
+        IPoint CreatePoint(ICoordinateSequence coordinates);
 
         /// <summary>
         /// Creates an object that implements DotSpatial.Geometries.IPolygon given a specified
@@ -161,6 +185,37 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>An object that implements DotSpatial.Geometries.IPolygon</returns>
         IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes);
 
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        IPolygon CreatePolygon(ICoordinateSequence coordinates);
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="coordinates">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        IPolygon CreatePolygon(IEnumerable<Coordinate> coordinates);
+
+        /// <summary>
+        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// </summary>
+        /// <param name="shell">the outer boundary of the new <c>Polygon</c>, or
+        /// <c>null</c> or an empty <c>LinearRing</c> if
+        /// the empty geometry is to be created.</param>
+        /// <returns>The polygon</returns>
+        IPolygon CreatePolygon(ILinearRing shell);
+
+        /// <summary>
+        /// Creates a <see cref="IGeometry"/> with the same extent as the given envelope.
+        /// </summary>
+        IGeometry ToGeometry(IEnvelope envelopeInternal);
         #endregion
     }
 }

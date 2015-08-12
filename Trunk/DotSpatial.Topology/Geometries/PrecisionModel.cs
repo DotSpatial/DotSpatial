@@ -30,7 +30,9 @@ namespace DotSpatial.Topology.Geometries
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.
     /// In other words, specifies the grid of allowable
     /// points for all <c>Geometry</c>s.
-    /// The <c>makePrecise</c> method allows rounding a coordinate to
+    /// </summary>
+    /// <remarks>
+    /// The <c>MakePrecise</c> method allows rounding a coordinate to
     /// a "precise" value; that is, one whose
     /// precision is known exactly.
     /// Coordinates are assumed to be precise in geometries.
@@ -50,19 +52,28 @@ namespace DotSpatial.Topology.Geometries
     /// Fixed: represents a model with a fixed number of decimal places.
     /// </para>
     /// A Fixed Precision Model is specified by a scale factor.
-    /// The scale factor specifies the grid which numbers are rounded to.
+    /// The scale factor specifies the size of the grid which numbers are rounded to.
     /// Input coordinates are mapped to fixed coordinates according to the following
     /// equations:
-    ///  jtsPt.x = round((inputPt.x * scale ) / scale
-    ///  jtsPt.y = round((inputPt.y * scale ) / scale
-    /// Coordinates are represented internally as double-precision values.
+    /// <list>
+    /// <item>jtsPt.x = round( (inputPt.x * scale ) / scale</item>
+    /// <item>jtsPt.y = round( (inputPt.y * scale ) / scale</item>
+    /// </list>
+    /// <para>
+    /// For example, to specify 3 decimal places of precision, use a scale factor
+    /// of 1000. To specify -3 decimal places of precision (i.e. rounding to
+    /// the nearest 1000), use a scale factor of 0.001.
+    /// </para>
+    /// Coordinates are represented internally as Java double-precision values.
     /// Since .NET uses the IEEE-394 floating point standard, this
     /// provides 53 bits of precision. (Thus the maximum precisely representable
-    /// integer is 9, 007, 199, 254, 740, 992).
-    /// NTS methods currently do not handle inputs with different precision models.
-    /// </summary>
+    /// <i>integer</i> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
+    /// <para/>
+    /// NTS binary methods currently do not handle inputs which have different precision models.
+    /// The precision model of any constructed geometric value is undefined.
+    /// </remarks>
     [Serializable]
-    public class PrecisionModel : IComparable
+    public class PrecisionModel : IPrecisionModel
     {
         #region Constant Fields
 
@@ -71,11 +82,11 @@ namespace DotSpatial.Topology.Geometries
         /// double-precision numbers allow 53 bits of mantissa, the value is equal to
         /// 2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
         /// </summary>
-        public const double MAXIMUM_PRECISE_VALUE = 9007199254740992.0;
+        public const double MaximumPreciseValue = 9007199254740992.0;
 
-        private const int FIXED_PRECISION_DIGITS = 1;
-        private const int FLOATING_PRECISION_DIGITS = 16;
-        private const int FLOATING_SINGLE_PRECISION_DIGITS = 6;
+        private const int FixedPrecisionDigits = 1;
+        private const int FloatingPrecisionDigits = 16;
+        private const int FloatingSinglePrecisionDigits = 6;
 
         #endregion
 
@@ -178,11 +189,11 @@ namespace DotSpatial.Topology.Geometries
                 switch (_modelType)
                 {
                     case PrecisionModelType.Floating:
-                        return FLOATING_PRECISION_DIGITS;
+                        return FloatingPrecisionDigits;
                     case PrecisionModelType.FloatingSingle:
-                        return FLOATING_SINGLE_PRECISION_DIGITS;
+                        return FloatingSinglePrecisionDigits;
                     case PrecisionModelType.Fixed:
-                        return FIXED_PRECISION_DIGITS + (int)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
+                        return FixedPrecisionDigits + (int)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
                     default:
                         throw new ArgumentOutOfRangeException(_modelType.ToString());
                 }
@@ -219,17 +230,39 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return 0;
-            }
+			}
+        }
+
+        ///// <summary>
+        ///// Gets the type of this PrecisionModel.
+        ///// </summary>
+        ///// <returns></returns>
+        //public PrecisionModels GetPrecisionModelType()
+        //{
+        //    return _modelType;
+        //}
+
+        /// <summary>
+        /// Gets the type of this PrecisionModel.
+        /// </summary>
+        /// <returns></returns>
+        public PrecisionModelType PrecisionModelType
+        {
+            get { return _modelType; }
         }
 
         /// <summary>
-        /// Returns the multiplying factor used to obtain a precise coordinate.
-        /// This method is private because PrecisionModel is intended to
-        /// be an immutable (value) type.
+        /// Returns the scale factor used to specify a fixed precision model.
         /// </summary>
+        /// <remarks>
+        /// The number of decimal places of precision is
+        /// equal to the base-10 logarithm of the scale factor.
+        /// Non-integral and negative scale factors are supported.
+        /// Negative scale factors indicate that the places
+        /// of precision is to the left of the decimal point.
+        /// </remarks>
         /// <returns>
-        /// the amount by which to multiply a coordinate after subtracting
-        /// the offset.
+        /// The scale factor for the fixed precision model
         /// </returns>
         public virtual double Scale
         {
@@ -289,10 +322,18 @@ namespace DotSpatial.Topology.Geometries
         /// A negative integer, zero, or a positive integer as this <c>PrecisionModel</c>
         /// is less than, equal to, or greater than the specified <c>PrecisionModel</c>.
         /// </returns>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o)
         {
-            PrecisionModel other = (PrecisionModel)o;
+            return CompareTo((IPrecisionModel)o);
+        }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(IPrecisionModel other)
+        {
             int sigDigits = MaximumSignificantDigits;
             int otherSigDigits = other.MaximumSignificantDigits;
             return (sigDigits).CompareTo(otherSigDigits);
@@ -307,10 +348,22 @@ namespace DotSpatial.Topology.Geometries
         {
             if (other == null)
                 return false;
-            if (!(other is PrecisionModel))
+
+            if (!(other is IPrecisionModel))
                 return false;
-            PrecisionModel otherPrecisionModel = (PrecisionModel)other;
-            return _modelType == otherPrecisionModel._modelType && _scale == otherPrecisionModel._scale;
+
+            return Equals((IPrecisionModel)other);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="otherPrecisionModel"></param>
+        /// <returns></returns>
+        public bool Equals(IPrecisionModel otherPrecisionModel)
+        {
+            return _modelType == otherPrecisionModel.PrecisionModelType &&
+                    _scale == otherPrecisionModel.Scale;
         }
 
         /// <summary>
@@ -318,16 +371,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets the type of this PrecisionModel.
-        /// </summary>
-        /// <returns></returns>
-        public virtual PrecisionModelType GetPrecisionModelType()
-        {
-            return _modelType;
+            return _modelType.GetHashCode() ^ _scale.GetHashCode();
         }
 
         /// <summary>
@@ -336,18 +380,29 @@ namespace DotSpatial.Topology.Geometries
         /// uniform rounding behaviour no matter where the number is
         /// on the number line.
         /// </summary>
+        /// <remarks>
+        /// This method has no effect on NaN values
+        /// </remarks>
         /// <param name="val"></param>
-        public virtual double MakePrecise(double val)
+        public double MakePrecise(double val)
         {
+            // don't change NaN values
+            if (Double.IsNaN(val)) return val;
             if (_modelType == PrecisionModelType.FloatingSingle)
             {
                 float floatSingleVal = (float)val;
                 return floatSingleVal;
             }
             if (_modelType == PrecisionModelType.Fixed)
-                // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
-                // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor((val * _scale) + 0.5d) / _scale;
+            {
+                /*.Net's default rounding algorithm is "Bankers Rounding" which turned
+                 * out to be no good for JTS/NTS geometry operations */
+                // return Math.Round(val * scale) / scale;          
+
+                // This is "Asymmetric Arithmetic Rounding"
+                // http://en.wikipedia.org/wiki/Rounding#Round_half_up
+                return Math.Floor(val * _scale + 0.5d) / _scale;
+            }
             return val;     // modelType == FLOATING - no rounding necessary
         }
 
@@ -355,7 +410,7 @@ namespace DotSpatial.Topology.Geometries
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void MakePrecise(Coordinate coord)
+        public void MakePrecise(Coordinate coord)
         {
             // optimization for full precision
             if (_modelType == PrecisionModelType.Floating)
@@ -363,8 +418,20 @@ namespace DotSpatial.Topology.Geometries
 
             coord.X = MakePrecise(coord.X);
             coord.Y = MakePrecise(coord.Y);
-
             //MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
+        }
+
+        ///<summary>
+        /// Determines which of two <see cref="IPrecisionModel"/>s is the most precise
+        ///</summary>
+        /// <param name="pm1">A precision model</param>
+        /// <param name="pm2">A precision model</param>
+        /// <returns>The PrecisionModel which is most precise</returns>
+        public static IPrecisionModel MostPrecise(IPrecisionModel pm1, IPrecisionModel pm2)
+        {
+            if (pm1.CompareTo(pm2) >= 0)
+                return pm1;
+            return pm2;
         }
 
         /// <summary>

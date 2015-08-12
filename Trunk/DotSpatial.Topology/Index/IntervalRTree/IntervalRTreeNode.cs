@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.IO;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.IntervalRTree
 {
@@ -42,7 +40,7 @@ namespace DotSpatial.Topology.Index.IntervalRTree
 
         public override string ToString()
         {
-            return WktWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
+            return WKTWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
         }
 
         #endregion

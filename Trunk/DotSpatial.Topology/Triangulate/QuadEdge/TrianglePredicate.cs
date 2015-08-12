@@ -40,7 +40,7 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
-#if !PCL
+
             // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
             Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre)) / a.Distance(circumCentre)));
@@ -55,7 +55,6 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
                 Debug.WriteLine("");
             }
             // ReSharper restore RedundantStringFormatCall
-#endif
         }
 
         /// <summary>
@@ -99,10 +98,10 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDDFast(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
         {
-            DoubleDouble aTerm = (DD.Sqr(a.X) + DD.Sqr(a.Y)) * TriAreaDDFast(b, c, p);
-            DoubleDouble bTerm = (DD.Sqr(b.X) + DD.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
-            DoubleDouble cTerm = (DD.Sqr(c.X) + DD.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
-            DoubleDouble pTerm = (DD.Sqr(p.X) + DD.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
+            DoubleDouble aTerm = (DoubleDouble.Sqr(a.X) + DoubleDouble.Sqr(a.Y)) * TriAreaDDFast(b, c, p);
+            DoubleDouble bTerm = (DoubleDouble.Sqr(b.X) + DoubleDouble.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
+            DoubleDouble cTerm = (DoubleDouble.Sqr(c.X) + DoubleDouble.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
+            DoubleDouble pTerm = (DoubleDouble.Sqr(p.X) + DoubleDouble.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
 
             DoubleDouble sum = aTerm - bTerm + cTerm - pTerm;
             bool isInCircle = sum.ToDoubleValue() > 0;
@@ -120,12 +119,12 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
         /// <returns></returns>
         public static bool IsInCircleDDNormalized(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
         {
-            DoubleDouble adx = DD.ValueOf(a.X) - p.X;
-            DoubleDouble ady = DD.ValueOf(a.Y) - p.Y;
-            DoubleDouble bdx = DD.ValueOf(b.X) - p.X;
-            DoubleDouble bdy = DD.ValueOf(b.Y) - p.Y;
-            DoubleDouble cdx = DD.ValueOf(c.X) - p.X;
-            DoubleDouble cdy = DD.ValueOf(c.Y) - p.Y;
+            DoubleDouble adx = DoubleDouble.ValueOf(a.X) - p.X;
+            DoubleDouble ady = DoubleDouble.ValueOf(a.Y) - p.Y;
+            DoubleDouble bdx = DoubleDouble.ValueOf(b.X) - p.X;
+            DoubleDouble bdy = DoubleDouble.ValueOf(b.Y) - p.Y;
+            DoubleDouble cdx = DoubleDouble.ValueOf(c.X) - p.X;
+            DoubleDouble cdy = DoubleDouble.ValueOf(c.Y) - p.Y;
 
             DoubleDouble abdet = adx * bdy - bdx * ady;
             DoubleDouble bcdet = bdx * cdy - cdx * bdy;
@@ -155,14 +154,14 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
         /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDDSlow(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
         {
-            DoubleDouble px = DD.ValueOf(p.X);
-            DoubleDouble py = DD.ValueOf(p.Y);
-            DoubleDouble ax = DD.ValueOf(a.X);
-            DoubleDouble ay = DD.ValueOf(a.Y);
-            DoubleDouble bx = DD.ValueOf(b.X);
-            DoubleDouble by = DD.ValueOf(b.Y);
-            DoubleDouble cx = DD.ValueOf(c.X);
-            DoubleDouble cy = DD.ValueOf(c.Y);
+            DoubleDouble px = DoubleDouble.ValueOf(p.X);
+            DoubleDouble py = DoubleDouble.ValueOf(p.Y);
+            DoubleDouble ax = DoubleDouble.ValueOf(a.X);
+            DoubleDouble ay = DoubleDouble.ValueOf(a.Y);
+            DoubleDouble bx = DoubleDouble.ValueOf(b.X);
+            DoubleDouble by = DoubleDouble.ValueOf(b.Y);
+            DoubleDouble cx = DoubleDouble.ValueOf(c.X);
+            DoubleDouble cy = DoubleDouble.ValueOf(c.Y);
 
             DoubleDouble aTerm = (ax * ax + ay * ay) * TriAreaDDSlow(bx, by, cx, cy, px, py);
             DoubleDouble bTerm = (bx * bx + by * by) * TriAreaDDSlow(ax, ay, cx, cy, px, py);
@@ -277,8 +276,8 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
         private static DoubleDouble TriAreaDDFast(Coordinate a, Coordinate b, Coordinate c)
         {
 
-            DoubleDouble t1 = (DD.ValueOf(b.X) - a.X) * (DD.ValueOf(c.Y) - a.Y);
-            DoubleDouble t2 = (DD.ValueOf(b.Y) - a.Y) * (DD.ValueOf(c.X) - a.X);
+            DoubleDouble t1 = (DoubleDouble.ValueOf(b.X) - a.X) * (DoubleDouble.ValueOf(c.Y) - a.Y);
+            DoubleDouble t2 = (DoubleDouble.ValueOf(b.Y) - a.Y) * (DoubleDouble.ValueOf(c.X) - a.X);
 
             return t1 - t2;
         }

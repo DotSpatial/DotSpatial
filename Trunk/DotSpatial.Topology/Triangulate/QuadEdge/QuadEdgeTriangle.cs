@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
                                tri[2].Coordinate,
                                tri[0].Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return CgAlgorithms.IsPointInRing(pt, ring);
         }
 
         /// <summary>
@@ -102,13 +102,13 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
                                tri[2].Orig.Coordinate,
                                tri[0].Orig.Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return CgAlgorithms.IsPointInRing(pt, ring);
         }
 
         public bool Contains(Coordinate pt)
         {
             var ring = GetCoordinates();
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return CgAlgorithms.IsPointInRing(pt, ring);
         }
 
         /// <summary>
