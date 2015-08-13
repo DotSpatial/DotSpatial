@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Shape.Random
         protected bool IsInExtent(Coordinate p)
         {
             if (_extentLocator != null)
-                return _extentLocator.Locate(p) != Location.Exterior;
+                return _extentLocator.Locate(p) != LocationType.Exterior;
             return Extent.Contains(p);
         }
 

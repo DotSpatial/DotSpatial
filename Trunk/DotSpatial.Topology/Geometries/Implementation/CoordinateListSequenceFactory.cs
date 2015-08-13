@@ -44,12 +44,16 @@ namespace DotSpatial.Topology.Utilities
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         public Ordinates Ordinates
         {
             get { return Ordinates.XYZM; }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).

@@ -35,6 +35,13 @@ namespace DotSpatial.Topology.Geometries
     {
         #region Properties
 
+        /// Coordinates
+        /// <summary>
+        /// Using an IList guarantees that we can access indexed coordinates, but the actual implementation
+        /// can be either in the form of an array or a list.
+        /// </summary>
+        IList<Coordinate> Coordinates { get; set; }
+
         /// <summary>
         /// Returns this Geometry's bounding box. If this Geometry is the empty point,
         /// returns an empty Point. If the Geometry is a point, returns a non-empty Point.
@@ -55,25 +62,15 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         string GeometryType { get; }
 
-        /// NumGeometries
         /// <summary>
-        /// Returns the number of Geometries in a Geometry Collection, or 1, if the geometry is not a collection
+        /// Gets the number of geometries that make up this geometry
         /// </summary>
         int NumGeometries { get; }
 
-        /// NumPoints
         /// <summary>
-        /// Returns the count of this geometry's vertices.  The geometries contained by
-        /// composite geometries must be geometries.  That is, they must implement NumPoints.
+        /// Get the number of coordinates, that make up this geometry
         /// </summary>
         int NumPoints { get; }
-
-        /// Coordinates
-        /// <summary>
-        /// Using an IList guarantees that we can access indexed coordinates, but the actual implementation
-        /// can be either in the form of an array or a list.
-        /// </summary>
-        IList<Coordinate> Coordinates { get; set; }
 
         #endregion
 

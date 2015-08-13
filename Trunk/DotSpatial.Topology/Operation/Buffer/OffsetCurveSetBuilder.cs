@@ -110,7 +110,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// The curve may be oriented in either direction.
         /// If the curve is oriented CW, the locations will be:
         /// Left: Location.Exterior.
-        /// Right: Location.Interior.
+        /// Right: LocationType.Interior.
         /// </summary>
         private void AddCurve(IList<Coordinate> coord, LocationType leftLoc, LocationType rightLoc)
         {

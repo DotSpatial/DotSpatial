@@ -26,17 +26,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
-    /// <summary>
-    /// Represents a linear polygon, which may include holes.
-    /// The shell and holes of the polygon are represented by {LinearRing}s.
-    /// In a valid polygon, holes may touch the shell or other holes at a single point.
-    /// However, no sequence of touching holes may split the polygon into two pieces.
-    /// The orientation of the rings in the polygon does not matter.
-    /// The shell and holes must conform to the assertions specified in the
-    /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.
+    /// <summary> 
+    /// Represents a polygon with linear edges, which may include holes.
+    /// The outer boundary (shell) 
+    /// and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
+    /// The boundary rings of the polygon may have any orientation.
+    /// Polygons are closed, simple geometries by definition.
+    /// <para/>
+    /// The polygon model conforms to the assertions specified in the 
+    /// <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+    /// Specification for SQL</a>.
+    /// <para/>
+    /// A <c>Polygon</c> is topologically valid if and only if:
+    /// <list type="Bullet">
+    /// <item>the coordinates which define it are valid coordinates</item>
+    /// <item>the linear rings for the shell and holes are valid
+    /// (i.e. are closed and do not self-intersect)</item>
+    /// <item>holes touch the shell or another hole at at most one point
+    /// (which implies that the rings of the shell and holes must not cross)</item>
+    /// <item>the interior of the polygon is connected,  
+    /// or equivalently no sequence of touching holes 
+    /// makes the interior of the polygon disconnected
+    /// (i.e. effectively split the polygon into two pieces).</item>
+    /// </list>
     /// </summary>
     [Serializable]
     public class Polygon : Geometry, IPolygon
@@ -48,7 +64,15 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon(null, null);
 
+        /// <summary>
+        /// The interior boundaries, if any.
+        /// </summary>
         private ILinearRing[] _holes;
+
+        /// <summary>
+        /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
+        /// is the empty point.
+        /// </summary>
         private ILinearRing _shell;
 
         #endregion
@@ -127,9 +151,9 @@ namespace DotSpatial.Topology.Geometries
             : base(factory)
         {
             if (inShell == null)
-                inShell = Factory.CreateLinearRing(null);
+                inShell = Factory.CreateLinearRing(new List<Coordinate>());
             if (inHoles == null)
-                inHoles = new LinearRing[] { };
+                inHoles = new ILinearRing[] { };
             if (HasNullElements(inHoles))
             {
                 throw new PolygonException(TopologyText.PolygonException_HoleElementNull);
@@ -170,9 +194,9 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 double area = 0.0;
-                area += Math.Abs(CgAlgorithms.SignedArea(_shell.Coordinates));
+                area += Math.Abs(CgAlgorithms.SignedArea(_shell.CoordinateSequence));
                 for (int i = 0; i < _holes.Length; i++)
-                    area -= Math.Abs(CgAlgorithms.SignedArea(_holes[i].Coordinates));
+                    area -= Math.Abs(CgAlgorithms.SignedArea(_holes[i].CoordinateSequence));
                 return area;
             }
         }
@@ -180,11 +204,105 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                if (IsEmpty)
+                    return Factory.CreateMultiLineString(null);
+                var rings = new ILinearRing[_holes.Length + 1];
+                rings[0] = _shell;
+                for (var i = 0; i < _holes.Length; i++)
+                    rings[i + 1] = _holes[i];
+                // create LineString or MultiLineString as appropriate
+                if (rings.Length <= 1)
+                    return Factory.CreateLinearRing(rings[0].CoordinateSequence);
+                return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, IBasicLineString>(rings));
+            }
+        }
+
+        /// <summary> 
+        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
+        /// </summary>
+        /// <returns>    
+        /// The dimension of the boundary of the class implementing this
+        /// interface, whether or not this object is the empty point. Returns
+        /// <c>Dimension.False</c> if the boundary is the empty point.
+        /// </returns>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                return DimensionType.Curve;
+            }
+        }
+
+        /// <summary>  
+        /// Returns a vertex of this <c>Geometry</c>
+        /// (usually, but not necessarily, the first one).
+        /// </summary>
+        /// <remarks>
+        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation. 
+        /// </remarks>
+        /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
+        /// <returns><c>null</c> if this Geometry is empty.
+        /// </returns>
         public override Coordinate Coordinate
         {
             get
             {
                 return _shell.Coordinate;
+            }
+        }
+
+        /// <summary>
+        /// Gets all the coordinates for the polygon.
+        /// </summary>
+        public override IList<Coordinate> Coordinates
+        {
+            get
+            {
+                if (IsEmpty)
+                    return new Coordinate[] { };
+
+                List<Coordinate> result = new List<Coordinate>();
+                result.AddRange(Shell.Coordinates);
+                foreach (var ring in Holes)
+                {
+                    result.AddRange(ring.Coordinates);
+                }
+                return result;
+            }
+            set
+            {
+                // Sets the coordinates of the shell and doesn't change holes
+                Shell.Coordinates = value;
+            }
+        }
+
+        /// <summary> 
+        /// Returns the dimension of this geometry.
+        /// </summary>
+        /// <remarks>
+        /// The dimension of a geometry is is the topological 
+        /// dimension of its embedding in the 2-D Euclidean plane.
+        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
+        /// <para>
+        /// Note that this is a different concept to the dimension of 
+        /// the vertex <see cref="Coordinate"/>s.
+        /// The geometry dimension can never be greater than the coordinate dimension.
+        /// For example, a 0-dimensional geometry (e.g. a Point) 
+        /// may have a coordinate dimension of 3 (X,Y,Z). 
+        /// </para>
+        /// </remarks>
+        /// <returns>  
+        /// The topological dimensions of this geometry
+        /// </returns>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Surface;
             }
         }
 
@@ -224,6 +342,34 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
+        public ILinearRing[] Holes
+        {
+            get
+            {
+                return _holes;
+            }
+            private set
+            {
+                _holes = value;
+            }
+        }
+
+        // Collections can be arrays or lists
+        ICollection<IBasicLineString> IBasicPolygon.Holes
+        {
+            get
+            {
+                return _holes;
+            }
+            set
+            {
+                SetHoles(value);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public override bool IsEmpty
         {
             get
@@ -245,30 +391,29 @@ namespace DotSpatial.Topology.Geometries
                 if (_shell.NumPoints != 5) return false;
 
                 // check vertices have correct values
-                IList<Coordinate> seq = _shell.Coordinates;
-                IEnvelope env = EnvelopeInternal;
+                var seq = Shell.CoordinateSequence;
+                var env = EnvelopeInternal;
                 for (int i = 0; i < 5; i++)
                 {
-                    Coordinate coord = seq[i];
-                    double x = coord.X;
+                    double x = seq.GetX(i);
                     if (!(x == env.Minimum.X || x == env.Maximum.X))
                         return false;
 
-                    double y = coord.Y;
+                    double y = seq.GetY(i);
                     if (!(y == env.Minimum.Y || y == env.Maximum.Y))
                         return false;
                 }
 
                 // check vertices are in right order
-                double prevX = seq[0].X;
-                double prevY = seq[0].Y;
-                for (int i = 1; i <= 4; i++)
+                var prevX = seq.GetX(0);
+                var prevY = seq.GetY(0);
+                for (var i = 1; i <= 4; i++)
                 {
-                    double x = seq[i].X;
-                    double y = seq[i].Y;
+                    var x = seq.GetX(i);
+                    var y = seq.GetY(i);
 
-                    bool xChanged = x != prevX;
-                    bool yChanged = y != prevY;
+                    var xChanged = x != prevX;
+                    var yChanged = y != prevY;
 
                     if (xChanged == yChanged)
                         return false;
@@ -276,17 +421,6 @@ namespace DotSpatial.Topology.Geometries
                     prevX = x;
                     prevY = y;
                 }
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
                 return true;
             }
         }
@@ -335,86 +469,9 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override IGeometry Boundary
+        public override OgcGeometryType OgcGeometryType
         {
-            get
-            {
-                if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                ILinearRing[] rings = new ILinearRing[_holes.Length + 1];
-                rings[0] = _shell;
-                for (int i = 0; i < _holes.Length; i++)
-                    rings[i + 1] = _holes[i];
-                if (rings.Length <= 1)
-                    return Factory.CreateLinearRing(rings[0].Coordinates);
-                return Factory.CreateMultiLineString(rings);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                return DimensionType.Curve;
-            }
-        }
-
-        /// <summary>
-        /// Gets all the coordinates for the polygon.  Setting this assumes that all the coordintes
-        /// belong in the shell.
-        /// </summary>
-        public override IList<Coordinate> Coordinates
-        {
-            get
-            {
-                if (IsEmpty)
-                    return new Coordinate[] { };
-
-                List<Coordinate> result = new List<Coordinate>();
-                result.AddRange(Shell.Coordinates);
-                foreach (var ring in Holes)
-                {
-                    result.AddRange(ring.Coordinates);
-                }
-                return result;
-            }
-            set
-            {
-                // Sets the coordinates of the shell and doesn't change holes
-                Shell.Coordinates = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                return DimensionType.Surface;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public ILinearRing[] Holes
-        {
-            get
-            {
-                return _holes;
-            }
-            set
-            {
-                _holes = value;
-            }
+            get { return OgcGeometryType.Polygon; }
         }
 
         /// <summary>
@@ -426,23 +483,8 @@ namespace DotSpatial.Topology.Geometries
             {
                 return _shell;
             }
-            set
-            {
-                _shell = value;
-            }
-        }
 
-        // Collections can be arrays or lists
-        ICollection<IBasicLineString> IBasicPolygon.Holes
-        {
-            get
-            {
-                return _holes;
-            }
-            set
-            {
-                SetHoles(value);
-            }
+            private set { _shell = value; }
         }
 
         IBasicLineString IBasicPolygon.Shell
@@ -470,6 +512,22 @@ namespace DotSpatial.Topology.Geometries
             _shell.Apply(filter);
             for (int i = 0; i < _holes.Length; i++)
                 _holes[i].Apply(filter);
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            ((LinearRing)_shell).Apply(filter);
+            if (!filter.Done)
+            {
+                for (int i = 0; i < _holes.Length; i++)
+                {
+                    ((LinearRing)_holes[i]).Apply(filter);
+                    if (filter.Done)
+                        break;
+                }
+            }
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -546,7 +604,38 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        {
+            var poly = (IPolygon)other;
+
+            var thisShell = (LinearRing)_shell;
+            var otherShell = (LinearRing)poly.Shell;
+            int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
+            if (shellComp != 0) return shellComp;
+
+            int nHole1 = NumHoles;
+            int nHole2 = poly.NumHoles;
+            int i = 0;
+            while (i < nHole1 && i < nHole2)
+            {
+                var thisHole = (LinearRing)GetInteriorRingN(i);
+                var otherHole = (LinearRing)poly.GetInteriorRingN(i);
+                var holeComp = thisHole.CompareToSameClass(otherHole, comparer);
+                if (holeComp != 0) return holeComp;
+                i++;
+            }
+            if (i < nHole1) return 1;
+            if (i < nHole2) return -1;
+            return 0;
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <returns></returns>
         protected override IEnvelope ComputeEnvelopeInternal()
@@ -573,12 +662,10 @@ namespace DotSpatial.Topology.Geometries
         {
             if (!IsEquivalentClass(other))
                 return false;
-            Polygon otherPolygon = (Polygon)other;
+            var otherPolygon = (IPolygon)other;
             IGeometry thisShell = _shell;
             IGeometry otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance))
-                return false;
-            if (_holes.Length != otherPolygon.Holes.Length)
                 return false;
             if (_holes.Length != otherPolygon.Holes.Length)
                 return false;
@@ -599,12 +686,40 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
+        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// </summary>
+        /// <param name="ordinate">The ordinate index</param>
+        /// <returns>An array of ordinate values</returns>
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
+                return CreateArray(NumPoints, Coordinate.NullOrdinate);
+
+            var result = new double[NumPoints];
+            var ordinates = _shell.GetOrdinates(ordinate);
+            Array.Copy(ordinates, 0, result, 0, ordinates.Length);
+            var offset = ordinates.Length;
+            foreach (var linearRing in _holes)
+            {
+                ordinates = linearRing.GetOrdinates(ordinate);
+                Array.Copy(ordinates, 0, result, offset, ordinates.Length);
+                offset += ordinates.Length;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         public override void Normalize()
         {
             Normalize(_shell, true);
-            foreach (LinearRing hole in _holes)
+            foreach (ILinearRing hole in _holes)
                 Normalize(hole, false);
             Array.Sort(Holes);
         }
@@ -647,18 +762,31 @@ namespace DotSpatial.Topology.Geometries
                 poly.Holes[i] = Holes[i].Copy();
         }
 
+        public override IGeometry Reverse()
+        {
+            var poly = new Polygon(new List<Coordinate>());
+            OnCopy(poly);
+            poly.Shell = (LinearRing)((LinearRing)_shell.Clone()).Reverse();
+            poly.Holes = CollectionUtil.Cast<LinearRing, ILinearRing>(new LinearRing[_holes.Length]);
+            for (int i = 0; i < _holes.Length; i++)
+            {
+                poly.Holes[i] = (LinearRing)((LinearRing)_holes[i].Clone()).Reverse();
+            }
+            return poly;// return the clone
+        }
+
         /// <summary>
         /// Rotates the polygon by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the polygon gets rotated around.</param>
+        /// <param name="origin">Coordinate the polygon gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public override void Rotate(Coordinate Origin, Double radAngle)
+        public override void Rotate(Coordinate origin, Double radAngle)
         {
-            _shell.Rotate(Origin, radAngle);
+            _shell.Rotate(origin, radAngle);
 
             foreach (var h in Holes)
             {
-                h.Rotate(Origin, radAngle);
+                h.Rotate(origin, radAngle);
             }
         }
 

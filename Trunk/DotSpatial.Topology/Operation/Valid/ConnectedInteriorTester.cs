@@ -144,7 +144,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 IList<DirectedEdge> edges = er.Edges;
                 DirectedEdge de = edges[0];
                 // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
+                if (de.Label.GetLocation(0, PositionType.Right) != LocationType.Interior) continue;
 
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
@@ -200,7 +200,7 @@ namespace DotSpatial.Topology.Operation.Valid
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
             foreach (DirectedEdge de in graph.EdgeEnds)               
-                if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                if (de.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
                     de.InResult = true;
         }
 

@@ -106,55 +106,24 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        /// Always Polygon
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Polygon;
-            }
-        }
-
-        /// <summary>
-        /// Always returns "MultiPolygon"
-        /// </summary>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPolygon";
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         public override IGeometry Boundary
         {
             get
             {
-                if (IsEmpty) return Factory.CreateGeometryCollection(null);
-                ArrayList allRings = new ArrayList();
-                for (int i = 0; i < Geometries.Length; i++)
+                if (IsEmpty)    
+                    return Factory.CreateMultiLineString(null);
+
+                var allRings = new List<ILineString>();
+                for (var i = 0; i < Geometries.Length; i++)
                 {
-                    Polygon polygon = (Polygon)Geometries[i];
-                    Geometry rings = (Geometry)polygon.Boundary;
+                    var polygon = (IPolygon) Geometries[i];
+                    var rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
-                        allRings.Add(rings.GetGeometryN(j));
-                }
-                return Factory.CreateMultiLineString((LineString[])allRings.ToArray(typeof(LineString)));
+                        allRings.Add((ILineString) rings.GetGeometryN(j));
+                }                
+                return Factory.CreateMultiLineString(allRings.ToArray());
             }
         }
 
@@ -177,6 +146,37 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return DimensionType.Surface;
+            }
+        }
+
+        /// <summary>
+        /// Always Polygon
+        /// </summary>
+        public override FeatureType FeatureType
+        {
+            get
+            {
+                return FeatureType.Polygon;
+            }
+        }
+
+        /// <summary>  
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"MultiPolygon"</returns>
+        public override string GeometryType
+        {
+            get
+            {
+                return "MultiPolygon";
+            }
+        }
+
+        public override OgcGeometryType OgcGeometryType
+        {
+            get
+            {
+                return OgcGeometryType.MultiPolygon;
             }
         }
 
@@ -232,6 +232,21 @@ namespace DotSpatial.Topology.Geometries
             }
 
             return new MultiPolygon(polygonArray);
+        }
+
+        ///<summary>Creates a {@link MultiPolygon} with every component reversed.
+        ///</summary>
+        /// <remarks>The order of the components in the collection are not reversed.</remarks>
+        /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
+        public override IGeometry Reverse()
+        {
+            int n = Geometries.Length;
+            IPolygon[] revGeoms = new IPolygon[n];
+            for (int i = 0; i < Geometries.Length; i++)
+            {
+                revGeoms[i] = (Polygon)Geometries[i].Reverse();
+            }
+            return Factory.CreateMultiPolygon(revGeoms);
         }
 
         #endregion

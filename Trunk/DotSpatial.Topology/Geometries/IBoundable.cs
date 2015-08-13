@@ -30,6 +30,8 @@ namespace DotSpatial.Topology.Geometries
     public interface IBoundable<out T, out TItem> 
         where T: IIntersectable<T>, IExpandable<T>
     {
+        #region Properties
+
         /// <summary> 
         /// Returns a representation of space that encloses this Boundable, preferably
         /// not much bigger than this Boundable's boundary yet fast to test for intersection
@@ -46,5 +48,7 @@ namespace DotSpatial.Topology.Geometries
         /// Gets the item that is bounded
         /// </summary>
         TItem Item { get; }
+
+        #endregion
     }
 }

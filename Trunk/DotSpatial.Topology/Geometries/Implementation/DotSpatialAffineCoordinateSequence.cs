@@ -16,7 +16,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         private readonly Ordinates _ordinates;
         private readonly double[] _xy;
         private readonly double[] _z;
-      
+
         [NonSerialized]
         private WeakReference _coordinateArrayRef;
 
@@ -198,12 +198,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             get { return _ordinates; }
         }
 
-        public Coordinate this[int index]
-        {  //TODO was soll damit werden?
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
         /// <summary>
         /// Gets the vector with x- and y-ordinate values;
         /// </summary>
@@ -220,6 +214,16 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public double[] Z
         {
             get { return _z; }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public Coordinate this[int index]
+        {  //TODO was soll damit werden?
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         #endregion
@@ -381,6 +385,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
 
             _coordinateArrayRef = new WeakReference(ret);
             return ret;
+        }
+
+        /// <summary>
+        /// Returns a list with the internal coordinates with x,y,z-values.
+        /// </summary>
+        /// <returns></returns>
+        public IList<Coordinate> ToList()
+        {
+           return ToCoordinateArray().ToList();
         }
 
         #endregion

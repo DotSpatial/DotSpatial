@@ -140,18 +140,16 @@ namespace DotSpatial.Topology.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistanceLineLine(ILineString line0, ILineString line1,
-                                                bool flip)
+        private void ComputeMinDistanceLineLine(ILineString line0, ILineString line1, bool flip)
         {
             var coord0 = line0.Coordinates;
             var coord1 = line1.Coordinates;
             // brute force approach!
-            for (var i = 0; i < coord0.Length - 1; i++)
+            for (var i = 0; i < coord0.Count - 1; i++)
             {
-                for (int j = 0; j < coord1.Length - 1; j++)
+                for (int j = 0; j < coord1.Count - 1; j++)
                 {
-                    var dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i],
-                                                                     coord0[i + 1], coord1[j], coord1[j + 1]);
+                    var dist = CgAlgorithms3D.DistanceSegmentSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
@@ -176,10 +174,9 @@ namespace DotSpatial.Topology.Operation.Distance3D
             var lineCoord = line.Coordinates;
             var coord = point.Coordinate;
             // brute force approach!
-            for (int i = 0; i < lineCoord.Length - 1; i++)
+            for (int i = 0; i < lineCoord.Count - 1; i++)
             {
-                var dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],
-                                                               lineCoord[i + 1]);
+                var dist = CgAlgorithms3D.DistancePointSegment(coord, lineCoord[i],lineCoord[i + 1]);
                 if (dist < _minDistance)
                 {
                     var seg = new LineSegment(lineCoord[i], lineCoord[i + 1]);
@@ -273,9 +270,7 @@ namespace DotSpatial.Topology.Operation.Distance3D
 
         private void ComputeMinDistancePointPoint(IPoint point0, IPoint point1, bool flip)
         {
-            var dist = CGAlgorithms3D.Distance(
-                point0.Coordinate,
-                point1.Coordinate);
+            var dist = CgAlgorithms3D.Distance(point0.Coordinate,point1.Coordinate);
             if (dist < _minDistance)
             {
                 UpdateDistance(dist,
@@ -302,9 +297,9 @@ namespace DotSpatial.Topology.Operation.Distance3D
             }
 
             // if no intersection, then compute line distance to polygon rings
-            ComputeMinDistanceLineLine(poly.Polygon.ExteriorRing, line, flip);
+            ComputeMinDistanceLineLine(poly.Polygon.Shell, line, flip);
             if (_isDone) return;
-            int nHole = poly.Polygon.NumInteriorRings;
+            int nHole = poly.Polygon.NumHoles;
             for (int i = 0; i < nHole; i++)
             {
                 ComputeMinDistanceLineLine(poly.Polygon.GetInteriorRingN(i), line, flip);
@@ -312,17 +307,16 @@ namespace DotSpatial.Topology.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistancePolygonPoint(PlanarPolygon3D polyPlane, IPoint point,
-                                                    bool flip)
+        private void ComputeMinDistancePolygonPoint(PlanarPolygon3D polyPlane, IPoint point,bool flip)
         {
             var pt = point.Coordinate;
 
-            var shell = polyPlane.Polygon.ExteriorRing;
+            var shell = polyPlane.Polygon.Shell;
             if (polyPlane.Intersects(pt, shell))
             {
                 // point is either inside or in a hole
 
-                var nHole = polyPlane.Polygon.NumInteriorRings;
+                var nHole = polyPlane.Polygon.NumHoles;
                 for (int i = 0; i < nHole; i++)
                 {
                     var hole = polyPlane.Polygon.GetInteriorRingN(i);
@@ -374,10 +368,10 @@ namespace DotSpatial.Topology.Operation.Distance3D
                                                     bool flip)
         {
             // compute shell ring
-            ComputeMinDistancePolygonLine(poly, ringPoly.ExteriorRing, flip);
+            ComputeMinDistancePolygonLine(poly, ringPoly.Shell, flip);
             if (_isDone) return;
             // compute hole rings
-            int nHole = ringPoly.NumInteriorRings;
+            int nHole = ringPoly.NumHoles;
             for (int i = 0; i < nHole; i++)
             {
                 ComputeMinDistancePolygonLine(poly, ringPoly.GetInteriorRingN(i), flip);
@@ -485,15 +479,15 @@ namespace DotSpatial.Topology.Operation.Distance3D
         {
             var dim0 = _geom[0].Dimension;
             var dim1 = _geom[1].Dimension;
-            if (dim0 >= Dimension.Surface && dim1 >= Dimension.Surface)
+            if (dim0 >= DimensionType.Surface && dim1 >= DimensionType.Surface)
             {
                 if (_geom[0].NumPoints > _geom[1].NumPoints)
                     return 0;
                 return 1;
             }
             // no more than one is dim 2
-            if (dim0 >= Dimension.Surface) return 0;
-            if (dim1 >= Dimension.Surface) return 1;
+            if (dim0 >= DimensionType.Surface) return 0;
+            if (dim1 >= DimensionType.Surface) return 1;
             // both dim <= 1 - don't flip
             return 0;
         }

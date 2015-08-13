@@ -32,6 +32,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>
+    [Serializable]
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         #region Fields
@@ -39,7 +40,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
-        public static new readonly IMultiLineString Empty = new MultiLineString();
+        public static new readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
 
         #endregion
 
@@ -123,58 +124,6 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        /// Always returns FeatureTypes.Line
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Line;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value></value>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiLineString";
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is closed.
-        /// </summary>
-        /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
-        public virtual bool IsClosed
-        {
-            get
-            {
-                if (IsEmpty)
-                    return false;
-                for (int i = 0; i < Geometries.Length; i++)
-                    if (!((LineString)Geometries[i]).IsClosed)
-                        return false;
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value></value>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <value></value>
@@ -182,11 +131,7 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                GeometryGraph g = new GeometryGraph(0, this);
-                Coordinate[] pts = g.GetBoundaryPoints();
-                return Factory.CreateMultiPoint(pts);
+                return (new BoundaryOp(this)).GetBoundary();
             }
         }
 
@@ -214,6 +159,54 @@ namespace DotSpatial.Topology.Geometries
             {
                 return DimensionType.Curve;
             }
+        }
+
+        /// <summary>
+        /// Always returns FeatureTypes.Line
+        /// </summary>
+        public override FeatureType FeatureType
+        {
+            get
+            {
+                return FeatureType.Line;
+            }
+        }
+
+        /// <summary>
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"MultiLineString"</returns>
+        public override string GeometryType
+        {
+            get
+            {
+                return "MultiLineString";
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is closed.
+        /// </summary>
+        /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
+        public virtual bool IsClosed
+        {
+            get
+            {
+                if (IsEmpty) 
+                    return false;
+                for (int i = 0; i < Geometries.Length; i++)
+                    if (!((ILineString) Geometries[i]).IsClosed)
+                        return false;                
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.MultiLineString; }
         }
 
         #endregion
@@ -260,12 +253,12 @@ namespace DotSpatial.Topology.Geometries
         /// and the order of their coordinate sequences are reversed.
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
-        public virtual IMultiLineString Reverse()
+        public override IGeometry Reverse()
         {
             int nLines = Geometries.Length;
-            ILineString[] revLines = new LineString[nLines];
+            ILineString[] revLines = new ILineString[nLines];
             for (int i = 0; i < Geometries.Length; i++)
-                revLines[nLines - 1 - i] = new LineString(((ILineString)Geometries[i]).Reverse());
+                revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();            
             return Factory.CreateMultiLineString(revLines);
         }
 

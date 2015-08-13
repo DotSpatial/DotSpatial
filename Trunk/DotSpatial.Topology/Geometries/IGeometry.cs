@@ -28,98 +28,18 @@ using DotSpatial.Topology.Operation.Buffer;
 
 namespace DotSpatial.Topology.Geometries
 {
-    /// <summary>
-    /// This has the methods and properties associated with any topology
+    /// <summary>  
+    /// Interface for basic implementation of <c>Geometry</c>.
     /// </summary>
     public interface IGeometry : IComparable, IRelate, IOverlay, IBasicGeometry
     {
         #region Properties
 
-        /// Area
         /// <summary>
-        /// Returns the area of this Geometry.
-        /// Areal Geometries have a non-zero area.
-        /// They override this function to compute the area.
-        /// Others return 0.0
+        /// Gets the area of this geometry if applicable, otherwise <c>0d</c>
         /// </summary>
-        /// <returns>The area of the Geometry.</returns>
+        /// <remarks>A <see cref="ISurface"/> method moved in IGeometry</remarks>
         double Area { get; }
-
-        /// Centroid
-        /// <summary>
-        /// Computes the centroid of this Geometry.
-        /// The centroid is equal to the centroid of the set of component Geometries of highest
-        /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
-        /// </summary>
-        /// <returns>A Point which is the centroid of this Geometry.</returns>
-        IPoint Centroid { get; }
-
-        /// Coordinate
-        /// <summary>
-        /// Returns a vertex of this Geometry
-        /// </summary>
-        Coordinate Coordinate { get; }
-
-        /// EnvelopeInternal
-        /// <summary>
-        /// Returns the interior geometry
-        /// </summary>
-        IEnvelope EnvelopeInternal { get; }
-
-        /// Factory
-        /// <summary>
-        /// Gets the factory which contains the context in whcih this geometry was created
-        /// </summary>
-        IGeometryFactory Factory { get; }
-
-        /// InteriorPoint
-        /// <summary>
-        /// Computes an interior point of this Geometry.  An interior point is guaranteed
-        /// to lie in the interior of the Geometry, if it possible to calculate such a point
-        /// exactly. Otherwise, the point may lie on the boundary of the point.
-        /// </summary>
-        IGeometry InteriorPoint { get; }
-
-        /// IsEmpty
-        /// <summary>
-        /// Returns whether or not the set of points in this geometry is empty
-        /// </summary>
-        bool IsEmpty { get; }
-
-        /// IsRectangle
-        /// <summary>
-        /// Essentially is false for anything other than a polygon, which
-        /// does a check to see if the polygon in question is a rectangle.
-        /// </summary>
-        bool IsRectangle { get; }
-
-        /// IsSimple
-        /// <summary>
-        /// Returns false if the Geometry not simple.  Subclasses provide their own definition
-        /// of "simple". If this Geometry is empty, returns true. In general, the SFS specifications
-        /// of simplicity seem to follow the following rule: A Geometry is simple if the only
-        /// self-intersections are at boundary points.  For all empty Geometrys, IsSimple==true.
-        /// </summary>
-        bool IsSimple { get; }
-
-        /// IsValid
-        /// <summary>
-        /// Tests the validity of this Geometry.  Subclasses provide their own definition of "valid"
-        /// </summary>
-        bool IsValid { get; }
-
-        /// Length
-        /// <summary>
-        /// Returns the length of this Geometry.  Linear geometries return their length.
-        /// Areal geometries return their perimeter.  Others return 0.0
-        /// </summary>
-        double Length { get; }
-
-        /// <summary>
-        /// There used to be a class for precision model stuff, but for Interface purposes, this will be
-        /// communicated as a an enumeration which can later be converted into a full fledged PrecisionModel.
-        /// </summary>
-        PrecisionModelType PrecisionModel { get; }
 
         /// Boundary
         /// <summary>
@@ -129,7 +49,7 @@ namespace DotSpatial.Topology.Geometries
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
         /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        IGeometry Boundary { get; set; }
+        IGeometry Boundary { get; }
 
         /// <summary>
         /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
@@ -141,13 +61,86 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         DimensionType BoundaryDimension { get; set; }
 
-        /// Dimension
         /// <summary>
-        /// Gets or sets the DotSpatial.Geometries.Dimensions of this Geometry.
+        /// Computes the centroid of this Geometry.
+        /// The centroid is equal to the centroid of the set of component Geometries of highest
+        /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
+        /// </summary>
+        /// <returns>A Point which is the centroid of this Geometry.</returns>
+        IPoint Centroid { get; }
+
+        ///<summary>
+        /// Gets a <see cref="Coordinate"/> that is guaranteed to be part of the geometry, usually the first.
+        ///</summary>
+        Coordinate Coordinate { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Dimension"/> of this geometry
         /// </summary>
         DimensionType Dimension { get; set; }
 
-        /// SRID
+        /// <summary>
+        /// Gets the envelope this <see cref="IGeometry"/> would fit into.
+        /// </summary>
+        IEnvelope EnvelopeInternal { get; }
+
+        ///<summary>
+        /// The <see cref="IGeometryFactory"/> used to create this geometry
+        ///</summary>
+        IGeometryFactory Factory { get; }
+
+        /// <summary>
+        /// Computes an interior point of this Geometry. An interior point is guaranteed
+        /// to lie in the interior of the Geometry, if it possible to calculate such a point
+        /// exactly. Otherwise, the point may lie on the boundary of the point.
+        /// </summary>
+        IPoint InteriorPoint { get; }
+
+        /// <summary>
+        /// Returns whether or not the set of points in this geometry is empty
+        /// </summary>
+        bool IsEmpty { get; }
+
+        /// <summary>
+        /// Essentially is false for anything other than a polygon, which
+        /// does a check to see if the polygon in question is a rectangle.
+        /// </summary>
+        bool IsRectangle { get; }
+
+        /// <summary>
+        /// Returns false if the Geometry not simple.  Subclasses provide their own definition
+        /// of "simple". If this Geometry is empty, returns true. In general, the SFS specifications
+        /// of simplicity seem to follow the following rule: A Geometry is simple if the only
+        /// self-intersections are at boundary points.  For all empty Geometrys, IsSimple==true.
+        /// </summary>
+        bool IsSimple { get; }
+
+        /// <summary>
+        /// Tests the validity of this Geometry.  Subclasses provide their own definition of "valid"
+        /// </summary>
+        bool IsValid { get; }
+
+        /// <summary>
+        /// Returns the length of this Geometry.  Linear geometries return their length.
+        /// Areal geometries return their perimeter.  Others return 0.0
+        /// </summary>
+        double Length { get; }
+
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        OgcGeometryType OgcGeometryType { get; }
+
+        /// <summary>
+        /// A ISurface method moved in IGeometry 
+        /// </summary>        
+        IPoint PointOnSurface { get; }
+
+        ///<summary>
+        /// The <see cref="IPrecisionModel"/> the <see cref="Factory"/> used to create this.
+        ///</summary>
+        IPrecisionModel PrecisionModel { get; }
+
         /// <summary>
         /// Gets/Sets the ID of the Spatial Reference System used by the Geometry. NTS supports Spatial Reference
         /// System information in the simple way defined in the SFS. A Spatial Reference System ID (SRID) is present
@@ -156,7 +149,6 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         int Srid { get; set; }
 
-        /// UserData
         /// <summary>
         /// Gets/Sets the user data object for this point, if any.  A simple scheme for applications to add their own custom
         /// data to a Geometry.  An example use might be to add an object representing a Coordinate Reference System.
@@ -168,21 +160,24 @@ namespace DotSpatial.Topology.Geometries
 
         #region Methods
 
-        // IClonable should require Clone()
-
-        // IComparable should require Compare, CompareTo
-
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c>'s
         /// coordinates. If you are using this method to modify the point, be sure
-        /// to call GeometryChanged() afterwards. Notice that you cannot use this
-        /// method to
-        /// modify this Geometry if its underlying CoordinateSequence's Get method
-        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
-        /// (if it even stores Coordinates at all).
+        /// to call <see cref="GeometryChanged()"/> afterwards.
+        /// Note that you cannot use this  method to modify this Geometry 
+        /// if its underlying <see cref="ICoordinateSequence"/>'s Get method
+        /// returns a copy of the <see cref="Coordinate"/>, rather than the actual
+        /// Coordinate stored (if it even stores Coordinates at all).
         /// </summary>
         /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
         void Apply(ICoordinateFilter filter);
+
+        ///<summary>
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s. 
+        /// If this method modifies any coordinate values, <see cref="GeometryChanged()"/> must be called to update the geometry state.
+        ///</summary>
+        /// <param name="filter">The filter to apply</param>
+        void Apply(ICoordinateSequenceFilter filter);
 
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c> and its
@@ -219,23 +214,6 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         IGeometry Buffer(double distance);
 
-        /// Buffer
-        /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
-        /// </summary>
-        /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
-        /// </param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
-        /// </returns>
-        IGeometry Buffer(double distance, BufferStyle endCapStyle);
-
-        /// Buffer
         /// <summary>
         /// Returns a buffer region around this <c>Geometry</c> having the given
         /// width and with a specified number of segments used to approximate curves.
@@ -255,7 +233,6 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         IGeometry Buffer(double distance, int quadrantSegments);
 
-        /// Buffer
         /// <summary>
         /// Returns a buffer region around this <c>Geometry</c> having the given
         /// width and with a specified number of segments used to approximate curves.
@@ -274,7 +251,9 @@ namespace DotSpatial.Topology.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
-        IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle);
+        IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle);
+
+        IGeometry Buffer(double distance, IBufferParameters bufferParameters);
 
         /// <summary>
         /// Clears any cached envelopes
@@ -301,22 +280,19 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         int CompareToSameClass(object o);
 
-        /// ConvexHull
         /// <summary>
         /// Returns the smallest convex Polygon that contains all the points in the Geometry. This obviously applies only to Geometry s which contain 3 or more points.
         /// </summary>
         /// <returns>the minimum-area convex polygon containing this Geometry's points.</returns>
         IGeometry ConvexHull();
 
-        /// Distance
         /// <summary>
         /// Returns the minimum distance between this <c>Geometry</c>
         /// and the <c>Geometry</c> g.
         /// </summary>
-        /// <param name="geom">The <c>Geometry</c> from which to compute the distance.</param>
-        double Distance(IGeometry geom);
+        /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        double Distance(IGeometry g);
 
-        /// Equals
         /// <summary>
         /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
         /// <c>Geometry</c>s is T*F**FFF*.
@@ -325,7 +301,6 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         bool Equals(IGeometry geom);
 
-        /// EqualsExact
         /// <summary>
         /// Returns true if the two <c>Geometry</c>s are exactly equal,
         /// up to a specified tolerance.
@@ -366,20 +341,35 @@ namespace DotSpatial.Topology.Geometries
         bool EqualsExact(IGeometry geom);
 
         /// <summary>
-        /// Notifies this Geometry that its Coordinates have been changed by an external
+        /// Tests whether two geometries are exactly equal
+        /// in their normalized forms.
+        /// </summary>>
+        /// <param name="g">A geometry</param>
+        /// <returns>true if the input geometries are exactly equal in their normalized form</returns>
+        bool EqualsNormalized(IGeometry g);
+
+        /// <summary>
+        /// Tests whether this geometry is topologically equal to the argument geometry
+        /// as defined by the SFS <tt>equals</tt> predicate.
+        /// </summary>
+        /// <param name="other">A geometry</param>
+        /// <returns><c>true</c> if this geometry is topologically equal to <paramref name="other"/></returns>
+        bool EqualsTopologically(IGeometry other);
+
+        /// <summary>
+        /// Notifies this geometry that its coordinates have been changed by an external
         /// party (using a CoordinateFilter, for example). The Geometry will flush
-        /// and/or update any information it has cached (such as its Envelope).
+        /// and/or update any information it has cached (such as its <see cref="IEnvelope"/>).
         /// </summary>
         void GeometryChanged();
 
         /// <summary>
         /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party. When GeometryChanged is called, this method will be called for
-        /// this Geometry and its component Geometries.
+        /// party. When <see cref="GeometryChanged"/> is called, this method will be called for
+        /// this <c>Geometry</c> and its component geometries.
         /// </summary>
         void GeometryChangedAction();
 
-        /// GetGeometryN
         /// <summary>
         /// Returns an element Geometry from a GeometryCollection,
         /// or <code>this</code>, if the geometry is not a collection.
@@ -388,7 +378,11 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The n'th geometry contained in this geometry.</returns>
         IGeometry GetGeometryN(int n);
 
-        /// IsWithinDistance
+        ///<summary>
+        /// Gets an array of <see cref="T:System.Double"/> ordinate values.
+        ///</summary>
+        Double[] GetOrdinates(Ordinate ordinate);
+
         /// <summary>
         /// Tests whether the distance from this <c>Geometry</c>
         /// to another is less than or equal to a specified value.
@@ -398,7 +392,6 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
         bool IsWithinDistance(IGeometry geom, double distance);
 
-        /// Normalize
         /// <summary>
         /// Converts this <c>Geometry</c> to normal form (or
         /// canonical form ). Normal form is a unique representation for <c>Geometry</c>
@@ -413,11 +406,20 @@ namespace DotSpatial.Topology.Geometries
         void Normalize();
 
         /// <summary>
+        /// Creates a new Geometry which is a normalized copy of this Geometry. 
+        /// </summary>
+        /// <returns>A normalized copy of this geometry.</returns>
+        /// <seealso cref="Normalize"/>
+        IGeometry Normalized();
+
+        IGeometry Reverse();
+
+        /// <summary>
         /// Rotates the geometry by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="origin">Coordinate the geometry gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        void Rotate(Coordinate Origin, double radAngle);
+        void Rotate(Coordinate origin, double radAngle);
 
         /// <summary>
         /// Returns the feature representation as GML 2.1.1 XML document.

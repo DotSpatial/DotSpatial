@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -40,10 +41,10 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
-        public static readonly IGeometryCollection Empty = new GeometryFactory().CreateGeometryCollection(null);
+        public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
-        /// Internal representation of this <c>GeometryCollection</c>.
+        /// Internal representation of this <c>GeometryCollection</c>.        
         /// </summary>
         private IGeometry[] _geometries;
 
@@ -198,6 +199,32 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                CheckNotGeometryCollection(this);
+                throw new ShouldNeverReachHereException();
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                DimensionType dimension = DimensionType.False;
+                for (int i = 0; i < _geometries.Length; i++)
+                    dimension = (DimensionType)Math.Max((int)dimension, (int)(_geometries[i].BoundaryDimension));
+                return dimension;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public override Coordinate Coordinate
         {
             get
@@ -205,6 +232,38 @@ namespace DotSpatial.Topology.Geometries
                 if (IsEmpty)
                     return null;
                 return _geometries[0].Coordinate;
+            }
+        }
+
+        /// <summary>
+        /// Collects all coordinates of all subgeometries into an Array.
+        /// Note that while changes to the coordinate objects themselves
+        /// may modify the Geometries in place, the returned Array as such 
+        /// is only a temporary container which is not synchronized back.
+        /// </summary>
+        /// <returns>The collected coordinates.</returns>
+        public override IList<Coordinate> Coordinates
+        {
+            get
+            {
+                IList<Coordinate> coordinates = new Coordinate[NumPoints];
+                int k = -1;
+                for (int i = 0; i < _geometries.Length; i++)
+                {
+                    IList<Coordinate> childCoordinates = _geometries[i].Coordinates;
+                    for (int j = 0; j < childCoordinates.Count; j++)
+                    {
+                        k++;
+                        coordinates[k] = childCoordinates[j];
+                    }
+                }
+                return coordinates;
+            }
+            set
+            {
+                // Make the assumption that we are setting only the first geometry coordinates?
+                if (_geometries.Length < 1) return;
+                _geometries[0].Coordinates = value;
             }
         }
 
@@ -221,7 +280,19 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
+        /// <summary>
+        ///
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                DimensionType dimension = DimensionType.False;
+                for (int i = 0; i < _geometries.Length; i++)
+                    dimension = (DimensionType)Math.Max((int)dimension, (int)_geometries[i].Dimension);
+                return dimension;
+            }
+        }
 
         /// <summary>
         /// Gets the Envelope that envelops this GeometryCollection
@@ -241,8 +312,18 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Uses an Enumeration to clarify the type of geometry
+        ///
         /// </summary>
+        public virtual IGeometry[] Geometries
+        {
+            get { return _geometries; }
+           protected set { _geometries = value; }
+        }
+
+        /// <summary>  
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"GeometryCollection"</returns>
         public override string GeometryType
         {
             get
@@ -280,19 +361,7 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                CheckNotGeometryCollection(this);
-                throw new ShouldNeverReachHereException();
-            }
-        }
-
-        /// <summary>
+        /// <summary>  
         /// Returns the length of this <c>GeometryCollection</c>.
         /// </summary>
         public override double Length
@@ -326,90 +395,17 @@ namespace DotSpatial.Topology.Geometries
             {
                 int numPoints = 0;
                 for (int i = 0; i < _geometries.Length; i++)
-                    numPoints += ((Geometry)_geometries[i]).NumPoints;
+                    numPoints += _geometries[i].NumPoints;
                 return numPoints;
             }
         }
 
         /// <summary>
-        ///
+        /// Gets the OGC geometry type
         /// </summary>
-        public override IGeometry Boundary
+        public override OgcGeometryType OgcGeometryType
         {
-            get
-            {
-                CheckNotGeometryCollection(this);
-                throw new ShouldNeverReachHereException();
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                DimensionType dimension = DimensionType.False;
-                for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (DimensionType)Math.Max((int)dimension, (int)((Geometry)_geometries[i]).BoundaryDimension);
-                return dimension;
-            }
-        }
-
-        /// <summary>
-        /// Collects all coordinates of all subgeometries into an Array.
-        /// Notice that while changes to the coordinate objects themselves
-        /// may modify the Geometries in place, the returned Array as such
-        /// is only a temporary container which is not synchronized back.
-        /// </summary>
-        /// <returns>The collected coordinates.</returns>
-        public override IList<Coordinate> Coordinates
-        {
-            get
-            {
-                IList<Coordinate> coordinates = new Coordinate[NumPoints];
-                int k = -1;
-                for (int i = 0; i < _geometries.Length; i++)
-                {
-                    IList<Coordinate> childCoordinates = _geometries[i].Coordinates;
-                    for (int j = 0; j < childCoordinates.Count; j++)
-                    {
-                        k++;
-                        coordinates[k] = childCoordinates[j];
-                    }
-                }
-                return coordinates;
-            }
-            set
-            {
-                // Make the assumption that we are setting only the first geometry coordinates?
-                if (_geometries.Length < 1) return;
-                _geometries[0].Coordinates = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                DimensionType dimension = DimensionType.False;
-                for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (DimensionType)Math.Max((int)dimension, (int)_geometries[i].Dimension);
-                return dimension;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual IGeometry[] Geometries
-        {
-            get { return _geometries; }
-            set { _geometries = value; }
+            get { return OgcGeometryType.GeometryCollection; }
         }
 
         #endregion
@@ -427,10 +423,7 @@ namespace DotSpatial.Topology.Geometries
             {
                 return _geometries[i];
             }
-            set
-            {
-                _geometries[i] = value;
-            }
+            set { _geometries[i] = value; }
         }
 
         #endregion
@@ -445,6 +438,22 @@ namespace DotSpatial.Topology.Geometries
         {
             for (int i = 0; i < _geometries.Length; i++)
                 _geometries[i].Apply(filter);
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (_geometries.Length == 0)
+                return;
+            for (int i = 0; i < _geometries.Length; i++)
+            {
+                ((Geometry)_geometries[i]).Apply(filter);
+                if (filter.Done)
+                {
+                    break;
+                }
+            }
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -499,9 +508,30 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public override int CompareToSameClass(object o)
         {
-            ArrayList theseElements = new ArrayList(_geometries);
-            ArrayList otherElements = new ArrayList(((GeometryCollection)o)._geometries);
+            var theseElements = new List<IGeometry>(_geometries);
+            var otherElements = new List<IGeometry>(((GeometryCollection) o)._geometries);
             return Compare(theseElements, otherElements);
+        }
+
+        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
+        {
+            IGeometryCollection gc = (IGeometryCollection) o;
+
+            int n1 = NumGeometries;
+            int n2 = gc.NumGeometries;
+            int i = 0;
+            while (i < n1 && i < n2)
+            {
+                IGeometry thisGeom = GetGeometryN(i);
+                Assert.IsTrue(thisGeom is Geometry);
+                IGeometry otherGeom = gc.GetGeometryN(i);
+                int holeComp = ((Geometry) thisGeom).CompareToSameClass(otherGeom, comp);
+                if (holeComp != 0) return holeComp;
+                i++;
+            }
+            if (i < n1) return 1;
+            if (i < n2) return -1;
+            return 0;
         }
 
         /// <summary>
@@ -527,13 +557,14 @@ namespace DotSpatial.Topology.Geometries
             if (!IsEquivalentClass(other))
                 return false;
 
-            GeometryCollection otherCollection = (GeometryCollection)other;
+            IGeometryCollection otherCollection = (IGeometryCollection) other;
             if (_geometries.Length != otherCollection.Geometries.Length)
                 return false;
 
-            for (int i = 0; i < _geometries.Length; i++)
-                if (!((Geometry)_geometries[i]).EqualsExact(otherCollection.Geometries[i], tolerance))
-                    return false;
+            for (int i = 0; i < _geometries.Length; i++) 
+                if (!_geometries[i].EqualsExact(
+                     otherCollection.Geometries[i], tolerance)) 
+                        return false;
             return true;
         }
 
@@ -556,9 +587,14 @@ namespace DotSpatial.Topology.Geometries
         /// this returns an IEnumerator over geometries composing GeometryCollection.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<IGeometry> GetEnumerator()
         {
-            return new Enumerator(this);
+            return new GeometryCollectionEnumerator(this);
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -571,10 +607,27 @@ namespace DotSpatial.Topology.Geometries
             return _geometries[n];
         }
 
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var result = new double[NumPoints];
+            var offset = 0;
+            for (var i = 0; i < NumGeometries; i++)
+            {
+                var geom = GetGeometryN(i);
+                var ordinates = geom.GetOrdinates(ordinate);
+                Array.Copy(ordinates, 0, result, offset, ordinates.Length);
+                offset += ordinates.Length;
+            }
+            return result;
+        }
+
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        public override void Normalize()
+        public override void Normalize() 
         {
             for (int i = 0; i < _geometries.Length; i++)
                 _geometries[i].Normalize();
@@ -592,24 +645,41 @@ namespace DotSpatial.Topology.Geometries
             for (int i = 0; i < _geometries.Length; i++)
                 gc._geometries[i] = (Geometry)_geometries[i].Clone();
         }
+      
+	    ///<summary>
+        /// Creates a <see cref="IGeometryCollection"/> with
+        /// every component reversed.
+        /// The order of the components in the collection are not reversed.
+        ///</summary>
+        /// <returns>A <see cref="IGeometryCollection"/></returns> in the reverse order
+        public override IGeometry Reverse()
+        {
+            int n = _geometries.Length;
+            IGeometry[] revGeoms = new IGeometry[n];
+            for (int i = 0; i < _geometries.Length; i++)
+            {
+                revGeoms[i] = _geometries[i].Reverse();
+            }
+            return Factory.CreateGeometryCollection(revGeoms);
+        }
 
         /// <summary>
         /// Rotates the geometries of the GeometryCollection by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the geometries get rotated around.</param>
+        /// <param name="origin">Coordinate the geometries get rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public override void Rotate(Coordinate Origin, Double radAngle)
+        public override void Rotate(Coordinate origin, Double radAngle)
         {
             foreach (IGeometry geo in Geometries)
             {
                 IPolygon poly = geo as IPolygon;
-                if (poly != null) { poly.Rotate(Origin, radAngle); continue; }
+                if (poly != null) { poly.Rotate(origin, radAngle); continue; }
 
                 ILineString ls = geo as ILineString;
-                if (ls != null) { ls.Rotate(Origin, radAngle); continue; }
+                if (ls != null) { ls.Rotate(origin, radAngle); continue; }
 
                 IPoint pt = geo as IPoint;
-                if (pt != null) { pt.Rotate(Origin, radAngle); continue; }
+                if (pt != null) { pt.Rotate(origin, radAngle); continue; }
             }
         }
 

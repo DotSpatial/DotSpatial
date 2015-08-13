@@ -26,7 +26,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// A type specific Geometry collection that deals with ILineStrings
     /// </summary>
-    public interface IMultiLineString : IGeometryCollection
+    public interface IMultiLineString : IMultiCurve, ILineal
     {
         #region Indexers
 

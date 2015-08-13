@@ -36,22 +36,18 @@ namespace DotSpatial.Topology.Utilities
     {
         #region Fields
 
-        private readonly ArrayList _list = new ArrayList();
-        private readonly ISet<Coordinate> _table = new SortedSet<Coordinate>();
+        private readonly List<Coordinate> _list = new List<Coordinate>();
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Returns the gathered <c>Coordinate</c>s.
+        /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
         public virtual Coordinate[] Coordinates
         {
-            get
-            {
-                return (Coordinate[])_list.ToArray(typeof(Coordinate));
-            }
+            get { return _list.ToArray(); }
         }
 
         #endregion
@@ -59,16 +55,26 @@ namespace DotSpatial.Topology.Utilities
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void Filter(Coordinate coord)
+        public void Filter(Coordinate coord)
         {
-            if (!_table.Contains(coord))
-            {
+            if (!_list.Contains(coord))
                 _list.Add(coord);
-                _table.Add(coord);
-            }
+        }
+
+        /// <summary>
+        /// Convenience method which allows running the filter over an array of <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <param name="coords">an array of coordinates</param>
+        /// <returns>an array of the unique coordinates</returns>
+        public static Coordinate[] FilterCoordinates(Coordinate[] coords)
+        {
+            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
+            for (int i = 0; i < coords.Length; i++)
+                filter.Filter(coords[i]);
+            return filter.Coordinates;
         }
 
         #endregion

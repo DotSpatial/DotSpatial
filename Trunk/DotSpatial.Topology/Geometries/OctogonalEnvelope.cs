@@ -85,15 +85,6 @@ namespace DotSpatial.Topology.Geometries
 
         #region Properties
 
-        public double MaxA { get { return _maxA; } }
-        public double MaxB { get { return _maxB; } }
-        public double MaxX { get { return _maxX; } }
-        public double MaxY { get { return _maxY; } }
-        public double MinA { get { return _minA; } }
-        public double MinB { get { return _minB; } }
-        public double MinX { get { return _minX; } }
-        public double MinY { get { return _minY; } }
-
         ///
         ///  Sets the value of this object to the null value
         ///
@@ -123,6 +114,15 @@ namespace DotSpatial.Topology.Geometries
                        && _minB <= _maxB;
             }
         }
+
+        public double MaxA { get { return _maxA; } }
+        public double MaxB { get { return _maxB; } }
+        public double MaxX { get { return _maxX; } }
+        public double MaxY { get { return _maxY; } }
+        public double MinA { get { return _minA; } }
+        public double MinB { get { return _minB; } }
+        public double MinX { get { return _minX; } }
+        public double MinY { get { return _minY; } }
 
         #endregion
 

@@ -27,12 +27,26 @@ using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Operation;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Basic implementation of <c>LineString</c>.
+    /// Models an OGC-style <code>LineString</code>
     /// </summary>
+    /// <remarks>
+    /// A LineString consists of a sequence of two or more vertices,
+    /// along with all points along the linearly-interpolated curves
+    /// (line segments) between each
+    /// pair of consecutive vertices.
+    /// Consecutive vertices may be equal.
+    /// The line segments in the line may intersect each other (in other words,
+    /// the linestring may "curl back" in itself and self-intersect.
+    /// Linestrings with exactly two identical points are invalid.
+    /// <para>A linestring must have either 0 or 2 or more points.
+    /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
+    /// </para>
+    /// </remarks>
     [Serializable]
     public class LineString : Geometry, ILineString
     {
@@ -41,12 +55,12 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new List<Coordinate>());
+        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
 
         /// <summary>
         /// The points of this <c>LineString</c>.
         /// </summary>
-        private IList<Coordinate> _points;
+        private ICoordinateSequence _points;
 
         #endregion
 
@@ -67,9 +81,7 @@ namespace DotSpatial.Topology.Geometries
                 points = new List<Coordinate>();
             if (points.Count == 1)
                 throw new ArgumentException("point array must contain 0 or > 1 elements");
-
-            if (points.GetType().IsArray) _points = points.ToList(); //fixed arrays cause errors in LinearRing.ValidateConstruction
-            else _points = points;
+            _points = DefaultFactory.CoordinateSequenceFactory.Create(points);
         }
 
         /// <summary>
@@ -100,7 +112,6 @@ namespace DotSpatial.Topology.Geometries
         public LineString(IBasicLineString lineString, IGeometryFactory factory)
             : this(lineString.Coordinates, factory) { }
 
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
         /// Creates an empty linestring using the specified factory.
@@ -109,10 +120,9 @@ namespace DotSpatial.Topology.Geometries
         public LineString(IGeometryFactory factory)
             : base(factory)
         {
-            _points = new List<Coordinate>();
+            _points = factory.CoordinateSequenceFactory.Create();
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
         /// Rather than using the factory trends, this will create a coordinate sequence by simply using the specified list of coordinates.
@@ -123,21 +133,16 @@ namespace DotSpatial.Topology.Geometries
         {
             if (coordinates == null)
             {
-                _points = new List<Coordinate>();
+                _points = DefaultFactory.CoordinateSequenceFactory.Create();
                 return;
             }
 
             if (!coordinates.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
             {
-                _points = coordinates as IList<Coordinate>;
+                _points = DefaultFactory.CoordinateSequenceFactory.Create(coordinates as IList<Coordinate>);
                 if (_points != null) return;
             }
-
-            _points = new List<Coordinate>();
-            foreach (Coordinate c in coordinates)
-            {
-                _points.Add(c);
-            }
+            _points = DefaultFactory.CoordinateSequenceFactory.Create(coordinates.ToList());
         }
 
         /// <summary>
@@ -149,21 +154,31 @@ namespace DotSpatial.Topology.Geometries
         {
             if (coordinates == null)
             {
-                _points = new List<Coordinate>();
+                _points = DefaultFactory.CoordinateSequenceFactory.Create();
                 return;
             }
+            IList<Coordinate> coords = coordinates.Select(c => new Coordinate(c)).ToList();
+            _points = DefaultFactory.CoordinateSequenceFactory.Create(coords);
+        }
 
-            if (!coordinates.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
-            {
-                _points = coordinates as IList<Coordinate>;
-                if (_points != null) return;
-            }
-
-            _points = new List<Coordinate>();
-            foreach (ICoordinate c in coordinates)
-            {
-                _points.Add(new Coordinate(c));
-            }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <param name="points">
+        /// The points of the linestring, or <c>null</c>
+        /// to create the empty point. Consecutive points may not be equal.
+        /// </param>
+        /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        public LineString(ICoordinateSequence points, IGeometryFactory factory)
+            : base(factory)
+        {
+            if (points == null)
+                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+            if (points.Count == 1)
+                throw new ArgumentException("Invalid number of points in LineString (found "
+                      + points.Count + " - must be 0 or >= 2)");
+            _points = points;
         }
 
         #endregion
@@ -171,7 +186,7 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        /// Gets the value of the angle between the <see cref="StartPoint" />
+        /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
         /// </summary>
         public virtual double Angle
@@ -191,6 +206,34 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Gets a MultiPoint geometry that contains the StartPoint and Endpoint
+        /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                return (new BoundaryOp(this)).GetBoundary();
+            }
+        }
+
+        /// <summary>
+        /// Gets False if the LineString is closed, or Point (0) otherwise, representing the endpoints
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                if (IsClosed)
+                {
+                    return DimensionType.False;
+                }
+                return DimensionType.Point;
+            }
+        }
+
         /// <summary>
         /// Gets the 0th coordinate
         /// </summary>
@@ -199,7 +242,33 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (IsEmpty) return null;
-                return _points.First();
+                return _points.GetCoordinate(0);
+            }
+        }
+
+        /// <summary>
+        /// Gets a System.Array of the coordinates
+        /// </summary>
+        public override IList<Coordinate> Coordinates
+        {
+            get
+            {
+                return _points.ToList();
+            }
+            set
+            {
+                _points = DefaultFactory.CoordinateSequenceFactory.Create(value);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public ICoordinateSequence CoordinateSequence
+        {
+            get
+            {
+                return _points;
             }
         }
 
@@ -218,6 +287,17 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Gets the dimensionality of a Curve(1)
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Curve;
+            }
+        }
+
+        /// <summary>
         /// Gets the point corresponding to NumPoints-1 and returns it as an IPoint interface
         /// </summary>
         public virtual IPoint EndPoint
@@ -225,9 +305,7 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (IsEmpty)
-                {
                     return null;
-                }
                 return GetPointN(NumPoints - 1);
             }
         }
@@ -244,8 +322,9 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Gets a string that says "LineString"
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"LineString"</returns>
         public override string GeometryType
         {
             get
@@ -262,10 +341,8 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (IsEmpty)
-                {
                     return false;
-                }
-                return new Coordinate(GetCoordinateN(0)).Equals2D(GetCoordinateN(NumPoints - 1));
+                return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
             }
         }
 
@@ -293,17 +370,6 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Gets a boolean that is false if any part of this LineString intersects with itself.
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
-        }
-
-        /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
@@ -326,6 +392,11 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.LineString; }
+        }
+
         /// <summary>
         /// Gets the 0 index point as a valid implementation of IPoint interface
         /// </summary>
@@ -334,72 +405,8 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (IsEmpty)
-                {
                     return null;
-                }
                 return GetPointN(0);
-            }
-        }
-
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Gets a MultiPoint geometry that contains the StartPoint and Endpoint
-        /// </summary>
-        public override IGeometry Boundary
-        {
-            get
-            {
-                if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                if (IsClosed)
-                    return MultiPoint.Empty;
-                return Factory.CreateMultiPoint(new[] { StartPoint.Coordinate, EndPoint.Coordinate });
-            }
-        }
-
-        /// <summary>
-        /// Gets False if the LineString is closed, or Point (0) otherwise, representing the endpoints
-        /// </summary>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                {
-                    return DimensionType.False;
-                }
-                return DimensionType.Point;
-            }
-        }
-
-        /// <summary>
-        /// Gets a System.Array of the coordinates
-        /// </summary>
-        public override IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return _points;
-            }
-            set
-            {
-                if (value.GetType().IsArray) //fixed arrays cause errors in LinearRing.ValidateConstruction
-                {
-                    _points = value.ToList();
-                }
-                else { _points = value; }
-            }
-        }
-
-        /// <summary>
-        /// Gets the dimensionality of a Curve(1)
-        /// </summary>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                return DimensionType.Curve;
             }
         }
 
@@ -416,7 +423,7 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                return _points[n];
+                return _points.GetCoordinate(n);
             }
             set
             {
@@ -434,10 +441,22 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
         {
-            foreach (Coordinate c in _points)
+            for (int i = 0; i < _points.Count; i++)
+                filter.Filter(_points.GetCoordinate(i));
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (_points.Count == 0)
+                return;
+            for (int i = 0; i < _points.Count; i++)
             {
-                filter.Filter(c);
+                filter.Filter(_points, i);
+                if (filter.Done)
+                    break;
             }
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -489,15 +508,15 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public override int CompareToSameClass(object o)
         {
-            LineString line = o as LineString;
+            ILineString line = o as LineString;
             // MD - optimized implementation
             int i = 0;
             int j = 0;
             if (line != null)
             {
-                while (i < _points.Count && j < line._points.Count)
+                while (i < _points.Count && j < line.CoordinateSequence.Count)
                 {
-                    int comparison = _points[i].CompareTo(line._points[j]);
+                    int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
                     if (comparison != 0)
                         return comparison;
                     i++;
@@ -508,10 +527,17 @@ namespace DotSpatial.Topology.Geometries
                 return 1;
             if (line != null)
             {
-                if (j < line._points.Count)
+                if (j < line.CoordinateSequence.Count)
                     return -1;
             }
             return 0;
+        }
+
+        protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
+        {
+            Assert.IsTrue(o is ILineString);
+            ILineString line = (LineString)o;
+            return comp.Compare(_points, line.CoordinateSequence);
         }
 
         /// <summary>
@@ -552,12 +578,12 @@ namespace DotSpatial.Topology.Geometries
             if (!IsEquivalentClass(other))
                 return false;
 
-            LineString otherLineString = (LineString)other;
-            if (_points.Count != otherLineString._points.Count)
+            ILineString otherLineString = (ILineString)other;
+            if (_points.Count != otherLineString.NumPoints)
                 return false;
 
             for (int i = 0; i < _points.Count; i++)
-                if (!Equal(new Coordinate(_points[i]), otherLineString._points[i], tolerance))
+                if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
                     return false;
             return true;
         }
@@ -569,7 +595,19 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public virtual Coordinate GetCoordinateN(int n)
         {
-            return _points[n];
+            return _points.GetCoordinate(n);
+        }
+
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_points.Ordinates & ordinateFlag) != ordinateFlag)
+                return CreateArray(_points.Count, Coordinate.NullOrdinate);
+
+            return CreateArray(_points, ordinate);
         }
 
         /// <summary>
@@ -580,7 +618,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public virtual IPoint GetPointN(int n)
         {
-            return new Point(_points[n]);
+            return Factory.CreatePoint(_points.GetCoordinate(n));
         }
 
         /// <summary>
@@ -590,9 +628,8 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         public virtual bool IsCoordinate(Coordinate pt)
         {
-            Coordinate coord = new Coordinate(pt);
             for (int i = 0; i < _points.Count; i++)
-                if (coord == _points[i])
+                if (_points.GetCoordinate(i).Equals(pt))
                     return true;
             return false;
         }
@@ -604,7 +641,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         protected override bool IsEquivalentClass(IGeometry other)
         {
-            return other is LineString;
+            return other is ILineString;
         }
 
         /// <summary>
@@ -618,10 +655,10 @@ namespace DotSpatial.Topology.Geometries
             {
                 int j = _points.Count - 1 - i;
                 // skip equal points on both ends
-                if (!_points[i].Equals(_points[j]))
+                if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
-                    if (_points[i].CompareTo(_points[j]) > 0)
-                        _points = _points.Reverse().ToList();
+                    if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
+                        Coordinates = Coordinates.Reverse().ToList();
                     return;
                 }
             }
@@ -654,38 +691,33 @@ namespace DotSpatial.Topology.Geometries
         /// Returns a copy of this ILineString
         /// </summary>
         protected override void OnCopy(Geometry copy)
-        {
+        { //TODO does this do anything ?
             base.OnCopy(copy);
             LineString ls = copy as LineString;
             if (ls == null) return;
-            ls.Coordinates = new List<Coordinate>();
-            foreach (Coordinate coordinate in _points)
-            {
-                ls.Coordinates.Add(coordinate);
-            }
+            ls._points = (ICoordinateSequence)_points.Clone();
         }
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public virtual ILineString Reverse()
+        public override IGeometry Reverse()
         {
-            List<Coordinate> result = Coordinates.CloneList();
-            result.Reverse();
-            return new LineString(result);
+            var seq = _points.Reversed();
+            return Factory.CreateLineString(seq);
         }
 
         /// <summary>
         /// Rotates the LineString by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the LineString gets rotated around.</param>
+        /// <param name="origin">Coordinate the LineString gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public override void Rotate(Coordinate Origin, double radAngle)
+        public override void Rotate(Coordinate origin, double radAngle)
         {
             for (int i = 0; i < _points.Count; i++)
             {
-                base.RotateCoordinateRad(Origin, ref _points[i].X, ref _points[i].Y, radAngle);
+                base.RotateCoordinateRad(origin, ref _points[i].X, ref _points[i].Y, radAngle);
             }
         }
 

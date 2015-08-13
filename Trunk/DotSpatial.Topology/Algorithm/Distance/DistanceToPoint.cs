@@ -59,8 +59,8 @@ namespace DotSpatial.Topology.Algorithm.Distance
 
         public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
         {
-            ComputeDistance(poly.ExteriorRing, pt, ptDist);
-            for (var i = 0; i < poly.NumInteriorRings; i++)
+            ComputeDistance(poly.Shell, pt, ptDist);
+            for (var i = 0; i < poly.NumHoles; i++)
             {
                 ComputeDistance(poly.GetInteriorRingN(i), pt, ptDist);
             }

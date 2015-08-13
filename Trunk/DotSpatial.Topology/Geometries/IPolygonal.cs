@@ -8,6 +8,5 @@ namespace DotSpatial.Topology.Geometries
     /// <seealso cref="IPuntal"/>
     /// <seealso cref="ILineal"/>
     public interface IPolygonal
-    {
-    }
+    {}
 }

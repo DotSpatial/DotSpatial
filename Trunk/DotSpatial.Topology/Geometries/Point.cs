@@ -24,29 +24,35 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Basic implementation of Point.
+    /// Represents a single point.
+    /// <para/>
+    /// A <c>Point</c> is topologically valid if and only if:
+    /// <list type="Bullet">
+    /// <item>The coordinate which defines it if any) is a valid coordinate 
+    /// (i.e. does not have an <c>NaN</c> X- or Y-ordinate</item>
+    /// </list>
     /// </summary>
     [Serializable]
     public class Point : Geometry, IPoint
     {
-        #region Constant Fields
-
-        private const Coordinate EMPTY_COORDINATE = null;
-
-        #endregion
-
         #region Fields
+
+        private static readonly Coordinate EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
         /// </summary>
-        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EMPTY_COORDINATE);
+        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
 
-        private IList<Coordinate> _coordinates = new List<Coordinate>();
+        /// <summary>  
+        /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
+        /// </summary>
+        private ICoordinateSequence _coordinates;
         private int _recordNumber;
 
         #endregion
@@ -58,7 +64,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public Point()
         {
-            _coordinates.Add(new Coordinate());
+            _coordinates = GeometryFactory.Default.CoordinateSequenceFactory.Create(new[] { new Coordinate() });
         }
 
         /// <summary>
@@ -69,11 +75,11 @@ namespace DotSpatial.Topology.Geometries
         public Point(IGeometryFactory factory)
             : base(factory)
         {
-            _coordinates.Add(new Coordinate());
+            _coordinates = factory.CoordinateSequenceFactory.Create(new[] { new Coordinate() });
         }
 
         /// <summary>
-        /// Initializes a new instance of the Point class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
@@ -81,8 +87,8 @@ namespace DotSpatial.Topology.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Coordinate coordinate) :
-            this(coordinate,
-                 new GeometryFactory()) { }
+            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
+            GeometryFactory.Default) { }
 
         /// <summary>
         /// Initializes a new instance of the Point class.
@@ -107,12 +113,26 @@ namespace DotSpatial.Topology.Geometries
         public Point(Coordinate coordinate, IGeometryFactory factory)
             : base(factory)
         {
-            _coordinates.Add(coordinate);
-            // SelectShapeType();
+            _coordinates = factory.CoordinateSequenceFactory.Create(new [] { coordinate });
         }
 
         /// <summary>
-        /// Initializes a new instance of the Point class.
+        /// Constructs a <c>Point</c> with the given coordinate.
+        /// </summary>
+        /// <param name="coordinates">
+        /// Contains the single coordinate on which to base this <c>Point</c>,
+        /// or <c>null</c> to create the empty point.
+        /// </param>
+        /// <param name="factory"></param>
+        public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
+        {               
+            if (coordinates == null) 
+                coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+            Assert.IsTrue(coordinates.Count <= 1);
+            _coordinates = coordinates;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
@@ -121,11 +141,11 @@ namespace DotSpatial.Topology.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public Point(double x, double y, double z)
-            : this(new Coordinate(x, y, z), DefaultFactory) { }
+        public Point(double x, double y, double z) : 
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new [] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
-        /// Initializes a new instance of the Point class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
@@ -133,14 +153,42 @@ namespace DotSpatial.Topology.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public Point(double x, double y) :
-            this(new Coordinate(x, y), DefaultFactory) { }
+        public Point(double x, double y)
+            : this(DefaultFactory.CoordinateSequenceFactory.Create(new [] { new Coordinate(x, y) }), DefaultFactory) { }
 
         #endregion
 
         #region Properties
 
-        /// Coordinate
+        /// <summary>
+        ///Gets the boundary of this geometry.
+        ///Zero-dimensional geometries have no boundary by definition,
+        ///so an empty GeometryCollection is returned.
+        /// </summary>
+        public override IGeometry Boundary
+        {
+            get
+            {
+                return Factory.CreateGeometryCollection(null);
+            }
+        }
+
+        /// <summary>
+        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
+        /// </summary>
+        /// <returns>
+        /// The dimension of the boundary of the class implementing this
+        /// interface, whether or not this object is the empty point. Returns
+        /// <c>Dimension.False</c> if the boundary is the empty point.
+        /// </returns>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                return DimensionType.False;
+            }
+        }
+
         /// <summary>
         /// Returns a vertex of this Geometry
         /// </summary>
@@ -148,9 +196,46 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                if (_coordinates == null) _coordinates = new List<Coordinate>();
-                if (_coordinates.Count == 0) _coordinates.Add(new Coordinate());
-                return _coordinates[0];
+                return _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
+            }
+        }
+
+        /// <summary>
+        /// People might access "Coordinates".  If we spontaneously generate a list from
+        /// our single coordinate, thne we will have problems.
+        /// They cannot SET the coordinate like myPoint.Coordinates[0].X = 5.
+        /// </summary>
+        public override IList<Coordinate> Coordinates
+        {
+            get
+            {
+                return _coordinates.ToList();
+            }
+            set
+            {
+                _coordinates = DefaultFactory.CoordinateSequenceFactory.Create(value);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICoordinateSequence CoordinateSequence
+        {
+            get
+            {
+                return _coordinates;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the DotSpatial.Geometries.Dimensions of this Geometry.
+        /// </summary>
+        public override DimensionType Dimension
+        {
+            get
+            {
+                return DimensionType.Point;
             }
         }
 
@@ -184,7 +269,6 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// IsEmpty
         /// <summary>
         /// Returns whether or not the set of points in this geometry is empty
         /// </summary>
@@ -192,34 +276,25 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                return Coordinate == null;
+                return _coordinates.Count == 0;
             }
         }
 
-        /// IsSimple
         /// <summary>
-        /// Returns false if the Geometry not simple.  Subclasses provide their own definition
-        /// of "simple". If this Geometry is empty, returns true. In general, the SFS specifications
-        /// of simplicity seem to follow the following rule: A Geometry is simple if the only
-        /// self-intersections are at boundary points.  For all empty Geometrys, IsSimple==true.
+        /// The measure coordinate
         /// </summary>
-        public override bool IsSimple
+        public virtual double M
         {
             get
             {
-                return true;
+                if (Coordinate == null)
+                    throw new ArgumentOutOfRangeException("M called on empty Point");
+                return Coordinate.M;
             }
-        }
-
-        /// IsValid
-        /// <summary>
-        /// Tests the validity of this Geometry.  Subclasses provide their own definition of "valid"
-        /// </summary>
-        public override bool IsValid
-        {
-            get
+            set
             {
-                return true;
+                Coordinate c = Coordinate;
+                c.M = value;
             }
         }
 
@@ -246,85 +321,14 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// Boundary
         /// <summary>
-        /// Returns the boundary, or the empty point if this <c>Geometry</c>
-        /// is empty. For a discussion of this function, see the OpenGIS Simple
-        /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
-        /// of a Geometry is a set of Geometries of the next lower dimension."
+        /// Gets the OGC geometry type
         /// </summary>
-        /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        public override IGeometry Boundary
+        public override OgcGeometryType OgcGeometryType
         {
-            get
-            {
-                return Factory.CreateGeometryCollection(null);
-            }
+            get { return OgcGeometryType.Point; }
         }
-
-        /// <summary>
-        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
-        /// </summary>
-        /// <returns>
-        /// The dimension of the boundary of the class implementing this
-        /// interface, whether or not this object is the empty point. Returns
-        /// <c>Dimension.False</c> if the boundary is the empty point.
-        /// </returns>
-        public override DimensionType BoundaryDimension
-        {
-            get
-            {
-                return DimensionType.False;
-            }
-        }
-
-        /// <summary>
-        /// People might access "Coordinates".  If we spontaneously generate a list from
-        /// our single coordinate, thne we will have problems.
-        /// They cannot SET the coordinate like myPoint.Coordinates[0].X = 5.
-        /// </summary>
-        public override IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return _coordinates;
-            }
-            set
-            {
-                _coordinates = value;
-            }
-        }
-
-        /// Dimension
-        /// <summary>
-        /// Gets or sets the DotSpatial.Geometries.Dimensions of this Geometry.
-        /// </summary>
-        public override DimensionType Dimension
-        {
-            get
-            {
-                return DimensionType.Point;
-            }
-        }
-
-        /// <summary>
-        /// The measure coordinate
-        /// </summary>
-        public virtual double M
-        {
-            get
-            {
-                if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException();
-                return Coordinate.M;
-            }
-            set
-            {
-                Coordinate c = Coordinate;
-                c.M = value;
-            }
-        }
-
+		
         /// <summary>
         /// This is an optional recordnumber index, used specifically for Shapefile points.
         /// </summary>
@@ -353,6 +357,8 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
+                if (Coordinate == null)
+                    throw new ArgumentOutOfRangeException("X called on empty Point");                
                 return Coordinate.X;
             }
             set
@@ -368,6 +374,8 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
+                if (Coordinate == null)
+                    throw new ArgumentOutOfRangeException("Y called on empty Point");                
                 return Coordinate.Y;
             }
             set
@@ -383,6 +391,8 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
+                if (Coordinate == null)
+                    throw new ArgumentOutOfRangeException("Z called on empty Point");
                 return Coordinate.Z;
             }
             set
@@ -425,6 +435,15 @@ namespace DotSpatial.Topology.Geometries
             if (IsEmpty)
                 return;
             filter.Filter(Coordinate);
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (IsEmpty)
+                return;
+            filter.Filter(_coordinates, 0);
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -479,6 +498,17 @@ namespace DotSpatial.Topology.Geometries
         {
             Point point = (Point)other;
             return Coordinate.CompareTo(point.Coordinate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        {
+            return comparer.Compare(CoordinateSequence, ((IPoint) other).CoordinateSequence);
         }
 
         /// <summary>
@@ -553,7 +583,23 @@ namespace DotSpatial.Topology.Geometries
                 return false;
             if (IsEmpty && other.IsEmpty)
                 return true;
-            return Equal(new Coordinate(other.Coordinate), Coordinate, tolerance);
+            if (IsEmpty != other.IsEmpty)
+                return false;
+
+            return Equal(other.Coordinate, Coordinate, tolerance);
+        }
+
+        public override double[] GetOrdinates(Ordinate ordinate)
+        {
+
+            if (IsEmpty)
+                return new double[0];
+
+            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
+                return new[] {Coordinate.NullOrdinate};
+            
+            return new [] { _coordinates.GetOrdinate(0, ordinate)};
         }
 
         /// <summary>
@@ -603,15 +649,22 @@ namespace DotSpatial.Topology.Geometries
                 p.SetCoordinate(Coordinate.Copy());
             }
         }
-
+		
+        public override IGeometry Reverse()
+        {
+            Point p = new Point();
+            OnCopy(p);
+            return p;
+        }
+		
         /// <summary>
         /// Rotates the point by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the point gets rotated around.</param>
+        /// <param name="origin">Coordinate the point gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public override void Rotate(Coordinate Origin, double radAngle)
+        public override void Rotate(Coordinate origin, double radAngle)
         {
-            RotateCoordinateRad(Origin , ref Coordinate.X, ref Coordinate.Y, radAngle);
+            RotateCoordinateRad(origin , ref Coordinate.X, ref Coordinate.Y, radAngle);
         }
 
         /// <summary>
@@ -620,10 +673,9 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="value">The value to set.</param>
         public void SetCoordinate(Coordinate value)
         {
-            if (_coordinates == null) _coordinates = new List<Coordinate>();
-            if (_coordinates.Count == 0)
+            if (_coordinates == null || _coordinates.Count == 0)
             {
-                _coordinates.Add(value);
+                _coordinates = DefaultFactory.CoordinateSequenceFactory.Create(value);
             }
             else
             {

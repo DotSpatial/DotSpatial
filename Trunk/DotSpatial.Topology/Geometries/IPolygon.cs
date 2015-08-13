@@ -27,7 +27,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// Full powered topology style Polygon
     /// </summary>
-    public interface IPolygon : IGeometry, IBasicPolygon
+    public interface IPolygon : IBasicPolygon, ISurface, IPolygonal
     {
         #region Properties
 

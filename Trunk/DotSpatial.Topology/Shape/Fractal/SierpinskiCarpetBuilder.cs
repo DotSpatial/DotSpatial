@@ -61,7 +61,7 @@ namespace DotSpatial.Topology.Shape.Fractal
             var baseLine = GetSquareBaseLine();
             var origin = baseLine.GetCoordinate(0);
             var holes = GetHoles(level, origin.X, origin.Y, Diameter);
-            var shell = (ILinearRing) ((IPolygon) GeomFactory.ToGeometry(GetSquareExtent())).ExteriorRing;
+            var shell = (ILinearRing) ((IPolygon) GeomFactory.ToGeometry(GetSquareExtent())).Shell;
             return GeomFactory.CreatePolygon(shell, holes);
         }
 

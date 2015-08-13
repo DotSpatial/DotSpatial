@@ -26,7 +26,7 @@ namespace DotSpatial.Topology.CoordinateSystems.Transformations
 	/// which means that some parts of the convex hull are inside the 
 	/// domain, and some parts of the convex hull are outside the domain.
 	/// </remarks>
-	public enum DomainFlags : int
+	public enum DomainFlags
 	{
 		/// <summary>
 		/// At least one point in a convex hull is inside the transform's domain.

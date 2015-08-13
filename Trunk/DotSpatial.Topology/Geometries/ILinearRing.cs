@@ -27,5 +27,14 @@ namespace DotSpatial.Topology.Geometries
     /// A closed, non-self intersecting Linestring
     /// </summary>
     public interface ILinearRing : ILineString
-    {}
+    {
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether this ring is oriented counter-clockwise.
+        /// </summary>
+        bool IsCounterClockwise { get; }
+
+        #endregion
+    }
 }

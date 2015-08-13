@@ -101,8 +101,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             get { return 0; }
         }
 
-        public Ordinates Ordinates { get; private set; }
-
         /// <summary>
         /// The CoordinateListSequence is not readonly
         /// </summary>
@@ -110,6 +108,8 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             get { return false; }
         }
+
+        public Ordinates Ordinates { get; private set; }
 
         #endregion
 
@@ -333,6 +333,14 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public Coordinate[] ToCoordinateArray()
         {
             return _internalList.ToArray();
+        }
+
+        /// <summary>
+        /// Returns the internal list.
+        /// </summary>
+        public IList<Coordinate> ToList()
+        {
+            return _internalList;
         }
 
         #endregion

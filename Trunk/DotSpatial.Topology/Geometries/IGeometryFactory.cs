@@ -216,6 +216,7 @@ namespace DotSpatial.Topology.Geometries
         /// Creates a <see cref="IGeometry"/> with the same extent as the given envelope.
         /// </summary>
         IGeometry ToGeometry(IEnvelope envelopeInternal);
+
         #endregion
     }
 }

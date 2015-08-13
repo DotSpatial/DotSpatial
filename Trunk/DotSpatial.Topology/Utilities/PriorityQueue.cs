@@ -10,7 +10,25 @@ namespace DotSpatial.Topology.Utilities
     public class PriorityQueue<T>
         where T : IComparable<T>
     {
+        #region Fields
+
         private readonly AlternativePriorityQueue<T, T> queue = new AlternativePriorityQueue<T, T>();
+
+        #endregion
+
+        #region Properties
+
+        ///<summary>
+        /// Returns size.
+        ///</summary>
+        public int Size
+        {
+            get { return this.queue.Count; }
+        }
+
+        #endregion
+
+        #region Methods
 
         ///<summary>Insert into the priority queue. Duplicates are allowed.
         ///</summary>
@@ -22,28 +40,20 @@ namespace DotSpatial.Topology.Utilities
         }
 
         ///<summary>
+        /// Make the priority queue logically empty.
+        ///</summary>
+        public void Clear()
+        {
+            this.queue.Clear();
+        }
+
+        ///<summary>
         /// Test if the priority queue is logically empty.
         ///</summary>
         /// <returns><c>true</c> if empty, <c>false</c> otherwise.</returns>
         public bool IsEmpty()
         {
             return this.queue.Count == 0;
-        }
-
-        ///<summary>
-        /// Returns size.
-        ///</summary>
-        public int Size
-        {
-            get { return this.queue.Count; }
-        }
-
-        ///<summary>
-        /// Make the priority queue logically empty.
-        ///</summary>
-        public void Clear()
-        {
-            this.queue.Clear();
         }
 
         ///<summary>
@@ -57,5 +67,7 @@ namespace DotSpatial.Topology.Utilities
                 ? default(T)
                 : node.Data;
         }
+
+        #endregion
     }
 }

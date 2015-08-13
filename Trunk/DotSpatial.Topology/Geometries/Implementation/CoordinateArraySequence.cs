@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DotSpatial.Topology.Geometries.Implementation
@@ -249,8 +250,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return new CoordinateArraySequence(cloneCoordinates);
         }
 
-
-
         /// <summary>
         /// Tests to see if the array contains the specified item
         /// </summary>
@@ -396,16 +395,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return Coordinates[index].Y;
         }
 
-        public ICoordinateSequence Reversed()
-        {
-            var coordinates = new Coordinate[Count];
-            for (var i = 0; i < Count; i++ )
-            {
-                coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
-            }
-            return new CoordinateArraySequence(coordinates);
-        }
-
         /// <summary>
         /// For arrays, this is very inneficient.  This will copy all the members
         /// except for the item to a new array.
@@ -441,6 +430,16 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return result;
         }
 
+        public ICoordinateSequence Reversed()
+        {
+            var coordinates = new Coordinate[Count];
+            for (var i = 0; i < Count; i++ )
+            {
+                coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
+            }
+            return new CoordinateArraySequence(coordinates);
+        }
+
         /// <summary>
         /// Sets the value for a given ordinate of a coordinate in this sequence.
         /// </summary>
@@ -470,6 +469,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public virtual Coordinate[] ToCoordinateArray()
         {
             return Coordinates;
+        }
+
+        /// <summary>
+        /// Returns the internal Array as List.
+        /// </summary>
+        /// <returns></returns>
+        public IList<Coordinate> ToList()
+        {
+            return Coordinates.ToList();
         }
 
         /// <summary>

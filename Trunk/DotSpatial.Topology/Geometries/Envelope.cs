@@ -211,6 +211,29 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Gets or sets the difference between the maximum and minimum y values.
+        /// Setting this will only change the _yMin value (leaving the top alone)
+        /// </summary>
+        /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
+        /// <remarks>To resemble the precedent set by the dot net framework controls, this is left as a property</remarks>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual double Height
+        {
+            get
+            {
+                if (IsNull)
+                    return 0;
+                return Maximum.Y - Minimum.Y;
+            }
+            set
+            {
+                double h = Math.Abs(value);
+                _max.Y = _min.Y + h;
+                OnEnvelopeChanged();
+            }
+        }
+
+        /// <summary>
         /// Returns <c>true</c> if this <c>Envelope</c> is a "null" envelope.
         /// </summary>
         /// <returns>
@@ -236,6 +259,18 @@ namespace DotSpatial.Topology.Geometries
             get { return _max; }
         }
 
+        public double MaxX
+        {
+            get { return _max.X; }
+            set { _max.X = value; }
+        }
+
+        public double MaxY
+        {
+            get { return _max.Y; }
+            set { _max.Y = value; }
+        }
+
         /// <summary>
         /// Gets the minimum coordinate
         /// </summary>
@@ -245,6 +280,18 @@ namespace DotSpatial.Topology.Geometries
             get { return _min; }
         }
 
+        public double MinX
+        {
+            get { return _min.X; }
+            set { _min.X = value; } 
+        }
+
+        public double MinY
+        {
+            get { return _min.Y; }
+            set { _min.Y = value; }
+        }
+
         /// <summary>
         /// Gets the number of ordinates for this envelope.
         /// </summary>
@@ -252,29 +299,6 @@ namespace DotSpatial.Topology.Geometries
         public int NumOrdinates
         {
             get { return _min.NumOrdinates; }
-        }
-
-        /// <summary>
-        /// Gets or sets the difference between the maximum and minimum y values.
-        /// Setting this will only change the _yMin value (leaving the top alone)
-        /// </summary>
-        /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
-        /// <remarks>To resemble the precedent set by the dot net framework controls, this is left as a property</remarks>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual double Height
-        {
-            get
-            {
-                if (IsNull)
-                    return 0;
-                return Maximum.Y - Minimum.Y;
-            }
-            set
-            {
-                double h = Math.Abs(value);
-                _max.Y = _min.Y + h;
-                OnEnvelopeChanged();
-            }
         }
 
         /// <summary>
@@ -339,29 +363,6 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        public double MinX
-        {
-            get { return _min.X; }
-            set { _min.X = value; } 
-        }
-        public double MaxX
-        {
-            get { return _max.X; }
-            set { _max.X = value; }
-        }
-
-        public double MinY
-        {
-            get { return _min.Y; }
-            set { _min.Y = value; }
-        }
-        public double MaxY
-        {
-            get { return _max.Y; }
-            set { _max.Y = value; }
-        }
-
-
         #endregion
 
         #region Methods
@@ -373,6 +374,11 @@ namespace DotSpatial.Topology.Geometries
         public virtual object Clone()
         {
             return Copy();
+        }
+
+        public int CompareTo(Envelope other)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -408,6 +414,21 @@ namespace DotSpatial.Topology.Geometries
         {
             _min = min;
             _max = max;
+        }
+
+        public bool Equals(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Envelope ExpandedBy(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExpandToInclude(Envelope other)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -581,6 +602,11 @@ namespace DotSpatial.Topology.Geometries
             return a.Intersects(b);
         }
 
+        public bool Intersects(Envelope other)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Fires the EnvelopeChanged event
         /// </summary>
@@ -607,21 +633,6 @@ namespace DotSpatial.Topology.Geometries
             OnEnvelopeChanged();
         }
 
-        public bool Equals(Envelope other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int CompareTo(Envelope other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Intersects(Envelope other)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Generates a string form of this envelope.
         /// </summary>
@@ -639,15 +650,5 @@ namespace DotSpatial.Topology.Geometries
         }
 
         #endregion
-
-        public void ExpandToInclude(Envelope other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Envelope ExpandedBy(Envelope other)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

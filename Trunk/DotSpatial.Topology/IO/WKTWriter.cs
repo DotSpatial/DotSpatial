@@ -461,7 +461,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="level"></param>
         /// <param name="doIndent"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringText(IBasicLineString lineString, int level, bool doIndent, TextWriter writer)
+        private void AppendLineStringText(ILineString lineString, int level, bool doIndent, TextWriter writer)
         {
             if (lineString.IsEmpty)
                 writer.Write("EMPTY");

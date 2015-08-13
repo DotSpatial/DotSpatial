@@ -131,6 +131,23 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
+        /// </summary>
+        /// <returns>
+        /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private static bool IsAtomic(IGeometry geom)
+        {
+            return !(geom is GeometryCollection);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -156,23 +173,6 @@ namespace DotSpatial.Topology.Geometries
         {
             _atStart = true;
             _index = 0;            
-        }
-
-        /// <summary>
-        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
-        /// </summary>
-        /// <returns>
-        /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        private static bool IsAtomic(IGeometry geom)
-        {
-            return !(geom is GeometryCollection);
         }
 
         #endregion

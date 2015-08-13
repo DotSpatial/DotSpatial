@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSpatial.Topology.Geometries.Implementation
 {
@@ -31,9 +33,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <value></value>
         public abstract int Count { get; }
 
-        public Ordinates Ordinates { get; private set; }
-        public abstract Coordinate this[int index] { get; set; }
-
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
@@ -47,6 +46,14 @@ namespace DotSpatial.Topology.Geometries.Implementation
                 Ordinates = DimensionToOrdinate(_dimension);
             }
         }
+
+        public Ordinates Ordinates { get; private set; }
+
+        #endregion
+
+        #region Indexers
+
+        public abstract Coordinate this[int index] { get; set; }
 
         #endregion
 
@@ -79,6 +86,14 @@ namespace DotSpatial.Topology.Geometries.Implementation
         }
 
         /// <summary>
+        /// Expands the given Envelope to include the coordinates in the sequence.
+        /// Allows implementing classes to optimize access to coordinate values.
+        /// </summary>
+        /// <param name="env">The envelope to expand.</param>
+        /// <returns>A reference to the expanded envelope.</returns>
+        public abstract IEnvelope ExpandEnvelope(IEnvelope env);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -95,14 +110,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
             }
             return null;
         }
-
-        /// <summary>
-        /// Expands the given Envelope to include the coordinates in the sequence.
-        /// Allows implementing classes to optimize access to coordinate values.
-        /// </summary>
-        /// <param name="env">The envelope to expand.</param>
-        /// <returns>A reference to the expanded envelope.</returns>
-        public abstract IEnvelope ExpandEnvelope(IEnvelope env);
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -254,6 +261,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return arr;
         }
 
+        public IList<Coordinate> ToList()
+        {
+            return ToCoordinateArray().ToList();
+        }
+
         public override string ToString()
         {
             return CoordinateSequences.ToString(this);
@@ -361,12 +373,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
             get { return _coords.Length / Dimension; }
         }
 
+        #endregion
+
+        #region Indexers
+
         public override Coordinate this[int index]
         {//TODO was soll damit werden?
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
-       
 
         #endregion
 
@@ -560,6 +575,10 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             get { return _coords.Length / Dimension; }
         }
+
+        #endregion
+
+        #region Indexers
 
         public override Coordinate this[int index]
         { //TODO was soll damit werden?

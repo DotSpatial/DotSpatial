@@ -37,11 +37,6 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        /// Gets the count of holes or interior rings
-        /// </summary>
-        int NumHoles { get; }
-
-        /// <summary>
         /// Gets the list of Interior Rings in the form of ILineStringBase objects
         /// </summary>
         ICollection<IBasicLineString> Holes
@@ -49,6 +44,11 @@ namespace DotSpatial.Topology.Geometries
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets the count of holes or interior rings
+        /// </summary>
+        int NumHoles { get; }
 
         /// <summary>
         /// Gets the exterior ring of the polygon as an ILineStringBase.

@@ -21,12 +21,7 @@ namespace DotSpatial.Topology.Geometries
     /// <author>Martin Davis</author>
     public interface ICoordinateSequenceFilter
     {
-        ///<summary>
-        /// Performs an operation on a coordinate in a <see cref="ICoordinateSequence"/>.
-        ///</summary>
-        /// <param name="seq">the <c>CoordinateSequence</c> to which the filter is applied</param>
-        /// <param name="i">i the index of the coordinate to apply the filter to</param>
-        void Filter(ICoordinateSequence seq, int i);
+        #region Properties
 
         ///<summary>
         /// Reports whether the application of this filter can be terminated.
@@ -44,6 +39,19 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <remarks>Most filters can simply return a constant value reflecting whether they are able to change the coordinates.</remarks>
         Boolean GeometryChanged { get; }
+
+        #endregion
+
+        #region Methods
+
+        ///<summary>
+        /// Performs an operation on a coordinate in a <see cref="ICoordinateSequence"/>.
+        ///</summary>
+        /// <param name="seq">the <c>CoordinateSequence</c> to which the filter is applied</param>
+        /// <param name="i">i the index of the coordinate to apply the filter to</param>
+        void Filter(ICoordinateSequence seq, int i);
+
+        #endregion
     }
 
 }

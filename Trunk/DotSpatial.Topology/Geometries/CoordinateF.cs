@@ -124,14 +124,6 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
-        ///  For now this is 3D
-        /// </summary>
-        public int NumOrdinates
-        {
-            get { return 3; }
-        }
-
-        /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x, y, z) values.
         /// </summary>
         [Browsable(false)]
@@ -157,6 +149,14 @@ namespace DotSpatial.Topology.Geometries
         {
             get { return _m; }
             set { _m = value; }
+        }
+
+        /// <summary>
+        ///  For now this is 3D
+        /// </summary>
+        public int NumOrdinates
+        {
+            get { return 3; }
         }
 
         /// <summary>

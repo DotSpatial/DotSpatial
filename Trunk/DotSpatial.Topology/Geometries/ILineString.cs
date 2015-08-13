@@ -26,7 +26,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// This adds the basic functionality of a
     /// </summary>
-    public interface ILineString : IGeometry, IBasicLineString
+    public interface ILineString : IBasicLineString, ICurve, ILineal
     {
         #region Properties
 
@@ -36,32 +36,11 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         double Angle { get; }
 
-        /// <summary>
-        /// Gets a topologically complete IPoint for the last coordinate
-        /// </summary>
-        IPoint EndPoint { get; }
-
-        /// <summary>
-        /// If the first coordinate is the same as the final coordinate, then the
-        /// linestring is closed.
-        /// </summary>
-        bool IsClosed { get; }
-
-        /// <summary>
-        /// If the coordinates listed for the linestring are both closed and simple then
-        /// they qualify as a linear ring.
-        /// </summary>
-        bool IsRing { get; }
-
-        /// <summary>
-        /// Gets a topologically complete IPoint for the first coordinate
-        /// </summary>
-        IPoint StartPoint { get; }
-
         #endregion
 
         #region Methods
 
+        Coordinate GetCoordinateN(int n);
         /// <summary>
         /// Retrieves a topologically complete IPoint for the n'th coordinate in the
         /// 0 based index of point values.
@@ -76,12 +55,6 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         bool IsCoordinate(Coordinate pt);
-
-        /// <summary>
-        /// Returns an ILineString that has its coordinates completely reversed
-        /// </summary>
-        /// <returns></returns>
-        ILineString Reverse();
 
         #endregion
     }

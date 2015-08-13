@@ -38,7 +38,13 @@ namespace DotSpatial.Topology.Utilities
     /// </typeparam>
     public sealed class PriorityQueueNode<TPriority, TData>
     {
+        #region Fields
+
         private readonly TData data;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityQueueNode{TPriority, TData}"/> class.
@@ -57,6 +63,10 @@ namespace DotSpatial.Topology.Utilities
             this.Priority = copyFrom.Priority;
             this.QueueIndex = copyFrom.QueueIndex;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets the <typeparamref name="TData"/> that is stored in this node.
@@ -79,5 +89,7 @@ namespace DotSpatial.Topology.Utilities
         /// It has no "real" meaning to anyone else.
         /// </remarks>
         internal int QueueIndex { get; set; }
+
+        #endregion
     }
 }

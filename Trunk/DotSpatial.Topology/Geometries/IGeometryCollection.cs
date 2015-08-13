@@ -21,14 +21,14 @@
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Specific topology functions for Mutigeometry code
     /// </summary>
-    public interface IGeometryCollection : IGeometry, IEnumerable
+    public interface IGeometryCollection : IGeometry, IEnumerable<IGeometry>
     {
         #region Properties
 
@@ -38,14 +38,14 @@ namespace DotSpatial.Topology.Geometries
         int Count { get; }
 
         /// <summary>
+        /// Gets a System.Array of all the geometries in this collection
+        /// </summary>
+        IGeometry[] Geometries { get; }
+
+        /// <summary>
         /// Return <c>true</c> if all features in collection are of the same type.
         /// </summary>
         bool IsHomogeneous { get; }
-
-        /// <summary>
-        /// Gets a System.Array of all the geometries in this collection
-        /// </summary>
-        IGeometry[] Geometries { get; set; }
 
         #endregion
 
@@ -56,10 +56,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        IGeometry this[int i]
-        {
-            get;
-        }
+        IGeometry this[int i] { get; }
 
         #endregion
     }

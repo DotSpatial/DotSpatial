@@ -26,6 +26,6 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// specifically for handling
     /// </summary>
-    public interface IMultiPolygon : IGeometryCollection
+    public interface IMultiPolygon : IMultiSurface, IPolygonal
     {}
 }

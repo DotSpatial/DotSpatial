@@ -20,7 +20,7 @@ namespace DotSpatial.Topology.CoordinateSystems.Transformations
 	/// <summary>
 	/// Semantic type of transform used in coordinate transformation.
 	/// </summary>
-	public enum TransformType : int
+	public enum TransformType
 	{
 		/// <summary>
 		/// Unknown or unspecified type of transform.

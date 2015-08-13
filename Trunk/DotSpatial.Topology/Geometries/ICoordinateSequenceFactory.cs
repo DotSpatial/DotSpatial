@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.Geometries
         /// </param>
         /// <returns>A coordinate sequence.</returns>
         ICoordinateSequence Create(int size, Ordinates ordinates);
-		
+
         /// <summary>
         /// Constructs a new coordinate sequence using a single coordinate.
         /// </summary>

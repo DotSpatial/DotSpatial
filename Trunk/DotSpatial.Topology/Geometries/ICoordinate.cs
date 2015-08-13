@@ -35,6 +35,11 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
+        /// A Measure coordinate
+        /// </summary>
+        double M { get; set; }
+
+        /// <summary>
         /// A 1D coordinate only has a valid X.  A 2D coordinate has X and Y, while a 3D coordinate
         /// has X, Y, and Z.  Presumably this is open ended and could support higher coordinates,
         /// but this coordinate is not responsible for storing values beyond its dimension and
@@ -44,11 +49,6 @@ namespace DotSpatial.Topology.Geometries
         {
             get;
         }
-
-        /// <summary>
-        /// A Measure coordinate
-        /// </summary>
-        double M { get; set; }
 
         /// <summary>
         /// Gets or sets the values as a one dimensional array of doubles.

@@ -39,7 +39,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// If the parent component is a line edge or node, there is a single
     /// topological relationship attribute, On.
     /// The possible values of a topological location are
-    /// { Location.Null, Location.Exterior, Location.Boundary, Location.Interior }
+    /// { Location.Null, Location.Exterior, Location.Boundary, LocationType.Interior }
     /// The labelling is stored in an array location[j] where
     /// where j has the values On, Left, Right.
     /// </summary>
@@ -66,7 +66,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Constructs a TopologyLocation specifying how points on, to the left of, and to the
         /// right of some GraphComponent relate to some Geometry. Possible values for the
         /// parameters are Location.Null, Location.Exterior, Location.Boundary,
-        /// and Location.Interior.
+        /// and LocationType.Interior.
         /// </summary>
         /// <param name="on"></param>
         /// <param name="left"></param>

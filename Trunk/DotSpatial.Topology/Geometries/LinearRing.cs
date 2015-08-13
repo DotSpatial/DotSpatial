@@ -28,16 +28,34 @@ using System.Collections.Generic;
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Basic implementation of <c>LinearRing</c>.
-    /// The first and last point in the coordinate sequence must be equal.
-    /// Either orientation of the ring is allowed.
-    /// A valid ring must not self-intersect.
+    /// Models an OGC SFS <c>LinearRing</c>.
     /// </summary>
+    /// <remarks>
+    /// A <c>LinearRing</c> is a <see cref="LineString"/> which is both closed and simple.
+    /// In other words,
+    /// the first and last coordinate in the ring must be equal,
+    /// and the interior of the ring must not self-intersect.
+    /// Either orientation of the ring is allowed.
+    /// <para>
+    /// A ring must have either 0 or 4 or more points.
+    /// The first and last points must be equal (in 2D).
+    /// If these conditions are not met, the constructors throw
+    /// an <see cref="ArgumentException"/></para>
+    /// </remarks>
     [Serializable]
     public class LinearRing : LineString, ILinearRing
     {
-        #region Constructors
+        #region Constant Fields
 
+        /// <summary>
+        /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
+        /// Empty rings with 0 vertices are also valid.
+        /// </summary>
+        public const int MinimumValidSize = 4;
+
+        #endregion
+
+        #region Constructors
         /// <summary>
         /// Creates a new instance of a linear ring where the enumerable collection of
         /// coordinates represents the set of coordinates to add to the ring.
@@ -73,7 +91,16 @@ namespace DotSpatial.Topology.Geometries
 
         #region Properties
 
-        /* END ADDED BY MPAUL42: monoGIS team */
+        /// <summary>
+        /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
+        /// </summary>
+        public override DimensionType BoundaryDimension
+        {
+            get
+            {
+                return DimensionType.False;
+            }
+        }
 
         /// <summary>
         /// This will always contain Line, even if it is technically empty
@@ -87,15 +114,15 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Geometry Type
+        /// Returns the name of this object's interface.
         /// </summary>
+        /// <returns>"LinearRing"</returns>
         public override string GeometryType
         {
-            get
-            {
-                return "LinearRing";
-            }
+            get { return "LinearRing"; }
         }
+
+        public bool IsCounterClockwise { get { return Algorithm.CgAlgorithms.IsCounterClockwise(CoordinateSequence); } }
 
         /// <summary>
         /// Gets a boolean that is true if the EndPoint is geometrically equal to the StartPoint in 2 Dimensions.
@@ -117,18 +144,24 @@ namespace DotSpatial.Topology.Geometries
 
         #region Methods
 
+        public override IGeometry Reverse()
+        {
+            var sequence = CoordinateSequence.Reversed();
+            return Factory.CreateLinearRing(sequence);
+        }
+
         /// <summary>
         /// Correct constructions with non-closed sequences.
         /// </summary>
         private void ValidateConstruction()
         {
-            if (!IsEmpty && !IsClosed)
+            if (!IsEmpty && !base.IsClosed)
             {
                 // The sequence is not closed, so add the first point again to close it.
                 Coordinates.Add(Coordinates[0].Copy());
-            }
-            if (Coordinates.Count >= 1 && Coordinates.Count < 3)
-                throw new ArgumentException("Number of points must be 0 or >= 3");
+            } //TODO ich fürchte Coordinates entspricht nicht mehr dem was es vorher war und die hinzugefügte Coordinate wird ignoriert.
+            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count < MinimumValidSize)
+                throw new ArgumentException("Number of points must be 0 or >3");
         }
 
         #endregion

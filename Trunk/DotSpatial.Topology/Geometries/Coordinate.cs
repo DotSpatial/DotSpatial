@@ -161,6 +161,20 @@ namespace DotSpatial.Topology.Geometries
         #region Properties
 
         /// <summary>
+        /// Gets/Sets <other>Coordinate</other>s (x,y,z) values.
+        /// </summary>
+        public Coordinate CoordinateValue
+        {
+            get { return this; }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+            }
+        }
+
+        /// <summary>
         /// Gets a pre-defined coordinate that has double.NaN for all the values.
         /// </summary>
         public static Coordinate Empty
@@ -177,20 +191,6 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return double.IsNaN(Z) ? 2 : 3;
-            }
-        }
-
-        /// <summary>
-        /// Gets/Sets <other>Coordinate</other>s (x,y,z) values.
-        /// </summary>
-        public Coordinate CoordinateValue
-        {
-            get { return this; }
-            set
-            {
-                X = value.X;
-                Y = value.Y;
-                Z = value.Z;
             }
         }
 

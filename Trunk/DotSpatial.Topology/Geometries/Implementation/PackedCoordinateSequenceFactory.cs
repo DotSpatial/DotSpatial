@@ -71,11 +71,6 @@ namespace DotSpatial.Topology.Geometries.Implementation
 
         #region Properties
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -83,6 +78,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
         {
             get { return dimension; }
             set { this.dimension = value; }
+        }
+
+        public Ordinates Ordinates
+        {
+            get { return Ordinates.XYZ; }
         }
 
         /// <summary>

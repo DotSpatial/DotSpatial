@@ -142,7 +142,6 @@ namespace DotSpatial.Topology.Geometries
             return DoAdd(coord, allowRepeated);
         }
 
-
         /// <summary>
         /// Inserts the specified coordinate at the specified position in this list.
         /// </summary>

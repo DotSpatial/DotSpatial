@@ -26,6 +26,8 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// This combines the full Topology.Geometry functions to the complete Vector.IPoint set of functions.
     /// </summary>
-    public interface IPoint : IGeometry, IBasicPoint
-    {}
+    public interface IPoint : IGeometry, IBasicPoint, IPuntal
+    {
+	ICoordinateSequence CoordinateSequence { get; }
+	}
 }

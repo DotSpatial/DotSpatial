@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Distance3D
@@ -45,6 +46,12 @@ namespace DotSpatial.Topology.Operation.Distance3D
 
         public Ordinates Ordinates { get { return _seq.Ordinates; } }
 
+        public Coordinate this[int index]
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         #endregion
 
         #region Methods
@@ -57,6 +64,11 @@ namespace DotSpatial.Topology.Operation.Distance3D
         public Envelope ExpandEnvelope(Envelope env)
         {
             throw new NotSupportedException();
+        }
+
+        public IEnvelope ExpandEnvelope(IEnvelope env)
+        {
+            throw new NotImplementedException();
         }
 
         public Coordinate GetCoordinate(int i)
@@ -111,6 +123,11 @@ namespace DotSpatial.Topology.Operation.Distance3D
         public Coordinate[] ToCoordinateArray()
         {
             throw new NotSupportedException();
+        }
+
+        public IList<Coordinate> ToList()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

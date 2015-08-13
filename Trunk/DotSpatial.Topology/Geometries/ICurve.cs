@@ -9,12 +9,6 @@ namespace DotSpatial.Topology.Geometries
 
         ICoordinateSequence CoordinateSequence { get; }
 
-
-        /// <summary>
-        /// Gets a topologically complete IPoint for the first coordinate
-        /// </summary>
-        IPoint StartPoint { get; }
-
         /// <summary>
         /// Gets a topologically complete IPoint for the last coordinate
         /// </summary>
@@ -32,6 +26,10 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         bool IsRing { get; }
 
+        /// <summary>
+        /// Gets a topologically complete IPoint for the first coordinate
+        /// </summary>
+        IPoint StartPoint { get; }
 
         #endregion
     }

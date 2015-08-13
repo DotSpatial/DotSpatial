@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using DotSpatial.Topology.Operation;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -39,7 +38,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
-        public static new readonly IMultiPoint Empty = new MultiPoint(new Point[] { });
+        public static new readonly IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new IPoint[] { });
 
         #endregion
 
@@ -81,48 +80,6 @@ namespace DotSpatial.Topology.Geometries
 
         #region Properties
 
-        /// <inheritdoc />
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.MultiPoint;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override string GeometryType
-        {
-            get
-            {
-                return "MultiPoint";
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         /// <summary>
         ///
         /// </summary>
@@ -154,6 +111,43 @@ namespace DotSpatial.Topology.Geometries
             {
                 return DimensionType.Point;
             }
+        }
+
+        /// <inheritdoc />
+        public override FeatureType FeatureType
+        {
+            get
+            {
+                return FeatureType.MultiPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns the name of this object's interface.
+        /// </summary>
+        /// <returns>"MultiPoint"</returns>
+        public override string GeometryType
+        {
+            get
+            {
+                return "MultiPoint";
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public override bool IsValid
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override OgcGeometryType OgcGeometryType
+        {
+            get { return OgcGeometryType.MultiPoint; }
         }
 
         #endregion
@@ -236,7 +230,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
         protected virtual Coordinate GetCoordinate(int n)
         {
-            return ((Point)Geometries[n]).Coordinate;
+            return Geometries[n].Coordinate;
         }
 
         #endregion
