@@ -67,25 +67,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsCoveredSet
-        {
-            get
-            {
-                return _isCoveredSet;
-            }
-        }
-
-        /// <summary>
-        /// An isolated component is one that does not intersect or touch any other
-        /// component.  This is the case if the label has valid locations for
-        /// only a single Geometry.
-        /// </summary>
-        /// <returns><c>true</c> if this component is isolated.</returns>
-        public abstract bool IsIsolated { get; }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
@@ -110,6 +91,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        public virtual bool IsCoveredSet
+        {
+            get
+            {
+                return _isCoveredSet;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public virtual bool IsInResult
         {
             get
@@ -121,6 +113,14 @@ namespace DotSpatial.Topology.GeometriesGraph
                 _isInResult = value;
             }
         }
+
+        /// <summary>
+        /// An isolated component is one that does not intersect or touch any other
+        /// component.  This is the case if the label has valid locations for
+        /// only a single Geometry.
+        /// </summary>
+        /// <returns><c>true</c> if this component is isolated.</returns>
+        public abstract bool IsIsolated { get; }
 
         /// <summary>
         ///

@@ -34,7 +34,10 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private Coordinate _coord; // Only non-null if this node is precise.
+        /// <summary>
+        /// Only non-null if this node is precise.
+        /// </summary>
+        private Coordinate _coord;
         private EdgeEndStar _edges;
 
         #endregion
@@ -50,23 +53,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             _coord = coord;
             _edges = edges;
-            base.Label = new Label(0, LocationType.Null);
+            Label = new Label(0, LocationType.Null);
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets a boolean that is true if this node is isolated
-        /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return (Label.GeometryCount == 1);
-            }
-        }
 
         /// <summary>
         /// A Coordinate for this node
@@ -84,6 +76,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get { return _edges; }
             protected set { _edges = value; }
+        }
+
+        /// <summary>
+        /// Gets a boolean that is true if this node is isolated
+        /// </summary>
+        public override bool IsIsolated
+        {
+            get
+            {
+                return (Label.GeometryCount == 1);
+            }
         }
 
         #endregion
@@ -174,6 +177,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="argIndex"></param>
         public virtual void SetLabelBoundary(int argIndex)
         {
+            if (Label == null) return;
+
             // determine the current location for the point (if any)
             LocationType loc = LocationType.Null;
             if (Label != null)
@@ -192,7 +197,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                     newLoc = LocationType.Boundary;
                     break;
             }
-            base.Label.SetLocation(argIndex, newLoc);
+            Label.SetLocation(argIndex, newLoc);
         }
 
         /// <summary>
@@ -208,7 +213,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(TextWriter outstream)
         {
             outstream.WriteLine("node " + _coord + " lbl: " + Label);
         }

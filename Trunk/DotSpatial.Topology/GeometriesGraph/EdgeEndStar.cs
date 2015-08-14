@@ -22,11 +22,13 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -39,17 +41,20 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
+        /// <summary> 
+        /// A list of all outgoing edges in the result, in CCW order.
+        /// </summary>
+        protected IList<EdgeEnd> EdgeList;
+
         /// <summary>
         /// A map which maintains the edges in sorted order around the node.
         /// </summary>
-        private readonly IDictionary _edgeMap = new SortedList();
+        protected IDictionary<EdgeEnd, EdgeEnd> EdgeMap = new OrderedDictionary<EdgeEnd, EdgeEnd>();
 
         /// <summary>
         /// The location of the point for this star in Geometry i Areas.
         /// </summary>
         private readonly LocationType[] _ptInAreaLocation = { LocationType.Null, LocationType.Null };
-
-        private IList _edgeList;
 
         #endregion
 
@@ -62,10 +67,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get
             {
-                IEnumerator it = GetEnumerator();
+                IEnumerator<EdgeEnd> it = GetEnumerator();
                 if (!it.MoveNext())
-                    return Coordinate.Empty;
-                EdgeEnd e = (EdgeEnd)it.Current;
+                    return null;
+                EdgeEnd e = it.Current;
                 return e.Coordinate;
             }
         }
@@ -77,48 +82,20 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get
             {
-                return _edgeMap.Count;
+                return EdgeMap.Count;
             }
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        public virtual IList Edges
+        public IList<EdgeEnd> Edges
         {
             get
             {
-                InitializeEdges();
-                return _edgeList;
+              InitializeEdges();
+                return EdgeList;
             }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual bool IsAreaLabelsConsistent
-        {
-            get
-            {
-                ComputeEdgeEndLabels();
-                return CheckAreaLabelsConsistent(0);
-            }
-        }
-
-        /// <summary>
-        /// A list of all outgoing edges in the result, in CCW order.
-        /// </summary>
-        protected IList EdgeList
-        {
-            get { return _edgeList; }
-        }
-
-        /// <summary>
-        /// Gets the EdgeMap
-        /// </summary>
-        protected IDictionary EdgeMap
-        {
-            get { return _edgeMap; }
         }
 
         #endregion
@@ -134,20 +111,19 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            IList edges = Edges;
+            IList<EdgeEnd> edges = Edges;
             // if no edges, trivially consistent
             if (edges.Count <= 0)
                 return true;
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
-            Label startLabel = ((EdgeEnd)edges[lastEdgeIndex]).Label;
-            LocationType startLoc = startLabel.GetLocation(geomIndex, PositionType.Left);
+            Label startLabel = edges[lastEdgeIndex].Label;
+            var startLoc = startLabel.GetLocation(geomIndex, PositionType.Left);
             Assert.IsTrue(startLoc != LocationType.Null, "Found unlabelled area edge");
 
-            LocationType currLoc = startLoc;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            var currLoc = startLoc;
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 Label label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
@@ -167,23 +143,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        private void ComputeEdgeEndLabels()
+        private void ComputeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
             // Compute edge label for each EdgeEnd
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (var ee in Edges)
             {
-                EdgeEnd ee = (EdgeEnd)it.Current;
-                ee.ComputeLabel();
+                ee.ComputeLabel(boundaryNodeRule);
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="geom"></param>
-        public virtual void ComputeLabelling(GeometryGraph[] geom)
+        /// <param name="geomGraph"></param>
+        public virtual void ComputeLabelling(GeometryGraph[] geomGraph)
         {
-            ComputeEdgeEndLabels();
+            ComputeEdgeEndLabels(geomGraph[0].BoundaryNodeRule);
             // Propagate side labels  around the edges in the star
             // for each parent Geometry
             PropagateSideLabels(0);
@@ -198,8 +173,8 @@ namespace DotSpatial.Topology.GeometriesGraph
             * If so, the edge has location Interior for the point.
             * In all other cases (e.g. the node is on a line, on a point, or not on the point at all) the edge
             * has the location Exterior for the point.
-            *
-            * Notice that the edge cannot be on the Boundary of the point, since then
+            * 
+            * Note that the edge cannot be on the Boundary of the point, since then
             * there would have been a parallel edge from the Geometry at this node also labelled Boundary
             * and this edge would have been labelled in the previous step.
             *
@@ -219,34 +194,32 @@ namespace DotSpatial.Topology.GeometriesGraph
             * area label propagation, symLabel merging, then finally null label resolution.
             */
             bool[] hasDimensionalCollapseEdge = { false, false };
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (var e in Edges)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 Label label = e.Label;
-                for (int geomi = 0; geomi < 2; geomi++)
+                for (int geomi = 0; geomi < 2; geomi++) 
                     if (label.IsLine(geomi) && label.GetLocation(geomi) == LocationType.Boundary)
-                        hasDimensionalCollapseEdge[geomi] = true;
+                        hasDimensionalCollapseEdge[geomi] = true;                
             }
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (var e in Edges)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
-                Label label = e.Label;
-                for (int geomi = 0; geomi < 2; geomi++)
+                Label label = e.Label;        
+                for (int geomi = 0; geomi < 2; geomi++) 
                 {
-                    if (label.IsAnyNull(geomi))
+                    if (label.IsAnyNull(geomi)) 
                     {
                         LocationType loc;
                         if (hasDimensionalCollapseEdge[geomi])
-                            loc = LocationType.Exterior;
-                        else
+                            loc = LocationType.Exterior;                
+                        else 
                         {
                             Coordinate p = e.Coordinate;
-                            loc = GetLocation(geomi, p, geom);
+                            loc = GetLocation(geomi, p, geomGraph);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
                     }
-                }
-            }
+                }        
+            }        
         }
 
         /// <summary>
@@ -257,10 +230,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual int FindIndex(EdgeEnd eSearch)
         {
             GetEnumerator();   // force edgelist to be computed
-            for (int i = 0; i < _edgeList.Count; i++)
+            for (int i = 0; i < EdgeList.Count; i++ ) 
             {
-                EdgeEnd e = (EdgeEnd)_edgeList[i];
-                if (e == eSearch)
+                EdgeEnd e = EdgeList[i];
+                if (e == eSearch) 
                     return i;
             }
             return -1;
@@ -272,7 +245,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// once an iterator is requested, it is likely that insertion into
         /// the map is complete).
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
+        public virtual IEnumerator<EdgeEnd> GetEnumerator()
         {
             return Edges.GetEnumerator();
         }
@@ -300,11 +273,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual EdgeEnd GetNextCw(EdgeEnd ee)
         {
             InitializeEdges();
-            int i = _edgeList.IndexOf(ee);
+            int i = EdgeList.IndexOf(ee);
             int iNextCw = i - 1;
             if (i == 0)
-                iNextCw = _edgeList.Count - 1;
-            return (EdgeEnd)_edgeList[iNextCw];
+                iNextCw = EdgeList.Count - 1;
+            return EdgeList[iNextCw];
         }
 
         /// <summary>
@@ -312,8 +285,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         protected void InitializeEdges()
         {
-            if (_edgeList == null)
-                _edgeList = new ArrayList(_edgeMap.Values);
+            if (EdgeList == null)
+                EdgeList = new List<EdgeEnd>(EdgeMap.Values);
         }
 
         /// <summary>
@@ -328,18 +301,23 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <param name="obj"></param>
-        protected void InsertEdgeEnd(EdgeEnd e, object obj)
+        protected void InsertEdgeEnd(EdgeEnd e, EdgeEnd obj)
         {
-            // Diego Guidi says: i have inserted this line because if i try to add an object already present
-            // in the list, a System.ArgumentException was thrown.
-            if (_edgeMap.Contains(e))
-                return;
-            _edgeMap.Add(e, obj);
-            _edgeList = null;    // edge list has changed - clear the cache
+            EdgeMap[e] = obj; 
+            EdgeList = null;    // edge list has changed - clear the cache
         }
 
         /// <summary>
         ///
+        /// </summary>
+        public bool IsAreaLabelsConsistent(GeometryGraph geometryGraph)
+        {
+            ComputeEdgeEndLabels(geometryGraph.BoundaryNodeRule);
+            return CheckAreaLabelsConsistent(0);
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="geomIndex"></param>
         public virtual void PropagateSideLabels(int geomIndex)
@@ -348,9 +326,8 @@ namespace DotSpatial.Topology.GeometriesGraph
             // As we move around the ring we move from the right to the left side of the edge
             LocationType startLoc = LocationType.Null;
             // initialize loc to location of last Curve side (if any)
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 Label label = e.Label;
                 if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, PositionType.Left) != LocationType.Null)
                     startLoc = label.GetLocation(geomIndex, PositionType.Left);
@@ -360,15 +337,13 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return;
 
             LocationType currLoc = startLoc;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in Edges)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 Label label = e.Label;
                 // set null On values to be in current location
                 if (label.GetLocation(geomIndex, PositionType.On) == LocationType.Null)
                     label.SetLocation(geomIndex, PositionType.On, currLoc);
                 // set side labels (if any)
-                // if (label.IsArea())    //ORIGINAL
                 if (label.IsArea(geomIndex))
                 {
                     LocationType leftLoc = label.GetLocation(geomIndex, PositionType.Left);
@@ -388,7 +363,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                         *  This must be an edge from the other point, which has no location
                         *  labelling for this point.  This edge must lie wholly inside or outside
                         *  the other point (which is determined by the current location).
-                        *  Assign both sides to be the current location.
+                        *  Assign both sides to be the current LocationType.
                         */
                         Assert.IsTrue(label.GetLocation(geomIndex, PositionType.Left) == LocationType.Null, "found single null side");
                         label.SetLocation(geomIndex, PositionType.Right, currLoc);
@@ -398,17 +373,23 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
+        public override string ToString()
+        {
+            var buf = new StringBuilder();
+            buf.AppendLine("EdgeEndStar:   " + Coordinate);
+            foreach (var e in this)
+                buf.AppendLine(e.ToString());
+            return buf.ToString();
+        }
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeEnd e = (EdgeEnd)it.Current;
+            foreach (EdgeEnd e in Edges)
                 e.Write(outstream);
-            }
         }
 
         #endregion

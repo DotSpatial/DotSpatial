@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
@@ -38,8 +38,8 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Constant Fields
 
-        private const int LINKING_TO_OUTGOING = 2;
-        private const int SCANNING_FOR_INCOMING = 1;
+        private const int LinkingToOutgoing = 2;
+        private const int ScanningForIncoming = 1;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// A list of all outgoing edges in the result, in CCW order.
         /// </summary>
-        private IList _resultAreaEdgeList;
+        private IList<DirectedEdge> _resultAreaEdgeList;
 
         #endregion
 
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             int currDepth = startDepth;
             for (int i = startIndex; i < endIndex; i++)
             {
-                DirectedEdge nextDe = (DirectedEdge)EdgeList[i];
+                DirectedEdge nextDe = (DirectedEdge)EdgeList[i];            
                 nextDe.SetEdgeDepths(PositionType.Right, currDepth);
                 currDepth = nextDe.GetDepth(PositionType.Left);
             }
@@ -116,10 +116,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             // determine the overall labelling for this DirectedEdgeStar
             // (i.e. for the node it is based at)
             _label = new Label(LocationType.Null);
-            IEnumerator it = GetEnumerator();
+            IEnumerator<EdgeEnd> it = GetEnumerator();
             while (it.MoveNext())
             {
-                EdgeEnd ee = (EdgeEnd)it.Current;
+                EdgeEnd ee = it.Current;
                 Edge e = ee.Edge;
                 Label eLabel = e.Label;
                 for (int i = 0; i < 2; i++)
@@ -149,11 +149,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             * - Exterior if the edge is incoming
             */
             LocationType startLoc = LocationType.Null;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge nextOut in Edges)
             {
-                DirectedEdge nextOut = (DirectedEdge)it.Current;
-                DirectedEdge nextIn = nextOut.Sym;
-                if (!nextOut.IsLineEdge)
+                DirectedEdge nextIn   = nextOut.Sym;
+                if (!nextOut.IsLineEdge) 
                 {
                     if (nextOut.IsInResult)
                     {
@@ -177,12 +176,11 @@ namespace DotSpatial.Topology.GeometriesGraph
             * If Curve edges are found, mark them as covered if they are in the interior
             */
             LocationType currLoc = startLoc;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge nextOut in Edges)
             {
-                DirectedEdge nextOut = (DirectedEdge)it.Current;
-                DirectedEdge nextIn = nextOut.Sym;
+                DirectedEdge nextIn   = nextOut.Sym;
                 if (nextOut.IsLineEdge)
-                    nextOut.Edge.IsCovered = (currLoc == LocationType.Interior);
+                    nextOut.Edge.IsCovered  = (currLoc == LocationType.Interior);
                 else
                 {
                     // edge is an Area edge
@@ -201,13 +199,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual int GetOutgoingDegree()
         {
             int degree = 0;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
-            {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                if (de.IsInResult)
+            foreach (DirectedEdge de in Edges)
+                if (de.IsInResult) 
                     degree++;
-            }
-            return degree;
+            return degree;         
         }
 
         /// <summary>
@@ -218,27 +213,23 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual int GetOutgoingDegree(EdgeRing er)
         {
             int degree = 0;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
-            {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                if (de.EdgeRing == er)
+            foreach (DirectedEdge de in Edges)
+                if (de.EdgeRing == er) 
                     degree++;
-            }
             return degree;
         }
 
-        private void GetResultAreaEdges()
-        {
-            if (_resultAreaEdgeList != null)
-                return;
-            _resultAreaEdgeList = new ArrayList();
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+        private IList<DirectedEdge> GetResultAreaEdges()
+        {            
+            if (_resultAreaEdgeList != null) 
+                return _resultAreaEdgeList;
+            _resultAreaEdgeList = new List<DirectedEdge>();
+            foreach (DirectedEdge de in Edges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 if (de.IsInResult || de.Sym.IsInResult)
                     _resultAreaEdgeList.Add(de);
             }
-            return;
+            return _resultAreaEdgeList;         
         }
 
         /// <summary>
@@ -247,7 +238,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual DirectedEdge GetRightmostEdge()
         {
-            IList edges = Edges;
+            IList<EdgeEnd> edges = Edges;
             int size = edges.Count;
             if (size < 1)
                 return null;
@@ -285,12 +276,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public virtual void LinkAllDirectedEdges()
         {
-            InitializeEdges();
+            IList<EdgeEnd> temp = Edges;
+            temp = null;    //Hack
             // find first area edge (if any) to start linking at
             DirectedEdge prevOut = null;
             DirectedEdge firstIn = null;
             // link edges in CW order
-            for (int i = EdgeList.Count - 1; i >= 0; i--)
+            for (int i = EdgeList.Count - 1; i >= 0; i--) 
             {
                 DirectedEdge nextOut = (DirectedEdge)EdgeList[i];
                 DirectedEdge nextIn = nextOut.Sym;
@@ -301,7 +293,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 // record outgoing edge, in order to link the last incoming edge
                 prevOut = nextOut;
             }
-            if (firstIn != null) firstIn.Next = prevOut;
+            firstIn.Next = prevOut;        
         }
 
         /// <summary>
@@ -313,11 +305,11 @@ namespace DotSpatial.Topology.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
             DirectedEdge incoming = null;
-            int state = SCANNING_FOR_INCOMING;
+            int state = ScanningForIncoming;
             // link edges in CW order
             for (int i = _resultAreaEdgeList.Count - 1; i >= 0; i--)
             {
-                DirectedEdge nextOut = (DirectedEdge)_resultAreaEdgeList[i];
+                DirectedEdge nextOut = this._resultAreaEdgeList[i];
                 DirectedEdge nextIn = nextOut.Sym;
 
                 // record first outgoing edge, in order to link the last incoming edge
@@ -326,30 +318,27 @@ namespace DotSpatial.Topology.GeometriesGraph
 
                 switch (state)
                 {
-                    case SCANNING_FOR_INCOMING:
+                    case ScanningForIncoming:
                         if (nextIn.EdgeRing != er)
                             continue;
                         incoming = nextIn;
-                        state = LINKING_TO_OUTGOING;
+                        state = LinkingToOutgoing;
                         break;
-                    case LINKING_TO_OUTGOING:
+                    case LinkingToOutgoing:
                         if (nextOut.EdgeRing != er)
                             continue;
-                        if (incoming != null) incoming.NextMin = nextOut;
-                        state = SCANNING_FOR_INCOMING;
+                        incoming.NextMin = nextOut;
+                        state = ScanningForIncoming;
                         break;
                     default:
                         break;
                 }
-            }
-            if (state == LINKING_TO_OUTGOING)
+            }        
+            if (state == LinkingToOutgoing) 
             {
                 Assert.IsTrue(firstOut != null, "found null for first outgoing dirEdge");
-                if (firstOut != null)
-                {
-                    Assert.IsTrue(firstOut.EdgeRing == er, "unable to link last incoming dirEdge");
-                    if (incoming != null) incoming.NextMin = firstOut;
-                }
+                Assert.IsTrue(firstOut.EdgeRing == er, "unable to link last incoming dirEdge");
+                incoming.NextMin = firstOut;
             }
         }
 
@@ -372,11 +361,11 @@ namespace DotSpatial.Topology.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
             DirectedEdge incoming = null;
-            int state = SCANNING_FOR_INCOMING;
+            int state = ScanningForIncoming;
             // link edges in CCW order
             for (int i = 0; i < _resultAreaEdgeList.Count; i++)
             {
-                DirectedEdge nextOut = (DirectedEdge)_resultAreaEdgeList[i];
+                DirectedEdge nextOut = _resultAreaEdgeList[i];
                 DirectedEdge nextIn = nextOut.Sym;
 
                 // skip de's that we're not interested in
@@ -389,28 +378,28 @@ namespace DotSpatial.Topology.GeometriesGraph
 
                 switch (state)
                 {
-                    case SCANNING_FOR_INCOMING:
+                    case ScanningForIncoming:
                         if (!nextIn.IsInResult)
                             continue;
                         incoming = nextIn;
-                        state = LINKING_TO_OUTGOING;
+                        state = LinkingToOutgoing;
                         break;
-                    case LINKING_TO_OUTGOING:
+                    case LinkingToOutgoing:
                         if (!nextOut.IsInResult)
                             continue;
-                        if (incoming != null) incoming.Next = nextOut;
-                        state = SCANNING_FOR_INCOMING;
+                        incoming.Next = nextOut;
+                        state = ScanningForIncoming;
                         break;
                     default:
                         break;
                 }
-            }
-            if (state == LINKING_TO_OUTGOING)
-            {
+            }        
+            if (state == LinkingToOutgoing) 
+            {        
                 if (firstOut == null)
                     throw new TopologyException("no outgoing dirEdge found", Coordinate);
                 Assert.IsTrue(firstOut.IsInResult, "unable to link last incoming dirEdge");
-                if (incoming != null) incoming.Next = firstOut;
+                incoming.Next = firstOut;
             }
         }
 
@@ -419,9 +408,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public virtual void MergeSymLabels()
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge de in Edges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 Label label = de.Label;
                 label.Merge(de.Sym.Label);
             }
@@ -433,9 +421,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="nodeLabel"></param>
         public virtual void UpdateLabelling(Label nodeLabel)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge de in Edges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 Label label = de.Label;
                 label.SetAllLocationsIfNull(0, nodeLabel.GetLocation(0));
                 label.SetAllLocationsIfNull(1, nodeLabel.GetLocation(1));
@@ -448,9 +435,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="outstream"></param>
         public override void Write(StreamWriter outstream)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge de in Edges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 outstream.Write("out ");
                 de.Write(outstream);
                 outstream.WriteLine();

@@ -21,9 +21,10 @@
 //
 // ********************************************************************************************************
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Algorithm.Locate;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph.Index;
 using DotSpatial.Topology.Utilities;
@@ -38,16 +39,20 @@ namespace DotSpatial.Topology.GeometriesGraph
         #region Fields
 
         private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
+        private readonly IBoundaryNodeRule _boundaryNodeRule;
 
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
-        private readonly IDictionary _lineEdgeMap = new Hashtable();
+        private readonly IDictionary<ILineString, Edge> _lineEdgeMap = new Dictionary<ILineString, Edge>();
 
         private readonly IGeometry _parentGeom;
-        private ICollection _boundaryNodes;
+        // for use if geometry is not Polygonal
+        private readonly PointLocator _ptLocator = new PointLocator();
+        private IPointOnGeometryLocator _areaPtLocator;
+        private IList<Node> _boundaryNodes;
         private bool _hasTooFewPoints;
         private Coordinate _invalidPoint;
 
@@ -55,7 +60,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// If this flag is true, the Boundary Determination Rule will used when deciding
         /// whether nodes are in the boundary or not
         /// </summary>
-        private bool _useBoundaryDeterminationRule;
+        private bool _useBoundaryDeterminationRule = true;
 
         #endregion
 
@@ -67,8 +72,20 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
         public GeometryGraph(int argIndex, IGeometry parentGeom)
+            : this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
+        {
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="argIndex"></param>
+        /// <param name="parentGeom"></param>
+        /// <param name="boundaryNodeRule"></param>
+        public GeometryGraph(int argIndex, IGeometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
         {
             _argIndex = argIndex;
+            _boundaryNodeRule = boundaryNodeRule;
             _parentGeom = parentGeom;
             if (parentGeom != null)
                 Add(parentGeom);
@@ -79,16 +96,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         #region Properties
 
         /// <summary>
+        /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
+        /// </summary>
+        public IBoundaryNodeRule BoundaryNodeRule
+        {
+            get { return _boundaryNodeRule; }
+        }
+
+        /// <summary>
         ///
         /// </summary>
-        public virtual ICollection BoundaryNodes
+        public IList<Node> BoundaryNodes
         {
             get
             {
                 if (_boundaryNodes == null)
-                {
-                    _boundaryNodes = Nodes.GetBoundaryNodes(_argIndex);
-                }
+                    _boundaryNodes = NodeMap.GetBoundaryNodes(_argIndex);
                 return _boundaryNodes;
             }
         }
@@ -141,24 +164,33 @@ namespace DotSpatial.Topology.GeometriesGraph
 
             // check if this Geometry should obey the Boundary Determination Rule
             // all collections except MultiPolygons obey the rule
-            if (g is GeometryCollection && !(g is MultiPolygon))
-                _useBoundaryDeterminationRule = true;
+            if (g is IMultiPolygon)
+                _useBoundaryDeterminationRule = false;
 
-            if (g is Polygon)
-                AddPolygon((Polygon)g);
+            if (g is IPolygon)
+                AddPolygon((IPolygon)g);
             // LineString also handles LinearRings
-            else if (g is LineString)
-                AddLineString(g);
-            else if (g is Point)
-                AddPoint(g.Coordinate);
-            else AddCollection(g);
+            else if (g is ILineString)
+                AddLineString((ILineString)g);
+            else if (g is IPoint)
+                AddPoint((IPoint)g);
+            else if (g is IMultiPoint)
+                AddCollection((IMultiPoint)g);
+            else if (g is IMultiLineString)
+                AddCollection((IMultiLineString)g);
+            else if (g is IMultiPolygon)
+                AddCollection((IMultiPolygon)g);
+            else if (g is IGeometryCollection)
+                AddCollection((IGeometryCollection)g);
+            else
+                throw new NotSupportedException(g.GetType().FullName);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="gc"></param>
-        private void AddCollection(IGeometry gc)
+        private void AddCollection(IGeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
@@ -185,7 +217,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="line"></param>
-        private void AddLineString(IBasicGeometry line)
+        private void AddLineString(ILineString line)
         {
             IList<Coordinate> coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
 
@@ -199,7 +231,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
             Edge e = new Edge(coord, new Label(_argIndex, LocationType.Interior));
-            _lineEdgeMap.Add(line, e);
+            _lineEdgeMap[line] = e;
             InsertEdge(e);
 
             /*
@@ -223,21 +255,35 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
-        private void AddPolygon(Polygon p)
+        private void AddPoint(IPoint p)
         {
-            AddPolygonRing(p.ExteriorRing, LocationType.Exterior, LocationType.Interior);
-
-            for (int i = 0; i < p.NumHoles; i++)
-                // Holes are topologically labelled opposite to the shell, since
-                // the interior of the polygon lies on their opposite side
-                // (on the left, if the hole is oriented CW)
-                AddPolygonRing(p.GetInteriorRingN(i), LocationType.Interior, LocationType.Exterior);
+            Coordinate coord = p.Coordinate;
+            InsertPoint(_argIndex, coord, LocationType.Interior);
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p"></param>
+        private void AddPolygon(IPolygon p)
+        {
+            AddPolygonRing(p.Shell, LocationType.Exterior, LocationType.Interior);
+
+            for (int i = 0; i < p.NumHoles; i++)
+            {
+                var hole = p.Holes[i];
+                // Holes are topologically labelled opposite to the shell, since
+                // the interior of the polygon lies on their opposite side
+                // (on the left, if the hole is oriented CW)
+                AddPolygonRing(hole, LocationType.Interior, LocationType.Exterior);
+            }
+        }
+
+        /// <summary>
+        /// Adds a polygon ring to the graph. Empty rings are ignored.
         /// The left and right topological location arguments assume that the ring is oriented CW.
         /// If the ring is in the opposite orientation,
         /// the left and right locations must be interchanged.
@@ -245,8 +291,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="lr"></param>
         /// <param name="cwLeft"></param>
         /// <param name="cwRight"></param>
-        private void AddPolygonRing(IBasicGeometry lr, LocationType cwLeft, LocationType cwRight)
+        private void AddPolygonRing(ILinearRing lr, LocationType cwLeft, LocationType cwRight)
         {
+            // don't bother adding empty holes
+            if (lr.IsEmpty)
+                return;
+
             IList<Coordinate> coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Count < 4)
             {
@@ -262,7 +312,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 right = cwLeft;
             }
             Edge e = new Edge(coord, new Label(_argIndex, LocationType.Boundary, left, right));
-            _lineEdgeMap.Add(lr, e);
+            _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(_argIndex, coord[0], LocationType.Boundary);
@@ -293,13 +343,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="argIndex"></param>
         private void AddSelfIntersectionNodes(int argIndex)
         {
-            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
+            foreach (Edge e in Edges)
             {
-                Edge e = (Edge)i.Current;
                 LocationType eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
                     AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
                 }
             }
@@ -346,11 +394,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="edgelist"></param>
-        public virtual void ComputeSplitEdges(IList edgelist)
+        public void ComputeSplitEdges(IList<Edge> edgelist)
         {
-            for (IEnumerator i = Edges.GetEnumerator(); i.MoveNext(); )
+            foreach (Edge e in Edges)
             {
-                Edge e = (Edge)i.Current;
                 e.EdgeIntersectionList.AddSplitEdges(edgelist);
             }
         }
@@ -365,14 +412,9 @@ namespace DotSpatial.Topology.GeometriesGraph
             return new SimpleMcSweepLineIntersector();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="boundaryCount"></param>
-        /// <returns></returns>
-        public static LocationType DetermineBoundary(int boundaryCount)
+        public static LocationType DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
-            return IsInBoundary(boundaryCount) ? LocationType.Boundary : LocationType.Interior;
+            return boundaryNodeRule.IsInBoundary(boundaryCount) ? LocationType.Boundary : LocationType.Interior;
         }
 
         /// <summary>
@@ -382,7 +424,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual Edge FindEdge(ILineString line)
         {
-            return (Edge)_lineEdgeMap[line];
+            return _lineEdgeMap[line];
         }
 
         /// <summary>
@@ -391,41 +433,39 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual Coordinate[] GetBoundaryPoints()
         {
-            ICollection coll = BoundaryNodes;
+            var coll = BoundaryNodes;
             Coordinate[] pts = new Coordinate[coll.Count];
             int i = 0;
-            for (IEnumerator it = coll.GetEnumerator(); it.MoveNext(); )
+            foreach (Node node in coll)
             {
-                Node node = (Node)it.Current;
                 pts[i++] = (Coordinate)node.Coordinate.Clone();
             }
             return pts;
         }
 
         /// <summary>
-        /// Adds points using the mod-2 rule of SFS.  This is used to add the boundary
-        /// points of dim-1 geometries (Curves/MultiCurves).  According to the SFS,
-        /// an endpoint of a Curve is on the boundary
-        /// if it is in the boundaries of an odd number of Geometries.
+        /// Adds candidate boundary points using the current <see cref="IBoundaryNodeRule"/>.
+        /// This is used to add the boundary
+        /// points of dim-1 geometries (Curves/MultiCurves).
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         private void InsertBoundaryPoint(int argIndex, Coordinate coord)
         {
-            Node n = Nodes.AddNode(coord);
+            var n = NodeMap.AddNode(coord);
+            // nodes always have labels
             Label lbl = n.Label;
             // the new point to insert is on a boundary
             int boundaryCount = 1;
             // determine the current location for the point (if any)
-            LocationType loc = LocationType.Null;
-            if (lbl != null)
-                loc = lbl.GetLocation(argIndex, PositionType.On);
+            //Location loc = LocationType.Null;
+            var loc = lbl.GetLocation(argIndex, PositionType.On);
             if (loc == LocationType.Boundary)
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            LocationType newLoc = DetermineBoundary(boundaryCount);
-            if (lbl != null) lbl.SetLocation(argIndex, newLoc);
+            LocationType newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
+            lbl.SetLocation(argIndex, newLoc);
         }
 
         /// <summary>
@@ -436,27 +476,33 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="onLocation"></param>
         private void InsertPoint(int argIndex, Coordinate coord, LocationType onLocation)
         {
-            Node n = Nodes.AddNode(coord);
+            Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
             if (lbl == null)
                 n.Label = new Label(argIndex, onLocation);
             else lbl.SetLocation(argIndex, onLocation);
         }
 
-        /// <summary>
-        /// This method implements the Boundary Determination Rule
-        /// for determining whether
-        /// a component (node or edge) that appears multiple times in elements
-        /// of a MultiGeometry is in the boundary or the interior of the Geometry.
-        /// The SFS uses the "Mod-2 Rule", which this function implements.
-        /// An alternative (and possibly more intuitive) rule would be
-        /// the "At Most One Rule":
-        /// isInBoundary = (componentCount == 1)
-        /// </summary>
-        public static bool IsInBoundary(int boundaryCount)
+        // MD - experimental for now
+        ///<summary>
+        /// Determines the <see cref="Location"/> of the given <see cref="Coordinate"/> in this geometry.
+        ///</summary>
+        /// <param name="pt">The point to test</param>
+        /// <returns>
+        /// The location of the point in the geometry
+        /// </returns>
+        public LocationType Locate(Coordinate pt)
         {
-            // the "Mod-2 Rule"
-            return boundaryCount % 2 == 1;
+            if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50)
+            {
+                // lazily init point locator
+                if (_areaPtLocator == null)
+                {
+                    _areaPtLocator = new IndexedPointInAreaLocator(_parentGeom);
+                }
+                return _areaPtLocator.Locate(pt);
+            }
+            return _ptLocator.Locate(pt, _parentGeom);
         }
 
         #endregion

@@ -22,60 +22,64 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Noding;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
     /// <summary>
-    /// Validates that a collection of SegmentStrings is correctly noded.
+    /// Validates that a collection of <see cref="Edge"/> is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class EdgeNodingValidator
     {
         #region Fields
 
-        private readonly NodingValidator _nv;
+        private readonly FastNodingValidator _nv;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edges"></param>
-        public EdgeNodingValidator(IEnumerable edges)
+        ///<summary>
+       /// Creates a new validator for the given collection of <see cref="Edge"/>s.
+       /// </summary> 
+       public EdgeNodingValidator(IEnumerable<Edge> edges)
         {
-            _nv = new NodingValidator(ToSegmentStrings(edges));
+            _nv = new FastNodingValidator(ToSegmentStrings(edges));
         }
 
         #endregion
 
         #region Methods
 
+        ///<summary>
+        /// Checks whether the supplied <see cref="Edge"/>s are correctly noded. 
+        ///</summary>
+        /// <param name="edges">an enumeration of Edges.</param>
+        /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
+        public static void CheckValid(IEnumerable<Edge> edges)
+        {
+            EdgeNodingValidator validator = new EdgeNodingValidator(edges);
+            validator.CheckValid();
+        }
+
         /// <summary>
-        ///
+        /// Checks whether the supplied edges are correctly noded. 
         /// </summary>
+       /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
         public virtual void CheckValid()
         {
             _nv.CheckValid();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edges"></param>
-        /// <returns></returns>
-        private static IList ToSegmentStrings(IEnumerable edges)
+        public static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings
-            IList segStrings = new ArrayList();
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
-                segStrings.Add(new SegmentString(e.Coordinates, e));
-            }
+            IList<ISegmentString> segStrings = new List<ISegmentString>();
+            foreach (Edge e in edges)
+                segStrings.Add(new BasicSegmentString(e.Coordinates, e));
             return segStrings;
         }
 

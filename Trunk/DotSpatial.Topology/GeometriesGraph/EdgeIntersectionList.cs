@@ -22,9 +22,10 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Geometries;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -35,9 +36,9 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        // a list of EdgeIntersections
         private readonly Edge _edge;  // the parent edge
-        private readonly IDictionary _nodeMap = new SortedList();
+        // a list of EdgeIntersections      
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> _nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
 
         #endregion
 
@@ -78,14 +79,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
-        public virtual void Add(Coordinate intPt, int segmentIndex, double dist)
+        /// <returns>The EdgeIntersection found or added.</returns>
+        public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
         {
             EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-            EdgeIntersection ei = (EdgeIntersection)_nodeMap[eiNew];
-            if (ei != null)
-                return;
-            _nodeMap.Add(eiNew, eiNew);
-            return;
+            EdgeIntersection ei;
+            if (_nodeMap.TryGetValue(eiNew, out ei))
+                return ei;
+            _nodeMap[eiNew] = eiNew;
+            return eiNew;
         }
 
         /// <summary>
@@ -105,18 +107,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// can be used to accumulate all split edges for a Geometry).
         /// </summary>
         /// <param name="edgeList"></param>
-        public virtual void AddSplitEdges(IList edgeList)
+        public void AddSplitEdges(IList<Edge> edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
 
-            IEnumerator it = GetEnumerator();
+            IEnumerator<EdgeIntersection> it = GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list
-            EdgeIntersection eiPrev = (EdgeIntersection)it.Current;
-            while (it.MoveNext())
+            EdgeIntersection eiPrev = it.Current;
+            while (it.MoveNext()) 
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                EdgeIntersection ei = it.Current;
                 Edge newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
 
@@ -131,8 +133,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
-        public virtual Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
-        {
+        public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
+        {        
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
             Coordinate lastSegStartPt = _edge.Points[ei1.SegmentIndex];
             // if the last intersection point is not equal to the its segment start pt,
@@ -146,19 +148,20 @@ namespace DotSpatial.Topology.GeometriesGraph
             Coordinate[] pts = new Coordinate[npts];
             int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
-            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++) 
                 pts[ipt++] = _edge.Points[i];
 
-            if (useIntPt1) pts[ipt] = ei1.Coordinate;
+            if (useIntPt1) 
+                pts[ipt] = ei1.Coordinate;
             return new Edge(pts, new Label(_edge.Label));
         }
 
         /// <summary>
         /// Returns an iterator of EdgeIntersections.
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
+        public IEnumerator<EdgeIntersection> GetEnumerator() 
+        { 
+            return _nodeMap.Values.GetEnumerator(); 
         }
 
         /// <summary>
@@ -168,9 +171,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual bool IsIntersection(Coordinate pt)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeIntersection ei in _nodeMap.Values    )
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
                 if (ei.Coordinate.Equals(pt))
                     return true;
             }
@@ -184,9 +186,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            for (IEnumerator<EdgeIntersection> it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                EdgeIntersection ei = it.Current;
                 ei.Write(outstream);
             }
         }

@@ -33,14 +33,18 @@ namespace DotSpatial.Topology.GeometriesGraph
 {
     /// <summary>
     /// Models the end of an edge incident on a node.
-    /// EdgeEnds have a direction
-    /// determined by the direction of the ray from the initial
-    /// point to the next point.
-    /// EdgeEnds are IComparable under the ordering
-    /// "a has a greater angle with the x-axis than b".
-    /// This ordering is used to sort EdgeEnds around a node.
     /// </summary>
-    public class EdgeEnd : IComparable
+    /// <remarks>
+    /// <para>
+    /// EdgeEnds have a direction determined by the direction of the ray from the initial
+    /// point to the next point.
+    /// </para>
+    /// <para>
+    /// EdgeEnds are IComparable under the ordering  "a has a greater angle with the x-axis than b".
+    /// This ordering is used to sort EdgeEnds around a node.
+    /// </para>
+    /// </remarks>
+    public class EdgeEnd : IComparable<EdgeEnd>
     {
         #region Fields
 
@@ -142,17 +146,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int Quadrant
-        {
-            get
-            {
-                return _quadrant;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         public virtual Edge Edge
         {
             get { return _edge; }
@@ -180,6 +173,17 @@ namespace DotSpatial.Topology.GeometriesGraph
             set
             {
                 _node = value;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual int Quadrant
+        {
+            get
+            {
+                return _quadrant;
             }
         }
 
@@ -216,18 +220,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="e"></param>
         /// <returns></returns>
-        public virtual int CompareTo(object obj)
+        public virtual int CompareTo(EdgeEnd e)
         {
-            EdgeEnd e = (EdgeEnd)obj;
             return CompareDirection(e);
         }
 
         /// <summary>
         /// Subclasses should override this if they are using labels
         /// </summary>
-        public virtual void ComputeLabel() { }
+        /// <param name="boundaryNodeRule"></param>
+        public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
 
         private void DoInit(Coordinate p0, Coordinate p1)
         {
@@ -255,13 +259,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(('['));
-            sb.Append(_p0.X);
-            sb.Append((' '));
-            sb.Append(_p1.Y);
-            sb.Append((']'));
-            return sb.ToString();
+            var angle = Math.Atan2(_dy, _dx);
+            var className = GetType().Name;
+            //var lastDotPos = className.LastIndexOf('.');
+            //var name = className.Substring(lastDotPos + 1);
+            return "  " + className + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label;
         }
 
         /// <summary>

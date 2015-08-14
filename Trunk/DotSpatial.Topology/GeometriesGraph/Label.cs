@@ -304,7 +304,19 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// 
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="tl"></param>
+        private void SetGeometryLocation(int geomIndex, TopologyLocation tl)
+        {
+            if (tl == null) 
+                return;
+            _elt[geomIndex].SetLocations(tl);
+        }
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -356,13 +368,13 @@ namespace DotSpatial.Topology.GeometriesGraph
             StringBuilder sb = new StringBuilder();
             if (_elt[0] != null)
             {
-                sb.Append("a:");
-                sb.Append(_elt[0].ToString());
+                sb.Append("A:");
+                sb.Append(_elt[0]);
             }
             if (_elt[1] != null)
             {
-                sb.Append(" b:");
-                sb.Append(_elt[1].ToString());
+                sb.Append(" B:");
+                sb.Append(_elt[1]);
             }
             return sb.ToString();
         }

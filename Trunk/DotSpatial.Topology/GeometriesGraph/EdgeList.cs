@@ -24,7 +24,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Noding;
 using Wintellect.PowerCollections;
 
@@ -42,7 +41,12 @@ namespace DotSpatial.Topology.GeometriesGraph
 
         /// <summary>
         /// An index of the edges, for fast lookup.
+        ///// a Quadtree is used, because this index needs to be dynamic
+        ///// (e.g. allow insertions after queries).
+        ///// An alternative would be to use an ordered set based on the values
+        ///// of the edge coordinates.
         /// </summary>
+        ////private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
         private readonly OrderedDictionary<OrientedCoordinateArray, Edge> _ocaMap = new OrderedDictionary<OrientedCoordinateArray, Edge>();
 
         #endregion
@@ -54,10 +58,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public virtual IList<Edge> Edges
         {
-            get
-            {
-                return _edges;
-            }
+            get { return _edges; }
         }
 
         #endregion
@@ -171,14 +172,14 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (int j = 0; j < _edges.Count; j++)
+            for (var j = 0; j < _edges.Count; j++) 
             {
-                Edge e = (Edge)_edges[j];
-                if (j > 0)
+                var e = _edges[j];
+                if (j > 0) 
                     outstream.Write(",");
                 outstream.Write("(");
-                IList<Coordinate> pts = e.Coordinates;
-                for (int i = 0; i < pts.Count; i++)
+                var pts = e.Coordinates;
+                for (var i = 0; i < pts.Count; i++)
                 {
                     if (i > 0)
                         outstream.Write(",");

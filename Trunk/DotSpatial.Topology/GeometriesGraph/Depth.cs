@@ -37,7 +37,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        private const int NULL = -1;
+        private const int Null = -1;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             // initialize depth array to a sentinel value
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 3; j++)
-                    _depth[i, j] = NULL;
+                    _depth[i, j] = Null;
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             if (location == LocationType.Exterior)
                 return 0;
 
-            return location == LocationType.Interior ? 1 : NULL;
+            return location == LocationType.Interior ? 1 : Null;
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (_depth[i, j] != NULL)
+                    if (_depth[i, j] != Null)
                         return false;
                 }
             }
@@ -190,7 +190,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual bool IsNull(int geomIndex)
         {
-            return _depth[geomIndex, 1] == NULL;
+            return _depth[geomIndex, 1] == Null;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual bool IsNull(int geomIndex, PositionType posIndex)
         {
-            return _depth[geomIndex, (int)posIndex] == NULL;
+            return _depth[geomIndex, (int)posIndex] == Null;
         }
 
         /// <summary>
@@ -251,8 +251,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return "A: " + _depth[0, 1] + ", " + _depth[0, 2]
-                 + " B: " + _depth[1, 1] + ", " + _depth[1, 2];
+            return string.Format("A: {0},{1} B: {2},{3}", _depth[0, 1], _depth[0, 2], _depth[1, 1], _depth[1, 2]);
         }
 
         #endregion

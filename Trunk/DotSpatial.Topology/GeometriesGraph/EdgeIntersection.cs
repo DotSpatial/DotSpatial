@@ -42,9 +42,9 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private Coordinate _coordinate;
-        private double _dist;
-        private int _segmentIndex;
+        private readonly Coordinate _coordinate;
+        private readonly double _distance;
+        private readonly int _segmentIndex;
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             _coordinate = new Coordinate(coord);
             _segmentIndex = segmentIndex;
-            _dist = dist;
+            _distance = dist;
         }
 
         #endregion
@@ -76,10 +76,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 return _coordinate;
             }
-            set
-            {
-                _coordinate = value;
-            }
+            //set
+            //{
+            //    _coordinate = value; 
+            //}
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get
             {
-                return _dist;
+                return _distance; 
             }
-            set
-            {
-                _dist = value;
-            }
+            //set
+            //{
+            //    dist = value; 
+            //}
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 return _segmentIndex;
             }
-            set
-            {
-                _segmentIndex = value;
-            }
+            //set
+            //{
+            //    segmentIndex = value; 
+            //}
         }
 
         #endregion
@@ -128,13 +128,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </returns>
         public virtual int Compare(int segmentIndex, double dist)
         {
-            if (SegmentIndex < segmentIndex)
+            if (_segmentIndex < segmentIndex) 
                 return -1;
-            if (SegmentIndex > segmentIndex)
+            if (_segmentIndex > segmentIndex) 
                 return 1;
-            if (Distance < dist)
+            if (_distance < dist) 
                 return -1;
-            return Distance > dist ? 1 : 0;
+            if (_distance > dist) 
+                return 1;
+            return 0;
         }
 
         /// <summary>
@@ -160,6 +162,11 @@ namespace DotSpatial.Topology.GeometriesGraph
             if (SegmentIndex == maxSegmentIndex)
                 return true;
             return false;
+        }
+
+        public override String ToString()
+        {
+            return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
         }
 
         /// <summary>

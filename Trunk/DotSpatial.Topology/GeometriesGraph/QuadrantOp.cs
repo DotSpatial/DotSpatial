@@ -37,6 +37,30 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// </summary>
     public class QuadrantOp
     {
+        #region Fields
+
+        /// <summary>
+	    /// North-East
+	    /// </summary>
+	    public static readonly int NE = 0;
+
+        /// <summary>
+        /// North-West
+        /// </summary>
+	    public static readonly int NW = 1;
+
+        /// <summary>
+        /// South-East
+        /// </summary>
+	    public static readonly int SE = 3;
+
+        /// <summary>
+	    /// South-West
+	    /// </summary>
+        public static readonly int SW = 2;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -82,8 +106,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="halfPlane"></param>
         public static bool IsInHalfPlane(int quad, int halfPlane)
         {
-            if (halfPlane == 3)
-                return quad == 3 || quad == 0;
+            if (halfPlane == SE) 
+                return quad == SE || quad == SW;            
             return quad == halfPlane || quad == halfPlane + 1;
         }
 
@@ -93,7 +117,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="quad"></param>
         public static bool IsNorthern(int quad)
         {
-            return quad == 0 || quad == 1;
+            return quad == NE || quad == NW;
         }
 
         /// <summary>
@@ -118,15 +142,20 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
+        /// <exception cref="ArgumentException">If the displacements are both 0</exception>
         public static int Quadrant(double dx, double dy)
         {
             if (dx == 0.0 && dy == 0.0)
-                throw new ArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
-            if (dx >= 0)
+                throw new ArgumentException("Cannot compute the quadrant for point ( "+ dx + ", " + dy + " )" );
+            if (dx >= 0.0)
             {
-                return dy >= 0 ? 0 : 3;
+                if (dy >= 0.0)
+                     return NE;
+                return SE;
             }
-            return dy >= 0 ? 1 : 2;
+            if (dy >= 0.0) 
+                return NW;
+            return SW;
         }
 
         /// <summary>
@@ -134,13 +163,21 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
+        /// <exception cref="ArgumentException"> if the points are equal</exception>
         public static int Quadrant(Coordinate p0, Coordinate p1)
         {
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
-            if (dx == 0.0 && dy == 0.0)
+            if (p1.X == p0.X && p1.Y == p0.Y)
                 throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
-            return Quadrant(dx, dy);
+            
+            if (p1.X >= p0.X)
+            {
+                if (p1.Y >= p0.Y)
+                    return NE;
+                return SE;
+            }
+            if (p1.Y >= p0.Y)
+                return NW;
+            return SW;
         }
 
         #endregion

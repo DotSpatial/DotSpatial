@@ -22,7 +22,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Algorithm;
@@ -36,7 +35,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// corresponding to the nodes and line segments of a <c>Geometry</c>. Each
     /// node and edge in the graph is labeled with its topological location relative to
     /// the source point.
-    /// Notice that there is no requirement that points of self-intersection be a vertex.
+    /// Note that there is no requirement that points of self-intersection be a vertex.
     /// Thus to obtain a correct topology graph, <c>Geometry</c>s must be
     /// self-noded before constructing their graphs.
     /// Two fundamental operations are supported by topology graphs:
@@ -47,9 +46,20 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private readonly IList _edgeEndList = new ArrayList();
-        private IList _edges = new ArrayList();
-        private NodeMap _nodes;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IList<EdgeEnd> EdgeEndList = new List<EdgeEnd>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly List<Edge> _edges = new List<Edge>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly NodeMap _nodes;
 
         #endregion
 
@@ -79,38 +89,40 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets a list of edge ends
         /// </summary>
-        public virtual IList EdgeEnds
+        public virtual IList<EdgeEnd> EdgeEnds
         {
             get
             {
-                return _edgeEndList;
+                return EdgeEndList;
             }
-        }
-
-        /// <summary>
-        /// Gets a list of the actual values contained in the nodes
-        /// </summary>
-        public virtual IList NodeValues
-        {
-            get { return new ArrayList(_nodes.Values); }
         }
 
         /// <summary>
         /// Gets or sets the list of edges.
         /// </summary>
-        public IList Edges
+        protected internal IList<Edge> Edges
         {
             get { return _edges; }
-            set { _edges = value; }
         }
 
         /// <summary>
         /// Gets or sets the NodeMap for this graph
         /// </summary>
-        public virtual NodeMap Nodes
+        protected NodeMap NodeMap
         {
             get { return _nodes; }
-            set { _nodes = value; }
+        }
+
+        /// <summary>
+        /// Gets a list of the actual values contained in the nodes
+        /// </summary>
+        public IList<Node> Nodes
+        {
+            get
+            {
+                return new List<Node>(_nodes.Values);
+            }
+            //protected set { nodes = value; }
         }
 
         #endregion
@@ -124,7 +136,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void Add(EdgeEnd e)
         {
             _nodes.Add(e);
-            _edgeEndList.Add(e);
+            EdgeEndList.Add(e);
         }
 
         /// <summary>
@@ -132,12 +144,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// will be created.  DirectedEdges are NOT linked by this method.
         /// </summary>
         /// <param name="edgesToAdd"></param>
-        public virtual void AddEdges(IList edgesToAdd)
+        public void AddEdges(IList<Edge> edgesToAdd)
         {
             // create all the nodes for the edges
-            for (IEnumerator it = edgesToAdd.GetEnumerator(); it.MoveNext(); )
+            foreach (Edge e in edgesToAdd)
             {
-                Edge e = (Edge)it.Current;
                 _edges.Add(e);
 
                 DirectedEdge de1 = new DirectedEdge(e, true);
@@ -189,7 +200,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             for (int i = 0; i < _edges.Count; i++)
             {
-                Edge e = (Edge)_edges[i];
+                Edge e = _edges[i];
                 IList<Coordinate> eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
@@ -205,12 +216,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public virtual EdgeEnd FindEdgeEnd(Edge e)
         {
-            for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeEnd ee = (EdgeEnd)i.Current;
-                if (ee.Edge == e)
-                    return ee;
-            }
+            foreach (EdgeEnd ee in EdgeEndList       )
+                if (ee.Edge == e) return ee;
             return null;
         }
 
@@ -225,7 +232,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             for (int i = 0; i < _edges.Count; i++)
             {
-                Edge e = (Edge)_edges[i];
+                Edge e = _edges[i];
                 IList<Coordinate> eCoord = e.Coordinates;
                 if (MatchInSameDirection(p0, p1, eCoord[0], eCoord[1]))
                     return e;
@@ -239,7 +246,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public IEnumerator<Edge> GetEdgeEnumerator()
         {
             return _edges.GetEnumerator();
         }
@@ -248,9 +255,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
-        {
-            return _nodes.GetEnumerator();
+        public IEnumerator<Node> GetNodeEnumerator()
+        {            
+            return _nodes.GetEnumerator();         
         }
 
         /// <summary>
@@ -286,11 +293,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public virtual void LinkAllDirectedEdges()
         {
-            for (IEnumerator nodeit = _nodes.GetEnumerator(); nodeit.MoveNext(); )
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).LinkAllDirectedEdges();
-            }
+            foreach (Node node in Nodes)
+                ((DirectedEdgeStar) node.Edges).LinkAllDirectedEdges();
         }
 
         /// <summary>
@@ -299,13 +303,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
         /// <param name="nodes"></param>
-        public static void LinkResultDirectedEdges(IList nodes)
+        public static void LinkResultDirectedEdges(IList<Node> nodes)
         {
-            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); )
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
-            }
+            foreach (Node node in nodes)
+                ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
         }
 
         /// <summary>
@@ -315,11 +316,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public virtual void LinkResultDirectedEdges()
         {
-            for (IEnumerator nodeit = _nodes.GetEnumerator(); nodeit.MoveNext(); )
-            {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).LinkResultDirectedEdges();
-            }
+            foreach (Node node in Nodes)
+                ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
         }
 
         /// <summary>
@@ -349,7 +347,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             for (int i = 0; i < _edges.Count; i++)
             {
                 outstream.WriteLine("edge " + i + ":");
-                Edge e = (Edge)_edges[i];
+                Edge e = _edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
             }

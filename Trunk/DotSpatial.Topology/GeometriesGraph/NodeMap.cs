@@ -22,9 +22,10 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology.Geometries;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.GeometriesGraph
 {
@@ -36,7 +37,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         #region Fields
 
         private readonly NodeFactory _nodeFact;
-        private readonly IDictionary _nodeMap = new SortedList();
+        private readonly IDictionary<Coordinate, Node > _nodeMap = new OrderedDictionary<Coordinate, Node>();
 
         #endregion
 
@@ -58,12 +59,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IList Values
+        public virtual IList<Node> Values
         {
-            get
-            {
-                return new ArrayList(_nodeMap.Values);
-            }
+            get { return new List<Node>(_nodeMap.Values); }
         }
 
         #endregion
@@ -89,8 +87,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="coord"></param>
         public virtual Node AddNode(Coordinate coord)
         {
-            Node node = (Node)_nodeMap[coord];
-            if (node == null)
+            Node node;
+            if (!_nodeMap.TryGetValue(coord, out node))
             {
                 node = _nodeFact.CreateNode(coord);
                 _nodeMap.Add(coord, node);
@@ -105,8 +103,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual Node AddNode(Node n)
         {
-            Node node = (Node)_nodeMap[n.Coordinate];
-            if (node == null)
+            Node node = _nodeMap[n.Coordinate];
+            if (node == null) 
             {
                 _nodeMap.Add(n.Coordinate, n);
                 return n;
@@ -121,7 +119,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="coord"></param>
         public virtual Node Find(Coordinate coord)
         {
-            return (Node)_nodeMap[coord];
+            Node res;
+            if (!_nodeMap.TryGetValue(coord, out res))
+                return null;
+            return res;
         }
 
         /// <summary>
@@ -129,12 +130,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual IList GetBoundaryNodes(int geomIndex)
+        public virtual IList<Node> GetBoundaryNodes(int geomIndex)
         {
-            IList bdyNodes = new ArrayList();
-            for (IEnumerator i = GetEnumerator(); i.MoveNext(); )
+            IList<Node> bdyNodes = new List<Node>();
+            foreach (Node node in _nodeMap.Values)
             {
-                Node node = (Node)i.Current;
                 if (node.Label.GetLocation(geomIndex) == LocationType.Boundary)
                     bdyNodes.Add(node);
             }
@@ -145,7 +145,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
+        public IEnumerator<Node> GetEnumerator()
         {
             return _nodeMap.Values.GetEnumerator();
         }
@@ -156,10 +156,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
-            for (IEnumerator i = GetEnumerator(); i.MoveNext(); )
+            foreach (Node node in _nodeMap.Values)
             {
-                Node n = (Node)i.Current;
-                n.Write(outstream);
+                node.Write(outstream);
             }
         }
 

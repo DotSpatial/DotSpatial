@@ -84,6 +84,15 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
+        public virtual int DeleteEventIndex
+        {
+            get { return _deleteEventIndex; }
+            set { _deleteEventIndex = value; }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public SweepLineEvent InsertEvent
         {
             get { return _insertEvent; }
@@ -111,15 +120,6 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         public virtual object Object
         {
             get { return _obj; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int DeleteEventIndex
-        {
-            get { return _deleteEventIndex; }
-            set { _deleteEventIndex = value; }
         }
 
         #endregion

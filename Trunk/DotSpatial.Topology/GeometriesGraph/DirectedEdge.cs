@@ -56,18 +56,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Creates a new instance of a directed edge
         /// </summary>
-        /// <param name="inEdge">The edge to use in order to create a directed edge</param>
-        /// <param name="inIsForward">A boolean that forces whether or not this edge is counted as forward</param>
-        public DirectedEdge(Edge inEdge, bool inIsForward)
-            : base(inEdge)
+        /// <param name="edge">The edge to use in order to create a directed edge</param>
+        /// <param name="isForward">A boolean that forces whether or not this edge is counted as forward</param>
+        public DirectedEdge(Edge edge, bool isForward)
+            : base(edge)
         {
-            _isForward = inIsForward;
-            if (_isForward)
-                base.Init(inEdge.GetCoordinate(0), inEdge.GetCoordinate(1));
-            else
+            _isForward = isForward;
+            if (isForward) 
+                Init(edge.GetCoordinate(0), edge.GetCoordinate(1));            
+            else 
             {
-                int n = inEdge.NumPoints - 1;
-                base.Init(inEdge.GetCoordinate(n), inEdge.GetCoordinate(n - 1));
+                int n = edge.NumPoints - 1;
+                Init(edge.GetCoordinate(n), edge.GetCoordinate(n-1));
             }
             ComputeDirectedLabel();
         }
@@ -84,10 +84,37 @@ namespace DotSpatial.Topology.GeometriesGraph
             get
             {
                 int depthDelta = Edge.DepthDelta;
-                if (!_isForward)
+                if (!IsForward) 
                     depthDelta = -depthDelta;
                 return depthDelta;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the EdgeRing
+        /// </summary>
+        public virtual EdgeRing EdgeRing
+        {
+            get { return _edgeRing; }
+            set { _edgeRing = value; }
+        }
+
+        /// <summary>
+        /// Gets a boolean indicating whether this edge is directed forward
+        /// </summary>
+        public virtual bool IsForward
+        {
+            get { return _isForward; }
+            protected set { _isForward = value; }
+        }
+
+        /// <summary>
+        /// Gets a boolean that is true if this edge is in the result
+        /// </summary>
+        public virtual bool IsInResult
+        {
+            get { return _isInResult; }
+            set { _isInResult = value; }
         }
 
         /// <summary>
@@ -130,33 +157,6 @@ namespace DotSpatial.Topology.GeometriesGraph
                     !Label.IsArea(1) || Label.AllPositionsEqual(1, LocationType.Exterior);
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the EdgeRing
-        /// </summary>
-        public virtual EdgeRing EdgeRing
-        {
-            get { return _edgeRing; }
-            set { _edgeRing = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whether this edge is directed forward
-        /// </summary>
-        public virtual bool IsForward
-        {
-            get { return _isForward; }
-            protected set { _isForward = value; }
-        }
-
-        /// <summary>
-        /// Gets a boolean that is true if this edge is in the result
-        /// </summary>
-        public virtual bool IsInResult
-        {
-            get { return _isInResult; }
-            set { _isInResult = value; }
         }
 
         /// <summary>

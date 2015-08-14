@@ -22,7 +22,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
@@ -37,16 +36,22 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private readonly IList _edges = new ArrayList();  // the DirectedEdges making up this EdgeRing
-        private readonly ArrayList _holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
-        private readonly IGeometryFactory _innerGeometryFactory;
+        /// <summary>
+        /// The directed edge which starts the list of edges for this EdgeRing.
+        /// </summary>
+        protected DirectedEdge StartDe;
+
+        private readonly List<DirectedEdge> _edges = new List<DirectedEdge>();  // the DirectedEdges making up this EdgeRing
+
+        private readonly IGeometryFactory _geometryFactory;
+        private readonly List<EdgeRing> _holes = new List<EdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
         private readonly Label _label = new Label(LocationType.Null); // label stores the locations of each point on the face surrounded by this ring
-        private readonly IList _pts = new ArrayList();
+        private readonly List<Coordinate> _pts = new List<Coordinate>();
         private bool _isHole;
         private int _maxNodeDegree = -1;
         private ILinearRing _ring;  // the ring created for this EdgeRing
         private EdgeRing _shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
-        private DirectedEdge _startDe;
+
 
         #endregion
 
@@ -59,7 +64,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geometryFactory"></param>
         protected EdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
         {
-            _innerGeometryFactory = geometryFactory;
+            _geometryFactory = geometryFactory;
             ComputePoints(start);
             ComputeRing();
         }
@@ -71,13 +76,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public virtual IList Edges
+        public virtual IList<DirectedEdge> Edges
         {
             get
             {
                 return _edges;
             }
         }
+
+        protected IGeometryFactory GeometryFactory { get { return _geometryFactory; } }
 
         /// <summary>
         ///
@@ -164,23 +171,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             }
         }
 
-        /// <summary>
-        /// Gets the inner geometry factory
-        /// </summary>
-        protected IGeometryFactory InnerGeometryFactory
-        {
-            get { return _innerGeometryFactory; }
-        }
-
-        /// <summary>
-        /// The directed edge which starts the list of edges for this EdgeRing.
-        /// </summary>
-        protected DirectedEdge StartDe
-        {
-            get { return _startDe; }
-            set { _startDe = value; }
-        }
-
         #endregion
 
         #region Methods
@@ -236,7 +226,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 if (degree > _maxNodeDegree)
                     _maxNodeDegree = degree;
                 de = GetNext(de);
-            }
+            } 
             while (de != StartDe);
             _maxNodeDegree *= 2;
         }
@@ -252,8 +242,8 @@ namespace DotSpatial.Topology.GeometriesGraph
             bool isFirstEdge = true;
             do
             {
-                Assert.IsTrue(de != null, "found null Directed Edge");
-                if (de == null) continue;
+                if (de == null)
+                    throw new TopologyException("found null Directed Edge");
                 if (de.EdgeRing == this)
                     throw new TopologyException("Directed Edge visited twice during ring-building at " + de.Coordinate);
 
@@ -266,7 +256,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 isFirstEdge = false;
                 SetEdgeRing(de, this);
                 de = GetNext(de);
-            }
+            } 
             while (de != StartDe);
         }
 
@@ -279,10 +269,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             if (_ring != null)
                 return;   // don't compute more than once
-            Coordinate[] coord = new Coordinate[_pts.Count];
-            for (int i = 0; i < _pts.Count; i++)
-                coord[i] = (Coordinate)_pts[i];
-            _ring = InnerGeometryFactory.CreateLinearRing(coord);
+            Coordinate[] coord = _pts.ToArray();
+            /* new Coordinate[_pts.Count];
+            for (int i = 0; i < _pts.Count; i++)            
+                coord[i] = (Coordinate) _pts[i];
+             */
+            _ring = _geometryFactory.CreateLinearRing(coord);
             _isHole = CgAlgorithms.IsCounterClockwise(_ring.Coordinates);
         }
 
@@ -295,13 +287,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             ILinearRing shell = LinearRing;
             IEnvelope env = shell.EnvelopeInternal;
-            if (!env.Contains(p))
+            if (!env.Contains(p)) 
                 return false;
-            if (!CgAlgorithms.IsPointInRing(p, shell.Coordinates))
+            if (!CgAlgorithms.IsPointInRing(p, shell.Coordinates)) 
                 return false;
-            for (IEnumerator i = _holes.GetEnumerator(); i.MoveNext(); )
+            foreach (EdgeRing hole in _holes)
             {
-                EdgeRing hole = (EdgeRing)i.Current;
                 if (hole.ContainsPoint(p))
                     return false;
             }
@@ -315,7 +306,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual Coordinate GetCoordinate(int i)
         {
-            return (Coordinate)_pts[i];
+            return _pts[i]; 
         }
 
         /// <summary>
@@ -352,10 +343,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return;
             // if there is no current RHS value, set it
             if (_label.GetLocation(geomIndex) == LocationType.Null)
-            {
                 _label.SetLocation(geomIndex, loc);
-                return;
-            }
         }
 
         /// <summary>
@@ -375,7 +363,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 de.Edge.IsInResult = true;
                 de = de.Next;
-            }
+            } 
             while (de != StartDe);
         }
 
@@ -386,9 +374,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public virtual IPolygon ToPolygon(IGeometryFactory geometryFactory)
         {
-            ILinearRing[] holeLr = new LinearRing[_holes.Count];
+            ILinearRing[] holeLr = new ILinearRing[_holes.Count];
             for (int i = 0; i < _holes.Count; i++)
-                holeLr[i] = ((EdgeRing)_holes[i]).LinearRing;
+                holeLr[i] = _holes[i].LinearRing;
             IPolygon poly = geometryFactory.CreatePolygon(LinearRing, holeLr);
             return poly;
         }

@@ -31,19 +31,27 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// <summary>
     /// A TopologyLocation is the labelling of a
     /// GraphComponent's topological relationship to a single Geometry.
+    /// </summary>
+    /// <remarks>
     /// If the parent component is an area edge, each side and the edge itself
     /// have a topological location.  These locations are named:
-    ///  On: on the edge
-    ///  Left: left-hand side of the edge
-    ///  Right: right-hand side
+    /// <list type="Table">
+    /// <item>On</item><description>on the edge</description> 
+    /// <item>Left</item><description>left-hand side of the edge</description>
+    /// <item>Right</item><description>right-hand side</description>
+    /// </list>
+    /// <para>
     /// If the parent component is a line edge or node, there is a single
-    /// topological relationship attribute, On.
+    /// topological relationship attribute, On.</para>
+    /// <para>
     /// The possible values of a topological location are
-    /// { Location.Null, Location.Exterior, Location.Boundary, LocationType.Interior }
-    /// The labelling is stored in an array location[j] where
+    /// { <see cref="LocationType.Null"/>, <see cref="LocationType.Exterior"/>, <see cref="LocationType.Boundary"/>, <see cref="LocationType.Interior"/> }</para>
+    /// <para>
+    /// The labelling is stored in an array _location[j] where
     /// where j has the values On, Left, Right.
-    /// </summary>
-    public class TopologyLocation
+    /// </para>
+    /// </remarks>
+    public class TopologyLocation 
     {
         #region Fields
 

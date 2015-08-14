@@ -62,7 +62,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             _eiList = new EdgeIntersectionList(this);
 
             _pts = pts;
-            base.Label = label;
+            Label = label;
         }
 
         /// <summary>
@@ -82,17 +82,33 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get
             {
-                Coordinate[] newPts = new Coordinate[2];
+                var newPts = new Coordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
-                Edge newe = new Edge(newPts, Label.ToLineLabel(Label));
+                var newe = new Edge(newPts, Label.ToLineLabel(Label));
                 return newe;
             }
         }
 
+
         /// <summary>
         ///
         /// </summary>
+        public override Coordinate Coordinate
+        {
+            get
+            {
+                return Points.Count > 0 ? Points[0] : Coordinate.Empty;
+            }
+            set
+            {
+                if (Points.Count > 0)
+                {
+                    Points[0] = value;
+                }
+            }
+        }
+
         public virtual IList<Coordinate> Coordinates
         {
             get
@@ -109,6 +125,22 @@ namespace DotSpatial.Topology.GeometriesGraph
             get
             {
                 return _depth;
+            }
+        }
+
+        /// <summary>
+        /// The depthDelta is the change in depth as an edge is crossed from R to L.
+        /// </summary>
+        /// <returns>The change in depth as the edge is crossed from R to L.</returns>
+        public virtual int DepthDelta
+        {
+            get
+            {
+                return _depthDelta;
+            }
+            set
+            {
+                _depthDelta = value;
             }
         }
 
@@ -184,6 +216,21 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
+        public virtual bool Isolated
+        {
+            get
+            {
+                return _isIsolated;
+            }
+            set
+            {
+                _isIsolated = value;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public virtual int MaximumSegmentIndex
         {
             get
@@ -208,66 +255,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int NumPoints
-        {
-            get
-            {
-                return _pts.Count;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override Coordinate Coordinate
-        {
-            get
-            {
-                return Points.Count > 0 ? Points[0] : Coordinate.Empty;
-            }
-            set
-            {
-                if (Points.Count > 0)
-                {
-                    Points[0] = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// The depthDelta is the change in depth as an edge is crossed from R to L.
-        /// </summary>
-        /// <returns>The change in depth as the edge is crossed from R to L.</returns>
-        public virtual int DepthDelta
-        {
-            get
-            {
-                return _depthDelta;
-            }
-            set
-            {
-                _depthDelta = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual bool Isolated
-        {
-            get
-            {
-                return _isIsolated;
-            }
-            set
-            {
-                _isIsolated = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         public virtual string Name
         {
             get
@@ -277,6 +264,17 @@ namespace DotSpatial.Topology.GeometriesGraph
             set
             {
                 _name = value;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual int NumPoints
+        {
+            get
+            {
+                return _pts.Count;
             }
         }
 
