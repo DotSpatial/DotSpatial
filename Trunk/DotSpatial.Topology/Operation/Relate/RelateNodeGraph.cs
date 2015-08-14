@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -73,8 +73,8 @@ namespace DotSpatial.Topology.Operation.Relate
             * Build EdgeEnds for all intersections.
             */
             EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
-            IList eeList = eeBuilder.ComputeEdgeEnds(geomGraph.GetEdgeEnumerator());
-            InsertEdgeEnds(eeList);
+            IList<EdgeEnd> eeList = eeBuilder.ComputeEdgeEnds(geomGraph.Edges);
+            InsertEdgeEnds(eeList);        
         }
 
         /// <summary>
@@ -89,18 +89,16 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="argIndex"></param>
         public virtual void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
         {
-            for (IEnumerator edgeIt = geomGraph.GetEdgeEnumerator(); edgeIt.MoveNext(); )
+            foreach (Edge e in geomGraph.Edges)
             {
-                Edge e = (Edge)edgeIt.Current;
-                LocationType eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
-                    RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
+                    RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
                     if (eLoc == LocationType.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else if (n.Label.IsNull(argIndex))
-                        n.SetLabel(argIndex, LocationType.Interior);
+                        n.SetLabel(argIndex, LocationType.Interior);                            
                 }
             }
         }
@@ -118,9 +116,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="argIndex"></param>
         public virtual void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
         {
-            for (IEnumerator nodeIt = geomGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+            foreach (Node graphNode in geomGraph.Nodes)
             {
-                Node graphNode = (Node)nodeIt.Current;
                 Node newNode = _nodes.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
@@ -130,7 +127,7 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public IEnumerator<Node> GetNodeEnumerator() 
         {
             return _nodes.GetEnumerator();
         }
@@ -139,13 +136,10 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <param name="ee"></param>
-        public virtual void InsertEdgeEnds(IList ee)
+        public void InsertEdgeEnds(IList<EdgeEnd> ee)
         {
-            for (IEnumerator i = ee.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeEnd e = (EdgeEnd)i.Current;
+            foreach (EdgeEnd e in ee)
                 _nodes.Add(e);
-            }
         }
 
         #endregion

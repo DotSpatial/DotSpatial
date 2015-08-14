@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -42,14 +42,12 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="edges"></param>
         /// <returns></returns>
-        public virtual IList ComputeEdgeEnds(IEnumerator edges)
+        public IList<EdgeEnd> ComputeEdgeEnds(IEnumerable<Edge> edges)
         {
-            IList l = new ArrayList();
-            for (IEnumerator i = edges; i.MoveNext(); )
-            {
-                Edge e = (Edge)i.Current;
+            IList<EdgeEnd> l = new List<EdgeEnd>();
+            foreach (Edge e in edges)
                 ComputeEdgeEnds(e, l);
-            }
+
             return l;
         }
 
@@ -59,25 +57,26 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="l"></param>
-        public virtual void ComputeEdgeEnds(Edge edge, IList l)
+        public void ComputeEdgeEnds(Edge edge, IList<EdgeEnd> l)
         {
             EdgeIntersectionList eiList = edge.EdgeIntersectionList;
             // ensure that the list has entries for the first and last point of the edge
             eiList.AddEndpoints();
 
-            IEnumerator it = eiList.GetEnumerator();
+            IEnumerator<EdgeIntersection> it = eiList.GetEnumerator();
+            EdgeIntersection eiPrev;
             EdgeIntersection eiCurr = null;
             // no intersections, so there is nothing to do
-            if (!it.MoveNext()) return;
-            EdgeIntersection eiNext = (EdgeIntersection)it.Current;
-            do
+            if (! it.MoveNext()) return;
+            EdgeIntersection eiNext = it.Current;
+            do 
             {
-                EdgeIntersection eiPrev = eiCurr;
+                eiPrev = eiCurr;
                 eiCurr = eiNext;
                 eiNext = null;
 
                 if (it.MoveNext())
-                    eiNext = (EdgeIntersection)it.Current;
+                    eiNext = it.Current;                
 
                 if (eiCurr != null)
                 {
@@ -99,7 +98,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="l"></param>
         /// <param name="eiCurr"></param>
         /// <param name="eiNext"></param>
-        public virtual void CreateEdgeEndForNext(Edge edge, IList l, EdgeIntersection eiCurr, EdgeIntersection eiNext)
+        public void CreateEdgeEndForNext(Edge edge, IList<EdgeEnd> l, EdgeIntersection eiCurr, EdgeIntersection eiNext)
         {
             int iNext = eiCurr.SegmentIndex + 1;
             // if there is no next edge there is nothing to do
@@ -126,7 +125,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="l"></param>
         /// <param name="eiCurr"></param>
         /// <param name="eiPrev"></param>
-        public virtual void CreateEdgeEndForPrev(Edge edge, IList l, EdgeIntersection eiCurr, EdgeIntersection eiPrev)
+        public void CreateEdgeEndForPrev(Edge edge, IList<EdgeEnd> l, EdgeIntersection eiCurr, EdgeIntersection eiPrev)
         {
             int iPrev = eiCurr.SegmentIndex;
             if (eiCurr.Distance == 0.0)

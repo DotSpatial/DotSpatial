@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.Operation.Relate
         #region Fields
 
         private readonly GeometryGraph[] _arg;     // the arg(s) of the operation
-        private readonly ArrayList _isolatedEdges = new ArrayList();
+        private readonly List<Edge> _isolatedEdges = new List<Edge>();
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
         private readonly PointLocator _ptLocator = new PointLocator();
@@ -135,9 +135,9 @@ namespace DotSpatial.Topology.Operation.Relate
 
             // build EdgeEnds for all intersections
             EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
-            IList ee0 = eeBuilder.ComputeEdgeEnds(_arg[0].GetEdgeEnumerator());
+            IList<EdgeEnd> ee0 = eeBuilder.ComputeEdgeEnds(_arg[0].Edges);
             InsertEdgeEnds(ee0);
-            IList ee1 = eeBuilder.ComputeEdgeEnds(_arg[1].GetEdgeEnumerator());
+            IList<EdgeEnd> ee1 = eeBuilder.ComputeEdgeEnds(_arg[1].Edges);
             InsertEdgeEnds(ee1);
 
             LabelNodeEdges();
@@ -169,13 +169,11 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="argIndex"></param>
         private void ComputeIntersectionNodes(int argIndex)
         {
-            for (IEnumerator i = _arg[argIndex].GetEdgeEnumerator(); i.MoveNext(); )
+            foreach (Edge e in _arg[argIndex].Edges)
             {
-                Edge e = (Edge)i.Current;
                 LocationType eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
                     RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
                     if (eLoc == LocationType.Boundary)
                         n.SetLabelBoundary(argIndex);
@@ -207,44 +205,35 @@ namespace DotSpatial.Topology.Operation.Relate
              */
             if (dimA == DimensionType.Surface && dimB == DimensionType.Surface)
             {
-                if (hasProper)
-                {
+                if (hasProper) 
                     im.SetAtLeast("212101212");
-                }
             }
+
+            /*
+             * If an Line segment properly intersects an edge segment of an Area,
+             * it follows that the Interior of the Line intersects the Boundary of the Area.
+             * If the intersection is a proper <i>interior</i> intersection, then
+             * there is an Interior-Interior intersection too.
+             * Note that it does not follow that the Interior of the Line intersects the Exterior
+             * of the Area, since there may be another Area component which contains the rest of the Line.
+             */
             else if (dimA == DimensionType.Surface && dimB == DimensionType.Curve)
             {
-                /*
-                * If an Line segment properly intersects an edge segment of an Area,
-                * it follows that the Interior of the Line intersects the Boundary of the Area.
-                * If the intersection is a proper <i>interior</i> intersection, then
-                * there is an Interior-Interior intersection too.
-                * Notice that it does not follow that the Interior of the Line intersects the Exterior
-                * of the Area, since there may be another Area component which contains the rest of the Line.
-                */
-                if (hasProper)
-                {
+                if (hasProper) 
                     im.SetAtLeast("FFF0FFFF2");
-                }
-                if (hasProperInterior)
-                {
+                if (hasProperInterior) 
                     im.SetAtLeast("1FFFFF1FF");
-                }
             }
+
             else if (dimA == DimensionType.Curve && dimB == DimensionType.Surface)
             {
-                if (hasProper)
-                {
+                if (hasProper) 
                     im.SetAtLeast("F0FFFFFF2");
-                }
                 if (hasProperInterior)
-                {
                     im.SetAtLeast("1F1FFFFFF");
-                }
             }
-            else if (dimA == DimensionType.Curve && dimB == DimensionType.Curve)
-            {
-                /* If edges of LineStrings properly intersect *in an interior point*, all
+
+            /* If edges of LineStrings properly intersect *in an interior point*, all
                we can deduce is that
                the interiors intersect.  (We can NOT deduce that the exteriors intersect,
                since some other segments in the geometries might cover the points in the
@@ -252,12 +241,11 @@ namespace DotSpatial.Topology.Operation.Relate
                It is important that the point be known to be an interior point of
                both Geometries, since it is possible in a self-intersecting point to
                have a proper intersection on one segment that is also a boundary point of another segment.
-               */
-
+            */
+            else if (dimA == DimensionType.Curve && dimB == DimensionType.Curve)
+            {
                 if (hasProperInterior)
-                {
                     im.SetAtLeast("0FFFFFFFF");
-                }
             }
         }
 
@@ -273,11 +261,10 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="argIndex"></param>
         private void CopyNodesAndLabels(int argIndex)
         {
-            for (IEnumerator i = _arg[argIndex].GetNodeEnumerator(); i.MoveNext(); )
+            foreach (Node graphNode in _arg[argIndex].Nodes)
             {
-                Node graphNode = (Node)i.Current;
                 Node newNode = _nodes.AddNode(graphNode.Coordinate);
-                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
+                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));                
             }
         }
 
@@ -285,12 +272,35 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <param name="ee"></param>
-        private void InsertEdgeEnds(IEnumerable ee)
+        private void InsertEdgeEnds(IEnumerable<EdgeEnd> ee)
         {
-            for (IEnumerator i = ee.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeEnd e = (EdgeEnd)i.Current;
+            foreach (EdgeEnd e in ee)
                 _nodes.Add(e);
+        }
+
+        /// <summary>
+        /// For all intersections on the edges of a Geometry,
+        /// label the corresponding node IF it doesn't already have a label.
+        /// This allows nodes created by either self-intersections or
+        /// mutual intersections to be labelled.
+        /// Endpoint nodes will already be labelled from when they were inserted.
+        /// </summary>
+        /// <param name="argIndex"></param>
+        private void LabelIntersectionNodes(int argIndex)
+        {
+            foreach (Edge e in _arg[argIndex].Edges)
+            {
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                {
+                    RelateNode n = (RelateNode)_nodes.Find(ei.Coordinate);
+                    if (n.Label.IsNull(argIndex))
+                    {
+                        if (eLoc == LocationType.Boundary)
+                             n.SetLabelBoundary(argIndex);
+                        else n.SetLabel(argIndex, LocationType.Interior);
+                    }
+                }
             }
         }
 
@@ -302,7 +312,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="e"></param>
         /// <param name="targetIndex"></param>
         /// <param name="target"></param>
-        private void LabelIsolatedEdge(GraphComponent e, int targetIndex, IGeometry target)
+        private void LabelIsolatedEdge(Edge e, int targetIndex, IGeometry target)
         {
             // this won't work for GeometryCollections with both dim 2 and 1 geoms
             if (target.Dimension > 0)
@@ -310,10 +320,10 @@ namespace DotSpatial.Topology.Operation.Relate
                 // since edge is not in boundary, may not need the full generality of PointLocator?
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
-                LocationType loc = _ptLocator.Locate(e.Coordinate, target);
+                var loc = _ptLocator.Locate(e.Coordinate, target);
                 e.Label.SetAllLocations(targetIndex, loc);
             }
-            else e.Label.SetAllLocations(targetIndex, LocationType.Exterior);
+            else e.Label.SetAllLocations(targetIndex, LocationType.Exterior);            
         }
 
         /// <summary>
@@ -327,9 +337,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedEdges(int thisIndex, int targetIndex)
         {
-            for (IEnumerator ei = _arg[thisIndex].GetEdgeEnumerator(); ei.MoveNext(); )
+            foreach (var e in _arg[thisIndex].Edges   )
             {
-                Edge e = (Edge)ei.Current;
                 if (e.IsIsolated)
                 {
                     LabelIsolatedEdge(e, targetIndex, _arg[targetIndex].Geometry);
@@ -343,7 +352,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="n"></param>
         /// <param name="targetIndex"></param>
-        private void LabelIsolatedNode(GraphComponent n, int targetIndex)
+        private void LabelIsolatedNode(Node n, int targetIndex)
         {
             LocationType loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
             n.Label.SetAllLocations(targetIndex, loc);
@@ -367,7 +376,9 @@ namespace DotSpatial.Topology.Operation.Relate
                 Assert.IsTrue(label.GeometryCount > 0, "node with empty label found");
                 if (n.IsIsolated)
                 {
-                    LabelIsolatedNode(n, label.IsNull(0) ? 0 : 1);
+                    if (label.IsNull(0))
+                         LabelIsolatedNode(n, 0);
+                    else LabelIsolatedNode(n, 1);
                 }
             }
         }
@@ -377,11 +388,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         private void LabelNodeEdges()
         {
-            for (IEnumerator ni = _nodes.GetEnumerator(); ni.MoveNext(); )
-            {
-                RelateNode node = (RelateNode)ni.Current;
-                node.Edges.ComputeLabelling(_arg);
-            }
+            foreach (RelateNode node in _nodes)
+                node.Edges.ComputeLabelling(_arg);                
         }
 
         /// <summary>
@@ -390,14 +398,12 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="im"></param>
         private void UpdateIm(IntersectionMatrix im)
         {
-            for (IEnumerator ei = _isolatedEdges.GetEnumerator(); ei.MoveNext(); )
+            foreach (Edge e in _isolatedEdges)
             {
-                Edge e = (Edge)ei.Current;
                 e.UpdateIm(im);
             }
-            for (IEnumerator ni = _nodes.GetEnumerator(); ni.MoveNext(); )
+            foreach (RelateNode node in _nodes )
             {
-                RelateNode node = (RelateNode)ni.Current;
                 node.UpdateIm(im);
                 node.UpdateImFromEdges(im);
             }

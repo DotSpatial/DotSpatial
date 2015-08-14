@@ -22,8 +22,9 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -38,7 +39,7 @@ namespace DotSpatial.Topology.Operation.Relate
     {
         #region Fields
 
-        private readonly IList _edgeEnds = new ArrayList();
+        private readonly IList<EdgeEnd> _edgeEnds = new List<EdgeEnd>();
 
         #endregion
 
@@ -48,11 +49,13 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <param name="e"></param>
-        public EdgeEndBundle(EdgeEnd e)
+        public EdgeEndBundle(IBoundaryNodeRule boundaryNodeRule, EdgeEnd e) 
             : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
             Insert(e);
         }
+
+        public EdgeEndBundle(EdgeEnd e) : this (null, e){}
 
         #endregion
 
@@ -61,7 +64,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <summary>
         ///
         /// </summary>
-        public virtual IList EdgeEnds
+        public IList<EdgeEnd> EdgeEnds
         {
             get
             {
@@ -76,33 +79,28 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <summary>
         /// This computes the overall edge label for the set of
         /// edges in this EdgeStubBundle.  It essentially merges
-        /// the ON and side labels for each edge.
+        /// the ON and side labels for each edge. 
         /// These labels must be compatible
         /// </summary>
-        public override void ComputeLabel()
+        /// <param name="boundaryNodeRule"></param>
+        public override void ComputeLabel(IBoundaryNodeRule boundaryNodeRule)
         {
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
             bool isArea = false;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 if (e.Label.IsArea())
                     isArea = true;
             }
             if (isArea)
-            {
-                Label = new Label(LocationType.Null, LocationType.Null, LocationType.Null);
-            }
-            else
-            {
-                Label = new Label(LocationType.Null);
-            }
+                 Label = new Label(LocationType.Null, LocationType.Null, LocationType.Null);
+            else Label = new Label(LocationType.Null);
 
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
             {
-                ComputeLabelOn(i);
+                ComputeLabelOn(i, boundaryNodeRule);
                 if (isArea)
                     ComputeLabelSides(i);
             }
@@ -114,11 +112,11 @@ namespace DotSpatial.Topology.Operation.Relate
         /// edgeStubs can be either on the boundary (eg Polygon edge)
         /// OR in the interior (e.g. segment of a LineString)
         /// of their parent Geometry.
-        /// In addition, GeometryCollections use the mod-2 rule to determine
+        /// In addition, GeometryCollections use the <see cref="IBoundaryNodeRule"/> to determine
         /// whether a segment is on the boundary or not.
-        /// Finally, in GeometryCollections it can still occur that an edge is both
+        /// Finally, in GeometryCollections it can occur that an edge is both
         /// on the boundary and in the interior (e.g. a LineString segment lying on
-        /// top of a Polygon edge.) In this case as usual the Boundary is given precendence.
+        /// top of a Polygon edge.) In this case the Boundary is given precendence.
         /// These observations result in the following rules for computing the ON location:
         ///  if there are an odd number of Bdy edges, the attribute is Bdy
         ///  if there are an even number >= 2 of Bdy edges, the attribute is Int
@@ -126,20 +124,20 @@ namespace DotSpatial.Topology.Operation.Relate
         ///  otherwise, the attribute is Null.
         /// </summary>
         /// <param name="geomIndex"></param>
-        private void ComputeLabelOn(int geomIndex)
+        /// <param name="boundaryNodeRule"></param>
+        private void ComputeLabelOn(int geomIndex, IBoundaryNodeRule boundaryNodeRule)
         {
             // compute the On location value
             int boundaryCount = 0;
             bool foundInterior = false;
             LocationType loc;
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
                 loc = e.Label.GetLocation(geomIndex);
-                if (loc == LocationType.Boundary)
+                if (loc == LocationType.Boundary) 
                     boundaryCount++;
-                if (loc == LocationType.Interior)
+                if (loc == LocationType.Interior) 
                     foundInterior = true;
             }
 
@@ -147,7 +145,7 @@ namespace DotSpatial.Topology.Operation.Relate
             if (foundInterior)
                 loc = LocationType.Interior;
             if (boundaryCount > 0)
-                loc = GeometryGraph.DetermineBoundary(boundaryCount);
+                loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
             Label.SetLocation(geomIndex, loc);
         }
 
@@ -157,7 +155,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// IF any edge's location is Interior for the side, side location = Interior
         /// ELSE IF there is at least one Exterior attribute, side location = Exterior
         /// ELSE  side location = Null
-        /// Notice that it is possible for two sides to have apparently contradictory information
+        /// Note that it is possible for two sides to have apparently contradictory information
         /// i.e. one edge side may indicate that it is in the interior of a point, while
         /// another edge side may indicate the exterior of the same point.  This is
         /// not an incompatibility - GeometryCollections may contain two Polygons that touch
@@ -168,18 +166,19 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="side"></param>
         private void ComputeLabelSide(int geomIndex, PositionType side)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
-                if (!e.Label.IsArea()) continue;
-                LocationType loc = e.Label.GetLocation(geomIndex, side);
-                if (loc == LocationType.Interior)
+                if (e.Label.IsArea()) 
                 {
-                    Label.SetLocation(geomIndex, side, LocationType.Interior);
-                    return;
+                    LocationType loc = e.Label.GetLocation(geomIndex, side);
+                    if (loc == LocationType.Interior)
+                    {
+                        Label.SetLocation(geomIndex, side, LocationType.Interior);
+                        return;
+                    }
+                    if (loc == LocationType.Exterior)
+                        Label.SetLocation(geomIndex, side, LocationType.Exterior);
                 }
-                if (loc == LocationType.Exterior)
-                    Label.SetLocation(geomIndex, side, LocationType.Exterior);
             }
         }
 
@@ -197,9 +196,9 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
-        {
-            return _edgeEnds.GetEnumerator();
+        public IEnumerator<EdgeEnd> GetEnumerator() 
+        { 
+            return _edgeEnds.GetEnumerator(); 
         }
 
         /// <summary>
@@ -229,9 +228,8 @@ namespace DotSpatial.Topology.Operation.Relate
         public override void Write(StreamWriter outstream)
         {
             outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeEnd ee in _edgeEnds)
             {
-                EdgeEnd ee = (EdgeEnd)it.Current;
                 ee.Write(outstream);
                 outstream.WriteLine();
             }

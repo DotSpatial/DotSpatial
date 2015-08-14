@@ -22,7 +22,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -46,14 +45,18 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="e"></param>
         public override void Insert(EdgeEnd e)
         {
-            EdgeEndBundle eb = (EdgeEndBundle)EdgeMap[e];
-            if (eb == null)
+            EdgeEnd ee;
+            //EdgeEndBundle eb; //= (EdgeEndBundle) edgeMap[e];
+            //if (eb == null)
+            if (!EdgeMap.TryGetValue(e, out ee)) 
             {
-                eb = new EdgeEndBundle(e);
-                InsertEdgeEnd(e, eb);
+                //eb = new EdgeEndBundle(e);
+                //InsertEdgeEnd(e, eb);
+                InsertEdgeEnd(e, new EdgeEndBundle(e));
             }
-            else
-                eb.Insert(e);
+            else 
+                ((EdgeEndBundle)ee).Insert(e);
+            
         }
 
         /// <summary>
@@ -62,11 +65,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="im"></param>
         public virtual void UpdateIm(IntersectionMatrix im)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
-            {
-                EdgeEndBundle esb = (EdgeEndBundle)it.Current;
+            foreach (EdgeEndBundle esb in Edges)
                 esb.UpdateIm(im);
-            }
         }
 
         #endregion
