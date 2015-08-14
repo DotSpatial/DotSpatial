@@ -23,6 +23,7 @@
 // *********************************************************************************************************
 
 using System;
+using System.Globalization;
 using System.Text;
 using DotSpatial.Topology.Algorithm;
 
@@ -43,8 +44,8 @@ namespace DotSpatial.Topology.Geometries
     {
         #region Fields
 
-        private static readonly System.Globalization.CultureInfo _cultureInfo =
-            System.Globalization.CultureInfo.InvariantCulture;
+        private static readonly CultureInfo _cultureInfo =
+            CultureInfo.InvariantCulture;
 
         private Coordinate _p0, _p1;
 
@@ -437,7 +438,7 @@ namespace DotSpatial.Topology.Geometries
                 var intPt = HCoordinate.Intersection(_p0, _p1, line._p0, line._p1);
                 return intPt;
             }
-            catch (NotRepresentableException ex)
+            catch (NotRepresentableException)
             {
                 // eat this exception, and return null;
             }

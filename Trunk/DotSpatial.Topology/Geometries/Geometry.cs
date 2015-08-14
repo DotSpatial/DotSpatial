@@ -23,34 +23,38 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries.Utilities;
 using DotSpatial.Topology.IO;
 using DotSpatial.Topology.IO.GML2;
+using DotSpatial.Topology.Operation;
 using DotSpatial.Topology.Operation.Buffer;
 using DotSpatial.Topology.Operation.Distance;
+using DotSpatial.Topology.Operation.Linemerge;
 using DotSpatial.Topology.Operation.Overlay;
+using DotSpatial.Topology.Operation.Overlay.Snap;
 using DotSpatial.Topology.Operation.Predicate;
 using DotSpatial.Topology.Operation.Relate;
+using DotSpatial.Topology.Operation.Union;
 using DotSpatial.Topology.Operation.Valid;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
 {
-    /// <summary>
-    /// Basic implementation of <c>Geometry</c>.
-    /// <c>Clone</c> returns a deep copy of the object.
+    /// <summary>  
+    /// A representation of a planar, linear vector geometry.
+    /// </summary>
+    /// <remarks>
     /// <para>
-    /// Binary Predicates:
+    /// <h3>Binary Predicates:</h3>
     /// Because it is not clear at this time what semantics for spatial
     /// analysis methods involving <c>GeometryCollection</c>s would be useful,
     /// <c>GeometryCollection</c>s are not supported as arguments to binary
-    /// predicates (other than <c>ConvexHull</c>) or the <c>Relate</c> method.
+    /// predicates or the <c>Relate</c> method.
     /// </para>
     /// <para>
-    /// Set-Theoretic Methods:
+    /// <h3>Overlay Methods:</h3> 
     /// The spatial analysis methods will
     /// return the most specific class possible to represent the result. If the
     /// result is homogeneous, a <c>Point</c>, <c>LineString</c>, or
@@ -60,15 +64,15 @@ namespace DotSpatial.Topology.Geometries
     /// heterogeneous a <c>GeometryCollection</c> will be returned.
     /// </para>
     /// <para>
-    /// Representation of Computed Geometries:
+    /// Representation of Computed Geometries:  
     /// The SFS states that the result
     /// of a set-theoretic method is the "point-set" result of the usual
     /// set-theoretic definition of the operation (SFS 3.2.21.1). However, there are
     /// sometimes many ways of representing a point set as a <c>Geometry</c>.
     /// The SFS does not specify an unambiguous representation of a given point set
     /// returned from a spatial analysis method. One goal of NTS is to make this
-    /// specification precise and unambiguous. NTS will use a canonical form for
-    /// <c>Geometry</c>s returned from spatial analysis methods. The canonical
+    /// specification precise and unambiguous. NTS uses a canonical form for
+    /// <c>Geometry</c>s returned from overlay methods. The canonical
     /// form is a <c>Geometry</c> which is simple and noded:
     /// Simple means that the Geometry returned will be simple according to
     /// the NTS definition of <c>IsSimple</c>.
@@ -80,30 +84,63 @@ namespace DotSpatial.Topology.Geometries
     /// ensure that the results are simple.
     /// </para>
     /// <para>
-    /// Constructed Points And The Precision Model:
+    /// Constructed Points And The Precision Model: 
     /// The results computed by the set-theoretic methods may
-    /// contain constructed points which are not present in the input <c>Geometry</c>
-    /// s. These new points arise from intersections between line segments in the
+    /// contain constructed points which are not present in the input <c>Geometry</c>s. 
+    /// These new points arise from intersections between line segments in the
     /// edges of the input <c>Geometry</c>s. In the general case it is not
     /// possible to represent constructed points exactly. This is due to the fact
     /// that the coordinates of an intersection point may contain twice as many bits
     /// of precision as the coordinates of the input line segments. In order to
     /// represent these constructed points explicitly, NTS must truncate them to fit
-    /// the <c>PrecisionModel</c>.
+    /// the <c>PrecisionModel</c>. 
     /// Unfortunately, truncating coordinates moves them slightly. Line segments
     /// which would not be coincident in the exact result may become coincident in
     /// the truncated representation. This in turn leads to "topology collapses" --
     /// situations where a computed element has a lower dimension than it would in
-    /// the exact result.
+    /// the exact result. 
     /// When NTS detects topology collapses during the computation of spatial
     /// analysis methods, it will throw an exception. If possible the exception will
-    /// report the location of the collapse.
+    /// report the location of the collapse. 
     /// </para>
-    /// </summary>
-    /// <remarks>
-    /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> are not overridden, so that when two
-    /// topologically equal Geometries are added to Collections and Dictionaries, they
-    /// remain distinct. This behaviour is desired in many cases.
+    /// <para>
+    /// 
+    /// <h3>Geometry Equality</h3>
+    /// There are two ways of comparing geometries for equality: 
+    /// <b>structural equality</b> and <b>topological equality</b>.
+    /// <h4>Structural Equality</h4>
+    /// Structural Equality is provided by the 
+    /// <see cref="EqualsExact(IGeometry)"/> method.  
+    /// This implements a comparison based on exact, structural pointwise
+    /// equality. 
+    /// The <see cref="Equals(object)"/> is a synonym for this method, 
+    /// to provide structural equality semantics for
+    /// use in collections.
+    /// It is important to note that structural pointwise equality
+    /// is easily affected by things like
+    /// ring order and component order.  In many situations
+    /// it will be desirable to normalize geometries before
+    /// comparing them (using the <see cref="Normalized()"/> 
+    /// or <see cref="Normalize()"/> methods).
+    /// <see cref="EqualsNormalized(IGeometry)"/> is provided
+    /// as a convenience method to compute equality over
+    /// normalized geometries, but it is expensive to use.
+    /// Finally, <see cref="EqualsExact(IGeometry, double)"/>
+    /// allows using a tolerance value for point comparison.
+    /// 
+    /// <h4>Topological Equality</h4>
+    /// Topological Equality is provided by the 
+    /// <see cref="EqualsTopologically(IGeometry)"/> method. 
+    /// It implements the SFS definition of point-set equality
+    /// defined in terms of the DE-9IM matrix. 
+    /// To support the SFS naming convention, the method
+    /// <see cref="Equals(IGeometry)"/> is also provided as a synonym.  
+    /// However, due to the potential for confusion with <see cref="Equals(object)"/>
+    /// its use is discouraged.
+    /// <para/>
+    /// Since <see cref="Equals(object)"/> and <see cref="GetHashCode"/> are overridden, 
+    /// Geometries can be used effectively in .Net collections.
+    /// </para>
     /// </remarks>
     [Serializable]
     public abstract class Geometry : IGeometry
@@ -115,7 +152,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>
-        public static GeometryFactory DefaultFactory = new GeometryFactory();
+        public static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
 
         /// <summary>
         ///
@@ -132,14 +169,22 @@ namespace DotSpatial.Topology.Geometries
             typeof(GeometryCollection),
         };
 
-        private readonly IGeometryFactory _factory;
-        /* END ADDED BY MPAUL42: monoGIS team */
-
         private IGeometry _boundary;
         private DimensionType _boundaryDimension;
         private DimensionType _dimension;
+
+        /// <summary>
+        /// The bounding box of this <c>Geometry</c>.
+        /// </summary>
         private IEnvelope _envelope;
+
+        private IGeometryFactory _factory;
+        // The ID of the Spatial Reference System used by this <c>Geometry</c>
         private int _srid;
+        /**
+         * An object reference which can be used to carry ancillary data defined
+         * by the client.
+         */
         private object _userData;
 
         #endregion
@@ -161,9 +206,9 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
+        /// Creates a new <c>Geometry</c> via the specified GeometryFactory.
         /// </summary>
-        /// <param name="factory"></param>
+        /// <param name="factory">The factory</param>
         protected Geometry(IGeometryFactory factory)
         {
             _factory = factory;
@@ -189,57 +234,116 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        /// <summary>  
+        /// Returns the boundary, or an empty geometry of appropriate dimension 
+        /// if this <c>Geometry</c> is empty. 
+        /// For a discussion of this function, see the OpenGIS Simple
+        /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
+        /// of a Geometry is a set of Geometries of the next lower dimension."
+        /// </summary>
+        /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
+        public virtual IGeometry Boundary
+        {
+            get { return _boundary; }
+            set { _boundary = value; }
+        }
+
+        /// <summary>
+        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
+        /// </summary>
+        /// <returns>
+        /// The dimension of the boundary of the class implementing this
+        /// interface, whether or not this object is the empty point. Returns
+        /// <c>Dimension.False</c> if the boundary is the empty point.
+        /// </returns>
+        public virtual DimensionType BoundaryDimension
+        {
+            get { return _boundaryDimension; }
+            set { _boundaryDimension = value; }
+        }
+
         /// <summary>
         /// Computes the centroid of this <c>Geometry</c>.
         /// The centroid is equal to the centroid of the set of component Geometries of highest
         /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
+        /// <para/>
+        /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
         /// </summary>
         /// <returns>A Point which is the centroid of this Geometry.</returns>
         public virtual IPoint Centroid
         {
             get
             {
-                if (IsEmpty) return null;
-
-                Coordinate centPt;
-                DimensionType dim = Dimension;
-
-                switch (dim)
+                if (IsEmpty)
                 {
-                    case DimensionType.Point:
-                        {
-                            CentroidPoint cent = new CentroidPoint();
-                            cent.Add(this);
-                            centPt = cent.Centroid;
-                        }
-                        break;
-                    case DimensionType.Curve:
-                        {
-                            CentroidLine cent = new CentroidLine();
-                            cent.Add(this);
-                            centPt = cent.Centroid;
-                        }
-                        break;
-                    default:
-                        {
-                            CentroidArea cent = new CentroidArea();
-                            cent.Add(this);
-                            centPt = cent.Centroid;
-                        }
-                        break;
+                    return Factory.CreatePoint((Coordinate)null);
                 }
-                return new Point(centPt);
+
+                var centPt = Algorithm.Centroid.GetCentroid(this);
+                return CreatePointFromInternalCoord(centPt, this);
             }
         }
 
         /// <summary>
-        /// Returns a vertex of this <c>Geometry</c>.
+        ///
         /// </summary>
-        /// <returns>
-        /// a Coordinate which is a vertex of this <c>Geometry</c>.
-        /// Returns <c>null</c> if this Geometry is empty.
+        private int ClassSortIndex
+        {
+            get
+            {
+                for (var i = 0; i < _sortedClasses.Length; i++)
+                    if (GetType() == _sortedClasses[i])
+                        return i;
+                throw new ClassNotSupportedException(GetType().FullName);
+            }
+        }
+
+        /// <summary>  
+        /// Returns a vertex of this <c>Geometry</c>
+        /// (usually, but not necessarily, the first one).
+        /// </summary>
+        /// <remarks>
+        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation. 
+        /// </remarks>
+        /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
+        /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
         public abstract Coordinate Coordinate { get; }
+
+        /// <summary>
+        /// Returns an array containing the values of all the vertices for 
+        /// this geometry.
+        /// </summary>
+        /// <remarks>
+        /// If the geometry is a composite, the array will contain all the vertices
+        /// for the components, in the order in which the components occur in the geometry.
+        /// <para>
+        /// In general, the array cannot be assumed to be the actual internal 
+        /// storage for the vertices.  Thus modifying the array
+        /// may not modify the geometry itself. 
+        /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
+        /// (possibly on the components) to modify the underlying data.
+        /// If the coordinates are modified, 
+        /// <see cref="IGeometry.GeometryChanged"/> must be called afterwards.
+        /// </para> 
+        /// </remarks>
+        /// <returns>The vertices of this <c>Geometry</c>.</returns>
+        /// <seealso cref="IGeometry.GeometryChanged"/>
+        /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
+        public abstract IList<Coordinate> Coordinates { get; set; }
+
+        /// <summary>
+        /// Returns the dimension of this <c>Geometry</c>.
+        /// </summary>
+        /// <returns>
+        /// The dimension of the class implementing this interface, whether
+        /// or not this object is the empty point.
+        /// </returns>
+        public virtual DimensionType Dimension
+        {
+            get { return _dimension; }
+            set { _dimension = value; }
+        }
 
         /// <summary>
         /// Gets the IEnvelope that contains this geometry
@@ -257,41 +361,51 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
-        /// Returns this <c>Geometry</c>s bounding box. If this <c>Geometry</c>
-        /// is the empty point, returns an empty <c>Point</c>. If the <c>Geometry</c>
-        /// is a point, returns a non-empty <c>Point</c>. Otherwise, returns a
-        /// <c>Polygon</c> whose points are (minx, miny), (maxx, miny), (maxx,
-        /// maxy), (minx, maxy), (minx, miny).
+        /// <summary>  
+        /// Gets a geometry representing the envelope (bounding box) of this <c>Geometry</c>.
         /// </summary>
-        /// <returns>
-        /// An empty <c>Point</c> (for empty <c>Geometry</c>s), a
-        /// <c>Point</c> (for <c>Point</c>s) or a <c>Polygon</c>
-        /// (in all other cases).
+        /// <remarks>If this <c>Geometry</c> is
+        /// <list type="Bullet">
+        /// <item>empty, returns an empty <c>Point</c></item>
+        /// <item>a point, returns a <c>Point</c></item>
+        /// <item>a line parallel to an axis, a two-vertex <c>LineString</c>,</item>
+        /// <item>otherwise, returns a 
+        /// <c>Polygon</c> whose vertices are (minx, miny), (maxx, miny), (maxx,
+        /// maxy), (minx, maxy), (minx, miny).</item>
+        /// </list>
+        /// </remarks>
+        /// <returns>    
+        /// A Geometry representing the envelope of this Geometry
         /// </returns>
+        /// <seealso cref="IGeometryFactory.ToGeometry(Geometries.Envelope)"/>
         public virtual IGeometry EnvelopeAsGeometry
         {
             get
             {
-                return new GeometryFactory(Factory).ToGeometry(new Envelope(EnvelopeInternal));
+                return Factory.ToGeometry(EnvelopeInternal);
             }
         }
 
         /// <summary>
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        ///, or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
+        /// Gets an <see cref="Geometries.Envelope"/> containing 
+        /// the minimum and maximum x and y values in this <c>Geometry</c>.
+        /// If the geometry is empty, an empty <c>Envelope</c> 
+        /// is returned.
         /// </summary>
-        /// <returns>
-        /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
-        /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
-        /// </returns>
+        /// <remarks>
+        /// The returned object is a copy of the one maintained internally,
+        /// to avoid aliasing issues.  
+        /// For best performance, clients which access this
+        /// envelope frequently should cache the return value.</remarks>
+        /// <returns>the envelope of this <c>Geometry</c>.</returns>
+        /// <returns>An empty Envelope if this Geometry is empty</returns>
         public virtual IEnvelope EnvelopeInternal
         {
             get
             {
                 if (_envelope == null)
                     _envelope = ComputeEnvelopeInternal();
-                return _envelope;
+                return new Envelope(_envelope);
             }
         }
 
@@ -325,15 +439,22 @@ namespace DotSpatial.Topology.Geometries
 
         /// <summary>
         /// Computes an interior point of this <c>Geometry</c>.
+        /// </summary>
+        /// <remarks>
         /// An interior point is guaranteed to lie in the interior of the Geometry,
         /// if it possible to calculate such a point exactly. Otherwise,
         /// the point may lie on the boundary of the point.
-        /// </summary>
+        /// <para/>
+        /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
+        /// </remarks>
         /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
-        public virtual IGeometry InteriorPoint
+        public IPoint InteriorPoint
         {
             get
             {
+                if (IsEmpty)
+                    return Factory.CreatePoint((Coordinate)null);
+
                 Coordinate interiorPt;
 
                 DimensionType dim = Dimension;
@@ -356,11 +477,16 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
-        /// Returns whether or not the set of points in this <c>Geometry</c> is empty.
+        /// <summary> 
+        /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
         /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> equals the empty point.</returns>
+        /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
         public abstract bool IsEmpty { get; }
+
+        protected bool IsGeometryCollection
+        {
+            get { return OgcGeometryType == OgcGeometryType.GeometryCollection; }
+        }
 
         /// <summary>
         ///
@@ -376,35 +502,52 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns false if the <c>Geometry</c> not simple.
-        /// Subclasses provide their own definition of "simple". If
-        /// this <c>Geometry</c> is empty, returns <c>true</c>.
-        /// In general, the SFS specifications of simplicity seem to follow the
-        /// following rule:
-        ///  A Geometry is simple if the only self-intersections are at boundary points.
-        /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
-        /// </summary>
-        /// <returns>
-        /// <c>false</c> if this <c>Geometry</c> has any points of
+        /// Tests whether this <see cref="IGeometry"/> is simple.
+        /// <para/>
+        /// The SFS definition of simplicity
+        /// follows the general rule that a Geometry is simple if it has no points of
         /// self-tangency, self-intersection or other anomalous points.
-        /// </returns>
-        public abstract bool IsSimple { get; }
+        /// <para/>
+        /// Simplicity is defined for each <see cref="IGeometry"/> subclass as follows:
+        /// <list type="Bullet">
+        /// <item>Valid polygonal geometries are simple, since their rings
+        /// must not self-intersect. <c>IsSimple</c>
+        /// tests for this condition and reports <code>false</code> if it is not met.
+        /// (This is a looser test than checking for validity).</item>
+        /// <item>Linear rings have the same semantics.</item>
+        /// <item>Linear geometries are simple iff they do not self-intersect at points
+        /// other than boundary points.</item>
+        /// <item>Zero-dimensional geometries (points) are simple iff they have no
+        /// repeated points.</item>
+        /// <item>Empty <code>Geometry</code>s are always simple.</item>
+        /// </list>
+        /// </summary>
+        /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
+        /// <seealso cref="IsValid"/>
+        public bool IsSimple
+        {
+            get
+            {
+                var isSimpleOp = new IsSimpleOp(this);
+                return isSimpleOp.IsSimple();
+            }
+        }
 
-        /// <summary>
-        /// Tests the validity of this <c>Geometry</c>.
-        /// Subclasses provide their own definition of "valid".
+        /// <summary>  
+        /// Tests whether this <c>Geometry</c> is topologically 
+        /// valid, according to the OGC SFS specification.<para/>
+        /// For validity rules see the documentation for the specific geometry subclass.
         /// </summary>
         /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
         public virtual bool IsValid
         {
             get
             {
-                IsValidOp isValidOp = new IsValidOp(this);
-                return isValidOp.IsValid;
+                return new IsValidOp(this).IsValid;
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// Returns the length of this <c>Geometry</c>.
         /// Linear geometries return their length.
         /// Areal geometries return their perimeter.
@@ -432,7 +575,7 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
+        /// <summary>  
         /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
         /// s contained by composite <c>Geometry</c>s must be
         /// Geometry's; that is, they must implement <c>NumPoints</c>.
@@ -441,69 +584,34 @@ namespace DotSpatial.Topology.Geometries
         public abstract int NumPoints { get; }
 
         /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
+        public abstract OgcGeometryType OgcGeometryType { get; }
+
+        /// <summary>
+        /// <see cref="InteriorPoint" />
+        /// </summary>
+        public IPoint PointOnSurface
+        {
+            get
+            {
+                return InteriorPoint;
+            }
+        }
+
+        /// <summary>  
         /// Returns the <c>PrecisionModel</c> used by the <c>Geometry</c>.
         /// </summary>
-        /// <returns>
+        /// <returns>    
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
-        public virtual PrecisionModelType PrecisionModel
+        public virtual IPrecisionModel PrecisionModel
         {
             get
             {
                 return Factory.PrecisionModel;
             }
-        }
-
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Returns the boundary, or the empty point if this <c>Geometry</c>
-        /// is empty. For a discussion of this function, see the OpenGIS Simple
-        /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
-        /// of a Geometry is a set of Geometries of the next lower dimension."
-        /// </summary>
-        /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        public virtual IGeometry Boundary
-        {
-            get { return _boundary; }
-            set { _boundary = value; }
-        }
-
-        /// <summary>
-        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
-        /// </summary>
-        /// <returns>
-        /// The dimension of the boundary of the class implementing this
-        /// interface, whether or not this object is the empty point. Returns
-        /// <c>Dimension.False</c> if the boundary is the empty point.
-        /// </returns>
-        public virtual DimensionType BoundaryDimension
-        {
-            get { return _boundaryDimension; }
-            set { _boundaryDimension = value; }
-        }
-
-        /// <summary>
-        /// Returns this <c>Geometry</c> s vertices. If you modify the coordinates
-        /// in this array, be sure to call GeometryChanged afterwards.
-        /// The <c>Geometry</c>s contained by composite <c>Geometry</c>s
-        /// must be Geometry's; that is, they must implement <c>Coordinates</c>.
-        /// </summary>
-        /// <returns>The vertices of this <c>Geometry</c>.</returns>
-        public abstract IList<Coordinate> Coordinates { get; set; }
-
-        /// <summary>
-        /// Returns the dimension of this <c>Geometry</c>.
-        /// </summary>
-        /// <returns>
-        /// The dimension of the class implementing this interface, whether
-        /// or not this object is the empty point.
-        /// </returns>
-        public virtual DimensionType Dimension
-        {
-            get { return _dimension; }
-            set { _dimension = value; }
         }
 
         /// <summary>
@@ -527,13 +635,15 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
+        /// </summary>
+        /// <remarks>
         /// A simple scheme for applications to add their own custom data to a Geometry.
         /// An example use might be to add an object representing a Coordinate Reference System.
-        /// notice that user data objects are not present in geometries created by
+        /// Note that user data objects are not present in geometries created by
         /// construction methods.
-        /// </summary>
+        /// </remarks>
         public virtual object UserData
         {
             get
@@ -546,18 +656,30 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        #endregion
+
+        #region Operators
+
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        private int ClassSortIndex
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator ==(Geometry obj1, IGeometry obj2)
         {
-            get
-            {
-                for (int i = 0; i < SortedClasses.Length; i++)
-                    if (GetType().Equals(SortedClasses[i]))
-                        return i;
-                throw new ClassNotSupportedException(GetType().FullName);
-            }
+            return Equals(obj1, obj2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator !=(Geometry obj1, IGeometry obj2)
+        {
+            return !(obj1 == obj2);
         }
 
         #endregion
@@ -565,16 +687,28 @@ namespace DotSpatial.Topology.Geometries
         #region Methods
 
         /// <summary>
-        /// Performs an operation with or on this <c>Geometry</c>'s
-        /// coordinates. If you are using this method to modify the point, be sure
-        /// to call GeometryChanged() afterwards. Notice that you cannot use this
-        /// method to
-        /// modify this Geometry if its underlying CoordinateSequence's Get method
-        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
-        /// (if it even stores Coordinates at all).
+        /// Performs an operation with or on this <c>Geometry</c>'s coordinates. 
         /// </summary>
+        /// <remarks>
+        /// If this method modifies any coordinate values,
+        /// <see cref="GeometryChanged"/> must be called to update the geometry state. 
+        /// Note that you cannot use this method to
+        /// modify this Geometry if its underlying CoordinateSequence's #get method
+        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
+        /// (if it even stores Coordinate objects at all).
+        /// </remarks>
         /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
         public abstract void Apply(ICoordinateFilter filter);
+
+        ///<summary>
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s.
+        /// </summary>
+        /// <remarks>
+        /// If the filter reports that a coordinate value has been changed, 
+        /// <see cref="GeometryChanged"/> will be called automatically.
+        ///</remarks>
+        /// <param name="filter">The filter to apply</param>
+        public abstract void Apply(ICoordinateSequenceFilter filter);
 
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c> and its
@@ -598,98 +732,294 @@ namespace DotSpatial.Topology.Geometries
         public abstract void Apply(IGeometryComponentFilter filter);
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
-        /// width and with a specified number of segments used to approximate curves.
-        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
-        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
-        /// approximated with line segments.  This method allows specifying the
-        /// accuracy of that approximation.
+        /// Computes a buffer area around this geometry having the given width. The
+        /// buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The buffer geometry is constructed using 8 segments per quadrant to approximate 
+        /// the circular arcs.</para>
+        /// <para>The end cap style is <c>BufferStyle.CapRound</c>.</para>
+        /// <para>
+        /// The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
+        /// </remarks>
         /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
+        /// The width of the buffer (may be positive, negative or 0), interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
-        public virtual IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        public IGeometry Buffer(double distance)
         {
-            return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
+            return BufferOp.Buffer(this, distance);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
-        /// width and with a specified number of segments used to approximate curves.
+        /// Computes a buffer region around this <c>Geometry</c> having the given width.
+        /// The buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
+        /// </summary>
+        /// <remarks>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
+        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// </param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        [Obsolete]
+        public virtual IGeometry Buffer(double distance, BufferStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, endCapStyle);
+        }
+
+        /// <summary>
+        /// Computes a buffer region around this <c>Geometry</c> having the given width.
+        /// The buffer of a Geometry is the Minkowski sum or difference of the geometry
+        /// with a disc of radius <c>Abs(distance)</c>.
+        /// </summary>
+        /// <remarks>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// </param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        public virtual IGeometry Buffer(double distance, EndCapStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
+        }
+
+        /// <summary>
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified accuracy of approximation for circular arcs.
         /// The buffer of a Geometry is the Minkowski sum of the Geometry with
         /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
         /// approximated with line segments.  This method allows specifying the
         /// accuracy of that approximation.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
+        /// </remarks>
         /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
+        /// The width of the buffer (may be positive, negative or 0), interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public virtual IGeometry Buffer(double distance, int quadrantSegments)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified number of segments used to approximate curves.
+        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
+        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
+        /// approximated with line segments.  This method allows specifying the
+        /// accuracy of that approximation.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
+        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
+        /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
-        public virtual IGeometry Buffer(double distance, BufferStyle endCapStyle)
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        [Obsolete]
+        public virtual IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, endCapStyle);
+            return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified number of segments used to approximate curves.
+        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
+        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
+        /// approximated with line segments.  This method allows specifying the
+        /// accuracy of that approximation.
         /// </summary>
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The end cap style specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
+        /// </remarks>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
         /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
+        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
-        /// are less than or equal to <c>distance</c>.
+        /// a polygonal geometry representing the buffer region (which may be empty)
         /// </returns>
-        public virtual IGeometry Buffer(double distance)
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance);
+            return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
         }
 
         /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>.
-        /// (Its subclasses do not trigger an exception).
+        /// Computes a buffer region around this <c>Geometry</c> having the given
+        /// width and with a specified number of segments used to approximate curves.
+        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
+        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
+        /// approximated with line segments.  This method allows specifying the
+        /// accuracy of that approximation.
         /// </summary>
-        /// <param name="g">
-        /// The <c>Geometry</c> to check;
-        /// throws  ArgumentException  if <c>g</c> is a <c>GeometryCollection</c>
-        /// but not one of its subclasses.
+        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs. 
+        /// To represent these arcs using linear geometry they must be approximated with line segments.
+        /// The <c>bufferParameters</c> argument has a property <c>QuadrantSegments</c> controlling the accuracy of
+        /// the approximation by specifying the number of line segments used to
+        /// represent a quadrant of a circle</para>
+        /// <para>The <c>EndCapStyle</c> property of the <c>bufferParameters</c> argument specifies the buffer geometry that will be
+        /// created at the ends of linestrings.  The styles provided are:
+        /// <ul>
+        /// <li><see cref="EndCapStyle.Round" /> - (default) a semi-circle</li>
+        /// <li><see cref="EndCapStyle.Flat" /> - a straight line perpendicular to the end segment</li>
+        /// <li><see cref="EndCapStyle.Square" /> - a half-square</li>
+        /// </ul></para>
+        /// <para>The buffer operation always returns a polygonal result. The negative or
+        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
+        ///	This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// </para>
+        /// </remarks>
+        /// <param name="distance">
+        /// The width of the buffer, interpreted according to the
+        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
         /// </param>
+        /// <param name="bufferParameters">This argument type has a number of properties that control the construction of the
+        /// buffer, including <c>QuadrantSegments</c>, <c>EndCapStyle</c>, <c>JoinStyle</c>, and <c>MitreLimit</c></param>
+        /// <returns>
+        /// a polygonal geometry representing the buffer region (which may be empty)
+        /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        /// <seealso cref="Buffer(double)"/>
+        ///// <seealso cref="Buffer(double, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, EndCapStyle)"/>
+        /// <seealso cref="Buffer(double, int)"/>
+        ///// <seealso cref="Buffer(double, int, BufferStyle)"/>
+        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
+        public IGeometry Buffer(double distance, IBufferParameters bufferParameters)
+        {
+            return BufferOp.Buffer(this, distance, bufferParameters);
+        }
+
+        /// <summary>
+        /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// (its subclasses do not trigger an exception).
+        /// </summary>
+        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// </exception>
         protected virtual void CheckNotGeometryCollection(IGeometry g)
         {
-            if (g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace)
-                throw new GeometryCollectionNotSupportedException();
+            if (IsNonHomogenousGeometryCollection(g))
+                throw new ArgumentException("This method does not support GeometryCollection arguments");
         }
 
         /// <summary>
@@ -730,20 +1060,19 @@ namespace DotSpatial.Topology.Geometries
         /// completes before <c>a</c>, a positive number is returned; if a
         /// before b, a negative number.
         /// </summary>
-        /// <param name="a">The left hand side ArrayList to compare.</param>
-        /// <param name="b">The right hand side ArrayList to compare.</param>
+        /// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
+        /// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        protected virtual int Compare(ArrayList a, ArrayList b)
+        protected virtual int Compare(List<IGeometry> a, List<IGeometry> b)
         {
-            IEnumerator i = a.GetEnumerator();
-            IEnumerator j = b.GetEnumerator();
+            IEnumerator<IGeometry> i = a.GetEnumerator();
+            IEnumerator<IGeometry> j = b.GetEnumerator();
 
             while (i.MoveNext() && j.MoveNext())
             {
-                IComparable aElement = (IComparable)i.Current;
-                IComparable bElement = (IComparable)j.Current;
+                IComparable aElement = i.Current;
+                IComparable bElement = j.Current;
                 int comparison = aElement.CompareTo(bElement);
-
                 if (comparison != 0)
                     return comparison;
             }
@@ -758,22 +1087,54 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        private static bool CompareGeometryCollections(IGeometry obj1, IGeometry obj2)
+        {
+            IGeometryCollection coll1 = obj1 as IGeometryCollection;
+            IGeometryCollection coll2 = obj2 as IGeometryCollection;
+            if (coll1 == null || coll2 == null)
+                return false;
+
+            // Short-circuit test
+            if (coll1.NumGeometries != coll2.NumGeometries)
+                return false;
+
+            // Deep test
+            for (int i = 0; i < coll1.NumGeometries; i++)
+            {
+                IGeometry geom1 = coll1[i];
+                IGeometry geom2 = coll2[i];
+                if (!geom1.Equals(geom2))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
-        /// or less than another <c>Geometry</c>.
+        /// or less than another <c>Geometry</c>.</summary>
+        /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
-        ///     Point (lowest),
-        ///     MultiPoint,
-        ///     LineString,
-        ///     LinearRing,
-        ///     MultiLineString,
-        ///     Polygon,
-        ///     MultiPolygon,
-        ///     GeometryCollection (highest).
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
         /// If the two <c>Geometry</c>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
-        /// </summary>
+        /// </remarks>
         /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
@@ -781,37 +1142,103 @@ namespace DotSpatial.Topology.Geometries
         /// defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o)
         {
-            Geometry other = o as Geometry;
+            return CompareTo(o as IGeometry);
+        }
+
+        /// <summary>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c>.</summary>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
+        /// If the two <c>Geometry</c>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
+        /// <param name="geom">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        public int CompareTo(IGeometry geom)
+        {
+            Geometry other = geom as Geometry;
             if (other == null)
-            {
-                Coordinate otherC = o as Coordinate;
-                if (otherC == null)
-                {
-                    IEnvelope otherE = o as IEnvelope;
-                    if (otherE == null)
-                    {
-                        throw new ApplicationException("the specified object could not be treated like a geometry.");
-                    }
-                    other = otherE.ToLinearRing() as Geometry;
-                }
-                else
-                {
-                    other = new Point(otherC);
-                }
-            }
-            if (other != null)
-            {
-                if (ClassSortIndex != other.ClassSortIndex)
-                    return ClassSortIndex - other.ClassSortIndex;
-                if (IsEmpty && other.IsEmpty)
-                    return 0;
-            }
+                return -1;
+
+            if (ClassSortIndex != other.ClassSortIndex)
+                return ClassSortIndex - other.ClassSortIndex;
+            if (IsEmpty && other.IsEmpty)
+                return 0;
             if (IsEmpty)
                 return -1;
-            if (other == null) return 1;
-            return other.IsEmpty ? 1 : CompareToSameClass(other);
+            if (other.IsEmpty)
+                return 1;
+            return CompareToSameClass(geom);
+        }
+
+        /// <summary>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c>, using the given <see paramref="IComparer{ICoordinateSequence}"/>.</summary>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        /// <list>
+        /// <item>Point (lowest),</item>
+        /// <item>MultiPoint,</item>
+        /// <item>LineString,</item>
+        /// <item>LinearRing,</item>
+        /// <item>MultiLineString,</item>
+        /// <item>Polygon,</item>
+        /// <item>MultiPolygon,</item>
+        /// <item>GeometryCollection (highest).</item>
+        /// </list>
+        /// If the two <c>Geometry</c>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
+        /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="comp">A <c>IComparer&lt;ICoordinateSequence&gt;</c></param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
+        {
+            Geometry other = (Geometry)o;
+            if (ClassSortIndex != other.ClassSortIndex)
+            {
+                return ClassSortIndex - other.ClassSortIndex;
+            }
+            if (IsEmpty && other.IsEmpty)
+            {
+                return 0;
+            }
+            if (IsEmpty)
+            {
+                return -1;
+            }
+            if (other.IsEmpty)
+            {
+                return 1;
+            }
+            return CompareToSameClass(o, comp);
         }
 
         /// <summary>
@@ -827,12 +1254,26 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         public abstract int CompareToSameClass(object o);
 
+        ///<summary>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c> of the same class.
+        /// using the given <see cref="IComparer{ICoordinateSequence}"/>.
+        ///</summary>
+        /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c></param>
+        /// <param name="comp">The comparer</param>
+        /// <returns>A positive number, 0, or a negative number, depending on whether
+        ///      this object is greater than, equal to, or less than <code>o</code>, as
+        ///      defined in "Normal Form For Geometry" in the JTS Technical
+        ///      Specifications
+        /// </returns>
+        protected internal abstract int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp);
+
         /// <summary>
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        ///, or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
+        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,
+        /// or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
         /// Unlike <c>EnvelopeInternal</c>, this method calculates the <c>Envelope</c>
         /// each time it is called; <c>EnvelopeInternal</c> caches the result
-        /// of this method.
+        /// of this method.        
         /// </summary>
         /// <returns>
         /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
@@ -840,21 +1281,43 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         protected abstract IEnvelope ComputeEnvelopeInternal();
 
-        /// <summary>
-        /// Returns <c>true</c> if <c>other.within(this)</c> returns <c>true</c>.
+        ///<summary>
+        /// Tests whether this geometry contains the argument geometry.
         /// </summary>
-        /// <param name="geom">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if this <c>Geometry</c> contains <c>other</c>.</returns>
-        public virtual bool Contains(IGeometry geom)
+        /// <remarks>
+        /// The <c>Contains</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>Every point of the other geometry is a point of this geometry,
+        /// and the interiors of the two geometries have at least one point in common.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches the pattern
+        /// <c>[T*****FF*]</c></item>
+        /// <item><c>g.within(this)</c><br/>
+        /// (<c>Contains</c> is the converse of <see cref="Within"/>)</item>
+        /// </list>
+        /// <para>
+        /// An implication of the definition is that "Geometries do not
+        /// contain their boundary".  In other words, if a geometry A is a subset of
+        /// the points in the boundary of a geometry B, <c>B.Contains(A) == false</c>.
+        /// (As a concrete example, take A to be a LineString which lies in the boundary of a Polygon B.)
+        /// For a predicate with similar behaviour but avoiding 
+        /// this subtle limitation, see <see cref="Covers"/>.
+
+        /// </para>
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if this <c>Geometry</c> contains <c>g</c></returns>
+        /// <see cref="Within"/>
+        /// <see cref="Covers"/>
+        public virtual bool Contains(IGeometry g)
         {
             // short-circuit test
-            if (!EnvelopeInternal.Contains(new Envelope(geom.EnvelopeInternal)))
+            if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleContains.Contains((Polygon)this, geom);
+                return RectangleContains.Contains((IPolygon)this, g);
             // general case
-            return Relate(geom).IsContains();
+            return Relate(g).IsContains();
         }
 
         /// <summary>
@@ -868,56 +1331,100 @@ namespace DotSpatial.Topology.Geometries
             return (new ConvexHull(this)).GetConvexHull();
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if this geometry is covered by the specified geometry.
-        /// <para>
+        ///<summary>Tests whether this geometry is covered by the specified geometry.</summary>
+        /// <remarks>
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
-        ///     - Every point of this geometry is a point of the other geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*F**F***</c> or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>.
-        ///     - <c>g.Covers(this)</c> (<c>CoveredBy</c> is the inverse of <c>Covers</c>).
+        /// <list>
+        /// <item>Every point of this geometry is a point of the other geometry.
+        /// </item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// at least one of the following patterns:
+        /// <list type="Bullet">
+        /// <item><c>[T*F**F***]</c></item>
+        /// <item><c>[*TF**F***]</c></item>
+        /// <item><c>[**FT*F***]</c></item>
+        /// <item><c>[**F*TF***]</c></item></list></item>
+        /// <item><c>g.Covers(this) == true</c><br/>
+        /// (<c>CoveredBy</c> is the converse of <see cref="Covers"/>)
+        /// </item>
+        /// </list>
+        /// If either geometry is empty, the value of this predicate is <c>false</c>.
+        /// <para>
+        /// This predicate is similar to <see cref="Within"/>, 
+        /// but is more inclusive (i.e. returns <c>true</c> for more cases).
         /// </para>
-        /// Notice the difference between <c>CoveredBy</c> and <c>Within</c>: <c>CoveredBy</c> is a more inclusive relation.
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>.
-        /// <returns><c>true</c> if this <c>Geometry</c> is covered by <paramref name="g" />.</returns>
-        /// <seealso cref="Geometry.Within" />
-        /// <seealso cref="Geometry.Covers" />
+        ///</remarks>
+        ///<param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        ///<returns><c>true</c> if this <c>Geometry</c> is covered by <c>g</c></returns>
+        ///<seealso cref="Within"/>
+        ///<seealso cref="Covers"/>
         public virtual bool CoveredBy(IGeometry g)
         {
             return g.Covers(this);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this geometry covers the specified geometry.
-        /// <para>
-        /// The <c>Covers</c> predicate has the following equivalent definitions:
-        ///     - Every point of the other geometry is a point of this geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*****FF*</c> or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
-        ///     - <c>g.CoveredBy(this)</c> (<c>Covers</c> is the inverse of <c>CoveredBy</c>).
-        /// </para>
-        /// Notice the difference between <c>Covers</c> and <c>Contains</c>: <c>Covers</c> is a more inclusive relation.
-        /// In particular, unlike <c>Contains</c> it does not distinguish between
-        /// points in the boundary and in the interior of geometries.
+        /// Tests whether this geometry covers the argument geometry
         /// </summary>
         /// <remarks>
+        /// The <c>covers</c> predicate has the following equivalent definitions:
+        /// <list>
+        /// <item>Every point of the other geometry is a point of this geometry.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches at least
+        /// one of the following patterns:
+        /// <list type="Bullet">
+        /// <item><c>[T*****FF*]</c> or<br/></item>
+        /// <item><c>[*T****FF*]</c> or<br/></item>
+        /// <item><c>[***T**FF*]</c> or<br/></item>
+        /// <item><c>[****T*FF*]</c></item>
+        /// </list>
+        /// </item>
+        /// <item><c>g.CoveredBy(this) == true</c><br/>
+        /// (<c>covers</c> is the converse of <see cref="CoveredBy"/>)</item>
+        /// </list>
+        /// If either geometry is empty, the value of this predicate is <c>false</c>.
+        /// <para>
+        /// This predicate is similar to <see cref="Contains"/>,
+        /// but is more inclusive (i.e. returns <c>true</c> for more cases).
+        /// In particular, unlike <c>Contains</c> it does not distinguish between
+        /// points in the boundary and in the interior of geometries.
         /// For most situations, <c>Covers</c> should be used in preference to <c>Contains</c>.
-        /// As an added benefit, <c>Covers</c> is more amenable to optimization, and hence should be more performant.
+        /// As an added benefit, <c>Covers</c> is more amenable to optimization,
+        /// and hence should be more performant.
+        /// </para>
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if this <c>Geometry</c> covers <paramref name="g" /></returns>
-        /// <seealso cref="Geometry.Contains" />
-        /// <seealso cref="Geometry.CoveredBy" />
+        /// <seealso cref="Contains" />
+        /// <seealso cref="CoveredBy" />
         public virtual bool Covers(IGeometry g)
         {
             // short-circuit test
-            if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
 
             // optimization for rectangle arguments
             if (IsRectangle)
-                return EnvelopeInternal.Contains(g.EnvelopeInternal);
+                // since we have already tested that the test envelope is covered
+                return true;
 
             return Relate(g).IsCovers();
+        }
+
+        protected static double[] CreateArray(int size, double value)
+        {
+            var result = new double[size];
+            for (var i = 0; i < size; i++)
+                result[i] = value;
+            return result;
+        }
+
+        protected static double[] CreateArray(ICoordinateSequence sequence, Ordinate ordinate)
+        {
+            var result = new double[sequence.Count];
+            for (var i = 0; i < result.Length; i++)
+                result[i] = sequence.GetOrdinate(i, ordinate);
+            return result;
         }
 
         /// <summary>
@@ -928,26 +1435,36 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         private static IPoint CreatePointFromInternalCoord(Coordinate coord, IGeometry exemplar)
         {
-            Coordinate c = new Coordinate(coord);
-            PrecisionModel prc = new PrecisionModel(exemplar.PrecisionModel);
-            prc.MakePrecise(c);
-
-            return exemplar.Factory.CreatePoint(c);
+            exemplar.PrecisionModel.MakePrecise(coord);
+            return exemplar.Factory.CreatePoint(coord);
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
-        ///  T*T****** (for a point and a curve, a point and an area or a line
-        /// and an area) 0******** (for two curves).
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns>
-        /// <c>true</c> if the two <c>Geometry</c>s cross.
-        /// For this function to return <c>true</c>, the <c>Geometry</c>
-        /// s must be a point and a curve; a point and a surface; two curves; or a
-        /// curve and a surface.
-        /// </returns>
+        ///<summary>
+        /// Tests whether this geometry crosses the specified geometry.
+        ///</summary>
+        /// <remarks>
+        /// The <c>Crosses</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have some but not all interior points in common.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// one of the following patterns:
+        /// <list type="Table">
+        /// <listheader><item>Code</item><description>Description</description></listheader>
+        /// <item><c>[T*T******]</c></item><description>for P/L, P/A, and L/A situations</description>
+        /// <item><c>[T*****T**]</c></item><description>for L/P, A/P, and A/L situations)</description>
+        /// <item><c>[0********]</c></item><description>for L/L situations</description>
+        /// </list>
+        /// </item>
+        /// </list>
+        /// For any other combination of dimensions this predicate returns <code>false</code>.
+        /// <para>
+        /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
+        /// In order to make the relation symmetric,
+        /// NTS extends the definition to apply to L/P, A/P and A/L situations as well.
+        /// </para>
+        /// </remarks>
+        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if the two <c>Geometry</c>s cross.</returns>
         public virtual bool Crosses(IGeometry g)
         {
             // short-circuit test
@@ -957,26 +1474,43 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points making up this
-        /// <c>Geometry</c> that do not make up <c>other</c>. This method
-        /// returns the closure of the resultant <c>Geometry</c>.
+        /// Computes a <c>Geometry</c> representing the closure of the point-set
+        /// of the points contained in this <c>Geometry</c> that are not contained in 
+        /// the <c>other</c> Geometry. 
+        /// <para/>
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the left-hand input.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
-        /// <returns>The point set difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public virtual IGeometry Difference(IGeometry other)
         {
+            // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
+            if (IsEmpty)
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
+            if (other == null || other.IsEmpty)
+                return (IGeometry)Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunction.Difference);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Difference);
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FF*FF****.
+        /// <summary>  
+        /// Tests whether this geometry is disjoint from the argument geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>Disjoint</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The DE-9IM intersection matrix for the two geometries matches <c>FF*FF****</c>.</item>
+        /// <item><c>!g.intersects(this) == true</c><br/>(<c>Disjoint</c> is the inverse of <c>Intersects</c>)</item>
+        /// </list>
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are disjoint.</returns>
+        /// <see cref="Intersects"/>
         public virtual bool Disjoint(IGeometry g)
         {
             // short-circuit test
@@ -985,11 +1519,14 @@ namespace DotSpatial.Topology.Geometries
             return Relate(g).IsDisjoint();
         }
 
-        /// <summary>
+        /// <summary>  
         /// Returns the minimum distance between this <c>Geometry</c>
-        /// and the <c>Geometry</c> g.
+        /// and another <c>Geometry</c> g.
         /// </summary>
         /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        /// <returns>The distance between the geometries</returns>
+        /// <returns>0 if either input geometry is empty</returns>
+        /// <exception cref="ArgumentException">if g is null</exception>
         public virtual double Distance(IGeometry g)
         {
             return DistanceOp.Distance(this, g);
@@ -1011,56 +1548,174 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**FFF*.
+        /// Tests whether this geometry is 
+        /// topologically equal to the argument geometry.
+        /// <para/>
+        /// This method is included for backward compatibility reasons.
+        /// It has been superseded by the <seealso cref="EqualsTopologically"/> method,
+        /// which has been named to clearly denote its functionality.
+        /// <para/>
+        /// This method should <b>NOT</b> be confused with the method 
+        /// <seealso cref="Equals(Object)"/>, which implements 
+        /// an exact equality comparison.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
+        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal.</returns>
+        /// <seealso cref="EqualsTopologically"/>
         public virtual bool Equals(IGeometry g)
         {
-            // short-circuit test
-            return EnvelopeInternal.Intersects(g.EnvelopeInternal) && Relate(g).IsEquals(Dimension, g.Dimension);
+            if (g == null)
+                return false;
+            return EqualsTopologically(g);
+        }
+
+        /// <summary>
+        /// Tests whether this geometry is structurally and numerically equal
+        /// to a given <tt>Object</tt>.
+        /// </summary>
+        /// <remarks>
+        /// If the argument <tt>Object</tt> is not a <c>Geometry</c>, 
+        /// the result is <c>false</c>.
+        /// Otherwise, the result is computed using
+        /// <seealso cref="EqualsExact(IGeometry)"/>.
+        /// <para/>
+        /// This method is provided to fulfill the Java contract
+        /// for value-based object equality. 
+        /// In conjunction with <seealso cref="GetHashCode"/> 
+        /// it provides semantics which are most useful 
+        /// for using
+        /// <c>Geometry</c>s as keys and values in Java collections.
+        /// <para/>
+        /// Note that to produce the expected result the input geometries
+        /// should be in normal form.  It is the caller's 
+        /// responsibility to perform this where required
+        /// (using <seealso cref="Normalized"/>
+        /// or <seealso cref="Normalize"/> as appropriate).
+        /// </remarks>
+        /// <param name="o">The object to compare</param>
+        /// <returns><c>true</c> if this geometry is exactly equal to the argument</returns>
+        /// <seealso cref="EqualsExact(IGeometry)"/>
+        /// <seealso cref="GetHashCode"/>
+        /// <seealso cref="Normalized"/>
+        /// <seealso cref="Normalize"/>
+        public override bool Equals(Object o)
+        {
+            var g = o as IGeometry;
+            return g != null && EqualsExact(g);
         }
 
         /// <summary>
         /// Returns true if the two <c>Geometry</c>s are exactly equal,
         /// up to a specified tolerance.
-        /// Two Geometries are exactly within a tolerance equal iff:
-        /// they have the same class,
-        /// they have the same values of Coordinates,
+        /// Two Geometries are exactly within a tolerance equal if:
+        /// <list type="Bullet">
+        /// <item>they have the same class,</item>
+        /// <item>they have the same values of Coordinates,
         /// within the given tolerance distance, in their internal
-        /// Coordinate lists, in exactly the same order.
-        /// If this and the other <c>Geometry</c>s are
-        /// composites and any children are not <c>Geometry</c>s, returns
-        /// false.
+        /// Coordinate lists, in exactly the same order.</item>
+        /// </list>
+        /// This method does <i>not</i>
+        /// test the values of the <c>GeometryFactory</c>, the <c>SRID</c>, 
+        /// or the <c>UserData</c> fields.
+        /// <para/>
+        /// To properly test equality between different geometries,
+        /// it is usually necessary to <see cref="Normalize"/> them first.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c>
+        /// have identical structure and point values, up to the distance tolerance.</param>
         /// <param name="tolerance">Distance at or below which two Coordinates will be considered equal.</param>
         /// <returns>
         /// <c>true</c> if this and the other <c>Geometry</c>
         /// are of the same class and have equal internal data.
         /// </returns>
+        /// <seealso cref="EqualsExact(IGeometry)"/>
+        /// <seealso cref="Normalize"/>
+        /// <seealso cref="Normalized"/>
         public abstract bool EqualsExact(IGeometry other, double tolerance);
 
         /// <summary>
         /// Returns true if the two <c>Geometry</c>s are exactly equal.
-        /// Two Geometries are exactly equal iff:
-        /// they have the same class,
-        /// they have the same values of Coordinates in their internal
-        /// Coordinate lists, in exactly the same order.
-        /// If this and the other <c>Geometry</c>s are
-        /// composites and any children are not <c>Geometry</c>s, returns
-        /// false.
-        /// This provides a stricter test of equality than <c>equals</c>.
+        /// Two Geometries are exactly equal if:
+        /// <list type="Bullet">
+        /// <item>they have the same class,</item>
+        /// <item>they have the same values of Coordinates in their internal
+        /// Coordinate lists, in exactly the same order.</item>
+        /// </list>
+        /// This provides a stricter test of equality than
+        /// <see cref="EqualsTopologically"/>, which is more useful
+        /// in certain situations
+        /// (such as using geometries as keys in collections).
+        /// <para/>
+        /// This method does <i>not</i>
+        /// test the values of the <c>GeometryFactory</c>, the <c>SRID</c>, 
+        /// or the <c>UserData</c> fields.
+        /// <para/>
+        /// To properly test equality between different geometries,
+        /// it is usually necessary to <see cref="Normalize"/> them first.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
-        /// <c>true</c> if this and the other <c>Geometry</c>
-        /// are of the same class and have equal internal data.
+        /// <c>true</c> if this and the other <c>Geometry</c> have identical structure and point values.
         /// </returns>
         public virtual bool EqualsExact(IGeometry other)
         {
-            return EqualsExact(other, 0);
+            // this is the exact meaning of jts r929: http://sourceforge.net/p/jts-topo-suite/code/929
+            // be aware of == operator overload!
+            bool sameref = ReferenceEquals(this, other);
+            return sameref || EqualsExact(other, 0);
+        }
+
+        /// <summary>
+        /// Tests whether two geometries are exactly equal
+        /// in their normalized forms.
+        /// <remarks>
+        /// This is a convenience method which creates normalized
+        /// versions of both geometries before computing
+        /// <seealso cref="EqualsExact(IGeometry)"/>.<para/>
+        /// This method is relatively expensive to compute.  
+        /// For maximum performance, the client 
+        /// should instead perform normalization  on the individual geometries
+        /// at an appropriate point during processing.
+        /// </remarks>
+        /// </summary>
+        /// <param name="g">A geometry</param>
+        /// <returns>true if the input geometries are exactly equal in their normalized form</returns>
+        /// <seealso cref="EqualsExact(IGeometry)"/>
+        public bool EqualsNormalized(IGeometry g)
+        {
+            if (g == null) return false;
+            return Normalized().EqualsExact(g.Normalized());
+        }
+
+        /// <summary>
+        /// Tests whether this geometry is topologically equal to the argument geometry
+        /// as defined by the SFS <c>Equals</c> predicate.
+        /// </summary>
+        /// <remarks>
+        /// The SFS <code>equals</code> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The two geometries have at least one point in common,
+        /// and no point of either geometry lies in the exterior of the other geometry.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// the pattern <tt>T*F**FFF*</tt> 
+        /// <pre>
+        /// T*F
+        /// **F
+        /// FF*
+        /// </pre></item>
+        /// </list>
+        /// <b>Note</b> that this method computes <b>topologically equality</b>. 
+        /// For structural equality, see {@link #equalsExact(Geometry)}.
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
+        public bool EqualsTopologically(IGeometry g)
+        {
+            // short-circuit test
+            if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
+                return false;
+
+            return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
         /// <summary>
@@ -1114,10 +1769,14 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party (using a CoordinateFilter, for example). The Geometry will flush
-        /// and/or update any information it has cached (such as its Envelope).
+        /// Notifies this geometry that its coordinates have been changed by an external
+        /// party (for example, via a <see cref="ICoordinateFilter"/>). 
         /// </summary>
+        /// <remarks>
+        /// When this method is called the geometry will flush
+        /// and/or update any derived information it has cached (such as its <see cref="Geometries.Envelope"/> ).
+        /// The operation is applied to all component Geometries.
+        /// </remarks>
         public virtual void GeometryChanged()
         {
             Apply(new GeometryChangedFilter());
@@ -1156,10 +1815,34 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Gets a hash code for the Geometry.
+        /// </summary>
+        /// <returns>
+        /// An integer value suitable for use as a hashcode
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return EnvelopeInternal.GetHashCode();
+            //int result = 17;
+            //return GetHashCodeInternal(result, x => 37 * x );
+            ////
+            ////foreach (var coord in Coordinates)
+            ////    result = 37 * result + coord.X.GetHashCode();                        
+            ////
+        }
+
+        /// <summary>
+        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// </summary>
+        /// <param name="ordinate">The ordinate index</param>
+        /// <returns>An array of ordinate values</returns>
+        public abstract double[] GetOrdinates(Ordinate ordinate);
+
+        /// <summary>  
         /// Returns true if the array contains any non-empty <c>Geometry</c>s.
         /// </summary>
         /// <param name="geometries"> an array of <c>Geometry</c>s; no elements may be <c>null</c></param>
-        /// <returns>
+        /// <returns>            
         /// <c>true</c> if any of the <c>Geometry</c>s
         /// <c>IsEmpty</c> methods return <c>false</c>.
         /// </returns>
@@ -1185,34 +1868,87 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points shared by this
-        /// <c>Geometry</c> and <c>other</c>.
+        /// Computes a <c>Geometry</c> representing the point-set which is
+        /// common to both this <c>Geometry</c> and the <c>other</c> Geometry.
+        /// <para/>
+        /// The intersection of two geometries of different dimension produces a result
+        /// geometry of dimension less than or equal to the minimum dimension of the input
+        /// geometries. 
+        /// The result geometry may be a heterogenous <see cref="IGeometryCollection"/>.
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the lowest input dimension.
+        /// <para/>
+        /// Intersection of <see cref="IGeometryCollection"/>s is supported
+        /// only for homogeneous collection types. 
+        /// <para/>
+        /// Non-empty heterogeneous <see cref="IGeometryCollection"/> arguments are not supported.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
-        /// <returns>The points common to the two <c>Geometry</c>s.</returns>
+        /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
+        /// <exception cref="TopologyException">if a robustness error occurs.</exception>
+        /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
         public virtual IGeometry Intersection(IGeometry other)
         {
+            // Special case: if one input is empty ==> empty
+            if (IsEmpty || other.IsEmpty)
+                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
+
+            // compute for GCs
+            if (IsGeometryCollection)
+            {
+                IGeometry g2 = other;
+                return GeometryCollectionMapper.Map(
+                    (IGeometryCollection)this, g => g.Intersection(g2));
+            }
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunction.Intersection);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if <c>disjoint</c> returns false.
-        /// </summary>
+        /// Tests whether this geometry intersects the argument geometry.
+        ///</summary>
+        /// <remarks>
+        /// The <c>Intersects</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The two geometries have at least one point in common</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches<br/>
+        /// <c>[T********]</c> or<br/>
+        /// <c>[*T*******]</c> or<br/>
+        /// <c>[***T*****]</c> or<br/>
+        /// <c>[****T****]</c></item>
+        /// <item> <c>!g.disjoint(this)</c><br/>
+        /// (<c>Intersects</c> is the inverse of <c>Disjoint</c>)</item>
+        /// </list></remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
+        /// <see cref="Disjoint"/>
         public virtual bool Intersects(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
+            /*
+             * TODO: (MD) Add optimizations:
+             *
+             * - for P-A case:
+             * If P is in env(A), test for point-in-poly
+             *
+             * - for A-A case:
+             * If env(A1).overlaps(env(A2))
+             * test for overlaps via point-in-poly first (both ways)
+             * Possibly optimize selection of point to test by finding point of A1
+             * closest to centre of env(A2).
+             * (Is there a test where we shouldn't bother - e.g. if env A
+             * is much smaller than env B, maybe there's no point in testing
+             * pt(B) in env(A)?
+             */
+
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleIntersects.Intersects((Polygon)this, g);
+                return RectangleIntersects.Intersects((IPolygon)this, g);
             if (g.IsRectangle)
-                return RectangleIntersects.Intersects((Polygon)g, this);
+                return RectangleIntersects.Intersects((IPolygon)g, this);
             return Relate(g).IsIntersects();
         }
 
@@ -1255,6 +1991,21 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        /// Returns <c>true</c> if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// (its subclasses do not trigger an exception).
+        /// </summary>
+        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// </exception>        
+        private static bool IsNonHomogenousGeometryCollection(IGeometry g)
+        {
+            return
+                g is IGeometryCollection &&
+                g.GeometryType == "GeometryCollection"; ; /*g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;*/
+        }
+
+        /// <summary> 
         /// Tests whether the distance from this <c>Geometry</c>
         /// to another is less than or equal to a specified value.
         /// </summary>
@@ -1270,17 +2021,40 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Converts this <c>Geometry</c> to normal form (or
-        /// canonical form ). Normal form is a unique representation for <c>Geometry</c>
-        /// s. It can be used to test whether two <c>Geometry</c>s are equal
+        /// Converts this <c>Geometry</c> to normal form (or canonical form ).
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Normal form is a unique representation for <c>Geometry</c>s. 
+        /// It can be used to test whether two <c>Geometry</c>s are equal
         /// in a way that is independent of the ordering of the coordinates within
         /// them. Normal form equality is a stronger condition than topological
-        /// equality, but weaker than pointwise equality. The definitions for normal
+        /// equality, but weaker than pointwise equality.</para>
+        /// <para>
+        /// The definitions for normal
         /// form use the standard lexicographical ordering for coordinates. "Sorted in
         /// order of coordinates" means the obvious extension of this ordering to
         /// sequences of coordinates.
-        /// </summary>
+        /// </para>
+        /// <para>
+        /// <b>NOTE</b> that this method mutates the value of this geometry in-place.
+        /// If this is not safe and/or wanted, the geometry should be
+        /// cloned prior to normalization.
+        /// </para>
+        /// </remarks>
         public abstract void Normalize();
+
+        /// <summary>
+        /// Creates a new Geometry which is a normalized copy of this Geometry. 
+        /// </summary>
+        /// <returns>A normalized copy of this geometry.</returns>
+        /// <seealso cref="Normalize"/>
+        public IGeometry Normalized()
+        {
+            var copy = (IGeometry)Clone();
+            copy.Normalize();
+            return copy;
+        }
 
         /// <summary>
         /// Allows each geometry to control any custom behavior that cannot be solved with MemberwiseClone.
@@ -1292,11 +2066,21 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
-        ///  T*T***T** (for two points or two surfaces)
-        ///  1*T***T** (for two curves).
+        /// Tests whether this geometry overlaps the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>Overlaps</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have at least one point each not shared by the other (or equivalently neither covers the other),
+        /// they have the same dimension,
+        /// and the intersection of the interiors of the two geometries has
+        /// the same dimension as the geometries themselves.</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        ///  <c>[T*T***T**]</c> (for two points or two surfaces)
+        ///  or <c>[1*T***T**]</c> (for two curves)</item>
+        /// </list>
+        /// If the geometries are of different dimension this predicate returns <c>false</c>.
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
         /// <c>true</c> if the two <c>Geometry</c>s overlap.
@@ -1311,22 +2095,28 @@ namespace DotSpatial.Topology.Geometries
             return Relate(g).IsOverlaps(Dimension, g.Dimension);
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if the elements in the DE-9IM intersection
-        /// matrix for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>
-        ///, which may be:
-        ///  0
-        ///  1
-        ///  2
-        ///  T ( = 0, 1 or 2)
-        ///  F ( = -1)
-        ///  * ( = -1, 0, 1 or 2)
-        /// For more information on the DE-9IM, see the OpenGIS Simple Features
-        /// Specification.
+        ///<summary>
+        /// Tests whether the elements in the DE-9IM
+        /// <see cref="IntersectionMatrix"/> for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <param name="intersectionPattern">The pattern against which to check the intersection matrix for the two <c>Geometry</c>s.</param>
-        /// <returns><c>true</c> if the DE-9IM intersection matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c>.</returns>
+        /// <remarks>
+        /// The pattern is a 9-character string, with symbols drawn from the following set:
+        /// <list>
+        ///<item>0 (dimension 0)</item>
+        ///<item>1 (dimension 1)</item>
+        ///<item>2 (dimension 2)</item>
+        ///<item>T ( matches 0, 1 or 2)</item>
+        ///<item>F ( matches FALSE)</item>
+        ///<item>* ( matches any value)</item>
+        /// </list> For more information on the DE-9IM, see the <i>OpenGIS Simple Features 
+        /// Specification</i>.
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="intersectionPattern">the pattern against which to check the 
+        /// intersection matrix for the two <c>Geometry</c>s</param>
+        /// <returns><c>true</c> if the DE-9IM intersection 
+        /// matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c></returns>
+        /// <seealso cref="IntersectionMatrix"/>
         public virtual bool Relate(IGeometry g, string intersectionPattern)
         {
             return Relate(g).Matches(intersectionPattern);
@@ -1348,12 +2138,19 @@ namespace DotSpatial.Topology.Geometries
             return RelateOp.Relate(this, g);
         }
 
+        ///<summary>
+        /// Computes a new geometry which has all component coordinate sequences
+        /// in reverse order (opposite orientation) to this one.
+        ///</summary>
+        /// <returns>A reversed geometry</returns>
+        public abstract IGeometry Reverse();
+
         /// <summary>
         /// Rotates the geometry by the given radian angle around the Origin.
         /// </summary>
-        /// <param name="Origin">Coordinate the geometry gets rotated around.</param>
+        /// <param name="origin">Coordinate the geometry gets rotated around.</param>
         /// <param name="radAngle">Rotation angle in radian.</param>
-        public abstract void Rotate(Coordinate Origin, Double radAngle);
+        public abstract void Rotate(Coordinate origin, Double radAngle);
 
         /// <summary>
         /// Rotates the given coordinate by the given radian angle around the Origin.
@@ -1371,19 +2168,35 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns a set combining the points in this <c>Geometry</c> not in
-        /// <c>other</c>, and the points in <c>other</c> not in this
-        /// <c>Geometry</c>. This method returns the closure of the resultant
-        /// <c>Geometry</c>.
+        /// Computes a <c>Geometry </c> representing the closure of the point-set 
+        /// which is the union of the points in this <c>Geometry</c> which are not 
+        /// contained in the <c>other</c> Geometry,
+        /// with the points in the <c>other</c> Geometry not contained in this
+        /// <c>Geometry</c>. 
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the highest input dimension.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
-        /// <returns>The point set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public virtual IGeometry SymmetricDifference(IGeometry other)
         {
+            // handle empty geometry cases
+            if (IsEmpty || (other == null || other.IsEmpty))
+            {
+                // both empty - check dimensions
+                if (IsEmpty && (other == null || other.IsEmpty))
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
+
+                // special case: if either input is empty ==> result = other arg
+                if (other == null || other.IsEmpty) return (IGeometry)Clone();
+                if (IsEmpty) return (IGeometry)other.Clone();
+            }
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
         }
 
         /// <summary>
@@ -1394,7 +2207,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public virtual byte[] ToBinary()
         {
-            WKBWriter writer = new WKBWriter();
+            var writer = new WKBWriter();
             return writer.Write(this);
         }
 
@@ -1432,14 +2245,30 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         public virtual string ToText()
         {
-            WKTWriter writer = new WKTWriter();
+            var writer = new WKTWriter(3);
             return writer.Write(this);
         }
 
-        /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FT*******, F**T***** or F***T****.
+        /// <summary>  
+        /// Tests whether this geometry touches the argument geometry
         /// </summary>
+        /// <remarks>
+        /// The <c>Touches</c> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>The geometries have at least one point in common, 
+        /// but their interiors do not intersect</item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches  
+        /// at least one of the following patterns
+        /// <list type="Bullet">
+        /// <item><c>FT*******</c>, </item>
+        /// <item><c>F**T*****</c> or </item>
+        /// <item><c>F***T****</c>.</item>
+        /// </list></item>
+        /// </list>
+        /// If both geometries have dimension 0, the predicate returns <c>false</c>, 
+        /// since points have only interiors.
+        /// This predicate is symmetric.
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns>
         /// <c>true</c> if the two <c>Geometry</c>s touch;
@@ -1454,17 +2283,73 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing all the points in this <c>Geometry</c>
-        /// and <c>other</c>.
+        /// Computes a <c>Geometry</c> representing  the point-set 
+        /// which is contained in both this
+        /// <c>Geometry</c> and the <c>other</c> Geometry.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compute the union.</param>
-        /// <returns>A set combining the points of this <c>Geometry</c> and the points of <c>other</c>.</returns>
+        /// <remarks>
+        /// The method may be used on arguments of different dimension, but it does not
+        /// support <see cref="IGeometryCollection"/> arguments.
+        /// <para/>
+        /// The union of two geometries of different dimension produces a result
+        /// geometry of dimension equal to the maximum dimension of the input
+        /// geometries. 
+        /// The result geometry may be a heterogenous
+        /// <see cref="IGeometryCollection"/>.  
+        /// If the result is empty, it is an atomic geometry
+        /// with the dimension of the highest input dimension.
+        /// <para/>
+        /// Unioning <see cref="ILineString"/>s has the effect of
+        /// <b>noding</b> and <b>dissolving</b> the input linework. In this context
+        /// "noding" means that there will be a node or endpoint in the result for
+        /// every endpoint or line segment crossing in the input. "Dissolving" means
+        /// that any duplicate (i.e. coincident) line segments or portions of line
+        /// segments will be reduced to a single line segment in the result. 
+        /// If <b>merged</b> linework is required, the <see cref="LineMerger"/>
+        /// class can be used.
+        /// <para/>
+        /// Non-empty <see cref="IGeometryCollection"/> arguments are not supported.</remarks>
+        /// <param name="other">the <c>Geometry</c> with which to compute the union</param>
+        /// <returns>A point-set combining the points of this <c>Geometry</c> and the
+        /// points of <c>other</c></returns>
+        /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
+        /// <exception cref="ArgumentException">Thrown if either input is a non-empty GeometryCollection</exception>
+        /// <seealso cref="LineMerger"/>
         public virtual IGeometry Union(IGeometry other)
         {
+            // handle empty geometry cases
+            if (IsEmpty || (other == null || other.IsEmpty))
+            {
+                if (IsEmpty && (other == null || other.IsEmpty))
+                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
+
+                // Special case: if either input is empty ==> other input
+                if (other == null || other.IsEmpty) return (IGeometry)Clone();
+                if (IsEmpty) return (IGeometry)other.Clone();
+            }
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Union);
+        }
 
-            return OverlayOp.Overlay(this, other, SpatialFunction.Union);
+        /// <summary> 
+        /// Computes the union of all the elements of this geometry.
+        /// </summary>
+        /// <remarks>
+        /// This method supports <see cref="IGeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
+        /// <remarks>
+        /// The result obeys the following contract:
+        /// <list type="Bullet">
+        /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
+        /// <item>Unioning a set of <see cref="IPolygon"/>s always returns a <see cref="IPolygonal"/> geometry 
+        /// (unlike <see cref="Union(IGeometry)"/>), which may return geometries of lower dimension if a topology 
+        /// collapse occurred).</item>
+        /// </list>
+        /// </remarks>
+        /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
+        public IGeometry Union()
+        {
+            return UnaryUnionOp.Union(this);
         }
 
         /// <summary>
@@ -1485,11 +2370,30 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**F***.
+        /// Tests whether this geometry is within the specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <code>within</code> predicate has the following equivalent definitions:
+        /// <list type="Bullet">
+        /// <item>
+        /// Every point of this geometry is a point of the other geometry,
+        /// and the interiors of the two geometries have at least one point in common.
+        /// </item>
+        /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>[T*F**F***]</c></item>
+        /// <item><c>g.contains(this) == true</c><br/>(<c>Within</c> is the converse of <see cref="Contains"/>)</item>
+        /// </list>
+        /// <para>
+        /// An implication of the definition is that "The boundary of a geometry is not within the Polygon".
+        /// In other words, if a geometry A is a subset of the points in the boundary of a geometry B, <c>A.within(B) == false</c>
+        /// (As a concrete example, take A to be a LineString which lies in the boundary of a Polygon B.)
+        /// For a predicate with similar behaviour but avoiding 
+        /// this subtle limitation, see <see cref="CoveredBy"/>.
+        /// </para>
+        /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
+        /// <see cref="Contains"/>
+        /// <see cref="CoveredBy"/>
         public virtual bool Within(IGeometry g)
         {
             return g.Contains(this);

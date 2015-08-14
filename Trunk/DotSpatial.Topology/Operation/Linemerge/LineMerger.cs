@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
                 if (node.Degree != 2) 
                 { 
                     BuildEdgeStringsStartingAt(node);
-                    node.Marked = true;
+                    node.IsMarked = true;
                 }
             }
         }
@@ -136,7 +136,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
                 { 
                     Assert.IsTrue(node.Degree == 2);
                     BuildEdgeStringsStartingAt(node);
-                    node.Marked = true;
+                    node.IsMarked = true;
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
             do
             {
                 edgeString.Add(current);
-                current.Edge.Marked = true;
+                current.Edge.IsMarked = true;
                 current = current.Next;      
             }
             while (current != null && current != start);

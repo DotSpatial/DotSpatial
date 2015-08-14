@@ -60,7 +60,7 @@ namespace DotSpatial.Topology.Planargraph.Algorithm
         /// <param name="subgraph"></param>
         private static void AddEdges(Node node, Stack<Node> nodeStack, Subgraph subgraph)
         {
-            node.Visited = true;
+            node.IsVisited = true;
             foreach (DirectedEdge de in node.OutEdges)
             {
                 subgraph.Add(de.Edge);

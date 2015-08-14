@@ -55,7 +55,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="g"></param>
         public InteriorPointLine(IGeometry g)
         {
-            _centroid = new Coordinate(g.Centroid);
+            _centroid = g.Centroid.Coordinate;
             AddInterior(g);
 
             if (_interiorPoint == null)
@@ -103,12 +103,12 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="geom">The point to add.</param>
         private void AddEndpoints(IGeometry geom)
         {
-            if (geom is LineString)
-                AddEndpoints(geom.Coordinates);
-            else if (geom is GeometryCollection)
+            if(geom is ILineString)
+                AddEndpoints(geom.Coordinates);   
+            else if(geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }
         }
@@ -131,12 +131,12 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="geom">The point to add.</param>
         private void AddInterior(IGeometry geom)
         {
-            if (geom is ILineString)
-                AddInterior(geom.Coordinates);
-            else if (geom is GeometryCollection)
+            if(geom is ILineString) 
+                AddInterior(geom.Coordinates);            
+            else if(geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     AddInterior(geometry);
             }
         }

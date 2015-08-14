@@ -22,8 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
@@ -38,9 +38,9 @@ namespace DotSpatial.Topology.Operation.Polygonize
     {
         #region Fields
 
-        private readonly IList _deList = new ArrayList();
+        private readonly IList<DirectedEdge> _deList = new List<DirectedEdge>();
         private readonly IGeometryFactory _factory;
-        private IList _holes;
+        private List<ILinearRing> _holes;
         // cache the following data for efficiency
         private ILinearRing _ring;
         private IList<Coordinate> _ringPts;
@@ -77,8 +77,9 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
+        /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
+        /// <return>true if the ring is valid.</return>
         public virtual bool IsValid
         {
             get
@@ -191,7 +192,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         public virtual void AddHole(ILinearRing hole)
         {
             if (_holes == null)
-                _holes = new ArrayList();
+                _holes = new List<ILinearRing>();
             _holes.Add(hole);
         }
 
@@ -199,9 +200,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
         {
             if (_ringPts != null) return;
             CoordinateList coordList = new CoordinateList();
-            for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext(); )
+            foreach (DirectedEdge de in _deList)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
                 AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
             }
@@ -223,36 +223,41 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// is known to be properly contained in a shell
         /// (which is guaranteed to be the case if the hole does not touch its shell).
         /// </summary>
-        /// <param name="testEr">The EdgeRing to test.</param>
-        /// <param name="shellList">The list of shells to test.</param>
-        /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
-        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
+        /// <param name="shellList"></param>
+        /// <param name="testEr"></param>
+        /// <returns>Containing EdgeRing, if there is one <br/>
+        /// or <value>null</value> if no containing EdgeRing is found.</returns>
+        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.Ring;
             IEnvelope testEnv = teString.EnvelopeInternal;
 
             EdgeRing minShell = null;
-            IEnvelope minEnv = null;
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            IEnvelope minShellEnv = null;
+            foreach (var tryShell in shellList)
             {
-                EdgeRing tryShell = (EdgeRing)it.Current;
-                ILinearRing tryRing = tryShell.Ring;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                var tryShellRing = tryShell.Ring;
+                var tryShellEnv = tryShellRing.EnvelopeInternal;
                 if (minShell != null)
-                    minEnv = minShell.Ring.EnvelopeInternal;
-                bool isContained = false;
-                // the hole envelope cannot equal the shell envelope
-                if (tryEnv.Equals(testEnv)) continue;
+                    minShellEnv = minShell.Ring.EnvelopeInternal;
 
-                Coordinate testPt = PtNotInList(teString.Coordinates, tryRing.Coordinates);
-                if (tryEnv.Contains(testEnv) && CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
-                    isContained = true;
+                // the hole envelope cannot equal the shell envelope
+                // (also guards against testing rings against themselves)
+                if (tryShellEnv.Equals(testEnv)) continue;
+                // hole must be contained in shell
+                if (!tryShellEnv.Contains(testEnv)) continue;
+
+                var testPt = PtNotInList(teString.Coordinates, tryShellRing.Coordinates);
+                var isContained = CgAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
+
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
-                    if (minShell == null || minEnv.Contains(tryEnv))
+                    if (minShell == null || minShellEnv.Contains(tryShellEnv))
+                    {
                         minShell = tryShell;
+                        minShellEnv = minShell.Ring.EnvelopeInternal;
+                    }
                 }
             }
             return minShell;
@@ -267,10 +272,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <returns><c>true</c> if the point is in the array.</returns>
         public static bool IsInList(Coordinate pt, IList<Coordinate> pts)
         {
-            for (int i = 0; i < pts.Count; i++)
-                if (new Coordinate(pt).Equals(pts[i]))
-                    return true;
-            return false;
+            return pts.Any(t => new Coordinate(pt).Equals(t));
         }
 
         /// <summary>
@@ -284,7 +286,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         {
             for (int i = 0; i < testPts.Count; i++)
             {
-                if (IsInList(testPts[i], pts) == false)
+                if (!IsInList(testPts[i], pts))
                     return new Coordinate(testPts[i]);
             }
             return null;

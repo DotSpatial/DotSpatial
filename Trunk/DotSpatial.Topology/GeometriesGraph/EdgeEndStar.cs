@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Algorithm.Locate;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 using Wintellect.PowerCollections;

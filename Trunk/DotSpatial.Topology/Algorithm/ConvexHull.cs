@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Algorithm
 {
@@ -60,7 +61,8 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="geomFactory"></param>
         public ConvexHull(Coordinate[] pts, IGeometryFactory geomFactory)
         {
-            _inputPts = pts;
+            // _inputPts = pts;
+            _inputPts = UniqueCoordinateArrayFilter.FilterCoordinates(pts);
             _geomFactory = geomFactory;
         }
 
@@ -75,19 +77,18 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns>The coordinates with unnecessary (collinear) vertices removed.</returns>
         private static Coordinate[] CleanRing(Coordinate[] original)
         {
-            Equals(original[0], original[original.Length - 1]);
-            List<Coordinate> cleanedRing = new List<Coordinate>();
-            Coordinate previousDistinctCoordinate = Coordinate.Empty;
+            Assert.IsEquals(original[0], original[original.Length - 1]);
+            var cleanedRing = new List<Coordinate>();
+            Coordinate previousDistinctCoordinate = null;
             for (int i = 0; i <= original.Length - 2; i++)
             {
-                Coordinate currentCoordinate = original[i];
-                Coordinate nextCoordinate = original[i + 1];
+                var currentCoordinate = original[i];
+                var nextCoordinate = original[i + 1];
                 if (currentCoordinate.Equals(nextCoordinate))
                     continue;
-
-                if (!previousDistinctCoordinate.IsEmpty() &&
+                if (previousDistinctCoordinate != null &&
                     IsBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate))
-                    continue;
+                    continue;                
                 cleanedRing.Add(currentCoordinate);
                 previousDistinctCoordinate = currentCoordinate;
             }
@@ -102,7 +103,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns></returns>
         private static Coordinate[] ComputeOctPts(Coordinate[] inputPts)
         {
-            Coordinate[] pts = new Coordinate[8];
+            var pts = new Coordinate[8];
             for (int j = 0; j < pts.Length; j++)
                 pts[j] = inputPts[0];
 
@@ -142,8 +143,9 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns></returns>
         private static Coordinate[] ComputeOctRing(Coordinate[] inputPts)
         {
-            Coordinate[] octPts = ComputeOctPts(inputPts);
-            CoordinateList coordList = new CoordinateList { { octPts, false } };
+            var octPts = ComputeOctPts(inputPts);
+            var coordList = new CoordinateList();
+            coordList.Add(octPts, false);
 
             // points must all lie in a line
             if (coordList.Count < 3)
@@ -160,7 +162,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns></returns>
         private static Coordinate[] ExtractCoordinates(IGeometry geom)
         {
-            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
+            var filter = new UniqueCoordinateArrayFilter();
             geom.Apply(filter);
             return filter.Coordinates;
         }
@@ -177,7 +179,7 @@ namespace DotSpatial.Topology.Algorithm
         /// 1 point, a <c>Point</c>;
         /// 0 points, an empty <c>GeometryCollection</c>.
         /// </returns>
-        public virtual IGeometry GetConvexHull()
+        public IGeometry GetConvexHull()
         {
             if (_inputPts.Length == 0)
                 return _geomFactory.CreateGeometryCollection(null);
@@ -188,22 +190,22 @@ namespace DotSpatial.Topology.Algorithm
             if (_inputPts.Length == 2)
                 return _geomFactory.CreateLineString(_inputPts);
 
-            Coordinate[] reducedPts = _inputPts;
+            var reducedPts = _inputPts;
             // use heuristic to reduce points, if large
             if (_inputPts.Length > 50)
                 reducedPts = Reduce(_inputPts);
 
             // sort points for Graham scan.
-            Coordinate[] sortedPts = PreSort(reducedPts);
+            var sortedPts = PreSort(reducedPts);
 
             // Use Graham scan to find convex hull.
-            Stack<Coordinate> cHs = GrahamScan(sortedPts);
+            var convexHullStack = GrahamScan(sortedPts);
 
             // Convert stack to an array.
-            Coordinate[] cH = cHs.ToArray();
+            var convexHull = convexHullStack.ToArray();
 
             // Convert array to appropriate output geometry.
-            return LineOrPolygon(cH);
+            return LineOrPolygon(convexHull);
         }
 
         /// <summary>
@@ -213,14 +215,17 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns></returns>
         private static Stack<Coordinate> GrahamScan(Coordinate[] c)
         {
-            Stack<Coordinate> ps = new Stack<Coordinate>(c.Length);
+            var ps = new Stack<Coordinate>(c.Length);
             ps.Push(c[0]);
             ps.Push(c[1]);
+            if(c.Length > 2)
             ps.Push(c[2]);
             for (int i = 3; i < c.Length; i++)
             {
-                Coordinate p = ps.Pop();
-                while (CgAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
+                var p = ps.Pop();
+                while (
+                    ps.Count > 0 /*(IsEmpty Hack)*/ &&
+                    CgAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
                     p = ps.Pop();
                 ps.Push(p);
                 ps.Push(c[i]);
@@ -271,12 +276,27 @@ namespace DotSpatial.Topology.Algorithm
             coordinates = CleanRing(coordinates);
             if (coordinates.Length == 3)
                 return _geomFactory.CreateLineString(new[] { coordinates[0], coordinates[1] });
-            ILinearRing linearRing = _geomFactory.CreateLinearRing(coordinates);
+            var linearRing = _geomFactory.CreateLinearRing(coordinates);
             return _geomFactory.CreatePolygon(linearRing, null);
         }
 
+        private static Coordinate[] PadArray3(Coordinate[] pts)
+        {
+            var pad = new Coordinate[3];
+            for (int i = 0; i < pad.Length; i++)
+            {
+                if (i < pts.Length)
+                {
+                    pad[i] = pts[i];
+                }
+                else
+                    pad[i] = pts[0];
+            }
+            return pad;
+        }
+
         /// <summary>
-        ///
+        /// Pre sorts the coordinates
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
@@ -290,7 +310,7 @@ namespace DotSpatial.Topology.Algorithm
                 if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y)
                      && (pts[i].X < pts[0].X)))
                 {
-                    Coordinate t = pts[0];
+                    var t = pts[0];
                     pts[0] = pts[i];
                     pts[i] = t;
                 }
@@ -309,21 +329,25 @@ namespace DotSpatial.Topology.Algorithm
         /// in the four orthogonal directions
         /// can be used, but even more inclusive is
         /// to use an octilateral defined by the points in the 8 cardinal directions.
-        /// Notice that even if the method used to determine the polygon vertices
+        /// Note that even if the method used to determine the polygon vertices
         /// is not 100% robust, this does not affect the robustness of the convex hull.
+        /// <para>
+        /// To satisfy the requirements of the Graham Scan algorithm, 
+        /// the returned array has at least 3 entries.
+        /// </para>
         /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
+        /// <param name="pts">The coordinates to reduce</param>
+        /// <returns>The reduced array of coordinates</returns>
         private static Coordinate[] Reduce(Coordinate[] pts)
         {
-            Coordinate[] polyPts = ComputeOctRing(pts);
-
+            var polyPts = ComputeOctRing(pts);
+            
             // unable to compute interior polygon for some reason
             if (polyPts == null)
                 return pts;
 
             // add points defining polygon
-            var reducedSet = new SortedSet<Coordinate>();
+            var reducedSet = new OrderedSet<Coordinate>();
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
 
@@ -333,31 +357,17 @@ namespace DotSpatial.Topology.Algorithm
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
-            for (int i = 0; i < pts.Length; i++)
-                if (!CgAlgorithms.IsPointInRing(pts[i], polyPts))
+            for (var i = 0; i < pts.Length; i++)
+                if (!CgAlgorithms.IsPointInRing(pts[i], polyPts))                
                     reducedSet.Add(pts[i]);
 
-            Coordinate[] arr = new Coordinate[reducedSet.Count];
-            reducedSet.CopyTo(arr, 0);
-            return arr;
-        }
+            var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ps"></param>
-        /// <returns></returns>
-        private Stack<Coordinate> ReverseStack(Stack<Coordinate> ps)
-        {
-            // Do a manual reverse of the stack
-            int size = ps.Count;
-            Coordinate[] tempArray = new Coordinate[size];
-            for (int i = 0; i < size; i++)
-                tempArray[i] = ps.Pop();
-            Stack<Coordinate> returnStack = new Stack<Coordinate>(size);
-            foreach (Coordinate obj in tempArray)
-                returnStack.Push(obj);
-            return returnStack;
+            // ensure that computed array has at least 3 points (not necessarily unique)  
+            if (reducedPts.Length < 3)
+                return PadArray3(reducedPts);
+
+            return reducedPts;
         }
 
         #endregion
@@ -372,7 +382,7 @@ namespace DotSpatial.Topology.Algorithm
         {
             #region Fields
 
-            private readonly Coordinate _origin = Coordinate.Empty;
+            private readonly Coordinate _origin;
 
             #endregion
 

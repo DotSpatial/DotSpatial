@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
@@ -53,7 +54,7 @@ namespace DotSpatial.Topology.Index.QuadTree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the terminology usage of Samet and others.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class Quadtree<T> : ISpatialIndex<T>
     {
         #region Fields

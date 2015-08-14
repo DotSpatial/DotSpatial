@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Geometries.Utilities;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Noding

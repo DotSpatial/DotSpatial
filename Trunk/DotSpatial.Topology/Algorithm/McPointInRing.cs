@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Algorithm.Locate;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.Bintree;
 using DotSpatial.Topology.Index.Chain;
@@ -34,7 +35,8 @@ namespace DotSpatial.Topology.Algorithm
     /// Implements <c>IPointInRing</c>
     /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
-    public sealed class McPointInRing : IPointInRing
+    /// <see cref="IndexedPointInAreaLocator"/>
+    public class McPointInRing : IPointInRing 
     {
         #region Fields
 
@@ -90,7 +92,7 @@ namespace DotSpatial.Topology.Algorithm
             _crossings = 0;
 
             // test all segments intersected by ray from pt in positive x direction
-            Envelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
+            var rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             _interval.Min = pt.Y;
             _interval.Max = pt.Y;
             IList<MonotoneChain> segs = _tree.Query(_interval);

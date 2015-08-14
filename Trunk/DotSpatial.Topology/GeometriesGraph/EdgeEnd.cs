@@ -24,7 +24,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;

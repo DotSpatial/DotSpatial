@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Algorithm;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -122,7 +123,7 @@ namespace DotSpatial.Topology.Geometries
             get { return "LinearRing"; }
         }
 
-        public bool IsCounterClockwise { get { return Algorithm.CgAlgorithms.IsCounterClockwise(CoordinateSequence); } }
+        public bool IsCounterClockwise { get { return CgAlgorithms.IsCounterClockwise(CoordinateSequence); } }
 
         /// <summary>
         /// Gets a boolean that is true if the EndPoint is geometrically equal to the StartPoint in 2 Dimensions.

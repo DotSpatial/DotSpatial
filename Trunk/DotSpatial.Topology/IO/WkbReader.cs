@@ -24,7 +24,6 @@
 using System;
 using System.IO;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.IO
 {

@@ -27,7 +27,7 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Operation.Polygonize
 {
     /// <summary>
-    /// Add every linear element in a point into the polygonizer graph.
+    /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
     /// </summary>
     public class LineStringAdder : IGeometryComponentFilter
     {
@@ -39,9 +39,6 @@ namespace DotSpatial.Topology.Operation.Polygonize
 
         #region Constructors
 
-        /// <summary>
-        /// Creates a new instance of LineStringAdder
-        /// </summary>
         public LineStringAdder(Polygonizer container)
         {
             _container = container;
@@ -52,16 +49,14 @@ namespace DotSpatial.Topology.Operation.Polygonize
         #region Methods
 
         /// <summary>
-        /// Applies the Filter to the specified geometry
+        /// Filters all <see cref="ILineString"/> geometry instances
         /// </summary>
-        /// <param name="g"></param>
-        public virtual void Filter(IGeometry g)
+        /// <param name="g">The geometry instance</param>
+        public void Filter(IGeometry g)
         {
-            ILineString l = g as ILineString;
-            if (l != null)
-            {
-                _container.Add(l);
-            }
+            var lineString = g as ILineString;
+            if (lineString != null)
+                _container.Add(lineString);
         }
 
         #endregion

@@ -48,6 +48,15 @@ namespace DotSpatial.Topology.Algorithm
         #region Properties
 
         ///<summary>
+        /// Reports whether the point lies exactly on one of the supplied segments.
+        /// <remarks>
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
+        /// no further segments need be supplied, since the result will never change again.
+        /// </remarks>
+        ///</summary>
+        public bool IsOnSegment { get; private set; }
+
+        ///<summary>
         /// Tests whether the point lies in or on the ring, polygon.
         ///</summary>
         ///<remarks>
@@ -72,15 +81,6 @@ namespace DotSpatial.Topology.Algorithm
                 return (_crossingCount % 2) == 1 ? LocationType.Interior : LocationType.Exterior;
             }
         }
-
-        ///<summary>
-        /// Reports whether the point lies exactly on one of the supplied segments.
-        /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
-        /// no further segments need be supplied, since the result will never change again.
-        /// </remarks>
-        ///</summary>
-        public bool IsOnSegment { get; private set; }
 
         #endregion
 
@@ -172,7 +172,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns>The location of the point in the ring</returns>
         public static LocationType LocatePointInRing(Coordinate p, IList<Coordinate> ring)
         {
-            RayCrossingCounter counter = new RayCrossingCounter(p);
+            var counter = new RayCrossingCounter(p);
             for (int i = 1; i < ring.Count; i++)
             {
                 Coordinate p1 = ring[i];
@@ -192,7 +192,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns>The location of the point in the ring</returns>
         public static LocationType LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
-            RayCrossingCounter counter = new RayCrossingCounter(p);
+            var counter = new RayCrossingCounter(p);
             for (int i = 1; i < ring.Count; i++)
             {
                 Coordinate p1 = ring.GetCoordinate(i);

@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.GeometriesGraph.Index;
@@ -39,7 +39,7 @@ namespace DotSpatial.Topology.Operation.Overlay
     {
         #region Fields
 
-        private readonly IList _inputEdges = new ArrayList();
+        private readonly List<Edge> _inputEdges = new List<Edge>();
         private readonly LineIntersector _li;
 
         #endregion
@@ -62,7 +62,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
-        public virtual IList NodedEdges
+        public virtual IList<Edge> NodedEdges
         {
             get
             {
@@ -70,11 +70,9 @@ namespace DotSpatial.Topology.Operation.Overlay
                 SegmentIntersector si = new SegmentIntersector(_li, true, false);
                 esi.ComputeIntersections(_inputEdges, si, true);
 
-                IList splitEdges = new ArrayList();
-                IEnumerator i = _inputEdges.GetEnumerator();
-                while (i.MoveNext())
+                IList<Edge> splitEdges = new List<Edge>();
+                foreach (Edge e in _inputEdges)
                 {
-                    Edge e = (Edge)i.Current;
                     e.EdgeIntersectionList.AddSplitEdges(splitEdges);
                 }
                 return splitEdges;
@@ -89,10 +87,9 @@ namespace DotSpatial.Topology.Operation.Overlay
         ///
         /// </summary>
         /// <param name="edges"></param>
-        public virtual void AddEdges(IList edges)
+        public virtual void AddEdges(IEnumerable<Edge> edges)
         {
-            // inputEdges.addAll(edges);
-            foreach (object obj in edges)
+            foreach (Edge obj in edges)
                 _inputEdges.Add(obj);
         }
 

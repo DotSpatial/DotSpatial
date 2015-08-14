@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Utilities;
+using DotSpatial.Topology.Geometries.Utilities;
 
 namespace DotSpatial.Topology.Noding.Snapround
 {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Geometries
@@ -103,7 +104,7 @@ namespace DotSpatial.Topology.Geometries
         /// 
         /// </summary>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        object System.Collections.IEnumerator.Current
+        object IEnumerator.Current
         {
             get { return Current; }
         }
@@ -137,7 +138,7 @@ namespace DotSpatial.Topology.Geometries
         /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

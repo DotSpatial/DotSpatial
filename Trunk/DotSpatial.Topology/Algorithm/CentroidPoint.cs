@@ -22,15 +22,17 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
-    /// <summary>
+    /// <summary> 
     /// Computes the centroid of a point point.
     /// Algorithm:
     /// Compute the average of all points.
     /// </summary>
+    [Obsolete("Use Centroid instead")]
     public class CentroidPoint
     {
         #region Fields
@@ -43,9 +45,9 @@ namespace DotSpatial.Topology.Algorithm
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        public virtual Coordinate Centroid
+        public Coordinate Centroid
         {
             get
             {
@@ -60,30 +62,31 @@ namespace DotSpatial.Topology.Algorithm
 
         #region Methods
 
-        /// <summary>
+        /// <summary> 
         /// Adds the point(s) defined by a Geometry to the centroid total.
         /// If the point is not of dimension 0 it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public virtual void Add(IGeometry geom)
+        public void Add(IGeometry geom)
         {
-            if (geom is IPoint)
+            if (geom is IPoint)             
+                Add(geom.Coordinate);
+
+            else if(geom is IGeometryCollection) 
             {
-                Add((geom).Coordinate);
-            }
-            else if (geom is IGeometryCollection)
-            {
-                IGeometryCollection gc = (IGeometryCollection)geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// Adds the length defined by a coordinate.
         /// </summary>
         /// <param name="pt">A coordinate.</param>
-        public virtual void Add(Coordinate pt)
+        public void Add(Coordinate pt)
         {
             _ptCount += 1;
             _centSum.X += pt.X;
@@ -91,5 +94,5 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         #endregion
-    }
+    }   
 }

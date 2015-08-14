@@ -151,7 +151,7 @@ namespace DotSpatial.Topology.Algorithm
         /// </returns>
         public static int SignOfDet2X2(DoubleDouble x1, DoubleDouble y1, DoubleDouble x2, DoubleDouble y2)
         {
-            DoubleDouble det = x1.Multiply(y2).Subtract(y1 * x2);
+            DoubleDouble det = x1 * y2 - y1 * x2;
             if (det.IsZero) return 0;
             return det.IsNegative ? -1 : 1;
         }

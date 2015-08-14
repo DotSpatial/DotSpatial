@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
@@ -39,10 +39,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         #region Fields
 
         private readonly IGeometryFactory _geometryFactory;
-        private readonly IList _lineEdgesList = new ArrayList();
+        private readonly List<Edge> _lineEdgesList = new List<Edge>();
         private readonly OverlayOp _op;
         private readonly PointLocator _ptLocator;
-        private readonly IList _resultLineList = new ArrayList();
+        private readonly List<IGeometry> _resultLineList = new List<IGeometry>();
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <returns>
         /// A list of the LineStrings in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList Build(SpatialFunction opCode)
+        public virtual IList<IGeometry> Build(SpatialFunction opCode)
         {
             FindCoveredLineEdges();
             CollectLines(opCode);
@@ -86,9 +86,8 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="opCode"></param>
         private void BuildLines(SpatialFunction opCode)
         {
-            for (IEnumerator it = _lineEdgesList.GetEnumerator(); it.MoveNext(); )
+            foreach (Edge e in _lineEdgesList)
             {
-                Edge e = (Edge)it.Current;
                 ILineString line = _geometryFactory.CreateLineString(e.Coordinates);
                 _resultLineList.Add(line);
                 e.IsInResult = true;
@@ -106,11 +105,11 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public virtual void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
+        public virtual void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
         {
             Label label = de.Label;
             if (de.IsLineEdge)
-                return;         // only interested in area edges
+                return;         // only interested in area edges         
             if (de.IsVisited)
                 return;         // already processed
             if (de.IsInteriorAreaEdge)
@@ -134,7 +133,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
+        public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
         {
             Label label = de.Label;
             Edge e = de.Edge;
@@ -155,10 +154,8 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="opCode"></param>
         private void CollectLines(SpatialFunction opCode)
         {
-            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            foreach (DirectedEdge de in _op.Graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 CollectLineEdge(de, opCode, _lineEdgesList);
                 CollectBoundaryTouchEdge(de, opCode, _lineEdgesList);
             }
@@ -174,10 +171,8 @@ namespace DotSpatial.Topology.Operation.Overlay
         private void FindCoveredLineEdges()
         {
             // first set covered for all L edges at nodes which have A edges too
-            IEnumerator nodeit = _op.Graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            foreach (Node node in _op.Graph.Nodes)
             {
-                Node node = (Node)nodeit.Current;
                 ((DirectedEdgeStar)node.Edges).FindCoveredLineEdges();
             }
 
@@ -185,15 +180,12 @@ namespace DotSpatial.Topology.Operation.Overlay
              * For all Curve edges which weren't handled by the above,
              * use a point-in-poly test to determine whether they are covered
              */
-            IEnumerator it = _op.Graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            foreach (DirectedEdge de in _op.Graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 Edge e = de.Edge;
                 if (de.IsLineEdge && !e.IsCoveredSet)
                 {
-                    bool isCovered = _op.IsCoveredByA(de.Coordinate);
-                    e.IsCovered = isCovered;
+                    e.IsCovered = _op.IsCoveredByA(de.Coordinate);
                 }
             }
         }
@@ -213,19 +205,13 @@ namespace DotSpatial.Topology.Operation.Overlay
         ///
         /// </summary>
         /// <param name="edgesList"></param>
-        private void LabelIsolatedLines(IList edgesList)
+        private void LabelIsolatedLines(IEnumerable<Edge> edgesList)
         {
-            IEnumerator it = edgesList.GetEnumerator();
-            while (it.MoveNext())
+            foreach (Edge e in edgesList)
             {
-                Edge e = (Edge)it.Current;
                 Label label = e.Label;
                 if (e.IsIsolated)
-                {
-                    if (label.IsNull(0))
-                        LabelIsolatedLine(e, 0);
-                    else LabelIsolatedLine(e, 1);
-                }
+                    LabelIsolatedLine(e, label.IsNull(0) ? 0 : 1);
             }
         }
 

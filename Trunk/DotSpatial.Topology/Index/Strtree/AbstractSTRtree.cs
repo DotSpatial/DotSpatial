@@ -27,6 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Index.Strtree
 {
@@ -35,7 +36,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. <i>Spatial Databases With
     /// Application To GIS</i>. Morgan Kaufmann, San Francisco, 2002.
     /// <para>
-    /// This implementation is based on <see cref="IBoundable{T, TItem}"/>s rather than just <see cref="AbstractNode{T, TItem}"/>s,
+    /// This implementation is based on <see cref="IBoundable{T,TItem}"/>s rather than just <see cref="AbstractNode{T, TItem}"/>s,
     /// because the STR algorithm operates on both nodes and
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
@@ -268,7 +269,7 @@ namespace DotSpatial.Topology.Index.Strtree
             parentBoundables.Add(CreateNode(newLevel));
             var castedChildBoundables = PlatformUtilityEx.CastPlatform(childBoundables);
             var sortedChildBoundables =
-                new Wintellect.PowerCollections.BigList<IBoundable<T, TItem>>(castedChildBoundables);
+                new BigList<IBoundable<T, TItem>>(castedChildBoundables);
             sortedChildBoundables.Sort(GetComparer());
             foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)
             {

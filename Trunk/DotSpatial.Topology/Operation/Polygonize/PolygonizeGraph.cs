@@ -22,12 +22,11 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Operation.Polygonize
 {
@@ -65,7 +64,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Add a <c>LineString</c> forming an edge of the polygon graph.
         /// </summary>
         /// <param name="line">The line to add.</param>
-        public virtual void AddEdge(LineString line)
+        public virtual void AddEdge(ILineString line)
         {
             if (line.IsEmpty) return;
             IList<Coordinate> linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
@@ -83,6 +82,34 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
+        /// Traverses the polygonized edge rings in the graph
+        /// and computes the depth parity (odd or even)
+        /// relative to the exterior of the graph.
+        /// 
+        /// If the client has requested that the output
+        /// be polygonally valid, only odd polygons will be constructed. 
+        /// </summary>
+        public void ComputeDepthParity()
+        {
+            while (true)
+            {
+                PolygonizeDirectedEdge de = null; //findLowestDirEdge();
+                if (de == null)
+                    return;
+                ComputeDepthParity(de);
+            }
+        }
+
+        ///<summary>
+        /// Traverses all connected edges, computing the depth parity of the associated polygons.
+        ///</summary>
+        /// <param name="de"></param>
+        private void ComputeDepthParity(PolygonizeDirectedEdge de)
+        {
+
+        }
+
+        /// <summary>
         /// Computes the next edge pointers going CCW around the given node, for the
         /// given edgering label.
         /// This algorithm has the effect of converting maximal edgerings into minimal edgerings
@@ -97,7 +124,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
             PolygonizeDirectedEdge prevInDe = null;
 
             // the edges are stored in CCW order around the star
-            IList edges = deStar.Edges;
+            IList<DirectedEdge> edges = deStar.Edges;
             //for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); ) {
             for (int i = edges.Count - 1; i >= 0; i--)
             {
@@ -144,9 +171,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
             PolygonizeDirectedEdge prevDe = null;
 
             // the edges are stored in CCW order around the star
-            for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge outDe in deStar.Edges)
             {
-                PolygonizeDirectedEdge outDe = (PolygonizeDirectedEdge)i.Current;
                 if (outDe.IsMarked) continue;
 
                 if (startDe == null) startDe = outDe;
@@ -170,11 +196,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
         private void ComputeNextCwEdges()
         {
             // set the next pointers for the edges around each node
-            for (IEnumerator iNode = GetNodeEnumerator(); iNode.MoveNext(); )
-            {
-                Node node = (Node)iNode.Current;
+            foreach (var node in Nodes)
                 ComputeNextCwEdges(node);
-            }
         }
 
         /// <summary>
@@ -182,19 +205,17 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// into the minimal edge rings required by NTS polygon topology rules.
         /// </summary>
         /// <param name="ringEdges">The list of start edges for the edgeRings to convert.</param>
-        private static void ConvertMaximalToMinimalEdgeRings(IEnumerable ringEdges)
+        private static void ConvertMaximalToMinimalEdgeRings(IEnumerable<DirectedEdge> ringEdges)
         {
-            for (IEnumerator i = ringEdges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge de in ringEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                 long label = de.Label;
-                IList intNodes = FindIntersectionNodes(de, label);
+                var intNodes = FindIntersectionNodes(de, label);
 
                 if (intNodes == null) continue;
                 // flip the next pointers on the intersection nodes to create minimal edge rings
-                for (IEnumerator iNode = intNodes.GetEnumerator(); iNode.MoveNext(); )
+                foreach (var node in intNodes)
                 {
-                    Node node = (Node)iNode.Current;
                     ComputeNextCcwEdges(node, label);
                 }
             }
@@ -206,10 +227,9 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <param name="node"></param>
         public static void DeleteAllEdges(Node node)
         {
-            IList edges = node.OutEdges.Edges;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                 de.IsMarked = true;
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge)de.Sym;
                 if (sym != null) sym.IsMarked = true;
@@ -220,19 +240,18 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Finds and removes all cut edges from the graph.
         /// </summary>
         /// <returns>A list of the <c>LineString</c>s forming the removed cut edges.</returns>
-        public virtual IList DeleteCutEdges()
+        public IList<ILineString> DeleteCutEdges()
         {
             ComputeNextCwEdges();
             // label the current set of edgerings
-            FindLabeledEdgeRings(DirectedEdges);
+            FindLabeledEdgeRings(DirEdges);
             /*
             * Cut Edges are edges where both dirEdges have the same label.
             * Delete them, and record them
             */
-            IList cutLines = new ArrayList();
-            for (IEnumerator i = DirectedEdges.GetEnumerator(); i.MoveNext(); )
+            IList<ILineString> cutLines = new List<ILineString>();
+            foreach (PolygonizeDirectedEdge de in DirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                 if (de.IsMarked) continue;
 
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge)de.Sym;
@@ -257,25 +276,24 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// In order to handle large recursion depths efficiently,
         /// an explicit recursion stack is used.
         /// </summary>
-        /// <returns>A List containing the LineStrings that formed dangles.</returns>
-        public virtual IList DeleteDangles()
+        /// <returns>A List containing the <see cref="ILineString"/>s that formed dangles.</returns>
+        public ICollection<ILineString> DeleteDangles()
         {
-            IList nodesToRemove = FindNodesOfDegree(1);
-            var dangleLines = new HashSet<LineString>();
+            var nodesToRemove = FindNodesOfDegree(1);
+            Set<ILineString> dangleLines = new Set<ILineString>();
 
-            Stack nodeStack = new Stack();
-            for (IEnumerator i = nodesToRemove.GetEnumerator(); i.MoveNext(); )
-                nodeStack.Push(i.Current);
+            Stack<Node> nodeStack = new Stack<Node>();
+            foreach (Node node in nodesToRemove)
+                nodeStack.Push(node);
 
             while (nodeStack.Count != 0)
             {
-                Node node = (Node)nodeStack.Pop();
+                Node node = nodeStack.Pop();
 
                 DeleteAllEdges(node);
-                IList nodeOutEdges = node.OutEdges.Edges;
-                for (IEnumerator i = nodeOutEdges.GetEnumerator(); i.MoveNext(); )
+                IList<DirectedEdge> nodeOutEdges = node.OutEdges.Edges;
+                foreach (PolygonizeDirectedEdge de in nodeOutEdges)
                 {
-                    PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                     // delete this edge and its sym
                     de.IsMarked = true;
                     PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge)de.Sym;
@@ -291,20 +309,20 @@ namespace DotSpatial.Topology.Operation.Polygonize
                         nodeStack.Push(toNode);
                 }
             }
-            return new ArrayList(dangleLines.ToList());
+            return dangleLines.AsReadOnly();
         }
 
         /// <summary>
-        /// Traverse a ring of DirectedEdges, accumulating them into a list.
+        /// Traverses a ring of DirectedEdges, accumulating them into a list.
         /// This assumes that all dangling directed edges have been removed
         /// from the graph, so that there is always a next dirEdge.
         /// </summary>
         /// <param name="startDe">The DirectedEdge to start traversing at.</param>
         /// <returns>A List of DirectedEdges that form a ring.</returns>
-        private static IList FindDirEdgesInRing(PolygonizeDirectedEdge startDe)
+        private static IEnumerable<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDe)
         {
             PolygonizeDirectedEdge de = startDe;
-            IList edges = new ArrayList();
+            IList<DirectedEdge> edges = new List<DirectedEdge>();
             do
             {
                 edges.Add(de);
@@ -346,10 +364,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// The list of intersection nodes found,
         /// or null if no intersection nodes were found.
         /// </returns>
-        private static IList FindIntersectionNodes(PolygonizeDirectedEdge startDe, long label)
+        private static IEnumerable<Node> FindIntersectionNodes(PolygonizeDirectedEdge startDe, long label)
         {
             PolygonizeDirectedEdge de = startDe;
-            IList intNodes = null;
+            IList<Node> intNodes = null;
             do
             {
                 if (de == null) continue;
@@ -357,7 +375,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 if (GetDegree(node, label) > 1)
                 {
                     if (intNodes == null)
-                        intNodes = new ArrayList();
+                        intNodes = new List<Node>();
                     intNodes.Add(node);
                 }
                 de = de.Next;
@@ -369,23 +387,24 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        ///
+        /// Finds and labels all edgerings in the graph.
+        /// The edge rings are labelling with unique integers.
+        /// The labelling allows detecting cut edges.
         /// </summary>
         /// <param name="dirEdges">A List of the DirectedEdges in the graph.</param>
         /// <returns>A List of DirectedEdges, one for each edge ring found.</returns>
-        private static IList FindLabeledEdgeRings(IEnumerable dirEdges)
+        private static IList<DirectedEdge> FindLabeledEdgeRings(IEnumerable<DirectedEdge> dirEdges)
         {
-            IList edgeRingStarts = new ArrayList();
+            IList<DirectedEdge> edgeRingStarts = new List<DirectedEdge>();
             // label the edge rings formed
             long currLabel = 1;
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge de in dirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                 if (de.IsMarked) continue;
                 if (de.Label >= 0) continue;
 
                 edgeRingStarts.Add(de);
-                IList edges = FindDirEdgesInRing(de);
+                var edges = FindDirEdgesInRing(de);
 
                 Label(edges, currLabel);
                 currLabel++;
@@ -401,12 +420,11 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegree(Node node, long label)
         {
-            IList edges = node.OutEdges.Edges;
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
             int degree = 0;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
-                if (de.Label == label)
+                if (de.Label == label) 
                     degree++;
             }
             return degree;
@@ -419,35 +437,33 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegreeNonDeleted(Node node)
         {
-            IList edges = node.OutEdges.Edges;
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
             int degree = 0;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
-                if (!de.IsMarked)
+                if (! de.IsMarked)
                     degree++;
             }
             return degree;
         }
 
         /// <summary>
-        /// Computes the EdgeRings formed by the edges in this graph.
+        /// Computes the minimal EdgeRings formed by the edges in this graph.        
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
-        public virtual IList GetEdgeRings()
+        public IList<EdgeRing> GetEdgeRings()
         {
             // maybe could optimize this, since most of these pointers should be set correctly already by deleteCutEdges()
             ComputeNextCwEdges();
             // clear labels of all edges in graph
-            Label(DirectedEdges, -1);
-            IList maximalRings = FindLabeledEdgeRings(DirectedEdges);
+            Label(DirEdges, -1);
+            IList<DirectedEdge> maximalRings = FindLabeledEdgeRings(DirEdges);
             ConvertMaximalToMinimalEdgeRings(maximalRings);
 
-            // find all edgerings
-            IList edgeRingList = new ArrayList();
-            for (IEnumerator i = DirectedEdges.GetEnumerator(); i.MoveNext(); )
+            // find all edgerings (which will now be minimal ones, as required)
+            IList<EdgeRing> edgeRingList = new List<EdgeRing>();
+            foreach (PolygonizeDirectedEdge de in DirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
                 if (de.IsMarked) continue;
                 if (de.IsInRing) continue;
 
@@ -479,13 +495,10 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="label"></param>
-        private static void Label(IEnumerable dirEdges, long label)
+        private static void Label(IEnumerable<DirectedEdge> dirEdges, long label)
         {
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
-            {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge)i.Current;
+            foreach (PolygonizeDirectedEdge de in dirEdges)
                 de.Label = label;
-            }
         }
 
         #endregion

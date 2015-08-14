@@ -1,8 +1,8 @@
 using System;
 using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Geometries.Utilities;
 using DotSpatial.Topology.Index;
 using DotSpatial.Topology.Index.IntervalRTree;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Algorithm.Locate
 {

@@ -46,10 +46,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
-        public bool IsMarked
-        {
-            get { return Marked; }
-        }
+        public bool IsMarked { get; set; }
 
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
@@ -59,25 +56,12 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>              
-        public bool IsVisited
-        {
-            get { return Visited; }
-        }
+        public bool IsVisited { get; set; }
 
         /// <summary>
         /// Gets or sets user defined data for this component
         /// </summary>
         public object Data { get; set; }
-
-        /// <summary>
-        /// Gets/Sets the marked flag for this component.
-        /// </summary>
-        public bool Marked { get; set; }
-
-        /// <summary> 
-        /// Gets/Sets the visited flag for this component.
-        /// </summary>
-        public bool Visited { get; set; }
 
         #endregion
 
@@ -86,16 +70,16 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Finds the first <see cref="GraphComponent" /> 
         /// in a <see cref="IEnumerator" /> set
-        /// which has the specified <see cref="GraphComponent.Visited" /> state.
+        /// which has the specified <see cref="GraphComponent.IsVisited" /> state.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="visitedState">The <see cref="GraphComponent.Visited" /> state to test.</param>
+        /// <param name="visitedState">The <see cref="GraphComponent.IsVisited" /> state to test.</param>
         /// <returns>The first <see cref="GraphComponent" /> found, or <c>null</c> if none found.</returns>
         public static GraphComponent GetComponentWithVisitedState(IEnumerator i, bool visitedState)
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                GraphComponent comp = (GraphComponent)i.Current;
                 if (comp.IsVisited == visitedState)
                     return comp;
             }
@@ -103,32 +87,32 @@ namespace DotSpatial.Topology.Planargraph
         }
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Marked" /> state 
+        /// Sets the <see cref="GraphComponent.IsMarked" /> state 
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="marked">The state to set the <see cref="GraphComponent.Marked" /> flag to.</param>
+        /// <param name="marked">The state to set the <see cref="GraphComponent.IsMarked" /> flag to.</param>
         public static void SetMarked(IEnumerator i, bool marked)
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
-                comp.Marked = marked;
+                GraphComponent comp = (GraphComponent)i.Current;
+                comp.IsMarked = marked;
             }
         }
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Visited" /> state 
+        /// Sets the <see cref="GraphComponent.IsVisited" /> state 
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="visited">The state to set the <see cref="GraphComponent.Visited" /> flag to.</param>
+        /// <param name="visited">The state to set the <see cref="GraphComponent.IsVisited" /> flag to.</param>
         public static void SetVisited(IEnumerator i, bool visited)
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
-                comp.Visited = visited;
+                GraphComponent comp = (GraphComponent)i.Current;
+                comp.IsVisited = visited;
             }
         }
 

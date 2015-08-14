@@ -23,7 +23,6 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology

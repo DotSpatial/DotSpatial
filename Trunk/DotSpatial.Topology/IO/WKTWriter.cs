@@ -434,7 +434,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="linearRing">The <c>LinearRing</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLinearRingTaggedText(IBasicLineString linearRing, int level, TextWriter writer)
+        private void AppendLinearRingTaggedText(ILineString linearRing, int level, TextWriter writer)
         {
             writer.Write("LINEARRING ");
             AppendLineStringText(linearRing, level, false, writer);
@@ -447,7 +447,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="lineString">The <c>LineString</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringTaggedText(IBasicLineString lineString, int level, TextWriter writer)
+        private void AppendLineStringTaggedText(ILineString lineString, int level, TextWriter writer)
         {
             writer.Write("LINESTRING ");
             AppendLineStringText(lineString, level, false, writer);
@@ -807,7 +807,7 @@ namespace DotSpatial.Topology.IO
                 // check if some precision is lost during text conversion: if so, use {0:R} formatter
                 return converted == d ? standard : string.Format(_formatter, MaxPrecisionFormat, d);
             }
-            catch (OverflowException ex)
+            catch (OverflowException)
             {
                 // Use MaxPrecisionFormat anyway
                 return string.Format(_formatter, MaxPrecisionFormat, d);

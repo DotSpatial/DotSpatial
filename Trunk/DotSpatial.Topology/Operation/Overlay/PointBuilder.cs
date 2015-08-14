@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -42,9 +42,9 @@ namespace DotSpatial.Topology.Operation.Overlay
 
         #region Constructors
 
-        /// <summary>
-        ///
-        /// </summary>
+        ///  <summary>
+        /// 
+        ///  </summary>
         /// <param name="op"></param>
         /// <param name="geometryFactory"></param>
         public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory)
@@ -64,10 +64,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList Build(SpatialFunction opCode)
+        public virtual IList<IGeometry> Build(SpatialFunction opCode)
         {
-            IList nodeList = CollectNodes(opCode);
-            IList resultPointList = SimplifyPoints(nodeList);
+            var nodeList = CollectNodes(opCode);
+            var resultPointList = SimplifyPoints(nodeList);
             return resultPointList;
         }
 
@@ -76,18 +76,18 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        private IList CollectNodes(SpatialFunction opCode)
+        private IList<Node> CollectNodes(SpatialFunction opCode)
         {
-            IList resultNodeList = new ArrayList();
+            IList<Node> resultNodeList = new List<Node>();
             // add nodes from edge intersections which have not already been included in the result
-            IEnumerator nodeit = _op.Graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            foreach (Node n in _op.Graph.Nodes)
             {
-                Node n = (Node)nodeit.Current;
-                if (n.IsInResult) continue;
-                Label label = n.Label;
-                if (OverlayOp.IsResultOfOp(label, opCode))
-                    resultNodeList.Add(n);
+                if (!n.IsInResult)
+                {
+                    Label label = n.Label;
+                    if (OverlayOp.IsResultOfOp(label, opCode))                    
+                        resultNodeList.Add(n);                    
+                }
             }
             return resultNodeList;
         }
@@ -101,17 +101,17 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="resultNodeList"></param>
         /// <returns></returns>
-        private IList SimplifyPoints(IEnumerable resultNodeList)
+        private IList<IGeometry> SimplifyPoints(IEnumerable<Node> resultNodeList)
         {
-            IList nonCoveredPointList = new ArrayList();
-            IEnumerator it = resultNodeList.GetEnumerator();
-            while (it.MoveNext())
+            IList<IGeometry> nonCoveredPointList = new List<IGeometry>();
+            foreach (Node n in resultNodeList)
             {
-                Node n = (Node)it.Current;
                 Coordinate coord = n.Coordinate;
-                if (_op.IsCoveredByLa(coord)) continue;
-                IPoint pt = _geometryFactory.CreatePoint(coord);
-                nonCoveredPointList.Add(pt);
+                if (!_op.IsCoveredByLA(coord))
+                {
+                    IPoint pt = _geometryFactory.CreatePoint(coord);
+                    nonCoveredPointList.Add(pt);
+                }
             }
             return nonCoveredPointList;
         }

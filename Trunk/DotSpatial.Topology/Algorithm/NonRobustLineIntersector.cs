@@ -42,7 +42,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        private IntersectionType ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
+        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
         {
             Coordinate q3;
             Coordinate q4;
@@ -56,43 +56,43 @@ namespace DotSpatial.Topology.Algorithm
             // make sure p3-p4 is in same direction as p1-p2
             if (r3 < r4)
             {
-                q3 = new Coordinate(p3);
+                q3 = p3;
                 t3 = r3;
-                q4 = new Coordinate(p4);
+                q4 = p4;
                 t4 = r4;
             }
             else
             {
-                q3 = new Coordinate(p4);
+                q3 = p4;
                 t3 = r4;
-                q4 = new Coordinate(p3);
+                q4 = p3;
                 t4 = r3;
             }
 
             // check for no intersection
-            if (t3 > r2 || t4 < r1)
-                return IntersectionType.NoIntersection;
-
+            if (t3 > r2 || t4 < r1) 
+                return NoIntersection;
+            
             // check for single point intersection
             if (q4 == p1)
             {
-                PointA = p1;
-                return IntersectionType.PointIntersection;
+                Pa.CoordinateValue = p1;
+                return PointIntersection;
             }
             if (q3 == p2)
             {
-                PointA = p2;
-                return IntersectionType.PointIntersection;
+                Pa.CoordinateValue = p2;
+                return PointIntersection;
             }
 
             // intersection MUST be a segment - compute endpoints
-            PointA = p1;
-            if (t3 > r1) PointA = q3;
+            Pa.CoordinateValue = p1;
+            if (t3 > r1) Pa.CoordinateValue = q3;
 
-            PointB = p2;
-            if (t4 < r2) PointB = q4;
-
-            return IntersectionType.Collinear;
+            Pb.CoordinateValue = p2;
+            if (t4 < r2) Pb.CoordinateValue = q4;
+            
+            return CollinearIntersection;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        public override IntersectionType ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
+        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             /*
             *  Coefficients of line eqns.
@@ -134,9 +134,7 @@ namespace DotSpatial.Topology.Algorithm
             *  same side of line 1, the line segments do not intersect.
             */
             if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))
-            {
-                return IntersectionType.NoIntersection;
-            }
+                return NoIntersection;           
 
             /*
             *  Compute a2, b2, c2
@@ -157,9 +155,7 @@ namespace DotSpatial.Topology.Algorithm
             *  not intersect.
             */
             if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2))
-            {
-                return IntersectionType.NoIntersection;
-            }
+                return NoIntersection;            
 
             /*
             *  Line segments intersect: compute intersection point.
@@ -169,24 +165,22 @@ namespace DotSpatial.Topology.Algorithm
                 return ComputeCollinearIntersection(p1, p2, p3, p4);
 
             double numX = b1 * c2 - b2 * c1;
-            double x = numX / denom;
+            Pa.X = numX / denom;
 
             double numY = a2 * c1 - a1 * c2;
-            double y = numY / denom;
-
-            PointA = new Coordinate(x, y);
+            Pa.Y = numY / denom;
 
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
             IsProper = true;
-            if (PointA.Equals(p1) || PointA.Equals(p2) || PointA.Equals(p3) || PointA.Equals(p4))
-                IsProper = false;
+            if (Pa.Equals(p1) || Pa.Equals(p2) || Pa.Equals(p3) || Pa.Equals(p4))             
+                IsProper = false;            
 
-            // truncate computed point to precision grid
-            if (PrecisionModel != null)
-                PrecisionModel.MakePrecise(PointA);
-
-            return IntersectionType.PointIntersection;
+            // truncate computed point to precision grid            
+            if (PrecisionModel != null) 
+                PrecisionModel.MakePrecise(Pa);
+            
+            return PointIntersection;
         }
 
         /// <summary>
@@ -223,7 +217,7 @@ namespace DotSpatial.Topology.Algorithm
             // if r != 0 the point does not lie on the line
             if (r != 0)
             {
-                Result = IntersectionType.NoIntersection;
+                Result = NoIntersection;
                 return;
             }
 
@@ -232,17 +226,15 @@ namespace DotSpatial.Topology.Algorithm
             double dist = RParameter(p1, p2, p);
             if (dist < 0.0 || dist > 1.0)
             {
-                Result = IntersectionType.NoIntersection;
+                Result = NoIntersection;
                 return;
             }
 
             IsProper = true;
-            if (p.Equals(p1) || p.Equals(p2))
-            {
+            if (p.Equals(p1) || p.Equals(p2))             
                 IsProper = false;
-            }
-
-            Result = IntersectionType.PointIntersection;
+            
+            Result = PointIntersection;
         }
 
         /// <summary>

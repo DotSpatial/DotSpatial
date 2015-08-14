@@ -23,7 +23,6 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology.Geometries;
 using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Noding

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace DotSpatial.Topology
 {
@@ -78,7 +79,7 @@ namespace DotSpatial.Topology
             foreach (var assembly in a)
             {
                 // Take a look at issue 114: http://code.google.com/p/nettopologysuite/issues/detail?id=114
-                if (assembly is System.Reflection.Emit.AssemblyBuilder) continue;
+                if (assembly is AssemblyBuilder) continue;
                 if (assembly.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder") continue;
                 if (assembly.GlobalAssemblyCache && assembly.CodeBase == Assembly.GetExecutingAssembly().CodeBase) continue;
 

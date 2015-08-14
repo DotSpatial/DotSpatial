@@ -44,9 +44,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         private bool _isForward;
         private bool _isInResult;
         private bool _isVisited;
-        private EdgeRing _minEdgeRing;  // the MinimalEdgeRing that this edge is part of
-        private DirectedEdge _next;  // the next edge in the edge ring for the polygon containing this edge
-        private DirectedEdge _nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
         private DirectedEdge _sym; // the symmetric edge
 
         #endregion
@@ -171,29 +168,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets or sets the minimum Edge Ring
         /// </summary>
-        public virtual EdgeRing MinEdgeRing
-        {
-            get { return _minEdgeRing; }
-            set { _minEdgeRing = value; }
-        }
+        public virtual EdgeRing MinEdgeRing { get; set; }
 
         /// <summary>
         /// Gets or sets the next directed edge relative to this directed edge
         /// </summary>
-        public virtual DirectedEdge Next
-        {
-            get { return _next; }
-            set { _next = value; }
-        }
+        public virtual DirectedEdge Next { get; set; }
 
         /// <summary>
         /// Gets or sets a directed edge for Next Min
         /// </summary>
-        public virtual DirectedEdge NextMin
-        {
-            get { return _nextMin; }
-            set { _nextMin = value; }
-        }
+        public virtual DirectedEdge NextMin { get; set; }
 
         /// <summary>
         ///

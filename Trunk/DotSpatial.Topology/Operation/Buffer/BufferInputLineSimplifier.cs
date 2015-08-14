@@ -1,3 +1,4 @@
+using System;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 
@@ -231,7 +232,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </returns>
         public Coordinate[] Simplify(double distanceTol)
         {
-            _distanceTol = System.Math.Abs(distanceTol);
+            _distanceTol = Math.Abs(distanceTol);
             if (distanceTol < 0)
                 _angleOrientation = CgAlgorithms.Clockwise;
 

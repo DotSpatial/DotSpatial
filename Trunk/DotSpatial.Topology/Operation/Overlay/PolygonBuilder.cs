@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
@@ -39,7 +39,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         #region Fields
 
         private readonly IGeometryFactory _geometryFactory;
-        private readonly IList _shellList = new ArrayList();
+        private readonly List<EdgeRing> _shellList = new List<EdgeRing>();
 
         #endregion
 
@@ -61,11 +61,11 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
-        public virtual IList Polygons
+        public virtual IList<IGeometry> Polygons
         {
             get
             {
-                IList resultPolyList = ComputePolygons(_shellList);
+                var resultPolyList = ComputePolygons(_shellList);
                 return resultPolyList;
             }
         }
@@ -82,7 +82,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="graph"></param>
         public virtual void Add(PlanarGraph graph)
         {
-            Add(graph.EdgeEnds, graph.NodeValues);
+            Add(graph.EdgeEnds, graph.Nodes);
         }
 
         /// <summary>
@@ -92,12 +92,12 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="nodes"></param>
-        public virtual void Add(IList dirEdges, IList nodes)
+        public virtual void Add(IList<EdgeEnd> dirEdges, IList<Node> nodes)
         {
             PlanarGraph.LinkResultDirectedEdges(nodes);
-            IList maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
-            IList freeHoleList = new ArrayList();
-            IList edgeRings = BuildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
+            var maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
+            var freeHoleList = new List<EdgeRing>();
+            var edgeRings = BuildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
             SortShellsAndHoles(edgeRings, _shellList, freeHoleList);
             PlaceFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it
@@ -108,18 +108,21 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
-        private IList BuildMaximalEdgeRings(IEnumerable dirEdges)
+        private List<EdgeRing> BuildMaximalEdgeRings(IEnumerable<EdgeEnd> dirEdges)
         {
-            IList maxEdgeRings = new ArrayList();
-            for (IEnumerator it = dirEdges.GetEnumerator(); it.MoveNext(); )
+            var maxEdgeRings = new List<EdgeRing>();
+            foreach (DirectedEdge de in dirEdges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                if (!de.IsInResult || !de.Label.IsArea()) continue;
-                // if this edge has not yet been processed
-                if (de.EdgeRing != null) continue;
-                MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
-                maxEdgeRings.Add(er);
-                er.SetInResult();
+                if (de.IsInResult && de.Label.IsArea())
+                {
+                    // if this edge has not yet been processed
+                    if (de.EdgeRing == null)
+                    {
+                        var er = new MaximalEdgeRing(de, _geometryFactory);
+                        maxEdgeRings.Add(er);
+                        er.SetInResult();
+                    }
+                }
             }
             return maxEdgeRings;
         }
@@ -131,18 +134,17 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="shellList"></param>
         /// <param name="freeHoleList"></param>
         /// <returns></returns>
-        private static IList BuildMinimalEdgeRings(IEnumerable maxEdgeRings, IList shellList, IList freeHoleList)
+        private List<EdgeRing> BuildMinimalEdgeRings(List<EdgeRing> maxEdgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
         {
-            IList edgeRings = new ArrayList();
-            for (IEnumerator it = maxEdgeRings.GetEnumerator(); it.MoveNext(); )
+            var edgeRings = new List<EdgeRing>();
+            foreach (MaximalEdgeRing er in maxEdgeRings)
             {
-                MaximalEdgeRing er = (MaximalEdgeRing)it.Current;
                 if (er.MaxNodeDegree > 2)
                 {
                     er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IList minEdgeRings = er.BuildMinimalRings();
+                    var minEdgeRings = er.BuildMinimalRings();
                     // at this point we can go ahead and attempt to place holes, if this EdgeRing is a polygon
-                    EdgeRing shell = FindShell(minEdgeRings);
+                    var shell = FindShell(minEdgeRings);
                     if (shell != null)
                     {
                         PlacePolygonHoles(shell, minEdgeRings);
@@ -151,7 +153,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                     else
                     {
                         // freeHoleList.addAll(minEdgeRings);
-                        foreach (object obj in minEdgeRings)
+                        foreach (EdgeRing obj in minEdgeRings)
                             freeHoleList.Add(obj);
                     }
                 }
@@ -165,13 +167,12 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="shellList"></param>
         /// <returns></returns>
-        private IList ComputePolygons(IEnumerable shellList)
+        private IList<IGeometry> ComputePolygons(IEnumerable<EdgeRing> shellList)
         {
-            IList resultPolyList = new ArrayList();
+            IList<IGeometry> resultPolyList = new List<IGeometry>();
             // add Polygons for all shells
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing er in shellList)
             {
-                EdgeRing er = (EdgeRing)it.Current;
                 IPolygon poly = er.ToPolygon(_geometryFactory);
                 resultPolyList.Add(poly);
             }
@@ -186,9 +187,8 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <returns></returns>
         public virtual bool ContainsPoint(Coordinate p)
         {
-            for (IEnumerator it = _shellList.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing er in _shellList)
             {
-                EdgeRing er = (EdgeRing)it.Current;
                 if (er.ContainsPoint(p))
                     return true;
             }
@@ -206,28 +206,24 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="testEr"></param>
         /// <param name="shellList"></param>
-        /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
-        private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable shellList)
+        /// <returns>Containing EdgeRing, if there is one <br/> or
+        /// <value>null</value> if no containing EdgeRing is found.</returns>
+        private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.LinearRing;
-            IEnvelope testEnv = teString.EnvelopeInternal;
-            Coordinate testPt = teString.Coordinates[0];
+            Envelope testEnv = teString.EnvelopeInternal;
+            Coordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            IEnvelope minEnv = null;
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
+            Envelope minEnv = null;
+            foreach (EdgeRing tryShell in shellList)
             {
-                EdgeRing tryShell = (EdgeRing)it.Current;
                 ILinearRing tryRing = tryShell.LinearRing;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                Envelope tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
-                bool isContained = false;
+               // check if this new containing ring is smaller than the current minimum ring
                 if (tryEnv.Contains(testEnv) && CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
-                    isContained = true;
-                // check if this new containing ring is smaller than the current minimum ring
-                if (isContained)
                 {
                     if (minShell == null || minEnv.Contains(tryEnv))
                         minShell = tryShell;
@@ -243,18 +239,19 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// The other possibility is that they are a series of connected holes, in which case
         /// no shell is returned.
         /// </summary>
-        /// <returns>The shell EdgeRing, if there is one.</returns>
-        /// <returns><c>null</c>, if all the rings are holes.</returns>
-        private static EdgeRing FindShell(IEnumerable minEdgeRings)
+        /// <returns>The shell EdgeRing, if there is one<br/> or
+        /// <value>null</value>, if all the rings are holes.</returns>
+        private static EdgeRing FindShell(IEnumerable<EdgeRing> minEdgeRings)
         {
             int shellCount = 0;
             EdgeRing shell = null;
-            for (IEnumerator it = minEdgeRings.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing er in minEdgeRings)
             {
-                EdgeRing er = (MinimalEdgeRing)it.Current;
-                if (er.IsHole) continue;
-                shell = er;
-                shellCount++;
+                if (!er.IsHole)
+                {
+                    shell = er;
+                    shellCount++;
+                }
             }
             Assert.IsTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
             return shell;
@@ -273,16 +270,16 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="shellList"></param>
         /// <param name="freeHoleList"></param>
-        private static void PlaceFreeHoles(IEnumerable shellList, IEnumerable freeHoleList)
+        private static void PlaceFreeHoles(IList<EdgeRing> shellList, IEnumerable<EdgeRing> freeHoleList)
         {
-            for (IEnumerator it = freeHoleList.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing hole in freeHoleList)
             {
-                EdgeRing hole = (EdgeRing)it.Current;
                 // only place this hole if it doesn't yet have a shell
                 if (hole.Shell == null)
                 {
                     EdgeRing shell = FindEdgeRingContaining(hole, shellList);
-                    Assert.IsTrue(shell != null, "unable to assign hole to a shell");
+                    if (shell == null)
+                        throw new TopologyException("unable to assign hole to a shell", hole.GetCoordinate(0));
                     hole.Shell = shell;
                 }
             }
@@ -299,12 +296,11 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="shell"></param>
         /// <param name="minEdgeRings"></param>
-        private static void PlacePolygonHoles(EdgeRing shell, IEnumerable minEdgeRings)
+        private static void PlacePolygonHoles(EdgeRing shell, IEnumerable<EdgeRing> minEdgeRings)
         {
-            for (IEnumerator it = minEdgeRings.GetEnumerator(); it.MoveNext(); )
+            foreach (MinimalEdgeRing er in minEdgeRings)
             {
-                MinimalEdgeRing er = (MinimalEdgeRing)it.Current;
-                if (er.IsHole)
+                if (er.IsHole) 
                     er.Shell = shell;
             }
         }
@@ -319,11 +315,10 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="edgeRings"></param>
         /// <param name="shellList"></param>
         /// <param name="freeHoleList"></param>
-        private static void SortShellsAndHoles(IEnumerable edgeRings, IList shellList, IList freeHoleList)
+        private static void SortShellsAndHoles(IEnumerable<EdgeRing> edgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
         {
-            for (IEnumerator it = edgeRings.GetEnumerator(); it.MoveNext(); )
+            foreach (EdgeRing er in edgeRings)
             {
-                EdgeRing er = (EdgeRing)it.Current;
                 er.SetInResult();
                 if (er.IsHole)
                     freeHoleList.Add(er);

@@ -22,22 +22,24 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Algorithm
 {
-    /// <summary>
+    /// <summary> 
     /// Computes the centroid of a linear point.
     /// Algorithm:
     /// Compute the average of the midpoints
     /// of all line segments weighted by the segment length.
     /// </summary>
+    [Obsolete("Use Centroid instead")]
     public class CentroidLine
     {
         #region Fields
 
-        private readonly Coordinate _centSum = new Coordinate(0D, 0D, 0D, 0D);
+        private readonly Coordinate _centSum = new Coordinate();
         private double _totalLength;
 
         #endregion
@@ -45,9 +47,9 @@ namespace DotSpatial.Topology.Algorithm
         #region Properties
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        public virtual Coordinate Centroid
+        public Coordinate Centroid
         {
             get
             {
@@ -62,30 +64,40 @@ namespace DotSpatial.Topology.Algorithm
 
         #region Methods
 
-        /// <summary>
-        /// Adds the linestring(s) defined by a Geometry to the centroid total.
-        /// If the point is not linear it does not contribute to the centroid.
+        /// <summary> 
+        /// Adds the linear components of by a Geometry to the centroid total.
+        /// If the geometry has no linear components it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public virtual void Add(IGeometry geom)
+        public void Add(IGeometry geom)
         {
-            if (geom is LineString)
-            {
+            if (geom is ILineString)             
                 Add(geom.Coordinates);
-            }
-            else if (geom is GeometryCollection)
+
+            else if (geom is IPolygon)
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                var poly = (IPolygon) geom;
+                // add linear components of a polygon
+                Add(poly.Shell.Coordinates);
+                for (int i = 0; i < poly.NumHoles; i++)
+                {
+                    Add(poly.GetInteriorRingN(i).Coordinates);
+                }
+            }
+
+            else if (geom is IGeometryCollection)
+            {
+                var gc = (IGeometryCollection)geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// Adds the length defined by an array of coordinates.
         /// </summary>
-        /// <param name="pts">An array of <c>Coordinates</c>.</param>
-        public virtual void Add(IList<Coordinate> pts)
+        /// <param name="pts">An array of <c>Coordinate</c>s.</param>
+        public void Add(IList<Coordinate> pts)
         {
             for (int i = 0; i < pts.Count - 1; i++)
             {

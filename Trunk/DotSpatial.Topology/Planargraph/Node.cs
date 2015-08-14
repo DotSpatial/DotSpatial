@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Utilities;
 using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Planargraph
@@ -141,9 +142,9 @@ namespace DotSpatial.Topology.Planargraph
         public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
             IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            var commonEdges = new Set<DirectedEdge>(Utilities.Caster.Cast<DirectedEdge>(edges0));
+            var commonEdges = new Set<DirectedEdge>(Caster.Cast<DirectedEdge>(edges0));
             IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
-            commonEdges.RemoveMany(Utilities.Caster.Cast<DirectedEdge>(edges1));
+            commonEdges.RemoveMany(Caster.Cast<DirectedEdge>(edges1));
             return new List<DirectedEdge>(commonEdges);
         }
 

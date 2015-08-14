@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotSpatial.Topology.Algorithm;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -47,14 +48,14 @@ namespace DotSpatial.Topology.Geometries
 
         private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
         {
-            if (coordinates != null && Algorithm.CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
+            if (coordinates != null && CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
                 Array.Reverse(coordinates);
             return CreateLinearRing(coordinates);
         }
 
         private ILinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
         {
-            if (coordinates != null && Algorithm.CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
+            if (coordinates != null && CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
             {
                 //CoordinateSequences.Reverse(coordinates);
                 coordinates = coordinates.Reversed();

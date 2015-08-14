@@ -592,7 +592,7 @@ namespace DotSpatial.Topology.Geometries
             return new GeometryCollectionEnumerator(this);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

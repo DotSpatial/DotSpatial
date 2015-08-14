@@ -22,25 +22,50 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.GeometriesGraph;
 
 namespace DotSpatial.Topology.Algorithm
 {
-    /// <summary>
-    /// Computes the topological relationship (Location) of a single point to a Geometry.
-    /// The algorithm obeys the SFS boundaryDetermination rule to correctly determine
-    /// whether the point lies on the boundary or not.
-    /// Notice that instances of this class are not reentrant.
+    /// <summary> 
+    /// Computes the topological relationship (<see cref="Location"/>) of a single point to a Geometry.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="IBoundaryNodeRule"/> may be specified to control the evaluation of whether the point lies on the boundary or not
+    /// The default rule is to use the the <i>SFS Boundary Determination Rule</i>
+    /// <para>
+    /// Notes:
+    /// <list Type="Bullet">
+    /// <item><see cref="ILinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
+    /// </list>
+    /// Instances of this class are not reentrant.
+    /// </para>
+    /// </remarks>
     public class PointLocator
     {
         #region Fields
 
+        private readonly IBoundaryNodeRule _boundaryRule = BoundaryNodeRules.EndpointBoundaryRule; //OGC_SFS_BOUNDARY_RULE;
         private bool _isIn;            // true if the point lies in or on any Geometry element
         private int _numBoundaries;    // the number of sub-elements whose boundaries the point lies in
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointLocator"/> class.
+        /// </summary>
+        public PointLocator() { }
+
+        public PointLocator(IBoundaryNodeRule boundaryRule)
+        {
+            if (boundaryRule == null)
+                throw new ArgumentException("Rule must be non-null");
+            _boundaryRule = boundaryRule;
+        }
 
         #endregion
 
@@ -53,10 +78,12 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="geom"></param>
         private void ComputeLocation(Coordinate p, IGeometry geom)
         {
+            if (geom is IPoint)
+                UpdateLocationInfo(Locate(p, (IPoint)geom));
             if (geom is ILineString)
-                UpdateLocationInfo(Locate(p, geom));
-            else if (geom is IPolygon)
-                UpdateLocationInfo(Locate(p, geom));
+                UpdateLocationInfo(Locate(p, (ILineString)geom));
+            else if (geom is Polygon)
+                UpdateLocationInfo(Locate(p, (IPolygon)geom));
             else if (geom is IMultiLineString)
             {
                 IMultiLineString ml = (IMultiLineString)geom;
@@ -71,7 +98,7 @@ namespace DotSpatial.Topology.Algorithm
             }
             else if (geom is IGeometryCollection)
             {
-                IEnumerator geomi = new GeometryCollection.Enumerator((IGeometryCollection)geom);
+                IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
                     IGeometry g2 = (IGeometry)geomi.Current;
@@ -103,16 +130,26 @@ namespace DotSpatial.Topology.Algorithm
             if (geom.IsEmpty)
                 return LocationType.Exterior;
             if (geom is ILineString)
-                return LocateInLineString(p, (ILineString)geom);
+                return Locate(p, (ILineString)geom);
             if (geom is IPolygon)
-                return LocateInPolygon(p, (IPolygon)geom);
+                return Locate(p, (IPolygon)geom);
 
             _isIn = false;
             _numBoundaries = 0;
             ComputeLocation(p, geom);
-            if (GeometryGraph.IsInBoundary(_numBoundaries))
+            if (_boundaryRule.IsInBoundary(_numBoundaries))
                 return LocationType.Boundary;
             if (_numBoundaries > 0 || _isIn)
+                return LocationType.Interior;
+            return LocationType.Exterior;
+        }
+
+        private static LocationType Locate(Coordinate p, IPoint pt)
+        {
+            // no point in doing envelope test, since equality test is just as fast
+
+            Coordinate ptCoord = pt.Coordinate;
+            if (ptCoord.Equals2D(p))
                 return LocationType.Interior;
             return LocationType.Exterior;
         }
@@ -123,8 +160,13 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        private static LocationType LocateInLineString(Coordinate p, ILineString l)
+        private static LocationType Locate(Coordinate p, ILineString l)
         {
+            // bounding-box check
+            if (!l.EnvelopeInternal.Intersects(p))
+                return LocationType.Exterior;
+
+
             IList<Coordinate> pt = l.Coordinates;
             if (!l.IsClosed)
                 if (p.Equals(pt[0]) || p.Equals(pt[pt.Count - 1]))
@@ -140,20 +182,20 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="poly"></param>
         /// <returns></returns>
-        private static LocationType LocateInPolygon(Coordinate p, IPolygon poly)
+        private LocationType Locate(Coordinate p, IPolygon poly)
         {
             if (poly.IsEmpty)
                 return LocationType.Exterior;
-            LinearRing shell = (LinearRing)poly.Shell;
-            LocationType shellLoc = LocateInPolygonRing(p, shell);
+            ILinearRing shell = poly.Shell;
+            var shellLoc = LocateInPolygonRing(p, shell);
             if (shellLoc == LocationType.Exterior)
                 return LocationType.Exterior;
             if (shellLoc == LocationType.Boundary)
                 return LocationType.Boundary;
             // now test if the point lies in or on the holes
-            foreach (LinearRing hole in poly.Holes)
+            foreach (ILinearRing hole in poly.Holes)
             {
-                LocationType holeLoc = LocateInPolygonRing(p, hole);
+                var holeLoc = LocateInPolygonRing(p, hole);
                 if (holeLoc == LocationType.Interior)
                     return LocationType.Exterior;
                 if (holeLoc == LocationType.Boundary)
@@ -168,14 +210,12 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private static LocationType LocateInPolygonRing(Coordinate p, IBasicGeometry ring)
+        private static LocationType LocateInPolygonRing(Coordinate p, ILinearRing ring)
         {
-            // can this test be folded into IsPointInRing?
-            if (CgAlgorithms.IsOnLine(p, ring.Coordinates))
-                return LocationType.Boundary;
-            if (CgAlgorithms.IsPointInRing(p, ring.Coordinates))
-                return LocationType.Interior;
-            return LocationType.Exterior;
+            // bounding-box check
+            if (!ring.EnvelopeInternal.Intersects(p)) return LocationType.Exterior;
+
+            return CgAlgorithms.LocatePointInRing(p, ring.Coordinates);
         }
 
         /// <summary>

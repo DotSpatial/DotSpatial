@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -120,7 +121,7 @@ namespace DotSpatial.Topology.Utilities
         public static TOut[] Cast<TIn,TOut>(TIn[] array)
         {
             var res = new TOut[array.Length];
-            System.Array.Copy(array, res, array.Length);
+            Array.Copy(array, res, array.Length);
             return res;
         }
 

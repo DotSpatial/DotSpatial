@@ -37,7 +37,7 @@ namespace DotSpatial.Topology.Algorithm
         #region Fields
 
         private readonly Coordinate _centroid;
-        private Coordinate _interiorPoint = Coordinate.Empty;
+        private Coordinate _interiorPoint;
         private double _minDistance = Double.MaxValue;
 
         #endregion
@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="g"></param>
         public InteriorPointPoint(IGeometry g)
         {
-            _centroid = new Coordinate(g.Centroid);
+            _centroid = g.Centroid.Coordinate;
             Add(g);
         }
 
@@ -80,12 +80,12 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="geom">The point to add.</param>
         private void Add(IGeometry geom)
         {
-            if (geom is Point)
-                Add(geom.Coordinate);
-            else if (geom is GeometryCollection)
+            if (geom is IPoint)
+                Add(geom.Coordinate);    
+            else if (geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }

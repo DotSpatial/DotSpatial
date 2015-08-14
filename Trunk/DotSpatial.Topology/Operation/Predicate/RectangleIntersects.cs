@@ -27,9 +27,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Algorithm.Locate;
 using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Utilities;
+using DotSpatial.Topology.Geometries.Utilities;
+using ShortCircuitedGeometryVisitor = DotSpatial.Topology.Utilities.ShortCircuitedGeometryVisitor;
 
 namespace DotSpatial.Topology.Operation.Predicate
 {

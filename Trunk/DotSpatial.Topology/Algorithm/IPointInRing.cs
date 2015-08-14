@@ -29,6 +29,7 @@ namespace DotSpatial.Topology.Algorithm
     /// <summary>
     /// An interface for classes which test whether a <c>Coordinate</c> lies inside a ring.
     /// </summary>
+    /// <see cref="Locate.IPointOnGeometryLocator"/>
     public interface IPointInRing
     {
         #region Methods

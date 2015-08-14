@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public SimplePointInRing(IBasicGeometry ring)
+        public SimplePointInRing(ILinearRing ring)
         {
             _pts = ring.Coordinates;
         }

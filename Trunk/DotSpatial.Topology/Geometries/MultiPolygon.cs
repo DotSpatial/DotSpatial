@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.Geometries
                 if (IsEmpty)    
                     return Factory.CreateMultiLineString(null);
 
-                var allRings = new List<ILineString>();
+                var allRings = new List<IBasicLineString>();
                 for (var i = 0; i < Geometries.Length; i++)
                 {
                     var polygon = (IPolygon) Geometries[i];

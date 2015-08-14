@@ -22,7 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
@@ -37,28 +38,28 @@ namespace DotSpatial.Topology.Operation.Overlay
     public enum SpatialFunction
     {
         /// <summary>
-        ///
+        /// The code for the Intersection overlay operation
         /// </summary>
         Intersection = 1,
 
         /// <summary>
-        ///
+        /// The code for the Union overlay operation
         /// </summary>
         Union = 2,
 
         /// <summary>
-        ///
+        /// The code for the Difference overlay operation
         /// </summary>
         Difference = 3,
 
         /// <summary>
-        ///
+        /// The code for the Symmetric Difference overlay operation
         /// </summary>
         SymDifference = 4,
     }
 
     /// <summary>
-    /// Computes the overlay of two <c>Geometry</c>s.  The overlay
+    /// Computes the geometric overlay of two <see cref="IGeometry"/>s.  The overlay
     /// can be used to determine any bool combination of the geometries.
     /// </summary>
     public class OverlayOp : GeometryGraphOperation
@@ -70,26 +71,27 @@ namespace DotSpatial.Topology.Operation.Overlay
         private readonly PlanarGraph _graph;
         private readonly PointLocator _ptLocator = new PointLocator();
         private IGeometry _resultGeom;
-        private IList _resultLineList = new ArrayList();
-        private IList _resultPointList = new ArrayList();
-        private IList _resultPolyList = new ArrayList();
+        private IList<IGeometry> _resultLineList = new List<IGeometry>();
+        private IList<IGeometry> _resultPointList = new List<IGeometry>();
+        private IList<IGeometry> _resultPolyList = new List<IGeometry>();
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// Constructs an instance to compute a single overlay operation
+        /// for the given geometries.
         /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
+        /// <param name="g0">The first geometry argument</param>
+        /// <param name="g1">The second geometry argument</param>
         public OverlayOp(IGeometry g0, IGeometry g1)
             : base(g0, g1)
         {
             _graph = new PlanarGraph(new OverlayNodeFactory());
             /*
             * Use factory of primary point.
-            * Notice that this does NOT handle mixed-precision arguments
+            * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
             _geomFact = g0.Factory;
@@ -100,14 +102,21 @@ namespace DotSpatial.Topology.Operation.Overlay
         #region Properties
 
         /// <summary>
-        ///
+        /// Disable <see cref="EdgeNodingValidator"/> 
+        /// when an intersection is made (<see cref="ComputeOverlay"/>), 
+        /// so performances are dramatically improved but failures are not managed.
+        /// </summary>
+        /// <remarks>
+        /// Use ay your own risk!
+        /// </remarks>        
+        public static bool NodingValidatorDisabled { get; set; }
+
+        /// <summary>
+        /// Gets the graph constructed to compute the overlay.
         /// </summary>
         public virtual PlanarGraph Graph
         {
-            get
-            {
-                return _graph;
-            }
+            get { return _graph; }
         }
 
         #endregion
@@ -122,42 +131,39 @@ namespace DotSpatial.Topology.Operation.Overlay
         {
             // remove any dirEdges whose sym is also included
             // (they "cancel each other out")
-            IEnumerator it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            var it = _graph.EdgeEnds.GetEnumerator();
+            while (it.MoveNext()) 
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                DirectedEdge sym = de.Sym;
-                if (de.IsInResult && sym.IsInResult)
-                {
-                    de.IsInResult = false;
-                    sym.IsInResult = false;
-                }
+                var de = (DirectedEdge) it.Current;
+                var sym = de.Sym;
+                if (!de.IsInResult || !sym.IsInResult)
+                    continue;
+
+                de.IsInResult = false;
+                sym.IsInResult = false;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="resultPointList"></param>
-        /// <param name="resultLineList"></param>
-        /// <param name="resultPolyList"></param>
+        ///  <summary>
+        /// 
+        ///  </summary>
+        ///  <param name="resultPointList"></param>
+        ///  <param name="resultLineList"></param>
+        ///  <param name="resultPolyList"></param>
+        /// <param name="opCode"></param>
         /// <returns></returns>
-        private IGeometry ComputeGeometry(IList resultPointList, IList resultLineList, IList resultPolyList)
+        private IGeometry ComputeGeometry(IEnumerable<IGeometry> resultPointList, IEnumerable<IGeometry> resultLineList, IEnumerable<IGeometry> resultPolyList, SpatialFunction opCode)
         {
-            ArrayList geomList = new ArrayList();
-            // element geometries of the result are always in the order Point, Curve, A
-            //geomList.addAll(resultPointList);
-            foreach (object obj in resultPointList)
-                geomList.Add(obj);
+            var geomList = new List<IGeometry>();
 
-            //geomList.addAll(resultLineList);
-            foreach (object obj in resultLineList)
-                geomList.Add(obj);
+            // element geometries of the result are always in the order Point,Curve,A
+            geomList.AddRange(resultPointList);
+            geomList.AddRange(resultLineList);
+            geomList.AddRange(resultPolyList);
 
-            //geomList.addAll(resultPolyList);
-            foreach (object obj in resultPolyList)
-                geomList.Add(obj);
-
+            if (geomList.Count == 0)
+                return CreateEmptyResult(opCode, arg[0].Geometry, arg[1].Geometry, _geomFact);
+            
             // build the most specific point possible
             return _geomFact.BuildGeometry(geomList);
         }
@@ -171,11 +177,11 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void ComputeLabelling()
         {
-            IEnumerator nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            var nodeit = _graph.Nodes.GetEnumerator();
+            while (nodeit.MoveNext()) 
             {
-                Node node = (Node)nodeit.Current;
-                node.Edges.ComputeLabelling(Arg);
+                var node = nodeit.Current;
+                node.Edges.ComputeLabelling(arg);
             }
             MergeSymLabels();
             UpdateNodeLabelling();
@@ -193,45 +199,44 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void ComputeLabelsFromDepths()
         {
-            for (IEnumerator it = _edgeList.GetEnumerator(); it.MoveNext(); )
+            for (var it = _edgeList.GetEnumerator(); it.MoveNext(); ) 
             {
-                Edge e = (Edge)it.Current;
-                Label lbl = e.Label;
-                Depth depth = e.Depth;
+                var e = it.Current;
+                var lbl = e.Label;
+                var depth = e.Depth;
                 /*
                 * Only check edges for which there were duplicates,
                 * since these are the only ones which might
                 * be the result of dimensional collapses.
                 */
-                if (!depth.IsNull())
+                if (depth.IsNull()) 
+                    continue;
+
+                depth.Normalize();                    
+                for (var i = 0; i < 2; i++)
                 {
-                    depth.Normalize();
-                    for (int i = 0; i < 2; i++)
-                    {
-                        if (!lbl.IsNull(i) && lbl.IsArea() && !depth.IsNull(i))
-                        {
-                            /*
-                             * if the depths are equal, this edge is the result of
-                             * the dimensional collapse of two or more edges.
-                             * It has the same location on both sides of the edge,
-                             * so it has collapsed to a line.
-                             */
-                            if (depth.GetDelta(i) == 0)
-                                lbl.ToLine(i);
-                            else
-                            {
-                                /*
-                                * This edge may be the result of a dimensional collapse,
-                                * but it still has different locations on both sides.  The
-                                * label of the edge must be updated to reflect the resultant
-                                * side locations indicated by the depth values.
-                                */
-                                Assert.IsTrue(!depth.IsNull(i, PositionType.Left), "depth of Left side has not been initialized");
-                                lbl.SetLocation(i, PositionType.Left, depth.GetLocation(i, PositionType.Left));
-                                Assert.IsTrue(!depth.IsNull(i, PositionType.Right), "depth of Right side has not been initialized");
-                                lbl.SetLocation(i, PositionType.Right, depth.GetLocation(i, PositionType.Right));
-                            }
-                        }
+                    if (lbl.IsNull(i) || !lbl.IsArea() || depth.IsNull(i))
+                        continue;
+                    /*
+                     * if the depths are equal, this edge is the result of
+                     * the dimensional collapse of two or more edges.
+                     * It has the same location on both sides of the edge,
+                     * so it has collapsed to a line.
+                     */
+                    if (depth.GetDelta(i) == 0)                   
+                        lbl.ToLine(i);
+                    else
+                    {                                
+                        /*
+                         * This edge may be the result of a dimensional collapse,
+                         * but it still has different locations on both sides.  The
+                         * label of the edge must be updated to reflect the resultant
+                         * side locations indicated by the depth values.
+                         */
+                        Assert.IsTrue(!depth.IsNull(i, PositionType.Left), "depth of Left side has not been initialized");
+                        lbl.SetLocation(i, PositionType.Left, depth.GetLocation(i, PositionType.Left));
+                        Assert.IsTrue(!depth.IsNull(i, PositionType.Right), "depth of Right side has not been initialized");
+                        lbl.SetLocation(i, PositionType.Right, depth.GetLocation(i, PositionType.Right));
                     }
                 }
             }
@@ -250,23 +255,37 @@ namespace DotSpatial.Topology.Operation.Overlay
             CopyPoints(1);
 
             // node the input Geometries
-            Arg[0].ComputeSelfNodes(LineIntersector, false);
-            Arg[1].ComputeSelfNodes(LineIntersector, false);
-
-            // --- Needs to convert args to monotonic edges or something.
+            arg[0].ComputeSelfNodes(lineIntersector, false);
+            arg[1].ComputeSelfNodes(lineIntersector, false);            
 
             // compute intersections between edges of the two input geometries
-            Arg[0].ComputeEdgeIntersections(Arg[1], LineIntersector, true);
+            arg[0].ComputeEdgeIntersections(arg[1], lineIntersector, true);
 
-            IList baseSplitEdges = new ArrayList();
-            Arg[0].ComputeSplitEdges(baseSplitEdges);
-            Arg[1].ComputeSplitEdges(baseSplitEdges);
+            IList<Edge> baseSplitEdges = new List<Edge>();
+            arg[0].ComputeSplitEdges(baseSplitEdges);            
+            arg[1].ComputeSplitEdges(baseSplitEdges);            
             // add the noded edges to this result graph
             InsertUniqueEdges(baseSplitEdges);
 
             ComputeLabelsFromDepths();
             ReplaceCollapsedEdges();
 
+            if (!NodingValidatorDisabled)
+            {
+                /*
+                 * Check that the noding completed correctly.
+                 * 
+                 * This test is slow, but necessary in order to catch robustness failure 
+                 * situations.
+                 * If an exception is thrown because of a noding failure, 
+                 * then snapping will be performed, which will hopefully avoid the problem.
+                 * In the future hopefully a faster check can be developed.  
+                 * 
+                 */
+                var nv = new EdgeNodingValidator(_edgeList.Edges);
+                nv.CheckValid();
+            }
+            
             _graph.AddEdges(_edgeList.Edges);
             ComputeLabelling();
             LabelIncompleteNodes();
@@ -279,18 +298,18 @@ namespace DotSpatial.Topology.Operation.Overlay
             */
             FindResultAreaEdges(opCode);
             CancelDuplicateResultEdges();
-            PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
+            var polyBuilder = new PolygonBuilder(_geomFact);
             polyBuilder.Add(_graph);
             _resultPolyList = polyBuilder.Polygons;
 
-            LineBuilder lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
+            var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
             _resultLineList = lineBuilder.Build(opCode);
 
-            PointBuilder pointBuilder = new PointBuilder(this, _geomFact);
+            var pointBuilder = new PointBuilder(this, _geomFact);
             _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set
-            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList);
+            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList, opCode);
         }
 
         /// <summary>
@@ -305,13 +324,54 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="argIndex"></param>
         private void CopyPoints(int argIndex)
         {
-            IEnumerator i = Arg[argIndex].GetNodeEnumerator();
-            while (i.MoveNext())
+            var i = arg[argIndex].GetNodeEnumerator();
+            while (i.MoveNext()) 
             {
-                Node graphNode = (Node)i.Current;
-                Node newNode = _graph.AddNode(graphNode.Coordinate);
+                var graphNode = i.Current;
+                var newNode = _graph.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
+        }
+
+        /// <summary>
+        /// Creates an empty result geometry of the appropriate dimension,
+        /// based on the given overlay operation and the dimensions of the inputs.
+        /// The created geometry is always an atomic geometry, 
+        /// not a collection.
+        /// <para/>
+        /// The empty result is constructed using the following rules:
+        /// <list type="Bullet">
+        /// <item><see cref="SpatialFunction.Intersection"/> - result has the dimension of the lowest input dimension</item>
+        /// <item><see cref="SpatialFunction.Union"/> - result has the dimension of the highest input dimension</item>
+        /// <item><see cref="SpatialFunction.Difference"/> - result has the dimension of the left-hand input</item>
+        /// <item><see cref="SpatialFunction.SymDifference"/> - result has the dimension of the highest input dimension
+        /// (since symDifference is the union of the differences).</item>
+        /// </list>
+        /// </summary>
+        /// <param name="overlayOpCode">The overlay operation being performed</param>
+        /// <param name="a">An input geometry</param>
+        /// <param name="b">An input geometry</param>
+        /// <param name="geomFact">The geometry factory being used for the operation</param>
+        /// <returns>An empty atomic geometry of the appropriate dimension</returns>
+        public static IGeometry CreateEmptyResult(SpatialFunction overlayOpCode, IGeometry a, IGeometry b, IGeometryFactory geomFact)
+        {
+            IGeometry result = null;
+            switch (ResultDimension(overlayOpCode, a, b))
+            {
+                case DimensionType.False:
+                    result = geomFact.CreateGeometryCollection(new IGeometry[0]);
+                    break;
+                case DimensionType.Point:
+                    result = geomFact.CreatePoint((Coordinate)null);
+                    break;
+                case DimensionType.Curve:
+                    result = geomFact.CreateLineString((Coordinate[])null);
+                    break;
+                case DimensionType.Surface:
+                    result = geomFact.CreatePolygon(null, null);
+                    break;
+            }
+            return result;
         }
 
         /// <summary>
@@ -324,26 +384,29 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void FindResultAreaEdges(SpatialFunction opCode)
         {
-            IEnumerator it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            var it = _graph.EdgeEnds.GetEnumerator();
+            while (it.MoveNext()) 
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
+                var de = (DirectedEdge) it.Current;
                 // mark all dirEdges with the appropriate label
-                Label label = de.Label;
+                var label = de.Label;
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
-                    IsResultOfOp(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), opCode))
-                    de.IsInResult = true;
+                    IsResultOfOp(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), opCode))                 
+                        de.IsInResult = true;                            
             }
         }
 
         /// <summary>
-        ///
+        /// Gets the result of the overlay for a given overlay operation.
+        /// <para/>
+        /// Note: this method can be called once only.
         /// </summary>
-        /// <param name="funcCode"></param>
-        /// <returns></returns>
-        public IGeometry GetResultGeometry(SpatialFunction funcCode)
+        /// <param name="overlayOpCode">The code of the overlay operation to perform</param>
+        /// <returns>The computed result geometry</returns>
+        /// <exception cref="TopologyException">Thrown if a robustness problem is encountered</exception>
+        public IGeometry GetResultGeometry(SpatialFunction overlayOpCode)
         {
-            ComputeOverlay(funcCode);
+            ComputeOverlay(overlayOpCode);
             return _resultGeom;
         }
 
@@ -355,16 +418,16 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// with the existing edge.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void InsertUniqueEdge(Edge e)
+        protected void InsertUniqueEdge(Edge e)
         {
-            int foundIndex = _edgeList.FindEdgeIndex(e);
+            var foundIndex = _edgeList.FindEdgeIndex(e);
             // If an identical edge already exists, simply update its label
             if (foundIndex >= 0)
             {
-                Edge existingEdge = _edgeList[foundIndex];
-                Label existingLabel = existingEdge.Label;
+                var existingEdge = _edgeList[foundIndex];
+                var existingLabel = existingEdge.Label;
 
-                Label labelToMerge = e.Label;
+                var labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
@@ -372,7 +435,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                     labelToMerge = new Label(e.Label);
                     labelToMerge.Flip();
                 }
-                Depth depth = existingEdge.Depth;
+                var depth = existingEdge.Depth;
                 // if this is the first duplicate found for this edge, initialize the depths
                 if (depth.IsNull())
                     depth.Add(existingLabel);
@@ -387,15 +450,11 @@ namespace DotSpatial.Topology.Operation.Overlay
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edges"></param>
-        private void InsertUniqueEdges(IEnumerable edges)
+        private void InsertUniqueEdges(IEnumerable<Edge> edges)
         {
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            for (var i = edges.GetEnumerator(); i.MoveNext(); ) 
             {
-                Edge e = (Edge)i.Current;
+                var e = i.Current;
                 InsertUniqueEdge(e);
             }
         }
@@ -404,68 +463,79 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <c>true</c> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private bool IsCovered(Coordinate coord, IEnumerable geomList)
+        private bool IsCovered(Coordinate coord, IEnumerable<IGeometry> geomList)
         {
-            IEnumerator it = geomList.GetEnumerator();
-            while (it.MoveNext())
+            var it = geomList.GetEnumerator();
+            while (it.MoveNext()) 
             {
-                IGeometry geom = (IGeometry)it.Current;
-                LocationType loc = _ptLocator.Locate(coord, geom);
-                if (loc != LocationType.Exterior)
+                var geom = it.Current;
+                var loc = _ptLocator.Locate(coord, geom);
+                if (loc != LocationType.Exterior) 
                     return true;
             }
             return false;
         }
 
         /// <summary>
-        /// This method is used to decide if an L edge should be included in the result or not.
+        /// Tests if an L edge should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
-        public virtual bool IsCoveredByA(Coordinate coord)
+        /// <param name="coord">The point coordinate</param>
+        /// <returns><c>true</c> if the coordinate point is covered by a result Area geometry.</returns>
+        public bool IsCoveredByA(Coordinate coord)
         {
-            if (IsCovered(coord, _resultPolyList))
-                return true;
-            return false;
+            return IsCovered(coord, _resultPolyList);
         }
 
         /// <summary>
-        /// This method is used to decide if a point node should be included in the result or not.
+        /// Tests if a point node should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
-        public virtual bool IsCoveredByLa(Coordinate coord)
+        /// <param name="coord">The point coordinate</param>
+        /// <returns><c>true</c> if the coordinate point is covered by a result Line or Area geometry.</returns>
+        public bool IsCoveredByLA(Coordinate coord)
         {
-            if (IsCovered(coord, _resultLineList))
+            if (IsCovered(coord, _resultLineList)) 
                 return true;
-            if (IsCovered(coord, _resultPolyList))
-                return true;
-            return false;
+            return IsCovered(coord, _resultPolyList);
         }
 
         /// <summary>
-        ///
+        /// Tests whether a point with a given topological <see cref="Label"/>
+        /// relative to two geometries is contained in 
+        /// the result of overlaying the geometries using
+        /// a given overlay operation.
+        /// <para/>
+        /// The method handles arguments of <see cref="LocationType.Null"/> correctly
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="opCode"></param>
-        /// <returns></returns>
-        public static bool IsResultOfOp(Label label, SpatialFunction opCode)
+        /// <param name="label">The topological label of the point</param>
+        /// <param name="overlayOpCode">The code for the overlay operation to test</param>
+        /// <returns><c>true</c> if the label locations correspond to the overlayOpCode</returns>
+        public static bool IsResultOfOp(Label label, SpatialFunction overlayOpCode)
         {
-            LocationType loc0 = label.GetLocation(0);
-            LocationType loc1 = label.GetLocation(1);
-            return IsResultOfOp(loc0, loc1, opCode);
+            var loc0 = label.GetLocation(0);
+            var loc1 = label.GetLocation(1);
+            return IsResultOfOp(loc0, loc1, overlayOpCode);
         }
 
         /// <summary>
-        /// This method will handle arguments of Location.NULL correctly.
+        /// Tests whether a point with given <see cref="LocationType"/>s
+        /// relative to two geometries is contained in 
+        /// the result of overlaying the geometries using
+        /// a given overlay operation.
+        /// <para/>
+        /// The method handles arguments of <see cref="LocationType.Null"/> correctly
         /// </summary>
-        /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
-        public static bool IsResultOfOp(LocationType loc0, LocationType loc1, SpatialFunction opCode)
+        /// <param name="loc0">the code for the location in the first geometry </param>
+        /// <param name="loc1">the code for the location in the second geometry</param>
+        /// <param name="overlayOpCode">the code for the overlay operation to test</param>
+        /// <returns><c>true</c> if the locations correspond to the overlayOpCode.</returns>
+        public static bool IsResultOfOp(LocationType loc0, LocationType loc1, SpatialFunction overlayOpCode)
         {
-            if (loc0 == LocationType.Boundary)
+            if (loc0 == LocationType.Boundary) 
                 loc0 = LocationType.Interior;
-            if (loc1 == LocationType.Boundary)
+            if (loc1 == LocationType.Boundary) 
                 loc1 = LocationType.Interior;
 
-            switch (opCode)
+            switch (overlayOpCode) 
             {
                 case SpatialFunction.Intersection:
                     return loc0 == LocationType.Interior && loc1 == LocationType.Interior;
@@ -474,19 +544,21 @@ namespace DotSpatial.Topology.Operation.Overlay
                 case SpatialFunction.Difference:
                     return loc0 == LocationType.Interior && loc1 != LocationType.Interior;
                 case SpatialFunction.SymDifference:
-                    return (loc0 == LocationType.Interior && loc1 != LocationType.Interior)
-                           || (loc0 != LocationType.Interior && loc1 == LocationType.Interior);
-                default:
+                    return   (loc0 == LocationType.Interior &&  loc1 != LocationType.Interior)
+                          || (loc0 != LocationType.Interior &&  loc1 == LocationType.Interior);
+	            default:
                     return false;
-            }
+            }            
         }
 
         /// <summary>
         /// Label an isolated node with its relationship to the target point.
         /// </summary>
-        private void LabelIncompleteNode(Node n, int targetIndex)
+        private void LabelIncompleteNode(GraphComponent n, int targetIndex)
         {
-            LocationType loc = _ptLocator.Locate(n.Coordinate, Arg[targetIndex].Geometry);
+            var loc = _ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
+            // MD - 2008-10-24 - experimental for now
+            //int loc = arg[targetIndex].Locate(n.Coordinate);
             n.Label.SetLocation(targetIndex, loc);
         }
 
@@ -505,19 +577,20 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNodes()
         {
-            IEnumerator ni = _graph.Nodes.GetEnumerator();
-            while (ni.MoveNext())
+            var ni = _graph.Nodes.GetEnumerator();
+            while (ni.MoveNext()) 
             {
-                Node n = (Node)ni.Current;
-                Label label = n.Label;
-                if (n.IsIsolated)
+                var n = ni.Current;
+                var label = n.Label;
+                if (n.IsIsolated) 
                 {
+                    //nodeCount++;
                     if (label.IsNull(0))
-                        LabelIncompleteNode(n, 0);
+                         LabelIncompleteNode(n, 0);
                     else LabelIncompleteNode(n, 1);
                 }
                 // now update the labelling for the DirectedEdges incident on this node
-                ((DirectedEdgeStar)n.Edges).UpdateLabelling(label);
+                ((DirectedEdgeStar) n.Edges).UpdateLabelling(label);
             }
         }
 
@@ -529,25 +602,27 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void MergeSymLabels()
         {
-            IEnumerator nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            var nodeit = _graph.Nodes.GetEnumerator();
+            while (nodeit.MoveNext()) 
             {
-                Node node = (Node)nodeit.Current;
-                ((DirectedEdgeStar)node.Edges).MergeSymLabels();
+                var node = nodeit.Current;
+                ((DirectedEdgeStar) node.Edges).MergeSymLabels();
             }
         }
 
         /// <summary>
-        ///
+        /// Computes an overlay operation 
+        /// for the given geometry arguments.
         /// </summary>
-        /// <param name="geom0"></param>
-        /// <param name="geom1"></param>
-        /// <param name="opCode"></param>
-        /// <returns></returns>
+        /// <param name="geom0">The first geometry argument</param>
+        /// <param name="geom1">The second geometry argument</param>
+        /// <param name="opCode">The code for the desired overlay operation</param>
+        /// <returns>The result of the overlay operation</returns>
+        /// <exception cref="TopologyException">Thrown if a robustness problem is encountered.</exception>
         public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
         {
-            OverlayOp gov = new OverlayOp(geom0, geom1);
-            IGeometry geomOv = gov.GetResultGeometry(opCode);
+            var gov = new OverlayOp(geom0, geom1);
+            var geomOv = gov.GetResultGeometry(opCode);
             return geomOv;
         }
 
@@ -557,44 +632,70 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         private void ReplaceCollapsedEdges()
         {
-            IList newEdges = new ArrayList();
-            IList edgesToRemove = new ArrayList();
-            IEnumerator it = _edgeList.GetEnumerator();
-            while (it.MoveNext())
+            IList<Edge> newEdges = new List<Edge>();
+            IList<Edge> edgesToRemove = new List<Edge>();
+            var it = _edgeList.GetEnumerator();
+            while (it.MoveNext()) 
             {
-                Edge e = (Edge)it.Current;
-                if (e.IsCollapsed)
-                {
-                    // edgeList.Remove(it.Current as Edge);
-                    // Diego Guidi says:
-                    // This instruction throws a "System.InvalidOperationException: Collection was modified; enumeration operation may not execute".
-                    // i try to not modify edgeList here, and remove all elements at the end of iteration.
-                    edgesToRemove.Add(it.Current);
-                    newEdges.Add(e.CollapsedEdge);
-                }
+                var e = it.Current;
+                if (!e.IsCollapsed) 
+                    continue;
+                // edgeList.Remove(it.Current as Edge); 
+                // Diego Guidi says:
+                // This instruction throws a "System.InvalidOperationException: Collection was modified; enumeration operation may not execute".
+                // i try to not modify edgeList here, and remove all elements at the end of iteration.
+                edgesToRemove.Add(it.Current);
+                newEdges.Add(e.CollapsedEdge);
             }
             // Removing all collapsed edges at the end of iteration.
             foreach (Edge obj in edgesToRemove)
-                _edgeList.Remove(obj);
-            // edgeList.addAll(newEdges);
-            foreach (object obj in newEdges)
-                _edgeList.Add((Edge)obj);
+                _edgeList.Remove(obj);            
+            foreach (var obj in newEdges)
+                _edgeList.Add(obj);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        private static DimensionType ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        {
+            var dim0 = (int)g0.Dimension;
+            var dim1 = (int)g1.Dimension;
+
+            var resultDimension = -1;
+            switch (opCode)
+            {
+                case SpatialFunction.Intersection:
+                    resultDimension = Math.Min(dim0, dim1);
+                    break;
+                case SpatialFunction.Union:
+                    resultDimension = Math.Max(dim0, dim1);
+                    break;
+                case SpatialFunction.Difference:
+                    resultDimension = dim0;
+                    break;
+                case SpatialFunction.SymDifference:
+                    /**
+                     * This result is chosen because
+                     * <pre>
+                     * SymDiff = Union(Diff(A, B), Diff(B, A)
+                     * </pre>
+                     * and Union has the dimension of the highest-dimension argument.
+                     */
+                    resultDimension = Math.Max(dim0, dim1);
+                    break;
+            }
+            return (DimensionType)resultDimension;
+        }
+
         private void UpdateNodeLabelling()
         {
             // update the labels for nodes
             // The label for a node is updated from the edges incident on it
-            // (Notice that a node may have already been labelled
+            // (Note that a node may have already been labelled
             // because it is a point in one of the input geometries)
-            IEnumerator nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            var nodeit = _graph.Nodes.GetEnumerator();
+            while (nodeit.MoveNext()) 
             {
-                Node node = (Node)nodeit.Current;
-                Label lbl = ((DirectedEdgeStar)node.Edges).Label;
+                var node = nodeit.Current;
+                var lbl = ((DirectedEdgeStar) node.Edges).Label;
                 node.Label.Merge(lbl);
             }
         }

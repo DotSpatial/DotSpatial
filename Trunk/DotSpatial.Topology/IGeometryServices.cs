@@ -1,5 +1,4 @@
-﻿using System;
-using DotSpatial.Topology.Geometries;
+﻿using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology
 {

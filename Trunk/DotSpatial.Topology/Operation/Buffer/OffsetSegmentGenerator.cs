@@ -468,7 +468,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 if (mitreRatio > _bufParams.MitreLimit)
                     isMitreWithinLimit = false;
             }
-            catch (NotRepresentableException ex)
+            catch (NotRepresentableException)
             {
                 intPt = new Coordinate(0, 0);
                 isMitreWithinLimit = false;

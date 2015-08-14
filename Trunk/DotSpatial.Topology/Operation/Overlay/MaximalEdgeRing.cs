@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 
@@ -60,15 +60,15 @@ namespace DotSpatial.Topology.Operation.Overlay
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IList BuildMinimalRings()
+        public virtual IList<EdgeRing> BuildMinimalRings()
         {
-            IList minEdgeRings = new ArrayList();
+            IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
             DirectedEdge de = StartDe;
-            do
+            do 
             {
                 if (de.MinEdgeRing == null)
                 {
-                    EdgeRing minEr = new MinimalEdgeRing(de, InnerGeometryFactory);
+                    EdgeRing minEr = new MinimalEdgeRing(de, GeometryFactory);
                     minEdgeRings.Add(minEr);
                 }
                 de = de.Next;
@@ -94,7 +94,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         public virtual void LinkDirectedEdgesForMinimalEdgeRings()
         {
             DirectedEdge de = StartDe;
-            do
+            do 
             {
                 Node node = de.Node;
                 ((DirectedEdgeStar)node.Edges).LinkMinimalDirectedEdges(this);

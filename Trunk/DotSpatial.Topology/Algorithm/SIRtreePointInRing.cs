@@ -59,6 +59,23 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
+        private void BuildIndex()
+        {
+            _sirTree = new SiRtree<LineSegment>();
+            IList<Coordinate> pts = _ring.Coordinates;
+            for (int i = 1; i < pts.Count; i++) 
+            {
+                if (pts[i - 1].Equals(pts[i])) 
+                    continue;
+
+                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
+                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
         public bool IsInside(Coordinate pt)
@@ -72,22 +89,6 @@ namespace DotSpatial.Topology.Algorithm
             
             // p is inside if number of crossings is odd.
             return (_crossings % 2) == 1;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void BuildIndex()
-        {
-            _sirTree = new SiRtree<LineSegment>();
-            IList<Coordinate> pts = _ring.Coordinates;
-            for (int i = 1; i < pts.Count; i++)
-            {
-                if (pts[i - 1].Equals(pts[i])) continue;
-
-                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
-            }
         }
 
         /// <summary>

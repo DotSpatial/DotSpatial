@@ -22,8 +22,8 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using DotSpatial.Topology.Utilities;
-using BitConverter = System.BitConverter;
 
 namespace DotSpatial.Topology.Precision
 {

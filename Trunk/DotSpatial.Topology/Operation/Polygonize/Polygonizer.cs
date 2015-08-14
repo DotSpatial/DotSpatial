@@ -22,37 +22,47 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Polygonize
 {
     /// <summary>
-    /// Polygonizes a set of Geometrys which contain linework that
+    /// Polygonizes a set of <see cref="IGeometry"/>s which contain linework that
     /// represents the edges of a planar graph.
-    /// Any dimension of Geometry is handled - the constituent linework is extracted
-    /// to form the edges.
-    /// The edges must be correctly noded; that is, they must only meet
-    /// at their endpoints.  The Polygonizer will still run on incorrectly noded input
-    /// but will not form polygons from incorrected noded edges.
+    /// </summary>
+    /// <remarks>
+    /// <para>All types of Geometry are accepted as input;
+    /// the constituent linework is extracted as the edges to be polygonized.
+    /// The processed edges must be correctly noded; that is, they must only meet
+    /// at their endpoints.  The Polygonizer will run on incorrectly noded input
+    /// but will not form polygons from non-noded edges, 
+    /// and will report them as errors.
+    /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
     /// Dangles - edges which have one or both ends which are not incident on another edge endpoint
     /// Cut Edges - edges which are connected at both ends but which do not form part of polygon
     /// Invalid Ring Lines - edges which form rings which are invalid
-    /// (e.g. the component lines contain a self-intersection).
-    /// </summary>
+    /// (e.g. the component lines contain a self-intersection).</para>
+    /// </remarks>
     public class Polygonizer
     {
         #region Fields
 
-        private readonly PolygonizeGraph _graph = new PolygonizeGraph(new GeometryFactory());
-        private readonly LineStringAdder _lineStringAdder; // Default adder
-        private IList _cutEdges = new ArrayList();
-        private IList _dangles = new ArrayList();
-        private IList _holeList;
-        private IList _invalidRingLines = new ArrayList();
-        private IList _polyList;
-        private IList _shellList;
+        /// <summary>
+        /// Default linestring adder.
+        /// </summary>
+        private readonly LineStringAdder _lineStringAdder;
+
+        private ICollection<ILineString> _cutEdges = new List<ILineString>();
+        // Initialized with empty collections, in case nothing is computed
+        private ICollection<ILineString> _dangles = new List<ILineString>();
+        private PolygonizeGraph _graph;
+        private IList<EdgeRing> _holeList;
+        private IList<IGeometry> _invalidRingLines = new List<IGeometry>();
+        private bool _isCheckingRingsValid = true;
+        private ICollection<IGeometry> _polyList;
+        private IList<EdgeRing> _shellList;
 
         #endregion
 
@@ -72,63 +82,14 @@ namespace DotSpatial.Topology.Operation.Polygonize
         #region Properties
 
         /// <summary>
-        /// Compute and returns the list of polygons formed by the polygonization.
+        /// Allows disabling the valid ring checking, 
+        /// to optimize situations where invalid rings are not expected.
         /// </summary>
-        public virtual IList Polygons
+        /// <remarks>The default is <c>true</c></remarks>
+        public bool IsCheckingRingsValid
         {
-            get
-            {
-                Polygonize();
-                return _polyList;
-            }
-        }
-
-        /// <summary>
-        /// Compute and returns the list of cut edges found during polygonization.
-        /// </summary>
-        public virtual IList CutEdges
-        {
-            get
-            {
-                Polygonize();
-                return _cutEdges;
-            }
-            protected set
-            {
-                _cutEdges = value;
-            }
-        }
-
-        /// <summary>
-        /// Compute and returns the list of dangling lines found during polygonization.
-        /// </summary>
-        public virtual IList Dangles
-        {
-            get
-            {
-                Polygonize();
-                return _dangles;
-            }
-            protected set
-            {
-                _dangles = value;
-            }
-        }
-
-        /// <summary>
-        /// Compute and returns the list of lines forming invalid rings found during polygonization.
-        /// </summary>
-        public virtual IList InvalidRingLines
-        {
-            get
-            {
-                Polygonize();
-                return _invalidRingLines;
-            }
-            protected set
-            {
-                _invalidRingLines = value;
-            }
+            get { return _isCheckingRingsValid; }
+            set { _isCheckingRingsValid = value; }
         }
 
         #endregion
@@ -136,23 +97,20 @@ namespace DotSpatial.Topology.Operation.Polygonize
         #region Methods
 
         /// <summary>
-        /// Add a collection of geometries to be polygonized.
+        /// Adds a collection of <see cref="IGeometry"/>s to be polygonized.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used.
         /// </summary>
         /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
-        public virtual void Add(IList geomList)
+        public void Add(ICollection<IGeometry> geomList)
         {
-            for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); )
-            {
-                Geometry geometry = (Geometry)i.Current;
+            foreach (var geometry in geomList)
                 Add(geometry);
-            }
         }
 
         /// <summary>
-        /// Add a point to the linework to be polygonized.
+        /// Adds a <see cref="IGeometry"/> to the linework to be polygonized.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used
@@ -164,59 +122,47 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        ///
+        /// Adds a  to the graph of polygon edges.
         /// </summary>
-        /// <param name="holeList"></param>
-        /// <param name="shellList"></param>
-        private static void AssignHolesToShells(IEnumerable holeList, IList shellList)
+        /// <param name="line">The <see cref="ILineString"/> to add.</param>
+        private void Add(ILineString line)
         {
-            for (IEnumerator i = holeList.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeRing holeEr = (EdgeRing)i.Current;
-                AssignHoleToShell(holeEr, shellList);
-            }
+            // create a new graph using the factory from the input Geometry
+            if (_graph == null)
+                _graph = new PolygonizeGraph(line.Factory);
+            _graph.AddEdge(line);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="holeEr"></param>
-        /// <param name="shellList"></param>
-        private static void AssignHoleToShell(EdgeRing holeEr, IList shellList)
+        private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, IList<EdgeRing> shellList)
         {
-            EdgeRing shell = EdgeRing.FindEdgeRingContaining(holeEr, shellList);
+            foreach (EdgeRing holeEdgeRing in holeList)
+                AssignHoleToShell(holeEdgeRing, shellList);
+        }
+
+        private static void AssignHoleToShell(EdgeRing holeEdgeRing, IList<EdgeRing> shellList)
+        {
+            var shell = EdgeRing.FindEdgeRingContaining(holeEdgeRing, shellList);
             if (shell != null)
-                shell.AddHole(holeEr.Ring);
+                shell.AddHole(holeEdgeRing.Ring);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edgeRingList"></param>
-        private void FindShellsAndHoles(IEnumerable edgeRingList)
+        private void FindShellsAndHoles(IEnumerable<EdgeRing> edgeRingList)
         {
-            _holeList = new ArrayList();
-            _shellList = new ArrayList();
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
+            _holeList = new List<EdgeRing>();
+            _shellList = new List<EdgeRing>();
+            foreach (var er in edgeRingList)
             {
-                EdgeRing er = (EdgeRing)i.Current;
                 if (er.IsHole)
                     _holeList.Add(er);
                 else _shellList.Add(er);
+
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="edgeRingList"></param>
-        /// <param name="validEdgeRingList"></param>
-        /// <param name="invalidRingList"></param>
-        private static void FindValidRings(IEnumerable edgeRingList, IList validEdgeRingList, IList invalidRingList)
+        private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, ICollection<EdgeRing> validEdgeRingList, ICollection<IGeometry> invalidRingList)
         {
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); )
+            foreach (var er in edgeRingList)
             {
-                EdgeRing er = (EdgeRing)i.Current;
                 if (er.IsValid)
                     validEdgeRingList.Add(er);
                 else invalidRingList.Add(er.LineString);
@@ -224,34 +170,72 @@ namespace DotSpatial.Topology.Operation.Polygonize
         }
 
         /// <summary>
-        /// Perform the polygonization, if it has not already been carried out.
+        /// Gets the list of cut edges found during polygonization.
+        /// </summary>
+        public ICollection<ILineString> GetCutEdges()
+        {
+            Polygonize();
+            return _cutEdges;
+        }
+
+        /// <summary> 
+        /// Gets the list of dangling lines found during polygonization.
+        /// </summary>
+        public ICollection<ILineString> GetDangles()
+        {
+            Polygonize();
+            return _dangles;
+        }
+
+        /// <summary>
+        /// Gets the list of lines forming invalid rings found during polygonization.
+        /// </summary>
+        public IList<IGeometry> GetInvalidRingLines()
+        {
+            Polygonize();
+            return _invalidRingLines;
+        }
+
+        /// <summary>
+        /// Gets the list of polygons formed by the polygonization.
+        /// </summary>        
+        public ICollection<IGeometry> GetPolygons()
+        {
+            Polygonize();
+            return _polyList;
+        }
+
+        /// <summary>
+        /// Performs the polygonization, if it has not already been carried out.
         /// </summary>
         private void Polygonize()
         {
             // check if already computed
-            if (_polyList != null) return;
-            _polyList = new ArrayList();
+            if (_polyList != null)
+                return;
 
-            // if no geometries were supplied it's possible graph could be null
-            if (_graph == null) return;
+            _polyList = new List<IGeometry>();
+
+            // if no geometries were supplied it's possible that graph is null
+            if (_graph == null)
+                return;
 
             _dangles = _graph.DeleteDangles();
             _cutEdges = _graph.DeleteCutEdges();
-            IList edgeRingList = _graph.GetEdgeRings();
+            var edgeRingList = _graph.GetEdgeRings();
 
-            IList validEdgeRingList = new ArrayList();
-            _invalidRingLines = new ArrayList();
-            FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            IList<EdgeRing> validEdgeRingList = new List<EdgeRing>();
+            _invalidRingLines = new List<IGeometry>();
+            if (IsCheckingRingsValid)
+                FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            else validEdgeRingList = edgeRingList;
 
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(_holeList, _shellList);
 
-            _polyList = new ArrayList();
-            for (IEnumerator i = _shellList.GetEnumerator(); i.MoveNext(); )
-            {
-                EdgeRing er = (EdgeRing)i.Current;
+            _polyList = new List<IGeometry>();
+            foreach (EdgeRing er in _shellList)
                 _polyList.Add(er.Polygon);
-            }
         }
 
         #endregion

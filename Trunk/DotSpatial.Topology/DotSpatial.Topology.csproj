@@ -111,6 +111,7 @@
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
     <Compile Include="Algorithm\Distance\DistanceToPoint.cs" />
     <Compile Include="Algorithm\Distance\PointPairDistance.cs" />
+    <Compile Include="Algorithm\IPointInAreaLocator.cs" />
     <Compile Include="Algorithm\Locate\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\Locate\IPointOnGeometryLocator.cs" />
     <Compile Include="Algorithm\Locate\SimplePointInAreaLocator.cs" />
@@ -118,7 +119,9 @@
     <Compile Include="Algorithm\Match\HausdorffSimilarityMeasure.cs" />
     <Compile Include="Algorithm\Match\ISimilarityMeasure.cs" />
     <Compile Include="Algorithm\Match\SimilarityMeasureCombiner.cs" />
+    <Compile Include="Algorithm\MinimumBoundingCircle.cs" />
     <Compile Include="Algorithm\RayCrossingCounter.cs" />
+    <Compile Include="Algorithm\RectangleLineIntersector.cs" />
     <Compile Include="Angle.cs" />
     <Compile Include="CoordinateSystems\AxisInfo.cs" />
     <Compile Include="CoordinateSystems\AxisOrientationEnum.cs" />
@@ -269,6 +272,7 @@
     <Compile Include="Noding\SegmentStringUtil.cs" />
     <Compile Include="Noding\SimpleSegmentSetMutualIntersector.cs" />
     <Compile Include="Noding\Snapround\GeometryNoder.cs" />
+    <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferInputLineSimplifier.cs" />
     <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferStyle.cs" />
@@ -284,6 +288,30 @@
     <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\OffsetSegmentGenerator.cs" />
     <Compile Include="Operation\Buffer\OffsetSegmentString.cs" />
+    <Compile Include="Operation\Distance3D\AxisPlaneCoordinateSequence.cs" />
+    <Compile Include="Operation\Distance3D\Distance3DOp.cs" />
+    <Compile Include="Operation\Distance3D\PlanarPolygon3D.cs" />
+    <Compile Include="Operation\Distance\FacetSequence.cs" />
+    <Compile Include="Operation\Distance\FacetSequenceTreeBuilder.cs" />
+    <Compile Include="Operation\Distance\IndexedFacedDistance.cs" />
+    <Compile Include="Operation\Linemerge\LineSequencer.cs" />
+    <Compile Include="Operation\Overlay\Snap\GeometrySnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\LineStringSnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapOverlayOp.cs" />
+    <Compile Include="Operation\Overlay\Validate\FuzzyPointLocator.cs" />
+    <Compile Include="Operation\Overlay\Validate\OffsetPointGenerator.cs" />
+    <Compile Include="Operation\Overlay\Validate\OverlayResultValidator.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
+    <Compile Include="Operation\Union\PointGeometryUnion.cs" />
+    <Compile Include="Operation\Union\UnaryUnionOp.cs" />
+    <Compile Include="Operation\Union\UnionInteracting.cs" />
+    <Compile Include="Operation\Valid\IndexedNestedRingTester.cs" />
+    <Compile Include="Precision\CoordinatePrecisionReducerFilter.cs" />
+    <Compile Include="Precision\GeometryPrecisionReducer.cs" />
+    <Compile Include="Precision\MinimumClearance.cs" />
+    <Compile Include="Precision\PrecisionReducerCoordinateOperation.cs" />
+    <Compile Include="Precision\SimpleMinimumClearance.cs" />
     <Compile Include="Shape\Fractal\KochSnowflakeBuilder.cs" />
     <Compile Include="Shape\Fractal\SierpinskiCarpetBuilder.cs" />
     <Compile Include="Shape\GeometricShapeBuilder.cs" />
@@ -445,9 +473,6 @@
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Utilities\GeometryEditor.cs" />
     <Compile Include="Utilities\GeometryTransformer.cs" />
-    <Compile Include="Utilities\LinearComponentExtracter.cs" />
-    <Compile Include="Utilities\PointExtracter.cs" />
-    <Compile Include="Utilities\PolygonExtracter.cs" />
     <Compile Include="Utilities\ShortCircuitedGeometryVisitor.cs" />
     <Compile Include="UnsupportedGeometryException.cs" />
     <Compile Include="Utilities\StreamTokenizer.cs" />
@@ -478,7 +503,6 @@
     <Compile Include="Algorithm\PointLocator.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
-    <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="ClassNotSupportedException.cs" />
@@ -671,6 +695,7 @@
     <Folder Include="Geometries\Prepared\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Precision\PrecisionSummary.xml" />
     <Content Include="Triangulate\QuadEdge\QuadEdgeSummary.xml" />
     <Content Include="Triangulate\TriangulateSummary.xml" />
   </ItemGroup>

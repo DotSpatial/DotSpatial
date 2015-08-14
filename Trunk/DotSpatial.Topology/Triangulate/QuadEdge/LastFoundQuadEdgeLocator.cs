@@ -1,3 +1,5 @@
+using System;
+
 namespace DotSpatial.Topology.Triangulate.QuadEdge
 {
     /// <summary>
@@ -38,7 +40,7 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
             }
             else
             {
-                throw new System.IndexOutOfRangeException();
+                throw new IndexOutOfRangeException();
             }
         }
 

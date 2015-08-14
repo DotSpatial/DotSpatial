@@ -344,7 +344,7 @@ namespace DotSpatial.Topology.Operation.Union
         /// <param name="g1">A polygonal geometry</param>
         /// <param name="common">The intersection of the envelopes of the inputs</param>
         /// <returns>The union of the inputs</returns>
-        private IGeometry UnionUsingEnvelopeIntersection(IGeometry g0, IGeometry g1, Envelope common)
+        private IGeometry UnionUsingEnvelopeIntersection(IGeometry g0, IGeometry g1, IEnvelope common)
         {
             var disjointPolys = new List<IGeometry>();
             var g0Int = ExtractByEnvelope(common, g0, disjointPolys);
@@ -355,7 +355,7 @@ namespace DotSpatial.Topology.Operation.Union
             return overallUnion;
         }
 
-        private IGeometry ExtractByEnvelope(Envelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
+        private IGeometry ExtractByEnvelope(IEnvelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
         {
             var intersectingGeoms = new List<IGeometry>();
             for (var i = 0; i < geom.NumGeometries; i++)
