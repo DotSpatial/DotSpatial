@@ -22,7 +22,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System;
 using DotSpatial.Topology.Utilities;
 using BitConverter = System.BitConverter;
 

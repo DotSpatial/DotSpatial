@@ -52,12 +52,12 @@ namespace DotSpatial.Topology.Precision
         /// <param name="distance">The buffer distance.</param>
         /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
         [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
-        public static IGeometry Buffer(Geometry geom, double distance)
+        public static IGeometry Buffer(IGeometry geom, double distance)
         {
             ApplicationException originalEx;
             try
             {
-                Geometry result = (Geometry)geom.Buffer(distance);
+                IGeometry result = geom.Buffer(distance);
                 return result;
             }
             catch (ApplicationException ex)

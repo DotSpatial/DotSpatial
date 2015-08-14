@@ -27,7 +27,31 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Precision
 {
     /// <summary>
-    /// Allow computing and removing common mantissa bits from one or more Geometries.
+    /// Removes common most-significant mantissa bits
+    /// from one or more <see cref="IGeometry"/>s.
+    /// <para/>
+    /// The CommonBitsRemover "scavenges" precision
+    /// which is "wasted" by a large displacement of the geometry
+    /// from the origin.
+    /// For example, if a small geometry is displaced from the origin
+    /// by a large distance,
+    /// the displacement increases the significant figures in the coordinates,
+    /// but does not affect the <i>relative</i> topology of the geometry.
+    /// Thus the geometry can be translated back to the origin
+    /// without affecting its topology.
+    /// In order to compute the translation without affecting
+    /// the full precision of the coordinate values,
+    /// the translation is performed at the bit level by
+    /// removing the common leading mantissa bits.
+    /// <para/>
+    /// If the geometry envelope already contains the origin,
+    /// the translation procedure cannot be applied.
+    /// In this case, the common bits value is computed as zero.
+    /// <para/>
+    /// If the geometry crosses the Y axis but not the X axis
+    /// (and <i>mutatis mutandum</i>),
+    /// the common bits for Y are zero,
+    /// but the common bits for X are non-zero.
     /// </summary>
     public class CommonBitsRemover
     {
@@ -45,10 +69,7 @@ namespace DotSpatial.Topology.Precision
         /// </summary>
         public virtual Coordinate CommonCoordinate
         {
-            get
-            {
-                return _commonCoord;
-            }
+            get { return _commonCoord; }
         }
 
         #endregion
@@ -75,7 +96,7 @@ namespace DotSpatial.Topology.Precision
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
         public virtual void AddCommonBits(IGeometry geom)
         {
-            Translater trans = new Translater(_commonCoord);
+            var trans = new Translater(_commonCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
         }
@@ -86,7 +107,7 @@ namespace DotSpatial.Topology.Precision
         /// </summary>
         /// <param name="geom">The Geometry from which to remove the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public virtual Geometry RemoveCommonBits(Geometry geom)
+        public virtual IGeometry RemoveCommonBits(IGeometry geom)
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;

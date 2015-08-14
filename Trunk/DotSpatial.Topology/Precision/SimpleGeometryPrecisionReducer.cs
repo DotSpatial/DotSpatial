@@ -22,6 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Topology.Geometries;
@@ -30,16 +31,20 @@ using DotSpatial.Topology.Utilities;
 namespace DotSpatial.Topology.Precision
 {
     /// <summary>
-    /// Reduces the precision of a <c>Geometry</c>
+    /// Reduces the precision of the coordinates of a <c>Geometry</c>
     /// according to the supplied {PrecisionModel}, without
     /// attempting to preserve valid topology.
-    /// The topology of the resulting point may be invalid if
+    /// </summary>
+    /// <remarks>
+    /// In case of <see cref="IPolygonal"/> geometries,
+    /// the topology of the resulting geometry may be invalid if
     /// topological collapse occurs due to coordinates being shifted.
     /// It is up to the client to check this and handle it if necessary.
     /// Collapses may not matter for some uses. An example
     /// is simplifying the input to the buffer algorithm.
     /// The buffer algorithm does not depend on the validity of the input point.
-    /// </summary>
+    /// </remarks>
+    [Obsolete("Use GeometryPrecisionReducer")]
     public class SimpleGeometryPrecisionReducer
     {
         #region Fields
@@ -68,7 +73,7 @@ namespace DotSpatial.Topology.Precision
         /// <summary>
         /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
         /// will be changed to be the PrecisionModel supplied to
-        /// specify the reduction.
+        /// specify the precision reduction.  <para/>
         /// The default is to not change the precision model.
         /// </summary>
         public virtual bool ChangePrecisionModel
@@ -104,6 +109,17 @@ namespace DotSpatial.Topology.Precision
 
         #region Methods
 
+        ///<summary>
+        /// Convenience method for doing precision reduction on a single geometry,
+        /// with collapses removed and keeping the geometry precision model the same.
+        ///</summary>
+        /// <returns>The reduced geometry</returns>
+        public static IGeometry Reduce(IGeometry g, PrecisionModel precModel)
+        {
+            var reducer = new SimpleGeometryPrecisionReducer(precModel);
+            return reducer.Reduce(g);
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -114,7 +130,6 @@ namespace DotSpatial.Topology.Precision
             GeometryEditor geomEdit;
             if (_changePrecisionModel)
             {
-                // GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel, geom.SRID);
                 GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
             }
@@ -170,7 +185,7 @@ namespace DotSpatial.Topology.Precision
                 for (int i = 0; i < coordinates.Count; i++)
                 {
                     Coordinate coord = new Coordinate(coordinates[i]);
-                    new PrecisionModel(_container._newPrecisionModel).MakePrecise(coord);
+                    _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
@@ -189,9 +204,9 @@ namespace DotSpatial.Topology.Precision
                 * (This may create an invalid point - the client must handle this.)
                 */
                 int minLength = 0;
-                if (geom is LineString)
+                if (geom is ILineString)
                     minLength = 2;
-                if (geom is LinearRing)
+                if (geom is ILinearRing)
                     minLength = 4;
 
                 Coordinate[] collapsedCoords = reducedCoords;
