@@ -32,7 +32,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// <summary>
     /// MonotoneChains are a way of partitioning the segments of an edge to
     /// allow for fast searching of intersections.
-    /// They have the following properties:
+    /// <para>
+    /// Specifically, a sequence of contiguous line segments
+    /// is a monotone chain iff all the vectors defined by the oriented segments
+    /// lies in the same quadrant.
+    /// </para><para>
+    /// Monotone Chains have the following useful properties:
     /// the segments within a monotone chain will never intersect each other, and
     /// the envelope of any contiguous subset of the segments in a monotone chain
     /// is simply the envelope of the endpoints of the subset.
@@ -42,6 +47,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// binary search to be used to find the intersection points of two monotone chains.
     /// For many types of real-world data, these properties eliminate a large number of
     /// segment comparisons, producing substantial speed gains.
+    /// </para>
     /// </summary>
     public class MonotoneChainIndexer
     {
@@ -75,7 +81,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
-            IList startIndexList = new ArrayList();
+            var startIndexList = new List<int>();
             startIndexList.Add(start);
             do
             {
@@ -85,7 +91,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             }
             while (start < pts.Count - 1);
             // copy list to an array of ints, for efficiency
-            int[] startIndex = ToIntArray(startIndexList);
+            int[] startIndex = startIndexList.ToArray();
             return startIndex;
         }
 
@@ -94,7 +100,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static int[] ToIntArray(IList list)
+        [Obsolete("Use List<int>.ToArray()")]
+        public static int[] ToIntArray(IList<int> list)
         {
             int[] array = new int[list.Count];
             for (int i = 0; i < array.Length; i++)

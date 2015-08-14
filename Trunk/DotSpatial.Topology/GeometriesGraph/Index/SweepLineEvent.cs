@@ -33,15 +33,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     {
         #region Constant Fields
 
-        /// <summary>
-        ///
-        /// </summary>
-        public const int DELETE = 2;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public const int INSERT = 1;
+        private const int Delete = 2;
+        private const int Insert = 1;
 
         #endregion
 
@@ -49,31 +42,39 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
 
         private readonly int _eventType;
         private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
+        private readonly object _label; // used for red-blue intersection detection
         private readonly object _obj;
         private readonly double _xValue;
         private int _deleteEventIndex;
-        private object _edgeSet;    // used for red-blue intersection detection
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// Creates an INSERT event.
         /// </summary>
-        /// <param name="edgeSet"></param>
-        /// <param name="x"></param>
-        /// <param name="insertEvent"></param>
-        /// <param name="obj"></param>
-        public SweepLineEvent(object edgeSet, double x, SweepLineEvent insertEvent, object obj)
+        /// <param name="label">The edge set label for this object.</param>
+        /// <param name="x">The event location</param>
+        /// <param name="obj">the object being inserted</param>
+        public SweepLineEvent(object label, double x, object obj)
         {
-            _edgeSet = edgeSet;
+            _eventType = Insert;
+            _label = label;
+            _xValue = x;
+            _obj = obj;
+        }
+
+        /// <summary>
+        /// Creates a DELETE event.
+        /// </summary>
+        /// <param name="x">The event location</param>
+        /// <param name="insertEvent">The corresponding INSERT event</param>
+        public SweepLineEvent(double x, SweepLineEvent insertEvent)
+        {
+            _eventType = Delete;
             _xValue = x;
             _insertEvent = insertEvent;
-            _eventType = INSERT;
-            if (insertEvent != null)
-                _eventType = DELETE;
-            _obj = obj;
         }
 
         #endregion
@@ -85,10 +86,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         public SweepLineEvent InsertEvent
         {
-            get
-            {
-                return _insertEvent;
-            }
+            get { return _insertEvent; }
         }
 
         /// <summary>
@@ -96,10 +94,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         public virtual bool IsDelete
         {
-            get
-            {
-                return _insertEvent != null;
-            }
+            get { return _eventType == Delete; }
         }
 
         /// <summary>
@@ -107,10 +102,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         public virtual bool IsInsert
         {
-            get
-            {
-                return _insertEvent == null;
-            }
+            get { return _eventType == Insert; }
         }
 
         /// <summary>
@@ -118,10 +110,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         public virtual object Object
         {
-            get
-            {
-                return _obj;
-            }
+            get { return _obj; }
         }
 
         /// <summary>
@@ -129,29 +118,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         public virtual int DeleteEventIndex
         {
-            get
-            {
-                return _deleteEventIndex;
-            }
-            set
-            {
-                _deleteEventIndex = value;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual object EdgeSet
-        {
-            get
-            {
-                return _edgeSet;
-            }
-            set
-            {
-                _edgeSet = value;
-            }
+            get { return _deleteEventIndex; }
+            set { _deleteEventIndex = value; }
         }
 
         #endregion
@@ -159,8 +127,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         #region Methods
 
         /// <summary>
-        /// ProjectionEvents are ordered first by their x-value, and then by their eventType.
-        /// It is important that Insert events are sorted before Delete events, so that
+        /// Events are ordered first by their x-value, and then by their eventType.
+        /// Insert events are sorted before Delete events, so that
         /// items whose Insert and Delete events occur at the same x-value will be
         /// correctly handled.
         /// </summary>
@@ -177,6 +145,14 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             if (_eventType > pe._eventType)
                 return 1;
             return 0;
+        }
+
+        public bool IsSameLabel(SweepLineEvent ev)
+        {
+            // no label set indicates single group
+            if (_label == null)
+                return false;
+            return _label == ev._label;
         }
 
         #endregion

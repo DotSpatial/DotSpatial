@@ -44,14 +44,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="edges"></param>
         /// <param name="si"></param>
         /// <param name="testAllSegments"></param>
-        public override void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments)
+        public override void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments)
         {
-            for (IEnumerator i0 = edges.GetEnumerator(); i0.MoveNext(); )
+            foreach (Edge edge0 in edges)
             {
-                Edge edge0 = (Edge)i0.Current;
-                for (IEnumerator i1 = edges.GetEnumerator(); i1.MoveNext(); )
+                foreach (Edge edge1 in edges)
                 {
-                    Edge edge1 = (Edge)i1.Current;
                     if (testAllSegments || edge0 != edge1)
                         ComputeIntersects(edge0, edge1, si);
                 }
@@ -64,16 +62,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
         /// <param name="si"></param>
-        public override void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si)
+        public override void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si)
         {
-            for (IEnumerator i0 = edges0.GetEnumerator(); i0.MoveNext(); )
+            foreach (Edge edge0 in edges0)
             {
-                Edge edge0 = (Edge)i0.Current;
-                for (IEnumerator i1 = edges1.GetEnumerator(); i1.MoveNext(); )
-                {
-                    Edge edge1 = (Edge)i1.Current;
+                foreach (Edge edge1 in edges1)
                     ComputeIntersects(edge0, edge1, si);
-                }
             }
         }
 

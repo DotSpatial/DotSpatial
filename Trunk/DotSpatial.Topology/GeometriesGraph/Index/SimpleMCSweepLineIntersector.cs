@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -38,7 +38,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     {
         #region Fields
 
-        private readonly ArrayList _events = new ArrayList();
+        private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
         // statistics information
         int _nOverlaps;
 
@@ -50,11 +50,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         ///
         /// </summary>
         /// <param name="edges"></param>
-        private void Add(IEnumerable edges)
+        private void Add(IEnumerable<Edge> edges)
         {
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            foreach (Edge edge in edges)
             {
-                Edge edge = (Edge)i.Current;
                 // edge is its own group
                 Add(edge, edge);
             }
@@ -65,11 +64,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
-        private void Add(IEnumerable edges, object edgeSet)
+        private void Add(IEnumerable<Edge> edges, object edgeSet)
         {
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            foreach (Edge edge in edges)
             {
-                Edge edge = (Edge)i.Current;
                 Add(edge, edgeSet);
             }
         }
@@ -86,9 +84,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             for (int i = 0; i < startIndex.Length - 1; i++)
             {
                 MonotoneChain mc = new MonotoneChain(mce, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
+                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
                 _events.Add(insertEvent);
-                _events.Add(new SweepLineEvent(edgeSet, mce.GetMaxX(i), insertEvent, mc));
+                _events.Add(new SweepLineEvent(mce.GetMaxX(i), insertEvent));
             }
         }
 
@@ -98,7 +96,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="edges"></param>
         /// <param name="si"></param>
         /// <param name="testAllSegments"></param>
-        public override void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments)
+        public override void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments)
         {
             if (testAllSegments)
                 Add(edges, null);
@@ -112,7 +110,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
         /// <param name="si"></param>
-        public override void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si)
+        public override void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si)
         {
             Add(edges0, edges0);
             Add(edges1, edges1);
@@ -130,7 +128,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
 
             for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsInsert)
                 {
                     // Console.WriteLine("Processing event " + i);
@@ -147,9 +145,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         private void PrepareEvents()
         {
             _events.Sort();
-            for (int i = 0; i < _events.Count; i++)
+            // set DELETE event indexes
+            for (int i = 0; i < _events.Count; i++ )
             {
-                SweepLineEvent ev = (SweepLineEvent)_events[i];
+                SweepLineEvent ev = _events[i];
                 if (ev.IsDelete)
                     ev.InsertEvent.DeleteEventIndex = i;
             }
@@ -173,17 +172,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             */
             for (int i = start; i < end; i++)
             {
-                SweepLineEvent ev1 = (SweepLineEvent)_events[i];
-                if (ev1.IsInsert)
+                SweepLineEvent ev1 = _events[i]; 
+                if (ev1.IsInsert) 
                 {
                     MonotoneChain mc1 = (MonotoneChain)ev1.Object;
-                    // don't compare edges in same group
-                    // null group indicates that edges should be compared
-                    if (ev0.EdgeSet == null)
-                    {
-                        // This null situation is problematic
-                    }
-                    if (ev0.EdgeSet == null || (ev0.EdgeSet != ev1.EdgeSet))
+                    // don't compare edges in same group, if labels are present
+                    if (!ev0.IsSameLabel(ev1)) 
                     {
                         mc0.ComputeIntersections(mc1, si);
                         _nOverlaps++;

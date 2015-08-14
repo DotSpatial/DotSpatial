@@ -108,12 +108,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         public virtual void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
             for (int i = 0; i < _startIndex.Length - 1; i++)
-            {
                 for (int j = 0; j < mce._startIndex.Length - 1; j++)
-                {
                     ComputeIntersectsForChain(i, mce, j, si);
-                }
-            }
         }
 
         /// <summary>
@@ -144,8 +140,6 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
             Coordinate p01 = _pts[end0];
             Coordinate p10 = mce._pts[start1];
             Coordinate p11 = mce._pts[end1];
-
-            // Console.WriteLine("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
 
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

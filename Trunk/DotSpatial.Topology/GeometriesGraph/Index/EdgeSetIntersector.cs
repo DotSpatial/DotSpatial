@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
@@ -46,12 +46,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="edges">A list of edges to test for intersections.</param>
         /// <param name="si">The SegmentIntersector to use.</param>
         /// <param name="testAllSegments"><c>true</c> if self-intersections are to be tested as well.</param>
-        public abstract void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments);
+        abstract public void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments);
 
         /// <summary>
         /// Computes all mutual intersections between two sets of edges.
         /// </summary>
-        public abstract void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si);
+        abstract public void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si);
 
         #endregion
     }

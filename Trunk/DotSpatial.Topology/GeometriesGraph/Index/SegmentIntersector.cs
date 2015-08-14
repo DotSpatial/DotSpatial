@@ -23,14 +23,15 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.GeometriesGraph.Index
 {
     /// <summary>
-    ///
+    /// Computes the intersection of line segments,
+    /// and adds the intersection to the edges containing the segments.
     /// </summary>
     public class SegmentIntersector
     {
@@ -44,11 +45,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         private readonly bool _includeProper;
         private readonly LineIntersector _li;
         private readonly bool _recordIsolated;
-        private ICollection[] _bdyNodes;
+        private IList<Node>[] _bdyNodes;
         private bool _hasIntersection;
         private bool _hasProper;
         private bool _hasProperInterior;
-        private int _numIntersections;
         private Coordinate _properIntersectionPoint;
 
         #endregion
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
 
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
-        /// line segments.  Notice that a proper intersection is not necessarily
+        /// line segments. Note that a proper intersection is not necessarily
         /// in the interior of the entire Geometry, since another edge may have
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the Geometry.
@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         /// This method is called by clients of the EdgeIntersector class to test for and add
         /// intersections for two segments of the edges being intersected.
-        /// Notice that clients (such as MonotoneChainEdges) may choose not to intersect
+        /// Note that clients (such as MonotoneChainEdges) may choose not to intersect
         /// certain pairs of segments for efficiency reasons.
         /// </summary>
         /// <param name="e0"></param>
@@ -158,7 +158,6 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
                     e0.Isolated = false;
                     e1.Isolated = false;
                 }
-                _numIntersections++;
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
                 // only intersection.
@@ -198,7 +197,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
-        private static bool IsBoundaryPoint(LineIntersector li, ICollection[] bdyNodes)
+        private static bool IsBoundaryPoint(LineIntersector li, IList<Node>[] bdyNodes)
         {
             if (bdyNodes == null)
                 return false;
@@ -215,11 +214,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
-        private static bool IsBoundaryPoint(LineIntersector li, IEnumerable bdyNodes)
+        private static bool IsBoundaryPoint(LineIntersector li, IEnumerable<Node> bdyNodes)
         {
-            for (IEnumerator i = bdyNodes.GetEnumerator(); i.MoveNext(); )
+            foreach (Node node in bdyNodes)
             {
-                Node node = (Node)i.Current;
                 Coordinate pt = node.Coordinate;
                 if (li.IsIntersection(pt))
                     return true;
@@ -230,7 +228,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact
         /// is simply the point shared by adjacent line segments.
-        /// Notice that closed edges require a special check for the point shared by the beginning
+        /// Note that closed edges require a special check for the point shared by the beginning
         /// and end segments.
         /// </summary>
         /// <param name="e0"></param>
@@ -262,9 +260,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="bdyNodes0"></param>
         /// <param name="bdyNodes1"></param>
-        public virtual void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
+        public void SetBoundaryNodes(IList<Node> bdyNodes0, IList<Node> bdyNodes1)
         {
-            _bdyNodes = new ICollection[2];
+            _bdyNodes = new IList<Node>[2];
             _bdyNodes[0] = bdyNodes0;
             _bdyNodes[1] = bdyNodes1;
         }
