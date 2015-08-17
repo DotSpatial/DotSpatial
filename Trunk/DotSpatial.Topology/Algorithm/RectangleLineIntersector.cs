@@ -27,7 +27,7 @@ namespace DotSpatial.Topology.Algorithm
         private readonly Coordinate _diagUp1;
         // for intersection testing, don't need to set precision model
         private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly Envelope _rectEnv;
+        private readonly IEnvelope _rectEnv;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace DotSpatial.Topology.Algorithm
         /// specified as an <see cref="Envelope"/>.
         /// </summary>
         /// <param name="rectEnv">The query rectangle, specified as an Envelope</param>
-        public RectangleLineIntersector(Envelope rectEnv)
+        public RectangleLineIntersector(IEnvelope rectEnv)
         {
             _rectEnv = rectEnv;
             /**
@@ -46,10 +46,10 @@ namespace DotSpatial.Topology.Algorithm
              * relative to the Left side of the rectangle.
              * Index 0 is the left side, 1 is the right side.
              */
-            _diagUp0 = new Coordinate(rectEnv.MinX, rectEnv.MinY);
-            _diagUp1 = new Coordinate(rectEnv.MaxX, rectEnv.MaxY);
-            _diagDown0 = new Coordinate(rectEnv.MinX, rectEnv.MaxY);
-            _diagDown1 = new Coordinate(rectEnv.MaxX, rectEnv.MinY);
+            _diagUp0 = new Coordinate(rectEnv.Minimum.X, rectEnv.Minimum.Y);
+            _diagUp1 = new Coordinate(rectEnv.Maximum.X, rectEnv.Maximum.Y);
+            _diagDown0 = new Coordinate(rectEnv.Minimum.X, rectEnv.Maximum.Y);
+            _diagDown1 = new Coordinate(rectEnv.Maximum.X, rectEnv.Minimum.Y);
         }
 
         #endregion

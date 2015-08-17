@@ -30,8 +30,8 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Operation.Predicate
 {
     /// <summary>
-    /// Tests if any line segments in two sets of CoordinateSequences intersect.
-    /// Optimized for small geometry size.
+    /// Tests if any line segments in two sets of <see cref="CoordinateSequences"/> intersect.
+    /// Optimized for use when at least one input is of small size.
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
     public class SegmentIntersectionTester
@@ -39,12 +39,12 @@ namespace DotSpatial.Topology.Operation.Predicate
         #region Fields
 
         // for purposes of intersection testing, don't need to set precision model
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly Coordinate pt00 = new Coordinate();
+        private readonly Coordinate pt01 = new Coordinate();
+        private readonly Coordinate pt10 = new Coordinate();
+        private readonly Coordinate pt11 = new Coordinate();
         private bool _hasIntersection;
-        private Coordinate _pt00;
-        private Coordinate _pt01;
-        private Coordinate _pt10;
-        private Coordinate _pt11;
 
         #endregion
 
@@ -55,22 +55,23 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// </summary>
         /// <param name="seq0"></param>
         /// <param name="seq1"></param>
-        private void HasIntersection(IList<Coordinate> seq0, IList<Coordinate> seq1)
+        /// <returns></returns>
+        public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1) 
         {
-            for (int i = 1; i < seq0.Count && !_hasIntersection; i++)
+            for (int i = 1; i < seq0.Count && ! _hasIntersection; i++) 
             {
-                _pt00 = seq0[i - 1];
-                _pt01 = seq0[i];
-                for (int j = 1; j < seq1.Count && !_hasIntersection; j++)
+                seq0.GetCoordinate(i - 1, pt00);
+                seq0.GetCoordinate(i, pt01);
+                for (int j = 1; j < seq1.Count && ! _hasIntersection; j++) 
                 {
-                    _pt10 = seq1[j - 1];
-                    _pt11 = seq1[j];
-                    _li.ComputeIntersection(_pt00, _pt01, _pt10, _pt11);
-                    if (_li.HasIntersection)
+                    seq1.GetCoordinate(j - 1, pt10);
+                    seq1.GetCoordinate(j, pt11);
+                    li.ComputeIntersection(pt00, pt01, pt10, pt11);
+                    if (li.HasIntersection)
                         _hasIntersection = true;
                 }
             }
-            return;
+            return _hasIntersection;
         }
 
         /// <summary>
@@ -79,12 +80,11 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// <param name="seq"></param>
         /// <param name="lines"></param>
         /// <returns></returns>
-        public bool HasIntersectionWithLineStrings(IList<Coordinate> seq, IList lines)
+        public bool HasIntersectionWithLineStrings(ICoordinateSequence seq, ICollection<IGeometry> lines)
         {
-            for (IEnumerator i = lines.GetEnumerator(); i.MoveNext(); )
+            foreach (ILineString line in lines)
             {
-                LineString line = (LineString)i.Current;
-                HasIntersection(seq, line.Coordinates);
+                HasIntersection(seq, line.CoordinateSequence);
                 if (_hasIntersection)
                     break;
             }

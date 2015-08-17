@@ -281,6 +281,7 @@
     <Compile Include="Noding\SegmentStringUtil.cs" />
     <Compile Include="Noding\SimpleSegmentSetMutualIntersector.cs" />
     <Compile Include="Noding\Snapround\GeometryNoder.cs" />
+    <Compile Include="NtsGeometryServices.cs" />
     <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferInputLineSimplifier.cs" />
     <Compile Include="Operation\Buffer\BufferParameters.cs" />

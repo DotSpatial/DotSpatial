@@ -27,20 +27,22 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Algorithm.Locate;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Geometries.Utilities;
-using ShortCircuitedGeometryVisitor = DotSpatial.Topology.Utilities.ShortCircuitedGeometryVisitor;
 
 namespace DotSpatial.Topology.Operation.Predicate
 {
-    /// <summary>
-    /// Optimized implementation of spatial predicate "intersects"
-    /// for cases where the first {@link Geometry} is a rectangle.
-    /// As a further optimization,
-    /// this class can be used directly to test many geometries against a single
-    /// rectangle.
+    /// <summary>Implementation of the <tt>Intersects</tt> spatial predicate
+    /// optimized for the case where one <see cref="IGeometry"/> is a rectangle. 
     /// </summary>
+    /// <remarks>
+    /// This class works for all input geometries, including <see cref="IGeometryCollection"/>s.
+    /// <para/>
+    /// As a further optimization, this class can be used in batch style
+    /// to test many geometries against a single rectangle.
+    /// </remarks>
     public class RectangleIntersects
     {
         #region Constant Fields
@@ -51,7 +53,7 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// Must be determined empirically.  Should err on the
         /// safe side by making value smaller rather than larger.
         /// </summary>
-        public const int MAXIMUM_SCAN_SEGMENT_COUNT = 200;
+        public const int MaximumScanSegmentCount = 200;
 
         #endregion
 
@@ -67,7 +69,7 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// <summary>
         /// Create a new intersects computer for a rectangle.
         /// </summary>
-        /// <param name="rectangle">A rectangular geometry.</param>
+        /// <param name="rectangle">A rectangular polygon.</param>
         public RectangleIntersects(IPolygon rectangle)
         {
             _rectangle = rectangle;
@@ -79,68 +81,75 @@ namespace DotSpatial.Topology.Operation.Predicate
         #region Methods
 
         /// <summary>
-        ///
+        /// Tests whether a rectangle intersects a given geometry.
         /// </summary>
-        /// <param name="rectangle"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public static bool Intersects(Polygon rectangle, IGeometry b)
+        /// <param name="rectangle">A rectangular polygon</param>
+        /// <param name="b">A geometry of any kind</param>
+        /// <returns><c>true</c> if the geometries intersect.</returns>
+        public static bool Intersects(IPolygon rectangle, IGeometry b)
         {
-            RectangleIntersects rp = new RectangleIntersects(rectangle);
+            var rp = new RectangleIntersects(rectangle);
             return rp.Intersects(b);
         }
 
         /// <summary>
-        ///
+        /// Tests whether the given Geometry intersects the query rectangle.
         /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
+        /// <param name="geom">The Geometry to test (may be of any type)</param>
+        /// <returns><value>true</value> if an intersection must occur 
+        /// or <value>false</value> if no conclusion about intersection can be made</returns>
         public bool Intersects(IGeometry geom)
         {
             if (!_rectEnv.Intersects(geom.EnvelopeInternal))
                 return false;
-            // test envelope relationships
-            EnvelopeIntersectsVisitor visitor = new EnvelopeIntersectsVisitor(_rectEnv);
+
+            /**
+             * Test if rectangle envelope intersects any component envelope.
+             * This handles Point components as well
+             */
+            var visitor = new EnvelopeIntersectsVisitor(_rectEnv);
             visitor.ApplyTo(geom);
-            if (visitor.Intersects())
+            if (visitor.Intersects)
                 return true;
 
-            // test if any rectangle corner is contained in the target
-            ContainsPointVisitor ecpVisitor = new ContainsPointVisitor(_rectangle);
+            /**
+             * Test if any rectangle vertex is contained in the target geometry
+             */
+            var ecpVisitor = new GeometryContainsPointVisitor(_rectangle);
             ecpVisitor.ApplyTo(geom);
-            if (ecpVisitor.ContainsPoint())
+            if (ecpVisitor.ContainsPoint)
                 return true;
 
-            // test if any lines intersect
-            LineIntersectsVisitor liVisitor = new LineIntersectsVisitor(_rectangle);
-            liVisitor.ApplyTo(geom);
-            if (liVisitor.Intersects())
-                return true;
-
-            return false;
+            /**
+             * Test if any target geometry line segment intersects the rectangle
+             */
+            var riVisitor = new RectangleIntersectsSegmentVisitor(_rectangle);
+            riVisitor.ApplyTo(geom);
+            return riVisitor.Intersects;
         }
 
         #endregion
     }
 
     /// <summary>
-    ///
+    /// Tests whether it can be concluded that a rectangle intersects a geometry,
+    /// based on the relationship of the envelope(s) of the geometry.
     /// </summary>
+    /// <author>Martin Davis</author>
     internal class EnvelopeIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
         #region Fields
 
         private readonly IEnvelope _rectEnv;
-        private bool _intersects;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// Creates an instance of this class using the provided <c>Envelope</c>
         /// </summary>
-        /// <param name="rectEnv"></param>
+        /// <param name="rectEnv">The query envelope</param>
         public EnvelopeIntersectsVisitor(IEnvelope rectEnv)
         {
             _rectEnv = rectEnv;
@@ -148,56 +157,63 @@ namespace DotSpatial.Topology.Operation.Predicate
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Reports whether it can be concluded that an intersection occurs, 
+        /// or whether further testing is required.
+        /// </summary>
+        /// <returns><c>true</c> if an intersection must occur <br/> 
+        /// or <c>false</c> if no conclusion about intersection can be made</returns>
+        public bool Intersects { get; private set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public bool Intersects() { return _intersects; }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         protected override bool IsDone()
         {
-            return _intersects;
+            return Intersects;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="element"></param>
         protected override void Visit(IGeometry element)
         {
-            IEnvelope elementEnv = element.EnvelopeInternal;
-            // disjoint
+            var elementEnv = element.EnvelopeInternal;
+
+            // disjoint => no intersection
             if (!_rectEnv.Intersects(elementEnv))
                 return;
-            // fully contained - must intersect
+
+            // rectangle contains target env => must intersect
             if (_rectEnv.Contains(elementEnv))
             {
-                _intersects = true;
+                Intersects = true;
                 return;
             }
             /*
-            * Since the envelopes intersect and the test element is connected,
-            * if its envelope is completely bisected by an edge of the rectangle
-            * the element and the rectangle must touch.
-            * (Notice it is NOT possible to make this conclusion
-            * if the test envelope is "on a corner" of the rectangle
-            * envelope)
-            */
+             * Since the envelopes intersect and the test element is connected,
+             * if its envelope is completely bisected by an edge of the rectangle
+             * the element and the rectangle must touch. (This is basically an application of
+             * the Jordan Curve Theorem). The alternative situation is that the test
+             * envelope is "on a corner" of the rectangle envelope, i.e. is not
+             * completely bisected. In this case it is not possible to make a conclusion
+             */
             if (elementEnv.Minimum.X >= _rectEnv.Minimum.X && elementEnv.Maximum.X <= _rectEnv.Maximum.X)
             {
-                _intersects = true;
+                Intersects = true;
                 return;
             }
             if (elementEnv.Minimum.Y >= _rectEnv.Minimum.Y && elementEnv.Maximum.Y <= _rectEnv.Maximum.Y)
             {
-                _intersects = true;
-                return;
+                Intersects = true;
             }
         }
 
@@ -205,70 +221,85 @@ namespace DotSpatial.Topology.Operation.Predicate
     }
 
     /// <summary>
-    ///
+    /// A visitor which tests whether it can be 
+    /// concluded that a geometry contains a vertex of
+    /// a query geometry.
     /// </summary>
-    internal class ContainsPointVisitor : ShortCircuitedGeometryVisitor
+    /// <author>Martin Davis</author>
+    internal class GeometryContainsPointVisitor : ShortCircuitedGeometryVisitor
     {
         #region Fields
 
         private readonly IEnvelope _rectEnv;
-        private readonly IList<Coordinate> _rectSeq;
-        private bool _containsPoint;
+        private readonly ICoordinateSequence _rectSeq;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="rectangle"></param>
-        public ContainsPointVisitor(IPolygon rectangle)
+        public GeometryContainsPointVisitor(IPolygon rectangle)
         {
-            _rectSeq = rectangle.Shell.Coordinates;
+            _rectSeq = rectangle.Shell.CoordinateSequence;
             _rectEnv = rectangle.EnvelopeInternal;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether it can be concluded that a corner point of the rectangle is
+        /// contained in the geometry, or whether further testing is required.
+        /// </summary>
+        /// <returns><value>true</value> if a corner point is contained 
+        /// or <value>false</value> if no conclusion about intersection can be made
+        /// </returns>
+        public bool ContainsPoint { get; private set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public bool ContainsPoint() { return _containsPoint; }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
         protected override bool IsDone()
         {
-            return _containsPoint;
+            return ContainsPoint;
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="geom"></param>
         protected override void Visit(IGeometry geom)
         {
-            if (!(geom is Polygon))
+            if (!(geom is IPolygon))
                 return;
-            IEnvelope elementEnv = geom.EnvelopeInternal;
-            if (!_rectEnv.Intersects(elementEnv))
+            
+            var elementEnv = geom.EnvelopeInternal;
+            if (! _rectEnv.Intersects(elementEnv))
                 return;
+            
             // test each corner of rectangle for inclusion
-            for (int i = 0; i < 4; i++)
+            var rectPt = new Coordinate();
+            for (var i = 0; i < 4; i++)
             {
-                Coordinate rectPt = _rectSeq[i];
+                _rectSeq.GetCoordinate(i, rectPt);
                 if (!elementEnv.Contains(rectPt))
                     continue;
+                
                 // check rect point in poly (rect is known not to touch polygon at this point)
-                if (!SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (Polygon)geom)) continue;
-                _containsPoint = true;
-                return;
+                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (IPolygon) geom))
+                {
+                    ContainsPoint = true;
+                    return;
+                }
             }
         }
 
@@ -276,85 +307,90 @@ namespace DotSpatial.Topology.Operation.Predicate
     }
 
     /// <summary>
-    ///
+    /// A visitor to test for intersection between the query rectangle and the line segments of the geometry.
     /// </summary>
-    internal class LineIntersectsVisitor : ShortCircuitedGeometryVisitor
+    /// <author>Martin Davis</author>
+    internal class RectangleIntersectsSegmentVisitor : ShortCircuitedGeometryVisitor
     {
         #region Fields
 
-        private readonly IPolygon _rectangle;
+        private readonly Coordinate _p0 = new Coordinate();
+        private readonly Coordinate _p1 = new Coordinate();
         private readonly IEnvelope _rectEnv;
-        private readonly IList<Coordinate> _rectSeq;
-        private bool _intersects;
+        private readonly RectangleLineIntersector _rectIntersector;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///
+        /// Creates a visitor for checking rectangle intersection with segments
         /// </summary>
-        /// <param name="rectangle"></param>
-        public LineIntersectsVisitor(IPolygon rectangle)
+        /// <param name="rectangle">the query rectangle </param>
+        public RectangleIntersectsSegmentVisitor(IPolygon rectangle)
         {
-            _rectangle = rectangle;
-            _rectSeq = rectangle.Shell.Coordinates;
             _rectEnv = rectangle.EnvelopeInternal;
+            _rectIntersector = new RectangleLineIntersector(_rectEnv);
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>Reports whether any segment intersection exists.</summary>
+        /// <returns>true if a segment intersection exists or
+        /// false if no segment intersection exists</returns>
+        public bool Intersects { get; private set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        private void ComputeSegmentIntersection(IGeometry geom)
+        private void CheckIntersectionWithLineStrings(IEnumerable<IGeometry> lines)
         {
-            // check segment intersection
-            // get all lines from geom (e.g. if it's a multi-ring polygon)
-            IList lines = LinearComponentExtracter.GetLines(geom);
-            SegmentIntersectionTester si = new SegmentIntersectionTester();
-            bool hasIntersection = si.HasIntersectionWithLineStrings(_rectSeq, lines);
-            if (hasIntersection)
+            foreach (ILineString testLine in lines)
             {
-                _intersects = true;
+                CheckIntersectionWithSegments(testLine);
+                if (Intersects)
+                    return;
+            }
+        }
+
+        private void CheckIntersectionWithSegments(ICurve testLine)
+        {
+            var seq1 = testLine.CoordinateSequence;
+            for (var j = 1; j < seq1.Count; j++)
+            {
+                seq1.GetCoordinate(j - 1, _p0);
+                seq1.GetCoordinate(j, _p1);
+
+                if (!_rectIntersector.Intersects(_p0, _p1)) continue;
+                Intersects = true;
                 return;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public bool Intersects() { return _intersects; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         protected override bool IsDone()
         {
-            return _intersects;
+            return Intersects;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
         protected override void Visit(IGeometry geom)
         {
-            IEnvelope elementEnv = geom.EnvelopeInternal;
+            /**
+             * It may be the case that the rectangle and the 
+             * envelope of the geometry component are disjoint,
+             * so it is worth checking this simple condition.
+             */
+            var elementEnv = geom.EnvelopeInternal;
             if (!_rectEnv.Intersects(elementEnv))
                 return;
-            // check if general relate algorithm should be used, since it's faster for large inputs
-            if (geom.NumPoints > RectangleIntersects.MAXIMUM_SCAN_SEGMENT_COUNT)
-            {
-                _intersects = _rectangle.Relate(geom).IsIntersects();
-                return;
-            }
-            ComputeSegmentIntersection(geom);
+
+            // check segment intersections
+            // get all lines from geometry component
+            // (there may be more than one if it's a multi-ring polygon)
+            var lines = LinearComponentExtracter.GetLines(geom);
+            CheckIntersectionWithLineStrings(lines);
         }
 
         #endregion
