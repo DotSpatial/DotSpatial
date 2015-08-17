@@ -57,13 +57,28 @@ namespace DotSpatial.Topology.Geometries
 
         #region Methods
 
-        /// <summary>
-        /// Generic constructor that parses a list and tries to form a working
-        /// object that implements MapWindow.Interfaces.IGeometry
+        /// <summary>  
+        /// Build an appropriate <c>Geometry</c>, <c>MultiGeometry</c>, or
+        /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
+        /// it.
         /// </summary>
-        /// <param name="geomList">some list of things</param>
-        /// <returns>An object that implements DotSpatial.Geometries.IGeometry</returns>
-        IGeometry BuildGeometry(IList geomList);
+        /// <remarks>
+        ///  If <c>geomList</c> contains a single <c>Polygon</c>,
+        /// the <c>Polygon</c> is returned.
+        ///  If <c>geomList</c> contains several <c>Polygon</c>s, a
+        /// <c>MultiPolygon</c> is returned.
+        ///  If <c>geomList</c> contains some <c>Polygon</c>s and
+        /// some <c>LineString</c>s, a <c>GeometryCollection</c> is
+        /// returned.
+        ///  If <c>geomList</c> is empty, an empty <c>GeometryCollection</c>
+        /// is returned.
+        /// </remarks>
+        /// <param name="geomList">The <c>Geometry</c> to combine.</param>
+        /// <returns>
+        /// A <c>Geometry</c> of the "smallest", "most type-specific" 
+        /// class that can contain the elements of <c>geomList</c>.
+        /// </returns>
+        IGeometry BuildGeometry(ICollection<IGeometry> geomList);
 
         /// <summary>
         /// Creates an object that implements DotSpatial.Geometries.IGeometry that is a copy

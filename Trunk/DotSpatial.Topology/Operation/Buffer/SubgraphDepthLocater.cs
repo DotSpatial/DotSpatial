@@ -42,7 +42,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         #region Fields
 
         private readonly LineSegment _seg = new LineSegment();
-        private readonly IList _subgraphs;
+        private readonly IList<BufferSubgraph> _subgraphs;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         ///
         /// </summary>
         /// <param name="subgraphs"></param>
-        public SubgraphDepthLocater(IList subgraphs)
+        public SubgraphDepthLocater(IList<BufferSubgraph> subgraphs)
         {
             _subgraphs = subgraphs;
         }
@@ -67,13 +67,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
-        private IList FindStabbedSegments(Coordinate stabbingRayLeftPt)
+        private IList<DepthSegment> FindStabbedSegments(Coordinate stabbingRayLeftPt)
         {
-            IList stabbedSegments = new ArrayList();
-            IEnumerator i = _subgraphs.GetEnumerator();
-            while (i.MoveNext())
+            IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
+            foreach (var bsg in _subgraphs)
             {
-                BufferSubgraph bsg = (BufferSubgraph)i.Current;
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);
             }
             return stabbedSegments;
@@ -87,16 +85,14 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdges"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, IEnumerable dirEdges, IList stabbedSegments)
+        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, IEnumerable<DirectedEdge> dirEdges, IList<DepthSegment> stabbedSegments)
         {
             /*
             * Check all forward DirectedEdges only.  This is still general,
             * because each Edge has a forward DirectedEdge.
             */
-            IEnumerator i = dirEdges.GetEnumerator();
-            while (i.MoveNext())
+            foreach (DirectedEdge de in dirEdges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 if (!de.IsForward)
                     continue;
                 FindStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
@@ -111,7 +107,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdge"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList stabbedSegments)
+        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList<DepthSegment> stabbedSegments)
         {
             IList<Coordinate> pts = dirEdge.Edge.Coordinates;
             for (int i = 0; i < pts.Count - 1; i++)
@@ -123,7 +119,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                     _seg.Reverse();
 
                 // skip segment if it is left of the stabbing line
-                double maxx = Math.Max(_seg.P0.X, _seg.P1.X);
+                var maxx = Math.Max(_seg.P0.X, _seg.P1.X);
                 if (maxx < stabbingRayLeftPt.X) continue;
 
                 // skip horizontal segments (there will be a non-horizontal one carrying the same depth info
@@ -152,12 +148,13 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <returns></returns>
         public virtual int GetDepth(Coordinate p)
         {
-            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
+            //ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p).CastPlatform());
+            var stabbedSegments = new List<DepthSegment>(FindStabbedSegments(p));
             // if no segments on stabbing line subgraph must be outside all others.
             if (stabbedSegments.Count == 0)
                 return 0;
             stabbedSegments.Sort();
-            DepthSegment ds = (DepthSegment)stabbedSegments[0];
+            var ds = stabbedSegments[0];
             return ds.LeftDepth;
         }
 
@@ -173,7 +170,6 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             #region Fields
 
-            private readonly int _leftDepth;
             private readonly LineSegment _upwardSeg;
 
             #endregion
@@ -189,7 +185,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             {
                 // input seg is assumed to be normalized
                 _upwardSeg = new LineSegment(seg);
-                _leftDepth = depth;
+                this.LeftDepth = depth;
             }
 
             #endregion
@@ -199,10 +195,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             /// <summary>
             ///
             /// </summary>
-            public int LeftDepth
-            {
-                get { return _leftDepth; }
-            }
+            public int LeftDepth { get; set; }
 
             #endregion
 
@@ -215,10 +208,10 @@ namespace DotSpatial.Topology.Operation.Buffer
             /// DS1 bigger  DS2   if   DS1.seg is right of DS2.seg.
             /// </summary>
             /// <param name="obj"></param>
-            /// <returns></returns>
+            /// <returns>The comparison value</returns>
             public int CompareTo(Object obj)
             {
-                DepthSegment other = (DepthSegment)obj;
+                var other = (DepthSegment)obj;
 
                 /*
                 * try and compute a determinate orientation for the segments.

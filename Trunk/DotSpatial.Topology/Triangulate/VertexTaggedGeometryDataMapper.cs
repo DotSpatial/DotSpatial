@@ -65,9 +65,9 @@ namespace DotSpatial.Topology.Triangulate
             }
         }
 
-        private void LoadVertices(Coordinate[] pts, object data)
+        private void LoadVertices(IList<Coordinate> pts, object data)
         {
-            for (int i = 0; i < pts.Length; i++)
+            for (int i = 0; i < pts.Count; i++)
             {
                 _coordDataMap.Add(pts[i], data);
             }

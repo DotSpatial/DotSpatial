@@ -63,6 +63,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(coordinates);
         }
 
+        public ICoordinateSequence Create(IEnumerable<ICoordinate> coordinates)
+        {
+            return new DotSpatialAffineCoordinateSequence(coordinates);
+        }
+
         /// <summary>
         /// Creates a <see cref="ICoordinateSequence" />  which is a copy
         /// of the given <see cref="ICoordinateSequence" />.

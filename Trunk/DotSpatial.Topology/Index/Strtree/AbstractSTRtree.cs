@@ -324,7 +324,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// Builds the tree if necessary.
         /// </summary>
         /// <returns>a List of items and/or Lists</returns>
-        public IList ItemsTree()
+        public IList<object> ItemsTree()
         {
             Build();
 
@@ -332,7 +332,7 @@ namespace DotSpatial.Topology.Index.Strtree
             return valuesTree ?? new List<object>();
         }
 
-        private static IList ItemsTree(AbstractNode<T, TItem> node)
+        private static IList<object> ItemsTree(AbstractNode<T, TItem> node)
         {
             var valuesTreeForNode = new List<object>();
 

@@ -57,6 +57,23 @@ namespace DotSpatial.Topology.Geometries
         #endregion
 
         #region Constructors
+
+        /// <summary>
+        /// Constructs a <c>LinearRing</c> with the given points.
+        /// </summary>
+        /// <param name="points">
+        /// Points forming a closed and simple linestring, or
+        /// <c>null</c> or an empty array to create the empty point.
+        /// This array must not contain <c>null</c> elements.
+        /// </param>
+        /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
+        public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
+            : base(points, factory)
+        {
+            ValidateConstruction();
+        }
+
         /// <summary>
         /// Creates a new instance of a linear ring where the enumerable collection of
         /// coordinates represents the set of coordinates to add to the ring.

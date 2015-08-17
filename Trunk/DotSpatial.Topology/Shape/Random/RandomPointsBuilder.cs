@@ -55,10 +55,10 @@ namespace DotSpatial.Topology.Shape.Random
         }
         */
 
-        protected Coordinate CreateRandomCoord(Envelope env)
+        protected Coordinate CreateRandomCoord(IEnvelope env)
         {
-            var x = env.MinX + env.Width * Rnd.NextDouble();
-            var y = env.MinY + env.Height * Rnd.NextDouble();
+            var x = env.Minimum.X + env.Width * Rnd.NextDouble();
+            var y = env.Minimum.Y + env.Height * Rnd.NextDouble();
 
             return CreateCoord(x, y);
         }

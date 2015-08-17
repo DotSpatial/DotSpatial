@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace DotSpatial.Topology.Geometries.Implementation
@@ -80,7 +81,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
                 default:
                     var flag = Ordinates.None;
                     for (var i = 3; i < dimension; i++)
-                        flag |= (Ordinates) (1 << i);
+                        flag |= (Ordinates)(1 << i);
                     return Ordinates.XY | flag;
             }
         }
@@ -99,12 +100,12 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
-            if (CoordRef != null) 
+            if (CoordRef != null)
             {
-                var arr = (Coordinate[]) CoordRef.Target;
-                if (arr != null) 
+                var arr = (Coordinate[])CoordRef.Target;
+                if (arr != null)
                     return arr;
-                
+
                 CoordRef = null;
                 return null;
             }
@@ -122,11 +123,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i)
         {
             var arr = GetCachedCoords();
-            if(arr != null)
-                 return arr[i];
+            if (arr != null)
+                return arr[i];
             return GetCoordinateInternal(i);
         }
 
@@ -136,7 +137,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="i">The index of the coordinate to copy.</param>
         /// <param name="c">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int i, Coordinate c) 
+        public void GetCoordinate(int i, Coordinate c)
         {
             c.X = GetOrdinate(i, Ordinate.X);
             c.Y = GetOrdinate(i, Ordinate.Y);
@@ -152,7 +153,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>
         /// A copy of the i'th coordinate in the sequence
         /// </returns>
-        public Coordinate GetCoordinateCopy(int i) 
+        public Coordinate GetCoordinateCopy(int i)
         {
             return GetCoordinateInternal(i);
         }
@@ -183,7 +184,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public double GetX(int index) 
+        public double GetX(int index)
         {
             return GetOrdinate(index, Ordinate.X);
         }
@@ -195,7 +196,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public double GetY(int index) 
+        public double GetY(int index)
         {
             return GetOrdinate(index, Ordinate.Y);
         }
@@ -220,7 +221,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
-        public void SetX(int index, double value) 
+        public void SetX(int index, double value)
         {
             CoordRef = null;
             SetOrdinate(index, Ordinate.X, value);
@@ -231,7 +232,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
-        public void SetY(int index, double value) 
+        public void SetY(int index, double value)
         {
             CoordRef = null;
             SetOrdinate(index, Ordinate.Y, value);
@@ -246,7 +247,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-        public Coordinate[] ToCoordinateArray() 
+        public Coordinate[] ToCoordinateArray()
         {
             Coordinate[] arr = GetCachedCoords();
             // testing - never cache
@@ -254,9 +255,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
                 return arr;
 
             arr = new Coordinate[Count];
-            for (int i = 0; i < arr.Length; i++) 
+            for (int i = 0; i < arr.Length; i++)
                 arr[i] = GetCoordinateInternal(i);
-            
+
             CoordRef = new WeakReference(arr);
             return arr;
         }
@@ -277,7 +278,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
-    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence 
+    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence
     {
         #region Fields
 
@@ -295,15 +296,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(double[] coords, int dimensions) 
+        public PackedDoubleCoordinateSequence(double[] coords, int dimensions)
         {
-            if (dimensions < 2) 
+            if (dimensions < 2)
                 throw new ArgumentException("Must have at least 2 dimensions");
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
+
+            if (coords.Length % dimensions != 0)
+                throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
-      
+
             Dimension = dimensions;
             _coords = coords;
         }
@@ -313,11 +314,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions) 
+        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions)
         {
             _coords = new double[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (int i = 0; i < coordinates.Length; i++)
                 _coords[i] = coordinates[i];
         }
 
@@ -326,14 +327,14 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension) 
+        public PackedDoubleCoordinateSequence(IList<Coordinate> coordinates, int dimension)
         {
             if (coordinates == null)
-                coordinates = new Coordinate[0];
+                coordinates = new List<Coordinate>();
             Dimension = dimension;
 
-            _coords = new double[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            _coords = new double[coordinates.Count * Dimension];
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 _coords[i * Dimension] = coordinates[i].X;
                 if (Dimension >= 2)
@@ -342,6 +343,29 @@ namespace DotSpatial.Topology.Geometries.Implementation
                     _coords[i * Dimension + 2] = coordinates[i].Z;
             }
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
+        public PackedDoubleCoordinateSequence(IList<ICoordinate> coordinates, int dimension)
+        {
+            if (coordinates == null)
+                coordinates = new List<ICoordinate>();
+            Dimension = dimension;
+
+            _coords = new double[coordinates.Count * Dimension];
+            for (int i = 0; i < coordinates.Count; i++)
+            {
+                _coords[i * Dimension] = coordinates[i].X;
+                if (Dimension >= 2)
+                    _coords[i * Dimension + 1] = coordinates[i].Y;
+                if (Dimension >= 3)
+                    _coords[i * Dimension + 2] = coordinates[i].Z;
+            }
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
@@ -368,7 +392,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-        public override int Count 
+        public override int Count
         {
             get { return _coords.Length / Dimension; }
         }
@@ -393,7 +417,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override object Clone() 
+        public override object Clone()
         {
             double[] clone = new double[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
@@ -420,7 +444,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index)
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -437,9 +461,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinate ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate)
         {
-            return _coords[index * Dimension + (int) ordinate];
+            return _coords[index * Dimension + (int)ordinate];
         }
 
         /// <summary>
@@ -474,10 +498,10 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Warning: for performance reasons the ordinate index is not checked.
         /// If it is larger than the dimension a meaningless value may be returned.
         /// </remarks> 
-        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
+        public override void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             CoordRef = null;
-            _coords[index * Dimension + (int) ordinate] = value;
+            _coords[index * Dimension + (int)ordinate] = value;
         }
 
         #endregion
@@ -486,7 +510,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
-    public class PackedFloatCoordinateSequence : PackedCoordinateSequence 
+    public class PackedFloatCoordinateSequence : PackedCoordinateSequence
     {
         #region Fields
 
@@ -504,15 +528,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(float[] coords, int dimensions) 
+        public PackedFloatCoordinateSequence(float[] coords, int dimensions)
         {
-            if (dimensions < 2) 
-                throw new ArgumentException("Must have at least 2 dimensions");      
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
+            if (dimensions < 2)
+                throw new ArgumentException("Must have at least 2 dimensions");
+
+            if (coords.Length % dimensions != 0)
+                throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
-      
+
             Dimension = dimensions;
             _coords = coords;
         }
@@ -522,12 +546,12 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions) 
+        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions)
         {
             _coords = new float[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
-                _coords[i] = (float) coordinates[i];      
+            for (int i = 0; i < coordinates.Length; i++)
+                _coords[i] = (float)coordinates[i];
         }
 
         /// <summary>
@@ -535,20 +559,42 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension) 
+        public PackedFloatCoordinateSequence(IList<Coordinate> coordinates, int dimension)
         {
             if (coordinates == null)
-                coordinates = new Coordinate[0];
+                coordinates = new List<Coordinate>();
             Dimension = dimension;
 
-            _coords = new float[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            _coords = new float[coordinates.Count * Dimension];
+            for (int i = 0; i < coordinates.Count; i++)
             {
-                _coords[i * Dimension] = (float) coordinates[i].X;
+                _coords[i * Dimension] = (float)coordinates[i].X;
                 if (Dimension >= 2)
-                    _coords[i * Dimension + 1] = (float) coordinates[i].Y;
+                    _coords[i * Dimension + 1] = (float)coordinates[i].Y;
                 if (Dimension >= 3)
-                _coords[i * Dimension + 2] = (float) coordinates[i].Z;
+                    _coords[i * Dimension + 2] = (float)coordinates[i].Z;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
+        public PackedFloatCoordinateSequence(IList<ICoordinate> coordinates, int dimension)
+        {
+            if (coordinates == null)
+                coordinates = new List<ICoordinate>();
+            Dimension = dimension;
+
+            _coords = new float[coordinates.Count * Dimension];
+            for (int i = 0; i < coordinates.Count; i++)
+            {
+                _coords[i * Dimension] = (float)coordinates[i].X;
+                if (Dimension >= 2)
+                    _coords[i * Dimension + 1] = (float)coordinates[i].Y;
+                if (Dimension >= 3)
+                    _coords[i * Dimension + 2] = (float)coordinates[i].Z;
             }
         }
 
@@ -557,7 +603,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(int size, int dimension) 
+        public PackedFloatCoordinateSequence(int size, int dimension)
         {
             Dimension = dimension;
             _coords = new float[size * Dimension];
@@ -596,7 +642,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        public override Object Clone()
         {
             float[] clone = new float[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
@@ -611,9 +657,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public override IEnvelope ExpandEnvelope(IEnvelope env)
         {
-        for (int i = 0; i < _coords.Length; i += Dimension )
-            env.ExpandToInclude(_coords[i], _coords[i + 1]);      
-        return env;
+            for (int i = 0; i < _coords.Length; i += Dimension)
+                env.ExpandToInclude(_coords[i], _coords[i + 1]);
+            return env;
         }
 
         /// <summary>
@@ -622,7 +668,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index)
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -639,9 +685,9 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinate ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate)
         {
-            return _coords[index * Dimension + (int) ordinate];
+            return _coords[index * Dimension + (int)ordinate];
         }
 
         /// <summary>
@@ -676,10 +722,10 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
+        public override void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             CoordRef = null;
-            _coords[index * Dimension + (int) ordinate] = (float) value;
+            _coords[index * Dimension + (int)ordinate] = (float)value;
         }
 
         #endregion

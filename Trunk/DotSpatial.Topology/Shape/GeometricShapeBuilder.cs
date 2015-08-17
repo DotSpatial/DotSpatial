@@ -8,7 +8,7 @@ namespace DotSpatial.Topology.Shape
         #region Fields
 
         protected IGeometryFactory GeomFactory;
-        private Envelope _extent = new Envelope(0, 1, 0, 1);
+        private IEnvelope _extent = new Envelope(0, 1, 0, 1);
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace DotSpatial.Topology.Shape
             get { return Diameter * 0.5; }
         }
 
-        public Envelope Extent
+        public IEnvelope Extent
         {
             get { return _extent; }
             set { _extent = value; }

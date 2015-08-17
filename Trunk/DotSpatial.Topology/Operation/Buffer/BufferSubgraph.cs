@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
-using DotSpatial.Topology.Utilities;
+using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Operation.Buffer
 {
@@ -42,9 +42,9 @@ namespace DotSpatial.Topology.Operation.Buffer
     {
         #region Fields
 
-        private readonly IList _dirEdgeList = new ArrayList();
+        private readonly List<DirectedEdge> _dirEdgeList  = new List<DirectedEdge>();
         private readonly RightmostEdgeFinder _finder;
-        private readonly IList _nodes = new ArrayList();
+        private readonly List<Node> _nodes        = new List<Node>();
         private Coordinate _rightMostCoord;
 
         #endregion
@@ -66,7 +66,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <summary>
         ///
         /// </summary>
-        public virtual IList DirectedEdges
+        public IList<DirectedEdge> DirectedEdges
         {
             get
             {
@@ -77,7 +77,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <summary>
         ///
         /// </summary>
-        public virtual IList Nodes
+        public IList<Node> Nodes
         {
             get
             {
@@ -105,18 +105,17 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </summary>
         /// <param name="node">The node to add.</param>
         /// <param name="nodeStack">The current set of nodes being traversed.</param>
-        private void Add(Node node, Stack nodeStack)
+        private void Add(Node node, Stack<Node> nodeStack)
         {
             node.IsVisited = true;
             _nodes.Add(node);
-            for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
+            foreach (DirectedEdge de in (DirectedEdgeStar)node.Edges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 _dirEdgeList.Add(de);
                 DirectedEdge sym = de.Sym;
                 Node symNode = sym.Node;
                 /*
-                * Notice: this is a depth-first traversal of the graph.
+                * NOTE: this is a depth-first traversal of the graph.
                 * This will cause a large depth of recursion.
                 * It might be better to do a breadth-first traversal.
                 */
@@ -132,11 +131,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="startNode">A node known to be in the subgraph.</param>
         private void AddReachable(Node startNode)
         {
-            Stack nodeStack = new Stack();
+            Stack<Node> nodeStack = new Stack<Node>();
             nodeStack.Push(startNode);
             while (nodeStack.Count != 0)
             {
-                Node node = (Node)nodeStack.Pop();
+                Node node = nodeStack.Pop();
                 Add(node, nodeStack);
             }
         }
@@ -146,11 +145,8 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </summary>
         private void ClearVisitedEdges()
         {
-            for (IEnumerator it = _dirEdgeList.GetEnumerator(); it.MoveNext(); )
-            {
-                DirectedEdge de = (DirectedEdge)it.Current;
+            foreach (DirectedEdge de in _dirEdgeList)
                 de.IsVisited = false;
-            }
         }
 
         /// <summary>
@@ -193,23 +189,21 @@ namespace DotSpatial.Topology.Operation.Buffer
         // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
         private static void ComputeDepths(DirectedEdge startEdge)
         {
-            var nodesVisited = new HashSet<Node>();
-            Queue nodeQueue = new Queue();
-            Node startNode = startEdge.Node;
-            nodeQueue.Enqueue(startNode);
+            Set<Node> nodesVisited = new Set<Node>();
+            Queue<Node> nodeQueue = new Queue<Node>();
+            Node startNode = startEdge.Node;                 
+            nodeQueue.Enqueue(startNode);   
             nodesVisited.Add(startNode);
             startEdge.IsVisited = true;
             while (nodeQueue.Count != 0)
             {
-                Node n = (Node)nodeQueue.Dequeue();
+                Node n = nodeQueue.Dequeue();                
                 nodesVisited.Add(n);
                 // compute depths around node, starting at this edge since it has depths assigned
                 ComputeNodeDepth(n);
-                // add all adjacent nodes to process queue, unless the node has been visited already
-                IEnumerator i = n.Edges.GetEnumerator();
-                while (i.MoveNext())
+                // add all adjacent nodes to process queue, unless the node has been visited already                
+                foreach (DirectedEdge de in (DirectedEdgeStar)n.Edges)
                 {
-                    DirectedEdge de = (DirectedEdge)i.Current;
                     DirectedEdge sym = de.Sym;
                     if (sym.IsVisited) continue;
                     Node adjNode = sym.Node;
@@ -230,10 +224,8 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             // find a visited dirEdge to start at
             DirectedEdge startEdge = null;
-            IEnumerator i = n.Edges.GetEnumerator();
-            while (i.MoveNext())
+            foreach (DirectedEdge de in (DirectedEdgeStar)n.Edges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 if (de.IsVisited || de.Sym.IsVisited)
                 {
                     startEdge = de;
@@ -242,14 +234,16 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
 
             // MD - testing  Result: breaks algorithm
-            Assert.IsTrue(startEdge != null, "unable to find edge to compute depths at " + n.Coordinate);
-            ((DirectedEdgeStar)n.Edges).ComputeDepths(startEdge);
+            // only compute string append if assertion would fail
+            if (startEdge == null)
+                //Assert.IsTrue(false, "unable to find edge to compute depths at " + n.Coordinate);
+                throw new TopologyException("unable to find edge to compute depths at " + n.Coordinate);
+
+            ((DirectedEdgeStar) n.Edges).ComputeDepths(startEdge);
 
             // copy depths to sym edges
-            IEnumerator j = n.Edges.GetEnumerator();
-            while (j.MoveNext())
+            foreach (DirectedEdge de in (DirectedEdgeStar)n.Edges)
             {
-                DirectedEdge de = (DirectedEdge)j.Current;
                 de.IsVisited = true;
                 CopySymDepths(de);
             }
@@ -288,13 +282,12 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// </summary>
         public virtual void FindResultEdges()
         {
-            for (IEnumerator it = _dirEdgeList.GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge de in _dirEdgeList)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 /*
                 * Select edges which have an interior depth on the RHS
                 * and an exterior depth on the LHS.
-                * Notice that because of weird rounding effects there may be
+                * Note that because of weird rounding effects there may be
                 * edges which have negative depths!  Negative depths
                 * count as "outside".
                 */

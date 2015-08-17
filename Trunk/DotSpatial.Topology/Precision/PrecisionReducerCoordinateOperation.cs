@@ -1,4 +1,5 @@
-﻿using DotSpatial.Topology.Geometries;
+﻿using System.Collections.Generic;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Geometries.Utilities;
 
 namespace DotSpatial.Topology.Precision
@@ -24,14 +25,14 @@ namespace DotSpatial.Topology.Precision
 
         #region Methods
 
-        public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
+        public override IList<Coordinate> Edit(IList<Coordinate> coordinates, IGeometry geom)
         {
-            if (coordinates.Length == 0)
+            if (coordinates.Count == 0)
                 return null;
 
-            var reducedCoords = new Coordinate[coordinates.Length];
+            var reducedCoords = new Coordinate[coordinates.Count];
             // copy coordinates and reduce
-            for (int i = 0; i < coordinates.Length; i++)
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 var coord = new Coordinate(coordinates[i]);
                 _targetPrecModel.MakePrecise(coord);

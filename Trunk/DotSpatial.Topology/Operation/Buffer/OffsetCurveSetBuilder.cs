@@ -73,7 +73,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             if (g.IsEmpty) return;
             if (g is IPolygon)
-                AddPolygon(g);
+                AddPolygon((IPolygon)g);
             // LineString also handles LinearRings
             else if (g is ILineString)
                 AddLineString(g);
@@ -96,9 +96,9 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="gc"></param>
         private void AddCollection(IGeometry gc)
         {
-            for (int i = 0; i < gc.NumGeometries; i++)
+            for (var i = 0; i < gc.NumGeometries; i++)
             {
-                IGeometry g = gc.GetGeometryN(i);
+                var g = gc.GetGeometryN(i);
                 Add(g);
             }
         }

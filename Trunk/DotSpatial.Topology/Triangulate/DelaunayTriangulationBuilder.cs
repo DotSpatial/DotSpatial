@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Triangulate.QuadEdge;
 
@@ -31,7 +33,7 @@ namespace DotSpatial.Topology.Triangulate
         ///// <param name="tolerance">the tolerance distance to use</param>
         public double Tolerance
         {
-            set {  _tolerance = value; }
+            set { _tolerance = value; }
         }
 
         #endregion
@@ -74,7 +76,7 @@ namespace DotSpatial.Topology.Triangulate
             if (geom == null)
                 return new CoordinateList();
 
-            Coordinate[] coords = geom.Coordinates;
+            IList<Coordinate> coords = geom.Coordinates;
             return Unique(coords);
         }
 
@@ -148,10 +150,12 @@ namespace DotSpatial.Topology.Triangulate
             return verts;
         }
 
-        public static CoordinateList Unique(Coordinate[] coords)
-        {
-            var coordsCopy = CoordinateArrays.CopyDeep(coords);
-            Array.Sort(coordsCopy);
+        public static CoordinateList Unique(IList<Coordinate> coords)
+        { //TODO does this do what it's supposed to?
+            var coordsCopy = coords.CloneList();
+            coordsCopy.Sort();
+            //var coordsCopy = CoordinateArrays.CopyDeep(coords.ToArray());
+            //Array.Sort(coordsCopy);
             var coordList = new CoordinateList(coordsCopy, false);
             return coordList;
         }

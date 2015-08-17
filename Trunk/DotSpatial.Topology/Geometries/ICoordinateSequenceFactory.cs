@@ -52,6 +52,14 @@ namespace DotSpatial.Topology.Geometries
         ICoordinateSequence Create(IEnumerable<Coordinate> coordinates);
 
         /// <summary>
+        /// Returns a <see cref="ICoordinateSequence" /> based on the given array; 
+        /// whether or not the array is copied is implementation-dependent.
+        /// </summary>
+        /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
+        /// <returns>A coordinate sequence.</returns>
+        ICoordinateSequence Create(IEnumerable<ICoordinate> coordinates);
+
+        /// <summary>
         /// Creates a <see cref="ICoordinateSequence" />  which is a copy
         /// of the given <see cref="ICoordinateSequence" />.
         /// This method must handle null arguments by creating an empty sequence.

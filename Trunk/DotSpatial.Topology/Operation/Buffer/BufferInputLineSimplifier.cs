@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 
@@ -53,7 +54,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         //private const int Keep = 2;
 
-        private readonly Coordinate[] _inputLine;
+        private readonly IList<Coordinate> _inputLine;
         private int _angleOrientation = CgAlgorithms.CounterClockwise;
         private double _distanceTol;
         private byte[] _isDeleted;
@@ -62,7 +63,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         #region Constructors
 
-        public BufferInputLineSimplifier(Coordinate[] inputLine)
+        public BufferInputLineSimplifier(IList<Coordinate> inputLine)
         {
             _inputLine = inputLine;
         }
@@ -74,12 +75,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         private Coordinate[] CollapseLine()
         {
             var coordList = new CoordinateList();
-            for (int i = 0; i < _inputLine.Length; i++)
+            for (int i = 0; i < _inputLine.Count; i++)
             {
                 if (_isDeleted[i] != Delete)
                     coordList.Add(_inputLine[i]);
             }
-            //    if (coordList.size() < inputLine.length)      System.out.println("Simplified " + (inputLine.length - coordList.size()) + " pts");
             return coordList.ToCoordinateArray();
         }
 
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             int lastIndex = FindNextNonDeletedIndex(midIndex);
 
             bool isChanged = false;
-            while (lastIndex < _inputLine.Length)
+            while (lastIndex < _inputLine.Count)
             {
                 // test triple for shallow concavity
                 bool isMiddleVertexDeleted = false;
@@ -134,7 +134,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         private int FindNextNonDeletedIndex(int index)
         {
             int next = index + 1;
-            while (next < _inputLine.Length - 1 && _isDeleted[next] == Delete)
+            while (next < _inputLine.Count - 1 && _isDeleted[next] == Delete)
                 next++;
             return next;
         }
@@ -213,7 +213,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="inputLine">The coordinate list to simplify</param>
         /// <param name="distanceTol">simplification distance tolerance to use</param>
         /// <returns>The simplified coordinate list</returns>
-        public static Coordinate[] Simplify(Coordinate[] inputLine, double distanceTol)
+        public static IList<Coordinate> Simplify(IList<Coordinate> inputLine, double distanceTol)
         {
             var simp = new BufferInputLineSimplifier(inputLine);
             return simp.Simplify(distanceTol);
@@ -237,7 +237,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 _angleOrientation = CgAlgorithms.Clockwise;
 
             // rely on fact that boolean array is filled with false value
-            _isDeleted = new byte[_inputLine.Length];
+            _isDeleted = new byte[_inputLine.Count];
 
             bool isChanged;
             do

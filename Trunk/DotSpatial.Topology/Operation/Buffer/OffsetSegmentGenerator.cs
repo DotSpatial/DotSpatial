@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
@@ -553,7 +554,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        public void AddSegments(Coordinate[] pt, bool isForward)
+        public void AddSegments(IList<Coordinate> pt, bool isForward)
         {
             _segList.AddPts(pt, isForward);
         }

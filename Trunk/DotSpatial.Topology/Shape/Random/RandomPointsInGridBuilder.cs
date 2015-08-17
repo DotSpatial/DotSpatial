@@ -97,8 +97,8 @@ namespace DotSpatial.Topology.Shape.Random
             {
                 for (var j = 0; j < nCells; j++)
                 {
-                    var orgX = Extent.MinX + i * gridDX + gutterOffsetX;
-                    var orgY = Extent.MinY + j * gridDY + gutterOffsetY;
+                    var orgX = Extent.Minimum.X + i * gridDX + gutterOffsetX;
+                    var orgY = Extent.Minimum.Y + j * gridDY + gutterOffsetY;
                     pts[index++] = RandomPointInCell(orgX, orgY, cellDX, cellDY);
                 }
             }

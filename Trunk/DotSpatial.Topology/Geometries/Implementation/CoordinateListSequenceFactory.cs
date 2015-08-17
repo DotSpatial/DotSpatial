@@ -24,10 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Geometries.Implementation;
 
-namespace DotSpatial.Topology.Utilities
+namespace DotSpatial.Topology.Geometries.Implementation
 {
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
@@ -61,6 +59,11 @@ namespace DotSpatial.Topology.Utilities
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
         public ICoordinateSequence Create(IEnumerable<Coordinate> coordinates)
+        {
+            return new CoordinateListSequence(coordinates);
+        }
+
+        public ICoordinateSequence Create(IEnumerable<ICoordinate> coordinates)
         {
             return new CoordinateListSequence(coordinates);
         }

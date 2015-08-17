@@ -200,7 +200,7 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             foreach (DirectedEdge de in graph.EdgeEnds)               
                 if (de.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
-                    de.InResult = true;
+                    de.IsInResult = true;
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace DotSpatial.Topology.Operation.Valid
             do
             {
                 if (de == null) throw new NullEdgeException();
-                de.Visited = true;
+                de.IsVisited = true;
                 de = de.Next;
             }
             while (de != startDe);

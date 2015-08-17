@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             _ptList.Add(bufPt);
         }
 
-        public void AddPts(Coordinate[] pt, bool isForward)
+        public void AddPts(IList<Coordinate> pt, bool isForward)
         {
             if (isForward)
             {
@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
             else
             {
-                for (int i = pt.Length - 1; i >= 0; i--)
+                for (int i = pt.Count - 1; i >= 0; i--)
                     AddPt(pt[i]);
             }
         }

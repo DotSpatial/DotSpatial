@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotSpatial.Topology.Geometries.Implementation
 {
@@ -119,8 +120,15 @@ namespace DotSpatial.Topology.Geometries.Implementation
         public ICoordinateSequence Create(IEnumerable<Coordinate> coordinates)
         {
             if (type == PackedType.Double)
-                return new PackedDoubleCoordinateSequence(coordinates, dimension);
-            return new PackedFloatCoordinateSequence(coordinates, dimension);
+                return new PackedDoubleCoordinateSequence(coordinates.ToList(), dimension);
+            return new PackedFloatCoordinateSequence(coordinates.ToList(), dimension);
+        }
+
+        public ICoordinateSequence Create(IEnumerable<ICoordinate> coordinates)
+        {
+            if (type == PackedType.Double)
+                return new PackedDoubleCoordinateSequence(coordinates.ToList(), dimension);
+            return new PackedFloatCoordinateSequence(coordinates.ToList(), dimension);
         }
 
         /// <summary>

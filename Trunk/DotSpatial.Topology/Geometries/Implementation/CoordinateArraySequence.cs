@@ -89,6 +89,20 @@ namespace DotSpatial.Topology.Geometries.Implementation
             }
             Coordinates = listcoords.ToArray();
         }
+        /// <summary>
+        /// Creates a new CoordinateArraySequence whose members are
+        /// </summary>
+        /// <param name="coordinates">The existing list whose members will be copied to the array.</param>
+        public CoordinateArraySequence(IEnumerable<ICoordinate> coordinates)
+        {//TODO check whether this can be removed
+            List<Coordinate> listcoords = new List<Coordinate>();
+            foreach (ICoordinate c in coordinates)
+            {
+                listcoords.Add(new Coordinate(c));
+            }
+            Coordinates = listcoords.ToArray();
+        }
+
 
         /// <summary>
         /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.

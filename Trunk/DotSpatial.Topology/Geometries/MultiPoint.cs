@@ -75,7 +75,31 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="points"></param>
         public MultiPoint(IEnumerable<ICoordinate> points) : base(CastPoints(points), DefaultFactory) { }
+      
+	    /// <summary>
+        /// Constructs a <c>MultiPoint</c>.
+        /// </summary>
+        /// <param name="points">
+        /// The <c>Point</c>s for this <c>MultiPoint</c>
+        /// , or <c>null</c> or an empty array to create the empty point.
+        /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
+        /// </param>
+        /// <param name="factory"></param>
+        public MultiPoint(IEnumerable<IPoint> points, IGeometryFactory factory) : base(points, factory) { }
 
+        /// <summary>
+        /// Constructs a <c>MultiPoint</c>.
+        /// </summary>
+        /// <param name="points">
+        /// The <c>Point</c>s for this <c>MultiPoint</c>
+        /// , or <c>null</c> or an empty array to create the empty point.
+        /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
+        /// </param>
+        /// <remarks>
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// </remarks>
+        public MultiPoint(IEnumerable<IPoint> points) : this(points, DefaultFactory) { }
         #endregion
 
         #region Properties

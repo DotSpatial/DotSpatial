@@ -152,10 +152,10 @@ namespace DotSpatial.Topology.Geometries
         /// from an existing one.
         /// </summary>
         /// <param name="pm"></param>
-        public PrecisionModel(PrecisionModel pm)
+        public PrecisionModel(IPrecisionModel pm)
         {
-            _modelType = pm._modelType;
-            _scale = pm._scale;
+            _modelType = pm.PrecisionModelType;
+            _scale = pm.Scale;
         }
 
         #endregion

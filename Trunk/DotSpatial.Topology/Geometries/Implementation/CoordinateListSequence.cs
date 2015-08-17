@@ -68,6 +68,17 @@ namespace DotSpatial.Topology.Geometries.Implementation
         }
 
         /// <summary>
+        /// Creates a new instance of a CoordinateListSequence
+        /// </summary>
+        /// <param name="coordinates">If this is a List of ICoordinates, the sequence will be a shallow list.
+        /// Otherwise, a List is created and shallow copies of each coordinate is added.</param>
+        public CoordinateListSequence(IEnumerable<ICoordinate> coordinates)
+        {
+            IEnumerable<ICoordinate> enumerable = coordinates as IList<ICoordinate> ?? coordinates.ToList();
+            _internalList = enumerable.Select(ele => new Coordinate(ele)).ToList();
+        }
+
+        /// <summary>
         /// Creates a new instance of CoordinateListSequence
         /// </summary>
         /// <param name="sequence">The sequence to use</param>

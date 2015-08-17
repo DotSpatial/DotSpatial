@@ -23,9 +23,9 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries.Implementation;
+using DotSpatial.Topology.Geometries.Utilities;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Geometries
@@ -183,6 +183,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
         /// it.
         /// </summary>
+        /// <remarks>
         ///  If <c>geomList</c> contains a single <c>Polygon</c>,
         /// the <c>Polygon</c> is returned.<br/>
         ///  If <c>geomList</c> contains several <c>Polygon</c>s, a
@@ -195,47 +196,62 @@ namespace DotSpatial.Topology.Geometries
         /// Note that this method does not "flatten" Geometries in the input, and hence if
         /// any MultiGeometries are contained in the input a GeometryCollection containing
         /// them will be returned.
-        /// <param name="geomList">The <c>Geometry</c>s to combine.</param>
-        /// <returns>A <c>Geometry</c> of the "smallest", "most type-specific" class that can contain the elements of <c>geomList</c>.</returns>
-        public virtual IGeometry BuildGeometry(IList geomList)
+        /// </remarks>
+        /// <param name="geomList">The <c>Geometry</c> to combine.</param>
+        /// <returns>
+        /// A <see cref="IGeometry"/> of the "smallest", "most type-specific" 
+        /// class that can contain the elements of <c>geomList</c>.
+        /// </returns>
+        public IGeometry BuildGeometry(ICollection<IGeometry> geomList)
         {
+            /**
+             * Determine some facts about the geometries in the list
+             */
             Type geomClass = null;
             bool isHeterogeneous = false;
+            bool hasGeometryCollection = false;
 
-            for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); )
+            IGeometry geom0 = null;
+            foreach (IGeometry geom in geomList)
             {
-                Geometry geom = (Geometry)i.Current;
+                if (geom == null) continue;
+                geom0 = geom;
+
                 Type partClass = geom.GetType();
                 if (geomClass == null)
                     geomClass = partClass;
                 if (partClass != geomClass)
                     isHeterogeneous = true;
+                if (geom is IGeometryCollection)
+                    hasGeometryCollection = true;
             }
+
+            /**
+             * Now construct an appropriate geometry to return
+             */
 
             // for the empty point, return an empty GeometryCollection
             if (geomClass == null)
                 return CreateGeometryCollection(null);
 
-            if (isHeterogeneous)
+            // for heterogenous collection of geometries or if it contains a GeometryCollection, return a GeometryCollection
+            if (isHeterogeneous || hasGeometryCollection)
                 return CreateGeometryCollection(ToGeometryArray(geomList));
 
-            // at this point we know the collection is hetereogenous.
+            // at this point we know the collection is homogenous.
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
-            IEnumerator ienum = geomList.GetEnumerator();
-            ienum.MoveNext();
-            Geometry geom0 = (Geometry)ienum.Current;
             bool isCollection = geomList.Count > 1;
 
             if (isCollection)
             {
-                if (geom0 is Polygon)
+                if (geom0 is IPolygon)
                     return CreateMultiPolygon(ToPolygonArray(geomList));
-                if (geom0 is LineString)
+                if (geom0 is ILineString)
                     return CreateMultiLineString(ToLineStringArray(geomList));
-                if (geom0 is Point)
-                    return new MultiPoint(ToPointArray(geomList));
-                throw new ShouldNeverReachHereException();
+                if (geom0 is IPoint)
+                    return CreateMultiPoint(ToPointArray(geomList));
+                Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
             }
             return geom0;
         }
@@ -283,7 +299,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         public virtual ILinearRing CreateLinearRing(IEnumerable<Coordinate> coordinates)
         {
-            return new LinearRing(coordinates);
+            return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary> 
@@ -307,7 +323,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         public virtual ILineString CreateLineString(IList<Coordinate> coordinates)
         {
-            return new LineString(coordinates, this);
+            return CreateLineString(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary>
@@ -364,7 +380,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>An object that implements DotSpatial.Geometries.IMultiPoint</returns>
         public IMultiPoint CreateMultiPoint(IEnumerable<ICoordinate> coordinates)
         {
-            return new MultiPoint(coordinates);
+            return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary> 
@@ -408,7 +424,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="coordinate"></param>
         public virtual IPoint CreatePoint(Coordinate coordinate)
         {
-            return new Point(coordinate, this);
+            return CreatePoint(coordinate != null ? CoordinateSequenceFactory.Create(new[] { coordinate }) : null);
         }
 
         public IPoint CreatePoint(ICoordinateSequence coordinates)
@@ -516,7 +532,7 @@ namespace DotSpatial.Topology.Geometries
         public virtual IGeometry ToGeometry(IEnvelope envelope)
         {
             if (envelope.IsNull)
-                return CreatePoint(null);
+                return CreatePoint((Coordinate)null);
 
             if (envelope.Minimum.X == envelope.Maximum.X && envelope.Minimum.Y == envelope.Maximum.Y)
                 return CreatePoint(new Coordinate(envelope.Minimum.X, envelope.Minimum.Y));
@@ -544,103 +560,116 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="geometries">The list of <c>Geometry's</c> to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IGeometry[] ToGeometryArray(IList geometries)
+        /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IGeometry[] ToGeometryArray(ICollection<IGeometry> geometries)
         {
-            if (geometries == null)
-                return null;
-            return (Geometry[])(new ArrayList(geometries)).ToArray(typeof(Geometry));
+            IGeometry[] list = new IGeometry[geometries.Count];
+            int i = 0;
+            foreach (IGeometry g in geometries)
+                list[i++] = g;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="linearRings">The <c>List</c> of LinearRings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static ILinearRing[] ToLinearRingArray(IList linearRings)
+        /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static ILinearRing[] ToLinearRingArray(ICollection<IGeometry> linearRings)
         {
-            return (ILinearRing[])(new ArrayList(linearRings)).ToArray(typeof(LinearRing));
+            ILinearRing[] list = new ILinearRing[linearRings.Count];
+            int i = 0;
+            foreach (ILinearRing lr in linearRings)
+                list[i++] = lr;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="lineStrings">The <c>List</c> of LineStrings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static ILineString[] ToLineStringArray(IList lineStrings)
+        /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static ILineString[] ToLineStringArray(ICollection<IGeometry> lineStrings)
         {
-            return (LineString[])(new ArrayList(lineStrings)).ToArray(typeof(LineString));
+            ILineString[] list = new ILineString[lineStrings.Count];
+            int i = 0;
+            foreach (ILineString ls in lineStrings)
+                list[i++] = ls;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="multiLineStrings">The <c>List</c> of MultiLineStrings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IMultiLineString[] ToMultiLineStringArray(IList multiLineStrings)
+        /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IMultiLineString[] ToMultiLineStringArray(ICollection<IGeometry> multiLineStrings)
         {
-            return (IMultiLineString[])(new ArrayList(multiLineStrings)).ToArray(typeof(MultiLineString));
+            IMultiLineString[] list = new IMultiLineString[multiLineStrings.Count];
+            int i = 0;
+            foreach (IMultiLineString mls in multiLineStrings)
+                list[i++] = mls;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="multiPoints">The <c>List</c> of MultiPoints to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IMultiPoint[] ToMultiPointArray(IList multiPoints)
+        /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IMultiPoint[] ToMultiPointArray(ICollection<IGeometry> multiPoints)
         {
-            return (IMultiPoint[])(new ArrayList(multiPoints)).ToArray(typeof(MultiPoint));
+            IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
+            int i = 0;
+            foreach (IMultiPoint mp in multiPoints)
+                list[i++] = mp;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="multiPolygons">The <c>List</c> of MultiPolygons to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IMultiPolygon[] ToMultiPolygonArray(IList multiPolygons)
+        /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IMultiPolygon[] ToMultiPolygonArray(ICollection<IGeometry> multiPolygons)
         {
-            return (IMultiPolygon[])(new ArrayList(multiPolygons)).ToArray(typeof(MultiPolygon));
+            IMultiPolygon[] list = new IMultiPolygon[multiPolygons.Count];
+            int i = 0;
+            foreach (IMultiPolygon mp in multiPolygons)
+                list[i++] = mp;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="points">The <c>List</c> of Points to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IPoint[] ToPointArray(IList points)
+        /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IPoint[] ToPointArray(ICollection<IGeometry> points)
         {
-            return (Point[])(new ArrayList(points)).ToArray(typeof(Point));
+            IPoint[] list = new IPoint[points.Count];
+            int i = 0;
+            foreach (IPoint p in points)
+                list[i++] = p;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="polygons">The <c>List</c> of Polygons to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static IPolygon[] ToPolygonArray(IList polygons)
+        /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static IPolygon[] ToPolygonArray(ICollection<IGeometry> polygons)
         {
-            return (Polygon[])(new ArrayList(polygons)).ToArray(typeof(Polygon));
+            IPolygon[] list = new IPolygon[polygons.Count];
+            int i = 0;
+            foreach (IPolygon p in polygons)
+                list[i++] = p;
+            return list;
         }
-
-        #endregion
-
-        #region Classes
-
-        private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
-        {
-            #region Methods
-
-            public override IList<Coordinate> Edit(IList<Coordinate> coordinates, IGeometry geometry)
-            {
-                return coordinates;
-            }
-
-            #endregion
-        }
-
         #endregion
     }
 }

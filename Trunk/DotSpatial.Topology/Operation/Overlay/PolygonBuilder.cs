@@ -211,15 +211,15 @@ namespace DotSpatial.Topology.Operation.Overlay
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
             ILinearRing teString = testEr.LinearRing;
-            Envelope testEnv = teString.EnvelopeInternal;
+            IEnvelope testEnv = teString.EnvelopeInternal;
             Coordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            Envelope minEnv = null;
+            IEnvelope minEnv = null;
             foreach (EdgeRing tryShell in shellList)
             {
                 ILinearRing tryRing = tryShell.LinearRing;
-                Envelope tryEnv = tryRing.EnvelopeInternal;
+                IEnvelope tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                // check if this new containing ring is smaller than the current minimum ring

@@ -87,8 +87,8 @@ namespace DotSpatial.Topology.Triangulate
 
         private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
         {
-            Coordinate[] coords = line.Coordinates;
-            for (int i = 1; i < coords.Length; i++)
+            IList<Coordinate> coords = line.Coordinates;
+            for (int i = 1; i < coords.Count; i++)
                 constraintSegs.Add(new Segment(coords[i - 1], coords[i]));
         }
 
@@ -106,8 +106,8 @@ namespace DotSpatial.Topology.Triangulate
 
         private void CreateVertices(IGeometry geom)
         {
-            Coordinate[] coords = geom.Coordinates;
-            for (int i = 0; i < coords.Length; i++)
+            var coords = geom.Coordinates;
+            for (int i = 0; i < coords.Count; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
                 _constraintVertexMap.Add(coords[i], v);

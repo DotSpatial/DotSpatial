@@ -301,7 +301,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
                 isAllValidLinearRings = false;
 
             var holes = new List<ILineString>();
-            for (int i = 0; i < geom.NumInteriorRings; i++)
+            for (int i = 0; i < geom.NumHoles; i++)
             {
                 IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;
@@ -312,16 +312,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
 
             if (isAllValidLinearRings)
             {
-#if !PCL
                 var holesAsLinearRing = holes.ConvertAll<ILinearRing>(ls => (ILinearRing)ls).ToArray();
-#else
-
-                var tmp = new List<ILinearRing>();
-                foreach (var lineString in holes)
-                    tmp.Add((ILinearRing)lineString);
-                var holesAsLinearRing = tmp.ToArray();
-#endif
-
                 return Factory.CreatePolygon((ILinearRing)shell, holesAsLinearRing);
             }
             else

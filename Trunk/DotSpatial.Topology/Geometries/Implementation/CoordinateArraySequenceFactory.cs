@@ -55,6 +55,11 @@ namespace DotSpatial.Topology.Geometries.Implementation
             return new CoordinateArraySequence(coordinates);
         }
 
+        public ICoordinateSequence Create(IEnumerable<ICoordinate> coordinates)
+        {
+            return new CoordinateArraySequence(coordinates);
+        }
+
         public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);

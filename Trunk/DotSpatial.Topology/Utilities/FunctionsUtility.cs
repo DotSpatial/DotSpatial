@@ -27,7 +27,7 @@ namespace DotSpatial.Topology.Utilities
             return parentGeom.Factory.BuildGeometry(geoms);
         }
 
-        public static Envelope GetEnvelopeOrDefault(IGeometry g)
+        public static IEnvelope GetEnvelopeOrDefault(IGeometry g)
         {
             return g == null ? DefaultEnvelope : g.EnvelopeInternal;
         }

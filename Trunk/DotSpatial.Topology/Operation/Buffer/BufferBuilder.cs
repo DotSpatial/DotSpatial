@@ -22,14 +22,12 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Noding;
 using DotSpatial.Topology.Operation.Overlay;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Buffer
 {
@@ -53,6 +51,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         private readonly EdgeList _edgeList = new EdgeList();
         private IGeometryFactory _geomFact;
         private PlanarGraph _graph;
+        private INoder _workingNoder;
         private IPrecisionModel _workingPrecisionModel;
 
         #endregion
@@ -74,7 +73,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// This allows choosing fast but non-robust noding, or slower
         /// but robust noding.
         ///</summary>
-        public INoder Noder { get; set; }
+        public INoder Noder
+        {
+            get { return _workingNoder; }
+            set { _workingNoder = value; }
+        }
 
         ///<summary>
         /// Sets the precision model to use during the curve computation and noding, 
@@ -105,7 +108,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
             OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
-            IList<ISegmentString> bufferSegStrList = curveSetBuilder.GetCurves();
+            var bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (bufferSegStrList.Count <= 0)
@@ -120,7 +123,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
             PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
-            IList resultPolyList = polyBuilder.Polygons;
+            var resultPolyList = polyBuilder.Polygons;
 
             // just in case...
             if (resultPolyList.Count <= 0)
@@ -141,34 +144,34 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="polyBuilder"> the PolygonBuilder which will build the final polygons</param>
         private static void BuildSubgraphs(IEnumerable<BufferSubgraph> subgraphList, PolygonBuilder polyBuilder)
         {
-            List<BufferSubgraph> processedGraphs = new List<BufferSubgraph>();
-            foreach (BufferSubgraph subgraph in subgraphList)
+            var processedGraphs = new List<BufferSubgraph>();
+            foreach (var subgraph in subgraphList)
             {
                 Coordinate p = subgraph.RightMostCoordinate;
-                SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
+                var locater = new SubgraphDepthLocater(processedGraphs);
                 int outsideDepth = locater.GetDepth(p);
                 subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
                 polyBuilder.Add(new List<EdgeEnd>(
-                    Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
+                    Utilities.Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
             }
         }
 
         private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, IPrecisionModel precisionModel)
         {
-            INoder noder = GetNoder(precisionModel);
+            var noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
-            IList nodedSegStrings = noder.GetNodedSubstrings();
+            var nodedSegStrings = noder.GetNodedSubstrings();
 
-            foreach (object segStr in nodedSegStrings)
+            foreach (var segStr in nodedSegStrings)
             {
                 var pts = segStr.Coordinates;
-                if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
+                if (pts.Count == 2 && pts[0].Equals2D(pts[1]))
                     continue;
 
-                Label oldLabel = (Label)segStr.Context;
-                Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
+                var oldLabel = (Label)segStr.Context;
+                var edge = new Edge(segStr.Coordinates, new Label(oldLabel));
 
                 InsertUniqueEdge(edge);
             }
@@ -176,8 +179,8 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         private static IGeometry ConvertSegStrings(IEnumerator<ISegmentString> it)
         {
-            GeometryFactory fact = new GeometryFactory();
-            List<IGeometry> lines = new List<IGeometry>();
+            var fact = new GeometryFactory();
+            var lines = new List<IGeometry>();
             while (it.MoveNext())
             {
                 ISegmentString ss = it.Current;
@@ -200,12 +203,12 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         private static IEnumerable<BufferSubgraph> CreateSubgraphs(PlanarGraph graph)
         {
-            List<BufferSubgraph> subgraphList = new List<BufferSubgraph>();
+            var subgraphList = new List<BufferSubgraph>();
             foreach (Node node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
-                    BufferSubgraph subgraph = new BufferSubgraph();
+                    var subgraph = new BufferSubgraph();
                     subgraph.Create(node);
                     subgraphList.Add(subgraph);
                 }
@@ -238,10 +241,11 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         private INoder GetNoder(IPrecisionModel precisionModel)
         {
-            if (Noder != null) return Noder;
+            if (_workingNoder != null) return _workingNoder;
 
             // otherwise use a fast (but non-robust) noder
             var noder = new McIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
+            
             return noder;
         }
 

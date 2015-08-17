@@ -188,7 +188,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
                 return _factory.CreatePolygon(null, null);
 
             var holes = new List<ILinearRing>();
-            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
+            for (var i = 0; i < newPolygon.NumHoles; i++)
             {
                 var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole == null || hole.IsEmpty) continue;
@@ -226,8 +226,8 @@ namespace DotSpatial.Topology.Geometries.Utilities
 
                 if (geometry is Point)
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
-                    return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
+                    var newCoordinates = Edit(geometry.Coordinates, geometry);
+                    return factory.CreatePoint((newCoordinates.Count > 0) ? newCoordinates[0] : null);
                 }
 
                 return geometry;
@@ -239,7 +239,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract Coordinate[] Edit(Coordinate[] coordinates, IGeometry geometry);
+            public abstract IList<Coordinate> Edit(IList<Coordinate> coordinates, IGeometry geometry);
 
             #endregion
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Planargraph;
 using DotSpatial.Topology.Planargraph.Algorithm;
@@ -68,8 +69,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <param name="geometries">A <see cref="IEnumerable{T}" /> of geometries to add.</param>
         public void Add(IEnumerable<IGeometry> geometries)
         {
-            foreach(IGeometry geometry in geometries)
-                Add(geometry);            
+            foreach (IGeometry geometry in geometries)
+                Add(geometry);
         }
 
         /// <summary>
@@ -79,23 +80,23 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(IGeometry geometry) 
+        public void Add(IGeometry geometry)
         {
-            geometry.Apply(new GeometryComponentFilterImpl(this));             
+            geometry.Apply(new GeometryComponentFilterImpl(this));
         }
 
         internal void AddLine(ILineString lineString)
         {
             if (_factory == null)
                 _factory = lineString.Factory;
-            
+
             _graph.AddEdge(lineString);
             _lineCount++;
         }
 
         private static LinkedListNode<DirectedEdge> AddReverseSubpath(
             DirectedEdge de, LinkedListNode<DirectedEdge> pos,
-            LinkedList<DirectedEdge> list,  bool expectedClosed)
+            LinkedList<DirectedEdge> list, bool expectedClosed)
         {
             // trace an unvisited path *backwards* from this de
             Node endNode = de.ToNode;
@@ -103,15 +104,15 @@ namespace DotSpatial.Topology.Operation.Linemerge
             while (true)
             {
                 if (pos == null)
-                     pos = list.AddLast(de.Sym);
+                    pos = list.AddLast(de.Sym);
                 else pos = list.AddAfter(pos, de.Sym);
-                de.Edge.Visited = true;
+                de.Edge.IsVisited = true;
                 fromNode = de.FromNode;
-                DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(fromNode);
+                DirectedEdge unvisitedOutDe = FindUnvisitedBestOrientedDe(fromNode);
                 // this must terminate, since we are continually marking edges as visited
-                if (unvisitedOutDE == null)
+                if (unvisitedOutDe == null)
                     break;
-                de = unvisitedOutDE.Sym;
+                de = unvisitedOutDe.Sym;
             }
             if (expectedClosed)
             {
@@ -140,7 +141,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
             {
                 foreach (DirectedEdge de in seq)
                 {
-                    LineMergeEdge e = (LineMergeEdge) de.Edge;
+                    LineMergeEdge e = (LineMergeEdge)de.Edge;
                     ILineString line = e.Line;
 
                     ILineString lineToAdd = line;
@@ -154,9 +155,9 @@ namespace DotSpatial.Topology.Operation.Linemerge
             return lines.Count == 0 ? _factory.CreateMultiLineString(new ILineString[] { }) : _factory.BuildGeometry(lines);
         }
 
-        private void ComputeSequence() 
+        private void ComputeSequence()
         {
-            if (_isRun) 
+            if (_isRun)
                 return;
             _isRun = true;
 
@@ -185,37 +186,37 @@ namespace DotSpatial.Topology.Operation.Linemerge
                     minDegree = node.Degree;
                     minDegreeNode = node;
                 }
-            }            
+            }
             return minDegreeNode;
         }
 
         private static IEnumerable<DirectedEdge> FindSequence(Subgraph graph)
-        {            
+        {
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
             var startNode = FindLowestDegreeNode(graph);
 
             var list = startNode.OutEdges.Edges;
-            
+
             var ie = list.GetEnumerator();
             ie.MoveNext();
 
-            var startDE = ie.Current;            
-            var startDESym = startDE.Sym;
-            
+            var startDe = ie.Current;
+            var startDeSym = startDe.Sym;
+
             var seq = new LinkedList<DirectedEdge>();
-            var pos = AddReverseSubpath(startDESym, null, seq, false);            
+            var pos = AddReverseSubpath(startDeSym, null, seq, false);
             while (pos != null)
             {
                 DirectedEdge prev = pos.Value;
-                DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(prev.FromNode);
-                if (unvisitedOutDE != null)
+                DirectedEdge unvisitedOutDe = FindUnvisitedBestOrientedDe(prev.FromNode);
+                if (unvisitedOutDe != null)
                 {
-                    DirectedEdge toInsert = unvisitedOutDE.Sym;
+                    DirectedEdge toInsert = unvisitedOutDe.Sym;
                     pos = AddReverseSubpath(toInsert, pos, seq, true);
                 }
-                else pos = pos.Previous;                
-            }                       
+                else pos = pos.Previous;
+            }
 
             /*
              * At this point, we have a valid sequence of graph DirectedEdges, but it
@@ -229,8 +230,8 @@ namespace DotSpatial.Topology.Operation.Linemerge
             IList<IEnumerable<DirectedEdge>> sequences = new List<IEnumerable<DirectedEdge>>();
             ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(_graph);
             var subgraphs = csFinder.GetConnectedSubgraphs();
-            foreach(Subgraph subgraph in subgraphs)
-            {                
+            foreach (Subgraph subgraph in subgraphs)
+            {
                 if (HasSequence(subgraph))
                 {
                     IEnumerable<DirectedEdge> seq = FindSequence(subgraph);
@@ -254,23 +255,23 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// The <see cref="DirectedEdge" /> found, 
         /// or <c>null</c> if none were unvisited.
         /// </returns>
-        private static DirectedEdge FindUnvisitedBestOrientedDE(Node node)
+        private static DirectedEdge FindUnvisitedBestOrientedDe(Node node)
         {
-            DirectedEdge wellOrientedDE = null;
-            DirectedEdge unvisitedDE = null;            
-            foreach(object obj in node.OutEdges)
+            DirectedEdge wellOrientedDe = null;
+            DirectedEdge unvisitedDe = null;
+            foreach (object obj in node.OutEdges)
             {
-                DirectedEdge de = (DirectedEdge) obj;
+                DirectedEdge de = (DirectedEdge)obj;
                 if (!de.Edge.IsVisited)
                 {
-                    unvisitedDE = de;
+                    unvisitedDe = de;
                     if (de.EdgeDirection)
-                        wellOrientedDE = de;
+                        wellOrientedDe = de;
                 }
             }
-            if (wellOrientedDE != null)
-                return wellOrientedDE;
-            return unvisitedDE;
+            if (wellOrientedDe != null)
+                return wellOrientedDe;
+            return unvisitedDe;
         }
 
         /// <summary>
@@ -295,9 +296,9 @@ namespace DotSpatial.Topology.Operation.Linemerge
         {
             int oddDegreeCount = 0;
             IEnumerator i = graph.GetNodeEnumerator();
-            while(i.MoveNext())
+            while (i.MoveNext())
             {
-                Node node = (Node) i.Current;
+                Node node = (Node)i.Current;
                 if (node.Degree % 2 == 1)
                     oddDegreeCount++;
             }
@@ -309,9 +310,9 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// </summary>
         /// <returns><c>true</c> if a valid sequence exists.</returns>
         public bool IsSequenceable()
-        {            
+        {
             ComputeSequence();
-            return _isSequenceable;         
+            return _isSequenceable;
         }
 
         /// <summary>
@@ -327,9 +328,9 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// </returns>
         public static bool IsSequenced(IGeometry geom)
         {
-            if (!(geom is IMultiLineString)) 
+            if (!(geom is IMultiLineString))
                 return true;
-        
+
             IMultiLineString mls = geom as IMultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
@@ -337,26 +338,26 @@ namespace DotSpatial.Topology.Operation.Linemerge
 
             Coordinate lastNode = null;
             IList<Coordinate> currNodes = new List<Coordinate>();
-            for (int i = 0; i < mls.NumGeometries; i++) 
+            for (int i = 0; i < mls.NumGeometries; i++)
             {
-                ILineString line = (ILineString) mls.GetGeometryN(i);
+                ILineString line = (ILineString)mls.GetGeometryN(i);
                 Coordinate startNode = line.GetCoordinateN(0);
-                Coordinate endNode   = line.GetCoordinateN(line.NumPoints - 1);
+                Coordinate endNode = line.GetCoordinateN(line.NumPoints - 1);
 
                 /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced
                  */
-                if (prevSubgraphNodes.Contains(startNode)) 
+                if (prevSubgraphNodes.Contains(startNode))
                     return false;
-                if (prevSubgraphNodes.Contains(endNode)) 
+                if (prevSubgraphNodes.Contains(endNode))
                     return false;
 
-                if (lastNode != null && !startNode.Equals(lastNode)) 
+                if (lastNode != null && !startNode.Equals(lastNode))
                 {
                     // start new connected sequence
                     prevSubgraphNodes.AddMany(currNodes);
                     currNodes.Clear();
-                }                
+                }
 
                 currNodes.Add(startNode);
                 currNodes.Add(endNode);
@@ -456,8 +457,9 @@ namespace DotSpatial.Topology.Operation.Linemerge
 
         private static ILineString Reverse(ILineString line)
         {
-            Coordinate[] pts = line.Coordinates;                     
-            Array.Reverse(pts);
+            IList<Coordinate> pts = line.Coordinates;
+            pts = pts.Reverse().ToList();
+            //Array.Reverse(pts);
             ILineString rev = line.Factory.CreateLineString(pts);
             rev.UserData = line.UserData; // Maintain UserData in reverse process
             return rev;
@@ -502,12 +504,12 @@ namespace DotSpatial.Topology.Operation.Linemerge
             public void Filter(IGeometry component)
             {
                 if (component is ILineString)
-                    _sequencer.AddLine(component as ILineString);                    
+                    _sequencer.AddLine(component as ILineString);
             }
 
             #endregion
         }
 
         #endregion
-    }    
+    }
 }

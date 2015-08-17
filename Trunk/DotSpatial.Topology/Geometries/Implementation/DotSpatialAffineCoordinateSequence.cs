@@ -52,6 +52,33 @@ namespace DotSpatial.Topology.Geometries.Implementation
         }
 
         /// <summary>
+        /// Creates an instance of this class with coordinates with xyz values.
+        /// </summary>
+        /// <param name="coordinates">The</param>
+        public DotSpatialAffineCoordinateSequence(IEnumerable<ICoordinate> coordinates)
+        {
+            if (coordinates == null)
+            {
+                _xy = new double[0];
+                return;
+            }
+
+            IList<ICoordinate> list = coordinates as IList<ICoordinate> ?? coordinates.ToList();
+            _xy = new double[2 * list.Count];
+            _z = new double[list.Count];
+            var j = 0;
+            for (var i = 0; i < list.Count; i++)
+            {
+                XY[j++] = list[i].X;
+                XY[j++] = list[i].Y;
+                Z[i] = list[i].Z;
+                //TODO why is m missing here?
+            }
+
+            _ordinates = Ordinates.XYZ;
+        }
+
+        /// <summary>
         /// Constructs a sequence of a given size, populated with new Coordinates.
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
