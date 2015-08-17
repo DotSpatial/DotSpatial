@@ -29,15 +29,17 @@ using DotSpatial.Topology.Geometries;
 namespace DotSpatial.Topology.Simplify
 {
     /// <summary>
-    ///
+    /// Represents a <see cref="ILineString"/> which can be modified to a simplified shape.
+    /// This class provides an attribute which specifies the minimum allowable length
+    /// for the modified result.
     /// </summary>
     public class TaggedLineString
     {
         #region Fields
 
         private readonly int _minimumSize;
-        private readonly LineString _parentLine;
-        private readonly IList _resultSegs = new ArrayList();
+        private readonly ILineString _parentLine;
+        private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
         private TaggedLineSegment[] _segs;
 
         #endregion
@@ -48,14 +50,14 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="parentLine"></param>
-        public TaggedLineString(LineString parentLine) : this(parentLine, 2) { }
+        public TaggedLineString(ILineString parentLine) : this(parentLine, 2) { }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="parentLine"></param>
         /// <param name="minimumSize"></param>
-        public TaggedLineString(LineString parentLine, int minimumSize)
+        public TaggedLineString(ILineString parentLine, int minimumSize)
         {
             _parentLine = parentLine;
             _minimumSize = minimumSize;
@@ -71,21 +73,15 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         public virtual int MinimumSize
         {
-            get
-            {
-                return _minimumSize;
-            }
+            get { return _minimumSize; }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual LineString Parent
+        public virtual ILineString Parent
         {
-            get
-            {
-                return _parentLine;
-            }
+            get { return _parentLine; }
         }
 
         /// <summary>
@@ -93,10 +89,7 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         public virtual IList<Coordinate> ParentCoordinates
         {
-            get
-            {
-                return _parentLine.Coordinates;
-            }
+            get { return _parentLine.Coordinates; }
         }
 
         /// <summary>
@@ -104,10 +97,7 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         public virtual Coordinate[] ResultCoordinates
         {
-            get
-            {
-                return ExtractCoordinates(_resultSegs);
-            }
+            get { return ExtractCoordinates(_resultSegs); }
         }
 
         /// <summary>
@@ -127,10 +117,7 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         public virtual TaggedLineSegment[] Segments
         {
-            get
-            {
-                return _segs;
-            }
+            get { return _segs; }
         }
 
         #endregion
@@ -169,13 +156,13 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>
-        private static Coordinate[] ExtractCoordinates(IList segs)
+        private static Coordinate[] ExtractCoordinates(IList<LineSegment> segs)
         {
             Coordinate[] pts = new Coordinate[segs.Count + 1];
             LineSegment seg = null;
             for (int i = 0; i < segs.Count; i++)
             {
-                seg = (LineSegment)segs[i];
+                seg = segs[i];
                 pts[i] = seg.P0;
             }
             // add last point
@@ -202,8 +189,7 @@ namespace DotSpatial.Topology.Simplify
             _segs = new TaggedLineSegment[pts.Count - 1];
             for (int i = 0; i < pts.Count - 1; i++)
             {
-                TaggedLineSegment seg
-                         = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
+                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
                 _segs[i] = seg;
             }
         }

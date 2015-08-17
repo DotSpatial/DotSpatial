@@ -166,6 +166,15 @@
     <Compile Include="CoordinateSystems\Transformations\IMathTransformFactory.cs" />
     <Compile Include="CoordinateSystems\Transformations\TransformType.cs" />
     <Compile Include="CoordinateSystems\WGS84ConversionInfo.cs" />
+    <Compile Include="DataStructures\Interval.cs" />
+    <Compile Include="Densify\Densifier.cs" />
+    <Compile Include="Dissolve\DissolveEdgeGraph.cs" />
+    <Compile Include="Dissolve\DissolveHalfEdge.cs" />
+    <Compile Include="Dissolve\LineDissolver.cs" />
+    <Compile Include="EdgeGraph\EdgeGraph.cs" />
+    <Compile Include="EdgeGraph\EdgeGraphBuilder.cs" />
+    <Compile Include="EdgeGraph\HalfEdge.cs" />
+    <Compile Include="EdgeGraph\MarkHalfEdge.cs" />
     <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
     <Compile Include="Geometries\DimensionType.cs" />
@@ -317,6 +326,8 @@
     <Compile Include="Shape\GeometricShapeBuilder.cs" />
     <Compile Include="Shape\Random\RandomPointsBuilder.cs" />
     <Compile Include="Shape\Random\RandomPointsInGridBuilder.cs" />
+    <Compile Include="Simplify\VWLineSimplifier.cs" />
+    <Compile Include="Simplify\VWSimplifier.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
     <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
     <Compile Include="Triangulate\ConstraintEnforcementException.cs" />
@@ -695,6 +706,7 @@
     <Folder Include="Geometries\Prepared\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Densify\DensifySummary.xml" />
     <Content Include="Precision\PrecisionSummary.xml" />
     <Content Include="Triangulate\QuadEdge\QuadEdgeSummary.xml" />
     <Content Include="Triangulate\TriangulateSummary.xml" />

@@ -37,7 +37,6 @@ namespace DotSpatial.Topology.Simplify
 
         private readonly IList<Coordinate> _pts;
         private readonly LineSegment _seg = new LineSegment();
-        private double _distanceTolerance;
         private bool[] _usePt;
 
         #endregion
@@ -55,6 +54,15 @@ namespace DotSpatial.Topology.Simplify
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double DistanceTolerance { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -66,7 +74,7 @@ namespace DotSpatial.Topology.Simplify
         public static IList<Coordinate> Simplify(IList<Coordinate> pts, double distanceTolerance)
         {
             DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
-            simp._distanceTolerance = distanceTolerance;
+            simp.DistanceTolerance = distanceTolerance;
             return simp.Simplify();
         }
 
@@ -74,7 +82,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        private Coordinate[] Simplify()
+        public Coordinate[] Simplify()
         {
             _usePt = new bool[_pts.Count];
             for (int i = 0; i < _pts.Count; i++)
@@ -110,7 +118,7 @@ namespace DotSpatial.Topology.Simplify
                     maxIndex = k;
                 }
             }
-            if (maxDistance <= _distanceTolerance)
+            if (maxDistance <= DistanceTolerance)
                 for (int k = i + 1; k < j; k++)
                     _usePt[k] = false;
             else

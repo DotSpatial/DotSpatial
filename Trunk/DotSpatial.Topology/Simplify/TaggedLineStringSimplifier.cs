@@ -22,7 +22,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries;
@@ -32,7 +31,7 @@ namespace DotSpatial.Topology.Simplify
     /// <summary>
     /// Simplifies a TaggedLineString, preserving topology
     /// (in the sense that no new intersections are introduced).
-    /// Uses the recursive D-P algorithm.
+    /// Uses the recursive Douglas-Peucker  algorithm.
     /// </summary>
     public class TaggedLineStringSimplifier
     {
@@ -51,11 +50,6 @@ namespace DotSpatial.Topology.Simplify
 
         #region Constructors
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inputIndex"></param>
-        /// <param name="outputIndex"></param>
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
         {
             _inputIndex = inputIndex;
@@ -67,18 +61,14 @@ namespace DotSpatial.Topology.Simplify
         #region Properties
 
         /// <summary>
-        ///
+        /// Sets the distance tolerance for the simplification.
+        /// All vertices in the simplified geometry will be within this
+        /// distance of the original geometry.
         /// </summary>
         public virtual double DistanceTolerance
         {
-            get
-            {
-                return _distanceTolerance;
-            }
-            set
-            {
-                _distanceTolerance = value;
-            }
+            get { return _distanceTolerance; }
+            set { _distanceTolerance = value; }
         }
 
         #endregion
@@ -115,14 +105,18 @@ namespace DotSpatial.Topology.Simplify
         }
 
         /// <summary>
-        ///
+        /// Flattens a section of the line between
+        /// indexes <paramref name="start"/> and <paramref name="end"/>,
+        /// replacing them with a line between the endpoints.
+        /// The input and output indexes are updated
+        /// to reflect this.
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
+        /// <param name="start">The start index of the flattened section.</param>
+        /// <param name="end">The end index of the flattened section.</param>
+        /// <returns>The new segment created.</returns>
         private LineSegment Flatten(int start, int end)
         {
-            // make a new segment for the simplified point
+            // make a new segment for the simplified geometry
             Coordinate p0 = _linePts[start];
             Coordinate p1 = _linePts[end];
             LineSegment newSeg = new LineSegment(p0, p1);
@@ -141,13 +135,14 @@ namespace DotSpatial.Topology.Simplify
         /// <returns></returns>
         private bool HasBadInputIntersection(TaggedLineString parentLine, int[] sectionIndex, LineSegment candidateSeg)
         {
-            IList querySegs = _inputIndex.Query(candidateSeg);
-            for (IEnumerator i = querySegs.GetEnumerator(); i.MoveNext(); )
+            IList<LineSegment> querySegs = _inputIndex.Query(candidateSeg);
+            foreach (TaggedLineSegment querySeg in querySegs)
             {
-                TaggedLineSegment querySeg = (TaggedLineSegment)i.Current;
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                if (interior)
                 {
-                    if (IsInLineSection(parentLine, sectionIndex, querySeg))
+                    bool inline = IsInLineSection(parentLine, sectionIndex, querySeg);
+                    if (inline)
                         continue;
                     return true;
                 }
@@ -178,11 +173,11 @@ namespace DotSpatial.Topology.Simplify
         /// <returns></returns>
         private bool HasBadOutputIntersection(LineSegment candidateSeg)
         {
-            IList querySegs = _outputIndex.Query(candidateSeg);
-            for (IEnumerator i = querySegs.GetEnumerator(); i.MoveNext(); )
+            IList<LineSegment> querySegs = _outputIndex.Query(candidateSeg);
+            foreach (LineSegment querySeg in querySegs)
             {
-                LineSegment querySeg = (LineSegment)i.Current;
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                if (interior)
                     return true;
             }
             return false;
@@ -201,7 +196,7 @@ namespace DotSpatial.Topology.Simplify
         }
 
         /// <summary>
-        /// Tests whether a segment is in a section of a TaggedLineString-
+        /// Tests whether a segment is in a section of a <see cref="TaggedLineString"/>.
         /// </summary>
         /// <param name="line"></param>
         /// <param name="sectionIndex"></param>
@@ -233,7 +228,8 @@ namespace DotSpatial.Topology.Simplify
         }
 
         /// <summary>
-        ///
+        /// Simplifies the given <see cref="TaggedLineString"/>
+        /// using the distance tolerance specified.
         /// </summary>
         /// <param name="line"></param>
         public virtual void Simplify(TaggedLineString line)
@@ -243,12 +239,6 @@ namespace DotSpatial.Topology.Simplify
             SimplifySection(0, _linePts.Count - 1, 0);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="depth"></param>
         private void SimplifySection(int i, int j, int depth)
         {
             depth += 1;
@@ -261,23 +251,36 @@ namespace DotSpatial.Topology.Simplify
                 return;
             }
 
+            bool isValidToSimplify = true;
+
+            /**
+             * Following logic ensures that there is enough points in the output line.
+             * If there is already more points than the minimum, there's nothing to check.
+             * Otherwise, if in the worst case there wouldn't be enough points,
+             * don't flatten this segment (which avoids the worst case scenario)
+             */
+            if (_line.ResultSize < _line.MinimumSize)
+            {
+                int worstCaseSize = depth + 1;
+                if (worstCaseSize < _line.MinimumSize)
+                    isValidToSimplify = false;
+            }
+
             double[] distance = new double[1];
             int furthestPtIndex = FindFurthestPoint(_linePts, i, j, distance);
-            bool isValidToFlatten = true;
-
-            // must have enough points in the output line
-            if (_line.ResultSize < _line.MinimumSize && depth < 2) isValidToFlatten = false;
             // flattening must be less than distanceTolerance
-            if (distance[0] > DistanceTolerance) isValidToFlatten = false;
+            if (distance[0] > _distanceTolerance)
+                isValidToSimplify = false;
             // test if flattened section would cause intersection
             LineSegment candidateSeg = new LineSegment();
             candidateSeg.P0 = _linePts[i];
             candidateSeg.P1 = _linePts[j];
             sectionIndex[0] = i;
             sectionIndex[1] = j;
-            if (HasBadIntersection(_line, sectionIndex, candidateSeg)) isValidToFlatten = false;
+            if (HasBadIntersection(_line, sectionIndex, candidateSeg))
+                isValidToSimplify = false;
 
-            if (isValidToFlatten)
+            if (isValidToSimplify)
             {
                 LineSegment newSeg = Flatten(i, j);
                 _line.AddToResult(newSeg);
