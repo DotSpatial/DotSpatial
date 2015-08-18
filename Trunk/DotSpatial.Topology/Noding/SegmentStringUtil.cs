@@ -24,7 +24,7 @@ namespace DotSpatial.Topology.Noding
         public static IList<ISegmentString> ExtractNodedSegmentStrings(IGeometry geom)
         {
             IList<ISegmentString> segStr = new List<ISegmentString>();
-            IList<IGeometry> lines = LinearComponentExtracter.GetLines(geom);
+            var lines = LinearComponentExtracter.GetLines(geom);
             foreach (IGeometry line in lines)
             {
                 IList<Coordinate> pts = line.Coordinates;

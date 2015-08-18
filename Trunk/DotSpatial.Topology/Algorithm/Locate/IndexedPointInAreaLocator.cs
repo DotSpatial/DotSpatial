@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Geometries.Utilities;
 using DotSpatial.Topology.Index;
@@ -86,9 +87,9 @@ namespace DotSpatial.Topology.Algorithm.Locate
 
             #region Methods
 
-            private void AddLine(Coordinate[] pts)
+            private void AddLine(IList<Coordinate> pts)
             {
-                for (int i = 1; i < pts.Length; i++)
+                for (int i = 1; i < pts.Count; i++)
                 {
                     LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
                     double min = Math.Min(seg.P0.Y, seg.P1.Y);
@@ -102,7 +103,7 @@ namespace DotSpatial.Topology.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
-                    Coordinate[] pts = line.Coordinates;
+                    var pts = line.Coordinates;
                     AddLine(pts);
                 }
             }

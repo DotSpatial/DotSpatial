@@ -259,18 +259,6 @@ namespace DotSpatial.Topology.Geometries
             get { return _max; }
         }
 
-        public double MaxX
-        {
-            get { return _max.X; }
-            set { _max.X = value; }
-        }
-
-        public double MaxY
-        {
-            get { return _max.Y; }
-            set { _max.Y = value; }
-        }
-
         /// <summary>
         /// Gets the minimum coordinate
         /// </summary>
@@ -278,18 +266,6 @@ namespace DotSpatial.Topology.Geometries
         public Coordinate Minimum
         {
             get { return _min; }
-        }
-
-        public double MinX
-        {
-            get { return _min.X; }
-            set { _min.X = value; } 
-        }
-
-        public double MinY
-        {
-            get { return _min.Y; }
-            set { _min.Y = value; }
         }
 
         /// <summary>
@@ -426,9 +402,46 @@ namespace DotSpatial.Topology.Geometries
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Enlarges this <c>Envelope</c> so that it contains the <c>other</c> Envelope.
+        /// Has no effect if <c>other</c> is wholly on or within the envelope.
+        /// </summary>
+        /// <param name="other">the <c>Envelope</c> to expand to include.</param>
+        public IEnvelope ExpandedBy(IEnvelope other)
+        {
+            if (other.IsNull) return this;
+            if (IsNull) return other;
+
+            var minx = (other.Minimum.X < Minimum.X) ? other.Minimum.X : Minimum.X;
+            var maxx = (other.Maximum.X > Maximum.X) ? other.Maximum.X : Maximum.X;
+            var miny = (other.Minimum.Y < Minimum.Y) ? other.Minimum.Y : Minimum.Y;
+            var maxy = (other.Maximum.Y > Maximum.Y) ? other.Maximum.Y : Maximum.Y;
+            return new Envelope(minx, maxx, miny, maxy);
+        }
+
         public void ExpandToInclude(Envelope other)
         {
             throw new NotImplementedException();
+        }
+
+        public void ExpandToInclude(IEnvelope other)
+        {
+            if (other == null || other.IsNull) return;
+            if (IsNull)
+            {
+                Init(other.Minimum, other.Maximum);
+                return;
+            }
+            int numDimensions = Math.Min(NumOrdinates, other.NumOrdinates);
+
+            Coordinate min = Minimum;
+            Coordinate max = Maximum;
+            for (int i = 0; i < numDimensions; i++)
+            {
+                if (other.Minimum[i] < min[i]) min[i] = other.Minimum[i];
+                if (other.Maximum[i] > max[i]) max[i] = other.Maximum[i];
+            }
+            Init(min, max); // re-initialize to prevent sign errors and indicate a change.
         }
 
         /// <summary>
@@ -605,6 +618,17 @@ namespace DotSpatial.Topology.Geometries
         public bool Intersects(Envelope other)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Intersects(IEnvelope other)
+        {
+            if (other == null || IsNull || other.IsNull) return false;
+            int numDimensions = Math.Min(NumOrdinates, other.NumOrdinates);
+            for (int i = 0; i < numDimensions; i++)
+            {
+                if (other.Minimum[i] > Maximum[i] || other.Maximum[i] < Minimum[i]) return false;
+            }
+            return true;
         }
 
         /// <summary>

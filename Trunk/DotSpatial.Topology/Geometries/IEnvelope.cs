@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.Geometries
     /// the supplies extent values are automatically sorted into the correct order.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public interface IEnvelope : ICloneable, IRectangle
+    public interface IEnvelope : ICloneable, IRectangle, IIntersectable<IEnvelope>,IExpandable<IEnvelope>
     {
         #region Events
 

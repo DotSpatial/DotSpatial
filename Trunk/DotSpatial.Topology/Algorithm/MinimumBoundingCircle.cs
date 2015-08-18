@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
@@ -102,7 +103,7 @@ namespace DotSpatial.Topology.Algorithm
 
         private void ComputeCirclePoints()
         {
-            IList<Coordinate> pts;
+            Coordinate[] pts;
             // handle degenerate or trivial cases
             if (_input.IsEmpty)
             {
@@ -111,7 +112,7 @@ namespace DotSpatial.Topology.Algorithm
             }
             if (_input.NumPoints == 1)
             {
-                pts = _input.Coordinates;
+                pts = _input.Coordinates.ToArray();
                 _extremalPts = new[] { new Coordinate(pts[0]) };
                 return;
             }
@@ -123,20 +124,20 @@ namespace DotSpatial.Topology.Algorithm
             var convexHull = _input.ConvexHull();
 
             // check for degenerate or trivial cases
-            var hullPts = convexHull.Coordinates;
+            var hullPts = convexHull.Coordinates.ToArray();
 
             // strip duplicate final point, if any
             pts = hullPts;
-            if (hullPts[0].Equals2D(hullPts[hullPts.Count - 1]))
+            if (hullPts[0].Equals2D(hullPts[hullPts.Length - 1]))
             {
-                pts = new Coordinate[hullPts.Count - 1];
-                CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Count - 1);
+                pts = new Coordinate[hullPts.Length - 1];
+                CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Length - 1);
             }
 
             /**
 		     * Optimization for the trivial case where the CH has fewer than 3 points
 		     */
-		    if (pts.Count <= 2)
+            if (pts.Length <= 2)
             {
                 _extremalPts = CoordinateArrays.CopyDeep(pts);
                 return;
@@ -155,7 +156,7 @@ namespace DotSpatial.Topology.Algorithm
              * at most <tt>pts.length</tt> iterations are required to terminate 
              * with a correct result.
              */
-            for (int i = 0; i < pts.Count; i++)
+            for (int i = 0; i < pts.Length; i++)
             {
                 var R = PointWithMinAngleWithSegment(pts, P, Q);
 

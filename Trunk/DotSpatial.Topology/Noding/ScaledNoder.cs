@@ -172,14 +172,14 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private Coordinate[] Scale(IList<Coordinate> pts)
+        private IList<Coordinate> Scale(IList<Coordinate> pts)
         {
             Coordinate[] roundPts = new Coordinate[pts.Count];
             for (int i = 0; i < pts.Count; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
                                              pts[i].Z);
-            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            IList<Coordinate> roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }
 

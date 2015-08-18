@@ -206,7 +206,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList<T> resultItems)
+        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList<T> resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -227,7 +227,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <returns>The index of the subquad that wholly contains the given envelope <br/>
         /// or -1 if no subquad wholly contains the envelope</returns>
-        public static int GetSubnodeIndex(Envelope env, double centreX, double centreY)
+        public static int GetSubnodeIndex(IEnvelope env, double centreX, double centreY)
         {
             int subnodeIndex = -1;
             if (env.Minimum.X >= centreX)
@@ -248,7 +248,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected abstract bool IsSearchMatch(Envelope searchEnv);
+        protected abstract bool IsSearchMatch(IEnvelope searchEnv);
 
         /// <summary> 
         /// Removes a single item from this subtree.
@@ -256,7 +256,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public bool Remove(Envelope itemEnv, T item)
+        public bool Remove(IEnvelope itemEnv, T item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv)) return false;
@@ -293,7 +293,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Visit(Envelope searchEnv, IItemVisitor<T> visitor)
+        public void Visit(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             if (!IsSearchMatch(searchEnv)) return;
 
@@ -311,7 +311,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
+        private void VisitItems(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
             for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )

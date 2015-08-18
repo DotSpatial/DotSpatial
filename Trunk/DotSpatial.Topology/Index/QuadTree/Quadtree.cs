@@ -31,9 +31,9 @@ namespace DotSpatial.Topology.Index.QuadTree
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying
     /// of items bounded by 2D rectangles.<br/>
-    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
+    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="IEnvelope"/>s.<br/>
     /// Any type of object can also be indexed, as long as it has an extent that can be 
-    /// represented by an <see cref="Envelope"/>.
+    /// represented by an <see cref="IEnvelope"/>.
     /// <para/>
     /// This Quadtree index provides a <b>primary filter</b>
     /// for range rectangle queries.  The various query methods return a list of
@@ -131,7 +131,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// 
         /// </summary>
         /// <param name="itemEnv"></param>
-        private void CollectStats(Envelope itemEnv)
+        private void CollectStats(IEnvelope itemEnv)
         {
             double delX = itemEnv.Width;
             if (delX < _minExtent && delX > 0.0)
@@ -148,7 +148,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="minExtent"></param>
-        public static Envelope EnsureExtent(Envelope itemEnv, double minExtent)
+        public static IEnvelope EnsureExtent(IEnvelope itemEnv, double minExtent)
         {
             //The names "ensureExtent" and "minExtent" are misleading -- sounds like
             //this method ensures that the extents are greater than minExtent.
@@ -180,10 +180,10 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(Envelope itemEnv, T item)
+        public void Insert(IEnvelope itemEnv, T item)
         {
             CollectStats(itemEnv);
-            Envelope insertEnv = EnsureExtent(itemEnv, _minExtent);
+            IEnvelope insertEnv = EnsureExtent(itemEnv, _minExtent);
             _root.Insert(insertEnv, item);
         }
 
@@ -192,7 +192,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <remarks>
         /// Precisely, the items that are returned are all items in the tree 
-        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// whose envelope <b>may</b> intersect the search IEnvelope.
         /// Note that some items with non-intersecting envelopes may be returned as well;
         /// the client is responsible for filtering these out.
         /// In most situations there will be many items in the tree which do not
@@ -201,7 +201,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <returns>A List of items which may intersect the search envelope</returns>
-        public IList<T> Query(Envelope searchEnv)
+        public IList<T> Query(IEnvelope searchEnv)
         {
             /*
             * the items that are matched are the items in quads which
@@ -217,7 +217,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <remarks>
         /// Precisely, the items that are visited are all items in the tree 
-        /// whose envelope <b>may</b> intersect the search Envelope.
+        /// whose envelope <b>may</b> intersect the search IEnvelope.
         /// Note that some items with non-intersecting envelopes may be visited as well;
         /// the client is responsible for filtering these out.
         /// In most situations there will be many items in the tree which do not
@@ -226,7 +226,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <param name="visitor">A visitor object which is passed the visited items</param>
-        public void Query(Envelope searchEnv, IItemVisitor<T> visitor)
+        public void Query(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             /*
             * the items that are matched are the items in quads which
@@ -248,12 +248,12 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <summary> 
         /// Removes a single item from the tree.
         /// </summary>
-        /// <param name="itemEnv">The Envelope of the item to be removed.</param>
+        /// <param name="itemEnv">The IEnvelope of the item to be removed.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found (and thus removed).</returns>
-        public bool Remove(Envelope itemEnv, T item)
+        public bool Remove(IEnvelope itemEnv, T item)
         {
-            Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
+            IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
             return _root.Remove(posEnv, item);
         }
 

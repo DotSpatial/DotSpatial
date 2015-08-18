@@ -48,7 +48,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <summary>
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public void Insert(Envelope itemEnv, T item)
+        public void Insert(IEnvelope itemEnv, T item)
         {
             int index = GetSubnodeIndex(itemEnv, Origin.X, Origin.Y);
             // if index is -1, itemEnv must cross the X or Y axis.
@@ -83,7 +83,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private static void InsertContained(Node<T> tree, Envelope itemEnv, T item)
+        private static void InsertContained(Node<T> tree, IEnvelope itemEnv, T item)
         {
             Assert.IsTrue(tree.Envelope.Contains(itemEnv));
             /*
@@ -105,7 +105,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(Envelope searchEnv)
+        protected override bool IsSearchMatch(IEnvelope searchEnv)
         {
             return true;
         }

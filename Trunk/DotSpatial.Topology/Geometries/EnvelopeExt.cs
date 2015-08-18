@@ -180,6 +180,49 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
+        ///  Tests if the given point lies in or on the envelope.
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="x">the x-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        ///  <param name="y">the y-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        ///  <returns> <c>true</c> if <c>(x, y)</c> lies in the interior or on the boundary of this <c>Envelope</c>.</returns>
+        public static bool Covers(this IEnvelope self, double x, double y)
+        {
+            if (self.IsNull) return false;
+            return x >= self.Minimum.X &&
+                x <= self.Maximum.X &&
+                y >= self.Minimum.Y &&
+               y <= self.Maximum.Y;
+        }
+
+        /// <summary>
+        ///  Tests if the given point lies in or on the envelope.
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
+        ///  <returns><c>true</c> if the point lies in the interior or on the boundary of this <c>Envelope</c>.</returns>
+        public static bool Covers(this IEnvelope self, Coordinate p)
+        {
+            return Covers(self, p.X, p.Y);
+        }
+
+        /// <summary>
+        ///  Tests if the <c>Envelope other</c> lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="other">the <c>Envelope</c> to check</param>
+        ///  <returns>true if this <c>Envelope</c> covers the <c>other</c></returns>
+        public static bool Covers(this IEnvelope self, IEnvelope other)
+        {
+            if (self.IsNull || other.IsNull)
+                return false;
+            return other.Minimum.X >= self.Minimum.X &&
+                 other.Maximum.X <= self.Maximum.X &&
+                 other.Minimum.Y >= self.Minimum.Y &&
+                 other.Maximum.Y <= self.Maximum.Y;
+        }
+
+        /// <summary>
         /// Computes the distance between this and another Envelope.
         /// The distance between overlapping Envelopes is 0.  Otherwise, the
         /// distance is the hyper Euclidean distance between the closest points.
@@ -824,7 +867,7 @@ namespace DotSpatial.Topology.Geometries
             coords.Add(self.BottomRight());
             coords.Add(self.BottomLeft());
             coords.Add(self.TopLeft()); // close the polygon
-            return new LinearRing(coords);
+            return new LinearRing(coords.ToList());
         }
 
         /// <summary>

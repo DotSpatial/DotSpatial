@@ -40,7 +40,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         ///
         /// </summary>
         /// <param name="itemEnv"></param>
-        public Key(Envelope itemEnv)
+        public Key(IEnvelope itemEnv)
         {
             Point = new Coordinate();
             ComputeKey(itemEnv);
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemEnv"></param>
-        public void ComputeKey(Envelope itemEnv)
+        public void ComputeKey(IEnvelope itemEnv)
         {
             Level = ComputeQuadLevel(itemEnv);
             Envelope = new Envelope();
@@ -103,7 +103,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemEnv"></param>
-        private void ComputeKey(int level, Envelope itemEnv)
+        private void ComputeKey(int level, IEnvelope itemEnv)
         {
             double quadSize = DoubleBits.PowerOf2(level);
             Point.X = Math.Floor(itemEnv.Minimum.X / quadSize) * quadSize;
@@ -116,7 +116,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static int ComputeQuadLevel(Envelope env)
+        public static int ComputeQuadLevel(IEnvelope env)
         {
             double dx = env.Width;
             double dy = env.Height;

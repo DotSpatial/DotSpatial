@@ -98,10 +98,10 @@ namespace DotSpatial.Topology.Operation
                 return GetEmptyMultiPoint();
             }
 
-            Coordinate[] bdyPts = ComputeBoundaryCoordinates(mLine);
+            IList<Coordinate> bdyPts = ComputeBoundaryCoordinates(mLine);
 
             // return Point or MultiPoint
-            if (bdyPts.Length == 1)
+            if (bdyPts.Count == 1)
             {
                 return _geomFact.CreatePoint(bdyPts[0]);
             }
@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.Operation
 
         //private Map endpointMap;
 
-        private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
+        private IList<Coordinate> ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
             IList<Coordinate> bdyPts = new List<Coordinate>();
             _endpointMap = new OrderedDictionary<Coordinate, Counter>();
@@ -134,7 +134,7 @@ namespace DotSpatial.Topology.Operation
                 }
             }
 
-            return CoordinateArrays.ToCoordinateArray(bdyPts);
+            return bdyPts;
         }
 
         public IGeometry GetBoundary()

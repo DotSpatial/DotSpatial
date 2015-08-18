@@ -19,10 +19,10 @@ namespace DotSpatial.Topology.Index.Strtree
     {
         #region Fields
 
-        private readonly IBoundable<Envelope, TItem> _boundable1;
-        private readonly IBoundable<Envelope, TItem> _boundable2;
+        private readonly IBoundable<IEnvelope, TItem> _boundable1;
+        private readonly IBoundable<IEnvelope, TItem> _boundable2;
         private readonly double _distance;
-        private readonly IItemDistance<Envelope, TItem> _itemDistance;
+        private readonly IItemDistance<IEnvelope, TItem> _itemDistance;
 
         #endregion
 
@@ -36,13 +36,14 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <param name="boundable1">The first boundable</param>
         /// <param name="boundable2">The second boundable</param>
         /// <param name="itemDistance">The item distance function</param>
-        public BoundablePair(IBoundable<Envelope, TItem> boundable1, IBoundable<Envelope, TItem> boundable2, IItemDistance<Envelope, TItem> itemDistance)
+        public BoundablePair(IBoundable<IEnvelope, TItem> boundable1, IBoundable<IEnvelope, TItem> boundable2, IItemDistance<IEnvelope, TItem> itemDistance)
         {
             _boundable1 = boundable1;
             _boundable2 = boundable2;
             _itemDistance = itemDistance;
             _distance = GetDistance();
         }
+
 
         #endregion
 
@@ -113,10 +114,10 @@ namespace DotSpatial.Topology.Index.Strtree
             return 0;
         }
 
-        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
+        private void Expand(IBoundable<IEnvelope, TItem> bndComposite, IBoundable<IEnvelope, TItem> bndOther,
                             PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
-            var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
+            var children = ((AbstractNode<IEnvelope, TItem>)bndComposite).ChildBoundables;
             foreach (var child in children)
             {
                 var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
@@ -173,7 +174,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// </summary>
         /// <param name="i">The index of the member to return (0 or 1)</param>
         /// <returns>The chosen member</returns>
-        public IBoundable<Envelope, TItem> GetBoundable(int i)
+        public IBoundable<IEnvelope, TItem> GetBoundable(int i)
         {
             return i == 0 ? _boundable1 : _boundable2;
         }
@@ -197,9 +198,9 @@ namespace DotSpatial.Topology.Index.Strtree
             return _boundable1.Bounds.Distance(_boundable2.Bounds);
         }
 
-        public static bool IsComposite(IBoundable<Envelope, TItem> item)
+        public static bool IsComposite(IBoundable<IEnvelope, TItem> item)
         {
-            return (item is AbstractNode<Envelope, TItem>);
+            return (item is AbstractNode<IEnvelope, TItem>);
         }
 
         #endregion

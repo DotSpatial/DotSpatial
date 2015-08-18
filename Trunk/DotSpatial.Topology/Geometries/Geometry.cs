@@ -1030,7 +1030,7 @@ namespace DotSpatial.Topology.Geometries
         ///
         /// </summary>
         /// <returns></returns>
-        object ICloneable.Clone()
+        public object Clone()
         {
             Geometry clone = (Geometry)MemberwiseClone();
             OnCopy(clone);
@@ -1487,7 +1487,7 @@ namespace DotSpatial.Topology.Geometries
             if (IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
             if (other == null || other.IsEmpty)
-                return (IGeometry)Clone();
+                return (IGeometry) Clone();
 
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);

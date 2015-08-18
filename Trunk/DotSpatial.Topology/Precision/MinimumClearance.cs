@@ -207,7 +207,7 @@ namespace DotSpatial.Topology.Precision
         /// Also computes the values of the nearest points, if any.
         /// </summary>
         /// <author>Martin Davis</author>
-        private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
+        private class MinClearanceDistance : IItemDistance<IEnvelope, FacetSequence>
         {
             #region Fields
 
@@ -227,7 +227,7 @@ namespace DotSpatial.Topology.Precision
 
             #region Methods
 
-            public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
+            public double Distance(IBoundable<IEnvelope, FacetSequence> b1, IBoundable<IEnvelope, FacetSequence> b2)
             {
                 var fs1 = b1.Item;
                 var fs2 = b2.Item;

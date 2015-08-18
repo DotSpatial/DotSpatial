@@ -51,7 +51,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="level"></param>
-        public Node(Envelope env, int level)
+        public Node(IEnvelope env, int level)
         {
             Envelope = env;
             _level = level;
@@ -66,7 +66,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <summary>
         ///
         /// </summary>
-        public Envelope Envelope { get; private set; }
+        public IEnvelope Envelope { get; private set; }
 
         #endregion
 
@@ -78,9 +78,9 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
         /// <returns></returns>
-        public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
+        public static Node<T> CreateExpanded(Node<T> node, IEnvelope addEnv)
         {
-            Envelope expandEnv = new Envelope(addEnv);
+            IEnvelope expandEnv = new Envelope(addEnv);
             if (node != null)
                 expandEnv.ExpandToInclude(node.Envelope);
 
@@ -95,7 +95,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static Node<T> CreateNode(Envelope env)
+        public static Node<T> CreateNode(IEnvelope env)
         {
             Key key = new Key(env);
             var node = new Node<T>(key.Envelope, key.Level);
@@ -144,7 +144,7 @@ namespace DotSpatial.Topology.Index.QuadTree
                 default:
                     break;
             }
-            Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
+            IEnvelope sqEnv = new Envelope(minx, maxx, miny, maxy);
             var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }
@@ -154,7 +154,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public NodeBase<T> Find(Envelope searchEnv)
+        public NodeBase<T> Find(IEnvelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             if (subnodeIndex == -1)
@@ -176,7 +176,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv">The envelope to search for</param>
         /// <returns>The subquad containing the search envelope.</returns>
-        public Node<T> GetNode(Envelope searchEnv)
+        public Node<T> GetNode(IEnvelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
             // if subquadIndex is -1 searchEnv is not contained in a subquad
@@ -227,7 +227,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(Envelope searchEnv)
+        protected override bool IsSearchMatch(IEnvelope searchEnv)
         {
             return Envelope.Intersects(searchEnv);
         }

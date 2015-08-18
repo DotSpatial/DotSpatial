@@ -23,6 +23,8 @@
 // ********************************************************************************************************
 
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Operation.Linemerge
@@ -37,7 +39,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
 
         private readonly IList _directedEdges = new ArrayList();
         private readonly IGeometryFactory _factory;
-        private Coordinate[] _coordinates;
+        private IList<Coordinate> _coordinates;
 
         #endregion
 
@@ -60,7 +62,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <summary>
         ///
         /// </summary>
-        private Coordinate[] Coordinates
+        private IList<Coordinate> Coordinates
         {
             get
             {
@@ -80,7 +82,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
                     }
                     _coordinates = coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
-                        CoordinateArrays.Reverse(_coordinates);
+                        _coordinates = _coordinates.Reverse().ToList();
                 }
                 return _coordinates;
             }

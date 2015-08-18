@@ -148,11 +148,11 @@ namespace DotSpatial.Topology.Operation.Distance
         }
         */
 
-        private class FacetSequenceDistance : IItemDistance<Envelope, FacetSequence>
+        private class FacetSequenceDistance : IItemDistance<IEnvelope, FacetSequence>
         {
             #region Methods
 
-            public double Distance(IBoundable<Envelope, FacetSequence> item1, IBoundable<Envelope, FacetSequence> item2)
+            public double Distance(IBoundable<IEnvelope, FacetSequence> item1, IBoundable<IEnvelope, FacetSequence> item2)
             {
                 return item1.Item.Distance(item2.Item);
             }

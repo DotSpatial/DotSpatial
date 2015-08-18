@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotSpatial.Topology.Algorithm;
 
 namespace DotSpatial.Topology.Geometries
@@ -46,10 +47,10 @@ namespace DotSpatial.Topology.Geometries
 
         #region Methods
 
-        private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
+        private ILinearRing CreateLinearRing(IList<Coordinate> coordinates, bool ccw)
         {
             if (coordinates != null && CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
-                Array.Reverse(coordinates);
+                coordinates = coordinates.Reverse().ToList();
             return CreateLinearRing(coordinates);
         }
 
@@ -69,7 +70,7 @@ namespace DotSpatial.Topology.Geometries
         /// </remarks>
         public override IPolygon CreatePolygon(IEnumerable<Coordinate> coordinates)
         {
-            var ring = CreateLinearRing(coordinates, true);
+            var ring = CreateLinearRing(coordinates.ToList(), true);
             return base.CreatePolygon(ring);
         }
 

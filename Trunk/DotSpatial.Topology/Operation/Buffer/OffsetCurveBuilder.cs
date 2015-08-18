@@ -300,10 +300,10 @@ namespace DotSpatial.Topology.Operation.Buffer
             {
                 ComputeOffsetCurve(inputPts, isRightSide, segGen);
             }
-            Coordinate[] curvePts = segGen.GetCoordinates();
+            IList<Coordinate> curvePts = segGen.GetCoordinates();
             // for right side line is traversed in reverse direction, so have to reverse generated line
             if (isRightSide)
-                CoordinateArrays.Reverse(curvePts);
+                curvePts = curvePts.Reverse().ToList();
             return curvePts;
         }
 
