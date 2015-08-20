@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Topology.dll
 // Description:  The basic topology module for the new dotSpatial libraries
 // ********************************************************************************************************
@@ -22,68 +22,60 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Index.KDTree
 {
     /// <summary>
-    /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.
+    /// This is an adaptation of the Java KdTree library implemented by Levy
+    /// and Heckel. This simplified version is written by Marco A. Alvarez
+    ///
+    /// KdTree is a class supporting KD-tree insertion, deletion, equality
+    /// search, range search, and nearest neighbor(s) using double-precision
+    /// floating-point keys.  Splitting dimension is chosen naively, by
+    /// depth modulo K.  Semantics are as follows:
+    ///
+    ///  Two different keys containing identical numbers should retrieve the
+    ///      same value from a given KD-tree.  Therefore keys are cloned when a
+    ///      node is inserted.
+    ///
+    ///  As with Hashtables, values inserted into a KD-tree are <I>not</I>
+    ///      cloned.  Modifying a value between insertion and retrieval will
+    ///      therefore modify the value stored in the tree.
+    ///
+    ///
+    /// @author Simon Levy, Bjoern Heckel
+    /// Translation by Marco A. Alvarez
+    /// Adapted by Ted Dunsford to better suite the dot net framework by
+    /// changing comments to work in intellisense and extending some of the
+    /// basic objects to work more tightly with MapWindow.
     /// </summary>
-    /// <remarks>
-    /// This implementation supports detecting and snapping points which are closer than a given
-    /// tolerance value. If the same point (up to tolerance) is inserted more than once a new node is
-    /// not created but the count of the existing node is incremented.
-    /// </remarks>
-    /// <typeparam name="T">The type of the user data object</typeparam>
-    /// <author>David Skea</author>
-    /// <author>Martin Davis</author>
-    public class KdTree<T> where T : class
+    public class KdTree
     {
-        #region Fields
+        #region Private Variables
 
-        private readonly double _tolerance;
-        // ReSharper disable once UnusedField.Compiler
-        private KdNode<T> _last = null;
-        private long _numberOfNodes;
-        private KdNode<T> _root;
+        // K = number of dimensions
+        private readonly int _k;
+
+        // root of KD-tree
+
+        // count of nodes
+        private int _count;
+        private KdNode _root;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of a KdTree with a snapping tolerance of 0.0.
-        /// (I.e. distinct points will <i>not</i> be snapped)
+        /// Creates a new tree with the specified number of dimensions.
         /// </summary>
-        public KdTree() : this(0.0) { }
-
-        /// <summary>
-        /// Creates a new instance of a KdTree, specifying a snapping distance tolerance.
-        /// Points which lie closer than the tolerance to a point already 
-        /// in the tree will be treated as identical to the existing point.
-        /// </summary>
-        /// <param name="tolerance">The tolerance distance for considering two points equal</param>
-        public KdTree(double tolerance)
+        /// <param name="k">An integer value specifying how many ordinates each key should have.</param>
+        public KdTree(int k)
         {
-            _tolerance = tolerance;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Tests whether the index contains any items.
-        /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _root == null;
-            }
+            if (k < 0) throw new NegativeArgumentException("k");
+            _k = k;
+            _root = null;
         }
 
         #endregion
@@ -91,186 +83,222 @@ namespace DotSpatial.Topology.Index.KDTree
         #region Methods
 
         /// <summary>
-        /// Inserts a new point in the kd-tree, with no data.
+        /// Insert a node into the KD-tree.
         /// </summary>
-        /// <param name="p">The point to insert</param>
-        /// <returns>The kdnode containing the point</returns>
-        public KdNode<T> Insert(Coordinate p)
+        /// <param name="key">The array of double valued keys marking the position to insert this object into the tree</param>
+        /// <param name="value">The object value to insert into the tree</param>
+        /// <exception cref="KeySizeException"> if key.length mismatches the dimension of the tree (K)</exception>
+        /// <exception cref="KeyDuplicateException"> if the key already exists in the tree</exception>
+        /// <remarks>
+        /// Uses algorithm translated from 352.ins.c of
+        ///   &#064;Book{GonnetBaezaYates1991,
+        ///   author =    {G.H. Gonnet and R. Baeza-Yates},
+        ///   title =     {Handbook of Algorithms and Data Structures},
+        ///   publisher = {Addison-Wesley},
+        ///   year =      {1991}
+        /// </remarks>
+        public void Insert(double[] key, object value)
         {
-            return Insert(p, null);
+            if (key.Length != _k) throw new KeySizeException();
+
+            _root = KdNode.Insert(new HPoint(key), value, _root, 0, _k);
+
+            _count++;
         }
 
         /// <summary>
-        /// Inserts a new point into the kd-tree.
+        /// Find the KD-tree node whose key is identical to the specified key.
+        /// This uses the algorithm translated from 352.srch.c of Connet and Baeza-Yates.
         /// </summary>
-        /// <param name="p">The point to insert</param>
-        /// <param name="data">A data item for the point</param>
-        /// <returns>
-        /// A new KdNode if a new point is inserted, else an existing
-        /// node is returned with its counter incremented. This can be checked
-        /// by testing returnedNode.getCount() > 1.
-        /// </returns>
-        public KdNode<T> Insert(Coordinate p, T data)
+        /// <param name="key">The key identifying the node to search for</param>
+        /// <returns>An object that is the node with a matching key, or null if no key was found.</returns>
+        /// <exception cref="KeySizeException"> if key.length mismatches the dimension of the tree (K)</exception>
+        public object Search(double[] key)
         {
-            if (_root == null)
-            {
-                _root = new KdNode<T>(p, data);
-                return _root;
-            }
+            if (key.Length != _k) throw new KeySizeException();
 
-            var currentNode = _root;
-            var leafNode = _root;
-            var isOddLevel = true;
-            var isLessThan = true;
+            KdNode kd = KdNode.Search(new HPoint(key), _root, _k);
 
-            /**
-             * Traverse the tree,
-             * first cutting the plane left-right (by X ordinate)
-             * then top-bottom (by Y ordinate)
-             */
-            while (currentNode != _last)
-            {
-                // test if point is already a node
-                if (currentNode != null)
-                {
-                    var isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
-
-                    // check if point is already in tree (up to tolerance) and if so simply
-                    // return existing node
-                    if (isInTolerance)
-                    {
-                        currentNode.Increment();
-                        return currentNode;
-                    }
-                }
-
-                if (isOddLevel)
-                {
-                    // ReSharper disable once PossibleNullReferenceException
-                    isLessThan = p.X < currentNode.X;
-                }
-                else
-                {
-                    // ReSharper disable once PossibleNullReferenceException
-                    isLessThan = p.Y < currentNode.Y;
-                }
-                leafNode = currentNode;
-                currentNode = isLessThan ? currentNode.Left : currentNode.Right;
-
-                isOddLevel = !isOddLevel;
-            }
-
-            // no node found, add new leaf node to tree
-            _numberOfNodes = _numberOfNodes + 1;
-            var node = new KdNode<T>(p, data);
-            node.Left = null;
-            node.Right = null;
-            if (isLessThan)
-                leafNode.Left = node;
-            else
-                leafNode.Right = node;
-            return node;
+            return (kd == null ? null : kd.V);
         }
 
         /// <summary>
-        /// Performs a nearest neighbor search of the points in the index.
+        /// Deletes a node from the KD-tree.  Instead of actually deleting the node and
+        /// rebuilding the tree, it marks the node as deleted.  Hence, it is up to the
+        /// caller to rebuild the tree as needed for efficiency.
         /// </summary>
-        /// <param name="coord">The point to search the nearset neighbor for</param>
-        public KdNode<T> NearestNeighbor(Coordinate coord)
+        /// <param name="key">The key to use to identify the node to delete</param>
+        /// <exception cref="KeySizeException"> if key.length mismatches the dimension of the tree (K)</exception>
+        /// <exception cref="KeyMissingException"> if the key was not found in the tree</exception>
+        public void Delete(double[] key)
         {
-            KdNode<T> result = null;
-            var closestDistSq = double.MaxValue;
-            NearestNeighbor(_root, _last, coord, ref result, ref closestDistSq);
-            return result;
-        }
+            if (key.Length != _k) throw new KeySizeException();
 
-        private static void NearestNeighbor(KdNode<T> currentNode, KdNode<T> bottomNode,
-            Coordinate queryCoordinate, ref KdNode<T> closestNode, ref double closestDistanceSq)
-        {
-            while (true)
-            {
-                if (currentNode == null || currentNode == bottomNode) return;
+            KdNode t = KdNode.Search(new HPoint(key), _root, _k);
 
-                var distSq = Math.Pow(currentNode.X - queryCoordinate.X, 2) +
-                             Math.Pow(currentNode.Y - queryCoordinate.Y, 2);
+            if (t == null) throw new KeyMissingException();
 
-                if (distSq < closestDistanceSq)
-                {
-                    closestNode = currentNode;
-                    closestDistanceSq = distSq;
-                }
+            t.IsDeleted = true;
 
-
-                var searchLeft = false;
-                var searchRight = false;
-                if (currentNode.Left != null)
-                    searchLeft = (Math.Pow(currentNode.Left.X - queryCoordinate.X, 2) +
-                                  Math.Pow(currentNode.Left.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
-
-                if (currentNode.Right != null)
-                    searchRight = (Math.Pow(currentNode.Right.X - queryCoordinate.X, 2) +
-                                   Math.Pow(currentNode.Right.Y - queryCoordinate.Y, 2)) < closestDistanceSq;
-
-                if (searchLeft)
-                    NearestNeighbor(currentNode.Left, bottomNode, queryCoordinate, ref closestNode, ref closestDistanceSq);
-
-                if (searchRight)
-                {
-                    currentNode = currentNode.Right;
-                    continue;
-                }
-                break;
-            }
+            _count--;
         }
 
         /// <summary>
-        /// Performs a range search of the points in the index. 
+        /// Find KD-tree node whose key is nearest neighbor to key.
+        /// Implements the Nearest Neighbor algorithm (Table 6.4) of
         /// </summary>
-        /// <param name="queryEnv">The range rectangle to query</param>
-        /// <returns>A collection of the KdNodes found</returns>
-        public ICollection<KdNode<T>> Query(Envelope queryEnv)
+        /// <param name="key">key for KD-tree node</param>
+        /// <returns>object at node nearest to key, or null on failure</returns>
+        /// <exception cref="KeySizeException"> if key.length mismatches the dimensions of the tree (K)</exception>
+        /// <remarks>
+        ///  &#064;techreport{AndrewMooreNearestNeighbor,
+        ///    author  = {Andrew Moore},
+        ///    title   = {An introductory tutorial on kd-trees},
+        ///    institution = {Robotics Institute, Carnegie Mellon University},
+        ///    year    = {1991},
+        ///    number  = {Technical Report No. 209, Computer Laboratory,
+        ///               University of Cambridge},
+        ///    address = {Pittsburgh, PA}
+        /// </remarks>
+        public object Nearest(double[] key)
         {
-            //KdNode<T> last = null;
-            ICollection<KdNode<T>> result = new Collection<KdNode<T>>();
-            QueryNode(_root, _last, queryEnv, true, result);
-            return result;
+            object[] neighbors = Nearest(key, 1);
+            return neighbors[0];
         }
 
         /// <summary>
-        /// Performs a range search of the points in the index.
+        /// Find KD-tree nodes whose keys are <I>n</I> nearest neighbors to
+        /// key. Uses algorithm above.  Neighbors are returned in ascending
+        /// order of distance to key.
         /// </summary>
-        /// <param name="queryEnv">The range rectangle to query</param>
-        /// <param name="result">A collection to accumulate the result nodes into</param>
-        public void Query(Envelope queryEnv, ICollection<KdNode<T>> result)
+        /// <param name="key">key for KD-tree node</param>
+        /// <param name="numNeighbors">The Integer showing how many neighbors to find</param>
+        /// <returns>An array of objects at the node nearest to the key</returns>
+        /// <exception cref="KeySizeException">Mismatch if key length doesn't match the dimension for the tree</exception>
+        /// <exception cref="NeighborsOutOfRangeException">if <I>n</I> is negative or exceeds tree size </exception>
+        public object[] Nearest(double[] key, int numNeighbors)
         {
-            QueryNode(_root, _last, queryEnv, true, result);
+            if (numNeighbors < 0 || numNeighbors > _count) throw new NeighborsOutOfRangeException();
+
+            if (key.Length != _k) throw new KeySizeException();
+
+            object[] neighbors = new object[numNeighbors];
+            NearestNeighborList nnl = new NearestNeighborList(numNeighbors);
+
+            // initial call is with infinite hyper-rectangle and max distance
+            HRect hr = HRect.InfiniteHRect(key.Length);
+            const double maxDistSqd = 1.79769e+30;
+            HPoint keyp = new HPoint(key);
+
+            KdNode.Nnbr(_root, keyp, hr, maxDistSqd, 0, _k, nnl);
+
+            for (int i = 0; i < numNeighbors; ++i)
+            {
+                KdNode kd = (KdNode)nnl.RemoveHighest();
+                neighbors[numNeighbors - i - 1] = kd.V;
+            }
+
+            return neighbors;
         }
 
-        private static void QueryNode(KdNode<T> currentNode, KdNode<T> bottomNode, Envelope queryEnv, bool odd, ICollection<KdNode<T>> result)
+        /// <summary>
+        /// Reverses the conventional nearest neighbor in order to obtain the furthest neighbor instead.
+        /// </summary>
+        /// <param name="key">The key for the KD-tree node</param>
+        /// <returns>The object that corresponds to the furthest object</returns>
+        public object Farthest(double[] key)
         {
-            if (currentNode == null || currentNode == bottomNode) return;
+            object[] neighbors = Farthest(key, 1);
+            return neighbors[0];
+        }
 
-            double min;
-            double max;
-            double discriminant;
-            if (odd)
-            {
-                min = queryEnv.Minimum.X;
-                max = queryEnv.Maximum.X;
-                discriminant = currentNode.X;
-            }
-            else
-            {
-                min = queryEnv.Minimum.Y;
-                max = queryEnv.Maximum.Y;
-                discriminant = currentNode.Y;
-            }
-            bool searchLeft = min < discriminant;
-            bool searchRight = discriminant <= max;
+        /// <summary>
+        /// Find KD-tree nodes whose keys are <I>n</I> farthest neighbors from
+        /// key.  Neighbors are returned in descending order of distance to key.
+        /// </summary>
+        /// <param name="key">key for KD-tree node</param>
+        /// <param name="numNeighbors">The Integer showing how many neighbors to find</param>
+        /// <returns>An array of objects at the node nearest to the key</returns>
+        /// <exception cref="KeySizeException">Mismatch if key length doesn't match the dimension for the tree</exception>
+        /// <exception cref="NeighborsOutOfRangeException">if <I>n</I> is negative or exceeds tree size </exception>
+        public object[] Farthest(double[] key, int numNeighbors)
+        {
+            if (numNeighbors < 0 || numNeighbors > _count) throw new NeighborsOutOfRangeException();
 
-            if (searchLeft) QueryNode(currentNode.Left, bottomNode, queryEnv, !odd, result);
-            if (queryEnv.Contains(currentNode.Coordinate)) result.Add(currentNode);
-            if (searchRight) QueryNode(currentNode.Right, bottomNode, queryEnv, !odd, result);
+            if (key.Length != _k) throw new KeySizeException();
+
+            object[] neighbors = new object[numNeighbors];
+            FarthestNeighborList fnl = new FarthestNeighborList(numNeighbors);
+
+            // initial call is with infinite hyper-rectangle and max distance
+            HRect hr = HRect.InfiniteHRect(key.Length);
+            //double max_dist_sqd = 1.79769e+30; //Double.MaxValue;
+            HPoint keyp = new HPoint(key);
+            KdNode.FarthestNeighbor(_root, keyp, hr, 0, 0, _k, fnl);
+            //KDNode.nnbr(_root, keyp, hr, max_dist_sqd, 0, _k, nnl);
+
+            for (int i = 0; i < numNeighbors; ++i)
+            {
+                KdNode kd = (KdNode)fnl.RemoveFarthest();
+                neighbors[numNeighbors - i - 1] = kd.V;
+            }
+
+            return neighbors;
+        }
+
+        /// <summary>
+        /// Search a range in the KD-tree.
+        /// </summary>
+        /// <param name="lowKey">The lower bound in all ordinates for keys</param>
+        /// <param name="highKey">Teh upper bound in all ordinates for keys</param>
+        /// <returns>An array of objects whose keys fall in range [lowk, uppk]</returns>
+        /// <remarks> Range search in a KD-tree.  Uses algorithm translated from 352.range.c of Gonnet and Baeza-Yates.</remarks>
+        /// <exception cref="KeySizeException">Mismatch of the specified parameters compared with the tree or each other.</exception>
+        public object[] SearchRange(double[] lowKey, double[] highKey)
+        {
+            if (lowKey.Length != highKey.Length) throw new KeySizeException();
+
+            if (lowKey.Length != _k) throw new KeySizeException();
+
+            List<KdNode> v = new List<KdNode>();
+
+            KdNode.SearchRange(new HPoint(lowKey), new HPoint(highKey), _root, 0, _k, v);
+            object[] o = new object[v.Count];
+            for (int i = 0; i < v.Count; ++i)
+            {
+                KdNode n = v[i];
+                o[i] = n.V;
+            }
+            return o;
+        }
+
+        /// <summary>
+        /// Converts the value to a string
+        /// </summary>
+        /// <returns>A string</returns>
+        public override string ToString()
+        {
+            return _root.ToString(0);
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the number of members in this tree.
+        /// </summary>
+        public int Count
+        {
+            get { return _count; }
+        }
+
+        /// <summary>
+        /// Gets the actual number of dimensions for this tree.
+        /// </summary>
+        public int K
+        {
+            get { return _k; }
         }
 
         #endregion

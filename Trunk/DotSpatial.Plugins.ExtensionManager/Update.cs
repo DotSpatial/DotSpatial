@@ -109,7 +109,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     updater.Start();
                     Environment.Exit(0);
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             }
         }
 

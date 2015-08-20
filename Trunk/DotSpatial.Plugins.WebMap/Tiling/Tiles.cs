@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {

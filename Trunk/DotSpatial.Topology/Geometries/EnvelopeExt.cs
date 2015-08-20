@@ -406,36 +406,6 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
-        /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
-        /// within the boundaries.
-        /// </summary>
-        /// <param name="self">The first envelope (this object when extending)</param>
-        /// <param name="other">the <c>Envelope</c> to merge with.</param>
-        public static void ExpandToInclude(this IEnvelope self, IEnvelope other)
-        {
-            if (self == null) return;
-            if (other == null) return;
-            if (other.IsNull)
-                return;
-            if (self.IsNull)
-            {
-                self.Init(other.Minimum, other.Maximum);
-                return;
-            }
-            int numDimensions = Math.Min(self.NumOrdinates, other.NumOrdinates);
-
-            Coordinate min = self.Minimum;
-            Coordinate max = self.Maximum;
-            for (int i = 0; i < numDimensions; i++)
-            {
-                if (other.Minimum[i] < min[i]) min[i] = other.Minimum[i];
-                if (other.Maximum[i] > max[i]) max[i] = other.Maximum[i];
-            }
-            self.Init(min, max); // re-initialize to prevent sign errors and indicate a change.
-        }
-
-        /// <summary>
         /// Returns the intersection of the specified segment with this bounding box.  If there is no intersection,
         /// then this returns null.  If the intersection is a corner, then the LineSegment will be degenerate,
         /// that is both the coordinates will be the same.  Otherwise, the segment will be returned so that the
@@ -590,32 +560,7 @@ namespace DotSpatial.Topology.Geometries
             return false;
         }
 
-        /// <summary>
-        /// Tests for intersection (any overlap) between the two envelopes.  In cases of unequal
-        /// dimensions, the smaller dimension is used (e.g., if a 2D rectangle doesn't intersect
-        /// a cube in its own plane, this would return false.)
-        /// </summary>
-        /// <param name="self">The <c>IEnvelope</c> that is being extended by this method</param>
-        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is
-        /// being checked for overlapping.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the <c>Envelope</c>s overlap.
-        /// </returns>
-        public static bool Intersects(this IEnvelope self, IEnvelope other)
-        {
-            if (self == null || other == null) return false;
-            if (self.IsNull || other.IsNull)
-                return false;
-            int numDimensions = Math.Min(self.NumOrdinates, other.NumOrdinates);
-            for (int i = 0; i < numDimensions; i++)
-            {
-                if (other.Minimum[i] > self.Maximum[i] || other.Maximum[i] < self.Minimum[i]) return false;
-            }
-            return true;
-        }
-
-        /// <summary>
+       /// <summary>
         /// Gets the left value for this rectangle.  This should be the
         /// X coordinate, but is added for clarity.
         /// </summary>

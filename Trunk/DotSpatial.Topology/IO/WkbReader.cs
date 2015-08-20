@@ -219,7 +219,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="data">The byte array to read from</param>
         /// <returns>The geometry read</returns>
         /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
-        public IGeometry Read(byte[] data)
+        public virtual IGeometry Read(byte[] data)
         {
             using (Stream stream = new MemoryStream(data))
                 return Read(stream);

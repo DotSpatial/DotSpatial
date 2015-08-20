@@ -23,13 +23,9 @@
 'January 2011   CWG             Adapted extensively to use TauDEM V5
 '********************************************************************************************************
 
-Imports System.Runtime.InteropServices
-
-Imports System.Windows.Forms
 Imports DotSpatial.Controls
 Imports DotSpatial.Data
 Imports DotSpatial.Plugins.Taudem.Port.Manhattan
-Imports MapWinGeoProc
 
 Public Class frmAutomatic_v3
     Inherits System.Windows.Forms.Form
@@ -1412,7 +1408,7 @@ Public Class frmAutomatic_v3
             '                    Dim sf As New MapWinGIS.Shapefile
             '                    sf.Open(strMask)
             '                    For i As Integer = 0 To myWrapper.maskShapesIdx.Count - 1
-            '                        maskCells = maskCells + MapWinGeoProc.Utils.Area(sf.Shape(myWrapper.maskShapesIdx(i))) / (r.CellWidth * r.CellHeight)
+            '                        maskCells = maskCells + Utils.Area(sf.Shape(myWrapper.maskShapesIdx(i))) / (r.CellWidth * r.CellHeight)
             '                    Next
             '                    sf.Close()
             '                    If numCells > maskCells Then
@@ -2708,7 +2704,7 @@ Public Class frmAutomatic_v3
     '                    chkbxMask.Checked = True
 
     '                    strShape = fileSave.FileName
-    '                    MapWinGeoProc.DataManagement.DeleteShapefile(strShape)
+    '                    DataManagement.DeleteShapefile(strShape)
     '                    Dim sf As New MapWinGIS.Shapefile
     '                    sf.CreateNew(strShape, MapWinGIS.ShpfileType.SHP_POLYGON)
     '                    sf.SaveAs(strShape)
@@ -2892,7 +2888,7 @@ Public Class frmAutomatic_v3
     '                fileSave.FilterIndex = 1
     '                If fileSave.ShowDialog() = Windows.Forms.DialogResult.OK Then
     '                    strShape = fileSave.FileName
-    '                    MapWinGeoProc.DataManagement.DeleteShapefile(strShape)
+    '                    DataManagement.DeleteShapefile(strShape)
     '                    Dim sf As New MapWinGIS.Shapefile
     '                    sf.CreateNew(strShape, MapWinGIS.ShpfileType.SHP_POINT)
     '                    ' Paul Meems, 10-Aug-11 Add projection to prevent projection warnings when adding:
@@ -3414,7 +3410,7 @@ Public Class frmAutomatic_v3
             tdbChoiceList.numProcesses = ProcessNum()
 
             If tdbChoiceList.FillGridPath <> "" And tdbChoiceList.D8SlopePath <> "" And tdbChoiceList.D8Path <> "" Then
-                'MapWinGeoProc.DataManagement.DeleteShapefile(tdbFileList.net)
+                'DataManagement.DeleteShapefile(tdbFileList.net)
                 DataManagement.CopyShapefile(tdbChoiceList.NetPath, tdbFileList.net)
             Else
                 If Not runAreaD8() Then runFormCleanup() : Return False
@@ -3637,7 +3633,7 @@ Public Class frmAutomatic_v3
         '        RemoveLayer(maskedPath)
 
         '        If rdobtnUseExtents.Checked Then 'mask by extents
-        '            If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, App.Map.View.Extents, maskedPath, App.ProgressHandler) = 0 Then
+        '            If Hydrology.Mask(tdbFileList.dem, App.Map.View.Extents, maskedPath, App.ProgressHandler) = 0 Then
         '                tdbFileList.dem = maskedPath
         '            End If
         '        Else
@@ -3645,12 +3641,12 @@ Public Class frmAutomatic_v3
         '                strmask = getPathByName(cmbxMask.Items(cmbxMask.SelectedIndex))
         '                If IO.Path.GetExtension(strmask) = ".shp" Then 'Mask by selected shapes
         '                    If myWrapper.maskShapesIdx.Count > 0 Then
-        '                        If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, strmask, myWrapper.maskShapesIdx, maskedPath, App.ProgressHandler) = 0 Then
+        '                        If Hydrology.Mask(tdbFileList.dem, strmask, myWrapper.maskShapesIdx, maskedPath, App.ProgressHandler) = 0 Then
         '                            tdbFileList.dem = maskedPath
         '                        End If
         '                    End If
         '                Else 'Mask by grid
-        '                    If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, strmask, maskedPath, App.ProgressHandler) = 0 Then
+        '                    If Hydrology.Mask(tdbFileList.dem, strmask, maskedPath, App.ProgressHandler) = 0 Then
         '                        tdbFileList.dem = maskedPath
         '                    End If
         '                End If
@@ -3676,7 +3672,7 @@ Public Class frmAutomatic_v3
             '        Else
             '            strBurnResult = tdbFileList.getAbsolutePath(tdbChoiceList.OutputPath, g_BaseDEM) + IO.Path.GetFileNameWithoutExtension(g_BaseDEM) + "_burn.tif"
             '        End If
-            '        If MapWinGeoProc.Hydrology.CanyonBurnin(strBurn, strDEM, strBurnResult, App.ProgressHandler) = 0 Then
+            '        If Hydrology.CanyonBurnin(strBurn, strDEM, strBurnResult, App.ProgressHandler) = 0 Then
             '            runBurn = strBurnResult
             '        Else
             '            MsgBox("An error occured while burning in the stream polyline.", MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
@@ -3900,7 +3896,7 @@ Public Class frmAutomatic_v3
         End If
 
         Dim i As Integer
-        ' i = MapWinGeoProc.Hydrology.AreaDInf(tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.sca, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, myWrapper)
+        ' i = Hydrology.AreaDInf(tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.sca, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, myWrapper)
         If i <> 0 Then Return False
 
         If doTicks Then
@@ -3943,7 +3939,7 @@ Public Class frmAutomatic_v3
 
         RemoveLayer(strClipShapePath)
 
-        'If MapWinGeoProc.Utils.ExtractSelectedPoints(tdbFileList.outletshpfile, strClipShapePath, myWrapper.outletShapesIdx, App.ProgressHandler) Then
+        'If Utils.ExtractSelectedPoints(tdbFileList.outletshpfile, strClipShapePath, myWrapper.outletShapesIdx, App.ProgressHandler) Then
         '    tdbFileList.outletshpfile = strClipShapePath
         'End If
 
@@ -3985,7 +3981,7 @@ Public Class frmAutomatic_v3
         Dim dx As Double = g.CellWidth
         g.Close()
         runAutoSnap = False
-        'runAutoSnap = MapWinGeoProc.Utils.SnapPointsToLines(tdbFileList.outletshpfile, tdbFileList.net, tdbChoiceList.snapThresh, dx / 2, newPointPath, True, App.ProgressHandler)
+        'runAutoSnap = Utils.SnapPointsToLines(tdbFileList.outletshpfile, tdbFileList.net, tdbChoiceList.snapThresh, dx / 2, newPointPath, True, App.ProgressHandler)
         If runAutoSnap Then tdbFileList.outletshpfile = newPointPath
     End Function
 

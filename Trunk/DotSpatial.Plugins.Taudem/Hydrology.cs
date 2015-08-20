@@ -37,6 +37,7 @@ using DotSpatial.Analysis;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Plugins.Taudem
 {

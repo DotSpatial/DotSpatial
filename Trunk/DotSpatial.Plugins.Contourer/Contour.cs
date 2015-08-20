@@ -147,7 +147,7 @@ namespace DotSpatial.Plugins.Contourer
                             if (Cls == lev.Count()) label = "> " + lev[lev.Count() - 1].ToString();
                             if (Cls >= 0 & Cls < lev.Count()) label = lev[Cls].ToString() + " - " + lev[Cls + 1].ToString();
 
-                            Topology.Polygon dsp = ToDotSpatialPolygon(p);
+                            Topology.Geometries.Polygon dsp = ToDotSpatialPolygon(p);
 
                             Feature f = (Feature)fs.AddFeature(dsp);
                             f.DataRow["Lev"] = Cls;
@@ -269,7 +269,7 @@ namespace DotSpatial.Plugins.Contourer
             return levels;
         }
 
-        public static Topology.Geometry toDotSpatial(Geometry l)
+        public static Topology.Geometries.Geometry toDotSpatial(Geometry l)
         {
             if (l.GeometryType == "LineString")
             {
@@ -280,66 +280,66 @@ namespace DotSpatial.Plugins.Contourer
             {
                 Polygon p = l as Polygon;
 
-                Topology.Polygon dsp = ToDotSpatialPolygon((IPolygon)l);
-                return (Topology.Geometry)dsp;
+                Topology.Geometries.Polygon dsp = ToDotSpatialPolygon((IPolygon)l);
+                return (Topology.Geometries.Geometry)dsp;
             }
 
             return null;
         }
 
-        internal static Topology.Point ToDotSpatialPoint(IPoint point)
+        internal static Topology.Geometries.Point ToDotSpatialPoint(IPoint point)
         {
-            return new Topology.Point(point.X, point.Y);
+            return new Topology.Geometries.Point(point.X, point.Y);
         }
 
-        internal static Topology.Point ToDotSpatialPoint(Coordinate point)
+        internal static Topology.Geometries.Point ToDotSpatialPoint(Coordinate point)
         {
-            return new Topology.Point(point.X, point.Y);
+            return new Topology.Geometries.Point(point.X, point.Y);
         }
 
-        internal static Topology.Coordinate ToDotSpatialCoordinate(Coordinate coordinate)
+        internal static Topology.Geometries.Coordinate ToDotSpatialCoordinate(Coordinate coordinate)
         {
-            return new Topology.Coordinate(coordinate.X, coordinate.Y);
+            return new Topology.Geometries.Coordinate(coordinate.X, coordinate.Y);
         }
 
-        internal static Topology.LineString ToDotSpatialLineString(ILineString l)
+        internal static Topology.Geometries.LineString ToDotSpatialLineString(ILineString l)
         {
-            Topology.Coordinate[] c = new Topology.Coordinate[l.Coordinates.Count()];
+            Topology.Geometries.Coordinate[] c = new Topology.Geometries.Coordinate[l.Coordinates.Count()];
 
             for (int i = 0; i < l.Coordinates.Count(); i++)
             {
-                c[i] = new Topology.Coordinate(l.Coordinates[i].X, l.Coordinates[i].Y);
+                c[i] = new Topology.Geometries.Coordinate(l.Coordinates[i].X, l.Coordinates[i].Y);
             }
-            return new Topology.LineString(c);
+            return new Topology.Geometries.LineString(c);
         }
 
-        internal static Topology.LinearRing ToDotSpatialLinearRing(ILinearRing geom)
+        internal static Topology.Geometries.LinearRing ToDotSpatialLinearRing(ILinearRing geom)
         {
-            Collection<Topology.Point> vertices = new Collection<Topology.Point>();
+            Collection<Topology.Geometries.Point> vertices = new Collection<Topology.Geometries.Point>();
 
             foreach (Coordinate coordinate in geom.Coordinates)
             {
-                Topology.Point p = ToDotSpatialPoint(coordinate);
+                Topology.Geometries.Point p = ToDotSpatialPoint(coordinate);
 
                 vertices.Add(p);
             }
-            return new Topology.LinearRing(vertices);
+            return new Topology.Geometries.LinearRing(vertices);
         }
 
-        internal static Topology.Polygon ToDotSpatialPolygon(IPolygon geom)
+        internal static Topology.Geometries.Polygon ToDotSpatialPolygon(IPolygon geom)
         {
-            Topology.LinearRing exteriorRing = ToDotSpatialLinearRing((ILinearRing)geom.ExteriorRing);
+            Topology.Geometries.LinearRing exteriorRing = ToDotSpatialLinearRing((ILinearRing)geom.ExteriorRing);
 
-            Topology.LinearRing[] interiorRings = new Topology.LinearRing[geom.InteriorRings.Count()];
+            Topology.Geometries.LinearRing[] interiorRings = new Topology.Geometries.LinearRing[geom.InteriorRings.Count()];
 
             //foreach (GeoAPI.Geometries.ILineString interiorRing in geom.InteriorRings)
             for (int i = 0; i < geom.InteriorRings.Count(); i++)
             {
-                Topology.LinearRing hole = ToDotSpatialLinearRing((ILinearRing)geom.InteriorRings[i]);
+                Topology.Geometries.LinearRing hole = ToDotSpatialLinearRing((ILinearRing)geom.InteriorRings[i]);
                 interiorRings[i] = hole;
             }
 
-            return new Topology.Polygon(exteriorRing, interiorRings);
+            return new Topology.Geometries.Polygon(exteriorRing, interiorRings);
         }
 
         public static Raster RasterCheck(Raster raster, double[] levels)

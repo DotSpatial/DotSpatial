@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using BruTile;
 using BruTile.Cache;
 using DotSpatial.Projections;
+using DotSpatial.Topology.Geometries;
+
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {

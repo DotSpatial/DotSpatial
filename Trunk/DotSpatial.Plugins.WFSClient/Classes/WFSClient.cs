@@ -12,6 +12,7 @@ using System.Xml.XPath;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Renci.Data.Interop.OpenGIS.Gml;
 using Renci.Data.Interop.OpenGIS.Wfs;
 

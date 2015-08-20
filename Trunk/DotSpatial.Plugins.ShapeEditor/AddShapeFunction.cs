@@ -28,6 +28,8 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
+using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -298,7 +300,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 ComputeSnappedLocation(e, ref snappedCoord);
                 // End snapping changes
 
-                Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
+                Topology.Geometries.Point pt = new Topology.Geometries.Point(snappedCoord); // Snapping changes
                 Feature f = new Feature(pt);
                 _featureSet.Features.Add(f);
                 _featureSet.ShapeIndices = null; // Reset shape indices

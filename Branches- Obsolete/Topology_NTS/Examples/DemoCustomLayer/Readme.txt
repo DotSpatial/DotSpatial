@@ -1,1 +1,0 @@
-﻿This examples shows how to create own custom Layer.

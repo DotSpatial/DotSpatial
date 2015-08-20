@@ -8,6 +8,7 @@ using System.Net;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -87,7 +88,7 @@ namespace DotSpatial.Plugins.WebMap
                         }
                     }
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                 }
             }

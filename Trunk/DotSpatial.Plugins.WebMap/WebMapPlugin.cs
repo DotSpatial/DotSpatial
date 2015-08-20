@@ -11,6 +11,7 @@ using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using ExtentArgs = DotSpatial.Data.ExtentArgs;
 
 namespace DotSpatial.Plugins.WebMap

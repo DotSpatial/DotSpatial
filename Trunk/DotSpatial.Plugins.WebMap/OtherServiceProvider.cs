@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Net;
 using DotSpatial.Plugins.WebMap.Tiling;
+using DotSpatial.Topology.Geometries;
 using Microsoft.VisualBasic;
 
 namespace DotSpatial.Plugins.WebMap

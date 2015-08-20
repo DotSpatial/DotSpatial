@@ -22,11 +22,13 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Topology
 {
     /// <summary>
     /// This is enumerates not only the specific types, but very specifically
-    /// that the types are the Topology variety, and not simply the vector variety
+    /// that the types are the Topology variety, and not simply the vector variety.
     /// </summary>
     public enum GeometryType
     {
@@ -75,6 +77,7 @@ namespace DotSpatial.Topology
     /// <summary>
     /// Shapefile Shape types enumeration
     /// </summary>
+    [Obsolete("Marked as Obsolete in DotSpatial 2.0 because it isn't used")]
     public enum ShapeGeometryType
     {
         /// <summary>
@@ -171,6 +174,7 @@ namespace DotSpatial.Topology
     /// <summary>
     /// Field Types
     /// </summary>
+    [Obsolete("Marked as Obsolete in DotSpatial 2.0 because it isn't used")]
     public enum VectorFieldType
     {
         // from GDAL 1.3.1
@@ -232,6 +236,7 @@ namespace DotSpatial.Topology
     /// <summary>
     /// Vector Geometry Types
     /// </summary>
+    [Obsolete("Marked as Obsolete in DotSpatial 2.0 because it isn't used")]
     public enum VectorGeometryType : long
     {
         // subset from GDAL 1.3.1

@@ -7,6 +7,8 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
+using Point = System.Drawing.Point;
 using PointShape = DotSpatial.Symbology.PointShape;
 
 namespace DotSpatial.Plugins.LiDAR

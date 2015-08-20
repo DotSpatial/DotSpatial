@@ -1,1 +1,0 @@
-﻿Allow tu run MapWindow scripts.

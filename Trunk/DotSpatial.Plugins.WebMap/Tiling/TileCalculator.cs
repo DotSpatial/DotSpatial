@@ -2,7 +2,8 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
-using MWPoint = DotSpatial.Topology.Point;
+using DotSpatial.Topology.Geometries;
+using MWPoint = DotSpatial.Topology.Geometries.Point;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {

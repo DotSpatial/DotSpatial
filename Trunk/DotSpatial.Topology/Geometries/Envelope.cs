@@ -25,6 +25,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
+using DotSpatial.Topology.IO;
 
 namespace DotSpatial.Topology.Geometries
 {
@@ -397,9 +398,14 @@ namespace DotSpatial.Topology.Geometries
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Enlarges this <c>Envelope</c> so that it contains the <c>other</c> Envelope.
+        /// Has no effect if <c>other</c> is wholly on or within the envelope.
+        /// </summary>
+        /// <param name="other">the <c>Envelope</c> to expand to include.</param>
         public Envelope ExpandedBy(Envelope other)
         {
-            throw new NotImplementedException();
+            return ExpandedBy((IEnvelope) other) as Envelope;
         }
 
         /// <summary>
@@ -419,11 +425,23 @@ namespace DotSpatial.Topology.Geometries
             return new Envelope(minx, maxx, miny, maxy);
         }
 
+        /// <summary>
+        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
+        /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
+        /// within the boundaries.
+        /// </summary>
+        /// <param name="other">the <c>Envelope</c> to merge with.</param>
         public void ExpandToInclude(Envelope other)
         {
-            throw new NotImplementedException();
+            ExpandToInclude((IEnvelope) other);
         }
 
+        /// <summary>
+        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
+        /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
+        /// within the boundaries.
+        /// </summary>
+        /// <param name="other">the <c>Envelope</c> to merge with.</param>
         public void ExpandToInclude(IEnvelope other)
         {
             if (other == null || other.IsNull) return;
@@ -615,11 +633,33 @@ namespace DotSpatial.Topology.Geometries
             return a.Intersects(b);
         }
 
+        /// <summary>
+        /// Tests for intersection (any overlap) between the two envelopes. In cases of unequal
+        /// dimensions, the smaller dimension is used (e.g., if a 2D rectangle doesn't intersect
+        /// a cube in its own plane, this would return false.)
+        /// </summary>
+        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is
+        /// being checked for overlapping.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <c>Envelope</c>s overlap.
+        /// </returns>
         public bool Intersects(Envelope other)
         {
-            throw new NotImplementedException();
+           return Intersects((IEnvelope) other);
         }
 
+        /// <summary>
+        /// Tests for intersection (any overlap) between the two envelopes. In cases of unequal
+        /// dimensions, the smaller dimension is used (e.g., if a 2D rectangle doesn't intersect
+        /// a cube in its own plane, this would return false.)
+        /// </summary>
+        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is
+        /// being checked for overlapping.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <c>Envelope</c>s overlap.
+        /// </returns>
         public bool Intersects(IEnvelope other)
         {
             if (other == null || IsNull || other.IsNull) return false;

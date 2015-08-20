@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using DotSpatial.Plugins.WebMap.Properties;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {

@@ -384,7 +384,7 @@ namespace DotSpatial.Topology.Algorithm
             {
                 intPt = HCoordinate.Intersection(p1, p2, q1, q2);
             }
-            catch (NotRepresentableException e)
+            catch (NotRepresentableException)
             {
                 // compute an approximate result      
                 // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);

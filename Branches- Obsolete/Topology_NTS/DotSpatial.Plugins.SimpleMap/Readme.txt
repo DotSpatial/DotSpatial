@@ -1,1 +1,0 @@
-﻿Plugin which adds basic map control to the DockManager.
