@@ -25,7 +25,7 @@ namespace DotSpatial.Topology.IO.KML
     /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set. 
     /// If set, the corresponding sub-elements will be output.
     /// </remarks>
-    public class KMLWriter
+    public class KmlWriter
     {
         #region Constant Fields
 
@@ -60,7 +60,7 @@ namespace DotSpatial.Topology.IO.KML
 
         #region Constructors
 
-        public KMLWriter()
+        public KmlWriter()
         {
             Z = Double.NaN;
             CreateDefaultFormatter();
@@ -166,7 +166,7 @@ namespace DotSpatial.Topology.IO.KML
         /// <returns>a string containing the KML geometry representation</returns>
         public static string WriteGeometry(IGeometry geometry, double z)
         {
-            KMLWriter writer = new KMLWriter { Z = z };
+            KmlWriter writer = new KmlWriter { Z = z };
             return writer.Write(geometry);
         }
 
@@ -183,7 +183,7 @@ namespace DotSpatial.Topology.IO.KML
         public static string WriteGeometry(IGeometry geometry, double z, int precision,
             bool extrude, string altitudeMode)
         {
-            KMLWriter writer = new KMLWriter
+            KmlWriter writer = new KmlWriter
             {
                 Z = z,
                 Precision = precision,
@@ -203,8 +203,8 @@ namespace DotSpatial.Topology.IO.KML
             IPrecisionModel precisionModel = precision < 0
                 ? new PrecisionModel(PrecisionModelType.Floating)
                 : new PrecisionModel(precision);
-            _formatter = WKTWriter.CreateFormatter(precisionModel);
-            string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
+            _formatter = WktWriter.CreateFormatter(precisionModel);
+            string digits = WktWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
             _format = String.Format("0.{0}", digits);
         }
 
@@ -221,7 +221,7 @@ namespace DotSpatial.Topology.IO.KML
         {
             if (LinePrefix != null)
                 sb.Append(LinePrefix);
-            sb.Append(WKTWriter.StringOfChar(' ', IndentSize * level));
+            sb.Append(WktWriter.StringOfChar(' ', IndentSize * level));
             sb.Append(text);
         }
 

@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.Noding
 
             IList<Coordinate> intSegs = _segInt.IntersectionSegments;
             return string.Format(TopologyText.FastNodingValidator_FoundNonNodedIntersection,
-                WKTWriter.ToLineString(intSegs[0], intSegs[1]), WKTWriter.ToLineString(intSegs[2], intSegs[3]));
+                WktWriter.ToLineString(intSegs[0], intSegs[1]), WktWriter.ToLineString(intSegs[2], intSegs[3]));
         }
 
         private void CheckInteriorIntersections()

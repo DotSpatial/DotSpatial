@@ -31,10 +31,10 @@ namespace DotSpatial.Topology.IO
     /// The <c>WKTReader</c> will convert the input numbers to the precise
     /// internal representation.
     /// <remarks>
-    /// <see cref="WKTReader" /> reads also non-standard "LINEARRING" tags.
+    /// <see cref="WktReader" /> reads also non-standard "LINEARRING" tags.
     /// </remarks>
     /// </summary>
-    public class WKTReader : ITextGeometryReader
+    public class WktReader : ITextGeometryReader
     {
         #region Fields
 
@@ -52,18 +52,18 @@ namespace DotSpatial.Topology.IO
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WKTReader() : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
+        public WktReader() : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
 
         /// <summary>  
         /// Creates a <c>WKTReader</c> that creates objects using the given
         /// <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
-        public WKTReader(IGeometryFactory geometryFactory) 
+        public WktReader(IGeometryFactory geometryFactory) 
         {
             _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
             _precisionModel = geometryFactory.PrecisionModel;
-            DefaultSRID = geometryFactory.Srid;
+            DefaultSrid = geometryFactory.Srid;
         }
 
         #endregion
@@ -78,21 +78,21 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Gets or sets the default SRID
         /// </summary>
-        public int DefaultSRID { get; set; }
+        public int DefaultSrid { get; set; }
 
         /// <summary>
         /// Gets or sets the factory to create geometries
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory); }
+            get { return GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSrid, _coordinateSequencefactory); }
             set
             {
                 if (value != null)
                 {
                     _coordinateSequencefactory = value.CoordinateSequenceFactory;
                     _precisionModel = value.PrecisionModel;
-                    DefaultSRID = value.Srid;
+                    DefaultSrid = value.Srid;
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace DotSpatial.Topology.IO
             set { }
         }
 
-        public bool HandleSRID
+        public bool HandleSrid
         {
             get { return true; }
             set { }
@@ -218,7 +218,7 @@ namespace DotSpatial.Topology.IO
                 //tokens.RemoveAt(0);
             }
             else
-                srid = DefaultSRID;
+                srid = DefaultSrid;
 
             /*Test of Z, M or ZM suffix*/
             var suffix = tokens.Current;

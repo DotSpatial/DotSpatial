@@ -33,7 +33,7 @@ namespace DotSpatial.Topology.IO
 {
     /// <summary> 
     /// Outputs the textual representation of a <see cref="Geometry" />.
-    /// The <see cref="WKTWriter" /> outputs coordinates rounded to the precision
+    /// The <see cref="WktWriter" /> outputs coordinates rounded to the precision
     /// model. No more than the maximum number of necessary decimal places will be
     /// output.
     /// The Well-known Text format is defined in the <A
@@ -43,7 +43,7 @@ namespace DotSpatial.Topology.IO
     /// not define a special tag for LinearRings. The standard tag to use is
     /// "LINESTRING".
     /// </summary>
-    public class WKTWriter : ITextGeometryWriter
+    public class WktWriter : ITextGeometryWriter
     {
         #region Constant Fields
 
@@ -64,12 +64,12 @@ namespace DotSpatial.Topology.IO
 
         #region Constructors
 
-        public WKTWriter()
+        public WktWriter()
         {
             MaxCoordinatesPerLine = -1;
         }
 
-        public WKTWriter(int outputDimension)
+        public WktWriter(int outputDimension)
         {
             MaxCoordinatesPerLine = -1;
             if (outputDimension < 2 || outputDimension > 3)
@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.IO
             }
         }
 
-        public bool HandleSRID
+        public bool HandleSrid
         {
             get { return EmitSrid; }
             set { EmitSrid = value; }

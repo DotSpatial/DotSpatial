@@ -38,7 +38,7 @@ namespace DotSpatial.Topology.IO
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
-    public class WKBWriter : IBinaryGeometryWriter
+    public class WkbWriter : IBinaryGeometryWriter
     {
         #region Fields
 
@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.IO
         private bool _emitM;
         private bool _emitZ;
         private Ordinates _handleOrdinates;
-        private bool _handleSRID;
+        private bool _handleSrid;
         private bool _strict = true;
 
         #endregion
@@ -57,14 +57,14 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
-        public WKBWriter() :
+        public WkbWriter() :
             this(ByteOrder.LittleEndian, false) { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        public WKBWriter(ByteOrder encodingType) :
+        public WkbWriter(ByteOrder encodingType) :
             this(encodingType, false)
         {
         }
@@ -73,9 +73,9 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSRID) :
-            this(encodingType, handleSRID, false)
+        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
+        public WkbWriter(ByteOrder encodingType, bool handleSrid) :
+            this(encodingType, handleSrid, false)
         {
         }
 
@@ -83,10 +83,10 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ) :
-            this(encodingType, handleSRID, emitZ, false)
+        public WkbWriter(ByteOrder encodingType, bool handleSrid, bool emitZ) :
+            this(encodingType, handleSrid, emitZ, false)
         {
         }
 
@@ -94,16 +94,16 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
         /// <param name="emitM">M values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ, bool emitM)
+        public WkbWriter(ByteOrder encodingType, bool handleSrid, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
             
             //Allow setting of HandleSRID
-            if (handleSRID)_strict = false;
-            HandleSRID = handleSRID;
+            if (handleSrid)_strict = false;
+            HandleSrid = handleSrid;
 
             var handleOrdinates = Ordinates.XY;
             if (emitZ)
@@ -157,10 +157,10 @@ namespace DotSpatial.Topology.IO
         /// Gets or sets whether the <see cref="IGeometry.Srid"/> value should be emitted
         /// </summary>
         [Obsolete("Use HandleSRID instead")]
-        public bool EmitSRID
+        public bool EmitSrid
         {
-            get { return HandleSRID; }
-            set { HandleSRID = value; }
+            get { return HandleSrid; }
+            set { HandleSrid = value; }
         }
 
         /// <summary>
@@ -201,14 +201,14 @@ namespace DotSpatial.Topology.IO
             }
         }
 
-        public bool HandleSRID
+        public bool HandleSrid
         {
-            get { return _handleSRID; }
+            get { return _handleSrid; }
             set
             {
                 if (_strict && value)
                     throw new ArgumentException("Cannot set HandleSRID to true if Strict is set", "value");
-                _handleSRID = value;
+                _handleSrid = value;
             }
         }
 
@@ -226,7 +226,7 @@ namespace DotSpatial.Topology.IO
             {
                 _strict = value;
                 if (_strict)
-                    HandleSRID = false;
+                    HandleSrid = false;
             }
         }
 
@@ -237,7 +237,7 @@ namespace DotSpatial.Topology.IO
         ///     4 bytes for WKBType.
         ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
+        protected int InitCount { get { return 5 + (HandleSrid ? 4 : 0); } }
 
         #endregion
 
@@ -290,7 +290,7 @@ namespace DotSpatial.Topology.IO
             {
                 writer = EncodingType == ByteOrder.LittleEndian
                     ? new BinaryWriter(stream)
-                    : new BEBinaryWriter(stream);
+                    : new BeBinaryWriter(stream);
                 Write(geometry, writer);
             }
             finally
@@ -671,29 +671,29 @@ namespace DotSpatial.Topology.IO
             //Byte Order
             WriteByteOrder(writer);
 
-            WKBGeometryTypes geometryType;
+            WkbGeometryType geometryType;
             switch (geom.GeometryType)
             {
                 case "Point":
-                    geometryType = WKBGeometryTypes.WKBPoint;
+                    geometryType = WkbGeometryType.WkbPoint;
                     break;
                 case "LineString":
-                    geometryType = WKBGeometryTypes.WKBLineString;
+                    geometryType = WkbGeometryType.WkbLineString;
                     break;
                 case "Polygon":
-                    geometryType = WKBGeometryTypes.WKBPolygon;
+                    geometryType = WkbGeometryType.WkbPolygon;
                     break;
                 case "MultiPoint":
-                    geometryType = WKBGeometryTypes.WKBMultiPoint;
+                    geometryType = WkbGeometryType.WkbMultiPoint;
                     break;
                 case "MultiPolygon":
-                    geometryType = WKBGeometryTypes.WKBMultiPolygon;
+                    geometryType = WkbGeometryType.WkbMultiPolygon;
                     break;
                 case "MultiLineString":
-                    geometryType = WKBGeometryTypes.WKBMultiLineString;
+                    geometryType = WkbGeometryType.WkbMultiLineString;
                     break;
                 case "GeometryCollection":
-                    geometryType = WKBGeometryTypes.WKBGeometryCollection;
+                    geometryType = WkbGeometryType.WkbGeometryCollection;
                     break;
                 default:
                     Assert.ShouldNeverReachHere("Unknown geometry type:" + geom.GeometryType);
@@ -715,14 +715,14 @@ namespace DotSpatial.Topology.IO
             }
 
             //Flag for SRID if needed
-            if (HandleSRID)
+            if (HandleSrid)
                 intGeometryType |= 0x20000000;
 
             //
             writer.Write(intGeometryType);
 
             //Write SRID if needed
-            if (HandleSRID)
+            if (HandleSrid)
                 writer.Write(geom.Srid);
         }
 

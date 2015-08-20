@@ -217,7 +217,7 @@ namespace DotSpatial.Topology.Noding
 
         public override string ToString()
         {
-            return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
+            return WktWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
 
         private static OctantDirection SafeOctant(Coordinate p0, Coordinate p1)

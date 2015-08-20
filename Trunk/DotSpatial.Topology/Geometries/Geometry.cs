@@ -2203,7 +2203,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public virtual byte[] ToBinary()
         {
-            var writer = new WKBWriter();
+            var writer = new WkbWriter();
             return writer.Write(this);
         }
 
@@ -2214,7 +2214,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public virtual XmlReader ToGmlFeature()
         {
-            GMLWriter writer = new GMLWriter();
+            GmlWriter writer = new GmlWriter();
             return writer.Write(this);
         }
 
@@ -2241,7 +2241,7 @@ namespace DotSpatial.Topology.Geometries
         /// </returns>
         public virtual string ToText()
         {
-            var writer = new WKTWriter(3);
+            var writer = new WktWriter(3);
             return writer.Write(this);
         }
 

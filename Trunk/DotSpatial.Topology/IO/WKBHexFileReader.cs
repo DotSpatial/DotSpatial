@@ -14,7 +14,7 @@ namespace DotSpatial.Topology.IO
     /// of whitespace and newlines.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class WKBHexFileReader
+    public class WkbHexFileReader
     {
         #region Fields
 
@@ -25,11 +25,11 @@ namespace DotSpatial.Topology.IO
         #region Constructors
 
         /// <summary>
-        /// Creates a new <see cref="WKBHexFileReader"/> given the
-        /// <see cref="WKBReader"/> to use to parse the geometries.
+        /// Creates a new <see cref="WkbHexFileReader"/> given the
+        /// <see cref="WkbReader"/> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
-        public WKBHexFileReader(IBinaryGeometryReader wkbReader)
+        public WkbHexFileReader(IBinaryGeometryReader wkbReader)
         {
             if (wkbReader == null)
                 throw new ArgumentNullException("wkbReader");
@@ -150,7 +150,7 @@ namespace DotSpatial.Topology.IO
                 var line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
 
-                var g = _wkbReader.Read(WKBReader.HexToBytes(line));
+                var g = _wkbReader.Read(WkbReader.HexToBytes(line));
                 if (count >= Offset)
                     geoms.Add(g);
                 count++;

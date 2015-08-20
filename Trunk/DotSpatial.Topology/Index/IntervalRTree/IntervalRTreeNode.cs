@@ -40,7 +40,7 @@ namespace DotSpatial.Topology.Index.IntervalRTree
 
         public override string ToString()
         {
-            return WKTWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
+            return WktWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
         }
 
         #endregion

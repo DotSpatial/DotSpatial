@@ -116,7 +116,7 @@ namespace DotSpatial.Topology.Algorithm.Distance
 
         public override string ToString()
         {
-  	        return WKTWriter.ToLineString(_pt[0], _pt[1]);
+  	        return WktWriter.ToLineString(_pt[0], _pt[1]);
         }
 
         #endregion

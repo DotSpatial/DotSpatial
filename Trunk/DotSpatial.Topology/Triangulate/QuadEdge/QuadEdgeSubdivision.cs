@@ -932,11 +932,11 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
             {
                 String loc = "";
                 if (pts.Length >= 2)
-                    loc = WKTWriter.ToLineString(pts[0], pts[1]);
+                    loc = WktWriter.ToLineString(pts[0], pts[1]);
                 else
                 {
                     if (pts.Length >= 1)
-                        loc = WKTWriter.ToPoint(pts[0]);
+                        loc = WktWriter.ToPoint(pts[0]);
                 }
 
                 Assert.IsTrue(pts.Length == 4, "Too few points for visited triangle at " + loc);

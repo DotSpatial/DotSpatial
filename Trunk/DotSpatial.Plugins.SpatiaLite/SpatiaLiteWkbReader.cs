@@ -7,7 +7,7 @@ namespace DotSpatial.Plugins.SpatiaLite
     /// <summary>
     /// Helper class for reading binary data from the SpatiaLite database
     /// </summary>
-    public class SpatiaLiteWkbReader : WKBReader
+    public class SpatiaLiteWkbReader : WkbReader
     {
         /// <summary>
         /// Convert a byte array to a DotSpatial.Topology geometry object
@@ -26,7 +26,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
+                    reader = (byteOrder == ByteOrder.BigEndian) ? new BeBinaryReader(stream) : new BinaryReader(stream);
 
                     int srid = reader.ReadInt32();
                     double mbrMinX = reader.ReadDouble();

@@ -122,7 +122,7 @@ namespace DotSpatial.Topology.Operation.Buffer.Validate
                 _errorIndicator = input.Factory.CreateLineString(pts);
                 _errMsg = "Distance between buffer curve and input is too large "
                   + "(" + _maxDistanceFound
-                  + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + ")";
+                  + " at " + WktWriter.ToLineString(pts[0], pts[1]) + ")";
             }
         }
 
@@ -145,7 +145,7 @@ namespace DotSpatial.Topology.Operation.Buffer.Validate
                 _errorIndicator = g1.Factory.CreateLineString(pts);
                 _errMsg = "Distance between buffer curve and input is too small "
                     + "(" + _minDistanceFound
-                    + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + " )";
+                    + " at " + WktWriter.ToLineString(pts[0], pts[1]) + " )";
             }
         }
 

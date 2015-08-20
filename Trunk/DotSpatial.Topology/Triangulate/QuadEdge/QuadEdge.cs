@@ -436,7 +436,7 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
         {
             var p0 = _vertex.Coordinate;
             var p1 = Dest.Coordinate;
-            return WKTWriter.ToLineString(p0, p1);
+            return WktWriter.ToLineString(p0, p1);
         }
 
         #endregion

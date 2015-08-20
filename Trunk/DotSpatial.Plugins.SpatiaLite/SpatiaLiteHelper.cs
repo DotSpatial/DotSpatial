@@ -344,7 +344,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 var byteOrder = (ByteOrder)stream.ReadByte();
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
+                    reader = (byteOrder == ByteOrder.BigEndian) ? new BeBinaryReader(stream) : new BinaryReader(stream);
                     var srid = reader.ReadInt32();
                     var mbrMinX = reader.ReadDouble();
                     var mbrMinY = reader.ReadDouble();

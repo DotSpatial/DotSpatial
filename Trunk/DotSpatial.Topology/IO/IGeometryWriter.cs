@@ -30,7 +30,7 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Gets or sets whether the SpatialReference ID must be handled.
         /// </summary>
-        bool HandleSRID { get; set; }
+        bool HandleSrid { get; set; }
 
         #endregion
     }

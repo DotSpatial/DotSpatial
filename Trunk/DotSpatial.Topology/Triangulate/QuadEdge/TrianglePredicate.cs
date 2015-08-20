@@ -47,8 +47,8 @@ namespace DotSpatial.Topology.Triangulate.QuadEdge
             if (nonRobustInCircle != isInCircleDD || nonRobustInCircle != isInCircleCC)
             {
                 Debug.WriteLine(String.Format("inCircle robustness failure (double result = {0}, DD result = {1}, CC result = {2})", nonRobustInCircle, isInCircleDD, isInCircleCC));
-                Debug.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
-                Debug.WriteLine(String.Format("Circumcentre = {0} radius = {1}", WKTWriter.ToPoint(circumCentre), a.Distance(circumCentre)));
+                Debug.WriteLine(WktWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
+                Debug.WriteLine(String.Format("Circumcentre = {0} radius = {1}", WktWriter.ToPoint(circumCentre), a.Distance(circumCentre)));
                 Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) / a.Distance(circumCentre) - 1)));
                 Debug.WriteLine(String.Format("p radius diff b = {0}", Math.Abs(p.Distance(circumCentre) / b.Distance(circumCentre) - 1)));
                 Debug.WriteLine(String.Format("p radius diff c = {0}", Math.Abs(p.Distance(circumCentre) / c.Distance(circumCentre) - 1)));

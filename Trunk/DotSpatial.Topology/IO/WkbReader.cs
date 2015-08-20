@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.IO
     /// too few points have vertices added,
     /// and non-closed rings are closed).
     /// s</remarks>
-    public class WKBReader : IBinaryGeometryReader
+    public class WkbReader : IBinaryGeometryReader
     {
         #region Fields
 
@@ -60,14 +60,14 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
         /// </summary>
-        public WKBReader() : this(GeometryServiceProvider.Instance) { }
+        public WkbReader() : this(GeometryServiceProvider.Instance) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="factory"></param>
         [Obsolete]
-        public WKBReader(IGeometryFactory factory)
+        public WkbReader(IGeometryFactory factory)
         {
             _geometryServices = GeometryServiceProvider.Instance;
 
@@ -75,18 +75,18 @@ namespace DotSpatial.Topology.IO
             _sequenceFactory = factory.CoordinateSequenceFactory;
             _precisionModel = factory.PrecisionModel;
 
-            HandleSRID = true;
+            HandleSrid = true;
             HandleOrdinates = AllowedOrdinates;
         }
 
-        public WKBReader(IGeometryServices services)
+        public WkbReader(IGeometryServices services)
         {
             services = services ?? GeometryServiceProvider.Instance;
             _geometryServices = services;
             _precisionModel = services.DefaultPrecisionModel;
             _sequenceFactory = services.DefaultCoordinateSequenceFactory;
 
-            HandleSRID = true;
+            HandleSrid = true;
             HandleOrdinates = AllowedOrdinates;
         }
 
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.IO
             }
         }
 
-        public bool HandleSRID { get; set; }
+        public bool HandleSrid { get; set; }
 
         /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
@@ -241,7 +241,7 @@ namespace DotSpatial.Topology.IO
             }
             else if (byteOrder == ByteOrder.BigEndian)
             {
-                reader = new BEBinaryReader(stream);
+                reader = new BeBinaryReader(stream);
             }
             else if (_isStrict)
             {
@@ -273,50 +273,50 @@ namespace DotSpatial.Topology.IO
         {
             CoordinateSystem cs;
             int srid;
-            WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);
+            WkbGeometryType geometryType = ReadGeometryType(reader, out cs, out srid);
             switch (geometryType)
             {
                 //Point
-                case WKBGeometryTypes.WKBPoint:
-                case WKBGeometryTypes.WKBPointZ:
-                case WKBGeometryTypes.WKBPointM:
-                case WKBGeometryTypes.WKBPointZM:
+                case WkbGeometryType.WkbPoint:
+                case WkbGeometryType.WkbPointZ:
+                case WkbGeometryType.WkbPointM:
+                case WkbGeometryType.WkbPointZm:
                     return ReadPoint(reader, cs, srid);
                 //Line String
-                case WKBGeometryTypes.WKBLineString:
-                case WKBGeometryTypes.WKBLineStringZ:
-                case WKBGeometryTypes.WKBLineStringM:
-                case WKBGeometryTypes.WKBLineStringZM:
+                case WkbGeometryType.WkbLineString:
+                case WkbGeometryType.WkbLineStringZ:
+                case WkbGeometryType.WkbLineStringM:
+                case WkbGeometryType.WkbLineStringZm:
                     return ReadLineString(reader, cs, srid);
                 //Polygon
-                case WKBGeometryTypes.WKBPolygon:
-                case WKBGeometryTypes.WKBPolygonZ:
-                case WKBGeometryTypes.WKBPolygonM:
-                case WKBGeometryTypes.WKBPolygonZM:
+                case WkbGeometryType.WkbPolygon:
+                case WkbGeometryType.WkbPolygonZ:
+                case WkbGeometryType.WkbPolygonM:
+                case WkbGeometryType.WkbPolygonZm:
                     return ReadPolygon(reader, cs, srid);
                 //Multi Point
-                case WKBGeometryTypes.WKBMultiPoint:
-                case WKBGeometryTypes.WKBMultiPointZ:
-                case WKBGeometryTypes.WKBMultiPointM:
-                case WKBGeometryTypes.WKBMultiPointZM:
+                case WkbGeometryType.WkbMultiPoint:
+                case WkbGeometryType.WkbMultiPointZ:
+                case WkbGeometryType.WkbMultiPointM:
+                case WkbGeometryType.WkbMultiPointZm:
                     return ReadMultiPoint(reader, cs, srid);
                 //Multi Line String
-                case WKBGeometryTypes.WKBMultiLineString:
-                case WKBGeometryTypes.WKBMultiLineStringZ:
-                case WKBGeometryTypes.WKBMultiLineStringM:
-                case WKBGeometryTypes.WKBMultiLineStringZM:
+                case WkbGeometryType.WkbMultiLineString:
+                case WkbGeometryType.WkbMultiLineStringZ:
+                case WkbGeometryType.WkbMultiLineStringM:
+                case WkbGeometryType.WkbMultiLineStringZm:
                     return ReadMultiLineString(reader, cs, srid);
                 //Multi Polygon
-                case WKBGeometryTypes.WKBMultiPolygon:
-                case WKBGeometryTypes.WKBMultiPolygonZ:
-                case WKBGeometryTypes.WKBMultiPolygonM:
-                case WKBGeometryTypes.WKBMultiPolygonZM:
+                case WkbGeometryType.WkbMultiPolygon:
+                case WkbGeometryType.WkbMultiPolygonZ:
+                case WkbGeometryType.WkbMultiPolygonM:
+                case WkbGeometryType.WkbMultiPolygonZm:
                     return ReadMultiPolygon(reader, cs, srid);
                 //Geometry Collection
-                case WKBGeometryTypes.WKBGeometryCollection:
-                case WKBGeometryTypes.WKBGeometryCollectionZ:
-                case WKBGeometryTypes.WKBGeometryCollectionM:
-                case WKBGeometryTypes.WKBGeometryCollectionZM:
+                case WkbGeometryType.WkbGeometryCollection:
+                case WkbGeometryType.WkbGeometryCollectionZ:
+                case WkbGeometryType.WkbGeometryCollectionM:
+                case WkbGeometryType.WkbGeometryCollectionZm:
                     return ReadGeometryCollection(reader, cs, srid);
                 default:
                     throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
@@ -433,59 +433,59 @@ namespace DotSpatial.Topology.IO
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);
+                WkbGeometryType geometryType = ReadGeometryType(reader, out cs2, out srid2);
                 switch (geometryType)
                 {
                     //Point
-                    case WKBGeometryTypes.WKBPoint:
-                    case WKBGeometryTypes.WKBPointZ:
-                    case WKBGeometryTypes.WKBPointM:
-                    case WKBGeometryTypes.WKBPointZM:
+                    case WkbGeometryType.WkbPoint:
+                    case WkbGeometryType.WkbPointZ:
+                    case WkbGeometryType.WkbPointM:
+                    case WkbGeometryType.WkbPointZm:
                         geometries[i] = ReadPoint(reader, cs2, srid);
                         break;
 
                     //Line String
-                    case WKBGeometryTypes.WKBLineString:
-                    case WKBGeometryTypes.WKBLineStringZ:
-                    case WKBGeometryTypes.WKBLineStringM:
-                    case WKBGeometryTypes.WKBLineStringZM:
+                    case WkbGeometryType.WkbLineString:
+                    case WkbGeometryType.WkbLineStringZ:
+                    case WkbGeometryType.WkbLineStringM:
+                    case WkbGeometryType.WkbLineStringZm:
                         geometries[i] = ReadLineString(reader, cs2, srid2);
                         break;
 
                     //Polygon
-                    case WKBGeometryTypes.WKBPolygon:
-                    case WKBGeometryTypes.WKBPolygonZ:
-                    case WKBGeometryTypes.WKBPolygonM:
-                    case WKBGeometryTypes.WKBPolygonZM:
+                    case WkbGeometryType.WkbPolygon:
+                    case WkbGeometryType.WkbPolygonZ:
+                    case WkbGeometryType.WkbPolygonM:
+                    case WkbGeometryType.WkbPolygonZm:
                         geometries[i] = ReadPolygon(reader, cs2, srid2);
                         break;
 
                     //Multi Point
-                    case WKBGeometryTypes.WKBMultiPoint:
-                    case WKBGeometryTypes.WKBMultiPointZ:
-                    case WKBGeometryTypes.WKBMultiPointM:
-                    case WKBGeometryTypes.WKBMultiPointZM:
+                    case WkbGeometryType.WkbMultiPoint:
+                    case WkbGeometryType.WkbMultiPointZ:
+                    case WkbGeometryType.WkbMultiPointM:
+                    case WkbGeometryType.WkbMultiPointZm:
                         geometries[i] = ReadMultiPoint(reader, cs2, srid2);
                         break;
 
                     //Multi Line String
-                    case WKBGeometryTypes.WKBMultiLineString:
-                    case WKBGeometryTypes.WKBMultiLineStringZ:
-                    case WKBGeometryTypes.WKBMultiLineStringM:
-                    case WKBGeometryTypes.WKBMultiLineStringZM:
+                    case WkbGeometryType.WkbMultiLineString:
+                    case WkbGeometryType.WkbMultiLineStringZ:
+                    case WkbGeometryType.WkbMultiLineStringM:
+                    case WkbGeometryType.WkbMultiLineStringZm:
                         geometries[i] = ReadMultiLineString(reader, cs2, srid2);
                         break;
 
                     //Multi Polygon
-                    case WKBGeometryTypes.WKBMultiPolygon:
+                    case WkbGeometryType.WkbMultiPolygon:
                         geometries[i] = ReadMultiPolygon(reader, cs2, srid2);
                         break;
 
                     //Geometry Collection
-                    case WKBGeometryTypes.WKBGeometryCollection:
-                    case WKBGeometryTypes.WKBGeometryCollectionZ:
-                    case WKBGeometryTypes.WKBGeometryCollectionM:
-                    case WKBGeometryTypes.WKBGeometryCollectionZM:
+                    case WkbGeometryType.WkbGeometryCollection:
+                    case WkbGeometryType.WkbGeometryCollectionZ:
+                    case WkbGeometryType.WkbGeometryCollectionM:
+                    case WkbGeometryType.WkbGeometryCollectionZm:
                         geometries[i] = ReadGeometryCollection(reader, cs2, srid2);
                         break;
 
@@ -496,7 +496,7 @@ namespace DotSpatial.Topology.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
-        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
+        private WkbGeometryType ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
         {
             uint type = reader.ReadUInt32();
             //Determine coordinate system
@@ -515,7 +515,7 @@ namespace DotSpatial.Topology.IO
             else
                 srid = -1;
 
-            if (!HandleSRID) srid = -1;
+            if (!HandleSrid) srid = -1;
 
             //Get cs from prefix
             uint ordinate = (type & 0xffff) / 1000;
@@ -532,7 +532,7 @@ namespace DotSpatial.Topology.IO
                     break;
             }
 
-            return (WKBGeometryTypes)((type & 0xffff) % 1000);
+            return (WkbGeometryType)((type & 0xffff) % 1000);
         }
 
         /// <summary>
@@ -582,8 +582,8 @@ namespace DotSpatial.Topology.IO
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
-                if (geometryType != WKBGeometryTypes.WKBLineString)
+                WkbGeometryType geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                if (geometryType != WkbGeometryType.WkbLineString)
                     throw new ArgumentException("ILineString feature expected");
                 strings[i] = ReadLineString(reader, cs2, srid2) as ILineString;
             }
@@ -607,8 +607,8 @@ namespace DotSpatial.Topology.IO
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes)reader.ReadInt32();
-                if (geometryType != WKBGeometryTypes.WKBPoint)
+                WkbGeometryType geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes)reader.ReadInt32();
+                if (geometryType != WkbGeometryType.WkbPoint)
                     throw new ArgumentException("IPoint feature expected");
                 points[i] = ReadPoint(reader, cs2, srid2) as IPoint;
             }
@@ -632,8 +632,8 @@ namespace DotSpatial.Topology.IO
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
                 int srid2;
-                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
-                if (geometryType != WKBGeometryTypes.WKBPolygon)
+                WkbGeometryType geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                if (geometryType != WkbGeometryType.WkbPolygon)
                     throw new ArgumentException("IPolygon feature expected");
                 polygons[i] = ReadPolygon(reader, cs2, srid2) as IPolygon;
             }
