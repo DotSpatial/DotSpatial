@@ -1,5 +1,6 @@
 ﻿using System;
 using DotSpatial.Data;
+using DotSpatial.Projections;
 
 namespace DemoCustomLayer.DemoCustomLayerExtension
 {
@@ -139,11 +140,11 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             get { return false; }
         }
 
-        public DotSpatial.Projections.ProjectionInfo Projection
+        public ProjectionInfo Projection
         {
             get
             {
-                return DotSpatial.Projections.KnownCoordinateSystems.Projected.World.WebMercator;
+                return KnownCoordinateSystems.Projected.World.WebMercator;
             }
             set
             {
@@ -163,7 +164,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
             }
         }
 
-        public void Reproject(DotSpatial.Projections.ProjectionInfo targetProjection)
+        public void Reproject(ProjectionInfo targetProjection)
         {
             //throw new NotImplementedException();
         }

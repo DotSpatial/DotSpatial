@@ -38,7 +38,7 @@ using DotSpatial.Data.Forms;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
 

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
-using System.Data;
-using System.Diagnostics;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Symbology;
-using System.Windows.Forms;
 
 namespace DotSpatial.Plugins.SetSelectable
 {

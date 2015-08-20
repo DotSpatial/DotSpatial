@@ -6,11 +6,6 @@
 
 namespace DotSpatial.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// This class converts an IProgressHandler to an ICancelProgressHandler. It wraps the IProgressHandler so that
     /// it can be used by a class that requires an ICancelProgressHandler. Cancel will always return false.

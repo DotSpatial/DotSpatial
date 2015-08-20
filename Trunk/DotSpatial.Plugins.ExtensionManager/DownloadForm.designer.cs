@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Plugins.ExtensionManager
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.ExtensionManager
 {
     partial class DownloadForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -75,9 +78,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.RichTextBox uxDownloadStatus;
-        private System.Windows.Forms.Button button1;
+        private ProgressBar progressBar;
+        private RichTextBox uxDownloadStatus;
+        private Button button1;
 
     }
 }

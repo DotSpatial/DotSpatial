@@ -20,7 +20,8 @@
 
 using System.Collections.Generic;
 using System.Data;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Operation.Buffer;
 
 namespace DotSpatial.Data
 {
@@ -61,9 +62,9 @@ namespace DotSpatial.Data
         /// <param name="distance">The double distance</param>
         /// <param name="endCapStyle">The end cap style to use</param>
         /// <returns>An IFeature representing the output from the buffer operation</returns>
-        public static IFeature Buffer(this IFeature self, double distance, BufferStyle endCapStyle)
+        public static IFeature Buffer(this IFeature self, double distance, EndCapStyle endCapStyle)
         {
-            IGeometry g = Geometry.FromBasicGeometry(self.BasicGeometry).Buffer(distance, endCapStyle);
+            IGeometry g = Geometry.FromBasicGeometry(self.BasicGeometry).Buffer(distance, new BufferParameters{EndCapStyle  = endCapStyle});
             return new Feature(g);
         }
 
@@ -90,7 +91,7 @@ namespace DotSpatial.Data
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle</param>
         /// <param name="endCapStyle">The end cap style to use</param>
         /// <returns>An IFeature representing the output from the buffer operation</returns>
-        public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, BufferStyle endCapStyle)
+        public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
             IGeometry g = Geometry.FromBasicGeometry(self.BasicGeometry).Buffer(distance, quadrantSegments, endCapStyle);
             return new Feature(g);
@@ -131,7 +132,7 @@ namespace DotSpatial.Data
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
-        public static IFeature Buffer(this IFeature self, double distance, BufferStyle endCapStyle, IFeatureSet destinationFeatureset)
+        public static IFeature Buffer(this IFeature self, double distance, EndCapStyle endCapStyle, IFeatureSet destinationFeatureset)
         {
             IFeature f = Buffer(self, distance, endCapStyle);
             destinationFeatureset.Features.Add(f);
@@ -182,7 +183,7 @@ namespace DotSpatial.Data
         /// <param name="destinationFeatureset">The output featureset to add this feature to and use
         /// as a reference for determining which data columns to copy.</param>
         /// <returns>The IFeature that represents the buffer feature.</returns>
-        public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, BufferStyle endCapStyle, IFeatureSet destinationFeatureset)
+        public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, EndCapStyle endCapStyle, IFeatureSet destinationFeatureset)
         {
             IFeature f = Buffer(self, distance, quadrantSegments, endCapStyle);
             destinationFeatureset.Features.Add(f);

@@ -7,7 +7,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Tests.Common;
-using MapWindow.Tests.XML.TestData;
 using NUnit.Framework;
 
 namespace DotSpatial.Serialization.Tests
@@ -176,7 +175,7 @@ namespace DotSpatial.Serialization.Tests
             Assert.Greater(map.Layers.Count, 0);
 
             manager.SerializationManager.SaveProject(projectFileName);
-            Assert.True(System.IO.File.Exists(projectFileName));
+            Assert.True(File.Exists(projectFileName));
 
             //reopen the project
             map.Layers.Clear();
@@ -215,7 +214,7 @@ namespace DotSpatial.Serialization.Tests
             Assert.IsNotNull(l.MapFrame);
 
             manager.SerializationManager.SaveProject(projectFileName);
-            Assert.True(System.IO.File.Exists(projectFileName));
+            Assert.True(File.Exists(projectFileName));
 
             //reopen the project
             map.Layers.Clear();

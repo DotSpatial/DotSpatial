@@ -5,7 +5,8 @@ using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.Symbology;
+using DotSpatial.Topology.Geometries;
 using Msg = DotSpatial.Controls.MessageStrings;
 
 namespace DotSpatial.Controls
@@ -118,7 +119,7 @@ namespace DotSpatial.Controls
         }
         
 
-        void Layers_LayerSelected(object sender, Symbology.LayerSelectedEventArgs e)
+        void Layers_LayerSelected(object sender, LayerSelectedEventArgs e)
         {
             _ZoomToLayer.Enabled = App.Map.Layers.SelectedLayer != null;
         }

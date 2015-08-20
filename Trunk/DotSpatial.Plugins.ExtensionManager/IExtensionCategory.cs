@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using DotSpatial.Controls;
 
 namespace DotSpatial.Plugins.ExtensionManager

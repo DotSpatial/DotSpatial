@@ -28,6 +28,7 @@ using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.GeometriesGraph;
 using DotSpatial.Topology.Noding;
 using DotSpatial.Topology.Operation.Overlay;
+using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Operation.Buffer
 {
@@ -154,7 +155,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
                 polyBuilder.Add(new List<EdgeEnd>(
-                    Utilities.Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
+                    Caster.Upcast<DirectedEdge, EdgeEnd>(subgraph.DirectedEdges)), subgraph.Nodes);
             }
         }
 

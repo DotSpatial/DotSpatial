@@ -1,8 +1,7 @@
 using System;
 using System.Globalization;
-using DotSpatial.Serialization;
 
-namespace MapWindow.Tests.XML.TestData
+namespace DotSpatial.Serialization.Tests
 {
     public class ObjectWithIntMember
     {

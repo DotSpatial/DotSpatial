@@ -15,11 +15,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Topology;
-using DotSpatial.Topology.KDTree;
+using DotSpatial.Modeling.Forms.Parameters;
+using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.Index.KDTree;
 
 namespace DotSpatial.Tools
 {
@@ -184,7 +184,7 @@ namespace DotSpatial.Tools
             int lastUpdate = 0;
 
             // Populates the KD tree
-            KdTree kd = new KdTree(2);
+            KdTree<> kd = new KdTree(2);
             List<int> randomList = new List<int>();
             for (int i = 0; i < input.Features.Count; i++)
             {

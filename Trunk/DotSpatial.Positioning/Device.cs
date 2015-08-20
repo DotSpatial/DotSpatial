@@ -21,23 +21,22 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Security;
-using System.Text;
 using System.Globalization;
 using System.IO;
-using System.ComponentModel;
+using System.Net;
+using System.Security;
+using System.Text;
 using System.Threading;
-
 #if !PocketPC || ICodeInAVacuum
 
 using System.Runtime.CompilerServices;
 
 #endif
-
-using System.Net;
 
 namespace DotSpatial.Positioning
 {

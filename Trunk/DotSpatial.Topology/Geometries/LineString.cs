@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Serialization;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Operation;
 using DotSpatial.Topology.Utilities;

@@ -22,14 +22,12 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
-using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
 using OSGeo.OGR;
 using OSGeo.OSR;
-using Geometry = OSGeo.OGR.Geometry;
 
-namespace DotSpatial.Data
+namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
     ///  OgrDatareader provide readonly forward only access to OsGeo data sources accessible though the OGR project

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using DotSpatial.Tests.Common;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Topology.Tests
@@ -45,8 +47,8 @@ namespace DotSpatial.Topology.Tests
             var ev = new Envelope(c);
             var x = c.X;
             var y = c.Y;
-            var ccheck = new GeoAPI.Geometries.Coordinate(x, y);
-            var evcheck = new GeoAPI.Geometries.Envelope(ccheck);
+            var ccheck = new Coordinate(x, y);
+            var evcheck = new Envelope(ccheck);
             AssertExt.AreEqual15(ev.Maximum.Y, evcheck.MaxY);
             AssertExt.AreEqual15(ev.Maximum.X, evcheck.MaxX);
             AssertExt.AreEqual15(ev.Minimum.Y, evcheck.MinY);
@@ -64,9 +66,9 @@ namespace DotSpatial.Topology.Tests
             var y1 = c1.Y;
             var x2 = c2.X;
             var y2 = c2.Y;
-            var c1Check = new GeoAPI.Geometries.Coordinate(x1, y1);
-            var c2Check = new GeoAPI.Geometries.Coordinate(x2, y2);
-            var evcheck = new GeoAPI.Geometries.Envelope(c1Check, c2Check);
+            var c1Check = new Coordinate(x1, y1);
+            var c2Check = new Coordinate(x2, y2);
+            var evcheck = new Envelope(c1Check, c2Check);
             AssertExt.AreEqual15(ev.Maximum.Y, evcheck.MaxY);
             AssertExt.AreEqual15(ev.Maximum.X, evcheck.MaxX);
             AssertExt.AreEqual15(ev.Minimum.Y, evcheck.MinY);
@@ -85,11 +87,11 @@ namespace DotSpatial.Topology.Tests
             var y1 = c1.Y;
             var x2 = c2.X;
             var y2 = c2.Y;
-            var c1Check = new GeoAPI.Geometries.Coordinate(x1, y1);
-            var c2Check = new GeoAPI.Geometries.Coordinate(x2, y2);
-            var evcheck = new GeoAPI.Geometries.Envelope(c1Check, c2Check);
+            var c1Check = new Coordinate(x1, y1);
+            var c2Check = new Coordinate(x2, y2);
+            var evcheck = new Envelope(c1Check, c2Check);
             var center = new Coordinate(ev.Center());
-            var centercheck = new GeoAPI.Geometries.Coordinate(evcheck.Centre);
+            var centercheck = new Coordinate(evcheck.Centre);
             AssertExt.AreEqual15(center.X, centercheck.X);
             AssertExt.AreEqual15(center.Y, centercheck.Y);
         }
@@ -103,7 +105,7 @@ namespace DotSpatial.Topology.Tests
             var y1 = ((rnd.NextDouble() * 360) - 180);
             var y2 = ((rnd.NextDouble() * 360) - 180);
             var ev = new Envelope(x1, x2, y1, y2);
-            var evcheck = new GeoAPI.Geometries.Envelope(x1, x2, y1, y2);
+            var evcheck = new Envelope(x1, x2, y1, y2);
             AssertExt.AreEqual15(ev.Height, evcheck.Height);
             AssertExt.AreEqual15(ev.Width, evcheck.Width);
         }
@@ -113,17 +115,17 @@ namespace DotSpatial.Topology.Tests
         {
             var coords = new Coordinate[36];
             var rnd = new Random();
-            var coordscheck = new GeoAPI.Geometries.Coordinate[36];
+            var coordscheck = new Coordinate[36];
             for (var i = 0; i < 36; i++)
             {
                 coords[i] = new Coordinate((rnd.NextDouble() * 360) - 180, (rnd.NextDouble() * 180) - 90);
                 var x = coords[i].X;
                 var y = coords[i].Y;
-                var c = new GeoAPI.Geometries.Coordinate(x, y);
+                var c = new Coordinate(x, y);
                 coordscheck[i] = c;
             }
-            var gf = new NetTopologySuite.Geometries.GeometryFactory();
-            GeoAPI.Geometries.ILineString lscheck = gf.CreateLineString(coordscheck);
+            var gf = new GeometryFactory();
+            ILineString lscheck = gf.CreateLineString(coordscheck);
             var ls = new LineString(coords);
             AssertExt.AreEqual15(ls.Envelope.Maximum.X, lscheck.EnvelopeInternal.MaxX);
             AssertExt.AreEqual15(ls.Envelope.Maximum.Y, lscheck.EnvelopeInternal.MaxY);
@@ -136,17 +138,17 @@ namespace DotSpatial.Topology.Tests
         {
             var coords = new Coordinate[36];
             var rnd = new Random();
-            var coordscheck = new GeoAPI.Geometries.Coordinate[36];
+            var coordscheck = new Coordinate[36];
             for (var i = 0; i < 36; i++)
             {
                 coords[i] = new Coordinate((rnd.NextDouble() * 360) - 180, (rnd.NextDouble() * 180) - 90);
                 var x = coords[i].X;
                 var y = coords[i].Y;
-                var c = new GeoAPI.Geometries.Coordinate(x, y);
+                var c = new Coordinate(x, y);
                 coordscheck[i] = c;
             }
-            var gf = new NetTopologySuite.Geometries.GeometryFactory();
-            GeoAPI.Geometries.ILineString lscheck = gf.CreateLineString(coordscheck);
+            var gf = new GeometryFactory();
+            ILineString lscheck = gf.CreateLineString(coordscheck);
             var ls = new LineString(coords);
             AssertExt.AreEqual15(ls.Envelope.Width, lscheck.EnvelopeInternal.Width);
             AssertExt.AreEqual15(ls.Envelope.Height, lscheck.EnvelopeInternal.Height);
@@ -158,17 +160,17 @@ namespace DotSpatial.Topology.Tests
         {
             var coords = new Coordinate[36];
             var rnd = new Random();
-            var coordscheck = new GeoAPI.Geometries.Coordinate[36];
+            var coordscheck = new Coordinate[36];
             for (var i = 0; i < 36; i++)
             {
                 coords[i] = new Coordinate((rnd.NextDouble() * 360) - 180, (rnd.NextDouble() * 180) - 90);
                 var x = coords[i].X;
                 var y = coords[i].Y;
-                var c = new GeoAPI.Geometries.Coordinate(x, y);
+                var c = new Coordinate(x, y);
                 coordscheck[i] = c;
             }
-            var gf = new NetTopologySuite.Geometries.GeometryFactory();
-            GeoAPI.Geometries.ILineString lscheck = gf.CreateLineString(coordscheck);
+            var gf = new GeometryFactory();
+            ILineString lscheck = gf.CreateLineString(coordscheck);
             var ls = new LineString(coords);
             var area = ls.Envelope.Area();
             var areacheck = lscheck.Envelope.Area;
@@ -181,20 +183,20 @@ namespace DotSpatial.Topology.Tests
             var coords = new Coordinate[20];
             var rnd = new Random();
             var center = new Coordinate((rnd.NextDouble() * 360) - 180, (rnd.NextDouble() * 180) - 90);
-            var coordscheck = new GeoAPI.Geometries.Coordinate[20];
+            var coordscheck = new Coordinate[20];
             for (var i = 0; i < 19; i++)
             {
                 coords[i] = new Coordinate(center.X + Math.Cos((i * 10) * Math.PI / 10), center.Y + (i * 10) * Math.PI / 10);
                 var x = coords[i].X;
                 var y = coords[i].Y;
-                var c = new GeoAPI.Geometries.Coordinate(x, y);
+                var c = new Coordinate(x, y);
                 coordscheck[i] = c;
             }
-            coordscheck[19] = new GeoAPI.Geometries.Coordinate(coords[0].X, coords[0].Y);
+            coordscheck[19] = new Coordinate(coords[0].X, coords[0].Y);
             coords[19] = new Coordinate(coords[0].X, coords[0].Y);
-            var gf = new NetTopologySuite.Geometries.GeometryFactory();
-            GeoAPI.Geometries.ILinearRing ring = gf.CreateLinearRing(coordscheck);
-            GeoAPI.Geometries.IPolygon pgcheck = gf.CreatePolygon(ring, null);
+            var gf = new GeometryFactory();
+            ILinearRing ring = gf.CreateLinearRing(coordscheck);
+            IPolygon pgcheck = gf.CreatePolygon(ring, null);
             var pg = new Polygon(coords);
             AssertExt.AreEqual15(pg.Envelope.Maximum.X, pgcheck.EnvelopeInternal.MaxX);
             AssertExt.AreEqual15(pg.Envelope.Maximum.Y, pgcheck.EnvelopeInternal.MaxY);
@@ -208,20 +210,20 @@ namespace DotSpatial.Topology.Tests
             var coords = new Coordinate[20];
             var rnd = new Random();
             var center = new Coordinate((rnd.NextDouble() * 360) - 180, (rnd.NextDouble() * 180) - 90);
-            var coordscheck = new GeoAPI.Geometries.Coordinate[20];
+            var coordscheck = new Coordinate[20];
             for (var i = 0; i < 19; i++)
             {
                 coords[i] = new Coordinate(center.X + Math.Cos((i * 10) * Math.PI / 10), center.Y + (i * 10) * Math.PI / 10);
                 var x = coords[i].X;
                 var y = coords[i].Y;
-                var c = new GeoAPI.Geometries.Coordinate(x, y);
+                var c = new Coordinate(x, y);
                 coordscheck[i] = c;
             }
-            coordscheck[19] = new GeoAPI.Geometries.Coordinate(coords[0].X, coords[0].Y);
+            coordscheck[19] = new Coordinate(coords[0].X, coords[0].Y);
             coords[19] = new Coordinate(coords[0].X, coords[0].Y);
-            var gf = new NetTopologySuite.Geometries.GeometryFactory();
-            GeoAPI.Geometries.ILinearRing ring = gf.CreateLinearRing(coordscheck);
-            GeoAPI.Geometries.IPolygon pgcheck = gf.CreatePolygon(ring, null);
+            var gf = new GeometryFactory();
+            ILinearRing ring = gf.CreateLinearRing(coordscheck);
+            IPolygon pgcheck = gf.CreatePolygon(ring, null);
             var pg = new Polygon(coords);
             var area = pg.Envelope.Area();
             AssertExt.AreEqual15(area, pgcheck.Envelope.Area);

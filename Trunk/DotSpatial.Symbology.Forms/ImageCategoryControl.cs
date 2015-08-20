@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {

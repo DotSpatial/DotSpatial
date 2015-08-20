@@ -19,8 +19,8 @@
 
 using System;
 using System.Data;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
+using DotSpatial.Topology.Geometries;
+using DotSpatial.Topology.IO;
 
 namespace DotSpatial.Data
 {
@@ -163,13 +163,9 @@ namespace DotSpatial.Data
                 {
                     if (IsWellKnownBinaryNull())
                     {
-                        if (_shape != null)
-                        {
-                            return _shape.ToGeometry(_featureTable.GeometryFactory);
-                        }
-                        return null;
+                        return _shape == null ? null : _shape.ToGeometry(_featureTable.GeometryFactory);
                     }
-                    WkbReader reader = new WkbReader(_featureTable.GeometryFactory);
+                    WKBReader reader = new WKBReader(_featureTable.GeometryFactory);
                     byte[] geometryBytes = (byte[])this[_featureTable.GeometryColumn];
 
                     _geometry = reader.Read(geometryBytes);

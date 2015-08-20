@@ -35,10 +35,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using DotSpatial.Analysis;
 using DotSpatial.Data;
-using DotSpatial.Plugins.Taudem;
+using DotSpatial.Projections;
 using DotSpatial.Topology;
 
-namespace MapWinGeoProc
+namespace DotSpatial.Plugins.Taudem
 {
     //using System.Windows.Forms;
     //using MapWindow.Interfaces.Geometries;
@@ -4814,7 +4814,7 @@ namespace MapWinGeoProc
             int usareaAcreFieldNum = AddField(streamShape, "DSAreaSqMi", typeof(double));
             int usareaSqMiFieldNum = AddField(streamShape, "USAreaSqMi", typeof(double));
 
-            DotSpatial.Projections.ProjectionInfo projStr = streamShape.Projection;
+            ProjectionInfo projStr = streamShape.Projection;
             IRaster demGrid = Raster.Open(demPath);
             IFeatureSet shedShape = FeatureSet.Open(subBasinShapePath);
             int shedShapeNumShapes = shedShape.NumRows();

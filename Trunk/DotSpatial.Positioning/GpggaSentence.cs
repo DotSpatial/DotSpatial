@@ -21,6 +21,7 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Text;
 
@@ -174,9 +175,9 @@ namespace DotSpatial.Positioning
             #region Append the position
 
             // Append latitude in the format HHMM.MMMM.
-            builder.Append(position.Latitude.ToString(NmeaSentence.LatitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Latitude.ToString(LatitudeFormat, NmeaCultureInfo));
             // Append Longitude in the format HHHMM.MMMM.
-            builder.Append(position.Longitude.ToString(NmeaSentence.LongitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Longitude.ToString(LongitudeFormat, NmeaCultureInfo));
 
             #endregion Append the position
 

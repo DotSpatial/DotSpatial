@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology
 {

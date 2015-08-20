@@ -8,10 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace DotSpatial.Plugins.ShapeEditor {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,27 +25,27 @@ namespace DotSpatial.Plugins.ShapeEditor {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     internal class ShapeEditorResources {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
         
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ShapeEditorResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        internal static ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DotSpatial.Plugins.ShapeEditor.ShapeEditorResources", typeof(ShapeEditorResources).Assembly);
+                if (ReferenceEquals(resourceMan, null)) {
+                    ResourceManager temp = new ResourceManager("DotSpatial.Plugins.ShapeEditor.ShapeEditorResources", typeof(ShapeEditorResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,8 +56,8 @@ namespace DotSpatial.Plugins.ShapeEditor {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        internal static CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -69,10 +75,10 @@ namespace DotSpatial.Plugins.ShapeEditor {
             }
         }
         
-        internal static System.Drawing.Bitmap move {
+        internal static Bitmap move {
             get {
                 object obj = ResourceManager.GetObject("move", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
@@ -94,17 +100,17 @@ namespace DotSpatial.Plugins.ShapeEditor {
             }
         }
         
-        internal static System.Drawing.Icon NewShape {
+        internal static Icon NewShape {
             get {
                 object obj = ResourceManager.GetObject("NewShape", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ((Icon)(obj));
             }
         }
         
-        internal static System.Drawing.Icon NewShapefile {
+        internal static Icon NewShapefile {
             get {
                 object obj = ResourceManager.GetObject("NewShapefile", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ((Icon)(obj));
             }
         }
         
@@ -117,10 +123,10 @@ namespace DotSpatial.Plugins.ShapeEditor {
             }
         }
         
-        internal static System.Drawing.Icon SnappingIcon {
+        internal static Icon SnappingIcon {
             get {
                 object obj = ResourceManager.GetObject("SnappingIcon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ((Icon)(obj));
             }
         }
     }

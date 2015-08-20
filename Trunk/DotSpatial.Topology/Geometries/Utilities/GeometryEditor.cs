@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Assert = DotSpatial.Topology.Utilities.Assert;
+using DotSpatial.Topology.Utilities;
 #if !NET35 && !PCL
 using Enumerable = DotSpatial.Topology.Utilities.Enumerable;
 #else
@@ -254,7 +254,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
         {
             #region Constructors
 
-            public CoordinateSequenceOperation(Topology.Utilities.Func<ICoordinateSequence, IGeometry, ICoordinateSequence> editSequence)
+            public CoordinateSequenceOperation(Func<ICoordinateSequence, IGeometry, ICoordinateSequence> editSequence)
             {
                 EditSequence = editSequence;
             }
@@ -269,7 +269,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
             ///// <param name="coordSeq">The coordinate array to operate on</param>
             ///// <param name="geometry">The geometry containing the coordinate list</param>
             /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
-            private Topology.Utilities.Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
+            private Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
 
             #endregion
 

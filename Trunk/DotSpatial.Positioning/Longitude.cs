@@ -21,13 +21,14 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotSpatial.Positioning.Properties;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -480,13 +481,13 @@ namespace DotSpatial.Positioning
                             return;
                         }
                         // Is it infinity?
-                        if (String.Compare(values[0], Properties.Resources.Common_Infinity, true, culture) == 0)
+                        if (String.Compare(values[0], Resources.Common_Infinity, true, culture) == 0)
                         {
                             _decimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
-                        if (String.Compare(values[0], Properties.Resources.Common_Empty, true, culture) == 0)
+                        if (String.Compare(values[0], Resources.Common_Empty, true, culture) == 0)
                         {
                             _decimalDegrees = 0.0;
                             return;
@@ -518,7 +519,7 @@ namespace DotSpatial.Positioning
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Properties.Resources.Longitude_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, "value");
                         }
                         // Set decimal degrees
                         _decimalDegrees = ToDecimalDegrees(
@@ -531,7 +532,7 @@ namespace DotSpatial.Positioning
                         // If this is a fractional value, remember that it is
                         if (values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1 || values[0].IndexOf(culture.NumberFormat.NumberDecimalSeparator) != -1)
                         {
-                            throw new ArgumentException(Properties.Resources.Longitude_OnlyRightmostIsDecimal, "value");
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal, "value");
                         }
 
                         // Set decimal degrees
@@ -548,7 +549,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
                     throw new ArgumentException(Properties.Resources.Longitude_InvalidFormat, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Longitude_InvalidFormat, "value", ex);
+                throw new ArgumentException(Resources.Longitude_InvalidFormat, "value", ex);
 #endif
             }
         }
@@ -1139,7 +1140,7 @@ Math.Round(
 #if PocketPC
                 throw new ArgumentOutOfRangeException(Properties.Resources.Angle_InvalidInterval);
 #else
-                throw new ArgumentOutOfRangeException("interval", interval, Properties.Resources.Angle_InvalidInterval);
+                throw new ArgumentOutOfRangeException("interval", interval, Resources.Angle_InvalidInterval);
 #endif
             // Get the amount in seconds
             double newSeconds = Seconds;
@@ -2444,10 +2445,10 @@ Math.Round(
             {
                 // Is it infinity?
                 if (double.IsPositiveInfinity(DecimalDegrees))
-                    return "+" + Properties.Resources.Common_Infinity;
+                    return "+" + Resources.Common_Infinity;
                 // Is it infinity?
                 if (double.IsNegativeInfinity(DecimalDegrees))
-                    return "-" + Properties.Resources.Common_Infinity;
+                    return "-" + Resources.Common_Infinity;
                 if (double.IsNaN(DecimalDegrees))
                     return "NaN";
 
@@ -2465,7 +2466,7 @@ Math.Round(
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
-                    throw new ArgumentException(Properties.Resources.Longitude_OnlyRightmostIsDecimal);
+                    throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
                 // Is there an hours specifier?
                 int startChar = format.IndexOf("H");
                 int endChar;
@@ -2504,7 +2505,7 @@ Math.Round(
                     {
                         if (isDecimalHandled)
                         {
-                            throw new ArgumentException(Properties.Resources.Longitude_OnlyRightmostIsDecimal);
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
                         }
                         isDecimalHandled = true;
                         format = format.Replace(subFormat, DecimalMinutes.ToString(newFormat, culture));
@@ -2529,7 +2530,7 @@ Math.Round(
                     {
                         if (isDecimalHandled)
                         {
-                            throw new ArgumentException(Properties.Resources.Longitude_OnlyRightmostIsDecimal);
+                            throw new ArgumentException(Resources.Longitude_OnlyRightmostIsDecimal);
                         }
                         format = format.Replace(subFormat, Seconds.ToString(newFormat, culture));
                     }
@@ -2567,7 +2568,7 @@ Math.Round(
             }
             catch
             {
-                throw new ArgumentException(Properties.Resources.Angle_InvalidToStringFormat);
+                throw new ArgumentException(Resources.Angle_InvalidToStringFormat);
             }
         }
 

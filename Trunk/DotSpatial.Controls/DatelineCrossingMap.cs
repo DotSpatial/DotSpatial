@@ -18,11 +18,12 @@
 // Peter Hammond/Jia Liang Liu |  02/20/2010        |  a map control that can be panned infinite horizentally 
 //                             |                    |  and crosses dateline
 // ********************************************************************************************************
+
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
-using System.ComponentModel;
 
 namespace DotSpatial.Controls
 {

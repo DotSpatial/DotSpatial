@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Data;
 
-namespace Contourer
+namespace DotSpatial.Plugins.Contourer
 {
     public partial class FormContour : Form
     {
@@ -22,7 +18,7 @@ namespace Contourer
         public Color[] color;
         public Contour.ContourType contourtype;
 
-        public DotSpatial.Data.FeatureSet Contours;
+        public FeatureSet Contours;
 
         public FormContour()
         {
@@ -53,7 +49,7 @@ namespace Contourer
 
             lev = Contour.CreateLevels(min, max, eve);
 
-            Contours = Contour.Execute(layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster, contourtype, "Value", lev);
+            Contours = Contour.Execute(layers[comboBoxLayerList.SelectedIndex].DataSet as Raster, contourtype, "Value", lev);
             Contours.Projection = layers[comboBoxLayerList.SelectedIndex].Projection;
 
             int NumLev = lev.GetLength(0);
@@ -110,7 +106,7 @@ namespace Contourer
         {
             double min, max, every;
 
-            DotSpatial.Data.Raster rst = layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster;
+            Raster rst = layers[comboBoxLayerList.SelectedIndex].DataSet as Raster;
 
             Contour.ContourType ContType = new Contour.ContourType();
 

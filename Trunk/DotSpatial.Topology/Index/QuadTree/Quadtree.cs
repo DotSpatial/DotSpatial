@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.Index.QuadTree
     {
         #region Fields
 
-        private readonly Root<T> _root;
+        protected readonly Root<T> Root;
 
         /// <summary>
         /// minExtent is the minimum envelope extent of all items
@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// </summary>
         public Quadtree()
         {
-            _root = new Root<T>();
+            Root = new Root<T>();
         }
 
         #endregion
@@ -94,7 +94,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         {
             get
             {
-                return _root != null ? _root.Count : 0;
+                return Root != null ? Root.Count : 0;
             }
         }
 
@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.Index.QuadTree
                 //I don't think it's possible for root to be null. Perhaps we should
                 //remove the check. [Jon Aquino]
                 //Or make an assertion [Jon Aquino 10/29/2003]
-                return _root != null ? _root.Depth : 0;
+                return Root != null ? Root.Depth : 0;
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         {
             get
             {
-                return _root == null;
+                return Root == null;
             }
         }
 
@@ -184,7 +184,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         {
             CollectStats(itemEnv);
             IEnvelope insertEnv = EnsureExtent(itemEnv, _minExtent);
-            _root.Insert(insertEnv, item);
+            Root.Insert(insertEnv, item);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace DotSpatial.Topology.Index.QuadTree
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            _root.Visit(searchEnv, visitor);
+            Root.Visit(searchEnv, visitor);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         public IList<T> QueryAll()
         {
             IList<T> foundItems = new List<T>();
-            _root.AddAllItems(ref foundItems);
+            Root.AddAllItems(ref foundItems);
             return foundItems;
         }
 
@@ -254,7 +254,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         public bool Remove(IEnvelope itemEnv, T item)
         {
             IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
-            return _root.Remove(posEnv, item);
+            return Root.Remove(posEnv, item);
         }
 
         #endregion

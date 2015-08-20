@@ -20,7 +20,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

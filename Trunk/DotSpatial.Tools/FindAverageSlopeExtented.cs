@@ -16,9 +16,11 @@
 using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Tools.Terrain_Analysis
+namespace DotSpatial.Tools
 {
     /// <summary>
     /// Find the slope

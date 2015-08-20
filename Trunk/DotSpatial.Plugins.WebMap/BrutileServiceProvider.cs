@@ -8,7 +8,6 @@ using System.Net;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Plugins.WebMap
 {

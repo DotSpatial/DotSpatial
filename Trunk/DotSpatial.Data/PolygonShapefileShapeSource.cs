@@ -27,6 +27,7 @@
 
 using System.IO;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
 
 namespace DotSpatial.Data
@@ -52,7 +53,7 @@ namespace DotSpatial.Data
         /// <param name="fileName"></param>
         /// <param name="spatialIndex"></param>
         /// <param name="shx"></param>
-        public PolygonShapefileShapeSource(string fileName, ISpatialIndex spatialIndex, ShapefileIndexFile shx)
+        public PolygonShapefileShapeSource(string fileName, ISpatialIndex<int> spatialIndex, ShapefileIndexFile shx)
             : base(fileName, spatialIndex, shx)
         {
         }

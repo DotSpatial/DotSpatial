@@ -16,6 +16,7 @@
 
 using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
 
@@ -145,7 +146,7 @@ namespace DotSpatial.Symbology.Forms
                 else
                 {
                     lblResult.Text = SymbologyFormsMessageStrings.ExpressionControl_EmptyExpression;
-                    lblResult.ForeColor = System.Drawing.Color.Red;
+                    lblResult.ForeColor = Color.Red;
                     return false;
                 }
             }
@@ -153,7 +154,7 @@ namespace DotSpatial.Symbology.Forms
             if (!res)
             {
                 lblResult.Text = exp.ErrorMessage;
-                lblResult.ForeColor = System.Drawing.Color.Red;
+                lblResult.ForeColor = Color.Red;
                 return false;
             }
 
@@ -161,13 +162,13 @@ namespace DotSpatial.Symbology.Forms
             if (exp.IsValidOperation(ref retVal, _table.Rows.Count > 0 ? _table.Rows[0] : null))// calculate with real values if possible else use temporary values
             {
                 lblResult.Text = retVal;
-                lblResult.ForeColor = System.Drawing.Color.Black;
+                lblResult.ForeColor = Color.Black;
                 return true;
             }
             else
             {
                 lblResult.Text = exp.ErrorMessage;
-                lblResult.ForeColor = System.Drawing.Color.Red;
+                lblResult.ForeColor = Color.Red;
                 return false;
             }
         }

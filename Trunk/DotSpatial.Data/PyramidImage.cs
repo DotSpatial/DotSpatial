@@ -26,7 +26,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

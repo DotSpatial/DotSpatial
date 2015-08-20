@@ -25,7 +25,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace DemoGPS
+namespace Demo.GPS
 {
     internal static class Program
     {

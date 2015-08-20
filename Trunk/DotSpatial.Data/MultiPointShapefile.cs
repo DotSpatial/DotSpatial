@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

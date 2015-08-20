@@ -9,7 +9,7 @@ namespace DotSpatial.Projections.Tests.Projected
     [TestFixture]
     public class NationalGridsNewZealand
     {
-        [TestAttribute]
+        [Test]
         [TestCaseSource("GetProjections")]
         public void NationalGridsNewZealandTests(ProjectionInfoDesc pInfo)
         {

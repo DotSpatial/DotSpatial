@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NuGet;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.Security.Principal;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
@@ -27,7 +25,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
         private const int ScrollBarMargin = 25;
         private readonly ListViewHelper Add = new ListViewHelper();
         private readonly Packages packages;
-        private string PackagePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "Packages");
+        private string PackagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Packages");
         private string AppPath = null;
 
         #endregion

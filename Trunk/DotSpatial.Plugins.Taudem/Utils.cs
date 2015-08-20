@@ -17,7 +17,7 @@
 
 using DotSpatial.Data;
 
-namespace MapWinGeoProc
+namespace DotSpatial.Plugins.Taudem
 {
     /// <summary>
     /// Utils provides a collection of methods ranging from file conversion to finding a point on a shape.

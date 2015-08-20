@@ -34,7 +34,7 @@ using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls
@@ -759,7 +759,7 @@ namespace DotSpatial.Controls
             {
                 if (_extendBuffer)
                 {
-                    Extent ext = ViewExtents.Copy();
+                    Extent ext = CloneableEM.Copy(ViewExtents);
                     ext.ExpandBy(ext.Width, ext.Height);
                     return ext;
                 }
@@ -807,7 +807,7 @@ namespace DotSpatial.Controls
             set
             {
                 if (value == null) return;
-                Extent ext = value.Copy();
+                Extent ext = CloneableEM.Copy(value);
                 ResetAspectRatio(ext);
                 // reset buffer initializes with correct buffer.  Don't allow initialization yet.
                 SuspendExtentChanged();
@@ -1275,7 +1275,7 @@ namespace DotSpatial.Controls
                     {
                         if (desired.Height > 0 && desired.Height < 1E300)
                         {
-                            Extent env = desired.Copy();
+                            Extent env = CloneableEM.Copy(desired);
                             env.ExpandBy(env.Width / 10, env.Height / 10); // Work item #84
                             ViewExtents = env;
                         }

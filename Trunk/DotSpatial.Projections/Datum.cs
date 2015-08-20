@@ -350,7 +350,7 @@ namespace DotSpatial.Projections
         /// <param name="esriString">The string to parse values from</param>
         public void ParseEsriString(string esriString)
         {
-            if (System.String.IsNullOrEmpty(esriString))
+            if (String.IsNullOrEmpty(esriString))
                 return;
 
             if (esriString.Contains("DATUM") == false) return;

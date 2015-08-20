@@ -27,9 +27,7 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
-using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.Measure
 {

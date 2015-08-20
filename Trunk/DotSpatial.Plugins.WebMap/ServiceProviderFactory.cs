@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using BruTile;
 using BruTile.Cache;
 using BruTile.Predefined;
 using BruTile.Web;

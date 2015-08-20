@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotSpatial.Serialization;
 using DotSpatial.Topology.Algorithm;
 
 namespace DotSpatial.Topology.Geometries

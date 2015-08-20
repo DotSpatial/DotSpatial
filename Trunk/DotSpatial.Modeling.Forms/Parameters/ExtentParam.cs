@@ -20,8 +20,9 @@
 
 using System.Collections.Generic;
 using DotSpatial.Data;
+using DotSpatial.Modeling.Forms.Elements;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
     /// ProjectionParam

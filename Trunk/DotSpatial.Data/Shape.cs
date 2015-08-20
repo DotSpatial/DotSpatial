@@ -21,8 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotSpatial.Serialization;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

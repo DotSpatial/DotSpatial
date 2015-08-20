@@ -1,8 +1,6 @@
-
 using NUnit.Framework;
-using DotSpatial.Serialization;
 
-namespace MapWindow.Tests.XML
+namespace DotSpatial.Serialization.Tests
 {
 	[TestFixture]
 	public class XmlHelperTests

@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Plugins.ShapeEditor
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.ShapeEditor
 {
     partial class SnapSettingsDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -70,7 +73,7 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox cbPerformSnap;
-        private System.Windows.Forms.Button btnSave;
+        private CheckBox cbPerformSnap;
+        private Button btnSave;
     }
 }

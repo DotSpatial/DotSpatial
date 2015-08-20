@@ -1,4 +1,8 @@
-﻿﻿using System;
+﻿using System;
+using System.Drawing;
+using DotSpatial.Data;
+using NUnit.Framework;
+
 // ********************************************************************************************************
 // Product Name: DotSpatial.Controls.Tests.dll
 // Description:  unit tests for DatelineCrossingMap
@@ -19,9 +23,6 @@
 // Peter Hammond/Jia Liang Liu |  02/20/2010        |  tests for DatelineCrossingMap 
 //                             |                    |  
 // ********************************************************************************************************
-using System.Drawing;
-using DotSpatial.Data;
-using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests
 { 

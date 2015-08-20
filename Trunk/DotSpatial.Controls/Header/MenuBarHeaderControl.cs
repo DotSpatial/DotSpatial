@@ -10,8 +10,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
 
 namespace DotSpatial.Controls.Header
 {

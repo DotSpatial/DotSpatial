@@ -25,6 +25,7 @@ using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -481,7 +482,7 @@ namespace DotSpatial.Data
                     Array.Copy(shape.Z, start, _z, offset, num);
                 }
 
-                ShapeRange newRange = shape.Range.Copy();
+                ShapeRange newRange = CloneableEM.Copy(shape.Range);
                 newRange.StartIndex = offset;
                 offset += num;
                 ShapeIndices.Add(newRange);
@@ -495,11 +496,11 @@ namespace DotSpatial.Data
         public void CopyFeatures(IFeatureSet source, bool copyAttributes)
         {
             ProgressMeter = new ProgressMeter(ProgressHandler, "Copying Features", ShapeIndices.Count);
-            Vertex = source.Vertex.Copy();
+            Vertex = CloneableEM.Copy(source.Vertex);
             _shapeIndices = new List<ShapeRange>();
             foreach (ShapeRange range in source.ShapeIndices)
             {
-                _shapeIndices.Add(range.Copy());
+                _shapeIndices.Add(CloneableEM.Copy(range));
             }
 
             if (copyAttributes)
@@ -529,7 +530,7 @@ namespace DotSpatial.Data
                         copy.ShapeIndex = ShapeIndices[i];
                         if (copyAttributes)
                         {
-                            copy.DataRow.ItemArray = f.DataRow.ItemArray.Copy();
+                            copy.DataRow.ItemArray = CloneableEM.Copy(f.DataRow.ItemArray);
                         }
 
                         i++;
@@ -545,7 +546,7 @@ namespace DotSpatial.Data
                         foreach (DataRow row in source.DataTable.Rows)
                         {
                             DataRow result = DataTable.NewRow();
-                            result.ItemArray = row.ItemArray.Copy();
+                            result.ItemArray = CloneableEM.Copy(row.ItemArray);
                             DataTable.Rows.Add(result);
                         }
                     }
@@ -739,7 +740,7 @@ namespace DotSpatial.Data
 
             // This will also deep copy the parts, attributes and vertices
             ShapeRange range = ShapeIndices[index];
-            result.Range = range.Copy();
+            result.Range = CloneableEM.Copy(range);
             int start = range.StartIndex;
             int numPoints = range.NumPoints;
 
@@ -1098,7 +1099,7 @@ namespace DotSpatial.Data
                 f.Add(GetFeature(row));
             }
             FeatureSet copy = new FeatureSet(f);
-            copy.Projection = Projection.Copy();
+            copy.Projection = CloneableEM.Copy(Projection);
             copy.InvalidateEnvelope(); // the new set will likely have a different envelope bounds
             return copy;
         }

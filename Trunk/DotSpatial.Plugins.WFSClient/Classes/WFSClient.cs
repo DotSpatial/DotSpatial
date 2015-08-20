@@ -1,22 +1,22 @@
-﻿namespace WFSPlugin
-{ 
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Data;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Serialization;
-    using System.Xml.XPath;
-    using DotSpatial.Data;
-    using DotSpatial.Projections;
-    using Renci.Data.Interop.OpenGIS.Wfs;
-    using Renci.Data.Interop.OpenGIS.Gml;
-    using DotSpatial.Topology;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.XPath;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using DotSpatial.Topology;
+using Renci.Data.Interop.OpenGIS.Gml;
+using Renci.Data.Interop.OpenGIS.Wfs;
+
+namespace DotSpatial.Plugins.WFSClient.Classes
+{
     class WFSClient
     {
         #region Fields
@@ -36,7 +36,7 @@
         #region Global Variables
 
         public WfsCapabilitiesType wfs;
-        private DotSpatial.Topology.FeatureType typeGeometry;
+        private FeatureType typeGeometry;
         private XmlNamespaceManager _nsmgr;
         public Dictionary<string, string> fields;
 
@@ -327,7 +327,7 @@
         private bool ExtractReference(XmlNode c)
         {
            // ProjectionInfo pro=null;
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Point)
+            if (typeGeometry == FeatureType.Point)
             {
                 foreach (XmlNode e in c)
                 {
@@ -339,7 +339,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Line)
+            if (typeGeometry == FeatureType.Line)
             {
                 foreach (XmlNode e in c)
                 {
@@ -351,7 +351,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Polygon)
+            if (typeGeometry == FeatureType.Polygon)
             {
                 foreach (XmlNode e in c)
                 {
@@ -373,7 +373,7 @@
             string geoData = "";
             IBasicGeometry geo=null;
             string[] pointValue=null;
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Point)
+            if (typeGeometry == FeatureType.Point)
             {
             foreach (XmlNode e in c)
             {
@@ -387,7 +387,7 @@
              geo = new Point(Convert.ToDouble(pointValue[0]), Convert.ToDouble(pointValue[1]));
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Polygon)
+            if (typeGeometry == FeatureType.Polygon)
             {
                 foreach (XmlNode e in c)
                 {
@@ -402,7 +402,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Line)
+            if (typeGeometry == FeatureType.Line)
             {
                 foreach (XmlNode e in c)
                 {
@@ -542,14 +542,14 @@
         private void GetGeometry()
         {
             if (fields[Geometry] == "gml:PointPropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Point;
+                typeGeometry = FeatureType.Point;
             if (fields[Geometry] == "gml:MultiSurfacePropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Polygon;
+                typeGeometry = FeatureType.Polygon;
             if (fields[Geometry] == "gml:MultiLineStringPropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Line;
+                typeGeometry = FeatureType.Line;
         }
 
-        private XPathNodeIterator CreateFields(XPathNavigator nav, DotSpatial.Topology.FeatureType type)
+        private XPathNodeIterator CreateFields(XPathNavigator nav, FeatureType type)
         {
 
             string exp = @"/wfs:FeatureCollection/child::*[name() = 'gml:featureMember' or name() = 'gml:featureMembers']/child::*";

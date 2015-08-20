@@ -21,12 +21,13 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotSpatial.Positioning.Properties;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -455,13 +456,13 @@ namespace DotSpatial.Positioning
             {
                 // Convert to uppercase and remove commas
                 value = value.Trim();
-                if (String.Compare(value, Properties.Resources.Common_Infinity, true, culture) == 0)
+                if (String.Compare(value, Resources.Common_Infinity, true, culture) == 0)
                 {
                     _value = double.PositiveInfinity;
                     _units = AreaUnit.SquareNauticalMiles;
                     return;
                 }
-                if (String.Compare(value, Properties.Resources.Common_Empty, true, culture) == 0)
+                if (String.Compare(value, Resources.Common_Empty, true, culture) == 0)
                 {
                     _value = 0;
                     _units = AreaUnit.SquareCentimeters;
@@ -501,7 +502,7 @@ namespace DotSpatial.Positioning
                 }
 #else
                 if (!double.TryParse(numericPortion, NumberStyles.Any, culture, out _value))
-                    throw new ArgumentException(Properties.Resources.Area_InvalidNumericPortion, "value");
+                    throw new ArgumentException(Resources.Area_InvalidNumericPortion, "value");
 #endif
                 // Try to interpret the measurement
                 // Remove any notion of "square"
@@ -573,7 +574,7 @@ namespace DotSpatial.Positioning
                         }
                         else
                         {
-                            throw new ArgumentException(Properties.Resources.Area_InvalidUnitPortion, "value");
+                            throw new ArgumentException(Resources.Area_InvalidUnitPortion, "value");
                         }
                         break;
                 }
@@ -583,7 +584,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
                     throw new ArgumentException(Properties.Resources.Area_InvalidFormat, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Area_InvalidFormat, "value", ex);
+                throw new ArgumentException(Resources.Area_InvalidFormat, "value", ex);
 #endif
             }
         }
@@ -2208,7 +2209,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
                 throw new ArgumentException(Properties.Resources.Area_InvalidFormat, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Area_InvalidFormat, "format", ex);
+                throw new ArgumentException(Resources.Area_InvalidFormat, "format", ex);
 #endif
             }
             //catch

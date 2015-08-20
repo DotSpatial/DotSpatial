@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {

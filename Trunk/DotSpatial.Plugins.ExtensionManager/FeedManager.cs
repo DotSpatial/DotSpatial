@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Collections.Specialized;
 using System.Windows.Forms;
-using NuGet;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -11,23 +10,23 @@ namespace DotSpatial.Plugins.ExtensionManager
     {
         public static IEnumerable<Feed> GetFeeds()
         {
-            for (int j = 0; j < Properties.Settings.Default.SourceUrls.Count; j++)
+            for (int j = 0; j < Settings.Default.SourceUrls.Count; j++)
             {
                 Feed feed = new Feed();
-                feed.Name = Properties.Settings.Default.SourceName[j];
-                feed.Url = Properties.Settings.Default.SourceUrls[j];
+                feed.Name = Settings.Default.SourceName[j];
+                feed.Url = Settings.Default.SourceUrls[j];
                 yield return feed;
             }
         }
 
         public static void Add(Feed feed)
         {
-            if (Properties.Settings.Default.SourceName.Contains(feed.Name))
+            if (Settings.Default.SourceName.Contains(feed.Name))
             {
                 MessageBox.Show(String.Format("Source name '{0}' already exists.", feed.Name));
                 return;
             }
-            if (Properties.Settings.Default.SourceUrls.Contains(feed.Url))
+            if (Settings.Default.SourceUrls.Contains(feed.Url))
             {
                 MessageBox.Show(String.Format("Source URL '{0}' already exists.", feed.Url));
                 return;
@@ -39,23 +38,23 @@ namespace DotSpatial.Plugins.ExtensionManager
                 return;
             }
 
-            Properties.Settings.Default.SourceName.Add(feed.Name);
-            Properties.Settings.Default.SourceUrls.Add(feed.Url);
-            Properties.Settings.Default.Save();
+            Settings.Default.SourceName.Add(feed.Name);
+            Settings.Default.SourceUrls.Add(feed.Url);
+            Settings.Default.Save();
         }
 
         public static void Remove(Feed feed)
         {
-            Properties.Settings.Default.SourceName.Remove(feed.Name);
-            Properties.Settings.Default.SourceUrls.Remove(feed.Url);
-            Properties.Settings.Default.Save();
+            Settings.Default.SourceName.Remove(feed.Name);
+            Settings.Default.SourceUrls.Remove(feed.Url);
+            Settings.Default.Save();
         }
 
         public static void ClearFeeds()
         {
-            Properties.Settings.Default.SourceName.Clear();
-            Properties.Settings.Default.SourceUrls.Clear();
-            Properties.Settings.Default.Save();
+            Settings.Default.SourceName.Clear();
+            Settings.Default.SourceUrls.Clear();
+            Settings.Default.Save();
         }
 
         /// <summary>
@@ -66,15 +65,15 @@ namespace DotSpatial.Plugins.ExtensionManager
         public static void ToggleAutoUpdate(string feed, Boolean toAdd)
         {
             {
-                if (toAdd && !Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed))
+                if (toAdd && !Settings.Default.FeedsToAutoUpdate.Contains(feed))
                 {
-                    Properties.Settings.Default.FeedsToAutoUpdate.Add(feed);
+                    Settings.Default.FeedsToAutoUpdate.Add(feed);
                 }
-                else if (!toAdd && Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed))
+                else if (!toAdd && Settings.Default.FeedsToAutoUpdate.Contains(feed))
                 {
-                    Properties.Settings.Default.FeedsToAutoUpdate.Remove(feed);
+                    Settings.Default.FeedsToAutoUpdate.Remove(feed);
                 }
-                Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
         }
 
@@ -82,13 +81,13 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// Return a list of feeds to autoupdate when app starts.
         /// </summary>
         /// <param name="appManager">The app manager.</param>
-        public static System.Collections.Specialized.StringCollection getAutoUpdateFeeds()
+        public static StringCollection getAutoUpdateFeeds()
         {
-            if (Properties.Settings.Default.FeedsToAutoUpdate == null)
+            if (Settings.Default.FeedsToAutoUpdate == null)
             {
-                Properties.Settings.Default.FeedsToAutoUpdate = new System.Collections.Specialized.StringCollection();
+                Settings.Default.FeedsToAutoUpdate = new StringCollection();
             }
-            return Properties.Settings.Default.FeedsToAutoUpdate;
+            return Settings.Default.FeedsToAutoUpdate;
         }
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <param name="feed">The feed to check.</param>
         public static bool isAutoUpdateFeed(string feed)
         {
-            return Properties.Settings.Default.FeedsToAutoUpdate.Contains(feed);
+            return Settings.Default.FeedsToAutoUpdate.Contains(feed);
         }
     }
 }

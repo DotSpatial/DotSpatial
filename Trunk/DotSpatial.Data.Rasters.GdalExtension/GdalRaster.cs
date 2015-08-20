@@ -23,11 +23,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using DotSpatial.Projections;
 using OSGeo.GDAL;
-using System.IO;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
@@ -515,24 +515,24 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             return null;
         }
 
-        public override System.Drawing.Color[] CategoryColors()
+        public override Color[] CategoryColors()
         {
-            System.Drawing.Color[] Colors = null;
+            Color[] Colors = null;
             ColorTable table = GetColorTable();
             if (table != null)
             {
                 int ColorCount = table.GetCount();
                 if (ColorCount > 0)
                 {
-                    Colors = new System.Drawing.Color[ColorCount];
+                    Colors = new Color[ColorCount];
                     for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex += 1)
                     {
-                        Colors[ColorIndex] = System.Drawing.Color.DimGray;
+                        Colors[ColorIndex] = Color.DimGray;
                         ColorEntry entry = table.GetColorEntry(ColorIndex);
                         switch (table.GetPaletteInterpretation())
                         {
-                            case PaletteInterp.GPI_RGB: Colors[ColorIndex] = System.Drawing.Color.FromArgb(entry.c4, entry.c1, entry.c2, entry.c3); break;
-                            case PaletteInterp.GPI_Gray: Colors[ColorIndex] = System.Drawing.Color.FromArgb(255, entry.c1, entry.c1, entry.c1); break;
+                            case PaletteInterp.GPI_RGB: Colors[ColorIndex] = Color.FromArgb(entry.c4, entry.c1, entry.c2, entry.c3); break;
+                            case PaletteInterp.GPI_Gray: Colors[ColorIndex] = Color.FromArgb(255, entry.c1, entry.c1, entry.c1); break;
                             //TODO: do any files use these types?
                             //case PaletteInterp.GPI_HLS
                             //case PaletteInterp.GPI_CMYK
@@ -584,7 +584,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _dataset.GetGeoTransform(affine);
             ProjectionString = projString;
             Bounds = new RasterBounds(base.NumRows, base.NumColumns, affine);
-            PixelSpace = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
+            PixelSpace = Marshal.SizeOf(typeof(T));
         }
     }
 }

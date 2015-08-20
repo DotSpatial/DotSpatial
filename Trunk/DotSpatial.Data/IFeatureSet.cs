@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

@@ -22,8 +22,9 @@
 using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Data;
+using DotSpatial.Modeling.Forms.Elements;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
     /// Point Feature Set Parameters past back from a ITool to the toolbox manager

@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -30,8 +29,10 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Controls
 {

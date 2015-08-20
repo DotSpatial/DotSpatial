@@ -23,7 +23,7 @@
 
 using System;
 
-namespace DotSpatial
+namespace DotSpatial.Serialization
 {
     /// <summary>
     /// CloneableEM

@@ -4,11 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using DotSpatial.Controls;
 using NuGet;
-using System;
+using PackageManager = NuGet.PackageManager;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -102,12 +104,12 @@ namespace DotSpatial.Plugins.ExtensionManager
             catch (WebException ex)
             {
                 // Timed out.
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
 
             return null;

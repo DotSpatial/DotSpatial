@@ -8,6 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace DotSpatial.Plugins.Contourer.Properties
 {
 
@@ -19,17 +27,17 @@ namespace DotSpatial.Plugins.Contourer.Properties
     // tramite uno strumento quale ResGen o Visual Studio.
     // Per aggiungere o rimuovere un membro, modificare il file con estensione .ResX, quindi eseguire di nuovo ResGen
     // con l'opzione /str oppure ricompilare il progetto VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     internal class Resources
     {
 
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
 
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
 
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources()
         {
         }
@@ -37,14 +45,14 @@ namespace DotSpatial.Plugins.Contourer.Properties
         /// <summary>
         ///   Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        internal static ResourceManager ResourceManager
         {
             get
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DotSpatial.Plugins.Contourer.Properties.Resources", typeof(Resources).Assembly);
+                    ResourceManager temp = new ResourceManager("DotSpatial.Plugins.Contourer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -55,8 +63,8 @@ namespace DotSpatial.Plugins.Contourer.Properties
         ///   Esegue l'override della proprietà CurrentUICulture del thread corrente per tutte
         ///   le ricerche di risorse che utilizzano questa classe di risorse fortemente tipizzata.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        internal static CultureInfo Culture
         {
             get
             {

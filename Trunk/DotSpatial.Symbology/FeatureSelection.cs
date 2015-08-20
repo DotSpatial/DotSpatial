@@ -24,7 +24,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology
 {

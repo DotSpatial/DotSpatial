@@ -19,11 +19,9 @@
 // ********************************************************************************************************
 
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {

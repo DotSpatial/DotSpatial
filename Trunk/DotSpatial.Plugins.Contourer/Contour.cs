@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using DotSpatial.Data;
+using DotSpatial.Topology;
 using GeoAPI.Geometries;
-
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Linemerge;
@@ -25,7 +26,7 @@ using NetTopologySuite.Operation.Polygonize;
 // for questions/ info tomaso.tonelli@gmail.com
 // ********************************************************************************************************
 
-namespace Contourer
+namespace DotSpatial.Plugins.Contourer
 {
     public class Contour
     {
@@ -36,12 +37,12 @@ namespace Contourer
         }
 
         private static ContourType type;
-        public static DotSpatial.Data.FeatureSet Execute(DotSpatial.Data.Raster rst, ContourType contourType, string FieldName = "Value", double[] levels = null)
+        public static FeatureSet Execute(Raster rst, ContourType contourType, string FieldName = "Value", double[] levels = null)
         {
             double[] lev = levels;
             noData = rst.NoDataValue;
             type = contourType;
-            DotSpatial.Data.Raster iRst = RasterCheck(rst, lev); ;
+            Raster iRst = RasterCheck(rst, lev); ;
 
             string field;
 
@@ -67,13 +68,13 @@ namespace Contourer
                 y[i] = rst.Extent.MaxY - rst.CellHeight * i - rst.CellHeight / 2;
             }
 
-            DotSpatial.Data.FeatureSet fs = null;
+            FeatureSet fs = null;
 
             switch (type)
             {
                 case ContourType.Line:
                     {
-                        fs = new DotSpatial.Data.FeatureSet(DotSpatial.Topology.FeatureType.Line);
+                        fs = new FeatureSet(FeatureType.Line);
                         fs.DataTable.Columns.Add(field, typeof(double));
 
                         for (int z = 0; z < levels.Length; z++)
@@ -82,7 +83,7 @@ namespace Contourer
 
                             foreach (var g in cont)
                             {
-                                var f = (DotSpatial.Data.Feature)fs.AddFeature(ToDotSpatialLineString((ILineString)g));
+                                var f = (Feature)fs.AddFeature(ToDotSpatialLineString((ILineString)g));
                                 f.DataRow[field] = lev[z];
                             }
                         }
@@ -91,7 +92,7 @@ namespace Contourer
 
                 case ContourType.Polygon:
                     {
-                        fs = new DotSpatial.Data.FeatureSet(DotSpatial.Topology.FeatureType.Polygon);
+                        fs = new FeatureSet(FeatureType.Polygon);
 
                         fs.DataTable.Columns.Add("Lev", typeof(int));
                         fs.DataTable.Columns.Add("Label", typeof(string));
@@ -137,7 +138,7 @@ namespace Contourer
                             int c = (int)((pnt.X - iRst.Extent.MinX) / iRst.CellWidth);
                             int r = (int)((iRst.Extent.MaxY - pnt.Y) / iRst.CellHeight);
 
-                            double z = ((DotSpatial.Data.Raster)iRst).Value[r, c];
+                            double z = ((Raster)iRst).Value[r, c];
 
                             int Cls = GetLevel(z, lev);
                             string label = "Undefined";
@@ -146,9 +147,9 @@ namespace Contourer
                             if (Cls == lev.Count()) label = "> " + lev[lev.Count() - 1].ToString();
                             if (Cls >= 0 & Cls < lev.Count()) label = lev[Cls].ToString() + " - " + lev[Cls + 1].ToString();
 
-                            DotSpatial.Topology.Polygon dsp = ToDotSpatialPolygon(p);
+                            Topology.Polygon dsp = ToDotSpatialPolygon(p);
 
-                            DotSpatial.Data.Feature f = (DotSpatial.Data.Feature)fs.AddFeature(dsp);
+                            Feature f = (Feature)fs.AddFeature(dsp);
                             f.DataRow["Lev"] = Cls;
                             f.DataRow["Label"] = label;
                         }
@@ -212,7 +213,7 @@ namespace Contourer
         //     return -100;
         //}
 
-        public static void CreateMinMaxEvery(DotSpatial.Data.Raster r, ContourType type, out double MinContour, out double MaxContour, out double every)
+        public static void CreateMinMaxEvery(Raster r, ContourType type, out double MinContour, out double MaxContour, out double every)
         {
             double min = r.Minimum;
             double max = r.Maximum;
@@ -268,7 +269,7 @@ namespace Contourer
             return levels;
         }
 
-        public static DotSpatial.Topology.Geometry toDotSpatial(Geometry l)
+        public static Topology.Geometry toDotSpatial(Geometry l)
         {
             if (l.GeometryType == "LineString")
             {
@@ -279,74 +280,74 @@ namespace Contourer
             {
                 Polygon p = l as Polygon;
 
-                DotSpatial.Topology.Polygon dsp = ToDotSpatialPolygon((GeoAPI.Geometries.IPolygon)l);
-                return (DotSpatial.Topology.Geometry)dsp;
+                Topology.Polygon dsp = ToDotSpatialPolygon((IPolygon)l);
+                return (Topology.Geometry)dsp;
             }
 
             return null;
         }
 
-        internal static DotSpatial.Topology.Point ToDotSpatialPoint(GeoAPI.Geometries.IPoint point)
+        internal static Topology.Point ToDotSpatialPoint(IPoint point)
         {
-            return new DotSpatial.Topology.Point(point.X, point.Y);
+            return new Topology.Point(point.X, point.Y);
         }
 
-        internal static DotSpatial.Topology.Point ToDotSpatialPoint(GeoAPI.Geometries.Coordinate point)
+        internal static Topology.Point ToDotSpatialPoint(Coordinate point)
         {
-            return new DotSpatial.Topology.Point(point.X, point.Y);
+            return new Topology.Point(point.X, point.Y);
         }
 
-        internal static DotSpatial.Topology.Coordinate ToDotSpatialCoordinate(GeoAPI.Geometries.Coordinate coordinate)
+        internal static Topology.Coordinate ToDotSpatialCoordinate(Coordinate coordinate)
         {
-            return new DotSpatial.Topology.Coordinate(coordinate.X, coordinate.Y);
+            return new Topology.Coordinate(coordinate.X, coordinate.Y);
         }
 
-        internal static DotSpatial.Topology.LineString ToDotSpatialLineString(GeoAPI.Geometries.ILineString l)
+        internal static Topology.LineString ToDotSpatialLineString(ILineString l)
         {
-            DotSpatial.Topology.Coordinate[] c = new DotSpatial.Topology.Coordinate[l.Coordinates.Count()];
+            Topology.Coordinate[] c = new Topology.Coordinate[l.Coordinates.Count()];
 
             for (int i = 0; i < l.Coordinates.Count(); i++)
             {
-                c[i] = new DotSpatial.Topology.Coordinate(l.Coordinates[i].X, l.Coordinates[i].Y);
+                c[i] = new Topology.Coordinate(l.Coordinates[i].X, l.Coordinates[i].Y);
             }
-            return new DotSpatial.Topology.LineString(c);
+            return new Topology.LineString(c);
         }
 
-        internal static DotSpatial.Topology.LinearRing ToDotSpatialLinearRing(GeoAPI.Geometries.ILinearRing geom)
+        internal static Topology.LinearRing ToDotSpatialLinearRing(ILinearRing geom)
         {
-            Collection<DotSpatial.Topology.Point> vertices = new Collection<DotSpatial.Topology.Point>();
+            Collection<Topology.Point> vertices = new Collection<Topology.Point>();
 
             foreach (Coordinate coordinate in geom.Coordinates)
             {
-                DotSpatial.Topology.Point p = ToDotSpatialPoint(coordinate);
+                Topology.Point p = ToDotSpatialPoint(coordinate);
 
                 vertices.Add(p);
             }
-            return new DotSpatial.Topology.LinearRing(vertices);
+            return new Topology.LinearRing(vertices);
         }
 
-        internal static DotSpatial.Topology.Polygon ToDotSpatialPolygon(GeoAPI.Geometries.IPolygon geom)
+        internal static Topology.Polygon ToDotSpatialPolygon(IPolygon geom)
         {
-            DotSpatial.Topology.LinearRing exteriorRing = ToDotSpatialLinearRing((GeoAPI.Geometries.ILinearRing)geom.ExteriorRing);
+            Topology.LinearRing exteriorRing = ToDotSpatialLinearRing((ILinearRing)geom.ExteriorRing);
 
-            DotSpatial.Topology.LinearRing[] interiorRings = new DotSpatial.Topology.LinearRing[geom.InteriorRings.Count()];
+            Topology.LinearRing[] interiorRings = new Topology.LinearRing[geom.InteriorRings.Count()];
 
             //foreach (GeoAPI.Geometries.ILineString interiorRing in geom.InteriorRings)
             for (int i = 0; i < geom.InteriorRings.Count(); i++)
             {
-                DotSpatial.Topology.LinearRing hole = ToDotSpatialLinearRing((GeoAPI.Geometries.ILinearRing)geom.InteriorRings[i]);
+                Topology.LinearRing hole = ToDotSpatialLinearRing((ILinearRing)geom.InteriorRings[i]);
                 interiorRings[i] = hole;
             }
 
-            return new DotSpatial.Topology.Polygon(exteriorRing, interiorRings);
+            return new Topology.Polygon(exteriorRing, interiorRings);
         }
 
-        public static DotSpatial.Data.Raster RasterCheck(DotSpatial.Data.Raster raster, double[] levels)
+        public static Raster RasterCheck(Raster raster, double[] levels)
         {
             double eps = (raster.Maximum - raster.Minimum) / 1000;
             int n = levels.Count();
 
-            DotSpatial.Data.Raster rst = raster;
+            Raster rst = raster;
 
             for (int i = 0; i <= rst.NumRows - 1; i++)
             {
@@ -368,7 +369,7 @@ namespace Contourer
             return rst;
         }
 
-        public static IList<IGeometry> GetContours(ref DotSpatial.Data.Raster rst, double[] x, double[] y, double zlev)
+        public static IList<IGeometry> GetContours(ref Raster rst, double[] x, double[] y, double zlev)
         {
             List<LineString> lsList = new List<LineString>();
 

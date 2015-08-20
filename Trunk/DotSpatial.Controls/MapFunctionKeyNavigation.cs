@@ -20,7 +20,6 @@
 
 using System.Drawing;
 using System.Windows.Forms;
-using DotSpatial.Data;
 
 namespace DotSpatial.Controls
 {

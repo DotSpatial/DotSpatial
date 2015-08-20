@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;

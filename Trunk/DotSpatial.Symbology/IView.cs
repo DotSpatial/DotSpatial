@@ -22,7 +22,7 @@
 using System;
 using System.Drawing;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Symbology

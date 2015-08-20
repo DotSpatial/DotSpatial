@@ -23,11 +23,9 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
-using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Data.OgrExtension
+namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
     /// OgrVectorProvider

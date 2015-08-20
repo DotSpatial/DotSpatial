@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Controls
 {

@@ -16,6 +16,7 @@
 // *******************************************************************************************************
 
 using System;
+using System.Windows.Forms;
 using DotSpatial.Data;
 
 namespace DotSpatial.Analysis
@@ -71,7 +72,7 @@ namespace DotSpatial.Analysis
                             progMeter.SendProgress();
 
                             // HACK: DoEvents messes up the normal flow of your application. 
-                            System.Windows.Forms.Application.DoEvents();
+                            Application.DoEvents();
                         }
 
                     }
@@ -131,7 +132,7 @@ namespace DotSpatial.Analysis
                 if (progMeter != null)
                 {
                     progMeter.Reset();
-                    System.Windows.Forms.Application.DoEvents();
+                    Application.DoEvents();
                 }
             }
         }

@@ -25,7 +25,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// A modular component that can be inherited to retrieve parameters for functions.

@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Net;
-using System.Security.Permissions;
-using System.Security;
-using System.Threading.Tasks;
-using System.IO;
-using System.Reflection;
-using System.Collections.Specialized;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Diagnostics;
-
-using NuGet;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Principal;
 using DotSpatial.Controls;
-using DotSpatial.Controls.Extensions;
-using DotSpatial.Extensions;
+using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -96,7 +85,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 try
                 {
                     //don't autoupdate in debug mode
-                    if (System.Diagnostics.Debugger.IsAttached)
+                    if (Debugger.IsAttached)
                         throw new Exception();
 
                     File.WriteAllLines(file, updates);
@@ -109,7 +98,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     File.Copy(updaterSource, updaterPath, true);
                     Process updater = new Process();
                     updater.StartInfo.FileName = updaterPath;
-                    updater.StartInfo.Arguments = '"' + System.Reflection.Assembly.GetEntryAssembly().Location + '"';
+                    updater.StartInfo.Arguments = '"' + Assembly.GetEntryAssembly().Location + '"';
 
                     //elevate privelages if the app needs updating
                     if (updateApp && !IsAdminRole())

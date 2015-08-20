@@ -19,6 +19,7 @@
 // ********************************************************************************************************
 
 using System;
+using DotSpatial.Serialization;
 using DotSpatial.Topology.Geometries.Implementation;
 
 namespace DotSpatial.Topology.Geometries

@@ -20,11 +20,12 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Controls
 {

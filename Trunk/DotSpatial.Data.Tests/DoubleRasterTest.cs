@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-
 namespace DotSpatial.Data.Tests
 {
     [TestFixture]
@@ -48,7 +47,7 @@ namespace DotSpatial.Data.Tests
                 }
             }
 
-            System.IO.File.Delete(path);
+            File.Delete(path);
         }
     }
 }

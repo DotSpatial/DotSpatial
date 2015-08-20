@@ -17,6 +17,7 @@
 using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 using DotSpatial.Topology;
 
 namespace DotSpatial.Tools

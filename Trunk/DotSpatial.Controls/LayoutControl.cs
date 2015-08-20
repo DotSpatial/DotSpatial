@@ -35,7 +35,7 @@ using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Controls
 {

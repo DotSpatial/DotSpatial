@@ -18,7 +18,7 @@
 //
 // ********************************************************************************************************
 
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology
 {

@@ -23,7 +23,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology
 {

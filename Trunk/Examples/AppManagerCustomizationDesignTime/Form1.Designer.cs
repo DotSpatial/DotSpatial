@@ -1,11 +1,15 @@
-﻿namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using DotSpatial.Controls;
+
+namespace DotSpatial.Examples.AppManagerCustomizationDesignTime
 {
     partial class Form1
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -384,33 +388,33 @@
 
         #endregion
 
-        private Controls.AppManager appManager;
-        private Controls.Map map1;
-        private Controls.SpatialStatusStrip spatialStatusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tbLegend;
-        private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tbMap;
-        private Controls.Legend legend1;
-        private Controls.SpatialHeaderControl spatialHeaderControl1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private Controls.SpatialToolStripPanel spatialToolStripPanel1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.Panel panel1;
-        private Controls.SpatialToolStripPanel spatialToolStripPanel2;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem item2ToolStripMenuItem;
-        private Controls.SpatialDockManager spatialDockManager1;
+        private AppManager appManager;
+        private Map map1;
+        private SpatialStatusStrip spatialStatusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel2;
+        private ToolStripProgressBar toolStripProgressBar1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel toolStripStatusLabel3;
+        private TabControl tabControl1;
+        private TabPage tbLegend;
+        private TabControl tabControl2;
+        private TabPage tbMap;
+        private Legend legend1;
+        private SpatialHeaderControl spatialHeaderControl1;
+        private MenuStrip menuStrip1;
+        private SpatialToolStripPanel spatialToolStripPanel1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem toolStripMenuItem3;
+        private Panel panel1;
+        private SpatialToolStripPanel spatialToolStripPanel2;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButton1;
+        private ToolStripLabel toolStripLabel1;
+        private ToolStrip toolStrip2;
+        private ToolStripButton toolStripButton2;
+        private ToolStripTextBox toolStripTextBox1;
+        private ToolStripMenuItem item2ToolStripMenuItem;
+        private SpatialDockManager spatialDockManager1;
     }
 }
 

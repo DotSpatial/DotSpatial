@@ -4,10 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.IO;
-using System.Net;
-using NuGet;
 using System;
+using System.IO;
+using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {

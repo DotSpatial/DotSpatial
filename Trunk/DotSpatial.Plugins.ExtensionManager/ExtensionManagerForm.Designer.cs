@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Plugins.ExtensionManager
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.ExtensionManager
 {
     partial class ExtensionManagerForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
 
         /// <summary>
@@ -283,25 +286,25 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabOnline;
-        private System.Windows.Forms.Button uxInstall;
-        private System.Windows.Forms.TextBox uxSearchText;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ListView uxPackages;
-        private System.Windows.Forms.ColumnHeader Pack;
-        private System.Windows.Forms.ColumnHeader Description;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox uxSearch;
-        private System.Windows.Forms.PictureBox uxClear;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.TabPage tabInstalled;
-        private System.Windows.Forms.ListView Installed;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.Button uxShowExtensionsFolder;
-        private System.Windows.Forms.Button uxUninstall;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private TabControl tabControl;
+        private TabPage tabOnline;
+        private Button uxInstall;
+        private TextBox uxSearchText;
+        private RichTextBox richTextBox1;
+        private ListView uxPackages;
+        private ColumnHeader Pack;
+        private ColumnHeader Description;
+        private Label label1;
+        private PictureBox uxSearch;
+        private PictureBox uxClear;
+        private ToolTip toolTip1;
+        private TabPage tabInstalled;
+        private ListView Installed;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private RichTextBox richTextBox2;
+        private Button uxShowExtensionsFolder;
+        private Button uxUninstall;
+        private CheckBox checkBox1;
     }
 }

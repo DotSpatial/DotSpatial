@@ -24,10 +24,10 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
 
 namespace DotSpatial.Data
@@ -37,7 +37,7 @@ namespace DotSpatial.Data
     /// </summary>
     public abstract class ShapefileShapeSource : IShapeSource
     {
-        private readonly ISpatialIndex _spatialIndex;
+        private readonly ISpatialIndex<int> _spatialIndex;
 
         /// <summary>
         /// Cached contents of shape index file
@@ -61,7 +61,7 @@ namespace DotSpatial.Data
         /// <param name="fileName"></param>
         /// <param name="spatialIndex"></param>
         /// <param name="shx"></param>
-        protected ShapefileShapeSource(string fileName, ISpatialIndex spatialIndex, ShapefileIndexFile shx)
+        protected ShapefileShapeSource(string fileName, ISpatialIndex<int> spatialIndex, ShapefileIndexFile shx)
         {
             Filename = fileName;
             _spatialIndex = spatialIndex;
@@ -147,7 +147,7 @@ namespace DotSpatial.Data
             // Use spatial index if we have one
             if (null != _spatialIndex && null != envelope)
             {
-                IList spatialQueryResults = _spatialIndex.Query(envelope);
+                IList<int> spatialQueryResults = _spatialIndex.Query(envelope);
 
                 // Sort the results from low to high index
                 var sqra = new int[spatialQueryResults.Count];
@@ -272,7 +272,6 @@ namespace DotSpatial.Data
         /// <param name="shp"></param>
         /// <param name="envelope"></param>
         /// <returns></returns>
-        protected abstract Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp,
-                                                 IEnvelope envelope);
+        protected abstract Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, IEnvelope envelope);
     }
 }

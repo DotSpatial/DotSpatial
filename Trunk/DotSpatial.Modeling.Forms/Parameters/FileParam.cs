@@ -21,8 +21,9 @@
 
 using System.Collections.Generic;
 using System.IO;
+using DotSpatial.Modeling.Forms.Elements;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
     /// A File access parameter

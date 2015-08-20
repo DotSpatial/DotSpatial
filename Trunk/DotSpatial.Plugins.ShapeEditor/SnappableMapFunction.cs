@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotSpatial.Symbology;
-using DotSpatial.Controls;
-using DotSpatial.Topology;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
     /// <summary>
     /// This is an abtract class that provides functionality for snapping objects.
     /// </summary>
-    public abstract class SnappableMapFunction : DotSpatial.Controls.MapFunction
+    public abstract class SnappableMapFunction : MapFunction
     {
         /// <summary>
         /// +/- N pixels around the mouse point.
@@ -134,7 +130,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// Perform any drawing necessary for snapping (e.g. draw a circle around snapped location).
         /// </summary>
         /// <param name="graphics">graphics to draw on</param>
-        protected void DoSnapDrawing(Graphics graphics, System.Drawing.Point pos)
+        protected void DoSnapDrawing(Graphics graphics, Point pos)
         {
             if (this.isSnapped)
             {
@@ -147,7 +143,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         /// <param name="prevWasSnapped"></param>
         /// <param name="pos"></param>
-        protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, System.Drawing.Point pos)
+        protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, Point pos)
         {
             // Invalidate the region around the mouse so that the previous snap colors are erased.
             if ((prevWasSnapped || this.isSnapped) && this.DoSnapping)

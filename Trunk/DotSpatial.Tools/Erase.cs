@@ -14,10 +14,10 @@
 // Troy Shields       |  03/2013           |  Updated License and cleaned up code.
 // ********************************************************************************************************
 
-using System;
+using DotSpatial.Analysis;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Analysis;
+using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Tools
 {

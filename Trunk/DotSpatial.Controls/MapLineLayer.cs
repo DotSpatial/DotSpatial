@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Controls

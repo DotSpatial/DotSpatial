@@ -6,6 +6,7 @@
 
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
@@ -41,7 +42,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 var package = packages.Install("DotSpatial.Plugins.Ribbon");
                 if (package == null)
                 {
-                    System.Windows.Forms.MessageBox.Show("No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.");
+                    MessageBox.Show("No HeaderControl was available, but we couldn't download the ribbon. Please make sure you are connected to the Internet.");
                 }
                 else
                 {

@@ -25,6 +25,8 @@ using System.Data;
 using System.Linq;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {

@@ -1,8 +1,5 @@
 ﻿using System;
-using DotSpatial.Topology.Utilities;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
-
 
 namespace DotSpatial.Topology.Tests
 {

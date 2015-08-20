@@ -26,8 +26,8 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using DotSpatial.Data.MiscUtil;
 using DotSpatial.Projections;
-using MiscUtil;
 
 namespace DotSpatial.Data
 {

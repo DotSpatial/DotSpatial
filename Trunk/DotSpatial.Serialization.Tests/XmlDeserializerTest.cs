@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
@@ -9,7 +8,6 @@ using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
 using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
 
 namespace DotSpatial.Serialization.Tests
 {
@@ -25,7 +23,7 @@ namespace DotSpatial.Serialization.Tests
         public void DeserializeTest()
         {
             XmlDeserializer target = new XmlDeserializer();
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
+            Map map = new Map();
             string path = Path.Combine("Data", "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }
@@ -39,7 +37,7 @@ namespace DotSpatial.Serialization.Tests
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
 
             XmlDeserializer target = new XmlDeserializer();
-            DotSpatial.Controls.Map map = new DotSpatial.Controls.Map();
+            Map map = new Map();
             string path = Path.Combine("Data", "DeserializeTest.map.xml");
             target.Deserialize(map, File.ReadAllText(path));
         }

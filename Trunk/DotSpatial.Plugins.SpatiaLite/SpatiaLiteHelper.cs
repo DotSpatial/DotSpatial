@@ -8,7 +8,6 @@ using System.Reflection;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
 using ByteOrder = DotSpatial.Topology.Utilities.ByteOrder;
 
 namespace DotSpatial.Plugins.SpatiaLite

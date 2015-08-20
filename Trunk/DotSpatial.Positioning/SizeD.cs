@@ -21,12 +21,13 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotSpatial.Positioning.Properties;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -131,7 +132,7 @@ namespace DotSpatial.Positioning
 
             // There should be two values
             if (values.Length != 2)
-                throw new FormatException(Properties.Resources.SizeD_InvalidFormat);
+                throw new FormatException(Resources.SizeD_InvalidFormat);
 
             // PArse it out
             _width = double.Parse(values[0].Trim(), culture);

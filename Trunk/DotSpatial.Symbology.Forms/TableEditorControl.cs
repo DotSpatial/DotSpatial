@@ -33,7 +33,7 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Symbology.Forms.Properties;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {

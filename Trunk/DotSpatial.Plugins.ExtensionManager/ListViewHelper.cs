@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
@@ -22,7 +26,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             imageList.ImageSize = new Size(32, 32);
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             // Add a default image at position 0;
-            imageList.Images.Add(DotSpatial.Plugins.ExtensionManager.Properties.Resources.box_closed_32x32);
+            imageList.Images.Add(Resources.box_closed_32x32);
             listView.LargeImageList = imageList;
             listView.SmallImageList = imageList;
 
@@ -73,7 +77,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                     }
                 }
             },
-         new System.Threading.CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+         new CancellationToken(), TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private static Task<Image> BeginGetImage(string iconUrl)
@@ -85,7 +89,7 @@ namespace DotSpatial.Plugins.ExtensionManager
 
                 // Had to use TaskScheduler.Default so that the threads were not attached to the parent (Main UI thread for RefreshPackageList)
             },
-            new System.Threading.CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
+            new CancellationToken(), TaskCreationOptions.None, TaskScheduler.Default);
 
             return task;
         }
@@ -99,9 +103,9 @@ namespace DotSpatial.Plugins.ExtensionManager
 
             try
             {
-                System.Net.WebRequest request = System.Net.WebRequest.Create(url);
-                System.Net.WebResponse response = request.GetResponse();
-                System.IO.Stream responseStream = response.GetResponseStream();
+                WebRequest request = WebRequest.Create(url);
+                WebResponse response = request.GetResponse();
+                Stream responseStream = response.GetResponseStream();
 
                 Bitmap bmp = new Bitmap(responseStream);
 

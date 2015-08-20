@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace DotSpatial.Controls.Header
+﻿namespace DotSpatial.Controls.Header
 {
     /// <summary>
     /// A visually distinguished container of <see cref="ActionItem"/> instances that are Grouped inside of <see cref="RootItem"/>s.

@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
 

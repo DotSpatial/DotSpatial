@@ -26,7 +26,7 @@ using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -429,7 +429,7 @@ namespace DotSpatial.Symbology
             if (result.Handled) return;
 
             if (_propertyDialogProvider == null) return;
-            var editCopy = this.Copy();
+            var editCopy = CloneableEM.Copy(this);
             CopyProperties(editCopy); // for some reason we are getting blank layers during edits, this tries to fix that
             _propertyDialogProvider.ShowDialog(editCopy);
             editCopy.Dispose();

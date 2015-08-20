@@ -25,7 +25,7 @@ using System.Drawing;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Controls
 {

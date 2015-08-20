@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.IO;
+﻿using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Tests.Common;
-using DotSpatial.Topology;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests

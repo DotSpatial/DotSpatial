@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DotSpatial.Serialization;
 using DotSpatial.Topology.EdgeGraph;
 using DotSpatial.Topology.Geometries;
 

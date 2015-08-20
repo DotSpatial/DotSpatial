@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Globalization;
 using System.IO;
 using System.Threading;
 using DotSpatial.Controls;
@@ -41,8 +40,8 @@ namespace DotSpatial.Symbology.Tests
         [Test]
         public void ExportSelectionTestWithCulture()
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("cs-CZ");
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("cs-CZ");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("cs-CZ");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("cs-CZ");
 
             string filename = Path.Combine("TestFiles", "soils.shp");
             string fileOut = Path.Combine("TestFiles", "soilsExport.shp");

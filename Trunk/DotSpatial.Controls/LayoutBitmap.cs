@@ -20,7 +20,6 @@
 // Ted Dunsford      | 8/28/2009  | Cleaned up some code formatting using resharper
 // ********************************************************************************************************
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;

@@ -21,12 +21,13 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotSpatial.Positioning.Properties;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -413,7 +414,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
                     throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Distance_InvalidNumericPortion, "value", ex);
+                throw new ArgumentException(Resources.Distance_InvalidNumericPortion, "value", ex);
 #endif
             }
 
@@ -441,7 +442,7 @@ namespace DotSpatial.Positioning
                 _units = DistanceUnit.Feet;
             else
             {
-                throw new ArgumentException(Properties.Resources.Distance_InvalidUnitPortion, "value");
+                throw new ArgumentException(Resources.Distance_InvalidUnitPortion, "value");
             }
         }
 
@@ -2148,7 +2149,7 @@ namespace DotSpatial.Positioning
             }
             catch (Exception ex)
             {
-                throw new FormatException(Properties.Resources.Distance_InvalidFormat, ex);
+                throw new FormatException(Resources.Distance_InvalidFormat, ex);
             }
             //catch
             //{

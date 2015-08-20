@@ -21,7 +21,7 @@
 using System;
 using System.Data;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Data
 {

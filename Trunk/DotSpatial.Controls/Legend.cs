@@ -27,6 +27,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using DotSpatial.Symbology.Forms;
 

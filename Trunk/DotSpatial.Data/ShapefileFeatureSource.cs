@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index;
 
 namespace DotSpatial.Data
@@ -83,7 +84,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the spatial index if any
         /// </summary>
-        public ISpatialIndex SpatialIndex
+        public ISpatialIndex<int> SpatialIndex
         {
             get { return Quadtree; }
         }

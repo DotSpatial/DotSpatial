@@ -17,8 +17,10 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 using DotSpatial.Topology;
 using DotSpatial.Topology.Algorithm;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Tools
 {

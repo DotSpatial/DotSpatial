@@ -26,10 +26,10 @@ using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 using DotSpatial.Topology;
-using Point = System.Drawing.Point;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     internal class PolygonElement : DialogElement
     {

@@ -19,9 +19,10 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Modeling.Forms.Elements;
 using DotSpatial.Projections;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
     /// ProjectionParam

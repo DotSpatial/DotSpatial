@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
@@ -11,7 +8,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

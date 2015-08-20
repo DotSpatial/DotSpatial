@@ -20,6 +20,7 @@
 
 using System;
 using System.Drawing;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {

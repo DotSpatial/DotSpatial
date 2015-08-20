@@ -1,5 +1,5 @@
 ﻿using DotSpatial.Extensions;
-using System;
+
 namespace DotSpatial.Plugins.ExtensionManager
 {
     public class SampleProjectInfo : ISampleProject

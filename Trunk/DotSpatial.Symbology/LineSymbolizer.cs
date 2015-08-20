@@ -26,7 +26,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Symbology

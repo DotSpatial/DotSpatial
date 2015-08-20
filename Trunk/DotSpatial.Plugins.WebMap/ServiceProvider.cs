@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Plugins.WebMap
 {

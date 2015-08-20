@@ -23,6 +23,7 @@ using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Msg = DotSpatial.Symbology.SymbologyMessageStrings;
 
 namespace DotSpatial.Symbology

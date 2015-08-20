@@ -21,9 +21,10 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 using DotSpatial.Projections.Forms;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// ProjectionElement

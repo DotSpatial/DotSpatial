@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Drawing;
 
 namespace DotSpatial.Controls.Header

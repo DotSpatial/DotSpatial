@@ -19,6 +19,10 @@
 //        Name       |    Date    |                       Comments
 // ------------------|------------|---------------------------------------------------------------
 // ********************************************************************************************************
+
+using System.ComponentModel;
+using System.Windows.Forms;
+
 namespace DotSpatial.Controls
 {
     /// <summary>
@@ -29,7 +33,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -262,28 +266,28 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.Button btnApply;
-        private System.Windows.Forms.TextBox txtEsriString;
-        private System.Windows.Forms.Label lblEsriString;
-        private System.Windows.Forms.Label lblProj4String;
-        private System.Windows.Forms.TextBox txtProj4String;
-        private System.Windows.Forms.TabControl tcMain;
-        private System.Windows.Forms.TabPage tbMain;
-        private System.Windows.Forms.TabPage tbDetails;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtProjectionType;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtAuthority;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.LinkLabel lnkSpatialReference;
-        private System.Windows.Forms.Button btnChange;
-        private System.Windows.Forms.TextBox txtAuthorityCode;
-        private System.Windows.Forms.Label label4;
+        private Button btnCancel;
+        private Button btnOk;
+        private Button btnApply;
+        private TextBox txtEsriString;
+        private Label lblEsriString;
+        private Label lblProj4String;
+        private TextBox txtProj4String;
+        private TabControl tcMain;
+        private TabPage tbMain;
+        private TabPage tbDetails;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel1;
+        private Panel panel2;
+        private TextBox txtName;
+        private Label label1;
+        private TextBox txtProjectionType;
+        private Label label2;
+        private TextBox txtAuthority;
+        private Label label3;
+        private LinkLabel lnkSpatialReference;
+        private Button btnChange;
+        private TextBox txtAuthorityCode;
+        private Label label4;
     }
 }

@@ -39,6 +39,10 @@ namespace DotSpatial.Topology.IO
     public class WKBReader : IBinaryGeometryReader
     {
         #region Fields
+
+        [Obsolete]
+        private readonly IGeometryFactory _factory;
+
         private readonly IGeometryServices _geometryServices;
         private readonly IPrecisionModel _precisionModel;
         private readonly ICoordinateSequenceFactory _sequenceFactory;
@@ -58,22 +62,22 @@ namespace DotSpatial.Topology.IO
         /// </summary>
         public WKBReader() : this(GeometryServiceProvider.Instance) { }
 
-        ///// <summary>
-        ///// Initialize reader with the given <c>GeometryFactory</c>.
-        ///// </summary>
-        ///// <param name="factory"></param>
-        //[Obsolete]
-        //public WKBReader(IGeometryFactory factory)
-        //{
-        //    _geometryServices = GeometryServiceProvider.Instance;
+        /// <summary>
+        /// Initialize reader with the given <c>GeometryFactory</c>.
+        /// </summary>
+        /// <param name="factory"></param>
+        [Obsolete]
+        public WKBReader(IGeometryFactory factory)
+        {
+            _geometryServices = GeometryServiceProvider.Instance;
 
-        //    _factory = factory;
-        //    _sequenceFactory = factory.CoordinateSequenceFactory;
-        //    _precisionModel = factory.PrecisionModel;
+            _factory = factory;
+            _sequenceFactory = factory.CoordinateSequenceFactory;
+            _precisionModel = factory.PrecisionModel;
 
-        //    HandleSRID = true;
-        //    HandleOrdinates = AllowedOrdinates;
-        //}
+            HandleSRID = true;
+            HandleOrdinates = AllowedOrdinates;
+        }
 
         public WKBReader(IGeometryServices services)
         {
@@ -117,6 +121,15 @@ namespace DotSpatial.Topology.IO
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
         public bool RepairRings { get { return _isStrict; } set { _isStrict = value; } }
+
+        /// <summary>
+        /// The <see cref="IGeometry"/> builder.
+        /// </summary>
+        [Obsolete]
+        protected IGeometryFactory Factory
+        {
+            get { return _factory; }
+        }
 
         #endregion
 

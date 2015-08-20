@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {

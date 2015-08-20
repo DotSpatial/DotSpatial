@@ -383,7 +383,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("exception:" + e.Message);
+                Console.WriteLine("exception:" + e.Message);
             }
             //}
             //else
@@ -799,7 +799,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -1255,7 +1255,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Console.WriteLine(e.Message);
                 }
                 _dataset.Dispose();
             }

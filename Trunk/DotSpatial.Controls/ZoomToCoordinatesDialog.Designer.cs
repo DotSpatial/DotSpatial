@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Controls
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Controls
 {
     partial class ZoomToCoordinatesDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -168,16 +171,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Button BT_Accept;
-        private System.Windows.Forms.Button BT_Cancel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox d1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox d2;
-        private System.Windows.Forms.Label latStatus;
-        private System.Windows.Forms.Label lonStatus;
-        private System.Windows.Forms.Label label4;
+        private Button BT_Accept;
+        private Button BT_Cancel;
+        private Label label1;
+        private Label label2;
+        private TextBox d1;
+        private Label label3;
+        private Label label10;
+        private TextBox d2;
+        private Label latStatus;
+        private Label lonStatus;
+        private Label label4;
     }
 }

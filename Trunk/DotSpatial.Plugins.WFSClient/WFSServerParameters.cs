@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-namespace WFSPlugin
+
+namespace DotSpatial.Plugins.WFSClient
 {
 
     public partial class WFSServerParameters : Form
     {
 
-        WFSClient wfsClient;
+        Classes.WFSClient wfsClient;
         public Map map;
         public WFSServerParameters()
         {
@@ -28,7 +24,7 @@ namespace WFSPlugin
             uxAttributesGrid.DataSource = null;
             var serverUrl = uxServer.Text;
 
-             wfsClient = new WFSClient();
+             wfsClient = new Classes.WFSClient();
             wfsClient.ReadCapabilities(serverUrl);
             uxInfo.Text = "";
             if (wfsClient.wfs.ServiceProvider != null)
@@ -130,7 +126,7 @@ namespace WFSPlugin
 
                 geographicField = uxAttributesGrid.SelectedRows[0].Cells["Name"].Value.ToString();
                 uxGeographicField.Text = "Geographic field: " + geographicField;
-                wfsClient.Geometry = WFSClient.IsGeographicFieldValid(uxAttributesGrid.SelectedRows[0].Cells["Type"].Value.ToString()) ? geographicField : null;
+                wfsClient.Geometry = Classes.WFSClient.IsGeographicFieldValid(uxAttributesGrid.SelectedRows[0].Cells["Type"].Value.ToString()) ? geographicField : null;
                 if (wfsClient.Geometry == null)
                 {
                     MessageBox.Show("Please select a geographic field valid");

@@ -4,6 +4,7 @@ using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests

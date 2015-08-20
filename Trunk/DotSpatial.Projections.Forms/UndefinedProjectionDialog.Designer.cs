@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Projections.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Projections.Forms
 {
     partial class UndefinedProjectionDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -141,17 +144,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblOriginal;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.RadioButton radLatLong;
-        private System.Windows.Forms.RadioButton radSelectedTransform;
-        private System.Windows.Forms.Label lblSelectedTransform;
-        private System.Windows.Forms.Button btnSelect;
-        private System.Windows.Forms.RadioButton radMapFrame;
-        private System.Windows.Forms.Label lblMapProjection;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.RadioButton radDoNothing;
-        private System.Windows.Forms.CheckBox chkAlways;
+        private Label label1;
+        private Label lblOriginal;
+        private Label label3;
+        private RadioButton radLatLong;
+        private RadioButton radSelectedTransform;
+        private Label lblSelectedTransform;
+        private Button btnSelect;
+        private RadioButton radMapFrame;
+        private Label lblMapProjection;
+        private Button button2;
+        private RadioButton radDoNothing;
+        private CheckBox chkAlways;
     }
 }

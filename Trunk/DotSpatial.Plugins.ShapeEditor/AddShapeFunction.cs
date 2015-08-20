@@ -28,7 +28,6 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
-using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {

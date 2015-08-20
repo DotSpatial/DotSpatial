@@ -24,8 +24,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// Save File Element

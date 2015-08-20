@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Windows.Forms;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {

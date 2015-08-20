@@ -12,6 +12,8 @@
 //
 // The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
 // ********************************************************************************************************
+
+using System.ComponentModel;
 using DotSpatial.Controls;
 
 namespace DemoMap
@@ -24,7 +26,7 @@ namespace DemoMap
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

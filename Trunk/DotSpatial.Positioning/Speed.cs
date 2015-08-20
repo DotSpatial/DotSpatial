@@ -21,12 +21,13 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotSpatial.Positioning.Properties;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;
@@ -371,7 +372,7 @@ namespace DotSpatial.Positioning
                         _units = SpeedUnit.StatuteMilesPerHour;
                         break;
                     default:
-                        throw new FormatException(Properties.Resources.Speed_InvalidUnitPortion);
+                        throw new FormatException(Resources.Speed_InvalidUnitPortion);
                 }
             }
             catch (Exception ex)
@@ -379,7 +380,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
 				throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, "value", ex);
+                throw new ArgumentException(Resources.Speed_InvalidFormat, "value", ex);
 #endif
             }
         }
@@ -1474,7 +1475,7 @@ namespace DotSpatial.Positioning
 #if PocketPC
                 throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, ex);
 #else
-                throw new ArgumentException(Properties.Resources.Speed_InvalidFormat, "format", ex);
+                throw new ArgumentException(Resources.Speed_InvalidFormat, "format", ex);
 #endif
             }
             //catch

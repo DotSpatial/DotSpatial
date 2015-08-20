@@ -20,7 +20,7 @@
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // ********************************************************************************************************
 
-namespace DotSpatial.Projections
+namespace DotSpatial.Projections.Nad
 {
     /// <summary>
     /// PhiLam has two double values and is used like a coordinate.

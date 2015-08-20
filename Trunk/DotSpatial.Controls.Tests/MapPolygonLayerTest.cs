@@ -1,19 +1,15 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using DotSpatial.Symbology;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
 using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using DotSpatial.Data;
-using DotSpatial.Symbology;
-using System.IO;
-using System.Drawing;
-using DotSpatial.Projections;
 
 namespace DotSpatial.Controls.Tests
 {

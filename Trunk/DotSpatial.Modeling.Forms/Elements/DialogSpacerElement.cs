@@ -23,7 +23,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// An element for DialogSpacing

@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Voronoi;
 
 namespace DotSpatial.Analysis

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using DotSpatial.Topology;
+using DotSpatial.Topology.Geometries;
 using Point = System.Drawing.Point;
-using DotSpatial.Controls;
+using PointShape = DotSpatial.Symbology.PointShape;
 
 namespace DemoCustomLayer.DemoCustomLayerExtension
 {
@@ -234,7 +236,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
             Random rnd = new Random();
             Color randomColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
-            PointSymbolizer sym = new PointSymbolizer(randomColor, DotSpatial.Symbology.PointShape.Rectangle, 4);
+            PointSymbolizer sym = new PointSymbolizer(randomColor, PointShape.Rectangle, 4);
             PointCategory category = new PointCategory(sym);
             bg.SmoothingMode = category.Symbolizer.Smoothing ? SmoothingMode.AntiAlias : SmoothingMode.None;
             Matrix trans = bg.Transform;

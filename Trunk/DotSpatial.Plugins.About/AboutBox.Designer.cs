@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Windows.Forms;
+
 namespace DotSpatial.Plugins.About
 {
 	partial class AboutBox
@@ -5,7 +8,7 @@ namespace DotSpatial.Plugins.About
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -362,32 +365,32 @@ namespace DotSpatial.Plugins.About
 
 		#endregion
 
-		private System.Windows.Forms.Button DetailsButton;
-		private System.Windows.Forms.PictureBox ImagePictureBox;
-		private System.Windows.Forms.Label AppDateLabel;
-		private System.Windows.Forms.Button SysInfoButton;
-		private System.Windows.Forms.Label AppCopyrightLabel;
-		private System.Windows.Forms.Label AppVersionLabel;
-		private System.Windows.Forms.Label AppDescriptionLabel;
-		private System.Windows.Forms.GroupBox GroupBox1;
-		private System.Windows.Forms.Label AppTitleLabel;
-		private System.Windows.Forms.Button OKButton;
-		internal System.Windows.Forms.RichTextBox MoreRichTextBox;
-		internal System.Windows.Forms.TabControl TabPanelDetails;
-		internal System.Windows.Forms.TabPage TabPageApplication;
-		internal System.Windows.Forms.ListView AppInfoListView;
-		internal System.Windows.Forms.ColumnHeader colKey;
-		internal System.Windows.Forms.ColumnHeader colValue;
-		internal System.Windows.Forms.TabPage TabPageAssemblies;
-		internal System.Windows.Forms.ListView AssemblyInfoListView;
-		internal System.Windows.Forms.ColumnHeader colAssemblyName;
-		internal System.Windows.Forms.ColumnHeader colAssemblyVersion;
-		internal System.Windows.Forms.ColumnHeader colAssemblyBuilt;
-		internal System.Windows.Forms.ColumnHeader colAssemblyCodeBase;
-		internal System.Windows.Forms.TabPage TabPageAssemblyDetails;
-		internal System.Windows.Forms.ListView AssemblyDetailsListView;
-		internal System.Windows.Forms.ColumnHeader ColumnHeader1;
-		internal System.Windows.Forms.ColumnHeader ColumnHeader2;
-		internal System.Windows.Forms.ComboBox AssemblyNamesComboBox;
+		private Button DetailsButton;
+		private PictureBox ImagePictureBox;
+		private Label AppDateLabel;
+		private Button SysInfoButton;
+		private Label AppCopyrightLabel;
+		private Label AppVersionLabel;
+		private Label AppDescriptionLabel;
+		private GroupBox GroupBox1;
+		private Label AppTitleLabel;
+		private Button OKButton;
+		internal RichTextBox MoreRichTextBox;
+		internal TabControl TabPanelDetails;
+		internal TabPage TabPageApplication;
+		internal ListView AppInfoListView;
+		internal ColumnHeader colKey;
+		internal ColumnHeader colValue;
+		internal TabPage TabPageAssemblies;
+		internal ListView AssemblyInfoListView;
+		internal ColumnHeader colAssemblyName;
+		internal ColumnHeader colAssemblyVersion;
+		internal ColumnHeader colAssemblyBuilt;
+		internal ColumnHeader colAssemblyCodeBase;
+		internal TabPage TabPageAssemblyDetails;
+		internal ListView AssemblyDetailsListView;
+		internal ColumnHeader ColumnHeader1;
+		internal ColumnHeader ColumnHeader2;
+		internal ComboBox AssemblyNamesComboBox;
 	}
 }

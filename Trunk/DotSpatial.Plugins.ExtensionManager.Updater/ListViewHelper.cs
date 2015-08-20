@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows.Forms;
-using NuGet;
+using DotSpatial.Plugins.ExtensionManager.Updater.Properties;
 
 namespace DotSpatial.Plugins.ExtensionManager.Updater
 {
@@ -22,7 +21,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
             imageList.ImageSize = new Size(16, 16);
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             // Add a default image at position 0;
-            imageList.Images.Add(Properties.Resources.Tick_16x16);
+            imageList.Images.Add(Resources.Tick_16x16);
 
             var pagelist = list.ToArray();
             ListViewItem[] items = new ListViewItem[pagelist.Length];

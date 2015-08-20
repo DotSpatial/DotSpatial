@@ -25,7 +25,6 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using System.Collections;
 using System.Collections.Generic;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Algorithm.Locate;

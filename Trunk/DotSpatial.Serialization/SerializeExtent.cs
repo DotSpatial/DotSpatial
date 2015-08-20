@@ -20,9 +20,8 @@
 
 using System;
 using System.ComponentModel;
-using DotSpatial.Serialization;
 
-namespace DotSpatial
+namespace DotSpatial.Serialization
 {
     /// <summary>
     /// Extent works like an envelope but is faster acting, has a minimum memory profile, only works in 2D and has no events.

@@ -2,12 +2,10 @@
 using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Controls.Docking;
 using DotSpatial.Controls.Header;
-using DotSpatial.Data.Properties;
 using DotSpatial.Symbology;
 
-namespace Contourer
+namespace DotSpatial.Plugins.Contourer
 {
     public class Snapin : Extension
     {
