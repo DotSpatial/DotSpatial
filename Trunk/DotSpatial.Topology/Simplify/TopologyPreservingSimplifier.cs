@@ -105,7 +105,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get { return _lineSimplifier.DistanceTolerance; }
             set { _lineSimplifier.DistanceTolerance = value; }
@@ -119,7 +119,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IGeometry GetResultGeometry()
+        public IGeometry GetResultGeometry()
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)

@@ -35,38 +35,6 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         ///<summary>
-        /// Tests whether an intersection was found.
-        ///</summary>
-        public bool HasIntersection
-        {
-            get
-            {
-                return InteriorIntersection != null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the intersections found.
-        /// </summary>
-        /// <returns>A list of <see cref="Coordinate"/>.</returns>
-        public IList<Coordinate> Intersections
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_intersections);
-            }
-        }
-
-        public bool IsDone
-        {
-            get
-            {
-                if (FindAllIntersections) return false;
-                return InteriorIntersection != null;
-            }
-        }
-
-        ///<summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
         /// This is a performance optimization that may be used if
         /// the segments have been previously noded by an appropriate algorithm.
@@ -92,15 +60,47 @@ namespace DotSpatial.Topology.Noding
         public bool FindAllIntersections { get; set; }
 
         ///<summary>
+        /// Tests whether an intersection was found.
+        ///</summary>
+        public bool HasIntersection
+        {
+            get
+            {
+                return InteriorIntersection != null;
+            }
+        }
+
+        ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         ///</summary>
         public Coordinate InteriorIntersection { get; private set; }
 
+        /// <summary>
+        /// Gets the intersections found.
+        /// </summary>
+        /// <returns>A list of <see cref="Coordinate"/>.</returns>
+        public IList<Coordinate> Intersections
+        {
+            get
+            {
+                return new ReadOnlyCollection<Coordinate>(_intersections);
+            }
+        }
+
         ///<summary>
         /// Gets the endpoints of the intersecting segments.
         ///</summary>
         public IList<Coordinate> IntersectionSegments { get; private set; }
+
+        public bool IsDone
+        {
+            get
+            {
+                if (FindAllIntersections) return false;
+                return InteriorIntersection != null;
+            }
+        }
 
         /// <summary>
         /// Gets/Sets whether intersection points are recorded.
@@ -156,6 +156,18 @@ namespace DotSpatial.Topology.Noding
         }
 
         ///<summary>
+        /// Tests whether a segment in a <see cref="ISegmentString" /> is an end segment.
+        /// (either the first or last).
+        ///</summary>
+        ///<param name="segStr">a segment string</param>
+        ///<param name="index">the index of a segment in the segment string</param>
+        ///<returns>true if the segment is an end segment</returns>
+        private static bool IsEndSegment(ISegmentString segStr, int index)
+        {
+            return (index == 0 || index >= segStr.Count - 2);
+        }
+
+        ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.<br/>
         /// Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
@@ -193,18 +205,6 @@ namespace DotSpatial.Topology.Noding
             InteriorIntersection = _li.GetIntersection(0);
             if (KeepIntersections) _intersections.Add(InteriorIntersection);
             Count++;
-        }
-
-        ///<summary>
-        /// Tests whether a segment in a <see cref="ISegmentString" /> is an end segment.
-        /// (either the first or last).
-        ///</summary>
-        ///<param name="segStr">a segment string</param>
-        ///<param name="index">the index of a segment in the segment string</param>
-        ///<returns>true if the segment is an end segment</returns>
-        private static bool IsEndSegment(ISegmentString segStr, int index)
-        {
-            return (index == 0 || index >= segStr.Count - 2);
         }
 
         #endregion

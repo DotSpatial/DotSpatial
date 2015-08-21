@@ -81,7 +81,7 @@ namespace DotSpatial.Topology.Operation.Overlay.Snap
 		     * to the centre point of the cell.
              */
             IPrecisionModel pm = g.PrecisionModel;
-            if (pm.PrecisionModelType == PrecisionModelType.Fixed)
+            if (pm.PrecisionModelType == PrecisionModels.Fixed)
             {
                 double fixedSnapTol = (1 / pm.Scale) * 2 / 1.415;
                 if (fixedSnapTol > snapTolerance)

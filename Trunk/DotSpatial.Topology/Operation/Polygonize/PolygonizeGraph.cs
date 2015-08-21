@@ -64,7 +64,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Add a <c>LineString</c> forming an edge of the polygon graph.
         /// </summary>
         /// <param name="line">The line to add.</param>
-        public virtual void AddEdge(ILineString line)
+        public void AddEdge(ILineString line)
         {
             if (line.IsEmpty) return;
             IList<Coordinate> linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
@@ -116,7 +116,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// </summary>
         /// <param name="node"></param>
         /// <param name="label"></param>
-        private static void ComputeNextCcwEdges(Node node, long label)
+        private static void ComputeNextCCWEdges(Node node, long label)
         {
             DirectedEdgeStar deStar = node.OutEdges;
             //PolyDirectedEdge lastInDE = null;
@@ -164,7 +164,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         ///
         /// </summary>
         /// <param name="node"></param>
-        private static void ComputeNextCwEdges(Node node)
+        private static void ComputeNextCWEdges(Node node)
         {
             DirectedEdgeStar deStar = node.OutEdges;
             PolygonizeDirectedEdge startDe = null;
@@ -193,11 +193,11 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <summary>
         ///
         /// </summary>
-        private void ComputeNextCwEdges()
+        private void ComputeNextCWEdges()
         {
             // set the next pointers for the edges around each node
             foreach (var node in Nodes)
-                ComputeNextCwEdges(node);
+                ComputeNextCWEdges(node);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 // flip the next pointers on the intersection nodes to create minimal edge rings
                 foreach (var node in intNodes)
                 {
-                    ComputeNextCcwEdges(node, label);
+                    ComputeNextCCWEdges(node, label);
                 }
             }
         }
@@ -242,7 +242,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <returns>A list of the <c>LineString</c>s forming the removed cut edges.</returns>
         public IList<ILineString> DeleteCutEdges()
         {
-            ComputeNextCwEdges();
+            ComputeNextCWEdges();
             // label the current set of edgerings
             FindLabeledEdgeRings(DirEdges);
             /*
@@ -454,7 +454,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         public IList<EdgeRing> GetEdgeRings()
         {
             // maybe could optimize this, since most of these pointers should be set correctly already by deleteCutEdges()
-            ComputeNextCwEdges();
+            ComputeNextCWEdges();
             // clear labels of all edges in graph
             Label(DirEdges, -1);
             IList<DirectedEdge> maximalRings = FindLabeledEdgeRings(DirEdges);

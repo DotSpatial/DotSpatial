@@ -11,8 +11,9 @@ namespace DotSpatial.Topology.Noding
     ///</summary>
     /// <remarks>
     /// <para>
-    /// In the most common use case, validation stops after a single non-noded intersection 
-    /// is detected, but the class can be requested to detect all intersections
+    /// In the most common use case, validation stops after a single
+    /// non-noded intersection is detected,
+    /// but the class can be requested to detect all intersections
     /// by using the <see cref="FindAllIntersections"/> property.
     /// <para/>
     /// The validator does not check for a-b-a topology collapse situations.
@@ -53,6 +54,11 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         /// <summary>
+        /// Gets or sets whether all intersections should be found.
+        /// </summary>
+        public bool FindAllIntersections { get; set; }
+
+        /// <summary>
         /// Gets a list of all intersections found.
         /// <remarks>
         /// Intersections are represented as <see cref="Coordinate"/>s.
@@ -76,14 +82,20 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
-        /// <summary>
-        /// Gets or sets whether all intersections should be found.
-        /// </summary>
-        public bool FindAllIntersections { get; set; }
-
         #endregion
 
         #region Methods
+
+        private void CheckInteriorIntersections()
+        {
+            // MD - It may even be reliable to simply check whether end segments (of SegmentStrings) have
+            //an interior intersection, since noding should have split any true interior intersections already.
+            _isValid = true;
+            _segInt = new InteriorIntersectionFinder(_li) { FindAllIntersections = FindAllIntersections };
+            MCIndexNoder noder = new MCIndexNoder(_segInt);
+            noder.ComputeNodes(_segStrings);
+            if (_segInt.HasIntersection) _isValid = false;
+        }
 
         ///<summary>
         /// Checks for an intersection and throws
@@ -102,6 +114,12 @@ namespace DotSpatial.Topology.Noding
             return nv.Intersections;
         }
 
+        private void Execute()
+        {
+            if (_segInt != null) return;
+            CheckInteriorIntersections();
+        }
+
         ///<summary>
         /// Returns an error message indicating the segments containing the intersection.
         ///</summary>
@@ -113,23 +131,6 @@ namespace DotSpatial.Topology.Noding
             IList<Coordinate> intSegs = _segInt.IntersectionSegments;
             return string.Format(TopologyText.FastNodingValidator_FoundNonNodedIntersection,
                 WKTWriter.ToLineString(intSegs[0], intSegs[1]), WKTWriter.ToLineString(intSegs[2], intSegs[3]));
-        }
-
-        private void CheckInteriorIntersections()
-        {
-            // MD - It may even be reliable to simply check whether end segments (of SegmentStrings) have
-            //an interior intersection, since noding should have split any true interior intersections already.
-            _isValid = true;
-            _segInt = new InteriorIntersectionFinder(_li) { FindAllIntersections = FindAllIntersections };
-            McIndexNoder noder = new McIndexNoder(_segInt);
-            noder.ComputeNodes(_segStrings);
-            if (_segInt.HasIntersection) _isValid = false;
-        }
-
-        private void Execute()
-        {
-            if (_segInt != null) return;
-            CheckInteriorIntersections();
         }
 
         #endregion

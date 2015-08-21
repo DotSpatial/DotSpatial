@@ -35,7 +35,7 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// A RightmostEdgeFinder find the DirectedEdge in a list which has the highest coordinate,
     /// and which is oriented L to R at that point. (I.e. the right side is on the RHS of the edge.)
     /// </summary>
-    public sealed class RightmostEdgeFinder
+    internal class RightmostEdgeFinder
     {
         #region Fields
 
@@ -125,8 +125,8 @@ namespace DotSpatial.Topology.Operation.Buffer
              * If not, use the sym instead.
              */
             _orientedDe = _minDe;
-            PositionType rightmostSide = GetRightmostSide(_minDe, _minIndex);
-            if (rightmostSide == PositionType.Left)
+            Positions rightmostSide = GetRightmostSide(_minDe, _minIndex);
+            if (rightmostSide == Positions.Left)
                 _orientedDe = _minDe.Sym;
         }
 
@@ -161,12 +161,12 @@ namespace DotSpatial.Topology.Operation.Buffer
             Assert.IsTrue(_minIndex > 0 && _minIndex < pts.Count, "rightmost point expected to be interior vertex of edge");
             Coordinate pPrev = pts[_minIndex - 1];
             Coordinate pNext = pts[_minIndex + 1];
-            int orientation = CgAlgorithms.ComputeOrientation(_minCoord, pNext, pPrev);
+            int orientation = CGAlgorithms.ComputeOrientation(_minCoord, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
-            if (pPrev.Y < _minCoord.Y && pNext.Y < _minCoord.Y && orientation == CgAlgorithms.CounterClockwise)
+            if (pPrev.Y < _minCoord.Y && pNext.Y < _minCoord.Y && orientation == CGAlgorithms.CounterClockwise)
                 usePrev = true;
-            else if (pPrev.Y > _minCoord.Y && pNext.Y > _minCoord.Y && orientation == CgAlgorithms.Clockwise)
+            else if (pPrev.Y > _minCoord.Y && pNext.Y > _minCoord.Y && orientation == CGAlgorithms.Clockwise)
                 usePrev = true;
             // if both segments are on the same side, do nothing - either is safe
             // to select as a rightmost segment
@@ -179,9 +179,9 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="de"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        private PositionType GetRightmostSide(DirectedEdge de, int index)
+        private Positions GetRightmostSide(DirectedEdge de, int index)
         {
-            PositionType side = GetRightmostSideOfSegment(de, index);
+            Positions side = GetRightmostSideOfSegment(de, index);
             if (side < 0)
                 side = GetRightmostSideOfSegment(de, index - 1);
             if (side < 0)
@@ -199,19 +199,19 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="de"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        private static PositionType GetRightmostSideOfSegment(EdgeEnd de, int i)
+        private Positions GetRightmostSideOfSegment(DirectedEdge de, int i)
         {
             Edge e = de.Edge;
             IList<Coordinate> coord = e.Coordinates;
 
             if (i < 0 || i + 1 >= coord.Count)
-                return PositionType.Parallel;
+                return Positions.Parallel;
             if (coord[i].Y == coord[i + 1].Y)
-                return PositionType.Parallel;
+                return Positions.Parallel;
 
-            PositionType pos = PositionType.Left;
+            Positions pos = Positions.Left;
             if (coord[i].Y < coord[i + 1].Y)
-                pos = PositionType.Right;
+                pos = Positions.Right;
 
             return pos;
         }

@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.Simplify
         /// distance of the original geometry.
         /// The tolerance value must be non-negative. 
         /// </remarks>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get { return _distanceTolerance; }
             set
@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.Simplify
             if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Clone();
 
-            DpTransformer transformer = new DpTransformer(this, EnsureValidTopology);
+            DPTransformer transformer = new DPTransformer(this, EnsureValidTopology);
             return transformer.Transform(_inputGeom);
         }
 
@@ -152,7 +152,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        private class DpTransformer : GeometryTransformer
+        private class DPTransformer : GeometryTransformer
         {
             #region Fields
 
@@ -168,7 +168,7 @@ namespace DotSpatial.Topology.Simplify
             /// </summary>
             /// <param name="container"></param>
             /// <param name="ensureValidTopology"></param>
-            public DpTransformer(DouglasPeuckerSimplifier container, bool ensureValidTopology)
+            public DPTransformer(DouglasPeuckerSimplifier container, bool ensureValidTopology)
             {
                 _container = container;
                 _ensureValidTopology = ensureValidTopology;

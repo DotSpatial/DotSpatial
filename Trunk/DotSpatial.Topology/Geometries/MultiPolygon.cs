@@ -130,22 +130,22 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return DimensionType.Curve;
+                return Dimension.Curve;
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return DimensionType.Surface;
+                return Dimension.Surface;
             }
         }
 

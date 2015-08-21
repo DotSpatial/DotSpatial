@@ -49,7 +49,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         // these envelopes are created once and reused
         private readonly Envelope env1 = new Envelope();
         private readonly Envelope env2 = new Envelope();
-        private readonly IList<Coordinate> _pts; // cache a reference to the coord array, for efficiency
+        private readonly IList<Coordinate> pts; // cache a reference to the coord array, for efficiency
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private readonly int[] startIndex;

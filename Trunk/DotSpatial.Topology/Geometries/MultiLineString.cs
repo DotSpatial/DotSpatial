@@ -139,13 +139,13 @@ namespace DotSpatial.Topology.Geometries
         ///
         /// </summary>
         /// <value></value>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
                 if (IsClosed)
-                    return DimensionType.False;
-                return DimensionType.Point;
+                    return Dimension.False;                
+                return Dimension.Point;
             }
         }
 
@@ -153,11 +153,11 @@ namespace DotSpatial.Topology.Geometries
         ///
         /// </summary>
         /// <value></value>
-        public override DimensionType Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return DimensionType.Curve;
+                return Dimension.Curve;
             }
         }
 
@@ -188,7 +188,7 @@ namespace DotSpatial.Topology.Geometries
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
         /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
-        public virtual bool IsClosed
+        public bool IsClosed
         {
             get
             {

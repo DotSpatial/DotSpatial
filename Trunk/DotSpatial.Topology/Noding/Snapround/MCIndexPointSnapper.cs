@@ -33,23 +33,23 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
     /// <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
     /// </summary>
-    public class McIndexPointSnapper
+    public class MCIndexPointSnapper
     {
         #region Fields
 
-        private readonly StRtree<MonotoneChain> _index;
+        private readonly STRtree<MonotoneChain> _index;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="McIndexPointSnapper"/> class.
+        /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
         /// </summary>
         /// <param name="index"></param>
-        public McIndexPointSnapper(ISpatialIndex<MonotoneChain> index)
+        public MCIndexPointSnapper(ISpatialIndex<MonotoneChain> index)
         {
-            _index = (StRtree<MonotoneChain>)index;
+            _index = (STRtree<MonotoneChain>)index;
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel, ISegmentString parentEdge, int hotPixelVertexIndex)
         {
-            Envelope pixelEnv = hotPixel.GetSafeEnvelope();
+            var pixelEnv = hotPixel.GetSafeEnvelope();
             var hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, hotPixelVertexIndex);
             _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;

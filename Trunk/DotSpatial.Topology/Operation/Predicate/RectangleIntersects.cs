@@ -242,7 +242,7 @@ namespace DotSpatial.Topology.Operation.Predicate
         /// <param name="rectangle"></param>
         public GeometryContainsPointVisitor(IPolygon rectangle)
         {
-            _rectSeq = rectangle.Shell.CoordinateSequence;
+            _rectSeq = rectangle.ExteriorRing.CoordinateSequence;
             _rectEnv = rectangle.EnvelopeInternal;
         }
 

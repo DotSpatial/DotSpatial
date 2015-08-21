@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Simplify
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
         /// </summary>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get { return _distanceTolerance; }
             set { _distanceTolerance = value; }
@@ -232,7 +232,7 @@ namespace DotSpatial.Topology.Simplify
         /// using the distance tolerance specified.
         /// </summary>
         /// <param name="line"></param>
-        public virtual void Simplify(TaggedLineString line)
+        public void Simplify(TaggedLineString line)
         {
             _line = line;
             _linePts = line.ParentCoordinates;

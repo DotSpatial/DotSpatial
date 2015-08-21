@@ -182,11 +182,11 @@ namespace DotSpatial.Topology.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return DimensionType.False;
+                return Dimension.False;
             }
         }
 
@@ -232,11 +232,11 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets or sets the DotSpatial.Geometries.Dimensions of this Geometry.
         /// </summary>
-        public override DimensionType Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return DimensionType.Point;
+                return Dimension.Point;
             }
         }
 

@@ -146,7 +146,7 @@ namespace DotSpatial.Topology.Index.Strtree
              */
             if (isComp1 && isComp2)
             {
-                if (_boundable1.Bounds.Area > _boundable2.Bounds.Area)
+                if (_boundable1.Bounds.Area() > _boundable2.Bounds.Area())
                 {
                     Expand(_boundable1, _boundable2, priQ, minDistance);
                     return;

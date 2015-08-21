@@ -58,7 +58,7 @@ namespace DotSpatial.Topology.Operation.Distance
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public virtual void Filter(IGeometry geom)
+        public void Filter(IGeometry geom)
         {
             if (geom is IPoint || geom is ILineString || geom is IPolygon)
                 _pts.Add(geom.Coordinate);

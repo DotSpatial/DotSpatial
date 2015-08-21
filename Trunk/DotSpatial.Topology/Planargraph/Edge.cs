@@ -98,7 +98,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="fromNode"></param>
         /// <returns></returns>
-        public virtual DirectedEdge GetDirEdge(Node fromNode)
+        public DirectedEdge GetDirEdge(Node fromNode)
         {
             if (DirEdge[0].FromNode == fromNode) 
                 return DirEdge[0];
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public virtual Node GetOppositeNode(Node node)
+        public Node GetOppositeNode(Node node)
         {
             if (DirEdge[0].FromNode == node) 
                 return DirEdge[0].ToNode;

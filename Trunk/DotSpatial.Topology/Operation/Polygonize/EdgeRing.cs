@@ -68,11 +68,11 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public virtual bool IsHole
+        public bool IsHole
         {
             get
             {
-                return CgAlgorithms.IsCounterClockwise(Ring.Coordinates);
+                return CGAlgorithms.IsCounterClockwise(Ring.Coordinates);
             }
         }
 
@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
         /// <return>true if the ring is valid.</return>
-        public virtual bool IsValid
+        public bool IsValid
         {
             get
             {
@@ -97,8 +97,8 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Used to return the coordinates in this ring
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
-        /// </summary>
-        public virtual ILineString LineString
+        /// </summary>        
+        public ILineString LineString
         {
             get
             {
@@ -109,7 +109,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <summary>
         /// Computes and returns the Polygon formed by this ring and any contained holes.
         /// </summary>
-        public virtual IPolygon Polygon
+        public IPolygon Polygon
         {
             get
             {
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// creating it (such as a topology problem). Details of problems are written to
         /// standard output.
         /// </summary>
-        public virtual ILinearRing Ring
+        public ILinearRing Ring
         {
             get
             {
@@ -160,7 +160,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        public virtual void Add(DirectedEdge de)
+        public void Add(DirectedEdge de)
         {
             _deList.Add(de);
         }
@@ -189,7 +189,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
         /// <param name="hole">The LinearRing forming the hole.</param>
-        public virtual void AddHole(ILinearRing hole)
+        public void AddHole(ILinearRing hole)
         {
             if (_holes == null)
                 _holes = new List<ILinearRing>();
@@ -248,7 +248,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
                 var testPt = PtNotInList(teString.Coordinates, tryShellRing.Coordinates);
-                var isContained = CgAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
+                var isContained = CGAlgorithms.IsPointInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)

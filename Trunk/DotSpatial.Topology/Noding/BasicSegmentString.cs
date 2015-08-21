@@ -41,6 +41,10 @@ namespace DotSpatial.Topology.Noding
 
         #region Properties
 
+        ///<summary>Gets the user-defined data for this segment string.
+        ///</summary>
+        public object Context { get; set; }
+
         public IList<Coordinate> Coordinates { get { return _pts; } }
 
         public int Count
@@ -52,10 +56,6 @@ namespace DotSpatial.Topology.Noding
         {
             get { return _pts[0].Equals2D(_pts[_pts.Count]); }
         }
-
-        ///<summary>Gets the user-defined data for this segment string.
-        ///</summary>
-        public object Context { get; set; }
 
         #endregion
 
@@ -85,9 +85,9 @@ namespace DotSpatial.Topology.Noding
         ///</summary>
         ///<param name="index">the index of the vertex starting the segment. Must not be the last index in the vertex list</param>
         ///<returns>octant of the segment at the vertex</returns>
-        public OctantDirection GetSegmentOctant(int index)
+        public Octants GetSegmentOctant(int index)
         {
-            return index == _pts.Count - 1 ? OctantDirection.Null : Octant.GetOctant(_pts[index], _pts[index + 1]);
+            return index == _pts.Count - 1 ? Octants.Null : Octant.GetOctant(_pts[index], _pts[index + 1]);
         }
 
         public override string ToString()

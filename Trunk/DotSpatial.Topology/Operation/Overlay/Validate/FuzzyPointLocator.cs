@@ -54,10 +54,10 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
 
-        public LocationType GetLocation(Coordinate pt)
+        public Location GetLocation(Coordinate pt)
         {
             if (IsWithinToleranceOfBoundary(pt))
-                return LocationType.Boundary;
+                return Location.Boundary;
             /*
             double dist = linework.distance(point);
 
@@ -134,10 +134,10 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
             if (g is IPolygon)
             {
                 IPolygon poly = (IPolygon)g;
-                _linework.Add(poly.Shell);
-                for (int i = 0; i < poly.NumHoles; i++)
+                _linework.Add(poly.ExteriorRing);
+                for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
-                    _linework.Add(poly.Holes[i]);
+                    _linework.Add(poly.InteriorRings[i]);
                 }
             }
         }

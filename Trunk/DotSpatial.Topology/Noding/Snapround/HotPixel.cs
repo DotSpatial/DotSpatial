@@ -45,6 +45,11 @@ namespace DotSpatial.Topology.Noding.Snapround
 
         #region Fields
 
+        /*
+         * The corners of the hot pixel, in the order:
+         *  10
+         *  23
+         */
         private readonly Coordinate[] _corner = new Coordinate[4];
         private readonly LineIntersector _li;
         private readonly Coordinate _originalPt;
@@ -56,11 +61,6 @@ namespace DotSpatial.Topology.Noding.Snapround
         private double _maxy;
         private double _minx;
         private double _miny;
-        /*
-         * The corners of the hot pixel, in the order:
-         *  10
-         *  23
-         */
         private Envelope _safeEnv;
 
         #endregion
@@ -136,6 +136,18 @@ namespace DotSpatial.Topology.Noding.Snapround
         }
 
         /// <summary>
+        /// Tests whether the line segment (p0-p1)
+        /// intersects this hot pixel.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="pScaled"></param>
+        private void CopyScaled(Coordinate p, Coordinate pScaled)
+        {
+            pScaled.X = Scale(p.X);
+            pScaled.Y = Scale(p.Y);
+        }
+
+        /// <summary>
         /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
         /// The envelope returned will be larger than the exact envelope of the pixel.
         /// </summary>
@@ -149,57 +161,6 @@ namespace DotSpatial.Topology.Noding.Snapround
                                        _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
             }
             return _safeEnv;
-        }
-
-        /// <summary>
-        /// Tests whether the line segment (p0-p1)
-        /// intersects this hot pixel.
-        /// </summary>
-        /// <param name="p0">The first coordinate of the line segment to test</param>
-        /// <param name="p1">The second coordinate of the line segment to test</param>
-        /// <returns>true if the line segment intersects this hot pixel.</returns>
-        public bool Intersects(Coordinate p0, Coordinate p1)
-        {
-            if (_scaleFactor == 1.0)
-                return IntersectsScaled(p0, p1);
-
-            CopyScaled(p0, _p0Scaled);
-            CopyScaled(p1, _p1Scaled);
-            return IntersectsScaled(_p0Scaled, _p1Scaled);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns></returns>
-        public bool IntersectsScaled(Coordinate p0, Coordinate p1)
-        {
-            double segMinx = Math.Min(p0.X, p1.X);
-            double segMaxx = Math.Max(p0.X, p1.X);
-            double segMiny = Math.Min(p0.Y, p1.Y);
-            double segMaxy = Math.Max(p0.Y, p1.Y);
-
-            bool isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
-                                     _maxy < segMiny || _miny > segMaxy;
-            if (isOutsidePixelEnv)
-                return false;
-            bool intersects = IntersectsToleranceSquare(p0, p1);
-            //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
-            return intersects;
-        }
-
-        /// <summary>
-        /// Tests whether the line segment (p0-p1)
-        /// intersects this hot pixel.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="pScaled"></param>
-        private void CopyScaled(Coordinate p, Coordinate pScaled)
-        {
-            pScaled.X = Scale(p.X);
-            pScaled.Y = Scale(p.Y);
         }
 
         /// <summary>
@@ -218,6 +179,23 @@ namespace DotSpatial.Topology.Noding.Snapround
             _corner[1] = new Coordinate(_minx, _maxy);
             _corner[2] = new Coordinate(_minx, _miny);
             _corner[3] = new Coordinate(_maxx, _miny);
+        }
+
+        /// <summary>
+        /// Tests whether the line segment (p0-p1)
+        /// intersects this hot pixel.
+        /// </summary>
+        /// <param name="p0">The first coordinate of the line segment to test</param>
+        /// <param name="p1">The second coordinate of the line segment to test</param>
+        /// <returns>true if the line segment intersects this hot pixel.</returns>
+        public bool Intersects(Coordinate p0, Coordinate p1)
+        {
+            if (_scaleFactor == 1.0)
+                return IntersectsScaled(p0, p1);
+
+            CopyScaled(p0, _p0Scaled);
+            CopyScaled(p1, _p1Scaled);
+            return IntersectsScaled(_p0Scaled, _p1Scaled);
         }
 
         /// <summary>
@@ -244,6 +222,29 @@ namespace DotSpatial.Topology.Noding.Snapround
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        /// <returns></returns>
+        public bool IntersectsScaled(Coordinate p0, Coordinate p1)
+        {
+            var segMinx = Math.Min(p0.X, p1.X);
+            double segMaxx = Math.Max(p0.X, p1.X);
+            double segMiny = Math.Min(p0.Y, p1.Y);
+            double segMaxy = Math.Max(p0.Y, p1.Y);
+
+            var isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
+                                     _maxy < segMiny || _miny > segMaxy;
+            if (isOutsidePixelEnv)
+                return false;
+            var intersects = IntersectsToleranceSquare(p0, p1);
+
+            //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
+            return intersects;
+        }
+
+        /// <summary>
         /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
         /// Because the tolerance square point set is partially open (along the
         /// top and right) the test needs to be more sophisticated than
@@ -261,8 +262,8 @@ namespace DotSpatial.Topology.Noding.Snapround
         /// <returns></returns>
         private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
         {
-            bool intersectsLeft = false;
-            bool intersectsBottom = false;
+            var intersectsLeft = false;
+            var intersectsBottom = false;
 
             _li.ComputeIntersection(p0, p1, _corner[0], _corner[1]);
             if (_li.IsProper) return true;

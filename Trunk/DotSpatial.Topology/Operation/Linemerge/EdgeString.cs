@@ -96,7 +96,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// Adds a directed edge which is known to form part of this line.
         /// </summary>
         /// <param name="directedEdge"></param>
-        public virtual void Add(LineMergeDirectedEdge directedEdge)
+        public void Add(LineMergeDirectedEdge directedEdge)
         {
             _directedEdges.Add(directedEdge);
         }
@@ -104,7 +104,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <summary>
         /// Converts this EdgeString into a LineString.
         /// </summary>
-        public virtual ILineString ToLineString()
+        public ILineString ToLineString()
         {
             return _factory.CreateLineString(Coordinates);
         }

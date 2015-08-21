@@ -150,7 +150,7 @@ namespace DotSpatial.Topology.Algorithm
                  * ordinate of intersection with the x-axis. (y2 != y1, so denominator
                  * will never be 0.0)
                  */
-                double xIntSign = RobustDeterminant.SignOfDet2X2(x1, y1, x2, y2);
+                double xIntSign = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2);
                 if (xIntSign == 0.0)
                 {
                     IsOnSegment = true;

@@ -66,7 +66,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         public override Coordinate Coordinate
         {
             get { return _coord; }
-            protected set { _coord = value; }
+            set { _coord = value; }
         }
 
         /// <summary>

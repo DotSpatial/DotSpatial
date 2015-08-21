@@ -94,8 +94,8 @@ namespace DotSpatial.Topology.Operation.Relate
                     isArea = true;
             }
             if (isArea)
-                 Label = new Label(LocationType.Null, LocationType.Null, LocationType.Null);
-            else Label = new Label(LocationType.Null);
+                 Label = new Label(Location.Null, Location.Null, Location.Null);
+            else Label = new Label(Location.Null);
 
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
@@ -130,21 +130,21 @@ namespace DotSpatial.Topology.Operation.Relate
             // compute the On location value
             int boundaryCount = 0;
             bool foundInterior = false;
-            LocationType loc;
+            Location loc;
 
             foreach (EdgeEnd e in _edgeEnds)
             {
                 loc = e.Label.GetLocation(geomIndex);
-                if (loc == LocationType.Boundary) 
+                if (loc == Location.Boundary) 
                     boundaryCount++;
-                if (loc == LocationType.Interior) 
+                if (loc == Location.Interior) 
                     foundInterior = true;
             }
 
-            loc = LocationType.Null;
-            if (foundInterior)
-                loc = LocationType.Interior;
-            if (boundaryCount > 0)
+            loc = Location.Null;
+            if (foundInterior) 
+                loc = Location.Interior;
+            if (boundaryCount > 0) 
                 loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
             Label.SetLocation(geomIndex, loc);
         }
@@ -164,20 +164,20 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="side"></param>
-        private void ComputeLabelSide(int geomIndex, PositionType side)
+        private void ComputeLabelSide(int geomIndex, Positions side)
         {
             foreach (EdgeEnd e in _edgeEnds)
             {
                 if (e.Label.IsArea()) 
                 {
-                    LocationType loc = e.Label.GetLocation(geomIndex, side);
-                    if (loc == LocationType.Interior)
+                    Location loc = e.Label.GetLocation(geomIndex, side);
+                    if (loc == Location.Interior)
                     {
-                        Label.SetLocation(geomIndex, side, LocationType.Interior);
+                        Label.SetLocation(geomIndex, side, Location.Interior);
                         return;
                     }
-                    if (loc == LocationType.Exterior)
-                        Label.SetLocation(geomIndex, side, LocationType.Exterior);
+                    if (loc == Location.Exterior)
+                        Label.SetLocation(geomIndex, side, Location.Exterior);
                 }
             }
         }
@@ -188,8 +188,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="geomIndex"></param>
         private void ComputeLabelSides(int geomIndex)
         {
-            ComputeLabelSide(geomIndex, PositionType.Left);
-            ComputeLabelSide(geomIndex, PositionType.Right);
+            ComputeLabelSide(geomIndex, Positions.Left);
+            ComputeLabelSide(geomIndex, Positions.Right);
         }
 
         /// <summary>
@@ -216,9 +216,9 @@ namespace DotSpatial.Topology.Operation.Relate
         /// Update the IM with the contribution for the computed label for the EdgeStubs.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIm(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
-            Edge.UpdateIm(Label, im);
+            Edge.UpdateIM(Label, im);
         }
 
         /// <summary>

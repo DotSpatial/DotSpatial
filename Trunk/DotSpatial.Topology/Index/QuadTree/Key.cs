@@ -25,7 +25,7 @@
 using System;
 using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// A Key is a unique identifier for a node in a quadtree.

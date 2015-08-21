@@ -182,13 +182,13 @@ namespace DotSpatial.Topology.Geometries.Utilities
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            var shell = (ILinearRing)Edit(newPolygon.Shell, operation);
+            var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
             if (shell == null || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return _factory.CreatePolygon(null, null);
 
             var holes = new List<ILinearRing>();
-            for (var i = 0; i < newPolygon.NumHoles; i++)
+            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole == null || hole.IsEmpty) continue;

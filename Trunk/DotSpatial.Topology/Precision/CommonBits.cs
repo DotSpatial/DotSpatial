@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.Precision
         /// <summary>
         ///
         /// </summary>
-        public virtual double Common
+        public double Common
         {
             get
             {
@@ -66,7 +66,7 @@ namespace DotSpatial.Topology.Precision
         ///
         /// </summary>
         /// <param name="num"></param>
-        public virtual void Add(double num)
+        public void Add(double num)
         {
             long numBits = BitConverter.DoubleToInt64Bits(num);
             if (_isFirst)
@@ -137,7 +137,7 @@ namespace DotSpatial.Topology.Precision
         /// </summary>
         /// <param name="bits"></param>
         /// <returns></returns>
-        public virtual string ToString(long bits)
+        public string ToString(long bits)
         {
             double x = BitConverter.Int64BitsToDouble(bits);
             string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);

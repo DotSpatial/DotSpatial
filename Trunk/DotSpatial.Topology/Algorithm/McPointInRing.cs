@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.Algorithm
     /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
     /// <see cref="IndexedPointInAreaLocator"/>
-    public class MCPointInRing : IPointInRing 
+    public class MCPointInRing : IPointInRing
     {
         #region Fields
 
@@ -131,8 +131,8 @@ namespace DotSpatial.Topology.Algorithm
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
-                
+                double xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);  // x intersection of segment with ray
+
                 /*
                 *  crosses ray if strictly positive intersection.
                 */

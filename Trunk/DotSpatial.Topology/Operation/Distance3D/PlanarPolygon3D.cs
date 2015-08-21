@@ -124,7 +124,7 @@ namespace DotSpatial.Topology.Operation.Distance3D
 
         private static Plane3D FindBestFitPlane(IPolygon poly)
         {
-            var seq = poly.Shell.CoordinateSequence;
+            var seq = poly.ExteriorRing.CoordinateSequence;
             var basePt = AveragePoint(seq);
             var normal = AverageNormal(seq);
             return new Plane3D(normal, basePt);
@@ -132,12 +132,12 @@ namespace DotSpatial.Topology.Operation.Distance3D
 
         public bool Intersects(Coordinate intPt)
         {
-            if (LocationType.Exterior == Locate(intPt, _poly.Shell))
+            if (Location.Exterior == Locate(intPt, _poly.ExteriorRing))
                 return false;
 
-            for (int i = 0; i < _poly.NumHoles; i++)
+            for (int i = 0; i < _poly.NumInteriorRings; i++)
             {
-                if (LocationType.Interior == Locate(intPt, _poly.GetInteriorRingN(i)))
+                if (Location.Interior == Locate(intPt, _poly.GetInteriorRingN(i)))
                     return false;
             }
             return true;
@@ -148,10 +148,10 @@ namespace DotSpatial.Topology.Operation.Distance3D
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
             Coordinate ptProj = Project(pt, _facingPlane);
-            return LocationType.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
+            return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
-        private LocationType Locate(Coordinate pt, ILineString ring)
+        private Location Locate(Coordinate pt, ILineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);

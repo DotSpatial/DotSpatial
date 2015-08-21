@@ -68,7 +68,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         {
             _xValue = x;
             _insertEvent = insertEvent;
-            _eventType = insertEvent != null ? SweepLineEvents.Delete : SweepLineEvents.Insert;
+            eventType = insertEvent != null ? SweepLineEvents.Delete : SweepLineEvents.Insert;
             _sweepInt = sweepInt;
         }
 
@@ -141,8 +141,8 @@ namespace DotSpatial.Topology.Index.Sweepline
             SweepLineEvent pe = (SweepLineEvent)o;
             if (_xValue < pe._xValue) return -1;
             if (_xValue > pe._xValue) return 1;
-            if (_eventType < pe._eventType) return -1;
-            if (_eventType > pe._eventType) return 1;
+            if (eventType < pe.eventType) return -1;
+            if (eventType > pe.eventType) return 1;
             return 0;
         }
 

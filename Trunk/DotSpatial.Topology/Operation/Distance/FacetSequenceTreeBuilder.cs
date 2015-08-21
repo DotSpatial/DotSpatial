@@ -74,10 +74,10 @@ namespace DotSpatial.Topology.Operation.Distance
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public static StRtree<FacetSequence> BuildSTRtree(IGeometry g)
+        public static STRtree<FacetSequence> BuildSTRtree(IGeometry g)
 // ReSharper restore InconsistentNaming
         {
-            var tree = new StRtree<FacetSequence>(STRtreeNodeCapacity);
+            var tree = new STRtree<FacetSequence>(STRtreeNodeCapacity);
             var sections = ComputeFacetSequences(g);
             foreach (var section in sections)
             {

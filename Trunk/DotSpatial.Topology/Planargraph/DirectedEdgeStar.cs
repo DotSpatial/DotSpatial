@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the coordinate for the node at wich this star is based.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -63,7 +63,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(Edge edge)
+        public int GetIndex(Edge edge)
         {
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(DirectedEdge dirEdge)
+        public int GetIndex(DirectedEdge dirEdge)
         {
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
@@ -148,7 +148,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual int GetIndex(int i)
+        public int GetIndex(int i)
         {
             int modi = i % _outEdges.Count;
             //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
@@ -175,7 +175,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
-        public virtual DirectedEdge GetNextEdge(DirectedEdge dirEdge)
+        public DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
             int i = GetIndex(dirEdge);
             return _outEdges[GetIndex(i + 1)];
@@ -185,7 +185,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Drops a member of this DirectedEdgeStar.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void Remove(DirectedEdge de)
+        public void Remove(DirectedEdge de)
         {
             _outEdges.Remove(de);
         }

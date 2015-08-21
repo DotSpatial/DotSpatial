@@ -63,10 +63,10 @@ namespace DotSpatial.Topology.Operation.Relate
         /// Update the IM with the contribution for the EdgeStubs around the node.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIm(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
             foreach (EdgeEndBundle esb in Edges)
-                esb.UpdateIm(im);
+                esb.UpdateIM(im);
         }
 
         #endregion

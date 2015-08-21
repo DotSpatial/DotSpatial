@@ -116,7 +116,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// the constituent linework will be extracted and used
         /// </summary>
         /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
-        public virtual void Add(IGeometry g)
+		public void Add(IGeometry g)
         {
             g.Apply(_lineStringAdder);
         }
@@ -236,6 +236,46 @@ namespace DotSpatial.Topology.Operation.Polygonize
             _polyList = new List<IGeometry>();
             foreach (EdgeRing er in _shellList)
                 _polyList.Add(er.Polygon);
+        }
+
+        #endregion
+
+        #region Classes
+
+        /// <summary>
+        /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
+        /// </summary>
+        private class LineStringAdder : IGeometryComponentFilter
+        {
+            #region Fields
+
+            private readonly Polygonizer _container;
+
+            #endregion
+
+            #region Constructors
+
+            public LineStringAdder(Polygonizer container)
+            {
+                _container = container;
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Filters all <see cref="ILineString"/> geometry instances
+            /// </summary>
+            /// <param name="g">The geometry instance</param>
+            public void Filter(IGeometry g)
+            {
+                var lineString = g as ILineString;
+                if (lineString != null)
+                    _container.Add(lineString);
+            }
+
+            #endregion
         }
 
         #endregion

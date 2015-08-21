@@ -88,7 +88,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="node"></param>
         /// <returns>The added node.</returns>
-        protected virtual void Add(Node node)
+        protected void Add(Node node)
         {
             NodeMap.Add(node);
         }
@@ -99,7 +99,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Only subclasses can add Edges, to ensure the edges added are of the right class.
         /// </summary>
         /// <param name="edge"></param>
-        protected virtual void Add(Edge edge)
+        protected void Add(Edge edge)
         {
             _edges.Add(edge);
             Add(edge.GetDirEdge(0));
@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.Planargraph
         /// to ensure the edges added are of the right class.
         /// </summary>
         /// <param name="dirEdge"></param>
-        protected virtual void Add(DirectedEdge dirEdge)
+        protected void Add(DirectedEdge dirEdge)
         {
             DirEdges.Add(dirEdge);
         }
@@ -123,7 +123,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <returns>The node found<br/>
         /// or <c>null</c> if this graph contains no node at the location
         /// </returns>
-        public virtual Node FindNode(Coordinate pt)
+        public Node FindNode(Coordinate pt)
         {
             return NodeMap.Find(pt);
         }
@@ -133,7 +133,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="degree"></param>
         /// <returns></returns>
-        public virtual IList<Node> FindNodesOfDegree(int degree)
+        public IList<Node> FindNodesOfDegree(int degree)
         {
             IList<Node> nodesFound = new List<Node>();
             foreach (var node in NodeMap.Values )
@@ -180,7 +180,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Node to zero.
         /// </summary>
         /// <param name="edge"></param>
-        public virtual void Remove(Edge edge)
+        public void Remove(Edge edge)
         {
             Remove(edge.GetDirEdge(0));
             Remove(edge.GetDirEdge(1));
@@ -196,7 +196,7 @@ namespace DotSpatial.Topology.Planargraph
         /// even if the removal of the DirectedEdge reduces the degree of a Node to zero.
         /// </remarks>
         /// <param name="de"></param>
-        public virtual void Remove(DirectedEdge de)
+        public void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
             if (sym != null)
@@ -211,7 +211,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Edges.
         /// </summary>
         /// <param name="node"></param>
-        public virtual void Remove(Node node)
+        public void Remove(Node node)
         {
             // unhook all directed edges
             IList<DirectedEdge> outEdges = node.OutEdges.Edges;

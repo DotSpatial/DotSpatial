@@ -109,7 +109,7 @@ namespace DotSpatial.Topology.Algorithm
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
                 // segment straddles x axis, so compute intersection.
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+               double xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
                 // crosses ray if strictly positive intersection.
                 if (0.0 < xInt) _crossings++;

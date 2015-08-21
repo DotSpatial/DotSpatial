@@ -57,7 +57,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public virtual ILineString Line
+        public ILineString Line
         {
             get
             {

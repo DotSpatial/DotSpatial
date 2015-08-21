@@ -143,7 +143,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 IList<DirectedEdge> edges = er.Edges;
                 DirectedEdge de = edges[0];
                 // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, PositionType.Right) != LocationType.Interior) continue;
+                if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
 
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
@@ -199,7 +199,7 @@ namespace DotSpatial.Topology.Operation.Valid
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
             foreach (DirectedEdge de in graph.EdgeEnds)               
-                if (de.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
+                if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
                     de.IsInResult = true;
         }
 
@@ -220,9 +220,9 @@ namespace DotSpatial.Topology.Operation.Valid
             Edge e = graph.FindEdgeInSameDirection(pt0, pt1);
             DirectedEdge de = (DirectedEdge)graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
-            if (de.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
-                intDe = de;
-            else if (de.Sym.Label.GetLocation(0, PositionType.Right) == LocationType.Interior)
+            if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                intDe = de;            
+            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)            
                 intDe = de.Sym;
             Assert.IsTrue(intDe != null, "unable to find dirEdge with Interior on RHS");
             VisitLinkedDirectedEdges(intDe);

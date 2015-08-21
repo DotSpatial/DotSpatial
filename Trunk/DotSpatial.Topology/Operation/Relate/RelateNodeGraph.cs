@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <param name="geomGraph"></param>
-        public virtual void Build(GeometryGraph geomGraph)
+        public void Build(GeometryGraph geomGraph)
         {
             // compute nodes for intersections between previously noded edges
             ComputeIntersectionNodes(geomGraph, 0);
@@ -87,18 +87,18 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="geomGraph"></param>
         /// <param name="argIndex"></param>
-        public virtual void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
+        public void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
         {
             foreach (Edge e in geomGraph.Edges)
             {
-                var eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
-                    if (eLoc == LocationType.Boundary)
+                    if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else if (n.Label.IsNull(argIndex))
-                        n.SetLabel(argIndex, LocationType.Interior);                            
+                        n.SetLabel(argIndex, Location.Interior);                            
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="geomGraph"></param>
         /// <param name="argIndex"></param>
-        public virtual void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
+        public void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
         {
             foreach (Node graphNode in geomGraph.Nodes)
             {

@@ -83,7 +83,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
 
             var n1 = simp1.Count - 1;
-            segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+            segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
             for (int i = 2; i <= n1; i++)
             {
                 segGen.AddNextSegment(simp1[i], true);
@@ -98,7 +98,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             var n2 = simp2.Count - 1;
 
             // since we are traversing line in opposite order, offset position is still LEFT
-            segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+            segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
             for (var i = n2 - 2; i >= 0; i--)
             {
                 segGen.AddNextSegment(simp2[i], true);
@@ -124,7 +124,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 var n2 = simp2.Count - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
-                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
                 segGen.AddFirstSegment();
                 for (var i = n2 - 2; i >= 0; i--)
                 {
@@ -140,7 +140,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 // Coordinate[] simp1 = inputPts;
 
                 var n1 = simp1.Count - 1;
-                segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+                segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
                 segGen.AddFirstSegment();
                 for (var i = 2; i <= n1; i++)
                 {
@@ -164,12 +164,12 @@ namespace DotSpatial.Topology.Operation.Buffer
             }
         }
 
-        private void ComputeRingBufferCurve(IList<Coordinate> inputPts, PositionType side, OffsetSegmentGenerator segGen)
+        private void ComputeRingBufferCurve(IList<Coordinate> inputPts, Positions side, OffsetSegmentGenerator segGen)
         {
             // simplify input line to improve performance
             var distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
-            if (side == PositionType.Right)
+            if (side == Positions.Right)
                 distTol = -distTol;
             var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             // MD - used for testing only (to eliminate simplification)
@@ -202,7 +202,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 var n2 = simp2.Count - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
-                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], PositionType.Left);
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
                 segGen.AddFirstSegment();
                 for (var i = n2 - 2; i >= 0; i--)
                 {
@@ -221,7 +221,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 //      Coordinate[] simp1 = inputPts;
 
                 var n1 = simp1.Count - 1;
-                segGen.InitSideSegments(simp1[0], simp1[1], PositionType.Left);
+                segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
                 segGen.AddFirstSegment();
                 for (var i = 2; i <= n1; i++)
                 {
@@ -252,7 +252,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <returns>A Coordinate array representing the curve <br/>
         /// or <c>null</c> if the curve is empty
         /// </returns>
-        public virtual IList<Coordinate> GetLineCurve(IList<Coordinate> inputPts, double distance)
+        public IList<Coordinate> GetLineCurve(IList<Coordinate> inputPts, double distance)
         {
             _distance = distance;
 
@@ -260,7 +260,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             if (distance < 0.0 && !_bufParams.IsSingleSided) return null;
             if (distance == 0.0) return null;
 
-            double posDistance = Math.Abs(distance);
+            var posDistance = Math.Abs(distance);
             var segGen = GetSegmentGenerator(posDistance);
             if (inputPts.Count <= 1)
             {
@@ -311,7 +311,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// as well as rings.
         /// </summary>
         /// <returns>A List of Coordinate or <c>null</c> if the curve is empty.</returns>
-        public virtual IList<Coordinate> GetRingCurve(IList<Coordinate> inputPts, PositionType side, double distance)
+        public IList<Coordinate> GetRingCurve(IList<Coordinate> inputPts, Positions side, double distance)
         {
             _distance = distance;
             if (inputPts.Count <= 2)

@@ -164,7 +164,7 @@ namespace DotSpatial.Topology.Operation.Distance
         {
             var pt = ptLoc.Coordinate;
             // if pt is not in exterior, distance to geom is 0
-            if (LocationType.Exterior != _ptLocator.Locate(pt, poly))
+            if (Location.Exterior != _ptLocator.Locate(pt, poly))
             {
                 _minDistance = 0.0;
                 locPtPoly[0] = ptLoc;
@@ -243,7 +243,7 @@ namespace DotSpatial.Topology.Operation.Distance
             {
                 for (var j = 0; j < coord1.Count - 1; j++)
                 {
-                    var dist = CgAlgorithms.DistanceLineLine(
+                    var dist = CGAlgorithms.DistanceLineLine(
                                                     coord0[i], coord0[i + 1],
                                                     coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
@@ -274,7 +274,7 @@ namespace DotSpatial.Topology.Operation.Distance
             // brute force approach!
             for (int i = 0; i < coord0.Count - 1; i++)
             {
-                double dist = CgAlgorithms.DistancePointLine(coord, coord0[i], coord0[i + 1]);
+                double dist = CGAlgorithms.DistancePointLine(coord, coord0[i], coord0[i + 1]);
                 if (dist < _minDistance)
                 {
                     _minDistance = dist;

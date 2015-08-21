@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.Operation.Union
              * This makes unioning more efficient, since vertices are more likely 
              * to be eliminated on each round.
              */
-            var index = new StRtree<object>(StrtreeNodeCapacity);
+            var index = new STRtree<object>(StrtreeNodeCapacity);
             foreach (IGeometry item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 

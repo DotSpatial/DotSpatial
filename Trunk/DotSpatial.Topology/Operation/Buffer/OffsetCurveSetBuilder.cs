@@ -110,14 +110,14 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// The curve may be oriented in either direction.
         /// If the curve is oriented CW, the locations will be:
         /// Left: Location.Exterior.
-        /// Right: LocationType.Interior.
+        /// Right: Location.Interior.
         /// </summary>
-        private void AddCurve(IList<Coordinate> coord, LocationType leftLoc, LocationType rightLoc)
+        private void AddCurve(IList<Coordinate> coord, Location leftLoc, Location rightLoc)
         {
             // don't add null or trivial curves!
             if (coord == null || coord.Count < 2) return;
             // add the edge for a coordinate list which is a raw offset curve
-            var e = new NodedSegmentString(coord, new Label(0, LocationType.Boundary, leftLoc, rightLoc));
+            var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
             _curveList.Add(e);
         }
 
@@ -132,7 +132,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurve(curve, LocationType.Exterior, LocationType.Interior);
+            AddCurve(curve, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 return;
             var coord = p.Coordinates;
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurve(curve, LocationType.Exterior, LocationType.Interior);
+            AddCurve(curve, Location.Exterior, Location.Interior);
         }
 
         /// <summary>
@@ -155,28 +155,28 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            double offsetDistance = _distance;
-            PositionType offsetSide = PositionType.Left;
+            var offsetDistance = _distance;
+            var offsetSide = Positions.Left;
             if (_distance < 0.0)
             {
                 offsetDistance = -_distance;
-                offsetSide = PositionType.Right;
+                offsetSide = Positions.Right;
             }
 
-            ILinearRing shell = p.Shell;
-            IList<Coordinate> shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
+            var shell = p.Shell;
+			var shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
             if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance)) return;
             // don't attemtp to buffer a polygon with too few distinct vertices
             if (_distance <= 0.0 && shellCoord.Count < 3) return;
 
-            AddPolygonRing(shellCoord, offsetDistance, offsetSide, LocationType.Exterior, LocationType.Interior);
+            AddPolygonRing(shellCoord, offsetDistance, offsetSide, Location.Exterior, Location.Interior);
 
-            for (int i = 0; i < p.NumHoles; i++)
+            for (var i = 0; i < p.NumInteriorRings; i++)
             {
-                ILinearRing hole = (ILinearRing)p.GetInteriorRingN(i);
-                IList<Coordinate> holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
+                var hole = (ILinearRing)p.GetInteriorRingN(i);
+                var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
@@ -185,7 +185,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
-                AddPolygonRing(holeCoord, offsetDistance, Position.Opposite(offsetSide), LocationType.Interior, LocationType.Exterior);
+                AddPolygonRing(holeCoord, offsetDistance, Position.Opposite(offsetSide), Location.Interior, Location.Exterior);
             }
         }
 
@@ -201,14 +201,14 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(IList<Coordinate> coord, double offsetDistance, PositionType side, LocationType cwLeftLoc, LocationType cwRightLoc)
+        private void AddPolygonRing(IList<Coordinate> coord, double offsetDistance, Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
             // don't bother adding ring if it is "flat" and will disappear in the output
             if (offsetDistance == 0.0 && coord.Count < LinearRing.MinimumValidSize)
                 return;
-            LocationType leftLoc = cwLeftLoc;
-            LocationType rightLoc = cwRightLoc;
-            if (coord.Count >= LinearRing.MinimumValidSize && CgAlgorithms.IsCounterClockwise(coord))
+            var leftLoc = cwLeftLoc;
+            var rightLoc = cwRightLoc;
+            if (coord.Count >= LinearRing.MinimumValidSize && CGAlgorithms.IsCounterClockwise(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
@@ -224,7 +224,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// its left and right location.
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
-        public virtual IList<ISegmentString> GetCurves()
+        public IList<ISegmentString> GetCurves()
         {
             Add(_inputGeom);
             return _curveList;
@@ -260,8 +260,8 @@ namespace DotSpatial.Topology.Operation.Buffer
              * a full topological computation.
              *
              */
-            ILinearRing ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
-            MinimumDiameter md = new MinimumDiameter(ring);
+            var ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
+            var md = new MinimumDiameter(ring);
             return md.Length < 2 * Math.Abs(bufferDistance);
         }
 
@@ -280,11 +280,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsTriangleErodedCompletely(IList<Coordinate> triangleCoord, double bufferDistance)
+        private static bool IsTriangleErodedCompletely(IList<Coordinate> triangleCoord, double bufferDistance)
         {
-            Triangle tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
-            Coordinate inCentre = tri.InCentre();
-            double distToCentre = CgAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
+            var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
+            var inCentre = tri.InCentre();
+            var distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }
 

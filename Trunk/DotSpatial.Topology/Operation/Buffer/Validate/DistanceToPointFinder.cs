@@ -57,8 +57,8 @@ namespace DotSpatial.Topology.Operation.Buffer.Validate
 
         public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
         {
-            ComputeDistance(poly.Shell, pt, ptDist);
-            for (int i = 0; i < poly.NumHoles; i++)
+            ComputeDistance(poly.ExteriorRing, pt, ptDist);
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 ComputeDistance(poly.GetInteriorRingN(i), pt, ptDist);
             }

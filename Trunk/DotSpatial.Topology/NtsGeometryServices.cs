@@ -220,7 +220,7 @@ namespace DotSpatial.Topology
         /// </summary>
         public NtsGeometryServices()
             : this(CoordinateArraySequenceFactory.Instance,
-            new PrecisionModel(PrecisionModelType.Floating), -1)
+            new PrecisionModel(PrecisionModels.Floating), -1)
         {
         }
 
@@ -235,7 +235,7 @@ namespace DotSpatial.Topology
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory;
             DefaultPrecisionModel = precisionModel;
-            DefaultSrid = srid;
+            DefaultSRID = srid;
         }
 
         #region Implementation of IGeometryServices
@@ -243,7 +243,7 @@ namespace DotSpatial.Topology
         /// <summary>
         /// Gets the default spatial reference id
         /// </summary>
-        public int DefaultSrid { get; set; }
+        public int DefaultSRID { get; set; }
 
         /// <summary>
         /// Gets or sets the coordiate sequence factory to use.
@@ -259,7 +259,7 @@ namespace DotSpatial.Topology
         /// Creates a precision model based on given precision model type
         /// </summary>
         /// <returns>The precision model type</returns>
-        public IPrecisionModel CreatePrecisionModel(PrecisionModelType modelType)
+        public IPrecisionModel CreatePrecisionModel(PrecisionModels modelType)
         {
             return new PrecisionModel(modelType);
         }
@@ -290,7 +290,7 @@ namespace DotSpatial.Topology
 
         public IGeometryFactory CreateGeometryFactory()
         {
-            return CreateGeometryFactory(DefaultSrid);
+            return CreateGeometryFactory(DefaultSRID);
         }
 
         public IGeometryFactory CreateGeometryFactory(int srid)
@@ -314,12 +314,12 @@ namespace DotSpatial.Topology
 
         public IGeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
         {
-            return CreateGeometryFactory(DefaultPrecisionModel, DefaultSrid, coordinateSequenceFactory);
+            return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
         }
 
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel)
         {
-            return CreateGeometryFactory(precisionModel, DefaultSrid, DefaultCoordinateSequenceFactory);
+            return CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
         }
 
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid)

@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual int Index
+        public int Index
         {
             get
             {
@@ -81,7 +81,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual IGeometry Parent
+        public IGeometry Parent
         {
             get
             {

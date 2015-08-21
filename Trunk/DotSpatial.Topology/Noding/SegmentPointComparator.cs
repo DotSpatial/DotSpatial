@@ -49,50 +49,35 @@ namespace DotSpatial.Topology.Noding
         ///  0 if the two nodes are equal, or <br/>
         ///  1 if node1 occurs first.
         /// </returns>
-        public static int Compare(OctantDirection octant, Coordinate p0, Coordinate p1)
+        public static int Compare(Octants octant, Coordinate p0, Coordinate p1)
         {
             // nodes can only be equal if their coordinates are equal
             if (p0.Equals2D(p1))
                 return 0;
 
-            int xSign = RelativeSign(p0.X, p1.X);
-            int ySign = RelativeSign(p0.Y, p1.Y);
+            var xSign = RelativeSign(p0.X, p1.X);
+            var ySign = RelativeSign(p0.Y, p1.Y);
 
             switch (octant)
             {
-                case OctantDirection.Zero:
+                case Octants.Zero: 
                     return CompareValue(xSign, ySign);
-                case OctantDirection.One:
+                case Octants.One:
                     return CompareValue(ySign, xSign);
-                case OctantDirection.Two:
+                case Octants.Two:
                     return CompareValue(ySign, -xSign);
-                case OctantDirection.Three:
+                case Octants.Three:
                     return CompareValue(-xSign, ySign);
-                case OctantDirection.Four:
+                case Octants.Four:
                     return CompareValue(-xSign, -ySign);
-                case OctantDirection.Five:
+                case Octants.Five:
                     return CompareValue(-ySign, -xSign);
-                case OctantDirection.Six:
+                case Octants.Six:
                     return CompareValue(-ySign, xSign);
-                case OctantDirection.Seven:
+                case Octants.Seven:
                     return CompareValue(xSign, -ySign);
             }
             throw new InvalidOctantException(octant.ToString());
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="x1"></param>
-        /// <returns></returns>
-        public static int RelativeSign(double x0, double x1)
-        {
-            if (x0 < x1)
-                return -1;
-            if (x0 > x1)
-                return 1;
-            return 0;
         }
 
         /// <summary>
@@ -110,6 +95,21 @@ namespace DotSpatial.Topology.Noding
             if (compareSign1 < 0)
                 return -1;
             if (compareSign1 > 0)
+                return 1;
+            return 0;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="x0"></param>
+        /// <param name="x1"></param>
+        /// <returns></returns>
+        public static int RelativeSign(double x0, double x1)
+        {
+            if (x0 < x1)
+                return -1;
+            if (x0 > x1)
                 return 1;
             return 0;
         }

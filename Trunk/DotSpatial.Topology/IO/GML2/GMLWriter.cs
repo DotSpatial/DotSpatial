@@ -61,7 +61,7 @@ namespace DotSpatial.Topology.IO.GML2
         public void Write(IGeometry geometry, Stream stream)
         {
             XmlTextWriter writer = new XmlTextWriter(stream, null) {Namespaces = true};
-            writer.WriteStartElement(GmlElements.GmlPrefix, "GML", GmlElements.GmlNs);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
             Write(geometry, writer);
             writer.WriteEndElement();
             ((IDisposable)writer).Dispose();
@@ -208,9 +208,9 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>        
         protected void Write(Coordinate coordinate, XmlTextWriter writer)
         {
-            writer.WriteStartElement(GmlElements.GmlPrefix, "coord", GmlElements.GmlNs);
-            writer.WriteElementString(GmlElements.GmlPrefix, "X", GmlElements.GmlNs, coordinate.X.ToString("g", NumberFormatter));
-            writer.WriteElementString(GmlElements.GmlPrefix, "Y", GmlElements.GmlNs, coordinate.Y.ToString("g", NumberFormatter));
+            writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
+            writer.WriteElementString(GMLElements.gmlPrefix, "X", GMLElements.gmlNS, coordinate.X.ToString("g", NumberFormatter));
+            writer.WriteElementString(GMLElements.gmlPrefix, "Y", GMLElements.gmlNS, coordinate.Y.ToString("g", NumberFormatter));
             writer.WriteEndElement();
         }
 
@@ -256,7 +256,7 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IPoint point, XmlTextWriter writer)
         {
-            writer.WriteStartElement("Point", GmlElements.GmlNs);
+            writer.WriteStartElement("Point", GMLElements.gmlNS);
             Write(point.Coordinate, writer);
             writer.WriteEndElement();
         }
@@ -268,7 +268,7 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(ILineString lineString, XmlTextWriter writer)
         {
-            writer.WriteStartElement("LineString", GmlElements.GmlNs);
+            writer.WriteStartElement("LineString", GMLElements.gmlNS);
             WriteCoordinates(lineString.Coordinates, writer);
             writer.WriteEndElement();
         }
@@ -280,7 +280,7 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(ILinearRing linearRing, XmlTextWriter writer)
         {
-            writer.WriteStartElement("LinearRing", GmlElements.GmlNs);
+            writer.WriteStartElement("LinearRing", GMLElements.gmlNS);
             WriteCoordinates(linearRing.Coordinates, writer);
             writer.WriteEndElement();
         }
@@ -292,13 +292,13 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IPolygon polygon, XmlTextWriter writer)
         {
-            writer.WriteStartElement("Polygon", GmlElements.GmlNs);
-            writer.WriteStartElement("outerBoundaryIs", GmlElements.GmlNs);
+            writer.WriteStartElement("Polygon", GMLElements.gmlNS);
+            writer.WriteStartElement("outerBoundaryIs", GMLElements.gmlNS);
             Write(polygon.Shell as ILinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumHoles; i++)
             {
-                writer.WriteStartElement("innerBoundaryIs", GmlElements.GmlNs);
+                writer.WriteStartElement("innerBoundaryIs", GMLElements.gmlNS);
                 Write(polygon.Holes[i] as ILinearRing, writer);
                 writer.WriteEndElement();
             }
@@ -312,10 +312,10 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiPoint multiPoint, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiPoint", GmlElements.GmlNs);
+            writer.WriteStartElement("MultiPoint", GMLElements.gmlNS);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
-                writer.WriteStartElement("pointMember", GmlElements.GmlNs);
+                writer.WriteStartElement("pointMember", GMLElements.gmlNS);
                 Write(multiPoint.Geometries[i] as IPoint, writer);
                 writer.WriteEndElement();
             }
@@ -329,10 +329,10 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiLineString multiLineString, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiLineString", GmlElements.GmlNs);
+            writer.WriteStartElement("MultiLineString", GMLElements.gmlNS);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
-                writer.WriteStartElement("lineStringMember", GmlElements.GmlNs);
+                writer.WriteStartElement("lineStringMember", GMLElements.gmlNS);
                 Write(multiLineString.Geometries[i] as ILineString, writer);
                 writer.WriteEndElement();
             }
@@ -346,10 +346,10 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IMultiPolygon multiPolygon, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiPolygon", GmlElements.GmlNs);
+            writer.WriteStartElement("MultiPolygon", GMLElements.gmlNS);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
-                writer.WriteStartElement("polygonMember", GmlElements.GmlNs);
+                writer.WriteStartElement("polygonMember", GMLElements.gmlNS);
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
                 writer.WriteEndElement();
             }
@@ -363,10 +363,10 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>
         protected void Write(IGeometryCollection geometryCollection, XmlTextWriter writer)
         {
-            writer.WriteStartElement("MultiGeometry", GmlElements.GmlNs);
+            writer.WriteStartElement("MultiGeometry", GMLElements.gmlNS);
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
-                writer.WriteStartElement("geometryMember", GmlElements.GmlNs);
+                writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
                 Write(geometryCollection.Geometries[i], writer);
                 writer.WriteEndElement();
             }
@@ -380,7 +380,7 @@ namespace DotSpatial.Topology.IO.GML2
         /// <param name="writer"></param>        
         protected void WriteCoordinates(IList<Coordinate> coordinates, XmlTextWriter writer)
         {
-            writer.WriteStartElement(GmlElements.GmlPrefix, "coordinates", GmlElements.GmlNs);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
             var elements = new List<string>(coordinates.Count);
             foreach (var coordinate in coordinates)
                 elements.Add(string.Format(NumberFormatter, "{0},{1}", coordinate.X, coordinate.Y));

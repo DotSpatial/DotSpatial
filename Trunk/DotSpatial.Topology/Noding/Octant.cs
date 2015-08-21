@@ -39,7 +39,7 @@ namespace DotSpatial.Topology.Noding
     /// </para>
     ///  If line segments lie along a coordinate axis, the octant is the lower of the two possible values.
     /// </summary>
-    public enum OctantDirection
+    public enum Octants
     {
         /// <summary>
         ///
@@ -88,7 +88,7 @@ namespace DotSpatial.Topology.Noding
     }
 
     /// <summary>
-    ///  Methods for computing and working with <see cref="OctantDirection"/> of the Cartesian plane.
+    ///  Methods for computing and working with <see cref="Octants"/> of the Cartesian plane.
     /// </summary>
     public static class Octant
     {
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="dx"></param>
         /// <param name="dy"></param>
         /// <returns></returns>
-        public static OctantDirection GetOctant(double dx, double dy)
+        public static Octants GetOctant(double dx, double dy)
         {
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for point ( " + dx + ", " + dy + " )");
@@ -113,15 +113,15 @@ namespace DotSpatial.Topology.Noding
             {
                 if (dy >= 0)
                 {
-                    return adx >= ady ? OctantDirection.Zero : OctantDirection.One;
+                    return adx >= ady ? Octants.Zero : Octants.One;
                 }
-                return adx >= ady ? OctantDirection.Seven : OctantDirection.Six;
+                return adx >= ady ? Octants.Seven : Octants.Six;
             }
             if (dy >= 0)
             {
-                return adx >= ady ? OctantDirection.Three : OctantDirection.Two;
+                return adx >= ady ? Octants.Three : Octants.Two;
             }
-            return adx >= ady ? OctantDirection.Four : OctantDirection.Five;
+            return adx >= ady ? Octants.Four : Octants.Five;
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public static OctantDirection GetOctant(Coordinate p0, Coordinate p1)
+        public static Octants GetOctant(Coordinate p0, Coordinate p1)
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;

@@ -31,8 +31,8 @@ namespace DotSpatial.Topology.Operation.Valid
     /// Contains information about the nature and location of 
     /// a <see cref="Geometry" /> validation error.
     /// </summary>
-    public enum TopologyValidationErrorType
-    {
+    public enum TopologyValidationErrors
+    {     
         /// <summary>
         /// Not used.
         /// </summary>
@@ -137,7 +137,7 @@ namespace DotSpatial.Topology.Operation.Valid
             "Invalid Coordinate"
         };
 
-        private readonly TopologyValidationErrorType _errorType;
+        private readonly TopologyValidationErrors _errorType;
         private readonly Coordinate _pt;
 
         #endregion
@@ -149,7 +149,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <param name="errorType"></param>
         /// <param name="pt"></param>
-        public TopologyValidationError(TopologyValidationErrorType errorType, Coordinate pt)
+        public TopologyValidationError(TopologyValidationErrors errorType, Coordinate pt)
         {
             _errorType = errorType;
             if (pt != null)
@@ -160,7 +160,7 @@ namespace DotSpatial.Topology.Operation.Valid
         ///
         /// </summary>
         /// <param name="errorType"></param>
-        public TopologyValidationError(TopologyValidationErrorType errorType) : this(errorType, null) { }
+        public TopologyValidationError(TopologyValidationErrors errorType) : this(errorType, null) { }
 
         #endregion
 
@@ -169,7 +169,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -180,7 +180,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         ///
         /// </summary>
-        public virtual TopologyValidationErrorType ErrorType
+        public TopologyValidationErrors ErrorType
         {
             get
             {
@@ -191,7 +191,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         ///
         /// </summary>
-        public virtual String Message
+        public String Message
         {
             get
             {

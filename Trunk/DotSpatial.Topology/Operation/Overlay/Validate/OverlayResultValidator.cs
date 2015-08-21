@@ -33,7 +33,7 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
 
         private readonly double _boundaryDistanceTolerance = Tolerance;
         private readonly IGeometry[] _geom;
-        private readonly LocationType[] _location = new LocationType[3];
+        private readonly Location[] _location = new Location[3];
         private readonly FuzzyPointLocator[] _locFinder;
         private readonly List<Coordinate> _testCoords = new List<Coordinate>();
         private Coordinate _invalidLocation;
@@ -100,7 +100,7 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
             /*
              * If any location is on the Boundary, can't deduce anything, so just return true
              */
-            if (HasLocation(_location, LocationType.Boundary))
+            if (HasLocation(_location, Location.Boundary))
                 return true;
 
             return IsValidResult(overlayOp, _location);
@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
                     GeometrySnapper.ComputeSizeBasedSnapTolerance(g1));
         }
 
-        private static bool HasLocation(LocationType[] location, LocationType loc)
+        private static bool HasLocation(Location[] location, Location loc)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -147,11 +147,11 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
             return isValid;
         }
 
-        private static bool IsValidResult(SpatialFunction overlayOp, LocationType[] location)
+        private static bool IsValidResult(SpatialFunction overlayOp, Location[] location)
         {
             bool expectedInterior = OverlayOp.IsResultOfOp(location[0], location[1], overlayOp);
 
-            bool resultInInterior = (location[2] == LocationType.Interior);
+            bool resultInInterior = (location[2] == Location.Interior);
             // MD use simpler: boolean isValid = (expectedInterior == resultInInterior);
             bool isValid = !(expectedInterior ^ resultInInterior);
 
@@ -160,16 +160,16 @@ namespace DotSpatial.Topology.Operation.Overlay.Validate
             return isValid;
         }
 
-        private static void ReportResult(SpatialFunction overlayOp, LocationType[] location, bool expectedInterior)
+        private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
 #if !PCL
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
             Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}", 
                 overlayOp,
-                Location.ToLocationSymbol(location[0]),
-                Location.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e',
-                Location.ToLocationSymbol(location[2])));
+                LocationUtility.ToLocationSymbol(location[0]), 
+                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e', 
+                LocationUtility.ToLocationSymbol(location[2])));
 // ReSharper restore RedundantStringFormatCall
 #endif
         }

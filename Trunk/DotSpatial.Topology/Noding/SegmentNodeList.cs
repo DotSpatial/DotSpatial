@@ -95,6 +95,35 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
+        /// Adds nodes for any collapsed edge pairs.
+        /// Collapsed edge pairs can be caused by inserted nodes, or they can be
+        /// pre-existing in the edge vertex list.
+        /// In order to provide the correct fully noded semantics,
+        /// the vertex at the base of a collapsed pair must also be added as a node.
+        /// </summary>
+        private void AddCollapsedNodes()
+        {
+            IList<int> collapsedVertexIndexes = new List<int>();
+
+            FindCollapsesFromInsertedNodes(collapsedVertexIndexes);
+            FindCollapsesFromExistingVertices(collapsedVertexIndexes);
+
+            // node the collapses
+            foreach(var vertexIndex in collapsedVertexIndexes)
+                Add(_edge.GetCoordinate(vertexIndex), vertexIndex);
+        }
+
+        /// <summary>
+        /// Adds nodes for the first and last points of the edge.
+        /// </summary>
+        private void AddEndPoints()
+        {
+            var maxSegIndex = _edge.Count - 1;
+            Add(_edge.GetCoordinate(0), 0);
+            Add(_edge.GetCoordinate(maxSegIndex), maxSegIndex);
+        }
+
+        /// <summary>
         /// Creates new edges for all the edges that the intersections in this
         /// list split the parent edge into.
         /// Adds the edges to the provided argument list
@@ -119,58 +148,6 @@ namespace DotSpatial.Topology.Noding
                 edgeList.Add(newEdge);
                 eiPrev = ei;
             }
-        }
-
-        /// <summary>
-        /// Returns an iterator of SegmentNodes.
-        /// </summary>
-        /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator<object>GetEnumerator() 
-        { 
-            return _nodeMap.Values.GetEnumerator(); 
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="outstream"></param>
-        public void Write(StreamWriter outstream)
-        {
-            outstream.Write("Intersections:");
-            foreach (object obj in this)
-            {
-                SegmentNode ei = (SegmentNode)obj;
-                ei.Write(outstream);
-            }
-        }
-
-        /// <summary>
-        /// Adds nodes for any collapsed edge pairs.
-        /// Collapsed edge pairs can be caused by inserted nodes, or they can be
-        /// pre-existing in the edge vertex list.
-        /// In order to provide the correct fully noded semantics,
-        /// the vertex at the base of a collapsed pair must also be added as a node.
-        /// </summary>
-        private void AddCollapsedNodes()
-        {
-            IList<int> collapsedVertexIndexes = new List<int>();
-
-            FindCollapsesFromInsertedNodes(collapsedVertexIndexes);
-            FindCollapsesFromExistingVertices(collapsedVertexIndexes);
-
-            // node the collapses
-            foreach(var vertexIndex in collapsedVertexIndexes)
-                Add(_edge.GetCoordinate(vertexIndex), vertexIndex);
-        }
-
-        /// <summary>
-        /// Adds nodes for the first and last points of the edge.
-        /// </summary>
-        private void AddEndPoints()
-        {
-            int maxSegIndex = _edge.Count - 1;
-            Add(_edge.GetCoordinate(0), 0);
-            Add(_edge.GetCoordinate(maxSegIndex), maxSegIndex);
         }
 
         /// <summary>
@@ -272,9 +249,32 @@ namespace DotSpatial.Topology.Noding
             }
         }
 
+        /// <summary>
+        /// Returns an iterator of SegmentNodes.
+        /// </summary>
+        /// <returns>An iterator of SegmentNodes.</returns>
+        public IEnumerator<object>GetEnumerator() 
+        { 
+            return _nodeMap.Values.GetEnumerator(); 
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="outstream"></param>
+        public void Write(StreamWriter outstream)
+        {
+            outstream.Write("Intersections:");
+            foreach(var obj in this)
+            {
+                var ei = (SegmentNode) obj;
+                ei.Write(outstream);
+            }
         }
 
         #endregion
@@ -364,6 +364,16 @@ namespace DotSpatial.Topology.Noding
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        private void ReadNextNode()
+        {
+            if (_nodeIt.MoveNext())
+                 _nextNode = (SegmentNode) _nodeIt.Current;
+            else _nextNode = null;
+        }
+
+        /// <summary>
         /// Not implemented.
         /// </summary>
         /// <exception cref="NotSupportedException">This method is not implemented.</exception>
@@ -379,16 +389,6 @@ namespace DotSpatial.Topology.Noding
         public void Reset()
         {
             _nodeIt.Reset();            
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void ReadNextNode()
-        {
-            if (_nodeIt.MoveNext())
-                 _nextNode = (SegmentNode) _nodeIt.Current;
-            else _nextNode = null;
         }
 
         #endregion

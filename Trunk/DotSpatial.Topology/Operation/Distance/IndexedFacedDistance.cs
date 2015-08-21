@@ -35,7 +35,7 @@ namespace DotSpatial.Topology.Operation.Distance
     {
         #region Fields
 
-        private readonly StRtree<FacetSequence> _cachedTree;
+        private readonly STRtree<FacetSequence> _cachedTree;
 
         #endregion
 

@@ -82,7 +82,7 @@ namespace DotSpatial.Topology.Planargraph
         /// The associated <see cref="DirectedEdge" />s and <see cref="Node" />s are also added.
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to add.</param>
-        public virtual void Add(Edge e)
+        public void Add(Edge e)
         {
             if (Edges.Contains(e))  
                 return;
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to test.</param>
         /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
-        public virtual bool Contains(Edge e)
+        public bool Contains(Edge e) 
         {
             return Edges.Contains(e); 
         }
@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.Planargraph
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
+        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
         { 
             return DirEdges.GetEnumerator(); 
         }
@@ -121,7 +121,7 @@ namespace DotSpatial.Topology.Planargraph
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator<Edge> GetEdgeEnumerator()
+        public IEnumerator<Edge> GetEdgeEnumerator() 
         {
             return Edges.GetEnumerator();
         }
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Returns an <see cref="IEnumerator{Node}" /> over the <see cref="Node" />s in this graph.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator<Node> GetNodeEnumerator()
+        public IEnumerator<Node> GetNodeEnumerator()
         {
             return NodeMap.GetEnumerator();
         }
@@ -139,7 +139,7 @@ namespace DotSpatial.Topology.Planargraph
         ///  Gets the <see cref="PlanarGraph" /> which this subgraph is part of.
         /// </summary>
         /// <returns></returns>
-        public virtual PlanarGraph GetParent()
+        public PlanarGraph GetParent()
         {
             return ParentGraph;
         }

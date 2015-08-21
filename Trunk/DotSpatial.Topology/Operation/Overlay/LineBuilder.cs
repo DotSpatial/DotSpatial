@@ -72,7 +72,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <returns>
         /// A list of the LineStrings in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList<IGeometry> Build(SpatialFunction opCode)
+        public IList<IGeometry> Build(SpatialFunction opCode)
         {
             FindCoveredLineEdges();
             CollectLines(opCode);
@@ -105,7 +105,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public virtual void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
+        public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
         {
             Label label = de.Label;
             if (de.IsLineEdge)
@@ -197,7 +197,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="targetIndex"></param>
         private void LabelIsolatedLine(Edge e, int targetIndex)
         {
-            LocationType loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
+            Location loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
             e.Label.SetLocation(targetIndex, loc);
         }
 

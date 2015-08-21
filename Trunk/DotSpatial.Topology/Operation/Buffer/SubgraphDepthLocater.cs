@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// The input subgraphs are assumed to have had depths
     /// already calculated for their edges.
     /// </summary>
-    public class SubgraphDepthLocater
+    internal class SubgraphDepthLocater
     {
         #region Fields
 
@@ -128,14 +128,14 @@ namespace DotSpatial.Topology.Operation.Buffer
                 if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
 
                 // skip if stabbing ray is right of the segment
-                if (CgAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CgAlgorithms.Right) continue;
+                if (CGAlgorithms.ComputeOrientation(_seg.P0, _seg.P1, stabbingRayLeftPt) == CGAlgorithms.Right) continue;
 
                 // stabbing line cuts this segment, so record it
-                int depth = dirEdge.GetDepth(PositionType.Left);
+                int depth = dirEdge.GetDepth(Positions.Left);
                 // if segment direction was flipped, use RHS depth instead
                 if (!_seg.P0.Equals(pts[i]))
-                    depth = dirEdge.GetDepth(PositionType.Right);
-                DepthSegment ds = new DepthSegment(_seg, depth);
+                    depth = dirEdge.GetDepth(Positions.Right);
+                var ds = new DepthSegment(_seg, depth);
                 stabbedSegments.Add(ds);
             }
         }
@@ -180,7 +180,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             /// </summary>
             /// <param name="seg"></param>
             /// <param name="depth"></param>
-            public DepthSegment(ILineSegmentBase seg, int depth)
+            public DepthSegment(LineSegment seg, int depth)
             {
                 // input seg is assumed to be normalized
                 _upwardSeg = new LineSegment(seg);
@@ -246,9 +246,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             /// <param name="seg0">The left hand side segment to compare.</param>
             /// <param name="seg1">The riht hand side segment to compare.</param>
             /// <returns>An integer, -1 if seg0 is less, 0 if they are the same, and 1 if seg0 is greater.</returns>
-            private static int CompareX(ILineSegmentBase seg0, ILineSegmentBase seg1)
+            private int CompareX(LineSegment seg0, LineSegment seg1)
             {
-                int compare0 = seg0.P0.CompareTo(seg1.P0);
+                var compare0 = seg0.P0.CompareTo(seg1.P0);
                 return compare0 != 0 ? compare0 : seg0.P1.CompareTo(seg1.P1);
             }
 

@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.IO
         private bool _emitM;
         private bool _emitZ;
         private Ordinates _handleOrdinates;
-        private bool _handleSrid;
+        private bool _handleSRID;
         private bool _strict = true;
 
         #endregion
@@ -73,9 +73,9 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSrid) :
-            this(encodingType, handleSrid, false)
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
+        public WKBWriter(ByteOrder encodingType, bool handleSRID) :
+            this(encodingType, handleSRID, false)
         {
         }
 
@@ -83,10 +83,10 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSrid, bool emitZ) :
-            this(encodingType, handleSrid, emitZ, false)
+        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ) :
+            this(encodingType, handleSRID, emitZ, false)
         {
         }
 
@@ -94,16 +94,16 @@ namespace DotSpatial.Topology.IO
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
+        /// <param name="handleSRID">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
         /// <param name="emitM">M values, present or not, should be emitted</param>
-        public WKBWriter(ByteOrder encodingType, bool handleSrid, bool emitZ, bool emitM)
+        public WKBWriter(ByteOrder encodingType, bool handleSRID, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
             
             //Allow setting of HandleSRID
-            if (handleSrid)_strict = false;
-            HandleSrid = handleSrid;
+            if (handleSRID)_strict = false;
+            HandleSRID = handleSRID;
 
             var handleOrdinates = Ordinates.XY;
             if (emitZ)
@@ -154,13 +154,13 @@ namespace DotSpatial.Topology.IO
         }
 
         /// <summary>
-        /// Gets or sets whether the <see cref="IGeometry.Srid"/> value should be emitted
+        /// Gets or sets whether the <see cref="IGeometry.SRID"/> value should be emitted
         /// </summary>
         [Obsolete("Use HandleSRID instead")]
-        public bool EmitSrid
+        public bool EmitSRID
         {
-            get { return HandleSrid; }
-            set { HandleSrid = value; }
+            get { return HandleSRID; }
+            set { HandleSRID = value; }
         }
 
         /// <summary>
@@ -201,16 +201,25 @@ namespace DotSpatial.Topology.IO
             }
         }
 
-        public bool HandleSrid
+        public bool HandleSRID
         {
-            get { return _handleSrid; }
+            get { return _handleSRID; }
             set
             {
                 if (_strict && value)
                     throw new ArgumentException("Cannot set HandleSRID to true if Strict is set", "value");
-                _handleSrid = value;
+                _handleSRID = value;
             }
         }
+
+        /// <summary>
+        /// Standard byte size for each complex point.
+        /// Each complex point (LineString, Polygon, ...) contains:
+        ///     1 byte for ByteOrder and
+        ///     4 bytes for WKBType.
+        ///     4 bytes for SRID value
+        /// </summary>
+        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
 
         /// <summary>
         /// Gets a value whether or not EWKB featues may be used.
@@ -226,18 +235,9 @@ namespace DotSpatial.Topology.IO
             {
                 _strict = value;
                 if (_strict)
-                    HandleSrid = false;
+                    HandleSRID = false;
             }
         }
-
-        /// <summary>
-        /// Standard byte size for each complex point.
-        /// Each complex point (LineString, Polygon, ...) contains:
-        ///     1 byte for ByteOrder and
-        ///     4 bytes for WKBType.
-        ///     4 bytes for SRID value
-        /// </summary>
-        protected int InitCount { get { return 5 + (HandleSrid ? 4 : 0); } }
 
         #endregion
 
@@ -251,53 +251,11 @@ namespace DotSpatial.Topology.IO
             return ToHex(bytes);
         }
 
-        ///<summary>Converts a byte array to a hexadecimal string.</summary>
-        /// <param name="bytes">A byte array</param>
-        public static String ToHex(byte[] bytes)
+        private void CalcCoordinateSize()
         {
-            var buf = new StringBuilder(bytes.Length * 2);
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                byte b = bytes[i];
-                buf.Append(ToHexDigit((b >> 4) & 0x0F));
-                buf.Append(ToHexDigit(b & 0x0F));
-            }
-            return buf.ToString();
-        }
-
-        /// <summary>
-        /// Writes a WKB representation of a given point.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        public virtual byte[] Write(IGeometry geometry)
-        {
-            byte[] bytes = GetBytes(geometry);
-            Write(geometry, new MemoryStream(bytes));
-            return bytes;
-        }
-
-        /// <summary>
-        /// Writes a WKB representation of a given point.
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        public virtual void Write(IGeometry geometry, Stream stream)
-        {
-            BinaryWriter writer = null;
-            try
-            {
-                writer = EncodingType == ByteOrder.LittleEndian
-                    ? new BinaryWriter(stream)
-                    : new BEBinaryWriter(stream);
-                Write(geometry, writer);
-            }
-            finally
-            {
-                if (writer != null)
-                    ((IDisposable)writer).Dispose();
-            }
+            _coordinateSize = 16;
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z) _coordinateSize += 8;
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
         }
 
         /// <summary>
@@ -414,7 +372,7 @@ namespace DotSpatial.Topology.IO
             var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             var count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
-            count += 4 * (geometry.NumHoles + 1);   // Index parts
+            count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
             count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
             return count;
         }
@@ -443,6 +401,64 @@ namespace DotSpatial.Topology.IO
         {
             return InitCount + _coordinateSize;
             //return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
+        }
+
+        ///<summary>Converts a byte array to a hexadecimal string.</summary>
+        /// <param name="bytes">A byte array</param>
+        public static String ToHex(byte[] bytes)
+        {
+            var buf = new StringBuilder(bytes.Length * 2);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                byte b = bytes[i];
+                buf.Append(ToHexDigit((b >> 4) & 0x0F));
+                buf.Append(ToHexDigit(b & 0x0F));
+            }
+            return buf.ToString();
+        }
+
+        private static char ToHexDigit(int n)
+        {
+            if (n < 0 || n > 15)
+                throw new ArgumentException("Nibble value out of range: " + n);
+            if (n <= 9)
+                return (char)('0' + n);
+            return (char)('A' + (n - 10));
+        }
+
+        /// <summary>
+        /// Writes a WKB representation of a given point.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        public virtual byte[] Write(IGeometry geometry)
+        {
+            byte[] bytes = GetBytes(geometry);
+            Write(geometry, new MemoryStream(bytes));
+            return bytes;
+        }
+
+        /// <summary>
+        /// Writes a WKB representation of a given point.
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public virtual void Write(IGeometry geometry, Stream stream)
+        {
+            BinaryWriter writer = null;
+            try
+            {
+                writer = EncodingType == ByteOrder.LittleEndian
+                    ? new BinaryWriter(stream)
+                    : new BEBinaryWriter(stream);
+                Write(geometry, writer);
+            }
+            finally
+            {
+                if (writer != null)
+                    ((IDisposable)writer).Dispose();
+            }
         }
 
         /// <summary>
@@ -571,10 +587,10 @@ namespace DotSpatial.Topology.IO
         protected void Write(IPolygon polygon, BinaryWriter writer)
         {
             WriteHeader(writer, polygon);
-            writer.Write(polygon.NumHoles + 1);
-            Write(polygon.Shell as ILinearRing, writer);
-            for (int i = 0; i < polygon.NumHoles; i++)
-                Write(polygon.Holes[i] as ILinearRing, writer);
+            writer.Write(polygon.NumInteriorRings + 1);
+            Write(polygon.ExteriorRing as ILinearRing, writer);
+            for (int i = 0; i < polygon.NumInteriorRings; i++)
+                Write(polygon.InteriorRings[i] as ILinearRing, writer);
         }
 
         /// <summary>
@@ -650,50 +666,34 @@ namespace DotSpatial.Topology.IO
             writer.Write((byte)EncodingType);
         }
 
-        private void CalcCoordinateSize()
-        {
-            _coordinateSize = 16;
-            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z) _coordinateSize += 8;
-            if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
-        }
-
-        private static char ToHexDigit(int n)
-        {
-            if (n < 0 || n > 15)
-                throw new ArgumentException("Nibble value out of range: " + n);
-            if (n <= 9)
-                return (char)('0' + n);
-            return (char)('A' + (n - 10));
-        }
-
         private void WriteHeader(BinaryWriter writer, IGeometry geom)
         {
             //Byte Order
             WriteByteOrder(writer);
 
-            WkbGeometryType geometryType;
+            WKBGeometryTypes geometryType;
             switch (geom.GeometryType)
             {
                 case "Point":
-                    geometryType = WkbGeometryType.WkbPoint;
+                    geometryType = WKBGeometryTypes.WKBPoint;
                     break;
                 case "LineString":
-                    geometryType = WkbGeometryType.WkbLineString;
+                    geometryType = WKBGeometryTypes.WKBLineString;
                     break;
                 case "Polygon":
-                    geometryType = WkbGeometryType.WkbPolygon;
+                    geometryType = WKBGeometryTypes.WKBPolygon;
                     break;
                 case "MultiPoint":
-                    geometryType = WkbGeometryType.WkbMultiPoint;
+                    geometryType = WKBGeometryTypes.WKBMultiPoint;
                     break;
                 case "MultiPolygon":
-                    geometryType = WkbGeometryType.WkbMultiPolygon;
+                    geometryType = WKBGeometryTypes.WKBMultiPolygon;
                     break;
                 case "MultiLineString":
-                    geometryType = WkbGeometryType.WkbMultiLineString;
+                    geometryType = WKBGeometryTypes.WKBMultiLineString;
                     break;
                 case "GeometryCollection":
-                    geometryType = WkbGeometryType.WkbGeometryCollection;
+                    geometryType = WKBGeometryTypes.WKBGeometryCollection;
                     break;
                 default:
                     Assert.ShouldNeverReachHere("Unknown geometry type:" + geom.GeometryType);
@@ -715,15 +715,15 @@ namespace DotSpatial.Topology.IO
             }
 
             //Flag for SRID if needed
-            if (HandleSrid)
+            if (HandleSRID)
                 intGeometryType |= 0x20000000;
 
             //
             writer.Write(intGeometryType);
 
             //Write SRID if needed
-            if (HandleSrid)
-                writer.Write(geom.Srid);
+            if (HandleSRID)
+                writer.Write(geom.SRID);
         }
 
         #endregion

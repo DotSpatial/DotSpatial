@@ -436,7 +436,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p">Point to check for ring inclusion</param>
         /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
         /// <returns>The <see cref="Location"/> of p relative to the ring</returns>
-        public static LocationType LocatePointInRing(Coordinate p, IList<Coordinate> ring)
+        public static Location LocatePointInRing(Coordinate p, IList<Coordinate> ring)
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }

@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual bool HasRepeatedPoint(IList<Coordinate> coord)
+        public bool HasRepeatedPoint(IList<Coordinate> coord)
         {
             for (int i = 1; i < coord.Count; i++)
             {
@@ -104,9 +104,9 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <returns></returns>
         private bool HasRepeatedPoint(IPolygon p)
         {
-            if (HasRepeatedPoint(p.Shell.Coordinates))
+            if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
                 return true;
-            for (int i = 0; i < p.NumHoles; i++)
+            for (int i = 0; i < p.NumInteriorRings; i++)
                 if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates)) 
                     return true;            
             return false;

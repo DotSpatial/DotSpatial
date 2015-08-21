@@ -63,6 +63,16 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         /// <summary>
+        /// Gets/Sets the user-defined data for this segment string.
+        /// </summary>
+        public object Context { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public IList<Coordinate> Coordinates { get; private set; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <value></value>
@@ -78,16 +88,6 @@ namespace DotSpatial.Topology.Noding
         {
             get{return Coordinates[0].Equals2D(Coordinates[Coordinates.Count - 1]);}
         }
-
-        /// <summary>
-        /// Gets/Sets the user-defined data for this segment string.
-        /// </summary>
-        public object Context { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public IList<Coordinate> Coordinates { get; private set; }
 
         /// <summary>
         ///
@@ -210,19 +210,19 @@ namespace DotSpatial.Topology.Noding
         /// Must not be the last index in the vertex list
         /// </param>
         /// <returns>The octant of the segment at the vertex</returns>
-        public OctantDirection GetSegmentOctant(int index)
+        public Octants GetSegmentOctant(int index)
         {
-            return index == Coordinates.Count - 1 ? OctantDirection.Null : SafeOctant(GetCoordinate(index), GetCoordinate(index + 1));
+            return index == Coordinates.Count - 1 ? Octants.Null : SafeOctant(GetCoordinate(index), GetCoordinate(index + 1));
+        }
+
+        private static Octants SafeOctant(Coordinate p0, Coordinate p1)
+        {
+            return p0.Equals2D(p1) ? Octants.Zero : Octant.GetOctant(p0, p1);
         }
 
         public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
-        }
-
-        private static OctantDirection SafeOctant(Coordinate p0, Coordinate p1)
-        {
-            return p0.Equals2D(p1) ? OctantDirection.Zero : Octant.GetOctant(p0, p1);
         }
 
         #endregion

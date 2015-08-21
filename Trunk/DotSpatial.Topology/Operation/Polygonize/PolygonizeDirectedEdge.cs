@@ -36,9 +36,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
     {
         #region Fields
 
-        private EdgeRing _edgeRing;
-        private long _label = -1;
-        private PolygonizeDirectedEdge _next;
+        private long label = -1;
 
         #endregion
 
@@ -69,7 +67,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Returns the ring of directed edges that this directed edge is
         /// a member of, or null if the ring has not been set.
         /// </summary>
-        public virtual bool IsInRing
+        public bool IsInRing
         {
             get
             {
@@ -81,15 +79,15 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Returns the identifier attached to this directed edge.
         /// Attaches an identifier to this directed edge.
         /// </summary>
-        public virtual long Label
+        public long Label
         {
             get
             {
-                return _label;
+                return label;
             }
             set
             {
-                _label = value;
+                label = value;
             }
         }
 
@@ -97,33 +95,13 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// Returns the next directed edge in the EdgeRing that this directed edge is a member of.
         /// Sets the next directed edge in the EdgeRing that this directed edge is a member of.
         /// </summary>
-        public virtual PolygonizeDirectedEdge Next
-        {
-            get
-            {
-                return _next;
-            }
-            set
-            {
-                _next = value;
-            }
-        }
+        public PolygonizeDirectedEdge Next { get; set; }
 
         /// <summary>
         /// Gets/Sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>
-        public virtual EdgeRing Ring
-        {
-            get
-            {
-                return _edgeRing;
-            }
-            set
-            {
-                _edgeRing = value;
-            }
-        }
+        public EdgeRing Ring { get; set; }
 
         #endregion
     }

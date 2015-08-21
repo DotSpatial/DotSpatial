@@ -44,25 +44,25 @@ namespace DotSpatial.Topology.Noding.Snapround
     /// results are not 100% guaranteed to be correctly noded.
     /// </para>
     /// </summary>
-    public class McIndexSnapRounder : INoder
+    public class MCIndexSnapRounder : INoder
     {
         #region Fields
 
         private readonly LineIntersector _li;
         private readonly double _scaleFactor;
         private IList<ISegmentString> _nodedSegStrings;
-        private McIndexNoder _noder;
-        private McIndexPointSnapper _pointSnapper;
+        private MCIndexNoder _noder;
+        private MCIndexPointSnapper _pointSnapper;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="McIndexSnapRounder"/> class.
+        /// Initializes a new instance of the <see cref="MCIndexSnapRounder"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public McIndexSnapRounder(IPrecisionModel pm)
+        public MCIndexSnapRounder(IPrecisionModel pm)
         {
             _li = new RobustLineIntersector { PrecisionModel = pm };
             _scaleFactor = pm.Scale;
@@ -71,40 +71,6 @@ namespace DotSpatial.Topology.Noding.Snapround
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Computes the noding for a collection of <see cref="ISegmentString" />s.
-        /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
-        /// others may only add some or none at all.
-        /// </summary>
-        /// <param name="inputSegmentStrings"></param>
-        public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
-        {
-            _nodedSegStrings = inputSegmentStrings;
-            _noder = new McIndexNoder();
-            _pointSnapper = new McIndexPointSnapper(_noder.Index);
-            SnapRound(inputSegmentStrings, _li);
-        }
-
-        /// <summary>
-        /// Snaps segments to all vertices
-        /// </summary>
-        /// <param name="edges">The list of segment strings to snap together</param>
-        public void ComputeVertexSnaps(IList<ISegmentString> edges)
-        {
-            foreach (INodableSegmentString edge in edges)
-                ComputeVertexSnaps(edge);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
-        /// The <see cref="ISegmentString"/>s have the same context as their parent.
-        /// </summary>
-        /// <returns></returns>
-        public IList<ISegmentString> GetNodedSubstrings()
-        {
-            return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
-        }
 
         /// <summary>
         /// Snaps segments to nodes created by segment intersections.
@@ -117,6 +83,30 @@ namespace DotSpatial.Topology.Noding.Snapround
                 var hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
                 _pointSnapper.Snap(hotPixel);
             }
+        }
+
+        /// <summary>
+        /// Computes the noding for a collection of <see cref="ISegmentString" />s.
+        /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
+        /// others may only add some or none at all.
+        /// </summary>
+        /// <param name="inputSegmentStrings"></param>
+        public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
+        {
+            _nodedSegStrings = inputSegmentStrings;
+            _noder = new MCIndexNoder();
+            _pointSnapper = new MCIndexPointSnapper(_noder.Index);
+            SnapRound(inputSegmentStrings, _li);
+        }
+
+        /// <summary>
+        /// Snaps segments to all vertices
+        /// </summary>
+        /// <param name="edges">The list of segment strings to snap together</param>
+        public void ComputeVertexSnaps(IList<ISegmentString> edges)
+        {
+            foreach (INodableSegmentString edge in edges)
+                ComputeVertexSnaps(edge);
         }
 
         /// <summary>
@@ -150,6 +140,16 @@ namespace DotSpatial.Topology.Noding.Snapround
             _noder.SegmentIntersector = intFinderAdder;
             _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
+        /// </summary>
+        /// <returns></returns>
+        public IList<ISegmentString> GetNodedSubstrings()
+        {
+            return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>

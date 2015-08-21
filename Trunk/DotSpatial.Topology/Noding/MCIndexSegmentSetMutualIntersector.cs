@@ -11,7 +11,7 @@ namespace DotSpatial.Topology.Noding
     /// <para/>
     /// Thread-safe and immutable.
     ///</summary>
-    public class McIndexSegmentSetMutualIntersector : ISegmentSetMutualIntersector
+    public class MCIndexSegmentSetMutualIntersector : ISegmentSetMutualIntersector
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace DotSpatial.Topology.Noding
         ///  The SpatialIndex used should be something that supports envelope
         /// (range) queries efficiently (such as a Quadtree or STRtree).
         /// </summary>
-        private readonly StRtree<MonotoneChain> _index = new StRtree<MonotoneChain>();
+        private readonly STRtree<MonotoneChain> _index = new STRtree<MonotoneChain>();
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace DotSpatial.Topology.Noding
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="baseSegStrings">The base segment strings to intersect</param>
-        public McIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings)
+        public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings)
         {
             InitBaseSegments(baseSegStrings);
         }
@@ -50,23 +50,6 @@ namespace DotSpatial.Topology.Noding
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
-        /// for all <i>candidate</i> intersections between
-        /// the given collection of SegmentStrings and the set of indexed segments. 
-        /// </summary>
-        /// <param name="segmentStrings"></param>
-        /// <param name="segmentIntersector"></param>
-        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
-        {
-            var monoChains = new List<MonotoneChain>();
-            foreach (var segStr in segmentStrings)
-            {
-                AddToMonoChains(segStr, monoChains);
-            }
-            IntersectChains(monoChains, segmentIntersector);
-        }
 
         private void AddToIndex(ISegmentString segStr)
         {
@@ -110,6 +93,23 @@ namespace DotSpatial.Topology.Noding
                     if (segmentIntersector.IsDone) return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
+        /// for all <i>candidate</i> intersections between
+        /// the given collection of SegmentStrings and the set of indexed segments. 
+        /// </summary>
+        /// <param name="segmentStrings"></param>
+        /// <param name="segmentIntersector"></param>
+        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
+        {
+            var monoChains = new List<MonotoneChain>();
+            foreach (var segStr in segmentStrings)
+            {
+                AddToMonoChains(segStr, monoChains);
+            }
+            IntersectChains(monoChains, segmentIntersector);
         }
 
         #endregion

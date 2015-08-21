@@ -95,7 +95,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>
         /// The angle this segment makes with the x-axis (in radians).
         /// </returns>
-        public virtual double Angle
+        public double Angle
         {
             get { return Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X); }
         }
@@ -104,7 +104,7 @@ namespace DotSpatial.Topology.Geometries
         /// Tests whether the segment is horizontal.
         /// </summary>
         /// <returns><c>true</c> if the segment is horizontal.</returns>
-        public virtual bool IsHorizontal
+        public bool IsHorizontal
         {
             get { return _p0.Y == _p1.Y; }
         }
@@ -113,7 +113,7 @@ namespace DotSpatial.Topology.Geometries
         /// Tests whether the segment is vertical.
         /// </summary>
         /// <returns><c>true</c> if the segment is vertical.</returns>
-        public virtual bool IsVertical
+        public bool IsVertical
         {
             get { return _p0.X == _p1.X; }
         }
@@ -122,7 +122,7 @@ namespace DotSpatial.Topology.Geometries
         /// Computes the length of the line segment.
         /// </summary>
         /// <returns>The length of the line segment.</returns>
-        public virtual double Length
+        public double Length
         {
             get { return _p0.Distance(_p1); }
         }
@@ -140,7 +140,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// The start-point
         /// </summary>
-        public virtual Coordinate P0
+        public Coordinate P0
         {
             get { return _p0; }
             set { _p0 = value; }
@@ -149,7 +149,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// The end-point
         /// </summary>
-        public virtual Coordinate P1
+        public Coordinate P1
         {
             get { return _p1; }
             set { _p1 = value; }
@@ -192,7 +192,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>
         /// A Coordinate which is the closest point on the line segment to the point p.
         /// </returns>
-        public virtual Coordinate ClosestPoint(Coordinate p)
+        public Coordinate ClosestPoint(Coordinate p)
         {
             var factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1)
@@ -209,7 +209,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
-        public virtual Coordinate[] ClosestPoints(ILineSegmentBase line)
+        public Coordinate[] ClosestPoints(ILineSegmentBase line)
         {
             LineSegment lineSeg = new LineSegment(line);
 
@@ -272,7 +272,7 @@ namespace DotSpatial.Topology.Geometries
         /// A negative integer, zero, or a positive integer as this <c>LineSegment</c>
         /// is less than, equal to, or greater than the specified <c>LineSegment</c>.
         /// </returns>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o)
         {
             var other = (LineSegment)o;
             var comp0 = _p0.CompareTo(other._p0);
@@ -284,17 +284,17 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="ls"></param>
         /// <returns></returns>
-        public virtual double Distance(ILineSegmentBase ls)
+        public double Distance(ILineSegmentBase ls)
         {
-            return CgAlgorithms.DistanceLineLine(_p0, _p1, ls.P0, ls.P1);
+            return CGAlgorithms.DistanceLineLine(_p0, _p1, ls.P0, ls.P1);
         }
 
         /// <summary>
         /// Computes the distance between this line segment and a point.
         /// </summary>
-        public virtual double Distance(Coordinate p)
+        public double Distance(Coordinate p)
         {
-            return CgAlgorithms.DistancePointLine(p, _p0, _p1);
+            return CGAlgorithms.DistancePointLine(p, _p0, _p1);
         }
 
         /// <summary>
@@ -303,9 +303,9 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual double DistancePerpendicular(Coordinate p)
+        public double DistancePerpendicular(Coordinate p)
         {
-            return CgAlgorithms.DistancePointLinePerpendicular(p, _p0, _p1);
+            return CGAlgorithms.DistancePointLinePerpendicular(p, _p0, _p1);
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>true</c> if <c>other</c> is a <c>LineSegment</c>
         /// with the same values for the x and y ordinates.
         /// </returns>
-        public virtual bool EqualsTopologically(ILineSegmentBase other)
+        public bool EqualsTopologically(ILineSegmentBase other)
         {
             return _p0.Equals(other.P0) && _p1.Equals(other.P1) ||
                    _p0.Equals(other.P1) && _p1.Equals(other.P0);
@@ -350,7 +350,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="i">Integer, specifies the coordiante</param>
         /// <returns>A topologically complete ICoordinate</returns>
-        public virtual Coordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             if (i == 0) return new Coordinate(_p0);
             return new Coordinate(_p1);
@@ -450,7 +450,7 @@ namespace DotSpatial.Topology.Geometries
         /// This is useful for using line segments in maps and indexes when
         /// topological equality rather than exact equality is desired.
         /// </summary>
-        public virtual void Normalize()
+        public void Normalize()
         {
             if (_p1.CompareTo(_p0) < 0)
                 Reverse();
@@ -473,10 +473,10 @@ namespace DotSpatial.Topology.Geometries
         /// -1 if <c>seg</c> is to the right of this segment,
         /// 0 if <c>seg</c> has indeterminate orientation relative to this segment.
         /// </returns>
-        public virtual int OrientationIndex(ILineSegmentBase seg)
+        public int OrientationIndex(ILineSegmentBase seg)
         {
-            int orient0 = CgAlgorithms.OrientationIndex(P0, P1, seg.P0);
-            int orient1 = CgAlgorithms.OrientationIndex(P0, P1, seg.P1);
+            int orient0 = CGAlgorithms.OrientationIndex(P0, P1, seg.P0);
+            int orient1 = CGAlgorithms.OrientationIndex(P0, P1, seg.P1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -502,7 +502,7 @@ namespace DotSpatial.Topology.Geometries
         ///
         public int OrientationIndex(Coordinate p)
         {
-            return CgAlgorithms.OrientationIndex(_p0, _p1, p);
+            return CGAlgorithms.OrientationIndex(_p0, _p1, p);
         }
 
         /// <summary>
@@ -578,7 +578,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual Coordinate Project(Coordinate p)
+        public Coordinate Project(Coordinate p)
         {
             if (p.Equals(_p0) || p.Equals(_p1))
                 return new Coordinate(p);
@@ -598,7 +598,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="seg">The line segment to project.</param>
         /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
-        public virtual ILineSegment Project(ILineSegmentBase seg)
+        public ILineSegment Project(ILineSegmentBase seg)
         {
             var pf0 = ProjectionFactor(seg.P0);
             var pf1 = ProjectionFactor(seg.P1);
@@ -628,7 +628,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="p">The point to compute the factor for</param>
         /// <returns>The projection factor for the point</returns>
-        public virtual double ProjectionFactor(Coordinate p)
+        public double ProjectionFactor(Coordinate p)
         {
             if (p.Equals(_p0)) return 0.0;
             if (p.Equals(_p1)) return 1.0;
@@ -659,7 +659,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Reverses the direction of the line segment.
         /// </summary>
-        public virtual void Reverse()
+        public void Reverse()
         {
             var temp = _p0;
             _p0 = _p1;
@@ -692,7 +692,7 @@ namespace DotSpatial.Topology.Geometries
         /// Defines a new LineSegment based on the previous line segment
         /// </summary>
         /// <param name="ls">The ILineSegmentBase</param>
-        public virtual void SetCoordinates(ILineSegmentBase ls)
+        public void SetCoordinates(ILineSegmentBase ls)
         {
             SetCoordinates(ls.P0, ls.P1);
         }
@@ -702,7 +702,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="p0">The first endpoint</param>
         /// <param name="p1">The second endpoint</param>
-        public virtual void SetCoordinates(Coordinate p0, Coordinate p1)
+        public void SetCoordinates(Coordinate p0, Coordinate p1)
         {
             P0.X = p0.X;
             P0.Y = p0.Y;

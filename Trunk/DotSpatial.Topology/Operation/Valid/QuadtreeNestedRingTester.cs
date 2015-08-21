@@ -67,7 +67,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate NestedPoint
+        public Coordinate NestedPoint
         {
             get
             {
@@ -83,7 +83,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(ILinearRing ring)
+        public void Add(ILinearRing ring)
         {
             _rings.Add(ring);
             _totalEnv.ExpandToInclude(ring.EnvelopeInternal);
@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsNonNested()
+        public bool IsNonNested()
         {
             BuildQuadtree();
 
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.Operation.Valid
                     Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
-                    bool isInside = CgAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+                    bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         _nestedPt = innerRingPt;

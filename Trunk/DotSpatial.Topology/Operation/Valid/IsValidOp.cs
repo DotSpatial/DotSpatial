@@ -69,7 +69,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// Computes the validity of the geometry,
         /// and returns <tt>true</tt> if it is valid.
         /// </summary>
-        public virtual bool IsValid
+        public bool IsValid
         {
             get
             {
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// </summary>
         /// <returns>The validation error, if the geometry is invalid <br/>
         /// or <value>null</value> if the geometry is valid</returns>
-        public virtual TopologyValidationError ValidationError
+        public TopologyValidationError ValidationError
         {
             get
             {
@@ -131,7 +131,7 @@ namespace DotSpatial.Topology.Operation.Valid
         private void CheckClosedRing(ILinearRing ring)
         {
             if (!ring.IsClosed)
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.RingNotClosed, ring.Coordinates[0]);
+                _validErr = new TopologyValidationError(TopologyValidationErrors.RingNotClosed, ring.GetCoordinateN(0));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             ConnectedInteriorTester cit = new ConnectedInteriorTester(graph);
             if (!cit.IsInteriorsConnected())
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.DisconnectedInteriors, cit.Coordinate);
+                _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors, cit.Coordinate);
         }
 
         /// <summary>
@@ -170,12 +170,12 @@ namespace DotSpatial.Topology.Operation.Valid
             bool isValidArea = cat.IsNodeConsistentArea;
             if (!isValidArea)
             {
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.SelfIntersection, cat.InvalidPoint);
+                _validErr = new TopologyValidationError(TopologyValidationErrors.SelfIntersection, cat.InvalidPoint);
                 return;
             }
             if (cat.HasDuplicateRings)
             {
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.DuplicateRings, cat.InvalidPoint);
+                _validErr = new TopologyValidationError(TopologyValidationErrors.DuplicateRings, cat.InvalidPoint);
             }
         }
 
@@ -193,8 +193,8 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             ILinearRing shell = p.Shell;
 
-            IPointInRing pir = new McPointInRing(shell);
-            for (int i = 0; i < p.NumHoles; i++)
+            IPointInRing pir = new MCPointInRing(shell);
+            for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 ILinearRing hole = p.Holes[i];
                 Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
@@ -210,7 +210,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 bool outside = !pir.IsInside(holePt);
                 if(outside)
                 {
-                    _validErr = new TopologyValidationError(TopologyValidationErrorType.HoleOutsideShell, holePt);
+                    _validErr = new TopologyValidationError(TopologyValidationErrors.HoleOutsideShell, holePt);
                     return;
                 }
             }            
@@ -233,7 +233,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 nestedTester.Add(innerHole);
             bool isNonNested = nestedTester.IsNonNested();
             if (!isNonNested)
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.NestedHoles, 
+                _validErr = new TopologyValidationError(TopologyValidationErrors.NestedHoles, 
                     nestedTester.NestedPoint);        
         }
 
@@ -247,7 +247,7 @@ namespace DotSpatial.Topology.Operation.Valid
             {
                 if (!IsValidCoordinate(c))
                 {
-                    _validErr = new TopologyValidationError(TopologyValidationErrorType.InvalidCoordinate, c);
+                    _validErr = new TopologyValidationError(TopologyValidationErrors.InvalidCoordinate, c);
                     return;
                 }
             }
@@ -259,9 +259,9 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <param name="poly"></param>
         private void CheckInvalidCoordinates(IPolygon poly)
         {
-            CheckInvalidCoordinates(poly.Shell.Coordinates);
+            CheckInvalidCoordinates(poly.ExteriorRing.Coordinates);
             if (_validErr != null) return;
-            foreach (LineString ls in poly.Holes)
+            foreach (ILineString ls in poly.InteriorRings)
             {
                 CheckInvalidCoordinates(ls.Coordinates);
                 if (_validErr != null) return;
@@ -286,7 +286,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 }
                 if (nodeSet.Contains(ei.Coordinate))
                 {
-                    _validErr = new TopologyValidationError(TopologyValidationErrorType.RingSelfIntersection, ei.Coordinate);
+                    _validErr = new TopologyValidationError(TopologyValidationErrors.RingSelfIntersection, ei.Coordinate);
                     return;
                 }
                 else nodeSet.Add(ei.Coordinate);
@@ -330,14 +330,14 @@ namespace DotSpatial.Topology.Operation.Valid
             // if point is on shell but not hole, check that the shell is inside the hole
             if (shellPt != null)
             {
-                bool insideHole = CgAlgorithms.IsPointInRing(shellPt, holePts);
+                bool insideHole = CGAlgorithms.IsPointInRing(shellPt, holePts);
                 if (!insideHole) return shellPt;                
             }
             Coordinate holePt = FindPointNotNode(holePts, shell, graph);
             // if point is on hole but not shell, check that the hole is outside the shell
             if (holePt != null)
             {
-                bool insideShell = CgAlgorithms.IsPointInRing(holePt, shellPts);
+                bool insideShell = CGAlgorithms.IsPointInRing(holePt, shellPts);
                 if (insideShell) 
                     return holePt;
                 return null;
@@ -362,12 +362,12 @@ namespace DotSpatial.Topology.Operation.Valid
             Coordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon
             if (shellPt == null) return;
-            bool insidePolyShell = CgAlgorithms.IsPointInRing(shellPt, polyPts);
+            bool insidePolyShell = CGAlgorithms.IsPointInRing(shellPt, polyPts);
             if (!insidePolyShell) return;
             // if no holes, this is an error!
-            if (p.NumHoles <= 0)
+            if (p.NumInteriorRings <= 0)
             {
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.NestedShells, shellPt);
+                _validErr = new TopologyValidationError(TopologyValidationErrors.NestedShells, shellPt);
                 return;
             }
 
@@ -384,7 +384,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 badNestedPt = CheckShellInsideHole(shell, hole, graph);
                 if (badNestedPt == null) return;
             }
-            _validErr = new TopologyValidationError(TopologyValidationErrorType.NestedShells, badNestedPt);
+            _validErr = new TopologyValidationError(TopologyValidationErrors.NestedShells, badNestedPt);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace DotSpatial.Topology.Operation.Valid
         {
             if (graph.HasTooFewPoints)
             {
-                _validErr = new TopologyValidationError(TopologyValidationErrorType.TooFewPoints,
+                _validErr = new TopologyValidationError(TopologyValidationErrors.TooFewPoints,
                     graph.InvalidPoint);
             }
         }

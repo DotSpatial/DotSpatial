@@ -211,13 +211,13 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                DimensionType dimension = DimensionType.False;
+                Dimension dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (DimensionType)Math.Max((int)dimension, (int)(_geometries[i].BoundaryDimension));
+                    dimension = (Dimension) Math.Max((int) dimension, (int) (_geometries[i].BoundaryDimension));
                 return dimension;
             }
         }
@@ -272,7 +272,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -283,13 +283,13 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType Dimension
+        public override Dimension Dimension 
         {
             get
             {
-                DimensionType dimension = DimensionType.False;
+                Dimension dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (DimensionType)Math.Max((int)dimension, (int)_geometries[i].Dimension);
+                    dimension = (Dimension) Math.Max((int)dimension, (int)_geometries[i].Dimension);
                 return dimension;
             }
         }
@@ -417,7 +417,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual IGeometry this[int i]
+        public IGeometry this[int i]
         {
             get
             {

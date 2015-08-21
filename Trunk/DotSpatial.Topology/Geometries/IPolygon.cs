@@ -31,10 +31,14 @@ namespace DotSpatial.Topology.Geometries
     {
         #region Properties
 
+ ILineString ExteriorRing { get; }
+ILineString[] InteriorRings { get; }
         /// <summary>
         /// Gets the System.Array of <see cref="ILinearRing">ILinearRing</see>s that make up the holes in the polygon.
         /// </summary>
         new ILinearRing[] Holes { get; }
+
+int NumInteriorRings { get; }
 
         /// <summary>
         /// Gets the <see cref="ILinearRing">ILinearRing</see> for the Exterior Ring.

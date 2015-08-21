@@ -61,7 +61,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<IGeometry> Polygons
+        public IList<IGeometry> Polygons
         {
             get
             {
@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// possibly with holes.
         /// </summary>
         /// <param name="graph"></param>
-        public virtual void Add(PlanarGraph graph)
+        public void Add(PlanarGraph graph)
         {
             Add(graph.EdgeEnds, graph.Nodes);
         }
@@ -92,7 +92,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="nodes"></param>
-        public virtual void Add(IList<EdgeEnd> dirEdges, IList<Node> nodes)
+        public void Add(IList<EdgeEnd> dirEdges, IList<Node> nodes)
         {
             PlanarGraph.LinkResultDirectedEdges(nodes);
             var maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
@@ -185,7 +185,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual bool ContainsPoint(Coordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             foreach (EdgeRing er in _shellList)
             {
@@ -223,7 +223,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                // check if this new containing ring is smaller than the current minimum ring
-                if (tryEnv.Contains(testEnv) && CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
+                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
                 {
                     if (minShell == null || minEnv.Contains(tryEnv))
                         minShell = tryShell;

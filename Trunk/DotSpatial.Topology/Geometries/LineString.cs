@@ -190,7 +190,7 @@ namespace DotSpatial.Topology.Geometries
         /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
         /// </summary>
-        public virtual double Angle
+        public double Angle
         {
             get
             {
@@ -223,15 +223,15 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets False if the LineString is closed, or Point (0) otherwise, representing the endpoints
         /// </summary>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
                 if (IsClosed)
                 {
-                    return DimensionType.False;
+                    return Dimension.False;
                 }
-                return DimensionType.Point;
+                return Dimension.Point;
             }
         }
 
@@ -279,7 +279,7 @@ namespace DotSpatial.Topology.Geometries
         /// Gets the integer count of the number of points in this LineString
         /// </summary>
         /// <value></value>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -290,18 +290,18 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets the dimensionality of a Curve(1)
         /// </summary>
-        public override DimensionType Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return DimensionType.Curve;
+                return Dimension.Curve;
             }
         }
 
         /// <summary>
         /// Gets the point corresponding to NumPoints-1 and returns it as an IPoint interface
         /// </summary>
-        public virtual IPoint EndPoint
+        public IPoint EndPoint
         {
             get
             {
@@ -362,7 +362,7 @@ namespace DotSpatial.Topology.Geometries
         /// Gets a boolean that is true if this LineString is both closed (has the same start and end point)
         /// and simple (does not self-intersect)
         /// </summary>
-        public virtual bool IsRing
+        public bool IsRing
         {
             get
             {
@@ -378,7 +378,7 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                return CgAlgorithms.Length(_points);
+                return CGAlgorithms.Length(_points);
             }
         }
 
@@ -401,7 +401,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets the 0 index point as a valid implementation of IPoint interface
         /// </summary>
-        public virtual IPoint StartPoint
+        public IPoint StartPoint
         {
             get
             {
@@ -420,7 +420,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Coordinate this[int n]
+        public Coordinate this[int n]
         {
             get
             {
@@ -594,7 +594,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Coordinate GetCoordinateN(int n)
+        public Coordinate GetCoordinateN(int n)
         {
             return _points.GetCoordinate(n);
         }
@@ -617,7 +617,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual IPoint GetPointN(int n)
+        public IPoint GetPointN(int n)
         {
             return Factory.CreatePoint(_points.GetCoordinate(n));
         }
@@ -627,7 +627,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public virtual bool IsCoordinate(Coordinate pt)
+        public bool IsCoordinate(Coordinate pt)
         {
             for (int i = 0; i < _points.Count; i++)
                 if (_points.GetCoordinate(i).Equals(pt))

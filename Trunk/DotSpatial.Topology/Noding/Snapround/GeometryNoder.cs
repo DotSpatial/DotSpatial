@@ -54,6 +54,17 @@ namespace DotSpatial.Topology.Noding.Snapround
 
         #region Methods
 
+        private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
+        {
+            var lines = new List<IGeometry>();
+            var lce = new LinearComponentExtracter(lines);
+            foreach (var geom in geoms)
+            {
+                geom.Apply(lce);
+            }
+            return lines;
+        }
+
         /// <summary>
         /// Nodes the linework of a set of Geometrys using SnapRounding.
         /// </summary>
@@ -70,7 +81,7 @@ namespace DotSpatial.Topology.Noding.Snapround
 
             var segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(pm);
-            INoder sr = new McIndexSnapRounder(_pm);
+            INoder sr = new MCIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 
@@ -82,17 +93,6 @@ namespace DotSpatial.Topology.Noding.Snapround
             }
 
             return ToLineStrings(nodedLines);
-        }
-
-        private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
-        {
-            var lines = new List<IGeometry>();
-            var lce = new LinearComponentExtracter(lines);
-            foreach (var geom in geoms)
-            {
-                geom.Apply(lce);
-            }
-            return lines;
         }
 
         private IList<ILineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)

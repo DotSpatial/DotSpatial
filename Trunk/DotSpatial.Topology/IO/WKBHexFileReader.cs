@@ -26,7 +26,7 @@ namespace DotSpatial.Topology.IO
 
         /// <summary>
         /// Creates a new <see cref="WKBHexFileReader"/> given the
-        /// <see cref="WkbReader"/> to use to parse the geometries.
+        /// <see cref="WKBReader"/> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
         public WKBHexFileReader(IBinaryGeometryReader wkbReader)
@@ -150,7 +150,7 @@ namespace DotSpatial.Topology.IO
                 var line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
 
-                var g = _wkbReader.Read(WkbReader.HexToBytes(line));
+                var g = _wkbReader.Read(WKBReader.HexToBytes(line));
                 if (count >= Offset)
                     geoms.Add(g);
                 count++;

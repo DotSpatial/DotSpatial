@@ -7,7 +7,7 @@ namespace DotSpatial.Plugins.SpatiaLite
     /// <summary>
     /// Helper class for reading binary data from the SpatiaLite database
     /// </summary>
-    public class SpatiaLiteWkbReader : WkbReader
+    public class SpatiaLiteWkbReader : WKBReader
     {
         /// <summary>
         /// Convert a byte array to a DotSpatial.Topology geometry object

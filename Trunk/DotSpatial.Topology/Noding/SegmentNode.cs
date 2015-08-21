@@ -40,7 +40,7 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         public readonly int SegmentIndex;
 
-        private readonly OctantDirection _segmentOctant;
+        private readonly Octants _segmentOctant;
         private readonly INodableSegmentString _segString;
 
         #endregion
@@ -54,7 +54,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="segmentOctant"></param>
-        public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, OctantDirection segmentOctant)
+        public SegmentNode(INodableSegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant)
         {
             Coordinate = null;
             _segString = segString;

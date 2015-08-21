@@ -13,41 +13,48 @@ namespace DotSpatial.Topology.IO
     /// <author>
     /// Martin Davis
     /// </author>
-    public class WktFileReader
+    public class WKTFileReader
     {
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
         private TextReader _reader;
-        private readonly WktReader _wktReader;
+        private readonly WKTReader _wktReader;
         private int _count;
 
-        private WktFileReader(WktReader wktReader)
+        private WKTFileReader(WKTReader wktReader)
         {
             _wktReader = wktReader;
             Limit = -1;
         }
 
         ///<summary>
-        /// Creates a new <see cref="WktFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WktReader" /> to use to parse the geometries.
+        /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         ///</summary>
         /// <param name="file"> the <see cref="FileInfo" /> to read from</param>
         /// <param name="wktReader">the geometry reader to use</param>
-        public WktFileReader(FileInfo file, WktReader wktReader) : this(wktReader) { _file = file; }
+        public WKTFileReader(FileInfo file, WKTReader wktReader)
+            :this(wktReader)
+        {
+            _file = file;
+        }
 
         ///<summary>
-        /// Creates a new <see cref="WktFileReader" />, given the name of the file to read from.
+        /// Creates a new <see cref="WKTFileReader" />, given the name of the file to read from.
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WktFileReader(String filename, WktReader wktReader) : this(new FileInfo(filename), wktReader) { }
+        public WKTFileReader(String filename, WKTReader wktReader)
+            : this(new FileInfo(filename), wktReader)
+        {
+        }
 
         ///<summary>
-        /// Creates a new <see cref="WktFileReader" />, given a <see cref="TextReader"/> to read with.
+        /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
         ///</summary>
         /// <param name="reader">The stream reader of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WktFileReader(TextReader reader, WktReader wktReader)
-            : this(wktReader)
+        public WKTFileReader(TextReader reader, WKTReader wktReader)
+            :this(wktReader)
         {
             _reader = reader;
         }

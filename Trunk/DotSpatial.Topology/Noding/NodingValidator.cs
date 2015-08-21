@@ -45,7 +45,8 @@ namespace DotSpatial.Topology.Noding
         #region Constructors
 
         /// <summary>
-        /// Creates a new validator for the given collection of <see cref="ISegmentString"/>s.
+        /// Creates a new validator for the given collection 
+        /// of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
         public NodingValidator(IList<ISegmentString> segStrings)
@@ -56,17 +57,6 @@ namespace DotSpatial.Topology.Noding
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Checks whether the supplied segment strings are correctly noded.
-        /// Throws an exception if they are not.
-        /// </summary>
-        public void CheckValid()
-        {
-            CheckEndPtVertexIntersections();
-            CheckInteriorIntersections();
-            CheckCollapses();
-        }
 
         private static void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
@@ -147,6 +137,17 @@ namespace DotSpatial.Topology.Noding
             if (!_li.HasIntersection) return;
             if (_li.IsProper || HasInteriorIntersection(_li, p00, p01) || HasInteriorIntersection(_li, p10, p11))
                 throw new ApplicationException(string.Format(TopologyText.NodingValidator_FoundNonNodedIntersection, p00, p01, p10, p11));
+        }
+
+        /// <summary>
+        /// Checks whether the supplied segment strings are correctly noded.
+        /// Throws an exception if they are not.
+        /// </summary>
+        public void CheckValid()
+        {
+            CheckEndPtVertexIntersections();
+            CheckInteriorIntersections();
+            CheckCollapses();
         }
 
         /// <summary>

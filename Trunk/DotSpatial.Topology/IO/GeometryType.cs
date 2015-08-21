@@ -41,7 +41,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="geometry">The geometry.</param>
         /// <param name="ordinates">The ordinates flag.</param>
         public GeometryType(IGeometry geometry, Ordinates ordinates)
-            : this(geometry.OgcGeometryType, ordinates, geometry.Srid >= 0)
+            : this(geometry.OgcGeometryType, ordinates, geometry.SRID >= 0)
         {
         }
 

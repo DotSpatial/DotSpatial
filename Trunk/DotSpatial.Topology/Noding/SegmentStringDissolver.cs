@@ -119,6 +119,16 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="oca"></param>
+        /// <param name="segString"></param>
+        private void Add(OrientedCoordinateArray oca, ISegmentString segString)
+        {
+            _ocaMap.Add(oca, segString);
+        }
+
+        /// <summary>
         /// Dissolve all <see cref="ISegmentString" />s in the input <see cref="IEnumerable{ISegmentString}"/>.
         /// </summary>
         /// <param name="segStrings"></param>
@@ -144,16 +154,6 @@ namespace DotSpatial.Topology.Noding
                 _merger.Merge(existing, segString, isSameOrientation);
             }
 
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="oca"></param>
-        /// <param name="segString"></param>
-        private void Add(OrientedCoordinateArray oca, ISegmentString segString)
-        {
-            _ocaMap.Add(oca, segString);
         }
 
         /// <summary>

@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>  
         /// Internal representation of this <see cref="IntersectionMatrix" />.
         /// </summary>
-        private readonly DimensionType[,] _matrix;
+        private readonly Dimension[,] _matrix;
 
         #endregion
 
@@ -76,8 +76,8 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         public IntersectionMatrix()
         {
-            _matrix = new DimensionType[3, 3];
-            SetAll(DimensionType.False);
+            _matrix = new Dimension[3, 3];
+            SetAll(Dimension.False);
         }
 
         /// <summary>
@@ -99,15 +99,15 @@ namespace DotSpatial.Topology.Geometries
         public IntersectionMatrix(IntersectionMatrix other)
             : this()
         {
-            _matrix[(int)LocationType.Interior, (int)LocationType.Interior] = other._matrix[(int)LocationType.Interior, (int)LocationType.Interior];
-            _matrix[(int)LocationType.Interior, (int)LocationType.Boundary] = other._matrix[(int)LocationType.Interior, (int)LocationType.Boundary];
-            _matrix[(int)LocationType.Interior, (int)LocationType.Exterior] = other._matrix[(int)LocationType.Interior, (int)LocationType.Exterior];
-            _matrix[(int)LocationType.Boundary, (int)LocationType.Interior] = other._matrix[(int)LocationType.Boundary, (int)LocationType.Interior];
-            _matrix[(int)LocationType.Boundary, (int)LocationType.Boundary] = other._matrix[(int)LocationType.Boundary, (int)LocationType.Boundary];
-            _matrix[(int)LocationType.Boundary, (int)LocationType.Exterior] = other._matrix[(int)LocationType.Boundary, (int)LocationType.Exterior];
-            _matrix[(int)LocationType.Exterior, (int)LocationType.Interior] = other._matrix[(int)LocationType.Exterior, (int)LocationType.Interior];
-            _matrix[(int)LocationType.Exterior, (int)LocationType.Boundary] = other._matrix[(int)LocationType.Exterior, (int)LocationType.Boundary];
-            _matrix[(int)LocationType.Exterior, (int)LocationType.Exterior] = other._matrix[(int)LocationType.Exterior, (int)LocationType.Exterior];
+            _matrix[(int)Location.Interior, (int)Location.Interior] = other._matrix[(int)Location.Interior, (int)Location.Interior];
+            _matrix[(int)Location.Interior, (int)Location.Boundary] = other._matrix[(int)Location.Interior, (int)Location.Boundary];
+            _matrix[(int)Location.Interior, (int)Location.Exterior] = other._matrix[(int)Location.Interior, (int)Location.Exterior];
+            _matrix[(int)Location.Boundary, (int)Location.Interior] = other._matrix[(int)Location.Boundary, (int)Location.Interior];
+            _matrix[(int)Location.Boundary, (int)Location.Boundary] = other._matrix[(int)Location.Boundary, (int)Location.Boundary];
+            _matrix[(int)Location.Boundary, (int)Location.Exterior] = other._matrix[(int)Location.Boundary, (int)Location.Exterior];
+            _matrix[(int)Location.Exterior, (int)Location.Interior] = other._matrix[(int)Location.Exterior, (int)Location.Interior];
+            _matrix[(int)Location.Exterior, (int)Location.Boundary] = other._matrix[(int)Location.Exterior, (int)Location.Boundary];
+            _matrix[(int)Location.Exterior, (int)Location.Exterior] = other._matrix[(int)Location.Exterior, (int)Location.Exterior];
         }
 
         #endregion
@@ -116,8 +116,8 @@ namespace DotSpatial.Topology.Geometries
 
         /// <summary>
         /// See methods Get(int, int) and Set(int, int, int value)
-        /// </summary>
-        public DimensionType this[LocationType row, LocationType column]
+        /// </summary>         
+        public Dimension this[Location row, Location column]
         {
             get
             {
@@ -139,11 +139,11 @@ namespace DotSpatial.Topology.Geometries
         /// in the summand matrices.
         /// </summary>
         /// <param name="im">The matrix to add.</param>
-        public virtual void Add(IIntersectionMatrix im)
+        public void Add(IIntersectionMatrix im)
         {
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    SetAtLeast((LocationType)i, (LocationType)j, im.Get((LocationType)i, (LocationType)j));
+                    SetAtLeast((Location)i, (Location)j, im.Get((Location)i, (Location)j));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace DotSpatial.Topology.Geometries
         /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>.
         /// </param>
         /// <returns>The dimension value at the given matrix position.</returns>
-        public virtual DimensionType Get(LocationType row, LocationType column)
+        public Dimension Get(Location row, Location column)
         {
             return _matrix[(int)row, (int)column];
         }
@@ -169,11 +169,11 @@ namespace DotSpatial.Topology.Geometries
         /// T*****FF*.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> contains the second.</returns>
-        public virtual bool IsContains()
+        public bool IsContains()
         {
-            return Matches(_matrix[(int)LocationType.Interior, (int)LocationType.Interior], 'T') &&
-                    _matrix[(int)LocationType.Exterior, (int)LocationType.Interior] == DimensionType.False &&
-                    _matrix[(int)LocationType.Exterior, (int)LocationType.Boundary] == DimensionType.False;
+            return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                   _matrix[(int)Location.Exterior, (int)Location.Interior] == Dimension.False &&
+                   _matrix[(int)Location.Exterior, (int)Location.Boundary] == Dimension.False;
         }
 
         /// <summary>
@@ -183,14 +183,14 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> is covered by the second</returns>
         public bool IsCoveredBy()
         {
-            bool hasPointInCommon = Matches(_matrix[(int)LocationType.Interior, (int)LocationType.Interior], 'T')
-                                    || Matches(_matrix[(int)LocationType.Interior, (int)LocationType.Boundary], 'T')
-                                    || Matches(_matrix[(int)LocationType.Boundary, (int)LocationType.Interior], 'T')
-                                    || Matches(_matrix[(int)LocationType.Boundary, (int)LocationType.Boundary], 'T');
+            bool hasPointInCommon = Matches(_matrix[(int)Location.Interior, (int)Location.Interior], 'T')
+                                    || Matches(_matrix[(int)Location.Interior, (int)Location.Boundary], 'T')
+                                    || Matches(_matrix[(int)Location.Boundary, (int)Location.Interior], 'T')
+                                    || Matches(_matrix[(int)Location.Boundary, (int)Location.Boundary], 'T');
 
             return hasPointInCommon &&
-                _matrix[(int)LocationType.Interior, (int)LocationType.Exterior] == DimensionType.False &&
-                _matrix[(int)LocationType.Boundary, (int)LocationType.Exterior] == DimensionType.False;
+                _matrix[(int)Location.Interior, (int)Location.Exterior] == Dimension.False &&
+                _matrix[(int)Location.Boundary, (int)Location.Exterior] == Dimension.False;
         }
 
         /// <summary>
@@ -198,16 +198,16 @@ namespace DotSpatial.Topology.Geometries
         /// or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> covers the second</returns>
-        public virtual bool IsCovers()
+        public bool IsCovers()
         {
-            bool hasPointInCommon = IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior])
-                                    || IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Boundary])
-                                    || IsTrue(_matrix[(int)LocationType.Boundary, (int)LocationType.Interior])
-                                    || IsTrue(_matrix[(int)LocationType.Boundary, (int)LocationType.Boundary]);
+            bool hasPointInCommon = IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior])
+                                    || IsTrue(_matrix[(int)Location.Interior, (int)Location.Boundary])
+                                    || IsTrue(_matrix[(int)Location.Boundary, (int)Location.Interior])
+                                    || IsTrue(_matrix[(int)Location.Boundary, (int)Location.Boundary]);
 
             return hasPointInCommon &&
-                    _matrix[(int)LocationType.Exterior, (int)LocationType.Interior] == DimensionType.False &&
-                    _matrix[(int)LocationType.Exterior, (int)LocationType.Boundary] == DimensionType.False;
+                    _matrix[(int)Location.Exterior, (int)Location.Interior] == Dimension.False &&
+                    _matrix[(int)Location.Exterior, (int)Location.Boundary] == Dimension.False;
         }
 
         /// <summary>
@@ -224,22 +224,22 @@ namespace DotSpatial.Topology.Geometries
         /// be a point and a curve; a point and a surface; two curves; or a curve
         /// and a surface.
         /// </returns>
-        public virtual bool IsCrosses(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB)
+        public bool IsCrosses(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
-            if ((dimensionOfGeometryA == DimensionType.Point && dimensionOfGeometryB == DimensionType.Curve) ||
-                (dimensionOfGeometryA == DimensionType.Point && dimensionOfGeometryB == DimensionType.Surface) ||
-                (dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Surface))
-                return IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior]) &&
-                       IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Exterior]);
+            if ((dimensionOfGeometryA == Dimension.Point && dimensionOfGeometryB == Dimension.Curve) ||
+                (dimensionOfGeometryA == Dimension.Point && dimensionOfGeometryB == Dimension.Surface) ||
+                (dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Surface))
+                return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                       IsTrue(_matrix[(int)Location.Interior, (int)Location.Exterior]);
 
-            if ((dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Point) ||
-                (dimensionOfGeometryA == DimensionType.Surface && dimensionOfGeometryB == DimensionType.Point) ||
-                (dimensionOfGeometryA == DimensionType.Surface && dimensionOfGeometryB == DimensionType.Curve))
-                return IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior]) &&
-                       IsTrue(_matrix[(int)LocationType.Exterior, (int)LocationType.Interior]);
+            if ((dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Point) ||
+                (dimensionOfGeometryA == Dimension.Surface && dimensionOfGeometryB == Dimension.Point) ||
+                (dimensionOfGeometryA == Dimension.Surface && dimensionOfGeometryB == Dimension.Curve))
+                return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                       IsTrue(_matrix[(int)Location.Exterior, (int)Location.Interior]);
 
-            if (dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Curve)
-                return _matrix[(int)LocationType.Interior, (int)LocationType.Interior] == 0;
+            if (dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Curve)
+                return _matrix[(int)Location.Interior, (int)Location.Interior] == 0;
 
             return false;
         }
@@ -251,13 +251,13 @@ namespace DotSpatial.Topology.Geometries
         /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> are disjoint.
         /// </returns>
-        public virtual bool IsDisjoint()
+        public bool IsDisjoint()
         {
             return
-                _matrix[(int)LocationType.Interior, (int)LocationType.Interior] == DimensionType.False &&
-                _matrix[(int)LocationType.Interior, (int)LocationType.Boundary] == DimensionType.False &&
-                _matrix[(int)LocationType.Boundary, (int)LocationType.Interior] == DimensionType.False &&
-                _matrix[(int)LocationType.Boundary, (int)LocationType.Boundary] == DimensionType.False;
+                _matrix[(int)Location.Interior, (int)Location.Interior] == Dimension.False &&
+                _matrix[(int)Location.Interior, (int)Location.Boundary] == Dimension.False &&
+                _matrix[(int)Location.Boundary, (int)Location.Interior] == Dimension.False &&
+                _matrix[(int)Location.Boundary, (int)Location.Boundary] == Dimension.False;
         }
 
         /// <summary> 
@@ -279,16 +279,16 @@ namespace DotSpatial.Topology.Geometries
         /// related by this <see cref="IntersectionMatrix" /> are equal; the
         /// <see cref="IGeometry"/>s must have the same dimension to be equal.
         /// </returns>
-        public virtual bool IsEquals(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB)
+        public bool IsEquals(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
             if (dimensionOfGeometryA != dimensionOfGeometryB)
                 return false;
 
-            return IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior]) &&
-                   _matrix[(int)LocationType.Interior, (int)LocationType.Exterior] == DimensionType.False &&
-                   _matrix[(int)LocationType.Boundary, (int)LocationType.Exterior] == DimensionType.False &&
-                   _matrix[(int)LocationType.Exterior, (int)LocationType.Interior] == DimensionType.False &&
-                   _matrix[(int)LocationType.Exterior, (int)LocationType.Boundary] == DimensionType.False;
+            return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                   _matrix[(int)Location.Interior, (int)Location.Exterior] == Dimension.False &&
+                   _matrix[(int)Location.Boundary, (int)Location.Exterior] == Dimension.False &&
+                   _matrix[(int)Location.Exterior, (int)Location.Interior] == Dimension.False &&
+                   _matrix[(int)Location.Exterior, (int)Location.Boundary] == Dimension.False;
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> intersect.
         /// </returns>
-        public virtual bool IsIntersects()
+        public bool IsIntersects()
         {
             return !IsDisjoint();
         }
@@ -316,18 +316,18 @@ namespace DotSpatial.Topology.Geometries
         /// function to return <c>true</c>, the <see cref="IGeometry"/>s must
         /// be two points, two curves or two surfaces.
         /// </returns>
-        public virtual bool IsOverlaps(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB)
+        public bool IsOverlaps(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
-            if ((dimensionOfGeometryA == DimensionType.Point && dimensionOfGeometryB == DimensionType.Point) ||
-                (dimensionOfGeometryA == DimensionType.Surface && dimensionOfGeometryB == DimensionType.Surface))
-                return IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior]) &&
-                       IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Exterior]) &&
-                       IsTrue(_matrix[(int)LocationType.Exterior, (int)LocationType.Interior]);
+            if ((dimensionOfGeometryA == Dimension.Point && dimensionOfGeometryB == Dimension.Point) ||
+                (dimensionOfGeometryA == Dimension.Surface && dimensionOfGeometryB == Dimension.Surface))
+                return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                       IsTrue(_matrix[(int)Location.Interior, (int)Location.Exterior]) &&
+                       IsTrue(_matrix[(int)Location.Exterior, (int)Location.Interior]);
 
-            if (dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Curve)
-                return _matrix[(int)LocationType.Interior, (int)LocationType.Interior] == DimensionType.Curve &&
-                       IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Exterior]) &&
-                       IsTrue(_matrix[(int)LocationType.Exterior, (int)LocationType.Interior]);
+            if (dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Curve)
+                return _matrix[(int)Location.Interior, (int)Location.Interior] == Dimension.Curve &&
+                       IsTrue(_matrix[(int)Location.Interior, (int)Location.Exterior]) &&
+                       IsTrue(_matrix[(int)Location.Exterior, (int)Location.Interior]);
 
             return false;
         }
@@ -343,21 +343,21 @@ namespace DotSpatial.Topology.Geometries
         /// s related by this <see cref="IntersectionMatrix" /> touch; Returns false
         /// if both <see cref="IGeometry"/>s are points.
         /// </returns>
-        public virtual bool IsTouches(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB)
+        public bool IsTouches(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
             if (dimensionOfGeometryA > dimensionOfGeometryB)
                 //no need to get transpose because pattern matrix is symmetrical
                 return IsTouches(dimensionOfGeometryB, dimensionOfGeometryA);
 
-            if ((dimensionOfGeometryA == DimensionType.Surface && dimensionOfGeometryB == DimensionType.Surface) ||
-                (dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Curve) ||
-                (dimensionOfGeometryA == DimensionType.Curve && dimensionOfGeometryB == DimensionType.Surface) ||
-                (dimensionOfGeometryA == DimensionType.Point && dimensionOfGeometryB == DimensionType.Surface) ||
-                (dimensionOfGeometryA == DimensionType.Point && dimensionOfGeometryB == DimensionType.Curve))
-                return _matrix[(int)LocationType.Interior, (int)LocationType.Interior] == DimensionType.False &&
-                        (IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Boundary]) ||
-                         IsTrue(_matrix[(int)LocationType.Boundary, (int)LocationType.Interior]) ||
-                         IsTrue(_matrix[(int)LocationType.Boundary, (int)LocationType.Boundary]));
+            if ((dimensionOfGeometryA == Dimension.Surface && dimensionOfGeometryB == Dimension.Surface) ||
+                (dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Curve) ||
+                (dimensionOfGeometryA == Dimension.Curve && dimensionOfGeometryB == Dimension.Surface) ||
+                (dimensionOfGeometryA == Dimension.Point && dimensionOfGeometryB == Dimension.Surface) ||
+                (dimensionOfGeometryA == Dimension.Point && dimensionOfGeometryB == Dimension.Curve))
+                return _matrix[(int)Location.Interior, (int)Location.Interior] == Dimension.False &&
+                        (IsTrue(_matrix[(int)Location.Interior, (int)Location.Boundary]) ||
+                         IsTrue(_matrix[(int)Location.Boundary, (int)Location.Interior]) ||
+                         IsTrue(_matrix[(int)Location.Boundary, (int)Location.Boundary]));
 
             return false;
         }
@@ -367,12 +367,12 @@ namespace DotSpatial.Topology.Geometries
         /// (i.e.  has value 0, 1, 2 or TRUE).
         /// </summary>
         /// <param name="actualDimensionValue">A number that can be stored in the <c>IntersectionMatrix</c>.
-        /// Possible values are <c>{<see cref="DimensionType.True"/>, <see cref="DimensionType.False"/>, <see cref="DimensionType.Dontcare"/>, 
-        /// <see cref="DimensionType.Point"/>, <see cref="DimensionType.Curve"/>, <see cref="DimensionType.Surface"/>}</c></param>
-        /// <returns><c>true</c> if the dimension value matches <see cref="DimensionType.True"/></returns>
-        public static bool IsTrue(DimensionType actualDimensionValue)
+        /// Possible values are <c>{<see cref="Dimension.True"/>, <see cref="Dimension.False"/>, <see cref="Dimension.Dontcare"/>, 
+        /// <see cref="Dimension.Point"/>, <see cref="Dimension.Curve"/>, <see cref="Dimension.Surface"/>}</c></param>
+        /// <returns><c>true</c> if the dimension value matches <see cref="Dimension.True"/></returns>
+        public static bool IsTrue(Dimension actualDimensionValue)
         {
-            if (actualDimensionValue >= 0 || actualDimensionValue == DimensionType.True)
+            if (actualDimensionValue >= 0 || actualDimensionValue == Dimension.True)
             {
                 return true;
             }
@@ -384,11 +384,11 @@ namespace DotSpatial.Topology.Geometries
         /// T*F**F***.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> is within the second.</returns>
-        public virtual bool IsWithin()
+        public bool IsWithin()
         {
-            return IsTrue(_matrix[(int)LocationType.Interior, (int)LocationType.Interior]) &&
-                   _matrix[(int)LocationType.Interior, (int)LocationType.Exterior] == DimensionType.False &&
-                   _matrix[(int)LocationType.Boundary, (int)LocationType.Exterior] == DimensionType.False;
+            return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
+                   _matrix[(int)Location.Interior, (int)Location.Exterior] == Dimension.False &&
+                   _matrix[(int)Location.Boundary, (int)Location.Exterior] == Dimension.False;
         }
 
         /// <summary>  
@@ -406,19 +406,19 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>
         /// <c>true</c> if the dimension symbol encompasses the dimension value.        
         /// </returns>        
-        public static bool Matches(DimensionType actualDimensionValue, char requiredDimensionSymbol)
+        public static bool Matches(Dimension actualDimensionValue, char requiredDimensionSymbol)
         {
-            if (requiredDimensionSymbol == Dimension.SymDontcare)
+            if (requiredDimensionSymbol == DimensionUtility.SymDontcare)
                 return true;
-            if (requiredDimensionSymbol == Dimension.SymTrue && (actualDimensionValue >= DimensionType.Point || actualDimensionValue == DimensionType.True))
+            if (requiredDimensionSymbol == DimensionUtility.SymTrue && (actualDimensionValue >= Dimension.Point || actualDimensionValue == Dimension.True))
                 return true;
-            if (requiredDimensionSymbol == Dimension.SymFalse && actualDimensionValue == DimensionType.False)
+            if (requiredDimensionSymbol == DimensionUtility.SymFalse && actualDimensionValue == Dimension.False)
                 return true;
-            if (requiredDimensionSymbol == Dimension.SymP && actualDimensionValue == DimensionType.Point)
+            if (requiredDimensionSymbol == DimensionUtility.SymP && actualDimensionValue == Dimension.Point)
                 return true;
-            if (requiredDimensionSymbol == Dimension.SymL && actualDimensionValue == DimensionType.Curve)
+            if (requiredDimensionSymbol == DimensionUtility.SymL && actualDimensionValue == Dimension.Curve)
                 return true;
-            if (requiredDimensionSymbol == Dimension.SymA && actualDimensionValue == DimensionType.Surface)
+            if (requiredDimensionSymbol == DimensionUtility.SymA && actualDimensionValue == Dimension.Surface)
                 return true;
             return false;
         }
@@ -458,7 +458,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>true</c> if this <see cref="IntersectionMatrix" />
         /// matches the required dimension symbols.
         /// </returns>
-        public virtual bool Matches(string requiredDimensionSymbols)
+        public bool Matches(string requiredDimensionSymbols)
         {
             if (requiredDimensionSymbols.Length != 9)
                 throw new ArgumentException("Should be length 9: " + requiredDimensionSymbols);
@@ -484,7 +484,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="dimensionValue">
         /// The new value of the element
         /// </param>
-        public virtual void Set(LocationType row, LocationType column, DimensionType dimensionValue)
+        public void Set(Location row, Location column, Dimension dimensionValue)
         {
             _matrix[(int)row, (int)column] = dimensionValue;
         }
@@ -503,7 +503,7 @@ namespace DotSpatial.Topology.Geometries
             {
                 int row = i / 3;
                 int col = i % 3;
-                _matrix[row, col] = Dimension.ToDimensionValue(dimensionSymbols[i]);
+                _matrix[row, col] = DimensionUtility.ToDimensionValue(dimensionSymbols[i]);
             }
         }
 
@@ -514,7 +514,7 @@ namespace DotSpatial.Topology.Geometries
         /// The dimension value to which to set this <see cref="IntersectionMatrix" />
         /// s elements. Possible values <c>True, False, Dontcare, 0, 1, 2}</c>.
         /// </param>         
-        public void SetAll(DimensionType dimensionValue)
+        public void SetAll(Dimension dimensionValue)
         {
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)
@@ -537,7 +537,7 @@ namespace DotSpatial.Topology.Geometries
         /// element. The order of dimension values from least to greatest is
         /// <c>True, False, Dontcare, 0, 1, 2</c>.
         /// </param>
-        public virtual void SetAtLeast(LocationType row, LocationType column, DimensionType minimumDimensionValue)
+        public void SetAtLeast(Location row, Location column, Dimension minimumDimensionValue)
         {
             if (_matrix[(int)row, (int)column] < minimumDimensionValue)
                 _matrix[(int)row, (int)column] = minimumDimensionValue;
@@ -553,13 +553,13 @@ namespace DotSpatial.Topology.Geometries
         /// compare the elements of this <see cref="IntersectionMatrix" />. The
         /// order of dimension values from least to greatest is <c>Dontcare, True, False, 0, 1, 2</c>.
         /// </param>
-        public virtual void SetAtLeast(string minimumDimensionSymbols)
+        public void SetAtLeast(string minimumDimensionSymbols)
         {
             for (int i = 0; i < minimumDimensionSymbols.Length; i++)
             {
                 int row = i / 3;
                 int col = i % 3;
-                SetAtLeast((LocationType)row, (LocationType)col, Dimension.ToDimensionValue(minimumDimensionSymbols[i]));
+                SetAtLeast((Location)row, (Location)col, DimensionUtility.ToDimensionValue(minimumDimensionSymbols[i]));
             }
         }
 
@@ -570,9 +570,9 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="minimumDimensionValue"></param>
-        public virtual void SetAtLeastIfValid(LocationType row, LocationType column, DimensionType minimumDimensionValue)
+        public void SetAtLeastIfValid(Location row, Location column, Dimension minimumDimensionValue)
         {
-            if (row >= LocationType.Interior && column >= LocationType.Interior)
+            if (row >= Location.Interior && column >= Location.Interior)
                 SetAtLeast(row, column, minimumDimensionValue);
         }
 
@@ -588,7 +588,7 @@ namespace DotSpatial.Topology.Geometries
             StringBuilder buf = new StringBuilder("123456789");
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)
-                    buf[3 * ai + bi] = Dimension.ToDimensionSymbol(_matrix[ai, bi]);
+                    buf[3 * ai + bi] = DimensionUtility.ToDimensionSymbol(_matrix[ai, bi]);
             return buf.ToString();
         }
 
@@ -596,9 +596,9 @@ namespace DotSpatial.Topology.Geometries
         /// Transposes this IntersectionMatrix.
         /// </summary>
         /// <returns>This <see cref="IntersectionMatrix" /> as a convenience,</returns>
-        public virtual IIntersectionMatrix Transpose()
+        public IIntersectionMatrix Transpose()
         {
-            DimensionType temp = _matrix[1, 0];
+            Dimension temp = _matrix[1, 0];
             _matrix[1, 0] = _matrix[0, 1];
             _matrix[0, 1] = temp;
 

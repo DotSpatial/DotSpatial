@@ -74,19 +74,19 @@ namespace DotSpatial.Topology.Operation.Relate
         /// boundary dimension in the Ext rows in the IM
         /// </summary>
         /// <param name="im"></param>
-        private void ComputeDisjointIm(IIntersectionMatrix im)
+        private void ComputeDisjointIM(IntersectionMatrix im)
         {
             IGeometry ga = _arg[0].Geometry;
             if (!ga.IsEmpty)
             {
-                im.Set(LocationType.Interior, LocationType.Exterior, ga.Dimension);
-                im.Set(LocationType.Boundary, LocationType.Exterior, ga.BoundaryDimension);
+                im.Set(Location.Interior, Location.Exterior, ga.Dimension);
+                im.Set(Location.Boundary, Location.Exterior, ga.BoundaryDimension);
             }
             IGeometry gb = _arg[1].Geometry;
             if (!gb.IsEmpty)
             {
-                im.Set(LocationType.Exterior, LocationType.Interior, gb.Dimension);
-                im.Set(LocationType.Exterior, LocationType.Boundary, gb.BoundaryDimension);
+                im.Set(Location.Exterior, Location.Interior, gb.Dimension);
+                im.Set(Location.Exterior, Location.Boundary, gb.BoundaryDimension);    
             }
         }
 
@@ -94,16 +94,16 @@ namespace DotSpatial.Topology.Operation.Relate
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IntersectionMatrix ComputeIm()
+        public IntersectionMatrix ComputeIM()
         {
             IntersectionMatrix im = new IntersectionMatrix();
             // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2
-            im.Set(LocationType.Exterior, LocationType.Exterior, DimensionType.Surface);
+            im.Set(Location.Exterior, Location.Exterior, Dimension.Surface);
 
             // if the Geometries don't overlap there is nothing to do
             if (!_arg[0].Geometry.EnvelopeInternal.Intersects(_arg[1].Geometry.EnvelopeInternal))
             {
-                ComputeDisjointIm(im);
+                ComputeDisjointIM(im);
                 return im;
             }
             _arg[0].ComputeSelfNodes(_li, false);
@@ -125,7 +125,7 @@ namespace DotSpatial.Topology.Operation.Relate
             LabelIsolatedNodes();
 
             // If a proper intersection was found, we can set a lower bound on the IM.
-            ComputeProperIntersectionIm(intersector, im);
+            ComputeProperIntersectionIM(intersector, im);
 
             /*
              * Now process improper intersections
@@ -155,7 +155,7 @@ namespace DotSpatial.Topology.Operation.Relate
             LabelIsolatedEdges(1, 0);
 
             // update the IM from all components
-            UpdateIm(im);
+            UpdateIM(im);
             return im;
         }
 
@@ -171,16 +171,16 @@ namespace DotSpatial.Topology.Operation.Relate
         {
             foreach (Edge e in _arg[argIndex].Edges)
             {
-                LocationType eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
-                    if (eLoc == LocationType.Boundary)
+                    if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else
                     {
                         if (n.Label.IsNull(argIndex))
-                            n.SetLabel(argIndex, LocationType.Interior);
+                            n.SetLabel(argIndex, Location.Interior);
                     }
                 }
             }
@@ -191,11 +191,11 @@ namespace DotSpatial.Topology.Operation.Relate
         /// </summary>
         /// <param name="intersector"></param>
         /// <param name="im"></param>
-        private void ComputeProperIntersectionIm(SegmentIntersector intersector, IIntersectionMatrix im)
+        private void ComputeProperIntersectionIM(SegmentIntersector intersector, IntersectionMatrix im)
         {
             // If a proper intersection is found, we can set a lower bound on the IM.
-            DimensionType dimA = _arg[0].Geometry.Dimension;
-            DimensionType dimB = _arg[1].Geometry.Dimension;
+            Dimension dimA = _arg[0].Geometry.Dimension;
+            Dimension dimB = _arg[1].Geometry.Dimension;
             bool hasProper = intersector.HasProperIntersection;
             bool hasProperInterior = intersector.HasProperInteriorIntersection;
 
@@ -203,7 +203,7 @@ namespace DotSpatial.Topology.Operation.Relate
             /*
              * If edge segments of Areas properly intersect, the areas must properly overlap.
              */
-            if (dimA == DimensionType.Surface && dimB == DimensionType.Surface)
+            if (dimA == Dimension.Surface && dimB == Dimension.Surface)
             {
                 if (hasProper) 
                     im.SetAtLeast("212101212");
@@ -217,7 +217,7 @@ namespace DotSpatial.Topology.Operation.Relate
              * Note that it does not follow that the Interior of the Line intersects the Exterior
              * of the Area, since there may be another Area component which contains the rest of the Line.
              */
-            else if (dimA == DimensionType.Surface && dimB == DimensionType.Curve)
+            else if (dimA == Dimension.Surface && dimB == Dimension.Curve)
             {
                 if (hasProper) 
                     im.SetAtLeast("FFF0FFFF2");
@@ -225,7 +225,7 @@ namespace DotSpatial.Topology.Operation.Relate
                     im.SetAtLeast("1FFFFF1FF");
             }
 
-            else if (dimA == DimensionType.Curve && dimB == DimensionType.Surface)
+            else if (dimA == Dimension.Curve && dimB == Dimension.Surface)
             {
                 if (hasProper) 
                     im.SetAtLeast("F0FFFFFF2");
@@ -242,7 +242,7 @@ namespace DotSpatial.Topology.Operation.Relate
                both Geometries, since it is possible in a self-intersecting point to
                have a proper intersection on one segment that is also a boundary point of another segment.
             */
-            else if (dimA == DimensionType.Curve && dimB == DimensionType.Curve)
+            else if (dimA == Dimension.Curve && dimB == Dimension.Curve)
             {
                 if (hasProperInterior)
                     im.SetAtLeast("0FFFFFFFF");
@@ -290,15 +290,15 @@ namespace DotSpatial.Topology.Operation.Relate
         {
             foreach (Edge e in _arg[argIndex].Edges)
             {
-                var eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     RelateNode n = (RelateNode)_nodes.Find(ei.Coordinate);
                     if (n.Label.IsNull(argIndex))
                     {
-                        if (eLoc == LocationType.Boundary)
+                        if (eLoc == Location.Boundary)
                              n.SetLabelBoundary(argIndex);
-                        else n.SetLabel(argIndex, LocationType.Interior);
+                        else n.SetLabel(argIndex, Location.Interior);
                     }
                 }
             }
@@ -320,10 +320,10 @@ namespace DotSpatial.Topology.Operation.Relate
                 // since edge is not in boundary, may not need the full generality of PointLocator?
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
-                var loc = _ptLocator.Locate(e.Coordinate, target);
+                Location loc = _ptLocator.Locate(e.Coordinate, target);
                 e.Label.SetAllLocations(targetIndex, loc);
             }
-            else e.Label.SetAllLocations(targetIndex, LocationType.Exterior);            
+            else e.Label.SetAllLocations(targetIndex, Location.Exterior);            
         }
 
         /// <summary>
@@ -354,8 +354,8 @@ namespace DotSpatial.Topology.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
-            LocationType loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
-            n.Label.SetAllLocations(targetIndex, loc);
+            Location loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
+            n.Label.SetAllLocations(targetIndex, loc);        
         }
 
         /// <summary>
@@ -396,16 +396,16 @@ namespace DotSpatial.Topology.Operation.Relate
         /// Update the IM with the sum of the IMs for each component.
         /// </summary>
         /// <param name="im"></param>
-        private void UpdateIm(IntersectionMatrix im)
+        private void UpdateIM(IntersectionMatrix im)
         {
             foreach (Edge e in _isolatedEdges)
             {
-                e.UpdateIm(im);
+                e.UpdateIM(im);
             }
             foreach (RelateNode node in _nodes )
             {
-                node.UpdateIm(im);
-                node.UpdateImFromEdges(im);
+                node.UpdateIM(im);
+                node.UpdateIMFromEdges(im);
             }
         }
 

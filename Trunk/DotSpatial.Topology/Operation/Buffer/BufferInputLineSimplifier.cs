@@ -55,7 +55,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         //private const int Keep = 2;
 
         private readonly IList<Coordinate> _inputLine;
-        private int _angleOrientation = CgAlgorithms.CounterClockwise;
+        private int _angleOrientation = CGAlgorithms.CounterClockwise;
         private double _distanceTol;
         private byte[] _isDeleted;
 
@@ -141,7 +141,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            var orientation = CgAlgorithms.ComputeOrientation(p0, p1, p2);
+            var orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
             bool isConcave = (orientation == _angleOrientation);
             return isConcave;
         }
@@ -163,7 +163,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         private static bool IsShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
-            double dist = CgAlgorithms.DistancePointLine(p1, p0, p2);
+            double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
             return dist < distanceTol;
         }
 
@@ -234,7 +234,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             _distanceTol = Math.Abs(distanceTol);
             if (distanceTol < 0)
-                _angleOrientation = CgAlgorithms.Clockwise;
+                _angleOrientation = CGAlgorithms.Clockwise;
 
             // rely on fact that boolean array is filled with false value
             _isDeleted = new byte[_inputLine.Count];

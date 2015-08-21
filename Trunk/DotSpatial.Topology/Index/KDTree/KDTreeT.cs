@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.KdTree
+namespace DotSpatial.Topology.Index.KDTree
 {
     /// <summary>
     /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.

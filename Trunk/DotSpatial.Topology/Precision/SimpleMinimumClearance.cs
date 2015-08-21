@@ -134,7 +134,7 @@ namespace DotSpatial.Topology.Precision
             {
                 if (_queryPt.Equals2D(seg0) || _queryPt.Equals2D(seg1))
                     return;
-                double segDist = CgAlgorithms.DistancePointLine(_queryPt, seg1, seg0);
+                double segDist = CGAlgorithms.DistancePointLine(_queryPt, seg1, seg0);
                 if (segDist > 0)
                     _smc.UpdateClearance(segDist, _queryPt, seg1, seg0);
             }

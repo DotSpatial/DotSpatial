@@ -89,7 +89,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the number of edges around this Node.
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -112,7 +112,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the collection of DirectedEdges that leave this Node.
         /// </summary>
-        public virtual DirectedEdgeStar OutEdges
+        public DirectedEdgeStar OutEdges
         {
             get
             {
@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Adds an outgoing DirectedEdge to this Node.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void AddOutEdge(DirectedEdge de)
+        public void AddOutEdge(DirectedEdge de)
         {
             DeStar.Add(de);
         }
@@ -154,7 +154,7 @@ namespace DotSpatial.Topology.Planargraph
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(Edge edge)
+        public int GetIndex(Edge edge)
         {
             return DeStar.GetIndex(edge);
         }

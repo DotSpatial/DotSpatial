@@ -114,7 +114,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         /// Gets the graph constructed to compute the overlay.
         /// </summary>
-        public virtual PlanarGraph Graph
+        public PlanarGraph Graph
         {
             get { return _graph; }
         }
@@ -233,10 +233,10 @@ namespace DotSpatial.Topology.Operation.Overlay
                          * label of the edge must be updated to reflect the resultant
                          * side locations indicated by the depth values.
                          */
-                        Assert.IsTrue(!depth.IsNull(i, PositionType.Left), "depth of Left side has not been initialized");
-                        lbl.SetLocation(i, PositionType.Left, depth.GetLocation(i, PositionType.Left));
-                        Assert.IsTrue(!depth.IsNull(i, PositionType.Right), "depth of Right side has not been initialized");
-                        lbl.SetLocation(i, PositionType.Right, depth.GetLocation(i, PositionType.Right));
+                        Assert.IsTrue(!depth.IsNull(i, Positions.Left), "depth of Left side has not been initialized");
+                        lbl.SetLocation(i, Positions.Left, depth.GetLocation(i, Positions.Left));
+                        Assert.IsTrue(!depth.IsNull(i, Positions.Right), "depth of Right side has not been initialized");
+                        lbl.SetLocation(i, Positions.Right, depth.GetLocation(i, Positions.Right));
                     }
                 }
             }
@@ -358,16 +358,16 @@ namespace DotSpatial.Topology.Operation.Overlay
             IGeometry result = null;
             switch (ResultDimension(overlayOpCode, a, b))
             {
-                case DimensionType.False:
+                case Dimension.False:
                     result = geomFact.CreateGeometryCollection(new IGeometry[0]);
                     break;
-                case DimensionType.Point:
+                case Dimension.Point:
                     result = geomFact.CreatePoint((Coordinate)null);
                     break;
-                case DimensionType.Curve:
+                case Dimension.Curve:
                     result = geomFact.CreateLineString((Coordinate[])null);
                     break;
-                case DimensionType.Surface:
+                case Dimension.Surface:
                     result = geomFact.CreatePolygon(null, null);
                     break;
             }
@@ -391,7 +391,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                 // mark all dirEdges with the appropriate label
                 var label = de.Label;
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
-                    IsResultOfOp(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), opCode))                 
+                    IsResultOfOp(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), opCode))                 
                         de.IsInResult = true;                            
             }
         }
@@ -470,7 +470,7 @@ namespace DotSpatial.Topology.Operation.Overlay
             {
                 var geom = it.Current;
                 var loc = _ptLocator.Locate(coord, geom);
-                if (loc != LocationType.Exterior) 
+                if (loc != Location.Exterior) 
                     return true;
             }
             return false;
@@ -528,24 +528,24 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <param name="loc1">the code for the location in the second geometry</param>
         /// <param name="overlayOpCode">the code for the overlay operation to test</param>
         /// <returns><c>true</c> if the locations correspond to the overlayOpCode.</returns>
-        public static bool IsResultOfOp(LocationType loc0, LocationType loc1, SpatialFunction overlayOpCode)
+        public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction overlayOpCode)
         {
-            if (loc0 == LocationType.Boundary) 
-                loc0 = LocationType.Interior;
-            if (loc1 == LocationType.Boundary) 
-                loc1 = LocationType.Interior;
+            if (loc0 == Location.Boundary) 
+                loc0 = Location.Interior;
+            if (loc1 == Location.Boundary) 
+                loc1 = Location.Interior;
 
             switch (overlayOpCode) 
             {
                 case SpatialFunction.Intersection:
-                    return loc0 == LocationType.Interior && loc1 == LocationType.Interior;
+                    return loc0 == Location.Interior && loc1 == Location.Interior;
                 case SpatialFunction.Union:
-                    return loc0 == LocationType.Interior || loc1 == LocationType.Interior;
+                    return loc0 == Location.Interior || loc1 == Location.Interior;
                 case SpatialFunction.Difference:
-                    return loc0 == LocationType.Interior && loc1 != LocationType.Interior;
+                    return loc0 == Location.Interior && loc1 != Location.Interior;
                 case SpatialFunction.SymDifference:
-                    return   (loc0 == LocationType.Interior &&  loc1 != LocationType.Interior)
-                          || (loc0 != LocationType.Interior &&  loc1 == LocationType.Interior);
+                    return   (loc0 == Location.Interior &&  loc1 != Location.Interior)
+                          || (loc0 != Location.Interior &&  loc1 == Location.Interior);
 	            default:
                     return false;
             }            
@@ -654,7 +654,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                 _edgeList.Add(obj);
         }
 
-        private static DimensionType ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
         {
             var dim0 = (int)g0.Dimension;
             var dim1 = (int)g1.Dimension;
@@ -682,7 +682,7 @@ namespace DotSpatial.Topology.Operation.Overlay
                     resultDimension = Math.Max(dim0, dim1);
                     break;
             }
-            return (DimensionType)resultDimension;
+            return (Dimension)resultDimension;
         }
 
         private void UpdateNodeLabelling()

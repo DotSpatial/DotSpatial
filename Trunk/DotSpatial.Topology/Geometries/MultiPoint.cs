@@ -118,22 +118,22 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return DimensionType.False;
+                return Dimension.False;
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public override DimensionType Dimension
+        public override Dimension Dimension 
         {
             get
             {
-                return DimensionType.Point;
+                return Dimension.Point;
             }
         }
 
@@ -252,7 +252,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected virtual Coordinate GetCoordinate(int n)
+        protected Coordinate GetCoordinate(int n) 
         {
             return Geometries[n].Coordinate;
         }

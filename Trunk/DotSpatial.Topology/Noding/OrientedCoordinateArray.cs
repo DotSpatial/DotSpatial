@@ -57,21 +57,6 @@ namespace DotSpatial.Topology.Noding
 
         #region Methods
 
-        /// <summary>
-        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <returns>
-        /// -1 this one is smaller;<br/>
-        ///  0 the two objects are equal;<br/>
-        ///  1 this one is greater.
-        /// </returns>
-        public int CompareTo(object o1)
-        {
-            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
-            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
-        }
-
         private static int CompareOriented(IList<Coordinate> pts1, bool orientation1, IList<Coordinate> pts2, bool orientation2)
         {
             int dir1 = orientation1 ? 1 : -1;
@@ -98,6 +83,21 @@ namespace DotSpatial.Topology.Noding
                 if(done1 && done2) 
                     return 0;
             }
+        }
+
+        /// <summary>
+        /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <returns>
+        /// -1 this one is smaller;<br/>
+        ///  0 the two objects are equal;<br/>
+        ///  1 this one is greater.
+        /// </returns>
+        public int CompareTo(object o1)
+        {
+            OrientedCoordinateArray oca = (OrientedCoordinateArray)o1;
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
 
         /// <summary>

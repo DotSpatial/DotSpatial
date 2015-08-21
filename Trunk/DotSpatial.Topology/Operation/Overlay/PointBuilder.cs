@@ -64,7 +64,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList<IGeometry> Build(SpatialFunction opCode)
+        public IList<IGeometry> Build(SpatialFunction opCode)
         {
             var nodeList = CollectNodes(opCode);
             var resultPointList = SimplifyPoints(nodeList);

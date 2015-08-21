@@ -42,7 +42,7 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         public void AddPt(Coordinate pt)
         {
-            Coordinate bufPt = new Coordinate(pt);
+            var bufPt = new Coordinate(pt);
             PrecisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsRedundant(bufPt))
@@ -90,7 +90,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         {
             if (_ptList.Count < 1)
                 return false;
-            Coordinate lastPt = _ptList[_ptList.Count - 1];
+            var lastPt = _ptList[_ptList.Count - 1];
             double ptDist = pt.Distance(lastPt);
             return ptDist < MinimumVertexDistance;
         }
@@ -101,8 +101,8 @@ namespace DotSpatial.Topology.Operation.Buffer
 
         public override string ToString()
         {
-            GeometryFactory fact = new GeometryFactory();
-            ILineString line = fact.CreateLineString(GetCoordinates());
+            var fact = new GeometryFactory();
+            var line = fact.CreateLineString(GetCoordinates());
             return line.ToString();
         }
 

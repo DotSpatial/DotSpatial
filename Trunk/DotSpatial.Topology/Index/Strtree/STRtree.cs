@@ -41,7 +41,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
     [Serializable]
-    public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
+    public class STRtree<TItem> : AbstractSTRtree<IEnvelope, TItem>, ISpatialIndex<TItem>
     {
         #region Constant Fields
 

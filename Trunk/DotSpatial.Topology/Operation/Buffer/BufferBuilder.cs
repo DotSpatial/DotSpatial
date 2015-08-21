@@ -88,7 +88,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         ///</remarks>
-        public virtual IPrecisionModel WorkingPrecisionModel
+        public IPrecisionModel WorkingPrecisionModel
         {
             get { return _workingPrecisionModel; }
             set { _workingPrecisionModel = value; }
@@ -231,11 +231,11 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="label"></param>
         private static int DepthDelta(Label label)
         {
-            LocationType lLoc = label.GetLocation(0, PositionType.Left);
-            LocationType rLoc = label.GetLocation(0, PositionType.Right);
-            if (lLoc == LocationType.Interior && rLoc == LocationType.Exterior)
+            var lLoc = label.GetLocation(0, Positions.Left);
+            var rLoc = label.GetLocation(0, Positions.Right);
+            if (lLoc == Location.Interior && rLoc == Location.Exterior)
                 return 1;
-            if (lLoc == LocationType.Exterior && rLoc == LocationType.Interior)
+            if (lLoc == Location.Exterior && rLoc == Location.Interior)
                 return -1;
             return 0;
         }
@@ -245,7 +245,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             if (_workingNoder != null) return _workingNoder;
 
             // otherwise use a fast (but non-robust) noder
-            var noder = new McIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
+            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
             
             return noder;
         }

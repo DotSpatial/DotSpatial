@@ -301,7 +301,7 @@ namespace DotSpatial.Topology.Geometries.Utilities
                 isAllValidLinearRings = false;
 
             var holes = new List<ILineString>();
-            for (int i = 0; i < geom.NumHoles; i++)
+            for (int i = 0; i < geom.NumInteriorRings; i++)
             {
                 IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;

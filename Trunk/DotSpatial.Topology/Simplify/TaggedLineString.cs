@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual int MinimumSize
+        public int MinimumSize
         {
             get { return _minimumSize; }
         }
@@ -78,7 +78,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual ILineString Parent
+        public ILineString Parent
         {
             get { return _parentLine; }
         }
@@ -86,7 +86,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Coordinate> ParentCoordinates
+        public IList<Coordinate> ParentCoordinates
         {
             get { return _parentLine.Coordinates; }
         }
@@ -94,7 +94,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate[] ResultCoordinates
+        public Coordinate[] ResultCoordinates
         {
             get { return ExtractCoordinates(_resultSegs); }
         }
@@ -102,7 +102,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual int ResultSize
+        public int ResultSize
         {
             get
             {
@@ -114,7 +114,7 @@ namespace DotSpatial.Topology.Simplify
         /// <summary>
         ///
         /// </summary>
-        public virtual TaggedLineSegment[] Segments
+        public TaggedLineSegment[] Segments
         {
             get { return _segs; }
         }
@@ -127,7 +127,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void AddToResult(LineSegment seg)
+        public void AddToResult(LineSegment seg)
         {
             _resultSegs.Add(seg);
         }
@@ -136,7 +136,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual ILinearRing AsLinearRing()
+        public ILinearRing AsLinearRing()
         {
             return _parentLine.Factory.CreateLinearRing(ExtractCoordinates(_resultSegs));
         }
@@ -145,7 +145,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual ILineString AsLineString()
+        public ILineString AsLineString()
         {
             return _parentLine.Factory.CreateLineString(ExtractCoordinates(_resultSegs));
         }
@@ -174,7 +174,7 @@ namespace DotSpatial.Topology.Simplify
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual TaggedLineSegment GetSegment(int i)
+        public TaggedLineSegment GetSegment(int i)
         {
             return _segs[i];
         }

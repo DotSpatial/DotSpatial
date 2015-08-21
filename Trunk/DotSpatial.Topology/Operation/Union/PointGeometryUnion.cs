@@ -51,9 +51,9 @@ namespace DotSpatial.Topology.Operation.Union
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
                 Coordinate coord = point.Coordinate;
-                LocationType loc = locater.Locate(coord, _otherGeom);
+                Location loc = locater.Locate(coord, _otherGeom);
 
-                if (loc == LocationType.Exterior)
+                if (loc == Location.Exterior)
                 {
                     exteriorCoords.Add(coord);
                 }

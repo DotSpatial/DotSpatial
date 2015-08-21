@@ -25,148 +25,148 @@
 namespace DotSpatial.Topology.IO
 {
     /// <summary>
-    /// WkbGeometryTypes
+    /// WKB Geometry Types
     /// </summary>
-    public enum WkbGeometryType
+    public enum WKBGeometryTypes
     {
         /// <summary>
         /// Point.
         /// </summary>
-        WkbPoint = 1,
+        WKBPoint = 1,
 
         /// <summary>
         /// LineString.
         /// </summary>
-        WkbLineString = 2,
+        WKBLineString = 2,
 
         /// <summary>
         /// Polygon.
         /// </summary>
-        WkbPolygon = 3,
+        WKBPolygon = 3,
 
         /// <summary>
         /// MultiPoint.
         /// </summary>
-        WkbMultiPoint = 4,
+        WKBMultiPoint = 4,
 
         /// <summary>
         /// MultiLineString.
         /// </summary>
-        WkbMultiLineString = 5,
+        WKBMultiLineString = 5,
 
         /// <summary>
         /// MultiPolygon.
         /// </summary>
-        WkbMultiPolygon = 6,
+        WKBMultiPolygon = 6,
 
         /// <summary>
         /// GeometryCollection.
         /// </summary>
-        WkbGeometryCollection = 7,
+        WKBGeometryCollection = 7,
 
         /// <summary>
         /// Point with Z coordinate.
         /// </summary>
-        WkbPointZ = 1001,
+        WKBPointZ = 1001,
 
         /// <summary>
         /// LineString with Z coordinate.
         /// </summary>
-        WkbLineStringZ = 1002,
+        WKBLineStringZ = 1002,
 
         /// <summary>
         /// Polygon with Z coordinate.
         /// </summary>
-        WkbPolygonZ = 1003,
+        WKBPolygonZ = 1003,
 
         /// <summary>
         /// MultiPoint with Z coordinate.
         /// </summary>
-        WkbMultiPointZ = 1004,
+        WKBMultiPointZ = 1004,
 
         /// <summary>
         /// MultiLineString with Z coordinate.
         /// </summary>
-        WkbMultiLineStringZ = 1005,
+        WKBMultiLineStringZ = 1005,
 
         /// <summary>
         /// MultiPolygon with Z coordinate.
         /// </summary>
-        WkbMultiPolygonZ = 1006,
+        WKBMultiPolygonZ = 1006,
 
         /// <summary>
         /// GeometryCollection with Z coordinate.
         /// </summary>
-        WkbGeometryCollectionZ = 1007,
+        WKBGeometryCollectionZ = 1007,
 
         /// <summary>
         /// Point with M ordinate value.
         /// </summary>
-        WkbPointM = 2001,
+        WKBPointM = 2001,
 
         /// <summary>
         /// LineString with M ordinate value.
         /// </summary>
-        WkbLineStringM = 2002,
+        WKBLineStringM = 2002,
 
         /// <summary>
         /// Polygon with M ordinate value.
         /// </summary>
-        WkbPolygonM = 2003,
+        WKBPolygonM = 2003,
 
         /// <summary>
         /// MultiPoint with M ordinate value.
         /// </summary>
-        WkbMultiPointM = 2004,
+        WKBMultiPointM = 2004,
 
         /// <summary>
         /// MultiLineString with M ordinate value.
         /// </summary>
-        WkbMultiLineStringM = 2005,
+        WKBMultiLineStringM = 2005,
 
         /// <summary>
         /// MultiPolygon with M ordinate value.
         /// </summary>
-        WkbMultiPolygonM = 2006,
+        WKBMultiPolygonM = 2006,
 
         /// <summary>
         /// GeometryCollection with M ordinate value.
         /// </summary>
-        WkbGeometryCollectionM = 2007,
+        WKBGeometryCollectionM = 2007,
 
         /// <summary>
         /// Point with Z coordinate and M ordinate value.
         /// </summary>
-        WkbPointZm = 3001,
+        WKBPointZM = 3001,
 
         /// <summary>
         /// LineString with Z coordinate and M ordinate value.
         /// </summary>
-        WkbLineStringZm = 3002,
+        WKBLineStringZM = 3002,
 
         /// <summary>
         /// Polygon with Z coordinate and M ordinate value.
         /// </summary>
-        WkbPolygonZm = 3003,
+        WKBPolygonZM = 3003,
 
         /// <summary>
         /// MultiPoint with Z coordinate and M ordinate value.
         /// </summary>
-        WkbMultiPointZm = 3004,
+        WKBMultiPointZM = 3004,
 
         /// <summary>
         /// MultiLineString with Z coordinate and M ordinate value.
         /// </summary>
-        WkbMultiLineStringZm = 3005,
+        WKBMultiLineStringZM = 3005,
 
         /// <summary>
         /// MultiPolygon with Z coordinate and M ordinate value.
         /// </summary>
-        WkbMultiPolygonZm = 3006,
+        WKBMultiPolygonZM = 3006,
 
         /// <summary>
         /// GeometryCollection with Z coordinate and M ordinate value.
         /// </summary>
-        WkbGeometryCollectionZm = 3007
+        WKBGeometryCollectionZM = 3007
     };
 }

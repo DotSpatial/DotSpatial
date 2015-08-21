@@ -63,7 +63,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {

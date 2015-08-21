@@ -52,7 +52,7 @@ namespace DotSpatial.Topology.Operation.Valid
 
         private void BuildIndex()
         {
-            _index = new StRtree<ILineString>();
+            _index = new STRtree<ILineString>();
 
             for (int i = 0; i < _rings.Count; i++)
             {
@@ -99,7 +99,7 @@ namespace DotSpatial.Topology.Operation.Valid
                     if (innerRingPt == null)
                         continue;
 
-                    Boolean isInside = CgAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+                    Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         _nestedPt = innerRingPt;

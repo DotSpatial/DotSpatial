@@ -48,14 +48,14 @@ namespace DotSpatial.Topology.Geometries
 
         private ILinearRing CreateLinearRing(IList<Coordinate> coordinates, bool ccw)
         {
-            if (coordinates != null && CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
+            if (coordinates != null && CGAlgorithms.IsCounterClockwise(coordinates) != ccw)
                 coordinates = coordinates.Reverse().ToList();
             return CreateLinearRing(coordinates);
         }
 
         private ILinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
         {
-            if (coordinates != null && CgAlgorithms.IsCounterClockwise(coordinates) != ccw)
+            if (coordinates != null && CGAlgorithms.IsCounterClockwise(coordinates) != ccw)
             {
                 //CoordinateSequences.Reverse(coordinates);
                 coordinates = coordinates.Reversed();

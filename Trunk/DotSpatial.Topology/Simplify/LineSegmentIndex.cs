@@ -46,7 +46,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="line"></param>
-        public virtual void Add(TaggedLineString line)
+        public void Add(TaggedLineString line) 
         {
             TaggedLineSegment[] segs = line.Segments;
             for (int i = 0; i < segs.Length; i++) 
@@ -60,7 +60,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void Add(LineSegment seg)
+        public void Add(LineSegment seg)
         {
             _index.Insert(new Envelope(seg.P0, seg.P1), seg);
         }
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.Simplify
         ///
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void Remove(LineSegment seg)
+        public void Remove(LineSegment seg)
         {
             _index.Remove(new Envelope(seg.P0, seg.P1), seg);
         }

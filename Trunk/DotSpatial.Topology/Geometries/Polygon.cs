@@ -194,10 +194,10 @@ namespace DotSpatial.Topology.Geometries
         {
             get
             {
-                double area = 0.0;
-                area += Math.Abs(CgAlgorithms.SignedArea(_shell.CoordinateSequence));
+                var area = 0.0;
+                area += Math.Abs(CGAlgorithms.SignedArea(_shell.CoordinateSequence));
                 for (int i = 0; i < _holes.Length; i++)
-                    area -= Math.Abs(CgAlgorithms.SignedArea(_holes[i].CoordinateSequence));
+                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));                
                 return area;
             }
         }
@@ -230,11 +230,11 @@ namespace DotSpatial.Topology.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return DimensionType.Curve;
+                return Dimension.Curve;
             }
         }
 
@@ -299,18 +299,18 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>  
         /// The topological dimensions of this geometry
         /// </returns>
-        public override DimensionType Dimension
+        public override Dimension Dimension
         {
             get
             {
-                return DimensionType.Surface;
+                return Dimension.Surface;
             }
         }
 
         /// <summary>
         /// This is just the Shell, but modified to work with IBasicPolygon
         /// </summary>
-        public virtual IBasicLineString ExteriorRing
+        public ILineString ExteriorRing
         {
             get
             {
@@ -352,6 +352,17 @@ namespace DotSpatial.Topology.Geometries
             private set
             {
                 _holes = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ILineString[] InteriorRings
+        {
+            get
+            {
+                return CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
             }
         }
 
@@ -444,6 +455,16 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NumInteriorRings
+        {
+            get
+            {
+                return _holes.Length;
+            }
+        }
         /// <summary>
         ///
         /// </summary>
@@ -744,7 +765,7 @@ namespace DotSpatial.Topology.Geometries
                 result.Add(uniqueCoordinates[i]);
             result.Add(uniqueCoordinates[0].Copy());
             ring.Coordinates = result;
-            if (CgAlgorithms.IsCounterClockwise(ring.Coordinates) == clockwise)
+            if (CGAlgorithms.IsCounterClockwise(ring.Coordinates) == clockwise)
                 ring.Coordinates = ring.Coordinates.Reverse().ToList();
         }
 

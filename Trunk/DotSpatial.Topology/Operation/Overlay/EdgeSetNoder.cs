@@ -62,11 +62,11 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Edge> NodedEdges
+        public IList<Edge> NodedEdges
         {
             get
             {
-                EdgeSetIntersector esi = new SimpleMcSweepLineIntersector();
+                EdgeSetIntersector esi = new SimpleMCSweepLineIntersector();
                 SegmentIntersector si = new SegmentIntersector(_li, true, false);
                 esi.ComputeIntersections(_inputEdges, si, true);
 
@@ -87,7 +87,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         ///
         /// </summary>
         /// <param name="edges"></param>
-        public virtual void AddEdges(IEnumerable<Edge> edges)
+        public void AddEdges(IEnumerable<Edge> edges)
         {
             foreach (Edge obj in edges)
                 _inputEdges.Add(obj);

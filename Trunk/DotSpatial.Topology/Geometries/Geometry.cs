@@ -170,8 +170,8 @@ namespace DotSpatial.Topology.Geometries
         };
 
         private IGeometry _boundary;
-        private DimensionType _boundaryDimension;
-        private DimensionType _dimension;
+        private Dimension _boundaryDimension;
+        private Dimension _dimension;
 
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
@@ -198,7 +198,7 @@ namespace DotSpatial.Topology.Geometries
         protected Geometry()
         {
             _factory = DefaultFactory;
-            _srid = _factory.Srid;
+            _srid = _factory.SRID;
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace DotSpatial.Topology.Geometries
         protected Geometry(IGeometryFactory factory)
         {
             _factory = factory;
-            _srid = factory.Srid;
+            _srid = factory.SRID;
         }
 
         #endregion
@@ -252,7 +252,7 @@ namespace DotSpatial.Topology.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        public virtual DimensionType BoundaryDimension
+        public virtual Dimension BoundaryDimension
         {
             get { return _boundaryDimension; }
             set { _boundaryDimension = value; }
@@ -266,7 +266,7 @@ namespace DotSpatial.Topology.Geometries
         /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
         /// </summary>
         /// <returns>A Point which is the centroid of this Geometry.</returns>
-        public virtual IPoint Centroid
+        public IPoint Centroid
         {
             get
             {
@@ -335,7 +335,7 @@ namespace DotSpatial.Topology.Geometries
         /// The dimension of the class implementing this interface, whether
         /// or not this object is the empty point.
         /// </returns>
-        public virtual DimensionType Dimension
+        public virtual Dimension Dimension
         {
             get { return _dimension; }
             set { _dimension = value; }
@@ -453,13 +453,13 @@ namespace DotSpatial.Topology.Geometries
 
                 Coordinate interiorPt;
 
-                DimensionType dim = Dimension;
-                if (dim == DimensionType.Point)
+                Dimension dim = Dimension;
+                if (dim == Dimension.Point)
                 {
                     InteriorPointPoint intPt = new InteriorPointPoint(this);
                     interiorPt = intPt.InteriorPoint;
                 }
-                else if (dim == DimensionType.Curve)
+                else if (dim == Dimension.Curve)
                 {
                     InteriorPointLine intPt = new InteriorPointLine(this);
                     interiorPt = intPt.InteriorPoint;
@@ -602,7 +602,7 @@ namespace DotSpatial.Topology.Geometries
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
-        public virtual IPrecisionModel PrecisionModel
+        public IPrecisionModel PrecisionModel
         {
             get
             {
@@ -610,16 +610,26 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <summary>
-        /// Gets/Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
+        /// <summary>  
+        /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <b>NOTE:</b> This method should only be used for exceptional circumstances or 
+        /// for backwards compatibility.  Normally the SRID should be set on the 
+        /// <see cref="IGeometryFactory"/> used to create the geometry.
+        /// SRIDs set using this method will <i>not</i> be propagated to 
+        /// geometries returned by constructive methods.</para>
+        /// </remarks>
+        /// <seealso cref="IGeometryFactory"/>  
+        /*
         /// NTS supports Spatial Reference System information in the simple way
         /// defined in the SFS. A Spatial Reference System ID (SRID) is present in
         /// each <c>Geometry</c> object. <c>Geometry</c> provides basic
         /// accessor operations for this field, but no others. The SRID is represented
         /// as an integer.
-        /// </summary>
-        [Obsolete("deprecated use {getUserData} instead")]
-        public virtual int Srid
+         */
+        public int SRID
         {
             get
             {
@@ -627,7 +637,20 @@ namespace DotSpatial.Topology.Geometries
             }
             set
             {
+
                 _srid = value;
+
+                // Adjust the geometry factory
+                _factory = GeometryServiceProvider.Instance.CreateGeometryFactory(
+                    _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
+
+                var collection = this as IGeometryCollection;
+                if (collection == null) return;
+
+                foreach (var geometry in collection.Geometries)
+                {
+                    geometry.SRID = value;
+                }
             }
         }
 
@@ -640,7 +663,7 @@ namespace DotSpatial.Topology.Geometries
         /// Note that user data objects are not present in geometries created by
         /// construction methods.
         /// </remarks>
-        public virtual object UserData
+        public object UserData
         {
             get
             {
@@ -1012,7 +1035,7 @@ namespace DotSpatial.Topology.Geometries
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
-        protected virtual void CheckNotGeometryCollection(IGeometry g)
+        protected void CheckNotGeometryCollection(IGeometry g)
         {
             if (IsNonHomogenousGeometryCollection(g))
                 throw new ArgumentException("This method does not support GeometryCollection arguments");
@@ -1304,7 +1327,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> contains <c>g</c></returns>
         /// <see cref="Within"/>
         /// <see cref="Covers"/>
-        public virtual bool Contains(IGeometry g)
+        public bool Contains(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
@@ -1354,7 +1377,7 @@ namespace DotSpatial.Topology.Geometries
         ///<returns><c>true</c> if this <c>Geometry</c> is covered by <c>g</c></returns>
         ///<seealso cref="Within"/>
         ///<seealso cref="Covers"/>
-        public virtual bool CoveredBy(IGeometry g)
+        public bool CoveredBy(IGeometry g)
         {
             return g.Covers(this);
         }
@@ -1393,7 +1416,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> covers <paramref name="g" /></returns>
         /// <seealso cref="Contains" />
         /// <seealso cref="CoveredBy" />
-        public virtual bool Covers(IGeometry g)
+        public bool Covers(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
@@ -1461,7 +1484,7 @@ namespace DotSpatial.Topology.Geometries
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s cross.</returns>
-        public virtual bool Crosses(IGeometry g)
+        public bool Crosses(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -1481,7 +1504,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
         /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
-        public virtual IGeometry Difference(IGeometry other)
+        public IGeometry Difference(IGeometry other)
         {
             // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (IsEmpty)
@@ -1507,7 +1530,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are disjoint.</returns>
         /// <see cref="Intersects"/>
-        public virtual bool Disjoint(IGeometry g)
+        public bool Disjoint(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -1523,7 +1546,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>The distance between the geometries</returns>
         /// <returns>0 if either input geometry is empty</returns>
         /// <exception cref="ArgumentException">if g is null</exception>
-        public virtual double Distance(IGeometry g)
+        public double Distance(IGeometry g)
         {
             return DistanceOp.Distance(this, g);
         }
@@ -1535,7 +1558,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        protected virtual bool Equal(Coordinate a, Coordinate b, double tolerance)
+        protected static bool Equal(Coordinate a, Coordinate b, double tolerance)
         {
             if (tolerance == 0)
                 return a.Equals(b);
@@ -1558,7 +1581,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal.</returns>
         /// <seealso cref="EqualsTopologically"/>
-        public virtual bool Equals(IGeometry g)
+        public bool Equals(IGeometry g)
         {
             if (g == null)
                 return false;
@@ -1653,7 +1676,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>
         /// <c>true</c> if this and the other <c>Geometry</c> have identical structure and point values.
         /// </returns>
-        public virtual bool EqualsExact(IGeometry other)
+        public bool EqualsExact(IGeometry other)
         {
             // this is the exact meaning of jts r929: http://sourceforge.net/p/jts-topo-suite/code/929
             // be aware of == operator overload!
@@ -1720,7 +1743,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>A String with the GML</returns>
         public string ExportToGml()
         {
-            return ToGmlFeature().ToString();
+            return ToGMLFeature().ToString();
         }
 
         /// <summary>
@@ -1773,7 +1796,7 @@ namespace DotSpatial.Topology.Geometries
         /// and/or update any derived information it has cached (such as its <see cref="Geometries.Envelope"/> ).
         /// The operation is applied to all component Geometries.
         /// </remarks>
-        public virtual void GeometryChanged()
+        public void GeometryChanged()
         {
             Apply(new GeometryChangedFilter());
         }
@@ -1783,7 +1806,7 @@ namespace DotSpatial.Topology.Geometries
         /// party. When GeometryChanged is called, this method will be called for
         /// this Geometry and its component Geometries.
         /// </summary>
-        public virtual void GeometryChangedAction()
+        public void GeometryChangedAction()
         {
             _envelope = null;
         }
@@ -1883,7 +1906,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
         /// <exception cref="ArgumentException">if the argument is a non-empty heterogenous <c>GeometryCollection</c></exception>
-        public virtual IGeometry Intersection(IGeometry other)
+        public IGeometry Intersection(IGeometry other)
         {
             // Special case: if one input is empty ==> empty
             if (IsEmpty || other.IsEmpty)
@@ -1919,7 +1942,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
         /// <see cref="Disjoint"/>
-        public virtual bool Intersects(IGeometry g)
+        public bool Intersects(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -2008,7 +2031,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="geom">the Geometry to check the distance to.</param>
         /// <param name="distance">the distance value to compare.</param>
         /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
-        public virtual bool IsWithinDistance(IGeometry geom, double distance)
+        public bool IsWithinDistance(IGeometry geom, double distance)
         {
             double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);
             if (envDist > distance)
@@ -2083,7 +2106,7 @@ namespace DotSpatial.Topology.Geometries
         /// For this function to return <c>true</c>, the <c>Geometry</c>
         /// s must be two points, two curves or two surfaces.
         /// </returns>
-        public virtual bool Overlaps(IGeometry g)
+        public bool Overlaps(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -2113,7 +2136,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if the DE-9IM intersection 
         /// matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c></returns>
         /// <seealso cref="IntersectionMatrix"/>
-        public virtual bool Relate(IGeometry g, string intersectionPattern)
+        public bool Relate(IGeometry g, string intersectionPattern)
         {
             return Relate(g).Matches(intersectionPattern);
         }
@@ -2176,7 +2199,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
         /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
-        public virtual IGeometry SymmetricDifference(IGeometry other)
+        public IGeometry SymmetricDifference(IGeometry other)
         {
             // handle empty geometry cases
             if (IsEmpty || (other == null || other.IsEmpty))
@@ -2211,8 +2234,8 @@ namespace DotSpatial.Topology.Geometries
         /// Returns the feature representation as GML 2.1.1 XML document.
         /// This XML document is based on <c>Geometry.xsd</c> schema.
         /// NO features or XLink are implemented here!
-        /// </summary>
-        public virtual XmlReader ToGmlFeature()
+        /// </summary>        
+        public XmlReader ToGMLFeature()
         {
             GMLWriter writer = new GMLWriter();
             return writer.Write(this);
@@ -2270,7 +2293,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>true</c> if the two <c>Geometry</c>s touch;
         /// Returns false if both <c>Geometry</c>s are points.
         /// </returns>
-        public virtual bool Touches(IGeometry g)
+        public bool Touches(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -2311,7 +2334,7 @@ namespace DotSpatial.Topology.Geometries
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         /// <exception cref="ArgumentException">Thrown if either input is a non-empty GeometryCollection</exception>
         /// <seealso cref="LineMerger"/>
-        public virtual IGeometry Union(IGeometry other)
+        public IGeometry Union(IGeometry other)
         {
             // handle empty geometry cases
             if (IsEmpty || (other == null || other.IsEmpty))
@@ -2390,7 +2413,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
         /// <see cref="Contains"/>
         /// <see cref="CoveredBy"/>
-        public virtual bool Within(IGeometry g)
+        public bool Within(IGeometry g)
         {
             return g.Contains(this);
         }

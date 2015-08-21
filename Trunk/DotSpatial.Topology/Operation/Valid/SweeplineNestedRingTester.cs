@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate NestedPoint
+        public Coordinate NestedPoint 
         {
             get
             {
@@ -81,7 +81,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(ILinearRing ring)
+        public void Add(ILinearRing ring)
         {
             _rings.Add(ring);
         }
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.Operation.Valid
                 return false;
             Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-            bool isInside = CgAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+            bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
             if (isInside) 
             {
                 _nestedPt = innerRingPt;
@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.Operation.Valid
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsNonNested()
+        public bool IsNonNested()
         {
             BuildIndex();
             OverlapAction action = new OverlapAction(this);
@@ -170,7 +170,7 @@ namespace DotSpatial.Topology.Operation.Valid
             /// <summary>
             /// 
             /// </summary>
-            public virtual bool IsNonNested
+            public bool IsNonNested
             {
                 get 
                 { 
@@ -187,7 +187,7 @@ namespace DotSpatial.Topology.Operation.Valid
             /// </summary>
             /// <param name="s0"></param>
             /// <param name="s1"></param>
-            public virtual void Overlap(SweepLineInterval s0, SweepLineInterval s1)
+            public void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
                 ILinearRing innerRing = (ILinearRing) s0.Item;
                 ILinearRing searchRing = (ILinearRing) s1.Item;

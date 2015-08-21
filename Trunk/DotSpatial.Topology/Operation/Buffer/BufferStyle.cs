@@ -22,11 +22,14 @@
 // |                      |            |
 // ********************************************************************************************************
 
+using System;
+
 namespace DotSpatial.Topology.Operation.Buffer
 {
     /// <summary>
     /// Buffer styles.
     /// </summary>
+    [Obsolete("Use EndCapStyle instead.")]
     public enum BufferStyle
     {
         /// <summary>

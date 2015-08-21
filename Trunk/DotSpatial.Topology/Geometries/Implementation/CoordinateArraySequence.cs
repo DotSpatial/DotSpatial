@@ -177,7 +177,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// <summary>
         /// Returns the length of the coordinate sequence.
         /// </summary>
-        public virtual int Count
+        public int Count 
         {
             get
             {
@@ -189,7 +189,7 @@ namespace DotSpatial.Topology.Geometries.Implementation
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public virtual int Dimension
+        public int Dimension
         {
             get
             {

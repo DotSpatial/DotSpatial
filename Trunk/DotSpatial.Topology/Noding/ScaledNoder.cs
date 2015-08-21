@@ -118,10 +118,10 @@ namespace DotSpatial.Topology.Noding
         /// <returns></returns>
         public IList<ISegmentString> GetNodedSubstrings()
         {
-            IList<ISegmentString> splitSegStrings = _noder.GetNodedSubstrings();
-            if (_isScaled)
-                Rescale(splitSegStrings);
-            return splitSegStrings;
+            IList<ISegmentString> splitSS = _noder.GetNodedSubstrings();
+            if (_isScaled) 
+                Rescale(splitSS);
+            return splitSS;
         }
 
         /// <summary>

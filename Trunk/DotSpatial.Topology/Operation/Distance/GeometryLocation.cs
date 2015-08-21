@@ -86,7 +86,7 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <summary>
         /// Returns the <see cref="Coordinate"/> of this location.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <summary>
         /// Returns the geometry component on (or in) which this location occurs.
         /// </summary>
-        public virtual IGeometry GeometryComponent
+        public IGeometry GeometryComponent
         {
             get
             {
@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.Operation.Distance
         /// <summary>
         /// Tests whether this location represents a point inside an area geometry.
         /// </summary>
-        public virtual bool IsInsideArea
+        public bool IsInsideArea
         {
             get
             {
@@ -120,7 +120,7 @@ namespace DotSpatial.Topology.Operation.Distance
         /// Returns the segment index for this location. If the location is inside an
         /// area, the index will have the value <see cref="InsideArea"/>.
         /// </summary>
-        public virtual int SegmentIndex
+        public int SegmentIndex
         {
             get
             {

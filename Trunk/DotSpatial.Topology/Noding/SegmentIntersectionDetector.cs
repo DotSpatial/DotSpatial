@@ -43,23 +43,6 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         /// <summary>
-        /// Tests whether processing can terminate, because all required information has been obtained
-        /// (e.g. an intersection of the desired type has been detected).
-        /// </summary>
-        public bool IsDone
-        {
-            get
-            {
-                // If finding all types, we can stop when both possible types have been found.
-                if (FindAllIntersectionTypes)
-                    return HasProperIntersection && HasNonProperIntersection;
-
-                //If searching for a proper intersection, only stop if one is found
-                return FindProper ? HasProperIntersection : HasIntersection;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets whether processing can terminate once any intersection is found.
         /// </summary>
         public bool FindAllIntersectionTypes { get; set; }
@@ -93,6 +76,23 @@ namespace DotSpatial.Topology.Noding
         ///</summary>
         /// <remarks>An array of the segment endpoints (p00, p01, p10, p11)</remarks>
         public IList<Coordinate> IntersectionSegments { get; private set; }
+
+        /// <summary>
+        /// Tests whether processing can terminate, because all required information has been obtained
+        /// (e.g. an intersection of the desired type has been detected).
+        /// </summary>
+        public bool IsDone
+        {
+            get
+            {
+                // If finding all types, we can stop when both possible types have been found.
+                if (FindAllIntersectionTypes)
+                    return HasProperIntersection && HasNonProperIntersection;
+
+                //If searching for a proper intersection, only stop if one is found
+                return FindProper ? HasProperIntersection : HasIntersection;
+            }
+        }
 
         #endregion
 

@@ -80,7 +80,7 @@ namespace DotSpatial.Topology.Geometries
         /// indicating the interior, boundary or exterior of the second <c>Geometry</c>.
         /// </param>
         /// <returns>The dimension value at the given matrix position.</returns>
-        DimensionType Get(LocationType row, LocationType column);
+        Dimension Get(Location row, Location column);
 
         /// <summary>
         /// Returns <c>true</c> if this <c>IntersectionMatrix</c> is
@@ -117,7 +117,7 @@ namespace DotSpatial.Topology.Geometries
         /// be a point and a curve; a point and a surface; two curves; or a curve
         /// and a surface.
         /// </returns>
-        bool IsCrosses(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB);
+        bool IsCrosses(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB);
 
         /// <summary>
         /// Returns <c>true</c> if this <c>IntersectionMatrix</c> is
@@ -140,7 +140,7 @@ namespace DotSpatial.Topology.Geometries
         /// <c>Geometry</c>s must have the same dimension for this function
         /// to return <c>true</c>.
         /// </returns>
-        bool IsEquals(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB);
+        bool IsEquals(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB);
 
         /// <summary>
         /// Returns <c>true</c> if <c>isDisjoint</c> returns false.
@@ -164,7 +164,7 @@ namespace DotSpatial.Topology.Geometries
         /// function to return <c>true</c>, the <c>Geometry</c>s must
         /// be two points, two curves or two surfaces.
         /// </returns>
-        bool IsOverlaps(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB);
+        bool IsOverlaps(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB);
 
         /// <summary>
         /// Returns <c>true</c> if this <c>IntersectionMatrix</c> is
@@ -177,7 +177,7 @@ namespace DotSpatial.Topology.Geometries
         /// s related by this <c>IntersectionMatrix</c> touch; Returns false
         /// if both <c>Geometry</c>s are points.
         /// </returns>
-        bool IsTouches(DimensionType dimensionOfGeometryA, DimensionType dimensionOfGeometryB);
+        bool IsTouches(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB);
 
         /// <summary>
         /// Returns <c>true</c> if this <c>IntersectionMatrix</c> is
@@ -216,7 +216,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="dimensionValue">
         /// The new value of the element
         /// </param>
-        void Set(LocationType row, LocationType column, DimensionType dimensionValue);
+        void Set(Location row, Location column, Dimension dimensionValue);
 
         /// <summary>
         /// Changes the elements of this <c>IntersectionMatrix</c> to the
@@ -235,7 +235,7 @@ namespace DotSpatial.Topology.Geometries
         /// The dimension value to which to set this <c>IntersectionMatrix</c>
         /// s elements. Possible values <c>True, False, Dontcare, 0, 1, 2}</c>.
         /// </param>
-        void SetAll(DimensionType dimensionValue);
+        void SetAll(Dimension dimensionValue);
 
         /// <summary>
         /// Changes the specified element to <c>minimumDimensionValue</c> if the
@@ -254,7 +254,7 @@ namespace DotSpatial.Topology.Geometries
         /// element. The order of dimension values from least to greatest is
         /// <c>True, False, Dontcare, 0, 1, 2</c>.
         /// </param>
-        void SetAtLeast(LocationType row, LocationType column, DimensionType minimumDimensionValue);
+        void SetAtLeast(Location row, Location column, Dimension minimumDimensionValue);
 
         /// <summary>
         /// For each element in this <c>IntersectionMatrix</c>, changes the
@@ -275,7 +275,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="minimumDimensionValue"></param>
-        void SetAtLeastIfValid(LocationType row, LocationType column, DimensionType minimumDimensionValue);
+        void SetAtLeastIfValid(Location row, Location column, Dimension minimumDimensionValue);
 
         /// <summary>
         /// Returns a nine-character <c>String</c> representation of this <c>IntersectionMatrix</c>.

@@ -23,7 +23,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Index.Quadtree;
+using DotSpatial.Topology.Index.QuadTree;
 
 //using GeoAPI.DataStructures;
 

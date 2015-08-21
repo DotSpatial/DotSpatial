@@ -34,7 +34,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
     {
         #region Fields
 
-        private readonly ILineString _line;
+        private readonly ILineString line;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <param name="line"></param>
         public PolygonizeEdge(ILineString line)
         {
-            _line = line;
+            this.line = line;
         }
 
         #endregion
@@ -56,11 +56,11 @@ namespace DotSpatial.Topology.Operation.Polygonize
         /// <summary>
         ///
         /// </summary>
-        public virtual ILineString Line
+        public ILineString Line
         {
             get
             {
-                return _line;
+                return line;
             }
         }
 

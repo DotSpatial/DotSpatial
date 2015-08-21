@@ -30,28 +30,6 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
-        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
-        /// for all <i>candidate</i> intersections between
-        /// the given collection of SegmentStrings and the set of base segments. 
-        /// </summary>
-        /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
-        /// <param name="segmentIntersector">The intersection detector to either record intersection occurences
-        /// or add intersection nodes to the input segment strings.</param>
-        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
-        {
-
-            foreach (var baseSegmentString in _baseBaseSegStrings)
-            {
-                foreach (var segmentString in segmentStrings)
-                {
-                    Intersect(baseSegmentString, segmentString, segmentIntersector);
-                    if (segmentIntersector.IsDone)
-                        return;
-                }
-            }
-        }
-
-        /// <summary>
         /// Processes all of the segment pairs in the given segment strings
         /// using the given <paramref name="segInt">SegmentIntersector</paramref>.
         /// </summary>
@@ -72,6 +50,28 @@ namespace DotSpatial.Topology.Noding
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
+        /// for all <i>candidate</i> intersections between
+        /// the given collection of SegmentStrings and the set of base segments. 
+        /// </summary>
+        /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
+        /// <param name="segmentIntersector">The intersection detector to either record intersection occurences
+        /// or add intersection nodes to the input segment strings.</param>
+        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
+        {
+
+            foreach (var baseSegmentString in _baseBaseSegStrings)
+            {
+                foreach (var segmentString in segmentStrings)
+                {
+                    Intersect(baseSegmentString, segmentString, segmentIntersector);
+                    if (segmentIntersector.IsDone)
+                        return;
+                }
+            }
         }
 
         #endregion

@@ -96,8 +96,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         public void AddEndpoints()
         {
             int maxSegIndex = edge.Points.Count - 1;
-            Add(_edge.Points[0], 0, 0.0);
-            Add(_edge.Points[maxSegIndex], maxSegIndex, 0.0);
+            Add(edge.Points[0], 0, 0.0);
+            Add(edge.Points[maxSegIndex], maxSegIndex, 0.0);
         }
 
         /// <summary>

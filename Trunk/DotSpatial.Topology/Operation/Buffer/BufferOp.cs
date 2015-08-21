@@ -156,8 +156,8 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance)
         {
-            BufferOp gBuf = new BufferOp(g);
-            IGeometry geomBuf = gBuf.GetResultGeometry(distance);
+            var gBuf = new BufferOp(g);
+            var geomBuf = gBuf.GetResultGeometry(distance);
             return geomBuf;
         }
 
@@ -171,8 +171,8 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <returns> the buffer of the input geometry</returns>
         public static IGeometry Buffer(IGeometry g, double distance, IBufferParameters parameters)
         {
-            BufferOp bufOp = new BufferOp(g, parameters);
-            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
+            var bufOp = new BufferOp(g, parameters);
+            var geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
@@ -187,13 +187,13 @@ namespace DotSpatial.Topology.Operation.Buffer
         public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
         {
             BufferOp bufOp = new BufferOp(g) {QuadrantSegments = quadrantSegments};
-            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
+            var geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
         private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
         {
-            INoder noder = new ScaledNoder(new McIndexSnapRounder(new PrecisionModel(1.0)),fixedPrecModel.Scale);
+            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),fixedPrecModel.Scale);
 
             var bufBuilder = new BufferBuilder(_bufParams);
             bufBuilder.WorkingPrecisionModel = fixedPrecModel;
@@ -254,7 +254,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             if (_resultGeometry != null) return;
 
             IPrecisionModel argPrecModel = _argGeom.Factory.PrecisionModel;
-            if (argPrecModel.PrecisionModelType == PrecisionModelType.Fixed)
+            if (argPrecModel.PrecisionModelType == PrecisionModels.Fixed)
                 BufferFixedPrecision(argPrecModel);
             else
                 BufferReducedPrecision();
@@ -265,7 +265,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         ///</summary>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
-        public virtual IGeometry GetResultGeometry(double distance)
+        public IGeometry GetResultGeometry(double distance)
         {
             _distance = distance;
             ComputeGeometry();
@@ -289,17 +289,17 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <returns> a scale factor for the buffer computation</returns>
         private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
         {
-            IEnvelope env = g.EnvelopeInternal;
+            var env = g.EnvelopeInternal;
             var envMax = MathUtil.Max(
                 Math.Abs(env.Maximum.X), Math.Abs(env.Maximum.Y),
                 Math.Abs(env.Minimum.X), Math.Abs(env.Minimum.Y));
 
-            double expandByDistance = distance > 0.0 ? distance : 0.0;
-            double bufEnvMax = envMax + 2 * expandByDistance;
+            var expandByDistance = distance > 0.0 ? distance : 0.0;
+            var bufEnvMax = envMax + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            int bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
-            int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
+            var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
+            var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
 
             double scaleFactor = Math.Pow(10.0, minUnitLog10);
             return scaleFactor;

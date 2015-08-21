@@ -47,10 +47,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets the spatial reference id to assign when creating geometries
         /// </summary>
-        int Srid
-        {
-            get;
-        }
+        int SRID { get; }
 
         #endregion
 

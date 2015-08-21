@@ -84,13 +84,14 @@ namespace DotSpatial.Topology.Operation.Relate
         #region Properties
 
         /// <summary>
-        ///
+        /// Gets the IntersectionMatrix for the spatial relationship
+        /// between the input geometries.
         /// </summary>
-        public virtual IntersectionMatrix IntersectionMatrix
+        public IntersectionMatrix IntersectionMatrix
         {
             get
             {
-                return _relate.ComputeIm();
+                return _relate.ComputeIM();
             }
         }
 

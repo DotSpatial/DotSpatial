@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        DimensionType BoundaryDimension { get; set; }
+        Dimension BoundaryDimension { get; }
 
         /// <summary>
         /// Computes the centroid of this Geometry.
@@ -77,7 +77,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Gets the <see cref="Dimension"/> of this geometry
         /// </summary>
-        DimensionType Dimension { get; set; }
+        Dimension Dimension { get; set; }
 
         /// <summary>
         /// Gets the envelope this <see cref="IGeometry"/> would fit into.
@@ -147,7 +147,7 @@ namespace DotSpatial.Topology.Geometries
         /// in each Geometry object. Geometry provides basic accessor operations for this field, but no others. The SRID
         /// is represented as an integer.
         /// </summary>
-        int Srid { get; set; }
+        int SRID { get; set; }
 
         /// <summary>
         /// Gets/Sets the user data object for this point, if any.  A simple scheme for applications to add their own custom
@@ -426,7 +426,7 @@ namespace DotSpatial.Topology.Geometries
         /// This XML document is based on <c>Geometry.xsd</c> schema.
         /// NO features or XLink are implemented here!
         /// </summary>
-        XmlReader ToGmlFeature();
+        XmlReader ToGMLFeature();
 
         #endregion
     }

@@ -102,7 +102,7 @@ namespace DotSpatial.Topology.Precision
         {
             var newFactory
             = new GeometryFactory(pm,
-                    inputFactory.Srid,
+                    inputFactory.SRID,
                     inputFactory.CoordinateSequenceFactory);
             return newFactory;
         }
@@ -198,7 +198,7 @@ namespace DotSpatial.Topology.Precision
              * to produce correct topology
              */
             bool finalRemoveCollapsed = _removeCollapsed;
-            if (geom.Dimension >= DimensionType.Surface)
+            if (geom.Dimension >= Dimension.Surface)
                 finalRemoveCollapsed = true;
 
             var reduceGeom = geomEdit.Edit(geom,

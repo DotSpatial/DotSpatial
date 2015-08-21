@@ -44,7 +44,7 @@ namespace DotSpatial.Topology.Utilities
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get { return _list.ToArray(); }
         }

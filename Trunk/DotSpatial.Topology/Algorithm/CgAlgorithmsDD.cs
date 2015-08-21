@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.Algorithm
             DD dx2 = DD.ValueOf(q.X) - p2.X;
             DD dy2 = DD.ValueOf(q.Y) - p2.Y;
 
-            return SignOfDet2X2(dx1, dy1, dx2, dy2);
+            return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
 
         /// <summary>

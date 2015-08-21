@@ -86,9 +86,9 @@ namespace DotSpatial.Topology.IO
             get { return Ordinates.XYZM; }
         }
 
-        public bool EmitM { get; set; }
-        public bool EmitSrid { get; set; }
-        public bool EmitZ { get; set; }
+        public bool EmitM{ get; set; }
+        public bool EmitSRID { get; set; }
+        public bool EmitZ{ get; set; }
 
         ///<summary>
         /// Gets/sets whther the output will be formatted.
@@ -99,7 +99,7 @@ namespace DotSpatial.Topology.IO
         {
             get
             {
-                Ordinates ret = Ordinates.XY;
+                var ret = Ordinates.XY;
                 if (EmitZ) ret |= Ordinates.Z;
                 if (EmitM) ret |= Ordinates.M;
                 return ret;
@@ -112,10 +112,10 @@ namespace DotSpatial.Topology.IO
             }
         }
 
-        public bool HandleSrid
+        public bool HandleSRID
         {
-            get { return EmitSrid; }
-            set { EmitSrid = value; }
+            get { return EmitSRID; }
+            set { EmitSRID = value; }
         }
 
         ///<summary>
@@ -140,180 +140,6 @@ namespace DotSpatial.Topology.IO
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Returns a <c>String</c> of repeated characters.
-        /// </summary>
-        /// <param name="ch">The character to repeat.</param>
-        /// <param name="count">The number of times to repeat the character.</param>
-        /// <returns>A <c>string</c> of characters.</returns>
-        public static string StringOfChar(char ch, int count)
-        {
-            StringBuilder buf = new StringBuilder();
-            for (int i = 0; i < count; i++)
-                buf.Append(ch);
-            return buf.ToString();
-        }
-
-        /// <summary>
-        /// Generates the WKT for a N-point <c>LineString</c> specified by a <see cref="ICoordinateSequence"/>.
-        /// </summary>
-        /// <param name="seq">The sequence to write.</param>
-        /// <returns>The WKT</returns>
-        public static string ToLineString(ICoordinateSequence seq)
-        {
-            StringBuilder buf = new StringBuilder();
-            buf.Append("LINESTRING");
-            if (seq.Count == 0)
-                buf.Append(" EMPTY");
-            else
-            {
-                buf.Append("(");
-                for (int i = 0; i < seq.Count; i++)
-                {
-                    if (i > 0) buf.Append(", ");
-                    buf.Append(string.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
-                }
-                buf.Append(")");
-            }
-            return buf.ToString();
-        }
-
-        /// <summary>
-        /// Generates the WKT for a <c>LineString</c> specified by two <see cref="Coordinate"/>s.
-        /// </summary>
-        /// <param name="p0">The first coordinate.</param>
-        /// <param name="p1">The second coordinate.</param>
-        /// <returns>The WKT</returns>
-        public static string ToLineString(Coordinate p0, Coordinate p1)
-        {
-#if LikeJTS
-            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
-            return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
-#endif
-        }
-
-        /// <summary>
-        /// Generates the WKT for a <c>Point</c> specified by a <see cref="Coordinate"/>.
-        /// </summary>
-        /// <param name="p0">The point coordinate.</param>
-        /// <returns>The WKT</returns>
-        public static string ToPoint(Coordinate p0)
-        {
-#if LikeJTS
-            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-            return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
-#endif
-        }
-
-        /// <summary>
-        /// Converts a <c>Geometry</c> to its Well-known Text representation.
-        /// </summary>
-        /// <param name="geometry">A <c>Geometry</c> to process.</param>
-        /// <returns>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</returns>
-        public virtual string Write(IGeometry geometry)
-        {
-            StringBuilder sb = new StringBuilder();
-            TextWriter sw = new StringWriter(sb);
-            TryWrite(geometry, sw);
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Converts a <c>Geometry</c> to its Well-known Text representation.
-        /// </summary>
-        /// <param name="geometry">A <c>Geometry</c> to process.</param>
-        /// <param name="stream">A <c>Stream</c> to write into</param>
-        public void Write(IGeometry geometry, Stream stream)
-        {
-            TextWriter sw = new StreamWriter(stream);
-            TryWrite(geometry, sw);
-        }
-
-        /// <summary>
-        /// Converts a <c>Geometry</c> to its Well-known Text representation.
-        /// </summary>
-        /// <param name="geometry">A <c>Geometry</c> to process.</param>
-        /// <param name="writer"></param>
-        /// <returns>A "Geometry Tagged Text" string (see the OpenGIS Simple Features Specification)</returns>
-        public virtual void Write(IGeometry geometry, TextWriter writer)
-        {
-            WriteFormatted(geometry, Formatted, writer);
-        }
-
-        /// <summary>
-        /// Same as <c>write</c>, but with newlines and spaces to make the
-        /// well-known text more readable.
-        /// </summary>
-        /// <param name="geometry">A <c>Geometry</c> to process</param>
-        /// <returns>
-        /// A "Geometry Tagged Text" string (see the OpenGIS Simple
-        /// Features Specification), with newlines and spaces.
-        /// </returns>
-        public virtual string WriteFormatted(IGeometry geometry)
-        {
-            TextWriter sw = new StringWriter();
-            try
-            {
-                WriteFormatted(geometry, true, sw);
-            }
-            catch (IOException)
-            {
-                Assert.ShouldNeverReachHere();
-            }
-            return sw.ToString();
-        }
-
-        /// <summary>
-        /// Same as <c>write</c>, but with newlines and spaces to make the
-        /// well-known text more readable.
-        /// </summary>
-        /// <param name="geometry">A <c>Geometry</c> to process</param>
-        /// <param name="writer"></param>
-        /// <returns>
-        /// A Geometry Tagged Text string (see the OpenGIS Simple
-        /// Features Specification), with newlines and spaces.
-        /// </returns>
-        public virtual void WriteFormatted(IGeometry geometry, TextWriter writer)
-        {
-            WriteFormatted(geometry, true, writer);
-        }
-
-        /// <summary>  
-        /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
-        /// with a sufficient number of decimal places.
-        /// </summary>
-        /// <param name="precisionModel"> 
-        /// The <c>PrecisionModel</c> used to determine
-        /// the number of decimal places to write.
-        /// </param>
-        /// <returns>
-        /// A <c>NumberFormatInfo</c> that write <c>double</c>s 
-        /// without scientific notation.
-        /// </returns>        
-        internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel)
-        {
-            // the default number of decimal places is 16, which is sufficient
-            // to accomodate the maximum precision of a double.
-            int digits = precisionModel.MaximumSignificantDigits;
-            int decimalPlaces = Math.Max(0, digits); // negative values not allowed
-
-            // specify decimal separator explicitly to avoid problems in other locales
-            NumberFormatInfo nfi = new NumberFormatInfo
-            {
-                NumberDecimalSeparator = ".",
-                NumberDecimalDigits = decimalPlaces,
-                NumberGroupSeparator = string.Empty,
-                NumberGroupSizes = new int[] { }
-            };
-            return nfi;
-        }
 
         ///<summary>Appends the i'th coordinate from the sequence to the writer</summary>
         /// <param name="seq">the <see cref="ICoordinateSequence"/> to process</param>
@@ -379,9 +205,9 @@ namespace DotSpatial.Topology.IO
                 writer.Write("EMPTY");
             else
             {
-                int level2 = level;
+                var level2 = level;
                 writer.Write("(");
-                for (int i = 0; i < geometryCollection.NumGeometries; i++)
+                for (var i = 0; i < geometryCollection.NumGeometries; i++) 
                 {
                     if (i > 0)
                     {
@@ -407,7 +233,7 @@ namespace DotSpatial.Topology.IO
 
             if (geometry is IPoint)
             {
-                IPoint point = (IPoint)geometry;
+                var point = (IPoint)geometry;
                 AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
             }
             else if (geometry is ILinearRing)
@@ -434,7 +260,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="linearRing">The <c>LinearRing</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLinearRingTaggedText(ILineString linearRing, int level, TextWriter writer)
+        private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
         {
             writer.Write("LINEARRING ");
             AppendLineStringText(linearRing, level, false, writer);
@@ -469,7 +295,7 @@ namespace DotSpatial.Topology.IO
             {
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
-                for (int i = 0; i < lineString.NumPoints; i++)
+                for (var i = 0; i < lineString.NumPoints; i++) 
                 {
                     if (i > 0)
                     {
@@ -513,10 +339,10 @@ namespace DotSpatial.Topology.IO
                 writer.Write("EMPTY");
             else
             {
-                int level2 = level;
-                bool doIndent = indentFirst;
+                var level2 = level;
+                var doIndent = indentFirst;
                 writer.Write("(");
-                for (int i = 0; i < multiLineString.NumGeometries; i++)
+                for (var i = 0; i < multiLineString.NumGeometries; i++) 
                 {
                     if (i > 0)
                     {
@@ -557,7 +383,7 @@ namespace DotSpatial.Topology.IO
             else
             {
                 writer.Write("(");
-                for (int i = 0; i < multiPoint.NumGeometries; i++)
+                for (var i = 0; i < multiPoint.NumGeometries; i++) 
                 {
                     if (i > 0)
                     {
@@ -598,10 +424,10 @@ namespace DotSpatial.Topology.IO
                 writer.Write("EMPTY");
             else
             {
-                int level2 = level;
-                bool doIndent = false;
+                var level2 = level;
+                var doIndent = false;
                 writer.Write("(");
-                for (int i = 0; i < multiPolygon.NumGeometries; i++)
+                for (var i = 0; i < multiPolygon.NumGeometries; i++) 
                 {
                     if (i > 0)
                     {
@@ -684,8 +510,8 @@ namespace DotSpatial.Topology.IO
             {
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
-                AppendLineStringText(polygon.Shell, level, false, writer);
-                for (int i = 0; i < polygon.NumHoles; i++)
+                AppendLineStringText(polygon.ExteriorRing, level, false, writer);
+                for (var i = 0; i < polygon.NumInteriorRings; i++) 
                 {
                     writer.Write(", ");
                     AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
@@ -723,6 +549,36 @@ namespace DotSpatial.Topology.IO
             }
         }
 
+        /// <summary>  
+        /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
+        /// with a sufficient number of decimal places.
+        /// </summary>
+        /// <param name="precisionModel"> 
+        /// The <c>PrecisionModel</c> used to determine
+        /// the number of decimal places to write.
+        /// </param>
+        /// <returns>
+        /// A <c>NumberFormatInfo</c> that write <c>double</c>s 
+        /// without scientific notation.
+        /// </returns>        
+        internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel)
+        {
+            // the default number of decimal places is 16, which is sufficient
+            // to accomodate the maximum precision of a double.
+            var digits = precisionModel.MaximumSignificantDigits;
+            var decimalPlaces = Math.Max(0, digits); // negative values not allowed
+
+            // specify decimal separator explicitly to avoid problems in other locales
+            var nfi = new NumberFormatInfo
+            {
+                NumberDecimalSeparator = ".",
+                NumberDecimalDigits = decimalPlaces,
+                NumberGroupSeparator = string.Empty,
+                NumberGroupSizes = new int[] { }
+            };
+            return nfi;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -750,6 +606,77 @@ namespace DotSpatial.Topology.IO
             Indent(level, writer);
         }
 
+        /// <summary>
+        /// Returns a <c>String</c> of repeated characters.
+        /// </summary>
+        /// <param name="ch">The character to repeat.</param>
+        /// <param name="count">The number of times to repeat the character.</param>
+        /// <returns>A <c>string</c> of characters.</returns>
+        public static string StringOfChar(char ch, int count)
+        {
+            var buf = new StringBuilder();
+            for (var i = 0; i < count; i++) 
+                buf.Append(ch);            
+            return buf.ToString();
+        }
+
+        /// <summary>
+        /// Generates the WKT for a N-point <c>LineString</c> specified by a <see cref="ICoordinateSequence"/>.
+        /// </summary>
+        /// <param name="seq">The sequence to write.</param>
+        /// <returns>The WKT</returns>
+        public static string ToLineString(ICoordinateSequence seq)
+        {
+            var buf = new StringBuilder();
+            buf.Append("LINESTRING");
+            if (seq.Count == 0)
+                buf.Append(" EMPTY");
+            else
+            {
+                buf.Append("(");
+                for (var i = 0; i < seq.Count; i++) 
+                {
+                    if (i > 0) buf.Append(", ");
+                    buf.Append(string.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
+                }
+                buf.Append(")");
+            }
+            return buf.ToString();
+        }
+
+        /// <summary>
+        /// Generates the WKT for a <c>LineString</c> specified by two <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <param name="p0">The first coordinate.</param>
+        /// <param name="p1">The second coordinate.</param>
+        /// <returns>The WKT</returns>
+        public static string ToLineString(Coordinate p0, Coordinate p1)
+        {
+#if LikeJTS
+            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
+#else
+            if (double.IsNaN(p0.Z))
+                return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
+            return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
+#endif
+        }
+
+        /// <summary>
+        /// Generates the WKT for a <c>Point</c> specified by a <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="p0">The point coordinate.</param>
+        /// <returns>The WKT</returns>
+        public static string ToPoint(Coordinate p0)
+        {
+#if LikeJTS
+            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+#else
+            if (double.IsNaN(p0.Z))
+                return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+            return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
+#endif
+        }
+
         private void TryWrite(IGeometry geometry, TextWriter sw)
         {
             try
@@ -760,6 +687,79 @@ namespace DotSpatial.Topology.IO
             {
                 Assert.ShouldNeverReachHere();
             }
+        }
+
+        /// <summary>
+        /// Converts a <c>Geometry</c> to its Well-known Text representation.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process.</param>
+        /// <returns>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</returns>
+        public virtual string Write(IGeometry geometry)
+        {
+            StringBuilder sb = new StringBuilder();
+            TextWriter sw = new StringWriter(sb);
+            TryWrite(geometry, sw);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Converts a <c>Geometry</c> to its Well-known Text representation.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process.</param>
+        /// <param name="stream">A <c>Stream</c> to write into</param>
+        public void Write(IGeometry geometry, Stream stream)
+        {
+            TextWriter sw = new StreamWriter(stream);
+            TryWrite(geometry, sw);
+        }
+
+        /// <summary>
+        /// Converts a <c>Geometry</c> to its Well-known Text representation.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process.</param>
+        /// <param name="writer"></param>
+        /// <returns>A "Geometry Tagged Text" string (see the OpenGIS Simple Features Specification)</returns>
+        public virtual void Write(IGeometry geometry, TextWriter writer)
+        {
+            WriteFormatted(geometry, Formatted, writer);
+        }
+
+        /// <summary>
+        /// Same as <c>write</c>, but with newlines and spaces to make the
+        /// well-known text more readable.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process</param>
+        /// <returns>
+        /// A "Geometry Tagged Text" string (see the OpenGIS Simple
+        /// Features Specification), with newlines and spaces.
+        /// </returns>
+        public virtual string WriteFormatted(IGeometry geometry)
+        {
+            TextWriter sw = new StringWriter();
+            try
+            {
+                WriteFormatted(geometry, true, sw);
+            }
+            catch (IOException)
+            {
+                Assert.ShouldNeverReachHere();
+            }
+            return sw.ToString();
+        }
+
+        /// <summary>
+        /// Same as <c>write</c>, but with newlines and spaces to make the
+        /// well-known text more readable.
+        /// </summary>
+        /// <param name="geometry">A <c>Geometry</c> to process</param>
+        /// <param name="writer"></param>
+        /// <returns>
+        /// A Geometry Tagged Text string (see the OpenGIS Simple
+        /// Features Specification), with newlines and spaces.
+        /// </returns>
+        public virtual void WriteFormatted(IGeometry geometry, TextWriter writer)
+        {
+            WriteFormatted(geometry, true, writer);
         }
 
         /// <summary>
@@ -780,7 +780,7 @@ namespace DotSpatial.Topology.IO
             _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
             IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
-            _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModelType.Floating;
+            _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
 
             _formatter = CreateFormatter(geometry.PrecisionModel);
             _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
@@ -803,7 +803,7 @@ namespace DotSpatial.Topology.IO
             if (!_useMaxPrecision)  return standard;
             try
             {
-                double converted = Convert.ToDouble(standard, _formatter);
+                var converted = Convert.ToDouble(standard, _formatter);
                 // check if some precision is lost during text conversion: if so, use {0:R} formatter
                 return converted == d ? standard : string.Format(_formatter, MaxPrecisionFormat, d);
             }

@@ -150,7 +150,7 @@ namespace DotSpatial.Topology.Operation.Buffer.Validate
         private void CheckExpectedEmpty()
         {
             // can't check areal features
-            if (_input.Dimension >= DimensionType.Surface) return;
+            if (_input.Dimension >= Dimension.Surface) return;
             // can't check positive distances
             if (_distance > 0.0) return;
 

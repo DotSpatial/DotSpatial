@@ -63,7 +63,7 @@ namespace DotSpatial.Topology.IO
         {
             _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
             _precisionModel = geometryFactory.PrecisionModel;
-            DefaultSrid = geometryFactory.Srid;
+            DefaultSRID = geometryFactory.SRID;
         }
 
         #endregion
@@ -78,21 +78,21 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Gets or sets the default SRID
         /// </summary>
-        public int DefaultSrid { get; set; }
+        public int DefaultSRID { get; set; }
 
         /// <summary>
         /// Gets or sets the factory to create geometries
         /// </summary>
         public IGeometryFactory Factory
         {
-            get { return GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSrid, _coordinateSequencefactory); }
+            get { return GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory); }
             set
             {
                 if (value != null)
                 {
                     _coordinateSequencefactory = value.CoordinateSequenceFactory;
                     _precisionModel = value.PrecisionModel;
-                    DefaultSrid = value.Srid;
+                    DefaultSRID = value.SRID;
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace DotSpatial.Topology.IO
             set { }
         }
 
-        public bool HandleSrid
+        public bool HandleSRID
         {
             get { return true; }
             set { }
@@ -117,167 +117,6 @@ namespace DotSpatial.Topology.IO
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Converts a Well-known Text representation to a <c>Geometry</c>.
-        /// </summary>
-        /// <param name="wellKnownText">
-        /// one or more Geometry Tagged Text strings (see the OpenGIS
-        /// Simple Features Specification) separated by whitespace.
-        /// </param>
-        /// <returns>
-        /// A <c>Geometry</c> specified by <c>wellKnownText</c>
-        /// </returns>
-        public IGeometry Read(string wellKnownText) 
-        {
-            using (var reader = new StringReader(wellKnownText))
-            {
-                return Read(reader);
-            }            
-        }
-
-        /// <summary>
-        /// Converts a Well-known Text representation to a <c>Geometry</c>.
-        /// </summary>
-        /// <param name="stream">
-        /// one or more Geometry Tagged Text strings (see the OpenGIS
-        /// Simple Features Specification) separated by whitespace.
-        /// </param>
-        /// <returns>
-        /// A <c>Geometry</c> specified by <c>wellKnownText</c>
-        /// </returns>
-        public IGeometry Read(Stream stream)
-        {
-            using (var reader = new StreamReader(stream))
-            {
-                return Read(reader);
-            }
-        }
-
-        /// <summary>  
-        /// Converts a Well-known Text representation to a <c>Geometry</c>.
-        /// </summary>
-        /// <param name="reader"> 
-        /// A Reader which will return a "Geometry Tagged Text"
-        /// string (see the OpenGIS Simple Features Specification).
-        /// </param>
-        /// <returns>A <c>Geometry</c> read from <c>reader</c>.
-        /// </returns>
-        public IGeometry Read(TextReader reader)
-        {
-            /*
-            var tokens = Tokenize(reader);
-            StreamTokenizer tokenizer = new StreamTokenizer(reader);
-            IList<Token> tokens = new List<Token>();
-            tokenizer.Tokenize(tokens);     // Read directly all tokens
-             */
-            //_index = 0;                      // Reset pointer to start of tokens
-            try
-            {
-                var enumerator = new StreamTokenizer(reader).GetEnumerator();
-                enumerator.MoveNext();
-                return ReadGeometryTaggedText(enumerator);
-            }
-            catch (IOException e)
-            {
-                throw new ParseException(e.ToString());
-            }            
-        }
-
-        /// <summary>
-        /// Creates a <c>Geometry</c> using the next token in the stream.
-        /// </summary>
-        /// <param name="tokens">
-        /// Tokenizer over a stream of text in Well-known Text
-        /// format. The next tokens must form a &lt;Geometry Tagged Text.
-        /// </param>
-        /// <returns>A <c>Geometry</c> specified by the next token
-        /// in the stream.</returns>
-        internal IGeometry ReadGeometryTaggedText(IEnumerator<Token> tokens)
-        {
-            /*
-             * A new different implementation by Marc Jacquin:
-             * this code manages also SRID values.
-             */
-            IGeometry returned;
-
-            int srid;
-            var type = GetNextWord(tokens);
-            if (type == "SRID")
-            {
-                tokens.MoveNext(); // =
-                srid = Convert.ToInt32(GetNextNumber(tokens));
-                tokens.MoveNext(); // ;
-                type = GetNextWord(tokens);
-
-                //sridValue = tokens[2].ToString();
-                //// tokens.RemoveRange(0, 4);
-                //tokens.RemoveAt(0);
-                //tokens.RemoveAt(0);
-                //tokens.RemoveAt(0);
-                //tokens.RemoveAt(0);
-            }
-            else
-                srid = DefaultSrid;
-
-            /*Test of Z, M or ZM suffix*/
-            var suffix = tokens.Current;
-
-            if (suffix is WordToken)
-            {
-                if (suffix == "Z")
-                {
-                    tokens.MoveNext();
-                }
-                else if (suffix == "ZM")
-                {
-                    tokens.MoveNext();                    
-                }
-                else if (suffix == "M")
-                {
-                    tokens.MoveNext();                    
-                }
-            }
-
-            var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
-                _coordinateSequencefactory);
-
-            if (type.Equals("POINT"))
-                returned = ReadPointText(tokens, factory);
-            else if (type.Equals("LINESTRING"))
-                returned = ReadLineStringText(tokens, factory);
-            else if (type.Equals("LINEARRING"))
-                returned = ReadLinearRingText(tokens, factory);
-            else if (type.Equals("POLYGON"))
-                returned = ReadPolygonText(tokens, factory);
-            else if (type.Equals("MULTIPOINT"))
-                returned = ReadMultiPointText(tokens, factory);
-            else if (type.Equals("MULTILINESTRING"))
-                returned = ReadMultiLineStringText(tokens, factory);
-            else if (type.Equals("MULTIPOLYGON"))
-                returned = ReadMultiPolygonText(tokens, factory);
-            else if (type.Equals("GEOMETRYCOLLECTION"))
-                returned = ReadGeometryCollectionText(tokens, factory);
-            else throw new ParseException("Unknown type: " + type);
-
-            if (returned == null)
-                throw new NullReferenceException("Error reading geometry");
-
-            return returned;
-        }
-
-        internal IList<Token> Tokenize(TextReader reader)
-        {
-            var tokenizer = new StreamTokenizer(reader);
-            IList<Token> tokens = new List<Token>();
-            tokenizer.Tokenize(tokens);     // Read directly all tokens
-            return tokens;
-        }
-
-        internal IEnumerator<Token> Tokenizer(TextReader reader)
-        {
-            return new StreamTokenizer(reader).GetEnumerator();
-        }
 
         //internal int Index { get { return _index; } set { _index = value; } }
 
@@ -502,6 +341,72 @@ namespace DotSpatial.Topology.IO
 		}
 
         /// <summary>
+        /// Converts a Well-known Text representation to a <c>Geometry</c>.
+        /// </summary>
+        /// <param name="wellKnownText">
+        /// one or more Geometry Tagged Text strings (see the OpenGIS
+        /// Simple Features Specification) separated by whitespace.
+        /// </param>
+        /// <returns>
+        /// A <c>Geometry</c> specified by <c>wellKnownText</c>
+        /// </returns>
+        public IGeometry Read(string wellKnownText) 
+        {
+            using (var reader = new StringReader(wellKnownText))
+            {
+                return Read(reader);
+            }            
+        }
+
+        /// <summary>
+        /// Converts a Well-known Text representation to a <c>Geometry</c>.
+        /// </summary>
+        /// <param name="stream">
+        /// one or more Geometry Tagged Text strings (see the OpenGIS
+        /// Simple Features Specification) separated by whitespace.
+        /// </param>
+        /// <returns>
+        /// A <c>Geometry</c> specified by <c>wellKnownText</c>
+        /// </returns>
+        public IGeometry Read(Stream stream)
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                return Read(reader);
+            }
+        }
+
+        /// <summary>  
+        /// Converts a Well-known Text representation to a <c>Geometry</c>.
+        /// </summary>
+        /// <param name="reader"> 
+        /// A Reader which will return a "Geometry Tagged Text"
+        /// string (see the OpenGIS Simple Features Specification).
+        /// </param>
+        /// <returns>A <c>Geometry</c> read from <c>reader</c>.
+        /// </returns>
+        public IGeometry Read(TextReader reader)
+        {
+            /*
+            var tokens = Tokenize(reader);
+            StreamTokenizer tokenizer = new StreamTokenizer(reader);
+            IList<Token> tokens = new List<Token>();
+            tokenizer.Tokenize(tokens);     // Read directly all tokens
+             */
+            //_index = 0;                      // Reset pointer to start of tokens
+            try
+            {
+                var enumerator = new StreamTokenizer(reader).GetEnumerator();
+                enumerator.MoveNext();
+                return ReadGeometryTaggedText(enumerator);
+            }
+            catch (IOException e)
+            {
+                throw new ParseException(e.ToString());
+            }            
+        }
+
+        /// <summary>
         /// Creates a <c>GeometryCollection</c> using the next token in the
         /// stream.
         /// </summary>
@@ -530,6 +435,88 @@ namespace DotSpatial.Topology.IO
                 nextToken = GetNextCloserOrComma(tokens);
             }            
             return factory.CreateGeometryCollection(geometries.ToArray());
+        }
+
+        /// <summary>
+        /// Creates a <c>Geometry</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        /// Tokenizer over a stream of text in Well-known Text
+        /// format. The next tokens must form a &lt;Geometry Tagged Text.
+        /// </param>
+        /// <returns>A <c>Geometry</c> specified by the next token
+        /// in the stream.</returns>
+        internal IGeometry ReadGeometryTaggedText(IEnumerator<Token> tokens)
+        {
+            /*
+             * A new different implementation by Marc Jacquin:
+             * this code manages also SRID values.
+             */
+            IGeometry returned;
+
+            int srid;
+            var type = GetNextWord(tokens);
+            if (type == "SRID")
+            {
+                tokens.MoveNext(); // =
+                srid = Convert.ToInt32(GetNextNumber(tokens));
+                tokens.MoveNext(); // ;
+                type = GetNextWord(tokens);
+
+                //sridValue = tokens[2].ToString();
+                //// tokens.RemoveRange(0, 4);
+                //tokens.RemoveAt(0);
+                //tokens.RemoveAt(0);
+                //tokens.RemoveAt(0);
+                //tokens.RemoveAt(0);
+            }
+            else
+                srid = DefaultSRID;
+
+            /*Test of Z, M or ZM suffix*/
+            var suffix = tokens.Current;
+
+            if (suffix is WordToken)
+            {
+                if (suffix == "Z")
+                {
+                    tokens.MoveNext();
+                }
+                else if (suffix == "ZM")
+                {
+                    tokens.MoveNext();                    
+                }
+                else if (suffix == "M")
+                {
+                    tokens.MoveNext();                    
+                }
+            }
+
+            var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
+                _coordinateSequencefactory);
+
+            if (type.Equals("POINT"))
+                returned = ReadPointText(tokens, factory);
+            else if (type.Equals("LINESTRING"))
+                returned = ReadLineStringText(tokens, factory);
+            else if (type.Equals("LINEARRING"))
+                returned = ReadLinearRingText(tokens, factory);
+            else if (type.Equals("POLYGON"))
+                returned = ReadPolygonText(tokens, factory);
+            else if (type.Equals("MULTIPOINT"))
+                returned = ReadMultiPointText(tokens, factory);
+            else if (type.Equals("MULTILINESTRING"))
+                returned = ReadMultiLineStringText(tokens, factory);
+            else if (type.Equals("MULTIPOLYGON"))
+                returned = ReadMultiPolygonText(tokens, factory);
+            else if (type.Equals("GEOMETRYCOLLECTION"))
+                returned = ReadGeometryCollectionText(tokens, factory);
+            else throw new ParseException("Unknown type: " + type);
+
+            if (returned == null)
+                throw new NullReferenceException("Error reading geometry");
+
+            return returned;
         }
 
         /// <summary>
@@ -688,6 +675,19 @@ namespace DotSpatial.Topology.IO
                 nextToken = GetNextCloserOrComma(tokens);
             }
             return factory.CreatePolygon(shell, holes.ToArray());
+        }
+
+        internal IList<Token> Tokenize(TextReader reader)
+        {
+            var tokenizer = new StreamTokenizer(reader);
+            IList<Token> tokens = new List<Token>();
+            tokenizer.Tokenize(tokens);     // Read directly all tokens
+            return tokens;
+        }
+
+        internal IEnumerator<Token> Tokenizer(TextReader reader)
+        {
+            return new StreamTokenizer(reader).GetEnumerator();
         }
 
         /// <summary> 

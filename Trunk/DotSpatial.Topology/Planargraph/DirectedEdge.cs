@@ -90,7 +90,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Returns the angle that the start of this DirectedEdge makes with the
         /// positive x-axis, in radians.
         /// </summary>
-        public virtual double Angle
+        public double Angle
         {
             get { return _angle; }
         }
@@ -98,7 +98,7 @@ namespace DotSpatial.Topology.Planargraph
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get { return From.Coordinate; }
         }
@@ -189,12 +189,12 @@ namespace DotSpatial.Topology.Planargraph
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".
         /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCgAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
         /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public virtual int CompareDirection(DirectedEdge e)
+        public int CompareDirection(DirectedEdge e)
         {
             // if the rays are in different quadrants, determining the ordering is trivial
             if (_quadrant > e.Quadrant)
@@ -203,7 +203,7 @@ namespace DotSpatial.Topology.Planargraph
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CgAlgorithms.ComputeOrientation(e.P0, e.P1, P1);            
+            return CGAlgorithms.ComputeOrientation(e.P0, e.P1, P1);            
         }
 
         /// <summary>
@@ -215,12 +215,12 @@ namespace DotSpatial.Topology.Planargraph
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".
         /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCgAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
         /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual int CompareTo(Object obj)
+        public int CompareTo(Object obj)
         {
             DirectedEdge de = (DirectedEdge)obj;
             return CompareDirection(de);
@@ -258,7 +258,7 @@ namespace DotSpatial.Topology.Planargraph
         /// Writes a detailed string representation of this DirectedEdge to the given PrintStream.
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             string className = GetType().FullName;
             int lastDotPos = className.LastIndexOf('.');

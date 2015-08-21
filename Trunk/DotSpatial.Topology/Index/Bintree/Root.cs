@@ -22,7 +22,7 @@
 // |                      |            |
 // ********************************************************************************************************
 
-using DotSpatial.Topology.Index.Quadtree;
+using DotSpatial.Topology.Index.QuadTree;
 using DotSpatial.Topology.Utilities;
 
 namespace DotSpatial.Topology.Index.Bintree

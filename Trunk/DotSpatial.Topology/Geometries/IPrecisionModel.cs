@@ -3,6 +3,32 @@
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
+    /// 
+    /// </summary>
+    public enum PrecisionModels
+    {
+        /// <summary> 
+        /// Floating precision corresponds to the standard 
+        /// double-precision floating-point representation, which is
+        /// based on the IEEE-754 standard
+        /// </summary>
+        Floating = 0,
+
+        /// <summary>
+        /// Floating single precision corresponds to the standard
+        /// single-precision floating-point representation, which is
+        /// based on the IEEE-754 standard
+        /// </summary>
+        FloatingSingle = 1,
+
+        /// <summary> 
+        /// Fixed Precision indicates that coordinates have a fixed number of decimal places.
+        /// The number of decimal places is determined by the log10 of the scale factor.
+        /// </summary>
+        Fixed = 2,
+    }
+
+    /// <summary>
     /// Interface for classes specifying the precision model of the <c>Coordinate</c>s in a <c>IGeometry</c>.
     /// In other words, specifies the grid of allowable points for all <c>IGeometry</c>s.
     /// </summary>
@@ -21,9 +47,9 @@ namespace DotSpatial.Topology.Geometries
         int MaximumSignificantDigits { get; }
 
         /// <summary>
-        /// Gets a value indicating the <see cref="PrecisionModelType">precision model</see> type
+        /// Gets a value indicating the <see cref="PrecisionModels">precision model</see> type
         /// </summary>
-        PrecisionModelType PrecisionModelType { get; }
+        PrecisionModels PrecisionModelType { get; }
 
         /// <summary>
         /// Gets a value indicating the scale factor of a fixed precision model

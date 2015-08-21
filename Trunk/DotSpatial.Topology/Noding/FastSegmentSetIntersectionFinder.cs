@@ -31,7 +31,7 @@ namespace DotSpatial.Topology.Noding
         /// <param name="baseSegStrings">The segment strings to search for intersections</param>
         public FastSegmentSetIntersectionFinder(IEnumerable<ISegmentString> baseSegStrings)
         {
-            _segSetMutInt = new McIndexSegmentSetMutualIntersector(baseSegStrings);
+            _segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
         }
 
         #endregion

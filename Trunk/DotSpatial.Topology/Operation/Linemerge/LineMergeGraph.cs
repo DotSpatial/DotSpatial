@@ -42,7 +42,7 @@ namespace DotSpatial.Topology.Operation.Linemerge
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge.
         /// </summary>
-        public virtual void AddEdge(ILineString lineString)
+        public void AddEdge(ILineString lineString)
         {
             if (lineString.IsEmpty)
                 return;

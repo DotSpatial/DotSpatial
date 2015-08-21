@@ -149,7 +149,7 @@ namespace DotSpatial.Topology.Operation.Distance3D
             {
                 for (int j = 0; j < coord1.Count - 1; j++)
                 {
-                    var dist = CgAlgorithms3D.DistanceSegmentSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1]);
+                    var dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i], coord0[i + 1], coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
                     {
                         _minDistance = dist;
@@ -176,7 +176,7 @@ namespace DotSpatial.Topology.Operation.Distance3D
             // brute force approach!
             for (int i = 0; i < lineCoord.Count - 1; i++)
             {
-                var dist = CgAlgorithms3D.DistancePointSegment(coord, lineCoord[i],lineCoord[i + 1]);
+                var dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],lineCoord[i + 1]);
                 if (dist < _minDistance)
                 {
                     var seg = new LineSegment(lineCoord[i], lineCoord[i + 1]);
@@ -270,7 +270,7 @@ namespace DotSpatial.Topology.Operation.Distance3D
 
         private void ComputeMinDistancePointPoint(IPoint point0, IPoint point1, bool flip)
         {
-            var dist = CgAlgorithms3D.Distance(point0.Coordinate,point1.Coordinate);
+            var dist = CGAlgorithms3D.Distance(point0.Coordinate,point1.Coordinate);
             if (dist < _minDistance)
             {
                 UpdateDistance(dist,
@@ -297,9 +297,9 @@ namespace DotSpatial.Topology.Operation.Distance3D
             }
 
             // if no intersection, then compute line distance to polygon rings
-            ComputeMinDistanceLineLine(poly.Polygon.Shell, line, flip);
+            ComputeMinDistanceLineLine(poly.Polygon.ExteriorRing, line, flip);
             if (_isDone) return;
-            int nHole = poly.Polygon.NumHoles;
+            int nHole = poly.Polygon.NumInteriorRings;
             for (int i = 0; i < nHole; i++)
             {
                 ComputeMinDistanceLineLine(poly.Polygon.GetInteriorRingN(i), line, flip);
@@ -311,12 +311,12 @@ namespace DotSpatial.Topology.Operation.Distance3D
         {
             var pt = point.Coordinate;
 
-            var shell = polyPlane.Polygon.Shell;
+            var shell = polyPlane.Polygon.ExteriorRing;
             if (polyPlane.Intersects(pt, shell))
             {
                 // point is either inside or in a hole
 
-                var nHole = polyPlane.Polygon.NumHoles;
+                var nHole = polyPlane.Polygon.NumInteriorRings;
                 for (int i = 0; i < nHole; i++)
                 {
                     var hole = polyPlane.Polygon.GetInteriorRingN(i);
@@ -368,10 +368,10 @@ namespace DotSpatial.Topology.Operation.Distance3D
                                                     bool flip)
         {
             // compute shell ring
-            ComputeMinDistancePolygonLine(poly, ringPoly.Shell, flip);
+            ComputeMinDistancePolygonLine(poly, ringPoly.ExteriorRing, flip);
             if (_isDone) return;
             // compute hole rings
-            int nHole = ringPoly.NumHoles;
+            int nHole = ringPoly.NumInteriorRings;
             for (int i = 0; i < nHole; i++)
             {
                 ComputeMinDistancePolygonLine(poly, ringPoly.GetInteriorRingN(i), flip);
@@ -479,15 +479,15 @@ namespace DotSpatial.Topology.Operation.Distance3D
         {
             var dim0 = _geom[0].Dimension;
             var dim1 = _geom[1].Dimension;
-            if (dim0 >= DimensionType.Surface && dim1 >= DimensionType.Surface)
+            if (dim0 >= Dimension.Surface && dim1 >= Dimension.Surface)
             {
                 if (_geom[0].NumPoints > _geom[1].NumPoints)
                     return 0;
                 return 1;
             }
             // no more than one is dim 2
-            if (dim0 >= DimensionType.Surface) return 0;
-            if (dim1 >= DimensionType.Surface) return 1;
+            if (dim0 >= Dimension.Surface) return 0;
+            if (dim1 >= Dimension.Surface) return 1;
             // both dim <= 1 - don't flip
             return 0;
         }

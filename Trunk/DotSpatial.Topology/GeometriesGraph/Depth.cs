@@ -254,7 +254,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("A: {0},{1} B: {2},{3}", _depth[0, 1], _depth[0, 2], _depth[1, 1], _depth[1, 2]);
+            return string.Format("A: {0},{1} B: {2},{3}", depth[0, 1], depth[0, 2], depth[1, 1], depth[1, 2]);
         }
 
         #endregion

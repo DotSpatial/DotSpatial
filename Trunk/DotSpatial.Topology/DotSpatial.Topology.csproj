@@ -177,7 +177,6 @@
     <Compile Include="EdgeGraph\MarkHalfEdge.cs" />
     <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="Geometries\DimensionType.cs" />
     <Compile Include="FeatureType.cs" />
     <Compile Include="Algorithm\Angle.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
@@ -255,11 +254,11 @@
     <Compile Include="IO\IGeometryWriter.cs" />
     <Compile Include="IO\KML\KMLWriter.cs" />
     <Compile Include="IO\ParseException.cs" />
-    <Compile Include="IO\WkbGeometryType.cs" />
+    <Compile Include="IO\WKBGeometryTypes.cs" />
     <Compile Include="IO\WKBHexFileReader.cs" />
-    <Compile Include="IO\WkbReader.cs" />
+    <Compile Include="IO\WKBReader.cs" />
     <Compile Include="IO\WKBWriter.cs" />
-    <Compile Include="IO\WktFileReader.cs" />
+    <Compile Include="IO\WKTFileReader.cs" />
     <Compile Include="IO\WKTReader.cs" />
     <Compile Include="IO\WKTWriter.cs" />
     <Compile Include="LinearReferencing\ExtractLineByLocation.cs" />
@@ -298,8 +297,6 @@
     <Compile Include="Operation\Buffer\BufferInputLineSimplifier.cs" />
     <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferStyle.cs" />
-    <Compile Include="Geometries\PrecisionModelType.cs" />
-    <Compile Include="Geometries\LocationType.cs" />
     <Compile Include="Geometries\Ordinate.cs" />
     <Compile Include="Geometries\Coordinate.cs" />
     <Compile Include="Geometries\CoordinateArrays.cs" />
@@ -401,16 +398,7 @@
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\CharBuffer.cs" />
-    <Compile Include="Utilities\RToolsUtil\CharToken.cs" />
-    <Compile Include="Utilities\RToolsUtil\CharTypeBits.cs" />
-    <Compile Include="Utilities\RToolsUtil\EofToken.cs" />
-    <Compile Include="Utilities\RToolsUtil\EolToken.cs" />
-    <Compile Include="Utilities\RToolsUtil\FloatToken.cs" />
-    <Compile Include="Utilities\RToolsUtil\IntToken.cs" />
     <Compile Include="Utilities\RToolsUtil\StreamTokenizer.cs" />
-    <Compile Include="Utilities\RToolsUtil\StreamTokenizerExceptions.cs" />
-    <Compile Include="Utilities\RToolsUtil\StreamTokenizerSettings.cs" />
-    <Compile Include="Utilities\RToolsUtil\StringToken.cs" />
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Geometries\Geometry.cs" />
@@ -616,7 +604,6 @@
     <Compile Include="Operation\Overlay\PolygonBuilder.cs" />
     <Compile Include="Operation\Polygonize\DuplicateEdgeException.cs" />
     <Compile Include="Operation\Polygonize\EdgeRing.cs" />
-    <Compile Include="Operation\Polygonize\LineStringAdder.cs" />
     <Compile Include="Operation\Polygonize\NullEdgeException.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeDirectedEdge.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeEdge.cs" />

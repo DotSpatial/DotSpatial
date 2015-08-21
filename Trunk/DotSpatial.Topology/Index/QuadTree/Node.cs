@@ -26,7 +26,7 @@ using System;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// Represents a node of a <c>Quadtree</c>.  Nodes contain

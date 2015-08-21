@@ -135,29 +135,29 @@ namespace DotSpatial.Data
         public static void ReadFeature(Stream data, FeatureSetPack results)
         {
             _endian = (ByteOrder)data.ReadByte();
-            WkbGeometryType type = (WkbGeometryType)ReadInt32(data);
+            WKBGeometryType type = (WKBGeometryType)ReadInt32(data);
 
             switch (type)
             {
-                case WkbGeometryType.WkbPoint:
+                case WKBGeometryType.WkbPoint:
                     ReadPoint(data, results);
                     return;
-                case WkbGeometryType.WkbLineString:
+                case WKBGeometryType.WkbLineString:
                     ReadLineString(data, results);
                     return;
-                case WkbGeometryType.WkbPolygon:
+                case WKBGeometryType.WkbPolygon:
                     ReadPolygon(data, results);
                     break;
-                case WkbGeometryType.WkbMultiPoint:
+                case WKBGeometryType.WkbMultiPoint:
                     ReadMultiPoint(data, results);
                     break;
-                case WkbGeometryType.WkbMultiLineString:
+                case WKBGeometryType.WkbMultiLineString:
                     ReadMultiLineString(data, results);
                     break;
-                case WkbGeometryType.WkbMultiPolygon:
+                case WKBGeometryType.WkbMultiPolygon:
                     ReadMultiPolygon(data, results);
                     break;
-                case WkbGeometryType.WkbGeometryCollection:
+                case WKBGeometryType.WkbGeometryCollection:
                     ReadGeometryCollection(data, results);
                     break;
             }
@@ -188,53 +188,53 @@ namespace DotSpatial.Data
         public static Shape ReadShape(Stream data, FeatureType featureType)
         {
             _endian = (ByteOrder)data.ReadByte();
-            WkbGeometryType type = (WkbGeometryType)ReadInt32(data);
+            WKBGeometryType type = (WKBGeometryType)ReadInt32(data);
             Shape result;
             switch (type)
             {
-                case WkbGeometryType.WkbPoint:
+                case WKBGeometryType.WkbPoint:
                     result = ReadPoint(data);
                     if (featureType == FeatureType.Point || featureType == FeatureType.MultiPoint || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbLineString:
+                case WKBGeometryType.WkbLineString:
                     result = ReadLineString(data);
                     if (featureType == FeatureType.Line || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbPolygon:
+                case WKBGeometryType.WkbPolygon:
                     result = ReadPolygon(data);
                     if (featureType == FeatureType.Polygon || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbMultiPoint:
+                case WKBGeometryType.WkbMultiPoint:
                     result = ReadMultiPoint(data);
                     if (featureType == FeatureType.MultiPoint || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbMultiLineString:
+                case WKBGeometryType.WkbMultiLineString:
                     result = ReadMultiLineString(data);
                     if (featureType == FeatureType.Line || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbMultiPolygon:
+                case WKBGeometryType.WkbMultiPolygon:
                     result = ReadMultiPolygon(data);
                     if (featureType == FeatureType.Polygon || featureType == FeatureType.Unspecified)
                     {
                         return result;
                     }
                     return null;
-                case WkbGeometryType.WkbGeometryCollection:
+                case WKBGeometryType.WkbGeometryCollection:
                     throw new ArgumentException("Mixed shape type collections are not supported by this method.");
             }
             return null;
@@ -264,28 +264,28 @@ namespace DotSpatial.Data
             for (int i = 0; i < numGeometries; i++)
             {
                 _endian = (ByteOrder)data.ReadByte();
-                WkbGeometryType type = (WkbGeometryType)ReadInt32(data);
+                WKBGeometryType type = (WKBGeometryType)ReadInt32(data);
                 switch (type)
                 {
-                    case WkbGeometryType.WkbPoint:
+                    case WKBGeometryType.WkbPoint:
                         ReadPoint(data, results);
                         return;
-                    case WkbGeometryType.WkbLineString:
+                    case WKBGeometryType.WkbLineString:
                         ReadLineString(data, results);
                         return;
-                    case WkbGeometryType.WkbPolygon:
+                    case WKBGeometryType.WkbPolygon:
                         ReadPolygon(data, results);
                         break;
-                    case WkbGeometryType.WkbMultiPoint:
+                    case WKBGeometryType.WkbMultiPoint:
                         ReadMultiPoint(data, results);
                         break;
-                    case WkbGeometryType.WkbMultiLineString:
+                    case WKBGeometryType.WkbMultiLineString:
                         ReadMultiLineString(data, results);
                         break;
-                    case WkbGeometryType.WkbMultiPolygon:
+                    case WKBGeometryType.WkbMultiPolygon:
                         ReadMultiPolygon(data, results);
                         break;
-                    case WkbGeometryType.WkbGeometryCollection:
+                    case WKBGeometryType.WkbGeometryCollection:
                         ReadGeometryCollection(data, results);
                         break;
                 }

@@ -78,7 +78,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         private double _maxCurveSegmentError;
         private Coordinate _s0, _s1, _s2;
         private OffsetSegmentString _segList;
-        private PositionType _side = PositionType.On;
+        private Positions _side = Positions.On;
 
         #endregion
 
@@ -170,7 +170,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 }
                 else
                 {
-                    AddFillet(_s1, _offset0.P1, _offset1.P0, CgAlgorithms.Clockwise, _distance);
+                    AddFillet(_s1, _offset0.P1, _offset1.P0, CGAlgorithms.Clockwise, _distance);
                 }
             }
         }
@@ -193,7 +193,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             double dy1 = p1.Y - p.Y;
             double endAngle = Math.Atan2(dy1, dx1);
 
-            if (direction == CgAlgorithms.Clockwise)
+            if (direction == CGAlgorithms.Clockwise)
             {
                 if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
             }
@@ -218,7 +218,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="radius">The radius of the fillet</param>
         private void AddFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
         {
-            var directionFactor = direction == CgAlgorithms.Clockwise ? -1 : 1;
+            var directionFactor = direction == CGAlgorithms.Clockwise ? -1 : 1;
 
             var totalAngle = Math.Abs(startAngle - endAngle);
             var nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
@@ -385,7 +385,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
             var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
-            if (_side == PositionType.Left)
+            if (_side == Positions.Left)
             {
                 _segList.AddPt(bevelEndLeft);
                 _segList.AddPt(bevelEndRight);
@@ -407,9 +407,9 @@ namespace DotSpatial.Topology.Operation.Buffer
             var seg = new LineSegment(p0, p1);
 
             var offsetL = new LineSegment();
-            ComputeOffsetSegment(seg, PositionType.Left, _distance, offsetL);
+            ComputeOffsetSegment(seg, Positions.Left, _distance, offsetL);
             var offsetR = new LineSegment();
-            ComputeOffsetSegment(seg, PositionType.Right, _distance, offsetR);
+            ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
 
             var dx = p1.X - p0.X;
             var dy = p1.Y - p0.Y;
@@ -420,7 +420,7 @@ namespace DotSpatial.Topology.Operation.Buffer
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _segList.AddPt(offsetL.P1);
-                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CgAlgorithms.Clockwise, _distance);
+                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.Clockwise, _distance);
                     _segList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -499,10 +499,10 @@ namespace DotSpatial.Topology.Operation.Buffer
             // do nothing if points are equal
             if (_s1.Equals(_s2)) return;
 
-            int orientation = CgAlgorithms.ComputeOrientation(_s0, _s1, _s2);
+            int orientation = CGAlgorithms.ComputeOrientation(_s0, _s1, _s2);
             bool outsideTurn =
-                  (orientation == CgAlgorithms.Clockwise && _side == PositionType.Left)
-              || (orientation == CgAlgorithms.CounterClockwise && _side == PositionType.Right);
+                  (orientation == CGAlgorithms.Clockwise && _side == Positions.Left)
+              || (orientation == CGAlgorithms.CounterClockwise && _side == Positions.Right);
 
             if (orientation == 0)
             { // lines are collinear
@@ -572,9 +572,9 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <param name="side">The side of the segment <see cref="Positions"/> the offset lies on</param>
         /// <param name="distance">The offset distance</param>
         /// <param name="offset">The points computed for the offset segment</param>
-        private static void ComputeOffsetSegment(LineSegment seg, PositionType side, double distance, LineSegment offset)
+        private static void ComputeOffsetSegment(LineSegment seg, Positions side, double distance, LineSegment offset)
         {
-            int sideSign = side == PositionType.Left ? 1 : -1;
+            int sideSign = side == Positions.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
             double dy = seg.P1.Y - seg.P0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
@@ -629,7 +629,7 @@ namespace DotSpatial.Topology.Operation.Buffer
             _segList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
         }
 
-        public void InitSideSegments(Coordinate s1, Coordinate s2, PositionType side)
+        public void InitSideSegments(Coordinate s1, Coordinate s2, Positions side)
         {
             _s1 = s1;
             _s2 = s2;

@@ -58,6 +58,20 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="e0"></param>
+        /// <param name="e1"></param>
+        private void ComputeIntersects(ISegmentString e0, ISegmentString e1)
+        {
+            IList<Coordinate> pts0 = e0.Coordinates;
+            IList<Coordinate> pts1 = e1.Coordinates;
+            for (int i0 = 0; i0 < pts0.Count - 1; i0++)
+                for (int i1 = 0; i1 < pts1.Count - 1; i1++)
+                    SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
+        }
+
+        /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString" />s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
         /// others may only add some or none at all.
@@ -79,20 +93,6 @@ namespace DotSpatial.Topology.Noding
         public override IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="e1"></param>
-        private void ComputeIntersects(ISegmentString e0, ISegmentString e1)
-        {
-            IList<Coordinate> pts0 = e0.Coordinates;
-            IList<Coordinate> pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Count - 1; i0++)
-                for (int i1 = 0; i1 < pts1.Count - 1; i1++)
-                    SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
         }
 
         #endregion

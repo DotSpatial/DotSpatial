@@ -37,7 +37,7 @@ namespace DotSpatial.Topology.Operation.Buffer
     /// a single polygon in the complete buffer, with zero or more holes, or
     /// one or more connected holes.
     /// </summary>
-    public class BufferSubgraph : IComparable
+    internal class BufferSubgraph : IComparable
     {
         #region Fields
 
@@ -87,7 +87,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public virtual Coordinate RightMostCoordinate
+        public Coordinate RightMostCoordinate
         {
             get
             {
@@ -156,7 +156,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
         /// be built before holes.
         /// </summary>
-        public virtual int CompareTo(Object o)
+        public int CompareTo(Object o) 
         {
             BufferSubgraph graph = (BufferSubgraph)o;
             if (RightMostCoordinate.X < graph.RightMostCoordinate.X)
@@ -170,13 +170,13 @@ namespace DotSpatial.Topology.Operation.Buffer
         ///
         /// </summary>
         /// <param name="outsideDepth"></param>
-        public virtual void ComputeDepth(int outsideDepth)
+        public void ComputeDepth(int outsideDepth)
         {
             ClearVisitedEdges();
             // find an outside edge to assign depth to
             DirectedEdge de = _finder.Edge;
             // right side of line returned by finder is on the outside
-            de.SetEdgeDepths(PositionType.Right, outsideDepth);
+            de.SetEdgeDepths(Positions.Right, outsideDepth);
             CopySymDepths(de);
             ComputeDepths(de);
         }
@@ -255,8 +255,8 @@ namespace DotSpatial.Topology.Operation.Buffer
         private static void CopySymDepths(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
-            sym.SetDepth(PositionType.Left, de.GetDepth(PositionType.Right));
-            sym.SetDepth(PositionType.Right, de.GetDepth(PositionType.Left));
+            sym.SetDepth(Positions.Left, de.GetDepth(Positions.Right));
+            sym.SetDepth(Positions.Right, de.GetDepth(Positions.Left));
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// Finds the edges in the graph and the rightmost coordinate.
         /// </summary>
         /// <param name="node">A node to start the graph traversal from.</param>
-        public virtual void Create(Node node)
+        public void Create(Node node)
         {
             AddReachable(node);
             _finder.FindEdge(_dirEdgeList);
@@ -279,7 +279,7 @@ namespace DotSpatial.Topology.Operation.Buffer
         /// Interior Area edges are the result of dimensional collapses.
         /// They do not form part of the result area boundary.
         /// </summary>
-        public virtual void FindResultEdges()
+        public void FindResultEdges()
         {
             foreach (DirectedEdge de in _dirEdgeList)
             {
@@ -291,8 +291,8 @@ namespace DotSpatial.Topology.Operation.Buffer
                 * count as "outside".
                 */
                 // <FIX> - handle negative depths
-                if (de.GetDepth(PositionType.Right) >= 1 && de.GetDepth(PositionType.Left) <= 0 && !de.IsInteriorAreaEdge)
-                    de.IsInResult = true;
+                if (de.GetDepth(Positions.Right) >= 1 && de.GetDepth(Positions.Left) <= 0 && !de.IsInteriorAreaEdge) 
+                    de.IsInResult = true;       
             }
         }
 

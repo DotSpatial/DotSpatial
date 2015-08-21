@@ -46,28 +46,28 @@ namespace DotSpatial.Topology.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
+        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static readonly IGeometryFactory Default = new GeometryFactory();
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
+        /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
-        public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModelType.Fixed));
+        public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
+        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
         public static readonly IGeometryFactory Floating = Default;
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
+        /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
-        public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModelType.FloatingSingle));
+        public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));
 
         private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
         private readonly IPrecisionModel _precisionModel;
@@ -96,7 +96,7 @@ namespace DotSpatial.Topology.Geometries
         {
             _precisionModel = new PrecisionModel(gf.PrecisionModel);
             _coordinateSequenceFactory = GetDefaultCoordinateSequenceFactory();
-            _srid = gf.Srid;
+            _srid = gf.SRID;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace DotSpatial.Topology.Geometries
         {
             _precisionModel = new PrecisionModel(gf.PrecisionModel);
             _coordinateSequenceFactory = coordinateSequenceFactory;
-            _srid = gf.Srid;
+            _srid = gf.SRID;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICoordinateSequenceFactory CoordinateSequenceFactory
+        public ICoordinateSequenceFactory CoordinateSequenceFactory
         {
             get { return _coordinateSequenceFactory; }
         }
@@ -167,9 +167,9 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
+        /// The SRID value defined for this factory.
         /// </summary>
-        public virtual int Srid
+        public int SRID
         {
             get { return _srid; }
         }
@@ -272,7 +272,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="g">The geometry</param>
         /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
         /// <seealso cref="IGeometry.Clone"/>
-        public virtual IGeometry CreateGeometry(IGeometry g)
+        public IGeometry CreateGeometry(IGeometry g)
         {
             // NOTE: don't move lambda to a separate variable!
             //       make a variable and you've broke WinPhone build.       

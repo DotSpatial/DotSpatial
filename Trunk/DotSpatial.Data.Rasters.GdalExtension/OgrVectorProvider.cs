@@ -139,7 +139,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     fs.DataTable.Columns.Add(new DataColumn(uniqueName, type));
                 }
 
-                var wkbReader = new WkbReader();
+                var wkbReader = new WKBReader();
                 while (reader.Read())
                 {
                     var wkbGeometry = (byte[]) reader["Geometry"];

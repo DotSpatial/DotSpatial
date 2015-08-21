@@ -27,9 +27,51 @@ using System;
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
-    /// Class containing static methods for conversions between Dimension values and characters.
+    /// Provides constants representing the dimensions of a point, a curve and a surface.
     /// </summary>
-    public static class Dimension
+    /// <remarks>
+    /// Also provides constants representing the dimensions of the empty geometry and
+    /// non-empty geometries, and the wildcard constant <see cref="Dontcare"/> meaning "any dimension".
+    /// These constants are used as the entries in <see cref="IntersectionMatrix"/>s.
+    /// </remarks>
+    public enum Dimension
+    {
+        /// <summary>
+        /// Dimension value of a point (0).
+        /// </summary>
+        Point = 0,
+
+        /// <summary>
+        /// Dimension value of a curve (1).
+        /// </summary>
+        Curve = 1,
+
+        /// <summary>
+        /// Dimension value of a surface (2).
+        /// </summary>
+        Surface = 2,
+
+        /// <summary>
+        /// Dimension value of a empty point (-1).
+        /// </summary>
+        False = -1,
+
+        /// <summary>
+        /// Dimension value of non-empty geometries (= {Point,Curve,A}).
+        /// </summary>
+        True = -2,
+
+        /// <summary>
+        /// Dimension value for any dimension (= {False, True}).
+        /// </summary>
+        Dontcare = -3
+    }
+
+    /// <summary>
+    /// Class containing static methods for conversions
+    /// between dimension values and characters.
+    /// </summary>
+    public class DimensionUtility
     {
         #region Constant Fields
 
@@ -74,22 +116,22 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="dimensionValue">Number that can be stored in the <c>IntersectionMatrix</c>.
         /// Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</param>
         /// <returns>Character for use in the string representation of an <c>IntersectionMatrix</c>.
-        /// Possible values are <c>T, F, *, 0, 1, 2</c>.</returns>
-        public static char ToDimensionSymbol(DimensionType dimensionValue)
+        /// Possible values are <c>T, F, * , 0, 1, 2</c>.</returns>
+        public static char ToDimensionSymbol(Dimension dimensionValue)
         {
             switch (dimensionValue)
             {
-                case DimensionType.False:
+                case Dimension.False:
                     return SymFalse;
-                case DimensionType.True:
+                case Dimension.True:
                     return SymTrue;
-                case DimensionType.Dontcare:
+                case Dimension.Dontcare:
                     return SymDontcare;
-                case DimensionType.Point:
+                case Dimension.Point:
                     return SymP;
-                case DimensionType.Curve:
+                case Dimension.Curve:
                     return SymL;
-                case DimensionType.Surface:
+                case Dimension.Surface:
                     return SymA;
                 default:
                     throw new ArgumentOutOfRangeException("Unknown dimension value: " + dimensionValue);
@@ -104,22 +146,22 @@ namespace DotSpatial.Topology.Geometries
         /// Possible values are <c>T, F, *, 0, 1, 2</c>.</param>
         /// <returns>Number that can be stored in the <c>IntersectionMatrix</c>.
         /// Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</returns>
-        public static DimensionType ToDimensionValue(char dimensionSymbol)
+        public static Dimension ToDimensionValue(char dimensionSymbol)
         {
             switch (Char.ToUpper(dimensionSymbol))
             {
                 case SymFalse:
-                    return DimensionType.False;
+                    return Dimension.False;
                 case SymTrue:
-                    return DimensionType.True;
+                    return Dimension.True;
                 case SymDontcare:
-                    return DimensionType.Dontcare;
+                    return Dimension.Dontcare;
                 case SymP:
-                    return DimensionType.Point;
+                    return Dimension.Point;
                 case SymL:
-                    return DimensionType.Curve;
+                    return Dimension.Curve;
                 case SymA:
-                    return DimensionType.Surface;
+                    return Dimension.Surface;
                 default:
                     throw new ArgumentOutOfRangeException("Unknown dimension symbol: " + dimensionSymbol);
             }

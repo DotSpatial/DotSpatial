@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.Quadtree
+namespace DotSpatial.Topology.Index.QuadTree
 {
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying

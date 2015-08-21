@@ -76,11 +76,6 @@ namespace DotSpatial.Topology.Noding
 
         #region Properties
 
-        ///<summary>
-        /// Always process all intersections
-        ///</summary>
-        public bool IsDone { get { return false; } }
-
         /// <summary>
         /// An interior intersection is an intersection which is
         /// in the interior of some segment.
@@ -107,6 +102,11 @@ namespace DotSpatial.Topology.Noding
         /// </summary>
         public bool HasProperIntersection { get; private set; }
 
+        ///<summary>
+        /// Always process all intersections
+        ///</summary>
+        public bool IsDone { get { return false; } }
+
         /// <summary>
         /// 
         /// </summary>
@@ -130,6 +130,25 @@ namespace DotSpatial.Topology.Noding
         public static bool IsAdjacentSegments(int i1, int i2)
         {
             return Math.Abs(i1 - i2) == 1;
+        }
+
+        /// <summary>
+        /// A trivial intersection is an apparent self-intersection which in fact
+        /// is simply the point shared by adjacent line segments.
+        /// Note that closed edges require a special check for the point shared by the beginning and end segments.
+        /// </summary>
+        /// <param name="e0"></param>
+        /// <param name="segIndex0"></param>
+        /// <param name="e1"></param>
+        /// <param name="segIndex1"></param>
+        /// <returns></returns>
+        private bool IsTrivialIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
+        {
+            if (e0 != e1 || LineIntersector.IntersectionNum != 1) return false;
+            if (IsAdjacentSegments(segIndex0, segIndex1)) return true;
+            if (!e0.IsClosed) return false;
+            int maxSegIndex = e0.Count - 1;
+            return (segIndex0 == 0 && segIndex1 == maxSegIndex) || (segIndex1 == 0 && segIndex0 == maxSegIndex);
         }
 
         /// <summary>
@@ -176,25 +195,6 @@ namespace DotSpatial.Topology.Noding
             NumProperIntersections++;
             HasProperIntersection = true;
             HasProperInteriorIntersection = true;
-        }
-
-        /// <summary>
-        /// A trivial intersection is an apparent self-intersection which in fact
-        /// is simply the point shared by adjacent line segments.
-        /// Note that closed edges require a special check for the point shared by the beginning and end segments.
-        /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        /// <returns></returns>
-        private bool IsTrivialIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
-        {
-            if (e0 != e1 || LineIntersector.IntersectionNum != 1) return false;
-            if (IsAdjacentSegments(segIndex0, segIndex1)) return true;
-            if (!e0.IsClosed) return false;
-            int maxSegIndex = e0.Count - 1;
-            return (segIndex0 == 0 && segIndex1 == maxSegIndex) || (segIndex1 == 0 && segIndex0 == maxSegIndex);
         }
 
         #endregion

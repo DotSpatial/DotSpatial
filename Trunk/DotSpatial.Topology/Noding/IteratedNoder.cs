@@ -103,7 +103,7 @@ namespace DotSpatial.Topology.Noding
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
         public void ComputeNodes(IList<ISegmentString> segStrings)    
         {
-            int[] numInteriorIntersections = new int[1];
+            var numInteriorIntersections = new int[1];
             _nodedSegStrings = segStrings;
             int nodingIterationCount = 0;
             int lastNodesCreated = -1;
@@ -145,8 +145,8 @@ namespace DotSpatial.Topology.Noding
         /// <param name="numInteriorIntersections"></param>
         private void Node(IList<ISegmentString> segStrings, int[] numInteriorIntersections)
         {
-            IntersectionAdder si = new IntersectionAdder(_li);
-            McIndexNoder noder = new McIndexNoder(si);
+            var si = new IntersectionAdder(_li);
+            var noder = new MCIndexNoder(si);            
             noder.ComputeNodes(segStrings);
             _nodedSegStrings = noder.GetNodedSubstrings();
             numInteriorIntersections[0] = si.NumInteriorIntersections;

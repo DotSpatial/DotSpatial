@@ -13,6 +13,11 @@ namespace DotSpatial.Topology.Noding
         #region Properties
 
         ///<summary>
+        /// Gets/Sets the user-defined data for this segment string.
+        ///</summary>
+        object Context { get; set; }
+
+        ///<summary>
         /// Points that make up ISegmentString
         ///</summary>
         IList<Coordinate> Coordinates { get; }
@@ -26,11 +31,6 @@ namespace DotSpatial.Topology.Noding
         /// States whether ISegmentString is closed
         /// </summary>
         bool IsClosed { get; }
-
-        ///<summary>
-        /// Gets/Sets the user-defined data for this segment string.
-        ///</summary>
-        object Context { get; set; }
 
         #endregion
 

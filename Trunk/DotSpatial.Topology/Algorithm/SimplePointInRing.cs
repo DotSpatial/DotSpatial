@@ -37,7 +37,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        private readonly IList<Coordinate> _pts;
+        private readonly IList<Coordinate> pts;
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="ring"></param>
         public SimplePointInRing(ILinearRing ring)
         {
-            _pts = ring.Coordinates;
+            pts = ring.Coordinates;
         }
 
         #endregion

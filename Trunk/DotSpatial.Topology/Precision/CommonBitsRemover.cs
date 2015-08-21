@@ -67,7 +67,7 @@ namespace DotSpatial.Topology.Precision
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public virtual Coordinate CommonCoordinate
+        public Coordinate CommonCoordinate
         {
             get { return _commonCoord; }
         }
@@ -83,7 +83,7 @@ namespace DotSpatial.Topology.Precision
         /// geometries.
         /// </summary>
         /// <param name="geom">A Geometry to test for common bits.</param>
-        public virtual void Add(IGeometry geom)
+        public void Add(IGeometry geom)
         {
             geom.Apply(_ccFilter);
             _commonCoord = _ccFilter.CommonCoordinate;
@@ -94,7 +94,7 @@ namespace DotSpatial.Topology.Precision
         /// The coordinates of the Geometry are changed.
         /// </summary>
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
-        public virtual void AddCommonBits(IGeometry geom)
+        public void AddCommonBits(IGeometry geom)
         {
             var trans = new Translater(_commonCoord);
             geom.Apply(trans);
@@ -107,7 +107,7 @@ namespace DotSpatial.Topology.Precision
         /// </summary>
         /// <param name="geom">The Geometry from which to remove the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public virtual IGeometry RemoveCommonBits(IGeometry geom)
+        public IGeometry RemoveCommonBits(IGeometry geom)
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
@@ -141,7 +141,7 @@ namespace DotSpatial.Topology.Precision
             /// <summary>
             ///
             /// </summary>
-            public virtual Coordinate CommonCoordinate
+            public Coordinate CommonCoordinate
             {
                 get
                 {
@@ -157,7 +157,7 @@ namespace DotSpatial.Topology.Precision
             ///
             /// </summary>
             /// <param name="coord"></param>
-            public virtual void Filter(Coordinate coord)
+            public void Filter(Coordinate coord)
             {
                 _commonBitsX.Add(coord.X);
                 _commonBitsY.Add(coord.Y);

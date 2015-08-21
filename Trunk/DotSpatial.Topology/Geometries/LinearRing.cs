@@ -113,11 +113,11 @@ namespace DotSpatial.Topology.Geometries
         /// <summary>
         /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
         /// </summary>
-        public override DimensionType BoundaryDimension
+        public override Dimension BoundaryDimension
         {
             get
             {
-                return DimensionType.False;
+                return Dimension.False;
             }
         }
 
@@ -141,7 +141,7 @@ namespace DotSpatial.Topology.Geometries
             get { return "LinearRing"; }
         }
 
-        public bool IsCounterClockwise { get { return CgAlgorithms.IsCounterClockwise(CoordinateSequence); } }
+        public bool IsCounterClockwise { get { return CGAlgorithms.IsCounterClockwise(CoordinateSequence); } }
 
         /// <summary>
         /// Gets a boolean that is true if the EndPoint is geometrically equal to the StartPoint in 2 Dimensions.

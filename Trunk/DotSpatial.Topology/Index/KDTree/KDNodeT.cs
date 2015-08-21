@@ -24,7 +24,7 @@
 
 using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.KdTree
+namespace DotSpatial.Topology.Index.KDTree
 {
     /// <summary>
     /// A node of a <see cref="KdTree{T}"/>, which represents one or more points in the same location.

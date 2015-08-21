@@ -60,7 +60,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IList<EdgeRing> BuildMinimalRings()
+        public IList<EdgeRing> BuildMinimalRings()
         {
             IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
             DirectedEdge de = StartDe;
@@ -91,7 +91,7 @@ namespace DotSpatial.Topology.Operation.Overlay
         /// For all nodes in this EdgeRing,
         /// link the DirectedEdges at the node to form minimalEdgeRings
         /// </summary>
-        public virtual void LinkDirectedEdgesForMinimalEdgeRings()
+        public void LinkDirectedEdgesForMinimalEdgeRings()
         {
             DirectedEdge de = StartDe;
             do 

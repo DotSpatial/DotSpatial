@@ -50,18 +50,18 @@ namespace DotSpatial.Topology.Operation.Relate
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.
         /// </summary>
-        public override void ComputeIm(IntersectionMatrix im)
+        public override void ComputeIM(IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), DimensionType.Point);
+            im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), Dimension.Point);
         }
 
         /// <summary>
         /// Update the IM with the contribution for the EdgeEnds incident on this node.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateImFromEdges(IntersectionMatrix im)
+        public void UpdateIMFromEdges(IntersectionMatrix im)
         {
-            ((EdgeEndBundleStar)Edges).UpdateIm(im);
+            ((EdgeEndBundleStar) Edges).UpdateIM(im);
         }
 
         #endregion

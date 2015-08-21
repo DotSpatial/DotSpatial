@@ -30,7 +30,7 @@ namespace DotSpatial.Topology
         /// <summary>
         /// Gets the default spatial reference id
         /// </summary>
-        int DefaultSrid { get; }
+        int DefaultSRID { get; }
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology
         /// Creates a precision model based on given precision model type
         /// </summary>
         /// <returns>The precision model type</returns>
-        IPrecisionModel CreatePrecisionModel(PrecisionModelType modelType);
+        IPrecisionModel CreatePrecisionModel(PrecisionModels modelType);
 
         /// <summary>
         /// Creates a precision model based on given precision model.

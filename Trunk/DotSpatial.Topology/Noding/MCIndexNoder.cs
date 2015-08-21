@@ -34,13 +34,13 @@ namespace DotSpatial.Topology.Noding
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
     /// envelope (range) queries efficiently (such as a <c>Quadtree</c>"
-    /// or <see cref="StRtree{TItem}" />.
+    /// or <see cref="STRtree{MonotoneChain}" />.
     /// </summary>
-    public class McIndexNoder : SinglePassNoder
+    public class MCIndexNoder : SinglePassNoder
     {
         #region Fields
 
-        private readonly ISpatialIndex<MonotoneChain> _index = new StRtree<MonotoneChain>();
+        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
         private int _idCounter;
         private IList<ISegmentString> _nodedSegStrings;
@@ -51,15 +51,15 @@ namespace DotSpatial.Topology.Noding
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="McIndexNoder"/> class.
+        /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
         /// </summary>
-        public McIndexNoder() { }
+        public MCIndexNoder() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="McIndexNoder"/> class.
+        /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
         /// </summary>
         /// <param name="segInt">The <see cref="ISegmentIntersector"/> to use.</param>
-        public McIndexNoder(ISegmentIntersector segInt)
+        public MCIndexNoder(ISegmentIntersector segInt) 
             : base(segInt) { }
 
         #endregion
@@ -87,6 +87,21 @@ namespace DotSpatial.Topology.Noding
         #region Methods
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="segStr"></param>
+        private void Add(ISegmentString segStr)
+        {
+            var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
+            foreach (var mc in segChains) 
+            {
+                mc.Id = _idCounter++;
+                _index.Insert(mc.Envelope, mc);
+                _monoChains.Add(mc);
+            }
+        }
+
+        /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
         /// others may only add some or none at all.
@@ -108,21 +123,6 @@ namespace DotSpatial.Topology.Noding
         public override IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="segStr"></param>
-        private void Add(ISegmentString segStr)
-        {
-            var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach (var mc in segChains) 
-            {
-                mc.Id = _idCounter++;
-                _index.Insert(mc.Envelope, mc);
-                _monoChains.Add(mc);
-            }
         }
 
         /// <summary>
