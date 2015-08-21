@@ -225,7 +225,7 @@ namespace DotSpatial.Topology.Algorithm
                 var p = ps.Pop();
                 while (
                     ps.Count > 0 /*(IsEmpty Hack)*/ &&
-                    CgAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
+                    CGAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
                     p = ps.Pop();
                 ps.Push(p);
                 ps.Push(c[i]);
@@ -246,7 +246,7 @@ namespace DotSpatial.Topology.Algorithm
         /// </returns>
         private static bool IsBetween(Coordinate c1, Coordinate c2, Coordinate c3)
         {
-            if (CgAlgorithms.ComputeOrientation(c1, c2, c3) != 0)
+            if (CGAlgorithms.ComputeOrientation(c1, c2, c3) != 0)
                 return false;
             if (c1.X != c3.X)
             {
@@ -353,12 +353,12 @@ namespace DotSpatial.Topology.Algorithm
 
             /*
              * Add all unique points not in the interior poly.
-             * CgAlgorithms.IsPointInRing is not defined for points actually on the ring,
+             * CGAlgorithms.IsPointInRing is not defined for points actually on the ring,
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
             for (var i = 0; i < pts.Length; i++)
-                if (!CgAlgorithms.IsPointInRing(pts[i], polyPts))                
+                if (!CGAlgorithms.IsPointInRing(pts[i], polyPts))                
                     reducedSet.Add(pts[i]);
 
             var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];
@@ -425,12 +425,12 @@ namespace DotSpatial.Topology.Algorithm
                 double dyp = p.Y - o.Y;
                 double dxq = q.X - o.X;
                 double dyq = q.Y - o.Y;
+             
+                int orient = CGAlgorithms.ComputeOrientation(o, p, q);
 
-                int orient = CgAlgorithms.ComputeOrientation(o, p, q);
-
-                if (orient == CgAlgorithms.CounterClockwise)
+                if(orient == CGAlgorithms.CounterClockwise)
                     return 1;
-                if (orient == CgAlgorithms.Clockwise)
+                if(orient == CGAlgorithms.Clockwise) 
                     return -1;
 
                 // points are collinear - check distance

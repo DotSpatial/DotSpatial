@@ -164,7 +164,7 @@ namespace DotSpatial.Topology.EdgeGraph
             // vectors are in the same quadrant
             // Check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CgAlgorithms.ComputeOrientation(e.Orig, e.Dest, Dest);
+            return CGAlgorithms.ComputeOrientation(e.Orig, e.Dest, Dest);
         }
 
         /// <summary>

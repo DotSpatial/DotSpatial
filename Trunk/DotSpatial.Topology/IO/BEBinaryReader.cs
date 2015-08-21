@@ -32,31 +32,31 @@ namespace DotSpatial.Topology.IO
     /// Extends the <see cref="BinaryReader" /> class to allow reading values in the BigEndian format.    
     /// </summary>
     /// <remarks>
-    /// While <see cref="BeBinaryReader" /> extends <see cref="BinaryReader" /> 
-    /// adding methods for reading integer values (<see cref="BeBinaryReader.ReadInt32" />)
-    /// and double values (<see cref="BeBinaryReader.ReadDouble" />) in the BigEndian format, 
+    /// While <see cref="BEBinaryReader" /> extends <see cref="BinaryReader" /> 
+    /// adding methods for reading integer values (<see cref="BEBinaryReader.ReadInt32" />)
+    /// and double values (<see cref="BEBinaryReader.ReadDouble" />) in the BigEndian format, 
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
     /// and <see cref="BinaryReader.ReadDouble" /> and more, 
     /// for reading <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
-    public class BeBinaryReader : BinaryReader
+    public class BEBinaryReader : BinaryReader
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BeBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-		public BeBinaryReader(Stream stream)  : base(stream) { }
+		public BEBinaryReader(Stream stream)  : base(stream) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BeBinaryReader"/> class.
+        /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.
         /// </summary>
         /// <param name="input">The supplied stream.</param>
         /// <param name="encoding">The character encoding.</param>
         /// <exception cref="T:System.ArgumentNullException">encoding is null. </exception>
         /// <exception cref="T:System.ArgumentException">The stream does not support reading, the stream is null, or the stream is already closed. </exception>
-        public BeBinaryReader(Stream input, Encoding encoding) : base(input, encoding) { }
+        public BEBinaryReader(Stream input, Encoding encoding) : base(input, encoding) { }
 
         #endregion
 

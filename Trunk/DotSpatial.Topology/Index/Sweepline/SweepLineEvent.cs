@@ -29,11 +29,27 @@ namespace DotSpatial.Topology.Index.Sweepline
     /// <summary>
     ///
     /// </summary>
+    public enum SweepLineEvents
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Insert = 1,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Delete = 2,
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class SweepLineEvent : IComparable
     {
         #region Fields
 
-        private readonly SweepLineEventType _eventType;
+        private readonly SweepLineEvents eventType;
         private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
         private readonly SweepLineInterval _sweepInt;
         private readonly double _xValue;
@@ -52,28 +68,8 @@ namespace DotSpatial.Topology.Index.Sweepline
         {
             _xValue = x;
             _insertEvent = insertEvent;
-            _eventType = insertEvent != null ? SweepLineEventType.Delete : SweepLineEventType.Insert;
+            _eventType = insertEvent != null ? SweepLineEvents.Delete : SweepLineEvents.Insert;
             _sweepInt = sweepInt;
-        }
-
-        #endregion
-
-        #region Enums
-
-        /// <summary>
-        ///
-        /// </summary>
-        public enum SweepLineEventType
-        {
-            /// <summary>
-            ///
-            /// </summary>
-            Insert = 1,
-
-            /// <summary>
-            ///
-            /// </summary>
-            Delete = 2,
         }
 
         #endregion
@@ -83,7 +79,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual SweepLineEvent InsertEvent
+        public SweepLineEvent InsertEvent
         {
             get
             {
@@ -94,7 +90,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual SweepLineInterval Interval
+        public SweepLineInterval Interval
         {
             get
             {
@@ -105,7 +101,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsDelete
+        public bool IsDelete
         {
             get
             {
@@ -116,7 +112,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsInsert
+        public bool IsInsert
         {
             get
             {
@@ -140,7 +136,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o) 
         {
             SweepLineEvent pe = (SweepLineEvent)o;
             if (_xValue < pe._xValue) return -1;

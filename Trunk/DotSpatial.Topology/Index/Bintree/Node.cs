@@ -62,7 +62,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets the node's <see cref="Interval"/>
         /// </summary>
-        public virtual Interval Interval
+        public  Interval Interval
         {
             get
             {
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.Index.Bintree
         {
             var expandInt = new Interval(addInterval);
             if (node != null) expandInt.ExpandToInclude(node._interval);
-            Node<T> largerNode = CreateNode(expandInt);
+            var largerNode = CreateNode(expandInt);
             if (node != null) largerNode.Insert(node);
             return largerNode;
         }

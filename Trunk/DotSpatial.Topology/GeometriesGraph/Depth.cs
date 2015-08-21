@@ -37,13 +37,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        private const int Null = -1;
+        private const int @null = -1;
 
         #endregion
 
         #region Fields
 
-        private readonly int[,] _depth = new int[2, 3];
+        private readonly int[,] depth = new int[2,3];
 
         #endregion
 
@@ -55,9 +55,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         public Depth()
         {
             // initialize depth array to a sentinel value
-            for (int i = 0; i < 2; i++)
-                for (int j = 0; j < 3; j++)
-                    _depth[i, j] = Null;
+            for (int i = 0; i < 2; i++) 
+                for (int j = 0; j < 3; j++)                 
+                    depth[i,j] = @null;                
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual int this[int geomIndex, PositionType posIndex]
+        public int this[int geomIndex, Positions posIndex]
         {
             get
             {
@@ -91,30 +91,30 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public virtual void Add(int geomIndex, PositionType posIndex, LocationType location)
+        /// <param name="_location"></param>
+        public void Add(int geomIndex, Positions posIndex, Location _location)
         {
-            if (location == LocationType.Interior)
-                _depth[geomIndex, (int)posIndex]++;
+            if (_location == Location.Interior)
+                depth[geomIndex, (int)posIndex]++;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="lbl"></param>
-        public virtual void Add(Label lbl)
+        public void Add(Label lbl)
         {
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    LocationType loc = lbl.GetLocation(i, (PositionType)j);
-                    if (loc == LocationType.Exterior || loc == LocationType.Interior)
+                    Location loc = lbl.GetLocation(i, (Positions)j);
+                    if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (PositionType)j))
-                            _depth[i, j] = DepthAtLocation(loc);
-                        else _depth[i, j] += DepthAtLocation(loc);
+                        if (IsNull(i, (Positions)j))
+                             depth[i,j]  = DepthAtLocation(loc);
+                        else depth[i,j] += DepthAtLocation(loc);
                     }
                 }
             }
@@ -123,14 +123,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="_location"></param>
         /// <returns></returns>
-        public static int DepthAtLocation(LocationType location)
+        public static int DepthAtLocation(Location _location)
         {
-            if (location == LocationType.Exterior)
+            if (_location == Location.Exterior) 
                 return 0;
 
-            return location == LocationType.Interior ? 1 : Null;
+            if (_location == Location.Interior) 
+                return 1;
+
+            return @null;
         }
 
         /// <summary>
@@ -138,20 +141,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual int GetDelta(int geomIndex)
+        public int GetDelta(int geomIndex)
         {
-            return _depth[geomIndex, (int)PositionType.Right] - _depth[geomIndex, (int)PositionType.Left];
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public virtual int GetDepth(int geomIndex, PositionType posIndex)
-        {
-            return _depth[geomIndex, (int)posIndex];
+            return depth[geomIndex, (int)Positions.Right] - depth[geomIndex, (int)Positions.Left];
         }
 
         /// <summary>
@@ -160,27 +152,38 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual LocationType GetLocation(int geomIndex, PositionType posIndex)
+        public int GetDepth(int geomIndex, Positions posIndex)
         {
-            if (_depth[geomIndex, (int)posIndex] <= 0)
-                return LocationType.Exterior;
-            return LocationType.Interior;
+            return depth[geomIndex, (int)posIndex];
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public Location GetLocation(int geomIndex, Positions posIndex)
+        {
+            if (depth[geomIndex, (int)posIndex] <= 0) 
+                return Location.Exterior;
+            return Location.Interior;
         }
 
         /// <summary>
         /// A Depth object is null (has never been initialized) if all depths are null.
         /// </summary>
-        public virtual bool IsNull()
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 3; j++)
+        public bool IsNull()
+        {                        
+                for (int i = 0; i < 2; i++)
                 {
-                    if (_depth[i, j] != Null)
-                        return false;
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (depth[i,j] != @null)
+                            return false;
+                    }
                 }
-            }
-            return true;
+                return true;            
         }
 
         /// <summary>
@@ -188,9 +191,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsNull(int geomIndex)
+        public bool IsNull(int geomIndex)
         {
-            return _depth[geomIndex, 1] == Null;
+            return depth[geomIndex,1] == @null;
         }
 
         /// <summary>
@@ -199,9 +202,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual bool IsNull(int geomIndex, PositionType posIndex)
+        public bool IsNull(int geomIndex, Positions posIndex)
         {
-            return _depth[geomIndex, (int)posIndex] == Null;
+            return depth[geomIndex,(int)posIndex] == @null;
         }
 
         /// <summary>
@@ -212,23 +215,23 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// involves reducing the depths by the same amount so that at least
         /// one of them is 0.  If the remaining value is > 0, it is set to 1.
         /// </summary>
-        public virtual void Normalize()
+        public void Normalize()
         {
             for (int i = 0; i < 2; i++)
             {
                 if (!IsNull(i))
                 {
-                    int minDepth = _depth[i, 1];
-                    if (_depth[i, 2] < minDepth)
-                        minDepth = _depth[i, 2];
+                    int minDepth = depth[i,1];
+                    if (depth[i,2] < minDepth)
+                    minDepth = depth[i,2];
 
                     if (minDepth < 0) minDepth = 0;
                     for (int j = 1; j < 3; j++)
                     {
                         int newValue = 0;
-                        if (_depth[i, j] > minDepth)
+                        if (depth[i,j] > minDepth)
                             newValue = 1;
-                        _depth[i, j] = newValue;
+                        depth[i,j] = newValue;
                     }
                 }
             }
@@ -240,9 +243,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="depthValue"></param>
-        public virtual void SetDepth(int geomIndex, PositionType posIndex, int depthValue)
+        public void SetDepth(int geomIndex, Positions posIndex, int depthValue)
         {
-            _depth[geomIndex, (int)posIndex] = depthValue;
+            depth[geomIndex, (int)posIndex] = depthValue;
         }
 
         /// <summary>

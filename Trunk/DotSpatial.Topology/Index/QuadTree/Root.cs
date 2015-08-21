@@ -26,7 +26,7 @@ using System;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
 
-namespace DotSpatial.Topology.Index.QuadTree
+namespace DotSpatial.Topology.Index.Quadtree
 {
     /// <summary>
     /// QuadRoot is the root of a single Quadtree.

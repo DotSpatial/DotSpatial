@@ -69,7 +69,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Checks whether the supplied edges are correctly noded. 
         /// </summary>
        /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
-        public virtual void CheckValid()
+        public void CheckValid()
         {
             _nv.CheckValid();
         }

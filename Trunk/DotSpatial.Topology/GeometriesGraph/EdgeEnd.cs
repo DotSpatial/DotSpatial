@@ -52,10 +52,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// The parent edge of this edge end.
         /// </summary>
-        private Edge _edge;
-
         private Label _label;
-        private Node _node;          // the node this edge end originates at
+
         private Coordinate _p0, _p1;  // points of initial line segment
         private int _quadrant;
 
@@ -77,21 +75,21 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="edge"></param>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        /// <param name="inLabel"></param>
-        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label inLabel)
+        /// <param name="label"></param>
+        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label)
             : this(edge)
         {
-            DoInit(p0, p1);
-            _label = inLabel;
+            Init(p0, p1);
+            _label = label;
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inEdge"></param>
-        protected EdgeEnd(Edge inEdge)
+        /// <param name="edge"></param>
+        protected EdgeEnd(Edge edge)
         {
-            _edge = inEdge;
+            this.Edge = edge;
         }
 
         #endregion
@@ -101,7 +99,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -112,7 +110,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate DirectedCoordinate
+        public Coordinate DirectedCoordinate
         {
             get
             {
@@ -123,7 +121,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual double Dx
+        public double Dx
         {
             get
             {
@@ -134,7 +132,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual double Dy
+        public double Dy
         {
             get
             {
@@ -145,40 +143,29 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Edge Edge
-        {
-            get { return _edge; }
-            protected set { _edge = value; }
-        }
+        public Edge Edge { get; protected set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Label Label
+        public Label Label
         {
-            get { return _label; }
+            get
+            {
+                return _label;
+            }
             protected set { _label = value; }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual Node Node
-        {
-            get
-            {
-                return _node;
-            }
-            set
-            {
-                _node = value;
-            }
-        }
+        public Node Node { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int Quadrant
+        public int Quadrant
         {
             get
             {
@@ -202,7 +189,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="e"></param>
-        public virtual int CompareDirection(EdgeEnd e)
+        public int CompareDirection(EdgeEnd e)
         {
             if (_dx == e._dx && _dy == e._dy)
                 return 0;
@@ -213,7 +200,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CgAlgorithms.ComputeOrientation(e._p0, e._p1, _p1);
+            return CGAlgorithms.ComputeOrientation(e._p0, e._p1, _p1);
         }
 
         /// <summary>
@@ -221,7 +208,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public virtual int CompareTo(EdgeEnd e)
+        public int CompareTo(EdgeEnd e)
         {
             return CompareDirection(e);
         }
@@ -232,7 +219,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="boundaryNodeRule"></param>
         public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
 
-        private void DoInit(Coordinate p0, Coordinate p1)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        protected void Init(Coordinate p0, Coordinate p1)
         {
             _p0 = p0;
             _p1 = p1;
@@ -242,20 +234,6 @@ namespace DotSpatial.Topology.GeometriesGraph
             Assert.IsTrue(!(_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        protected virtual void Init(Coordinate p0, Coordinate p1)
-        {
-            DoInit(p0, p1);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             var angle = Math.Atan2(_dy, _dx);
@@ -275,7 +253,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             string fullname = GetType().FullName;
             int lastDotPos = fullname.LastIndexOf('.');
             string name = fullname.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + Label);
+            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label);
         }
 
         #endregion

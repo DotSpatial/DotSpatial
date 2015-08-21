@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets the count of all the items in this node, plus all the items in all of the child nodes
         /// </summary>
-        public virtual int Count
+        public  int Count
         {
             get
             {
@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets an integer representing the maximum levels needed to be decended to account for all the child nodes
         /// </summary>
-        public virtual int Depth
+        public  int Depth
         {
             get
             {

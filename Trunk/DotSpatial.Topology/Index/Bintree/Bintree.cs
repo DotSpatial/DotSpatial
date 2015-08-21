@@ -131,10 +131,11 @@ namespace DotSpatial.Topology.Index.Bintree
         /// </summary>
         public static Interval EnsureExtent(Interval itemInterval, double minExtent)
         {
-            double min = itemInterval.Min;
-            double max = itemInterval.Max;
+            var min = itemInterval.Min;
+            var max = itemInterval.Max;
             // has a non-zero extent
-            if (min != max) return itemInterval;
+            if (min != max) 
+                return itemInterval;
             // pad extent
             if (min == max)
             {

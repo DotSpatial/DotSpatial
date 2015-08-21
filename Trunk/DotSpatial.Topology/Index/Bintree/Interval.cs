@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets the width of the interval (<see cref="Max"/> - <see cref="Min"/>)
         /// </summary>
-        public virtual double Width
+        public double Width
         {
             get { return Max - Min; }
         }
@@ -92,7 +92,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets or sets a value indicating the maximum value of the closed interval.
         /// </summary>
-        public virtual double Max
+        public double Max
         {
             get { return _max; }
             set { _max = value; }
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         /// Gets or sets a value indicating the minimum value of the closed interval.
         /// </summary>
-        public virtual double Min
+        public double Min
         {
             get { return _min; }
             set { _min = value; }

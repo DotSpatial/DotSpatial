@@ -54,10 +54,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inLabel"></param>
-        protected GraphComponent(Label inLabel)
+        /// <param name="label"></param>
+        protected GraphComponent(Label label)
         {
-            _label = inLabel;
+            _label = label;
         }
 
         #endregion
@@ -75,7 +75,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsCovered
+        public bool IsCovered
         {
             get
             {
@@ -91,7 +91,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsCoveredSet
+        public bool IsCoveredSet
         {
             get
             {
@@ -100,9 +100,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
-        public virtual bool IsInResult
+        public bool IsInResult
         {
             get
             {
@@ -125,7 +125,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsVisited
+        public bool IsVisited
         {
             get
             {
@@ -159,17 +159,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Compute the contribution to an IM for this component.
         /// </summary>
-        public abstract void ComputeIm(IntersectionMatrix im);
+        public abstract void ComputeIM(IntersectionMatrix im);
 
         /// <summary>
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIm(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
-            Assert.IsTrue(Label.GeometryCount >= 2, "found partial label");
-            ComputeIm(im);
+            Assert.IsTrue(_label.GeometryCount >= 2, "found partial label");
+            ComputeIM(im);
         }
 
         #endregion

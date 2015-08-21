@@ -100,7 +100,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Gets a <c>LineString</c> which is a minimum diameter.
         /// </summary>
         /// <returns>A <c>LineString</c> which is a minimum diameter.</returns>
-        public virtual ILineString Diameter
+        public ILineString Diameter
         {
             get
             {
@@ -122,7 +122,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Gets the length of the minimum diameter of the input Geometry.
         /// </summary>
         /// <returns>The length of the minimum diameter.</returns>
-        public virtual double Length
+        public double Length
         {
             get
             {
@@ -135,7 +135,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Gets the segment forming the base of the minimum diameter.
         /// </summary>
         /// <returns>The segment forming the base of the minimum diameter.</returns>
-        public virtual ILineString SupportingSegment
+        public ILineString SupportingSegment
         {
             get
             {
@@ -148,7 +148,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
         /// </summary>
         /// <returns>A coordinate forming one end of the minimum diameter.</returns>
-        public virtual Coordinate WidthCoordinate
+        public Coordinate WidthCoordinate
         {
             get
             {
@@ -233,7 +233,7 @@ namespace DotSpatial.Topology.Algorithm
         private void ComputeWidthConvex(IGeometry convexGeom)
         {
             if (convexGeom is IPolygon)
-                _convexHullPts = ((IPolygon) convexGeom).Shell.Coordinates;
+                _convexHullPts = ((IPolygon) convexGeom).ExteriorRing.Coordinates;
             else 
                 _convexHullPts = convexGeom.Coordinates;
 

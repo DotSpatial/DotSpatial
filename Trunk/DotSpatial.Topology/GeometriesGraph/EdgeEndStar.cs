@@ -55,7 +55,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// The location of the point for this star in Geometry i Areas.
         /// </summary>
-        private readonly LocationType[] _ptInAreaLocation = { LocationType.Null, LocationType.Null };
+        private readonly Location[] _ptInAreaLocation = { Location.Null, Location.Null };
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns>
         /// The coordinate for the node this star is based at.
         /// </returns>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -79,7 +79,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -119,17 +119,17 @@ namespace DotSpatial.Topology.GeometriesGraph
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
             Label startLabel = edges[lastEdgeIndex].Label;
-            var startLoc = startLabel.GetLocation(geomIndex, PositionType.Left);
-            Assert.IsTrue(startLoc != LocationType.Null, "Found unlabelled area edge");
+            Location startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
+            Assert.IsTrue(startLoc != Location.Null, "Found unlabelled area edge");
 
-            var currLoc = startLoc;
+            Location currLoc = startLoc;
             foreach (EdgeEnd e in Edges)
             {
                 Label label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
-                LocationType leftLoc = label.GetLocation(geomIndex, PositionType.Left);
-                LocationType rightLoc = label.GetLocation(geomIndex, PositionType.Right);
+                Location leftLoc = label.GetLocation(geomIndex, Positions.Left);
+                Location rightLoc = label.GetLocation(geomIndex, Positions.Right);        
                 // check that edge is really a boundary between inside and outside!
                 if (leftLoc == rightLoc)
                     return false;
@@ -199,7 +199,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             {
                 Label label = e.Label;
                 for (int geomi = 0; geomi < 2; geomi++) 
-                    if (label.IsLine(geomi) && label.GetLocation(geomi) == LocationType.Boundary)
+                    if (label.IsLine(geomi) && label.GetLocation(geomi) == Location.Boundary)
                         hasDimensionalCollapseEdge[geomi] = true;                
             }
             foreach (var e in Edges)
@@ -209,9 +209,9 @@ namespace DotSpatial.Topology.GeometriesGraph
                 {
                     if (label.IsAnyNull(geomi)) 
                     {
-                        LocationType loc;
+                        Location loc;
                         if (hasDimensionalCollapseEdge[geomi])
-                            loc = LocationType.Exterior;                
+                            loc = Location.Exterior;                
                         else 
                         {
                             Coordinate p = e.Coordinate;
@@ -228,7 +228,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="eSearch"></param>
         /// <returns></returns>
-        public virtual int FindIndex(EdgeEnd eSearch)
+        public int FindIndex(EdgeEnd eSearch)
         {
             GetEnumerator();   // force edgelist to be computed
             for (int i = 0; i < EdgeList.Count; i++ ) 
@@ -246,7 +246,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// once an iterator is requested, it is likely that insertion into
         /// the map is complete).
         /// </summary>
-        public virtual IEnumerator<EdgeEnd> GetEnumerator()
+        public IEnumerator<EdgeEnd> GetEnumerator()
         {
             return Edges.GetEnumerator();
         }
@@ -258,10 +258,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="p"></param>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public virtual LocationType GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
+        private Location GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
-            if (_ptInAreaLocation[geomIndex] == LocationType.Null)
+            if (_ptInAreaLocation[geomIndex] == Location.Null) 
                 _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);
             return _ptInAreaLocation[geomIndex];
         }
@@ -271,7 +271,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="ee"></param>
         /// <returns></returns>
-        public virtual EdgeEnd GetNextCw(EdgeEnd ee)
+        public EdgeEnd GetNextCW(EdgeEnd ee)
         {
             InitializeEdges();
             int i = EdgeList.IndexOf(ee);
@@ -321,40 +321,40 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="geomIndex"></param>
-        public virtual void PropagateSideLabels(int geomIndex)
+        public void PropagateSideLabels(int geomIndex)
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            LocationType startLoc = LocationType.Null;
+            Location startLoc = Location.Null;
             // initialize loc to location of last Curve side (if any)
             foreach (EdgeEnd e in Edges)
             {
                 Label label = e.Label;
-                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, PositionType.Left) != LocationType.Null)
-                    startLoc = label.GetLocation(geomIndex, PositionType.Left);
+                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Location.Null)
+                    startLoc = label.GetLocation(geomIndex, Positions.Left);
             }
             // no labelled sides found, so no labels to propagate
-            if (startLoc == LocationType.Null)
+            if (startLoc == Location.Null) 
                 return;
 
-            LocationType currLoc = startLoc;
+            Location currLoc = startLoc;
             foreach (EdgeEnd e in Edges)
             {
                 Label label = e.Label;
                 // set null On values to be in current location
-                if (label.GetLocation(geomIndex, PositionType.On) == LocationType.Null)
-                    label.SetLocation(geomIndex, PositionType.On, currLoc);
+                if (label.GetLocation(geomIndex, Positions.On) == Location.Null)
+                    label.SetLocation(geomIndex, Positions.On, currLoc);
                 // set side labels (if any)
                 if (label.IsArea(geomIndex))
                 {
-                    LocationType leftLoc = label.GetLocation(geomIndex, PositionType.Left);
-                    LocationType rightLoc = label.GetLocation(geomIndex, PositionType.Right);
+                    Location leftLoc   = label.GetLocation(geomIndex, Positions.Left);
+                    Location rightLoc  = label.GetLocation(geomIndex, Positions.Right);
                     // if there is a right location, that is the next location to propagate
-                    if (rightLoc != LocationType.Null)
-                    {
+                    if (rightLoc != Location.Null) 
+                    {            
                         if (rightLoc != currLoc)
                             throw new TopologyException(TopologyText.SideLocationConflict, e.Coordinate);
-                        if (leftLoc == LocationType.Null)
+                        if (leftLoc == Location.Null) 
                             throw new TopologyException(TopologyText.SingleNullSide, e.Coordinate);
                         currLoc = leftLoc;
                     }
@@ -364,11 +364,11 @@ namespace DotSpatial.Topology.GeometriesGraph
                         *  This must be an edge from the other point, which has no location
                         *  labelling for this point.  This edge must lie wholly inside or outside
                         *  the other point (which is determined by the current location).
-                        *  Assign both sides to be the current LocationType.
+                        *  Assign both sides to be the current location.
                         */
-                        Assert.IsTrue(label.GetLocation(geomIndex, PositionType.Left) == LocationType.Null, "found single null side");
-                        label.SetLocation(geomIndex, PositionType.Right, currLoc);
-                        label.SetLocation(geomIndex, PositionType.Left, currLoc);
+                        Assert.IsTrue(label.GetLocation(geomIndex, Positions.Left) == Location.Null, "found single null side");
+                        label.SetLocation(geomIndex, Positions.Right, currLoc);
+                        label.SetLocation(geomIndex, Positions.Left, currLoc);
                     }
                 }
             }

@@ -63,22 +63,22 @@ namespace DotSpatial.Topology.Algorithm
         /// This property only determines the correct location if <b>all</b> relevant segments have been processed.</remarks>
         public bool IsPointInPolygon
         {
-            get { return Location != LocationType.Exterior; }
+            get { return Location != Location.Exterior; } 
         }
 
         ///<summary>
-        /// Gets the <see cref="LocationType"/> of the point relative to  the ring, polygon
+        /// Gets the <see cref="Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
         ///</summary>
         /// <remarks>This property only determines the correct location if <b>all</b> relevant segments have been processed</remarks>
-        public LocationType Location
+        public Location Location
         {
             get
             {
-                if (IsOnSegment) return LocationType.Boundary;
+                if (IsOnSegment) return Location.Boundary;
 
                 // The point is in the interior of the ring if the number of X-crossings is odd.
-                return (_crossingCount % 2) == 1 ? LocationType.Interior : LocationType.Exterior;
+                return (_crossingCount % 2) == 1 ? Location.Interior : Location.Exterior;
             }
         }
 
@@ -164,19 +164,19 @@ namespace DotSpatial.Topology.Algorithm
         }
 
         ///<summary>
-        /// Determines the <see cref="LocationType"/> of a point in a ring.
+        /// Determines the <see cref="Geometries.Location"/> of a point in a ring.
         /// This method is an exemplar of how to use this class.
         ///</summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">An array of Coordinates forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
-        public static LocationType LocatePointInRing(Coordinate p, IList<Coordinate> ring)
+        public static Location LocatePointInRing(Coordinate p, IList<Coordinate> ring)
         {
             var counter = new RayCrossingCounter(p);
             for (int i = 1; i < ring.Count; i++)
             {
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i - 1];
+                var p1 = ring[i];
+                var p2 = ring[i - 1];
                 counter.CountSegment(p1, p2);
                 if (counter.IsOnSegment)
                     return counter.Location;
@@ -190,7 +190,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p">The point to test</param>
         /// <param name="ring">A coordinate sequence forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
-        public static LocationType LocatePointInRing(Coordinate p, ICoordinateSequence ring)
+        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
             var counter = new RayCrossingCounter(p);
             for (int i = 1; i < ring.Count; i++)

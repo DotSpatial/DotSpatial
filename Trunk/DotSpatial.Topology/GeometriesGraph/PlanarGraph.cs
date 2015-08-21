@@ -89,7 +89,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets a list of edge ends
         /// </summary>
-        public virtual IList<EdgeEnd> EdgeEnds
+        public IList<EdgeEnd> EdgeEnds
         {
             get
             {
@@ -133,7 +133,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Adds a new EdgeEnd to the planar graph
         /// </summary>
         /// <param name="e">The EdgeEnd to add</param>
-        public virtual void Add(EdgeEnd e)
+        public void Add(EdgeEnd e)
         {
             _nodes.Add(e);
             EdgeEndList.Add(e);
@@ -166,7 +166,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="node">The node to add</param>
         /// <returns>The node after the addition</returns>
-        public virtual Node AddNode(Node node)
+        public Node AddNode(Node node) 
         {
             return _nodes.AddNode(node);
         }
@@ -176,7 +176,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="coord">An ICoordinate to add</param>
         /// <returns>The newly added node</returns>
-        public virtual Node AddNode(Coordinate coord)
+        public Node AddNode(Coordinate coord) 
         {
             return _nodes.AddNode(coord);
         }
@@ -185,7 +185,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// The node if found; null otherwise
         /// </returns>
         /// <param name="coord"></param>
-        public virtual Node Find(Coordinate coord)
+        public Node Find(Coordinate coord) 
         {
             return _nodes.Find(coord);
         }
@@ -196,7 +196,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual Edge FindEdge(Coordinate p0, Coordinate p1)
+        public Edge FindEdge(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < _edges.Count; i++)
             {
@@ -214,7 +214,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual EdgeEnd FindEdgeEnd(Edge e)
+        public EdgeEnd FindEdgeEnd(Edge e)
         {
             foreach (EdgeEnd ee in EdgeEndList       )
                 if (ee.Edge == e) return ee;
@@ -228,7 +228,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="p0"></param>
         ///<param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
+        public Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < _edges.Count; i++)
             {
@@ -264,7 +264,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Adds a new EdgeEnd to the planar graph
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void InsertEdge(Edge e)
+        protected void InsertEdge(Edge e)
         {
             _edges.Add(e);
         }
@@ -275,13 +275,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual bool IsBoundaryNode(int geomIndex, Coordinate coord)
+        public bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
             Node node = _nodes.Find(coord);
             if (node == null)
                 return false;
             Label label = node.Label;
-            if (label != null && label.GetLocation(geomIndex) == LocationType.Boundary)
+            if (label != null && label.GetLocation(geomIndex) == Location.Boundary) 
                 return true;
             return false;
         }
@@ -291,7 +291,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
-        public virtual void LinkAllDirectedEdges()
+        public void LinkAllDirectedEdges()
         {
             foreach (Node node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkAllDirectedEdges();
@@ -314,7 +314,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
-        public virtual void LinkResultDirectedEdges()
+        public void LinkResultDirectedEdges()
         {
             foreach (Node node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
@@ -333,7 +333,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             if (!p0.Equals(ep0))
                 return false;
-            return CgAlgorithms.ComputeOrientation(p0, p1, ep1) == CgAlgorithms.Collinear &&
+            return CGAlgorithms.ComputeOrientation(p0, p1, ep1) == CGAlgorithms.Collinear &&
                    QuadrantOp.Quadrant(p0, p1) == QuadrantOp.Quadrant(ep0, ep1);
         }
 
@@ -341,7 +341,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteEdges(StreamWriter outstream)
+        public void WriteEdges(StreamWriter outstream)
         {
             outstream.WriteLine("Edges:");
             for (int i = 0; i < _edges.Count; i++)

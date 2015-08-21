@@ -37,7 +37,7 @@ namespace DotSpatial.Topology.Algorithm
         private void CheckDD(Coordinate p1, Coordinate p2, Coordinate q1,
             Coordinate q2, Coordinate intPt)
         {
-            Coordinate intPtDD = CgAlgorithmsDoubleDouble.Intersection(p1, p2, q1, q2);
+            Coordinate intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
             bool isIn = IsInSegmentEnvelopes(intPtDD);
 #if !PCL
             Debug.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
@@ -112,15 +112,15 @@ namespace DotSpatial.Topology.Algorithm
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            int Pq1 = CgAlgorithms.OrientationIndex(p1, p2, q1);
-            int Pq2 = CgAlgorithms.OrientationIndex(p1, p2, q2);
+            int Pq1 = CGAlgorithms.OrientationIndex(p1, p2, q1);
+            int Pq2 = CGAlgorithms.OrientationIndex(p1, p2, q2);
 
             if ((Pq1 > 0 && Pq2 > 0) ||
                 (Pq1 < 0 && Pq2 < 0))
                 return NoIntersection;
 
-            int Qp1 = CgAlgorithms.OrientationIndex(q1, q2, p1);
-            int Qp2 = CgAlgorithms.OrientationIndex(q1, q2, p2);
+            int Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
+            int Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
 
             if ((Qp1 > 0 && Qp2 > 0) ||
                 (Qp1 < 0 && Qp2 < 0))
@@ -196,7 +196,8 @@ namespace DotSpatial.Topology.Algorithm
             // do between check first, since it is faster than the orientation test
             if (Envelope.Intersects(p1, p2, p))
             {
-                if ((CgAlgorithms.OrientationIndex(p1, p2, p) == 0) && (CgAlgorithms.OrientationIndex(p2, p1, p) == 0))
+                if ((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) &&
+                    (CGAlgorithms.OrientationIndex(p2, p1, p) == 0))
                 {
                     IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
@@ -315,21 +316,21 @@ namespace DotSpatial.Topology.Algorithm
             Coordinate q1, Coordinate q2)
         {
             Coordinate nearestPt = p1;
-            double minDist = CgAlgorithms.DistancePointLine(p1, q1, q2);
+            double minDist = CGAlgorithms.DistancePointLine(p1, q1, q2);
 
-            double dist = CgAlgorithms.DistancePointLine(p2, q1, q2);
+            double dist = CGAlgorithms.DistancePointLine(p2, q1, q2);
             if (dist < minDist)
             {
                 minDist = dist;
                 nearestPt = p2;
             }
-            dist = CgAlgorithms.DistancePointLine(q1, p1, p2);
+            dist = CGAlgorithms.DistancePointLine(q1, p1, p2);
             if (dist < minDist)
             {
                 minDist = dist;
                 nearestPt = q1;
             }
-            dist = CgAlgorithms.DistancePointLine(q2, p1, p2);
+            dist = CGAlgorithms.DistancePointLine(q2, p1, p2);
             if (dist < minDist)
             {
                 minDist = dist;

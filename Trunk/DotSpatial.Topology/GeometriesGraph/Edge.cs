@@ -78,7 +78,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Edge CollapsedEdge
+        public Edge CollapsedEdge
         {
             get
             {
@@ -132,7 +132,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// The depthDelta is the change in depth as an edge is crossed from R to L.
         /// </summary>
         /// <returns>The change in depth as the edge is crossed from R to L.</returns>
-        public virtual int DepthDelta
+        public int DepthDelta
         {
             get
             {
@@ -147,7 +147,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual EdgeIntersectionList EdgeIntersectionList
+        public EdgeIntersectionList EdgeIntersectionList
         {
             get
             {
@@ -158,7 +158,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Envelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -176,7 +176,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsClosed
+        public bool IsClosed
         {
             get
             {
@@ -188,7 +188,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// An Edge is collapsed if it is an Area edge and it consists of
         /// two segments which are equal and opposite (eg a zero-width V).
         /// </summary>
-        public virtual bool IsCollapsed
+        public bool IsCollapsed
         {
             get
             {
@@ -216,7 +216,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool Isolated
+        public bool Isolated
         {
             get
             {
@@ -231,7 +231,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int MaximumSegmentIndex
+        public int MaximumSegmentIndex
         {
             get
             {
@@ -242,7 +242,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual MonotoneChainEdge MonotoneChainEdge
+        public MonotoneChainEdge MonotoneChainEdge
         {
             get
             {
@@ -255,7 +255,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual string Name
+        public string Name
         {
             get
             {
@@ -270,7 +270,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int NumPoints
+        public int NumPoints
         {
             get
             {
@@ -281,7 +281,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Coordinate> Points
+        public IList<Coordinate> Points
         {
             get
             {
@@ -332,17 +332,17 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="segmentIndex"></param>
         /// <param name="geomIndex"></param>
         /// <param name="intIndex"></param>
-        public virtual void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
+        public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
             Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
-            int normalizedSegmentIndex = segmentIndex;
-            double dist = li.GetEdgeDistance(geomIndex, intIndex);
-
+            var normalizedSegmentIndex = segmentIndex;
+            var dist = li.GetEdgeDistance(geomIndex, intIndex);        
+            
             // normalize the intersection point location
-            int nextSegIndex = normalizedSegmentIndex + 1;
+            var nextSegIndex = normalizedSegmentIndex + 1;
             if (nextSegIndex < Points.Count)
             {
-                Coordinate nextPt = Points[nextSegIndex];
+                var nextPt = Points[nextSegIndex];        
 
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -363,10 +363,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="li"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="geomIndex"></param>
-        public virtual void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+        public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
-            for (int i = 0; i < li.IntersectionNum; i++)
-                AddIntersection(li, segmentIndex, geomIndex, i);
+            for (var i = 0; i < li.IntersectionNum; i++) 
+                AddIntersection(li, segmentIndex, geomIndex, i);            
         }
 
         /// <summary>
@@ -374,9 +374,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// A component only contributes if it has a labelling for both parent geometries.
         /// </summary>
         /// <param name="im"></param>
-        public override void ComputeIm(IntersectionMatrix im)
+        public override void ComputeIM(IntersectionMatrix im)
         {
-            UpdateIm(Label, im);
+            UpdateIM(Label, im);
         }
 
         /// <summary>
@@ -402,15 +402,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// the coordinates of e1 are the same or the reverse of the coordinates in e2.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual bool Equals(Edge e)
+        protected bool Equals(Edge e)
         {
             if (Points.Count != e.Points.Count)
                 return false;
 
-            bool isEqualForward = true;
-            bool isEqualReverse = true;
-            int iRev = Points.Count;
-            for (int i = 0; i < Points.Count; i++)
+            var isEqualForward = true;
+            var isEqualReverse = true;
+            var iRev = Points.Count;
+            for (var i = 0; i < Points.Count; i++)
             {
                 if (!Points[i].Equals2D(e.Points[i]))
                     isEqualForward = false;
@@ -427,7 +427,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual Coordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             return Points[i];
         }
@@ -445,11 +445,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <c>true</c> if the coordinate sequences of the Edges are identical.
         /// </returns>
         /// <param name="e"></param>
-        public virtual bool IsPointwiseEqual(Edge e)
+        public bool IsPointwiseEqual(Edge e)
         {
             if (Points.Count != e.Points.Count)
                 return false;
-            for (int i = 0; i < Points.Count; i++)
+            for (var i = 0; i < Points.Count; i++)
                 if (!Points[i].Equals2D(e.Points[i]))
                     return false;
             return true;
@@ -479,23 +479,23 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="label"></param>
         /// <param name="im"></param>
-        public static void UpdateIm(Label label, IntersectionMatrix im)
+        public static void UpdateIM(Label label, IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.On), label.GetLocation(1, PositionType.On), DimensionType.Curve);
+            im.SetAtLeastIfValid(label.GetLocation(0, Positions.On), label.GetLocation(1, Positions.On), Dimension.Curve);
             if (!label.IsArea()) return;
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Left), label.GetLocation(1, PositionType.Left), DimensionType.Surface);
-            im.SetAtLeastIfValid(label.GetLocation(0, PositionType.Right), label.GetLocation(1, PositionType.Right), DimensionType.Surface);
+                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Left), label.GetLocation(1, Positions.Left), Dimension.Surface);
+                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), Dimension.Surface);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.Write("edge " + _name + ": ");
             outstream.Write("LINESTRING (");
-            for (int i = 0; i < Points.Count; i++)
+            for (var i = 0; i < Points.Count; i++)
             {
                 if (i > 0) outstream.Write(",");
                 outstream.Write(Points[i].X + " " + Points[i].Y);
@@ -507,10 +507,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteReverse(StreamWriter outstream)
+        public void WriteReverse(StreamWriter outstream)
         {
             outstream.Write("edge " + _name + ": ");
-            for (int i = Points.Count - 1; i >= 0; i--)
+            for (var i = Points.Count - 1; i >= 0; i--)
                 outstream.Write(Points[i] + " ");
             outstream.WriteLine(String.Empty);
         }

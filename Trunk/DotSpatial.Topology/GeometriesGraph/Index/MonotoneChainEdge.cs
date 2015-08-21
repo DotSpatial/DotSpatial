@@ -45,14 +45,14 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     {
         #region Fields
 
-        private readonly Edge _e;
+        private readonly Edge e;
         // these envelopes are created once and reused
-        private readonly Envelope _env1 = new Envelope();
-        private readonly Envelope _env2 = new Envelope();
+        private readonly Envelope env1 = new Envelope();
+        private readonly Envelope env2 = new Envelope();
         private readonly IList<Coordinate> _pts; // cache a reference to the coord array, for efficiency
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
-        private readonly int[] _startIndex;
+        private readonly int[] startIndex;
 
         #endregion
 
@@ -64,10 +64,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="e"></param>
         public MonotoneChainEdge(Edge e)
         {
-            _e = e;
-            _pts = e.Coordinates;
+            this.e = e;
+            pts = e.Coordinates;
             MonotoneChainIndexer mcb = new MonotoneChainIndexer();
-            _startIndex = mcb.GetChainStartIndices(_pts);
+            startIndex = mcb.GetChainStartIndices(pts);
         }
 
         #endregion
@@ -77,22 +77,22 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Coordinate> Coordinates
+        public IList<Coordinate> Coordinates
         {
             get
             {
-                return _pts;
+                return pts;
             }
         }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual int[] StartIndexes
+        public int[] StartIndexes
         {
             get
             {
-                return _startIndex;
+                return startIndex;
             }
         }
 
@@ -105,11 +105,11 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="mce"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
+        public void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
-            for (int i = 0; i < _startIndex.Length - 1; i++)
-                for (int j = 0; j < mce._startIndex.Length - 1; j++)
-                    ComputeIntersectsForChain(i, mce, j, si);
+            for (int i = 0; i < startIndex.Length - 1; i++)
+                for (int j = 0; j < mce.startIndex.Length - 1; j++)
+                    ComputeIntersectsForChain(i, mce, j, si);           
         }
 
         /// <summary>
@@ -119,10 +119,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="mce"></param>
         /// <param name="chainIndex1"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
+        public void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
         {
-            ComputeIntersectsForChain(_startIndex[chainIndex0], _startIndex[chainIndex0 + 1], mce,
-                                      mce._startIndex[chainIndex1], mce._startIndex[chainIndex1 + 1], si);
+            ComputeIntersectsForChain(startIndex[chainIndex0], startIndex[chainIndex0 + 1], mce,
+                                      mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);
         }
 
         /// <summary>
@@ -136,22 +136,22 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="ei"></param>
         private void ComputeIntersectsForChain(int start0, int end0, MonotoneChainEdge mce, int start1, int end1, SegmentIntersector ei)
         {
-            Coordinate p00 = _pts[start0];
-            Coordinate p01 = _pts[end0];
-            Coordinate p10 = mce._pts[start1];
-            Coordinate p11 = mce._pts[end1];
-
+            Coordinate p00 = pts[start0];
+            Coordinate p01 = pts[end0];
+            Coordinate p10 = mce.pts[start1];
+            Coordinate p11 = mce.pts[end1];
+            
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {
-                ei.AddIntersections(_e, start0, mce._e, start1);
+                ei.AddIntersections(e, start0, mce.e, start1);
                 return;
             }
 
             // nothing to do if the envelopes of these chains don't overlap
-            _env1.Init(p00, p01);
-            _env2.Init(p10, p11);
-            if (!_env1.Intersects(_env2))
+            env1.Init(p00, p01);
+            env2.Init(p10, p11);
+            if (!env1.Intersects(env2)) 
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
@@ -180,10 +180,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public virtual double GetMaxX(int chainIndex)
+        public double GetMaxX(int chainIndex)
         {
-            double x1 = _pts[_startIndex[chainIndex]].X;
-            double x2 = _pts[_startIndex[chainIndex + 1]].X;
+            double x1 = pts[startIndex[chainIndex]].X;
+            double x2 = pts[startIndex[chainIndex + 1]].X;
             return x1 > x2 ? x1 : x2;
         }
 
@@ -192,10 +192,10 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public virtual double GetMinX(int chainIndex)
+        public double GetMinX(int chainIndex)
         {
-            double x1 = _pts[_startIndex[chainIndex]].X;
-            double x2 = _pts[_startIndex[chainIndex + 1]].X;
+            double x1 = pts[startIndex[chainIndex]].X;
+            double x2 = pts[startIndex[chainIndex + 1]].X;
             return x1 < x2 ? x1 : x2;
         }
 

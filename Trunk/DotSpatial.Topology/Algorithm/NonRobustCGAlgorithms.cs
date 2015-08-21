@@ -32,7 +32,7 @@ namespace DotSpatial.Topology.Algorithm
     /// FOR TESTING PURPOSES ONLY!.
     /// The non-robustness is due to rounding error in floating point computation.
     /// </summary>
-    public static class NonRobustCgAlgorithms
+    public static class NonRobustCGAlgorithms
     {
         #region Methods
 
@@ -63,9 +63,9 @@ namespace DotSpatial.Topology.Algorithm
         {
             // check for zero-length segments
             if (a.Equals(b))
-                return CgAlgorithms.DistancePointLine(a, c, d);
+                return CGAlgorithms.DistancePointLine(a, c, d);
             if (c.Equals(d))
-                return CgAlgorithms.DistancePointLine(d, a, b);
+                return CGAlgorithms.DistancePointLine(d, a, b);
 
             // AB and CD are line segments
             /*
@@ -103,11 +103,11 @@ namespace DotSpatial.Topology.Algorithm
             {
                 return Math
                     .Min(
-                        CgAlgorithms.DistancePointLine(a, c, d),
+                        CGAlgorithms.DistancePointLine(a, c, d),
                         Math.Min(
-                            CgAlgorithms.DistancePointLine(b, c, d),
-                            Math.Min(CgAlgorithms.DistancePointLine(c, a, b),
-                                     CgAlgorithms.DistancePointLine(d, a, b))));
+                            CGAlgorithms.DistancePointLine(b, c, d),
+                            Math.Min(CGAlgorithms.DistancePointLine(c, a, b),
+                                     CGAlgorithms.DistancePointLine(d, a, b))));
 
             }
             double s = sTop/sBot;
@@ -118,11 +118,11 @@ namespace DotSpatial.Topology.Algorithm
                 // no intersection
                 return Math
                     .Min(
-                        CgAlgorithms.DistancePointLine(a, c, d),
+                        CGAlgorithms.DistancePointLine(a, c, d),
                         Math.Min(
-                            CgAlgorithms.DistancePointLine(b, c, d),
-                            Math.Min(CgAlgorithms.DistancePointLine(c, a, b),
-                                     CgAlgorithms.DistancePointLine(d, a, b))));
+                            CGAlgorithms.DistancePointLine(b, c, d),
+                            Math.Min(CGAlgorithms.DistancePointLine(c, a, b),
+                                     CGAlgorithms.DistancePointLine(d, a, b))));
             }
             return 0.0; // intersection exists
         }
@@ -137,7 +137,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <c>true</c> if the ring is oriented counter-clockwise.
         /// throws <c>ArgumentException</c> if the ring is degenerate (does not contain 3 different points)
         /// </returns>
-        public static bool IsCcw(Coordinate[] ring)
+        public static bool IsCCW(Coordinate[] ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Length - 1;

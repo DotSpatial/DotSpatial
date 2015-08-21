@@ -241,7 +241,7 @@ namespace DotSpatial.Topology.IO
             }
             else if (byteOrder == ByteOrder.BigEndian)
             {
-                reader = new BeBinaryReader(stream);
+                reader = new BEBinaryReader(stream);
             }
             else if (_isStrict)
             {

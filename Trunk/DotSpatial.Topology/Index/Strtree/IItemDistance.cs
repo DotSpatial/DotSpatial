@@ -5,7 +5,7 @@ namespace DotSpatial.Topology.Index.Strtree
 {
     /// <summary>
     /// A function method which computes the distance
-    /// between two <see cref="IBoundable{T,TItem}"/>s in an <see cref="StRtree{TItem}"/>.
+    /// between two <see cref="IBoundable{T, TItem}"/>s in an <see cref="STRtree{TItem}"/>.
     /// Used for Nearest Neighbour searches.
     /// </summary>
     /// <author>Martin Davis</author>

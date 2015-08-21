@@ -67,7 +67,7 @@ namespace DotSpatial.Topology.Mathematics
 #if !PCL
     [Serializable]
 #endif
-    public struct DoubleDouble : IComparable, IComparable<DoubleDouble> /*, IFormattable*/
+    public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {
         #region Constant Fields
 
@@ -90,29 +90,29 @@ namespace DotSpatial.Topology.Mathematics
         /// <summary>
         /// The value nearest to the constant e (the natural logarithm base). 
         /// </summary>
-        public static readonly DoubleDouble E = new DoubleDouble(2.718281828459045091e+00, 1.445646891729250158e-16);
+        public static readonly DD E = new DD(2.718281828459045091e+00, 1.445646891729250158e-16);
 
         /// <summary>
-        /// The smallest representable relative difference between two <see cref="DoubleDouble"/> values
+        /// The smallest representable relative difference between two <see cref="DD"/> values
         /// </summary>
         public static readonly double Epsilon = 1.23259516440783e-32; /* = 2^-106 */
 
         /// <summary>
         /// A value representing the result of an operation which does not return a valid number.
         /// </summary>
-        public static readonly DoubleDouble NaN = new DoubleDouble(Double.NaN, Double.NaN);
+        public static readonly DD NaN = new DD(Double.NaN, Double.NaN);
 
         /// <summary>The value nearest to the constant Pi.</summary>
-        public static readonly DoubleDouble Pi = new DoubleDouble(3.141592653589793116e+00, 1.224646799147353207e-16);
+        public static readonly DD Pi = new DD(3.141592653589793116e+00, 1.224646799147353207e-16);
 
         /// <summary>The value nearest to the constant Pi / 2.</summary>
-        public static readonly DoubleDouble PiHalf = new DoubleDouble(1.570796326794896558e+00, 6.123233995736766036e-17);
+        public static readonly DD PiHalf = new DD(1.570796326794896558e+00, 6.123233995736766036e-17);
 
         /// <summary>The value nearest to the constant 2 * Pi.</summary>
-        public static readonly DoubleDouble TwoPi = new DoubleDouble(6.283185307179586232e+00, 2.449293598294706414e-16);
+        public static readonly DD TwoPi = new DD(6.283185307179586232e+00, 2.449293598294706414e-16);
 
-        private static readonly DoubleDouble Ten = ValueOf(10.0);
-        private static readonly DoubleDouble One = ValueOf(1.0);
+        private static readonly DD Ten = ValueOf(10.0);
+        private static readonly DD One = ValueOf(1.0);
         private static readonly String SCI_NOT_EXPONENT_CHAR = "E";
         private static readonly String SCI_NOT_ZERO = "0.0E0";
         /**
@@ -129,38 +129,38 @@ namespace DotSpatial.Topology.Mathematics
         #region Constructors
 
         /// <summary>
-        /// Creates a new <see cref="DoubleDouble"/> with value x.
+        /// Creates a new <see cref="DD"/> with value x.
         /// </summary>
         /// <param name="x">The initial value</param>
-        public DoubleDouble(double x) : this(x, 0d) { }
+        public DD(double x) : this(x, 0d) { }
 
         /// <summary>
-        /// Creates a new <see cref="DoubleDouble"/> with value (hi, lo).
+        /// Creates a new <see cref="DD"/> with value (hi, lo).
         /// </summary>
         /// <param name="hi">The high order component</param>
         /// <param name="lo">The low order component</param>
-        public DoubleDouble(double hi, double lo)
+        public DD(double hi, double lo)
         {
             _hi = hi;
             _lo = lo;
         }
 
         /// <summary>
-        /// Creates a <see cref="DoubleDouble"/> with a value equal to the argument
+        /// Creates a <see cref="DD"/> with a value equal to the argument
         /// </summary>
         /// <param name="dd">The initial value</param>
-        public DoubleDouble(DoubleDouble dd)
+        public DD(DD dd)
         {
             _hi = dd._hi;
             _lo = dd._lo;
         }
 
         /// <summary>
-        /// Creates a new <see cref="DoubleDouble"/> equal to the argument.
+        /// Creates a new <see cref="DD"/> equal to the argument.
         /// </summary>
         /// <param name="str">the value to initialize by</param>
         /// <remarks> NumberFormatException if <tt>str</tt> is not a valid representation of a number.</remarks>
-        public DoubleDouble(String str) : this(Parse(str)) { }
+        public DD(String str) : this(Parse(str)) { }
 
         #endregion
 
@@ -197,7 +197,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The sum of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DoubleDouble operator +(DoubleDouble lhs, DoubleDouble rhs)
+        public static DD operator +(DD lhs, DD rhs)
         {
             double S = lhs._hi + rhs._hi;
             double T = lhs._lo + rhs._lo;
@@ -213,7 +213,7 @@ namespace DotSpatial.Topology.Mathematics
             e = t + h;
 
             double zhi = H + e;
-            return new DoubleDouble(zhi, e + (H - zhi));
+            return new DD(zhi, e + (H - zhi));
         }
 
         /// <summary>
@@ -222,17 +222,17 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The sum of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DoubleDouble operator +(DoubleDouble lhs, Double rhs)
+        public static DD operator +(DD lhs, Double rhs)
         {
-            return lhs + new DoubleDouble(rhs, 0);
+            return lhs + new DD(rhs, 0);
         }
 
-        public static DoubleDouble operator /(DoubleDouble lhs, Double rhs)
+        public static DD operator /(DD lhs, Double rhs)
         {
-            return lhs / new DoubleDouble(rhs, 0d);
+            return lhs / new DD(rhs, 0d);
         }
 
-        public static DoubleDouble operator /(DoubleDouble lhs, DoubleDouble rhs)
+        public static DD operator /(DD lhs, DD rhs)
         {
             if (IsNaN(rhs)) return CreateNaN();
 
@@ -250,35 +250,35 @@ namespace DotSpatial.Topology.Mathematics
             c = ((((lhs._hi - U) - u) + lhs._lo) - C * rhs._lo) / rhs._hi;
             u = C + c;
 
-            return new DoubleDouble(u, (C - u) + c);
+            return new DD(u, (C - u) + c);
         }
 
-        public static bool operator ==(DoubleDouble lhs, DoubleDouble rhs)
+        public static bool operator ==(DD lhs, DD rhs)
         {
             return lhs._hi == rhs._hi && lhs._lo == rhs._lo;
         }
 
-        public static explicit operator DoubleDouble(String val)
+        public static explicit operator DD(String val)
         {
             return Parse(val);
         }
 
-        public static implicit operator DoubleDouble(Double val)
+        public static implicit operator DD(Double val)
         {
-            return new DoubleDouble(val);
+            return new DD(val);
         }
 
-        public static bool operator !=(DoubleDouble rhs, DoubleDouble lhs)
+        public static bool operator !=(DD rhs, DD lhs)
         {
             return !(rhs == lhs);
         }
 
-        public static DoubleDouble operator *(DoubleDouble lhs, Double rhs)
+        public static DD operator *(DD lhs, Double rhs)
         {
-            return lhs * new DoubleDouble(rhs, 0d);
+            return lhs * new DD(rhs, 0d);
         }
 
-        public static DoubleDouble operator *(DoubleDouble lhs, DoubleDouble rhs)
+        public static DD operator *(DD lhs, DD rhs)
         {
             if (IsNaN(rhs)) return CreateNaN();
 
@@ -296,7 +296,7 @@ namespace DotSpatial.Topology.Mathematics
             hx = C - zhi;
             double zlo = c + hx;
 
-            return new DoubleDouble(zhi, zlo);
+            return new DD(zhi, zlo);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The difference of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DoubleDouble operator -(DoubleDouble lhs, DoubleDouble rhs)
+        public static DD operator -(DD lhs, DD rhs)
         {
             return lhs + rhs.Negate();
         }
@@ -316,9 +316,9 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The difference of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DoubleDouble operator -(DoubleDouble lhs, Double rhs)
+        public static DD operator -(DD lhs, Double rhs)
         {
-            return lhs + new DoubleDouble(-rhs, 0);
+            return lhs + new DD(-rhs, 0);
         }
 
         #endregion
@@ -334,30 +334,30 @@ namespace DotSpatial.Topology.Mathematics
         /// </list>
         /// </summary>
         /// <returns>The absolute value of this value</returns>
-        public DoubleDouble Abs()
+        public DD Abs()
         {
             if (IsNaN(this)) return NaN;
-            return IsNegative ? Negate() : new DoubleDouble(this);
+            return IsNegative ? Negate() : new DD(this);
         }
 
         /// <summary>
-        /// Returns a <see cref="DoubleDouble"/> whose value is <c>(this + <paramref name="y"/>)</c>
+        /// Returns a <see cref="DD"/> whose value is <c>(this + <paramref name="y"/>)</c>
         /// </summary>
         /// <param name="y">The addende</param>"/>
         /// <returns><c>(this + <paramref name="y"/>)</c></returns>
         [Obsolete("Use operator +")]
-        public DoubleDouble Add(DoubleDouble y)
+        public DD Add(DD y)
         {
             return this + y;
         }
 
         /// <summary>
-        /// Returns a <see cref="DoubleDouble"/> whose value is <tt>(this + y)</tt>.
+        /// Returns a <see cref="DD"/> whose value is <tt>(this + y)</tt>.
         /// </summary>
         /// <param name="y">The addend</param>
         /// <returns><tt>(this + y)</tt></returns>
         [Obsolete("Use Operator +")]
-        public DoubleDouble Add(double y)
+        public DD Add(double y)
         {
             return this + y;
         }
@@ -370,7 +370,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <returns>the smallest (closest to negative infinity) value 
         /// that is not less than the argument and is equal to a mathematical integer. </returns>
-        public DoubleDouble Ceiling()
+        public DD Ceiling()
         {
             if (IsNaN(this)) return NaN;
             double fhi = Math.Ceiling(_hi);
@@ -381,7 +381,7 @@ namespace DotSpatial.Topology.Mathematics
                 flo = Math.Ceiling(_lo);
                 // do we need to renormalize here?
             }
-            return new DoubleDouble(fhi, flo);
+            return new DD(fhi, flo);
         }
 
         /// <summary>
@@ -390,7 +390,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <returns>Acopy of this value</returns>
         public Object Clone()
         {
-            return new DoubleDouble(_hi, _lo);
+            return new DD(_hi, _lo);
         }
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="other"></param>
         /// <returns>-1,0 or 1 depending on whether this value is less than, equal to or greater than the value of <tt>other</tt>.</returns>
-        public int CompareTo(DoubleDouble other)
+        public int CompareTo(DD other)
         {
             if (_hi < other._hi) return -1;
             if (_hi > other._hi) return 1;
@@ -414,30 +414,30 @@ namespace DotSpatial.Topology.Mathematics
         /// <returns>-1,0 or 1 depending on whether this value is less than, equal to or greater than the value of <tt>other</tt>.</returns>
         public int CompareTo(Object other)
         {
-            return CompareTo((DoubleDouble)other);
+            return CompareTo((DD)other);
         }
 
         /// <summary>
-        /// Creates a new <see cref="DoubleDouble"/> with the value of the argument.
+        /// Creates a new <see cref="DD"/> with the value of the argument.
         /// </summary>
         /// <param name="dd">The value to copy</param>
         /// <returns>A copy of <paramref name="dd"/></returns>
-        public static DoubleDouble Copy(DoubleDouble dd)
+        public static DD Copy(DD dd)
         {
-            return new DoubleDouble(dd);
+            return new DD(dd);
         }
 
-        private static DoubleDouble CreateNaN()
+        private static DD CreateNaN()
         {
-            return new DoubleDouble(Double.NaN, Double.NaN);
+            return new DD(Double.NaN, Double.NaN);
         }
 
         /// <summary>
-        /// Computes a new <see cref="DoubleDouble"/> whose value is <tt>(this / y)</tt>.
+        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
         /// </summary>
         /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DoubleDouble"/> with the value <c>(this / y)</c></returns>
-        public DoubleDouble Divide(DoubleDouble y)
+        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
+        public DD Divide(DD y)
         {
             double C = _hi / y._hi;
             double c = Split * C;
@@ -455,16 +455,16 @@ namespace DotSpatial.Topology.Mathematics
 
             double zhi = u;
             double zlo = (C - u) + c;
-            return new DoubleDouble(zhi, zlo);
+            return new DD(zhi, zlo);
         }
 
         /// <summary>
-        /// Computes a new <see cref="DoubleDouble"/> whose value is <tt>(this / y)</tt>.
+        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
         /// </summary>
         /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DoubleDouble"/> with the value <c>(this / y)</c></returns>
+        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
         [Obsolete("Use /-operator instead")]
-        public DoubleDouble Divide(double y)
+        public DD Divide(double y)
         {
             return this / y;
         }
@@ -483,7 +483,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="y">a DoubleDouble value</param>
         /// <returns>true if this value = y</returns>
-        public bool Equals(DoubleDouble y)
+        public bool Equals(DD y)
         {
             return y._hi.Equals(_hi) && y._lo.Equals(_lo);
         }
@@ -491,8 +491,8 @@ namespace DotSpatial.Topology.Mathematics
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (obj.GetType() != typeof(DoubleDouble)) return false;
-            return Equals((DoubleDouble)obj);
+            if (obj.GetType() != typeof(DD)) return false;
+            return Equals((DD)obj);
         }
 
         /// <summary>
@@ -601,7 +601,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <returns>the largest (closest to positive infinity) value that is not greater than the argument 
         /// and is equal to a mathematical integer.</returns>
-        public DoubleDouble Floor()
+        public DD Floor()
         {
             if (IsNaN(this)) return NaN;
             double fhi = Math.Floor(_hi);
@@ -612,7 +612,7 @@ namespace DotSpatial.Topology.Mathematics
                 flo = Math.Floor(_lo);
             }
             // do we need to renormalize here?    
-            return new DoubleDouble(fhi, flo);
+            return new DD(fhi, flo);
         }
 
         public override int GetHashCode()
@@ -640,7 +640,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="y">a DoubleDouble value</param>
         /// <returns>true if this value >= y</returns>
-        public bool GreaterOrEqualThan(DoubleDouble y)
+        public bool GreaterOrEqualThan(DD y)
         {
             return (_hi > y._hi) || (_hi == y._hi && _lo >= y._lo);
         }
@@ -650,7 +650,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="y">a DoubleDouble value</param>
         /// <returns>true if this value > y</returns>
-        public bool GreaterThan(DoubleDouble y)
+        public bool GreaterThan(DD y)
         {
             return (_hi > y._hi) || (_hi == y._hi && _lo > y._lo);
         }
@@ -658,7 +658,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <summary>
         /// Gets a value indicating whether this object is positive or not
         /// </summary>
-        public static bool IsNaN(DoubleDouble value)
+        public static bool IsNaN(DD value)
         {
             return Double.IsNaN(value._hi);
         }
@@ -676,7 +676,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="y">a DoubleDouble value</param>
         /// <returns>true if this value <= y</returns>
-        public bool LessOrEqualThan(DoubleDouble y)
+        public bool LessOrEqualThan(DD y)
         {
             return (_hi < y._hi) || (_hi == y._hi && _lo <= y._lo);
         }
@@ -686,7 +686,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="y">A DoubleDouble value</param>
         /// <returns><c>true</c> if this value is &lt; <paramref name="y"/> </returns>
-        public bool LessThan(DoubleDouble y)
+        public bool LessThan(DD y)
         {
             return (_hi < y._hi) || (_hi == y._hi && _lo < y._lo);
         }
@@ -720,7 +720,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="x">A DD number</param>
         /// <returns>The maximum of the two numbers</returns>
-        public DoubleDouble Max(DoubleDouble x)
+        public DD Max(DD x)
         {
             return GreaterOrEqualThan(x) ? this : x;
         }
@@ -730,7 +730,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="x">A DD number</param>
         /// <returns>The minimum of the two numbers</returns>
-        public DoubleDouble Min(DoubleDouble x)
+        public DD Min(DD x)
         {
             return LessThan(x) ? this : x;
         }
@@ -743,7 +743,7 @@ namespace DotSpatial.Topology.Mathematics
          */
 
         [Obsolete("Use *-operator instead")]
-        public DoubleDouble Multiply(DoubleDouble y)
+        public DD Multiply(DD y)
         {
             return this * y;
             //return Copy(this).SelfMultiply(y);
@@ -757,19 +757,19 @@ namespace DotSpatial.Topology.Mathematics
          */
 
         [Obsolete("Use *-operator instead")]
-        public DoubleDouble Multiply(double y)
+        public DD Multiply(double y)
         {
             return this * y;
         }
 
         /// <summary>
-        /// Returns a <see cref="DoubleDouble"/> whose value is <c>-this</c>.
+        /// Returns a <see cref="DD"/> whose value is <c>-this</c>.
         /// </summary>
         /// <returns><c>-this</c></returns>
-        public DoubleDouble Negate()
+        public DD Negate()
         {
             if (IsNaN(this)) return this;
-            return new DoubleDouble(-_hi, -_lo);
+            return new DD(-_hi, -_lo);
         }
 
         /*------------------------------------------------------------
@@ -788,7 +788,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="str">The string to parse</param>
         /// <returns>The value of the parsed number</returns>
         /// <exception cref="FormatException">Thrown if <tt>str</tt> is not a valid representation of a number</exception>
-        public static DoubleDouble Parse(String str)
+        public static DD Parse(String str)
         {
             int i = 0;
             int strlen = str.Length;
@@ -811,7 +811,7 @@ namespace DotSpatial.Topology.Mathematics
 
             // scan all digits and accumulate into an integral value
             // Keep track of the location of the decimal point (if any) to allow scaling later
-            DoubleDouble val = new DoubleDouble();
+            DD val = new DD();
 
             int numDigits = 0;
             int numBeforeDec = 0;
@@ -854,7 +854,7 @@ namespace DotSpatial.Topology.Mathematics
                                           + "' at position " + i
                                           + " in string " + str);
             }
-            DoubleDouble val2 = val;
+            DD val2 = val;
 
             // scale the number correctly
             int numDecPlaces = numDigits - numBeforeDec - exp;
@@ -869,7 +869,7 @@ namespace DotSpatial.Topology.Mathematics
             }
             else if (numDecPlaces < 0)
             {
-                DoubleDouble scale = Ten.Pow(-numDecPlaces);
+                DD scale = Ten.Pow(-numDecPlaces);
                 val2 = val * scale;
             }
             // apply leading sign, if any
@@ -887,13 +887,13 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="exp">The integer exponent</param>
         /// <returns>x raised to the integral power exp</returns>
-        public DoubleDouble Pow(int exp)
+        public DD Pow(int exp)
         {
             if (exp == 0.0)
                 return ValueOf(1.0);
 
-            DoubleDouble r = new DoubleDouble(this);
-            DoubleDouble s = ValueOf(1.0);
+            DD r = new DD(this);
+            DD s = ValueOf(1.0);
             int n = Math.Abs(exp);
 
             if (n > 1)
@@ -925,7 +925,7 @@ namespace DotSpatial.Topology.Mathematics
         /// Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
         /// </summary>
         /// <returns>the reciprocal of this value</returns>
-        public DoubleDouble Reciprocal()
+        public DD Reciprocal()
         {
             double C = 1.0 / _hi;
             double c = Split * C;
@@ -942,7 +942,7 @@ namespace DotSpatial.Topology.Mathematics
 
             double zhi = C + c;
             double zlo = (C - zhi) + c;
-            return new DoubleDouble(zhi, zlo);
+            return new DD(zhi, zlo);
         }
 
         /// <summary>
@@ -954,7 +954,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </list>
         /// </summary>
         /// <returns>This value rounded to the nearest integer</returns>
-        public DoubleDouble Rint()
+        public DD Rint()
         {
             if (IsNaN(this)) return this;
             // may not be 100% correct
@@ -987,7 +987,7 @@ namespace DotSpatial.Topology.Mathematics
         /// Computes the square of this value.
         /// </summary>
         /// <returns>The square of this value.</returns>
-        public static DoubleDouble Sqr(double x)
+        public static DD Sqr(double x)
         {
             return ValueOf(x) * x;
         }
@@ -996,12 +996,12 @@ namespace DotSpatial.Topology.Mathematics
         /// Computes the square of this value.
         /// </summary>
         /// <returns>The square of this value</returns>
-        public DoubleDouble Sqr()
+        public DD Sqr()
         {
             return this * this;
         }
 
-        public static DoubleDouble Sqrt(double x)
+        public static DD Sqrt(double x)
         {
             return ValueOf(x).Sqrt();
         }
@@ -1012,7 +1012,7 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <returns>the positive square root of this number. 
         /// If the argument is NaN or less than zero, the result is NaN.</returns>
-        public DoubleDouble Sqrt()
+        public DD Sqrt()
         {
             /* Strategy:  Use Karp's trick:  if x is an approximation
             to sqrt(a), then
@@ -1043,23 +1043,23 @@ namespace DotSpatial.Topology.Mathematics
         }
 
         /// <summary>
-        /// Computes a new <see cref="DoubleDouble"/> object whose value is <tt>(this - y)</tt>.
+        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
         /// </summary>
         /// <param name="y">The subtrahend</param>
         /// <returns><tt>(this - y)</tt></returns>
         [Obsolete("Use operator -")]
-        public DoubleDouble Subtract(DoubleDouble y)
+        public DD Subtract(DD y)
         {
             return Add(y.Negate());
         }
 
         /// <summary>
-        /// Computes a new <see cref="DoubleDouble"/> object whose value is <tt>(this - y)</tt>.
+        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
         /// </summary>
         /// <param name="y">The subtrahend</param>
         /// <returns><tt>(this - y)</tt></returns>
         [Obsolete("Use operator -")]
-        public DoubleDouble Subtract(double y)
+        public DD Subtract(double y)
         {
             return Add(-y);
         }
@@ -1187,7 +1187,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <returns>
         /// The integer which is largest in absolute value and not further from zero than this value
         /// </returns>
-        public DoubleDouble Truncate()
+        public DD Truncate()
         {
             if (IsNaN(this)) return NaN;
             return IsPositive() ? Floor() : Ceiling();
@@ -1199,7 +1199,7 @@ namespace DotSpatial.Topology.Mathematics
         /// <param name="str">A string containing a representation of a numeric value</param>
         /// <returns>The extended precision version of the value</returns>
         /// <exception cref="FormatException">Thrown if <paramref name="str"/> is not a valid representation of a number</exception>
-        public static DoubleDouble ValueOf(String str)
+        public static DD ValueOf(String str)
         {
             return Parse(str);
         }
@@ -1209,9 +1209,9 @@ namespace DotSpatial.Topology.Mathematics
         /// </summary>
         /// <param name="x">a numeric value</param>
         /// <returns>the extended precision version of the value</returns>
-        public static DoubleDouble ValueOf(double x)
+        public static DD ValueOf(double x)
         {
-            return new DoubleDouble(x);
+            return new DD(x);
         }
 
         #endregion

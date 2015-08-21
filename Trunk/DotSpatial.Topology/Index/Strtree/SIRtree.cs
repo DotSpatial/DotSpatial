@@ -34,7 +34,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class SiRtree<TItem> : AbstractStRtree<Interval, TItem> 
+    public class SIRtree<TItem> : AbstractSTRtree<Interval, TItem> 
     {
         #region Fields
 
@@ -48,13 +48,13 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <summary>
         /// Constructs an SIRtree with the default (10) node capacity.
         /// </summary>
-        public SiRtree() : this(10) { }
+        public SIRtree() : this(10) { }
 
         /// <summary>
         /// Constructs an SIRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public SiRtree(int nodeCapacity) : base(nodeCapacity) { }
+        public SIRtree(int nodeCapacity) : base(nodeCapacity) { }
 
         #endregion
 

@@ -33,19 +33,19 @@ namespace DotSpatial.Topology.Algorithm
     public enum Orientation
     {
         ///<summary>Constant representing no orientation</summary>
-        None = CgAlgorithms.Collinear,
+        None = CGAlgorithms.Collinear,
 
         ///<summary>Constant representing straight orientation</summary>
         Straight = None,
 
         ///<summary>Constant representing counterclockwise orientation</summary>
-        CounterClockwise = CgAlgorithms.CounterClockwise,
+        CounterClockwise = CGAlgorithms.CounterClockwise,
 
         ///<summary>Constant representing left orientation</summary>
         Left = CounterClockwise,
 
         ///<summary>Constant representing clockwise orientation</summary>
-        Clockwise = CgAlgorithms.Clockwise,
+        Clockwise = CGAlgorithms.Clockwise,
 
         ///<summary>Constant representing right orientation</summary>
         Right = Clockwise

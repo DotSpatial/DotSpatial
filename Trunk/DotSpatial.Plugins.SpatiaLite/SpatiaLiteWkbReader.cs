@@ -26,7 +26,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BeBinaryReader(stream) : new BinaryReader(stream);
+                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
 
                     int srid = reader.ReadInt32();
                     double mbrMinX = reader.ReadDouble();

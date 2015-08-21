@@ -15,7 +15,7 @@ namespace DotSpatial.Topology.IO.GML2
     /// Thanks to <see href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatial">rstuven</see> for improvements :)
     /// </remarks>
     /// </summary>
-    public class GmlWriter
+    public class GMLWriter
     {
         #region Constant Fields
 

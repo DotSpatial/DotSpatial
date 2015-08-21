@@ -52,7 +52,7 @@ namespace DotSpatial.Topology.Algorithm.Locate
             ILinearRing shell = poly.Shell;
             if (!IsPointInRing(p, shell)) return false;
             // now test if the point lies in or on the holes
-            for (int i = 0; i < poly.NumHoles; i++)
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 ILinearRing hole = (ILinearRing)poly.GetInteriorRingN(i);
                 if (IsPointInRing(p, hole)) return false;
@@ -71,7 +71,7 @@ namespace DotSpatial.Topology.Algorithm.Locate
             // short-circuit if point is not in ring envelope
             if (!ring.EnvelopeInternal.Intersects(p))
                 return false;
-            return CgAlgorithms.IsPointInRing(p, ring.Coordinates);
+            return CGAlgorithms.IsPointInRing(p, ring.Coordinates);
         }
 
         ///<summary>
@@ -80,16 +80,16 @@ namespace DotSpatial.Topology.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <param name="geom">The areal geometry to test</param>
         /// <returns>The Location of the point in the geometry  </returns>
-        public static LocationType Locate(Coordinate p, IGeometry geom)
+        public static Location Locate(Coordinate p, IGeometry geom)
         {
-            if (geom.IsEmpty) return LocationType.Exterior;
+            if (geom.IsEmpty) return Location.Exterior;
 
             if (ContainsPoint(p, geom))
-                return LocationType.Interior;
-            return LocationType.Exterior;
+                return Location.Interior;
+            return Location.Exterior;
         }
 
-        public LocationType Locate(Coordinate p)
+        public Location Locate(Coordinate p)
         {
             return Locate(p, _geom);
         }

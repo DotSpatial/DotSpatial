@@ -56,7 +56,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Edge> Edges
+        public IList<Edge> Edges
         {
             get { return _edges; }
         }
@@ -70,7 +70,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public virtual Edge this[int index]
+        public Edge this[int index]
         {
             get
             {
@@ -86,7 +86,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Insert an edge unless it is already in the list.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(Edge e)
+        public void Add(Edge e)
         {
             _edges.Add(e);
             var oca = new OrientedCoordinateArray(e.Coordinates);
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="edgeColl"></param>
-        public virtual void AddAll(IEnumerable<Edge> edgeColl)
+        public void AddAll(IEnumerable<Edge> edgeColl)
         {
             for (var i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
                 Add(i.Current);
@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
-        public virtual int FindEdgeIndex(Edge e)
+        public int FindEdgeIndex(Edge e)
         {
             for (var i = 0; i < _edges.Count; i++)
                 if ((_edges[i]).Equals(e))
@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
-        public virtual Edge FindEqualEdge(Edge e)
+        public Edge FindEqualEdge(Edge e)
         {
             var oca = new OrientedCoordinateArray(e.Coordinates);
             // will return null if no edge matches
@@ -142,7 +142,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual Edge Get(int i)
+        public Edge Get(int i) 
         {
             return _edges[i]; 
         }
@@ -151,7 +151,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator<Edge> GetEnumerator() 
+        public IEnumerator<Edge> GetEnumerator() 
         { 
             return _edges.GetEnumerator(); 
         }
@@ -160,7 +160,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Remove the selected Edge element from the list if present.
         /// </summary>
         /// <param name="e">Edge element to remove from list</param>
-        public virtual void Remove(Edge e)
+        public void Remove(Edge e)
         {
             _edges.Remove(e);
         }
@@ -169,7 +169,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
             for (var j = 0; j < _edges.Count; j++) 

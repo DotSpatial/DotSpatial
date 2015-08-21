@@ -49,7 +49,7 @@ namespace DotSpatial.Topology.Index.QuadTree
 
         #region Fields
 
-        private readonly double _x;
+        private readonly double x;
         private long _xBits;
 
         #endregion
@@ -62,7 +62,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <param name="x"></param>
         public DoubleBits(double x)
         {
-            _x = x;
+            this.x = x;
             _xBits = BitConverter.DoubleToInt64Bits(x);
         }
 
@@ -205,7 +205,7 @@ namespace DotSpatial.Topology.Index.QuadTree
             string str = bitStr.Substring(0, 1) + "  "
                 + bitStr.Substring(1, 12) + "(" + Exponent + ") "
                 + bitStr.Substring(12)
-                + " [ " + _x + " ]";
+                + " [ " + x + " ]";
             return str;
         }
 

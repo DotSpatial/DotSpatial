@@ -34,9 +34,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     {
         #region Fields
 
-        private readonly Edge _edge;
-        readonly int _ptIndex;
-        private readonly IList<Coordinate> _pts;
+        private readonly Edge edge;
+        readonly int ptIndex;
+        private readonly IList<Coordinate> pts;
 
         #endregion
 
@@ -49,9 +49,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="ptIndex"></param>
         public SweepLineSegment(Edge edge, int ptIndex)
         {
-            _edge = edge;
-            _ptIndex = ptIndex;
-            _pts = edge.Coordinates;
+            this.edge = edge;
+            this.ptIndex = ptIndex;
+            pts = edge.Coordinates;
         }
 
         #endregion
@@ -61,12 +61,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual double MaxX
+        public double MaxX
         {
             get
             {
-                double x1 = _pts[_ptIndex].X;
-                double x2 = _pts[_ptIndex + 1].X;
+                double x1 = pts[ptIndex].X;
+                double x2 = pts[ptIndex + 1].X;
                 return x1 > x2 ? x1 : x2;
             }
         }
@@ -74,12 +74,12 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual double MinX
+        public double MinX
         {
             get
             {
-                double x1 = _pts[_ptIndex].X;
-                double x2 = _pts[_ptIndex + 1].X;
+                double x1 = pts[ptIndex].X;
+                double x2 = pts[ptIndex + 1].X;
                 return x1 < x2 ? x1 : x2;
             }
         }
@@ -93,9 +93,9 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
+        public void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
         {
-            si.AddIntersections(_edge, _ptIndex, ss._edge, ss._ptIndex);
+            si.AddIntersections(edge, ptIndex, ss.edge, ss.ptIndex);
         }
 
         #endregion

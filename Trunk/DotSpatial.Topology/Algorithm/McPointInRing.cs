@@ -36,7 +36,7 @@ namespace DotSpatial.Topology.Algorithm
     /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
     /// <see cref="IndexedPointInAreaLocator"/>
-    public class McPointInRing : IPointInRing 
+    public class MCPointInRing : IPointInRing 
     {
         #region Fields
 
@@ -53,7 +53,7 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public McPointInRing(ILinearRing ring)
+        public MCPointInRing(ILinearRing ring)
         {
             _ring = ring;
             BuildIndex();
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.Algorithm
             _interval.Max = pt.Y;
             IList<MonotoneChain> segs = _tree.Query(_interval);
 
-            McSelecter mcSelecter = new McSelecter(this, pt);
+            MCSelecter mcSelecter = new MCSelecter(this, pt);
             foreach (MonotoneChain mc in segs)
                 TestMonotoneChain(rayEnv, mcSelecter, mc);
 
@@ -131,8 +131,8 @@ namespace DotSpatial.Topology.Algorithm
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                double xInt = RobustDeterminant.SignOfDet2X2(x1, y1, x2, y2) / (y2 - y1);  // x intersection of segment with ray
-
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+                
                 /*
                 *  crosses ray if strictly positive intersection.
                 */
@@ -147,7 +147,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
         /// <param name="mc"></param>
-        private static void TestMonotoneChain(Envelope rayEnv, McSelecter mcSelecter, MonotoneChain mc)
+        private static void TestMonotoneChain(Envelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
         {
             mc.Select(rayEnv, mcSelecter);
         }
@@ -159,11 +159,11 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        private class McSelecter : MonotoneChainSelectAction
+        private class MCSelecter : MonotoneChainSelectAction
         {
             #region Fields
 
-            private readonly McPointInRing _container;
+            private readonly MCPointInRing _container;
             private readonly Coordinate _p;
 
             #endregion
@@ -175,7 +175,7 @@ namespace DotSpatial.Topology.Algorithm
             /// </summary>
             /// <param name="container"></param>
             /// <param name="p"></param>
-            public McSelecter(McPointInRing container, Coordinate p)
+            public MCSelecter(MCPointInRing container, Coordinate p)
             {
                 _container = container;
                 _p = p;

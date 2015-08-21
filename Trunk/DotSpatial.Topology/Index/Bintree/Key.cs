@@ -23,7 +23,9 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Index.QuadTree;
+using DotSpatial.Topology.Index.Quadtree;
+
+//using GeoAPI.DataStructures;
 
 namespace DotSpatial.Topology.Index.Bintree
 {
@@ -61,7 +63,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
-        public virtual Interval Interval
+        public  Interval Interval
         {
             get
             {
@@ -72,7 +74,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
-        public virtual int Level
+        public  int Level
         {
             get
             {
@@ -83,7 +85,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <summary>
         ///
         /// </summary>
-        public virtual double Point
+        public  double Point
         {
             get
             {
@@ -102,7 +104,7 @@ namespace DotSpatial.Topology.Index.Bintree
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
         {
-            double size = DoubleBits.PowerOf2(level);
+            var size = DoubleBits.PowerOf2(level);            
             _pt = Math.Floor(itemInterval.Min / size) * size;
             _interval.Init(_pt, _pt + size);
         }

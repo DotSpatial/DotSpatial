@@ -45,7 +45,7 @@ namespace DotSpatial.Topology.GeometriesGraph
 
         private readonly IGeometryFactory _geometryFactory;
         private readonly List<EdgeRing> _holes = new List<EdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
-        private readonly Label _label = new Label(LocationType.Null); // label stores the locations of each point on the face surrounded by this ring
+        private readonly Label _label = new Label(Location.Null); // label stores the locations of each point on the face surrounded by this ring
         private readonly List<Coordinate> _pts = new List<Coordinate>();
         private bool _isHole;
         private int _maxNodeDegree = -1;
@@ -76,7 +76,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public virtual IList<DirectedEdge> Edges
+        public IList<DirectedEdge> Edges
         {
             get
             {
@@ -89,7 +89,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsHole
+        public bool IsHole
         {
             get
             {
@@ -100,7 +100,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsIsolated
+        public bool IsIsolated
         {
             get
             {
@@ -111,7 +111,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsShell
+        public bool IsShell
         {
             get
             {
@@ -122,7 +122,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Label Label
+        public Label Label
         {
             get
             {
@@ -133,7 +133,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual ILinearRing LinearRing
+        public ILinearRing LinearRing
         {
             get
             {
@@ -144,7 +144,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual int MaxNodeDegree
+        public int MaxNodeDegree
         {
             get
             {
@@ -157,7 +157,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual EdgeRing Shell
+        public EdgeRing Shell
         {
             get
             {
@@ -179,7 +179,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void AddHole(EdgeRing ring)
+        public void AddHole(EdgeRing ring) 
         {
             _holes.Add(ring);
         }
@@ -190,7 +190,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="edge"></param>
         /// <param name="isForward"></param>
         /// <param name="isFirstEdge"></param>
-        protected virtual void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
+        protected void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
         {
             IList<Coordinate> edgePts = edge.Coordinates;
             if (isForward)
@@ -275,7 +275,7 @@ namespace DotSpatial.Topology.GeometriesGraph
                 coord[i] = (Coordinate) _pts[i];
              */
             _ring = _geometryFactory.CreateLinearRing(coord);
-            _isHole = CgAlgorithms.IsCounterClockwise(_ring.Coordinates);
+            _isHole = CGAlgorithms.IsCounterClockwise(_ring.Coordinates);
         }
 
         /// <summary>
@@ -283,13 +283,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// It will also check any holes, if they have been assigned.
         /// </summary>
         /// <param name="p"></param>
-        public virtual bool ContainsPoint(Coordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             ILinearRing shell = LinearRing;
             IEnvelope env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
-            if (!CgAlgorithms.IsPointInRing(p, shell.Coordinates)) 
+            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
                 return false;
             foreach (EdgeRing hole in _holes)
             {
@@ -320,7 +320,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="deLabel"></param>
-        protected virtual void MergeLabel(Label deLabel)
+        protected void MergeLabel(Label deLabel)
         {
             MergeLabel(deLabel, 0);
             MergeLabel(deLabel, 1);
@@ -335,14 +335,14 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="deLabel"></param>
         /// <param name="geomIndex"></param>
-        protected virtual void MergeLabel(Label deLabel, int geomIndex)
+        protected void MergeLabel(Label deLabel, int geomIndex)
         {
-            LocationType loc = deLabel.GetLocation(geomIndex, PositionType.Right);
+            Location loc = deLabel.GetLocation(geomIndex, Positions.Right);
             // no information to be had from this label
-            if (loc == LocationType.Null)
+            if (loc == Location.Null) 
                 return;
             // if there is no current RHS value, set it
-            if (_label.GetLocation(geomIndex) == LocationType.Null)
+            if (_label.GetLocation(geomIndex) == Location.Null)
                 _label.SetLocation(geomIndex, loc);
         }
 
@@ -356,7 +356,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual void SetInResult()
+        public void SetInResult()
         {
             DirectedEdge de = StartDe;
             do
@@ -372,12 +372,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geometryFactory"></param>
         /// <returns></returns>
-        public virtual IPolygon ToPolygon(IGeometryFactory geometryFactory)
+        public IPolygon ToPolygon(IGeometryFactory geometryFactory)
         {
-            ILinearRing[] holeLr = new ILinearRing[_holes.Count];
+            ILinearRing[] holeLR = new ILinearRing[_holes.Count];
             for (int i = 0; i < _holes.Count; i++)
-                holeLr[i] = _holes[i].LinearRing;
-            IPolygon poly = geometryFactory.CreatePolygon(LinearRing, holeLr);
+                holeLR[i] = _holes[i].LinearRing;
+            IPolygon poly = geometryFactory.CreatePolygon(LinearRing, holeLR);
             return poly;
         }
 

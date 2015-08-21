@@ -27,7 +27,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// <summary>
     ///
     /// </summary>
-    public enum PositionType
+    public enum Positions
     {
         /// <summary>
         ///  An indicator that a Location is <c>on</c> a GraphComponent (0)
@@ -58,18 +58,18 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Methods
 
-        /// <summary>
-        /// Returns Positions.Left if the position is Positions.Right,
+        /// <summary> 
+        /// Returns Positions.Left if the position is Positions.Right, 
         /// Positions.Right if the position is Left, or the position
         /// otherwise.
         /// </summary>
         /// <param name="position"></param>
-        public static PositionType Opposite(PositionType position)
+        public static Positions Opposite(Positions position)
         {
-            if (position == PositionType.Left)
-                return PositionType.Right;
-            if (position == PositionType.Right)
-                return PositionType.Left;
+            if (position == Positions.Left)
+                return Positions.Right;
+            if (position == Positions.Right)
+                return Positions.Left;
             return position;
         }
 

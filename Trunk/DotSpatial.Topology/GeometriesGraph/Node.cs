@@ -53,7 +53,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             _coord = coord;
             _edges = edges;
-            Label = new Label(0, LocationType.Null);
+            Label = new Label(0, Location.Null);
         }
 
         #endregion
@@ -66,13 +66,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         public override Coordinate Coordinate
         {
             get { return _coord; }
-            set { _coord = value; }
+            protected set { _coord = value; }
         }
 
         /// <summary>
         /// Gets the edges for this node
         /// </summary>
-        public virtual EdgeEndStar Edges
+        public EdgeEndStar Edges
         {
             get { return _edges; }
             protected set { _edges = value; }
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Add the edge to the list of edges at this node.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(EdgeEnd e)
+        public void Add(EdgeEnd e)
         {
             // Assert: start pt of e is equal to node point
             _edges.Insert(e);
@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Basic nodes do not compute IMs.
         /// </summary>
         /// <param name="im"></param>
-        public override void ComputeIm(IntersectionMatrix im) { }
+        public override void ComputeIM(IntersectionMatrix im) { }
 
         /// <summary>
         /// The location for a given eltIndex for a node will be one
@@ -119,13 +119,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="label2"></param>
         /// <param name="eltIndex"></param>
-        public virtual LocationType ComputeMergedLocation(Label label2, int eltIndex)
+        public Location ComputeMergedLocation(Label label2, int eltIndex)
         {
-            LocationType loc = Label.GetLocation(eltIndex);
-            if (!label2.IsNull(eltIndex))
+            Location loc = Label.GetLocation(eltIndex);
+            if (!label2.IsNull(eltIndex)) 
             {
-                LocationType nLoc = label2.GetLocation(eltIndex);
-                if (loc != LocationType.Boundary)
+                Location nLoc = label2.GetLocation(eltIndex);
+                if (loc != Location.Boundary) 
                     loc = nLoc;
             }
             return loc;
@@ -135,7 +135,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="n"></param>
-        public virtual void MergeLabel(Node n)
+        public void MergeLabel(Node n)
         {
             MergeLabel(n.Label);
         }
@@ -147,13 +147,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// as long as the location is non-null.
         /// </summary>
         /// <param name="label2"></param>
-        public virtual void MergeLabel(Label label2)
+        public void MergeLabel(Label label2)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++) 
             {
-                LocationType loc = ComputeMergedLocation(label2, i);
-                LocationType thisLoc = Label.GetLocation(i);
-                if (thisLoc == LocationType.Null)
+                Location loc = ComputeMergedLocation(label2, i);
+                Location thisLoc = Label.GetLocation(i);
+                if (thisLoc == Location.Null) 
                     Label.SetLocation(i, loc);
             }
         }
@@ -163,7 +163,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="onLocation"></param>
-        public virtual void SetLabel(int argIndex, LocationType onLocation)
+        public void SetLabel(int argIndex, Location onLocation)
         {
             if (Label == null)
                 Label = new Label(argIndex, onLocation);
@@ -175,27 +175,27 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// obeying the mod-2 boundaryDetermination rule.
         /// </summary>
         /// <param name="argIndex"></param>
-        public virtual void SetLabelBoundary(int argIndex)
+        public void SetLabelBoundary(int argIndex)
         {
             if (Label == null) return;
 
             // determine the current location for the point (if any)
-            LocationType loc = LocationType.Null;
+            Location loc = Location.Null;
             if (Label != null)
                 loc = Label.GetLocation(argIndex);
             // flip the loc
-            LocationType newLoc;
+            Location newLoc;
             switch (loc)
             {
-                case LocationType.Boundary:
-                    newLoc = LocationType.Interior;
-                    break;
-                case LocationType.Interior:
-                    newLoc = LocationType.Boundary;
-                    break;
-                default:
-                    newLoc = LocationType.Boundary;
-                    break;
+            case Location.Boundary:
+                newLoc = Location.Interior; 
+                break;
+            case Location.Interior:
+                newLoc = Location.Boundary; 
+                break;
+            default:
+                newLoc = Location.Boundary; 
+                break;
             }
             Label.SetLocation(argIndex, newLoc);
         }

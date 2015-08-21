@@ -17,7 +17,7 @@ namespace DotSpatial.Topology.Algorithm.Locate
         ///</summary>
         ///<param name="p">The point to test</param>
         ///<returns>The location of the point in the geometry</returns>
-        LocationType Locate(Coordinate p);
+        Location Locate(Coordinate p);
 
         #endregion
     }
@@ -46,11 +46,11 @@ namespace DotSpatial.Topology.Algorithm.Locate
 
             switch (locator.Locate(coordinate))
             {
-                case LocationType.Boundary:
-                case LocationType.Interior:
+                case Location.Boundary:
+                case Location.Interior:
                     return true;
 
-                case LocationType.Exterior:
+                case Location.Exterior:
                     return false;
 
                 default:

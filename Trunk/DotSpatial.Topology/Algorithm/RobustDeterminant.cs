@@ -90,7 +90,7 @@ namespace DotSpatial.Topology.Algorithm
             var dy1 = p2.Y - p1.Y;
             var dx2 = q.X - p2.X;
             var dy2 = q.Y - p2.Y;
-            return SignOfDet2X2(dx1, dy1, dx2, dy2);
+            return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
 
         /*
@@ -142,7 +142,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <item>0 if the determinant is null.</item>
         /// </list>
         /// </returns>
-        public static int SignOfDet2X2(double x1, double y1, double x2, double y2)
+        public static int SignOfDet2x2(double x1, double y1, double x2, double y2)
         {
             // returns -1 if the determinant is negative,
             // returns  1 if the determinant is positive,

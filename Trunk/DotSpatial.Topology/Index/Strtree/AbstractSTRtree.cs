@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Utilities;
+using IList = System.Collections.Generic.IList<object>;
 using Wintellect.PowerCollections;
 
 namespace DotSpatial.Topology.Index.Strtree
@@ -41,7 +42,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// </para>
     /// </summary>
     [Serializable]
-    public abstract class AbstractStRtree<T, TItem>
+    public abstract class AbstractSTRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
     {
         #region Fields
@@ -64,7 +65,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// nodes that a node may have.
         /// </summary>
         /// <param name="nodeCapacity"></param>
-        protected AbstractStRtree(int nodeCapacity)
+        protected AbstractSTRtree(int nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
             _nodeCapacity = nodeCapacity;
@@ -102,7 +103,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <summary>
         /// Gets the number of elements in the tree
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -114,10 +115,7 @@ namespace DotSpatial.Topology.Index.Strtree
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public virtual int Depth
+        public int Depth
         {
             get
             {
@@ -323,7 +321,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// Builds the tree if necessary.
         /// </summary>
         /// <returns>a List of items and/or Lists</returns>
-        public IList<object> ItemsTree()
+        public IList ItemsTree()
         {
             Build();
 
@@ -331,7 +329,7 @@ namespace DotSpatial.Topology.Index.Strtree
             return valuesTree ?? new List<object>();
         }
 
-        private static IList<object> ItemsTree(AbstractNode<T, TItem> node)
+        private static IList ItemsTree(AbstractNode<T, TItem> node)
         {
             var valuesTreeForNode = new List<object>();
 

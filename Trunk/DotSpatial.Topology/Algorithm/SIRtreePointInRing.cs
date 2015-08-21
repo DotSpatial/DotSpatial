@@ -30,13 +30,13 @@ namespace DotSpatial.Topology.Algorithm
     /// <summary>
     /// Implements <c>PointInRing</c> using a <c>SIRtree</c> index to increase performance.
     /// </summary>
-    public class SiRtreePointInRing : IPointInRing
+    public class SIRtreePointInRing : IPointInRing 
     {
         #region Fields
 
         private readonly ILinearRing _ring;
         private int _crossings;  // number of segment/ray crossings
-        private SiRtree<LineSegment> _sirTree;
+        private SIRtree<LineSegment> _sirTree;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public SiRtreePointInRing(ILinearRing ring)
+        public SIRtreePointInRing(ILinearRing ring)
         {
             _ring = ring;
             BuildIndex();
@@ -61,7 +61,7 @@ namespace DotSpatial.Topology.Algorithm
         /// </summary>
         private void BuildIndex()
         {
-            _sirTree = new SiRtree<LineSegment>();
+            _sirTree = new SIRtree<LineSegment>();
             IList<Coordinate> pts = _ring.Coordinates;
             for (int i = 1; i < pts.Count; i++) 
             {
@@ -96,7 +96,7 @@ namespace DotSpatial.Topology.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <param name="seg"></param>
-        private void TestLineSegment(Coordinate p, ILineSegmentBase seg)
+        private void TestLineSegment(Coordinate p, LineSegment seg) 
         {
             // Test if segment crosses ray from test point in positive x direction.
             Coordinate p1 = seg.P0;
@@ -109,7 +109,7 @@ namespace DotSpatial.Topology.Algorithm
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
                 // segment straddles x axis, so compute intersection.
-                double xInt = RobustDeterminant.SignOfDet2X2(x1, y1, x2, y2) / (y2 - y1);  // x intersection of segment with ray
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
                 // crosses ray if strictly positive intersection.
                 if (0.0 < xInt) _crossings++;

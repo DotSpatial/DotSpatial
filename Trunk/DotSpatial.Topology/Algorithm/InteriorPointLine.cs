@@ -69,7 +69,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate InteriorPoint
+        public Coordinate InteriorPoint
         {
             get
             {

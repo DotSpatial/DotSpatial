@@ -41,7 +41,7 @@ namespace DotSpatial.Topology.Index.Strtree
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
     [Serializable]
-    public class StRtree<TItem> : AbstractStRtree<IEnvelope, TItem>, ISpatialIndex<TItem>
+    public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
         #region Constant Fields
 
@@ -62,8 +62,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <summary>
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public StRtree()
-            : this(DefaultNodeCapacity)
+        public STRtree() : this(DefaultNodeCapacity)
         {
         }
 
@@ -72,7 +71,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// a node may have.
         /// </summary>
         /// <remarks>The minimum recommended capacity setting is 4.</remarks>
-        public StRtree(int nodeCapacity) :
+        public STRtree(int nodeCapacity) :
             base(nodeCapacity)
         {
         }
@@ -255,7 +254,7 @@ namespace DotSpatial.Topology.Index.Strtree
         /// <param name="tree">Another tree</param>
         /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
         /// <returns>The pair of the nearest items, one from each tree</returns>
-        public TItem[] NearestNeighbour(StRtree<TItem> tree, IItemDistance<IEnvelope, TItem> itemDist)
+        public TItem[] NearestNeighbour(STRtree<TItem> tree, IItemDistance<IEnvelope, TItem> itemDist)
         {
             var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);

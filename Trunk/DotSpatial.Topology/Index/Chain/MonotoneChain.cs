@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// <summary>
         /// Gets the chain's context
         /// </summary>
-        public virtual object Context
+        public object Context
         {
             get
             {
@@ -120,7 +120,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// Return the subsequence of coordinates forming this chain.
         /// Allocates a new array to hold the Coordinates.
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -135,7 +135,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// <summary>
         /// Gets the end index of the underlying linestring
         /// </summary>
-        public virtual int EndIndex
+        public int EndIndex
         {
             get
             {
@@ -146,7 +146,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// <summary>
         /// Gets the chain's envelope
         /// </summary>
-        public virtual Envelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -163,7 +163,7 @@ namespace DotSpatial.Topology.Index.Chain
         /// <summary>
         /// Gets the start index
         /// </summary>
-        public virtual int StartIndex
+        public int StartIndex
         {
             get
             {

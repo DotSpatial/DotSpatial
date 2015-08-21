@@ -221,8 +221,8 @@ namespace DotSpatial.Topology.CoordinateSystems.Transformations
         /// <returns></returns>
         public static IPolygon TransformPolygon(IGeometryFactory factory, IPolygon p, IMathTransform transform)
         {
-            var holes = new List<ILinearRing>(p.Holes.Length);
-            for (var i = 0; i < p.Holes.Length; i++)
+			var holes = new List<ILinearRing>(p.InteriorRings.Length); 
+            for (var i = 0; i < p.InteriorRings.Length; i++)
             {
                 var hole = TransformLinearRing(factory,
                     p.Holes[i], transform);

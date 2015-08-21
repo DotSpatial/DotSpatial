@@ -94,7 +94,7 @@ namespace DotSpatial.Topology.Algorithm
             if (geom is IPolygon) 
             {
                 var poly = (IPolygon) geom;
-                BasePoint = poly.Shell.GetCoordinateN(0);
+                BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
             else if (geom is IGeometryCollection) 
@@ -125,8 +125,8 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="poly"></param>
         private void Add(IPolygon poly)
         {
-            AddShell(poly.Shell.Coordinates);
-            foreach (ILineString ls in poly.Holes)
+            AddShell(poly.ExteriorRing.Coordinates);
+            foreach (ILineString ls in poly.InteriorRings)
                 AddHole(ls.Coordinates);
         }
 
@@ -136,7 +136,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="pts"></param>
         private void AddHole(IList<Coordinate> pts)
         {
-            bool isPositiveArea = CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = CGAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);
@@ -169,7 +169,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="pts"></param>
         private void AddShell(IList<Coordinate> pts)
         {
-            bool isPositiveArea = !CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = !CGAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);

@@ -45,7 +45,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     /// topological relationship attribute, On.</para>
     /// <para>
     /// The possible values of a topological location are
-    /// { <see cref="LocationType.Null"/>, <see cref="LocationType.Exterior"/>, <see cref="LocationType.Boundary"/>, <see cref="LocationType.Interior"/> }</para>
+    /// { <see cref="Location.Null"/>, <see cref="Location.Exterior"/>, <see cref="Location.Boundary"/>, <see cref="Location.Interior"/> }</para>
     /// <para>
     /// The labelling is stored in an array _location[j] where
     /// where j has the values On, Left, Right.
@@ -55,7 +55,7 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private LocationType[] _location;
+        private Location[] _location;
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="location"></param>
-        public TopologyLocation(ICollection<LocationType> location)
+        public TopologyLocation(ICollection<Location> location)
         {
             Init(location.Count);
         }
@@ -73,28 +73,28 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Constructs a TopologyLocation specifying how points on, to the left of, and to the
         /// right of some GraphComponent relate to some Geometry. Possible values for the
-        /// parameters are Location.Null, Location.Exterior, Location.Boundary,
-        /// and LocationType.Interior.
-        /// </summary>
+        /// parameters are Location.Null, Location.Exterior, Location.Boundary, 
+        /// and Location.Interior.
+        /// </summary>        
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        public TopologyLocation(LocationType on, LocationType left, LocationType right)
+        public TopologyLocation(Location on, Location left, Location right) 
         {
             Init(3);
-            _location[(int)PositionType.On] = on;
-            _location[(int)PositionType.Left] = left;
-            _location[(int)PositionType.Right] = right;
+            _location[(int) Positions.On] = on;
+            _location[(int) Positions.Left] = left;
+            _location[(int) Positions.Right] = right;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="on"></param>
-        public TopologyLocation(LocationType on)
+        public TopologyLocation(Location on) 
         {
             Init(1);
-            _location[(int)PositionType.On] = on;
+            _location[(int) Positions.On] = on;
         }
 
         /// <summary>
@@ -103,7 +103,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="gl"></param>
         public TopologyLocation(TopologyLocation gl)
         {
-            if (gl == null) return;
+            if (gl == null)
+                throw new ArgumentNullException("gl", "null topology location specified");
+
             Init(gl._location.Length);
             for (int i = 0; i < _location.Length; i++)
                 _location[i] = gl._location[i];
@@ -116,12 +118,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns>
         /// <c>true</c> if any locations are Null.
         /// </returns>
-        public virtual bool IsAnyNull
+        public  bool IsAnyNull
         {
             get
             {
                 for (int i = 0; i < _location.Length; i++)
-                    if (_location[i] == LocationType.Null)
+                    if (_location[i] == Location.Null) 
                         return true;
                 return false;
             }
@@ -130,7 +132,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsArea
+        public  bool IsArea
         {
             get
             {
@@ -141,7 +143,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsLine
+        public  bool IsLine
         {
             get
             {
@@ -152,12 +154,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns>
         /// <c>true</c> if all locations are Null.
         /// </returns>
-        public virtual bool IsNull
+        public  bool IsNull
         {
             get
             {
                 for (int i = 0; i < _location.Length; i++)
-                    if (_location[i] != LocationType.Null)
+                    if (_location[i] != Location.Null) 
                         return false;
                 return true;
             }
@@ -169,11 +171,11 @@ namespace DotSpatial.Topology.GeometriesGraph
 
         /// <summary>
         /// Get calls Get(Positions posIndex),
-        /// Set calls SetLocation(Positions locIndex, Locations locValue)
+        /// Set calls SetLocation(Positions locIndex, Location locValue)
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual LocationType this[PositionType posIndex]
+        public  Location this[Positions posIndex]
         {
             get
             {
@@ -194,7 +196,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public virtual bool AllPositionsEqual(LocationType loc)
+        public  bool AllPositionsEqual(Location loc)
         {
             for (int i = 0; i < _location.Length; i++)
                 if (_location[i] != loc)
@@ -205,13 +207,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual void Flip()
+        public  void Flip()
         {
             if (_location.Length <= 1)
                 return;
-            LocationType temp = _location[(int)PositionType.Left];
-            _location[(int)PositionType.Left] = _location[(int)PositionType.Right];
-            _location[(int)PositionType.Right] = temp;
+            Location temp = _location[(int)Positions.Left];
+            _location[(int)Positions.Left] = _location[(int)Positions.Right];
+            _location[(int)Positions.Right] = temp;
         }
 
         /// <summary>
@@ -219,19 +221,19 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual LocationType Get(PositionType posIndex)
+        public  Location Get(Positions posIndex)
         {
             int index = (int)posIndex;
             if (index < _location.Length)
                 return _location[index];
-            return LocationType.Null;
+            return Location.Null;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual LocationType[] GetLocations()
+        public  Location[] GetLocations() 
         {
             return _location;
         }
@@ -242,8 +244,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="size"></param>
         private void Init(int size)
         {
-            _location = new LocationType[size];
-            SetAllLocations(LocationType.Null);
+            _location = new Location[size];
+            SetAllLocations(Location.Null);
         }
 
         /// <summary>
@@ -252,7 +254,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="le"></param>
         /// <param name="locIndex"></param>
         /// <returns></returns>
-        public virtual bool IsEqualOnSide(TopologyLocation le, int locIndex)
+        public  bool IsEqualOnSide(TopologyLocation le, int locIndex)
         {
             return _location[locIndex] == le._location[locIndex];
         }
@@ -264,16 +266,16 @@ namespace DotSpatial.Topology.GeometriesGraph
         public virtual void Merge(TopologyLocation gl)
         {
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
-            if (gl._location.Length > _location.Length)
+            if (gl._location.Length > _location.Length) 
             {
-                LocationType[] newLoc = new LocationType[3];
-                newLoc[(int)PositionType.On] = _location[(int)PositionType.On];
-                newLoc[(int)PositionType.Left] = LocationType.Null;
-                newLoc[(int)PositionType.Right] = LocationType.Null;
+                Location[] newLoc = new Location[3];
+                newLoc[(int)Positions.On] = _location[(int)Positions.On];
+                newLoc[(int)Positions.Left] = Location.Null;
+                newLoc[(int)Positions.Right] = Location.Null;
                 _location = newLoc;
             }
-            for (int i = 0; i < _location.Length; i++)
-                if (_location[i] == LocationType.Null && i < gl._location.Length)
+            for (int i = 0; i < _location.Length; i++) 
+                if (_location[i] == Location.Null && i < gl._location.Length)
                     _location[i] = gl._location[i];
         }
 
@@ -281,7 +283,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetAllLocations(LocationType locValue)
+        public  void SetAllLocations(Location locValue)
         {
             for (int i = 0; i < _location.Length; i++)
                 _location[i] = locValue;
@@ -291,10 +293,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetAllLocationsIfNull(LocationType locValue)
+        public  void SetAllLocationsIfNull(Location locValue)
         {
-            for (int i = 0; i < _location.Length; i++)
-                if (_location[i] == LocationType.Null)
+            for (int i = 0; i < _location.Length; i++) 
+                if (_location[i] == Location.Null) 
                     _location[i] = locValue;
         }
 
@@ -303,7 +305,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="locIndex"></param>
         /// <param name="locValue"></param>
-        public virtual void SetLocation(PositionType locIndex, LocationType locValue)
+        public  void SetLocation(Positions locIndex, Location locValue)
         {
             _location[(int)locIndex] = locValue;
         }
@@ -312,9 +314,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetLocation(LocationType locValue)
+        public  void SetLocation(Location locValue)
         {
-            SetLocation(PositionType.On, locValue);
+            SetLocation(Positions.On, locValue);
         }
 
         /// <summary>
@@ -323,18 +325,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        public virtual void SetLocations(LocationType on, LocationType left, LocationType right)
+        public  void SetLocations(Location on, Location left, Location right) 
         {
-            _location[(int)PositionType.On] = on;
-            _location[(int)PositionType.Left] = left;
-            _location[(int)PositionType.Right] = right;
+            _location[(int)Positions.On] = on;
+            _location[(int)Positions.Left] = left;
+            _location[(int)Positions.Right] = right;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="gl"></param>
-        public virtual void SetLocations(TopologyLocation gl)
+        public  void SetLocations(TopologyLocation gl) 
         {
             for (int i = 0; i < gl._location.Length; i++)
                 _location[i] = gl._location[i];
@@ -348,10 +350,10 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             StringBuilder sb = new StringBuilder();
             if (_location.Length > 1)
-                sb.Append(Location.ToLocationSymbol(_location[(int)PositionType.Left]));
-            sb.Append(Location.ToLocationSymbol(_location[(int)PositionType.On]));
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Left]));
+            sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.On]));
             if (_location.Length > 1)
-                sb.Append(Location.ToLocationSymbol(_location[(int)PositionType.Right]));
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Right]));
             return sb.ToString();
         }
 

@@ -47,7 +47,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         ///
         /// </summary>
         /// <param name="sweepInt"></param>
-        public virtual void Add(SweepLineInterval sweepInt)
+        public void Add(SweepLineInterval sweepInt)
         {
             SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
             _events.Add(insertEvent);
@@ -77,7 +77,7 @@ namespace DotSpatial.Topology.Index.Sweepline
         ///
         /// </summary>
         /// <param name="action"></param>
-        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
+        public void ComputeOverlaps(ISweepLineOverlapAction action)
         {
             _nOverlaps = 0;
             BuildIndex();

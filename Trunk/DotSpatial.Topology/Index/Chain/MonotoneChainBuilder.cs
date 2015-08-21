@@ -96,7 +96,7 @@ namespace DotSpatial.Topology.Index.Chain
             var startIndex = GetChainStartIndices(pts);
             for (var i = 0; i < startIndex.Length - 1; i++)
             {
-                MonotoneChain mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
+                var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);                
                 mcList.Add(mc);
             }
             return mcList;

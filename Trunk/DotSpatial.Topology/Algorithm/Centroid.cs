@@ -7,14 +7,18 @@ namespace DotSpatial.Topology.Algorithm
 
     /// <summary>
     /// Computes the centroid of a <see cref="IGeometry"/> of any dimension.
-    /// If the geometry is nominally of higher dimension,  but has lower <i>effective</i> dimension 
-    /// (i.e. contains only components having zero length or area), 
+    /// If the geometry is nominally of higher dimension, 
+    /// but has lower <i>effective</i> dimension 
+    /// (i.e. contains only components
+    /// having zero length or area), 
     /// the centroid will be computed as for the equivalent lower-dimension geometry.
-    /// If the input geometry is empty, a <c>null</c> Coordinate is returned.
+    /// If the input geometry is empty, a
+    /// <c>null</c> Coordinate is returned.
     /// 
     /// <h2>Algorithm</h2>
     /// <list type="Bullet">
-    /// <item><b>Dimension 2</b> - the centroid ic computed as a weighted sum of the centroids
+    /// <item><b>Dimension 2</b> - the centroid ic computed
+    /// as a weighted sum of the centroids
     /// of a decomposition of the area into (possibly overlapping) triangles.
     /// Holes and multipolygons are handled correctly.
     /// See <c>http://www.faqs.org/faqs/graphics/algorithms-faq/</c>
@@ -111,8 +115,8 @@ namespace DotSpatial.Topology.Algorithm
 
         private void Add(IPolygon poly)
         {
-            AddShell(poly.Shell.Coordinates);
-            for (int i = 0; i < poly.NumHoles; i++)
+            AddShell(poly.ExteriorRing.Coordinates);
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 AddHole(poly.GetInteriorRingN(i).Coordinates);
             }
@@ -120,7 +124,7 @@ namespace DotSpatial.Topology.Algorithm
 
         private void AddHole(IList<Coordinate> pts)
         {
-            bool isPositiveArea = CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = CGAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
@@ -168,7 +172,7 @@ namespace DotSpatial.Topology.Algorithm
         {
             if (pts.Count > 0)
                 SetBasePoint(pts[0]);
-            bool isPositiveArea = !CgAlgorithms.IsCounterClockwise(pts);
+            bool isPositiveArea = !CGAlgorithms.IsCounterClockwise(pts);
             for (int i = 0; i < pts.Count - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);

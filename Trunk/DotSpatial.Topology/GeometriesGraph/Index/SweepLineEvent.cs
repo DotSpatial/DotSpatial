@@ -84,7 +84,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual int DeleteEventIndex
+        public int DeleteEventIndex
         {
             get { return _deleteEventIndex; }
             set { _deleteEventIndex = value; }
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsDelete
+        public bool IsDelete
         {
             get { return _eventType == Delete; }
         }
@@ -109,7 +109,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual bool IsInsert
+        public bool IsInsert
         {
             get { return _eventType == Insert; }
         }
@@ -117,7 +117,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <summary>
         ///
         /// </summary>
-        public virtual object Object
+        public object Object
         {
             get { return _obj; }
         }
@@ -133,7 +133,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o)
         {
             SweepLineEvent pe = (SweepLineEvent)o;
             if (_xValue < pe._xValue)

@@ -15,7 +15,7 @@ namespace DotSpatial.Topology.Algorithm
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <returns>the location of the point in the geometry</returns>
-        LocationType Locate(Coordinate p);
+        Location Locate(Coordinate p);
 
         #endregion
     }

@@ -8,7 +8,7 @@ namespace DotSpatial.Topology.Algorithm
     /// Basic computational geometry algorithms for geometry and coordinates defined in 3-dimensional Cartesian space.
     /// @author mdavis
     /// </summary>
-    public class CgAlgorithms3D
+    public class CGAlgorithms3D
     {
         #region Methods
 

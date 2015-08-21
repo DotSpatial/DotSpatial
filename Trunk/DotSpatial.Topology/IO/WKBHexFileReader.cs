@@ -14,7 +14,7 @@ namespace DotSpatial.Topology.IO
     /// of whitespace and newlines.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class WkbHexFileReader
+    public class WKBHexFileReader
     {
         #region Fields
 
@@ -25,11 +25,11 @@ namespace DotSpatial.Topology.IO
         #region Constructors
 
         /// <summary>
-        /// Creates a new <see cref="WkbHexFileReader"/> given the
+        /// Creates a new <see cref="WKBHexFileReader"/> given the
         /// <see cref="WkbReader"/> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
-        public WkbHexFileReader(IBinaryGeometryReader wkbReader)
+        public WKBHexFileReader(IBinaryGeometryReader wkbReader)
         {
             if (wkbReader == null)
                 throw new ArgumentNullException("wkbReader");

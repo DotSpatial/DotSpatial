@@ -34,7 +34,7 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     /// The use of MonotoneChains as the items in the index
     /// seems to offer an improvement in performance over a sweep-line alone.
     /// </summary>
-    public class SimpleMcSweepLineIntersector : EdgeSetIntersector
+    public class SimpleMCSweepLineIntersector : EdgeSetIntersector
     {
         #region Fields
 

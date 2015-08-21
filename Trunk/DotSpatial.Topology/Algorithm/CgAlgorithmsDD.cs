@@ -4,10 +4,10 @@ using DotSpatial.Topology.Mathematics;
 namespace DotSpatial.Topology.Algorithm
 {
     /// <summary>
-    /// Implements basic computational geometry algorithms using <seealso cref="DoubleDouble"/> arithmetic.
+    /// Implements basic computational geometry algorithms using <seealso cref="DD"/> arithmetic.
     /// </summary>
     /// <author>Martin Davis</author>
-    public static class CgAlgorithmsDoubleDouble
+    public static class CGAlgorithmsDD
     {
         #region Constant Fields
 
@@ -21,7 +21,7 @@ namespace DotSpatial.Topology.Algorithm
         #region Methods
 
         /// <summary>
-        /// Computes an intersection point between two lines using DoubleDouble arithmetic.
+        /// Computes an intersection point between two lines using DD arithmetic.
         /// Currently does not handle case of parallel lines.
         /// </summary>
         /// <param name="p1">A point of 1st segment</param>
@@ -31,9 +31,9 @@ namespace DotSpatial.Topology.Algorithm
         /// <returns></returns>
         public static Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            DoubleDouble denom1 = (DoubleDouble.ValueOf(q2.Y) - DoubleDouble.ValueOf(q1.Y)) * (DoubleDouble.ValueOf(p2.X) - DoubleDouble.ValueOf(p1.X));
-            DoubleDouble denom2 = (DoubleDouble.ValueOf(q2.X) - DoubleDouble.ValueOf(q1.X)) * (DoubleDouble.ValueOf(p2.Y) - DoubleDouble.ValueOf(p1.Y));
-            DoubleDouble denom = denom1 - denom2;
+            var denom1 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * (DD.ValueOf(p2.X) - DD.ValueOf(p1.X));
+            var denom2 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X)) * (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y));
+            var denom = denom1 - denom2;
 
             /**
              * Cases:
@@ -42,19 +42,19 @@ namespace DotSpatial.Topology.Algorithm
              * - intersection point lies within line segment q if fracQ is between 0 and 1
              */
 
-            DoubleDouble numx1 = (DoubleDouble.ValueOf(q2.X) - DoubleDouble.ValueOf(q1.X)) * (DoubleDouble.ValueOf(p1.Y) - DoubleDouble.ValueOf(q1.Y));
-            DoubleDouble numx2 = (DoubleDouble.ValueOf(q2.Y) - DoubleDouble.ValueOf(q1.Y)) * (DoubleDouble.ValueOf(p1.X) - DoubleDouble.ValueOf(q1.X));
-            DoubleDouble numx = numx1 - numx2;
-            DoubleDouble fracP = numx / denom;
+            DD numx1 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
+            DD numx2 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
+            DD numx = numx1 - numx2;
+            DD fracP = numx / denom;
 
-            double x = (DoubleDouble.ValueOf(p1.X) + (DoubleDouble.ValueOf(p2.X) - DoubleDouble.ValueOf(p1.X)) * fracP).ToDoubleValue();
+            double x = (DD.ValueOf(p1.X) + (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * fracP).ToDoubleValue();
 
-            DoubleDouble numy1 = (DoubleDouble.ValueOf(p2.X) - DoubleDouble.ValueOf(p1.X)) * (DoubleDouble.ValueOf(p1.Y) - DoubleDouble.ValueOf(q1.Y));
-            DoubleDouble numy2 = (DoubleDouble.ValueOf(p2.Y) - DoubleDouble.ValueOf(p1.Y)) * (DoubleDouble.ValueOf(p1.X) - DoubleDouble.ValueOf(q1.X));
-            DoubleDouble numy = numy1 - numy2;
-            DoubleDouble fracQ = numy / denom;
+            DD numy1 = (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
+            DD numy2 = (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
+            DD numy = numy1 - numy2;
+            DD fracQ = numy / denom;
 
-            double y = (DoubleDouble.ValueOf(q1.Y) + (DoubleDouble.ValueOf(q2.Y) - DoubleDouble.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
+            double y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
 
             return new Coordinate(x, y);
         }
@@ -79,10 +79,10 @@ namespace DotSpatial.Topology.Algorithm
             if (index <= 1) return index;
 
             // normalize coordinates
-            DoubleDouble dx1 = DoubleDouble.ValueOf(p2.X) - p1.X;
-            DoubleDouble dy1 = DoubleDouble.ValueOf(p2.Y) - p1.Y;
-            DoubleDouble dx2 = DoubleDouble.ValueOf(q.X) - p2.X;
-            DoubleDouble dy2 = DoubleDouble.ValueOf(q.Y) - p2.Y;
+            DD dx1 = DD.ValueOf(p2.X) - p1.X;
+            DD dy1 = DD.ValueOf(p2.Y) - p1.Y;
+            DD dx2 = DD.ValueOf(q.X) - p2.X;
+            DD dy2 = DD.ValueOf(q.Y) - p2.Y;
 
             return SignOfDet2X2(dx1, dy1, dx2, dy2);
         }
@@ -149,9 +149,9 @@ namespace DotSpatial.Topology.Algorithm
         /// <item>0 if the determinant is 0.</item>
         /// </list>
         /// </returns>
-        public static int SignOfDet2X2(DoubleDouble x1, DoubleDouble y1, DoubleDouble x2, DoubleDouble y2)
+        public static int SignOfDet2x2(DD x1, DD y1, DD x2, DD y2)
         {
-            DoubleDouble det = x1 * y2 - y1 * x2;
+            DD det = x1 * y2 - y1 * x2;
             if (det.IsZero) return 0;
             return det.IsNegative ? -1 : 1;
         }

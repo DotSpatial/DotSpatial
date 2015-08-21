@@ -119,7 +119,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IGeometry Geometry
+        public IGeometry Geometry
         {
             get
             {
@@ -130,7 +130,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual bool HasTooFewPoints
+        public bool HasTooFewPoints
         {
             get
             {
@@ -141,7 +141,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate InvalidPoint
+        public Coordinate InvalidPoint
         {
             get
             {
@@ -204,13 +204,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// to be correct.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void AddEdge(Edge e)
+        public void AddEdge(Edge e)
         {
             InsertEdge(e);
             IList<Coordinate> coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(_argIndex, coord[0], LocationType.Boundary);
-            InsertPoint(_argIndex, coord[coord.Count - 1], LocationType.Boundary);
+            InsertPoint(_argIndex, coord[0], Location.Boundary);
+            InsertPoint(_argIndex, coord[coord.Count - 1], Location.Boundary);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace DotSpatial.Topology.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(_argIndex, LocationType.Interior));
+            Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));
             _lineEdgeMap[line] = e;
             InsertEdge(e);
 
@@ -249,9 +249,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
         /// <param name="pt"></param>
-        public virtual void AddPoint(Coordinate pt)
+        public void AddPoint(Coordinate pt)
         {
-            InsertPoint(_argIndex, pt, LocationType.Interior);
+            InsertPoint(_argIndex, pt, Location.Interior);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         private void AddPoint(IPoint p)
         {
             Coordinate coord = p.Coordinate;
-            InsertPoint(_argIndex, coord, LocationType.Interior);
+            InsertPoint(_argIndex, coord, Location.Interior);
         }
 
         /// <summary>
@@ -270,15 +270,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            AddPolygonRing(p.Shell, LocationType.Exterior, LocationType.Interior);
+            AddPolygonRing(p.Shell, Location.Exterior, Location.Interior);
 
-            for (int i = 0; i < p.NumHoles; i++)
+            for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = p.Holes[i];
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                AddPolygonRing(hole, LocationType.Interior, LocationType.Exterior);
+                AddPolygonRing(hole, Location.Interior, Location.Exterior);
             }
         }
 
@@ -291,7 +291,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="lr"></param>
         /// <param name="cwLeft"></param>
         /// <param name="cwRight"></param>
-        private void AddPolygonRing(ILinearRing lr, LocationType cwLeft, LocationType cwRight)
+        private void AddPolygonRing(ILinearRing lr, Location cwLeft, Location cwRight)
         {
             // don't bother adding empty holes
             if (lr.IsEmpty)
@@ -304,18 +304,18 @@ namespace DotSpatial.Topology.GeometriesGraph
                 _invalidPoint = coord[0];
                 return;
             }
-            LocationType left = cwLeft;
-            LocationType right = cwRight;
-            if (CgAlgorithms.IsCounterClockwise(coord))
+            Location left = cwLeft;
+            Location right = cwRight;
+            if (CGAlgorithms.IsCounterClockwise(coord))
             {
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge(coord, new Label(_argIndex, LocationType.Boundary, left, right));
+            Edge e = new Edge(coord, new Label(_argIndex, Location.Boundary, left, right));
             _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(_argIndex, coord[0], LocationType.Boundary);
+            InsertPoint(_argIndex, coord[0], Location.Boundary);
         }
 
         /// <summary>
@@ -327,12 +327,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="loc"></param>
-        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, LocationType loc)
+        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, Location loc)
         {
             // if this node is already a boundary node, don't change it
             if (IsBoundaryNode(argIndex, coord))
                 return;
-            if (loc == LocationType.Boundary && _useBoundaryDeterminationRule)
+            if (loc == Location.Boundary && _useBoundaryDeterminationRule)
                 InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }
@@ -345,7 +345,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             foreach (Edge e in Edges)
             {
-                LocationType eLoc = e.Label.GetLocation(argIndex);
+                Location eLoc = e.Label.GetLocation(argIndex);
                 foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
                     AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
@@ -360,7 +360,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="li"></param>
         /// <param name="includeProper"></param>
         /// <returns></returns>
-        public virtual SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
+        public SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
         {
             SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
@@ -377,7 +377,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="li">The <c>LineIntersector</c> to use.</param>
         /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
         /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
-        public virtual SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
+        public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
         {
             SegmentIntersector si = new SegmentIntersector(li, true, false);
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
@@ -409,12 +409,13 @@ namespace DotSpatial.Topology.GeometriesGraph
         private static EdgeSetIntersector CreateEdgeSetIntersector()
         {
             // various options for computing intersections, from slowest to fastest
-            return new SimpleMcSweepLineIntersector();
+            return new SimpleMCSweepLineIntersector();
         }
 
-        public static LocationType DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
+        public static Location DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
-            return boundaryNodeRule.IsInBoundary(boundaryCount) ? LocationType.Boundary : LocationType.Interior;
+            return boundaryNodeRule.IsInBoundary(boundaryCount)
+                ? Location.Boundary : Location.Interior;
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public virtual Edge FindEdge(ILineString line)
+        public Edge FindEdge(ILineString line)
         {
             return _lineEdgeMap[line];
         }
@@ -431,7 +432,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual Coordinate[] GetBoundaryPoints()
+        public Coordinate[] GetBoundaryPoints()
         {
             var coll = BoundaryNodes;
             Coordinate[] pts = new Coordinate[coll.Count];
@@ -458,13 +459,13 @@ namespace DotSpatial.Topology.GeometriesGraph
             // the new point to insert is on a boundary
             int boundaryCount = 1;
             // determine the current location for the point (if any)
-            //Location loc = LocationType.Null;
-            var loc = lbl.GetLocation(argIndex, PositionType.On);
-            if (loc == LocationType.Boundary)
+            //Location loc = Location.Null;
+            var loc = lbl.GetLocation(argIndex, Positions.On);
+            if (loc == Location.Boundary)
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            LocationType newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
+            Location newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -474,7 +475,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="onLocation"></param>
-        private void InsertPoint(int argIndex, Coordinate coord, LocationType onLocation)
+        private void InsertPoint(int argIndex, Coordinate coord, Location onLocation)
         {
             Node n = NodeMap.AddNode(coord);
             Label lbl = n.Label;
@@ -491,7 +492,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <returns>
         /// The location of the point in the geometry
         /// </returns>
-        public LocationType Locate(Coordinate pt)
+        public Location Locate(Coordinate pt)
         {
             if (_parentGeom is IPolygonal && _parentGeom.NumGeometries > 50)
             {

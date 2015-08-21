@@ -128,7 +128,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -140,7 +140,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Direct access to w private field
         /// </summary>
         [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
-        protected virtual double W
+        protected double W
         {
             get { return _w; }
             set { _w = value; }
@@ -150,7 +150,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Direct access to x private field
         /// </summary>
         [Obsolete("This is a simple access to x private field: use GetX() instead.")]
-        protected virtual double X
+        protected double X
         {
             get { return _x; }
             set { _x = value; }
@@ -160,7 +160,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Direct access to y private field
         /// </summary>
         [Obsolete("This is a simple access to y private field: use GetY() instead.")]
-        protected virtual double Y
+        protected double Y
         {
             get { return _y; }
             set { _y = value; }
@@ -174,7 +174,7 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual double GetX()
+        public double GetX()
         {
             double a = _x / _w;
             if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
@@ -186,12 +186,12 @@ namespace DotSpatial.Topology.Algorithm
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual double GetY()
-        {
-            double a = _y / _w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
-                throw new NotRepresentableException();
-            return a;
+        public double GetY()
+        {            
+            double a = _y/_w;
+            if ((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
+                throw new NotRepresentableException();            
+            return a;            
         }
 
         ///<summary>

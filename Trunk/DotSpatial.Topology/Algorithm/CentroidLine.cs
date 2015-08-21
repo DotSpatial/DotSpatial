@@ -78,8 +78,8 @@ namespace DotSpatial.Topology.Algorithm
             {
                 var poly = (IPolygon) geom;
                 // add linear components of a polygon
-                Add(poly.Shell.Coordinates);
-                for (int i = 0; i < poly.NumHoles; i++)
+                Add(poly.ExteriorRing.Coordinates);
+                for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
                     Add(poly.GetInteriorRingN(i).Coordinates);
                 }

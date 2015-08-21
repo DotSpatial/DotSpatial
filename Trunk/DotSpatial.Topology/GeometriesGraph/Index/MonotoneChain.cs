@@ -30,8 +30,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
     {
         #region Fields
 
-        private readonly int _chainIndex;
-        private readonly MonotoneChainEdge _mce;
+        private readonly int chainIndex;
+        private readonly MonotoneChainEdge mce;
 
         #endregion
 
@@ -44,8 +44,8 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         /// <param name="chainIndex"></param>
         public MonotoneChain(MonotoneChainEdge mce, int chainIndex)
         {
-            _mce = mce;
-            _chainIndex = chainIndex;
+            this.mce = mce;
+            this.chainIndex = chainIndex;
         }
 
         #endregion
@@ -53,13 +53,13 @@ namespace DotSpatial.Topology.GeometriesGraph.Index
         #region Methods
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="mc"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
+        public void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
         {
-            _mce.ComputeIntersectsForChain(_chainIndex, mc._mce, mc._chainIndex, si);
+            this.mce.ComputeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
         }
 
         #endregion

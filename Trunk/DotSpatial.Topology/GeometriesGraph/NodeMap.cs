@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual IList<Node> Values
+        public IList<Node> Values
         {
             get { return new List<Node>(_nodeMap.Values); }
         }
@@ -74,7 +74,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Adds the EdgeEnd to the (possibly new) node.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(EdgeEnd e)
+        public void Add(EdgeEnd e)
         {
             Coordinate p = e.Coordinate;
             Node n = AddNode(p);
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// This method expects that a node has a coordinate value.
         /// </summary>
         /// <param name="coord"></param>
-        public virtual Node AddNode(Coordinate coord)
+        public Node AddNode(Coordinate coord)
         {
             Node node;
             if (!_nodeMap.TryGetValue(coord, out node))
@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Node AddNode(Node n)
+        public Node AddNode(Node n)
         {
             Node node = _nodeMap[n.Coordinate];
             if (node == null) 
@@ -117,7 +117,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
-        public virtual Node Find(Coordinate coord)
+        public Node Find(Coordinate coord)
         {
             Node res;
             if (!_nodeMap.TryGetValue(coord, out res))
@@ -130,12 +130,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual IList<Node> GetBoundaryNodes(int geomIndex)
+        public IList<Node> GetBoundaryNodes(int geomIndex)
         {
             IList<Node> bdyNodes = new List<Node>();
             foreach (Node node in _nodeMap.Values)
             {
-                if (node.Label.GetLocation(geomIndex) == LocationType.Boundary)
+                if (node.Label.GetLocation(geomIndex) == Location.Boundary)
                     bdyNodes.Add(node);
             }
             return bdyNodes;
@@ -154,7 +154,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             foreach (Node node in _nodeMap.Values)
             {

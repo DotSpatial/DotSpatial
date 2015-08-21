@@ -11,7 +11,7 @@ namespace DotSpatial.Topology.IO.GML2
     /// Reads a GML document and creates a representation of the features based on NetTopologySuite model.
     /// Uses GML 2.1.1 <c>Geometry.xsd</c> schema for base for features.
     /// </summary>
-    public class GmlReader
+    public class GMLReader
     {
         private readonly IGeometryFactory _factory;
 
@@ -26,12 +26,12 @@ namespace DotSpatial.Topology.IO.GML2
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
         /// </summary>
-        public GmlReader() : this(GeometryFactory.Default) { }
+        public GMLReader() : this(GeometryFactory.Default) { }
 
         /// <summary>
         /// Initialize reader with the given <see cref="IGeometryFactory"/>.
         /// </summary>        
-        public GmlReader(IGeometryFactory factory)
+        public GMLReader(IGeometryFactory factory)
         {
             _factory = factory;
         }
@@ -108,7 +108,7 @@ namespace DotSpatial.Topology.IO.GML2
                         break;
 
                     case XmlNodeType.EndElement:
-                        if (reader.Name == GmlElements.GmlPrefix + ":coord")
+                        if (reader.Name == GMLElements.gmlPrefix + ":coord")
                             return new Coordinate(x, y);
                         break;
                 }
@@ -277,7 +277,7 @@ namespace DotSpatial.Topology.IO.GML2
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
                         if (name == "Polygon" ||
-                            name == GmlElements.GmlPrefix + ":Polygon")
+                            name == GMLElements.gmlPrefix + ":Polygon")
                             return Factory.CreatePolygon(exterior, interiors.ToArray());
                         break;
                 }
@@ -300,7 +300,7 @@ namespace DotSpatial.Topology.IO.GML2
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
                         if (name == "MultiPoint" ||
-                            name == GmlElements.GmlPrefix + ":MultiPoint")
+                            name == GMLElements.gmlPrefix + ":MultiPoint")
                             return Factory.CreateMultiPoint(points.ToArray());
                         break;
                 }
@@ -323,7 +323,7 @@ namespace DotSpatial.Topology.IO.GML2
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
                         if (name == "MultiLineString" || 
-                            name == GmlElements.GmlPrefix + ":MultiLineString")
+                            name == GMLElements.gmlPrefix + ":MultiLineString")
                             return Factory.CreateMultiLineString(lines.ToArray());
                         break;
                 }
@@ -346,7 +346,7 @@ namespace DotSpatial.Topology.IO.GML2
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
                         if (name == "MultiPolygon" || 
-                            name == GmlElements.GmlPrefix + ":MultiPolygon")
+                            name == GMLElements.gmlPrefix + ":MultiPolygon")
                             return Factory.CreateMultiPolygon(polygons.ToArray());
                         break;
                 }
@@ -381,7 +381,7 @@ namespace DotSpatial.Topology.IO.GML2
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
                         if (name == "MultiGeometry" ||
-                            name == GmlElements.GmlPrefix + ":MultiGeometry")
+                            name == GMLElements.gmlPrefix + ":MultiGeometry")
                             return Factory.CreateGeometryCollection(collection.ToArray());
                         break;
                 }
@@ -392,8 +392,8 @@ namespace DotSpatial.Topology.IO.GML2
         private static bool IsStartElement(XmlReader reader, string name)
         {
             return reader.IsStartElement(name) ||
-                   reader.IsStartElement(name, GmlElements.GmlNs) ||
-                   reader.IsStartElement(GmlElements.GmlPrefix + ":" + name);
+                   reader.IsStartElement(name, GMLElements.gmlNS) ||
+                   reader.IsStartElement(GMLElements.gmlPrefix + ":" + name);
         }
     }
 }

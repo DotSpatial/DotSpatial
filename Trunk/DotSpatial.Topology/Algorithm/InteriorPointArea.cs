@@ -77,7 +77,7 @@ namespace DotSpatial.Topology.Algorithm
         /// <summary>
         /// Gets the computed interior point.
         /// </summary>
-        public virtual Coordinate InteriorPoint
+        public Coordinate InteriorPoint
         {
             get { return _interiorPoint; }
         }
@@ -250,8 +250,8 @@ namespace DotSpatial.Topology.Algorithm
 
             private double GetBisectorY()
             {
-                Process(_poly.Shell);
-                for (int i = 0; i < _poly.NumHoles; i++)
+                Process(_poly.ExteriorRing);
+                for (int i = 0; i < _poly.NumInteriorRings; i++)
                 {
                     Process(_poly.GetInteriorRingN(i));
                 }

@@ -92,7 +92,7 @@ namespace DotSpatial.Topology.Noding
 
         public override string ToString()
         {
-            return WktWriter.ToLineString(new CoordinateArraySequence(_pts));
+            return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));
         }
 
         #endregion

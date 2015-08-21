@@ -61,7 +61,7 @@ namespace DotSpatial.Topology.Triangulate
 
         private static String MsgWithCoord(String msg, Coordinate pt) {
             if (pt != null)
-                return msg + " [ " + WktWriter.ToPoint(pt) + " ]";
+                return msg + " [ " + WKTWriter.ToPoint(pt) + " ]";
             return msg;
         }
 

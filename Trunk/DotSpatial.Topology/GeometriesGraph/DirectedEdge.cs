@@ -40,7 +40,6 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         private readonly int[] _depth = { 0, -999, -999 };
 
-        private EdgeRing _edgeRing;  // the EdgeRing that this edge is part of
         private bool _isForward;
         private bool _isInResult;
         private bool _isVisited;
@@ -76,7 +75,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Obtains the chaing in depth
         /// </summary>
-        public virtual int DepthDelta
+        public int DepthDelta
         {
             get
             {
@@ -90,16 +89,12 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets or sets the EdgeRing
         /// </summary>
-        public virtual EdgeRing EdgeRing
-        {
-            get { return _edgeRing; }
-            set { _edgeRing = value; }
-        }
+        public EdgeRing EdgeRing { get; set; }
 
         /// <summary>
         /// Gets a boolean indicating whether this edge is directed forward
         /// </summary>
-        public virtual bool IsForward
+        public bool IsForward
         {
             get { return _isForward; }
             protected set { _isForward = value; }
@@ -108,7 +103,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets a boolean that is true if this edge is in the result
         /// </summary>
-        public virtual bool IsInResult
+        public bool IsInResult
         {
             get { return _isInResult; }
             set { _isInResult = value; }
@@ -120,7 +115,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// and for each Geometry both sides are in the interior.
         /// </summary>
         /// <returns><c>true</c> if this is an interior Area edge.</returns>
-        public virtual bool IsInteriorAreaEdge
+        public bool IsInteriorAreaEdge
         {
             get
             {
@@ -128,8 +123,8 @@ namespace DotSpatial.Topology.GeometriesGraph
                 for (int i = 0; i < 2; i++)
                 {
                     if (!(Label.IsArea(i)
-                          && Label.GetLocation(i, PositionType.Left) == LocationType.Interior
-                          && Label.GetLocation(i, PositionType.Right) == LocationType.Interior))
+                        && Label.GetLocation(i, Positions.Left)  == Location.Interior
+                        && Label.GetLocation(i, Positions.Right) == Location.Interior))
                     {
                         isInteriorAreaEdge = false;
                     }
@@ -143,15 +138,15 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// at least one of the labels is a line label
         /// any labels which are not line labels have all Locations = Exterior.
         /// </summary>
-        public virtual bool IsLineEdge
+        public bool IsLineEdge
         {
             get
             {
                 bool isLine = Label.IsLine(0) || Label.IsLine(1);
                 bool isExteriorIfArea0 =
-                    !Label.IsArea(0) || Label.AllPositionsEqual(0, LocationType.Exterior);
+                    !Label.IsArea(0) || Label.AllPositionsEqual(0, Location.Exterior);
                 bool isExteriorIfArea1 =
-                    !Label.IsArea(1) || Label.AllPositionsEqual(1, LocationType.Exterior);
+                    !Label.IsArea(1) || Label.AllPositionsEqual(1, Location.Exterior);
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
         }
@@ -159,7 +154,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets or sets a boolean that is true if this edge has been visited
         /// </summary>
-        public virtual bool IsVisited
+        public bool IsVisited
         {
             get { return _isVisited; }
             set { _isVisited = value; }
@@ -168,22 +163,22 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// Gets or sets the minimum Edge Ring
         /// </summary>
-        public virtual EdgeRing MinEdgeRing { get; set; }
+        public EdgeRing MinEdgeRing { get; set; }
 
         /// <summary>
         /// Gets or sets the next directed edge relative to this directed edge
         /// </summary>
-        public virtual DirectedEdge Next { get; set; }
+        public DirectedEdge Next { get; set; }
 
         /// <summary>
         /// Gets or sets a directed edge for Next Min
         /// </summary>
-        public virtual DirectedEdge NextMin { get; set; }
+        public DirectedEdge NextMin { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual DirectedEdge Sym
+        public DirectedEdge Sym
         {
             get { return _sym; }
             set { _sym = value; }
@@ -196,7 +191,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// This is used for edges corresponding to lines, which will only
         /// appear oriented in a single direction in the result.
         /// </summary>
-        public virtual bool VisitedEdge
+        public bool VisitedEdge
         {
             get
             {
@@ -227,11 +222,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Computes the factor for the change in depth when moving from one location to another.
         /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
         /// </summary>
-        public static int DepthFactor(LocationType currLocation, LocationType nextLocation)
+        public static int DepthFactor(Location currLocation, Location nextLocation)
         {
-            if (currLocation == LocationType.Exterior && nextLocation == LocationType.Interior)
+            if (currLocation == Location.Exterior && nextLocation == Location.Interior)
                 return 1;
-            if (currLocation == LocationType.Interior && nextLocation == LocationType.Exterior)
+            else if (currLocation == Location.Interior && nextLocation == Location.Exterior)
                 return -1;
             return 0;
         }
@@ -241,7 +236,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="position">A Positions enumeration</param>
         /// <returns>An integer showing the depth</returns>
-        public virtual int GetDepth(PositionType position)
+        public int GetDepth(Positions position) 
         {
             return _depth[(int)position];
         }
@@ -252,7 +247,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="position">A Position</param>
         /// <param name="depthVal">The integer depth to specify</param>
         /// <exception cref="TopologyException">Assigned depths do not match</exception>
-        public virtual void SetDepth(PositionType position, int depthVal)
+        public void SetDepth(Positions position, int depthVal)
         {
             if (_depth[(int)position] != -999)
                 if (_depth[(int)position] != depthVal)
@@ -268,7 +263,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="position"></param>
         /// <param name="depth"></param>
-        public virtual void SetEdgeDepths(PositionType position, int depth)
+        public void SetEdgeDepths(Positions position, int depth)
         {
             // get the depth transition delta from R to Curve for this directed Edge
             int depthDelta = Edge.DepthDelta;
@@ -277,11 +272,11 @@ namespace DotSpatial.Topology.GeometriesGraph
 
             // if moving from Curve to R instead of R to Curve must change sign of delta
             int directionFactor = 1;
-            if (position == PositionType.Left)
+            if (position == Positions.Left)
                 directionFactor = -1;
 
-            PositionType oppositePos = Position.Opposite(position);
-            int delta = depthDelta * directionFactor;
+            Positions oppositePos = Position.Opposite(position);
+            int delta = depthDelta * directionFactor;            
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);
             SetDepth(oppositePos, oppositeDepth);
@@ -294,8 +289,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         public override void Write(StreamWriter outstream)
         {
             base.Write(outstream);
-            outstream.Write(" " + _depth[(int)PositionType.Left] + "/" + _depth[(int)PositionType.Right]);
-            outstream.Write(" (" + DepthDelta + ")");
+            outstream.Write(" " + _depth[(int)Positions.Left] + "/" + _depth[(int)Positions.Right]);
+            outstream.Write(" (" + DepthDelta + ")");            
             if (_isInResult)
                 outstream.Write(" inResult");
         }
@@ -304,7 +299,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteEdge(StreamWriter outstream)
+        public void WriteEdge(StreamWriter outstream)
         {
             Write(outstream);
             outstream.Write(" ");

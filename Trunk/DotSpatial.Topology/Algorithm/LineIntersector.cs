@@ -124,7 +124,7 @@ namespace DotSpatial.Topology.Algorithm
         /// Tests whether the input geometries intersect.
         /// </summary>
         /// <returns><c>true</c> if the input geometries intersect.</returns>
-        public virtual bool HasIntersection
+        public bool HasIntersection
         {
             get { return Result != NoIntersection; }
         }
@@ -147,7 +147,7 @@ namespace DotSpatial.Topology.Algorithm
         /// if the point lies in the interior of the segment (e.g. is not equal to either of the endpoints).
         /// </summary>
         /// <returns><c>true</c>  if the intersection is proper.</returns>
-        public virtual bool IsProper
+        public bool IsProper 
         {
             get { return HasIntersection && _isProper; }
             protected set { _isProper = value; }

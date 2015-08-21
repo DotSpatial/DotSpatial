@@ -114,9 +114,9 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p">The coordinate to test.</param>
         /// <param name="geom">The Geometry to test.</param>
         /// <returns><c>true</c> if the point is in the interior or boundary of the Geometry.</returns>
-        public virtual bool Intersects(Coordinate p, IGeometry geom)
+        public bool Intersects(Coordinate p, IGeometry geom)
         {
-            return Locate(p, geom) != LocationType.Exterior;
+            return Locate(p, geom) != Location.Exterior;
         }
 
         /// <summary>
@@ -125,33 +125,34 @@ namespace DotSpatial.Topology.Algorithm
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
         /// </summary>
         /// <returns>The Location of the point relative to the input Geometry.</returns>
-        public virtual LocationType Locate(Coordinate p, IGeometry geom)
+        public Location Locate(Coordinate p, IGeometry geom)
         {
             if (geom.IsEmpty)
-                return LocationType.Exterior;
-            if (geom is ILineString)
-                return Locate(p, (ILineString)geom);
-            if (geom is IPolygon)
-                return Locate(p, (IPolygon)geom);
+                return Location.Exterior;
+            if (geom is ILineString) 
+                return Locate(p, (ILineString) geom);
+            if (geom is IPolygon) 
+                return Locate(p, (IPolygon) geom);
 
             _isIn = false;
             _numBoundaries = 0;
             ComputeLocation(p, geom);
             if (_boundaryRule.IsInBoundary(_numBoundaries))
-                return LocationType.Boundary;
+                return Location.Boundary;
             if (_numBoundaries > 0 || _isIn)
-                return LocationType.Interior;
-            return LocationType.Exterior;
+                return Location.Interior;
+
+            return Location.Exterior;
         }
 
-        private static LocationType Locate(Coordinate p, IPoint pt)
+        private static Location Locate(Coordinate p, IPoint pt)
         {
             // no point in doing envelope test, since equality test is just as fast
 
             Coordinate ptCoord = pt.Coordinate;
             if (ptCoord.Equals2D(p))
-                return LocationType.Interior;
-            return LocationType.Exterior;
+                return Location.Interior;
+            return Location.Exterior;
         }
 
         /// <summary>
@@ -160,20 +161,20 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        private static LocationType Locate(Coordinate p, ILineString l)
+        private static Location Locate(Coordinate p, ILineString l)
         {
             // bounding-box check
-            if (!l.EnvelopeInternal.Intersects(p))
-                return LocationType.Exterior;
-
+            if (!l.EnvelopeInternal.Intersects(p)) 
+                return Location.Exterior;
+  	
 
             IList<Coordinate> pt = l.Coordinates;
             if (!l.IsClosed)
                 if (p.Equals(pt[0]) || p.Equals(pt[pt.Count - 1]))
-                    return LocationType.Boundary;
-            if (CgAlgorithms.IsOnLine(p, pt))
-                return LocationType.Interior;
-            return LocationType.Exterior;
+                    return Location.Boundary;                            
+            if (CGAlgorithms.IsOnLine(p, pt))
+                return Location.Interior;
+            return Location.Exterior;
         }
 
         /// <summary>
@@ -182,26 +183,26 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="poly"></param>
         /// <returns></returns>
-        private LocationType Locate(Coordinate p, IPolygon poly)
+        private Location Locate(Coordinate p, IPolygon poly)
         {
             if (poly.IsEmpty)
-                return LocationType.Exterior;
+                return Location.Exterior;
             ILinearRing shell = poly.Shell;
-            var shellLoc = LocateInPolygonRing(p, shell);
-            if (shellLoc == LocationType.Exterior)
-                return LocationType.Exterior;
-            if (shellLoc == LocationType.Boundary)
-                return LocationType.Boundary;
+            Location shellLoc = LocateInPolygonRing(p, shell);
+            if (shellLoc == Location.Exterior) 
+                return Location.Exterior;
+            if (shellLoc == Location.Boundary) 
+                return Location.Boundary;
             // now test if the point lies in or on the holes
-            foreach (ILinearRing hole in poly.Holes)
+            foreach (ILinearRing hole in poly.InteriorRings)
             {
-                var holeLoc = LocateInPolygonRing(p, hole);
-                if (holeLoc == LocationType.Interior)
-                    return LocationType.Exterior;
-                if (holeLoc == LocationType.Boundary)
-                    return LocationType.Boundary;
+                Location holeLoc = LocateInPolygonRing(p, hole);
+                if (holeLoc == Location.Interior) 
+                    return Location.Exterior;
+                if (holeLoc == Location.Boundary) 
+                    return Location.Boundary;
             }
-            return LocationType.Interior;
+            return Location.Interior;
         }
 
         /// <summary>
@@ -210,23 +211,23 @@ namespace DotSpatial.Topology.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private static LocationType LocateInPolygonRing(Coordinate p, ILinearRing ring)
+        private static Location LocateInPolygonRing(Coordinate p, ILinearRing ring)
         {
-            // bounding-box check
-            if (!ring.EnvelopeInternal.Intersects(p)) return LocationType.Exterior;
+  	        // bounding-box check
+  	        if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
 
-            return CgAlgorithms.LocatePointInRing(p, ring.Coordinates);
+  	        return CGAlgorithms.LocatePointInRing(p, ring.Coordinates);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="loc"></param>
-        private void UpdateLocationInfo(LocationType loc)
+        private void UpdateLocationInfo(Location loc)
         {
-            if (loc == LocationType.Interior)
+            if(loc == Location.Interior) 
                 _isIn = true;
-            if (loc == LocationType.Boundary)
+            if(loc == Location.Boundary) 
                 _numBoundaries++;
         }
 

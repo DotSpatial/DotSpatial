@@ -66,17 +66,17 @@ namespace DotSpatial.Topology.Index.Sweepline
         /// <summary>
         ///
         /// </summary>
-        public virtual object Item { get { return _item; } }
+        public object Item { get { return _item; } }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual double Max { get { return _max; } }
+        public double Max { get { return _max; } }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual double Min { get { return _min; } }
+        public double Min { get { return _min; } }
 
         #endregion
     }

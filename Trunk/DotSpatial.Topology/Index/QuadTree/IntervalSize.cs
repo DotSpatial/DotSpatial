@@ -24,7 +24,7 @@
 
 using System;
 
-namespace DotSpatial.Topology.Index.QuadTree
+namespace DotSpatial.Topology.Index.Quadtree
 {
     /// <summary>
     /// Provides a test for whether an interval is
@@ -35,7 +35,7 @@ namespace DotSpatial.Topology.Index.QuadTree
     /// computing a midpoint value which does not lie strictly between the
     /// endpoints.
     /// </summary>
-    public static class IntervalSize
+    public static class IntervalSize 
     {
         #region Constant Fields
 

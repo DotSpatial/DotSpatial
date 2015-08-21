@@ -36,9 +36,9 @@ namespace DotSpatial.Topology.GeometriesGraph
     {
         #region Fields
 
-        private readonly Edge _edge;  // the parent edge
+        private readonly Edge edge;  // the parent edge
         // a list of EdgeIntersections      
-        private readonly IDictionary<EdgeIntersection, EdgeIntersection> _nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <param name="edge"></param>
         public EdgeIntersectionList(Edge edge)
         {
-            _edge = edge;
+            this.edge = edge;
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             get
             {
-                return _nodeMap.Count;
+                return nodeMap.Count;
             }
         }
 
@@ -84,18 +84,18 @@ namespace DotSpatial.Topology.GeometriesGraph
         {
             EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
             EdgeIntersection ei;
-            if (_nodeMap.TryGetValue(eiNew, out ei))
+            if (nodeMap.TryGetValue(eiNew, out ei))
                 return ei;
-            _nodeMap[eiNew] = eiNew;
+            nodeMap[eiNew] = eiNew;
             return eiNew;
         }
 
         /// <summary>
         /// Adds entries for the first and last points of the edge to the list.
         /// </summary>
-        public virtual void AddEndpoints()
+        public void AddEndpoints()
         {
-            int maxSegIndex = _edge.Points.Count - 1;
+            int maxSegIndex = edge.Points.Count - 1;
             Add(_edge.Points[0], 0, 0.0);
             Add(_edge.Points[maxSegIndex], maxSegIndex, 0.0);
         }
@@ -136,7 +136,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
         {        
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            Coordinate lastSegStartPt = _edge.Points[ei1.SegmentIndex];
+            Coordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
@@ -149,11 +149,11 @@ namespace DotSpatial.Topology.GeometriesGraph
             int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++) 
-                pts[ipt++] = _edge.Points[i];
+                pts[ipt++] = edge.Points[i];
 
             if (useIntPt1) 
                 pts[ipt] = ei1.Coordinate;
-            return new Edge(pts, new Label(_edge.Label));
+            return new Edge(pts, new Label(edge.Label));
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         public IEnumerator<EdgeIntersection> GetEnumerator() 
         { 
-            return _nodeMap.Values.GetEnumerator(); 
+            return nodeMap.Values.GetEnumerator(); 
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual bool IsIntersection(Coordinate pt)
+        public bool IsIntersection(Coordinate pt)
         {
-            foreach (EdgeIntersection ei in _nodeMap.Values    )
+            foreach (EdgeIntersection ei in nodeMap.Values    )
             {
                 if (ei.Coordinate.Equals(pt))
                     return true;
@@ -183,7 +183,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
             for (IEnumerator<EdgeIntersection> it = GetEnumerator(); it.MoveNext(); ) 

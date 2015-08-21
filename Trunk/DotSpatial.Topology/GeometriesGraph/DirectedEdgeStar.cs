@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual Label Label
+        public Label Label
         {
             get
             {
@@ -75,11 +75,11 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="de"></param>
-        public virtual void ComputeDepths(DirectedEdge de)
+        public void ComputeDepths(DirectedEdge de)
         {
             int edgeIndex = FindIndex(de);
-            int startDepth = de.GetDepth(PositionType.Left);
-            int targetLastDepth = de.GetDepth(PositionType.Right);
+            int startDepth = de.GetDepth(Positions.Left);
+            int targetLastDepth = de.GetDepth(Positions.Right);
             // compute the depths from this edge up to the end of the edge array
             int nextDepth = ComputeDepths(edgeIndex + 1, EdgeList.Count, startDepth);
             // compute the depths for the initial part of the array
@@ -98,8 +98,8 @@ namespace DotSpatial.Topology.GeometriesGraph
             for (int i = startIndex; i < endIndex; i++)
             {
                 DirectedEdge nextDe = (DirectedEdge)EdgeList[i];            
-                nextDe.SetEdgeDepths(PositionType.Right, currDepth);
-                currDepth = nextDe.GetDepth(PositionType.Left);
+                nextDe.SetEdgeDepths(Positions.Right, currDepth);
+                currDepth = nextDe.GetDepth(Positions.Left);
             }
             return currDepth;
         }
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.GeometriesGraph
 
             // determine the overall labelling for this DirectedEdgeStar
             // (i.e. for the node it is based at)
-            _label = new Label(LocationType.Null);
+            _label = new Label(Location.Null);
             IEnumerator<EdgeEnd> it = GetEnumerator();
             while (it.MoveNext())
             {
@@ -124,9 +124,9 @@ namespace DotSpatial.Topology.GeometriesGraph
                 Label eLabel = e.Label;
                 for (int i = 0; i < 2; i++)
                 {
-                    LocationType eLoc = eLabel.GetLocation(i);
-                    if (eLoc == LocationType.Interior || eLoc == LocationType.Boundary)
-                        _label.SetLocation(i, LocationType.Interior);
+                    Location eLoc = eLabel.GetLocation(i);
+                    if (eLoc == Location.Interior || eLoc == Location.Boundary)
+                        _label.SetLocation(i, Location.Interior);
                 }
             }
         }
@@ -136,8 +136,8 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// area at this node (if any).
         /// If any L edges are found in the interior of the result, mark them as covered.
         /// </summary>
-        public virtual void FindCoveredLineEdges()
-        {
+        public void FindCoveredLineEdges()
+        {        
             // Since edges are stored in CCW order around the node,
             // as we move around the ring we move from the right to the left side of the edge
 
@@ -148,7 +148,7 @@ namespace DotSpatial.Topology.GeometriesGraph
             * - Interior if the edge is outgoing
             * - Exterior if the edge is incoming
             */
-            LocationType startLoc = LocationType.Null;
+            Location startLoc = Location.Null;
             foreach (DirectedEdge nextOut in Edges)
             {
                 DirectedEdge nextIn   = nextOut.Sym;
@@ -156,18 +156,18 @@ namespace DotSpatial.Topology.GeometriesGraph
                 {
                     if (nextOut.IsInResult)
                     {
-                        startLoc = LocationType.Interior;
+                        startLoc = Location.Interior;
                         break;
                     }
                     if (nextIn.IsInResult)
                     {
-                        startLoc = LocationType.Exterior;
+                        startLoc = Location.Exterior;
                         break;
                     }
                 }
             }
             // no A edges found, so can't determine if Curve edges are covered or not
-            if (startLoc == LocationType.Null)
+            if (startLoc == Location.Null)
                 return;
 
             /*
@@ -175,19 +175,19 @@ namespace DotSpatial.Topology.GeometriesGraph
             * (Interior or Exterior) for the result area.
             * If Curve edges are found, mark them as covered if they are in the interior
             */
-            LocationType currLoc = startLoc;
+            Location currLoc = startLoc;
             foreach (DirectedEdge nextOut in Edges)
             {
                 DirectedEdge nextIn   = nextOut.Sym;
                 if (nextOut.IsLineEdge)
-                    nextOut.Edge.IsCovered  = (currLoc == LocationType.Interior);
+                    nextOut.Edge.IsCovered  = (currLoc == Location.Interior);
                 else
                 {
                     // edge is an Area edge
                     if (nextOut.IsInResult)
-                        currLoc = LocationType.Exterior;
+                        currLoc = Location.Exterior;
                     if (nextIn.IsInResult)
-                        currLoc = LocationType.Interior;
+                        currLoc = Location.Interior;
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual int GetOutgoingDegree()
+        public int GetOutgoingDegree()
         {
             int degree = 0;
             foreach (DirectedEdge de in Edges)
@@ -210,7 +210,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// </summary>
         /// <param name="er"></param>
         /// <returns></returns>
-        public virtual int GetOutgoingDegree(EdgeRing er)
+        public int GetOutgoingDegree(EdgeRing er)
         {
             int degree = 0;
             foreach (DirectedEdge de in Edges)
@@ -236,7 +236,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual DirectedEdge GetRightmostEdge()
+        public DirectedEdge GetRightmostEdge()
         {
             IList<EdgeEnd> edges = Edges;
             int size = edges.Count;
@@ -274,7 +274,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public virtual void LinkAllDirectedEdges()
+        public void LinkAllDirectedEdges()
         {
             IList<EdgeEnd> temp = Edges;
             temp = null;    //Hack
@@ -300,7 +300,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         ///
         /// </summary>
         /// <param name="er"></param>
-        public virtual void LinkMinimalDirectedEdges(EdgeRing er)
+        public void LinkMinimalDirectedEdges(EdgeRing er)
         {
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
@@ -354,7 +354,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// (in other words, the topological location of the face is given by the RHS label of the DirectedEdge).
         /// PRECONDITION: No pair of dirEdges are both marked as being in the result.
         /// </summary>
-        public virtual void LinkResultDirectedEdges()
+        public void LinkResultDirectedEdges()
         {
             // make sure edges are copied to resultAreaEdges list
             GetResultAreaEdges();
@@ -406,7 +406,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// <summary>
         /// For each dirEdge in the star, merge the label .
         /// </summary>
-        public virtual void MergeSymLabels()
+        public void MergeSymLabels()
         {
             foreach (DirectedEdge de in Edges)
             {
@@ -419,7 +419,7 @@ namespace DotSpatial.Topology.GeometriesGraph
         /// Update incomplete dirEdge labels from the labelling for the node.
         /// </summary>
         /// <param name="nodeLabel"></param>
-        public virtual void UpdateLabelling(Label nodeLabel)
+        public void UpdateLabelling(Label nodeLabel)
         {
             foreach (DirectedEdge de in Edges)
             {

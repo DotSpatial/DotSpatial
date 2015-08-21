@@ -25,7 +25,7 @@
 using System;
 using DotSpatial.Topology.Geometries;
 
-namespace DotSpatial.Topology.Index.QuadTree
+namespace DotSpatial.Topology.Index.Quadtree
 {
     /// <summary>
     /// A Key is a unique identifier for a node in a quadtree.
@@ -53,7 +53,7 @@ namespace DotSpatial.Topology.Index.QuadTree
         /// <summary>
         ///
         /// </summary>
-        public virtual Coordinate Centre
+        public Coordinate Centre
         {
             get
             {

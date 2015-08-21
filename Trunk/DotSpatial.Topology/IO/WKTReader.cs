@@ -31,10 +31,10 @@ namespace DotSpatial.Topology.IO
     /// The <c>WKTReader</c> will convert the input numbers to the precise
     /// internal representation.
     /// <remarks>
-    /// <see cref="WktReader" /> reads also non-standard "LINEARRING" tags.
+    /// <see cref="WKTReader" /> reads also non-standard "LINEARRING" tags.
     /// </remarks>
     /// </summary>
-    public class WktReader : ITextGeometryReader
+    public class WKTReader : ITextGeometryReader
     {
         #region Fields
 
@@ -52,14 +52,14 @@ namespace DotSpatial.Topology.IO
         /// <summary> 
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WktReader() : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
+        public WKTReader() : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
 
         /// <summary>  
         /// Creates a <c>WKTReader</c> that creates objects using the given
         /// <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
-        public WktReader(IGeometryFactory geometryFactory) 
+        public WKTReader(IGeometryFactory geometryFactory) 
         {
             _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
             _precisionModel = geometryFactory.PrecisionModel;

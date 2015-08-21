@@ -61,9 +61,9 @@ namespace DotSpatial.Topology.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual bool IsInside(Coordinate pt)
+        public bool IsInside(Coordinate pt)
         {
-            return CgAlgorithms.IsPointInRing(pt, _pts);
+            return CGAlgorithms.IsPointInRing(pt, pts);
         }
 
         #endregion

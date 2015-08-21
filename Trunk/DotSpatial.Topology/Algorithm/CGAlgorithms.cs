@@ -33,7 +33,7 @@ namespace DotSpatial.Topology.Algorithm
     /// Specifies and implements various fundamental Computational Geometric algorithms.
     /// The algorithms supplied in this class are robust for double-precision floating point.
     /// </summary>
-    public static class CgAlgorithms
+    public static class CGAlgorithms
     {
         #region Constant Fields
 
@@ -375,20 +375,22 @@ namespace DotSpatial.Topology.Algorithm
             return false;
         }
 
-        /// <summary>
-        /// Test whether a point lies inside a ring.
-        /// The ring may be oriented in either direction.
-        /// If the point lies on the ring boundary the result of this method is unspecified.
-        /// This algorithm does not attempt to first check the point against the envelope
-        /// of the ring.
+        /// <summary> 
+        /// Tests whether a point lies inside or on a ring.
         /// </summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>A point lying exactly on the ring boundary is considered to be inside the ring.</para>
+        /// <para>This method does <i>not</i> first check the point against the envelope
+        /// of the ring.</para>
+        /// </remarks>
         /// <param name="p">Point to check for ring inclusion.</param>
-        /// <param name="ring">Assumed to have first point identical to last point.</param>
-        /// <returns><c>true</c> if p is inside ring.</returns>
+        /// <param name="ring">An array of <see cref="Coordinate"/>s representing the ring (which must have first point identical to last point)</param>
+        /// <returns>true if p is inside ring.</returns>
+        /// <see cref="IPointInRing"/>
         public static bool IsPointInRing(Coordinate p, IList<Coordinate> ring)
         {
-            return LocatePointInRing(p, ring) != LocationType.Exterior;
-
+            return LocatePointInRing(p, ring) != Location.Exterior;
         }
 
         /// <summary>
@@ -476,7 +478,7 @@ namespace DotSpatial.Topology.Algorithm
              * an appropriate patch.
              * 
              */
-            return CgAlgorithmsDoubleDouble.OrientationIndex(p1, p2, q);
+            return CGAlgorithmsDD.OrientationIndex(p1, p2, q);
         }
 
         /// <summary>
@@ -498,17 +500,17 @@ namespace DotSpatial.Topology.Algorithm
         {
             if (ring.Count < 3) return 0.0;
 
-            double sum = 0.0;
+            var sum = 0.0;
             /**
              * Based on the Shoelace formula.
              * http://en.wikipedia.org/wiki/Shoelace_formula
              */
-            double x0 = ring[0].X;
-            for (int i = 1; i < ring.Count - 1; i++)
+            var x0 = ring[0].X;
+            for (var i = 1; i < ring.Count - 1; i++)
             {
-                double x = ring[i].X - x0;
-                double y1 = ring[i + 1].Y;
-                double y2 = ring[i - 1].Y;
+                var x = ring[i].X - x0;
+                var y1 = ring[i + 1].Y;
+                var y2 = ring[i - 1].Y;
                 sum += x * (y2 - y1);
             }
             return sum / 2.0;

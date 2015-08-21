@@ -38,7 +38,7 @@ namespace DotSpatial.Topology.IO
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
-    public class WkbWriter : IBinaryGeometryWriter
+    public class WKBWriter : IBinaryGeometryWriter
     {
         #region Fields
 
@@ -57,14 +57,14 @@ namespace DotSpatial.Topology.IO
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
-        public WkbWriter() :
+        public WKBWriter() :
             this(ByteOrder.LittleEndian, false) { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        public WkbWriter(ByteOrder encodingType) :
+        public WKBWriter(ByteOrder encodingType) :
             this(encodingType, false)
         {
         }
@@ -74,7 +74,7 @@ namespace DotSpatial.Topology.IO
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
         /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
-        public WkbWriter(ByteOrder encodingType, bool handleSrid) :
+        public WKBWriter(ByteOrder encodingType, bool handleSrid) :
             this(encodingType, handleSrid, false)
         {
         }
@@ -85,7 +85,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="encodingType">Encoding type</param>
         /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
-        public WkbWriter(ByteOrder encodingType, bool handleSrid, bool emitZ) :
+        public WKBWriter(ByteOrder encodingType, bool handleSrid, bool emitZ) :
             this(encodingType, handleSrid, emitZ, false)
         {
         }
@@ -97,7 +97,7 @@ namespace DotSpatial.Topology.IO
         /// <param name="handleSrid">SRID values, present or not, should be emitted.</param>
         /// <param name="emitZ">Z values, present or not, should be emitted</param>
         /// <param name="emitM">M values, present or not, should be emitted</param>
-        public WkbWriter(ByteOrder encodingType, bool handleSrid, bool emitZ, bool emitM)
+        public WKBWriter(ByteOrder encodingType, bool handleSrid, bool emitZ, bool emitM)
         {
             EncodingType = encodingType;
             
@@ -290,7 +290,7 @@ namespace DotSpatial.Topology.IO
             {
                 writer = EncodingType == ByteOrder.LittleEndian
                     ? new BinaryWriter(stream)
-                    : new BeBinaryWriter(stream);
+                    : new BEBinaryWriter(stream);
                 Write(geometry, writer);
             }
             finally
