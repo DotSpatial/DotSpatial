@@ -88,7 +88,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         #region Events
 
-        public event EventHandler VertextMoved;
+        public event EventHandler<VertexMovedEventArgs> VertextMoved;
 
         #endregion
 
@@ -465,7 +465,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e"></param>
         private void OnVertexMoved(VertexMovedEventArgs e)
         {
-            EventHandler handler = VertextMoved;
+            EventHandler<VertexMovedEventArgs> handler = VertextMoved;
             if (handler != null)
                 handler(this, e);
         }
