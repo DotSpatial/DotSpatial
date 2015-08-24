@@ -22,6 +22,7 @@
 // |-----------------|----------|----------------------------------------------------------------------
 // ********************************************************************************************************
 
+using System.Xml.Serialization;
 using DotSpatial.Topology.Geometries;
 using DotSpatial.Topology.Index.QuadTree;
 
@@ -32,17 +33,7 @@ namespace DotSpatial.Data
     /// </summary>
     public class ShapefileFeatureSourceQuadtree : Quadtree<int>
     {
-        /// <summary>
-        /// Insert the row
-        /// </summary>
-        /// <param name="itemEnv"></param>
-        /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, int item)
-        {
-            base.Insert(itemEnv, item);
-        }
-
-        /// <summary>
+       /// <summary>
         /// Remove the row
         /// </summary>
         /// <param name="itemEnv"></param>
@@ -50,7 +41,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public bool Remove(IEnvelope itemEnv, int item)
         {
-            bool retValue = base.Remove(itemEnv, item); //TODO do we need to adjust? jany_
+            bool retValue = base.Remove(itemEnv, item); //TODO Do we need to adjust? I didn't know how to change that when I upgraded the NTS quellcode because I couldn't figure out how to call this code. (2015-08-24 jany_)
             //if (retValue)
             //    AdjustNodesForDeletedItem(Root, item);
             return retValue;
@@ -81,27 +72,6 @@ namespace DotSpatial.Data
         //        if (null != childNode)
         //            AdjustNodesForDeletedItem(childNode, deletedItem);
         //    }
-        //}
-
-        ///// <summary>
-        ///// Deprecated.  Use Remove(IEnvelope, int item) instead.
-        ///// </summary>
-        ///// <param name="itemEnv"></param>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        //public new bool Remove(IEnvelope itemEnv, object item)
-        //{
-        //    return Remove(itemEnv, (int)item);
-        //}
-
-        ///// <summary>
-        ///// Deprecated. Use Insert(IEnvelope, int item) instead.
-        ///// </summary>
-        ///// <param name="itemEnv"></param>
-        ///// <param name="item"></param>
-        //public new void Insert(IEnvelope itemEnv, object item)
-        //{
-        //    Insert(itemEnv, (int)item);
         //}
     }
 }
