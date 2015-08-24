@@ -302,7 +302,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCounterClockwise(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -334,7 +334,7 @@ namespace DotSpatial.Data
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
                     var isContained = tryEnv.Contains(testEnv)
-                                       && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                                       && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
                                            || (PointInList(testPt, tryRing.Coordinates)));
 
                     // Check if this new containing ring is smaller than the current minimum ring

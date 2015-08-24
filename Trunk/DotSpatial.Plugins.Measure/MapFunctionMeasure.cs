@@ -295,14 +295,14 @@ namespace DotSpatial.Plugins.Measure
 
         private double GetArea(List<Coordinate> tempPolygon)
         {
-            double area = Math.Abs(CgAlgorithms.SignedArea(tempPolygon));
+            double area = Math.Abs(CGAlgorithms.SignedArea(tempPolygon));
             if (_previousParts == null || _previousParts.Count == 0)
             {
-                _firstPartIsCounterClockwise = CgAlgorithms.IsCounterClockwise(tempPolygon);
+                _firstPartIsCounterClockwise = CGAlgorithms.IsCounterClockwise(tempPolygon);
             }
             else
             {
-                if (CgAlgorithms.IsCounterClockwise(tempPolygon) != _firstPartIsCounterClockwise)
+                if (CGAlgorithms.IsCounterClockwise(tempPolygon) != _firstPartIsCounterClockwise)
                 {
                     area = -area;
                 }

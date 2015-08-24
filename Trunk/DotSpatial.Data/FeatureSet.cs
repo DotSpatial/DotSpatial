@@ -152,7 +152,7 @@ namespace DotSpatial.Data
                 {
                     byte[] data = (byte[])row[0];
                     MemoryStream ms = new MemoryStream(data);
-                    WkbFeatureReader.ReadFeature(ms, result);
+                    WKBFeatureReader.ReadFeature(ms, result);
                 }
 
                 // convert lists of arrays into a single vertex array for each shape type.
@@ -1330,7 +1330,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCounterClockwise(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -1369,7 +1369,7 @@ namespace DotSpatial.Data
                     bool isContained = false;
 
                     if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                        && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
                             || PointInList(testPt, tryRing.Coordinates)))
                     {
                         isContained = true;

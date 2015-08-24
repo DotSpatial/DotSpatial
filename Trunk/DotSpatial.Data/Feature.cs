@@ -269,7 +269,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCounterClockwise(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -317,7 +317,7 @@ namespace DotSpatial.Data
                     bool isContained = false;
 
                     if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                        && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
                             || (PointInList(testPt, tryRing.Coordinates))))
                     {
                         isContained = true;

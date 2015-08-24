@@ -211,7 +211,7 @@ namespace DotSpatial.Data
                     IBasicLineString bl = pg.Shell;
                     IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                    if (CgAlgorithms.IsCounterClockwise(bl.Coordinates))
+                    if (CGAlgorithms.IsCounterClockwise(bl.Coordinates))
                     {
                         // Exterior rings need to be clockwise
                         coords = coords.Reverse();
@@ -225,7 +225,7 @@ namespace DotSpatial.Data
                     {
                         parts.Add(points.Count);
                         IEnumerable<Coordinate> holeCoords = hole.Coordinates;
-                        if (!CgAlgorithms.IsCounterClockwise(hole.Coordinates))
+                        if (!CGAlgorithms.IsCounterClockwise(hole.Coordinates))
                         {
                             // Interior rings need to be counter-clockwise
                             holeCoords = holeCoords.Reverse();

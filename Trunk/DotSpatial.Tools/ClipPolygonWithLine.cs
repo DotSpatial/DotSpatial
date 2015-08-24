@@ -199,7 +199,7 @@ namespace DotSpatial.Tools
                 for (int i = 0; i <= numParts - 1; i++)
                 {
                     IFeature currPart = polyParts[i];
-                    if (CgAlgorithms.IsCounterClockwise(currPart.Coordinates) == false)
+                    if (CGAlgorithms.IsCounterClockwise(currPart.Coordinates) == false)
                     {
                         if (speedOptimized)
                         {
@@ -678,7 +678,7 @@ namespace DotSpatial.Tools
                 SeparateParts(ref polygon, ref parts);
                 for (int i = 0; i <= numParts - 1; i++)
                 {
-                    bool currIsClockwise = !CgAlgorithms.IsCounterClockwise(parts[i].Coordinates);
+                    bool currIsClockwise = !CGAlgorithms.IsCounterClockwise(parts[i].Coordinates);
                     bool partIsHole = false;
 
                     // Decide if the current part is an island or a hole.
