@@ -180,14 +180,15 @@ namespace DotSpatial.Controls
             IMapFunction select = new MapFunctionSelect(this);
             IMapFunction zoomIn = new MapFunctionClickZoom(this);
             IMapFunction zoomOut = new MapFunctionZoomOut(this);
+            IMapFunction zoomPan = new MapFunctionZoom(this);
             MapFunctions = new List<IMapFunction>
                                {
-                                   new MapFunctionZoom(this),
                                    new MapFunctionKeyNavigation(this),
                                    pan,
                                    select,
                                    zoomIn,
                                    zoomOut,
+                                   zoomPan,
                                    label,
                                    info,
                                };
@@ -198,7 +199,8 @@ namespace DotSpatial.Controls
                                       {FunctionMode.Label, label},
                                       {FunctionMode.Select, select},
                                       {FunctionMode.ZoomIn, zoomIn},
-                                      {FunctionMode.ZoomOut, zoomOut}
+                                      {FunctionMode.ZoomOut, zoomOut},
+                                      {FunctionMode.ZoomPan, zoomPan}
                                   };
 
             CollisionDetection = false;
@@ -882,6 +884,7 @@ namespace DotSpatial.Controls
                     case FunctionMode.Label:
                         Cursor = Cursors.IBeam;
                         break;
+                    case FunctionMode.ZoomPan:
                     case FunctionMode.None:
                         Cursor = Cursors.Arrow;
                         break;
@@ -921,11 +924,15 @@ namespace DotSpatial.Controls
                 }
                 else
                 {
+                    if (_functionMode != FunctionMode.ZoomPan)
+                    {
+                        // Except for function mode "none" allow scrolling
+                        IMapFunction scroll = _functionLookup[FunctionMode.ZoomPan];
+                        ActivateMapFunction(scroll);
+                    }
+
                     IMapFunction newMode = _functionLookup[_functionMode];
                     ActivateMapFunction(newMode);
-                    // Except for function mode "none" allow scrolling
-                    IMapFunction scroll = MapFunctions.Find(f => f.GetType() == typeof(MapFunctionZoom));
-                    ActivateMapFunction(scroll);
                 }
 
                 //function mode changed event

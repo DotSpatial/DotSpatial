@@ -13,7 +13,7 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// <summary>
     /// This is an abtract class that provides functionality for snapping objects.
     /// </summary>
-    public abstract class SnappableMapFunction : DotSpatial.Controls.MapFunction
+    public abstract class SnappableMapFunction : DotSpatial.Controls.MapFunctionZoom
     {
         /// <summary>
         /// +/- N pixels around the mouse point.
@@ -48,14 +48,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         public IFeature SnappedFeature
         {
             get { return _snappedFeature; }
-        }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public SnappableMapFunction()
-        {
-            this.DoSnapping = false;
         }
 
         /// <summary>

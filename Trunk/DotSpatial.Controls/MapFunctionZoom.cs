@@ -26,7 +26,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A MapFunction that can zoom the map using the scroll wheel.
+    /// A MapFunction that zooms the map by scrolling the scroll wheel and pans the map by pressing the mouse wheel and moving the mouse.
     /// </summary>
     public class MapFunctionZoom : MapFunction
     {
@@ -38,6 +38,10 @@ namespace DotSpatial.Controls
         private double _sensitivity;
         private int _timerInterval;
         private Timer _zoomTimer;
+        private bool _isDragging;
+        private bool _preventDrag;
+        private Rectangle _source;
+        private Point _dragStart;
 
         #endregion
 
@@ -68,10 +72,7 @@ namespace DotSpatial.Controls
         private void ZoomTimerTick(object sender, EventArgs e)
         {
             _zoomTimer.Stop();
-            if (_mapFrame == null)
-            {
-                return;
-            }
+            if (_mapFrame == null) return;
             _client = Rectangle.Empty;
             _mapFrame.ResetExtents();
             Map.IsBusy = false;
@@ -131,9 +132,7 @@ namespace DotSpatial.Controls
         protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
-            if (e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0))
-            {}
-            else
+            if (!(e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0)))
             {
                 e.Map.IsZoomedToMaxExtent = false;
                 Rectangle r = e.Map.MapFrame.View;
@@ -141,10 +140,7 @@ namespace DotSpatial.Controls
                 // For multiple zoom steps before redrawing, we actually
                 // want the x coordinate relative to the screen, not
                 // the x coordinate relative to the previously modified view.
-                if (_client == Rectangle.Empty)
-                {
-                    _client = r;
-                }
+                if (_client == Rectangle.Empty) _client = r;
                 int cw = _client.Width;
                 int ch = _client.Height;
 
@@ -153,13 +149,11 @@ namespace DotSpatial.Controls
 
                 if (_direction * e.Delta > 0)
                 {
-
                     double inFactor = 2.0 * _sensitivity;
                     r.Inflate(Convert.ToInt32(-w / inFactor), Convert.ToInt32(-h / inFactor));
                     // try to keep the mouse cursor in the same geographic position
                     r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - w / inFactor);
                     r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - h / inFactor);
-
                 }
                 else
                 {
@@ -179,9 +173,65 @@ namespace DotSpatial.Controls
                     BusySet = true;
                 }
                 base.OnMouseWheel(e);
-
             }
 
+        }
+
+        /// <summary>
+        /// Handles the actions that the tool controls during the OnMouseDown event
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseDown(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Middle && !_preventDrag)
+            {
+                _dragStart = e.Location;
+                _source = e.Map.MapFrame.View;
+            }
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Handles the mouse move event, changing the viewing extents to match the movements
+        /// of the mouse if the left mouse button is down.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseMove(GeoMouseArgs e)
+        {
+            if (_dragStart != Point.Empty && !_preventDrag)
+            {
+                if (!BusySet)
+                {
+                    Map.IsBusy = true;
+                    BusySet = true;
+                }
+
+                _isDragging = true;
+                Point diff = new Point { X = _dragStart.X - e.X, Y = _dragStart.Y - e.Y };
+                e.Map.MapFrame.View = new Rectangle(_source.X + diff.X, _source.Y + diff.Y, _source.Width, _source.Height);
+                Map.Invalidate();
+            }
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        /// Mouse Up
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseUp(GeoMouseArgs e)
+        {
+            if (e.Button == MouseButtons.Middle && _isDragging)
+            {
+                _isDragging = false;
+                _preventDrag = true;
+                e.Map.MapFrame.ResetExtents();
+                _preventDrag = false;
+                Map.IsBusy = false;
+                BusySet = false;
+            }
+            _dragStart = Point.Empty;
+
+            base.OnMouseUp(e);
         }
 
         #endregion

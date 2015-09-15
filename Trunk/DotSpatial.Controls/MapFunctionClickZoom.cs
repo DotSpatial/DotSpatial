@@ -30,7 +30,7 @@ using Point = System.Drawing.Point;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A MapFunction that can zoom into the map using clicks or rectangle dragging.
+    /// A MapFunction that can zoom into the map using left mouse clicks or rectangle dragging. It zooms out on right mouse clicks.
     /// </summary>
     public class MapFunctionClickZoom : MapFunction
     {
@@ -53,7 +53,7 @@ namespace DotSpatial.Controls
             : base(inMap)
         {
             _selectionPen = new Pen(Color.Black) { DashStyle = DashStyle.Dash };
-            YieldStyle = YieldStyles.LeftButton;
+            YieldStyle = YieldStyles.LeftButton | YieldStyles.RightButton;
         }
 
         #endregion
@@ -77,15 +77,15 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseDown(GeoMouseArgs e)
         {
-			if (e.Button == MouseButtons.Left)
-			{
-				_startPoint = e.Location;
-				_currentPoint = _startPoint;
-				_geoStartPoint = e.GeographicLocation;
-				_isDragging = true;
-				Map.IsBusy = true;
-			}
-			base.OnMouseDown(e);
+            if (e.Button == MouseButtons.Left)
+            {
+                _startPoint = e.Location;
+                _currentPoint = _startPoint;
+                _geoStartPoint = e.GeographicLocation;
+                _isDragging = true;
+                Map.IsBusy = true;
+            }
+            base.OnMouseDown(e);
         }
 
         /// <summary>
@@ -94,16 +94,16 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseMove(GeoMouseArgs e)
         {
-			int x = Math.Min(Math.Min(_startPoint.X, _currentPoint.X), e.X);
-			int y = Math.Min(Math.Min(_startPoint.Y, _currentPoint.Y), e.Y);
-			int mx = Math.Max(Math.Max(_startPoint.X, _currentPoint.X), e.X);
-			int my = Math.Max(Math.Max(_startPoint.Y, _currentPoint.Y), e.Y);
-			_currentPoint = e.Location;
-			if (_isDragging)
-			{
-				Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
-			}
-			base.OnMouseMove(e);
+            if (_isDragging)
+            {
+                int x = Math.Min(Math.Min(_startPoint.X, _currentPoint.X), e.X);
+                int y = Math.Min(Math.Min(_startPoint.Y, _currentPoint.Y), e.Y);
+                int mx = Math.Max(Math.Max(_startPoint.X, _currentPoint.X), e.X);
+                int my = Math.Max(Math.Max(_startPoint.Y, _currentPoint.Y), e.Y);
+                _currentPoint = e.Location;
+                Map.Invalidate(new Rectangle(x, y, mx - x, my - y));
+            }
+            base.OnMouseMove(e);
         }
 
         /// <summary>
@@ -112,46 +112,49 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            e.Map.IsZoomedToMaxExtent = false;
-            bool handled = false;
-            _currentPoint = e.Location;
-
-            Map.Invalidate();
-            if (_isDragging)
+            if (!(e.Map.IsZoomedToMaxExtent && e.Button == MouseButtons.Right))
             {
-                if (_geoStartPoint != null && _startPoint != e.Location)
+                e.Map.IsZoomedToMaxExtent = false;
+                bool handled = false;
+                _currentPoint = e.Location;
+
+                Map.Invalidate();
+                if (_isDragging)
                 {
-                    IEnvelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
-                                                 _geoStartPoint.Y, e.GeographicLocation.Y);
-                    if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
+                    if (_geoStartPoint != null && _startPoint != e.Location)
                     {
-                        e.Map.ViewExtents = env.ToExtent();
-                        handled = true;
+                        IEnvelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
+                                                     _geoStartPoint.Y, e.GeographicLocation.Y);
+                        if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
+                        {
+                            e.Map.ViewExtents = env.ToExtent();
+                            handled = true;
+                        }
                     }
                 }
-            }
-            _isDragging = false;
+                _isDragging = false;
 
-            if (handled == false)
-            {
-                Rectangle r = e.Map.MapFrame.View;
-                int w = r.Width;
-                int h = r.Height;
-                if (e.Button == MouseButtons.Left)
+                if (handled == false)
                 {
-                    r.Inflate(-r.Width / 4, -r.Height / 4);
-                    // The mouse cursor should anchor the geographic location during zoom.
-                    r.X += (e.X / 2) - w / 4;
-                    r.Y += (e.Y / 2) - h / 4;
+                    Rectangle r = e.Map.MapFrame.View;
+                    int w = r.Width;
+                    int h = r.Height;
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        r.Inflate(-r.Width / 4, -r.Height / 4);
+                        // The mouse cursor should anchor the geographic location during zoom.
+                        r.X += (e.X / 2) - w / 4;
+                        r.Y += (e.Y / 2) - h / 4;
+                    }
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        r.Inflate(r.Width / 2, r.Height / 2);
+                        r.X += w / 2 - e.X;
+                        r.Y += h / 2 - e.Y;
+                    }
+                    e.Map.MapFrame.View = r;
+                    e.Map.MapFrame.ResetExtents();
                 }
-                else
-                {
-                    r.Inflate(r.Width / 2, r.Height / 2);
-                    r.X += w / 2 - e.X;
-                    r.Y += h / 2 - e.Y;
-                }
-                e.Map.MapFrame.View = r;
-                e.Map.MapFrame.ResetExtents();
             }
 
             base.OnMouseUp(e);

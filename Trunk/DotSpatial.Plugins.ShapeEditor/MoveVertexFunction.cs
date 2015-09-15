@@ -67,14 +67,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the MoveVertexFunction class.
-        /// </summary>
-        public MoveVertexFunction()
-        {
-            Configure();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the MoveVertexFunction class where the Map will be defined.
         /// </summary>
         /// <param name="map">The map control that implements the IMap interface.</param>
@@ -201,91 +193,95 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnMouseDown(GeoMouseArgs e)
         {
-            _mousePosition = e.Location;
-            if (_dragging)
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
-                if (e.Button == MouseButtons.Right)
+                _mousePosition = e.Location;
+                if (_dragging)
                 {
-                    _dragging = false;
-                    Map.Invalidate();
-                    Map.IsBusy = false;
-                }
-            }
-            else
-            {
-                if (_selectedFeature != null)
-                {
-                    Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-
-                    IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
-
-                    if (CheckForVertexDrag(e)) { return; }
-
-                    // No vertex selection has occured.
-                    if (!_selectedFeature.Intersects(env.ToPolygon()))
+                    if (e.Button == MouseButtons.Right)
                     {
-                        // We are clicking down outside of the given polygon, so clear our selected feature
-                        DeselectFeature();
-                        return;
+                        _dragging = false;
+                        Map.Invalidate();
+                        Map.IsBusy = false;
                     }
                 }
-
-                if (_activeFeature != null)
+                else
                 {
-                    // Don't start dragging a vertices right away for polygons and lines.
-                    // First you select the polygon, which displays the vertices, then they can be moved.
-                    if (_featureSet.FeatureType == FeatureType.Polygon)
+                    if (_selectedFeature != null)
                     {
-                        _selectedFeature = _activeFeature;
-                        _activeFeature = null;
-                        IPolygonCategory sc = _selectedCategory as IPolygonCategory;
-                        if (sc == null)
-                        {
-                            _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
-                                                    {
-                                                        LegendItemVisible = false
-                                                    };
-                        }
+                        Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
 
-                        _layer.SetCategory(_selectedFeature, _selectedCategory);
-                    }
-                    else if (_featureSet.FeatureType == FeatureType.Line)
-                    {
-                        _selectedFeature = _activeFeature;
-                        _activeFeature = null;
-                        ILineCategory sc = _selectedCategory as ILineCategory;
-                        if (sc == null)
+                        IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+
+                        if (CheckForVertexDrag(e)) { return; }
+
+                        // No vertex selection has occured.
+                        if (!_selectedFeature.Intersects(env.ToPolygon()))
                         {
-                            _selectedCategory = new LineCategory(Color.Cyan, 1) { LegendItemVisible = false };
+                            // We are clicking down outside of the given polygon, so clear our selected feature
+                            DeselectFeature();
+                            return;
                         }
-                        _layer.SetCategory(_selectedFeature, _selectedCategory);
                     }
-                    else
+
+                    if (_activeFeature != null)
                     {
-                        _dragging = true;
-                        Map.IsBusy = true;
-                        _dragCoord = _activeFeature.Coordinates[0];
-                        MapPointLayer mpl = _layer as MapPointLayer;
-                        if (mpl != null)
+                        // Don't start dragging a vertices right away for polygons and lines.
+                        // First you select the polygon, which displays the vertices, then they can be moved.
+                        if (_featureSet.FeatureType == FeatureType.Polygon)
                         {
-                            mpl.SetVisible(_activeFeature, false);
-                        }
-                        IPointCategory sc = _selectedCategory as IPointCategory;
-                        if (sc == null)
-                        {
-                            IPointSymbolizer ps =
-                                _layer.GetCategory(_activeFeature).Symbolizer.Copy() as IPointSymbolizer;
-                            if (ps != null)
+                            _selectedFeature = _activeFeature;
+                            _activeFeature = null;
+                            IPolygonCategory sc = _selectedCategory as IPolygonCategory;
+                            if (sc == null)
                             {
-                                ps.SetFillColor(Color.Cyan);
-                                _selectedCategory = new PointCategory(ps);
+                                _selectedCategory = new PolygonCategory(Color.FromArgb(55, 0, 255, 255), Color.Blue, 1)
+                                                        {
+                                                            LegendItemVisible = false
+                                                        };
+                            }
+
+                            _layer.SetCategory(_selectedFeature, _selectedCategory);
+                        }
+                        else if (_featureSet.FeatureType == FeatureType.Line)
+                        {
+                            _selectedFeature = _activeFeature;
+                            _activeFeature = null;
+                            ILineCategory sc = _selectedCategory as ILineCategory;
+                            if (sc == null)
+                            {
+                                _selectedCategory = new LineCategory(Color.Cyan, 1) { LegendItemVisible = false };
+                            }
+                            _layer.SetCategory(_selectedFeature, _selectedCategory);
+                        }
+                        else
+                        {
+                            _dragging = true;
+                            Map.IsBusy = true;
+                            _dragCoord = _activeFeature.Coordinates[0];
+                            MapPointLayer mpl = _layer as MapPointLayer;
+                            if (mpl != null)
+                            {
+                                mpl.SetVisible(_activeFeature, false);
+                            }
+                            IPointCategory sc = _selectedCategory as IPointCategory;
+                            if (sc == null)
+                            {
+                                IPointSymbolizer ps =
+                                    _layer.GetCategory(_activeFeature).Symbolizer.Copy() as IPointSymbolizer;
+                                if (ps != null)
+                                {
+                                    ps.SetFillColor(Color.Cyan);
+                                    _selectedCategory = new PointCategory(ps);
+                                }
                             }
                         }
                     }
+                    Map.MapFrame.Initialize();
+                    Map.Invalidate();
                 }
-                Map.MapFrame.Initialize();
-                Map.Invalidate();
             }
+            base.OnMouseDown(e);
         }
 
         /// <inheritdoc />
@@ -333,6 +329,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
                 // check to see if the coordinates intersect with a shape in our current featureset.
             }
+            base.OnMouseMove(e);
         }
 
         /// <inheritdoc />
@@ -365,6 +362,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
             }
             Map.MapFrame.Initialize();
+            base.OnMouseUp(e);
         }
 
         /// <summary>

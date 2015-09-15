@@ -56,14 +56,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the AddShapeFunction class.
-        /// </summary>
-        public AddShapeFunction()
-        {
-            Configure();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the AddShapeFunction class.  This specifies the Map that this function should be applied to.
         /// </summary>
         /// <param name="map">The map control that implements the IMap interface that this function uses.</param>
@@ -255,30 +247,29 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_standBy) { return; }
+                // Begin snapping changes
+                Coordinate snappedCoord = e.GeographicLocation;
+                bool prevWasSnapped = this.isSnapped;
+                this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
+                _coordinateDialog.X = snappedCoord.X;
+                _coordinateDialog.Y = snappedCoord.Y;
+                // End snapping changes
 
-            // Begin snapping changes
-            Coordinate snappedCoord = e.GeographicLocation;
-            bool prevWasSnapped = this.isSnapped;
-            this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
-            _coordinateDialog.X = snappedCoord.X;
-            _coordinateDialog.Y = snappedCoord.Y;
-            // End snapping changes
+                if (_coordinates != null && _coordinates.Count > 0)
+                {
+                    List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
+                    Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
+                    Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
+                    Rectangle invalid = Rectangle.Union(newRect, oldRect);
+                    invalid.Inflate(20, 20);
+                    Map.Invalidate(invalid);
+                }
 
-            if (_coordinates != null && _coordinates.Count > 0)
-            {
-                List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
-                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
-                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
-                Rectangle invalid = Rectangle.Union(newRect, oldRect);
-                invalid.Inflate(20, 20);
-                Map.Invalidate(invalid);
-            }
+                // Begin snapping changes
+                _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
+                DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
+                // End snapping changes
             
-            // Begin snapping changes
-            _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
-            DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
-            // End snapping changes
-
             base.OnMouseMove(e);
         }
 
@@ -291,48 +282,50 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (_standBy) { return; }
             if (_featureSet == null || _featureSet.IsDisposed) { return; }
 
-            // Add the current point to the featureset
-            if (_featureSet.FeatureType == FeatureType.Point)
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
-                // Begin snapping changes
-                Coordinate snappedCoord = _coordinateDialog.Coordinate;
-                ComputeSnappedLocation(e, ref snappedCoord);
-                // End snapping changes
-
-                Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
-                Feature f = new Feature(pt);
-                _featureSet.Features.Add(f);
-                _featureSet.ShapeIndices = null; // Reset shape indices
-                _featureSet.UpdateExtent();
-                _layer.AssignFastDrawnStates();
-                _featureSet.InvalidateVertices();
-                return;
-            }
-
-            if (e.Button == MouseButtons.Right)
-            {
-                _context.Show((Control)Map, e.Location);
-            }
-            else
-            {
-                if (_coordinates == null) { _coordinates = new List<Coordinate>(); }
-                
-                // Begin snapping changes
-                Coordinate snappedCoord = e.GeographicLocation;
-                ComputeSnappedLocation(e, ref snappedCoord);
-                // End snapping changes
-
-                _coordinates.Add(snappedCoord); // Snapping changes
-                if (_coordinates.Count > 1)
+                // Add the current point to the featureset
+                if (_featureSet.FeatureType == FeatureType.Point)
                 {
-                    Point p1 = Map.ProjToPixel(_coordinates[_coordinates.Count - 1]);
-                    Point p2 = Map.ProjToPixel(_coordinates[_coordinates.Count - 2]);
-                    Rectangle invalid = SymbologyGlobal.GetRectangle(p1, p2);
-                    invalid.Inflate(20, 20);
-                    Map.Invalidate(invalid);
+                    // Begin snapping changes
+                    Coordinate snappedCoord = _coordinateDialog.Coordinate;
+                    ComputeSnappedLocation(e, ref snappedCoord);
+                    // End snapping changes
+
+                    Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
+                    Feature f = new Feature(pt);
+                    _featureSet.Features.Add(f);
+                    _featureSet.ShapeIndices = null; // Reset shape indices
+                    _featureSet.UpdateExtent();
+                    _layer.AssignFastDrawnStates();
+                    _featureSet.InvalidateVertices();
+                    return;
+                }
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    _context.Show((Control)Map, e.Location);
+                }
+                else
+                {
+                    if (_coordinates == null) { _coordinates = new List<Coordinate>(); }
+
+                    // Begin snapping changes
+                    Coordinate snappedCoord = e.GeographicLocation;
+                    ComputeSnappedLocation(e, ref snappedCoord);
+                    // End snapping changes
+
+                    _coordinates.Add(snappedCoord); // Snapping changes
+                    if (_coordinates.Count > 1)
+                    {
+                        Point p1 = Map.ProjToPixel(_coordinates[_coordinates.Count - 1]);
+                        Point p2 = Map.ProjToPixel(_coordinates[_coordinates.Count - 2]);
+                        Rectangle invalid = SymbologyGlobal.GetRectangle(p1, p2);
+                        invalid.Inflate(20, 20);
+                        Map.Invalidate(invalid);
+                    }
                 }
             }
-
             base.OnMouseUp(e);
         }
 

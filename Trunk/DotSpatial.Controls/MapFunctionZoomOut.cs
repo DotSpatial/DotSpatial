@@ -25,7 +25,7 @@ using DotSpatial.Data;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// A MapFunction that can zoom the map out based on mouse clicks.
+    /// A MapFunction that can zoom the map out based on left mouse clicks and in based on right mouse clicks.
     /// </summary>
     public class MapFunctionZoomOut : MapFunction
     {
@@ -48,9 +48,7 @@ namespace DotSpatial.Controls
         /// <param name="e"></param>
         protected override void OnMouseUp(GeoMouseArgs e)
         {
-            if (e.Map.IsZoomedToMaxExtent)
-            {}
-            else
+            if (!(e.Map.IsZoomedToMaxExtent && e.Button == MouseButtons.Left))
             {
                 e.Map.IsZoomedToMaxExtent = false;
                 Map.Invalidate();
@@ -67,7 +65,7 @@ namespace DotSpatial.Controls
                     e.Map.MapFrame.View = r;
                     e.Map.MapFrame.ResetExtents();
                 }
-                else
+                else if (e.Button == MouseButtons.Right)
                 {
                     r.Inflate(-r.Width / 4, -r.Height / 4);
                     // The mouse cursor should anchor the geographic location during zoom.
