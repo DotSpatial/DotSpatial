@@ -1,6 +1,8 @@
 ﻿using System;
-using DotSpatial.Topology.Geometries;
 using NUnit.Framework;
+using DotSpatial.Topology.IO;
+using Assert = NUnit.Framework.Assert;
+using DotSpatial.Topology.Geometries;
 
 namespace DotSpatial.Topology.Tests
 {
@@ -19,7 +21,7 @@ namespace DotSpatial.Topology.Tests
             var c = new Coordinate((rnd.NextDouble() + 360) - 180, (rnd.NextDouble() * 180) - 90);
             var p = new Point(c);
             var vals = p.ToBinary();
-            var wkr = new WkbReader();
+            var wkr = new WKBReader();
             var g = wkr.Read(vals);
             var pt = g as Point;
             if (pt != null)
@@ -44,7 +46,7 @@ namespace DotSpatial.Topology.Tests
             }
             var ls = new LineString(coords);
             var vals = ls.ToBinary();
-            var wkr = new WkbReader();
+            var wkr = new WKBReader();
             var g = wkr.Read(vals);
             var lscheck = g as LineString;
             if (lscheck != null)
@@ -78,7 +80,7 @@ namespace DotSpatial.Topology.Tests
             coords[19] = new Coordinate(coords[0].X, coords[0].Y);
             var pg = new Polygon(coords);
             var vals = pg.ToBinary();
-            var wkr = new WkbReader();
+            var wkr = new WKBReader();
             var g = wkr.Read(vals);
             var pgcheck = g as Polygon;
             if (pgcheck != null)
@@ -120,7 +122,7 @@ namespace DotSpatial.Topology.Tests
             }
             var mpg = new MultiPolygon(pg);
             var vals = mpg.ToBinary();
-            var wkr = new WkbReader();
+            var wkr = new WKBReader();
             var g = wkr.Read(vals);
             var mpgcheck = g as MultiPolygon;
             if (mpgcheck != null)
@@ -154,7 +156,7 @@ namespace DotSpatial.Topology.Tests
             }
             var mls = new MultiLineString(ls);
             var vals = mls.ToBinary();
-            var wkr = new WkbReader();
+            var wkr = new WKBReader();
             var g = wkr.Read(vals);
             var mlscheck = g as MultiLineString;
             if (mlscheck != null)
@@ -182,7 +184,7 @@ namespace DotSpatial.Topology.Tests
             }
             var mps = new MultiPoint(c);
             var vals = mps.ToBinary();
-            var wkb = new WkbReader();
+            var wkb = new WKBReader();
             var g = wkb.Read(vals);
             var mpsCheck = g as MultiPoint;
             if (mpsCheck != null)
@@ -211,7 +213,7 @@ namespace DotSpatial.Topology.Tests
             }
             var mps = new MultiPoint(c);
             var vals = mps.ToBinary();
-            var wkb = new WkbReader();
+            var wkb = new WKBReader();
             var g = wkb.Read(vals);
             var mpsCheck = g as MultiPoint;
             if (mpsCheck != null)

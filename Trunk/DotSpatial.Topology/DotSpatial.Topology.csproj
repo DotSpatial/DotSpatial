@@ -88,7 +88,8 @@
   <ItemGroup>
     <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Debug\PowerCollections.dll</HintPath>
+      <HintPath>..\..\..\dotspatial-git\Trunk\bin\Debug\PowerCollections.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

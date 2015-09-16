@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DotSpatial.Topology.Geometries;
+using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
 {

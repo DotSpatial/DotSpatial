@@ -2,6 +2,7 @@
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Tests.Common;
+using DotSpatial.Topology.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
