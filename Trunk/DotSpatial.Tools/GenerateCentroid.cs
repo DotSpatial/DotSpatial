@@ -113,7 +113,7 @@ namespace DotSpatial.Tools
             bool multiPoint = false;
             foreach (IFeature f1 in input1.Features)
             {
-                if (f1.NumGeometries > 1)
+                if (f1.Geometry.NumGeometries > 1)
                 {
                     multiPoint = true;
                 }
@@ -132,7 +132,7 @@ namespace DotSpatial.Tools
                     return false;
                 }
 
-                IFeature fnew = new Feature(f.Centroid());
+                IFeature fnew = new Feature(f.Geometry.Centroid);
 
                 // Add the centroid to output
                 output.Features.Add(fnew);

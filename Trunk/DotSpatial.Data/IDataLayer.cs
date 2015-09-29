@@ -188,7 +188,7 @@ namespace DotSpatial.Data
         /// Gets or sets the spatial filter so that only members that intersect with the specified
         /// geometry will be returned.
         /// </summary>
-        IBasicGeometry SpatialFilter
+        IGeometry SpatialFilter
         {
             get;
             set;

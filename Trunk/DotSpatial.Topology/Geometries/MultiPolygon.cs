@@ -66,13 +66,13 @@ namespace DotSpatial.Topology.Geometries
         /// from an array of basic polygon interfaces.
         /// </summary>
         /// <param name="polygons"></param>
-        public MultiPolygon(IBasicPolygon[] polygons) : base(polygons, DefaultFactory) { }
+        public MultiPolygon(IPolygon[] polygons) : base(polygons, DefaultFactory) { }
 
         /// <summary>
         /// This will attempt to create a new MultiPolygon from the specified basic geometry.
         /// </summary>
         /// <param name="inBasicGeometry">A Polygon or MultiPolygon</param>
-        public MultiPolygon(IBasicGeometry inBasicGeometry)
+        public MultiPolygon(IGeometry inBasicGeometry)
             : base(inBasicGeometry, DefaultFactory)
         {
         }
@@ -82,7 +82,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="inBasicGeometry">A Polygon or MultiPolygon</param>
         /// <param name="inFactory">An implementation of the IGeometryFactory interface</param>
-        public MultiPolygon(IBasicGeometry inBasicGeometry, IGeometryFactory inFactory)
+        public MultiPolygon(IGeometry inBasicGeometry, IGeometryFactory inFactory)
             : base(inBasicGeometry, inFactory)
         {
         }
@@ -115,7 +115,7 @@ namespace DotSpatial.Topology.Geometries
                 if (IsEmpty)    
                     return Factory.CreateMultiLineString(null);
 
-                var allRings = new List<IBasicLineString>();
+                var allRings = new List<ILineString>();
                 for (var i = 0; i < Geometries.Length; i++)
                 {
                     var polygon = (IPolygon) Geometries[i];
@@ -146,17 +146,6 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return Dimension.Surface;
-            }
-        }
-
-        /// <summary>
-        /// Always Polygon
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Polygon;
             }
         }
 
@@ -203,7 +192,7 @@ namespace DotSpatial.Topology.Geometries
         /// create a new, fully functional MultiPolygon based on the same coordinates.
         /// </summary>
         /// <param name="inGeometry">The IBasicGeometry to turn into a MultiPolygon. </param>
-        public static new IMultiPolygon FromBasicGeometry(IBasicGeometry inGeometry)
+        public static new IMultiPolygon FromBasicGeometry(IGeometry inGeometry)
         {
             // Multipolygons cast directly
             IMultiPolygon result = inGeometry as IMultiPolygon;
@@ -216,7 +205,7 @@ namespace DotSpatial.Topology.Geometries
                 return new MultiPolygon(new[] { p });
             }
 
-            IBasicPolygon bp = (IBasicPolygon)inGeometry;
+            IPolygon bp = (IPolygon)inGeometry;
             if (bp != null)
             {
                 return new MultiPolygon(new[] { bp });
@@ -227,7 +216,7 @@ namespace DotSpatial.Topology.Geometries
             // assume that we have some kind of MultiGeometry of IBasicPolygon objects
             for (int i = 0; i < inGeometry.NumGeometries; i++)
             {
-                IBasicPolygon ibp = (IBasicPolygon)inGeometry.GetBasicGeometryN(i);
+                IPolygon ibp = (IPolygon)inGeometry.GetGeometryN(i);
                 polygonArray[i] = new Polygon(ibp);
             }
 

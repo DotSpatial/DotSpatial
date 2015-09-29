@@ -430,10 +430,10 @@ namespace DotSpatial.Data
                 offset += contentLength; // adding the previous content length from each loop calculates the word offset
                 List<Coordinate> points = new List<Coordinate>();
                 contentLength = 22;
-                for (int iPart = 0; iPart < f.NumGeometries; iPart++)
+                for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
                 {
                     parts.Add(points.Count);
-                    IBasicLineString bl = f.GetBasicGeometryN(iPart) as IBasicLineString;
+                    ILineString bl = f.Geometry.GetGeometryN(iPart) as ILineString;
                     if (bl == null) continue;
                     points.AddRange(bl.Coordinates);
                 }
@@ -472,7 +472,7 @@ namespace DotSpatial.Data
                 {
                     continue;
                 }
-                IEnvelope env = f.Envelope ?? new Envelope();
+                IEnvelope env = f.Geometry.Envelope ?? new Envelope();
                 bbWriter.Write(env.Minimum.X);            // Byte 12   Xmin          Double      1           Little
                 bbWriter.Write(env.Minimum.Y);            // Byte 20   Ymin          Double      1           Little
                 bbWriter.Write(env.Maximum.X);            // Byte 28   Xmax          Double      1           Little
@@ -495,10 +495,10 @@ namespace DotSpatial.Data
                 bbWriter.Write(xyVals);
                 if (Header.ShapeType == ShapeType.PolyLineZ)
                 {
-                    if (f.Envelope != null)
+                    if (f.Geometry.Envelope != null)
                     {
-                        bbWriter.Write(f.Envelope.Minimum.Z);
-                        bbWriter.Write(f.Envelope.Maximum.Z);
+                        bbWriter.Write(f.Geometry.Envelope.Minimum.Z);
+                        bbWriter.Write(f.Geometry.Envelope.Maximum.Z);
                     }
                     double[] zVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; ipoint++)
@@ -510,15 +510,15 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
                 {
-                    if (f.Envelope == null)
+                    if (f.Geometry.Envelope == null)
                     {
                         bbWriter.Write(0.0);
                         bbWriter.Write(0.0);
                     }
                     else
                     {
-                        bbWriter.Write(f.Envelope.Minimum.M);
-                        bbWriter.Write(f.Envelope.Maximum.M);
+                        bbWriter.Write(f.Geometry.Envelope.Minimum.M);
+                        bbWriter.Write(f.Geometry.Envelope.Maximum.M);
                     }
 
                     double[] mVals = new double[points.Count];

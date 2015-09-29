@@ -6511,7 +6511,7 @@ namespace DotSpatial.Plugins.Taudem
             IGeometry right = mergeBasinsByDrainageI(shed, drainage.right);
             IFeature outlet = shed.get_Shape(drainage.val);
             // will this work?
-            IGeometry outg = outlet.BasicGeometry as IGeometry;
+            IGeometry outg = outlet.Geometry as IGeometry;
             if (left == null)
             {
                 if (right == null)

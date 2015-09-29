@@ -104,7 +104,7 @@ namespace DotSpatial.Symbology
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        IBasicGeometry g = _layer.DataSet.Features[shp].BasicGeometry;
+                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
                         IGeometry geom = Geometry.FromBasicGeometry(g);
                         if (reg.Disjoint(geom)) doAdd = true;
                     }
@@ -116,7 +116,7 @@ namespace DotSpatial.Symbology
                 else
                 {
                     if (!shape.Extent.Intersects(region)) continue;
-                    IBasicGeometry g = _layer.DataSet.GetFeature(shp).BasicGeometry;
+                    IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
                     IGeometry geom = Geometry.FromBasicGeometry(g);
                     switch (_selectionMode)
                     {
@@ -222,7 +222,7 @@ namespace DotSpatial.Symbology
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        IBasicGeometry g = _layer.DataSet.Features[shp].BasicGeometry;
+                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
                         IGeometry geom = Geometry.FromBasicGeometry(g);
                         if (reg.Disjoint(geom)) doFlip = true;
                     }
@@ -235,11 +235,11 @@ namespace DotSpatial.Symbology
                 {
                     if (!shape.Extent.Intersects(region)) continue;
                     IFeature f = _layer.DataSet.Features[shp]; // only get this if envelopes intersect
-                    IGeometry geom = Geometry.FromBasicGeometry(f.BasicGeometry);
+                    IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
                     switch (SelectionMode)
                     {
                         case SelectionMode.Contains:
-                            if (region.Intersects(f.Envelope))
+                            if (region.Intersects(f.Geometry.Envelope))
                             {
                                 if (reg.Contains(geom)) doFlip = true;
                             }
@@ -251,7 +251,7 @@ namespace DotSpatial.Symbology
                             if (reg.Covers(geom)) doFlip = true;
                             break;
                         case SelectionMode.Intersects:
-                            if (region.Intersects(f.Envelope))
+                            if (region.Intersects(f.Geometry.Envelope))
                             {
                                 if (reg.Intersects(geom)) doFlip = true;
                             }
@@ -346,7 +346,7 @@ namespace DotSpatial.Symbology
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        IBasicGeometry g = _layer.DataSet.Features[shp].BasicGeometry;
+                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
                         IGeometry geom = Geometry.FromBasicGeometry(g);
                         if (reg.Disjoint(geom)) doRemove = true;
                     }
@@ -358,7 +358,7 @@ namespace DotSpatial.Symbology
                 else
                 {
                     if (!shape.Extent.Intersects(region)) continue;
-                    IBasicGeometry g = _layer.DataSet.Features[shp].BasicGeometry;
+                    IGeometry g = _layer.DataSet.Features[shp].Geometry;
                     IGeometry geom = Geometry.FromBasicGeometry(g);
                     switch (_selectionMode)
                     {

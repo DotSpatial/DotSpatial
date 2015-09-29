@@ -85,7 +85,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        protected override void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures)
+        protected override void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
         {
             FileInfo fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -100,7 +100,7 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < feature.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                IBasicPolygon pg = feature.GetBasicGeometryN(iPart) as IBasicPolygon;
+                IPolygon pg = feature.GetGeometryN(iPart) as IPolygon;
                 if (pg == null) continue;
                 var bl = pg.Shell;
                 IEnumerable<Coordinate> coords = bl.Coordinates;
@@ -112,7 +112,7 @@ namespace DotSpatial.Data
                 }
 
                 points.AddRange(coords);
-                foreach (IBasicLineString hole in pg.Holes)
+                foreach (ILineString hole in pg.Holes)
                 {
                     parts.Add(points.Count);
                     IEnumerable<Coordinate> holeCoords = hole.Coordinates;

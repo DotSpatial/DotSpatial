@@ -169,7 +169,7 @@ namespace DotSpatial.Topology.Geometries
         /// Constructor for a polygon
         /// </summary>
         /// <param name="polygonBase">A simpler BasicPolygon to empower with topology functions</param>
-        public Polygon(IBasicPolygon polygonBase)
+        public Polygon(IPolygon polygonBase)
             : base(DefaultFactory)
         {
             SetHoles(polygonBase.Holes);
@@ -197,7 +197,7 @@ namespace DotSpatial.Topology.Geometries
                 var area = 0.0;
                 area += Math.Abs(CGAlgorithms.SignedArea(_shell.CoordinateSequence));
                 for (int i = 0; i < _holes.Length; i++)
-                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));                
+                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].CoordinateSequence));
                 return area;
             }
         }
@@ -218,7 +218,7 @@ namespace DotSpatial.Topology.Geometries
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
-                return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, IBasicLineString>(rings));
+                return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, ILineString>(rings));
             }
         }
 
@@ -316,16 +316,9 @@ namespace DotSpatial.Topology.Geometries
             {
                 return _shell;
             }
-        }
-
-        /// <summary>
-        /// This will always contain points, even if it is technically empty
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
+            set
             {
-                return FeatureType.Polygon;
+                SetShell(value);
             }
         }
 
@@ -341,21 +334,6 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public ILinearRing[] Holes
-        {
-            get
-            {
-                return _holes;
-            }
-            private set
-            {
-                _holes = value;
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         public ILineString[] InteriorRings
@@ -367,7 +345,7 @@ namespace DotSpatial.Topology.Geometries
         }
 
         // Collections can be arrays or lists
-        ICollection<IBasicLineString> IBasicPolygon.Holes
+        public ILinearRing[] Holes
         {
             get
             {
@@ -506,20 +484,10 @@ namespace DotSpatial.Topology.Geometries
                 return _shell;
             }
 
-            private set { _shell = value; }
+            set { _shell = value; }
         }
 
-        IBasicLineString IBasicPolygon.Shell
-        {
-            get
-            {
-                return _shell;
-            }
-            set
-            {
-                SetShell(value);
-            }
-        }
+
 
         #endregion
 
@@ -817,7 +785,7 @@ namespace DotSpatial.Topology.Geometries
         /// converted into an array of linear rings.
         /// </summary>
         /// <param name="holeData"></param>
-        private void SetHoles(ICollection<IBasicLineString> holeData)
+        private void SetHoles(ICollection<ILineString> holeData)
         {
             if (holeData == null || holeData.Count == 0)
             {
@@ -828,14 +796,14 @@ namespace DotSpatial.Topology.Geometries
             if (_holes != null) return;
 
             List<ILinearRing> rings = new List<ILinearRing>();
-            foreach (IBasicLineString linestring in holeData)
+            foreach (ILineString linestring in holeData)
             {
                 rings.Add(new LinearRing(FromBasicGeometry(linestring) as ILineString));
             }
             _holes = rings.ToArray();
         }
 
-        private void SetShell(IBasicLineString basicShell)
+        private void SetShell(ILineString basicShell)
         {
             if (basicShell == null)
             {

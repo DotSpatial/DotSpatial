@@ -457,18 +457,20 @@ namespace DotSpatial.Controls
             var angle = GetAngleToRotate(symb, f);
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
-            if (f.NumGeometries == 1)
+            IGeometry geo = f.Geometry;
+
+            if (geo.NumGeometries == 1)
             {
-                RectangleF labelBounds = PlacePolygonLabel(f.BasicGeometry, e, labelSize, symb, angle);
+                RectangleF labelBounds = PlacePolygonLabel(f.Geometry, e, labelSize, symb, angle);
                 CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
             }
             else
             {
                 if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
                 {
-                    for (int n = 0; n < f.NumGeometries; n++)
+                    for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        RectangleF labelBounds = PlacePolygonLabel(f.GetBasicGeometryN(n), e, labelSize, symb, angle);
+                        RectangleF labelBounds = PlacePolygonLabel(geo.GetGeometryN(n), e, labelSize, symb, angle);
                         CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                     }
                 }
@@ -476,9 +478,9 @@ namespace DotSpatial.Controls
                 {
                     double largestArea = 0;
                     IPolygon largest = null;
-                    for (int n = 0; n < f.NumGeometries; n++)
+                    for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        IPolygon pg = Geometry.FromBasicGeometry(f.GetBasicGeometryN(n)) as IPolygon;
+                        IPolygon pg = Geometry.FromBasicGeometry(geo.GetGeometryN(n)) as IPolygon;
                         if (pg == null) continue;
                         double tempArea = pg.Area;
                         if (largestArea < tempArea)
@@ -529,7 +531,7 @@ namespace DotSpatial.Controls
         /// <param name="labelSize"></param>
         /// <param name="symb"></param>
         /// <returns></returns>
-        private static RectangleF PlacePolygonLabel(IBasicGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlacePolygonLabel(IGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
             IPolygon pg = Geometry.FromBasicGeometry(geom) as IPolygon;
             if (pg == null) return RectangleF.Empty;
@@ -571,15 +573,15 @@ namespace DotSpatial.Controls
             //Depending on the labeling strategy we do different things
             if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
             {
-                for (int n = 0; n < f.NumGeometries; n++)
+                for (int n = 0; n < f.Geometry.NumGeometries; n++)
                 {
-                    RectangleF labelBounds = PlacePointLabel(f.GetBasicGeometryN(n), e, labelSize, symb, angle);
+                    RectangleF labelBounds = PlacePointLabel(f.Geometry.GetGeometryN(n), e, labelSize, symb, angle);
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                 }
             }
             else
             {
-                RectangleF labelBounds = PlacePointLabel(f, e, labelSize, symb, angle);
+                RectangleF labelBounds = PlacePointLabel(f.Geometry, e, labelSize, symb, angle);
                 CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
             }
         }
@@ -618,9 +620,9 @@ namespace DotSpatial.Controls
             point.Y = (float)y;
         }
 
-        private static RectangleF PlacePointLabel(IBasicGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlacePointLabel(IGeometry f, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
-            Coordinate c = f.GetBasicGeometryN(1).Coordinates[0];
+            Coordinate c = f.GetGeometryN(1).Coordinates[0];
             return PlaceLabel(c, e, labelSize, symb, angle);
         }
 
@@ -637,10 +639,12 @@ namespace DotSpatial.Controls
 
             Func<SizeF> labelSize = () => g.MeasureString(txt, _caches.GetFont(symb));
 
-            if (f.NumGeometries == 1)
+            IGeometry geo = f.Geometry;
+
+            if (geo.NumGeometries == 1)
             {
-                var angle = GetAngleToRotate(symb, f, f.BasicGeometry);
-                RectangleF labelBounds = PlaceLineLabel(f.BasicGeometry, labelSize, e, symb, angle);
+                var angle = GetAngleToRotate(symb, f, f.Geometry);
+                RectangleF labelBounds = PlaceLineLabel(f.Geometry, labelSize, e, symb, angle);
                 CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
             }
             else
@@ -648,10 +652,10 @@ namespace DotSpatial.Controls
                 //Depending on the labeling strategy we do diff things
                 if (symb.PartsLabelingMethod == PartLabelingMethod.LabelAllParts)
                 {
-                    for (int n = 0; n < f.NumGeometries; n++)
+                    for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        var angle = GetAngleToRotate(symb, f, f.GetBasicGeometryN(n));
-                        RectangleF labelBounds = PlaceLineLabel(f.GetBasicGeometryN(n), labelSize, e, symb, angle);
+                        var angle = GetAngleToRotate(symb, f, geo.GetGeometryN(n));
+                        RectangleF labelBounds = PlaceLineLabel(geo.GetGeometryN(n), labelSize, e, symb, angle);
                         CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                     }
                 }
@@ -659,9 +663,9 @@ namespace DotSpatial.Controls
                 {
                     double longestLine = 0;
                     int longestIndex = 0;
-                    for (int n = 0; n < f.NumGeometries; n++)
+                    for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        ILineString ls = f.GetBasicGeometryN(n) as ILineString;
+                        ILineString ls = geo.GetGeometryN(n) as ILineString;
                         double tempLength = 0;
                         if (ls != null) tempLength = ls.Length;
                         if (longestLine < tempLength)
@@ -670,8 +674,8 @@ namespace DotSpatial.Controls
                             longestIndex = n;
                         }
                     }
-                    var angle = GetAngleToRotate(symb, f, f.GetBasicGeometryN(longestIndex));
-                    RectangleF labelBounds = PlaceLineLabel(f.GetBasicGeometryN(longestIndex), labelSize, e, symb, angle);
+                    var angle = GetAngleToRotate(symb, f, geo.GetGeometryN(longestIndex));
+                    RectangleF labelBounds = PlaceLineLabel(geo.GetGeometryN(longestIndex), labelSize, e, symb, angle);
                     CollisionDraw(txt, g, symb, f, e, labelBounds, existingLabels, angle);
                 }
             }
@@ -686,7 +690,7 @@ namespace DotSpatial.Controls
         /// <param name="symb">Symbolizer to figure out the look of the label.</param>
         /// <param name="angle">Angle in degree the label gets rotated by.</param>
         /// <returns>The RectangleF that is needed to draw the label.</returns>
-        private static RectangleF PlaceLineLabel(IBasicGeometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
+        private static RectangleF PlaceLineLabel(IGeometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
         {
             ILineString ls = Geometry.FromBasicGeometry(lineString) as ILineString;
             if (ls == null) return Rectangle.Empty;
@@ -818,7 +822,7 @@ namespace DotSpatial.Controls
         /// <param name="feature">Feature whose label gets rotated.</param>
         /// <param name="lineString"></param>
         /// <returns>Resulting angle in degree.</returns>
-        private static float GetAngleToRotate(ILabelSymbolizer symb, IFeature feature, IBasicGeometry lineString = null)
+        private static float GetAngleToRotate(ILabelSymbolizer symb, IFeature feature, IGeometry lineString = null)
         {
             if (symb.UseAngle)
             {

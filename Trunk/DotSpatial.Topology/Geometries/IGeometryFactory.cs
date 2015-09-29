@@ -129,7 +129,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="lineStrings">The Array of objects that implement DotSpatial.Geometries.IlineStringBase </param>
         /// <returns>A new MultiLineString that implements IMultiLineString</returns>
-        IMultiLineString CreateMultiLineString(IBasicLineString[] lineStrings);
+        IMultiLineString CreateMultiLineString(ILineString[] lineStrings);
 
         /// <summary>
         /// Creates an object that implements DotSpatial.Geometries.IMultiPoint from an array of objects that implement DotSpatial.Geometries.ICoordinate

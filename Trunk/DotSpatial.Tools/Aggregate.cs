@@ -116,7 +116,7 @@ namespace DotSpatial.Tools
                     continue;
                 }
 
-                oneFeature = oneFeature.Union(sourceData.Features[i]);
+                oneFeature = oneFeature.Union(sourceData.Features[i].Geometry);
 
                 // pm.CurrentValue = i;
             }

@@ -50,12 +50,12 @@ namespace DotSpatial.Topology.Geometries
         /// Constructs a multiLineString from the list of IBasicLineStrings, creating new full geometries where necessary.
         /// </summary>
         /// <param name="lineStrings">An IBasicLineString that is either a full IGeometry itself, or will be cast into one by this step</param>
-        public MultiLineString(IEnumerable<IBasicLineString> lineStrings)
+        public MultiLineString(IEnumerable<ILineString> lineStrings)
         {
             int count = lineStrings.Count();
             IGeometry[] g = new IGeometry[count];
             int index = 0;
-            foreach (IBasicLineString basicLineString in lineStrings)
+            foreach (ILineString basicLineString in lineStrings)
             {
                 g[index] = FromBasicGeometry(basicLineString);
                 index = index + 1;
@@ -73,7 +73,7 @@ namespace DotSpatial.Topology.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(IBasicLineString[] lineStrings, IGeometryFactory factory)
+        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory)
             : base(lineStrings, factory)
         {
         }
@@ -82,7 +82,7 @@ namespace DotSpatial.Topology.Geometries
         /// This will attempt to create a new MultiLineString from the specified basic geometry.
         /// </summary>
         /// <param name="inBasicGeometry">A Basic geometry that shoule be a LineString or MultiLineString</param>
-        public MultiLineString(IBasicGeometry inBasicGeometry)
+        public MultiLineString(IGeometry inBasicGeometry)
             : base(inBasicGeometry, DefaultFactory)
         {
         }
@@ -92,7 +92,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="inBasicGeometry">A Basic geometry that shoule be a LineString or MultiLineString</param>
         /// <param name="inFactory">Any valid Geometry Factory</param>
-        public MultiLineString(IBasicGeometry inBasicGeometry, IGeometryFactory inFactory)
+        public MultiLineString(IGeometry inBasicGeometry, IGeometryFactory inFactory)
             : base(inBasicGeometry, inFactory)
         {
         }
@@ -110,7 +110,7 @@ namespace DotSpatial.Topology.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiLineString(IBasicLineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
 
         /// <summary>
         /// Constructor for a MultiLineString that is empty
@@ -158,17 +158,6 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return Dimension.Curve;
-            }
-        }
-
-        /// <summary>
-        /// Always returns FeatureTypes.Line
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Line;
             }
         }
 

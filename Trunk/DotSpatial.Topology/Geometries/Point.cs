@@ -88,7 +88,7 @@ namespace DotSpatial.Topology.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Coordinate coordinate) :
-            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
+            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate }),
             GeometryFactory.Default) { }
 
         /// <summary>
@@ -99,9 +99,7 @@ namespace DotSpatial.Topology.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public Point(ICoordinate coordinate) :
-            this(new Coordinate(coordinate),
-                 new GeometryFactory()) { }
+        public Point(ICoordinate coordinate) : this(new Coordinate(coordinate), new GeometryFactory()) { }
 
         /// <summary>
         /// Constructs a <c>Point</c> with the given coordinate.
@@ -114,7 +112,7 @@ namespace DotSpatial.Topology.Geometries
         public Point(Coordinate coordinate, IGeometryFactory factory)
             : base(factory)
         {
-            _coordinates = factory.CoordinateSequenceFactory.Create(new [] { coordinate });
+            _coordinates = factory.CoordinateSequenceFactory.Create(new[] { coordinate });
         }
 
         /// <summary>
@@ -125,9 +123,10 @@ namespace DotSpatial.Topology.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
-        {               
-            if (coordinates == null) 
+        public Point(ICoordinateSequence coordinates, IGeometryFactory factory)
+            : base(factory)
+        {
+            if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             Assert.IsTrue(coordinates.Count <= 1);
             _coordinates = coordinates;
@@ -142,8 +141,8 @@ namespace DotSpatial.Topology.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public Point(double x, double y, double z) : 
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new [] { new Coordinate(x, y, z) }), DefaultFactory) { }
+        public Point(double x, double y, double z) :
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -155,7 +154,7 @@ namespace DotSpatial.Topology.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(double x, double y)
-            : this(DefaultFactory.CoordinateSequenceFactory.Create(new [] { new Coordinate(x, y) }), DefaultFactory) { }
+            : this(DefaultFactory.CoordinateSequenceFactory.Create(new[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         #endregion
 
@@ -249,17 +248,6 @@ namespace DotSpatial.Topology.Geometries
         }
 
         /// <summary>
-        /// This will always contain points, even if it is technically empty
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Point;
-            }
-        }
-
-        /// <summary>
         /// returns Point
         /// </summary>
         public override string GeometryType
@@ -329,7 +317,7 @@ namespace DotSpatial.Topology.Geometries
         {
             get { return OgcGeometryType.Point; }
         }
-		
+
         /// <summary>
         /// This is an optional recordnumber index, used specifically for Shapefile points.
         /// </summary>
@@ -359,7 +347,7 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("X called on empty Point");                
+                    throw new ArgumentOutOfRangeException("X called on empty Point");
                 return Coordinate.X;
             }
             set
@@ -376,7 +364,7 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("Y called on empty Point");                
+                    throw new ArgumentOutOfRangeException("Y called on empty Point");
                 return Coordinate.Y;
             }
             set
@@ -509,7 +497,7 @@ namespace DotSpatial.Topology.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
         {
-            return comparer.Compare(CoordinateSequence, ((IPoint) other).CoordinateSequence);
+            return comparer.Compare(CoordinateSequence, ((IPoint)other).CoordinateSequence);
         }
 
         /// <summary>
@@ -598,9 +586,9 @@ namespace DotSpatial.Topology.Geometries
 
             var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
-                return new[] {Coordinate.NullOrdinate};
-            
-            return new [] { _coordinates.GetOrdinate(0, ordinate)};
+                return new[] { Coordinate.NullOrdinate };
+
+            return new[] { _coordinates.GetOrdinate(0, ordinate) };
         }
 
         /// <summary>
@@ -650,14 +638,14 @@ namespace DotSpatial.Topology.Geometries
                 p.SetCoordinate(Coordinate.Copy());
             }
         }
-		
+
         public override IGeometry Reverse()
         {
             Point p = new Point();
             OnCopy(p);
             return p;
         }
-		
+
         /// <summary>
         /// Rotates the point by the given radian angle around the Origin.
         /// </summary>
@@ -665,7 +653,7 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="radAngle">Rotation angle in radian.</param>
         public override void Rotate(Coordinate origin, double radAngle)
         {
-            RotateCoordinateRad(origin , ref Coordinate.X, ref Coordinate.Y, radAngle);
+            RotateCoordinateRad(origin, ref Coordinate.X, ref Coordinate.Y, radAngle);
         }
 
         /// <summary>

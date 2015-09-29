@@ -207,7 +207,7 @@ namespace DotSpatial.Data
         /// </summary>
         public Shape Shape
         {
-            get { return _shape ?? (_shape = new Shape(Geometry)); }
+            get { return _shape ?? (_shape = new Shape(Geometry, FeatureType.Unspecified)); }
             set { _shape = value; }
         }
 

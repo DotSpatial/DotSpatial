@@ -334,9 +334,9 @@ namespace DotSpatial.Data
                 offset += contentLength; // adding the previous content length from each loop calculates the word offset
                 List<Coordinate> points = new List<Coordinate>();
                 contentLength = 20;
-                for (int iPart = 0; iPart < f.NumGeometries; iPart++)
+                for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
                 {
-                    IList<Coordinate> coords = f.BasicGeometry.GetBasicGeometryN(iPart).Coordinates;
+                    IList<Coordinate> coords = f.Geometry.GetGeometryN(iPart).Coordinates;
                     foreach (Coordinate coord in coords)
                     {
                         points.Add(coord);
@@ -376,10 +376,10 @@ namespace DotSpatial.Data
                 {
                     continue;
                 }
-                bbWriter.Write(f.Envelope.Minimum.X);      // Byte 12   Xmin    Double      1           Little
-                bbWriter.Write(f.Envelope.Minimum.Y);      // Byte 20   Ymin    Double      1           Little
-                bbWriter.Write(f.Envelope.Maximum.X);      // Byte 28   Xmax    Double      1           Little
-                bbWriter.Write(f.Envelope.Maximum.Y);      // Byte 36   Ymax    Double      1           Little
+                bbWriter.Write(f.Geometry.Envelope.Minimum.X);      // Byte 12   Xmin    Double      1           Little
+                bbWriter.Write(f.Geometry.Envelope.Minimum.Y);      // Byte 20   Ymin    Double      1           Little
+                bbWriter.Write(f.Geometry.Envelope.Maximum.X);      // Byte 28   Xmax    Double      1           Little
+                bbWriter.Write(f.Geometry.Envelope.Maximum.Y);      // Byte 36   Ymax    Double      1           Little
 
                 bbWriter.Write(points.Count);              // Byte 44   #Points Integer     1           Little
                 // Byte X    Points   Point    #Points       Little
@@ -392,8 +392,8 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.MultiPointZ)
                 {
-                    bbWriter.Write(f.Envelope.Minimum.Z);
-                    bbWriter.Write(f.Envelope.Maximum.Z);
+                    bbWriter.Write(f.Geometry.Envelope.Minimum.Z);
+                    bbWriter.Write(f.Geometry.Envelope.Maximum.Z);
                     foreach (Coordinate coord in points)
                     {
                         bbWriter.Write(coord.Z);
@@ -401,15 +401,15 @@ namespace DotSpatial.Data
                 }
                 if (Header.ShapeType == ShapeType.MultiPointM || Header.ShapeType == ShapeType.MultiPointZ)
                 {
-                    if (f.Envelope == null)
+                    if (f.Geometry.Envelope == null)
                     {
                         bbWriter.Write(0.0);
                         bbWriter.Write(0.0);
                     }
                     else
                     {
-                        bbWriter.Write(f.Envelope.Minimum.M);
-                        bbWriter.Write(f.Envelope.Maximum.M);
+                        bbWriter.Write(f.Geometry.Envelope.Minimum.M);
+                        bbWriter.Write(f.Geometry.Envelope.Maximum.M);
                     }
                     foreach (Coordinate coord in points)
                     {

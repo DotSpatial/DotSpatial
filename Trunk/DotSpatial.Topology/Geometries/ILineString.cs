@@ -26,7 +26,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>
     /// This adds the basic functionality of a
     /// </summary>
-    public interface ILineString : IBasicLineString, ICurve, ILineal
+    public interface ILineString :  ICurve, ILineal
     {
         #region Properties
 

@@ -82,7 +82,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdocs/>
-        protected override void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures)
+        protected override void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
         {
             var fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);

@@ -636,7 +636,7 @@ namespace DotSpatial.Controls
                     foreach (IFeature f in drawnFeatures)
                     {
                         BuildPolygon(DataSet.Vertex, f.ShapeIndex, borderPath, e,
-                                     drawExtents.Contains(f.Envelope) ? null : shClip);
+                                     drawExtents.Contains(f.Geometry.Envelope) ? null : shClip);
                     }
                     borderPaths.Add(borderPath);
                 }

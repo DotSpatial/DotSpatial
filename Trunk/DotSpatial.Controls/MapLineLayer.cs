@@ -269,7 +269,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Builds a linestring into the graphics path, using minX, maxY, dx and dy for the transformations.
         /// </summary>
-        internal static void BuildLineString(GraphicsPath path, IBasicLineString ls, double minX, double maxY, double dx, double dy)
+        internal static void BuildLineString(GraphicsPath path, ILineString ls, double minX, double maxY, double dx, double dy)
         {
             IList<Coordinate> cs = ls.Coordinates;
             List<Point> points = new List<Point>();

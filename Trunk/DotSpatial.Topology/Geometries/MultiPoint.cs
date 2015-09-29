@@ -59,7 +59,7 @@ namespace DotSpatial.Topology.Geometries
         /// This will attempt to create a new MultiPoint from the specified basic geometry.
         /// </summary>
         /// <param name="inBasicGeometry">A Point or MultiPoint</param>
-        public MultiPoint(IBasicGeometry inBasicGeometry)
+        public MultiPoint(IGeometry inBasicGeometry)
             : base(inBasicGeometry, DefaultFactory)
         {
         }
@@ -137,15 +137,6 @@ namespace DotSpatial.Topology.Geometries
             }
         }
 
-        /// <inheritdoc />
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.MultiPoint;
-            }
-        }
-
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
@@ -206,9 +197,9 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="rawPoints"></param>
         /// <returns></returns>
-        private static IEnumerable<IBasicGeometry> CastPoints(IEnumerable<Coordinate> rawPoints)
+        private static IEnumerable<IGeometry> CastPoints(IEnumerable<Coordinate> rawPoints)
         {
-            List<IBasicGeometry> result = new List<IBasicGeometry>();
+            List<IGeometry> result = new List<IGeometry>();
             foreach (Coordinate rawPoint in rawPoints)
             {
                 result.Add(new Point(rawPoint));
@@ -223,9 +214,9 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="rawPoints"></param>
         /// <returns></returns>
-        private static IEnumerable<IBasicGeometry> CastPoints(IEnumerable<ICoordinate> rawPoints)
+        private static IEnumerable<IGeometry> CastPoints(IEnumerable<ICoordinate> rawPoints)
         {
-            List<IBasicGeometry> result = new List<IBasicGeometry>();
+            List<IGeometry> result = new List<IGeometry>();
             foreach (ICoordinate rawPoint in rawPoints)
             {
                 result.Add(new Point(rawPoint));

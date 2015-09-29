@@ -227,7 +227,7 @@ namespace DotSpatial.Data
         /// <returns>
         /// The feature that was added to this featureset
         /// </returns>
-        public IFeature AddFeature(IBasicGeometry geometry)
+        public IFeature AddFeature(IGeometry geometry)
         {
             IFeature f = new Feature(geometry, this);
             return f;
@@ -392,7 +392,7 @@ namespace DotSpatial.Data
 
                 if (!shape.Range.Extent.IsEmpty())
                 {
-                    Extent.ExpandToInclude(new Extent(addedFeature.Envelope));
+                    Extent.ExpandToInclude(new Extent(addedFeature.Geometry.Envelope));
                 }
             }
         }
@@ -526,7 +526,7 @@ namespace DotSpatial.Data
                     int i = 0;
                     foreach (IFeature f in source.Features)
                     {
-                        IFeature copy = AddFeature(f.BasicGeometry);
+                        IFeature copy = AddFeature(f.Geometry);
                         copy.ShapeIndex = ShapeIndices[i];
                         if (copyAttributes)
                         {
@@ -564,7 +564,7 @@ namespace DotSpatial.Data
                     int i = 0;
                     foreach (IFeature f in source.Features)
                     {
-                        IFeature result = AddFeature(f.BasicGeometry);
+                        IFeature result = AddFeature(f.Geometry);
                         result.ShapeIndex = ShapeIndices[i];
                         i++;
                     }
@@ -976,7 +976,7 @@ namespace DotSpatial.Data
                     if (!shapes[shp].Intersects(aoi)) continue;
 
                     var feature = GetFeature(shp);
-                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                    affectedRegion.ExpandToInclude(feature.Geometry.Envelope.ToExtent());
                     result.Add(feature);
                 }
             }
@@ -984,10 +984,10 @@ namespace DotSpatial.Data
             {
                 foreach (var feature in Features)
                 {
-                    if (!region.Intersects(feature.Envelope) || !feature.Intersects(region.ToEnvelope())) continue;
+                    if (!region.Intersects(feature.Geometry.Envelope) || !feature.Intersects(region.ToEnvelope())) continue;
 
                     result.Add(feature);
-                    affectedRegion.ExpandToInclude(feature.Envelope.ToExtent());
+                    affectedRegion.ExpandToInclude(feature.Geometry.Envelope.ToExtent());
                 }
             }
 
@@ -1156,7 +1156,7 @@ namespace DotSpatial.Data
         protected IFeature GetLine(int index)
         {
             ShapeRange shape = ShapeIndices[index];
-            List<IBasicLineString> lines = new List<IBasicLineString>();
+            List<ILineString> lines = new List<ILineString>();
             foreach (PartRange part in shape.Parts)
             {
                 int i = part.StartIndex;
@@ -1197,7 +1197,7 @@ namespace DotSpatial.Data
             }
             else
             {
-                geom = FeatureGeometryFactory.CreateMultiLineString(new IBasicLineString[] { });
+                geom = FeatureGeometryFactory.CreateMultiLineString(new ILineString[] { });
             }
 
             var f = new Feature(geom)
@@ -1396,12 +1396,12 @@ namespace DotSpatial.Data
 
             if (polygons.Length == 1)
             {
-                feature.BasicGeometry = polygons[0];
+                feature.Geometry = polygons[0];
             }
             else
             {
                 // It's a multi part
-                feature.BasicGeometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
+                feature.Geometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
             }
 
             feature.ParentFeatureSet = this;
@@ -1970,8 +1970,8 @@ namespace DotSpatial.Data
 
                 foreach (IFeature feature in Features)
                 {
-                    feature.UpdateEnvelope();
-                    MyExtent.ExpandToInclude(new Extent(feature.Envelope));
+                    feature.Geometry.UpdateEnvelope();
+                    MyExtent.ExpandToInclude(new Extent(feature.Geometry.Envelope));
                 }
             }
             else
@@ -2434,13 +2434,13 @@ namespace DotSpatial.Data
             if (_features == null)
                 return;
 
-            int count = _features.Sum(f => f.NumPoints);
+            int count = _features.Sum(f => f.Geometry.NumPoints);
             _vertices = new double[count * 2];
             int i = 0;
             foreach (IFeature f in _features)
             {
                 // this should be all the coordinates, for all parts of the geometry.
-                IList<Coordinate> coords = f.Coordinates;
+                IList<Coordinate> coords = f.Geometry.Coordinates;
 
                 if (coords == null) continue;
 
@@ -2459,17 +2459,17 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Envelope), StartIndex = vIndex };
+                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.Envelope), StartIndex = vIndex };
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 
                 // for simplicity in looping, there is always at least one part.
                 // That way, the shape range can be ignored and the parts loop used instead.
                 int shapeStart = vIndex;
-                for (int part = 0; part < f.NumGeometries; part++)
+                for (int part = 0; part < f.Geometry.NumGeometries; part++)
                 {
                     PartRange prtx = new PartRange(_vertices, shapeStart, vIndex - shapeStart, FeatureType);
-                    IBasicPolygon bp = f.GetBasicGeometryN(part) as IBasicPolygon;
+                    IPolygon bp = f.Geometry.GetGeometryN(part) as IPolygon;
                     if (bp != null)
                     {
                         // Account for the Shell
@@ -2489,7 +2489,7 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        int numPoints = f.GetBasicGeometryN(part).NumPoints;
+                        int numPoints = f.Geometry.GetGeometryN(part).NumPoints;
 
                         // This is not a polygon, so just add the number of points.
                         vIndex += numPoints;
@@ -2524,7 +2524,7 @@ namespace DotSpatial.Data
             foreach (IFeature f in _features)
             {
                 // this should be all the coordinates, for all parts of the geometry.
-                IList<Coordinate> coords = f.Coordinates;
+                IList<Coordinate> coords = f.Geometry.Coordinates;
 
                 if (coords == null)
                 {

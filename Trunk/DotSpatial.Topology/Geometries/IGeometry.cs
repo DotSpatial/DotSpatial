@@ -23,6 +23,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using DotSpatial.Topology.Operation.Buffer;
 
@@ -31,7 +32,7 @@ namespace DotSpatial.Topology.Geometries
     /// <summary>  
     /// Interface for basic implementation of <c>Geometry</c>.
     /// </summary>
-    public interface IGeometry : IComparable, IRelate, IOverlay, IBasicGeometry
+    public interface IGeometry : IComparable, IRelate, IOverlay, ICloneable
     {
         #region Properties
 
@@ -74,10 +75,25 @@ namespace DotSpatial.Topology.Geometries
         ///</summary>
         Coordinate Coordinate { get; }
 
+        /// Coordinates
+        /// <summary>
+        /// Using an IList guarantees that we can access indexed coordinates, but the actual implementation
+        /// can be either in the form of an array or a list.
+        /// </summary>
+        IList<Coordinate> Coordinates { get; set; }
+
         /// <summary>
         /// Gets the <see cref="Dimension"/> of this geometry
         /// </summary>
         Dimension Dimension { get; set; }
+
+        /// <summary>
+        /// Returns this Geometry's bounding box. If this Geometry is the empty point,
+        /// returns an empty Point. If the Geometry is a point, returns a non-empty Point.
+        /// Otherwise, returns a Polygon whose points are (minx, miny), (maxx, miny),
+        /// (maxx, maxy), (minx, maxy), (minx, miny).
+        /// </summary>
+        IEnvelope Envelope { get; }
 
         /// <summary>
         /// Gets the envelope this <see cref="IGeometry"/> would fit into.
@@ -88,6 +104,13 @@ namespace DotSpatial.Topology.Geometries
         /// The <see cref="IGeometryFactory"/> used to create this geometry
         ///</summary>
         IGeometryFactory Factory { get; }
+
+        /// <summary>
+        /// Clarifies the subtype of geometry in string format in accordance with
+        /// OGC convenction, but most internal identification simply uses
+        /// the type identification.
+        /// </summary>
+        string GeometryType { get; }
 
         /// <summary>
         /// Computes an interior point of this Geometry. An interior point is guaranteed
@@ -125,6 +148,16 @@ namespace DotSpatial.Topology.Geometries
         /// Areal geometries return their perimeter.  Others return 0.0
         /// </summary>
         double Length { get; }
+
+        /// <summary>
+        /// Gets the number of geometries that make up this geometry
+        /// </summary>
+        int NumGeometries { get; }
+
+        /// <summary>
+        /// Get the number of coordinates, that make up this geometry
+        /// </summary>
+        int NumPoints { get; }
 
         /// <summary>
         /// Gets the OGC geometry type
@@ -357,6 +390,12 @@ namespace DotSpatial.Topology.Geometries
         bool EqualsTopologically(IGeometry other);
 
         /// <summary>
+        /// Returns the string that is the valid GML markup string.
+        /// </summary>
+        /// <returns>A String containing the valid GML</returns>
+        string ExportToGml();
+
+        /// <summary>
         /// Notifies this geometry that its coordinates have been changed by an external
         /// party (using a CoordinateFilter, for example). The Geometry will flush
         /// and/or update any information it has cached (such as its <see cref="IEnvelope"/>).
@@ -381,7 +420,7 @@ namespace DotSpatial.Topology.Geometries
         ///<summary>
         /// Gets an array of <see cref="T:System.Double"/> ordinate values.
         ///</summary>
-        Double[] GetOrdinates(Ordinate ordinate);
+        double[] GetOrdinates(Ordinate ordinate);
 
         /// <summary>
         /// Tests whether the distance from this <c>Geometry</c>
@@ -422,11 +461,35 @@ namespace DotSpatial.Topology.Geometries
         void Rotate(Coordinate origin, double radAngle);
 
         /// <summary>
+        /// Returns the Well-known Binary representation of this <c>Geometry</c>.
+        /// For a definition of the Well-known Binary format, see the OpenGIS Simple
+        /// Features Specification.
+        /// </summary>
+        /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
+        byte[] ToBinary();
+
+        /// <summary>
         /// Returns the feature representation as GML 2.1.1 XML document.
         /// This XML document is based on <c>Geometry.xsd</c> schema.
         /// NO features or XLink are implemented here!
         /// </summary>
         XmlReader ToGMLFeature();
+
+        /// ToString
+        /// <summary>
+        /// Returns the Well-known Text representation of this <c>Geometry</c>.
+        /// For a definition of the Well-known Text format, see the OpenGIS Simple
+        /// Features Specification.
+        /// </summary>
+        /// <returns>
+        /// The Well-known Text representation of this <c>Geometry</c>.
+        /// </returns>
+        string ToString();
+
+        /// <summary>
+        /// Forces the cached envelope to be re-calculated using the coordinates.
+        /// </summary>
+        void UpdateEnvelope();
 
         #endregion
     }

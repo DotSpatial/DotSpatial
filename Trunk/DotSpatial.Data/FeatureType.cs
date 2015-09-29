@@ -1,4 +1,4 @@
-// ********************************************************************************************************
+﻿// ********************************************************************************************************
 // Product Name: DotSpatial.Topology.dll
 // Description:  The basic topology module for the new dotSpatial libraries
 // ********************************************************************************************************
@@ -20,45 +20,38 @@
 // |         Name         |    Date    |                              Comment
 // |----------------------|------------|------------------------------------------------------------
 // |                      |            |
+// ********************************************************************************************************
 
-using System.Collections.Generic;
-
-namespace DotSpatial.Topology.Geometries
+namespace DotSpatial.Data
 {
     /// <summary>
-    /// This supports some of the basic data-related capabilities of a polygon, but no topology functions.
-    /// Each of these uses the specifically different nomenclature so that the parallel concepts in a
-    /// full Polygon can return the appropriate datatype.  Since Polygon will Implement IPolygonBase, it
-    /// is the responsibility of the developer to perform the necessary casts when returning this
-    /// set from the more complete topology classes.
+    /// An abreviated list for quick classification
     /// </summary>
-    public interface IBasicPolygon : IBasicGeometry
+    public enum FeatureType
     {
-        #region Properties
+        /// <summary>
+        /// None specified or custom
+        /// </summary>
+        Unspecified = 0,
 
         /// <summary>
-        /// Gets the list of Interior Rings in the form of ILineStringBase objects
+        /// Point
         /// </summary>
-        ICollection<IBasicLineString> Holes
-        {
-            get;
-            set;
-        }
+        Point = 1,
 
         /// <summary>
-        /// Gets the count of holes or interior rings
+        /// Line
         /// </summary>
-        int NumHoles { get; }
+        Line = 2,
 
         /// <summary>
-        /// Gets the exterior ring of the polygon as an ILineStringBase.
+        /// Polygon
         /// </summary>
-        IBasicLineString Shell
-        {
-            get;
-            set;
-        }
+        Polygon = 3,
 
-        #endregion
+        /// <summary>
+        /// MultiPoint
+        /// </summary>
+        MultiPoint = 4
     }
 }

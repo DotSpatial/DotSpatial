@@ -196,7 +196,7 @@ namespace DotSpatial.Tools
             while (randomList.Count > 0)
             {
                 int index = rnd.Next(0, randomList.Count - 1);
-                Coordinate coord = input.Features[randomList[index]].Coordinates[0];
+                Coordinate coord = input.Features[randomList[index]].Geometry.Coordinates[0];
                 while (kd.Search(coord.ToArray()) != null)
                 {
                     coord.X = coord.X * 1.000000000000001D;
@@ -238,7 +238,7 @@ namespace DotSpatial.Tools
                                 continue;
                             }
 
-                            double distanceToCell = cellCenter.Distance(featurePt.Coordinates[0]);
+                            double distanceToCell = cellCenter.Distance(featurePt.Geometry.Coordinates[0]);
                             if (distanceToCell <= distance || distance == 0)
                             {
                                 // If we can't convert the value to a double throw it out

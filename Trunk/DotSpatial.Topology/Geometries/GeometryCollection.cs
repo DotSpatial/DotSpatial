@@ -93,7 +93,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="inGeometry"></param>
         /// <param name="inFactory"></param>
-        public GeometryCollection(IBasicGeometry inGeometry, IGeometryFactory inFactory)
+        public GeometryCollection(IGeometry inGeometry, IGeometryFactory inFactory)
             : base(inFactory)
         {
             if (inGeometry == null)
@@ -102,35 +102,35 @@ namespace DotSpatial.Topology.Geometries
                 return;
             }
 
-            IBasicPolygon pg = inGeometry.GetBasicGeometryN(0) as IBasicPolygon;
+            IPolygon pg = inGeometry.GetGeometryN(0) as IPolygon;
             if (pg != null)
             {
                 _geometries = new IGeometry[inGeometry.NumGeometries];
                 for (int iGeom = 0; iGeom < inGeometry.NumGeometries; iGeom++)
                 {
-                    pg = inGeometry.GetBasicGeometryN(iGeom) as IBasicPolygon;
+                    pg = inGeometry.GetGeometryN(iGeom) as IPolygon;
                     _geometries[iGeom] = new Polygon(pg);
                 }
                 return;
             }
-            IBasicPoint pt = inGeometry.GetBasicGeometryN(0) as IBasicPoint;
+            IPoint pt = inGeometry.GetGeometryN(0) as IPoint;
             if (pt != null)
             {
                 _geometries = new IGeometry[inGeometry.NumGeometries];
                 for (int iGeom = 0; iGeom < inGeometry.NumGeometries; iGeom++)
                 {
-                    pt = inGeometry.GetBasicGeometryN(iGeom) as IBasicPoint;
-                    _geometries[iGeom] = new Point(pt);
+                    pt = inGeometry.GetGeometryN(iGeom) as IPoint;
+                   if (pt != null) _geometries[iGeom] = new Point(pt.Coordinate);
                 }
                 return;
             }
-            IBasicLineString ls = inGeometry.GetBasicGeometryN(0) as IBasicLineString;
+            ILineString ls = inGeometry.GetGeometryN(0) as ILineString;
             if (ls != null)
             {
                 _geometries = new IGeometry[inGeometry.NumGeometries];
                 for (int iGeom = 0; iGeom < inGeometry.NumGeometries; iGeom++)
                 {
-                    ls = inGeometry.GetBasicGeometryN(iGeom) as IBasicLineString;
+                    ls = inGeometry.GetGeometryN(iGeom) as ILineString;
                     _geometries[iGeom] = new LineString(ls);
                 }
                 return;
@@ -142,7 +142,7 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="baseGeometries"></param>
         /// <param name="factory"></param>
-        public GeometryCollection(IEnumerable<IBasicGeometry> baseGeometries, IGeometryFactory factory)
+        public GeometryCollection(IEnumerable<IGeometry> baseGeometries, IGeometryFactory factory)
             : base(factory)
         {
             if (baseGeometries == null) return; // Don't set up the geometries array
@@ -154,7 +154,7 @@ namespace DotSpatial.Topology.Geometries
                 throw new ArgumentException("geometries must not contain null elements");
 
             int index = 0;
-            foreach (IBasicGeometry baseGeometry in baseGeometries)
+            foreach (IGeometry baseGeometry in baseGeometries)
             {
                 _geometries[index] = FromBasicGeometry(baseGeometry);
                 index = index + 1;
@@ -568,16 +568,16 @@ namespace DotSpatial.Topology.Geometries
             return true;
         }
 
-        /// <summary>
-        /// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
-        /// If there is only one geometry, this will return this object.
-        /// </summary>
-        /// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
-        /// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
-        public override IBasicGeometry GetBasicGeometryN(int index)
-        {
-            return _geometries[index];
-        }
+        ///// <summary>
+        ///// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
+        ///// If there is only one geometry, this will return this object.
+        ///// </summary>
+        ///// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
+        ///// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
+        //public override IBasicGeometry GetBasicGeometryN(int index)
+        //{
+        //    return _geometries[index];
+        //}
 
         /// <summary>
         /// Returns a <c>GeometryCollectionEnumerator</c>:

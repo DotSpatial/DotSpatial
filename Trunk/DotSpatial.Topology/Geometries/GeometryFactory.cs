@@ -342,7 +342,7 @@ namespace DotSpatial.Topology.Geometries
         /// array will create an empty MultiLineString.
         /// </summary>
         /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
-        public virtual IMultiLineString CreateMultiLineString(IBasicLineString[] lineStrings)
+        public virtual IMultiLineString CreateMultiLineString(ILineString[] lineStrings)
         {
             if (lineStrings == null)
             {

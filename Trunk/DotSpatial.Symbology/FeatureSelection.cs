@@ -151,19 +151,19 @@ namespace DotSpatial.Symbology
                 bool doAdd = false;
                 if (_selectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Envelope))
+                    if (region.Intersects(f.Geometry.Envelope))
                     {
                         Add(f);
-                        affectedArea.ExpandToInclude(f.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
                         added = true;
                     }
                 }
                 else if (_selectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Envelope))
+                    if (region.Contains(f.Geometry.Envelope))
                     {
                         Add(f);
-                        affectedArea.ExpandToInclude(f.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
                         added = true;
                     }
                 }
@@ -184,15 +184,15 @@ namespace DotSpatial.Symbology
                 {
                     reg = region.ToPolygon();
                 }
-                IGeometry geom = Geometry.FromBasicGeometry(f.BasicGeometry);
+                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
                 switch (_selectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Contains(f.Envelope))
+                        if (region.Contains(f.Geometry.Envelope))
                         {
                             doAdd = true;
                         }
-                        else if (region.Intersects(f.Envelope))
+                        else if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Contains(geom)) doAdd = true;
                         }
@@ -208,11 +208,11 @@ namespace DotSpatial.Symbology
                         break;
                     case SelectionMode.Intersects:
 
-                        if (region.Contains(f.Envelope))
+                        if (region.Contains(f.Geometry.Envelope))
                         {
                             doAdd = true;
                         }
-                        else if (region.Intersects(f.Envelope))
+                        else if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Intersects(geom)) doAdd = true;
                         }
@@ -232,7 +232,7 @@ namespace DotSpatial.Symbology
                 if (doAdd)
                 {
                     Add(f);
-                    affectedArea.ExpandToInclude(f.Envelope);
+                    affectedArea.ExpandToInclude(f.Geometry.Envelope);
                     added = true;
                 }
             }
@@ -272,26 +272,26 @@ namespace DotSpatial.Symbology
                 IFeature f = kvp.Key;
                 if (SelectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Envelope))
+                    if (region.Intersects(f.Geometry.Envelope))
                     {
                         kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                        affectedArea.ExpandToInclude(f.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
                     }
                 }
                 else if (SelectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Envelope))
+                    if (region.Contains(f.Geometry.Envelope))
                     {
                         kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                        affectedArea.ExpandToInclude(f.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
                     }
                 }
                 IPolygon reg = region.ToPolygon();
-                IGeometry geom = Geometry.FromBasicGeometry(f.BasicGeometry);
+                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
                 switch (SelectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Intersects(f.Envelope))
+                        if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Contains(geom)) doFlip = true;
                         }
@@ -306,7 +306,7 @@ namespace DotSpatial.Symbology
                         if (reg.Disjoint(geom)) doFlip = true;
                         break;
                     case SelectionMode.Intersects:
-                        if (region.Intersects(f.Envelope))
+                        if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Intersects(geom)) doFlip = true;
                         }
@@ -325,7 +325,7 @@ namespace DotSpatial.Symbology
                 {
                     flipped = true;
                     kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                    affectedArea.ExpandToInclude(f.Envelope);
+                    affectedArea.ExpandToInclude(f.Geometry.Envelope);
                 }
             }
             ResumeChanges();
@@ -485,32 +485,32 @@ namespace DotSpatial.Symbology
                 bool doRemove = false;
                 if (_selectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Envelope))
+                    if (region.Intersects(f.Geometry.Envelope))
                     {
                         if (Remove(f))
                         {
                             removed = true;
-                            affectedArea.ExpandToInclude(f.Envelope);
+                            affectedArea.ExpandToInclude(f.Geometry.Envelope);
                         }
                     }
                 }
                 else if (_selectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Envelope))
+                    if (region.Contains(f.Geometry.Envelope))
                     {
                         if (Remove(f))
                         {
                             removed = true;
-                            affectedArea.ExpandToInclude(f.Envelope);
+                            affectedArea.ExpandToInclude(f.Geometry.Envelope);
                         }
                     }
                 }
                 IPolygon reg = region.ToPolygon();
-                IGeometry geom = Geometry.FromBasicGeometry(f.BasicGeometry);
+                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
                 switch (_selectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Intersects(f.Envelope))
+                        if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Contains(geom)) doRemove = true;
                         }
@@ -525,7 +525,7 @@ namespace DotSpatial.Symbology
                         if (reg.Disjoint(geom)) doRemove = true;
                         break;
                     case SelectionMode.Intersects:
-                        if (region.Intersects(f.Envelope))
+                        if (region.Intersects(f.Geometry.Envelope))
                         {
                             if (reg.Intersects(geom)) doRemove = true;
                         }
@@ -544,7 +544,7 @@ namespace DotSpatial.Symbology
                 {
                     if (Remove(f))
                     {
-                        affectedArea.ExpandToInclude(f.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
                         removed = true;
                     }
                 }
@@ -971,7 +971,7 @@ namespace DotSpatial.Symbology
             IEnvelope env = new Envelope();
             foreach (IFeature f in this)
             {
-                env.ExpandToInclude(f.Envelope);
+                env.ExpandToInclude(f.Geometry.Envelope);
             }
             return env;
         }

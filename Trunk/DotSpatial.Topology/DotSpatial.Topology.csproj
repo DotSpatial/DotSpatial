@@ -178,7 +178,6 @@
     <Compile Include="EdgeGraph\MarkHalfEdge.cs" />
     <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="FeatureType.cs" />
     <Compile Include="Algorithm\Angle.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
     <Compile Include="Geometries\GeometryComponentFilter.cs" />
@@ -406,10 +405,6 @@
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="GeometryCollectionNotSupportedException.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
-    <Compile Include="Geometries\IBasicGeometry.cs" />
-    <Compile Include="Geometries\IBasicLineString.cs" />
-    <Compile Include="Geometries\IBasicPoint.cs" />
-    <Compile Include="Geometries\IBasicPolygon.cs" />
     <Compile Include="Geometries\ICoordinate.cs" />
     <Compile Include="Geometries\ICoordinateF.cs" />
     <Compile Include="Geometries\ICoordinateFilter.cs" />

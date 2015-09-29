@@ -503,15 +503,14 @@ namespace DotSpatial.Topology.Geometries
         /// <param name="self">The <c>IEnvelope</c> that is being extended by this method</param>
         /// <param name="geom">A geometric intersection against the area of this envelope</param>
         /// <returns>A geometry, cropped to the space of this envelope if necessary.</returns>
-        public static IBasicGeometry Intersection(this IEnvelope self, IBasicGeometry geom)
+        public static IGeometry Intersection(this IEnvelope self, IGeometry geom)
         {
             if (self == null || geom == null) return null;
             if (self.IsNull) return null;
             IEnvelope env = geom.Envelope;
             if (env.Intersects(self) == false) return null;
             if (self.Contains(env)) return geom;
-            IGeometry g = Geometry.FromBasicGeometry(geom);
-            return g.Intersection(self.ToPolygon());
+            return geom.Intersection(self.ToPolygon());
         }
 
         /// <summary>

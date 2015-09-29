@@ -99,7 +99,7 @@ namespace DotSpatial.Topology.Geometries
         /// Creates a new topologically complete LineString from a LineStringBase
         /// </summary>
         /// <param name="lineStringBase"></param>
-        public LineString(IBasicLineString lineStringBase)
+        public LineString(ILineString lineStringBase)
             : this(lineStringBase.Coordinates, DefaultFactory) { }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace DotSpatial.Topology.Geometries
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
         /// <param name="factory"></param>
-        public LineString(IBasicLineString lineString, IGeometryFactory factory)
+        public LineString(ILineString lineString, IGeometryFactory factory)
             : this(lineString.Coordinates, factory) { }
 
 
@@ -308,17 +308,6 @@ namespace DotSpatial.Topology.Geometries
                 if (IsEmpty)
                     return null;
                 return GetPointN(NumPoints - 1);
-            }
-        }
-
-        /// <summary>
-        /// This will always contain Line, even if it is technically empty
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Line;
             }
         }
 

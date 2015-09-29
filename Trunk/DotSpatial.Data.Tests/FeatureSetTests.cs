@@ -120,7 +120,7 @@ namespace DotSpatial.Data.Tests
                 // Now try to open saved shapefile
                 // Points must have same location in WGS1984
                 var openFs = FeatureSet.Open(tmpFile);
-                var fs0 = (Point) openFs.Features[0].BasicGeometry;
+                var fs0 = (Point) openFs.Features[0].Geometry;
                 var c1 = new[] {fs0.X, fs0.Y};
                 Reproject.ReprojectPoints(c1, z, openFs.Projection, wgs, 0, 1); // reproject back to wgs1984
 

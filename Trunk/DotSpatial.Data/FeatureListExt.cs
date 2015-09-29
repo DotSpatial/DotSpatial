@@ -107,7 +107,7 @@ namespace DotSpatial.Data
         /// <param name="self">This feature list</param>
         /// <param name="geometry">The geometry to create a new feature from.</param>
         /// <exception cref="FeatureTypeMismatchException">Thrown if the new geometry does not match the currently specified feature type.  </exception>
-        public static void Add(this IFeatureList self, IBasicGeometry geometry)
+        public static void Add(this IFeatureList self, IGeometry geometry)
         {
             Feature f = new Feature(geometry);
             if (f.FeatureType != self.Parent.FeatureType && self.Parent.FeatureType != FeatureType.Unspecified)

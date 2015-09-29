@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using DotSpatial.Topology.Algorithm;
 using DotSpatial.Topology.Geometries.Utilities;
@@ -414,17 +415,6 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return _factory;
-            }
-        }
-
-        /// <summary>
-        /// This will be overridden by the specific feature type since this is abstract
-        /// </summary>
-        public virtual FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Unspecified;
             }
         }
 
@@ -1752,29 +1742,29 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public static IGeometry FromBasicGeometry(IBasicGeometry geom)
+        public static IGeometry FromBasicGeometry(IGeometry geom)
         {
             // first try to use the geometry as a sub-class itself
-            IBasicPolygon pg = geom as IBasicPolygon;
+            IPolygon pg = geom as IPolygon;
             if (pg != null) return new Polygon(pg);
 
-            IBasicLineString ls = geom as IBasicLineString;
+            ILineString ls = geom as ILineString;
             if (ls != null) return new LineString(ls);
 
-            IBasicPoint p = geom as IBasicPoint;
-            if (p != null) return new Point(p);
+            IPoint p = geom as IPoint;
+            if (p != null) return new Point(p.Coordinate);
 
             // if that fails, test for multi-geometry
             if (geom.NumGeometries > 0)
             {
-                IBasicGeometry test = geom.GetBasicGeometryN(0);
-                pg = test as IBasicPolygon;
+                IGeometry test = geom.GetGeometryN(0);
+                pg = test as IPolygon;
                 if (pg != null) return new MultiPolygon(geom);
 
-                ls = test as IBasicLineString;
+                ls = test as ILineString;
                 if (ls != null) return new MultiLineString(geom);
 
-                p = test as IBasicPoint;
+                p = test as IPoint;
                 if (p != null) return new MultiPoint(geom);
             }
             else
@@ -1811,16 +1801,16 @@ namespace DotSpatial.Topology.Geometries
             _envelope = null;
         }
 
-        /// <summary>
-        /// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
-        /// If there is only one geometry, this will return this object.
-        /// </summary>
-        /// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
-        /// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
-        public virtual IBasicGeometry GetBasicGeometryN(int index)
-        {
-            return this;
-        }
+        ///// <summary>
+        ///// This returns the index'th BasicGeometry where index is between 0 and NumGeometries - 1.
+        ///// If there is only one geometry, this will return this object.
+        ///// </summary>
+        ///// <param name="index">An integer index between 0 and NumGeometries - 1 specifying the basic geometry</param>
+        ///// <returns>A BasicGeometry representing only the specific sub-geometry specified</returns>
+        //public virtual IBasicGeometry GetBasicGeometryN(int index)
+        //{
+        //    return this;
+        //}
 
         /// <summary>
         /// Returns an element Geometry from a GeometryCollection,
@@ -1878,12 +1868,9 @@ namespace DotSpatial.Topology.Geometries
         /// </summary>
         /// <param name="array"> an array to validate.</param>
         /// <returns><c>true</c> if any of <c>array</c>s elements are <c>null</c>.</returns>
-        protected static bool HasNullElements(IEnumerable<IBasicGeometry> array)
+        protected static bool HasNullElements(IEnumerable<IGeometry> array)
         {
-            foreach (IBasicGeometry o in array)
-                if (o == null)
-                    return true;
-            return false;
+            return array.Any(o => o == null);
         }
 
         /// <summary>

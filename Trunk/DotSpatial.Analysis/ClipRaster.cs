@@ -34,10 +34,10 @@ namespace DotSpatial.Analysis
             double rasterMinXCenter = inputRaster.Xllcenter;
 
             // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
-            if (polygon.Envelope.Minimum.X < rasterMinXCenter)
+            if (polygon.Geometry.Envelope.Minimum.X < rasterMinXCenter)
                 return rasterMinXCenter;
             else
-                return FirstColumnToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
+                return FirstColumnToProcess(polygon.Geometry.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
         }
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace DotSpatial.Analysis
             double rasterMinXCenter = inputRaster.Xllcenter;
 
             // Does the poly sit to the left of the raster or does the raster start before the left edge of the poly
-            if (polygon.Envelope.Minimum.X < rasterMinXCenter)
+            if (polygon.Geometry.Envelope.Minimum.X < rasterMinXCenter)
                 return 0;
             else
-                return ColumnIndexToProcess(polygon.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
+                return ColumnIndexToProcess(polygon.Geometry.Envelope.Minimum.X, rasterMinXCenter, inputRaster.CellWidth);
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace DotSpatial.Analysis
             double rasterMaxXCenter = inputRaster.Extent.MaxX - inputRaster.CellWidth / 2;
 
             // Does the poly sit to the right of the raster or does the raster end after the right edge of the poly
-            if (polygon.Envelope.Right() > rasterMaxXCenter)
+            if (polygon.Geometry.Envelope.Right() > rasterMaxXCenter)
                 return inputRaster.NumColumns - 1;
             else
-                return ColumnIndexToProcess(polygon.Envelope.Right(), rasterMaxXCenter, inputRaster.CellWidth);
+                return ColumnIndexToProcess(polygon.Geometry.Envelope.Right(), rasterMaxXCenter, inputRaster.CellWidth);
         }
 
         /// <summary>
@@ -178,8 +178,7 @@ namespace DotSpatial.Analysis
         /// <param name="column">The column.</param>
         /// <param name="output">The output.</param>
         /// <param name="input">The input.</param>
-        private static void ParseIntersections(List<double> intersections, double xCurrent, int column, IRaster output,
-                                               IRaster input)
+        private static void ParseIntersections(List<double> intersections, double xCurrent, int column, IRaster output, IRaster input)
         {
             double yStart = 0;
             double yEnd;
@@ -249,14 +248,14 @@ namespace DotSpatial.Analysis
         {
             List<Border> borders = new List<Border>();
 
-            for (int i = 0; i < feature.Coordinates.Count - 1; i++)
+            for (int i = 0; i < feature.Geometry.Coordinates.Count - 1; i++)
             {
                 Border border = new Border();
-                border.X1 = feature.Coordinates[i].X;
-                border.X2 = feature.Coordinates[i + 1].X;
-
-                double y1 = feature.Coordinates[i].Y;
-                double y2 = feature.Coordinates[i + 1].Y;
+                border.X1 = feature.Geometry.Coordinates[i].X;
+                border.X2 = feature.Geometry.Coordinates[i + 1].X;
+                                   
+                double y1 = feature.Geometry.Coordinates[i].Y;
+                double y2 = feature.Geometry.Coordinates[i + 1].Y;
                 border.M = (y2 - y1) / (border.X2 - border.X1);
                 border.Q = y1 - (border.M * border.X1);
 

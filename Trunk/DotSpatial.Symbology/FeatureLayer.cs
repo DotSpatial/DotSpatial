@@ -1897,7 +1897,7 @@ namespace DotSpatial.Symbology
                 {
                     if (category == features[f].SchemeCategory)
                     {
-                        ext.ExpandToInclude(new Extent(f.Envelope));
+                        ext.ExpandToInclude(new Extent(f.Geometry.Envelope));
                     }
                 }
 

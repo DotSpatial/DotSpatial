@@ -135,35 +135,35 @@ namespace DotSpatial.Modeling.Forms
             }
             else if (rect.Width == 0)
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[2];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X, rect.Y + rect.Height);
+                Coordinate[] rectanglePoints = new Coordinate[2];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X, rect.Y + rect.Height);
                 rectanglePoly = new LineString(rectanglePoints);
             }
             else if (rect.Height == 0)
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[2];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y);
+                Coordinate[] rectanglePoints = new Coordinate[2];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X + rect.Width, rect.Y);
                 rectanglePoly = new LineString(rectanglePoints);
             }
             else
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[5];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X, rect.Y + rect.Height);
-                rectanglePoints[2] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y + rect.Height);
-                rectanglePoints[3] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y);
-                rectanglePoints[4] = new Topology.Geometries.Point(rect.X, rect.Y);
+                Coordinate[] rectanglePoints = new Coordinate[5];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X, rect.Y + rect.Height);
+                rectanglePoints[2] = new Coordinate(rect.X + rect.Width, rect.Y + rect.Height);
+                rectanglePoints[3] = new Coordinate(rect.X + rect.Width, rect.Y);
+                rectanglePoints[4] = new Coordinate(rect.X, rect.Y);
                 rectanglePoly = new Polygon(new LinearRing(rectanglePoints));
             }
 
             if (Shape == ModelShape.Arrow)
             {
-                Topology.Geometries.Point[] arrowPoints = new Topology.Geometries.Point[_arrowPath.PointCount];
+                Coordinate[] arrowPoints = new Coordinate[_arrowPath.PointCount];
                 for (int i = 0; i < _arrowPath.PointCount; i++)
                 {
-                    arrowPoints[i] = new Topology.Geometries.Point(_arrowPath.PathPoints[i].X + Location.X, _arrowPath.PathPoints[i].Y + Location.Y);
+                    arrowPoints[i] = new Coordinate(_arrowPath.PathPoints[i].X + Location.X, _arrowPath.PathPoints[i].Y + Location.Y);
                 }
                 LineString arrowLine = new LineString(arrowPoints);
                 return (arrowLine.Intersects(rectanglePoly));

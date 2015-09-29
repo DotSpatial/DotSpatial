@@ -101,7 +101,7 @@ namespace DotSpatial.Topology.Geometries
         /// Constructor
         /// </summary>
         /// <param name="linestringbase"></param>
-        public LinearRing(IBasicLineString linestringbase)
+        public LinearRing(ILineString linestringbase)
             : base(linestringbase)
         {
         }
@@ -118,17 +118,6 @@ namespace DotSpatial.Topology.Geometries
             get
             {
                 return Dimension.False;
-            }
-        }
-
-        /// <summary>
-        /// This will always contain Line, even if it is technically empty
-        /// </summary>
-        public override FeatureType FeatureType
-        {
-            get
-            {
-                return FeatureType.Line;
             }
         }
 

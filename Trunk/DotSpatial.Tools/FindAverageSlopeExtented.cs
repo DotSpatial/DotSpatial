@@ -174,14 +174,14 @@ namespace DotSpatial.Tools
                     Coordinate coordin = slopegrid.CellToProj(i, j);
                     IPoint pt = new Point(coordin);
                     IFeature point = new Feature(pt);
-                    if (!outerShpFile.Features[outerShpIndex].Covers(point))
+                    if (!outerShpFile.Features[outerShpIndex].Geometry.Covers(point.Geometry))
                     {
                         continue; // not found the point inside.
                     }
 
                     for (int c = 0; c < poly.Features.Count; c++)
                     {
-                        if (output.Features[c].Covers(point))
+                        if (output.Features[c].Geometry.Covers(point.Geometry))
                         {
                             areaCount[c]++;
                             areaTotal[c] += slopegrid.Value[i, j] / 100;

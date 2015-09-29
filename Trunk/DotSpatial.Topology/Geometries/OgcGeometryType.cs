@@ -44,47 +44,47 @@ namespace DotSpatial.Topology.Geometries
         /// CircularString
         /// </summary>
         CircularString = 8,
-        
+
         /// <summary>
         /// CompoundCurve
         /// </summary>
         CompoundCurve = 9,
-        
+
         /// <summary>
         /// CurvePolygon
         /// </summary>
         CurvePolygon = 10,
-        
+
         /// <summary>
         /// MultiCurve
         /// </summary>
         MultiCurve = 11,
-        
+
         /// <summary>
         /// MultiSurface
         /// </summary>
         MultiSurface = 12,
-        
+
         /// <summary>
         /// Curve
         /// </summary>
         Curve = 13,
-        
+
         /// <summary>
         /// Surface
         /// </summary>
         Surface = 14,
-        
+
         /// <summary>
         /// PolyhedralSurface
         /// </summary>
         PolyhedralSurface = 15,
-        
+
         /// <summary>
         /// TIN
         /// </summary>
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         TIN = 16
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     };
 }

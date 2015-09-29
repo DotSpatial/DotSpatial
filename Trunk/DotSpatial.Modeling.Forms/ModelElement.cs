@@ -300,26 +300,26 @@ namespace DotSpatial.Modeling.Forms
             }
             else if (rect.Width == 0)
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[2];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X, rect.Y + rect.Height);
+                Coordinate[] rectanglePoints = new Coordinate[2];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X, rect.Y + rect.Height);
                 rectanglePoly = new LineString(rectanglePoints);
             }
             else if (rect.Height == 0)
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[2];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y);
+                Coordinate[] rectanglePoints = new Coordinate[2];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X + rect.Width, rect.Y);
                 rectanglePoly = new LineString(rectanglePoints);
             }
             else
             {
-                Topology.Geometries.Point[] rectanglePoints = new Topology.Geometries.Point[5];
-                rectanglePoints[0] = new Topology.Geometries.Point(rect.X, rect.Y);
-                rectanglePoints[1] = new Topology.Geometries.Point(rect.X, rect.Y + rect.Height);
-                rectanglePoints[2] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y + rect.Height);
-                rectanglePoints[3] = new Topology.Geometries.Point(rect.X + rect.Width, rect.Y);
-                rectanglePoints[4] = new Topology.Geometries.Point(rect.X, rect.Y);
+                Coordinate[] rectanglePoints = new Coordinate[5];
+                rectanglePoints[0] = new Coordinate(rect.X, rect.Y);
+                rectanglePoints[1] = new Coordinate(rect.X, rect.Y + rect.Height);
+                rectanglePoints[2] = new Coordinate(rect.X + rect.Width, rect.Y + rect.Height);
+                rectanglePoints[3] = new Coordinate(rect.X + rect.Width, rect.Y);
+                rectanglePoints[4] = new Coordinate(rect.X, rect.Y);
                 rectanglePoly = new Polygon(new LinearRing(rectanglePoints));
             }
 
@@ -331,18 +331,18 @@ namespace DotSpatial.Modeling.Forms
                 case ModelShape.Ellipse:
                     int b = Height / 2;
                     int a = Width / 2;
-                    Topology.Geometries.Point[] ellipsePoints = new Topology.Geometries.Point[(4 * a) + 1];
+                    Coordinate[] ellipsePoints = new Coordinate[(4 * a) + 1];
                     for (int x = -a; x <= a; x++)
                     {
                         if (x == 0)
                         {
-                            ellipsePoints[x + a] = new Topology.Geometries.Point(Location.X + x + a, Location.Y);
-                            ellipsePoints[3 * a - x] = new Topology.Geometries.Point(Location.X + x + a, Location.Y + Height);
+                            ellipsePoints[x + a] = new Coordinate(Location.X + x + a, Location.Y);
+                            ellipsePoints[3 * a - x] = new Coordinate(Location.X + x + a, Location.Y + Height);
                         }
                         else
                         {
-                            ellipsePoints[x + a] = new Topology.Geometries.Point(Location.X + x + a, Location.Y + b - Math.Sqrt(Math.Abs(((b * b * x * x) / (a * a)) - (b * b))));
-                            ellipsePoints[3 * a - x] = new Topology.Geometries.Point(Location.X + x + a, Location.Y + b + Math.Sqrt(Math.Abs(((b * b * x * x) / (a * a)) - (b * b))));
+                            ellipsePoints[x + a] = new Coordinate(Location.X + x + a, Location.Y + b - Math.Sqrt(Math.Abs(((b * b * x * x) / (a * a)) - (b * b))));
+                            ellipsePoints[3 * a - x] = new Coordinate(Location.X + x + a, Location.Y + b + Math.Sqrt(Math.Abs(((b * b * x * x) / (a * a)) - (b * b))));
                         }
                     }
 
@@ -350,11 +350,11 @@ namespace DotSpatial.Modeling.Forms
                     return (ellipsePoly.Intersects(rectanglePoly));
 
                 case ModelShape.Triangle:
-                    Topology.Geometries.Point[] trianglePoints = new Topology.Geometries.Point[4];
-                    trianglePoints[0] = new Topology.Geometries.Point(Location.X, Location.Y);
-                    trianglePoints[1] = new Topology.Geometries.Point(Location.X, Location.Y + Height);
-                    trianglePoints[2] = new Topology.Geometries.Point(Location.X + Width - 5, Location.Y + ((Height - 5) / 2));
-                    trianglePoints[3] = new Topology.Geometries.Point(Location.X, Location.Y);
+                    Coordinate[] trianglePoints = new Coordinate[4];
+                    trianglePoints[0] = new Coordinate(Location.X, Location.Y);
+                    trianglePoints[1] = new Coordinate(Location.X, Location.Y + Height);
+                    trianglePoints[2] = new Coordinate(Location.X + Width - 5, Location.Y + ((Height - 5) / 2));
+                    trianglePoints[3] = new Coordinate(Location.X, Location.Y);
                     Polygon trianglePoly = new Polygon(new LinearRing(trianglePoints));
                     return (trianglePoly.Intersects(rectanglePoly));
 

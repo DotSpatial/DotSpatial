@@ -123,7 +123,7 @@ namespace DotSpatial.Tools
 
             foreach (IFeature t in input.Features)
             {
-                Geometry geom = t.BasicGeometry as Geometry;
+                Geometry geom = t.Geometry as Geometry;
                 if (geom != null)
                 {
                     for (int part = 0; part < geom.NumGeometries; part++)
@@ -181,7 +181,7 @@ namespace DotSpatial.Tools
                 int numOldPoints = 0;
                 int numNewPoints = 0;
 
-                Geometry geom = input.Features[j].BasicGeometry as Geometry;
+                Geometry geom = input.Features[j].Geometry as Geometry;
                 if (geom != null)
                 {
                     numOldPoints = geom.NumPoints;

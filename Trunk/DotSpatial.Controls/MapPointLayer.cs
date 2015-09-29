@@ -446,7 +446,7 @@ namespace DotSpatial.Controls
                 IPointSymbolizer ps = ds.IsSelected ? pc.SelectionSymbolizer : pc.Symbolizer;
                 if (ps == null) continue;
 
-                foreach (Coordinate c in feature.Coordinates)
+                foreach (Coordinate c in feature.Geometry.Coordinates)
                 {
                     DrawPoint(c.X, c.Y, e, ps, g, origTransform);
                 }

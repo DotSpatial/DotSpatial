@@ -44,8 +44,7 @@ namespace DotSpatial.Analysis
                 Coordinate c1 = edge.RightData.ToCoordinate();
                 Coordinate c2 = edge.LeftData.ToCoordinate();
                 LineString ls = new LineString(new List<Coordinate> { c1, c2 });
-                Feature f = new Feature(ls);
-                result.AddFeature(f);
+                result.AddFeature(ls);
             }
             return result;
         }
@@ -68,8 +67,7 @@ namespace DotSpatial.Analysis
                 Coordinate c1 = edge.VVertexA.ToCoordinate();
                 Coordinate c2 = edge.VVertexB.ToCoordinate();
                 LineString ls = new LineString(new List<Coordinate> { c1, c2 });
-                Feature f = new Feature(ls);
-                result.AddFeature(f);
+                result.AddFeature(ls);
             }
             return result;
         }

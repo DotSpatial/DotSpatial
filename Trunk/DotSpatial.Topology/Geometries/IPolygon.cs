@@ -22,28 +22,44 @@
 // |                      |            |
 // *********************************************************************************************************
 
+using System.Collections.Generic;
+
 namespace DotSpatial.Topology.Geometries
 {
     /// <summary>
     /// Full powered topology style Polygon
     /// </summary>
-    public interface IPolygon : IBasicPolygon, ISurface, IPolygonal
+    public interface IPolygon :  ISurface, IPolygonal
     {
         #region Properties
 
- ILineString ExteriorRing { get; }
-ILineString[] InteriorRings { get; }
-        /// <summary>
-        /// Gets the System.Array of <see cref="ILinearRing">ILinearRing</see>s that make up the holes in the polygon.
-        /// </summary>
-        new ILinearRing[] Holes { get; }
-
-int NumInteriorRings { get; }
+        ILineString ExteriorRing { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="ILinearRing">ILinearRing</see> for the Exterior Ring.
+        /// Gets the list of Interior Rings in the form of ILineStringBase objects
         /// </summary>
-        new ILinearRing Shell { get; }
+        ILinearRing[] Holes
+        {
+            get;
+            set;
+        }
+
+        ILineString[] InteriorRings { get; }
+
+        /// <summary>
+        /// Gets the count of holes or interior rings
+        /// </summary>
+        int NumHoles { get; }
+
+        int NumInteriorRings { get; }
+
+        /// <summary>
+        /// Gets the exterior ring of the polygon as an ILineStringBase.
+        /// </summary>
+        ILinearRing Shell
+        {
+            get;
+        }
 
         #endregion
 

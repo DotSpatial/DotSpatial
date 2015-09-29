@@ -303,7 +303,7 @@ namespace DotSpatial.Data
                 int fid = 0;
                 foreach (IFeature f in Features)
                 {
-                    Coordinate c = f.BasicGeometry.Coordinates[0];
+                    Coordinate c = f.Geometry.Coordinates[0];
                     shpStream.WriteBe(fid + 1);
                     shpStream.WriteBe(wordSize - 4);
                     shxStream.WriteBe(50 + fid * wordSize);
