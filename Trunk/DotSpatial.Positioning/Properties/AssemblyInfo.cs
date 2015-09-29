@@ -34,9 +34,9 @@ using System.Runtime.ConstrainedExecution;
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning")]
 
-[assembly: AssemblyVersion("2.0")]
-[assembly: AssemblyInformationalVersion("2.0 Experimental Release")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyVersion("1.8")]
+[assembly: AssemblyInformationalVersion("1.8 Experimental Release")]
+[assembly: AssemblyFileVersion("1.8")]
 
 
 #if PocketPC

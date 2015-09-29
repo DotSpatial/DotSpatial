@@ -48,9 +48,9 @@ using System.Runtime.ConstrainedExecution;
 		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2002")]
 #else
 		// .NET Framework 1.1
-[assembly: AssemblyVersion("2.0")]
-[assembly: AssemblyInformationalVersion("2.0 Experimental Release")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyVersion("1.8")]
+[assembly: AssemblyInformationalVersion("1.8 Experimental Release")]
+[assembly: AssemblyFileVersion("1.8")]
 
 		[assembly: AssemblyDescription("This assembly provides objects used to design geographic applications using Visual Studio 2003")]
 #endif

@@ -31,6 +31,6 @@ Imports DotSpatial.Controls
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0")> 
-<Assembly: AssemblyInformationalVersion("2.0 Experimental Release")> 
-<Assembly: AssemblyFileVersion("2.0.1.0")> 
+<Assembly: AssemblyVersion("1.8")> 
+<Assembly: AssemblyInformationalVersion("1.8")> 
+<Assembly: AssemblyFileVersion("1.8")> 
