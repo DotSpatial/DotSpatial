@@ -139,13 +139,12 @@ namespace DotSpatial.Data.Tests
             var outfile = FileTools.GetTempFileName(".shp");
             IFeatureSet fs = new FeatureSet();
             var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
-            IFeature f = new Feature(c);
 
             fs.CoordinateType = CoordinateType.Z;
             fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
             fs.DataTable.Columns.Add(new DataColumn(("ID"), typeof(int)));
 
-            f = fs.AddFeature(f);
+            IFeature f = fs.AddFeature(new Point(c));
             f.DataRow.BeginEdit();
             f.DataRow["ID"] = 1;
             f.DataRow.EndEdit();

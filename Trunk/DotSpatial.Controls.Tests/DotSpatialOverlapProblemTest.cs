@@ -15,7 +15,7 @@ namespace DotSpatial.Controls.Tests
             var feature1 = new Feature(FeatureType.Line, getCoordinatesFeature1());
             var feature2 = new Feature(FeatureType.Line, getCoordinatesFeature2());
 
-            var overlaps = feature1.Overlaps(feature2);
+            var overlaps = feature1.Geometry.Overlaps(feature2.Geometry);
 
         }
 

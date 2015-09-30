@@ -31,8 +31,8 @@ namespace DotSpatial.Data.Tests
                 Assert.AreEqual(original.Features.Count, newSave.Features.Count);
                 for (var j = 0; j < original.Features.Count; j += 100)
                 {
-                    Assert.AreEqual(original.Features.ElementAt(j).Coordinates,
-                        newSave.Features.ElementAt(j).Coordinates);
+                    Assert.AreEqual(original.Features.ElementAt(j).Geometry.Coordinates,
+                        newSave.Features.ElementAt(j).Geometry.Coordinates);
                 }
             }
             finally
