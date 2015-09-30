@@ -315,13 +315,11 @@ namespace DotSpatial.Plugins.Contourer
 
         internal static Topology.Geometries.LinearRing ToDotSpatialLinearRing(ILinearRing geom)
         {
-            Collection<Topology.Geometries.Point> vertices = new Collection<Topology.Geometries.Point>();
+            Collection<Topology.Geometries.Coordinate> vertices = new Collection<Topology.Geometries.Coordinate>();
 
             foreach (Coordinate coordinate in geom.Coordinates)
             {
-                Topology.Geometries.Point p = ToDotSpatialPoint(coordinate);
-
-                vertices.Add(p);
+                vertices.Add(ToDotSpatialCoordinate(coordinate));
             }
             return new Topology.Geometries.LinearRing(vertices);
         }

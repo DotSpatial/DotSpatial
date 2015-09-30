@@ -42,8 +42,8 @@ namespace DotSpatial.Plugins.Taudem
         /// ascribing a sign value to the individual part areas.
         ///</remarks>
         public static double AreaOfPart(IFeature polygon, int PartIndex)
-        {
-            return polygon.Area();
+        { //TODO why is partindex ignored?
+            return polygon.Geometry.Area;
         }
     }
 }

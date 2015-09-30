@@ -101,7 +101,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             if (_selectedFeature != null)
             {
-                foreach (Coordinate c in _selectedFeature.Coordinates)
+                foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
                 {
                     Point pt = e.GeoGraphics.ProjToPixel(c);
                     if (e.GeoGraphics.ImageRectangle.Contains(pt))
@@ -168,7 +168,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     Map.Invalidate();
                 }
             }
-            foreach (Coordinate c in _selectedFeature.Coordinates)
+            foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
             {
                 if (ext.Contains(c))
                 {
@@ -207,7 +207,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
                 Rectangle rect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w * 2, h * 2);
-                if (!rect.Contains(Map.ProjToPixel(_activeFeature.Coordinates[0])))
+                if (!rect.Contains(Map.ProjToPixel(_activeFeature.Geometry.Coordinates[0])))
                 {
                     mpl.SetCategory(_activeFeature, _oldCategory);
                     _activeFeature = null;
@@ -216,7 +216,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
             else
             {
-                if (!_activeFeature.Intersects(env))
+                if (!_activeFeature.Geometry.Intersects(env))
                 {
                     _layer.SetCategory(_activeFeature, _oldCategory);
                     _activeFeature = null;
@@ -262,7 +262,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             }
                         }
                         _imageRect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w, h);
-                        if (_imageRect.Contains(Map.ProjToPixel(feature.Coordinates[0])))
+                        if (_imageRect.Contains(Map.ProjToPixel(feature.Geometry.Coordinates[0])))
                         {
                             _activeFeature = feature;
                             _oldCategory = mpl.GetCategory(feature);
@@ -279,7 +279,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
                 else
                 {
-                    if (feature.Intersects(env))
+                    if (feature.Geometry.Intersects(env))
                     {
                         _activeFeature = feature;
                         _oldCategory = _layer.GetCategory(_activeFeature);
@@ -368,9 +368,9 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 if (_layer.DataSet.FeatureType == FeatureType.Polygon)
                 {
-                    for (int prt = 0; prt < _selectedFeature.NumGeometries; prt++)
+                    for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
                     {
-                        IBasicGeometry g = _selectedFeature.GetBasicGeometryN(prt);
+                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
                         IList<Coordinate> coords = g.Coordinates;
                         for (int ic = 0; ic < coords.Count; ic++)
                         {
@@ -405,9 +405,9 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
                 else if (_layer.DataSet.FeatureType == FeatureType.Line)
                 {
-                    for (int prt = 0; prt < _selectedFeature.NumGeometries; prt++)
+                    for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
                     {
-                        IBasicGeometry g = _selectedFeature.GetBasicGeometryN(prt);
+                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
                         IList<Coordinate> coords = g.Coordinates;
                         for (int ic = 0; ic < coords.Count; ic++)
                         {
@@ -466,7 +466,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     if (CheckForVertexDrag(e)) { return; }
 
                     // No vertex selection has occured.
-                    if (!_selectedFeature.Intersects(env.ToPolygon()))
+                    if (!_selectedFeature.Geometry.Intersects(env.ToPolygon()))
                     {
                         // We are clicking down outside of the given polygon, so clear our selected feature
                         DeselectFeature();
@@ -508,7 +508,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     {
                         _dragging = true;
                         Map.IsBusy = true;
-                        _dragCoord = _activeFeature.Coordinates[0];
+                        _dragCoord = _activeFeature.Geometry.Coordinates[0];
                         MapPointLayer mpl = _layer as MapPointLayer;
                         if (mpl != null)
                         {

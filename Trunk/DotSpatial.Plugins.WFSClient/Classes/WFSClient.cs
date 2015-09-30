@@ -372,7 +372,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
         private IFeature ExtractGeographicData(XmlNode c)
         {
             string geoData = "";
-            IBasicGeometry geo=null;
+            IGeometry geo=null;
             string[] pointValue=null;
             if (typeGeometry == FeatureType.Point)
             {
@@ -425,7 +425,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             return feat;
         }
 
-        private IBasicGeometry GetPolyline(MultiLineStringType multi)
+        private IGeometry GetPolyline(MultiLineStringType multi)
         {
 
              ILinearRing[] lines = new LinearRing[multi.LineStringMembers.Count];
@@ -452,7 +452,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
         }
 
-        private IBasicGeometry GetPolygon(MultiSurfaceType multi)
+        private IGeometry GetPolygon(MultiSurfaceType multi)
         {
             Polygon[] p = new Polygon[multi.SurfaceMemberItems.Count];
                 ;

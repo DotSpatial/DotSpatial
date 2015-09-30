@@ -5199,9 +5199,9 @@ namespace DotSpatial.Plugins.Taudem
                         }
 
                         // Check merged shape for single part and clockwise
-                        if (mergeShape.NumGeometries > 1)
+                        if (mergeShape.Geometry.NumGeometries > 1)
                         {
-                            Trace.WriteLine("Merged polygon has " + mergeShape.NumGeometries + " parts");
+                            Trace.WriteLine("Merged polygon has " + mergeShape.Geometry.NumGeometries + " parts");
                         }
                         else
                         {
@@ -5214,7 +5214,8 @@ namespace DotSpatial.Plugins.Taudem
                         }
 
                         var currshpidx = newShed.NumRows();
-                        newShed.AddFeature(mergeShape);
+                        
+                        newShed.AddFeature(mergeShape.Geometry);
                         newShed.EditCellValue(idfieldnum, currshpidx, currshpidx);
                         newShed.EditCellValue(linkfieldnum, currshpidx, strLinks);
                         newShed.EditCellValue(outletfieldnum, currshpidx, dsNodeVal);
@@ -6148,12 +6149,12 @@ namespace DotSpatial.Plugins.Taudem
 
         private static void GetStreamElevationPoints(int sindx, IFeatureSet streamShape, IRaster demGrid, out double elevLow, out double elevHigh)
         {
-            var shapePoints = streamShape.get_Shape(sindx).NumPoints;
+            var shapePoints = streamShape.get_Shape(sindx).Geometry.NumPoints;
             elevLow = 10000000;
             elevHigh = -1000000;
             for (var i = 0; i < shapePoints; i += 2)
             {
-                var pt = streamShape.get_Shape(sindx).Coordinates[i];
+                var pt = streamShape.get_Shape(sindx).Geometry.Coordinates[i];
 
                 RcIndex position = demGrid.ProjToCell(pt.X, pt.Y);
                 if (position.IsEmpty()) continue;
@@ -6542,10 +6543,10 @@ namespace DotSpatial.Plugins.Taudem
             IFeature lr = mergeAbuttingPolygons(left, right);
             IFeature outlet = shed.get_Shape(drainage.val);
             // check for multipart shape
-            if (outlet.NumGeometries > 1)
+            if (outlet.Geometry.NumGeometries > 1)
             {
                 Trace.WriteLine("Subbasin " + drainage.val.ToString() + " has " +
-                                          outlet.NumGeometries.ToString() + " parts");
+                                          outlet.Geometry.NumGeometries.ToString() + " parts");
             }
             else
             {
@@ -6566,10 +6567,10 @@ namespace DotSpatial.Plugins.Taudem
             if (shape2 == null) return shape1;
             IFeature mergeShape = null;
             // check both shapes are single parts
-            bool areSingleGeometryFeatures = (shape1.NumGeometries == 1) && (shape2.NumGeometries == 1);
+            bool areSingleGeometryFeatures = (shape1.Geometry.NumGeometries == 1) && (shape2.Geometry.NumGeometries == 1);
             if (areSingleGeometryFeatures)
             {
-                mergeShape = shape1.Union(shape2);
+                mergeShape = new Feature(shape1.Geometry.Union(shape2.Geometry));
             }
             else
             {
@@ -6589,7 +6590,7 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns></returns>
         private static IFeature ReverseShape(IFeature shape)
         {
-            IFeature result = new Feature(FeatureType.Polygon, shape.Coordinates.Reverse());
+            IFeature result = new Feature(FeatureType.Polygon, shape.Geometry.Coordinates.Reverse());
 
             return result;
         }
@@ -6602,18 +6603,18 @@ namespace DotSpatial.Plugins.Taudem
         /// <returns></returns>
         public static double SignedArea(IFeature shape)
         {
-            if (shape.NumPoints < 4)
+            if (shape.Geometry.NumPoints < 4)
                 return 0.0;
 
             double sum = 0.0;
             Coordinate ptb;
-            Coordinate ptc = shape.Coordinates[0];
+            Coordinate ptc = shape.Geometry.Coordinates[0];
             // If this is a close polygon, the starting point will
             // be the ssame as the end point, so we don't look at the last point.
-            for (int i = 0; i < shape.NumPoints - 1; i++)
+            for (int i = 0; i < shape.Geometry.NumPoints - 1; i++)
             {
                 ptb = ptc;
-                ptc = shape.Coordinates[i + 1];
+                ptc = shape.Geometry.Coordinates[i + 1];
                 double bx = ptb.X;
                 double by = ptb.Y;
                 double cx = ptc.X;

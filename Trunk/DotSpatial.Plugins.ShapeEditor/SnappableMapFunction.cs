@@ -112,7 +112,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             {
                 foreach (IFeature feat in layer.DataSet.Features)
                 {
-                    foreach (Coordinate c in feat.Coordinates)
+                    foreach (Coordinate c in feat.Geometry.Coordinates)
                     {
                         // If the mouse envelope contains the current coordinate, we found a snap location.
                         if (env.Contains(c))
