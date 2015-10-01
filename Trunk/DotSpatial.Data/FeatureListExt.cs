@@ -19,8 +19,9 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using System.Linq;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -88,11 +89,11 @@ namespace DotSpatial.Data
             }
             if (self.Parent.FeatureType == FeatureType.Line)
             {
-                self.Add(new Feature(new LineString(points)));
+                self.Add(new Feature(new LineString(points as Coordinate[])));
             }
             if (self.Parent.FeatureType == FeatureType.Polygon)
             {
-                self.Add(new Feature(new Polygon(points)));
+                self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
             }
             if (self.Parent.FeatureType == FeatureType.MultiPoint)
             {

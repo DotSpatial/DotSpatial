@@ -26,10 +26,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Index;
-
+using GeoAPI.Geometries;
+using NetTopologySuite.Index;
 namespace DotSpatial.Data
 {
     /// <summary>
@@ -101,7 +99,7 @@ namespace DotSpatial.Data
         public abstract FeatureType FeatureType { get; }
 
         /// <inheritdocs/>
-        public Dictionary<int, Shape> GetShapes(ref int startIndex, int count, IEnvelope envelope)
+        public Dictionary<int, Shape> GetShapes(ref int startIndex, int count, Envelope envelope)
         {
             Dictionary<int, Shape> result = new Dictionary<int, Shape>();
             ShapefileIndexFile shx = CacheShapeIndexFile();
@@ -272,6 +270,6 @@ namespace DotSpatial.Data
         /// <param name="shp"></param>
         /// <param name="envelope"></param>
         /// <returns></returns>
-        protected abstract Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, IEnvelope envelope);
+        protected abstract Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, Envelope envelope);
     }
 }

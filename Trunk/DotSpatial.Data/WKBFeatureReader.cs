@@ -21,8 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.IO;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
 {

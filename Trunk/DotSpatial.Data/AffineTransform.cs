@@ -21,7 +21,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {

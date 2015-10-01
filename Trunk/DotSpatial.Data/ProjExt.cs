@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Data

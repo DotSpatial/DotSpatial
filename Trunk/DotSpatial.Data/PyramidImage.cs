@@ -26,7 +26,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -111,9 +111,9 @@ namespace DotSpatial.Data
             if (_header.ImageHeaders[0] == null) return null;
 
             Rectangle expWindow = window.ExpandBy(1);
-            IEnvelope expEnvelope = envelope.ToEnvelope().Reproportion(window, expWindow);
+            Envelope expEnvelope = envelope.ToEnvelope().Reproportion(window, expWindow);
 
-            IEnvelope env = expEnvelope.Intersection(Bounds.Extent.ToEnvelope());
+            Envelope env = expEnvelope.Intersection(Bounds.Extent.ToEnvelope());
             if (env == null || env.IsNull || env.Height == 0 || env.Width == 0) return null;
 
             PyramidImageHeader he = _header.ImageHeaders[0];

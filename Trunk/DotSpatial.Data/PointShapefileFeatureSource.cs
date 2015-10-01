@@ -26,8 +26,7 @@
 
 using System;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -126,12 +125,12 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PointM)
             {
-                shpStream.WriteLe(point.M);                            // Byte 28      M                   Double      1           Little
+                shpStream.WriteLe(point[Ordinate.M]);                            // Byte 28      M                   Double      1           Little
             }
             else if (header.ShapeType == ShapeType.PointZ)
             {
                 shpStream.WriteLe(point.Z);                            // Byte 28      Z                   Double      1           Little
-                shpStream.WriteLe(point.M);                            // Byte 36      M                   Double      1           Little
+                shpStream.WriteLe(point[Ordinate.M]);                            // Byte 36      M                   Double      1           Little
             }
             shpStream.Flush();
             shpStream.Close();
@@ -153,14 +152,14 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public override IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount)
+        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
             return Select(new PointShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex,
                           maxCount);
         }
 
         /// <inheritdoc/>
-        public override void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
+        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
         {
             SearchAndModifyAttributes(new PointShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }

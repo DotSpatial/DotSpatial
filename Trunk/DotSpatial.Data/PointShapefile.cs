@@ -23,8 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -321,7 +320,7 @@ namespace DotSpatial.Data
                     }
                     if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
                     {
-                        shpStream.WriteLe(c.M);
+                        shpStream.WriteLe(c[Ordinate.M]);
                     }
                     fid++;
                 }

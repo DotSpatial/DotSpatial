@@ -22,9 +22,9 @@
 // |-----------------|----------|----------------------------------------------------------------------
 // ********************************************************************************************************
 
-using System.Xml.Serialization;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Index.QuadTree;
+using System.Collections;
+using GeoAPI.Geometries;
+using NetTopologySuite.Index.Quadtree;
 
 namespace DotSpatial.Data
 {
@@ -39,7 +39,7 @@ namespace DotSpatial.Data
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool Remove(IEnvelope itemEnv, int item)
+        public bool Remove(Envelope itemEnv, int item)
         {
             bool retValue = base.Remove(itemEnv, item); //TODO Do we need to adjust? I didn't know how to change that when I upgraded the NTS quellcode because I couldn't figure out how to call this code. (2015-08-24 jany_)
             //if (retValue)

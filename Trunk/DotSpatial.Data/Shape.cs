@@ -22,9 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -115,13 +115,13 @@ namespace DotSpatial.Data
             _vertices = new double[geometry.NumPoints * 2];
             _z = new double[geometry.NumPoints];
             _m = new double[geometry.NumPoints];
-            for (var i = 0; i < coords.Count; i++)
+            for (var i = 0; i < coords.Length; i++) //TODO jany_ do we cause error if we replace list.count with array.length?
             {
                 var c = coords[i];
                 _vertices[i * 2] = c.X;
                 _vertices[i * 2 + 1] = c.Y;
                 _z[i] = c.Z;
-                _m[i] = c.M;
+                _m[i] = c[Ordinate.M];
             }
             _shapeRange = ShapeRangeFromGeometry(geometry, featureType, _vertices, 0);
         }
@@ -139,9 +139,9 @@ namespace DotSpatial.Data
             {
                 _z = new[] { coord.Z };
             }
-            if (!double.IsNaN(coord.M))
+            if (!double.IsNaN(coord[Ordinate.M]))
             {
-                _m = new[] { coord.M };
+                _m = new[] { coord[Ordinate.M] };
             }
 
             _shapeRange = new ShapeRange(FeatureType.Point);
@@ -190,10 +190,10 @@ namespace DotSpatial.Data
                 throw new ArgumentNullException("envelope");
 
             _shapeRange = new ShapeRange(FeatureType.Polygon);
-            double xMin = envelope.Minimum.X;
-            double yMin = envelope.Minimum.Y;
-            double xMax = envelope.Maximum.X;
-            double yMax = envelope.Maximum.Y;
+            double xMin = envelope.MinX;
+            double yMin = envelope.MinY;
+            double xMax = envelope.MaxX;
+            double yMax = envelope.MaxY;
             _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
             _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) { NumVertices = 4 });
         }
@@ -268,7 +268,7 @@ namespace DotSpatial.Data
             {
                 GetCoordinates(part, coords);
             }
-            return factory.CreateMultiPoint(coords);
+            return factory.CreateMultiPoint(coords.ToArray());
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace DotSpatial.Data
             foreach (var part in _shapeRange.Parts)
             {
                 var coords = GetCoordinates(part);
-                lines.Add(factory.CreateLineString(coords));
+                lines.Add(factory.CreateLineString(coords.ToArray()));
             }
             if (lines.Count == 1) return (IGeometry)lines[0];
             return factory.CreateMultiLineString(lines.ToArray());
@@ -298,7 +298,7 @@ namespace DotSpatial.Data
             foreach (var d in part)
             {
                 var c = new Coordinate(d.X, d.Y);
-                if (M != null && M.Length > 0) c.M = M[i];
+                if (M != null && M.Length > 0) c[Ordinate.M] = M[i];
                 if (Z != null && Z.Length > 0) c.Z = Z[i];
                 i++;
                 coords.Add(c);
@@ -319,14 +319,14 @@ namespace DotSpatial.Data
             foreach (var part in _shapeRange.Parts)
             {
                 var coords = GetCoordinates(part);
-                var ring = factory.CreateLinearRing(coords);
+                var ring = factory.CreateLinearRing(coords.ToArray());
                 if (_shapeRange.Parts.Count == 1)
                 {
                     shells.Add(ring);
                 }
                 else
                 {
-                    if (CGAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCCW(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -348,13 +348,13 @@ namespace DotSpatial.Data
             {
                 ILinearRing testRing = t;
                 ILinearRing minShell = null;
-                IEnvelope minEnv = null;
-                IEnvelope testEnv = testRing.EnvelopeInternal;
+                Envelope minEnv = null;
+                Envelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
                 for (int j = 0; j < shells.Count; j++)
                 {
                     ILinearRing tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                    Envelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
                     var isContained = tryEnv.Contains(testEnv)
@@ -421,7 +421,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static ShapeRange ShapeRangeFromGeometry(IGeometry geometry, FeatureType featureType, double[] vertices, int offset)
         {
-            ShapeRange shx = new ShapeRange(featureType) { Extent = new Extent(geometry.Envelope) };
+            ShapeRange shx = new ShapeRange(featureType) { Extent = new Extent(geometry.EnvelopeInternal) };
             int vIndex = offset / 2;
             int shapeStart = vIndex;
             for (int part = 0; part < geometry.NumGeometries; part++)

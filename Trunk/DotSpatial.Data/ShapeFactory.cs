@@ -16,8 +16,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {

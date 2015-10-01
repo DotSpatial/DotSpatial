@@ -21,8 +21,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.Serialization;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -215,7 +214,7 @@ namespace DotSpatial.Data
         public FeatureRow AddFeatureRow(IGeometry geometry)
         {
             FeatureRow rowFeatureRow = ((FeatureRow)(NewRow()));
-            object[] columnValuesArray = new object[] { null, geometry.ToBinary() };
+            object[] columnValuesArray = { null, geometry.AsBinary() };
             rowFeatureRow.Geometry = geometry;
             rowFeatureRow.ItemArray = columnValuesArray;
             Rows.Add(rowFeatureRow);

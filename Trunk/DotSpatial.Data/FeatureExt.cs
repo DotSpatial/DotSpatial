@@ -20,8 +20,11 @@
 
 using System.Collections.Generic;
 using System.Data;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Operation.Buffer;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using GeoAPI.Operation.Buffer;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Buffer;
 
 namespace DotSpatial.Data
 {
@@ -50,7 +53,7 @@ namespace DotSpatial.Data
         /// <returns>An IFeature representing the output from the buffer operation</returns>
         public static IFeature Buffer(this IFeature self, double distance)
         {
-            IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Buffer(distance);
+            IGeometry g = self.Geometry.Buffer(distance);
             return new Feature(g);
         }
 
@@ -64,7 +67,7 @@ namespace DotSpatial.Data
         /// <returns>An IFeature representing the output from the buffer operation</returns>
         public static IFeature Buffer(this IFeature self, double distance, EndCapStyle endCapStyle)
         {
-            IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Buffer(distance, new BufferParameters { EndCapStyle = endCapStyle });
+            IGeometry g = self.Geometry.Buffer(distance, new BufferParameters { EndCapStyle = endCapStyle });
             return new Feature(g);
         }
 
@@ -78,7 +81,7 @@ namespace DotSpatial.Data
         /// <returns>An IFeature representing the output from the buffer operation</returns>
         public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments)
         {
-            IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Buffer(distance, quadrantSegments);
+            IGeometry g = self.Geometry.Buffer(distance, quadrantSegments);
             return new Feature(g);
         }
 
@@ -93,7 +96,7 @@ namespace DotSpatial.Data
         /// <returns>An IFeature representing the output from the buffer operation</returns>
         public static IFeature Buffer(this IFeature self, double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
-            IGeometry g = Geometry.FromBasicGeometry(self.Geometry).Buffer(distance, quadrantSegments, endCapStyle);
+            IGeometry g = self.Geometry.Buffer(distance, quadrantSegments, endCapStyle);
             return new Feature(g);
         }
 
@@ -236,7 +239,7 @@ namespace DotSpatial.Data
         /// <returns>A new feature that is the convex hull of this feature.</returns>
         public static IFeature ConvexHull(this IFeature self)
         {
-            return new Feature(Geometry.FromBasicGeometry(self.Geometry).ConvexHull());
+            return new Feature(self.Geometry.ConvexHull());
         }
 
         /// <summary>
@@ -655,7 +658,7 @@ namespace DotSpatial.Data
         /// <param name="radAngle">The rotation angle in radian.</param>
         public static void Rotate(this IFeature self, Coordinate origin, double radAngle)
         {
-            IGeometry geo = Geometry.FromBasicGeometry(self.Geometry);
+            IGeometry geo = self.Geometry;
             geo.Rotate(origin, radAngle);
             self.Geometry = geo;
         }

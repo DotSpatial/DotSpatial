@@ -21,7 +21,8 @@
 // ********************************************************************************************************
 
 using System.Drawing;
-using DotSpatial.Topology.Geometries;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -38,14 +39,13 @@ namespace DotSpatial.Data
         /// <param name="original">The original rectangle </param>
         /// <param name="newRectangle">The new rectangle</param>
         /// <returns>A new IEnvelope </returns>
-        public static IEnvelope Reproportion(this IEnvelope self, Rectangle original, Rectangle newRectangle)
+        public static Envelope Reproportion(this Envelope self, Rectangle original, Rectangle newRectangle)
         {
             double dx = self.Width * (newRectangle.X - original.X) / original.Width;
             double dy = self.Height * (newRectangle.Y - original.Y) / original.Height;
             double w = (self.Width * newRectangle.Width / original.Width);
             double h = (self.Height * newRectangle.Height / original.Height);
-            double[] ext = { self.X + dx, self.X + dx + w, self.Y + dy - h, self.Y + dy };
-            return new Envelope(ext);
+            return new Envelope(self.MinX + dx, self.MinX + dx + w, self.MinY + dy - h, self.MinY + dy);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="self">The Envelope to convert into an Extent.</param>
         /// <returns></returns>
-        public static Extent ToExtent(this IEnvelope self)
+        public static Extent ToExtent(this Envelope self)
         {
             if (self.HasZ())
             {
@@ -67,5 +67,6 @@ namespace DotSpatial.Data
             }
             return new Extent(self);
         }
+
     }
 }

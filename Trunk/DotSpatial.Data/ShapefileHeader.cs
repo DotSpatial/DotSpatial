@@ -21,7 +21,7 @@
 
 using System;
 using System.IO;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -420,11 +420,9 @@ namespace DotSpatial.Data
         /// Generates a new envelope based on the extents of this shapefile.
         /// </summary>
         /// <returns>An Envelope</returns>
-        public IEnvelope ToEnvelope()
+        public Envelope ToEnvelope()
         {
-            IEnvelope env = new Envelope(_xMin, _xMax, _yMin, _yMax, Zmin, Zmax);
-            env.Minimum.M = _mMin;
-            env.Maximum.M = _mMax;
+            Envelope env = new Envelope(_xMin, _xMax, _yMin, _yMax, Zmin, Zmax, _mMin,_mMax);
             return env;
         }
 

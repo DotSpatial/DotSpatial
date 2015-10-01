@@ -21,8 +21,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -52,7 +51,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets or sets the envelope.  If this is null, then no envelope is used.
         /// </summary>
-        public IEnvelope Envelope { get; set; }
+        public Envelope Envelope { get; set; }
 
         /// <summary>
         /// Gets the feature type of the feature source.
@@ -84,7 +83,7 @@ namespace DotSpatial.Data
         /// </summary>
         public class Enumerator : IEnumerator<Dictionary<int, Shape>>
         {
-            private readonly IEnvelope _envelope;
+            private readonly Envelope _envelope;
             private readonly int _pageSize;
             private readonly IShapeSource _source;
             private int _count;

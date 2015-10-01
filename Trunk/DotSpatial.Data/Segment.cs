@@ -19,8 +19,8 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {

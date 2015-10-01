@@ -18,14 +18,14 @@
 //
 // ********************************************************************************************************
 
-using DotSpatial.Topology;
+
 
 namespace DotSpatial.Data
 {
     /// <summary>
     /// IRasterBounds
     /// </summary>
-    public interface IRasterBounds : IRectangle
+    public interface IRasterBounds// : IRectangle
     {
         #region Methods
 
@@ -50,6 +50,34 @@ namespace DotSpatial.Data
         void Save();
 
         #endregion
+
+
+        /// <summary>
+        /// Gets or sets the difference between the maximum and minimum y values.
+        /// Setting this will change only the minimum Y value, leaving the Top alone
+        /// </summary>
+        /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
+        double Height { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the difference between the maximum and minimum x values.
+        /// Setting this will change only the Maximum X value, and leave the minimum X alone
+        /// </summary>
+        /// <returns>max x - min x, or 0 if this is a null <c>Envelope</c>.</returns>
+        double Width { get; set; }
+
+        /// <summary>
+        /// In the precedent set by controls, envelopes support an X value and a width.
+        /// The X value represents the Minimum.X coordinate for this envelope.
+        /// </summary>
+        double X { get; set; }
+
+        /// <summary>
+        /// In the precedent set by controls, envelopes support a Y value and a height.
+        /// the Y value represents the Top of the envelope, (Maximum.Y) and the Height
+        /// represents the span between Maximum and Minimum Y.
+        /// </summary>
+        double Y { get; set; }
 
         #region Properties
 

@@ -23,8 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -376,10 +375,10 @@ namespace DotSpatial.Data
                 {
                     continue;
                 }
-                bbWriter.Write(f.Geometry.Envelope.Minimum.X);      // Byte 12   Xmin    Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Minimum.Y);      // Byte 20   Ymin    Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Maximum.X);      // Byte 28   Xmax    Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Maximum.Y);      // Byte 36   Ymax    Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MinX);      // Byte 12   Xmin    Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MinY);      // Byte 20   Ymin    Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxX);      // Byte 28   Xmax    Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxY);      // Byte 36   Ymax    Double      1           Little
 
                 bbWriter.Write(points.Count);              // Byte 44   #Points Integer     1           Little
                 // Byte X    Points   Point    #Points       Little
@@ -392,8 +391,8 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.MultiPointZ)
                 {
-                    bbWriter.Write(f.Geometry.Envelope.Minimum.Z);
-                    bbWriter.Write(f.Geometry.Envelope.Maximum.Z);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.MinZ);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.MaxZ);
                     foreach (Coordinate coord in points)
                     {
                         bbWriter.Write(coord.Z);
@@ -408,12 +407,12 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        bbWriter.Write(f.Geometry.Envelope.Minimum.M);
-                        bbWriter.Write(f.Geometry.Envelope.Maximum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.MinM);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.MaxM);
                     }
                     foreach (Coordinate coord in points)
                     {
-                        bbWriter.Write(coord.M);
+                        bbWriter.Write(coord[Ordinate.M]);
                     }
                 }
 

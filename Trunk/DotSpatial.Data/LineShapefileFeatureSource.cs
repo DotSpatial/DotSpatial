@@ -27,8 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -138,10 +137,10 @@ namespace DotSpatial.Data
                 return;
             }
 
-            shpStream.WriteLe(feature.Envelope.Minimum.X);             // Byte 12      Xmin                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Minimum.Y);             // Byte 20      Ymin                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Maximum.X);             // Byte 28      Xmax                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Maximum.Y);             // Byte 36      Ymax                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MinX);             // Byte 12      Xmin                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MinY);             // Byte 20      Ymin                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MaxX);             // Byte 28      Xmax                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MaxY);             // Byte 36      Ymax                Double      1           Little
             shpStream.WriteLe(parts.Count);                            // Byte 44      NumParts            Integer     1           Little
             shpStream.WriteLe(points.Count);                           // Byte 48      NumPoints           Integer     1           Little
             // Byte 52      Parts               Integer     NumParts    Little
@@ -162,8 +161,8 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolyLineZ)
             {
-                shpStream.WriteLe(feature.Envelope.Minimum.Z);
-                shpStream.WriteLe(feature.Envelope.Maximum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.MinZ);
+                shpStream.WriteLe(feature.EnvelopeInternal.MaxZ);
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -181,14 +180,14 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.Envelope.Minimum.M);
-                    shpStream.WriteLe(feature.Envelope.Maximum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MinM);
+                    shpStream.WriteLe(feature.EnvelopeInternal.MaxM);
                 }
 
                 double[] mVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; i++)
                 {
-                    mVals[ipoint] = points[ipoint].M;
+                    mVals[ipoint] = points[ipoint][Ordinate.M]; //TODO jany_ does this work?
                     ipoint++;
                 }
                 shpStream.WriteLe(mVals, 0, points.Count);
@@ -213,14 +212,14 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public override IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount)
+        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
             return Select(new LineShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex,
                           maxCount);
         }
 
         /// <inheritdoc/>
-        public override void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
+        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
         {
             SearchAndModifyAttributes(new LineShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }

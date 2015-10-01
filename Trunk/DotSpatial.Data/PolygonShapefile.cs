@@ -23,9 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace DotSpatial.Data
 {
@@ -211,7 +210,7 @@ namespace DotSpatial.Data
                     ILineString bl = pg.Shell;
                     IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                    if (CGAlgorithms.IsCounterClockwise(bl.Coordinates))
+                    if (CGAlgorithms.IsCCW(bl.Coordinates))
                     {
                         // Exterior rings need to be clockwise
                         coords = coords.Reverse();
@@ -225,7 +224,7 @@ namespace DotSpatial.Data
                     {
                         parts.Add(points.Count);
                         IEnumerable<Coordinate> holeCoords = hole.Coordinates;
-                        if (!CGAlgorithms.IsCounterClockwise(hole.Coordinates))
+                        if (!CGAlgorithms.IsCCW(hole.Coordinates))
                         {
                             // Interior rings need to be counter-clockwise
                             holeCoords = holeCoords.Reverse();
@@ -271,10 +270,10 @@ namespace DotSpatial.Data
                     continue;
                 }
 
-                bbWriter.Write(f.Geometry.Envelope.Minimum.X);             // Byte 12      Xmin                Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Minimum.Y);             // Byte 20      Ymin                Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Maximum.X);             // Byte 28      Xmax                Double      1           Little
-                bbWriter.Write(f.Geometry.Envelope.Maximum.Y);             // Byte 36      Ymax                Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MinX);             // Byte 12      Xmin                Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MinY);             // Byte 20      Ymin                Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxX);             // Byte 28      Xmax                Double      1           Little
+                bbWriter.Write(f.Geometry.EnvelopeInternal.MaxY);             // Byte 36      Ymax                Double      1           Little
                 bbWriter.Write(parts.Count);                 // Byte 44      NumParts            Integer     1           Little
                 bbWriter.Write(points.Count);                // Byte 48      NumPoints           Integer     1           Little
                 // Byte 52      Parts               Integer     NumParts    Little
@@ -297,8 +296,8 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.PolygonZ)
                 {
-                    bbWriter.Write(f.Geometry.Envelope.Minimum.Z);
-                    bbWriter.Write(f.Geometry.Envelope.Maximum.Z);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.MinZ);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.MaxZ);
                     double[] zVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; i++)
                     {
@@ -317,14 +316,14 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        bbWriter.Write(f.Geometry.Envelope.Minimum.M);
-                        bbWriter.Write(f.Geometry.Envelope.Maximum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.MinM);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.MaxM);
                     }
 
                     double[] mVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; i++)
                     {
-                        mVals[ipoint] = points[ipoint].M;
+                        mVals[ipoint] = points[ipoint][Ordinate.M];
                         ipoint++;
                     }
                     bbWriter.Write(mVals);

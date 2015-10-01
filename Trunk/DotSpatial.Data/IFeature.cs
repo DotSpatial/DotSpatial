@@ -21,7 +21,7 @@
 
 using System;
 using System.Data;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -65,18 +65,18 @@ namespace DotSpatial.Data
             set;
         }
 
-        /// <summary>
-        /// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
-        /// returns a cached value in this object or is retrieved directly from the geometry.  The
-        /// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
-        /// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
-        /// will cause the Envelope property to reference the geometry.
-        /// </summary>
-        CacheTypes EnvelopeSource
-        {
-            get;
-            set;
-        }
+        ///// <summary>
+        ///// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
+        ///// returns a cached value in this object or is retrieved directly from the geometry.  The
+        ///// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
+        ///// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
+        ///// will cause the Envelope property to reference the geometry.
+        ///// </summary>
+        //CacheTypes EnvelopeSource
+        //{
+        //    get;
+        //    set;
+        //}
 
         FeatureType FeatureType { get; }
 

@@ -25,9 +25,8 @@
 // ********************************************************************************************************
 
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Index;
+using GeoAPI.Geometries;
+using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
 {
@@ -82,7 +81,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdocs/>
-        protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, IEnvelope envelope)
+        protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, Envelope envelope)
         {
             // Read from the index file because some deleted records
             // might still exist in the .shp file.

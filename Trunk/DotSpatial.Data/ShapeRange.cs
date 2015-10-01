@@ -21,8 +21,7 @@
 using System;
 using System.Collections.Generic;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -234,7 +233,7 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the ShapeRange class.
         /// </summary>
         /// <param name="env">The envelope to turn into a shape range.</param>
-        public ShapeRange(IEnvelope env)
+        public ShapeRange(Envelope env)
             :this(env.ToExtent())
         {
         }

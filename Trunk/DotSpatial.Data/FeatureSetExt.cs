@@ -21,8 +21,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -142,9 +143,9 @@ namespace DotSpatial.Data
         /// <param name="self">This feature</param>
         /// <param name="env">The envelope to test</param>
         /// <returns>Boolean, true if the intersection occurs</returns>
-        public static bool Intersects(this IFeature self, IEnvelope env)
+        public static bool Intersects(this IFeature self, Envelope env)
         {
-            return self.Geometry.Envelope.Intersects(env) && Geometry.FromBasicGeometry(self.Geometry).Intersects(env.ToPolygon());
+            return self.Geometry.EnvelopeInternal.Intersects(env) && self.Geometry.Intersects(env.ToPolygon());
         }
 
         /// <summary>
@@ -257,7 +258,7 @@ namespace DotSpatial.Data
                 for (int i = 0; i < self.Features.Count; i++)
                 {
                     IFeature selfFeature = self.Features[i];
-                    List<IFeature> potentialOthers = other.Select(selfFeature.Geometry.Envelope.ToExtent());
+                    List<IFeature> potentialOthers = other.Select(selfFeature.Geometry.EnvelopeInternal.ToExtent());
                     foreach (IFeature otherFeature in potentialOthers)
                     {
                         selfFeature.Intersection(otherFeature, result, joinType);
@@ -284,7 +285,7 @@ namespace DotSpatial.Data
                     }
                     pm.Reset();
                     pm = new ProgressMeter(progHandler, "Calculating Intersections", self.NumRows());
-                    Extent otherEnvelope = new Extent(union.Geometry.Envelope);
+                    Extent otherEnvelope = union.Geometry.EnvelopeInternal.ToExtent();
                     for (int shp = 0; shp < self.ShapeIndices.Count; shp++)
                     {
                         if (!self.ShapeIndices[shp].Extent.Intersects(otherEnvelope)) continue;

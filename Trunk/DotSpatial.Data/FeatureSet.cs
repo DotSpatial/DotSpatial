@@ -23,9 +23,9 @@ using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -392,7 +392,7 @@ namespace DotSpatial.Data
 
                 if (!shape.Range.Extent.IsEmpty())
                 {
-                    Extent.ExpandToInclude(new Extent(addedFeature.Geometry.Envelope));
+                    Extent.ExpandToInclude(addedFeature.Geometry.EnvelopeInternal.ToExtent());
                 }
             }
         }
@@ -976,7 +976,7 @@ namespace DotSpatial.Data
                     if (!shapes[shp].Intersects(aoi)) continue;
 
                     var feature = GetFeature(shp);
-                    affectedRegion.ExpandToInclude(feature.Geometry.Envelope.ToExtent());
+                    affectedRegion.ExpandToInclude(feature.Geometry.EnvelopeInternal.ToExtent());
                     result.Add(feature);
                 }
             }
@@ -984,10 +984,10 @@ namespace DotSpatial.Data
             {
                 foreach (var feature in Features)
                 {
-                    if (!region.Intersects(feature.Geometry.Envelope) || !feature.Intersects(region.ToEnvelope())) continue;
+                    if (!region.Intersects(feature.Geometry.EnvelopeInternal) || !feature.Intersects(region.ToEnvelope())) continue;
 
                     result.Add(feature);
-                    affectedRegion.ExpandToInclude(feature.Geometry.Envelope.ToExtent());
+                    affectedRegion.ExpandToInclude(feature.Geometry.EnvelopeInternal.ToExtent());
                 }
             }
 
@@ -1167,7 +1167,7 @@ namespace DotSpatial.Data
                     coords.Add(c);
                     if (M != null && M.Length > 0)
                     {
-                        c.M = M[i];
+                        c[Ordinate.M] = M[i];
                     }
 
                     if (Z != null && Z.Length > 0)
@@ -1178,7 +1178,7 @@ namespace DotSpatial.Data
                     i++;
                 }
 
-                lines.Add(new LineString(coords));
+                lines.Add(new LineString(coords.ToArray()));
             }
 
             IGeometry geom;
@@ -1226,7 +1226,7 @@ namespace DotSpatial.Data
                     coords.Add(c);
                     if (M != null && M.Length != 0)
                     {
-                        c.M = M[i];
+                        c[Ordinate.M] = M[i];
                     }
 
                     if (Z != null && Z.Length != 0)
@@ -1243,7 +1243,7 @@ namespace DotSpatial.Data
                 FeatureGeometryFactory = GeometryFactory.Default;
             }
 
-            var mp = FeatureGeometryFactory.CreateMultiPoint(coords);
+            var mp = FeatureGeometryFactory.CreateMultiPoint(coords.ToArray());
             var f = new Feature(mp)
             {
                 ParentFeatureSet = this,
@@ -1263,7 +1263,7 @@ namespace DotSpatial.Data
             Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
             if (M != null && M.Length != 0)
             {
-                c.M = M[index];
+                c[Ordinate.M] = M[index];
             }
 
             if (Z != null && Z.Length != 0)
@@ -1298,10 +1298,10 @@ namespace DotSpatial.Data
                 FeatureGeometryFactory = GeometryFactory.Default;
             }
 
-            Feature feature = new Feature
-                                  {
-                                      Envelope = ShapeIndices[index].Extent.ToEnvelope()
-                                  };
+            Feature feature = new Feature();
+                                  //{
+                                  //    Envelope = ShapeIndices[index].Extent.ToEnvelope()
+                                  //};
             ShapeRange shape = ShapeIndices[index];
             List<ILinearRing> shells = new List<ILinearRing>();
             List<ILinearRing> holes = new List<ILinearRing>();
@@ -1314,7 +1314,7 @@ namespace DotSpatial.Data
                     Coordinate c = new Coordinate(d.X, d.Y);
                     if (M != null && M.Length > 0)
                     {
-                        c.M = M[i];
+                        c[Ordinate.M] = M[i];
                     }
                     if (Z != null && Z.Length > 0)
                     {
@@ -1323,14 +1323,14 @@ namespace DotSpatial.Data
                     i++;
                     coords.Add(c);
                 }
-                ILinearRing ring = FeatureGeometryFactory.CreateLinearRing(coords);
+                ILinearRing ring = FeatureGeometryFactory.CreateLinearRing(coords.ToArray());
                 if (shape.Parts.Count == 1)
                 {
                     shells.Add(ring);
                 }
                 else
                 {
-                    if (CGAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCCW(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -1353,30 +1353,21 @@ namespace DotSpatial.Data
             {
                 ILinearRing testRing = t;
                 ILinearRing minShell = null;
-                IEnvelope minEnv = null;
-                IEnvelope testEnv = testRing.EnvelopeInternal;
+                Envelope minEnv = null;
+                Envelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
                 ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {
                     tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                    Envelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                     {
                         minEnv = minShell.EnvelopeInternal;
                     }
 
-                    bool isContained = false;
-
-                    if (tryEnv.Contains(testEnv)
-                        && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                            || PointInList(testPt, tryRing.Coordinates)))
-                    {
-                        isContained = true;
-                    }
-
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (isContained)
+                    if (tryEnv.Contains(testEnv)&& (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)|| PointInList(testPt, tryRing.Coordinates)))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
@@ -1969,9 +1960,9 @@ namespace DotSpatial.Data
                 }
 
                 foreach (IFeature feature in Features)
-                {
-                    feature.Geometry.UpdateEnvelope();
-                    MyExtent.ExpandToInclude(new Extent(feature.Geometry.Envelope));
+                { //TODO jany_ do we need to update the envelope?
+                    //feature.Geometry.UpdateEnvelope();
+                    MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
                 }
             }
             else
@@ -2459,7 +2450,7 @@ namespace DotSpatial.Data
             int vIndex = 0;
             foreach (IFeature f in _features)
             {
-                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.Envelope), StartIndex = vIndex };
+                ShapeRange shx = new ShapeRange(FeatureType) { Extent = new Extent(f.Geometry.EnvelopeInternal), StartIndex = vIndex };
                 _shapeIndices.Add(shx);
                 f.ShapeIndex = shx;
 

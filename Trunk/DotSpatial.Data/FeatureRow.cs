@@ -19,8 +19,8 @@
 
 using System;
 using System.Data;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.IO;
+using GeoAPI.Geometries;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
 {
@@ -59,7 +59,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void StoreShape()
         {
-            this[_featureTable.GeometryColumn] = _shape.ToGeometry(_featureTable.GeometryFactory).ToBinary();
+            this[_featureTable.GeometryColumn] = _shape.ToGeometry(_featureTable.GeometryFactory).AsBinary();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void StoreGeometry()
         {
-            this[_featureTable.GeometryColumn] = _geometry.ToBinary();
+            this[_featureTable.GeometryColumn] = _geometry.AsBinary();
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace DotSpatial.Data
                     // Accessing property here to try to create geometry.
                     IGeometry lazyGeom = Geometry;
                     if (lazyGeom == null) return null;
-                    _extent = new Extent(lazyGeom.Envelope);
+                    _extent = lazyGeom.EnvelopeInternal.ToExtent();
                 }
                 return _extent;
             }
