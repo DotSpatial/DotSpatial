@@ -18,7 +18,7 @@
 //
 // ********************************************************************************************************
 
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if members were removed from the selection</returns>
         public static bool ClearSelection(this ISelectable self)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.ClearSelection(out ignoreMe);
         }
 
@@ -46,9 +46,9 @@ namespace DotSpatial.Symbology
         /// <param name="tolerant">The region where selection should take place</param>
         /// <param name="strict">The region in cases where tolerance is not used</param>
         /// <returns>Boolean, true if the selected state of any members of this item were altered</returns>
-        public static bool InvertSelection(this ISelectable self, IEnvelope tolerant, IEnvelope strict)
+        public static bool InvertSelection(this ISelectable self, Envelope tolerant, Envelope strict)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.InvertSelection(tolerant, strict, SelectionMode.Intersects, out ignoreMe);
         }
 
@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <param name="affectedArea">The affected area to modify</param>
         /// <returns>Boolean, true if the selection state was modified by this action</returns>
-        public static bool InvertSelection(this IFeatureLayer self, IEnvelope tolerant, IEnvelope strict, out IEnvelope affectedArea)
+        public static bool InvertSelection(this IFeatureLayer self, Envelope tolerant, Envelope strict, out Envelope affectedArea)
         {
             return self.InvertSelection(tolerant, strict, SelectionMode.Intersects, out affectedArea);
         }
@@ -74,9 +74,9 @@ namespace DotSpatial.Symbology
         /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <returns>Boolean, true if any items were added to the selection</returns>
-        public static bool Select(this ISelectable self, IEnvelope tolerant, IEnvelope strict)
+        public static bool Select(this ISelectable self, Envelope tolerant, Envelope strict)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.Select(tolerant, strict, SelectionMode.Intersects, out ignoreMe);
         }
 
@@ -89,7 +89,7 @@ namespace DotSpatial.Symbology
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <param name="affectedArea">The geographic envelope of the region impacted by the selection.</param>
         /// <returns>True if any members were added to the current selection.</returns>
-        public static bool Select(this IFeatureLayer self, IEnvelope tolerant, IEnvelope strict, out IEnvelope affectedArea)
+        public static bool Select(this IFeatureLayer self, Envelope tolerant, Envelope strict, out Envelope affectedArea)
         {
             return self.Select(tolerant, strict, SelectionMode.Intersects, out affectedArea);
         }
@@ -102,9 +102,9 @@ namespace DotSpatial.Symbology
         /// <param name="tolerant">The geographic envelope in cases like cliking near points where tolerance is allowed</param>
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance</param>
         /// <returns>Boolean, true if any items were added to the selection</returns>
-        public static bool UnSelect(this ISelectable self, IEnvelope tolerant, IEnvelope strict)
+        public static bool UnSelect(this ISelectable self, Envelope tolerant, Envelope strict)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.UnSelect(tolerant, strict, SelectionMode.Intersects, out ignoreMe);
         }
 
@@ -116,7 +116,7 @@ namespace DotSpatial.Symbology
         /// <param name="strict">The geographic region when working with absolutes, without a tolerance.</param>
         /// <param name="affectedArea">The geographic envelope that will be visibly impacted by the change.</param>
         /// <returns>Boolean, true if members were removed from the selection.</returns>
-        public static bool UnSelect(this IFeatureLayer self, IEnvelope tolerant, IEnvelope strict, out IEnvelope affectedArea)
+        public static bool UnSelect(this IFeatureLayer self, Envelope tolerant, Envelope strict, out Envelope affectedArea)
         {
             return self.UnSelect(tolerant, strict, SelectionMode.Intersects, out affectedArea);
         }

@@ -26,8 +26,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -136,7 +135,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="env"></param>
         /// <param name="selected"></param>
-        public LineSymbolizer(IEnvelope env, bool selected)
+        public LineSymbolizer(Envelope env, bool selected)
         {
             _strokes = new CopyList<IStroke>();
             ICartographicStroke myStroke = new CartographicStroke();

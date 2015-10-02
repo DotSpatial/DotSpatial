@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -85,7 +85,7 @@ namespace DotSpatial.Symbology
         /// be resolved for the entire layer first based on whatever internal priority
         /// methods exist.  Only the non-colliding visible labels will be returned.
         /// </summary>
-        Dictionary<int, IEnvelope> GetLabelExtents();
+        Dictionary<int, Envelope> GetLabelExtents();
 
         /// <summary>
         /// Gets the list of possibly rotated label boundaries visible in the current display.

@@ -18,7 +18,7 @@
 //
 // ********************************************************************************************************
 
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -32,8 +32,8 @@ namespace DotSpatial.Symbology
         /// <param name="featureLayer"></param>
         public static void InvertSelection(this IFeatureLayer featureLayer)
         {
-            IEnvelope ignoreMe;
-            IEnvelope env = featureLayer.Extent.ToEnvelope();
+            Envelope ignoreMe;
+            Envelope env = featureLayer.Extent.ToEnvelope();
             featureLayer.InvertSelection(env, env, SelectionMode.IntersectsExtent, out ignoreMe);
         }
 

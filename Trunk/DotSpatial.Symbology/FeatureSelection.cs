@@ -24,7 +24,9 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -41,7 +43,7 @@ namespace DotSpatial.Symbology
         private FilterType _activeType;
         IFeatureCategory _category;
         int _chunk;
-        private IEnvelope _envelope;
+        private Envelope _envelope;
         bool _isReadOnly;
         private IFeatureCategory _regionCategory;
         bool _selected;
@@ -136,7 +138,7 @@ namespace DotSpatial.Symbology
         /// <param name="region"></param>
         /// <param name="affectedArea">The affected area of this addition</param>
         /// <returns>True if any item was actually added to the collection</returns>
-        public bool AddRegion(IEnvelope region, out IEnvelope affectedArea)
+        public bool AddRegion(Envelope region, out Envelope affectedArea)
         {
             bool added = false;
             SuspendChanges();
@@ -151,19 +153,19 @@ namespace DotSpatial.Symbology
                 bool doAdd = false;
                 if (_selectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Geometry.Envelope))
+                    if (region.Intersects(f.Geometry.EnvelopeInternal))
                     {
                         Add(f);
-                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                         added = true;
                     }
                 }
                 else if (_selectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Geometry.Envelope))
+                    if (region.Contains(f.Geometry.EnvelopeInternal))
                     {
                         Add(f);
-                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                         added = true;
                     }
                 }
@@ -171,28 +173,28 @@ namespace DotSpatial.Symbology
                 IGeometry reg;
                 if (region.Width == 0 && region.Height == 0)
                 {
-                    reg = new Point(region.X, region.Y);
+                    reg = new Point(region.MinX, region.MaxY);
                 }
                 else if (region.Height == 0 || region.Width == 0)
                 {
                     Coordinate[] coords = new Coordinate[2];
-                    coords[0] = new Coordinate(region.X, region.Y);
-                    coords[1] = new Coordinate(region.Bottom(), region.Right());
+                    coords[0] = new Coordinate(region.MinX, region.MaxY);
+                    coords[1] = new Coordinate(region.MinY, region.MaxX);
                     reg = new LineString(coords);
                 }
                 else
                 {
                     reg = region.ToPolygon();
                 }
-                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
+                IGeometry geom = f.Geometry;
                 switch (_selectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Contains(f.Geometry.Envelope))
+                        if (region.Contains(f.Geometry.EnvelopeInternal))
                         {
                             doAdd = true;
                         }
-                        else if (region.Intersects(f.Geometry.Envelope))
+                        else if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Contains(geom)) doAdd = true;
                         }
@@ -208,11 +210,11 @@ namespace DotSpatial.Symbology
                         break;
                     case SelectionMode.Intersects:
 
-                        if (region.Contains(f.Geometry.Envelope))
+                        if (region.Contains(f.Geometry.EnvelopeInternal))
                         {
                             doAdd = true;
                         }
-                        else if (region.Intersects(f.Geometry.Envelope))
+                        else if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Intersects(geom)) doAdd = true;
                         }
@@ -232,7 +234,7 @@ namespace DotSpatial.Symbology
                 if (doAdd)
                 {
                     Add(f);
-                    affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                    affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                     added = true;
                 }
             }
@@ -259,7 +261,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="region">The geographic region to reverse the selected state</param>
         /// <param name="affectedArea">The affected area to invert</param>
-        public bool InvertSelection(IEnvelope region, out IEnvelope affectedArea)
+        public bool InvertSelection(Envelope region, out Envelope affectedArea)
         {
             SuspendChanges();
             bool flipped = false;
@@ -272,26 +274,26 @@ namespace DotSpatial.Symbology
                 IFeature f = kvp.Key;
                 if (SelectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Geometry.Envelope))
+                    if (region.Intersects(f.Geometry.EnvelopeInternal))
                     {
                         kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                     }
                 }
                 else if (SelectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Geometry.Envelope))
+                    if (region.Contains(f.Geometry.EnvelopeInternal))
                     {
                         kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                     }
                 }
                 IPolygon reg = region.ToPolygon();
-                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
+                IGeometry geom = f.Geometry;
                 switch (SelectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Intersects(f.Geometry.Envelope))
+                        if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Contains(geom)) doFlip = true;
                         }
@@ -306,7 +308,7 @@ namespace DotSpatial.Symbology
                         if (reg.Disjoint(geom)) doFlip = true;
                         break;
                     case SelectionMode.Intersects:
-                        if (region.Intersects(f.Geometry.Envelope))
+                        if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Intersects(geom)) doFlip = true;
                         }
@@ -325,7 +327,7 @@ namespace DotSpatial.Symbology
                 {
                     flipped = true;
                     kvp.Value.IsSelected = !kvp.Value.IsSelected;
-                    affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                    affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                 }
             }
             ResumeChanges();
@@ -470,7 +472,7 @@ namespace DotSpatial.Symbology
         /// <param name="region">The geographic region to remove</param>
         /// <param name="affectedArea">A geographic area that was affected by this change.</param>
         /// <returns>Boolean, true if the collection was changed</returns>
-        public bool RemoveRegion(IEnvelope region, out IEnvelope affectedArea)
+        public bool RemoveRegion(Envelope region, out Envelope affectedArea)
         {
             SuspendChanges();
             bool removed = false;
@@ -485,32 +487,32 @@ namespace DotSpatial.Symbology
                 bool doRemove = false;
                 if (_selectionMode == SelectionMode.IntersectsExtent)
                 {
-                    if (region.Intersects(f.Geometry.Envelope))
+                    if (region.Intersects(f.Geometry.EnvelopeInternal))
                     {
                         if (Remove(f))
                         {
                             removed = true;
-                            affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                            affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                         }
                     }
                 }
                 else if (_selectionMode == SelectionMode.ContainsExtent)
                 {
-                    if (region.Contains(f.Geometry.Envelope))
+                    if (region.Contains(f.Geometry.EnvelopeInternal))
                     {
                         if (Remove(f))
                         {
                             removed = true;
-                            affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                            affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                         }
                     }
                 }
                 IPolygon reg = region.ToPolygon();
-                IGeometry geom = Geometry.FromBasicGeometry(f.Geometry);
+                IGeometry geom = f.Geometry;
                 switch (_selectionMode)
                 {
                     case SelectionMode.Contains:
-                        if (region.Intersects(f.Geometry.Envelope))
+                        if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Contains(geom)) doRemove = true;
                         }
@@ -525,7 +527,7 @@ namespace DotSpatial.Symbology
                         if (reg.Disjoint(geom)) doRemove = true;
                         break;
                     case SelectionMode.Intersects:
-                        if (region.Intersects(f.Geometry.Envelope))
+                        if (region.Intersects(f.Geometry.EnvelopeInternal))
                         {
                             if (reg.Intersects(geom)) doRemove = true;
                         }
@@ -544,7 +546,7 @@ namespace DotSpatial.Symbology
                 {
                     if (Remove(f))
                     {
-                        affectedArea.ExpandToInclude(f.Geometry.Envelope);
+                        affectedArea.ExpandToInclude(f.Geometry.EnvelopeInternal);
                         removed = true;
                     }
                 }
@@ -629,7 +631,7 @@ namespace DotSpatial.Symbology
         /// If the collection changes, this will be invalidated automatically,
         /// and the next envelope request will re-calcualte the envelope.
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -966,12 +968,12 @@ namespace DotSpatial.Symbology
 
         #endregion
 
-        private IEnvelope GetEnvelope()
+        private Envelope GetEnvelope()
         {
-            IEnvelope env = new Envelope();
+            Envelope env = new Envelope();
             foreach (IFeature f in this)
             {
-                env.ExpandToInclude(f.Geometry.Envelope);
+                env.ExpandToInclude(f.Geometry.EnvelopeInternal);
             }
             return env;
         }

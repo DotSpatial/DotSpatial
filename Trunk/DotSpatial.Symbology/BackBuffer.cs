@@ -23,7 +23,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -52,7 +52,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The real world extents for the entire buffer
         /// </summary>
-        private IEnvelope _extents;
+        private Envelope _extents;
 
         /// <summary>
         /// The image being shown
@@ -96,7 +96,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the geographic extents for the entire back buffer.
         /// </summary>
-        public IEnvelope Extents
+        public Envelope Extents
         {
             get { return _extents; }
             set
@@ -200,8 +200,8 @@ namespace DotSpatial.Symbology
         public Coordinate PixelToProj(PointF testPoint)
         {
             Coordinate coord = new Coordinate();
-            coord.X = testPoint.X * _extents.Width / _image.Width + _extents.Minimum.X;
-            coord.Y = _extents.Maximum.Y - testPoint.Y * _extents.Height / _image.Height;
+            coord.X = testPoint.X * _extents.Width / _image.Width + _extents.MinX;
+            coord.Y = _extents.MaxY - testPoint.Y * _extents.Height / _image.Height;
             return coord;
         }
 
@@ -243,8 +243,8 @@ namespace DotSpatial.Symbology
         public PointF ProjToPixel(Coordinate coord)
         {
             PointF pt = new PointF();
-            pt.X = Convert.ToSingle(((coord.X - _extents.Minimum.X) * _image.Width / _extents.Width));
-            pt.Y = Convert.ToSingle(((_extents.Maximum.Y - coord.Y) * _image.Height / _extents.Height));
+            pt.X = Convert.ToSingle(((coord.X - _extents.MinX) * _image.Width / _extents.Width));
+            pt.Y = Convert.ToSingle(((_extents.MaxY - coord.Y) * _image.Height / _extents.Height));
             return pt;
         }
 
@@ -268,7 +268,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// The envelope bounds in geographic coordinates.
         /// </summary>
-        public IEnvelope Envelope
+        public Envelope Envelope
         {
             get { return _extents; }
         }

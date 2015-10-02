@@ -154,7 +154,7 @@ namespace DotSpatial.Symbology
         /// so if you want to select a new region instead of an old one, first use ClearSelection.
         /// This is the default selection that only tests the anchor point, not the entire label.
         /// </summary>
-        /// <param name="region">An IEnvelope showing a 3D selection box for intersection testing.</param>
+        /// <param name="region">An Envelope showing a 3D selection box for intersection testing.</param>
         /// <returns>True if any members were added to the current selection.</returns>
         public bool Select(Extent region)
         {

@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -32,7 +32,7 @@ namespace DotSpatial.Symbology
     {
         #region Private Variables
 
-        private IEnvelope _geographicView;
+        private Envelope _geographicView;
 
         #endregion
 
@@ -56,20 +56,20 @@ namespace DotSpatial.Symbology
         /// <param name="z1">The first z-value.</param>
         /// <param name="z2">The second z-value.</param>
         public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2) :
-            base(x1, x2, y1, y2, z1, z2)
+            base(x1, x2, y1, y2, z1, z2, double.NaN, double.NaN)
         {
             _geographicView = new Envelope(x1, x2, y1, y2);
         }
 
         /// <summary>
-        /// Constructs a new DrawWindow based on the specified IEnvelope.  The envelope becomes
+        /// Constructs a new DrawWindow based on the specified Envelope.  The envelope becomes
         /// the GeographicView for this DrawWindow.
         /// </summary>
         /// <param name="env"></param>
-        public DrawWindow(IEnvelope env)
+        public DrawWindow(Envelope env)
             : base(env)
         {
-            _geographicView = env.Copy();
+            _geographicView = env.Clone();
         }
 
         #endregion
@@ -80,11 +80,11 @@ namespace DotSpatial.Symbology
         /// Replaces the inherited Envelope copy in order to create a copy of the DrawWindow instead
         /// </summary>
         /// <returns></returns>
-        public new DrawWindow Copy()
+        public DrawWindow Copy()
         {
-            IEnvelope env = base.Copy();
-            DrawWindow dw = new DrawWindow(env);
-            dw.GeographicView = _geographicView;
+            
+            Envelope env = base.Clone();
+            DrawWindow dw = new DrawWindow(env) {GeographicView = _geographicView};
             return dw;
         }
 
@@ -105,10 +105,10 @@ namespace DotSpatial.Symbology
         /// <returns>A PointF</returns>
         public PointF ProjToDrawWindow(double inX, double inY)
         {
-            double x = inX - Minimum.X;
-            double y = inY - Minimum.Y;
-            x = x / base.Width;
-            y = y / base.Height;
+            double x = inX - MinX;
+            double y = inY - MinY;
+            x = x / Width;
+            y = y / Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
@@ -119,10 +119,10 @@ namespace DotSpatial.Symbology
         /// <returns>A PointF</returns>
         public PointF ProjToDrawWindow(Coordinate inCoord)
         {
-            double x = inCoord.X - Minimum.X;
-            double y = inCoord.Y - Minimum.Y;
-            x = x / base.Width;
-            y = y / base.Height;
+            double x = inCoord.X - MinX;
+            double y = inCoord.Y - MinY;
+            x = x / Width;
+            y = y / Height;
             return new PointF(Convert.ToSingle(x), Convert.ToSingle(y));
         }
 
@@ -134,10 +134,10 @@ namespace DotSpatial.Symbology
         public PointF[] ProjToDrawWindow(List<Coordinate> inCoords)
         {
             if (inCoords == null || inCoords.Count == 0) return null;
-            double minX = Minimum.X;
-            double minY = Minimum.Y;
-            double w = base.Width;
-            double h = base.Height;
+            double minX = MinX;
+            double minY = MinY;
+            double w = Width;
+            double h = Height;
             PointF[] result = new PointF[inCoords.Count];
             for (int i = 0; i < inCoords.Count; i++)
             {
@@ -159,8 +159,8 @@ namespace DotSpatial.Symbology
         {
             double x = Convert.ToDouble(inPoint);
             double y = Convert.ToDouble(inPoint);
-            x = base.Width * x + Minimum.X;
-            y = base.Height * y + Minimum.Y;
+            x = Width * x + MinX;
+            y = Height * y + MinY;
             return new Coordinate(x, y);
         }
 
@@ -174,10 +174,10 @@ namespace DotSpatial.Symbology
         {
             List<Coordinate> result = new List<Coordinate>();
 
-            double minX = Minimum.X;
-            double minY = Minimum.Y;
-            double w = base.Width;
-            double h = base.Height;
+            double minX = MinX;
+            double minY = MinY;
+            double w = Width;
+            double h = Height;
             foreach (PointF point in inPoints)
             {
                 double x = Convert.ToDouble(point);
@@ -194,10 +194,10 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public RectangleF ProjToDrawWindow(IEnvelope env)
+        public RectangleF ProjToDrawWindow(Envelope env)
         {
-            PointF ul = ProjToDrawWindow(env.Minimum.X, env.Maximum.Y);
-            PointF lr = ProjToDrawWindow(env.Maximum.X, env.Minimum.Y);
+            PointF ul = ProjToDrawWindow(env.MinX, env.MaxY);
+            PointF lr = ProjToDrawWindow(env.MaxX, env.MinY);
             return new RectangleF(ul.X, ul.Y, lr.X - ul.X, ul.Y - lr.Y);
         }
 
@@ -206,7 +206,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="window"></param>
         /// <returns></returns>
-        public IEnvelope DrawWindowToProj(RectangleF window)
+        public Envelope DrawWindowToProj(RectangleF window)
         {
             PointF lr = new PointF(window.Right, window.Bottom);
             return new Envelope(DrawWindowToProj(window.Location), DrawWindowToProj(lr));
@@ -219,7 +219,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// This is the the current extent of the map in geographic coordinates.
         /// </summary>
-        public virtual IEnvelope GeographicView
+        public virtual Envelope GeographicView
         {
             get { return _geographicView; }
             set { _geographicView = value; }

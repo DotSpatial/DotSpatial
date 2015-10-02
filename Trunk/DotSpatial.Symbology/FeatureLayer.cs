@@ -22,8 +22,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Msg = DotSpatial.Symbology.SymbologyMessageStrings;
 
 namespace DotSpatial.Symbology
@@ -207,7 +206,7 @@ namespace DotSpatial.Symbology
                 return;
             }
 
-            IEnvelope env = _selection.Envelope;
+            Envelope env = _selection.Envelope;
             if (env.Width == 0 || env.Height == 0)
             {
                 env.ExpandBy(distanceX, distanceY);
@@ -365,7 +364,7 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// The clear selection.
         /// </returns>
-        public override bool ClearSelection(out IEnvelope affectedArea)
+        public override bool ClearSelection(out Envelope affectedArea)
         {
             affectedArea = _selection.Envelope;
             if (!_drawnStatesNeeded)
@@ -521,14 +520,14 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// The invert selection.
         /// </returns>
-        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
+        public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
             }
 
-            IEnvelope region = tolerant;
+            Envelope region = tolerant;
             if (DataSet.FeatureType == FeatureType.Polygon)
             {
                 region = strict;
@@ -595,12 +594,12 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// Boolean, true if items were selected.
         /// </returns>
-        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode, out IEnvelope affectedArea)
+        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode selectionMode, out Envelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
                 AssignFastDrawnStates();
 
-            IEnvelope region = tolerant;
+            Envelope region = tolerant;
             if (DataSet.FeatureType == FeatureType.Polygon)
                 region = strict;
 
@@ -738,7 +737,7 @@ namespace DotSpatial.Symbology
                 AssignFastDrawnStates();
             }
 
-            IEnvelope ignoreme;
+            Envelope ignoreme;
             if (IsWithinLegendSelection() || _scheme.IsWithinLegendSelection())
             {
                 _selection.AddRegion(Extent.ToEnvelope(), out ignoreme);
@@ -1136,15 +1135,15 @@ namespace DotSpatial.Symbology
         /// <returns>
         /// Boolean, true if members were removed from the selection.
         /// </returns>
-        public override bool UnSelect(IEnvelope tolerant, IEnvelope strict, SelectionMode selectionMode,
-                                      out IEnvelope affectedArea)
+        public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode selectionMode,
+                                      out Envelope affectedArea)
         {
             if (!_drawnStatesNeeded && !_editMode)
             {
                 AssignFastDrawnStates();
             }
 
-            IEnvelope region = tolerant;
+            Envelope region = tolerant;
             if (DataSet.FeatureType == FeatureType.Polygon)
             {
                 region = strict;
@@ -1897,7 +1896,7 @@ namespace DotSpatial.Symbology
                 {
                     if (category == features[f].SchemeCategory)
                     {
-                        ext.ExpandToInclude(new Extent(f.Geometry.Envelope));
+                        ext.ExpandToInclude(new Extent(f.Geometry.EnvelopeInternal));
                     }
                 }
 

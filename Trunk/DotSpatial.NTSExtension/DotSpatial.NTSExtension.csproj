@@ -58,12 +58,17 @@
   <ItemGroup>
     <Compile Include="Angle.cs" />
     <Compile Include="ClassNotSupportedException.cs" />
+    <Compile Include="CoordinateF.cs" />
+    <Compile Include="CoordinateMismatchException.cs" />
+    <Compile Include="EnumerableExt.cs" />
     <Compile Include="Envelope.cs" />
     <Compile Include="EnvelopeExt.cs" />
+    <Compile Include="FloatVector3.cs" />
     <Compile Include="GeometryExt.cs" />
     <Compile Include="IMatrix.cs" />
     <Compile Include="IMatrix4.cs" />
     <Compile Include="IMatrixD.cs" />
+    <Compile Include="IRectangle.cs" />
     <Compile Include="Matrix4.cs" />
     <Compile Include="MatrixD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

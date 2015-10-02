@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -9,6 +6,27 @@ namespace DotSpatial.NTSExtension
 {
    public static class EnvelopeExt
     {
+        /// <summary>
+        /// Gets the minY, which is Y - Height.
+        /// </summary>
+        /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>
+        /// <returns></returns>
+        public static double Bottom(this Envelope self)
+        {
+            return self.MinY;
+        }
+
+
+        /// <summary>
+        /// Gets the right value, which is X + Width.
+        /// </summary>
+        /// <param name="self">The <c>IEnvelope</c> that this calculation is for.</param>
+        /// <returns></returns>
+        public static double Right(this Envelope self)
+        {
+            return self.MaxX;
+        }
+
 
         /// <summary>
         /// Converts this envelope into a linear ring.
@@ -42,7 +60,6 @@ namespace DotSpatial.NTSExtension
         {
             return new Polygon(ToLinearRing(self));
         }
-
 
     }
 }

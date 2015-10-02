@@ -22,8 +22,7 @@
 using System;
 using System.Drawing;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -81,7 +80,7 @@ namespace DotSpatial.Symbology
         /// the map) into world coordinates (like longitude, latitude)
         /// </summary>
         /// <param name="window">A Rectangle in pixel coordinates to find the geographic equivalent of</param>
-        /// <returns>A Valid IEnvelope that shows the location on the screen</returns>
+        /// <returns>A Valid Envelope that shows the location on the screen</returns>
         Extent PixelToProj(Rectangle window);
 
         #endregion
@@ -131,9 +130,9 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the IEnvelope representing the world coordinate extents of the map
+        /// Gets the Envelope representing the world coordinate extents of the map
         /// </summary>
-        IEnvelope Extents
+        Envelope Extents
         {
             get;
         }

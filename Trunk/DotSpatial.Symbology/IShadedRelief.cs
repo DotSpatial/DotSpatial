@@ -20,7 +20,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Symbology
 {

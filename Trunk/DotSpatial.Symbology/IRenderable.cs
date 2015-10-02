@@ -60,7 +60,7 @@ namespace DotSpatial.Symbology
         #region Properties
 
         /// <summary>
-        /// Obtains an IEnvelope in world coordinates that contains this object
+        /// Obtains an Envelope in world coordinates that contains this object
         /// </summary>
         /// <returns></returns>
         Extent Extent

@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -43,7 +43,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Removes any members from existing in the selected state
         /// </summary>
-        bool ClearSelection(out IEnvelope affectedArea);
+        bool ClearSelection(out Envelope affectedArea);
 
         /// <summary>
         /// Inverts the selected state of any members in the specified region.
@@ -53,7 +53,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode">The selection mode determining how to test for intersection</param>
         /// <param name="affectedArea">The geographic region encapsulating the changed members</param>
         /// <returns>Boolean, true if members were changed by the selection process.</returns>
-        bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea);
+        bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea);
 
         /// <summary>
         /// Adds any members found in the specified region to the selected state as long as
@@ -64,7 +64,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode">The selection mode</param>
         /// <param name="affectedArea">The envelope affected area</param>
         /// <returns>Boolean, true if any members were added to the selection</returns>
-        bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea);
+        bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea);
 
         /// <summary>
         /// Removes any members found in the specified region from the selection
@@ -74,7 +74,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode">The selection mode to use for selecting items</param>
         /// <param name="affectedArea">The geographic region containing all the shapes that were altered</param>
         /// <returns>Boolean, true if any members were removed from the selection</returns>
-        bool UnSelect(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea);
+        bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea);
 
         #endregion
 

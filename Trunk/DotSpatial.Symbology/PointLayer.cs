@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {

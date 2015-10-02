@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -173,7 +173,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool ClearSelection(out IEnvelope affectedAreas)
+        public override bool ClearSelection(out Envelope affectedAreas)
         {
             affectedAreas = new Envelope();
             bool changed = false;
@@ -181,7 +181,7 @@ namespace DotSpatial.Symbology
             MapFrame.SuspendEvents();
             foreach (ILayer layer in GetLayers())
             {
-                IEnvelope layerArea;
+                Envelope layerArea;
                 if (layer.ClearSelection(out layerArea)) changed = true;
                 affectedAreas.ExpandToInclude(layerArea);
             }
@@ -193,7 +193,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public override bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (!_selectionEnabled) return false;
@@ -204,7 +204,7 @@ namespace DotSpatial.Symbology
                 .Reverse()
                 .Where(_ => _.SelectionEnabled && _.IsVisible))
             {
-                IEnvelope layerArea;
+                Envelope layerArea;
                 if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
                 affectedArea.ExpandToInclude(layerArea);
 				// removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
@@ -250,7 +250,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public override bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (!_selectionEnabled) return false;
@@ -259,7 +259,7 @@ namespace DotSpatial.Symbology
             foreach (ILayer s in GetLayers())
             {
                 if (s.SelectionEnabled == false) continue;
-                IEnvelope layerArea;
+                Envelope layerArea;
                 if (s.InvertSelection(tolerant, strict, mode, out layerArea)) somethingChanged = true;
                 affectedArea.ExpandToInclude(layerArea);
             }
@@ -269,7 +269,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <inheritdoc />
-        public override bool UnSelect(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public override bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (!_selectionEnabled) return false;
@@ -277,7 +277,7 @@ namespace DotSpatial.Symbology
             SuspendEvents();
             foreach (ILayer s in GetLayers())
             {
-                IEnvelope layerArea;
+                Envelope layerArea;
                 if (s.UnSelect(tolerant, strict, mode, out layerArea)) somethingChanged = true;
                 affectedArea.ExpandToInclude(layerArea);
             }
