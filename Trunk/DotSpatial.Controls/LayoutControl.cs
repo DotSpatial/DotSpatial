@@ -35,7 +35,7 @@ using System.Windows.Forms;
 using System.Xml;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -681,12 +681,11 @@ namespace DotSpatial.Controls
                         else if (loadList[i] is LayoutMap)
                         {
                             var lm = loadList[i] as LayoutMap;
-                            var env = new Envelope();
-                            env.Minimum.X = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmin"].Value);
-                            env.Minimum.Y = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmin"].Value);
-                            env.Maximum.X = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmax"].Value);
-                            env.Maximum.Y = XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmax"].Value);
-                            if (lm != null) lm.Envelope = env;
+                            if (lm != null) lm.Envelope = new Envelope (XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmin"].Value),
+                                                                        XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeXmax"].Value),
+                                                                        XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmin"].Value),
+                                                                        XmlHelper.FromString<double>(innerChild.Attributes["EnvelopeYmax"].Value)); 
+                           
                         }
                         else if (loadList[i] is LayoutNorthArrow)
                         {
@@ -933,10 +932,10 @@ namespace DotSpatial.Controls
                 {
                     var lm = le as LayoutMap;
                     var map = layoutXmlDoc.CreateElement("Map");
-                    map.SetAttribute("EnvelopeXmin", XmlHelper.ToString(lm.Envelope.Minimum.X));
-                    map.SetAttribute("EnvelopeYmin", XmlHelper.ToString(lm.Envelope.Minimum.Y));
-                    map.SetAttribute("EnvelopeXmax", XmlHelper.ToString(lm.Envelope.Maximum.X));
-                    map.SetAttribute("EnvelopeYmax", XmlHelper.ToString(lm.Envelope.Maximum.Y));
+                    map.SetAttribute("EnvelopeXmin", XmlHelper.ToString(lm.Envelope.MinX));
+                    map.SetAttribute("EnvelopeYmin", XmlHelper.ToString(lm.Envelope.MinY));
+                    map.SetAttribute("EnvelopeXmax", XmlHelper.ToString(lm.Envelope.MaxX));
+                    map.SetAttribute("EnvelopeYmax", XmlHelper.ToString(lm.Envelope.MaxY));
                     element.AppendChild(map);
                 }
                 else if (le is LayoutNorthArrow)

@@ -25,7 +25,7 @@ using System.Drawing;
 using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -44,7 +44,7 @@ namespace DotSpatial.Controls
         #region Private Variables
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
+        private Envelope _bufferExtent; // the geographic extent of the current buffer.
         private Rectangle _bufferRectangle;
         private bool _isInitialized;
         private Image _stencil; // draw features to the stencil
@@ -232,7 +232,7 @@ namespace DotSpatial.Controls
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), ShallowCopy]
-        public IEnvelope BufferEnvelope
+        public Envelope BufferEnvelope
         {
             get { return _bufferExtent; }
             set { _bufferExtent = value; }

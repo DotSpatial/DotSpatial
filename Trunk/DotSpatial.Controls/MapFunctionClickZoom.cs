@@ -24,8 +24,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -121,7 +120,7 @@ namespace DotSpatial.Controls
             {
                 if (_geoStartPoint != null && _startPoint != e.Location)
                 {
-                    IEnvelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
+                    Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
                                                  _geoStartPoint.Y, e.GeographicLocation.Y);
                     if (Math.Abs(e.X - _startPoint.X) > 1 && Math.Abs(e.Y - _startPoint.Y) > 1)
                     {

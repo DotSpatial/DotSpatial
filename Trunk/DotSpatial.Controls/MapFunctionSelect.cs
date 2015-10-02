@@ -24,8 +24,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
@@ -87,7 +86,7 @@ namespace DotSpatial.Controls
             if (e.Button == MouseButtons.Left)
             {
                 _startPoint = e.Location;
-				_currentPoint = _startPoint;
+                _currentPoint = _startPoint;
                 _geoStartPoint = e.GeographicLocation;
                 _isDragging = true;
                 Map.IsBusy = true;
@@ -161,9 +160,9 @@ namespace DotSpatial.Controls
             _isDragging = false;
             //Map.Invalidate(); // Get rid of the selection box
             //Application.DoEvents();
-            IEnvelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
+            Envelope env = new Envelope(_geoStartPoint.X, e.GeographicLocation.X,
                 _geoStartPoint.Y, e.GeographicLocation.Y);
-            IEnvelope tolerant = env;
+            Envelope tolerant = env;
 
             if (_startPoint.X == e.X && _startPoint.Y == e.Y)
             {
@@ -212,14 +211,14 @@ namespace DotSpatial.Controls
             Map.IsBusy = false;
         }
 
-        private void HandleSelection(IEnvelope tolerant, IEnvelope strict)
+        private void HandleSelection(Envelope tolerant, Envelope strict)
         {
             Keys key = Control.ModifierKeys;
             if ((((key & Keys.Shift) == Keys.Shift) == false)
                 && (((key & Keys.Control) == Keys.Control) == false))
             {
                 // If they are not pressing shift, then first clear the selection before adding new members to it.
-                IEnvelope region;
+                Envelope region;
 #if DEBUG
                 var sw = new Stopwatch();
                 sw.Start();
@@ -233,7 +232,7 @@ namespace DotSpatial.Controls
 
             if ((key & Keys.Control) == Keys.Control)
             {
-                IEnvelope region;
+                Envelope region;
                 Map.InvertSelection(tolerant, strict, SelectionMode.Intersects, out region);
             }
             else
@@ -251,7 +250,7 @@ namespace DotSpatial.Controls
                 {
                     MessageBox.Show(MessageStrings.MapFunctionSelect_NoSelectableLayer);
                 }
-                IEnvelope region;
+                Envelope region;
                 Map.Select(tolerant, strict, SelectionMode.Intersects, out region);
             }
         }

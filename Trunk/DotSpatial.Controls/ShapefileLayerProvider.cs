@@ -21,7 +21,6 @@
 using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Controls
 {

@@ -23,8 +23,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -41,7 +40,7 @@ namespace DotSpatial.Controls
         private bool _doSelect;
         private Coordinate _geoStartPoint;
         private bool _isDragging;
-        private IEnvelope _selectionEnvelope;
+        private Envelope _selectionEnvelope;
         private Point _startPoint;
 
         #endregion
@@ -64,7 +63,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Selection envelope
         /// </summary>
-        public IEnvelope SelectionEnvelope
+        public Envelope SelectionEnvelope
         {
             get { return _selectionEnvelope; }
         }

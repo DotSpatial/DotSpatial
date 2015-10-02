@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
-   public static class EnvelopeExt
+    public static class EnvelopeExt
     {
         /// <summary>
         /// Gets the minY, which is Y - Height.
@@ -16,6 +16,25 @@ namespace DotSpatial.NTSExtension
             return self.MinY;
         }
 
+        /// <summary>
+        /// Gets the coordinate defining the center of this envelope
+        /// in all of the dimensions of this envelope.
+        /// </summary>
+        /// <param name="self">The <c>IEnvelope</c> to find the center for</param>
+        /// <returns>An ICoordinate</returns>
+        public static Coordinate Center(this Envelope self)
+        {
+            if (self == null || self.IsNull) return null;
+            Coordinate result = new Coordinate
+            {
+                X = (self.MinX + self.MaxX) / 2,
+                Y = (self.MinY + self.MaxY) / 2
+            };
+
+            if (!double.IsNaN(self.MinZ)) result.Z = (self.MinZ + self.MaxZ) / 2;
+            if (!double.IsNaN(self.MinM)) result.M = (self.MinM + self.MaxM) / 2;
+            return result;
+        }
 
         /// <summary>
         /// Gets the right value, which is X + Width.

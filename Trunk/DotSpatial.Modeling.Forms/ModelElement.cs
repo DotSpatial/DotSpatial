@@ -24,7 +24,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Modeling.Forms
@@ -296,7 +297,7 @@ namespace DotSpatial.Modeling.Forms
             IGeometry rectanglePoly;
             if ((rect.Height == 0) && (rect.Width == 0))
             {
-                rectanglePoly = new Topology.Geometries.Point(rect.X, rect.Y);
+                rectanglePoly = new NetTopologySuite.Geometries.Point(rect.X, rect.Y);
             }
             else if (rect.Width == 0)
             {

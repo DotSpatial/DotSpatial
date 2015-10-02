@@ -38,8 +38,7 @@ using DotSpatial.Data.Forms;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
@@ -374,7 +373,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Removes any members from existing in the selected state
         /// </summary>
-        public bool ClearSelection(out IEnvelope affectedArea)
+        public bool ClearSelection(out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (MapFrame == null) return false;
@@ -389,7 +388,7 @@ namespace DotSpatial.Controls
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The envelope affected area.</param>
         /// <returns>Boolean, true if any members were added to the selection.</returns>
-        public bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (MapFrame == null) return false;
@@ -404,7 +403,7 @@ namespace DotSpatial.Controls
         /// <param name="mode">The selection mode determining how to test for intersection.</param>
         /// <param name="affectedArea">The geographic region encapsulating the changed members.</param>
         /// <returns>boolean, true if members were changed by the selection process.</returns>
-        public bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (MapFrame == null) return false;
@@ -419,7 +418,7 @@ namespace DotSpatial.Controls
         /// <param name="mode">The selection mode.</param>
         /// <param name="affectedArea">The envelope affected area.</param>
         /// <returns>Boolean, true if any members were added to the selection.</returns>
-        public bool UnSelect(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = new Envelope();
             if (MapFrame == null) return false;
@@ -1284,7 +1283,7 @@ namespace DotSpatial.Controls
         /// a geographic envelope.
         /// </summary>
         /// <param name="rect">The rectangle to convert</param>
-        /// <returns>An IEnvelope interface</returns>
+        /// <returns>An Envelope interface</returns>
         public Extent PixelToProj(Rectangle rect)
         {
             return _geoMapFrame.PixelToProj(rect);
@@ -1305,7 +1304,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic IEnvelope</param>
+        /// <param name="env">The geographic Envelope</param>
         /// <returns>A Rectangle</returns>
         public Rectangle ProjToPixel(Extent env)
         {

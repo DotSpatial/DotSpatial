@@ -27,7 +27,6 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Modeling.Forms.Elements
 {

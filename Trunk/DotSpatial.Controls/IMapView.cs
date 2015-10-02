@@ -20,8 +20,7 @@
 
 using System.Drawing;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -44,7 +43,7 @@ namespace DotSpatial.Controls
         /// a geographic envelope.
         /// </summary>
         /// <param name="rect">The rectangle to convert</param>
-        /// <returns>An IEnvelope interface</returns>
+        /// <returns>An Envelope interface</returns>
         Extent PixelToProj(Rectangle rect);
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic IEnvelope</param>
+        /// <param name="env">The geographic Envelope</param>
         /// <returns>A Rectangle</returns>
         Rectangle ProjToPixel(Extent env);
 

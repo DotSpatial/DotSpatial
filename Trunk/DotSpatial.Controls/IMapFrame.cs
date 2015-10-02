@@ -24,8 +24,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -72,10 +71,10 @@ namespace DotSpatial.Controls
         Coordinate BufferToProj(Point position);
 
         /// <summary>
-        /// This projects a rectangle relative to the buffer into and IEnvelope in geographic coordinates.
+        /// This projects a rectangle relative to the buffer into and Envelope in geographic coordinates.
         /// </summary>
         /// <param name="rect">A Rectangle</param>
-        /// <returns>An IEnvelope interface</returns>
+        /// <returns>An Envelope interface</returns>
         Extent BufferToProj(Rectangle rect);
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="ext">The geographic IEnvelope</param>
+        /// <param name="ext">The geographic Envelope</param>
         /// <returns>A Rectangle</returns>
         Rectangle ProjToBuffer(Extent ext);
 

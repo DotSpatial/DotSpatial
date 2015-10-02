@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -93,7 +93,7 @@ namespace DotSpatial.Controls
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
-        IEnvelope BufferEnvelope
+        Envelope BufferEnvelope
         {
             get;
             set;

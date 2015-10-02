@@ -6,7 +6,7 @@ using System.Xml;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Msg = DotSpatial.Controls.MessageStrings;
 
 namespace DotSpatial.Controls
@@ -333,7 +333,7 @@ namespace DotSpatial.Controls
         /// </summary>
         private void DeselectAll_Click(object sender, EventArgs e)
         {
-            IEnvelope env;
+            Envelope env;
             App.Map.MapFrame.ClearSelection(out env);
         }
 
@@ -394,7 +394,7 @@ namespace DotSpatial.Controls
         private void ZoomToLayer(IMapLayer layerToZoom)
         {
             const double eps = 1e-7;
-            IEnvelope layerEnvelope = layerToZoom.Extent.ToEnvelope();
+            Envelope layerEnvelope = layerToZoom.Extent.ToEnvelope();
             if (layerEnvelope.Width > eps && layerEnvelope.Height > eps)
             {
                 layerEnvelope.ExpandBy(layerEnvelope.Width / 10, layerEnvelope.Height / 10); // work item #84

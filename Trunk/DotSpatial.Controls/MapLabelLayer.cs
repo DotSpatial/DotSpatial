@@ -31,8 +31,8 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -59,7 +59,7 @@ namespace DotSpatial.Controls
         private static readonly List<RectangleF> ExistingLabels = new List<RectangleF>(); // for collision prevention, tracks existing labels.
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
+        private Envelope _bufferExtent; // the geographic extent of the current buffer.
         private Rectangle _bufferRectangle;
         private int _chunkSize;
         private bool _isInitialized;
@@ -480,7 +480,7 @@ namespace DotSpatial.Controls
                     IPolygon largest = null;
                     for (int n = 0; n < geo.NumGeometries; n++)
                     {
-                        IPolygon pg = Geometry.FromBasicGeometry(geo.GetGeometryN(n)) as IPolygon;
+                        IPolygon pg = geo.GetGeometryN(n) as IPolygon;
                         if (pg == null) continue;
                         double tempArea = pg.Area;
                         if (largestArea < tempArea)
@@ -533,7 +533,7 @@ namespace DotSpatial.Controls
         /// <returns></returns>
         private static RectangleF PlacePolygonLabel(IGeometry geom, MapArgs e, Func<SizeF> labelSize, ILabelSymbolizer symb, float angle)
         {
-            IPolygon pg = Geometry.FromBasicGeometry(geom) as IPolygon;
+            IPolygon pg = geom as IPolygon;
             if (pg == null) return RectangleF.Empty;
             Coordinate c;
             switch (symb.LabelPlacementMethod)
@@ -545,7 +545,7 @@ namespace DotSpatial.Controls
                     c = pg.InteriorPoint.Coordinate;
                     break;
                 default:
-                    c = geom.Envelope.Center();
+                    c = geom.EnvelopeInternal.Centre;
                     break;
             }
             return PlaceLabel(c, e, labelSize, symb, angle);
@@ -692,7 +692,7 @@ namespace DotSpatial.Controls
         /// <returns>The RectangleF that is needed to draw the label.</returns>
         private static RectangleF PlaceLineLabel(IGeometry lineString, Func<SizeF> labelSize, MapArgs e, ILabelSymbolizer symb, float angle)
         {
-            ILineString ls = Geometry.FromBasicGeometry(lineString) as ILineString;
+            LineString ls = lineString as LineString;
             if (ls == null) return Rectangle.Empty;
 
             ls = GetSegment(ls, symb);
@@ -836,14 +836,14 @@ namespace DotSpatial.Controls
             }
             else if (symb.UseLineOrientation)
             {
-                ILineString ls = lineString as LineString;
+                LineString ls = lineString as LineString;
                 if (ls != null)
                 {
                     ls = GetSegment(ls, symb);
                     if (ls == null) return 0;
                     if (symb.LineOrientation == LineOrientation.Parallel)
                         return ToSingle(-ls.Angle);
-                    else return ToSingle(-ls.Angle - 90);
+                    return ToSingle(-ls.Angle - 90);
                 }
             }
             return 0;
@@ -855,36 +855,33 @@ namespace DotSpatial.Controls
         /// <param name="lineString">LineString to get the segment from.</param>
         /// <param name="symb">Symbolizer to get the LineLabelPlacement from.</param>
         /// <returns>Null on unnown LineLabelPlacementMethod else the calculated segment. </returns>
-        private static ILineString GetSegment(ILineString lineString, ILabelSymbolizer symb)
+        private static LineString GetSegment(LineString lineString, ILabelSymbolizer symb)
         {
-            if (lineString.Coordinates.Count <= 2)
-                return lineString;
-            else
+            if (lineString.Coordinates.Length <= 2)  return lineString;
+              
+            var coords = lineString.Coordinates;
+            switch (symb.LineLabelPlacementMethod)
             {
-                var coords = lineString.Coordinates;
-                switch (symb.LineLabelPlacementMethod)
-                {
-                    case LineLabelPlacementMethod.FirstSegment:
-                        return new LineString(new List<Coordinate> { coords[0], coords[1] });
-                    case LineLabelPlacementMethod.LastSegment:
-                        return new LineString(new List<Coordinate> { coords[coords.Count - 2], coords[coords.Count - 1] });
-                    case LineLabelPlacementMethod.MiddleSegment:
-                        int start = (int)Math.Ceiling(coords.Count / 2D) - 1;
-                        return new LineString(new List<Coordinate> { coords[start], coords[start + 1] });
-                    case LineLabelPlacementMethod.LongestSegment:
-                        double length = 0;
-                        LineString temp = null;
-                        for (int i = 0; i < coords.Count - 1; i++)
+                case LineLabelPlacementMethod.FirstSegment:
+                    return new LineString(new[] { coords[0], coords[1] });
+                case LineLabelPlacementMethod.LastSegment:
+                    return new LineString(new[] { coords[coords.Length - 2], coords[coords.Length - 1] });
+                case LineLabelPlacementMethod.MiddleSegment:
+                    int start = (int)Math.Ceiling(coords.Length / 2D) - 1;
+                    return new LineString(new[] { coords[start], coords[start + 1] });
+                case LineLabelPlacementMethod.LongestSegment:
+                    double length = 0;
+                    LineString temp = null;
+                    for (int i = 0; i < coords.Length - 1; i++)
+                    {
+                        LineString l = new LineString(new[] { coords[i], coords[i + 1] });
+                        if (l.Length > length)
                         {
-                            LineString l = new LineString(new List<Coordinate> { coords[i], coords[i + 1] });
-                            if (l.Length > length)
-                            {
-                                length = l.Length;
-                                temp = l;
-                            }
+                            length = l.Length;
+                            temp = l;
                         }
-                        return temp;
-                }
+                    }
+                    return temp;
             }
             return null;
         }
@@ -976,7 +973,7 @@ namespace DotSpatial.Controls
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
+        public Envelope BufferEnvelope
         {
             get { return _bufferExtent; }
             set { _bufferExtent = value; }
