@@ -15,8 +15,9 @@
 using System;
 using System.Linq;
 using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
 {
@@ -89,8 +90,8 @@ namespace DotSpatial.Analysis
                 //make a random point somewhere in the rectangular extents of the feature
                 double rndx = r.Next(0, 100000) / 100000.0;
                 double rndy = r.Next(0, 100000) / 100000.0;
-                c.X = rndx * (ConstrainingFeature.Envelope.Right() - ConstrainingFeature.Envelope.Left()) + ConstrainingFeature.Envelope.Left();
-                c.Y = rndy * (ConstrainingFeature.Envelope.Top() - ConstrainingFeature.Envelope.Bottom()) + ConstrainingFeature.Envelope.Bottom();
+                c.X = rndx * (ConstrainingFeature.Geometry.EnvelopeInternal.Right() - ConstrainingFeature.Geometry.EnvelopeInternal.MinX) + ConstrainingFeature.Geometry.EnvelopeInternal.MinX;
+                c.Y = rndy * (ConstrainingFeature.Geometry.EnvelopeInternal.MaxY - ConstrainingFeature.Geometry.EnvelopeInternal.Bottom()) + ConstrainingFeature.Geometry.EnvelopeInternal.Bottom();
                 //check if the point falls within the polygon featureset
                
                 Point p = new Point(c);

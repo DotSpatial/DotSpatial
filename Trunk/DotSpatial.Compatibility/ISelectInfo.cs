@@ -20,7 +20,7 @@
 
 using System.Collections;
 using System.Drawing;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Compatibility
 {

@@ -25,7 +25,6 @@ using System.Reflection;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Analysis
 {

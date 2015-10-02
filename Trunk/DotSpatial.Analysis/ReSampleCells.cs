@@ -19,7 +19,7 @@
 
 using System;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Analysis
 {

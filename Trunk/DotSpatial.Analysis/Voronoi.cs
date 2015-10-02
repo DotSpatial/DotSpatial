@@ -18,8 +18,10 @@
 using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Voronoi;
+using DotSpatial.NTSExtension;
+using DotSpatial.NTSExtension.Voronoi;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
 {
@@ -43,7 +45,7 @@ namespace DotSpatial.Analysis
             {
                 Coordinate c1 = edge.RightData.ToCoordinate();
                 Coordinate c2 = edge.LeftData.ToCoordinate();
-                LineString ls = new LineString(new List<Coordinate> { c1, c2 });
+                LineString ls = new LineString(new [] { c1, c2 });
                 result.AddFeature(ls);
             }
             return result;
@@ -66,7 +68,7 @@ namespace DotSpatial.Analysis
             {
                 Coordinate c1 = edge.VVertexA.ToCoordinate();
                 Coordinate c2 = edge.VVertexB.ToCoordinate();
-                LineString ls = new LineString(new List<Coordinate> { c1, c2 });
+                LineString ls = new LineString(new [] { c1, c2 });
                 result.AddFeature(ls);
             }
             return result;
@@ -102,7 +104,7 @@ namespace DotSpatial.Analysis
 
             Extent ext = points.Extent;
             ext.ExpandBy(ext.Width / 100, ext.Height / 100);
-            IEnvelope env = ext.ToEnvelope();
+            Envelope env = ext.ToEnvelope();
             IPolygon bounds = env.ToPolygon();
 
             // Convert undefined coordinates to a defined coordinate.
@@ -200,7 +202,7 @@ namespace DotSpatial.Analysis
                     continue;
                 }
 
-                Polygon pg = new Polygon(coords);
+                Polygon pg = new Polygon(new LinearRing(coords.ToArray()));
 
                 if (cropToExtent)
                 {
@@ -237,7 +239,7 @@ namespace DotSpatial.Analysis
         /// </summary>
         /// <param name="graph">The VoronoiGraph with the edge list.</param>
         /// <param name="bounds">The polygon bounding the datapoints.</param>
-        private static void HandleBoundaries(VoronoiGraph graph, IEnvelope bounds)
+        private static void HandleBoundaries(VoronoiGraph graph, Envelope bounds)
         {
             List<ILineString> boundSegments = new List<ILineString>();
             List<VoronoiEdge> unboundEdges = new List<VoronoiEdge>();
@@ -252,11 +254,11 @@ namespace DotSpatial.Analysis
                 }
 
                 boundSegments.Add(
-                    new LineString(new List<Coordinate> { edge.VVertexA.ToCoordinate(), edge.VVertexB.ToCoordinate() }));
+                    new LineString(new [] { edge.VVertexA.ToCoordinate(), edge.VVertexB.ToCoordinate() }));
             }
 
             // calculate a length to extend a ray to look for intersections
-            IEnvelope env = bounds;
+            Envelope env = bounds;
             double h = env.Height;
             double w = env.Width;
             double len = Math.Sqrt((w * w) + (h * h));
@@ -295,11 +297,11 @@ namespace DotSpatial.Analysis
 
                 if (edge.VVertexA.ContainsNan())
                 {
-                    edge.VVertexA = new Vector2(end.ToArray());
+                    edge.VVertexA = new Vector2(end.X,end.Y);
                 }
                 else
                 {
-                    edge.VVertexB = new Vector2(end.ToArray());
+                    edge.VVertexB = new Vector2(end.X, end.Y);
                 }
             }
         }
