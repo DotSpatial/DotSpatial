@@ -274,7 +274,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 invalid.Inflate(20, 20);
                 Map.Invalidate(invalid);
             }
-            
+
             // Begin snapping changes
             _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
             DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
@@ -316,7 +316,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             else
             {
                 if (_coordinates == null) { _coordinates = new List<Coordinate>(); }
-                
+
                 // Begin snapping changes
                 Coordinate snappedCoord = e.GeographicLocation;
                 ComputeSnappedLocation(e, ref snappedCoord);
@@ -396,6 +396,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
+            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); //close polygons because they must be closed
+
             _parts.Add(_coordinates);
             _coordinates = new List<Coordinate>();
             Map.Invalidate();
