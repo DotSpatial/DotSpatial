@@ -20,7 +20,8 @@ using System.Diagnostics;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -576,7 +577,7 @@ namespace DotSpatial.Tools
                 var key = pair.Key;
                 var lineSegList = pair.Value.List;
 
-                var polyList = new List<Polygon>();
+                var polyList = new List<IPolygon>();
                 var ind = 0;
                 while (ind != lineSegList.Count)
                 {
@@ -611,7 +612,7 @@ namespace DotSpatial.Tools
                         polyShell.Add(segment.P0.Equals2D(last) ? segment.P1 : segment.P0);
                     }
 
-                    polyList.Add(new Polygon(polyShell));
+                    polyList.Add(new Polygon(new LinearRing(polyShell.ToArray())));
                 }
 
                 IGeometry geometry = polyList.Count == 1 ? (IGeometry)polyList[0] : new MultiPolygon(polyList.ToArray());

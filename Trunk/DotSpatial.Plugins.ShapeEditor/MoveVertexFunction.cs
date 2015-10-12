@@ -27,9 +27,9 @@ using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -363,7 +363,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         private bool CheckForVertexDrag(GeoMouseArgs e)
         {
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-            IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+            Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
             if (e.Button == MouseButtons.Left)
             {
                 if (_layer.DataSet.FeatureType == FeatureType.Polygon)
@@ -461,7 +461,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 {
                     Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
 
-                    IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+                    Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
 
                     if (CheckForVertexDrag(e)) { return; }
 

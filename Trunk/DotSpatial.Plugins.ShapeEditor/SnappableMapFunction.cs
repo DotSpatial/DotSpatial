@@ -3,7 +3,7 @@ using System.Drawing;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
@@ -106,7 +106,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (pix == null)
                 return false;
 
-            IEnvelope env = pix.ToEnvelope();
+            Envelope env = pix.ToEnvelope();
 
             foreach (IFeatureLayer layer in this.snapLayers)
             {

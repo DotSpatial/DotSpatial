@@ -17,8 +17,8 @@ using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {

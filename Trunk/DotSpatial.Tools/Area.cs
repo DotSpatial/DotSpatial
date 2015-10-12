@@ -18,7 +18,7 @@ using System.Data;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -142,8 +142,7 @@ namespace DotSpatial.Tools
                     newFeature.DataRow[colSource.ColumnName] = input.Features[j].DataRow[colSource.ColumnName];
                 }
 
-                newFeature.DataRow[TextStrings.Area + fieldCount] =
-                    MultiPolygon.FromBasicGeometry(output.Features[j].Geometry).Area;
+                newFeature.DataRow[TextStrings.Area + fieldCount] = output.Features[j].Geometry.Area;
 
                 // Status updates is done here
                 cancelProgressHandler.Progress(

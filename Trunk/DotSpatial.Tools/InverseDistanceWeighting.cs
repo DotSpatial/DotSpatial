@@ -18,8 +18,8 @@ using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Index.KDTree;
+using GeoAPI.Geometries;
+using NetTopologySuite.Index.KdTree;
 
 namespace DotSpatial.Tools
 {
@@ -145,16 +145,8 @@ namespace DotSpatial.Tools
         /// of rows and columns will be computed from the cellSize and input featureset</param>
         /// <param name="cancelProgressHandler">A progress handler for receiving progress messages</param>
         /// <returns>A boolean, true if the IDW process worked correctly</returns>
-        public bool Execute(
-            IFeatureSet input,
-            string zField,
-            double cellSize,
-            double power,
-            NeighborhoodType neighborType,
-            int pointCount,
-            double distance,
-            IRaster output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet input, string zField, double cellSize, double power, NeighborhoodType neighborType, int pointCount, double distance,
+            IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input == null || output == null)
@@ -172,8 +164,7 @@ namespace DotSpatial.Tools
             int numColumns = Convert.ToInt32(Math.Round(input.Extent.Width / cellSize));
             int numRows = Convert.ToInt32(Math.Round(input.Extent.Height / cellSize));
 
-            output = Raster.CreateRaster(
-                output.Filename, string.Empty, numColumns, numRows, 1, typeof(double), new[] { string.Empty });
+            output = Raster.CreateRaster(output.Filename, string.Empty, numColumns, numRows, 1, typeof(double), new[] { string.Empty });
 
             output.CellHeight = cellSize;
             output.CellWidth = cellSize;
@@ -183,108 +174,107 @@ namespace DotSpatial.Tools
             // Used to calculate progress
             int lastUpdate = 0;
 
-            // Populates the KD tree
-            KdTree kd = new KdTree(2);
-            List<int> randomList = new List<int>();
-            for (int i = 0; i < input.Features.Count; i++)
-            {
-                randomList.Add(i);
-            }
+            //TODO jany_ correct code to work with new KdTree
 
-            Random rnd = new Random();
-            List<int> completed = new List<int>();
-            while (randomList.Count > 0)
-            {
-                int index = rnd.Next(0, randomList.Count - 1);
-                Coordinate coord = input.Features[randomList[index]].Geometry.Coordinates[0];
-                while (kd.Search(coord.ToArray()) != null)
-                {
-                    coord.X = coord.X * 1.000000000000001D;
-                }
+            //// Populates the KD tree
+            //KdTree kd = new KdTree(2);
+            //List<int> randomList = new List<int>();
+            //for (int i = 0; i < input.Features.Count; i++)
+            //{
+            //    randomList.Add(i);
+            //}
 
-                kd.Insert(coord.ToArray(), input.Features[randomList[index]]);
-                completed.Add(randomList[index]);
-                randomList.RemoveAt(index);
-            }
+            //Random rnd = new Random();
+            //List<int> completed = new List<int>();
+            //while (randomList.Count > 0)
+            //{
+            //    int index = rnd.Next(0, randomList.Count - 1);
+            //    Coordinate coord = input.Features[randomList[index]].Geometry.Coordinates[0];
+            //    while (kd.Search(coord.ToArray()) != null)
+            //    {
+            //        coord.X = coord.X * 1.000000000000001D;
+            //    }
 
-            // Makes sure we don't try to search for more points then exist
-            if (kd.Count < pointCount)
-            {
-                pointCount = kd.Count;
-            }
+            //    kd.Insert(coord.ToArray(), input.Features[randomList[index]]);
+            //    completed.Add(randomList[index]);
+            //    randomList.RemoveAt(index);
+            //}
 
-            if (neighborType == NeighborhoodType.FixedCount)
-            {
-                // we add all the old features to output
-                for (int x = 0; x < numColumns; x++)
-                {
-                    for (int y = 0; y < numRows; y++)
-                    {
-                        // Gets the pointCount number of cells closest to the current cell
-                        Coordinate cellCenter = output.CellToProj(y, x);
-                        Double[] pixelCoord = new double[2];
-                        pixelCoord[0] = output.CellToProj(y, x).X;
-                        pixelCoord[1] = output.CellToProj(y, x).Y;
-                        object[] result = kd.Nearest(pixelCoord, pointCount);
+            //// Makes sure we don't try to search for more points then exist
+            //if (kd.Count < pointCount)
+            //{
+            //    pointCount = kd.Count;
+            //}
 
-                        // Sets up the IDW numerator and denominator
-                        double top = 0;
-                        double bottom = 0;
-                        foreach (object feat in result)
-                        {
-                            IFeature featurePt = feat as Feature;
-                            if (featurePt == null)
-                            {
-                                continue;
-                            }
+            //if (neighborType == NeighborhoodType.FixedCount)
+            //{
+            //    // we add all the old features to output
+            //    for (int x = 0; x < numColumns; x++)
+            //    {
+            //        for (int y = 0; y < numRows; y++)
+            //        {
+            //            // Gets the pointCount number of cells closest to the current cell
+            //            Coordinate cellCenter = output.CellToProj(y, x);
+            //            Double[] pixelCoord = new double[2];
+            //            pixelCoord[0] = output.CellToProj(y, x).X;
+            //            pixelCoord[1] = output.CellToProj(y, x).Y;
+            //            object[] result = kd.Nearest(pixelCoord, pointCount);
 
-                            double distanceToCell = cellCenter.Distance(featurePt.Geometry.Coordinates[0]);
-                            if (distanceToCell <= distance || distance == 0)
-                            {
-                                // If we can't convert the value to a double throw it out
-                                try
-                                {
-                                    Convert.ToDouble(featurePt.DataRow[zField]);
-                                }
-                                catch
-                                {
-                                    continue;
-                                }
+            //            // Sets up the IDW numerator and denominator
+            //            double top = 0;
+            //            double bottom = 0;
+            //            foreach (object feat in result)
+            //            {
+            //                IFeature featurePt = feat as Feature;
+            //                if (featurePt == null)
+            //                {
+            //                    continue;
+            //                }
 
-                                if (power == 2)
-                                {
-                                    top += (1 / (distanceToCell * distanceToCell))
-                                           * Convert.ToDouble(featurePt.DataRow[zField]);
-                                    bottom += 1 / (distanceToCell * distanceToCell);
-                                }
-                                else
-                                {
-                                    top += (1 / Math.Pow(distanceToCell, power))
-                                           * Convert.ToDouble(featurePt.DataRow[zField]);
-                                    bottom += 1 / Math.Pow(distanceToCell, power);
-                                }
-                            }
-                        }
+            //                double distanceToCell = cellCenter.Distance(featurePt.Geometry.Coordinates[0]);
+            //                if (distanceToCell <= distance || distance == 0)
+            //                {
+            //                    // If we can't convert the value to a double throw it out
+            //                    try
+            //                    {
+            //                        Convert.ToDouble(featurePt.DataRow[zField]);
+            //                    }
+            //                    catch
+            //                    {
+            //                        continue;
+            //                    }
 
-                        output.Value[y, x] = top / bottom;
-                    }
+            //                    if (power == 2)
+            //                    {
+            //                        top += (1 / (distanceToCell * distanceToCell))
+            //                               * Convert.ToDouble(featurePt.DataRow[zField]);
+            //                        bottom += 1 / (distanceToCell * distanceToCell);
+            //                    }
+            //                    else
+            //                    {
+            //                        top += (1 / Math.Pow(distanceToCell, power))
+            //                               * Convert.ToDouble(featurePt.DataRow[zField]);
+            //                        bottom += 1 / Math.Pow(distanceToCell, power);
+            //                    }
+            //                }
+            //            }
 
-                    // Checks if we need to update the status bar
-                    if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100)
-                        > lastUpdate)
-                    {
-                        lastUpdate =
-                            Convert.ToInt32(
-                                Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
-                        cancelProgressHandler.Progress(
-                            string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
-                        if (cancelProgressHandler.Cancel)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
+            //            output.Value[y, x] = top / bottom;
+            //        }
+
+            //        // Checks if we need to update the status bar
+            //        if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100)> lastUpdate)
+            //        {
+            //            lastUpdate =Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
+            //            cancelProgressHandler.Progress(
+            //                string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
+            //            if (cancelProgressHandler.Cancel)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //}
 
             output.Save();
             return true;

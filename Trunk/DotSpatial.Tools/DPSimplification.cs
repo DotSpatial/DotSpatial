@@ -18,11 +18,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.Simplify;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Simplify;
 
 namespace DotSpatial.Tools
 {
@@ -131,9 +133,8 @@ namespace DotSpatial.Tools
                         Geometry geomPart = (Geometry)geom.GetGeometryN(part);
 
                         // do the simplification
-                        IList<Coordinate> oldCoords = geomPart.Coordinates;
-                        IList<Coordinate> newCoords = DouglasPeuckerLineSimplifier.Simplify(
-                            oldCoords, tolerance);
+                        Coordinate[] oldCoords = geomPart.Coordinates;
+                        Coordinate[] newCoords = DouglasPeuckerLineSimplifier.Simplify(oldCoords, tolerance);
 
                         // convert the coordinates back to a geometry
                         Geometry newGeom = new LineString(newCoords);
@@ -195,9 +196,8 @@ namespace DotSpatial.Tools
                         Geometry geomPart = (Geometry)geom.GetGeometryN(part);
 
                         // do the simplification
-                        IList<Coordinate> oldCoords = geomPart.Coordinates;
-                        IList<Coordinate> newCoords = DouglasPeuckerLineSimplifier.Simplify(
-                            oldCoords, tolerance);
+                        Coordinate[] oldCoords = geomPart.Coordinates;
+                        Coordinate[] newCoords = DouglasPeuckerLineSimplifier.Simplify(oldCoords, tolerance);
 
                         // convert the coordinates back to a geometry
                         Geometry newGeom = new LineString(newCoords);

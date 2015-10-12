@@ -23,7 +23,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Forms;
 using DotSpatial.Symbology.Forms;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
