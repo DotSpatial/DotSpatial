@@ -27,8 +27,9 @@ using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology.Algorithm;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.Measure
@@ -293,16 +294,16 @@ namespace DotSpatial.Plugins.Measure
             return dist;
         }
 
-        private double GetArea(List<Coordinate> tempPolygon)
+        private double GetArea(Coordinate[] tempPolygon)
         {
             double area = Math.Abs(CGAlgorithms.SignedArea(tempPolygon));
             if (_previousParts == null || _previousParts.Count == 0)
             {
-                _firstPartIsCounterClockwise = CGAlgorithms.IsCounterClockwise(tempPolygon);
+                _firstPartIsCounterClockwise = CGAlgorithms.IsCCW(tempPolygon);
             }
             else
             {
-                if (CGAlgorithms.IsCounterClockwise(tempPolygon) != _firstPartIsCounterClockwise)
+                if (CGAlgorithms.IsCCW(tempPolygon) != _firstPartIsCounterClockwise)
                 {
                     area = -area;
                 }
@@ -351,19 +352,19 @@ namespace DotSpatial.Plugins.Measure
                 {
                     if (tempPolygon.Count == 2)
                     {
-                        Rectangle r = Map.ProjToPixel(new LineString(tempPolygon).Envelope.ToExtent());
+                        Rectangle r = Map.ProjToPixel(new LineString(tempPolygon.ToArray()).EnvelopeInternal.ToExtent());
                         r.Inflate(20, 20);
                         Map.Invalidate(r);
                     }
                     _mousePosition = e.Location;
                     return;
                 }
-                Polygon pg = new Polygon(new LinearRing(tempPolygon));
+                Polygon pg = new Polygon(new LinearRing(tempPolygon.ToArray()));
 
-                double area = GetArea(tempPolygon);
+                double area = GetArea(tempPolygon.ToArray());
 
                 _measureDialog.TotalArea = area;
-                Rectangle rr = Map.ProjToPixel(pg.Envelope.ToExtent());
+                Rectangle rr = Map.ProjToPixel(pg.EnvelopeInternal.ToExtent());
                 rr.Inflate(20, 20);
                 Map.Invalidate(rr);
                 _mousePosition = e.Location;
@@ -438,7 +439,7 @@ namespace DotSpatial.Plugins.Measure
                 {
                     if (_coordinates.Count >= 3)
                     {
-                        double area = GetArea(_coordinates);
+                        double area = GetArea(_coordinates.ToArray());
                         _currentArea = area;
                     }
                 }

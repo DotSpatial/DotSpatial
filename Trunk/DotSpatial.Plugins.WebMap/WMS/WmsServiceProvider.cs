@@ -8,8 +8,8 @@ using System.Windows.Forms;
 using BruTile;
 using BruTile.Cache;
 using DotSpatial.Projections;
-using DotSpatial.Topology.Geometries;
-
+using GeoAPI.Geometries;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.WebMap.WMS
 {
@@ -55,8 +55,8 @@ namespace DotSpatial.Plugins.WebMap.WMS
                 {
                     var mapVertices = new[]
                     {
-                        envelope.TopLeft().X, envelope.TopLeft().Y,
-                        envelope.BottomRight().X, envelope.BottomRight().Y
+                        envelope.MinX, envelope.MaxY,
+                        envelope.MaxX, envelope.MinY
                     };
                     double[] viewExtentZ = { 0.0, 0.0 };
                     Reproject.ReprojectPoints(mapVertices, viewExtentZ, Wgs84Proj, _data.CrsProjectionInfo, 0, mapVertices.Length / 2);

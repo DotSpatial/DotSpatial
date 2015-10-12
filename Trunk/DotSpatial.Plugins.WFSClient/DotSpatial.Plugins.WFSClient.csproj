@@ -67,11 +67,12 @@
       <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
-      <Name>DotSpatial.Topology</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Reference Include="GeoAPI">
+      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite">
+      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\NetTopologySuite.dll</HintPath>
+    </Reference>
     <Reference Include="Renci.Data.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3d62193ae6a45b09, processorArchitecture=MSIL">
       <HintPath>SupportFiles\Renci.Data.Interop.dll</HintPath>
     </Reference>

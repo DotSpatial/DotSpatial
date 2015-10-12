@@ -10,9 +10,9 @@ using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using ExtentArgs = DotSpatial.Data.ExtentArgs;
+using FeatureType = DotSpatial.Data.FeatureType;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -559,8 +559,8 @@ namespace DotSpatial.Plugins.WebMap
             // of the tiled image
             var tileVertices = new[]
             {
-                tiles.TopLeftTile.TopLeft().X, tiles.TopLeftTile.TopLeft().Y,
-                tiles.BottomRightTile.BottomRight().X, tiles.BottomRightTile.BottomRight().Y
+                tiles.TopLeftTile.MinX, tiles.TopLeftTile.MaxY,
+                tiles.BottomRightTile.MaxX, tiles.BottomRightTile.MinY
             };
 
             //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map

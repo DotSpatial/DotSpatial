@@ -79,6 +79,5 @@ namespace DotSpatial.NTSExtension
         {
             return new Polygon(ToLinearRing(self));
         }
-
     }
 }

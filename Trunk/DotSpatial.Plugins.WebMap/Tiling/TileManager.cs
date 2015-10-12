@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using DotSpatial.Plugins.WebMap.Properties;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
@@ -23,8 +23,8 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
         public Tiles GetTiles(Envelope envelope, Rectangle bounds, BackgroundWorker bw)
         {
-            var mapTopLeft = envelope.TopLeft();
-            var mapBottomRight = envelope.BottomRight();
+            Coordinate mapTopLeft = new Coordinate(envelope.MinX, envelope.MaxY);
+            Coordinate mapBottomRight = new Coordinate(envelope.MaxX, envelope.MinY);
 
             //Clip the coordinates so they are in the range of the web mercator projection
             mapTopLeft.Y = TileCalculator.Clip(mapTopLeft.Y, TileCalculator.MinLatitude, TileCalculator.MaxLatitude);
