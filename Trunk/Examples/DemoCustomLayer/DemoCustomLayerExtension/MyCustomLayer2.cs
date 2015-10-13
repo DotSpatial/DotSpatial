@@ -6,8 +6,7 @@ using System.Drawing.Drawing2D;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
 using PointShape = DotSpatial.Symbology.PointShape;
 
@@ -32,7 +31,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
 
         private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
         private Image _stencil; // draw features to the stencil
-        private IEnvelope _bufferExtent; // the geographic extent of the current buffer.
+        private Envelope _bufferExtent; // the geographic extent of the current buffer.
         private Rectangle _bufferRectangle;
 
         #endregion
@@ -320,7 +319,7 @@ namespace DemoCustomLayer.DemoCustomLayerExtension
         /// </summary>
         [ShallowCopy,
         Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope
+        public Envelope BufferEnvelope
         {
             get { return _bufferExtent; }
             set { _bufferExtent = value; }
