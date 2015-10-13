@@ -1,8 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports DotSpatial.Topology
-Imports DotSpatial.Topology.Geometries
+Imports GeoAPI.Geometries
 
 Namespace Manhattan
 

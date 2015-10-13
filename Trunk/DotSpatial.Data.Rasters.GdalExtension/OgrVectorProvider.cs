@@ -23,8 +23,7 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.IO;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {

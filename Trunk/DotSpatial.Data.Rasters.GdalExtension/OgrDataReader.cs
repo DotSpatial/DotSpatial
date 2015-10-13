@@ -23,7 +23,6 @@ using System.Data;
 using System.Data.Common;
 using System.Globalization;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
 using OSGeo.OGR;
 using OSGeo.OSR;
 

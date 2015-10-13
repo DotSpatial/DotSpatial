@@ -11,8 +11,8 @@ using System.Xml.Serialization;
 using System.Xml.XPath;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Renci.Data.Interop.OpenGIS.Gml;
 using Renci.Data.Interop.OpenGIS.Wfs;
 
@@ -444,7 +444,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             var membe1 = member.LineString;
             foreach (DirectPositionListType rings in membe1.Items)
             {
-                List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                var lstCoor = ExtractCoordinates(rings);
                   return  new LinearRing(lstCoor);
                
             }
@@ -488,7 +488,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
 
                 foreach (DirectPositionListType rings in lii.Items)
                 {
-                    List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                    var lstCoor = ExtractCoordinates(rings);
 
                     holes[i]=new LinearRing(lstCoor);
                     i++;
@@ -503,7 +503,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             LinearRingType li = sur.Exterior.Ring as LinearRingType;
             foreach (DirectPositionListType rings in li.Items)
             {
-                List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                var lstCoor = ExtractCoordinates(rings);
 
                 shell = new LinearRing(lstCoor);
 
@@ -511,7 +511,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             return sur;
         }
 
-        private static List<Coordinate> ExtractCoordinates(DirectPositionListType rings)
+        private static Coordinate[] ExtractCoordinates(DirectPositionListType rings)
         {
             string[] listpoints = rings.Text.Split(' ');
             int num = listpoints.Count() / 2;
@@ -520,7 +520,7 @@ namespace DotSpatial.Plugins.WFSClient.Classes
             for (int i = 0; i < listpoints.Count(); i = i + 2)
                 lstCoor.Add(new Coordinate(Convert.ToDouble(listpoints[i]), Convert.ToDouble(listpoints[i + 1])));
 
-            return lstCoor;
+            return lstCoor.ToArray();
         }
 
         private XPathNodeIterator SelectTypeGeometry(XPathNavigator nav, XPathNodeIterator iterator)

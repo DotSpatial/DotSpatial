@@ -4,8 +4,9 @@ Option Explicit On
 Imports System.Collections.Generic
 Imports System.Globalization
 Imports DotSpatial.Data
-Imports DotSpatial.Topology.Geometries
 Imports Microsoft.VisualBasic
+Imports GeoAPI.Geometries
+Imports NetTopologySuite.Geometries
 
 Namespace Manhattan
 
@@ -334,10 +335,10 @@ Namespace Manhattan
                             COORDS.Add(S1.Value)
                         Next
                         If COORDS.Count > 0 Then
-                            Dim newPolygon As IGeometry = New Polygon(New LinearRing(COORDS))
+                            Dim newPolygon As IGeometry = New Polygon(New LinearRing(COORDS.ToArray()))
                             Dim addedFEAT As IFeature = PolygonFeatureSet.AddFeature(newPolygon)
                             addedFEAT.DataRow(0) = GridValue
-                            addedFEAT.DataRow(1) = addedFEAT.geometry.Area
+                            addedFEAT.DataRow(1) = addedFEAT.Geometry.Area
                             addedFEAT.DataRow.AcceptChanges()
                         End If
                     Next
