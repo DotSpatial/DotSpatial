@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DotSpatial.Data;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Controls.Tests

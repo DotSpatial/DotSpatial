@@ -3,8 +3,8 @@ using System.Data;
 using System.IO;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
