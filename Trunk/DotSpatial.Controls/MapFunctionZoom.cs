@@ -67,10 +67,7 @@ namespace DotSpatial.Controls
         private void ZoomTimerTick(object sender, EventArgs e)
         {
             _zoomTimer.Stop();
-            if (_mapFrame == null)
-            {
-                return;
-            }
+            if (_mapFrame == null) return;
             _client = Rectangle.Empty;
             _mapFrame.ResetExtents();
             Map.IsBusy = false;
@@ -130,9 +127,7 @@ namespace DotSpatial.Controls
         protected override void OnMouseWheel(GeoMouseArgs e) //Fix this
         {
             _zoomTimer.Stop(); // if the timer was already started, stop it.
-            if (e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0))
-            {}
-            else
+            if (!(e.Map.IsZoomedToMaxExtent && (_direction * e.Delta < 0)))
             {
                 e.Map.IsZoomedToMaxExtent = false;
                 Rectangle r = e.Map.MapFrame.View;
@@ -140,10 +135,7 @@ namespace DotSpatial.Controls
                 // For multiple zoom steps before redrawing, we actually
                 // want the x coordinate relative to the screen, not
                 // the x coordinate relative to the previously modified view.
-                if (_client == Rectangle.Empty)
-                {
-                    _client = r;
-                }
+                if (_client == Rectangle.Empty) _client = r;
                 int cw = _client.Width;
                 int ch = _client.Height;
 
@@ -152,13 +144,11 @@ namespace DotSpatial.Controls
 
                 if (_direction * e.Delta > 0)
                 {
-
                     double inFactor = 2.0 * _sensitivity;
                     r.Inflate(Convert.ToInt32(-w / inFactor), Convert.ToInt32(-h / inFactor));
                     // try to keep the mouse cursor in the same geographic position
                     r.X += Convert.ToInt32((e.X * w / (_sensitivity * cw)) - w / inFactor);
                     r.Y += Convert.ToInt32((e.Y * h / (_sensitivity * ch)) - h / inFactor);
-
                 }
                 else
                 {

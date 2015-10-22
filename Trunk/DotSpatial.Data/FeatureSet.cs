@@ -1272,9 +1272,7 @@ namespace DotSpatial.Data
             }
 
             if (FeatureGeometryFactory == null)
-            {
                 FeatureGeometryFactory = GeometryFactory.Default;
-            }
 
             IPoint p = FeatureGeometryFactory.CreatePoint(c);
             var f = new Feature(p)
@@ -1294,14 +1292,8 @@ namespace DotSpatial.Data
         protected IFeature GetPolygon(int index)
         {
             if (FeatureGeometryFactory == null)
-            {
                 FeatureGeometryFactory = GeometryFactory.Default;
-            }
 
-            Feature feature = new Feature();
-                                  //{
-                                  //    Envelope = ShapeIndices[index].Extent.ToEnvelope()
-                                  //};
             ShapeRange shape = ShapeIndices[index];
             List<ILinearRing> shells = new List<ILinearRing>();
             List<ILinearRing> holes = new List<ILinearRing>();
@@ -1367,7 +1359,7 @@ namespace DotSpatial.Data
                     }
 
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (tryEnv.Contains(testEnv)&& (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)|| PointInList(testPt, tryRing.Coordinates)))
+                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || PointInList(testPt, tryRing.Coordinates)))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
@@ -1385,18 +1377,11 @@ namespace DotSpatial.Data
                 polygons[i] = FeatureGeometryFactory.CreatePolygon(shells[i], holesForShells[i].ToArray());
             }
 
-            if (polygons.Length == 1)
+            Feature feature = new Feature((polygons.Length == 1 ? polygons[0] : FeatureGeometryFactory.CreateMultiPolygon(polygons) as IGeometry))
             {
-                feature.Geometry = polygons[0];
-            }
-            else
-            {
-                // It's a multi part
-                feature.Geometry = FeatureGeometryFactory.CreateMultiPolygon(polygons);
-            }
-
-            feature.ParentFeatureSet = this;
-            feature.ShapeIndex = shape;
+                ParentFeatureSet = this,
+                ShapeIndex = shape
+            };
 
             // Attributes handled in the overridden case
             return feature;
@@ -1955,8 +1940,8 @@ namespace DotSpatial.Data
             {
                 if (Features == null || Features.Count <= 0)
                 {
-                     // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
-                    return; 
+                    // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
+                    return;
                 }
 
                 foreach (IFeature feature in Features)

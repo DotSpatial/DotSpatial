@@ -692,8 +692,6 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-
-       
-
+		
     }
-  }
+}

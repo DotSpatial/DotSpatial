@@ -72,7 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DGV_Select.de.resx">
+    <EmbeddedResource Include="DGV_Select.de-DE.resx">
       <DependentUpon>DGV_Select.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DGV_Select.resx">

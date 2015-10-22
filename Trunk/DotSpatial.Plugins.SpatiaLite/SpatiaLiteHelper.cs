@@ -7,10 +7,8 @@ using System.IO;
 using System.Reflection;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.IO;
-using ByteOrder = DotSpatial.Topology.IO.ByteOrder;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {

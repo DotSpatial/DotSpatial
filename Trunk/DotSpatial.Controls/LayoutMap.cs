@@ -62,7 +62,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------ Public Properties
+        #region Public Properties
 
         /// <summary>
         /// The geographic envelope to be shown by the layout
@@ -147,8 +147,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------- public methods
-
+        #region Public methods
 
         /// <summary>
         /// Updates the size of the control
@@ -265,8 +264,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width),
-                                                  Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
             }
         }
 

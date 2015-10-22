@@ -214,7 +214,7 @@ namespace DotSpatial.Controls
 
             g.DrawLine(scalePen, leftStart, fontHeight * 1.6f, leftStart + (breakWidth * _numBreaks), fontHeight * 1.6f);
 
-            g.DrawString("1 : " + String.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
+            g.DrawString("1 : " + string.Format("{0:0, }", Map.Scale), _font, scaleBrush, leftStart - (g.MeasureString(Math.Abs(geoBreakWidth * startBreak).ToString(), _font).Width / 2), fontHeight * 2.5F);
 
             for (int i = startBreak; i <= _numBreaks + startBreak; i++)
             {

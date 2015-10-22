@@ -117,9 +117,10 @@ namespace DotSpatial.Data
                 object value = feature.DataRow[fieldName];
                 if (resultFeatures.ContainsKey(value))
                 {
-                    IFeature union = result.AddFeature(resultFeatures[value].Geometry.Union(feature.Geometry));
+                    IFeature union = new Feature(resultFeatures[value].Geometry.Union(feature.Geometry));
+                    union.DataRow = result.DataTable.NewRow();
                     union.DataRow[fieldName] = value;
-                    resultFeatures[value] = union;
+                    resultFeatures[value] = union; //TODO does this work without leaving remnants of the old datarow?
                 }
                 else
                 {
@@ -327,6 +328,5 @@ namespace DotSpatial.Data
             }
             return result;
         }
-    
     }
 }

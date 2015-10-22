@@ -1,6 +1,7 @@
 ﻿using System.IO;
-using DotSpatial.Topology.Geometries;
-using DotSpatial.Topology.IO;
+using GeoAPI.Geometries;
+using GeoAPI.IO;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
@@ -10,14 +11,14 @@ namespace DotSpatial.Plugins.SpatiaLite
     public class SpatiaLiteWkbReader : WKBReader
     {
         /// <summary>
-        /// Convert a byte array to a DotSpatial.Topology geometry object
+        /// Reads SpatiaLite data from the given stream. This is also called by Read(byte[] data).
         /// </summary>
-        /// <param name="data">the data from the BLOB column</param>
-        /// <returns>the geometry object</returns>
-        public override IGeometry Read(byte[] data)
+        /// <param name="stream">Stream that should be used to read the data.</param>
+        /// <returns>IGeometry that is contained in the given stream.</returns>
+        public override IGeometry Read(Stream stream)
         {
             //specialized Read() method for SpatiaLite
-            using (Stream stream = new MemoryStream(data))
+            using (stream)
             {
                 //read first byte
                 BinaryReader reader = null;

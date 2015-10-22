@@ -274,7 +274,7 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         /// <summary>
-        /// Changes the opacity of the current basemap image and invalidates the map
+        /// Changes the opacity of the current basemap image and invalidates the map.
         /// </summary>
         private void ChangeBasemapOpacity()
         {
@@ -350,8 +350,7 @@ namespace DotSpatial.Plugins.WebMap
         {
             if (_baseMapLayer == null)
             {
-                //Need to first initialize and add the basemap layer synchronously (it will fail if done in
-                // another thread.
+                //Need to first initialize and add the basemap layer synchronously (it will fail if done in another thread).
 
                 //First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
                 var tempImageData = new InRamImageData(Resources.nodata, new Extent(1, 1, 2, 2));
@@ -383,6 +382,9 @@ namespace DotSpatial.Plugins.WebMap
             RunOrCancelBW();
         }
 
+        /// <summary>
+        /// Changes the Maps opacity to the selected opacity.
+        /// </summary>
         private void OpacitySelected(object sender, SelectedValueChangedEventArgs e)
         {
             if (_baseMapLayer == null)

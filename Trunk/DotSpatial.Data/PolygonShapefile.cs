@@ -309,7 +309,7 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.PolygonM || Header.ShapeType == ShapeType.PolygonZ)
                 {
-                    if (f.Geometry.Envelope == null)
+                    if (f.Geometry.EnvelopeInternal == null)
                     {
                         bbWriter.Write(0.0);
                         bbWriter.Write(0.0);

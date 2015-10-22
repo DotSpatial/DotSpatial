@@ -177,7 +177,7 @@ namespace DotSpatial.Data
         {
             _dataRow = null;
             _basicGeometry = null;
-            _featureType=FeatureType.Unspecified;
+            _featureType = FeatureType.Unspecified;
             //_envelopSource = CacheTypes.Cached;
         }
 
@@ -583,6 +583,7 @@ namespace DotSpatial.Data
             set
             {
                 _basicGeometry = value;
+                FeatureType = FeatureTypeFromGeometryType(_basicGeometry.OgcGeometryType);
                 //EnvelopeSource = CacheTypes.Cached;
             }
         }

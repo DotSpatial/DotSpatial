@@ -313,8 +313,7 @@ namespace DotSpatial.Data
             int blockHeight = 32000000 / w;
             if (blockHeight > h) blockHeight = h;
             int numBlocks = (int)Math.Ceiling(h / (double)blockHeight);
-            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Generating Pyramids",
-                                                 _header.ImageHeaders.Length * numBlocks);
+            ProgressMeter pm = new ProgressMeter(ProgressHandler, "Generating Pyramids", _header.ImageHeaders.Length * numBlocks);
             for (int block = 0; block < numBlocks; block++)
             {
                 // Normally block height except for the lowest block which is usually smaller
@@ -325,8 +324,7 @@ namespace DotSpatial.Data
                 byte[] vals = ReadWindow(block * blockHeight, 0, bh, w, 0);
 
                 Bitmap bmp = new Bitmap(w, bh);
-                BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, bh), ImageLockMode.WriteOnly,
-                                             PixelFormat.Format32bppArgb);
+                BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, bh), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
                 Marshal.Copy(vals, 0, bd.Scan0, vals.Length);
                 bmp.UnlockBits(bd);
 

@@ -195,7 +195,7 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolygonM || header.ShapeType == ShapeType.PolygonZ)
             {
-                if (feature.Envelope == null)
+                if (feature.EnvelopeInternal == null)
                 {
                     shpStream.WriteLe(0.0);
                     shpStream.WriteLe(0.0);

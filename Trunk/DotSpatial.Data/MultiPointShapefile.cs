@@ -400,7 +400,7 @@ namespace DotSpatial.Data
                 }
                 if (Header.ShapeType == ShapeType.MultiPointM || Header.ShapeType == ShapeType.MultiPointZ)
                 {
-                    if (f.Geometry.Envelope == null)
+                    if (f.Geometry.EnvelopeInternal == null)
                     {
                         bbWriter.Write(0.0);
                         bbWriter.Write(0.0);

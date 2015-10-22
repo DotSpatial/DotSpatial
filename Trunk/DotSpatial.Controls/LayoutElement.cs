@@ -287,17 +287,8 @@ namespace DotSpatial.Controls
 
                         GraphicsPath gp = new GraphicsPath();
                         gp.AddLine(tempRect.X, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y);
-                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
-
-                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y, tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height);
-                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
-
-                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X + tempRect.Width, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y + tempRect.Height);
-                        //outlineSymbol.Outline.DrawPath(g, gp, 1D);
-
-                        //gp = new GraphicsPath();
                         gp.AddLine(tempRect.X, tempRect.Y + tempRect.Height, tempRect.X, tempRect.Y);
                         outlineSymbol.Outline.DrawPath(g, gp, 1D);
                         gp.Dispose();

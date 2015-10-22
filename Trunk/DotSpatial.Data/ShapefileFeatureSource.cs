@@ -145,8 +145,6 @@ namespace DotSpatial.Data
         /// <inheritdocs/>
         public void Add(IFeature feature)
         {
-            
-
             if (feature.FeatureType != FeatureType)
             {
                 throw new FeatureTypeMismatchException();
