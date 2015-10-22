@@ -128,6 +128,18 @@ namespace DotSpatial.Serialization
                             name => AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(z => z.FullName == name.FullName),
                             null);
                     }
+                    if (t == null)
+                    {   //check whether the needed object was moved to another assembly
+                        MovedTypes mt = new MovedTypes();
+                        foreach (TypeMoveDefintion tc in mt.Types)
+                        {
+                            if (tc.IsApplicable(valueAttrib.Value))
+                            {
+                                t = Type.GetType(tc.MoveType(valueAttrib.Value));
+                                if (t != null) break;
+                            }
+                        }
+                    }
                 }
                 catch (FileLoadException)
                 {
