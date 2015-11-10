@@ -192,7 +192,7 @@ namespace DotSpatial.Data
 
             ByteBlock allCoords = new ByteBlock(BLOCKSIZE);
             bool isM = (header.ShapeType == ShapeType.MultiPointZ || header.ShapeType == ShapeType.MultiPointM);
-            bool isZ = (header.ShapeType == ShapeType.PolyLineZ);
+            bool isZ = (header.ShapeType == ShapeType.MultiPointZ);
             ByteBlock allZ = null;
             ByteBlock allM = null;
             if (isZ)
