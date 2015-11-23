@@ -73,7 +73,7 @@ namespace DotSpatial.Data
         /// <param name="env">The envelope with extent values to read.</param>
         public ExtentM(Envelope env)
         {
-            SetValues(env.MinX, env.MinY, env.MinM, env.MaxX, env.MaxY, env.MaxM);
+            SetValues(env.MinX, env.MinY, env.Minimum.M, env.MaxX, env.MaxY, env.Maximum.M);
         }
 
         /// <summary>
@@ -122,13 +122,13 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Contains(Coordinate c)
         {
-            if (HasM && !double.IsNaN(c[Ordinate.M]))
+            if (HasM && !double.IsNaN(c.M))
             {
-                if (MaxM < c[Ordinate.M])
+                if (MaxM < c.M)
                 {
                     return false;
                 }
-                if (MinM > c[Ordinate.M])
+                if (MinM > c.M)
                 {
                     return false;
                 }
@@ -166,13 +166,13 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Contains(Envelope env)
         {
-            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
+            if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {
-                if (env.MaxM < MinM)
+                if (env.Maximum.M < MinM)
                 {
                     return false;
                 }
-                if (env.MinM > MaxM)
+                if (env.Minimum.M > MaxM)
                 {
                     return false;
                 }
@@ -298,7 +298,7 @@ namespace DotSpatial.Data
         /// <returns>Boolean</returns>
         public override bool Intersects(Coordinate c)
         {
-            if ((HasM && !double.IsNaN(c[Ordinate.M])) && (c[Ordinate.M] < MinM || c[Ordinate.M] > MaxM))
+            if ((HasM && !double.IsNaN(c.M)) && (c.M < MinM || c.M > MaxM))
             {
                 return false;
             }
@@ -356,13 +356,13 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Intersects(Envelope env)
         {
-            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
+            if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {
-                if (env.MaxM < MinM)
+                if (env.Maximum.M < MinM)
                 {
                     return false;
                 }
-                if (env.MinM > MaxM)
+                if (env.Minimum.M > MaxM)
                 {
                     return false;
                 }
@@ -427,13 +427,13 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Within(Envelope env)
         {
-            if (!double.IsNaN(env.MinM) && !double.IsNaN(env.MaxM) && HasM)
+            if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {
-                if (env.MaxM > MinM)
+                if (env.Maximum.M > MinM)
                 {
                     return false;
                 }
-                if (env.MinM < MaxM)
+                if (env.Minimum.M < MaxM)
                 {
                     return false;
                 }

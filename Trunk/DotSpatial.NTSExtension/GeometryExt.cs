@@ -14,37 +14,41 @@ namespace DotSpatial.NTSExtension
         /// <param name="radAngle">Rotation angle in radian.</param>
         public static void Rotate(this IGeometry self, Coordinate origin, double radAngle)
         {
-            IPoint pnt = self as IPoint;
-            if (pnt != null)
+            switch (self.OgcGeometryType)
             {
-                RotateCoordinateRad(origin, ref pnt.Coordinate.X, ref pnt.Coordinate.Y, radAngle);
-                return;
+                case OgcGeometryType.Point:
+                    IPoint pnt = self as IPoint;
+                    if (pnt != null)
+                    {
+                        RotateCoordinateRad(origin, ref pnt.Coordinate.X, ref pnt.Coordinate.Y, radAngle);
+                    }
+                    break;
+                case OgcGeometryType.LineString:
+                    ILineString l = self as ILineString;
+                    if (l != null)
+                    {
+                        for (int i = 0; i < l.Coordinates.Length; i++)
+                            RotateCoordinateRad(origin, ref l.Coordinates[i].X, ref l.Coordinates[i].Y, radAngle);
+                    }
+                    break;
+                case OgcGeometryType.Polygon:
+                    IPolygon p = self as IPolygon;
+                    if (p != null)
+                    {
+                        p.Shell.Rotate(origin, radAngle);
+                        foreach (var h in p.Holes)
+                            h.Rotate(origin, radAngle);
+                    }
+                    break;
+                case OgcGeometryType.GeometryCollection:
+                    IGeometryCollection geocol = self as IGeometryCollection;
+                    if (geocol != null)
+                    {
+                        foreach (IGeometry geo in geocol.Geometries)
+                            geo.Rotate(origin, radAngle);
+                    }
+                    break;
             }
-
-            IPolygon p = self as IPolygon;
-            if (p != null)
-            {
-                p.Shell.Rotate(origin, radAngle);
-                foreach (var h in p.Holes)
-                    h.Rotate(origin, radAngle);
-                return;
-            }
-
-            ILineString l = self as ILineString;
-            if (l != null)
-            {
-                for (int i = 0; i < l.Coordinates.Length; i++)
-                    RotateCoordinateRad(origin, ref l.Coordinates[i].X, ref l.Coordinates[i].Y, radAngle);
-                return;
-            }
-
-            IGeometryCollection geocol = self as IGeometryCollection;
-            if (geocol != null)
-            {
-                foreach (IGeometry geo in geocol.Geometries)
-                    geo.Rotate(origin, radAngle);
-            }
-
         }
         /// <summary>
         /// Rotates the given coordinate by the given radian angle around the origin.

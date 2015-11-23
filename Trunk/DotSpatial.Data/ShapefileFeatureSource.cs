@@ -174,7 +174,7 @@ namespace DotSpatial.Data
                 header.Xmax = feature.Geometry.EnvelopeInternal.MaxX;
                 header.Ymin = feature.Geometry.EnvelopeInternal.MinY;
                 header.Ymax = feature.Geometry.EnvelopeInternal.MaxY;
-                if (double.IsNaN(feature.Geometry.Coordinates[0][Ordinate.M])) //TODO jany_ does this work?
+                if (double.IsNaN(feature.Geometry.Coordinates[0].M))
                 {
                     header.ShapeType = ShapeType;
                 }
@@ -186,12 +186,12 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
-                        header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
+                        header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
+                        header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                         header.ShapeType = ShapeTypeZ;
                     }
-                    header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
-                    header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
+                    header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
+                    header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                 }
                 header.ShxLength = 4 + 50;
                 header.SaveAs(Filename);
@@ -283,7 +283,7 @@ namespace DotSpatial.Data
                     header.Xmax = feature.Geometry.EnvelopeInternal.MaxX;
                     header.Ymin = feature.Geometry.EnvelopeInternal.MinY;
                     header.Ymax = feature.Geometry.EnvelopeInternal.MaxY;
-                    if (double.IsNaN(feature.Geometry.Coordinates[0][Ordinate.M])) //TODO jany_ does this work?
+                    if (double.IsNaN(feature.Geometry.Coordinates[0].M))
                     {
                         header.ShapeType = ShapeType;
                     }
@@ -295,12 +295,12 @@ namespace DotSpatial.Data
                         }
                         else
                         {
-                            header.Zmin = feature.Geometry.EnvelopeInternal.MinZ;
-                            header.Zmax = feature.Geometry.EnvelopeInternal.MaxZ;
+                            header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
+                            header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                             header.ShapeType = ShapeTypeZ;
                         }
-                        header.Mmin = feature.Geometry.EnvelopeInternal.MinM;
-                        header.Mmax = feature.Geometry.EnvelopeInternal.MaxM;
+                        header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
+                        header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                     }
                     header.ShxLength = 4 + 50;
                     header.SaveAs(Filename);
@@ -435,17 +435,19 @@ namespace DotSpatial.Data
             else
             {
                 // Other features, so include new feature
-                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax, header.Zmin, header.Zmax, header.Mmin, header.Mmax);
+                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax);
+                newExt.InitM(header.Mmin, header.Mmax);
+                newExt.InitZ(header.Zmin, header.Zmax);
                 newExt.ExpandToInclude(feature.EnvelopeInternal);
             }
-            header.Xmin = newExt.MinX;
-            header.Ymin = newExt.MinY;
-            header.Zmin = newExt.MinZ;
-            header.Xmax = newExt.MaxX;
-            header.Ymax = newExt.MaxY;
-            header.Zmax = newExt.MaxZ;
-            header.Mmin = newExt.MinM; //TODO added by jany_ on nts integration ... is this correct?
-            header.Mmax = newExt.MaxM;
+            header.Xmin = newExt.Minimum.X;
+            header.Ymin = newExt.Minimum.Y;
+            header.Zmin = newExt.Minimum.Z;
+            header.Xmax = newExt.Maximum.X;
+            header.Ymax = newExt.Maximum.Y;
+            header.Zmax = newExt.Maximum.Z;
+            header.Mmin = newExt.Minimum.M; //TODO added by jany_ on nts integration ... is this correct?
+            header.Mmax = newExt.Maximum.M;
             header.ShxLength = header.ShxLength + 4;
             if (writeHeaderFiles)
             {
@@ -513,7 +515,7 @@ namespace DotSpatial.Data
                         schemaDefined = true;
                         result.CopyTableSchema(td);
                     }
-                    var f = new Feature(pair.Value) {RecordNumber = pair.Key + 1, DataRow = td.Rows[0]};
+                    var f = new Feature(pair.Value) { RecordNumber = pair.Key + 1, DataRow = td.Rows[0] };
                     result.Features.Add(f);
                     f.UpdateEnvelope();
                 }

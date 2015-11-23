@@ -333,7 +333,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="envelope"></param>
         /// <returns></returns>
-        public bool Intersects(IEnvelope envelope)
+        public bool Intersects(Envelope envelope)
         {
             return Intersects(new Shape(envelope).Range);
         }

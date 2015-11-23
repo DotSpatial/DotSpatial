@@ -56,8 +56,9 @@ namespace DotSpatial.Symbology
         /// <param name="z1">The first z-value.</param>
         /// <param name="z2">The second z-value.</param>
         public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2) :
-            base(x1, x2, y1, y2, z1, z2, double.NaN, double.NaN)
+            base(x1, x2, y1, y2)
         {
+            InitZ(z1,z2);
             _geographicView = new Envelope(x1, x2, y1, y2);
         }
 

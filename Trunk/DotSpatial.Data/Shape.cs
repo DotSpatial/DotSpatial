@@ -121,7 +121,7 @@ namespace DotSpatial.Data
                 _vertices[i * 2] = c.X;
                 _vertices[i * 2 + 1] = c.Y;
                 _z[i] = c.Z;
-                _m[i] = c[Ordinate.M];
+                _m[i] = c.M;
             }
             _shapeRange = ShapeRangeFromGeometry(geometry, featureType, _vertices, 0);
         }
@@ -139,9 +139,9 @@ namespace DotSpatial.Data
             {
                 _z = new[] { coord.Z };
             }
-            if (!double.IsNaN(coord[Ordinate.M]))
+            if (!double.IsNaN(coord.M))
             {
-                _m = new[] { coord[Ordinate.M] };
+                _m = new[] { coord.M };
             }
 
             _shapeRange = new ShapeRange(FeatureType.Point);
@@ -184,7 +184,7 @@ namespace DotSpatial.Data
         /// Creates a clockwise polygon shape from an envelope
         /// </summary>
         /// <param name="envelope"></param>
-        public Shape(IEnvelope envelope)
+        public Shape(Envelope envelope)
         {
             if (Equals(envelope, null))
                 throw new ArgumentNullException("envelope");
@@ -298,7 +298,7 @@ namespace DotSpatial.Data
             foreach (var d in part)
             {
                 var c = new Coordinate(d.X, d.Y);
-                if (M != null && M.Length > 0) c[Ordinate.M] = M[i];
+                if (M != null && M.Length > 0) c.M = M[i];
                 if (Z != null && Z.Length > 0) c.Z = Z[i];
                 i++;
                 coords.Add(c);

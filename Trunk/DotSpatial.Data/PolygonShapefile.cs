@@ -102,6 +102,7 @@ namespace DotSpatial.Data
         // Byte 48      NumPoints           Integer     1           Little
         // Byte 52      Parts               Integer     NumParts    Little
         // Byte X       Points              Point       NumPoints   Little
+        // X = 52 + 4 * NumParts
 
         // X Y M Poly Lines: Total Length = 34 Bytes
         // ---------------------------------------------------------
@@ -118,6 +119,9 @@ namespace DotSpatial.Data
         // Byte Y*      Mmin                Double      1           Little
         // Byte Y + 8*  Mmax                Double      1           Little
         // Byte Y + 16* Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // * = optional
 
         // X Y Z M Poly Lines: Total Length = 44 Bytes
         // ---------------------------------------------------------
@@ -137,6 +141,10 @@ namespace DotSpatial.Data
         // Byte Z*      Mmin                Double      1           Little
         // Byte Z+8*    Mmax                Double      1           Little
         // Byte Z+16*   Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // Z = Y + 16 + (8 * NumPoints)
+        // * = optional
 
         /// <summary>
         /// Gets the specified feature by constructing it from the vertices, rather
@@ -296,8 +304,8 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.PolygonZ)
                 {
-                    bbWriter.Write(f.Geometry.EnvelopeInternal.MinZ);
-                    bbWriter.Write(f.Geometry.EnvelopeInternal.MaxZ);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.Z);
+                    bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.Z);
                     double[] zVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; i++)
                     {
@@ -316,14 +324,14 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MinM);
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MaxM);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.M);
                     }
 
                     double[] mVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; i++)
                     {
-                        mVals[ipoint] = points[ipoint][Ordinate.M];
+                        mVals[ipoint] = points[ipoint].M;
                         ipoint++;
                     }
                     bbWriter.Write(mVals);

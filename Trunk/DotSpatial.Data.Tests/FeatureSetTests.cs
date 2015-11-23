@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using DotSpatial.NTSExtension;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
 using GeoAPI.Geometries;
@@ -171,7 +172,7 @@ namespace DotSpatial.Data.Tests
                 new Coordinate(11.1, 22.2, 3.3, 4.4)
             };
 
-            var mp = new MultiPoint(vertices);
+            var mp = new MultiPoint(vertices.CastToPointArray());
             var f = new Feature(mp);
             var fs = new FeatureSet(f.FeatureType)
             {

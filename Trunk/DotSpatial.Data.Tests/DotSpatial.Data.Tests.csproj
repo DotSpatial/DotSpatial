@@ -59,6 +59,10 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.NTSExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09d201a08f2fe77e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Debug\DotSpatial.NTSExtension.dll</HintPath>
+    </Reference>
     <Reference Include="GeoAPI">
       <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\GeoAPI.dll</HintPath>
     </Reference>

@@ -43,7 +43,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\GeoAPI.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite, Version=1.13.3.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+    <Reference Include="NetTopologySuite, Version=1.13.3.2, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\NetTopologySuite.dll</HintPath>
     </Reference>
@@ -69,6 +69,7 @@
     <Compile Include="IMatrix4.cs" />
     <Compile Include="IMatrixD.cs" />
     <Compile Include="IRectangle.cs" />
+    <Compile Include="LineStringExt.cs" />
     <Compile Include="Matrix4.cs" />
     <Compile Include="MatrixD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

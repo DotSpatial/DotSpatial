@@ -104,15 +104,10 @@ namespace DotSpatial.Data
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
             // Get the basic header information.
-            var header = new ShapefileHeader(fileName);
-            Extent = header.ToExtent();
+            var header = Header;
             // Check to ensure that the fileName is the correct shape type
-            if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM
-                && header.ShapeType != ShapeType.PointZ)
+            if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM && header.ShapeType != ShapeType.PointZ)
             {
                 throw new ApplicationException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
             }
@@ -122,6 +117,9 @@ namespace DotSpatial.Data
                 // the file is empty so we are done reading
                 return;
             }
+
+            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
+            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
 
             var numShapes = shapeHeaders.Count;
             double[] m = null;
@@ -320,7 +318,7 @@ namespace DotSpatial.Data
                     }
                     if (Header.ShapeType == ShapeType.PointM || Header.ShapeType == ShapeType.PointZ)
                     {
-                        shpStream.WriteLe(c[Ordinate.M]);
+                        shpStream.WriteLe(c.M);
                     }
                     fid++;
                 }

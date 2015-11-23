@@ -21,9 +21,9 @@
 using System.Collections.Generic;
 using System.Data;
 using DotSpatial.NTSExtension;
+using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 
 namespace DotSpatial.Data
@@ -658,9 +658,10 @@ namespace DotSpatial.Data
         /// <param name="radAngle">The rotation angle in radian.</param>
         public static void Rotate(this IFeature self, Coordinate origin, double radAngle)
         {
-            IGeometry geo = self.Geometry;
+            IGeometry geo = self.Geometry.Copy();
             geo.Rotate(origin, radAngle);
             self.Geometry = geo;
+            self.UpdateEnvelope();
         }
 
         // /// <summary>

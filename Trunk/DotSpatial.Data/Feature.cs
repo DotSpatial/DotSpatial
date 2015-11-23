@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
@@ -73,7 +74,7 @@ namespace DotSpatial.Data
             {
                 Coordinate c = new Coordinate(shape.Vertices[0], shape.Vertices[1]);
                 if (shape.Z != null) c.Z = shape.Z[0];
-                if (shape.M != null) c[Ordinate.M] = shape.M[0];
+                if (shape.M != null) c.M = shape.M[0];
                 _basicGeometry = new Point(c);
                 _featureType = FeatureType.Point;
             }
@@ -86,11 +87,11 @@ namespace DotSpatial.Data
                     {
                         Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[i * 2 + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
-                        if (shape.M != null) c[Ordinate.M] = shape.M[i];
+                        if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
                     }
                 }
-                _basicGeometry = new MultiPoint(coords);
+                _basicGeometry = new MultiPoint(coords.CastToPointArray());
                 _featureType = FeatureType.MultiPoint;
             }
 
@@ -104,7 +105,7 @@ namespace DotSpatial.Data
                     {
                         Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[i * 2 + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
-                        if (shape.M != null) c[Ordinate.M] = shape.M[i];
+                        if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
                     }
                     strings.Add(new LineString(coords.ToArray()));
@@ -151,7 +152,7 @@ namespace DotSpatial.Data
         public Feature(IGeometry geometry)
         {
             _basicGeometry = geometry;
-            _featureType = FeatureTypeFromGeometryType(geometry.OgcGeometryType);
+            _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = null;
         }
 
@@ -164,7 +165,7 @@ namespace DotSpatial.Data
         public Feature(IGeometry geometry, IFeatureSet parent)
         {
             _basicGeometry = geometry;
-            _featureType = FeatureTypeFromGeometryType(geometry.OgcGeometryType);
+            _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = parent.DataTable.NewRow();
             //_envelopSource = CacheTypes.Dynamic;
             parent.Features.Add(this);
@@ -198,7 +199,7 @@ namespace DotSpatial.Data
                     break;
                 case FeatureType.MultiPoint:
                     _dataRow = null;
-                    _basicGeometry = new MultiPoint(coordinates);
+                    _basicGeometry = new MultiPoint(coordinates.CastToPointArray());
                     //_envelopSource = CacheTypes.Dynamic;
                     break;
                 case FeatureType.Point:
@@ -268,7 +269,7 @@ namespace DotSpatial.Data
                 foreach (Vertex d in part)
                 {
                     Coordinate c = new Coordinate(d.X, d.Y);
-                    if (shape.M != null && shape.M.Length > 0) c[Ordinate.M] = shape.M[i];
+                    if (shape.M != null && shape.M.Length > 0) c.M = shape.M[i];
                     if (shape.Z != null && shape.Z.Length > 0) c.Z = shape.Z[i];
                     i++;
                     coords.Add(c);
@@ -372,10 +373,12 @@ namespace DotSpatial.Data
 
         #endregion
 
-        private FeatureType FeatureTypeFromGeometryType(OgcGeometryType geometryType)
+        private FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
         {
             FeatureType featureType = FeatureType.Unspecified;
-            switch (geometryType)
+            if (geometry == null) return featureType;
+
+            switch (geometry.OgcGeometryType)
             {
                 case OgcGeometryType.Point:
                     featureType = FeatureType.Point;
@@ -442,9 +445,7 @@ namespace DotSpatial.Data
         public void UpdateEnvelope()
         {
             if (_basicGeometry == null) return;
-            //TODO jany_ do we need to update the envelope?
-            //   _basicGeometry.UpdateEnvelope();
-            //_envelope = _basicGeometry.Envelope;
+            _basicGeometry.UpdateEnvelope();
             if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
@@ -583,7 +584,7 @@ namespace DotSpatial.Data
             set
             {
                 _basicGeometry = value;
-                FeatureType = FeatureTypeFromGeometryType(_basicGeometry.OgcGeometryType);
+                FeatureType = FeatureTypeFromGeometryType(_basicGeometry);
                 //EnvelopeSource = CacheTypes.Cached;
             }
         }

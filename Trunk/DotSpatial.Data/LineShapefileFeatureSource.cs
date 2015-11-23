@@ -161,8 +161,8 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolyLineZ)
             {
-                shpStream.WriteLe(feature.EnvelopeInternal.MinZ);
-                shpStream.WriteLe(feature.EnvelopeInternal.MaxZ);
+                shpStream.WriteLe(feature.EnvelopeInternal.Minimum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.Maximum.Z);
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -180,14 +180,14 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.EnvelopeInternal.MinM);
-                    shpStream.WriteLe(feature.EnvelopeInternal.MaxM);
+                    shpStream.WriteLe(feature.EnvelopeInternal.Minimum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.Maximum.M);
                 }
 
                 double[] mVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; i++)
                 {
-                    mVals[ipoint] = points[ipoint][Ordinate.M]; //TODO jany_ does this work?
+                    mVals[ipoint] = points[ipoint].M;
                     ipoint++;
                 }
                 shpStream.WriteLe(mVals, 0, points.Count);

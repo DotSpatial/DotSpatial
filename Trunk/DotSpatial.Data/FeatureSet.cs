@@ -21,6 +21,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
+using DotSpatial.NTSExtension;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
 using GeoAPI.Geometries;
@@ -984,7 +985,8 @@ namespace DotSpatial.Data
             {
                 foreach (var feature in Features)
                 {
-                    if (!region.Intersects(feature.Geometry.EnvelopeInternal) || !feature.Intersects(region.ToEnvelope())) continue;
+                    if (!feature.Geometry.Intersects(region.ToEnvelope().ToPolygon()))
+                        continue;
 
                     result.Add(feature);
                     affectedRegion.ExpandToInclude(feature.Geometry.EnvelopeInternal.ToExtent());
@@ -1167,7 +1169,7 @@ namespace DotSpatial.Data
                     coords.Add(c);
                     if (M != null && M.Length > 0)
                     {
-                        c[Ordinate.M] = M[i];
+                        c.M = M[i];
                     }
 
                     if (Z != null && Z.Length > 0)
@@ -1226,7 +1228,7 @@ namespace DotSpatial.Data
                     coords.Add(c);
                     if (M != null && M.Length != 0)
                     {
-                        c[Ordinate.M] = M[i];
+                        c.M = M[i];
                     }
 
                     if (Z != null && Z.Length != 0)
@@ -1263,7 +1265,7 @@ namespace DotSpatial.Data
             Coordinate c = new Coordinate(Vertex[index * 2], Vertex[index * 2 + 1]);
             if (M != null && M.Length != 0)
             {
-                c[Ordinate.M] = M[index];
+                c.M = M[index];
             }
 
             if (Z != null && Z.Length != 0)
@@ -1306,7 +1308,7 @@ namespace DotSpatial.Data
                     Coordinate c = new Coordinate(d.X, d.Y);
                     if (M != null && M.Length > 0)
                     {
-                        c[Ordinate.M] = M[i];
+                        c.M = M[i];
                     }
                     if (Z != null && Z.Length > 0)
                     {
@@ -1946,7 +1948,7 @@ namespace DotSpatial.Data
 
                 foreach (IFeature feature in Features)
                 { //TODO jany_ do we need to update the envelope?
-                    //feature.Geometry.UpdateEnvelope();
+                    feature.Geometry.UpdateEnvelope();
                     MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
                 }
             }

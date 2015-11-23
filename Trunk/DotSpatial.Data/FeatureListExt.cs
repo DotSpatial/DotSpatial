@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using System.Linq;
+using DotSpatial.NTSExtension;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -97,7 +97,7 @@ namespace DotSpatial.Data
             }
             if (self.Parent.FeatureType == FeatureType.MultiPoint)
             {
-                self.Add(new Feature(new MultiPoint(points)));
+                self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
             }
         }
 

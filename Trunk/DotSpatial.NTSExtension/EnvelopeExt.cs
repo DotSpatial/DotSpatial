@@ -31,8 +31,8 @@ namespace DotSpatial.NTSExtension
                 Y = (self.MinY + self.MaxY) / 2
             };
 
-            if (!double.IsNaN(self.MinZ)) result.Z = (self.MinZ + self.MaxZ) / 2;
-            if (!double.IsNaN(self.MinM)) result.M = (self.MinM + self.MaxM) / 2;
+            if (!double.IsNaN(self.Minimum.Z)) result.Z = (self.Minimum.Z + self.Maximum.Z) / 2;
+            if (!double.IsNaN(self.Minimum.M)) result.M = (self.Minimum.M + self.Maximum.M) / 2;
             return result;
         }
 
@@ -60,7 +60,7 @@ namespace DotSpatial.NTSExtension
             {
                 new Coordinate(self.MinX, self.MaxY),
                 new Coordinate(self.MaxX, self.MaxY),
-                new Coordinate(self.MaxX, self.MinX),
+                new Coordinate(self.MaxX, self.MinY),
                 new Coordinate(self.MinX, self.MinY),
                 new Coordinate(self.MinX, self.MaxY)
             };
@@ -77,6 +77,7 @@ namespace DotSpatial.NTSExtension
         /// <returns>A Polygon, which technically qualifies as an IGeometry</returns>
         public static IPolygon ToPolygon(this Envelope self)
         {
+            if (self.IsNull) return new Polygon(new LinearRing(new Coordinate[]{}));
             return new Polygon(ToLinearRing(self));
         }
     }

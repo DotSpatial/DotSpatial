@@ -151,6 +151,8 @@ namespace DotSpatial.Data
         /// <returns>A Shape object</returns>
         Shape ToShape();
 
+        void UpdateEnvelope();
+
         #endregion
     }
 }

@@ -20,6 +20,8 @@
 
 using System;
 using System.Collections.Generic;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
@@ -65,6 +67,24 @@ namespace DotSpatial.NTSExtension
             }
             return (T)obj;
         }
+
+        /// <summary>
+        /// Converts an array of coordinates into points.
+        /// Eventually I hope to reduce the amount of "casting" necessary, in order
+        /// to allow as much as possible to occur via an interface.
+        /// </summary>
+        /// <param name="rawPoints"></param>
+        /// <returns></returns>
+        public static IPoint[] CastToPointArray(this IEnumerable<Coordinate> rawPoints)
+        {
+            List<IPoint> result = new List<IPoint>();
+            foreach (Coordinate rawPoint in rawPoints)
+            {
+                result.Add(new Point(rawPoint));
+            }
+            return result.ToArray();
+        }
+
 
         #endregion
     }

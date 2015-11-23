@@ -745,6 +745,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public Envelope ToEnvelope()
         {
+            if (double.IsNaN(MinX)) return new Envelope();
             return new Envelope(MinX, MaxX, MinY, MaxY);
         }
 

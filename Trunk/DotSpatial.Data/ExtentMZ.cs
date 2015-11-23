@@ -64,8 +64,8 @@ namespace DotSpatial.Data
         /// <param name="env">The Envelope to read the minimum and maximum values from.</param>
         public ExtentMZ(Envelope env)
         {
-            SetValues(env.MinX, env.MinY, env.MinM, env.MinZ,
-                env.MaxX, env.MaxY, env.MaxM, env.MaxZ);
+            SetValues(env.MinX, env.MinY, env.Minimum.M, env.Minimum.Z,
+                env.MaxX, env.MaxY, env.Maximum.M, env.Maximum.Z);
         }
 
         /// <summary>
@@ -215,9 +215,9 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Intersects(Envelope env)
         {
-            if (!double.IsNaN(env.MinZ) && !double.IsNaN(env.MaxZ) && HasZ)
+            if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.MaxZ < MinZ || env.MinZ > MaxZ)
+                if (env.Maximum.Z < MinZ || env.Minimum.Z > MaxZ)
                     return false;
             }
             return base.Intersects(env);
@@ -358,9 +358,9 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Within(Envelope env)
         {
-            if (!double.IsNaN(env.MinZ) && !double.IsNaN(env.MaxZ) && HasZ)
+            if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.MaxZ > MinZ || env.MinZ < MaxZ)
+                if (env.Maximum.Z > MinZ || env.Minimum.Z < MaxZ)
                     return false;
             }
             return base.Within(env);
@@ -374,9 +374,9 @@ namespace DotSpatial.Data
         /// <returns>Boolean.</returns>
         public override bool Contains(Envelope env)
         {
-            if (!double.IsNaN(env.MinZ) && !double.IsNaN(env.MaxZ) && HasZ)
+            if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
-                if (env.MaxZ < MinZ || env.MinZ > MaxZ)
+                if (env.Maximum.Z < MinZ || env.Minimum.Z > MaxZ)
                     return false;
             }
             return base.Contains(env);

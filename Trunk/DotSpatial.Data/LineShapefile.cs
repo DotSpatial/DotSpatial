@@ -102,8 +102,9 @@ namespace DotSpatial.Data
         // Byte 48      NumPoints           Integer     1           Little
         // Byte 52      Parts               Integer     NumParts    Little
         // Byte X       Points              Point       NumPoints   Little
+        // X = 52 + 4 * NumParts
 
-        // X Y M Poly Lines
+        // X Y M Poly Lines: Total Length = 34 Bytes
         // ---------------------------------------------------------
         // Position     Value               Type        Number      Byte Order
         // ---------------------------------------------------------
@@ -118,8 +119,11 @@ namespace DotSpatial.Data
         // Byte Y*      Mmin                Double      1           Little
         // Byte Y + 8*  Mmax                Double      1           Little
         // Byte Y + 16* Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // * = optional
 
-        // X Y Z M Poly Lines
+        // X Y Z M Poly Lines: Total Length = 44 Bytes
         // ---------------------------------------------------------
         // Position     Value               Type        Number  Byte Order
         // ---------------------------------------------------------
@@ -137,6 +141,10 @@ namespace DotSpatial.Data
         // Byte Z*      Mmin                Double      1           Little
         // Byte Z+8*    Mmax                Double      1           Little
         // Byte Z+16*   Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // Z = Y + 16 + (8 * NumPoints)
+        // * = optional
 
         /// <summary>
         /// Gets the specified feature by constructing it from the vertices, rather
@@ -306,15 +314,15 @@ namespace DotSpatial.Data
                     var shape = shapeIndices[shp];
                     if (shape.ShapeType == ShapeType.NullShape) continue;
                     reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes
+                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
 
                     // Read parts
-                    var partsBytes = reader.ReadBytes(4 * shape.NumParts);
+                    var partsBytes = reader.ReadBytes(4 * shape.NumParts); //Numparts * Integer(4) = existing Parts
                     Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
                     partsInd += 4 * shape.NumParts;
 
                     // Read points
-                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints);
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
                     Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
                     vertInd += 8 * 2 * shape.NumPoints;
 
@@ -496,8 +504,8 @@ namespace DotSpatial.Data
                 {
                     if (f.Geometry.EnvelopeInternal != null)
                     {
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MinZ);
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MaxZ);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.Z);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.Z);
                     }
                     double[] zVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; ipoint++)
@@ -516,8 +524,8 @@ namespace DotSpatial.Data
                     }
                     else
                     {
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MinM);
-                        bbWriter.Write(f.Geometry.EnvelopeInternal.MaxM);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.M);
                     }
 
                     double[] mVals = new double[points.Count];

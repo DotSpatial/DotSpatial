@@ -214,29 +214,29 @@ namespace DotSpatial.Data
             fs.WriteBe(_fileCode);       //  Byte 0          File Code       9994        Integer     Big
 
             byte[] bt = new byte[20];
-            fs.Write(bt, 0, 20);          //  Bytes 4 - 20 are unused
+            fs.Write(bt, 0, 20);         //  Bytes 4 - 20 are unused
 
             fs.WriteBe(destFileLength);  //  Byte 24         File Length     File Length Integer     Big
 
             fs.WriteLe(_version);        //  Byte 28         Version         1000        Integer     Little
 
-            fs.WriteLe((int)_shapeType);  //  Byte 32         Shape Type      Shape Type  Integer     Little
+            fs.WriteLe((int)_shapeType); //  Byte 32         Shape Type      Shape Type  Integer     Little
 
-            fs.WriteLe(_xMin);            //  Byte 36         Bounding Box    Xmin        Double      Little
+            fs.WriteLe(_xMin);           //  Byte 36         Bounding Box    Xmin        Double      Little
 
-            fs.WriteLe(_yMin);            //  Byte 44         Bounding Box    Ymin        Double      Little
+            fs.WriteLe(_yMin);           //  Byte 44         Bounding Box    Ymin        Double      Little
 
             fs.WriteLe(_xMax);           //  Byte 52         Bounding Box    Xmax        Double      Little
 
             fs.WriteLe(_yMax);           //  Byte 60         Bounding Box    Ymax        Double      Little
 
-            fs.WriteLe(_zMin);         //  Byte 68         Bounding Box    Zmin        Double      Little
+            fs.WriteLe(_zMin);           //  Byte 68         Bounding Box    Zmin        Double      Little
 
-            fs.WriteLe(_zMax);          //  Byte 76         Bounding Box    Zmax        Double      Little
+            fs.WriteLe(_zMax);           //  Byte 76         Bounding Box    Zmax        Double      Little
 
-            fs.WriteLe(_mMin);         //  Byte 84         Bounding Box    Mmin        Double      Little
+            fs.WriteLe(_mMin);           //  Byte 84         Bounding Box    Mmin        Double      Little
 
-            fs.WriteLe(_mMax);        //  Byte 92         Bounding Box    Mmax        Double      Little
+            fs.WriteLe(_mMax);           //  Byte 92         Bounding Box    Mmax        Double      Little
 
             // ------------ WRITE TO SHP FILE -------------------------
 
@@ -422,7 +422,9 @@ namespace DotSpatial.Data
         /// <returns>An Envelope</returns>
         public Envelope ToEnvelope()
         {
-            Envelope env = new Envelope(_xMin, _xMax, _yMin, _yMax, Zmin, Zmax, _mMin,_mMax);
+            Envelope env = new Envelope(_xMin, _xMax, _yMin, _yMax);
+            env.InitM(_mMin, _mMax);
+            env.InitZ(_zMin, _zMax);
             return env;
         }
 
