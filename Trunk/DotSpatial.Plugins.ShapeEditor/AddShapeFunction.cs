@@ -26,6 +26,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.NTSExtension;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -360,7 +361,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 Feature f = null;
                 if (_featureSet.FeatureType == FeatureType.MultiPoint)
                 {
-                    f = new Feature(new MultiPoint(_coordinates));
+                    f = new Feature(new MultiPoint(_coordinates.CastToPointArray()));
                 }
                 if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
                 {
