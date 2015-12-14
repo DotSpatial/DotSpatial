@@ -497,7 +497,7 @@ namespace DotSpatial.Data
             Array.Copy(Bounds.AffineCoefficients, 0, aff, 0, 6);
             aff[0] = topLeft.X;
             aff[3] = topLeft.Y;
-            result.Bounds = new RasterBounds(sizeX, sizeY, aff);
+            result.Bounds = new RasterBounds(sizeY, sizeX, aff);
             result.NoDataValue = NoDataValue;
             result.Projection = Projection;
             result.IsInRam = true;
