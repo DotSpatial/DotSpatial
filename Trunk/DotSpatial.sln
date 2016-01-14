@@ -147,7 +147,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.Extensio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatial.Plugins.SetSelectable", "DotSpatial.Plugins.SetSelectable\DotSpatial.Plugins.SetSelectable.csproj", "{84FD5045-5DE8-4950-A083-77789573F430}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyHeaderControl", "DummyHeaderControl\DummyHeaderControl.csproj", "{6AB60B40-E91A-4459-9837-FB0D509F091A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyHeaderControl", "Examples\DummyHeaderControl\DummyHeaderControl.csproj", "{6AB60B40-E91A-4459-9837-FB0D509F091A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
