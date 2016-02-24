@@ -138,11 +138,19 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <inheritdoc />
         protected override void OnDeactivate()
         {
+           ClearSelection();
+            base.OnDeactivate();
+        }
+
+        /// <summary>
+        /// Deselects the selected feature and removes the highlight from any highlighted feature.
+        /// </summary>
+        public void ClearSelection()
+        {
             DeselectFeature();
             RemoveHighlightFromFeature();
             _oldCategory = null;
-            base.OnDeactivate();
-        }
+            }
 
         /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)

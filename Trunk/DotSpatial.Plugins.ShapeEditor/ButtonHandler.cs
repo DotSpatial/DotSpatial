@@ -115,22 +115,23 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         private void AddButtons()
         {
-            const string ShapeEditorMenuKey = "kShapeEditor";
+            const string shapeEditorMenuKey = "kShapeEditor";
 
             //_Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
-            _addShape = new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShape.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey };
+            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
+            _addShape = new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShape.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey };
             _Header.Add(_addShape);
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.move, RootKey = HeaderControl.HomeRootItemKey });
-            _Header.Add(new SimpleActionItem(ShapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
+            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.move, RootKey = HeaderControl.HomeRootItemKey });
+            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
         }
 
-        private void SnappingButton_Click(object sender, EventArgs E)
+        private void SnappingButton_Click(object sender, EventArgs e)
         {
-            SnapSettingsDialog dlg = new SnapSettingsDialog();
-            dlg.DoSnapping = this._doSnapping;
+            SnapSettingsDialog dlg = new SnapSettingsDialog { DoSnapping = _doSnapping };
             dlg.ShowDialog();
-            this._doSnapping = dlg.DoSnapping;
+            _doSnapping = dlg.DoSnapping;
+            if (_moveVertexFunction != null) _moveVertexFunction.DoSnapping = _doSnapping; // changed by jany_ (2016-02-24) update the snap settings of the functions without having to stop editing
+            if (_addShapeFunction != null) _addShapeFunction.DoSnapping = _doSnapping;
         }
 
         private void MoveVertexButton_Click(object sender, EventArgs e)
@@ -155,15 +156,13 @@ namespace DotSpatial.Plugins.ShapeEditor
 
         private void SetSnapLayers(SnappableMapFunction func)
         {
-            func.DoSnapping = this._doSnapping;
-            if (!this._doSnapping)
+            func.DoSnapping = _doSnapping;
+            if (!_doSnapping)
                 return;
 
-            foreach (var layer in _geoMap.Layers)
+            foreach (var fl in _geoMap.GetFeatureLayers())
             {
-                IFeatureLayer fl = layer as IFeatureLayer;
-                if (fl != null && fl != _activeLayer && fl.DataSet.FeatureType != _activeLayer.DataSet.FeatureType)
-                    func.AddLayerToSnap(fl);
+                func.AddLayerToSnap(fl); // changed by jany_ (2016-02-24) allow all layers to be snapped because there seems to be no reason to exclude any of them
             }
         }
 
@@ -172,26 +171,25 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (!e.IsSelected && e.Layer == _activeLayer)
             {
                 _activeLayer = null;
-                if (_moveVertexFunction != null) { _moveVertexFunction.DeselectFeature(); }
+                if (_moveVertexFunction != null)
+                {
+                    _moveVertexFunction.ClearSelection(); // changed by jany_ (2016-02-24) make sure highlighted features are reset too to prevent exception
+                }
                 return;
             }
-            
+
             _activeLayer = e.Layer as IFeatureLayer;
             if (_activeLayer == null) { return; }
 
             if (_moveVertexFunction != null)
-            {
                 UpdateMoveVertexFunctionLayer();
-            }
-            else if (_addShapeFunction != null)
-            {
+            if (_addShapeFunction != null) // changed by jany_ (2016-02-24) update both because moveFeature might not be the active function just because it is not null
                 UpdateAddShapeFunctionLayer();
-            }
         }
 
         private void UpdateMoveVertexFunctionLayer()
         {
-            _moveVertexFunction.DeselectFeature();
+            _moveVertexFunction.ClearSelection(); // changed by jany_ (2016-02-24) make sure highlighted features are reset too to prevent exception
             _moveVertexFunction.Layer = _activeLayer;
             SetSnapLayers(_moveVertexFunction);
         }

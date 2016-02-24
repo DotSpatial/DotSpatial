@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using DotSpatial.Symbology;
 using DotSpatial.Controls;
 using DotSpatial.Topology;
@@ -13,7 +10,7 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// <summary>
     /// This is an abtract class that provides functionality for snapping objects.
     /// </summary>
-    public abstract class SnappableMapFunction : DotSpatial.Controls.MapFunctionZoom
+    public abstract class SnappableMapFunction : MapFunctionZoom
     {
         /// <summary>
         /// +/- N pixels around the mouse point.
@@ -57,7 +54,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         public SnappableMapFunction(IMap map)
             : base(map)
         {
-            this.DoSnapping = false;
+            DoSnapping = false;
         }
 
         /// <summary>
@@ -67,9 +64,9 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="layer"></param>
         public void AddLayerToSnap(IFeatureLayer layer)
         {
-            if (this.snapLayers == null)
+            if (snapLayers == null)
                 InitializeSnapLayers();
-            this.snapLayers.Add(layer);
+            snapLayers.Add(layer);
         }
 
         /// <summary>
@@ -78,7 +75,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         protected void InitializeSnapLayers()
         {
-            this.snapLayers = new List<IFeatureLayer>();
+            snapLayers = new List<IFeatureLayer>();
         }
 
         /// <summary>
@@ -91,10 +88,10 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <returns>true if snap found</returns>
         protected bool ComputeSnappedLocation(GeoMouseArgs e, ref Coordinate snappedCoord)
         {
-            if (this.snapLayers == null || e == null || Map == null)
+            if (snapLayers == null || e == null || Map == null)
                 return false;
 
-            Rectangle mouseRect = new Rectangle(e.X - this.snapTol, e.Y - this.snapTol, this.snapTol * 2, this.snapTol * 2);
+            Rectangle mouseRect = new Rectangle(e.X - snapTol, e.Y - snapTol, snapTol * 2, snapTol * 2);
 
             Extent pix = Map.PixelToProj(mouseRect);
             if (pix == null)
@@ -102,7 +99,7 @@ namespace DotSpatial.Plugins.ShapeEditor
 
             IEnvelope env = pix.ToEnvelope();
 
-            foreach (IFeatureLayer layer in this.snapLayers)
+            foreach (IFeatureLayer layer in snapLayers)
             {
                 foreach (IFeature feat in layer.DataSet.Features)
                 {
@@ -126,11 +123,12 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// Perform any drawing necessary for snapping (e.g. draw a circle around snapped location).
         /// </summary>
         /// <param name="graphics">graphics to draw on</param>
+        /// <param name="pos">point where the circles center will be</param>
         protected void DoSnapDrawing(Graphics graphics, System.Drawing.Point pos)
         {
-            if (this.isSnapped)
+            if (isSnapped)
             {
-                graphics.DrawEllipse(this.snapPen, pos.X - 5, pos.Y - 5, 10, 10);
+                graphics.DrawEllipse(snapPen, pos.X - 5, pos.Y - 5, 10, 10);
             }
         }
 
@@ -142,7 +140,7 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected void DoMouseMoveForSnapDrawing(bool prevWasSnapped, System.Drawing.Point pos)
         {
             // Invalidate the region around the mouse so that the previous snap colors are erased.
-            if ((prevWasSnapped || this.isSnapped) && this.DoSnapping)
+            if ((prevWasSnapped || isSnapped) && DoSnapping)
             {
                 Rectangle invalid = new Rectangle(pos.X - 30, pos.Y - 30, 60, 60);
                 Map.Invalidate(invalid);

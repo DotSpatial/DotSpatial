@@ -85,40 +85,21 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// </summary>
         protected override void OnActivate()
         {
-            if (_coordinateDialog == null) { _coordinateDialog = new CoordinateDialog(); }
+            if (_coordinateDialog == null) _coordinateDialog = new CoordinateDialog();
 
-            if (_featureSet.CoordinateType == CoordinateType.Z)
-            {
-                _coordinateDialog.ShowZValues = true;
-                _coordinateDialog.ShowMValues = true;
-            }
-            else if (_featureSet.CoordinateType == CoordinateType.M)
-            {
-                _coordinateDialog.ShowZValues = false;
-                _coordinateDialog.ShowMValues = true;
-            }
-            else
-            {
-                _coordinateDialog.ShowZValues = false;
-                _coordinateDialog.ShowMValues = false;
-            }
+            _coordinateDialog.ShowZValues = _featureSet.CoordinateType == CoordinateType.Z;
+            _coordinateDialog.ShowMValues = _featureSet.CoordinateType == CoordinateType.M || _featureSet.CoordinateType == CoordinateType.Z;
+
             if (_featureSet.FeatureType == FeatureType.Point || _featureSet.FeatureType == FeatureType.MultiPoint)
             {
-                if (_context.MenuItems.Contains(_finishPart))
-                {
-                    _context.MenuItems.Remove(_finishPart);
-                }
+                if (_context.MenuItems.Contains(_finishPart)) _context.MenuItems.Remove(_finishPart);
             }
-            else
-            {
-                if (!_context.MenuItems.Contains(_finishPart))
-                {
-                    _context.MenuItems.Add(1, _finishPart);
-                }
-            }
+            else if (!_context.MenuItems.Contains(_finishPart))
+                _context.MenuItems.Add(1, _finishPart);
+
             _coordinateDialog.Show();
             _coordinateDialog.FormClosing += CoordinateDialogFormClosing;
-            if (_standBy == false) { _coordinates = new List<Coordinate>(); }
+            if (!_standBy) _coordinates = new List<Coordinate>();
             if (_tempLayer != null)
             {
                 Map.MapFrame.DrawingLayers.Remove(_tempLayer);
@@ -247,29 +228,29 @@ namespace DotSpatial.Plugins.ShapeEditor
         protected override void OnMouseMove(GeoMouseArgs e)
         {
             if (_standBy) { return; }
-                // Begin snapping changes
-                Coordinate snappedCoord = e.GeographicLocation;
-                bool prevWasSnapped = this.isSnapped;
-                this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
-                _coordinateDialog.X = snappedCoord.X;
-                _coordinateDialog.Y = snappedCoord.Y;
-                // End snapping changes
+            // Begin snapping changes
+            Coordinate snappedCoord = e.GeographicLocation;
+            bool prevWasSnapped = this.isSnapped;
+            this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
+            _coordinateDialog.X = snappedCoord.X;
+            _coordinateDialog.Y = snappedCoord.Y;
+            // End snapping changes
 
-                if (_coordinates != null && _coordinates.Count > 0)
-                {
-                    List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
-                    Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
-                    Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
-                    Rectangle invalid = Rectangle.Union(newRect, oldRect);
-                    invalid.Inflate(20, 20);
-                    Map.Invalidate(invalid);
-                }
+            if (_coordinates != null && _coordinates.Count > 0)
+            {
+                List<Point> points = _coordinates.Select(coord => Map.ProjToPixel(coord)).ToList();
+                Rectangle oldRect = SymbologyGlobal.GetRectangle(_mousePosition, points[points.Count - 1]);
+                Rectangle newRect = SymbologyGlobal.GetRectangle(e.Location, points[points.Count - 1]);
+                Rectangle invalid = Rectangle.Union(newRect, oldRect);
+                invalid.Inflate(20, 20);
+                Map.Invalidate(invalid);
+            }
 
-                // Begin snapping changes
-                _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
-                DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
-                // End snapping changes
-            
+            // Begin snapping changes
+            _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
+            DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
+            // End snapping changes
+
             base.OnMouseMove(e);
         }
 
