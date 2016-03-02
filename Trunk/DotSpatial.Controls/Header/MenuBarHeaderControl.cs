@@ -214,7 +214,7 @@ namespace DotSpatial.Controls.Header
             {
                 strip.Items.Add(combo);
             }
-
+            item.combobox = combo;
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
         }
 
