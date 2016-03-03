@@ -641,32 +641,26 @@ namespace DotSpatial.Symbology
         /// </summary>
         private static List<Break> GetUniqueValues(string fieldName, DataTable table)
         {
-            ArrayList lst = new ArrayList();
+            HashSet<object> lst = new HashSet<object>();
             bool containsNull = false;
             foreach (DataRow dr in table.Rows)
             {
                 object val = dr[fieldName];
-                if (val == null || dr[fieldName] is DBNull)
-                {
-                    val = "[NULL]";
-                    containsNull = true;
-                }
-                if (val.ToString() == string.Empty)
+                if (val == null || dr[fieldName] is DBNull || val.ToString() == string.Empty)
                 {
                     containsNull = true;
-                    val = "[NULL]";
                 }
-
-                if (lst.Contains(val)) continue;
-                if (val.ToString() != "[NULL]") lst.Add(val);
+                else if (!lst.Contains(val)) 
+                {
+                    lst.Add(val);
+                }
             }
 
-            lst.Sort(); // breaks if a value is null.
             List<Break> result = new List<Break>();
             if (containsNull) result.Add(new Break("[NULL]"));
-            foreach (object item in lst)
+            foreach (object item in lst.OrderBy(o => o))
             {
-                result.Add(new Break(String.Format(CultureInfo.InvariantCulture, "{0}", item))); // Changed by jany_ (2015-07-27) use InvariantCulture because this is used in Datatable.Select in FeatureCategoryControl and causes error when german localization is used
+                result.Add(new Break(string.Format(CultureInfo.InvariantCulture, "{0}", item))); // Changed by jany_ (2015-07-27) use InvariantCulture because this is used in Datatable.Select in FeatureCategoryControl and causes error when german localization is used
             }
             return result;
         }

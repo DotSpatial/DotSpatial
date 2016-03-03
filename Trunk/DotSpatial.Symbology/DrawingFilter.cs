@@ -127,10 +127,11 @@ namespace DotSpatial.Symbology
             }
 
             var tables = new List<DataTable>(); // just in case there is more than one Table somehow
-            var allRows = new List<DataRow>();
+            var allRows = new Dictionary<DataRow, int>();
             var tempList = new List<DataTable>();
             var containsFID = fc.Any(category => category.FilterExpression != null && category.FilterExpression.Contains("[FID]"));
 
+            var featureIndex = 0;
             foreach (var f in _featureList)
             {
                 if (f.DataRow == null)
@@ -150,9 +151,10 @@ namespace DotSpatial.Symbology
                             tempList.Add(t);
                         }
                     }
-                    allRows.Add(f.DataRow);
+                    allRows.Add(f.DataRow, featureIndex);
                 }
                 if (_drawnStates.ContainsKey(f)) _drawnStates[f].SchemeCategory = null;
+                featureIndex++;
             }
 
             foreach (IFeatureCategory cat in fc)
@@ -163,8 +165,8 @@ namespace DotSpatial.Symbology
 
                     foreach (DataRow dr in rows)
                     {
-                        int index = allRows.IndexOf(dr);
-                        if (index != -1)
+                        int index;
+                        if (allRows.TryGetValue (dr, out index))
                         {
                             _drawnStates[_featureList[index]].SchemeCategory = cat;
                         }
