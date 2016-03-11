@@ -29,11 +29,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class GphdtSentence : NmeaSentence, IHeadingSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private Azimuth _heading;
-
         #region Constructors
 
         /// <summary>
@@ -42,7 +37,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         public GphdtSentence(string sentence)
             : base(sentence)
-        { }
+        { SetPropertiesFromSentence(); }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GphdtSentence"/> class.
@@ -53,75 +48,38 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GphdtSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        { SetPropertiesFromSentence(); }
 
         #endregion Constructors
 
         #region Overrides
 
         /// <summary>
-        /// Overrides OnSentanceChanged for the GPVTGSentence
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        private new void SetPropertiesFromSentence()
         {
-            // First, process the basic info for the sentence
-            base.OnSentenceChanged();
-
-            // Cache the sentence words
-            string[] words = Words;
-            int wordCount = words.Length;
-
             /*
-             * $GPVTG
+             * $GPHDT
+                Heading, True.
+                Actual vessel heading in degrees Ture produced by any device or system producing true heading.
 
-                Track Made Good and Ground Speed.
-
-                eg1. $GPVTG, 360.0, T, 348.7, M, 000.0, N, 000.0, K*43
-                eg2. $GPVTG, 054.7, T, 034.4, M, 005.5, N, 010.2, K
-
-                           054.7, T      True track made good
-                           034.4, M      Magnetic track made good
-                           005.5, N      Ground speed, knots
-                           010.2, K      Ground speed, Kilometers per hour
-
-                eg3. $GPVTG, t, T, ,, s.ss, N, s.ss, K*hh
-                0    = Track made good
-                1    = Fixed text 'T' indicates that track made good is relative to true north
-                2    = not used
-                3    = not used
-                4    = Speed over ground in knots
-                5    = Fixed text 'N' indicates that speed over ground in in knots
-                6    = Speed over ground in kilometers/hour
-                7    = Fixed text 'K' indicates that speed over ground is in kilometers/hour
-
-             *
-             *
-             */
-
-            #region Heading
-
-            if (wordCount >= 1 && words[0].Length != 0)
-                _heading = Azimuth.Parse(words[0], NmeaCultureInfo);
-            else
-                _heading = Azimuth.Invalid;
-
-            #endregion Heading
-
-        }
+                $GPHDT,x.x,T
+                x.x = Heading, degrees True 
+            */
+            Heading = ParseAzimuth(0);
+           }
 
         #endregion Overrides
 
-        #region IHeadingSentence Members
+        #region Properties
 
         /// <summary>
         /// the Heading
         /// </summary>
-        public Azimuth Heading
-        {
-            get { return _heading; }
-        }
+        public Azimuth Heading { get; private set; }
 
-        #endregion IHeadingSentence Members
+        #endregion
 
     }
 }

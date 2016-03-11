@@ -23,7 +23,9 @@
 // | DonK                     |  5/25/2011 | Fixed the bug in parsing NMEA sentence (Dotspatial issue 295)
 // ********************************************************************************************************
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace DotSpatial.Positioning
@@ -33,16 +35,12 @@ namespace DotSpatial.Positioning
     /// </summary>
     public class NmeaSentence : Packet, IEquatable<NmeaSentence>
     {
+        #region Fields
+
         public const string LatitudeFormat = "HHMM.MMMM,I,";
         public const string LongitudeFormat = "HHHMM.MMMM,I,";
-        private string _sentence;
-        private string _commandWord;
-        private string[] _words;
-        private string _existingChecksum;
-        private string _correctChecksum;
         private bool _isValid;
-
-        #region Fields
+        private string _sentence;
 
         /// <summary>
         /// Represents the culture used to process all NMEA GPS data, including numbers and dates.
@@ -65,11 +63,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence"></param>
         public NmeaSentence(string sentence)
         {
-            // Set this sentence's value
-            _sentence = sentence;
-
-            // Notify of the change
-            DoSentenceChanged();
+            Sentence = sentence; //set the sentence and parse it to the properties
         }
 
         /// <summary>
@@ -84,20 +78,12 @@ namespace DotSpatial.Positioning
         /// be preserved using this constructor.  To process an entire sentence, use the entire NMEA string as a constructor.</remarks>
         protected NmeaSentence(string sentence, string commandWord, string[] words, string validChecksum)
         {
-            _sentence = sentence;
-            _commandWord = commandWord;
-            _words = words;
-            _existingChecksum = validChecksum;
-            _correctChecksum = validChecksum;
+            _sentence = sentence; //set _sentence directly so that it won't be split into the properties, because the properties are set to the parameters afterwards anyway
+            CommandWord = commandWord;
+            Words = words;
+            ExistingChecksum = validChecksum;
+            CorrectChecksum = validChecksum;
             _isValid = true;
-
-            // Notify of the change
-            //DoSentenceChanged();
-            /*
-             * DonK 2011-05-19: Refactoring based on commments in Issue #295
-             * http://dotspatial.codeplex.com/workitem/295
-             */
-            OnSentenceChanged();
         }
 
         #endregion Constructors
@@ -105,57 +91,41 @@ namespace DotSpatial.Positioning
         #region Protected Members
 
         /// <summary>
-        /// Sets the sentence.
+        /// Calculates and adds a checksum to the end of the sentence if the senctence doesn't have a checksum.
         /// </summary>
-        /// <param name="sentence">The sentence.</param>
-        protected void SetSentence(string sentence)
+        public void AppendChecksum()
         {
-            // Set the new value
-            _sentence = sentence;
+            // Does it already have a checksum?
+            if (ExistingChecksum != null)
+                return;
 
-            // Notify of the change
-            //OnSentenceChanged();
-            /*
-             * DonK 2011-05-19: Refactoring based on commments in Issue #295
-             * http://dotspatial.codeplex.com/workitem/295
-             */
-            DoSentenceChanged();
+            // No. Set the current checksum
+            ExistingChecksum = CorrectChecksum;
+            _isValid = true;  
+
+            // Does it contain an asterisk? If not, add one
+            if (Sentence.IndexOf("*", StringComparison.Ordinal) == -1)
+                Sentence += '*';
+
+            // Calculate and append the checksum
+            Sentence += CorrectChecksum;
         }
-
+        
         /// <summary>
-        /// Called when [sentence changed].
+        /// Sets this classes properties from the Sentence.
         /// </summary>
-        protected virtual void OnSentenceChanged()
-        {
-            //DoSentenceChanged();
-            /*
-             * DonK 2011-05-19: Refactoring based on commments in Issue #295
-             * http://dotspatial.codeplex.com/workitem/295
-             */
-            CalculateChecksum();
-        }
-
-        private void DoSentenceChanged()
+        protected void SetPropertiesFromSentence()
         {
             // Get the location of the dollar sign
-            int dollarSignIndex = _sentence.IndexOf("$", StringComparison.Ordinal);
+            int dollarSignIndex = Sentence.IndexOf("$", StringComparison.Ordinal);
+            if (dollarSignIndex == -1) return; // If it's -1, this is invalid
 
-            // If it's -1, this is invalid
-            if (dollarSignIndex == -1)
-                return;
+            // Get the location of the first comma. This will mark the end of the command word and the start of data.
+            int firstCommaIndex = Sentence.IndexOf(",", StringComparison.Ordinal);
+            if (firstCommaIndex == -1) return; // If it's -1, this is invalid
 
-            // Get the location of the first comma. This will mark the end of the
-            // command word and the start of data.
-            int firstCommaIndex = _sentence.IndexOf(",", StringComparison.Ordinal);
-
-            // If it's -1, this is invalid
-            if (firstCommaIndex == -1)
-                return;
-
-            // Determine if the data is not properly formated
-            // it will lead to a negative length
-            if (firstCommaIndex < dollarSignIndex)
-                return;
+            // Determine if the data is not properly formated. Not propertly formated data leads to a negative length.
+            if (firstCommaIndex < dollarSignIndex) return;
 
             // The data starts just after the first comma
             int dataStartIndex = firstCommaIndex + 1;
@@ -168,121 +138,253 @@ namespace DotSpatial.Positioning
             *
             * ... the string is interned, which allows us to compare the word by reference.
             */
-            _commandWord = string.Intern(_sentence.Substring(dollarSignIndex, firstCommaIndex - dollarSignIndex));
+            CommandWord = string.Intern(Sentence.Substring(dollarSignIndex, firstCommaIndex - dollarSignIndex));
 
             // Next, get the index of the asterisk
-            int asteriskIndex = _sentence.IndexOf("*", StringComparison.Ordinal);
-
-            // Is an asterisk present?
-            int dataEndIndex;
-            if (asteriskIndex == -1)
-            {
-                // No. The end of the data is the last character of the sentence
-                dataEndIndex = _sentence.Length - 1;
-            }
-            else
-            {
-                // Yes. The end of the data is just before the asterisk
-                dataEndIndex = asteriskIndex - 1;
-            }
+            int asteriskIndex = Sentence.IndexOf("*", StringComparison.Ordinal);
+            int dataEndIndex = asteriskIndex == -1 ? Sentence.Length - 1 : asteriskIndex - 1; //dataEndIndex is before asterix if it exists, otherwise it's the last character
+           
+            // Determine if the data is properly formated. Not propertly formated data leads to a negative length.
+            if (dataEndIndex < dataStartIndex) return;
 
             /* Extract the words for the sentence, starting just after the first comma and ending
             * just before the asterisk or at the end of the string.
             *
             * $GPRMC, 11, 22, 33, 44, 55*CC OR $GPRMC, 11, 22, 33, 44, 55
-            * ^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^
-            * 7 20
             */
-
-            // Determine if the data is not properly formated
-            // This will lead to a negative length
-            if (dataEndIndex < dataStartIndex)
-                return;
-
-            _words = _sentence.Substring(dataStartIndex, dataEndIndex - dataStartIndex + 1).Split(',');
-
-            /*
-            * DonK 2011-05-19: Refactoring based on commments in Issue #295
-            * http://dotspatial.codeplex.com/workitem/295
-            */
-            CalculateChecksum();
-        }
-
-        /*
-         * DonK 2011-05-19: Added method based on commments in Issue #295
-         * http://dotspatial.codeplex.com/workitem/295
-         */
-
-        private void CalculateChecksum()
-        {
-            /* Extract the data portion of the sentence. This portion is used to calculate the checksum
-             *
-             * $GPRMC, 11, 22, 33, 44, 55*CC    OR    $GPRMC, 11, 22, 33, 44, 55
-             */
-
-            // Get the location of the dollar sign
-            int dollarSignIndex = _sentence.IndexOf("$", StringComparison.Ordinal);
-
-            // If it's -1, this is invalid
-            if (dollarSignIndex == -1)
-                return;
-
-            // Next, get the index of the asterisk
-            int asteriskIndex = _sentence.IndexOf("*", StringComparison.Ordinal);
-
-            // Is an asterisk present?
-            int dataEndIndex;
-            if (asteriskIndex == -1)
-            {
-                // No. The end of the data is the last character of the sentence
-                dataEndIndex = _sentence.Length - 1;
-            }
-            else
-            {
-                // Yes. The end of the data is just before the asterisk
-                dataEndIndex = asteriskIndex - 1;
-            }
+            Words = Sentence.Substring(dataStartIndex, dataEndIndex - dataStartIndex + 1).Split(',');
 
             // Calculate the checksum for this portion
-            byte checksum = (byte)_sentence[dollarSignIndex + 1];
+            byte checksum = (byte)Sentence[dollarSignIndex + 1];
             for (int index = dollarSignIndex + 2; index <= dataEndIndex; index++)
-                checksum ^= (byte)_sentence[index];
-
-            // The checksum is the two-character hexadecimal value
-            _correctChecksum = checksum.ToString("X2", NmeaCultureInfo);
+                checksum ^= (byte)Sentence[index];
+            
+            CorrectChecksum = checksum.ToString("X2", NmeaCultureInfo); // The checksum is the two-character hexadecimal value
 
             // Get existing checksum
             // The checksum is limited to two characters and we expect a \r\n to follow them
-            if (asteriskIndex != -1 && _sentence.Length >= asteriskIndex + 1 + 2)
+            if (asteriskIndex != -1 && Sentence.Length >= asteriskIndex + 1 + 2)
             {
-                // Get the existing checksum
-                _existingChecksum = _sentence.Substring(asteriskIndex + 1, 2);
+                ExistingChecksum = Sentence.Substring(asteriskIndex + 1, 2);
 
-                // If it matches the current checksum, the sentence is valid
-                _isValid = _existingChecksum.Equals(_correctChecksum, StringComparison.Ordinal);
+                // If the existing checksum matches the current checksum, the sentence is valid
+                _isValid = ExistingChecksum.Equals(CorrectChecksum, StringComparison.Ordinal);
+            }
+        }
+
+        #region ParseMethods
+        /// <summary>
+        /// Parses the word at the given position to Azimuth.
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to Azimuth.</param>
+        /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
+        protected Azimuth ParseAzimuth(int position)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return Azimuth.Invalid;
+            return Azimuth.Parse(Words[position], NmeaCultureInfo);
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to DilutionOfPrecision.
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to DilutionOfPrecision.</param>
+        /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
+        protected DilutionOfPrecision ParseDilution(int position)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return DilutionOfPrecision.Invalid;
+            return new DilutionOfPrecision(float.Parse(Words[position], NmeaCultureInfo));
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to Distance.
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to Distance.</param>
+        /// <param name="unit">DistanceUnit that is used for parsing.</param>
+        /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
+        protected Distance ParseDistance(int position, DistanceUnit unit)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return Distance.Invalid;
+            return new Distance(double.Parse(Words[position], NmeaCultureInfo), unit);
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to FixMethode. Expected is (0 = noFix, 1 = Fix2D, 2 = Fix3D). If the order is correct but noFix starts at 1 set noFixAt1 to true.
+        /// </summary>
+        /// <param name="position">Position of the word that will be parsed.</param>
+        /// <param name="noFixAt1">Indicates that noFix starts at 1 instead of 0.</param>
+        /// <returns>Unknown if the position was outside of the Word array or the word was empty or contained an unknown value.</returns>
+        protected FixMethod ParseFixMethod(int position, bool noFixAt1)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return FixMethod.Unknown;
+
+            int value = int.Parse(Words[position], NmeaCultureInfo);
+            if (noFixAt1) value -= 1; //if noFix starts at 1 we subtract 1 so that we can use the value in the switch block
+
+            switch (value)
+            {
+                case 0:
+                    return FixMethod.NoFix;
+                case 1:
+                    return FixMethod.Fix2D;
+                case 2:
+                    return FixMethod.Fix3D;
+                default:
+                    return FixMethod.Unknown;
             }
         }
 
         /// <summary>
-        /// Calculates and adds a checksum to the end of the sentence.
+        /// Parses the FixMode from the given position of the Words array. (A = Automatic, M = Manual, everything else = Unknown)
         /// </summary>
-        public void AppendChecksum()
+        /// <param name="position">Position of the Word array that will be parsed.</param>
+        /// <returns></returns>
+        protected FixMode ParseFixMode(int position)
         {
-            // Does it already have a checksum?
-            if (_existingChecksum != null)
-                return;
-
-            // No. Set the current checksum
-            _existingChecksum = _correctChecksum;
-            _isValid = _existingChecksum.Equals(_correctChecksum, StringComparison.Ordinal);
-
-            // Does it contain an asterisk? If not, add one
-            if (_sentence.IndexOf("*", StringComparison.Ordinal) == -1)
-                _sentence = _sentence + '*';
-
-            // Calculate and append the checksum
-            _sentence = _sentence + _correctChecksum;
+            if (Words.Length > position && Words[position].Length != 0)
+            {
+                return Words[position] == "A" ? FixMode.Automatic : Words[position] == "M" ? FixMode.Manual : FixMode.Unknown;
+            }
+            return FixMode.Unknown;
         }
+
+        /// <summary>
+        /// Parses the FixQuality from the given position of the Words array. (0 = NoFix, 1 = GpsFix, 2 = DifferentialGpsFix, 3 = PulsePerSecond, 4 = FixedRealTimeKinematic, 5 = FloatRealTimeKinematic, 
+        /// 6 = Estimated, 7 = ManualInput, 8 = Simulated, everything else = Unknown)
+        /// </summary>
+        /// <param name="position">Position of the Word array that will be parsed.</param>
+        /// <returns>Unknown if position is outside of Words array or word at the position is empty or the given value is not between 0 and 8.</returns>
+        protected FixQuality ParseFixQuality(int position)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return FixQuality.Unknown;
+
+            switch (int.Parse(Words[position], NmeaCultureInfo))
+            {
+                case 0:
+                    return FixQuality.NoFix;
+                case 1:
+                    return FixQuality.GpsFix;
+                case 2:
+                    return FixQuality.DifferentialGpsFix;
+                case 3:
+                    return FixQuality.PulsePerSecond;
+                case 4:
+                    return FixQuality.FixedRealTimeKinematic;
+                case 5:
+                    return FixQuality.FloatRealTimeKinematic;
+                case 6:
+                    return FixQuality.Estimated;
+                case 7:
+                    return FixQuality.ManualInput;
+                case 8:
+                    return FixQuality.Simulated;
+                default:
+                    return FixQuality.Unknown;
+            }
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to FixStatus (A = Fix, everything else = NoFix).
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to FixStatus.</param>
+        /// <returns>Unknown if position is outside of Words array or word at the position is empty.</returns>
+        protected FixStatus ParseFixStatus(int position)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return FixStatus.Unknown;
+            return Words[position].Equals("A", StringComparison.OrdinalIgnoreCase) ? FixStatus.Fix : FixStatus.NoFix;
+        }
+
+        /// <summary>
+        /// Parses the Position based on the given indizes and the Words array.
+        /// </summary>
+        /// <param name="latitudeValuePosition">Position of the latitude value inside the Words array.</param>
+        /// <param name="latitudeHemispherePosition">Position of the latitude hemisphere inside the Words array.</param>
+        /// <param name="longitudeValuePosition">Position of the longitude value inside the Words array.</param>
+        /// <param name="longitudeHemispherePosition">Position of the longitude hemisphere inside the Words array.</param>
+        /// <returns>Position.Invalid, if the Words array is to short or at least one of the fields is empty.</returns>
+        protected Position ParsePosition(int latitudeValuePosition, int latitudeHemispherePosition, int longitudeValuePosition, int longitudeHemispherePosition)
+        {
+            List<int> positions = new List<int> { latitudeValuePosition, latitudeHemispherePosition, longitudeValuePosition, longitudeHemispherePosition };
+
+            if (Words.Length <= positions.Max() || positions.Any(pos => Words[pos].Length < 1)) //not enough words or empty field result in invalid position
+                return Position.Invalid;
+
+            // Parse the latitude
+            string latitudeWord = Words[latitudeValuePosition];
+            int latitudeHours = int.Parse(latitudeWord.Substring(0, 2), NmeaCultureInfo);
+            double latitudeDecimalMinutes = double.Parse(latitudeWord.Substring(2), NmeaCultureInfo);
+            LatitudeHemisphere latitudeHemisphere = Words[latitudeHemispherePosition].Equals("N", StringComparison.Ordinal) ? LatitudeHemisphere.North : LatitudeHemisphere.South;
+
+            // Parse the longitude
+            string longitudeWord = Words[longitudeValuePosition];
+            int longitudeHours = int.Parse(longitudeWord.Substring(0, 3), NmeaCultureInfo);
+            double longitudeDecimalMinutes = double.Parse(longitudeWord.Substring(3), NmeaCultureInfo);
+            LongitudeHemisphere longitudeHemisphere = Words[longitudeHemispherePosition].Equals("E", StringComparison.Ordinal) ? LongitudeHemisphere.East : LongitudeHemisphere.West;
+
+            return new Position(new Latitude(latitudeHours, latitudeDecimalMinutes, latitudeHemisphere), new Longitude(longitudeHours, longitudeDecimalMinutes, longitudeHemisphere));
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to Speed based on the given unit.
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to speed.</param>
+        /// <param name="unit">SpeedUnit that is used for parsing.</param>
+        /// <returns>Invalid if position is outside of Words array or word at the position is empty.</returns>
+        protected Speed ParseSpeed(int position, SpeedUnit unit)
+        {
+            if (Words.Length <= position || Words[position].Length == 0) return Speed.Invalid;
+            return new Speed(double.Parse(Words[position], NmeaCultureInfo), unit);
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to UtcDateTime.
+        /// </summary>
+        /// <param name="timePosition">Position of the Words array that contains the time that gets parsed to UtcDateTime. Expected is a string of format hhmmss. Every number after that will be parsed to milliseconds.</param>
+        /// <param name="datePosition">Position of the Words array that contains the date that gets parsed to UtcDateTime. Expected is a string of format ddmmyy. The Year will be added to 2000, because we expect the year to be of this millennium.</param>
+        /// <returns>MinValue if the bigger position is outside of Words array or if one of the words is empty.</returns>
+        protected DateTime ParseUtcDateTime(int timePosition, int datePosition)
+        {
+            int maxPos = Math.Max(timePosition, datePosition);
+
+            if (Words.Length <= maxPos || Words[timePosition].Length == 0 && Words[datePosition].Length == 0)
+                return DateTime.MinValue;
+
+            // Parse the UTC time
+            string utcTimeWord = Words[timePosition];
+            int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
+            int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
+            int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
+            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
+
+            // Parse the UTC date
+            string utcDateWord = Words[datePosition];
+            int utcDay = int.Parse(utcDateWord.Substring(0, 2), NmeaCultureInfo);
+            int utcMonth = int.Parse(utcDateWord.Substring(2, 2), NmeaCultureInfo);
+            int utcYear = int.Parse(utcDateWord.Substring(4, 2), NmeaCultureInfo) + 2000;
+
+            // Build a UTC date/time
+            return new DateTime(utcYear, utcMonth, utcDay, utcHours, utcMinutes, utcSeconds, utcMilliseconds, DateTimeKind.Utc);
+        }
+
+        /// <summary>
+        /// Parses the word at the given position to UtcTimeSpan. Expected is a String of format hhmmss. Every number after that will be parsed to milliseconds.
+        /// </summary>
+        /// <param name="position">Position of the Words array that gets parsed to UtcTimeSpan.</param>
+        /// <returns>MinValue if position is outside of Words array or word at the position is empty.</returns>
+        protected TimeSpan ParseUtcTimeSpan(int position)
+        {
+            // Do we have enough data to process the UTC time?
+            if (Words.Length <= position || Words[position].Length == 0) return TimeSpan.MinValue;
+
+            string utcTimeWord = Words[position];
+            int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
+            int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
+            int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
+            int utcMilliseconds = utcTimeWord.Length > 6 ? Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo) : 0;
+
+            // Build a TimeSpan for this value
+            return new TimeSpan(0, utcHours, utcMinutes, utcSeconds, utcMilliseconds);
+        }
+        #endregion
 
         #endregion Protected Members
 
@@ -291,55 +393,33 @@ namespace DotSpatial.Positioning
         /// <summary>
         /// Returns the body of the sentence split by commas into strings.
         /// </summary>
-        public string[] Words
-        {
-            get
-            {
-                return _words;
-            }
-        }
+        public string[] Words { get; private set; }
 
         /// <summary>
         /// Returns the first word of the sentence which indicates its purpose.
         /// </summary>
-        public string CommandWord
-        {
-            get
-            {
-                return _commandWord;
-            }
-        }
+        public string CommandWord { get; private set; }
 
         /// <summary>
         /// Returns the current checksum of the sentence.
         /// </summary>
-        public string ExistingChecksum
-        {
-            get
-            {
-                return _existingChecksum;
-            }
-        }
+        public string ExistingChecksum { get; private set; }
 
         /// <summary>
         /// Returns the checksum which matches the content of the sentence.
         /// </summary>
-        public string CorrectChecksum
-        {
-            get
-            {
-                return _correctChecksum;
-            }
-        }
+        public string CorrectChecksum { get; private set; }
 
         /// <summary>
         /// Returns a string representing the entire NMEA sentence.
         /// </summary>
         public string Sentence
         {
-            get
+            get { return _sentence; }
+            protected set
             {
-                return _sentence;
+                _sentence = value;
+                SetPropertiesFromSentence();
             }
         }
 
@@ -364,7 +444,7 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public override byte[] ToByteArray()
         {
-            return Encoding.ASCII.GetBytes(_sentence);
+            return Encoding.ASCII.GetBytes(Sentence);
         }
 
         /// <summary>
@@ -375,7 +455,7 @@ namespace DotSpatial.Positioning
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString(string format, IFormatProvider formatProvider)
         {
-            return _sentence;
+            return Sentence;
         }
 
         #endregion Overrides
@@ -389,7 +469,7 @@ namespace DotSpatial.Positioning
         /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(NmeaSentence other)
         {
-            return _sentence.Equals(other.Sentence, StringComparison.Ordinal);
+            return Sentence.Equals(other.Sentence, StringComparison.Ordinal);
         }
 
         #endregion IEquatable<NmeaSentence> Members

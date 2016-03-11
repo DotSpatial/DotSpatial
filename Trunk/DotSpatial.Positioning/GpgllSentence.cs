@@ -53,19 +53,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class GpgllSentence : NmeaSentence, IUtcTimeSentence, IPositionSentence, IFixStatusSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _utcTime;
-        /// <summary>
-        ///
-        /// </summary>
-        private Position _position;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixStatus _fixStatus;
-
         #region Constructors
 
         /// <summary>
@@ -77,7 +64,7 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GpgllSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        { SetPropertiesFromSentence(); }
 
         /// <summary>
         /// Creates a GpgllSentence from the specified string
@@ -85,7 +72,7 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         public GpgllSentence(string sentence)
             : base(sentence)
-        { }
+        { SetPropertiesFromSentence(); }
 
         /// <summary>
         /// Creates a GpgllSentence from the specified parameters
@@ -98,40 +85,24 @@ namespace DotSpatial.Positioning
             // Build a sentence
             StringBuilder builder = new StringBuilder(128);
 
-            #region Append the command word
-
             // Append the command word
             builder.Append("$GPGLL");
-
-            #endregion Append the command word
-
-            // Append a comma
             builder.Append(',');
 
-            #region Append the position
-
             // Append latitude in the format HHMM.MMMM.
-            builder.Append(position.Latitude.ToString(NmeaSentence.LatitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Latitude.ToString(LatitudeFormat, NmeaCultureInfo));
             // Append Longitude in the format HHHMM.MMMM.
-            builder.Append(position.Longitude.ToString(NmeaSentence.LongitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Longitude.ToString(LongitudeFormat, NmeaCultureInfo));
 
-            #endregion Append the position
-
-            #region Append the UTC time
-
+            // Append the UTC time
             builder.Append(utcTime.Hours.ToString("0#", NmeaCultureInfo));
             builder.Append(utcTime.Minutes.ToString("0#", NmeaCultureInfo));
             builder.Append(utcTime.Seconds.ToString("0#", NmeaCultureInfo));
             builder.Append(".");
             builder.Append(utcTime.Milliseconds.ToString("00#", NmeaCultureInfo));
-
-            #endregion Append the UTC time
-
-            // Append a comma
             builder.Append(",");
 
-            #region Append the fix status
-
+            //Append the fix status
             switch (fixStatus)
             {
                 case FixStatus.Fix:
@@ -142,10 +113,9 @@ namespace DotSpatial.Positioning
                     break;
             }
 
-            #endregion Append the fix status
-
             // Set this object's sentence
-            SetSentence(builder.ToString());
+            Sentence = builder.ToString();
+            SetPropertiesFromSentence();
 
             // Finally, append the checksum
             AppendChecksum();
@@ -156,126 +126,34 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Called when [sentence changed].
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        private new void SetPropertiesFromSentence()
         {
-            // Parse the basic sentence information
-            base.OnSentenceChanged();
-
-            // Cache the words
-            string[] words = Words;
-            int wordCount = words.Length;
-
-            // Do we have enough words to make a lat/long location?
-            if (wordCount >= 4 && words[0].Length != 0 && words[1].Length != 0 && words[2].Length != 0 && words[3].Length != 0)
-            {
-                #region Latitude
-
-                string latitudeWord = words[0];
-                int latitudeHours = int.Parse(latitudeWord.Substring(0, 2), NmeaCultureInfo);
-                double latitudeDecimalMinutes = double.Parse(latitudeWord.Substring(2), NmeaCultureInfo);
-                LatitudeHemisphere latitudeHemisphere =
-                    words[1].Equals("N", StringComparison.OrdinalIgnoreCase) ? LatitudeHemisphere.North : LatitudeHemisphere.South;
-
-                #endregion Latitude
-
-                #region Longitude
-
-                string longitudeWord = words[2];
-                int longitudeHours = int.Parse(longitudeWord.Substring(0, 3), NmeaCultureInfo);
-                double longitudeDecimalMinutes = double.Parse(longitudeWord.Substring(3), NmeaCultureInfo);
-                LongitudeHemisphere longitudeHemisphere =
-                    words[3].Equals("E", StringComparison.OrdinalIgnoreCase) ? LongitudeHemisphere.East : LongitudeHemisphere.West;
-
-                #endregion Longitude
-
-                #region Position
-
-                _position = new Position(
-                                new Latitude(latitudeHours, latitudeDecimalMinutes, latitudeHemisphere),
-                                new Longitude(longitudeHours, longitudeDecimalMinutes, longitudeHemisphere));
-
-                #endregion Position
-            }
-
-            // Do we have enough data to process the UTC time?
-            if (wordCount >= 5 && words[4].Length != 0)
-            {
-                #region UTC Time
-
-                string utcTimeWord = words[4];
-                int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
-                int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
-                int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
-                int utcMilliseconds = 0;
-                if (utcTimeWord.Length > 6)
-                    utcMilliseconds = Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo);
-
-                // Build a TimeSpan for this value
-                _utcTime = new TimeSpan(0, utcHours, utcMinutes, utcSeconds, utcMilliseconds);
-
-                #endregion UTC Time
-            }
-            else
-            {
-                // The UTC time is invalid
-                _utcTime = TimeSpan.MinValue;
-            }
-
-            // Do we have enough data to get the fix status?
-            if (wordCount >= 6 && words[5].Length != 0)
-            {
-                #region Fix Status
-
-                // An "A" means a valid fix
-                _fixStatus = words[5].Equals("A", StringComparison.OrdinalIgnoreCase) ? FixStatus.Fix : FixStatus.NoFix;
-
-                #endregion Fix Status
-            }
-            else
-            {
-                // The fix status is invalid
-                _fixStatus = FixStatus.Unknown;
-            }
+            Position = ParsePosition(0, 1, 2, 3);
+            UtcTime = ParseUtcTimeSpan(4);
+            FixStatus = ParseFixStatus(5);
         }
 
         #endregion Overrides
 
-        #region IUtcDateTimeSentence Members
+        #region Properties
 
         /// <summary>
         /// Gets the time in UTC from the IUtcTimeSentence
         /// </summary>
-        public TimeSpan UtcTime
-        {
-            get { return _utcTime; }
-        }
-
-        #endregion IUtcDateTimeSentence Members
-
-        #region IPositionSentence Members
+        public TimeSpan UtcTime { get; private set; }
 
         /// <summary>
         /// Represents an NMEA sentence which contains a position.
         /// </summary>
-        public Position Position
-        {
-            get { return _position; }
-        }
-
-        #endregion IPositionSentence Members
-
-        #region IFixStatusSentence Members
+        public Position Position { get; private set; }
 
         /// <summary>
         /// The Fix Status
         /// </summary>
-        public FixStatus FixStatus
-        {
-            get { return _fixStatus; }
-        }
+        public FixStatus FixStatus { get; private set; }
 
-        #endregion IFixStatusSentence Members
+        #endregion
     }
 }

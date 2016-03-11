@@ -36,32 +36,15 @@ namespace DotSpatial.Positioning
     /// signal.</remarks>
     public sealed class GpgsvSentence : NmeaSentence, ISatelliteCollectionSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private int _totalMessageCount;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _currentMessageNumber;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _satellitesInView;
-        /// <summary>
-        ///
-        /// </summary>
-        private IList<Satellite> _satellites;
-
         #region Constructors
 
         /// <summary>
-        /// Creates a GPSV sentence instance from the specified string
+        /// Creates a GPGSV sentence instance from the specified string.
         /// </summary>
         /// <param name="sentence">The sentence.</param>
         public GpgsvSentence(string sentence)
             : base(sentence)
-        { }
+        { SetPropertiesFromSentence(); }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GpgsvSentence"/> class.
@@ -72,7 +55,7 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GpgsvSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        { SetPropertiesFromSentence(); }
 
         /// <summary>
         /// Creates a GPSV sentence instance from the specified parameters describing the location and signal strength of GPS satellites
@@ -81,44 +64,35 @@ namespace DotSpatial.Positioning
         /// <param name="currentMessageNumber">The current message number.</param>
         /// <param name="satellitesInView">The satellites in view.</param>
         /// <param name="satellites">The satellites.</param>
-        public GpgsvSentence(int totalMessageCount, int currentMessageNumber,
-    int satellitesInView, IList<Satellite> satellites)
+        public GpgsvSentence(int totalMessageCount, int currentMessageNumber, int satellitesInView, IList<Satellite> satellites)
         {
-            _totalMessageCount = totalMessageCount;
-            _currentMessageNumber = currentMessageNumber;
-            _satellitesInView = satellitesInView;
-            _satellites = satellites;
+            TotalMessageCount = totalMessageCount;
+            CurrentMessageNumber = currentMessageNumber;
+            SatellitesInView = satellitesInView;
+            Satellites = satellites;
 
             // Build a sentence
             StringBuilder builder = new StringBuilder(128);
 
             // Append the command word
             builder.Append("$GPGSV");
-
-            // Append a comma
             builder.Append(',');
 
             // Total message count
-            builder.Append(_totalMessageCount);
-
-            // Append a comma
+            builder.Append(TotalMessageCount);
             builder.Append(',');
 
             // Current message number
-            builder.Append(_currentMessageNumber);
-
-            // Append a comma
+            builder.Append(CurrentMessageNumber);
             builder.Append(',');
 
             // Satellites in view
-            builder.Append(_satellitesInView);
+            builder.Append(SatellitesInView);
 
-            #region Satellite information
-
-            int count = _satellites.Count;
+            int count = Satellites.Count;
             for (int index = 0; index < count; index++)
             {
-                Satellite satellite = _satellites[index];
+                Satellite satellite = Satellites[index];
 
                 // Serialize this satellite
                 builder.Append(",");
@@ -131,10 +105,9 @@ namespace DotSpatial.Positioning
                 builder.Append(satellite.SignalToNoiseRatio.Value.ToString("0#", NmeaCultureInfo));
             }
 
-            #endregion Satellite information
-
             // Set this object's sentence
-            SetSentence(builder.ToString());
+            Sentence = builder.ToString();
+            SetPropertiesFromSentence();
 
             // Finally, append the checksum
             AppendChecksum();
@@ -145,13 +118,10 @@ namespace DotSpatial.Positioning
         #region Overrides
 
         /// <summary>
-        /// Called when [sentence changed].
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        private new void SetPropertiesFromSentence()
         {
-            // Parse the basic sentence information
-            base.OnSentenceChanged();
-
             // Cache the words
             string[] words = Words;
             int wordCount = words.Length;
@@ -185,18 +155,18 @@ namespace DotSpatial.Positioning
 
             // Get the total message count
             if (wordCount > 1 && words[1].Length != 0)
-                _totalMessageCount = int.Parse(words[0], NmeaCultureInfo);
+                TotalMessageCount = int.Parse(words[0], NmeaCultureInfo);
 
             // Get the current message number
             if (wordCount > 2 && words[2].Length != 0)
-                _currentMessageNumber = int.Parse(words[1], NmeaCultureInfo);
+                CurrentMessageNumber = int.Parse(words[1], NmeaCultureInfo);
 
             // Get the total message count
             if (wordCount > 3 && words[3].Length != 0)
-                _satellitesInView = int.Parse(words[2], NmeaCultureInfo);
+                SatellitesInView = int.Parse(words[2], NmeaCultureInfo);
 
             // Make a new list of satellites
-            _satellites = new List<Satellite>();
+            Satellites = new List<Satellite>();
 
             // Now process each satellite
             for (int index = 0; index < 6; index++)
@@ -228,16 +198,12 @@ namespace DotSpatial.Positioning
 
                 // Update the signal strength
                 if (wordCount > currentWordIndex + 3 && words[currentWordIndex + 3].Length != 0)
-                {
                     newSignalToNoiseRatio = SignalToNoiseRatio.Parse(words[currentWordIndex + 3], NmeaCultureInfo);
-                }
                 else
-                {
                     newSignalToNoiseRatio = SignalToNoiseRatio.Empty;
-                }
 
                 // Add the satellite to the collection
-                _satellites.Add(new Satellite(pseudorandomNumber, newAzimuth, newElevation, newSignalToNoiseRatio, false));
+                Satellites.Add(new Satellite(pseudorandomNumber, newAzimuth, newElevation, newSignalToNoiseRatio, false));
             }
         }
 
@@ -246,8 +212,7 @@ namespace DotSpatial.Positioning
         #region Static Members
 
         /// <summary>
-        /// Returns a collection of $GPGSV sentences fully describing the specified
-        /// collection of satellites.
+        /// Returns a collection of $GPGSV sentences fully describing the specified collection of satellites.
         /// </summary>
         /// <param name="satellites">The satellites.</param>
         /// <returns></returns>
@@ -265,9 +230,8 @@ namespace DotSpatial.Positioning
                 {
                     // Calculate the satellite to add
                     int satelliteIndex = (index - 1) * 4 + count;
-                    // Are we at the end of the collection?
+                    // Stop if were at the end of the collection
                     if (satelliteIndex >= satellites.Count)
-                        // Yes.  Stop adding
                         break;
                     // Copy the satellite in
                     messageSatellites.Add(satellites[satelliteIndex]);
@@ -288,48 +252,24 @@ namespace DotSpatial.Positioning
         /// Returns a collection of <strong>Satellite</strong> objects describing current
         /// satellite information.
         /// </summary>
-        public IList<Satellite> Satellites
-        {
-            get
-            {
-                return _satellites;
-            }
-        }
+        public IList<Satellite> Satellites { get; private set; }
 
         /// <summary>
         /// Returns the total number of $GPGSV sentence in a sequence.
         /// </summary>
-        public int TotalMessageCount
-        {
-            get
-            {
-                return _totalMessageCount;
-            }
-        }
+        public int TotalMessageCount { get; private set; }
 
         /// <summary>
         /// Returns the current message index when the sentence is one of several
         /// messages.
         /// </summary>
-        public int CurrentMessageNumber
-        {
-            get
-            {
-                return _currentMessageNumber;
-            }
-        }
+        public int CurrentMessageNumber { get; private set; }
 
         /// <summary>
         /// Returns the number of satellites whose signals are detected by the GPS
         /// device.
         /// </summary>
-        public int SatellitesInView
-        {
-            get
-            {
-                return _satellitesInView;
-            }
-        }
+        public int SatellitesInView { get; private set; }
 
         #endregion Public Members
     }

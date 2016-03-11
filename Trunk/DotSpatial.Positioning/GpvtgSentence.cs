@@ -28,19 +28,6 @@ namespace DotSpatial.Positioning
     /// </summary>
     public sealed class GpvtgSentence : NmeaSentence, IBearingSentence, ISpeedSentence, IMagneticVariationSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private Azimuth _bearing;
-        /// <summary>
-        ///
-        /// </summary>
-        private Longitude _magneticVariation;
-        /// <summary>
-        ///
-        /// </summary>
-        private Speed _speed;
-
         #region Constructors
 
         /// <summary>
@@ -49,7 +36,9 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         public GpvtgSentence(string sentence)
             : base(sentence)
-        { }
+        {
+            SetPropertiesFromSentence();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GpvtgSentence"/> class.
@@ -60,20 +49,19 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GpvtgSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        {
+            SetPropertiesFromSentence();
+        }
 
         #endregion Constructors
 
         #region Overrides
 
         /// <summary>
-        /// Overrides OnSentanceChanged for the GPVTGSentence
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        private new void SetPropertiesFromSentence()
         {
-            // First, process the basic info for the sentence
-            base.OnSentenceChanged();
-
             // Cache the sentence words
             string[] words = Words;
             int wordCount = words.Length;
@@ -100,96 +88,47 @@ namespace DotSpatial.Positioning
                 5    = Fixed text 'N' indicates that speed over ground in in knots
                 6    = Speed over ground in kilometers/hour
                 7    = Fixed text 'K' indicates that speed over ground is in kilometers/hour
-
-             *
-             *
              */
 
-            #region Bearing
-
-            if (wordCount >= 1 && words[0].Length != 0)
-                _bearing = Azimuth.Parse(words[0], NmeaCultureInfo);
-            else
-                _bearing = Azimuth.Invalid;
-
-            #endregion Bearing
-
-            #region Magnetic Variation
-
+            // Bearing
+            Bearing = ParseAzimuth(0);
+            
+            // Magnetic Variation
             if (wordCount >= 3 && words[2].Length != 0)
-                _magneticVariation = new Longitude(double.Parse(words[2], NmeaCultureInfo) - _bearing.DecimalDegrees);
+                MagneticVariation = new Longitude(double.Parse(words[2], NmeaCultureInfo) - Bearing.DecimalDegrees);
             else
-                _magneticVariation = Longitude.Invalid;
-
-            #endregion Magnetic Variation
-
-            #region Speed
-
-            /* Speed is reported as both knots and KM/H.  We can parse either of the values.
-             * First, try to parse knots.  If that fails, parse KM/h.
-             */
-
-            if (wordCount > 5 && words[4].Length != 0)
+                MagneticVariation = Longitude.Invalid;
+            
+            // Speed is reported as both knots and KM/H. We can parse either of the values.
+            // First, try to parse knots. If that fails, parse KM/h.
+            Speed = ParseSpeed(4, SpeedUnit.Knots);
+            if (Speed == Speed.Invalid || Speed.Value == 0)
             {
-                _speed = new Speed(
-                    // Parse the numeric portion
-                double.Parse(words[4], NmeaCultureInfo),
-                    // Use knots
-                SpeedUnit.Knots);
-            }
-            else if (wordCount > 7 && words[6].Length != 0)
-            {
-                _speed = new Speed(
-                    // Parse the numeric portion
-                double.Parse(words[6], NmeaCultureInfo),
-                    // Use knots
-                SpeedUnit.KilometersPerHour);
-            }
-            else
-            {
-                // Invalid speed
-                _speed = Speed.Invalid;
+                Speed s = ParseSpeed(6, SpeedUnit.KilometersPerHour);
+                if (s != Speed.Invalid) Speed = s;
             }
 
-            #endregion Speed
         }
 
         #endregion Overrides
 
-        #region IBearingSentence Members
+        #region Properties
 
         /// <summary>
         /// the Bearing
         /// </summary>
-        public Azimuth Bearing
-        {
-            get { return _bearing; }
-        }
-
-        #endregion IBearingSentence Members
-
-        #region ISpeedSentence Members
+        public Azimuth Bearing { get; private set; }
 
         /// <summary>
         /// The Speed
         /// </summary>
-        public Speed Speed
-        {
-            get { return _speed; }
-        }
-
-        #endregion ISpeedSentence Members
-
-        #region IMagneticVariationSentence Members
-
+        public Speed Speed { get; private set; }
+        
         /// <summary>
         /// The Magnetic Variation
         /// </summary>
-        public Longitude MagneticVariation
-        {
-            get { return _magneticVariation; }
-        }
+        public Longitude MagneticVariation { get; private set; }
 
-        #endregion IMagneticVariationSentence Members
+        #endregion 
     }
 }

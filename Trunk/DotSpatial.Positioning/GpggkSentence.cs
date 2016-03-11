@@ -45,29 +45,8 @@ namespace DotSpatial.Positioning
     /// height is not available, the WGS 1984 ellipsoidal height will be exported.
     /// </summary>
     public sealed class GpggkSentence : NmeaSentence, IPositionSentence, IUtcDateTimeSentence, IFixQualitySentence, IPositionDilutionOfPrecisionSentence,
-                                    IAltitudeAboveEllipsoidSentence
+                                        IAltitudeAboveEllipsoidSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private DateTime _utcDateTime;
-        /// <summary>
-        ///
-        /// </summary>
-        private Position _position;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixQuality _fixQuality;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _meanDilutionOfPrecision;
-        /// <summary>
-        ///
-        /// </summary>
-        private Distance _altitudeAboveEllipsoid;
-
         #region Constructors
 
         /// <summary>
@@ -77,6 +56,7 @@ namespace DotSpatial.Positioning
         public GpggkSentence(string sentence)
             : base(sentence)
         {
+            SetPropertiesFromSentence();
         }
 
         /// <summary>
@@ -88,205 +68,51 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GpggkSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        {
+            SetPropertiesFromSentence();
+        }
 
         #endregion Constructors
 
         /// <summary>
-        /// Called when [sentence changed].
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        new void SetPropertiesFromSentence()
         {
-            // Process the basic sentence elements
-            base.OnSentenceChanged();
-
-            // Cache the word array
-            string[] words = Words;
-            int wordCount = words.Length;
-
-            // Do we have enough words to parse the UTC date/time?
-            if (wordCount >= 2 && words[0].Length != 0 && words[1].Length != 0)
-            {
-                #region Parse the UTC time
-
-                string utcTimeWord = words[0];
-                int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
-                int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
-                int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
-                int utcMilliseconds = Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo);
-
-                #endregion Parse the UTC time
-
-                #region Parse the UTC date
-
-                string utcDateWord = words[1];
-                int utcMonth = int.Parse(utcDateWord.Substring(0, 2), NmeaCultureInfo);
-                int utcDay = int.Parse(utcDateWord.Substring(2, 2), NmeaCultureInfo);
-                int utcYear = int.Parse(utcDateWord.Substring(4, 2), NmeaCultureInfo) + 2000;
-
-                #endregion Parse the UTC date
-
-                #region Build a UTC date/time
-
-                _utcDateTime = new DateTime(utcYear, utcMonth, utcDay, utcHours, utcMinutes, utcSeconds, utcMilliseconds, DateTimeKind.Utc);
-
-                #endregion Build a UTC date/time
-            }
-            else
-            {
-                // The UTC date/time is invalid
-                _utcDateTime = DateTime.MinValue;
-            }
-
-            // Do we have enough data to parse the location?
-            if (wordCount >= 6 && words[2].Length != 0 && words[3].Length != 0 && words[4].Length != 0 && words[5].Length != 0)
-            {
-                #region Parse the latitude
-
-                string latitudeWord = words[2];
-                int latitudeHours = int.Parse(latitudeWord.Substring(0, 2), NmeaCultureInfo);
-                double latitudeDecimalMinutes = double.Parse(latitudeWord.Substring(2), NmeaCultureInfo);
-                LatitudeHemisphere latitudeHemisphere =
-                    words[3].Equals("N", StringComparison.OrdinalIgnoreCase) ? LatitudeHemisphere.North : LatitudeHemisphere.South;
-
-                #endregion Parse the latitude
-
-                #region Parse the longitude
-
-                string longitudeWord = words[4];
-                int longitudeHours = int.Parse(longitudeWord.Substring(0, 3), NmeaCultureInfo);
-                double longitudeDecimalMinutes = double.Parse(longitudeWord.Substring(3), NmeaCultureInfo);
-                LongitudeHemisphere longitudeHemisphere =
-                    words[5].Equals("E", StringComparison.OrdinalIgnoreCase) ? LongitudeHemisphere.East : LongitudeHemisphere.West;
-
-                #endregion Parse the longitude
-
-                #region Build a Position from the latitude and longitude
-
-                _position = new Position(
-                                new Latitude(latitudeHours, latitudeDecimalMinutes, latitudeHemisphere),
-                                new Longitude(longitudeHours, longitudeDecimalMinutes, longitudeHemisphere));
-
-                #endregion Build a Position from the latitude and longitude
-            }
-
-            // Do we have enough data for the fix quality?
-            if (wordCount > 7 && words[7].Length != 0)
-            {
-                switch (Convert.ToInt32(words[7], NmeaCultureInfo))
-                {
-                    case 0:
-                        _fixQuality = FixQuality.NoFix;
-                        break;
-                    case 1:
-                        _fixQuality = FixQuality.GpsFix;
-                        break;
-                    case 2:
-                        _fixQuality = FixQuality.DifferentialGpsFix;
-                        break;
-                    case 3:
-                        _fixQuality = FixQuality.PulsePerSecond;
-                        break;
-                    case 4:
-                        _fixQuality = FixQuality.FixedRealTimeKinematic;
-                        break;
-                    case 5:
-                        _fixQuality = FixQuality.FloatRealTimeKinematic;
-                        break;
-                    case 6:
-                        _fixQuality = FixQuality.Estimated;
-                        break;
-                    case 7:
-                        _fixQuality = FixQuality.ManualInput;
-                        break;
-                    case 8:
-                        _fixQuality = FixQuality.Simulated;
-                        break;
-                    default:
-                        _fixQuality = FixQuality.Unknown;
-                        break;
-                }
-            }
-            else
-            {
-                // The fix quality is invalid
-                _fixQuality = FixQuality.Unknown;
-            }
-
-            // Process the fixed satellite count
-            //_fixedSatelliteCount = wordCount > 8 ? int.Parse(Words[8], NmeaCultureInfo) : 0;
-
-            // Process the mean DOP
-            if (wordCount > 9 && Words[9].Length != 0)
-                _meanDilutionOfPrecision = new DilutionOfPrecision(float.Parse(Words[9], NmeaCultureInfo));
-            else
-                _meanDilutionOfPrecision = DilutionOfPrecision.Maximum;
-
-            // Altitude above ellipsoid
-            if (wordCount > 10 && Words[10].Length != 0)
-                _altitudeAboveEllipsoid = new Distance(double.Parse(Words[10], NmeaCultureInfo), DistanceUnit.Meters).ToLocalUnitType();
-            else
-                _altitudeAboveEllipsoid = Distance.Empty;
+            UtcDateTime = ParseUtcDateTime(0, 1);
+            Position = ParsePosition(2, 3, 4, 5);
+            FixQuality = ParseFixQuality(7);
+            PositionDilutionOfPrecision = ParseDilution(9);             // Process the mean DOP
+            AltitudeAboveEllipsoid = ParseDistance(10, DistanceUnit.Meters).ToLocalUnitType();
         }
 
-        #region IPositionSentence Members
+        #region Properties
 
         /// <summary>
         /// Represents an NMEA sentence which contains a position.
         /// </summary>
-        public Position Position
-        {
-            get { return _position; }
-        }
-
-        #endregion IPositionSentence Members
-
-        #region IFixQualitySentence Members
+        public Position Position { get; private set; }
 
         /// <summary>
         /// The Fix Quality
         /// </summary>
-        public FixQuality FixQuality
-        {
-            get { return _fixQuality; }
-        }
-
-        #endregion IFixQualitySentence Members
-
-        #region IMeanDilutionOfPrecisionSentence Members
+        public FixQuality FixQuality { get; private set; }
 
         /// <summary>
         /// The Position Dilution of Precision (PDOP)
         /// </summary>
-        public DilutionOfPrecision PositionDilutionOfPrecision
-        {
-            get { return _meanDilutionOfPrecision; }
-        }
-
-        #endregion IMeanDilutionOfPrecisionSentence Members
-
-        #region IAltitudeAboveEllipsoidSentence Members
+        public DilutionOfPrecision PositionDilutionOfPrecision { get; private set; }
 
         /// <summary>
         /// The Altitude Above Ellipsoid
         /// </summary>
-        public Distance AltitudeAboveEllipsoid
-        {
-            get { return _altitudeAboveEllipsoid; }
-        }
-
-        #endregion IAltitudeAboveEllipsoidSentence Members
-
-        #region IUtcDateTimeSentence Members
+        public Distance AltitudeAboveEllipsoid { get; private set; }
 
         /// <summary>
         /// Represents an NMEA sentence which contains date and time in UTC.
         /// </summary>
-        public DateTime UtcDateTime
-        {
-            get { return _utcDateTime; }
-        }
+        public DateTime UtcDateTime { get; private set; }
 
-        #endregion IUtcDateTimeSentence Members
+        #endregion
     }
 }

@@ -64,46 +64,9 @@ namespace DotSpatial.Positioning
     /// 14   = Checksum
     /// </summary>
     public sealed class GpggaSentence : NmeaSentence, IPositionSentence, IUtcTimeSentence, IAltitudeSentence,
-                                    IGeoidalSeparationSentence, IDifferentialGpsSentence, IFixQualitySentence,
-                                    IHorizontalDilutionOfPrecisionSentence, IFixedSatelliteCountSentence
+                                        IGeoidalSeparationSentence, IDifferentialGpsSentence, IFixQualitySentence,
+                                        IHorizontalDilutionOfPrecisionSentence, IFixedSatelliteCountSentence
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private Position _position;
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _utcTime;
-        /// <summary>
-        ///
-        /// </summary>
-        private FixQuality _fixQuality;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _fixedSatelliteCount = -1;
-        /// <summary>
-        ///
-        /// </summary>
-        private Distance _altitude;
-        /// <summary>
-        ///
-        /// </summary>
-        private Distance _geoidalSeparation;
-        /// <summary>
-        ///
-        /// </summary>
-        private DilutionOfPrecision _horizontalDilutionOfPrecision;
-        /// <summary>
-        ///
-        /// </summary>
-        private int _differentialGpsStationID;
-        /// <summary>
-        ///
-        /// </summary>
-        private TimeSpan _differentialGpsAge;
-
         #region Constructors
 
         /// <summary>
@@ -112,7 +75,10 @@ namespace DotSpatial.Positioning
         /// <param name="sentence">The sentence.</param>
         public GpggaSentence(string sentence)
             : base(sentence)
-        { }
+        {
+            FixedSatelliteCount = -1;
+            SetPropertiesFromSentence();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GpggaSentence"/> class.
@@ -123,7 +89,10 @@ namespace DotSpatial.Positioning
         /// <param name="validChecksum">The valid checksum.</param>
         internal GpggaSentence(string sentence, string commandWord, string[] words, string validChecksum)
             : base(sentence, commandWord, words, validChecksum)
-        { }
+        {
+            FixedSatelliteCount = -1;
+            SetPropertiesFromSentence();
+        }
 
         /// <summary>
         /// Creates a new sentence
@@ -136,47 +105,32 @@ namespace DotSpatial.Positioning
         /// <param name="altitude">The altitude.</param>
         /// <param name="geoidalSeparation">The geoidal separation.</param>
         /// <param name="differentialGpsAge">The differential GPS age.</param>
-        /// <param name="differentialGpsStationID">The differential GPS station ID.</param>
-        public GpggaSentence(TimeSpan utcTime, Position position, FixQuality fixQuality, int trackedSatelliteCount,
-                    DilutionOfPrecision horizontalDilutionOfPrecision, Distance altitude, Distance geoidalSeparation,
-                    TimeSpan differentialGpsAge, int differentialGpsStationID)
+        /// <param name="differentialGpsStationId">The differential GPS station ID.</param>
+        public GpggaSentence(TimeSpan utcTime, Position position, FixQuality fixQuality, int trackedSatelliteCount, DilutionOfPrecision horizontalDilutionOfPrecision,
+                             Distance altitude, Distance geoidalSeparation, TimeSpan differentialGpsAge, int differentialGpsStationId)
         {
+            FixedSatelliteCount = -1;
             // Use a string builder to create the sentence text
             StringBuilder builder = new StringBuilder(128);
 
-            #region Append the command word
-
             // Append the command word
             builder.Append("$GPGGA");
-
-            #endregion Append the command word
-
-            // Append a comma
             builder.Append(',');
 
-            #region Append the UTC time
-
-            /* Convert UTC time to a string in the form HHMMSS.SSSS. Any value less than 10 will be
-             * padded with a zero.
-             */
-
+            // Convert UTC time to a string in the form HHMMSS.SSSS. Any value less than 10 will be padded with a zero.
             builder.Append(utcTime.Hours.ToString("0#", NmeaCultureInfo));
             builder.Append(utcTime.Minutes.ToString("0#", NmeaCultureInfo));
             builder.Append(utcTime.Seconds.ToString("0#", NmeaCultureInfo));
             builder.Append(".");
             builder.Append(utcTime.Milliseconds.ToString("00#", NmeaCultureInfo));
-
-            #endregion Append the UTC time
-
-            // Append a comma
             builder.Append(',');
 
             #region Append the position
 
             // Append latitude in the format HHMM.MMMM.
-            builder.Append(position.Latitude.ToString(NmeaSentence.LatitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Latitude.ToString(LatitudeFormat, NmeaCultureInfo));
             // Append Longitude in the format HHHMM.MMMM.
-            builder.Append(position.Longitude.ToString(NmeaSentence.LongitudeFormat, NmeaCultureInfo));
+            builder.Append(position.Longitude.ToString(LongitudeFormat, NmeaCultureInfo));
 
             #endregion Append the position
 
@@ -212,22 +166,16 @@ namespace DotSpatial.Positioning
                     builder.Append("8");
                     break;
             }
-
-            #endregion Append fix quality
-
             // Append a comma
             builder.Append(",");
-
+            #endregion Append fix quality
+            
             // Append the tracked (signal strength is > 0) satellite count
             builder.Append(trackedSatelliteCount.ToString(NmeaCultureInfo));
-
-            // Append a comma
             builder.Append(",");
 
             // Append the numerical value of HDOP
             builder.Append(horizontalDilutionOfPrecision.Value.ToString(NmeaCultureInfo));
-
-            // Append a comma
             builder.Append(",");
 
             #region Altitude above sea level
@@ -255,18 +203,17 @@ namespace DotSpatial.Positioning
             // Differnetial signal age in seconds
             if (!differentialGpsAge.Equals(TimeSpan.MinValue))
                 builder.Append(differentialGpsAge.TotalSeconds.ToString(NmeaCultureInfo));
-
-            // Append a comma
             builder.Append(",");
 
             // Station ID
-            if (differentialGpsStationID != -1)
-                builder.Append(differentialGpsStationID.ToString(NmeaCultureInfo));
+            if (differentialGpsStationId != -1)
+                builder.Append(differentialGpsStationId.ToString(NmeaCultureInfo));
 
             #endregion Differential GPS information
 
             // Set this object's sentence
-            SetSentence(builder.ToString());
+            Sentence = builder.ToString();
+            SetPropertiesFromSentence();
 
             // Finally, append the checksum
             AppendChecksum();
@@ -275,308 +222,86 @@ namespace DotSpatial.Positioning
         #endregion Constructors
 
         /// <summary>
-        /// Called when [sentence changed].
+        /// Corrects this classes properties after the base sentence was changed.
         /// </summary>
-        protected override void OnSentenceChanged()
+        private new void SetPropertiesFromSentence()
         {
-            // Parse the basic sentence information
-            base.OnSentenceChanged();
-
             // Cache the words
             string[] words = Words;
             int wordCount = words.Length;
 
-            // Do we have enough data to process the UTC time?
-            if (wordCount >= 1 && words[0].Length != 0)
-            {
-                #region UTC Time
-
-                string utcTimeWord = words[0];
-                int utcHours = int.Parse(utcTimeWord.Substring(0, 2), NmeaCultureInfo);
-                int utcMinutes = int.Parse(utcTimeWord.Substring(2, 2), NmeaCultureInfo);
-                int utcSeconds = int.Parse(utcTimeWord.Substring(4, 2), NmeaCultureInfo);
-                int utcMilliseconds = 0;
-                if (utcTimeWord.Length > 6)
-                    utcMilliseconds = Convert.ToInt32(float.Parse(utcTimeWord.Substring(6), NmeaCultureInfo) * 1000, NmeaCultureInfo);
-
-                // Build a TimeSpan for this value
-                _utcTime = new TimeSpan(0, utcHours, utcMinutes, utcSeconds, utcMilliseconds);
-
-                #endregion UTC Time
-            }
-            else
-            {
-                // The UTC time is invalid
-                _utcTime = TimeSpan.MinValue;
-            }
-
-            // Do we have enough data for locations?
-            if (wordCount >= 5 && words[1].Length != 0 && words[2].Length != 0 && words[3].Length != 0 && words[4].Length != 0)
-            {
-                #region Latitude
-
-                string latitudeWord = words[1];
-                int latitudeHours = int.Parse(latitudeWord.Substring(0, 2), NmeaCultureInfo);
-                double latitudeDecimalMinutes = double.Parse(latitudeWord.Substring(2), NmeaCultureInfo);
-                LatitudeHemisphere latitudeHemisphere =
-                    words[2].Equals("N", StringComparison.OrdinalIgnoreCase) ? LatitudeHemisphere.North : LatitudeHemisphere.South;
-
-                #endregion Latitude
-
-                #region Longitude
-
-                string longitudeWord = words[3];
-                int longitudeHours = int.Parse(longitudeWord.Substring(0, 3), NmeaCultureInfo);
-                double longitudeDecimalMinutes = double.Parse(longitudeWord.Substring(3), NmeaCultureInfo);
-                LongitudeHemisphere longitudeHemisphere =
-                    words[4].Equals("E", StringComparison.OrdinalIgnoreCase) ? LongitudeHemisphere.East : LongitudeHemisphere.West;
-
-                #endregion Longitude
-
-                #region Position
-
-                _position = new Position(
-                                new Latitude(latitudeHours, latitudeDecimalMinutes, latitudeHemisphere),
-                                new Longitude(longitudeHours, longitudeDecimalMinutes, longitudeHemisphere));
-
-                #endregion Position
-            }
-            else
-            {
-                _position = Position.Invalid;
-            }
-
-            // Do we have enough data for fix quality?
-            if (wordCount >= 6 && words[5].Length != 0)
-            {
-                #region Fix Quality
-
-                switch (int.Parse(words[5], NmeaCultureInfo))
-                {
-                    case 0:
-                        _fixQuality = FixQuality.NoFix;
-                        break;
-                    case 1:
-                        _fixQuality = FixQuality.GpsFix;
-                        break;
-                    case 2:
-                        _fixQuality = FixQuality.DifferentialGpsFix;
-                        break;
-                    case 3:
-                        _fixQuality = FixQuality.PulsePerSecond;
-                        break;
-                    case 4:
-                        _fixQuality = FixQuality.FixedRealTimeKinematic;
-                        break;
-                    case 5:
-                        _fixQuality = FixQuality.FloatRealTimeKinematic;
-                        break;
-                    case 6:
-                        _fixQuality = FixQuality.Estimated;
-                        break;
-                    case 7:
-                        _fixQuality = FixQuality.ManualInput;
-                        break;
-                    case 8:
-                        _fixQuality = FixQuality.Simulated;
-                        break;
-                    default:
-                        _fixQuality = FixQuality.Unknown;
-                        break;
-                }
-
-                #endregion Fix Quality
-            }
-            else
-            {
-                // This fix quality is invalid
-                _fixQuality = FixQuality.Unknown;
-            }
+            UtcTime = ParseUtcTimeSpan(0);
+            Position = ParsePosition(1, 2, 3, 4);
+            FixQuality = ParseFixQuality(5);
 
             // Number of satellites in view is skipped.  We'll work off of GPGSV data.
             if (wordCount >= 7 && words[6].Length != 0)
-            {
-                _fixedSatelliteCount = int.Parse(words[6], NmeaCultureInfo);
-            }
+                FixedSatelliteCount = int.Parse(words[6], NmeaCultureInfo);
 
-            // Is there enough information to process horizontal dilution of precision?
-            if (wordCount >= 8 && words[7].Length != 0)
-            {
-                #region Horizontal Dilution of Precision
-
-                try
-                {
-                    _horizontalDilutionOfPrecision =
-                        new DilutionOfPrecision(float.Parse(words[7], NmeaCultureInfo));
-                }
-                catch (ArgumentException)
-                {
-                    _horizontalDilutionOfPrecision = DilutionOfPrecision.Invalid;
-                }
-
-                #endregion Horizontal Dilution of Precision
-            }
-            else
-            {
-                // The HDOP is invalid
-                _horizontalDilutionOfPrecision = DilutionOfPrecision.Invalid;
-            }
-
-            // Is there enough information to process altitude?
-            if (wordCount >= 9 && words[8].Length != 0)
-            {
-                #region Altitude
-
-                // Altitude is the 8th NMEA word
-                _altitude = new Distance(float.Parse(words[8], NmeaCultureInfo), DistanceUnit.Meters);
-
-                #endregion Altitude
-            }
-            else
-            {
-                // The altitude is invalid
-                _altitude = Distance.Invalid;
-            }
-
-            // Is there enough information to process geoidal separation?
-            if (wordCount >= 11 && words[10].Length != 0)
-            {
-                #region Geoidal Separation
-
-                // Parse the geoidal separation
-                _geoidalSeparation = new Distance(float.Parse(words[10], NmeaCultureInfo), DistanceUnit.Meters);
-
-                #endregion Geoidal Separation
-            }
-            else
-            {
-                // The geoidal separation is invalid
-                _geoidalSeparation = Distance.Invalid;
-            }
+            HorizontalDilutionOfPrecision = ParseDilution(7);
+            Altitude = ParseDistance(8, DistanceUnit.Meters);
+            GeoidalSeparation = ParseDistance(10, DistanceUnit.Meters);
 
             // Is there enough info to process Differential GPS info?
             if (wordCount >= 14 && words[12].Length != 0 && words[13].Length != 0)
             {
-                #region Differential GPS information
-
-                _differentialGpsAge = words[12].Length != 0 ? TimeSpan.FromSeconds(float.Parse(words[12], NmeaCultureInfo)) : TimeSpan.MinValue;
-
-                if (words[13].Length != 0)
-                    _differentialGpsStationID = int.Parse(words[13], NmeaCultureInfo);
-                else
-                    _differentialGpsStationID = -1;
-
-                #endregion Differential GPS information
+                DifferentialGpsAge = words[12].Length != 0 ? TimeSpan.FromSeconds(float.Parse(words[12], NmeaCultureInfo)) : TimeSpan.MinValue;
+                DifferentialGpsStationID = words[13].Length != 0 ? int.Parse(words[13], NmeaCultureInfo) : -1;
             }
             else
             {
-                _differentialGpsStationID = -1;
-                _differentialGpsAge = TimeSpan.MinValue;
+                DifferentialGpsStationID = -1;
+                DifferentialGpsAge = TimeSpan.MinValue;
             }
         }
 
-        #region IPositionSentence Members
+        #region Properties
 
         /// <summary>
         /// Represents an NMEA sentence which contains a position.
         /// </summary>
-        public Position Position
-        {
-            get { return _position; }
-        }
-
-        #endregion IPositionSentence Members
-
-        #region IUtcDatetimeSentence Members
+        public Position Position { get; private set; }
 
         /// <summary>
         /// Gets the time in UTC from the IUtcTimeSentence
         /// </summary>
-        public TimeSpan UtcTime
-        {
-            get { return _utcTime; }
-        }
-
-        #endregion IUtcDatetimeSentence Members
-
-        #region IAltitudeSentence Members
+        public TimeSpan UtcTime { get; private set; }
 
         /// <summary>
         /// The Altitude
         /// </summary>
-        public Distance Altitude
-        {
-            get { return _altitude; }
-        }
-
-        #endregion IAltitudeSentence Members
-
-        #region IHorizontalDilutionOfPrecisionSentence Members
+        public Distance Altitude { get; private set; }
 
         /// <summary>
         /// The Horizontal Dilution of Precision
         /// </summary>
-        public DilutionOfPrecision HorizontalDilutionOfPrecision
-        {
-            get { return _horizontalDilutionOfPrecision; }
-        }
-
-        #endregion IHorizontalDilutionOfPrecisionSentence Members
-
-        #region IGeoidalSeparationSentence Members
+        public DilutionOfPrecision HorizontalDilutionOfPrecision { get; private set; }
 
         /// <summary>
         /// The Geoidal Separation
         /// </summary>
-        public Distance GeoidalSeparation
-        {
-            get { return _geoidalSeparation; }
-        }
-
-        #endregion IGeoidalSeparationSentence Members
-
-        #region IFixQualitySentence Members
+        public Distance GeoidalSeparation { get; private set; }
 
         /// <summary>
         /// The Fix Quality
         /// </summary>
-        public FixQuality FixQuality
-        {
-            get { return _fixQuality; }
-        }
-
-        #endregion IFixQualitySentence Members
-
-        #region IDifferentialGpsSentence Members
+        public FixQuality FixQuality { get; private set; }
 
         /// <summary>
         /// The integer ID of the GPS Station
         /// </summary>
-        public int DifferentialGpsStationID
-        {
-            get { return _differentialGpsStationID; }
-        }
+        public int DifferentialGpsStationID { get; private set; }
 
         /// <summary>
         /// Differntial GPS Age
         /// </summary>
-        public TimeSpan DifferentialGpsAge
-        {
-            get { return _differentialGpsAge; }
-        }
-
-        #endregion IDifferentialGpsSentence Members
-
-        #region IFixedSatelliteCountSentence Members
+        public TimeSpan DifferentialGpsAge { get; private set; }
 
         /// <summary>
         /// The Fixed Satellite Count
         /// </summary>
-        public int FixedSatelliteCount
-        {
-            get { return _fixedSatelliteCount; }
-        }
+        public int FixedSatelliteCount { get; private set; }
 
-        #endregion IFixedSatelliteCountSentence Members
+        #endregion
     }
 }
