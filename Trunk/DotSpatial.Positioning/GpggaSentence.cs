@@ -184,7 +184,7 @@ namespace DotSpatial.Positioning
             builder.Append(altitude.ToMeters().Value.ToString(NmeaCultureInfo));
 
             // Append a comma, the unit (M = meters), and another comma
-            builder.Append(", M,");
+            builder.Append(",M,");
 
             #endregion Altitude above sea level
 
@@ -194,7 +194,7 @@ namespace DotSpatial.Positioning
             builder.Append(geoidalSeparation.ToMeters().Value.ToString(NmeaCultureInfo));
 
             // Append a comma
-            builder.Append(", M,");
+            builder.Append(",M,");
 
             #endregion Geoidal separation
 

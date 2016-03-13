@@ -240,9 +240,7 @@ namespace DotSpatial.Positioning
         /// </summary>
         /// <param name="maxHDOP">The max HDOP.</param>
         /// <param name="maxVDOP">The max VDOP.</param>
-        public void Randomize(
-    DilutionOfPrecision maxHDOP,
-    DilutionOfPrecision maxVDOP)
+        public void Randomize(DilutionOfPrecision maxHDOP, DilutionOfPrecision maxVDOP)
         {
             _minHdop = 1;
             _maxHdop = maxHDOP.Value;
@@ -259,11 +257,7 @@ namespace DotSpatial.Positioning
         /// <param name="maxHDOP">The max HDOP.</param>
         /// <param name="minVDOP">The min VDOP.</param>
         /// <param name="maxVDOP">The max VDOP.</param>
-        public void Randomize(
-    DilutionOfPrecision minHDOP,
-    DilutionOfPrecision maxHDOP,
-    DilutionOfPrecision minVDOP,
-    DilutionOfPrecision maxVDOP)
+        public void Randomize(DilutionOfPrecision minHDOP, DilutionOfPrecision maxHDOP, DilutionOfPrecision minVDOP, DilutionOfPrecision maxVDOP)
         {
             _minHdop = minHDOP.Value;
             _maxHdop = maxHDOP.Value;
@@ -285,16 +279,8 @@ namespace DotSpatial.Positioning
         /// <param name="maxHDOP">The max HDOP.</param>
         /// <param name="minVDOP">The min VDOP.</param>
         /// <param name="maxVDOP">The max VDOP.</param>
-        public void Randomize(
-    Random seed,
-    Speed speedLow,
-    Speed speedHigh,
-    Azimuth bearingStart,
-    Azimuth bearingArc,
-    DilutionOfPrecision minHDOP,
-    DilutionOfPrecision maxHDOP,
-    DilutionOfPrecision minVDOP,
-    DilutionOfPrecision maxVDOP)
+        public void Randomize(Random seed, Speed speedLow, Speed speedHigh, Azimuth bearingStart, Azimuth bearingArc, DilutionOfPrecision minHDOP,
+                              DilutionOfPrecision maxHDOP, DilutionOfPrecision minVDOP, DilutionOfPrecision maxVDOP)
         {
             Randomize(seed, speedLow, speedHigh, bearingStart, bearingArc);
 
