@@ -106,6 +106,11 @@ namespace DotSpatial.Controls
         private IProgressHandler _progressHandler;
         private Size _oldSize;
 
+        /// <summary>
+        /// This is used to remember the last minimal extent that was set by OnViewExtentsChanged.
+        /// It's used to stop a loop that starts if MapFrame.ResetAspectRatio makes the minExt smaller than 1e-7.
+        /// </summary>
+        private Extent _lastMinExtent;
         #endregion
 
         #region Constructors
@@ -1578,7 +1583,15 @@ namespace DotSpatial.Controls
             {
                 double x = ViewExtents.Center.X;
                 double y = ViewExtents.Center.Y;
-                ViewExtents = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
+                Extent newExtent = new Extent(x - minExt / 2, y - minExt / 2, x + minExt / 2, y + minExt / 2); // resize to stay above the minExt
+
+                //changed by jany_ (2016-04-14) Remember the last minimum extent in case MapFrame.ResetAspectRatio decides to resize the ViewExtent to something smaller than this.
+                //We don't want to cause a loop between this point and MapFrame.ResetAspectRatio switching ViewExtent between minExt and the corresponding extent that comes from fitting minExt to the maps aspect ratio.
+                if (_lastMinExtent == null || !_lastMinExtent.Equals(newExtent))
+                {
+                    _lastMinExtent = newExtent; 
+                    ViewExtents = newExtent;
+                }
             }
             else
             {
