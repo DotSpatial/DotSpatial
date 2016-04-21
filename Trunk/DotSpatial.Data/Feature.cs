@@ -275,14 +275,6 @@ namespace DotSpatial.Data
                     {
                         shells.Add(ring);
                     }
-                    //if (part.IsHole())
-                    //{
-                    //    holes.Add(ring);
-                    //}
-                    //else
-                    //{
-                    //    shells.Add(ring);
-                    //}
                 }
             }
             if (shells.Count == 0 && holes.Count > 0)
@@ -305,24 +297,15 @@ namespace DotSpatial.Data
                 IEnvelope minEnv = null;
                 IEnvelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
-                ILinearRing tryRing;
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    tryRing = shells[j];
+                    ILinearRing tryRing = shells[j];
                     IEnvelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
-                    bool isContained = false;
-
-                    if (tryEnv.Contains(testEnv)
-                        && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                            || (PointInList(testPt, tryRing.Coordinates))))
-                    {
-                        isContained = true;
-                    }
-
+                    
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (isContained)
+                    if (tryEnv.Contains(testEnv) && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)|| (PointInList(testPt, tryRing.Coordinates))))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {

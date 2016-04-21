@@ -142,9 +142,9 @@ namespace DotSpatial.Controls
         private void SetCurrentProjectDirectory(string fileName)
         {
             // we set the working directory to the location of the project file. All filenames will be relative to this path.
-            if (String.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
             {
-                CurrentProjectFile = CurrentProjectDirectory = String.Empty;
+                CurrentProjectFile = CurrentProjectDirectory = string.Empty;
             }
             else
             {

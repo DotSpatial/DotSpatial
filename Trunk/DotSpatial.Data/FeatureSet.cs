@@ -1963,8 +1963,8 @@ namespace DotSpatial.Data
             {
                 if (Features == null || Features.Count <= 0)
                 {
-                     // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
-                    return; 
+                    // jany_ (2015-07-17) return the empty extent because any other extent would result in to big extent when zooming to full map extent
+                    return;
                 }
 
                 foreach (IFeature feature in Features)
@@ -2059,16 +2059,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a relative path from one file
-        /// or folder to another.
+        /// Creates a relative path from one file or folder to another.
         /// </summary>
         /// <param name="toPath">
-        /// Contains the path that defines the
-        /// endpoint of the relative path.
+        /// Contains the path that defines the endpoint of the relative path.
         /// </param>
         /// <returns>
-        /// The relative path from the start
-        /// directory to the end path.
+        /// The relative path from the start directory to the end path.
         /// </returns>
         /// <exception cref="ArgumentNullException">Occurs when the toPath is NULL</exception>
         //http://weblogs.asp.net/pwelter34/archive/2006/02/08/create-a-relative-path-code-snippet.aspx
@@ -2079,37 +2076,25 @@ namespace DotSpatial.Data
             if (toPath == null)
                 throw new ArgumentNullException("toPath");
 
-            bool isRooted = Path.IsPathRooted(fromDirectory)
-                            && Path.IsPathRooted(toPath);
-
-            if (isRooted)
+            if (Path.IsPathRooted(fromDirectory) && Path.IsPathRooted(toPath))
             {
-                bool isDifferentRoot = string.Compare(
-                    Path.GetPathRoot(fromDirectory),
-                    Path.GetPathRoot(toPath), true) != 0;
-
-                if (isDifferentRoot)
+                if (string.Compare(Path.GetPathRoot(fromDirectory), Path.GetPathRoot(toPath), true) != 0)
                     return toPath;
             }
 
             StringCollection relativePath = new StringCollection();
-            string[] fromDirectories = fromDirectory.Split(
-                Path.DirectorySeparatorChar);
+            string[] fromDirectories = fromDirectory.Split(Path.DirectorySeparatorChar);
 
-            string[] toDirectories = toPath.Split(
-                Path.DirectorySeparatorChar);
+            string[] toDirectories = toPath.Split(Path.DirectorySeparatorChar);
 
-            int length = Math.Min(
-                fromDirectories.Length,
-                toDirectories.Length);
+            int length = Math.Min(fromDirectories.Length, toDirectories.Length);
 
             int lastCommonRoot = -1;
 
             // find common root
             for (int x = 0; x < length; x++)
             {
-                if (string.Compare(fromDirectories[x],
-                                   toDirectories[x], true) != 0)
+                if (string.Compare(fromDirectories[x], toDirectories[x], true) != 0)
                     break;
 
                 lastCommonRoot = x;
@@ -2130,11 +2115,7 @@ namespace DotSpatial.Data
             string[] relativeParts = new string[relativePath.Count];
             relativePath.CopyTo(relativeParts, 0);
 
-            string newPath = string.Join(
-                Path.DirectorySeparatorChar.ToString(),
-                relativeParts);
-
-            return newPath;
+            return string.Join(Path.DirectorySeparatorChar.ToString(), relativeParts);
         }
 
         /// <summary>
