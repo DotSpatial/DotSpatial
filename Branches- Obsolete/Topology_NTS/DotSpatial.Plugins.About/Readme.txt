@@ -1,1 +1,0 @@
-﻿Plugin which shows "About..." window.

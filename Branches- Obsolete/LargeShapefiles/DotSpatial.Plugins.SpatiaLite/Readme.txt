@@ -1,1 +1,0 @@
-﻿SpatiaLite support.
