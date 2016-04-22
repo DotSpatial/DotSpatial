@@ -28,15 +28,15 @@ using System.Runtime.ConstrainedExecution;
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("DotSpatial.Positioning")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning")]
 
-[assembly: AssemblyVersion("1.8")]
-[assembly: AssemblyInformationalVersion("1.8 Experimental Release")]
-[assembly: AssemblyFileVersion("1.8")]
+[assembly: AssemblyVersion("1.9")]
+
+[assembly: AssemblyFileVersion("1.9")]
 
 
 #if PocketPC

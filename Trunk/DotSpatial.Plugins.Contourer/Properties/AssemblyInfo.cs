@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.Contourer")]
-[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2015")]
+[assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,6 +32,6 @@ using System.Runtime.InteropServices;
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build
 // utilizzando l'asterisco (*) come descritto di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8")]
-[assembly: AssemblyInformationalVersion("1.8")]
-[assembly: AssemblyFileVersion("1.8")]
+[assembly: AssemblyVersion("1.9")]
+
+[assembly: AssemblyFileVersion("1.9")]
