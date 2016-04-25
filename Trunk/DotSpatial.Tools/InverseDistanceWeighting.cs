@@ -172,7 +172,7 @@ namespace DotSpatial.Tools
             output.Yllcenter = input.Extent.MinY + (cellSize / 2);
 
             // Used to calculate progress
-            int lastUpdate = 0;
+            //int lastUpdate = 0;
 
             //TODO jany_ correct code to work with new KdTree
 
@@ -263,9 +263,9 @@ namespace DotSpatial.Tools
             //        }
 
             //        // Checks if we need to update the status bar
-            //        if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100)> lastUpdate)
+            //        if (Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100) > lastUpdate)
             //        {
-            //            lastUpdate =Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
+            //            lastUpdate = Convert.ToInt32(Convert.ToDouble(x * numRows) / Convert.ToDouble(numColumns * numRows) * 100);
             //            cancelProgressHandler.Progress(
             //                string.Empty, lastUpdate, "Cell: " + (x * numRows) + " of " + (numColumns * numRows));
             //            if (cancelProgressHandler.Cancel)
