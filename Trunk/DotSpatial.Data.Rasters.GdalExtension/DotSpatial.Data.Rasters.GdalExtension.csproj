@@ -78,11 +78,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\GDAL.1.9.2\lib\net40\gdal_csharp.dll</HintPath>
     </Reference>
-    <Reference Include="GeoAPI">
-      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\GeoAPI.dll</HintPath>
+    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tmp\GeoAPI.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite">
-      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\NetTopologySuite.dll</HintPath>
+    <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tmp\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="ogr_csharp, Version=1.0.4704.32537, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

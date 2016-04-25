@@ -49,12 +49,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\BruTile.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="GeoAPI">
-      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\GeoAPI.dll</HintPath>
+    <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tmp\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NetTopologySuite">
-      <HintPath>..\..\..\NTSFork\Debug\v4.0\AnyCPU\NetTopologySuite.dll</HintPath>
+    <Reference Include="NetTopologySuite, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tmp\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
