@@ -97,10 +97,9 @@ namespace DotSpatial.Data
             public Enumerator(ShapeReader parent)
             {
                 _source = parent._source;
-                _count = -1;
-                _index = -1;
                 _pageSize = parent.PageSize;
                 _envelope = parent.Envelope;
+                Reset();
             }
 
             #region IEnumerator<Dictionary<int,Shape>> Members
@@ -125,7 +124,6 @@ namespace DotSpatial.Data
             public bool MoveNext()
             {
                 if (_count < 0) _count = _source.GetShapeCount();
-                _index++;
                 if (_index >= _count) return false;
                 _page = _source.GetShapes(ref _index, _pageSize, _envelope);
                 return true;
@@ -135,7 +133,7 @@ namespace DotSpatial.Data
             public void Reset()
             {
                 _page = null;
-                _index = -1;
+                _index = 0;
                 _count = -1;
             }
 

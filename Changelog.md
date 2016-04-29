@@ -12,4 +12,5 @@ All notable changes to this project will be documented in this file.
 - TBD (#TaskNumber)
 
 ### Fixed
+- ShapeReader skipping one entry when switching the page (#774)
 - TBD (#TaskNumber)
