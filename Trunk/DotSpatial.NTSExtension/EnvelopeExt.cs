@@ -6,6 +6,48 @@ namespace DotSpatial.NTSExtension
 {
     public static class EnvelopeExt
     {
+        public static void InitZ(this Envelope envelope, double z1, double z2)
+        {
+            if (z1 < z2)
+            {
+                envelope.Minimum.Z = z1;
+                envelope.Maximum.Z = z2;
+            }
+            else
+            {
+                envelope.Minimum.Z = z2;
+                envelope.Maximum.Z = z1;
+            }
+        }
+
+        public static void InitM(this Envelope envelope, double m1, double m2)
+        {
+            if (m1 < m2)
+            {
+                envelope.Minimum.M = m1;
+                envelope.Maximum.M = m2;
+            }
+            else
+            {
+                envelope.Minimum.M = m2;
+                envelope.Maximum.M = m1;
+            }
+        }
+
+        public static bool HasM(this Envelope envelope)
+        {
+            if (double.IsNaN(envelope.Minimum.M) || double.IsNaN(envelope.Maximum.M))
+                return false;
+            return envelope.Minimum.M <= envelope.Maximum.M;
+        }
+
+        public static bool HasZ(this Envelope envelope)
+        {
+            if (double.IsNaN(envelope.Minimum.Z) || double.IsNaN(envelope.Maximum.Z))
+                return false;
+            return envelope.Minimum.Z <= envelope.Maximum.Z;
+        }
+
         /// <summary>
         /// Gets the minY, which is Y - Height.
         /// </summary>

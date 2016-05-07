@@ -27,16 +27,17 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\DotSpatial.NTSExtension.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>test.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DotSpatial.NTSExtension.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
@@ -61,7 +62,6 @@
     <Compile Include="CoordinateF.cs" />
     <Compile Include="CoordinateMismatchException.cs" />
     <Compile Include="EnumerableExt.cs" />
-    <Compile Include="Envelope.cs" />
     <Compile Include="EnvelopeExt.cs" />
     <Compile Include="FloatVector3.cs" />
     <Compile Include="GeometryExt.cs" />
@@ -85,7 +85,8 @@
     <Compile Include="Voronoi\VoronoiGraph.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.snk" />
+    <None Include="DotSpatial.NTSExtension.snk" />
+    <None Include="package.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TopologyText.resx" />
