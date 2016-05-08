@@ -35,7 +35,7 @@ using Ogr = OSGeo.OGR.Ogr;
 
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
-    public static class GdalConfiguration
+    public static partial class GdalConfiguration
     {
         private static volatile bool _configuredOgr;
         private static volatile bool _configuredGdal;
