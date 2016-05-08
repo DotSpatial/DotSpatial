@@ -45,8 +45,9 @@ namespace DotSpatial.Projections
         /// </summary>
         /// <param name="location">The Manifest Assembly resource location or file path</param>
         /// <param name="embedded">Indicates if grid file is embedded resource or external file</param>
-        public LlaNadTable(string location, bool embedded)
-            : base(location, embedded)
+        /// <param name="requiresDecompression"></param>
+        public LlaNadTable(string location, bool embedded, bool requiresDecompression)
+            : base(location, embedded, requiresDecompression)
         {
             Format = GridShiftTableFormat.LLA;
         }

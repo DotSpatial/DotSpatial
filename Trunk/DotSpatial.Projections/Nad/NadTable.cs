@@ -56,6 +56,7 @@ namespace DotSpatial.Projections
         private long _dataOffset;
 
         private bool _fileIsEmbedded;
+        private readonly bool _requiresDecompression;
         private bool _filled;
         private GridShiftTableFormat _format;
 
@@ -112,6 +113,11 @@ namespace DotSpatial.Projections
         {
         }
 
+        public NadTable(string resourceLocation, bool embedded, bool requiresDecompression)
+            : this(resourceLocation, 0, embedded, requiresDecompression)
+        {
+        }
+
         /// <summary>
         /// This initializes a new table with the assumption that the offset needs to be specified
         /// because in gsb files, more than one table is listed, and this is a subtable.
@@ -131,7 +137,8 @@ namespace DotSpatial.Projections
         /// <param name="location">The resource (or file) location</param>
         /// <param name="offset">The offset marking the start of the header in the file</param>
         /// <param name="embedded">Indicates if embedded resource or external file</param>
-        public NadTable(string location, long offset, bool embedded)
+        /// <param name="requiresDecompression">Indicates if embedded resource requires decompression</param>
+        public NadTable(string location, long offset, bool embedded, bool requiresDecompression = false)
         {
             _subGrids = new List<NadTable>();
 
@@ -144,6 +151,7 @@ namespace DotSpatial.Projections
                 _gridFilePath = location;
             }
             _fileIsEmbedded = embedded;
+            _requiresDecompression = requiresDecompression;
             _dataOffset = offset;
         }
 
@@ -167,37 +175,23 @@ namespace DotSpatial.Projections
         /// This method parses the extension of a resource location or
         /// path and creates the new NadTable type.
         /// </summary>
-        /// <param name="resourceLocation"></param>
-        /// <returns></returns>
-        public static NadTable FromSourceName(string resourceLocation)
-        {
-            return FromSourceName(resourceLocation, true);
-        }
-
-        /// <summary>
-        /// This method parses the extension of a resource location or
-        /// path and creates the new NadTable type.
-        /// </summary>
-        /// <param name="location"></param>
-        /// <param name="embedded"></param>
-        /// <returns></returns>
-        public static NadTable FromSourceName(string location, bool embedded)
+        public static NadTable FromSourceName(string location, bool embedded = true, bool requiresDecompression = false)
         {
             NadTable result = null;
             string ext = Path.GetExtension(location).ToLower();
             switch (ext)
             {
                 case ".lla":
-                    result = new LlaNadTable(location, embedded);
+                    result = new LlaNadTable(location, embedded, requiresDecompression);
                     break;
                 case ".gsb":
-                    result = new GsbNadTable(location, 0, embedded);
+                    result = new GsbNadTable(location, 0, embedded, requiresDecompression);
                     break;
                 case ".dat":
-                    result = new DatNadTable(location, embedded);
+                    result = new DatNadTable(location, embedded, requiresDecompression);
                     break;
                 case ".los":
-                    result = new LasLosNadTable(location, embedded);
+                    result = new LasLosNadTable(location, embedded, requiresDecompression);
                     break;
             }
             if (result != null) result.ReadHeader();
@@ -317,6 +311,11 @@ namespace DotSpatial.Projections
             set { _fileIsEmbedded = value; }
         }
 
+        protected bool RequiresDecompression
+        {
+            get { return _requiresDecompression; }
+        }
+
         /// <summary>
         /// If FileIsEmbedded is false, this contains the full path to the grid file
         /// </summary>
@@ -365,7 +364,11 @@ namespace DotSpatial.Projections
         protected Stream GetStream()
         {
             Assembly a = Assembly.GetExecutingAssembly();
-            Stream str = FileIsEmbedded ? a.GetManifestResourceStream(_manifestResourceString) : File.Open(_gridFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Stream str = FileIsEmbedded
+                ? (_requiresDecompression
+                    ? DeflateStreamReader.DecodeEmbeddedResource(_manifestResourceString)
+                    : a.GetManifestResourceStream(_manifestResourceString))
+                : File.OpenRead(_gridFilePath);
             return str;
         }
 

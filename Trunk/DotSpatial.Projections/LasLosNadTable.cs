@@ -46,8 +46,9 @@ namespace DotSpatial.Projections
         /// </summary>
         /// <param name="location">The resource location or grid file path</param>
         /// <param name="embedded">Indicates if grid is an embedded resource</param>
-        public LasLosNadTable(string location, bool embedded)
-            : base(location, embedded)
+        /// <param name="requiresDecompression"></param>
+        public LasLosNadTable(string location, bool embedded, bool requiresDecompression)
+            : base(location, embedded, requiresDecompression)
         {
             Format = GridShiftTableFormat.LOS;
         }

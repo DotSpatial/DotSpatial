@@ -26,9 +26,6 @@ using DotSpatial.Projections.Transforms;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// GridShift
-    /// </summary>
     public static class GridShift
     {
         private const double HUGE_VAL = double.MaxValue;
@@ -46,11 +43,6 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Applies either a forward or backward gridshift based on the specified name
         /// </summary>
-        /// <param name="names"></param>
-        /// <param name="inverse"></param>
-        /// <param name="xy"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="numPoints"></param>
         public static void Apply(string[] names, bool inverse, double[] xy, int startIndex, long numPoints)
         {
             for (int i = startIndex; i < numPoints; i++)
@@ -64,8 +56,11 @@ namespace DotSpatial.Projections
                 /* keep trying till we find a Table that works from the ones listed */
                 foreach (string name in names)
                 {
-                    if (!_shift.Tables.ContainsKey(name)) continue;
-                    NadTable table = _shift.Tables[name];
+                    Lazy<NadTable> tableLazy;
+                    if (!_shift.Tables.TryGetValue(name, out tableLazy)) continue;
+
+                    var table = tableLazy.Value;
+
                     bool found = false;
                     // For GSB tables, we need to check for the appropriate sub-table
                     if (table.SubGrids != null && table.SubGrids.Count > 1)
@@ -318,10 +313,6 @@ namespace DotSpatial.Projections
         {
             _shift.InitializeExternalGrids(gridsFolder, recursive);
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
     }

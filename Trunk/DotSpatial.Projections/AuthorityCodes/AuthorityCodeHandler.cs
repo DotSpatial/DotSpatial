@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 
@@ -59,12 +58,7 @@ namespace DotSpatial.Projections.AuthorityCodes
         {
             get { return _lazyInstance.Value; }
         }
-
-        /// <summary>
-        /// Gets the
-        /// </summary>
-        /// <param name="authorityCodeOrName"></param>
-        /// <returns></returns>
+   
         public ProjectionInfo this[string authorityCodeOrName]
         {
             get
@@ -80,26 +74,9 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         private void ReadDefault()
         {
-            using (var s =
-                Assembly.GetCallingAssembly().GetManifestResourceStream(
-                    "DotSpatial.Projections.AuthorityCodes.AuthorityCodeToProj4.ds"))
+            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.AuthorityCodeToProj4.ds"))
             {
-                using (var msUncompressed = new MemoryStream())
-                {
-                    using (var ds = new DeflateStream(s, CompressionMode.Decompress, true))
-                    {
-                        //replaced by jirikadlec2 to compile for .NET Framework 3.5
-                        //ds.CopyTo(msUncompressed);
-                        var buffer = new byte[4096];
-                        int numRead;
-                        while ((numRead = ds.Read(buffer, 0, buffer.Length)) != 0)
-                        {
-                            msUncompressed.Write(buffer, 0, numRead);
-                        }
-                    }
-                    msUncompressed.Seek(0, SeekOrigin.Begin);
-                    ReadFromStream(msUncompressed, false);
-                }
+                ReadFromStream(str, false);
             }
         }
 

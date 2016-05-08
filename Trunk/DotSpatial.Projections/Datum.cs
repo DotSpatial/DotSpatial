@@ -21,12 +21,11 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
+using System.Xml.Serialization;
 
 namespace DotSpatial.Projections
 {
@@ -35,16 +34,22 @@ namespace DotSpatial.Projections
     /// </summary>
     public class Datum : ProjDescriptor, IEsriString
     {
-        private const double SEC_TO_RAD = 4.84813681109535993589914102357e-6;
-
         #region Private Variables
 
+        private const double SEC_TO_RAD = 4.84813681109535993589914102357e-6;
         private DatumType _datumtype;
         private string _description;
         private string[] _nadGrids;
         private string _name;
         private Spheroid _spheroid;
         private double[] _toWgs84;
+
+        private static readonly Lazy<DatumsHandler> _datumsHandler = new Lazy<DatumsHandler>(delegate
+        {
+            var dh = new DatumsHandler();
+            dh.Initialize();
+            return dh;
+        }, true);
 
         #endregion Private Variables
 
@@ -345,12 +350,12 @@ namespace DotSpatial.Projections
         }
 
         /// <summary>
-        /// parses the datum from the esri string
+        /// Parses the datum from the esri string
         /// </summary>
         /// <param name="esriString">The string to parse values from</param>
         public void ParseEsriString(string esriString)
         {
-            if (System.String.IsNullOrEmpty(esriString))
+            if (string.IsNullOrEmpty(esriString))
                 return;
 
             if (esriString.Contains("DATUM") == false) return;
@@ -359,68 +364,50 @@ namespace DotSpatial.Projections
             if (iEnd < iStart) return;
             _name = esriString.Substring(iStart, iEnd - iStart + 1);
 
-            Assembly currentAssembly = Assembly.GetExecutingAssembly();
-            string fileName = null;
-            string currentAssemblyLocation = currentAssembly.Location;
-            if (!String.IsNullOrEmpty(currentAssemblyLocation))
+            var datumEntry = _datumsHandler.Value[_name];
+            if (datumEntry != null)
             {
-                fileName = Path.GetDirectoryName(currentAssemblyLocation) + "\\datums.xml";
-            }
-            Stream datumStream = File.Exists(fileName) ? File.Open(fileName, FileMode.Open) : currentAssembly.GetManifestResourceStream("DotSpatial.Projections.XML.datums.xml");
-
-            if (datumStream != null)
-            {
-                XmlTextReader reader = new XmlTextReader(datumStream);
-
-                while (reader.Read())
+                DatumType = datumEntry.Type;
+                switch (DatumType)
                 {
-                    if (reader.AttributeCount == 0) continue;
-                    reader.MoveToAttribute("Name");
-                    if (reader.Value != _name) continue;
-                    reader.MoveToAttribute("Type");
-                    if (string.IsNullOrEmpty(reader.Value)) break;
-                    DatumType = (DatumType)Enum.Parse(typeof(DatumType), reader.Value);
-                    switch (DatumType)
-                    {
-                        case DatumType.Param3:
-                            {
-                                double[] transform = new double[3];
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    reader.MoveToAttribute("P" + (i + 1));
-                                    if (!string.IsNullOrEmpty(reader.Value))
-                                    {
-                                        transform[i] = double.Parse(reader.Value, CultureInfo.InvariantCulture);
-                                    }
-                                }
-                                ToWGS84 = transform;
-                            }
+                    case DatumType.Param3:
+                        {
+                            var transform = new double[3];
+                            transform[0] = ParseDouble(datumEntry.P1);
+                            transform[1] = ParseDouble(datumEntry.P2);
+                            transform[2] = ParseDouble(datumEntry.P3);
+                            ToWGS84 = transform;
+                        }
+                        break;
+                    case DatumType.Param7:
+                        {
+                            double[] transform = new double[7];
+                            transform[0] = ParseDouble(datumEntry.P1);
+                            transform[1] = ParseDouble(datumEntry.P2);
+                            transform[2] = ParseDouble(datumEntry.P3);
+                            transform[3] = ParseDouble(datumEntry.P4);
+                            transform[4] = ParseDouble(datumEntry.P5);
+                            transform[5] = ParseDouble(datumEntry.P6);
+                            transform[6] = ParseDouble(datumEntry.P7);
+                            ToWGS84 = transform;
                             break;
-                        case DatumType.Param7:
-                            {
-                                double[] transform = new double[7];
-                                for (int i = 0; i < 7; i++)
-                                {
-                                    reader.MoveToAttribute("P" + (i + 1));
-                                    if (!string.IsNullOrEmpty(reader.Value))
-                                    {
-                                        transform[i] = double.Parse(reader.Value, CultureInfo.InvariantCulture);
-                                    }
-                                }
-                                ToWGS84 = transform;
-                                break;
-                            }
-                        case DatumType.GridShift:
-                            reader.MoveToAttribute("Shift");
-                            if (string.IsNullOrEmpty(reader.Value)) continue;
-                            NadGrids = reader.Value.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                            break;
-                    }
-                    break;
+                        }
+                    case DatumType.GridShift:
+                        if (!string.IsNullOrEmpty(datumEntry.Shift))
+                        {
+                            NadGrids = datumEntry.Shift.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);
+                        }
+                        break;
                 }
             }
 
             _spheroid.ParseEsriString(esriString);
+        }
+
+        private static double ParseDouble(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return 0;
+            return double.Parse(str, CultureInfo.InvariantCulture);
         }
 
         #endregion

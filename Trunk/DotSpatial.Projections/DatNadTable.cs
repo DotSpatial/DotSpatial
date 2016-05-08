@@ -40,8 +40,8 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Creates a new instance of GsbNadTable
         /// </summary>
-        public DatNadTable(string location, bool embedded)
-            : base(location, embedded)
+        public DatNadTable(string location, bool embedded, bool requiresDecompression)
+            : base(location, embedded, requiresDecompression)
         {
             Format = GridShiftTableFormat.DAT;
         }

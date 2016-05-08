@@ -79,6 +79,12 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DotSpatial.Projections.Tests.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,6 +96,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorityCodes\AuthorityCodeHandlerTests.cs" />
+    <Compile Include="DatumsHandlerTests.cs" />
     <Compile Include="Geographic\Africa.cs" />
     <Compile Include="Geographic\Antarctica.cs" />
     <Compile Include="Geographic\Asia.cs" />
@@ -98,6 +106,7 @@
     <Compile Include="Geographic\Europe.cs" />
     <Compile Include="Geographic\NorthAmerica.cs" />
     <Compile Include="Geographic\Oceans.cs" />
+    <Compile Include="Nad\NadTablesTests.cs" />
     <Compile Include="ProjectionInfoDesc.cs" />
     <Compile Include="Geographic\SolarSystem.cs" />
     <Compile Include="Geographic\SouthAmerica.cs" />
@@ -185,8 +194,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DotSpatial.Projections.Tests.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>

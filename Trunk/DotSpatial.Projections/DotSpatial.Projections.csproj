@@ -97,10 +97,12 @@
     <Compile Include="AuthorityCodes\AuthorityCodeHandler.cs" />
     <Compile Include="AuxiliarySphereType.cs" />
     <EmbeddedResource Include="AuthorityCodes\AuthorityCodeToProj4.ds" />
-    <None Include="AuthorityCodes\DeflateStreamUtility.cs" />
+    <None Include="DeflateStreamUtility\DeflateStreamUtility.cs" />
     <Compile Include="DatNadTable.cs" />
+    <Compile Include="DatumsHandler.cs" />
     <Compile Include="DatumTransform.cs" />
     <Compile Include="DatumTransformStage.cs" />
+    <Compile Include="DeflateStreamReader.cs" />
     <Compile Include="GridShiftTableFormat.cs" />
     <Compile Include="GsbNadTable.cs" />
     <Compile Include="ICoordinateSystemCategoryHolder.cs" />
@@ -280,46 +282,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\MemberInfoExtensions.cs" />
     <Compile Include="ShallowCopy.cs" />
+    <EmbeddedResource Include="Nad\alaska.ds.lla" />
+    <EmbeddedResource Include="Nad\conus.ds.lla" />
+    <EmbeddedResource Include="Nad\FL.ds.lla" />
+    <EmbeddedResource Include="Nad\hawaii.ds.lla" />
+    <EmbeddedResource Include="Nad\MD.ds.lla" />
+    <EmbeddedResource Include="Nad\ntv1_can.ds.dat" />
+    <EmbeddedResource Include="Nad\ntv2_0.ds.gsb" />
+    <EmbeddedResource Include="Nad\null.ds.lla" />
+    <EmbeddedResource Include="Nad\prvi.ds.lla" />
+    <EmbeddedResource Include="Nad\stgeorge.ds.lla" />
+    <EmbeddedResource Include="Nad\stlrnc.ds.lla" />
+    <EmbeddedResource Include="Nad\stpaul.ds.lla" />
+    <EmbeddedResource Include="Nad\TN.ds.lla" />
+    <EmbeddedResource Include="Nad\WI.ds.lla" />
+    <EmbeddedResource Include="Nad\WO.ds.lla" />
     <None Include="package.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Nad\alaska.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\conus.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\FL.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\hawaii.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\MD.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\null.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\prvi.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\stgeorge.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\stlrnc.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\stpaul.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\TN.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\WI.lla" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Nad\WO.lla" />
     <EmbeddedResource Include="ProjectionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectionMessages.Designer.cs</LastGenOutput>
@@ -332,13 +312,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Nad\ntv1_can.dat" />
-    <EmbeddedResource Include="Nad\ntv2_0.GSB" />
-    <EmbeddedResource Include="XML\gcs.csv" />
-    <EmbeddedResource Include="XML\pcs.csv" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\datums.xml" />
+    <EmbeddedResource Include="XML\datums.xml.ds" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -366,13 +340,10 @@
     <None Include="DotSpatial.Projections.4.0.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AuthorityCodes\AuthorityCodeToProj4.txt" />
+    <None Include="DeflateStreamUtility\Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AuthorityCodes\Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AuthorityCodes\DeflateStreamUtility.exe" />
+    <None Include="DeflateStreamUtility\DeflateStreamUtility.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

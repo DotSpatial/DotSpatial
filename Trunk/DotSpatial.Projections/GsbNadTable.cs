@@ -46,8 +46,8 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Creates a new instance of GsbNadTable
         /// </summary>
-        public GsbNadTable(string location, long offset, bool embedded)
-            : base(location, offset, embedded)
+        public GsbNadTable(string location, long offset, bool embedded, bool requiresDecompression)
+            : base(location, offset, embedded, requiresDecompression)
         {
             Format = GridShiftTableFormat.GSB;
         }
@@ -88,7 +88,7 @@ namespace DotSpatial.Projections
             for (int iGrid = 0; iGrid < numGrids; iGrid++)
             {
                 string location = FileIsEmbedded ? ManifestResourceString : GridFilePath;
-                NadTable sub = new GsbNadTable(location, offset, FileIsEmbedded);
+                NadTable sub = new GsbNadTable(location, offset, FileIsEmbedded, RequiresDecompression);
                 sub.ReadHeader();
                 offset += 176 + sub.NumPhis * sub.NumLambdas * 16;
                 SubGrids.Add(sub);

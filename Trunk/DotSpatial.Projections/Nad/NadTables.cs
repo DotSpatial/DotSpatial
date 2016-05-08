@@ -20,20 +20,18 @@
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// NadTables
-    /// </summary>
     public class NadTables
     {
         #region Private Variables
 
-        private readonly Dictionary<string, NadTable> _tables;
+        private readonly Dictionary<string, Lazy<NadTable>> _tables = new Dictionary<string, Lazy<NadTable>>();
 
         #endregion
 
@@ -44,21 +42,22 @@ namespace DotSpatial.Projections
         /// </summary>
         public NadTables()
         {
-            _tables = new Dictionary<string, NadTable>();
             Assembly a = Assembly.GetExecutingAssembly();
-            string[] names = a.GetManifestResourceNames();
-
-            foreach (string s in names)
+            foreach (var s in a.GetManifestResourceNames())
             {
                 string[] ss = s.Split('.');
-                string coreName = "@" + ss[ss.Length - 2];
+                if (ss.Length < 3) continue;
+                string coreName = "@" + ss[ss.Length - 3];
                 if (_tables.ContainsKey(coreName)) continue;
                 string ext = Path.GetExtension(s).ToLower();
                 if (ext != ".lla" && ext != ".dat" && ext != ".gsb") continue;
-                Stream text = a.GetManifestResourceStream(s);
-                if (text == null) continue;
-                NadTable nt = NadTable.FromSourceName(s);
-                _tables.Add(coreName, nt);
+                if (ss[ss.Length - 2] != "ds") continue; // only encoded by DeflateStreamUtility
+                using (var str = a.GetManifestResourceStream(s))
+                {
+                    if (str == null) continue;
+                }
+                var s1 = s;
+                _tables.Add(coreName, new Lazy<NadTable>(() => NadTable.FromSourceName(s1, true, true), true));
             }
         }
 
@@ -79,12 +78,10 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Load grids from the specified folder
         /// </summary>
-        /// <param name="strGridsFolder"></param>
-        /// <param name="recursive"></param>
         public void InitializeExternalGrids(string strGridsFolder, bool recursive)
         {
             SearchOption opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            string[] gridTypes = new[] { "*.los", "*.gsb", "*.dat", "*.lla" };
+            string[] gridTypes = { "*.los", "*.gsb", "*.dat", "*.lla" };
             List<string> names = new List<string>();
             foreach (string gridType in gridTypes)
             {
@@ -92,15 +89,15 @@ namespace DotSpatial.Projections
                 names.AddRange(tmp);
             }
 
-            foreach (string s in names)
+            foreach (var s in names)
             {
                 string coreName = "@" + Path.GetFileNameWithoutExtension(s);
                 if (_tables.ContainsKey(coreName)) continue;
                 string ext = Path.GetExtension(s).ToLower();
                 if (ext != ".los" && ext != ".gsb" && ext != ".dat") continue;
                 if (ext == ".los" && !File.Exists(s.Replace(".los", ".las"))) continue;
-                NadTable nt = NadTable.FromSourceName(s, false);
-                _tables.Add(coreName, nt);
+                var s1 = s;
+                _tables.Add(coreName, new Lazy<NadTable>(() => NadTable.FromSourceName(s1, false), true));
             }
         }
 
@@ -111,7 +108,7 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Gets an array of the lla tables that have been added as a resource
         /// </summary>
-        public Dictionary<string, NadTable> Tables
+        public Dictionary<string, Lazy<NadTable>> Tables
         {
             get { return _tables; }
         }
