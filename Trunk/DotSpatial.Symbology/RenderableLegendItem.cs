@@ -93,11 +93,11 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Obtains an IEnvelope in world coordinates that contains this object.  This is virtual, and
+        /// Obtains an Envelope in world coordinates that contains this object.  This is virtual, and
         /// will usually be reconfigured in subclasses to simply show the dataset extent.
         /// </summary>
         /// <returns></returns>
-        [Category("General"), Description("Obtains an IEnvelope that contains this object")]
+        [Category("General"), Description("Obtains an Envelope that contains this object")]
         public virtual Extent Extent
         {
             get { return _extent; }

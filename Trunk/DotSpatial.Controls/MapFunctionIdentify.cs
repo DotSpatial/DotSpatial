@@ -20,11 +20,11 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -116,7 +116,7 @@ namespace DotSpatial.Controls
                 tempLayer = map.MapFrame;
             }
             map.MapFrame.IsSelected = true;
-            IEnvelope env;
+            Envelope env;
             map.MapFrame.ClearSelection(out env);
             map.MapFrame.IsSelected = false;
             tempLayer.IsSelected = true;

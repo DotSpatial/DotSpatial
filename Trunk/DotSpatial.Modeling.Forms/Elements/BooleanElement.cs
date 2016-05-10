@@ -22,8 +22,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// An element for true/false values

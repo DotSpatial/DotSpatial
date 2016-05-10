@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="package.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -87,11 +88,6 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
-      <Name>DotSpatial.Topology</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

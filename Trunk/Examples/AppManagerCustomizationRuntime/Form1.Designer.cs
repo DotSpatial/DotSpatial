@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Examples.AppManagerCustomizationRuntime
+﻿using System.ComponentModel;
+using DotSpatial.Controls;
+
+namespace DotSpatial.Examples.AppManagerCustomizationRuntime
 {
     partial class Form1
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -54,7 +57,7 @@
 
         #endregion
 
-        private Controls.AppManager appManager;
+        private AppManager appManager;
     }
 }
 

@@ -14,10 +14,10 @@
 // Dan Ames           |  3/2013            |  Cleaning up header and interface as model for other tools. 
 // *******************************************************************************************************
 
-using System;
+using DotSpatial.Analysis;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Topology;
+using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Tools
 {
@@ -96,7 +96,7 @@ namespace DotSpatial.Tools
             }
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
             
-            if (Analysis.Buffer.AddBuffer(inputFeatures, bufferDistance, outputFeatures, cancelProgressHandler))
+            if (Buffer.AddBuffer(inputFeatures, bufferDistance, outputFeatures, cancelProgressHandler))
             {
                 outputFeatures.Save();
                 return true;

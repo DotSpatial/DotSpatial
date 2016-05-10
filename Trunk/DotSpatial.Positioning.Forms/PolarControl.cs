@@ -21,17 +21,17 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 #if !PocketPC
 #endif
-
-using System.Reflection;
 
 namespace DotSpatial.Positioning.Forms
 {

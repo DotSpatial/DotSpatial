@@ -20,6 +20,8 @@
 // ********************************************************************************************************
 
 using System;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DotSpatial.Controls
@@ -41,10 +43,10 @@ namespace DotSpatial.Controls
                 // On Mac and possibly other Mono platforms, GdipCreateLineBrushFromRect
                 // in gdiplus native lib returns InvalidParameter in Mono file LinearGradientBrush.cs
                 // if a StripPanel's Width or Height is 0, so force them to non-0.
-                _toolStripContainer1.TopToolStripPanel.Size = new System.Drawing.Size(_toolStripContainer1.TopToolStripPanel.Size.Width, 1);
-                _toolStripContainer1.BottomToolStripPanel.Size = new System.Drawing.Size(_toolStripContainer1.BottomToolStripPanel.Size.Width, 1);
-                _toolStripContainer1.LeftToolStripPanel.Size = new System.Drawing.Size(1, _toolStripContainer1.LeftToolStripPanel.Size.Height);
-                _toolStripContainer1.RightToolStripPanel.Size = new System.Drawing.Size(1, _toolStripContainer1.RightToolStripPanel.Size.Height);
+                _toolStripContainer1.TopToolStripPanel.Size = new Size(_toolStripContainer1.TopToolStripPanel.Size.Width, 1);
+                _toolStripContainer1.BottomToolStripPanel.Size = new Size(_toolStripContainer1.BottomToolStripPanel.Size.Width, 1);
+                _toolStripContainer1.LeftToolStripPanel.Size = new Size(1, _toolStripContainer1.LeftToolStripPanel.Size.Height);
+                _toolStripContainer1.RightToolStripPanel.Size = new Size(1, _toolStripContainer1.RightToolStripPanel.Size.Height);
             }
         }
 
@@ -73,7 +75,7 @@ namespace DotSpatial.Controls
         private void layoutControl1_FilenameChanged(object sender, EventArgs e)
         {
             Text = !string.IsNullOrEmpty(_layoutControl1.Filename)
-                ? "DotSpatial Print Layout - " + System.IO.Path.GetFileName(this._layoutControl1.Filename)
+                ? "DotSpatial Print Layout - " + Path.GetFileName(this._layoutControl1.Filename)
                 : "DotSpatial Print Layout";
         }
 

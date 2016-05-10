@@ -8,7 +8,7 @@ using System.Net;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -88,7 +88,7 @@ namespace DotSpatial.Plugins.WebMap
                         }
                     }
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                 }
             }
@@ -96,9 +96,9 @@ namespace DotSpatial.Plugins.WebMap
             return bitMap;
         }
 
-        protected static Extent ToBrutileExtent(IEnvelope extent)
+        protected static Extent ToBrutileExtent(Envelope extent)
         {
-            return new Extent(extent.Minimum.X, extent.Minimum.Y, extent.Maximum.X, extent.Maximum.Y);
+            return new Extent(extent.MinX, extent.MinY, extent.MaxX, extent.MaxY);
         }
     }
 }

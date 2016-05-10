@@ -18,9 +18,9 @@
 //
 // ********************************************************************************************************
 
+using System.Data;
 using System.Drawing;
 using DotSpatial.Serialization;
-using System.Data;
 
 namespace DotSpatial.Symbology
 {

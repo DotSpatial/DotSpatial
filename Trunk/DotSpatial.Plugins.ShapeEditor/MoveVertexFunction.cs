@@ -18,16 +18,18 @@
 //
 // ********************************************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
-using System;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.ShapeEditor
 {
@@ -108,6 +110,108 @@ namespace DotSpatial.Plugins.ShapeEditor
         #region Methods
 
         /// <summary>
+        /// This function checks to see if the current mouse location is over a vertex.
+        /// </summary>
+        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse
+        /// location and geographic coordinates.</param>
+        private bool CheckForVertexDrag(GeoMouseArgs e)
+        {
+            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
+            Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+            if (e.Button == MouseButtons.Left)
+            {
+                if (_layer.DataSet.FeatureType == FeatureType.Polygon)
+                {
+                    for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
+                    {
+                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
+                        IList<Coordinate> coords = g.Coordinates;
+                        for (int ic = 0; ic < coords.Count; ic++)
+                        {
+                            Coordinate c = coords[ic];
+                            if (env.Contains(c))
+                            {
+                                _dragging = true;
+                                _dragCoord = c;
+                                if (ic == 0)
+                                {
+                                    _closedCircleCoord = coords[coords.Count - 1];
+                                    _previousPoint = coords[coords.Count - 2];
+                                    _nextPoint = coords[1];
+                                }
+                                else if (ic == coords.Count - 1)
+                                {
+                                    _closedCircleCoord = coords[0];
+                                    _previousPoint = coords[coords.Count - 2];
+                                    _nextPoint = coords[1];
+                                }
+                                else
+                                {
+                                    _previousPoint = coords[ic - 1];
+                                    _nextPoint = coords[ic + 1];
+                                    _closedCircleCoord = null;
+                                }
+                                Map.Invalidate();
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else if (_layer.DataSet.FeatureType == FeatureType.Line)
+                {
+                    for (int prt = 0; prt < _selectedFeature.Geometry.NumGeometries; prt++)
+                    {
+                        IGeometry g = _selectedFeature.Geometry.GetGeometryN(prt);
+                        IList<Coordinate> coords = g.Coordinates;
+                        for (int ic = 0; ic < coords.Count; ic++)
+                        {
+                            Coordinate c = coords[ic];
+                            if (env.Contains(c))
+                            {
+                                _dragging = true;
+                                _dragCoord = c;
+
+                                if (ic == 0)
+                                {
+                                    _previousPoint = null;
+                                    _nextPoint = coords[1];
+                                }
+                                else if (ic == coords.Count - 1)
+                                {
+                                    _previousPoint = coords[coords.Count - 2];
+                                    _nextPoint = null;
+                                }
+                                else
+                                {
+                                    _previousPoint = coords[ic - 1];
+                                    _nextPoint = coords[ic + 1];
+                                }
+                                Map.Invalidate();
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Deselects the selected feature and removes the highlight from any highlighted feature.
+        /// </summary>
+        public void ClearSelection()
+        {
+            DeselectFeature();
+            RemoveHighlightFromFeature();
+            _oldCategory = null;
+        }
+
+        private void Configure()
+        {
+            YieldStyle = (YieldStyles.LeftButton | YieldStyles.RightButton);
+        }
+
+        /// <summary>
         /// This should be called if for some reason the layer gets un-selected or whatever so that the selection
         /// should clear.
         /// </summary>
@@ -123,34 +227,12 @@ namespace DotSpatial.Plugins.ShapeEditor
             Map.Invalidate();
         }
 
-        /// <summary>
-        /// Removes the highlighting from the actively highlighted feature.
-        /// </summary>
-        public void RemoveHighlightFromFeature()
-        {
-            if (_activeFeature != null)
-            {
-                _layer.SetCategory(_activeFeature, _oldCategory);
-            }
-            _activeFeature = null;
-        }
-
         /// <inheritdoc />
         protected override void OnDeactivate()
         {
-           ClearSelection();
+            ClearSelection();
             base.OnDeactivate();
         }
-
-        /// <summary>
-        /// Deselects the selected feature and removes the highlight from any highlighted feature.
-        /// </summary>
-        public void ClearSelection()
-        {
-            DeselectFeature();
-            RemoveHighlightFromFeature();
-            _oldCategory = null;
-            }
 
         /// <inheritdoc />
         protected override void OnDraw(MapDrawArgs e)
@@ -158,7 +240,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
             if (_selectedFeature != null)
             {
-                foreach (Coordinate c in _selectedFeature.Coordinates)
+                foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
                 {
                     Point pt = e.GeoGraphics.ProjToPixel(c);
                     if (e.GeoGraphics.ImageRectangle.Contains(pt))
@@ -219,12 +301,12 @@ namespace DotSpatial.Plugins.ShapeEditor
                     {
                         Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
 
-                        IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
+                        Envelope env = Map.PixelToProj(mouseRect).ToEnvelope();
 
                         if (CheckForVertexDrag(e)) { return; }
 
                         // No vertex selection has occured.
-                        if (!_selectedFeature.Intersects(env.ToPolygon()))
+                        if (!_selectedFeature.Geometry.Intersects(env.ToPolygon()))
                         {
                             // We are clicking down outside of the given polygon, so clear our selected feature
                             DeselectFeature();
@@ -266,7 +348,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                         {
                             _dragging = true;
                             Map.IsBusy = true;
-                            _dragCoord = _activeFeature.Coordinates[0];
+                            _dragCoord = _activeFeature.Geometry.Coordinates[0];
                             MapPointLayer mpl = _layer as MapPointLayer;
                             if (mpl != null)
                             {
@@ -374,98 +456,6 @@ namespace DotSpatial.Plugins.ShapeEditor
         }
 
         /// <summary>
-        /// This function checks to see if the current mouse location is over a vertex.
-        /// </summary>
-        /// <param name="e">The GeoMouseArgs parameter contains information about the mouse
-        /// location and geographic coordinates.</param>
-        private bool CheckForVertexDrag(GeoMouseArgs e)
-        {
-            Rectangle mouseRect = new Rectangle(_mousePosition.X - 3, _mousePosition.Y - 3, 6, 6);
-            IEnvelope env = Map.PixelToProj(mouseRect).ToEnvelope();
-            if (e.Button == MouseButtons.Left)
-            {
-                if (_layer.DataSet.FeatureType == FeatureType.Polygon)
-                {
-                    for (int prt = 0; prt < _selectedFeature.NumGeometries; prt++)
-                    {
-                        IBasicGeometry g = _selectedFeature.GetBasicGeometryN(prt);
-                        IList<Coordinate> coords = g.Coordinates;
-                        for (int ic = 0; ic < coords.Count; ic++)
-                        {
-                            Coordinate c = coords[ic];
-                            if (env.Contains(c))
-                            {
-                                _dragging = true;
-                                _dragCoord = c;
-                                if (ic == 0)
-                                {
-                                    _closedCircleCoord = coords[coords.Count - 1];
-                                    _previousPoint = coords[coords.Count - 2];
-                                    _nextPoint = coords[1];
-                                }
-                                else if (ic == coords.Count - 1)
-                                {
-                                    _closedCircleCoord = coords[0];
-                                    _previousPoint = coords[coords.Count - 2];
-                                    _nextPoint = coords[1];
-                                }
-                                else
-                                {
-                                    _previousPoint = coords[ic - 1];
-                                    _nextPoint = coords[ic + 1];
-                                    _closedCircleCoord = null;
-                                }
-                                Map.Invalidate();
-                                return true;
-                            }
-                        }
-                    }
-                }
-                else if (_layer.DataSet.FeatureType == FeatureType.Line)
-                {
-                    for (int prt = 0; prt < _selectedFeature.NumGeometries; prt++)
-                    {
-                        IBasicGeometry g = _selectedFeature.GetBasicGeometryN(prt);
-                        IList<Coordinate> coords = g.Coordinates;
-                        for (int ic = 0; ic < coords.Count; ic++)
-                        {
-                            Coordinate c = coords[ic];
-                            if (env.Contains(c))
-                            {
-                                _dragging = true;
-                                _dragCoord = c;
-
-                                if (ic == 0)
-                                {
-                                    _previousPoint = null;
-                                    _nextPoint = coords[1];
-                                }
-                                else if (ic == coords.Count - 1)
-                                {
-                                    _previousPoint = coords[coords.Count - 2];
-                                    _nextPoint = null;
-                                }
-                                else
-                                {
-                                    _previousPoint = coords[ic - 1];
-                                    _nextPoint = coords[ic + 1];
-                                }
-                                Map.Invalidate();
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        private void Configure()
-        {
-            YieldStyle = (YieldStyles.LeftButton | YieldStyles.RightButton);
-        }
-
-        /// <summary>
         /// Fires the VertexMoved event.
         /// </summary>
         /// <param name="e"></param>
@@ -474,6 +464,18 @@ namespace DotSpatial.Plugins.ShapeEditor
             EventHandler<VertexMovedEventArgs> handler = VertextMoved;
             if (handler != null)
                 handler(this, e);
+        }
+
+        /// <summary>
+        /// Removes the highlighting from the actively highlighted feature.
+        /// </summary>
+        public void RemoveHighlightFromFeature()
+        {
+            if (_activeFeature != null)
+            {
+                _layer.SetCategory(_activeFeature, _oldCategory);
+            }
+            _activeFeature = null;
         }
 
         /// <summary>
@@ -512,7 +514,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                             }
                         }
                         _imageRect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w, h);
-                        if (_imageRect.Contains(Map.ProjToPixel(feature.Coordinates[0])))
+                        if (_imageRect.Contains(Map.ProjToPixel(feature.Geometry.Coordinates[0])))
                         {
                             _activeFeature = feature;
                             _oldCategory = mpl.GetCategory(feature);
@@ -529,7 +531,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 }
                 else
                 {
-                    if (feature.Intersects(env))
+                    if (feature.Geometry.Intersects(env))
                     {
                         _activeFeature = feature;
                         _oldCategory = _layer.GetCategory(_activeFeature);
@@ -587,7 +589,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     }
                 }
                 Rectangle rect = new Rectangle(e.Location.X - (w / 2), e.Location.Y - (h / 2), w * 2, h * 2);
-                if (!rect.Contains(Map.ProjToPixel(_activeFeature.Coordinates[0])))
+                if (!rect.Contains(Map.ProjToPixel(_activeFeature.Geometry.Coordinates[0])))
                 {
                     mpl.SetCategory(_activeFeature, _oldCategory);
                     _activeFeature = null;
@@ -596,7 +598,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
             else
             {
-                if (!_activeFeature.Intersects(env))
+                if (!_activeFeature.Geometry.Intersects(env))
                 {
                     _layer.SetCategory(_activeFeature, _oldCategory);
                     _activeFeature = null;
@@ -633,7 +635,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     Map.Invalidate();
                 }
             }
-            foreach (Coordinate c in _selectedFeature.Coordinates)
+            foreach (Coordinate c in _selectedFeature.Geometry.Coordinates)
             {
                 if (ext.Contains(c))
                 {

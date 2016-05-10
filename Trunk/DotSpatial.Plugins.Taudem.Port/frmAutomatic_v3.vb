@@ -23,11 +23,9 @@
 'January 2011   CWG             Adapted extensively to use TauDEM V5
 '********************************************************************************************************
 
-Imports System.Runtime.InteropServices
-
-Imports System.Windows.Forms
 Imports DotSpatial.Controls
 Imports DotSpatial.Data
+Imports DotSpatial.Plugins.Taudem.Port.Manhattan
 
 Public Class frmAutomatic_v3
     Inherits System.Windows.Forms.Form
@@ -1410,7 +1408,7 @@ Public Class frmAutomatic_v3
             '                    Dim sf As New MapWinGIS.Shapefile
             '                    sf.Open(strMask)
             '                    For i As Integer = 0 To myWrapper.maskShapesIdx.Count - 1
-            '                        maskCells = maskCells + MapWinGeoProc.Utils.Area(sf.Shape(myWrapper.maskShapesIdx(i))) / (r.CellWidth * r.CellHeight)
+            '                        maskCells = maskCells + Utils.Area(sf.Shape(myWrapper.maskShapesIdx(i))) / (r.CellWidth * r.CellHeight)
             '                    Next
             '                    sf.Close()
             '                    If numCells > maskCells Then
@@ -2706,7 +2704,7 @@ Public Class frmAutomatic_v3
     '                    chkbxMask.Checked = True
 
     '                    strShape = fileSave.FileName
-    '                    MapWinGeoProc.DataManagement.DeleteShapefile(strShape)
+    '                    DataManagement.DeleteShapefile(strShape)
     '                    Dim sf As New MapWinGIS.Shapefile
     '                    sf.CreateNew(strShape, MapWinGIS.ShpfileType.SHP_POLYGON)
     '                    sf.SaveAs(strShape)
@@ -2890,7 +2888,7 @@ Public Class frmAutomatic_v3
     '                fileSave.FilterIndex = 1
     '                If fileSave.ShowDialog() = Windows.Forms.DialogResult.OK Then
     '                    strShape = fileSave.FileName
-    '                    MapWinGeoProc.DataManagement.DeleteShapefile(strShape)
+    '                    DataManagement.DeleteShapefile(strShape)
     '                    Dim sf As New MapWinGIS.Shapefile
     '                    sf.CreateNew(strShape, MapWinGIS.ShpfileType.SHP_POINT)
     '                    ' Paul Meems, 10-Aug-11 Add projection to prevent projection warnings when adding:
@@ -3412,8 +3410,8 @@ Public Class frmAutomatic_v3
             tdbChoiceList.numProcesses = ProcessNum()
 
             If tdbChoiceList.FillGridPath <> "" And tdbChoiceList.D8SlopePath <> "" And tdbChoiceList.D8Path <> "" Then
-                'MapWinGeoProc.DataManagement.DeleteShapefile(tdbFileList.net)
-                MapWinGeoProc.DataManagement.CopyShapefile(tdbChoiceList.NetPath, tdbFileList.net)
+                'DataManagement.DeleteShapefile(tdbFileList.net)
+                DataManagement.CopyShapefile(tdbChoiceList.NetPath, tdbFileList.net)
             Else
                 If Not runAreaD8() Then runFormCleanup() : Return False
                 If tdbChoiceList.useDinf Then
@@ -3635,7 +3633,7 @@ Public Class frmAutomatic_v3
         '        RemoveLayer(maskedPath)
 
         '        If rdobtnUseExtents.Checked Then 'mask by extents
-        '            If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, App.Map.View.Extents, maskedPath, App.ProgressHandler) = 0 Then
+        '            If Hydrology.Mask(tdbFileList.dem, App.Map.View.Extents, maskedPath, App.ProgressHandler) = 0 Then
         '                tdbFileList.dem = maskedPath
         '            End If
         '        Else
@@ -3643,12 +3641,12 @@ Public Class frmAutomatic_v3
         '                strmask = getPathByName(cmbxMask.Items(cmbxMask.SelectedIndex))
         '                If IO.Path.GetExtension(strmask) = ".shp" Then 'Mask by selected shapes
         '                    If myWrapper.maskShapesIdx.Count > 0 Then
-        '                        If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, strmask, myWrapper.maskShapesIdx, maskedPath, App.ProgressHandler) = 0 Then
+        '                        If Hydrology.Mask(tdbFileList.dem, strmask, myWrapper.maskShapesIdx, maskedPath, App.ProgressHandler) = 0 Then
         '                            tdbFileList.dem = maskedPath
         '                        End If
         '                    End If
         '                Else 'Mask by grid
-        '                    If MapWinGeoProc.Hydrology.Mask(tdbFileList.dem, strmask, maskedPath, App.ProgressHandler) = 0 Then
+        '                    If Hydrology.Mask(tdbFileList.dem, strmask, maskedPath, App.ProgressHandler) = 0 Then
         '                        tdbFileList.dem = maskedPath
         '                    End If
         '                End If
@@ -3674,7 +3672,7 @@ Public Class frmAutomatic_v3
             '        Else
             '            strBurnResult = tdbFileList.getAbsolutePath(tdbChoiceList.OutputPath, g_BaseDEM) + IO.Path.GetFileNameWithoutExtension(g_BaseDEM) + "_burn.tif"
             '        End If
-            '        If MapWinGeoProc.Hydrology.CanyonBurnin(strBurn, strDEM, strBurnResult, App.ProgressHandler) = 0 Then
+            '        If Hydrology.CanyonBurnin(strBurn, strDEM, strBurnResult, App.ProgressHandler) = 0 Then
             '            runBurn = strBurnResult
             '        Else
             '            MsgBox("An error occured while burning in the stream polyline.", MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
@@ -3727,7 +3725,7 @@ Public Class frmAutomatic_v3
 
         App.ProgressHandler.Progress("Status", 0, "Pit Fill")
         Try
-            MapWinGeoProc.Hydrology.Fill(strToFill, tdbFileList.fel, App.ProgressHandler)
+            Hydrology.Fill(strToFill, tdbFileList.fel, App.ProgressHandler)
         Catch ex As Exception
             MsgBox("An error occured while filling the grid: " + ex.Message, MsgBoxStyle.OkOnly, "Automatic Watershed Delineation Error")
             App.ProgressHandler.Progress("Status", 0, "")
@@ -3780,7 +3778,7 @@ Public Class frmAutomatic_v3
             tickb = Now().Ticks
         End If
 
-        Dim result = MapWinGeoProc.Hydrology.D8(tdbFileList.fel, tdbFileList.p, tdbFileList.sd8, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, ProgressHandler.App.ProgressHandler)
+        Dim result = Hydrology.D8(tdbFileList.fel, tdbFileList.p, tdbFileList.sd8, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, ProgressHandler.App.ProgressHandler)
 
 
         If doTicks Then
@@ -3820,7 +3818,7 @@ Public Class frmAutomatic_v3
         If doTicks Then
             tickb = Now().Ticks
         End If
-        i = MapWinGeoProc.Hydrology.AreaD8(tdbFileList.p, tdbFileList.outletshpfile, tdbFileList.ad8, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
+        i = Hydrology.AreaD8(tdbFileList.p, tdbFileList.outletshpfile, tdbFileList.ad8, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
         If i <> 0 Then Return False
 
         If doTicks Then
@@ -3859,7 +3857,7 @@ Public Class frmAutomatic_v3
             tickb = Now().Ticks
         End If
 
-        i = MapWinGeoProc.Hydrology.DInf(tdbFileList.fel, tdbFileList.ang, tdbFileList.slp, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
+        i = Hydrology.DInf(tdbFileList.fel, tdbFileList.ang, tdbFileList.slp, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
         If i <> 0 Then Return False
 
         If doTicks Then
@@ -3898,7 +3896,7 @@ Public Class frmAutomatic_v3
         End If
 
         Dim i As Integer
-        ' i = MapWinGeoProc.Hydrology.AreaDInf(tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.sca, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, myWrapper)
+        ' i = Hydrology.AreaDInf(tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.sca, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, myWrapper)
         If i <> 0 Then Return False
 
         If doTicks Then
@@ -3941,7 +3939,7 @@ Public Class frmAutomatic_v3
 
         RemoveLayer(strClipShapePath)
 
-        'If MapWinGeoProc.Utils.ExtractSelectedPoints(tdbFileList.outletshpfile, strClipShapePath, myWrapper.outletShapesIdx, App.ProgressHandler) Then
+        'If Utils.ExtractSelectedPoints(tdbFileList.outletshpfile, strClipShapePath, myWrapper.outletShapesIdx, App.ProgressHandler) Then
         '    tdbFileList.outletshpfile = strClipShapePath
         'End If
 
@@ -3983,7 +3981,7 @@ Public Class frmAutomatic_v3
         Dim dx As Double = g.CellWidth
         g.Close()
         runAutoSnap = False
-        'runAutoSnap = MapWinGeoProc.Utils.SnapPointsToLines(tdbFileList.outletshpfile, tdbFileList.net, tdbChoiceList.snapThresh, dx / 2, newPointPath, True, App.ProgressHandler)
+        'runAutoSnap = Utils.SnapPointsToLines(tdbFileList.outletshpfile, tdbFileList.net, tdbChoiceList.snapThresh, dx / 2, newPointPath, True, App.ProgressHandler)
         If runAutoSnap Then tdbFileList.outletshpfile = newPointPath
     End Function
 
@@ -4020,7 +4018,7 @@ Public Class frmAutomatic_v3
             tickb = Now().Ticks
         End If
 
-        i = MapWinGeoProc.Hydrology.DelinStreamGrids(tdbFileList.dem, tdbFileList.fel, tdbFileList.p, tdbFileList.sd8, tdbFileList.ad8, tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.gord, tdbFileList.plen, tdbFileList.tlen, tdbFileList.src, tdbFileList.ord, tdbFileList.tree, tdbFileList.coord, tdbFileList.net, tdbFileList.w, tdbChoiceList.Threshold, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.useDinf, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
+        i = Hydrology.DelinStreamGrids(tdbFileList.dem, tdbFileList.fel, tdbFileList.p, tdbFileList.sd8, tdbFileList.ad8, tdbFileList.ang, tdbFileList.outletshpfile, tdbFileList.gord, tdbFileList.plen, tdbFileList.tlen, tdbFileList.src, tdbFileList.ord, tdbFileList.tree, tdbFileList.coord, tdbFileList.net, tdbFileList.w, tdbChoiceList.Threshold, tdbChoiceList.useOutlets, tdbChoiceList.EdgeContCheck, tdbChoiceList.useDinf, tdbChoiceList.numProcesses, tdbChoiceList.ShowTaudemOutput, App.ProgressHandler)
         If i <> 0 Then Return False
 
         If doTicks Then
@@ -4114,7 +4112,7 @@ Public Class frmAutomatic_v3
         End If
         App.ProgressHandler.Progress("Status", 0, "Calculating Stream Parameters")
         If tdbChoiceList.CalcSpecialStreamFields Then
-            runApplyStreamAttributes = MapWinGeoProc.Hydrology.ApplyStreamAttributes(tdbFileList.net, tdbFileList.dem, tdbFileList.wshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            runApplyStreamAttributes = Hydrology.ApplyStreamAttributes(tdbFileList.net, tdbFileList.dem, tdbFileList.wshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
             runApplyStreamAttributes = True
         End If
@@ -4161,11 +4159,11 @@ Public Class frmAutomatic_v3
             tickb = Now().Ticks
         End If
 
-        runApplyWatershedAttributes = MapWinGeoProc.Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
+        runApplyWatershedAttributes = Hydrology.ApplyWatershedLinkAttributes(tdbFileList.wshed, tdbFileList.net, App.ProgressHandler)
 
         If tdbChoiceList.CalcSpecialWshedFields Then
-            runApplyWatershedAttributes = MapWinGeoProc.Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
-            runApplyWatershedAttributes = MapWinGeoProc.Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            runApplyWatershedAttributes = Hydrology.ApplyWatershedAreaAttributes(tdbFileList.wshed, App.ProgressHandler)
+            runApplyWatershedAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.wshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
         Else
             runApplyWatershedAttributes = True
         End If
@@ -4190,7 +4188,7 @@ Public Class frmAutomatic_v3
         End If
 
         RemoveLayer(tdbFileList.mergewshed)
-        runBuildJoinedBasins = MapWinGeoProc.Hydrology.BuildJoinedBasins(tdbFileList.wshed, tdbFileList.outletshpfile, tdbFileList.mergewshed, App.ProgressHandler)
+        runBuildJoinedBasins = Hydrology.BuildJoinedBasins(tdbFileList.wshed, tdbFileList.outletshpfile, tdbFileList.mergewshed, App.ProgressHandler)
 
         If doTicks Then
             ticka = Now().Ticks
@@ -4203,10 +4201,10 @@ Public Class frmAutomatic_v3
         runApplyJoinBasinAttributes = False
 
         If tdbChoiceList.calcSpecialMergeWshedFields Then
-            runApplyJoinBasinAttributes = MapWinGeoProc.Hydrology.ApplyJoinBasinAreaAttributes(tdbFileList.mergewshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
-            runApplyJoinBasinAttributes = MapWinGeoProc.Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.mergewshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
-            runApplyJoinBasinAttributes = MapWinGeoProc.Hydrology.ApplyWatershedElevationAttribute(tdbFileList.w, tdbFileList.mergewshed, tdbFileList.fel, App.ProgressHandler)
-            runApplyJoinBasinAttributes = MapWinGeoProc.Hydrology.ApplyJoinBasinStreamAttributes(tdbFileList.net, tdbFileList.w, tdbFileList.mergewshed, App.ProgressHandler)
+            runApplyJoinBasinAttributes = Hydrology.ApplyJoinBasinAreaAttributes(tdbFileList.mergewshed, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            runApplyJoinBasinAttributes = Hydrology.ApplyWatershedSlopeAttribute(tdbFileList.w, tdbFileList.mergewshed, tdbFileList.sd8, cmbxElevUnits.SelectedIndex, App.ProgressHandler)
+            runApplyJoinBasinAttributes = Hydrology.ApplyWatershedElevationAttribute(tdbFileList.w, tdbFileList.mergewshed, tdbFileList.fel, App.ProgressHandler)
+            runApplyJoinBasinAttributes = Hydrology.ApplyJoinBasinStreamAttributes(tdbFileList.net, tdbFileList.w, tdbFileList.mergewshed, App.ProgressHandler)
         Else
             runApplyJoinBasinAttributes = True
         End If

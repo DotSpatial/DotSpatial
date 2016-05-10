@@ -1,22 +1,23 @@
-﻿namespace WFSPlugin
-{ 
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Data;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Serialization;
-    using System.Xml.XPath;
-    using DotSpatial.Data;
-    using DotSpatial.Projections;
-    using Renci.Data.Interop.OpenGIS.Wfs;
-    using Renci.Data.Interop.OpenGIS.Gml;
-    using DotSpatial.Topology;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.XPath;
+using DotSpatial.Data;
+using DotSpatial.Projections;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using Renci.Data.Interop.OpenGIS.Gml;
+using Renci.Data.Interop.OpenGIS.Wfs;
+
+namespace DotSpatial.Plugins.WFSClient.Classes
+{
     class WFSClient
     {
         #region Fields
@@ -36,7 +37,7 @@
         #region Global Variables
 
         public WfsCapabilitiesType wfs;
-        private DotSpatial.Topology.FeatureType typeGeometry;
+        private FeatureType typeGeometry;
         private XmlNamespaceManager _nsmgr;
         public Dictionary<string, string> fields;
 
@@ -327,7 +328,7 @@
         private bool ExtractReference(XmlNode c)
         {
            // ProjectionInfo pro=null;
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Point)
+            if (typeGeometry == FeatureType.Point)
             {
                 foreach (XmlNode e in c)
                 {
@@ -339,7 +340,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Line)
+            if (typeGeometry == FeatureType.Line)
             {
                 foreach (XmlNode e in c)
                 {
@@ -351,7 +352,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Polygon)
+            if (typeGeometry == FeatureType.Polygon)
             {
                 foreach (XmlNode e in c)
                 {
@@ -371,9 +372,9 @@
         private IFeature ExtractGeographicData(XmlNode c)
         {
             string geoData = "";
-            IBasicGeometry geo=null;
+            IGeometry geo=null;
             string[] pointValue=null;
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Point)
+            if (typeGeometry == FeatureType.Point)
             {
             foreach (XmlNode e in c)
             {
@@ -387,7 +388,7 @@
              geo = new Point(Convert.ToDouble(pointValue[0]), Convert.ToDouble(pointValue[1]));
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Polygon)
+            if (typeGeometry == FeatureType.Polygon)
             {
                 foreach (XmlNode e in c)
                 {
@@ -402,7 +403,7 @@
                 }
             }
 
-            if (typeGeometry == DotSpatial.Topology.FeatureType.Line)
+            if (typeGeometry == FeatureType.Line)
             {
                 foreach (XmlNode e in c)
                 {
@@ -424,7 +425,7 @@
             return feat;
         }
 
-        private IBasicGeometry GetPolyline(MultiLineStringType multi)
+        private IGeometry GetPolyline(MultiLineStringType multi)
         {
 
              ILinearRing[] lines = new LinearRing[multi.LineStringMembers.Count];
@@ -443,7 +444,7 @@
             var membe1 = member.LineString;
             foreach (DirectPositionListType rings in membe1.Items)
             {
-                List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                var lstCoor = ExtractCoordinates(rings);
                   return  new LinearRing(lstCoor);
                
             }
@@ -451,7 +452,7 @@
 
         }
 
-        private IBasicGeometry GetPolygon(MultiSurfaceType multi)
+        private IGeometry GetPolygon(MultiSurfaceType multi)
         {
             Polygon[] p = new Polygon[multi.SurfaceMemberItems.Count];
                 ;
@@ -487,7 +488,7 @@
 
                 foreach (DirectPositionListType rings in lii.Items)
                 {
-                    List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                    var lstCoor = ExtractCoordinates(rings);
 
                     holes[i]=new LinearRing(lstCoor);
                     i++;
@@ -502,7 +503,7 @@
             LinearRingType li = sur.Exterior.Ring as LinearRingType;
             foreach (DirectPositionListType rings in li.Items)
             {
-                List<Coordinate> lstCoor = ExtractCoordinates(rings);
+                var lstCoor = ExtractCoordinates(rings);
 
                 shell = new LinearRing(lstCoor);
 
@@ -510,7 +511,7 @@
             return sur;
         }
 
-        private static List<Coordinate> ExtractCoordinates(DirectPositionListType rings)
+        private static Coordinate[] ExtractCoordinates(DirectPositionListType rings)
         {
             string[] listpoints = rings.Text.Split(' ');
             int num = listpoints.Count() / 2;
@@ -519,7 +520,7 @@
             for (int i = 0; i < listpoints.Count(); i = i + 2)
                 lstCoor.Add(new Coordinate(Convert.ToDouble(listpoints[i]), Convert.ToDouble(listpoints[i + 1])));
 
-            return lstCoor;
+            return lstCoor.ToArray();
         }
 
         private XPathNodeIterator SelectTypeGeometry(XPathNavigator nav, XPathNodeIterator iterator)
@@ -542,14 +543,14 @@
         private void GetGeometry()
         {
             if (fields[Geometry] == "gml:PointPropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Point;
+                typeGeometry = FeatureType.Point;
             if (fields[Geometry] == "gml:MultiSurfacePropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Polygon;
+                typeGeometry = FeatureType.Polygon;
             if (fields[Geometry] == "gml:MultiLineStringPropertyType")
-                typeGeometry = DotSpatial.Topology.FeatureType.Line;
+                typeGeometry = FeatureType.Line;
         }
 
-        private XPathNodeIterator CreateFields(XPathNavigator nav, DotSpatial.Topology.FeatureType type)
+        private XPathNodeIterator CreateFields(XPathNavigator nav, FeatureType type)
         {
 
             string exp = @"/wfs:FeatureCollection/child::*[name() = 'gml:featureMember' or name() = 'gml:featureMembers']/child::*";

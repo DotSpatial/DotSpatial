@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.IO;
+﻿using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Data.Rasters.GdalExtension;
 using DotSpatial.Tests.Common;
-using DotSpatial.Topology;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Tools.Tests
@@ -26,7 +24,7 @@ namespace DotSpatial.Tools.Tests
             target.Execute(raster, outShape, new MockProgressHandler());
             FileTools.DeleteShapeFile(outShape.Filename);
 
-            var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
+            var mpCount = outShape.Features.Count(t => t.Geometry is MultiPolygon);
             Assert.That(mpCount > 0);
         }
 
@@ -44,7 +42,7 @@ namespace DotSpatial.Tools.Tests
             target.Execute(raster, flowDirectionGrid, outShape, new MockProgressHandler());
             FileTools.DeleteShapeFile(outShape.Filename);
 
-            var mpCount = outShape.Features.Count(t => t.BasicGeometry is MultiPolygon);
+            var mpCount = outShape.Features.Count(t => t.Geometry is MultiPolygon);
             Assert.That(mpCount == 0);
         }
     }

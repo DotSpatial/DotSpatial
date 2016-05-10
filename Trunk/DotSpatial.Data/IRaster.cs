@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace DotSpatial.Data
 {
@@ -435,7 +436,7 @@ namespace DotSpatial.Data
         /// A raster can contain predefined colors for its categories, for example NLCD GeoTIFF has a palette
         /// </summary>
         /// <returns>null if raster has no category colors</returns>
-        System.Drawing.Color[] CategoryColors();
+        Color[] CategoryColors();
 
         #endregion
 

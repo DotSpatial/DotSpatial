@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
-using DotSpatial.Topology;
-using MWPoint = DotSpatial.Topology.Point;
+using GeoAPI.Geometries;
+using MWPoint = NetTopologySuite.Geometries.Point;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Plugins.WebMap.Tiling
 {
@@ -125,13 +126,7 @@ namespace DotSpatial.Plugins.WebMap.Tiling
 
             var mapSize = MapSize(levelOfDetail);
 
-            var pixelXY = new MWPoint
-            {
-                X = (int)Clip(x * mapSize + 0.5, 0, mapSize - 1),
-                Y = (int)Clip(y * mapSize + 0.5, 0, mapSize - 1)
-            };
-
-            return pixelXY;
+            return new MWPoint((int)Clip(x * mapSize + 0.5, 0, mapSize - 1),(int)Clip(y * mapSize + 0.5, 0, mapSize - 1));
         }
 
         /// <summary>

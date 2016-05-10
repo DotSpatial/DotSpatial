@@ -19,7 +19,7 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Plugins.ScaleBar.Properties;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Plugins.ScaleBar
 {
@@ -201,11 +201,7 @@ namespace DotSpatial.Plugins.ScaleBar
             if ((scale == 0 || App.Map.Projection == null)) return;
 
             var ext = App.Map.ViewExtents;
-            Point centerpoint = new Point
-            {
-                X = (ext.MinX + ext.MaxX) / 2,
-                Y = (ext.MinY + ext.MaxY) / 2
-            };
+            Point centerpoint = new Point((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
 
             //TODO this works for Meter-based coordinate-systems. How must this be done for lat/long?
             const double dInchesPerMeter = 39.3700787401575;

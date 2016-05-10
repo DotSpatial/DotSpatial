@@ -25,8 +25,9 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using DotSpatial.Data;
+using DotSpatial.Modeling.Forms.Parameters;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     internal class PointElementOut : DialogElement
     {

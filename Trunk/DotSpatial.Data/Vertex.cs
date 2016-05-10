@@ -20,7 +20,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {

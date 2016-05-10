@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System.Drawing;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Compatibility
 {
@@ -69,7 +69,7 @@ namespace DotSpatial.Compatibility
         /// <summary>
         /// Gets or sets the map's current extents.
         /// </summary>
-        IEnvelope Extents { get; set; }
+        Envelope Extents { get; set; }
 
         /// <summary>
         /// Gets or sets the cursor to use on the map.  The enumeration can be any of the following:
@@ -257,7 +257,7 @@ namespace DotSpatial.Compatibility
         /// Takes a snapshot of the currently visible layers at the extents specified.
         /// </summary>
         /// <param name="bounds">The area to take the snapshot of.</param>
-        Image Snapshot(IEnvelope bounds);
+        Image Snapshot(Envelope bounds);
 
         /// <summary>
         /// Triggers reloading of field values for the given layer. No action will occur if the layer handle is invalid, not a shapefile, or has no labels.

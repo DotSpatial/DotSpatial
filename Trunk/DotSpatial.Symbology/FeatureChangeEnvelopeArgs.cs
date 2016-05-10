@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -33,7 +33,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new instance of FeatureChangeEnvelopeArgs
         /// </summary>
-        public FeatureChangeEnvelopeArgs(List<int> inChangedFeatures, IEnvelope inEnvelope)
+        public FeatureChangeEnvelopeArgs(List<int> inChangedFeatures, Envelope inEnvelope)
             : base(inChangedFeatures)
         {
             Envelope = inEnvelope;
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the geographic envelope for the most recent selection event.
         /// </summary>
-        public IEnvelope Envelope { get; protected set; }
+        public Envelope Envelope { get; protected set; }
 
         #endregion
     }

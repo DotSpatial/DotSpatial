@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -40,7 +40,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Calculates the envelope of this collection
         /// </summary>
-        IEnvelope Envelope
+        Envelope Envelope
         {
             get;
         }
@@ -90,7 +90,7 @@ namespace DotSpatial.Symbology
         /// <param name="region"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        bool AddRegion(IEnvelope region, out IEnvelope affectedArea);
+        bool AddRegion(Envelope region, out Envelope affectedArea);
 
         /// <summary>
         ///
@@ -98,7 +98,7 @@ namespace DotSpatial.Symbology
         /// <param name="region"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        bool InvertSelection(IEnvelope region, out IEnvelope affectedArea);
+        bool InvertSelection(Envelope region, out Envelope affectedArea);
 
         /// <summary>
         ///
@@ -106,7 +106,7 @@ namespace DotSpatial.Symbology
         /// <param name="region"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        bool RemoveRegion(IEnvelope region, out IEnvelope affectedArea);
+        bool RemoveRegion(Envelope region, out Envelope affectedArea);
 
         /// <summary>
         /// Returns a new featureset based on the features in this collection

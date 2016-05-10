@@ -5,10 +5,10 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DotSpatial.Extensions.SplashScreens

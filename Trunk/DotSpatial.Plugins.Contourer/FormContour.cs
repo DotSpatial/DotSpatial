@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DotSpatial.Controls;
+using DotSpatial.Data;
 
-namespace Contourer
+namespace DotSpatial.Plugins.Contourer
 {
     public partial class FormContour : Form
     {
-        public IMapRasterLayer[] layers;
+        public IMapRasterLayer[] Layers;
 
         public string LayerName = "";
-        public double min;
-        public double max;
-        public double eve;
-        public double[] lev;
-        public Color[] color;
-        public Contour.ContourType contourtype;
+        public double Min;
+        public double Max;
+        public double Eve;
+        public double[] Lev;
+        public Color[] Color;
+        public Contour.ContourType Contourtype;
 
-        public DotSpatial.Data.FeatureSet Contours;
+        public FeatureSet Contours;
 
         public FormContour()
         {
@@ -31,69 +27,61 @@ namespace Contourer
 
         private Contour.ContourType GetSelectedType()
         {
-            Contour.ContourType ContType = new Contour.ContourType();
-
-            if (comboBoxType.SelectedIndex == 0)
-                ContType = Contour.ContourType.Line;
-            else
-                ContType = Contour.ContourType.Polygon;
-
-            return ContType;
+            return comboBoxType.SelectedIndex == 0 ? Contour.ContourType.Line : Contour.ContourType.Polygon;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             LayerName = comboBoxLayerList.Text;
 
-            max = (double)numericUpDownMax.Value;
-            min = (double)numericUpDownMin.Value;
-            eve = (double)numericUpDownEvery.Value;
+            Max = (double)numericUpDownMax.Value;
+            Min = (double)numericUpDownMin.Value;
+            Eve = (double)numericUpDownEvery.Value;
 
-            contourtype = GetSelectedType();
+            Contourtype = GetSelectedType();
 
-            lev = Contour.CreateLevels(min, max, eve);
+            Lev = Contour.CreateLevels(Min, Max, Eve);
 
-            Contours = Contour.Execute(layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster, contourtype, "Value", lev);
-            Contours.Projection = layers[comboBoxLayerList.SelectedIndex].Projection;
+            Contours = Contour.Execute(Layers[comboBoxLayerList.SelectedIndex].DataSet as Raster, Contourtype, "Value", Lev);
+            Contours.Projection = Layers[comboBoxLayerList.SelectedIndex].Projection;
 
-            int NumLev = lev.GetLength(0);
+            int numLev = Lev.GetLength(0);
 
-            switch (contourtype)
+            switch (Contourtype)
             {
                 case (Contour.ContourType.Line):
                     {
-                        color = new Color[NumLev];
-                        for (int i = 0; i < NumLev; i++)
+                        Color = new Color[numLev];
+                        for (int i = 0; i < numLev; i++)
                         {
-                            color[i] = tomPaletteEditor1.GetColor(lev[i]);
+                            Color[i] = tomPaletteEditor1.GetColor(Lev[i]);
                         }
                     }
                     break;
                 case (Contour.ContourType.Polygon):
                     {
-                        color = new Color[NumLev - 1];
-                        for (int i = 0; i < NumLev - 1; i++)
+                        Color = new Color[numLev - 1];
+                        for (int i = 0; i < numLev - 1; i++)
                         {
-                            color[i] = tomPaletteEditor1.GetColor(lev[i] + (eve / 2));
+                            Color[i] = tomPaletteEditor1.GetColor(Lev[i] + (Eve / 2));
                         }
                     }
                     break;
             }
-            this.DialogResult = DialogResult.OK;
-
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void FormContour_Load(object sender, EventArgs e)
         {
-            if (layers.Length == 0)
+            if (Layers.Length == 0)
             {
                 MessageBox.Show("Please add a raster layer.");
-                this.Close();
+                Close();
                 return;
             }
 
-            foreach (IMapRasterLayer l in layers)
+            foreach (IMapRasterLayer l in Layers)
             {
                 comboBoxLayerList.Items.Add(l.LegendText);
             }
@@ -110,16 +98,11 @@ namespace Contourer
         {
             double min, max, every;
 
-            DotSpatial.Data.Raster rst = layers[comboBoxLayerList.SelectedIndex].DataSet as DotSpatial.Data.Raster;
+            Raster rst = Layers[comboBoxLayerList.SelectedIndex].DataSet as Raster;
 
-            Contour.ContourType ContType = new Contour.ContourType();
+            Contour.ContourType contType = GetSelectedType();
 
-            if (comboBoxType.SelectedIndex == 0)
-                ContType = Contour.ContourType.Line;
-            else
-                ContType = Contour.ContourType.Polygon;
-
-            Contour.CreateMinMaxEvery(rst, ContType, out min, out  max, out every); ;
+            Contour.CreateMinMaxEvery(rst, contType, out min, out  max, out every); 
 
             numericUpDownMin.Value = (decimal)min;
             numericUpDownMax.Value = (decimal)max;
@@ -128,18 +111,16 @@ namespace Contourer
 
             tomPaletteEditor1.ClearItems();
 
-            if (ContType == Contour.ContourType.Line)
+            if (contType == Contour.ContourType.Line)
             {
-                tomPaletteEditor1.AddItem(min, Color.Chartreuse);
-                tomPaletteEditor1.AddItem(max, Color.Magenta);
-                //tomPaletteEditor1.AddItem((max + min) / 2, Color.Yellow);
+                tomPaletteEditor1.AddItem(min, System.Drawing.Color.Chartreuse);
+                tomPaletteEditor1.AddItem(max, System.Drawing.Color.Magenta);
             }
 
-            if (ContType == Contour.ContourType.Polygon)
+            if (contType == Contour.ContourType.Polygon)
             {
-                tomPaletteEditor1.AddItem(min + every / 2, Color.Chartreuse);
-                tomPaletteEditor1.AddItem(max - every / 2, Color.Magenta);
-                //tomPaletteEditor1.AddItem((max + min) / 2, Color.Yellow);
+                tomPaletteEditor1.AddItem(min + every / 2, System.Drawing.Color.Chartreuse);
+                tomPaletteEditor1.AddItem(max - every / 2, System.Drawing.Color.Magenta);
             }
 
             tomPaletteEditor1.Invalidate();

@@ -66,6 +66,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DotSpatial.Plugins.ToolManager.nuspec">
       <SubType>Designer</SubType>
     </None>

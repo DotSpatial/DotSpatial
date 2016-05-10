@@ -47,6 +47,14 @@
     <AssemblyOriginatorKeyFile>DotSpatial.Controls.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.1\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -444,6 +452,7 @@
     <None Include="app.config" />
     <None Include="DotSpatial.Controls.snk" />
     <None Include="package.nuspec" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -553,10 +562,6 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21c1d7a7-e8e5-4590-a921-2287ad43cb98}</Project>
       <Name>DotSpatial.Symbology</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
-      <Name>DotSpatial.Topology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

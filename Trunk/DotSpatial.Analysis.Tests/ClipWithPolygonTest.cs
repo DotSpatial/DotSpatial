@@ -1,7 +1,6 @@
-﻿using DotSpatial.Data;
-using System.IO;
+﻿using System.IO;
+using DotSpatial.Data;
 using NUnit.Framework;
-
 
 namespace DotSpatial.Analysis.Tests
 {

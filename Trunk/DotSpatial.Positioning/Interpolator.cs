@@ -21,8 +21,8 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
-using System;
 
+using System;
 #if !PocketPC || DesignTime
 
 using System.ComponentModel;

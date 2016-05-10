@@ -37,7 +37,7 @@ namespace DotSpatial.Symbology
         /// Creates a new instance of the DrawCompleted Event Arguments
         /// </summary>
         /// <param name="inGraphics">A Graphics surface</param>
-        /// <param name="inDrawWindow">An implementation of DotSpatial.Geometries.IEnvelope defining the geographic drawing region</param>
+        /// <param name="inDrawWindow">An implementation of DotSpatial.Geometries.Envelope defining the geographic drawing region</param>
         /// <param name="inCancelled">True if the draw method was cancelled before any rendering took place.  A Cancel is different from when an acception is thrown.</param>
         /// <param name="inException">If an exception occured during rendering, this will not be null.</param>
         public DrawCompletedArgs(Graphics inGraphics, DrawWindow inDrawWindow, bool inCancelled, Exception inException)

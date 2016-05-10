@@ -25,8 +25,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using DotSpatial.Data;
+using DotSpatial.NTSExtension;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Symbology
 {

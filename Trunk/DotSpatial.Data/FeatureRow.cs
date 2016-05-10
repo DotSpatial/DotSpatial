@@ -19,8 +19,8 @@
 
 using System;
 using System.Data;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
+using GeoAPI.Geometries;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
 {
@@ -59,7 +59,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void StoreShape()
         {
-            this[_featureTable.GeometryColumn] = _shape.ToGeometry(_featureTable.GeometryFactory).ToBinary();
+            this[_featureTable.GeometryColumn] = _shape.ToGeometry(_featureTable.GeometryFactory).AsBinary();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace DotSpatial.Data
         /// </summary>
         public void StoreGeometry()
         {
-            this[_featureTable.GeometryColumn] = _geometry.ToBinary();
+            this[_featureTable.GeometryColumn] = _geometry.AsBinary();
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace DotSpatial.Data
                     // Accessing property here to try to create geometry.
                     IGeometry lazyGeom = Geometry;
                     if (lazyGeom == null) return null;
-                    _extent = new Extent(lazyGeom.Envelope);
+                    _extent = lazyGeom.EnvelopeInternal.ToExtent();
                 }
                 return _extent;
             }
@@ -163,13 +163,9 @@ namespace DotSpatial.Data
                 {
                     if (IsWellKnownBinaryNull())
                     {
-                        if (_shape != null)
-                        {
-                            return _shape.ToGeometry(_featureTable.GeometryFactory);
-                        }
-                        return null;
+                        return _shape == null ? null : _shape.ToGeometry(_featureTable.GeometryFactory);
                     }
-                    WkbReader reader = new WkbReader(_featureTable.GeometryFactory);
+                    WKBReader reader = new WKBReader(_featureTable.GeometryFactory);
                     byte[] geometryBytes = (byte[])this[_featureTable.GeometryColumn];
 
                     _geometry = reader.Read(geometryBytes);
@@ -211,7 +207,7 @@ namespace DotSpatial.Data
         /// </summary>
         public Shape Shape
         {
-            get { return _shape ?? (_shape = new Shape(Geometry)); }
+            get { return _shape ?? (_shape = new Shape(Geometry, FeatureType.Unspecified)); }
             set { _shape = value; }
         }
 

@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Controls.DefaultRequiredImports;
 using DotSpatial.Controls.Docking;
@@ -41,8 +42,6 @@ using DotSpatial.Controls.Header;
 using DotSpatial.Data;
 using DotSpatial.Extensions;
 using DotSpatial.Extensions.SplashScreens;
-using DotSpatial.Controls.Extensions;
-using System.Threading;
 
 namespace DotSpatial.Controls
 {

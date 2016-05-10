@@ -17,7 +17,7 @@
 
 using DotSpatial.Data;
 
-namespace MapWinGeoProc
+namespace DotSpatial.Plugins.Taudem
 {
     /// <summary>
     /// Utils provides a collection of methods ranging from file conversion to finding a point on a shape.
@@ -42,8 +42,8 @@ namespace MapWinGeoProc
         /// ascribing a sign value to the individual part areas.
         ///</remarks>
         public static double AreaOfPart(IFeature polygon, int PartIndex)
-        {
-            return polygon.Area();
+        { //TODO why is partindex ignored?
+            return polygon.Geometry.Area;
         }
     }
 }

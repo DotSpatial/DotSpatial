@@ -21,7 +21,7 @@
 
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -61,9 +61,9 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new polygon symbolizer based on the specified parameters.
         /// </summary>
-        /// <param name="env">The IEnvelope representing the base geometric size of the layer.  This helps to estimate a useful geographic line width</param>
+        /// <param name="env">The Envelope representing the base geometric size of the layer.  This helps to estimate a useful geographic line width</param>
         /// <param name="selected">Boolean, true if this should use a standard selection symbology of light cyan coloring</param>
-        public PolygonSymbolizerOld(IEnvelope env, bool selected)
+        public PolygonSymbolizerOld(Envelope env, bool selected)
         {
             _borderSymbolizer = new LineSymbolizer(env, selected);
             Configure();

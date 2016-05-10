@@ -1,11 +1,15 @@
-﻿namespace DotSpatial.Modeling.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using DotSpatial.Projections.Forms;
+
+namespace DotSpatial.Data.Forms
 {
     partial class ExtentDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -328,24 +332,24 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox grpXY;
-        private Projections.Forms.DoubleBox dbxMaximumX;
-        private Projections.Forms.DoubleBox dbxMinimumY;
-        private Projections.Forms.DoubleBox dbxMaximumY;
-        private Projections.Forms.DoubleBox dbxMinimumX;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox chkM;
-        private Projections.Forms.DoubleBox dbxMaximumM;
-        private Projections.Forms.DoubleBox dbxMinimumM;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox chkZ;
-        private Projections.Forms.DoubleBox dbxMaximumZ;
-        private Projections.Forms.DoubleBox dbxMinimumZ;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnCancel;
+        private GroupBox grpXY;
+        private DoubleBox dbxMaximumX;
+        private DoubleBox dbxMinimumY;
+        private DoubleBox dbxMaximumY;
+        private DoubleBox dbxMinimumX;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private GroupBox groupBox2;
+        private CheckBox chkM;
+        private DoubleBox dbxMaximumM;
+        private DoubleBox dbxMinimumM;
+        private GroupBox groupBox3;
+        private CheckBox chkZ;
+        private DoubleBox dbxMaximumZ;
+        private DoubleBox dbxMinimumZ;
+        private Button btnOK;
+        private Button btnCancel;
     }
 }

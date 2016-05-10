@@ -1,11 +1,15 @@
-﻿namespace Contourer
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using TomControls;
+
+namespace DotSpatial.Plugins.Contourer
 {
     partial class FormContour
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -227,18 +231,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.ComboBox comboBoxLayerList;
-        private System.Windows.Forms.ComboBox comboBoxType;
-        private System.Windows.Forms.NumericUpDown numericUpDownMin;
-        private System.Windows.Forms.NumericUpDown numericUpDownMax;
-        private System.Windows.Forms.NumericUpDown numericUpDownEvery;
-        private TomControls.TomPaletteEditor tomPaletteEditor1;
+        private Button buttonOK;
+        private Label label1;
+        private Label label2;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private Button buttonCancel;
+        private ComboBox comboBoxLayerList;
+        private ComboBox comboBoxType;
+        private NumericUpDown numericUpDownMin;
+        private NumericUpDown numericUpDownMax;
+        private NumericUpDown numericUpDownEvery;
+        private TomPaletteEditor tomPaletteEditor1;
     }
 }

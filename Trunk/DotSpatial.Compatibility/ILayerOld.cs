@@ -21,7 +21,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Compatibility
 {

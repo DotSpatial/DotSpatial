@@ -13,7 +13,6 @@
 
 using System;
 using DotSpatial.Data;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Analysis
 {
@@ -49,9 +48,9 @@ namespace DotSpatial.Analysis
                 for (Int16 j = 0; j <= SourceFeatures.ShapeIndices.Count - 1; j++)
                 {
                     SF = SourceFeatures.GetFeature(j);
-                    if (SF.Envelope.Intersects(TF.Envelope))
+                    if (SF.Geometry.Envelope.Intersects(TF.Geometry.Envelope))
                     {
-                        TF = TF.Difference(SF);                             //clip off any pieces of SF that overlap FR
+                        TF = TF.Difference(SF.Geometry);                             //clip off any pieces of SF that overlap FR
                     }
                     if (TF == null)
                     {                                                       //sometimes difference leaves nothing left of a feature
@@ -60,7 +59,7 @@ namespace DotSpatial.Analysis
                 }
                 if (TF != null)
                 {
-                    ResultFeatures.AddFeature(TF).CopyAttributes(TargetFeatures.GetFeature(i));  //add the fully clipped feature to the results
+                    ResultFeatures.AddFeature(TF.Geometry).CopyAttributes(TargetFeatures.GetFeature(i));  //add the fully clipped feature to the results
                 }
                 if (cancelProgressHandler != null)
                 {
@@ -86,8 +85,8 @@ namespace DotSpatial.Analysis
             IFeature SF;
             for (Int16 j = 0; j <= SourceFeatures.ShapeIndices.Count - 1; j++)
             {
-                SF = SourceFeatures.GetFeature(j);
-                TargetFeatures.AddFeature(SF).CopyAttributes(SourceFeatures.GetFeature(j));   //by default this will try to copy attributes over that have the same name.
+                SF = SourceFeatures.GetFeature(j); //TODO jany_ why call get feature twice instead of using sf to copy attributes?
+                TargetFeatures.AddFeature(SF.Geometry).CopyAttributes(SourceFeatures.GetFeature(j));   //by default this will try to copy attributes over that have the same name.
             }
             return TargetFeatures;
         }

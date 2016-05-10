@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace DotSpatial.Projections
+namespace DotSpatial.Projections.Nad
 {
     /// <summary>
     /// NadRecord is a single entry from an lla file

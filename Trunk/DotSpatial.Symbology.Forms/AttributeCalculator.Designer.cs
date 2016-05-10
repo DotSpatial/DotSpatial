@@ -20,9 +20,9 @@
 // --------------------------------------------------------------------------------------------------------
 // Ted Dunsford | 9/11/2009  |  Cleaned up the code conventions using re-sharper
 // ********************************************************************************************************
+
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms

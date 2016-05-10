@@ -81,6 +81,14 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.1\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -160,7 +168,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DotSpatial.Plugins.ShapeEditor.nuspec" />
+    <None Include="packages.config" />
     <None Include="Resources\NewShape.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +195,10 @@
       <Name>DotSpatial.Extensions</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
+      <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
+      <Name>DotSpatial.NTSExtension</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
       <Name>DotSpatial.Projections</Name>
@@ -203,11 +217,6 @@
     <ProjectReference Include="..\DotSpatial.Symbology\DotSpatial.Symbology.csproj">
       <Project>{21C1D7A7-E8E5-4590-A921-2287AD43CB98}</Project>
       <Name>DotSpatial.Symbology</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
-      <Name>DotSpatial.Topology</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

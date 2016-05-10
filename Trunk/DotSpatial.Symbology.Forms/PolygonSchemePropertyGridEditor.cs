@@ -23,6 +23,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using DotSpatial.Data;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology.Forms
 {

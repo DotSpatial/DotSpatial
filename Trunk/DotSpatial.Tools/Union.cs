@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Tools
 {
@@ -139,7 +140,7 @@ namespace DotSpatial.Tools
             List<IFeature> intersectList;
             for (int i = 0; i < self.Features.Count; i++)
             {
-                intersectList = other.Select(self.Features[i].Envelope.ToExtent());
+                intersectList = other.Select(self.Features[i].Geometry.EnvelopeInternal.ToExtent());
                 foreach (IFeature feat in intersectList)
                 {
                     if (cancelProgressHandler.Cancel)
@@ -164,7 +165,7 @@ namespace DotSpatial.Tools
             // Take (Other-Intersect Featureset)
             for (int i = 0; i < other.Features.Count; i++)
             {
-                intersectList = self.Select(other.Features[i].Envelope.ToExtent());
+                intersectList = self.Select(other.Features[i].Geometry.EnvelopeInternal.ToExtent());
                 foreach (IFeature feat in intersectList)
                 {
                     if (cancelProgressHandler.Cancel)

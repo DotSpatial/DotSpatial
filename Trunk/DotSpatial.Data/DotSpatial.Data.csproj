@@ -85,6 +85,14 @@
     <DocumentationFile>..\bin\Release\DotSpatial.Data.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.1\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
@@ -95,6 +103,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +122,7 @@
     <Compile Include="FeatureTable.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FeatureType.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="IContainRasterBounds.cs" />
     <Compile Include="IDisposeLock.cs" />
@@ -367,6 +377,7 @@
     <None Include="app.config" />
     <None Include="DotSpatial.Data.4.0.snk" />
     <None Include="package.nuspec" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -399,6 +410,10 @@
       <Project>{bdc11a53-b435-4b9f-b8fa-06be940acda8}</Project>
       <Name>DotSpatial.Mono</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
+      <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
+      <Name>DotSpatial.NTSExtension</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{d286df06-21fa-40be-b384-6aca509ac98c}</Project>
       <Name>DotSpatial.Projections</Name>
@@ -406,10 +421,6 @@
     <ProjectReference Include="..\DotSpatial.Serialization\DotSpatial.Serialization.csproj">
       <Project>{9b692e11-0273-4331-9b15-1670093eddbf}</Project>
       <Name>DotSpatial.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
-      <Name>DotSpatial.Topology</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

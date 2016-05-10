@@ -23,10 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using DotSpatial.Data;
-using DotSpatial.Data.Forms;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Data.Forms
 {
     /// <summary>
     /// A Dialog that allows users to enter an X, Y, Z or M extent.

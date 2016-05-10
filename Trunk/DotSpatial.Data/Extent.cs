@@ -20,11 +20,9 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-
+using GeoAPI.Geometries;
 namespace DotSpatial.Data
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace DotSpatial.Data
     /// only works in 2D and has no events.
     /// </summary>
     [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Extent : ICloneable, IExtent, IRectangle
+    public class Extent : ICloneable, IExtent//, IRectangle
     {
         /// <summary>
         /// Creates a new instance of Extent. This introduces no error checking and assumes
@@ -98,15 +96,15 @@ namespace DotSpatial.Data
         /// Creates a new extent from the specified envelope
         /// </summary>
         /// <param name="env"></param>
-        public Extent(IEnvelope env)
+        public Extent(Envelope env)
         {
             if (Equals(env, null))
                 throw new ArgumentNullException("env");
 
-            MinX = env.Minimum.X;
-            MinY = env.Minimum.Y;
-            MaxX = env.Maximum.X;
-            MaxY = env.Maximum.Y;
+            MinX = env.MinX;
+            MinY = env.MinY;
+            MaxX = env.MaxX;
+            MaxY = env.MaxY;
         }
 
         /// <summary>
@@ -312,24 +310,24 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public virtual bool Contains(IEnvelope env)
+        public virtual bool Contains(Envelope env)
         {
             if (Equals(env, null))
                 throw new ArgumentNullException("env");
 
-            if (MinX > env.Minimum.X)
+            if (MinX > env.MinX)
             {
                 return false;
             }
-            if (MaxX < env.Maximum.X)
+            if (MaxX < env.MaxX)
             {
                 return false;
             }
-            if (MinY > env.Minimum.Y)
+            if (MinY > env.MinY)
             {
                 return false;
             }
-            return !(MaxY < env.Maximum.Y);
+            return !(MaxY < env.MaxY);
         }
 
         /// <summary>
@@ -452,7 +450,7 @@ namespace DotSpatial.Data
             {
                 MinY = y;
             }
-            if (double.IsNaN(MaxX) ||  x > MaxX)
+            if (double.IsNaN(MaxX) || x > MaxX)
             {
                 MaxX = x;
             }
@@ -583,24 +581,24 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public virtual bool Intersects(IEnvelope env)
+        public virtual bool Intersects(Envelope env)
         {
             if (Equals(env, null))
                 throw new ArgumentNullException("env");
 
-            if (env.Maximum.X < MinX)
+            if (env.MaxX < MinX)
             {
                 return false;
             }
-            if (env.Maximum.Y < MinY)
+            if (env.MaxY < MinY)
             {
                 return false;
             }
-            if (env.Minimum.X > MaxX)
+            if (env.MinX > MaxX)
             {
                 return false;
             }
-            return !(env.Minimum.Y > MaxY);
+            return !(env.MinY > MaxY);
         }
 
         /// <summary>
@@ -745,8 +743,9 @@ namespace DotSpatial.Data
         /// Creates a geometric envelope interface from this
         /// </summary>
         /// <returns></returns>
-        public IEnvelope ToEnvelope()
+        public Envelope ToEnvelope()
         {
+            if (double.IsNaN(MinX)) return new Envelope();
             return new Envelope(MinX, MaxX, MinY, MaxY);
         }
 
@@ -789,24 +788,24 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public virtual bool Within(IEnvelope env)
+        public virtual bool Within(Envelope env)
         {
             if (Equals(env, null))
                 throw new ArgumentNullException("env");
 
-            if (MinX < env.Minimum.X)
+            if (MinX < env.MinX)
             {
                 return false;
             }
-            if (MaxX > env.Maximum.X)
+            if (MaxX > env.MaxX)
             {
                 return false;
             }
-            if (MinY < env.Minimum.Y)
+            if (MinY < env.MinY)
             {
                 return false;
             }
-            return !(MaxY > env.Maximum.Y);
+            return !(MaxY > env.MaxY);
         }
 
         /// <summary>

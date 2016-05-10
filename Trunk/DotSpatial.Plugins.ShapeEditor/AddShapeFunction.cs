@@ -26,8 +26,10 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Controls;
 using DotSpatial.Data;
+using DotSpatial.NTSExtension;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Point = System.Drawing.Point;
 
 namespace DotSpatial.Plugins.ShapeEditor
@@ -124,7 +126,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (_coordinateDialog != null) { _coordinateDialog.Hide(); }
             if (_coordinates != null && _coordinates.Count > 1)
             {
-                LineString ls = new LineString(_coordinates);
+                LineString ls = new LineString(_coordinates.ToArray());
                 FeatureSet fs = new FeatureSet(FeatureType.Line);
                 fs.Features.Add(new Feature(ls));
                 MapLineLayer gll = new MapLineLayer(fs)
@@ -230,8 +232,8 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (_standBy) { return; }
             // Begin snapping changes
             Coordinate snappedCoord = e.GeographicLocation;
-            bool prevWasSnapped = this.isSnapped;
-            this.isSnapped = ComputeSnappedLocation(e, ref snappedCoord);
+            bool prevWasSnapped = IsSnapped;
+            IsSnapped = ComputeSnappedLocation(e, ref snappedCoord);
             _coordinateDialog.X = snappedCoord.X;
             _coordinateDialog.Y = snappedCoord.Y;
             // End snapping changes
@@ -247,7 +249,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             }
 
             // Begin snapping changes
-            _mousePosition = this.isSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
+            _mousePosition = IsSnapped ? Map.ProjToPixel(snappedCoord) : e.Location;
             DoMouseMoveForSnapDrawing(prevWasSnapped, _mousePosition);
             // End snapping changes
 
@@ -273,8 +275,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                     ComputeSnappedLocation(e, ref snappedCoord);
                     // End snapping changes
 
-                    Topology.Point pt = new Topology.Point(snappedCoord); // Snapping changes
-                    Feature f = new Feature(pt);
+                    Feature f = new Feature(snappedCoord);
                     _featureSet.Features.Add(f);
                     _featureSet.ShapeIndices = null; // Reset shape indices
                     _featureSet.UpdateExtent();
@@ -334,7 +335,7 @@ namespace DotSpatial.Plugins.ShapeEditor
                 Feature f = null;
                 if (_featureSet.FeatureType == FeatureType.MultiPoint)
                 {
-                    f = new Feature(new MultiPoint(_coordinates));
+                    f = new Feature(new MultiPoint(_coordinates.CastToPointArray()));
                 }
                 if (_featureSet.FeatureType == FeatureType.Line || _featureSet.FeatureType == FeatureType.Polygon)
                 {
@@ -370,6 +371,8 @@ namespace DotSpatial.Plugins.ShapeEditor
         /// <param name="e">An empty EventArgs class.</param>
         public void FinishPart(object sender, EventArgs e)
         {
+            if (_featureSet.FeatureType == FeatureType.Polygon && !_coordinates[0].Equals2D(_coordinates[_coordinates.Count - 1])) _coordinates.Add(_coordinates[0]); //close polygons because they must be closed
+
             _parts.Add(_coordinates);
             _coordinates = new List<Coordinate>();
             Map.Invalidate();

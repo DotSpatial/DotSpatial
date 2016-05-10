@@ -23,7 +23,7 @@
 
 using System.Collections.Generic;
 using System.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -71,7 +71,7 @@ namespace DotSpatial.Data
         /// Be sure to add one before the next call.
         /// <param name="maxCount">The integer maximum number of IFeature values that should be returned.</param>
         /// <returns>A dictionary with FID keys and IFeature values.</returns>
-        IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount);
+        IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount);
 
         /// <summary>
         /// Conditionally modify attributes as searched in a single pass via client supplied callback.
@@ -79,7 +79,7 @@ namespace DotSpatial.Data
         /// <param name="envelope">The envelope for vector filtering.</param>
         /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
         /// <param name="rowCallback">Callback on each feature</param>
-        void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
+        void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
 
         /// <summary>
         /// Edits the values of the specified row in the attribute table.  Since not all data formats

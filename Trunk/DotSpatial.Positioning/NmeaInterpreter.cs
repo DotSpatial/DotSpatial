@@ -22,9 +22,10 @@
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // | VladimirArias (Colombia) | 02/03/2014 | Added hdt nmea sentence for heading orientation
 // ********************************************************************************************************
+
 using System;
-using System.Text;
 using System.Security;
+using System.Text;
 
 namespace DotSpatial.Positioning
 {

@@ -1,11 +1,15 @@
-﻿namespace DotSpatial.Symbology.Forms
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Symbology.Forms
 {
     partial class ExpressionControl
     {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Verwendete Ressourcen bereinigen.
@@ -28,37 +32,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpressionControl));
-            this.lblFields = new System.Windows.Forms.Label();
-            this.lblSelectPrecursor = new System.Windows.Forms.Label();
-            this.rtbExpression = new System.Windows.Forms.RichTextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btValidate = new System.Windows.Forms.Button();
-            this.btNewLine = new System.Windows.Forms.Button();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.dgvFields = new System.Windows.Forms.DataGridView();
-            this.dgvcName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ExpressionControl));
+            this.lblFields = new Label();
+            this.lblSelectPrecursor = new Label();
+            this.rtbExpression = new RichTextBox();
+            this.groupBox1 = new GroupBox();
+            this.tableLayoutPanel1 = new TableLayoutPanel();
+            this.label5 = new Label();
+            this.label6 = new Label();
+            this.label7 = new Label();
+            this.label8 = new Label();
+            this.label9 = new Label();
+            this.label4 = new Label();
+            this.label3 = new Label();
+            this.label10 = new Label();
+            this.label2 = new Label();
+            this.label11 = new Label();
+            this.label12 = new Label();
+            this.label13 = new Label();
+            this.groupBox2 = new GroupBox();
+            this.label1 = new Label();
+            this.btValidate = new Button();
+            this.btNewLine = new Button();
+            this.lblResult = new Label();
+            this.label14 = new Label();
+            this.dgvFields = new DataGridView();
+            this.dgvcName = new DataGridViewTextBoxColumn();
+            this.dgvcType = new DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).BeginInit();
+            ((ISupportInitialize)(this.dgvFields)).BeginInit();
             this.SuspendLayout();
             // 
             // lblFields
@@ -76,7 +80,7 @@
             this.rtbExpression.AcceptsTab = true;
             resources.ApplyResources(this.rtbExpression, "rtbExpression");
             this.rtbExpression.Name = "rtbExpression";
-            this.rtbExpression.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbExpression_KeyDown);
+            this.rtbExpression.KeyDown += new KeyEventHandler(this.rtbExpression_KeyDown);
             // 
             // groupBox1
             // 
@@ -179,14 +183,14 @@
             resources.ApplyResources(this.btValidate, "btValidate");
             this.btValidate.Name = "btValidate";
             this.btValidate.UseVisualStyleBackColor = true;
-            this.btValidate.Click += new System.EventHandler(this.btValidate_Click);
+            this.btValidate.Click += new EventHandler(this.btValidate_Click);
             // 
             // btNewLine
             // 
             resources.ApplyResources(this.btNewLine, "btNewLine");
             this.btNewLine.Name = "btNewLine";
             this.btNewLine.UseVisualStyleBackColor = true;
-            this.btNewLine.Click += new System.EventHandler(this.btNewLine_Click);
+            this.btNewLine.Click += new EventHandler(this.btNewLine_Click);
             // 
             // lblResult
             // 
@@ -205,29 +209,29 @@
             this.dgvFields.AllowUserToResizeColumns = false;
             this.dgvFields.AllowUserToResizeRows = false;
             resources.ApplyResources(this.dgvFields, "dgvFields");
-            this.dgvFields.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvFields.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFields.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFields.Columns.AddRange(new DataGridViewColumn[] {
             this.dgvcName,
             this.dgvcType});
-            this.dgvFields.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvFields.EditMode = DataGridViewEditMode.EditProgrammatically;
             this.dgvFields.MultiSelect = false;
             this.dgvFields.Name = "dgvFields";
             this.dgvFields.ReadOnly = true;
             this.dgvFields.RowHeadersVisible = false;
             this.dgvFields.ShowEditingIcon = false;
-            this.dgvFields.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFields_CellMouseDoubleClick);
+            this.dgvFields.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(this.dgvFields_CellMouseDoubleClick);
             // 
             // dgvcName
             // 
-            this.dgvcName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             resources.ApplyResources(this.dgvcName, "dgvcName");
             this.dgvcName.Name = "dgvcName";
             this.dgvcName.ReadOnly = true;
             // 
             // dgvcType
             // 
-            this.dgvcType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvcType.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             resources.ApplyResources(this.dgvcType, "dgvcType");
             this.dgvcType.Name = "dgvcType";
             this.dgvcType.ReadOnly = true;
@@ -235,7 +239,7 @@
             // ExpressionControl
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.Controls.Add(this.dgvFields);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.lblResult);
@@ -253,7 +257,7 @@
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).EndInit();
+            ((ISupportInitialize)(this.dgvFields)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,31 +265,31 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblFields;
-        private System.Windows.Forms.Label lblSelectPrecursor;
-        private System.Windows.Forms.RichTextBox rtbExpression;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button btValidate;
-        private System.Windows.Forms.Button btNewLine;
-        private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.DataGridView dgvFields;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcType;
+        private Label lblFields;
+        private Label lblSelectPrecursor;
+        private RichTextBox rtbExpression;
+        private GroupBox groupBox1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label3;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private Label label10;
+        private Label label4;
+        private GroupBox groupBox2;
+        private Label label1;
+        private Label label2;
+        private Label label11;
+        private Label label12;
+        private Label label13;
+        private Button btValidate;
+        private Button btNewLine;
+        private Label lblResult;
+        private Label label14;
+        private DataGridView dgvFields;
+        private DataGridViewTextBoxColumn dgvcName;
+        private DataGridViewTextBoxColumn dgvcType;
     }
 }

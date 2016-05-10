@@ -22,6 +22,7 @@
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // | DonK                     |  5/25/2011 | Fixed the bug in parsing NMEA sentence (Dotspatial issue 295)
 // ********************************************************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

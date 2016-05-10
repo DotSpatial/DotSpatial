@@ -21,7 +21,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {

@@ -21,7 +21,7 @@
 
 using System;
 using System.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -31,23 +31,16 @@ namespace DotSpatial.Data
     /// know what type of feature this is, you can still tell it to draw itself.  You won't
     /// be able to specify any drawing characteristics from this object however.
     /// </summary>
-    public interface IFeature : IBasicGeometry, IComparable<IFeature>
+    public interface IFeature : ICloneable, IComparable<IFeature>
     {
-        /// <summary>
-        /// Gets the datarow containing all the attributes related to this geometry
-        /// </summary>
-        DataRow DataRow
-        {
-            get;
-            set;
-        }
+        #region Properties
 
         /// <summary>
         /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
         /// This will be enough geometry information to cast into a full fledged geometry
         /// that can be used in coordination with DotSpatial.Analysis
         /// </summary>
-        IBasicGeometry BasicGeometry
+        IGeometry Geometry
         {
             get;
             set;
@@ -64,17 +57,28 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
-        /// returns a cached value in this object or is retrieved directly from the geometry.  The
-        /// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
-        /// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
-        /// will cause the Envelope property to reference the geometry.
+        /// Gets the datarow containing all the attributes related to this geometry
         /// </summary>
-        CacheTypes EnvelopeSource
+        DataRow DataRow
         {
             get;
             set;
         }
+
+        ///// <summary>
+        ///// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
+        ///// returns a cached value in this object or is retrieved directly from the geometry.  The
+        ///// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
+        ///// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
+        ///// will cause the Envelope property to reference the geometry.
+        ///// </summary>
+        //CacheTypes EnvelopeSource
+        //{
+        //    get;
+        //    set;
+        //}
+
+        FeatureType FeatureType { get; }
 
         /// <summary>
         /// Gets the key that is associated with this feature.  This returns -1 if
@@ -104,16 +108,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
-        /// and whether or not the shape is null.
-        /// </summary>
-        ShapeType ShapeType
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// This is simply a quick access to the Vertices list for this specific
         /// feature.  If the Vertices have not yet been defined, this will be null.
         /// </summary>
@@ -124,6 +118,20 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
+        /// When a shape is loaded from a Shapefile, this will identify whether M or Z values are used
+        /// and whether or not the shape is null.
+        /// </summary>
+        ShapeType ShapeType
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Creates a deep copy of this feature.  the new datarow created will not be connected
         /// to a data Table, so it should be added to one.
         /// </summary>
@@ -131,16 +139,20 @@ namespace DotSpatial.Data
         IFeature Copy();
 
         /// <summary>
-        /// Creates a new shape based on this feature by itself.
-        /// </summary>
-        /// <returns>A Shape object</returns>
-        Shape ToShape();
-
-        /// <summary>
         /// This uses the field names to copy attribute values from the source to this feature.
         /// Even if columns are missing or if there are extra columns, this method should work.
         /// </summary>
         /// <param name="source">The IFeature source to copy attributes from.</param>
         void CopyAttributes(IFeature source);
+
+        /// <summary>
+        /// Creates a new shape based on this feature by itself.
+        /// </summary>
+        /// <returns>A Shape object</returns>
+        Shape ToShape();
+
+        void UpdateEnvelope();
+
+        #endregion
     }
 }

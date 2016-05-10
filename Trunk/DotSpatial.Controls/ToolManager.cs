@@ -29,7 +29,6 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Symbology;
-using System.Diagnostics;
 
 namespace DotSpatial.Controls
 {

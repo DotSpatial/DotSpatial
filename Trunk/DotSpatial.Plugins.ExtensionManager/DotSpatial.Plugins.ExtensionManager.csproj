@@ -146,11 +146,6 @@
       <Name>DotSpatial.Symbology</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{A8079861-C636-4ECE-99C1-AD313276787B}</Project>
-      <Name>DotSpatial.Topology</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DownloadForm.resx">

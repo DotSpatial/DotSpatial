@@ -1,14 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using DotSpatial.Data;
+using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using ClassCleanup = NUnit.Framework.TestFixtureTearDownAttribute;
 using ClassInitialize = NUnit.Framework.TestFixtureSetUpAttribute;
-using Assert = NUnit.Framework.Assert;
-using DotSpatial.Serialization;
-using DotSpatial.Data;
 
 namespace DotSpatial.Controls.Tests
 {

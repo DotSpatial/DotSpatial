@@ -21,7 +21,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.Serialization;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -107,9 +107,7 @@ namespace DotSpatial.Data
         public FeatureRow AddFeatureRow(byte[] wellKnownBinary)
         {
             FeatureRow rowFeatureRow = ((FeatureRow)(NewRow()));
-            object[] columnValuesArray = new object[] {
-                                                          null,
-                                                          wellKnownBinary};
+            object[] columnValuesArray = new object[] { null, wellKnownBinary };
             rowFeatureRow.ItemArray = columnValuesArray;
             Rows.Add(rowFeatureRow);
             return rowFeatureRow;
@@ -216,8 +214,7 @@ namespace DotSpatial.Data
         public FeatureRow AddFeatureRow(IGeometry geometry)
         {
             FeatureRow rowFeatureRow = ((FeatureRow)(NewRow()));
-            object[] columnValuesArray = new object[] {
-                                                          null, geometry.ToBinary()};
+            object[] columnValuesArray = { null, geometry.AsBinary() };
             rowFeatureRow.Geometry = geometry;
             rowFeatureRow.ItemArray = columnValuesArray;
             Rows.Add(rowFeatureRow);
@@ -240,8 +237,7 @@ namespace DotSpatial.Data
             Columns.Add(_columnFID);
             _columnGeometry = new DataColumn("GEOMETRY", typeof(byte[]), null, MappingType.Element);
             Columns.Add(_columnGeometry);
-            Constraints.Add(new UniqueConstraint("Constraint1", new[] {
-                                                                          _columnFID}, true));
+            Constraints.Add(new UniqueConstraint("Constraint1", new[] { _columnFID }, true));
             _columnFID.AutoIncrement = true;
             _columnFID.AutoIncrementSeed = -1;
             _columnFID.AutoIncrementStep = -1;

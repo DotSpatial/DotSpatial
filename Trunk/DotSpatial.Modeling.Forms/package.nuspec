@@ -21,7 +21,8 @@
       <dependency id="DotSpatial.Projections.Forms" />
       <dependency id="DotSpatial.Symbology" />
       <dependency id="DotSpatial.Symbology.Forms" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
   <files>

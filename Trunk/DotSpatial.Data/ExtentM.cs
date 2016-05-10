@@ -20,8 +20,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
-
+using GeoAPI.Geometries;
 namespace DotSpatial.Data
 {
     /// <summary>
@@ -72,9 +71,9 @@ namespace DotSpatial.Data
         /// Initializes a new instance of the ExtentM class.  This overload works from an envelope.
         /// </summary>
         /// <param name="env">The envelope with extent values to read.</param>
-        public ExtentM(IEnvelope env)
+        public ExtentM(Envelope env)
         {
-            SetValues(env.Minimum.X, env.Minimum.Y, env.Minimum.M, env.Maximum.X, env.Maximum.Y, env.Maximum.M);
+            SetValues(env.MinX, env.MinY, env.Minimum.M, env.MaxX, env.MaxY, env.Maximum.M);
         }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
-        public override bool Contains(IEnvelope env)
+        public override bool Contains(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {
@@ -355,7 +354,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
-        public override bool Intersects(IEnvelope env)
+        public override bool Intersects(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {
@@ -426,7 +425,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to compare.</param>
         /// <returns>Boolean.</returns>
-        public override bool Within(IEnvelope env)
+        public override bool Within(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.M) && !double.IsNaN(env.Maximum.M) && HasM)
             {

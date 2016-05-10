@@ -20,8 +20,9 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
+using DotSpatial.Modeling.Forms.Elements;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Parameters
 {
     /// <summary>
     /// List of strings parameter returned by an ITool allows the tool to specify a list of values and a default

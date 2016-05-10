@@ -16,7 +16,8 @@
     <dependencies>
       <dependency id="DotSpatial.Mono" />
       <dependency id="DotSpatial.Serialization" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
       <dependency id="DotSpatial.Projections" />
     </dependencies>
   </metadata>

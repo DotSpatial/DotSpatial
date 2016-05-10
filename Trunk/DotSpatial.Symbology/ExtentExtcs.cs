@@ -35,7 +35,7 @@ namespace DotSpatial.Symbology
         /// <param name="self">The original envelope</param>
         /// <param name="original">The original rectangle </param>
         /// <param name="newRectangle">The new rectangle</param>
-        /// <returns>A new IEnvelope </returns>
+        /// <returns>A new Envelope </returns>
         public static Extent Reproportion(this Extent self, Rectangle original, Rectangle newRectangle)
         {
             double dx = self.Width * (newRectangle.X - original.X) / original.Width;

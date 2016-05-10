@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Controls
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Controls
 {
     partial class OptionsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -79,9 +82,9 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox chkZoomOutFartherThanMaxExtent;
-        private System.Windows.Forms.Button btOk;
-        private System.Windows.Forms.Button btCancel;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private CheckBox chkZoomOutFartherThanMaxExtent;
+        private Button btOk;
+        private Button btCancel;
+        private ToolTip toolTip1;
     }
 }

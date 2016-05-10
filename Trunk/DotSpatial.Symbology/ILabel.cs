@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -19,7 +18,7 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
             Application.Run(new Updater(args));
         }
 
-        static System.Reflection.Assembly Resolver(object sender, ResolveEventArgs args)
+        static Assembly Resolver(object sender, ResolveEventArgs args)
         {
             var a1 = Assembly.GetExecutingAssembly();
             var s = a1.GetManifestResourceStream(string.Format("{0}.Resources.{1}.dll", 

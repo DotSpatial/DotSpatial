@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System.Windows.Forms;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {

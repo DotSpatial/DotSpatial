@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Plugins.SpatiaLite
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.SpatiaLite
 {
     partial class frmQuery
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -186,14 +189,14 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnRunQuery;
-        private System.Windows.Forms.TreeView treeTables;
-        private System.Windows.Forms.TextBox txtQuery;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Panel pnlTitle;
-        private System.Windows.Forms.Label lblTreeTitle;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.DataGridView dgQueryResult;
-        private System.Windows.Forms.Button btnAddToMap;
+        private Button btnRunQuery;
+        private TreeView treeTables;
+        private TextBox txtQuery;
+        private SplitContainer splitContainer1;
+        private Panel pnlTitle;
+        private Label lblTreeTitle;
+        private SplitContainer splitContainer2;
+        private DataGridView dgQueryResult;
+        private Button btnAddToMap;
     }
 }

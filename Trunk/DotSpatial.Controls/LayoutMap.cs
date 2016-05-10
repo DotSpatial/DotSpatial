@@ -25,7 +25,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -37,7 +37,7 @@ namespace DotSpatial.Controls
         #region Fields
 
         private Bitmap _buffer;
-        private IEnvelope _envelope;
+        private Envelope _envelope;
         private bool _extentChanged = true;
         private Map _mapControl;
         private RectangleF _oldRectangle;
@@ -62,37 +62,29 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------ Public Properties
+        #region Public Properties
 
         /// <summary>
         /// The geographic envelope to be shown by the layout
         /// </summary>
         [Browsable(false)]
-        public virtual IEnvelope Envelope
+        public virtual Envelope Envelope
         {
             get { return _envelope; }
             set
             {
-                IEnvelope tempEnv = new Envelope();
                 if (value.Width / value.Height < Size.Width / Size.Height)
                 {
-                    double yCenter = value.Minimum.Y + (value.Height / 2.0);
+                    double yCenter = value.MinY + (value.Height / 2.0);
                     double deltaY = (value.Width / Size.Width * Size.Height) / 2.0;
-                    tempEnv.Minimum.Y = yCenter - deltaY;
-                    tempEnv.Maximum.Y = yCenter + deltaY;
-                    tempEnv.Minimum.X = value.Minimum.X;
-                    tempEnv.Maximum.X = value.Maximum.X;
+                    _envelope = new Envelope(value.MinX, value.MaxX, yCenter - deltaY, yCenter + deltaY);
                 }
                 else
                 {
-                    double xCenter = value.Minimum.X + (value.Width / 2.0);
+                    double xCenter = value.MinX + (value.Width / 2.0);
                     double deltaX = (value.Height / Size.Height * Size.Width) / 2.0;
-                    tempEnv.Minimum.X = xCenter - deltaX;
-                    tempEnv.Maximum.X = xCenter + deltaX;
-                    tempEnv.Minimum.Y = value.Minimum.Y;
-                    tempEnv.Maximum.Y = value.Maximum.Y;
+                    _envelope = new Envelope(xCenter - deltaX, xCenter + deltaX, value.MinY, value.MaxY);
                 }
-                _envelope = tempEnv;
                 _extentChanged = true;
                 OnThumbnailChanged();
                 OnInvalidate();
@@ -131,14 +123,15 @@ namespace DotSpatial.Controls
             {
                 if (_mapControl.Layers.Count < 1)
                     return;
-                IEnvelope tempEnv = Envelope;
-                double xtl = tempEnv.X;
-                double ytl = tempEnv.Y;
-                tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
-                tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
-                tempEnv.X = xtl;
-                tempEnv.Y = ytl;
-                Envelope = tempEnv;
+                //Envelope tempEnv = Envelope;
+                double xtl = Envelope.MinX;
+                double ytl = Envelope.MaxY;
+                //tempEnv.Width = (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D);
+                //tempEnv.Height = (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D);
+                //tempEnv.X = xtl;
+                //tempEnv.Y = ytl;
+                //Envelope = tempEnv;
+                Envelope.Init(xtl, xtl + (value * Size.Width) / (UnitMeterConversion() * 39.3700787 * 100D), ytl - (value * Size.Height) / (UnitMeterConversion() * 39.3700787 * 100D), ytl);
             }
         }
 
@@ -154,8 +147,7 @@ namespace DotSpatial.Controls
 
         #endregion
 
-        #region ------------------- public methods
-        
+        #region Public methods
 
         /// <summary>
         /// Updates the size of the control
@@ -171,14 +163,19 @@ namespace DotSpatial.Controls
                 {
                     double dx = Envelope.Width / _oldRectangle.Width;
                     double dy = Envelope.Height / _oldRectangle.Height;
-                    IEnvelope newEnv = Envelope.Copy();
+                    //Envelope newEnv = Envelope.Clone();
+                    //newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    //newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
+                    //newEnv.X = Envelope.X;
+                    //newEnv.Y = Envelope.Y;
+                    //Envelope = newEnv;
 
-                    newEnv.Width = newEnv.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
-                    newEnv.Height = newEnv.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
-                    newEnv.X = Envelope.X;
-                    newEnv.Y = Envelope.Y;
+                    double xtl = Envelope.MinX;
+                    double ytl = Envelope.MaxY;
+                    double width = Envelope.Width + ((Rectangle.Width - _oldRectangle.Width) * dx);
+                    double height = Envelope.Height + ((Rectangle.Height - _oldRectangle.Height) * dy);
 
-                    Envelope = newEnv;
+                    Envelope.Init(xtl, xtl + width, ytl - height, ytl);
                 }
                 _oldRectangle = new RectangleF(LocationF, Size);
             }
@@ -209,13 +206,9 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ZoomInMap()
         {
-            double tenPerWidth = (Envelope.Maximum.X - Envelope.Minimum.X) / 20;
-            double tenPerHeight = (Envelope.Maximum.Y - Envelope.Minimum.Y) / 20;
-            Envelope envl = new Envelope();
-            envl.Minimum.X = Envelope.Minimum.X + tenPerWidth;
-            envl.Minimum.Y = Envelope.Minimum.Y + tenPerHeight;
-            envl.Maximum.X = Envelope.Maximum.X - tenPerWidth;
-            envl.Maximum.Y = Envelope.Maximum.Y - tenPerWidth;
+            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
+            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20; // todo jany_ why uses maxy tenperwidth instead of height?
+            Envelope envl = new Envelope(Envelope.MinX + tenPerWidth, Envelope.MaxX - tenPerWidth, Envelope.MinY + tenPerHeight, Envelope.MaxY - tenPerWidth); //TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 
@@ -224,13 +217,9 @@ namespace DotSpatial.Controls
         /// </summary>
         public virtual void ZoomOutMap()
         {
-            double tenPerWidth = (Envelope.Maximum.X - Envelope.Minimum.X) / 20;
-            double tenPerHeight = (Envelope.Maximum.Y - Envelope.Minimum.Y) / 20;
-            Envelope envl = new Envelope();
-            envl.Minimum.X = Envelope.Minimum.X - tenPerWidth;
-            envl.Minimum.Y = Envelope.Minimum.Y - tenPerHeight;
-            envl.Maximum.X = Envelope.Maximum.X + tenPerWidth;
-            envl.Maximum.Y = Envelope.Maximum.Y + tenPerWidth;
+            double tenPerWidth = (Envelope.MaxX - Envelope.MinX) / 20;
+            double tenPerHeight = (Envelope.MaxY - Envelope.MinY) / 20;// todo jany_ why uses maxy tenperwidth instead of height?
+            Envelope envl = new Envelope(Envelope.MinX - tenPerWidth, Envelope.MaxX + tenPerWidth, Envelope.MinY - tenPerHeight, Envelope.MaxY + tenPerWidth);//TODO jany_ can we assign this direct or do we lose MinX etc?
             Envelope = envl;
         }
 
@@ -241,7 +230,7 @@ namespace DotSpatial.Controls
         /// <param name="y">The amount to pan the map in the Y-axis in map coord</param>
         public virtual void PanMap(double x, double y)
         {
-            Envelope = new Envelope(Envelope.Minimum.X - x, Envelope.Maximum.X - x, Envelope.Minimum.Y - y, Envelope.Maximum.Y - y);
+            Envelope = new Envelope(Envelope.MinX - x, Envelope.MaxX - x, Envelope.MinY - y, Envelope.MaxY - y);
         }
 
         /// <summary>
@@ -275,8 +264,7 @@ namespace DotSpatial.Controls
             }
             else
             {
-                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width),
-                                                  Convert.ToInt32(Size.Height)), _envelope.ToExtent());
+                MapControl.Print(g, new Rectangle(Location.X, Location.Y, Convert.ToInt32(Size.Width), Convert.ToInt32(Size.Height)), _envelope.ToExtent());
             }
         }
 

@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace DotSpatial.Controls.Extensions
-{
-    using System;
-    using System.IO;
-    using DotSpatial.Controls.Properties;
-    using DotSpatial.Extensions;
+using System;
+using System.IO;
+using DotSpatial.Controls.Properties;
+using DotSpatial.Extensions;
 
+namespace DotSpatial.Controls
+{
     /// <summary>
     /// The PackageManager performs file based operations on packages.
     /// </summary>
@@ -114,11 +114,11 @@ namespace DotSpatial.Controls.Extensions
         /// </summary>
         public static void TryDeleteAllPackages()
         {
-            if (Directory.Exists(DotSpatial.Controls.AppManager.AbsolutePathToExtensions))
+            if (Directory.Exists(AppManager.AbsolutePathToExtensions))
             {
                 try
                 {
-                    DeleteDirectory(DotSpatial.Controls.AppManager.AbsolutePathToExtensions);
+                    DeleteDirectory(AppManager.AbsolutePathToExtensions);
                 }
                 catch (ArgumentException) { }
                 catch (DirectoryNotFoundException) { }

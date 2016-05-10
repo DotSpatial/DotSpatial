@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -104,15 +104,10 @@ namespace DotSpatial.Data
                 throw new FileNotFoundException(DataStrings.FileNotFound_S.Replace("%S", fileName));
             }
 
-            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
-            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
-
             // Get the basic header information.
-            var header = new ShapefileHeader(fileName);
-            Extent = header.ToExtent();
+            var header = Header;
             // Check to ensure that the fileName is the correct shape type
-            if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM
-                && header.ShapeType != ShapeType.PointZ)
+            if (header.ShapeType != ShapeType.Point && header.ShapeType != ShapeType.PointM && header.ShapeType != ShapeType.PointZ)
             {
                 throw new ApplicationException(DataStrings.FileNotPoints_S.Replace("%S", fileName));
             }
@@ -122,6 +117,9 @@ namespace DotSpatial.Data
                 // the file is empty so we are done reading
                 return;
             }
+
+            // Reading the headers gives us an easier way to track the number of shapes and their overall length etc.
+            List<ShapeHeader> shapeHeaders = ReadIndexFile(fileName);
 
             var numShapes = shapeHeaders.Count;
             double[] m = null;
@@ -302,7 +300,7 @@ namespace DotSpatial.Data
                 int fid = 0;
                 foreach (IFeature f in Features)
                 {
-                    Coordinate c = f.BasicGeometry.Coordinates[0];
+                    Coordinate c = f.Geometry.Coordinates[0];
                     shpStream.WriteBe(fid + 1);
                     shpStream.WriteBe(wordSize - 4);
                     shxStream.WriteBe(50 + fid * wordSize);

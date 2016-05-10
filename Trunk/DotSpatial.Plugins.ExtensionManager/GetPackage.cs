@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NuGet;
 using DotSpatial.Extensions;
+using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {

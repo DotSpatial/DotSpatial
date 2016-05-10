@@ -21,8 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
+using DotSpatial.Serialization;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -66,11 +68,11 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="feature"></param>
         public Shape(IFeature feature)
-            : this((IBasicGeometry)feature)
+            : this(feature.Geometry, feature.FeatureType)
         {
             if (Equals(feature, null))
                 throw new ArgumentNullException("feature");
-            if (feature.NumPoints == 0)
+            if (feature.Geometry.NumPoints == 0)
                 throw new ArgumentOutOfRangeException("feature", "The IFeature.NumPoints of the parameter feature must be greater than 0.");
             _attributes = feature.DataRow.ItemArray;
         }
@@ -80,8 +82,32 @@ namespace DotSpatial.Data
         /// all by itself.  The attributes will be null.
         /// </summary>
         /// <param name="geometry">The geometry to create a shape from.</param>
-        public Shape(IBasicGeometry geometry)
+        /// <param name="featureType"/>
+        public Shape(IGeometry geometry, FeatureType featureType)
         {
+            if (featureType == FeatureType.Unspecified)
+            {   switch (geometry.OgcGeometryType)
+                {
+                    case OgcGeometryType.Point:
+                        featureType = FeatureType.Point;
+                        break;
+                    case OgcGeometryType.LineString:
+                    case OgcGeometryType.MultiLineString:
+                        featureType = FeatureType.Line;
+                        break;
+                    case OgcGeometryType.Polygon:
+                    case OgcGeometryType.MultiPolygon:
+                        featureType = FeatureType.Polygon;
+                        break;
+                    case OgcGeometryType.MultiPoint:
+                        featureType = FeatureType.MultiPoint;
+                        break;
+                    default:
+                        featureType = FeatureType.Unspecified;
+                        break;
+                }
+            }
+
             if (Equals(geometry, null))
                 throw new ArgumentNullException("geometry");
 
@@ -89,7 +115,7 @@ namespace DotSpatial.Data
             _vertices = new double[geometry.NumPoints * 2];
             _z = new double[geometry.NumPoints];
             _m = new double[geometry.NumPoints];
-            for (var i = 0; i < coords.Count; i++)
+            for (var i = 0; i < coords.Length; i++) //TODO jany_ do we cause error if we replace list.count with array.length?
             {
                 var c = coords[i];
                 _vertices[i * 2] = c.X;
@@ -97,7 +123,7 @@ namespace DotSpatial.Data
                 _z[i] = c.Z;
                 _m[i] = c.M;
             }
-            _shapeRange = ShapeRangeFromGeometry(geometry, _vertices, 0);
+            _shapeRange = ShapeRangeFromGeometry(geometry, featureType, _vertices, 0);
         }
 
         /// <summary>
@@ -108,19 +134,19 @@ namespace DotSpatial.Data
         {
             if (Equals(coord, null))
                 throw new ArgumentNullException("coord");
-            
+
             if (!double.IsNaN(coord.Z))
             {
-                _z = new[] {coord.Z};
+                _z = new[] { coord.Z };
             }
             if (!double.IsNaN(coord.M))
             {
-                _m = new[] {coord.M};
+                _m = new[] { coord.M };
             }
 
             _shapeRange = new ShapeRange(FeatureType.Point);
-            _vertices = new [] {coord.X, coord.Y};
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) {NumVertices = 1});
+            _vertices = new[] { coord.X, coord.Y };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) { NumVertices = 1 });
             _shapeRange.Extent = new Extent(coord.X, coord.Y, coord.X, coord.Y);
         }
 
@@ -131,8 +157,8 @@ namespace DotSpatial.Data
         public Shape(Vertex coord)
         {
             _shapeRange = new ShapeRange(FeatureType.Point);
-            _vertices = new [] { coord.X, coord.Y };
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) {NumVertices = 1});
+            _vertices = new[] { coord.X, coord.Y };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Point) { NumVertices = 1 });
             _shapeRange.Extent = new Extent(coord.X, coord.Y, coord.X, coord.Y);
         }
 
@@ -144,32 +170,32 @@ namespace DotSpatial.Data
         {
             if (Equals(extent, null))
                 throw new ArgumentNullException("extent");
-            
+
             _shapeRange = new ShapeRange(FeatureType.Polygon);
             double xMin = extent.MinX;
             double yMin = extent.MinY;
             double xMax = extent.MaxX;
             double yMax = extent.MaxY;
             _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) { NumVertices = 4 });
         }
 
         /// <summary>
         /// Creates a clockwise polygon shape from an envelope
         /// </summary>
         /// <param name="envelope"></param>
-        public Shape(IEnvelope envelope)
+        public Shape(Envelope envelope)
         {
             if (Equals(envelope, null))
                 throw new ArgumentNullException("envelope");
 
             _shapeRange = new ShapeRange(FeatureType.Polygon);
-            double xMin = envelope.Minimum.X;
-            double yMin = envelope.Minimum.Y;
-            double xMax = envelope.Maximum.X;
-            double yMax = envelope.Maximum.Y;
-            _vertices = new[] {xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin};
-            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) {NumVertices = 4});
+            double xMin = envelope.MinX;
+            double yMin = envelope.MinY;
+            double xMax = envelope.MaxX;
+            double yMax = envelope.MaxY;
+            _vertices = new[] { xMin, yMax, xMax, yMax, xMax, yMin, xMin, yMin };
+            _shapeRange.Parts.Add(new PartRange(_vertices, 0, 0, FeatureType.Polygon) { NumVertices = 4 });
         }
 
         #endregion
@@ -242,7 +268,7 @@ namespace DotSpatial.Data
             {
                 GetCoordinates(part, coords);
             }
-            return factory.CreateMultiPoint(coords);
+            return factory.CreateMultiPoint(coords.ToArray());
         }
 
         /// <summary>
@@ -252,17 +278,17 @@ namespace DotSpatial.Data
         protected IGeometry FromLine(IGeometryFactory factory)
         {
             if (factory == null) factory = Geometry.DefaultFactory;
-            var lines = new List<IBasicLineString>();
+            var lines = new List<ILineString>();
             foreach (var part in _shapeRange.Parts)
             {
                 var coords = GetCoordinates(part);
-                lines.Add(factory.CreateLineString(coords));
+                lines.Add(factory.CreateLineString(coords.ToArray()));
             }
             if (lines.Count == 1) return (IGeometry)lines[0];
             return factory.CreateMultiLineString(lines.ToArray());
         }
 
-        private List<Coordinate> GetCoordinates(VertexRange part,  List<Coordinate> coords = null)
+        private List<Coordinate> GetCoordinates(VertexRange part, List<Coordinate> coords = null)
         {
             if (coords == null)
             {
@@ -293,14 +319,14 @@ namespace DotSpatial.Data
             foreach (var part in _shapeRange.Parts)
             {
                 var coords = GetCoordinates(part);
-                var ring = factory.CreateLinearRing(coords);
+                var ring = factory.CreateLinearRing(coords.ToArray());
                 if (_shapeRange.Parts.Count == 1)
                 {
                     shells.Add(ring);
                 }
                 else
                 {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCCW(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -322,17 +348,17 @@ namespace DotSpatial.Data
             {
                 ILinearRing testRing = t;
                 ILinearRing minShell = null;
-                IEnvelope minEnv = null;
-                IEnvelope testEnv = testRing.EnvelopeInternal;
+                Envelope minEnv = null;
+                Envelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
                 for (int j = 0; j < shells.Count; j++)
                 {
                     ILinearRing tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                    Envelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
                     var isContained = tryEnv.Contains(testEnv)
-                                       && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                                       && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
                                            || (PointInList(testPt, tryRing.Coordinates)));
 
                     // Check if this new containing ring is smaller than the current minimum ring
@@ -389,19 +415,19 @@ namespace DotSpatial.Data
         /// Create a ShapeRange from a Geometry to use in constructing a Shape
         /// </summary>
         /// <param name="geometry"></param>
+        /// <param name="featureType"></param>
         /// <param name="vertices"></param>
         /// <param name="offset">offset into vertices array where this feature starts</param>
         /// <returns></returns>
-        public static ShapeRange ShapeRangeFromGeometry(IBasicGeometry geometry, double[] vertices, int offset)
+        public static ShapeRange ShapeRangeFromGeometry(IGeometry geometry, FeatureType featureType, double[] vertices, int offset)
         {
-            var featureType = geometry.FeatureType;
-            ShapeRange shx = new ShapeRange(featureType) { Extent = new Extent(geometry.Envelope) };
+            ShapeRange shx = new ShapeRange(featureType) { Extent = new Extent(geometry.EnvelopeInternal) };
             int vIndex = offset / 2;
             int shapeStart = vIndex;
             for (int part = 0; part < geometry.NumGeometries; part++)
             {
                 PartRange prtx = new PartRange(vertices, shapeStart, vIndex - shapeStart, featureType);
-                IBasicPolygon bp = geometry.GetBasicGeometryN(part) as IBasicPolygon;
+                IPolygon bp = geometry.GetGeometryN(part) as IPolygon;
                 if (bp != null)
                 {
                     // Account for the Shell
@@ -422,7 +448,7 @@ namespace DotSpatial.Data
                 }
                 else
                 {
-                    int numPoints = geometry.GetBasicGeometryN(part).NumPoints;
+                    int numPoints = geometry.GetGeometryN(part).NumPoints;
 
                     // This is not a polygon, so just add the number of points.
                     vIndex += numPoints;
@@ -443,7 +469,7 @@ namespace DotSpatial.Data
         /// <returns></returns>
         public static ShapeRange ShapeRangeFromFeature(IFeature feature, double[] vertices, int offset)
         {
-            return ShapeRangeFromGeometry(feature.BasicGeometry, vertices, offset);
+            return ShapeRangeFromGeometry(feature.Geometry, feature.FeatureType, vertices, offset);
         }
 
         /// <summary>

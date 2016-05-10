@@ -26,7 +26,7 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -49,7 +49,7 @@ namespace DotSpatial.Data
         /// <param name="count">The integer count of the maximum number of shapes to return here. </param>
         /// <param name="envelope">The geographic extents that can be used to limit the shapes.  If this is null, then no envelope is used.</param>
         /// <returns>The Dictionary with FID indices and Shape values</returns>
-        Dictionary<int, Shape> GetShapes(ref int startIndex, int count, IEnvelope envelope);
+        Dictionary<int, Shape> GetShapes(ref int startIndex, int count, Envelope envelope);
 
         /// <summary>
         /// Returns array of shapes at the specified indices

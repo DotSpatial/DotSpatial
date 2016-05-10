@@ -11,19 +11,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Security.Permissions;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DotSpatial.Controls;
-using DotSpatial.Controls.Extensions;
-using DotSpatial.Modeling.Forms;
 using DotSpatial.Extensions;
+using DotSpatial.Plugins.ExtensionManager.Properties;
 using NuGet;
-using System.Net;
-using DotSpatial.Data;
-using System.Runtime.InteropServices;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {
@@ -532,8 +526,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <returns></returns>
         private void SearchAndClearIcons()
         {
-            Image SearchIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.google_custom_search;
-            Image ClearIcon = DotSpatial.Plugins.ExtensionManager.Properties.Resources.draw_eraser;
+            Image SearchIcon = Resources.google_custom_search;
+            Image ClearIcon = Resources.draw_eraser;
             ImageList image = new ImageList();
             image.Images.Add(SearchIcon);
             image.Images.Add(ClearIcon);

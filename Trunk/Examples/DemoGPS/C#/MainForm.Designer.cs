@@ -21,10 +21,13 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GeoFrameworks 2.0
 // | Shade1974 (Ted Dunsford) | 10/21/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
+using System.ComponentModel;
+using System.Windows.Forms;
 using DotSpatial.Positioning;
 using DotSpatial.Positioning.Forms;
 
-namespace DemoGPS
+namespace Demo.GPS
 {
     /// <summary>
     /// The Main form for the project.
@@ -34,7 +37,7 @@ namespace DemoGPS
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -788,57 +791,57 @@ namespace DemoGPS
 
         #endregion
 
-        private System.Windows.Forms.Button startButton;
-        private System.Windows.Forms.Button stopButton;
+        private Button startButton;
+        private Button stopButton;
         private NmeaInterpreter nmeaInterpreter1;
-        private System.Windows.Forms.Button pauseButton;
-        private System.Windows.Forms.Button resumeButton;
-        private System.Windows.Forms.ListBox sentenceListBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox altitudeTextBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox speedTextBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox positionTextBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox utcDateTimeTextBox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox dateTimeTextBox;
-        private System.Windows.Forms.Button detectButton;
-        private System.Windows.Forms.Button cancelDetectButton;
-        private System.Windows.Forms.ListView devicesListView;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage devicesTab;
-        private System.Windows.Forms.TabPage dataTab;
-        private System.Windows.Forms.TabPage rawDataTab;
-        private System.Windows.Forms.TabPage satellitesTab;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
-        private System.Windows.Forms.CheckBox serialCheckBox;
-        private System.Windows.Forms.CheckBox bluetoothCheckBox;
-        private System.Windows.Forms.TextBox bearingTextBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ListView satellitesListView;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ContextMenuStrip deviceContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem redetectMenuItem;
-        private System.Windows.Forms.CheckBox exhaustiveCheckBox;
-        private System.Windows.Forms.ToolStripMenuItem resetMenuItem;
-        private System.Windows.Forms.Button undetectButton;
-        private System.Windows.Forms.CheckBox firstDeviceCheckBox;
-        private System.Windows.Forms.ToolStripStatusLabel speedLabel;
-        private System.Windows.Forms.ToolStripStatusLabel positionLabel;
-        private System.Windows.Forms.ToolStripStatusLabel bearingLabel;
-        private System.Windows.Forms.ToolStripStatusLabel altitudeLabel;
-        private System.Windows.Forms.CheckBox clockSynchronizationCheckBox;
+        private Button pauseButton;
+        private Button resumeButton;
+        private ListBox sentenceListBox;
+        private Label label1;
+        private TextBox altitudeTextBox;
+        private Label label3;
+        private TextBox speedTextBox;
+        private Label label4;
+        private TextBox positionTextBox;
+        private Label label6;
+        private TextBox utcDateTimeTextBox;
+        private Label label2;
+        private TextBox dateTimeTextBox;
+        private Button detectButton;
+        private Button cancelDetectButton;
+        private ListView devicesListView;
+        private StatusStrip statusStrip1;
+        private TabControl tabControl1;
+        private TabPage devicesTab;
+        private TabPage dataTab;
+        private TabPage rawDataTab;
+        private TabPage satellitesTab;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ToolStripStatusLabel statusLabel;
+        private SplitContainer splitContainer1;
+        private PropertyGrid propertyGrid1;
+        private CheckBox serialCheckBox;
+        private CheckBox bluetoothCheckBox;
+        private TextBox bearingTextBox;
+        private Label label5;
+        private ListView satellitesListView;
+        private ColumnHeader columnHeader3;
+        private ColumnHeader columnHeader4;
+        private ColumnHeader columnHeader5;
+        private ColumnHeader columnHeader6;
+        private ColumnHeader columnHeader7;
+        private ContextMenuStrip deviceContextMenu;
+        private ToolStripMenuItem redetectMenuItem;
+        private CheckBox exhaustiveCheckBox;
+        private ToolStripMenuItem resetMenuItem;
+        private Button undetectButton;
+        private CheckBox firstDeviceCheckBox;
+        private ToolStripStatusLabel speedLabel;
+        private ToolStripStatusLabel positionLabel;
+        private ToolStripStatusLabel bearingLabel;
+        private ToolStripStatusLabel altitudeLabel;
+        private CheckBox clockSynchronizationCheckBox;
         private Clock clock1;
         private Altimeter altimeter1;
         private Compass compass1;

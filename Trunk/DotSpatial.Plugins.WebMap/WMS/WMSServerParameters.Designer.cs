@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Plugins.WebMap.WMS
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.WebMap.WMS
 {
     partial class WMSServerParameters
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -568,48 +571,48 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblQuerable;
-        private System.Windows.Forms.Label lblNoSubsets;
-        private System.Windows.Forms.ListBox lbCRS;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lbStyles;
-        private System.Windows.Forms.Label lblStyles;
-        private System.Windows.Forms.Label lblOpaque;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox tbAbstract;
-        private System.Windows.Forms.GroupBox gbSelectedLayer;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TreeView tvLayers;
-        private System.Windows.Forms.Label lblServerURL;
-        private System.Windows.Forms.Button btnGetCapabilities;
-        private System.Windows.Forms.TextBox tbServerUrl;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TextBox tbTitle;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbName;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lblCascaded;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label lblFixedHeight;
-        private System.Windows.Forms.Label lblFixedWidth;
-        private System.Windows.Forms.GroupBox gbServerInfo;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbServerAbstract;
-        private System.Windows.Forms.TextBox tbServerTitle;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbServerOnlineResource;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbServerAccessConstraints;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbCustomParameters;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tbLogin;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox tbPassword;
+        private Label lblQuerable;
+        private Label lblNoSubsets;
+        private ListBox lbCRS;
+        private Label label1;
+        private ListBox lbStyles;
+        private Label lblStyles;
+        private Label lblOpaque;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+        private TextBox tbAbstract;
+        private GroupBox gbSelectedLayer;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TreeView tvLayers;
+        private Label lblServerURL;
+        private Button btnGetCapabilities;
+        private TextBox tbServerUrl;
+        private Button btnCancel;
+        private Button btnOK;
+        private TableLayoutPanel tableLayoutPanel2;
+        private TextBox tbTitle;
+        private Label label3;
+        private TextBox tbName;
+        private Label label4;
+        private Label lblCascaded;
+        private Label label5;
+        private Label lblFixedHeight;
+        private Label lblFixedWidth;
+        private GroupBox gbServerInfo;
+        private Label label8;
+        private TextBox tbServerAbstract;
+        private TextBox tbServerTitle;
+        private Label label7;
+        private TextBox tbServerOnlineResource;
+        private Label label9;
+        private TextBox tbServerAccessConstraints;
+        private Label label10;
+        private Label label2;
+        private TextBox tbCustomParameters;
+        private Label label6;
+        private TextBox tbLogin;
+        private Label label11;
+        private TextBox tbPassword;
     }
 }

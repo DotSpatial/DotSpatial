@@ -29,8 +29,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Index;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
 {
@@ -83,7 +84,7 @@ namespace DotSpatial.Data
         /// <summary>
         /// Gets the spatial index if any
         /// </summary>
-        public ISpatialIndex SpatialIndex
+        public ISpatialIndex<int> SpatialIndex
         {
             get { return Quadtree; }
         }
@@ -164,44 +165,44 @@ namespace DotSpatial.Data
             if (File.Exists(Filename))
             {
                 header.Open(Filename);
-                UpdateHeader(header, feature);
+                UpdateHeader(header, feature.Geometry);
                 numFeatures = (header.ShxLength - 50) / 4;
             }
             else
             {
-                header.Xmin = feature.Envelope.Minimum.X;
-                header.Xmax = feature.Envelope.Maximum.X;
-                header.Ymin = feature.Envelope.Minimum.Y;
-                header.Ymax = feature.Envelope.Maximum.Y;
-                if (double.IsNaN(feature.Coordinates[0].M))
+                header.Xmin = feature.Geometry.EnvelopeInternal.MinX;
+                header.Xmax = feature.Geometry.EnvelopeInternal.MaxX;
+                header.Ymin = feature.Geometry.EnvelopeInternal.MinY;
+                header.Ymax = feature.Geometry.EnvelopeInternal.MaxY;
+                if (double.IsNaN(feature.Geometry.Coordinates[0].M))
                 {
                     header.ShapeType = ShapeType;
                 }
                 else
                 {
-                    if (double.IsNaN(feature.Coordinates[0].Z))
+                    if (double.IsNaN(feature.Geometry.Coordinates[0].Z))
                     {
                         header.ShapeType = ShapeTypeM;
                     }
                     else
                     {
-                        header.Zmin = feature.Envelope.Minimum.Z;
-                        header.Zmax = feature.Envelope.Maximum.Z;
+                        header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
+                        header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                         header.ShapeType = ShapeTypeZ;
                     }
-                    header.Mmin = feature.Envelope.Minimum.M;
-                    header.Mmax = feature.Envelope.Maximum.M;
+                    header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
+                    header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                 }
                 header.ShxLength = 4 + 50;
                 header.SaveAs(Filename);
             }
 
-            AppendBasicGeometry(header, feature, numFeatures);
+            AppendBasicGeometry(header, feature.Geometry, numFeatures);
 
             feature.RecordNumber = numFeatures;
 
             if (null != Quadtree)
-                Quadtree.Insert(feature.Envelope, numFeatures - 1);
+                Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
         }
 
         /// <inheritdocs/>
@@ -225,8 +226,8 @@ namespace DotSpatial.Data
                 // Update extent in header if feature being deleted is NOT completely contained
                 var hdr = new ShapefileHeader(Filename);
 
-                IEnvelope featureEnv = ifs.GetFeature(0).Envelope;
-                if (featureEnv.Left() <= hdr.Xmin || featureEnv.Right() >= hdr.Xmax || featureEnv.Top() >= hdr.Ymax || featureEnv.Bottom() <= hdr.Ymin)
+                Envelope featureEnv = ifs.GetFeature(0).Geometry.EnvelopeInternal;
+                if (featureEnv.MinX <= hdr.Xmin || featureEnv.MaxX >= hdr.Xmax || featureEnv.MaxY >= hdr.Ymax || featureEnv.MinY <= hdr.Ymin)
                 {
                     UpdateExtents();
                 }
@@ -273,53 +274,53 @@ namespace DotSpatial.Data
                 int numFeatures = 0;
                 if (filenameExists)
                 {
-                    UpdateHeader(header, feature, true);
+                    UpdateHeader(header, feature.Geometry, true);
                     numFeatures = (header.ShxLength - 50) / 4;
                 }
                 else
                 {
-                    header.Xmin = feature.Envelope.Minimum.X;
-                    header.Xmax = feature.Envelope.Maximum.X;
-                    header.Ymin = feature.Envelope.Minimum.Y;
-                    header.Ymax = feature.Envelope.Maximum.Y;
-                    if (double.IsNaN(feature.Coordinates[0].M))
+                    header.Xmin = feature.Geometry.EnvelopeInternal.MinX;
+                    header.Xmax = feature.Geometry.EnvelopeInternal.MaxX;
+                    header.Ymin = feature.Geometry.EnvelopeInternal.MinY;
+                    header.Ymax = feature.Geometry.EnvelopeInternal.MaxY;
+                    if (double.IsNaN(feature.Geometry.Coordinates[0].M))
                     {
                         header.ShapeType = ShapeType;
                     }
                     else
                     {
-                        if (double.IsNaN(feature.Coordinates[0].Z))
+                        if (double.IsNaN(feature.Geometry.Coordinates[0].Z))
                         {
                             header.ShapeType = ShapeTypeM;
                         }
                         else
                         {
-                            header.Zmin = feature.Envelope.Minimum.Z;
-                            header.Zmax = feature.Envelope.Maximum.Z;
+                            header.Zmin = feature.Geometry.EnvelopeInternal.Minimum.Z;
+                            header.Zmax = feature.Geometry.EnvelopeInternal.Maximum.Z;
                             header.ShapeType = ShapeTypeZ;
                         }
-                        header.Mmin = feature.Envelope.Minimum.M;
-                        header.Mmax = feature.Envelope.Maximum.M;
+                        header.Mmin = feature.Geometry.EnvelopeInternal.Minimum.M;
+                        header.Mmax = feature.Geometry.EnvelopeInternal.Maximum.M;
                     }
                     header.ShxLength = 4 + 50;
                     header.SaveAs(Filename);
                     filenameExists = true;
                 }
 
-                AppendBasicGeometry(header, feature, numFeatures);
+                AppendBasicGeometry(header, feature.Geometry, numFeatures);
 
                 feature.RecordNumber = numFeatures;
 
                 if (null != Quadtree)
-                    Quadtree.Insert(feature.Envelope, numFeatures - 1);
+                    Quadtree.Insert(feature.Geometry.EnvelopeInternal, numFeatures - 1);
             }
         }
 
         /// <inheritdocs/>
-        public abstract IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount);
+        public abstract IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount);
 
         /// <inheritdocs/>
-        public abstract void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
+        public abstract void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback);
 
         /// <inheritdocs/>
         public void EditAttributes(int fid, DataRow attributeValues)
@@ -398,7 +399,7 @@ namespace DotSpatial.Data
                 case ShapeType.PointZ:
                     return new PointShapefileFeatureSource(filename, useSpatialIndexing, trackDeletedRows);
                 default:
-                    throw new ClassNotSupportedException(string.Format("Cannot create ShapefileFeatureSource for {0} shape type", header.ShapeType));
+                    throw new ClassNotSupportedException(string.Format("Cannot create ShapefileFeatureSource for {0} shape type", header.ShapeType)); // TODO jany_ why use classNotSupportedException if message not a class name?  resulting Errormessage makes no sense
             }
         }
 
@@ -409,7 +410,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="header"></param>
         /// <param name="feature"></param>
-        protected void UpdateHeader(ShapefileHeader header, IBasicGeometry feature)
+        protected void UpdateHeader(ShapefileHeader header, IGeometry feature)
         {
             UpdateHeader(header, feature, true);
         }
@@ -421,21 +422,23 @@ namespace DotSpatial.Data
         /// <param name="header"></param>
         /// <param name="feature"></param>
         /// <param name="writeHeaderFiles"> </param>
-        protected void UpdateHeader(ShapefileHeader header, IBasicGeometry feature, bool writeHeaderFiles)
+        protected void UpdateHeader(ShapefileHeader header, IGeometry feature, bool writeHeaderFiles)
         {
             // Update the envelope
-            IEnvelope newExt;
+            Envelope newExt;
             // First, check to see if there are no features (ShxLength == 50)
             if (header.ShxLength <= 50)
             {
                 // This is the lone feature, so just set the extent to the feature extent
-                newExt = feature.Envelope;
+                newExt = feature.EnvelopeInternal;
             }
             else
             {
                 // Other features, so include new feature
-                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax, header.Zmin, header.Zmax);
-                newExt.ExpandToInclude(feature.Envelope);
+                newExt = new Envelope(header.Xmin, header.Xmax, header.Ymin, header.Ymax);
+                newExt.InitM(header.Mmin, header.Mmax);
+                newExt.InitZ(header.Zmin, header.Zmax);
+                newExt.ExpandToInclude(feature.EnvelopeInternal);
             }
             header.Xmin = newExt.Minimum.X;
             header.Ymin = newExt.Minimum.Y;
@@ -443,6 +446,8 @@ namespace DotSpatial.Data
             header.Xmax = newExt.Maximum.X;
             header.Ymax = newExt.Maximum.Y;
             header.Zmax = newExt.Maximum.Z;
+            header.Mmin = newExt.Minimum.M; //TODO added by jany_ on nts integration ... is this correct?
+            header.Mmax = newExt.Maximum.M;
             header.ShxLength = header.ShxLength + 4;
             if (writeHeaderFiles)
             {
@@ -494,7 +499,7 @@ namespace DotSpatial.Data
         /// <param name="startIndex"></param>
         /// <param name="maxCount"></param>
         /// <returns></returns>
-        protected IFeatureSet Select(IShapeSource sr, string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount)
+        protected IFeatureSet Select(IShapeSource sr, string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
             var shapes = sr.GetShapes(ref startIndex, maxCount, envelope);
             AttributeTable at = GetAttributeTable(Filename);
@@ -510,7 +515,7 @@ namespace DotSpatial.Data
                         schemaDefined = true;
                         result.CopyTableSchema(td);
                     }
-                    var f = new Feature(pair.Value) {RecordNumber = pair.Key + 1, DataRow = td.Rows[0]};
+                    var f = new Feature(pair.Value) { RecordNumber = pair.Key + 1, DataRow = td.Rows[0] };
                     result.Features.Add(f);
                     f.UpdateEnvelope();
                 }
@@ -525,7 +530,7 @@ namespace DotSpatial.Data
         /// <param name="envelope">The envelope for vector filtering.</param>
         /// <param name="chunkSize">Number of shapes to request from the ShapeSource in each chunk</param>
         /// <param name="featureEditCallback">Callback on each feature</param>
-        protected void SearchAndModifyAttributes(IShapeSource sr, IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent featureEditCallback)
+        protected void SearchAndModifyAttributes(IShapeSource sr, Envelope envelope, int chunkSize, FeatureSourceRowEditEvent featureEditCallback)
         {
             var samp = new ShapefileFeatureSourceSearchAndModifyAttributeParameters(featureEditCallback);
             AttributeTable at = null;
@@ -623,7 +628,7 @@ namespace DotSpatial.Data
         /// <param name="header"></param>
         /// <param name="feature"></param>
         /// <param name="numFeatures"></param>
-        protected abstract void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures);
+        protected abstract void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures);
 
         /// <summary>
         /// Create an appropriate ShapeSource for this FeatureSource

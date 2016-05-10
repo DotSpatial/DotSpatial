@@ -7,9 +7,8 @@ using System.IO;
 using System.Reflection;
 using DotSpatial.Data;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
-using ByteOrder = DotSpatial.Topology.Utilities.ByteOrder;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
@@ -343,7 +342,7 @@ namespace DotSpatial.Plugins.SpatiaLite
                 var byteOrder = (ByteOrder)stream.ReadByte();
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BeBinaryReader(stream) : new BinaryReader(stream);
+                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
                     var srid = reader.ReadInt32();
                     var mbrMinX = reader.ReadDouble();
                     var mbrMinY = reader.ReadDouble();

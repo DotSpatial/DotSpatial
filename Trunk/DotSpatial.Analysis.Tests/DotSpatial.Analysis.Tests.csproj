@@ -125,12 +125,9 @@
       <Project>{878a9c2c-21ac-4e63-9819-715b66b63cf5}</Project>
       <Name>DotSpatial.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotSpatial.Topology\DotSpatial.Topology.csproj">
-      <Project>{a8079861-c636-4ece-99c1-ad313276787b}</Project>
-      <Name>DotSpatial.Topology</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

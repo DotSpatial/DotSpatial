@@ -22,7 +22,8 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using DotSpatial.Topology;
+using DotSpatial.Serialization;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -81,7 +82,7 @@ namespace DotSpatial.Symbology
         /// scaled to the specified extent.
         /// </summary>
         /// <param name="extent">The geographic extent that is 100 times wider than the geographic size of the points.</param>
-        public LineCategory(IEnvelope extent)
+        public LineCategory(Envelope extent)
         {
             Symbolizer = new LineSymbolizer(extent, false);
             SelectionSymbolizer = new LineSymbolizer(extent, true);

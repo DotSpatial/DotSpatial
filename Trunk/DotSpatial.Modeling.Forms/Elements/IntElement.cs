@@ -24,8 +24,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 
-namespace DotSpatial.Modeling.Forms
+namespace DotSpatial.Modeling.Forms.Elements
 {
     /// <summary>
     /// an element for integers

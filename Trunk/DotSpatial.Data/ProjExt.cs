@@ -21,11 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 using Point = System.Drawing.Point;
 
-namespace DotSpatial.Symbology
+namespace DotSpatial.Data
 {
     /// <summary>
     /// Extension methods for the IProj interface

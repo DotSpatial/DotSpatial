@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 
 namespace DotSpatial.Data
@@ -732,7 +733,7 @@ namespace DotSpatial.Data
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual System.Drawing.Color[] CategoryColors()
+        public virtual Color[] CategoryColors()
         {
             return null;
         }

@@ -17,7 +17,9 @@
       <dependency id="DotSpatial.Data" />
       <dependency id="DotSpatial.Projections" />
       <dependency id="DotSpatial.Serialization" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NTSExtension" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
   <files>

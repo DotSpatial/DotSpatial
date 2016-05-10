@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using NuGet;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using DotSpatial.Controls;
+using NuGet;
 
 namespace DotSpatial.Plugins.ExtensionManager
 {

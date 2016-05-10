@@ -19,7 +19,7 @@
 // ********************************************************************************************************
 
 using System;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -34,7 +34,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new instance of EnvelopeArgs
         /// </summary>
-        public EnvelopeArgs(IEnvelope inEnvelope)
+        public EnvelopeArgs(Envelope inEnvelope)
         {
             Envelope = inEnvelope;
         }
@@ -46,7 +46,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the envelope specific to this event.
         /// </summary>
-        public IEnvelope Envelope { get; protected set; }
+        public Envelope Envelope { get; protected set; }
 
         #endregion
     }

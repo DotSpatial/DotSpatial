@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using Microsoft.CSharp.RuntimeBinder;
-using System.Diagnostics;
 
 namespace DotSpatial.Plugins.MapWindowProjectFileCompatibility
 {

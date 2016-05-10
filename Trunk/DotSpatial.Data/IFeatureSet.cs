@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -127,7 +127,7 @@ namespace DotSpatial.Data
         /// Generates a new feature, adds it to the features and returns the value.
         /// </summary>
         /// <returns>The feature that was added to this featureset</returns>
-        IFeature AddFeature(IBasicGeometry geometry);
+        IFeature AddFeature(IGeometry geometry);
 
         /// <summary>
         /// Adds the FID values as a field called FID, but only if the FID field

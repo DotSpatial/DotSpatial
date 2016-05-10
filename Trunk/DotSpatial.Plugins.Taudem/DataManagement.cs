@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace MapWinGeoProc
+namespace DotSpatial.Plugins.Taudem
 {
     //using MapWinUtility;
 

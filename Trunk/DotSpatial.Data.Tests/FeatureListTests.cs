@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using DotSpatial.Topology;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -18,7 +18,7 @@ namespace DotSpatial.Data.Tests
                                            expected = args.Feature.DataRow;
                                        };
 
-            var addedFeature = parent.AddFeature(new Point());
+            var addedFeature = parent.AddFeature(Point.Empty);
             var actual = addedFeature.DataRow;
 
             Assert.AreEqual(expected, actual);

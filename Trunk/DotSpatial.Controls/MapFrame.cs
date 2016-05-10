@@ -34,8 +34,7 @@ using DotSpatial.Projections;
 using DotSpatial.Projections.Forms;
 using DotSpatial.Serialization;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -244,7 +243,7 @@ namespace DotSpatial.Controls
             get { return _layers.EventsSuspended; }
         }
 
-        public override bool ClearSelection(out IEnvelope affectedAreas)
+        public override bool ClearSelection(out Envelope affectedAreas)
         {
             former = null;
             foreach (var l in this.GetAllLayers())
@@ -759,7 +758,7 @@ namespace DotSpatial.Controls
             {
                 if (_extendBuffer)
                 {
-                    Extent ext = ViewExtents.Copy();
+                    Extent ext = CloneableEM.Copy(ViewExtents);
                     ext.ExpandBy(ext.Width, ext.Height);
                     return ext;
                 }
@@ -807,7 +806,7 @@ namespace DotSpatial.Controls
             set
             {
                 if (value == null) return;
-                Extent ext = value.Copy();
+                Extent ext = CloneableEM.Copy(value);
                 ResetAspectRatio(ext);
                 // reset buffer initializes with correct buffer.  Don't allow initialization yet.
                 SuspendExtentChanged();
@@ -965,7 +964,7 @@ namespace DotSpatial.Controls
 
             double controlAspect = w / h;
             double envelopeAspect = newEnv.Width / newEnv.Height;
-            Coordinate center = newEnv.ToEnvelope().Center();
+            Coordinate center = newEnv.ToEnvelope().Centre;
 
             if (controlAspect > envelopeAspect)
             {
@@ -1049,21 +1048,21 @@ namespace DotSpatial.Controls
         /// <returns>An ICoordinate describing the geographic position</returns>
         public Coordinate BufferToProj(Point position)
         {
-            IEnvelope view = BufferExtents.ToEnvelope();
+            Envelope view = BufferExtents.ToEnvelope();
             if (base.ViewExtents == null) return new Coordinate(0, 0);
             double x = Convert.ToDouble(position.X);
             double y = Convert.ToDouble(position.Y);
-            x = x * view.Width / _width + view.Minimum.X;
-            y = view.Maximum.Y - y * view.Height / _height;
+            x = x * view.Width / _width + view.MinX;
+            y = view.MaxY - y * view.Height / _height;
 
             return new Coordinate(x, y, 0.0);
         }
 
         /// <summary>
-        /// This projects a rectangle relative to the buffer into and IEnvelope in geographic coordinates.
+        /// This projects a rectangle relative to the buffer into and Envelope in geographic coordinates.
         /// </summary>
         /// <param name="rect">A Rectangle</param>
-        /// <returns>An IEnvelope interface</returns>
+        /// <returns>An Envelope interface</returns>
         public Extent BufferToProj(Rectangle rect)
         {
             Point tl = new Point(rect.X, rect.Y);
@@ -1081,10 +1080,10 @@ namespace DotSpatial.Controls
         /// <returns>A Point with the new location.</returns>
         public Point ProjToBuffer(Coordinate location)
         {
-            IEnvelope view = BufferExtents.ToEnvelope();
+            Envelope view = BufferExtents.ToEnvelope();
             if (_width == 0 || _height == 0) return new Point(0, 0);
-            int x = Convert.ToInt32((location.X - view.Minimum.X) * (_width / view.Width));
-            int y = Convert.ToInt32((view.Maximum.Y - location.Y) * (_height / view.Height));
+            int x = Convert.ToInt32((location.X - view.MinX) * (_width / view.Width));
+            int y = Convert.ToInt32((view.MaxY - location.Y) * (_height / view.Height));
             return new Point(x, y);
         }
 
@@ -1092,7 +1091,7 @@ namespace DotSpatial.Controls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="env">The geographic IEnvelope</param>
+        /// <param name="env">The geographic Envelope</param>
         /// <returns>A Rectangle</returns>
         public Rectangle ProjToBuffer(Extent env)
         {
@@ -1219,7 +1218,7 @@ namespace DotSpatial.Controls
             ZoomToLayerEnvelope(e.Envelope);
         }
 
-        private void ZoomToLayerEnvelope(IEnvelope layerEnvelope)
+        private void ZoomToLayerEnvelope(Envelope layerEnvelope)
         {
             if (_extendBuffer)
             {
@@ -1275,7 +1274,7 @@ namespace DotSpatial.Controls
                     {
                         if (desired.Height > 0 && desired.Height < 1E300)
                         {
-                            Extent env = desired.Copy();
+                            Extent env = CloneableEM.Copy(desired);
                             env.ExpandBy(env.Width / 10, env.Height / 10); // Work item #84
                             ViewExtents = env;
                         }

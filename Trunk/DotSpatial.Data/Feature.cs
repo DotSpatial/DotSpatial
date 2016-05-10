@@ -23,8 +23,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
+using DotSpatial.NTSExtension;
+using DotSpatial.Serialization;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -45,13 +48,11 @@ namespace DotSpatial.Data
         /// </summary>
         public static string ComparisonField;
 
-        private IBasicGeometry _basicGeometry;
+        private IGeometry _basicGeometry;
         private DataRow _dataRow;
-        private CacheTypes _envelopSource;
-        private IEnvelope _envelope;
         private int _numParts;
         private IFeatureSet _parentFeatureSet;
-
+        private FeatureType _featureType;
         #endregion
 
         #region Constructors
@@ -71,6 +72,7 @@ namespace DotSpatial.Data
                 if (shape.Z != null) c.Z = shape.Z[0];
                 if (shape.M != null) c.M = shape.M[0];
                 _basicGeometry = new Point(c);
+                _featureType = FeatureType.Point;
             }
             if (shape.Range.FeatureType == FeatureType.MultiPoint)
             {
@@ -82,13 +84,16 @@ namespace DotSpatial.Data
                         Coordinate c = new Coordinate(shape.Vertices[i * 2], shape.Vertices[i * 2 + 1]);
                         if (shape.Z != null) c.Z = shape.Z[i];
                         if (shape.M != null) c.M = shape.M[i];
+                        coords.Add(c);
                     }
                 }
-                _basicGeometry = new MultiPoint(coords);
+                _basicGeometry = new MultiPoint(coords.CastToPointArray());
+                _featureType = FeatureType.MultiPoint;
             }
+
             if (shape.Range.FeatureType == FeatureType.Line)
             {
-                List<IBasicLineString> strings = new List<IBasicLineString>();
+                List<ILineString> strings = new List<ILineString>();
                 foreach (PartRange part in shape.Range.Parts)
                 {
                     List<Coordinate> coords = new List<Coordinate>();
@@ -99,16 +104,17 @@ namespace DotSpatial.Data
                         if (shape.M != null) c.M = shape.M[i];
                         coords.Add(c);
                     }
-                    strings.Add(new LineString(coords));
+                    strings.Add(new LineString(coords.ToArray()));
                 }
                 if (strings.Count > 1)
                 {
-                    _basicGeometry = new MultiLineString(strings);
+                    _basicGeometry = new MultiLineString(strings.ToArray());
                 }
                 else if (strings.Count == 1)
                 {
                     _basicGeometry = strings[0];
                 }
+                _featureType = FeatureType.Line;
             }
             if (shape.Range.FeatureType == FeatureType.Polygon)
             {
@@ -139,9 +145,10 @@ namespace DotSpatial.Data
         /// Creates a feature from a geometry
         /// </summary>
         /// <param name="geometry">The geometry to turn into a feature</param>
-        public Feature(IBasicGeometry geometry)
+        public Feature(IGeometry geometry)
         {
             _basicGeometry = geometry;
+            _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = null;
         }
 
@@ -151,11 +158,11 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="geometry">The IBasicGeometry to use for this feature</param>
         /// <param name="parent">The IFeatureSet to add this feature to.</param>
-        public Feature(IBasicGeometry geometry, IFeatureSet parent)
+        public Feature(IGeometry geometry, IFeatureSet parent)
         {
             _basicGeometry = geometry;
+            _featureType = FeatureTypeFromGeometryType(geometry);
             _dataRow = parent.DataTable.NewRow();
-            _envelopSource = CacheTypes.Dynamic;
             parent.Features.Add(this);
         }
 
@@ -166,7 +173,8 @@ namespace DotSpatial.Data
         {
             _dataRow = null;
             _basicGeometry = null;
-            _envelopSource = CacheTypes.Cached;
+            _featureType = FeatureType.Unspecified;
+            //_envelopSource = CacheTypes.Cached;
         }
 
         /// <summary>
@@ -181,25 +189,26 @@ namespace DotSpatial.Data
             {
                 case FeatureType.Line:
                     _dataRow = null;
-                    _basicGeometry = new LineString(coordinates);
-                    _envelopSource = CacheTypes.Dynamic;
+                    _basicGeometry = new LineString(coordinates.ToArray());
+                    //_envelopSource = CacheTypes.Dynamic;
                     break;
                 case FeatureType.MultiPoint:
                     _dataRow = null;
-                    _basicGeometry = new MultiPoint(coordinates);
-                    _envelopSource = CacheTypes.Dynamic;
+                    _basicGeometry = new MultiPoint(coordinates.CastToPointArray());
+                    //_envelopSource = CacheTypes.Dynamic;
                     break;
                 case FeatureType.Point:
                     _dataRow = null;
                     _basicGeometry = new Point(coordinates.First());
-                    _envelopSource = CacheTypes.Dynamic;
+                    //_envelopSource = CacheTypes.Dynamic;
                     break;
                 case FeatureType.Polygon:
                     _dataRow = null;
-                    _basicGeometry = new Polygon(coordinates);
-                    _envelopSource = CacheTypes.Dynamic;
+                    _basicGeometry = new Polygon(new LinearRing(coordinates.ToArray()));
+                    //_envelopSource = CacheTypes.Dynamic;
                     break;
             }
+            _featureType = featureType;
         }
 
         /// <summary>
@@ -238,14 +247,13 @@ namespace DotSpatial.Data
         /// </summary>
         /// <returns>An IBasicGeometry interface</returns>
         /// <exception cref="IndexOutOfRangeException">Index cannot be less than 0 or greater than 1</exception>
-        public IBasicGeometry GetBasicGeometryN(int index)
+        public IGeometry GetBasicGeometryN(int index)
         {
-            return _basicGeometry.GetBasicGeometryN(index);
+            return _basicGeometry.GetGeometryN(index);
         }
 
         private void ReadPolygonShape(Shape shape)
         {
-            _envelope = shape.Range.Extent.ToEnvelope();
             List<ILinearRing> shells = new List<ILinearRing>();
             List<ILinearRing> holes = new List<ILinearRing>();
             foreach (PartRange part in shape.Range.Parts)
@@ -260,14 +268,14 @@ namespace DotSpatial.Data
                     i++;
                     coords.Add(c);
                 }
-                LinearRing ring = new LinearRing(coords);
+                LinearRing ring = new LinearRing(coords.ToArray());
                 if (shape.Range.Parts.Count == 1)
                 {
                     shells.Add(ring);
                 }
                 else
                 {
-                    if (CgAlgorithms.IsCounterClockwise(ring.Coordinates))
+                    if (CGAlgorithms.IsCCW(ring.Coordinates))
                     {
                         holes.Add(ring);
                     }
@@ -294,18 +302,18 @@ namespace DotSpatial.Data
             {
                 ILinearRing testRing = holes[i];
                 ILinearRing minShell = null;
-                IEnvelope minEnv = null;
-                IEnvelope testEnv = testRing.EnvelopeInternal;
+                Envelope minEnv = null;
+                Envelope testEnv = testRing.EnvelopeInternal;
                 Coordinate testPt = testRing.Coordinates[0];
                 for (int j = 0; j < shells.Count; j++)
                 {
                     ILinearRing tryRing = shells[j];
-                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                    Envelope tryEnv = tryRing.EnvelopeInternal;
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
-                    
+
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (tryEnv.Contains(testEnv) && (CgAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)|| (PointInList(testPt, tryRing.Coordinates))))
+                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || (PointInList(testPt, tryRing.Coordinates))))
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
                         {
@@ -316,7 +324,7 @@ namespace DotSpatial.Data
                 }
             }
 
-            var polygons = new Polygon[shells.Count];
+            var polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
             {
                 polygons[i] = new Polygon(shells[i], holesForShells[i].ToArray());
@@ -331,6 +339,7 @@ namespace DotSpatial.Data
                 // It's a multi part
                 _basicGeometry = new MultiPolygon(polygons);
             }
+            _featureType = FeatureType.Polygon;
         }
 
         /// <summary>
@@ -348,6 +357,32 @@ namespace DotSpatial.Data
         }
 
         #endregion
+
+        private FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
+        {
+            FeatureType featureType = FeatureType.Unspecified;
+            if (geometry == null) return featureType;
+
+            switch (geometry.OgcGeometryType)
+            {
+                case OgcGeometryType.Point:
+                    featureType = FeatureType.Point;
+                    break;
+                case OgcGeometryType.LineString:
+                case OgcGeometryType.MultiLineString:
+                    featureType = FeatureType.Line;
+                    break;
+                case OgcGeometryType.Polygon:
+                case OgcGeometryType.MultiPolygon:
+                    featureType = FeatureType.Polygon;
+                    break;
+                case OgcGeometryType.MultiPoint:
+                    featureType = FeatureType.MultiPoint;
+                    break;
+            }
+            return featureType;
+        }
+
 
         #region Methods
 
@@ -396,7 +431,6 @@ namespace DotSpatial.Data
         {
             if (_basicGeometry == null) return;
             _basicGeometry.UpdateEnvelope();
-            _envelope = _basicGeometry.Envelope;
             if (ShapeIndex != null) ShapeIndex.CalculateExtents(); //Changed by jany_ (2015-07-09) must be updated because sometimes ShapeIndizes are used although IndexMode is false
         }
 
@@ -406,7 +440,8 @@ namespace DotSpatial.Data
         /// <returns>A String representing the Geographic Markup Language version of this point</returns>
         public virtual string ExportToGml()
         {
-            return _basicGeometry.ExportToGml();
+            var geo = (_basicGeometry as Geometry);
+            return (geo == null) ? "" : geo.ToGMLFeature().ToString();
         }
 
         /// <summary>
@@ -417,7 +452,7 @@ namespace DotSpatial.Data
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public virtual byte[] ToBinary()
         {
-            return _basicGeometry.ToBinary();
+            return _basicGeometry.AsBinary();
         }
 
         /// <summary>
@@ -436,8 +471,7 @@ namespace DotSpatial.Data
         public Feature Copy()
         {
             Feature clone = (Feature)MemberwiseClone();
-            clone.BasicGeometry = BasicGeometry.Copy();
-            clone.Envelope = Envelope.Copy();
+            clone.Geometry = Geometry.Copy();
             DataTable table = ParentFeatureSet.DataTable;
             clone._dataRow = table.NewRow();
             if (DataRow != null)
@@ -456,8 +490,7 @@ namespace DotSpatial.Data
         /// <param name="copy">The feature being copied</param>
         protected virtual void OnCopy(Feature copy)
         {
-            copy.Envelope = Envelope.Copy();
-            copy.BasicGeometry = _basicGeometry.Copy();
+            copy.Geometry = _basicGeometry.Copy();
             // This provides an overrideable interface for modifying the copy behavior.
         }
 
@@ -478,25 +511,25 @@ namespace DotSpatial.Data
                 }
                 int count = 0;
 
-                if (_basicGeometry.FeatureType != FeatureType.Polygon)
+                if (FeatureType != FeatureType.Polygon)
                     return _basicGeometry.NumGeometries;
-                IBasicPolygon p = _basicGeometry as IBasicPolygon;
+                IPolygon p = _basicGeometry as IPolygon;
                 if (p == null)
                 {
                     // we have a multi-polygon situation
                     for (int i = 0; i < _basicGeometry.NumGeometries; i++)
                     {
-                        p = _basicGeometry.GetBasicGeometryN(i) as IBasicPolygon;
+                        p = _basicGeometry.GetGeometryN(i) as IPolygon;
                         if (p == null) continue;
                         count += 1; // Shell
-                        count += p.NumHoles; // Holes
+                        count += p.NumInteriorRings; // Holes
                     }
                 }
                 else
                 {
                     // The feature is a polygon, not a multi-polygon
                     count += 1; // Shell
-                    count += p.NumHoles; // Holes
+                    count += p.NumInteriorRings; // Holes
                 }
                 return count;
             }
@@ -523,11 +556,11 @@ namespace DotSpatial.Data
         #region IFeature Members
 
         /// <summary>
-        /// Gets or sets a valid IBasicGeometry associated with the data elements of this feature.
+        /// Gets or sets a valid IGeometry associated with the data elements of this feature.
         /// This will be enough geometry information to cast into a full fledged geometry
         /// that can be used in coordination with DotSpatial.Analysis
         /// </summary>
-        public virtual IBasicGeometry BasicGeometry
+        public virtual IGeometry Geometry
         {
             get
             {
@@ -536,7 +569,8 @@ namespace DotSpatial.Data
             set
             {
                 _basicGeometry = value;
-                EnvelopeSource = CacheTypes.Cached;
+                FeatureType = FeatureTypeFromGeometryType(_basicGeometry);
+                //EnvelopeSource = CacheTypes.Cached;
             }
         }
 
@@ -553,22 +587,6 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// Returns an array of coordinates corresponding to the basic feature.
-        /// </summary>
-        public virtual IList<Coordinate> Coordinates
-        {
-            get
-            {
-                if (_basicGeometry == null) return null;
-                return _basicGeometry.Coordinates;
-            }
-            set
-            {
-                if (_basicGeometry == null) return;
-                _basicGeometry.Coordinates = value;
-            }
-        }
 
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry.
@@ -589,50 +607,7 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <summary>
-        /// This is an envelope, but specified by the file, not by calculating from the geometry.
-        /// To obtain a calculated envelope, calling the DynamicEnvelope()
-        /// </summary>
-        public virtual IEnvelope Envelope
-        {
-            get
-            {
-                if (_envelopSource == CacheTypes.Cached && _envelope != null) return _envelope;
-                if (BasicGeometry == null) return _envelope;
-                _envelope = BasicGeometry.Envelope;
-                return _envelope;
-            }
-            set
-            {
-                // Setting the geometry envelope may not even be possible. Setting this automatically caches an envelope.
-                _envelopSource = CacheTypes.Cached;
-                _envelope = value;
-            }
-        }
 
-        /// <summary>
-        /// Gets or sets a DotSpatial.Data.CacheTypes enumeration specifying whether the Envelope property
-        /// returns a cached value in this object or is retrieved directly from the geometry.  The
-        /// initial case for Shapefiles is to use a cache.  Setting the envelope assumes that you
-        /// are going to use a cached value and will set this to Cached.  Setting this to Dynamic
-        /// will cause the Envelope property to reference the geometry.
-        /// </summary>
-        public virtual CacheTypes EnvelopeSource
-        {
-            get { return _envelopSource; }
-            set
-            {
-                _envelopSource = value;
-                if (_basicGeometry != null)
-                {
-                    _envelope = _envelopSource == CacheTypes.Dynamic ? _basicGeometry.Envelope : _basicGeometry.Envelope.Copy();
-                }
-                else
-                {
-                    _envelope = new Envelope();
-                }
-            }
-        }
 
         /// <summary>
         /// Returns either Point, Polygon or Line
@@ -641,9 +616,9 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_basicGeometry == null) return FeatureType.Unspecified;
-                return _basicGeometry.FeatureType;
+                return _basicGeometry == null ? FeatureType.Unspecified : _featureType;
             }
+            private set { _featureType = value; }
         }
 
         /// <summary>

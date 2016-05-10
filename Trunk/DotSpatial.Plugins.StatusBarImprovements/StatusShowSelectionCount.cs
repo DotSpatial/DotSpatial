@@ -2,12 +2,13 @@
 // <copyright file="StatusBarCoordinates.cs" company="">
 // </copyright>
 // -----------------------------------------------------------------------
+
 using System;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Symbology;
 
-namespace DemoMap
+namespace DotSpatial.Plugins.StatusBarImprovements
 {
     /// <summary>
     /// Displays how much layers selected

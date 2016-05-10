@@ -22,6 +22,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {

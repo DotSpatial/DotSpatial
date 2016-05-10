@@ -19,7 +19,9 @@
 // ********************************************************************************************************
 
 using System.Collections.Generic;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -87,15 +89,15 @@ namespace DotSpatial.Data
             }
             if (self.Parent.FeatureType == FeatureType.Line)
             {
-                self.Add(new Feature(new LineString(points)));
+                self.Add(new Feature(new LineString(points as Coordinate[])));
             }
             if (self.Parent.FeatureType == FeatureType.Polygon)
             {
-                self.Add(new Feature(new Polygon(points)));
+                self.Add(new Feature(new Polygon(new LinearRing(points as Coordinate[]))));
             }
             if (self.Parent.FeatureType == FeatureType.MultiPoint)
             {
-                self.Add(new Feature(new MultiPoint(points)));
+                self.Add(new Feature(new MultiPoint(points.CastToPointArray())));
             }
         }
 
@@ -106,7 +108,7 @@ namespace DotSpatial.Data
         /// <param name="self">This feature list</param>
         /// <param name="geometry">The geometry to create a new feature from.</param>
         /// <exception cref="FeatureTypeMismatchException">Thrown if the new geometry does not match the currently specified feature type.  </exception>
-        public static void Add(this IFeatureList self, IBasicGeometry geometry)
+        public static void Add(this IFeatureList self, IGeometry geometry)
         {
             Feature f = new Feature(geometry);
             if (f.FeatureType != self.Parent.FeatureType && self.Parent.FeatureType != FeatureType.Unspecified)

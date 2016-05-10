@@ -20,7 +20,7 @@
 using System;
 using System.ComponentModel;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -62,10 +62,10 @@ namespace DotSpatial.Data
         /// Initialize a new instance of the ExtentMZ class.
         /// </summary>
         /// <param name="env">The Envelope to read the minimum and maximum values from.</param>
-        public ExtentMZ(IEnvelope env)
+        public ExtentMZ(Envelope env)
         {
-            SetValues(env.Minimum.X, env.Minimum.Y, env.Minimum.M, env.Minimum.Z,
-                env.Maximum.X, env.Maximum.Y, env.Maximum.M, env.Maximum.Z);
+            SetValues(env.MinX, env.MinY, env.Minimum.M, env.Minimum.Z,
+                env.MaxX, env.MaxY, env.Maximum.M, env.Maximum.Z);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
-        public override bool Intersects(IEnvelope env)
+        public override bool Intersects(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
@@ -356,7 +356,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to compare.</param>
         /// <returns>Boolean.</returns>
-        public override bool Within(IEnvelope env)
+        public override bool Within(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {
@@ -372,7 +372,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to test.</param>
         /// <returns>Boolean.</returns>
-        public override bool Contains(IEnvelope env)
+        public override bool Contains(Envelope env)
         {
             if (!double.IsNaN(env.Minimum.Z) && !double.IsNaN(env.Maximum.Z) && HasZ)
             {

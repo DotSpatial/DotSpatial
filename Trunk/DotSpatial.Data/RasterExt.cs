@@ -21,7 +21,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -43,14 +43,8 @@ namespace DotSpatial.Data
         public static bool ContainsFeature(this IRaster raster, IFeature shape)
         {
             IRasterBounds bounds = raster.Bounds;
-            Extent shapeExtent = shape.Envelope.ToExtent();
-            if (shapeExtent.MinX > bounds.Extent.MaxX || shapeExtent.MinY > bounds.Extent.MaxY ||
-                shapeExtent.MaxX < bounds.Extent.MinX || shapeExtent.MaxY < bounds.Extent.MinY)
-            {
-                return false;
-            }
-
-            return true;
+            Extent shapeExtent = shape.Geometry.EnvelopeInternal.ToExtent();
+            return !(shapeExtent.MinX > bounds.Extent.MaxX) && !(shapeExtent.MinY > bounds.Extent.MaxY) && !(shapeExtent.MaxX < bounds.Extent.MinX) && !(shapeExtent.MaxY < bounds.Extent.MinY);
         }
 
         /// <summary>

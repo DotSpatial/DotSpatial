@@ -19,11 +19,9 @@
 // ********************************************************************************************************
 
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -36,7 +34,7 @@ namespace DotSpatial.Symbology.Forms
 
         private readonly IWindowsFormsEditorService _dialogProvider;
         private double _dynamicVisibilityWidth;
-        private IEnvelope _grabExtents;
+        private Envelope _grabExtents;
         private ILayer _layer;
         private bool _useDynamicVisibility;
 
@@ -132,7 +130,7 @@ namespace DotSpatial.Symbology.Forms
         /// If a layer is not provided, the DynamicVisibilityExtents
         /// will be set to the grab extents instead.
         /// </summary>
-        public IEnvelope GrabExtents
+        public Envelope GrabExtents
         {
             get { return _grabExtents; }
             set { _grabExtents = value; }

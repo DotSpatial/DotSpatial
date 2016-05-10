@@ -28,8 +28,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Algorithm;
+using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace DotSpatial.Data
 {
@@ -84,7 +84,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        protected override void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures)
+        protected override void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
         {
             FileInfo fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -99,23 +99,23 @@ namespace DotSpatial.Data
             for (int iPart = 0; iPart < feature.NumGeometries; iPart++)
             {
                 parts.Add(points.Count);
-                IBasicPolygon pg = feature.GetBasicGeometryN(iPart) as IBasicPolygon;
+                IPolygon pg = feature.GetGeometryN(iPart) as IPolygon;
                 if (pg == null) continue;
                 var bl = pg.Shell;
                 IEnumerable<Coordinate> coords = bl.Coordinates;
 
-                if (CgAlgorithms.IsCounterClockwise(bl.Coordinates))
+                if (CGAlgorithms.IsCCW(bl.Coordinates))
                 {
                     // Exterior rings need to be clockwise
                     coords = coords.Reverse();
                 }
 
                 points.AddRange(coords);
-                foreach (IBasicLineString hole in pg.Holes)
+                foreach (ILineString hole in pg.Holes)
                 {
                     parts.Add(points.Count);
                     IEnumerable<Coordinate> holeCoords = hole.Coordinates;
-                    if (!CgAlgorithms.IsCounterClockwise(hole.Coordinates))
+                    if (!CGAlgorithms.IsCCW(hole.Coordinates))
                     {
                         // Interior rings need to be counter-clockwise
                         holeCoords = holeCoords.Reverse();
@@ -159,10 +159,10 @@ namespace DotSpatial.Data
                 return;
             }
 
-            shpStream.WriteLe(feature.Envelope.Minimum.X);             // Byte 12      Xmin                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Minimum.Y);             // Byte 20      Ymin                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Maximum.X);             // Byte 28      Xmax                Double      1           Little
-            shpStream.WriteLe(feature.Envelope.Maximum.Y);             // Byte 36      Ymax                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MinX);             // Byte 12      Xmin                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MinY);             // Byte 20      Ymin                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MaxX);             // Byte 28      Xmax                Double      1           Little
+            shpStream.WriteLe(feature.EnvelopeInternal.MaxY);             // Byte 36      Ymax                Double      1           Little
             shpStream.WriteLe(parts.Count);                            // Byte 44      NumParts            Integer     1           Little
             shpStream.WriteLe(points.Count);                           // Byte 48      NumPoints           Integer     1           Little
             // Byte 52      Parts               Integer     NumParts    Little
@@ -183,8 +183,8 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolygonZ)
             {
-                shpStream.WriteLe(feature.Envelope.Minimum.Z);
-                shpStream.WriteLe(feature.Envelope.Maximum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.Minimum.Z);
+                shpStream.WriteLe(feature.EnvelopeInternal.Maximum.Z);
                 double[] zVals = new double[points.Count];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
@@ -195,15 +195,15 @@ namespace DotSpatial.Data
 
             if (header.ShapeType == ShapeType.PolygonM || header.ShapeType == ShapeType.PolygonZ)
             {
-                if (feature.Envelope == null)
+                if (feature.EnvelopeInternal == null)
                 {
                     shpStream.WriteLe(0.0);
                     shpStream.WriteLe(0.0);
                 }
                 else
                 {
-                    shpStream.WriteLe(feature.Envelope.Minimum.M);
-                    shpStream.WriteLe(feature.Envelope.Maximum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.Minimum.M);
+                    shpStream.WriteLe(feature.EnvelopeInternal.Maximum.M);
                 }
 
                 double[] mVals = new double[points.Count];
@@ -234,14 +234,14 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public override IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount)
+        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
             return Select(new PolygonShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex,
                           maxCount);
         }
 
         /// <inheritdoc/>
-        public override void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
+        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
         {
             SearchAndModifyAttributes(new PolygonShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }

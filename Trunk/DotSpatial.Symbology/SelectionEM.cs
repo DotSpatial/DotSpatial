@@ -18,7 +18,7 @@
 //
 // ********************************************************************************************************
 
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -34,9 +34,9 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="self">The ISelection to invert</param>
         /// <param name="region">The geographic region to reverse the selected state</param>
-        public static bool InvertSelection(this ISelection self, IEnvelope region)
+        public static bool InvertSelection(this ISelection self, Envelope region)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.InvertSelection(region, out ignoreMe);
         }
 

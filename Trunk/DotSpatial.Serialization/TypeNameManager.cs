@@ -50,7 +50,7 @@ namespace DotSpatial.Serialization
         /// reference may need to be updated with local assembly information.
         /// </summary>
         /// <param name="invalidTypeName">The invalidated type name, usually because the version is out of date.</param>
-        /// <returns>A string represnting the same type, but with a modern assmebly.</returns>
+        /// <returns>A string representing the same type, but with a modern assembly.</returns>
         public string UpdateTypename(string invalidTypeName)
         {
             QualifiedTypeName myType = new QualifiedTypeName(invalidTypeName);

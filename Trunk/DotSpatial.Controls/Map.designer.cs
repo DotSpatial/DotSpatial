@@ -20,8 +20,8 @@
 //--------------------|--------------------|--------------------------------------------------------
 // Jiri Kadlec        |  2/18/2010         |  Added zoom out button and custom mouse cursors
 // ********************************************************************************************************
+
 using System.ComponentModel;
-using System.Drawing;
 
 namespace DotSpatial.Controls
 {

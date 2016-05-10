@@ -1,12 +1,9 @@
-﻿namespace DotSpatial.Plugins.WFSClient
+﻿using System;
+using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
+
+namespace DotSpatial.Plugins.WFSClient
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using DotSpatial.Controls;
-    using DotSpatial.Controls.Header;
-    using WFSPlugin;
     public class WfsPlugin : Extension
     {
         public override void Activate()

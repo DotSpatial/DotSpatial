@@ -1,17 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using DotSpatial.Controls;
 using DotSpatial.Controls.Header;
 using DotSpatial.Data;
+using DotSpatial.Plugins.WebMap.Properties;
 using DotSpatial.Plugins.WebMap.Tiling;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-using System.Diagnostics;
 using DotSpatial.Symbology;
+using GeoAPI.Geometries;
+using ExtentArgs = DotSpatial.Data.ExtentArgs;
+using FeatureType = DotSpatial.Data.FeatureType;
 
 namespace DotSpatial.Plugins.WebMap
 {
@@ -74,7 +75,7 @@ namespace DotSpatial.Plugins.WebMap
             {
                 Key = "kOptions",
                 RootKey = HeaderControl.HomeRootItemKey,
-                GroupCaption = Properties.Resources.Panel_Name,
+                GroupCaption = Resources.Panel_Name,
                 Enabled = false,
             };
             App.HeaderControl.Add(_optionsAction);
@@ -162,8 +163,8 @@ namespace DotSpatial.Plugins.WebMap
             _opacityDropDown = new DropDownActionItem
                                    {
                                        AllowEditingText = true,
-                                       Caption = Properties.Resources.Opacity_Box_Text,
-                                       ToolTipText = Properties.Resources.Opacity_Box_ToolTip,
+                                       Caption = Resources.Opacity_Box_Text,
+                                       ToolTipText = Resources.Opacity_Box_ToolTip,
                                        Width = 45,
                                        Key = STR_KeyOpacityDropDown
                                    };
@@ -179,7 +180,7 @@ namespace DotSpatial.Plugins.WebMap
                 _opacityDropDown.Items.Add(opacity);
             }
 
-            _opacityDropDown.GroupCaption = Properties.Resources.Panel_Name;
+            _opacityDropDown.GroupCaption = Resources.Panel_Name;
             _opacityDropDown.SelectedValueChanged += OpacitySelected;
             _opacityDropDown.RootKey = HeaderControl.HomeRootItemKey;
 
@@ -197,12 +198,12 @@ namespace DotSpatial.Plugins.WebMap
                 RootKey = HeaderControl.HomeRootItemKey,
                 Width = 145,
                 AllowEditingText = false,
-                ToolTipText = Properties.Resources.Service_Box_ToolTip,
-                GroupCaption = Properties.Resources.Panel_Name
+                ToolTipText = Resources.Service_Box_ToolTip,
+                GroupCaption = Resources.Panel_Name
             };
 
             // "None" provider
-            _emptyProvider = new ServiceProvider(Properties.Resources.None);
+            _emptyProvider = new ServiceProvider(Resources.None);
             _serviceDropDown.Items.Add(_emptyProvider);
 
             // Default providers
@@ -273,7 +274,7 @@ namespace DotSpatial.Plugins.WebMap
         }
 
         /// <summary>
-        /// Changes the opacity of the current basemap image and invalidates the map
+        /// Changes the opacity of the current basemap image and invalidates the map.
         /// </summary>
         private void ChangeBasemapOpacity()
         {
@@ -349,16 +350,15 @@ namespace DotSpatial.Plugins.WebMap
         {
             if (_baseMapLayer == null)
             {
-                //Need to first initialize and add the basemap layer synchronously (it will fail if done in
-                // another thread.
+                //Need to first initialize and add the basemap layer synchronously (it will fail if done in another thread).
 
                 //First create a temporary imageData with an Envelope (otherwise adding to the map will fail)
-                var tempImageData = new InRamImageData(Properties.Resources.nodata, new Extent(1, 1, 2, 2));
+                var tempImageData = new InRamImageData(Resources.nodata, new Extent(1, 1, 2, 2));
 
                 _baseMapLayer = new MapImageLayer(tempImageData)
                                 {
                                     Projection = App.Map.Projection,
-                                    LegendText = Properties.Resources.Legend_Title
+                                    LegendText = Resources.Legend_Title
                                 };
 
                 _baseMapLayer.RemoveItem += BaseMapLayerRemoveItem;
@@ -382,6 +382,9 @@ namespace DotSpatial.Plugins.WebMap
             RunOrCancelBW();
         }
 
+        /// <summary>
+        /// Changes the Maps opacity to the selected opacity.
+        /// </summary>
         private void OpacitySelected(object sender, SelectedValueChangedEventArgs e)
         {
             if (_baseMapLayer == null)
@@ -432,16 +435,16 @@ namespace DotSpatial.Plugins.WebMap
                 _opacityDropDown.SelectedItem = opacity;
                 _opacity = Convert.ToInt16(opacity);
 
-                var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", Properties.Resources.None);
-                if (basemapName.Equals(Properties.Resources.None)) // make sure there is no basemap layer that shouldn't be there
+                var basemapName = App.SerializationManager.GetCustomSetting(PluginName + "_BasemapName", Resources.None);
+                if (basemapName.Equals(Resources.None)) // make sure there is no basemap layer that shouldn't be there
                 {
-                    var tmpLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Properties.Resources.Legend_Title);
+                    var tmpLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Resources.Legend_Title);
                     if (tmpLayer != null)
                         RemoveBasemapLayer(tmpLayer);
                 }
                 else
                 {
-                    _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Properties.Resources.Legend_Title);
+                    _baseMapLayer = (MapImageLayer)App.Map.MapFrame.GetAllLayers().FirstOrDefault(layer => layer.LegendText == Resources.Legend_Title);
                     if (_baseMapLayer != null) _baseMapLayer.Projection = WebMercProj; // changed by jany_(2015-07-09) set the projection because if it is not set we produce a cross thread exception when DotSpatial tries to show the projection dialog
 
                     //hack: need to set provider to original object, not a new one.
@@ -466,7 +469,7 @@ namespace DotSpatial.Plugins.WebMap
         private void SerializationManagerSerializing(object sender, SerializingEventArgs e)
         {
             var p = CurrentProvider;
-            App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", p != null ? p.Name : Properties.Resources.None);
+            App.SerializationManager.SetCustomSetting(PluginName + "_BasemapName", p != null ? p.Name : Resources.None);
             App.SerializationManager.SetCustomSetting(PluginName + "_Opacity", _opacity.ToString(CultureInfo.InvariantCulture));
         }
 
@@ -483,7 +486,7 @@ namespace DotSpatial.Plugins.WebMap
         private void ServiceSelected(object sender, SelectedValueChangedEventArgs e)
         {
             var p = CurrentProvider;
-            if (p == null || p.Name == Properties.Resources.None)
+            if (p == null || p.Name == Resources.None)
             {
                 DisableBasemapLayer();
             }
@@ -558,8 +561,8 @@ namespace DotSpatial.Plugins.WebMap
             // of the tiled image
             var tileVertices = new[]
             {
-                tiles.TopLeftTile.TopLeft().X, tiles.TopLeftTile.TopLeft().Y,
-                tiles.BottomRightTile.BottomRight().X, tiles.BottomRightTile.BottomRight().Y
+                tiles.TopLeftTile.MinX, tiles.TopLeftTile.MaxY,
+                tiles.BottomRightTile.MaxX, tiles.BottomRightTile.MinY
             };
 
             //Reproject from WGS1984 geographic coordinates to web mercator so we can show on the map

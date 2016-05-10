@@ -21,6 +21,7 @@
 // ********************************************************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
@@ -140,7 +141,7 @@ namespace DotSpatial.Controls
             if (null != target && (target.StartsWith("www.") ||
                                    target.StartsWith("http:")))
             {
-                System.Diagnostics.Process.Start(target);
+                Process.Start(target);
             }
         }
 

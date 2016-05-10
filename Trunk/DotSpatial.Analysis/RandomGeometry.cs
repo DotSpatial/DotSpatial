@@ -13,8 +13,11 @@
 // *******************************************************************************************************
 
 using System;
+using System.Linq;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Analysis
 {
@@ -50,14 +53,13 @@ namespace DotSpatial.Analysis
                 c.X = rndx * (ConstrainingFeatures.Extent.MaxX - ConstrainingFeatures.Extent.MinX) + ConstrainingFeatures.Extent.MinX;
                 c.Y = rndy * (ConstrainingFeatures.Extent.MaxY - ConstrainingFeatures.Extent.MinY) + ConstrainingFeatures.Extent.MinY;
 
+                Point p = new Point(c);
+
                 //check if the point falls within the polygon featureset
-                foreach (var f in ConstrainingFeatures.Features)
+                if (ConstrainingFeatures.Features.Any(f => f.Geometry.Intersects(p)))
                 {
-                    if (f.Intersects(c))
-                    {
-                        fsOut.AddFeature(new Feature(c));
-                        i++;
-                    }
+                    fsOut.AddFeature(p);
+                    i++;
                 }
                 if (cancelProgressHandler != null)
                 {
@@ -88,12 +90,14 @@ namespace DotSpatial.Analysis
                 //make a random point somewhere in the rectangular extents of the feature
                 double rndx = r.Next(0, 100000) / 100000.0;
                 double rndy = r.Next(0, 100000) / 100000.0;
-                c.X = rndx * (ConstrainingFeature.Envelope.Right() - ConstrainingFeature.Envelope.Left()) + ConstrainingFeature.Envelope.Left();
-                c.Y = rndy * (ConstrainingFeature.Envelope.Top() - ConstrainingFeature.Envelope.Bottom()) + ConstrainingFeature.Envelope.Bottom();
+                c.X = rndx * (ConstrainingFeature.Geometry.EnvelopeInternal.Right() - ConstrainingFeature.Geometry.EnvelopeInternal.MinX) + ConstrainingFeature.Geometry.EnvelopeInternal.MinX;
+                c.Y = rndy * (ConstrainingFeature.Geometry.EnvelopeInternal.MaxY - ConstrainingFeature.Geometry.EnvelopeInternal.Bottom()) + ConstrainingFeature.Geometry.EnvelopeInternal.Bottom();
                 //check if the point falls within the polygon featureset
-                if (ConstrainingFeature.Intersects(c))
+               
+                Point p = new Point(c);
+                if (ConstrainingFeature.Geometry.Intersects(p))
                 {
-                    fsOut.AddFeature(new Feature(c));
+                    fsOut.AddFeature(p);
                     i++;
                 }
             }

@@ -18,8 +18,8 @@
 // 2015-03-02 - jany_ - Moved to Dotspatial
 // ********************************************************************************************************
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 

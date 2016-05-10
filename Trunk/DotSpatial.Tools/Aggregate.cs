@@ -15,6 +15,7 @@
 
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
+using DotSpatial.Modeling.Forms.Parameters;
 
 namespace DotSpatial.Tools
 {
@@ -115,7 +116,7 @@ namespace DotSpatial.Tools
                     continue;
                 }
 
-                oneFeature = oneFeature.Union(sourceData.Features[i]);
+                oneFeature = oneFeature.Union(sourceData.Features[i].Geometry);
 
                 // pm.CurrentValue = i;
             }

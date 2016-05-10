@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Tests.Common;
 using NUnit.Framework;

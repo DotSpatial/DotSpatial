@@ -21,11 +21,11 @@
 // | Tidyup  (Ben Tombs)      | 10/21/2010 | Original copy submitted from modified GPS.Net 3.0
 // | Shade1974 (Ted Dunsford) | 10/22/2010 | Added file headers reviewed formatting with resharper.
 // ********************************************************************************************************
+
 using System;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
-
 #if !PocketPC
 
 using System.ComponentModel;

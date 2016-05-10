@@ -15,7 +15,8 @@
 using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Topology;
+using DotSpatial.Modeling.Forms.Parameters;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Tools
 {

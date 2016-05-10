@@ -12,12 +12,12 @@
 //
 // The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
 // ********************************************************************************************************
+
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Security;
-
 #if !PocketPC && Framework20
 
 using System.Runtime.ConstrainedExecution;
@@ -56,7 +56,7 @@ using System.Runtime.ConstrainedExecution;
 
 /* This assembly contains language-specific resources.  Help the CLR find them. */
 #if Framework20 && !PocketPC
-[assembly: NeutralResourcesLanguageAttribute("en-US", UltimateResourceFallbackLocation.MainAssembly)]
+[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
 
 /* The assembly configuration just explains what target platform this assembly is for.  This

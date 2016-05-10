@@ -20,7 +20,6 @@
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
 // ********************************************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

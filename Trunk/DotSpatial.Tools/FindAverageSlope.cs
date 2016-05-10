@@ -16,7 +16,9 @@
 using System;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Topology;
+using DotSpatial.Modeling.Forms.Parameters;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -174,8 +176,8 @@ namespace DotSpatial.Tools
                         Point pt3 = new Point(xCent + dxHalf, yCent - dyHalf);
                         Point pt4 = new Point(xCent + dxHalf, yCent + dyHalf);
                         Point pt5 = new Point(xCent - dxHalf, yCent + dyHalf);
-                        if ((((!tempFeat.Covers(pt1) && !tempFeat.Covers(pt2)) && !tempFeat.Covers(pt3))
-                             && !tempFeat.Covers(pt4)) && !tempFeat.Covers(pt5))
+                        if ((((!tempFeat.Geometry.Covers(pt1) && !tempFeat.Geometry.Covers(pt2)) && !tempFeat.Geometry.Covers(pt3))
+                             && !tempFeat.Geometry.Covers(pt4)) && !tempFeat.Geometry.Covers(pt5))
                         {
                             continue;
                         }

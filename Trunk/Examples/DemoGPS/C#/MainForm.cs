@@ -29,7 +29,7 @@ using System.Threading;
 using System.Windows.Forms;
 using DotSpatial.Positioning;
 
-namespace DemoGPS
+namespace Demo.GPS
 {
     /// <summary>
     /// The Main form for the project.

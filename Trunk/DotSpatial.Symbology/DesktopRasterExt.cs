@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Symbology
 {

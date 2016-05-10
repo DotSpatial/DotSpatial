@@ -17,8 +17,8 @@
 // Contributor(s): (Open source contributors should list themselves and their modifications here).
 //
 // ********************************************************************************************************
+
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {

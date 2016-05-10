@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace MiscUtil.Linq
+namespace DotSpatial.Data.MiscUtil
 {
     // Required Attribution under Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License;
     // http://www.codeproject.com/KB/cs/GenericArithmeticUtil.aspx

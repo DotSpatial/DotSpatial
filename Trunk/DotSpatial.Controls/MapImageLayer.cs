@@ -22,9 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using System.Drawing.Imaging;
 
 namespace DotSpatial.Controls
 {

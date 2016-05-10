@@ -1,11 +1,14 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports DotSpatial.Topology
+Imports GeoAPI.Geometries
 
-Public Class manhattanPolygonParts
+Namespace Manhattan
 
-    Public partindex As Integer
-    Public points As New Dictionary(Of Integer, Coordinate)
+    Public Class manhattanPolygonParts
 
-End Class
+        Public partindex As Integer
+        Public points As New Dictionary(Of Integer, Coordinate)
+
+    End Class
+End NameSpace

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using DotSpatial.Symbology;
 using DotSpatial.Controls;
+using DotSpatial.Symbology;
 
 namespace DotSpatial.Plugins.SetSelectable
 {
@@ -28,7 +28,7 @@ namespace DotSpatial.Plugins.SetSelectable
         /// <summary>
         /// Corrects the text in the datagridview, when the selection of a layer changes.
         /// </summary>
-        public void SelectionChanged(object sender, System.EventArgs e)
+        public void SelectionChanged(object sender, EventArgs e)
         {
             DGV_Layer.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             DGV_Layer.Refresh();
@@ -44,7 +44,7 @@ namespace DotSpatial.Plugins.SetSelectable
             if (mLayer != null)
             {
                 mLayer.SelectionChanged += SelectionChanged;
-                LayerSelection layerSelection = _layers.FirstOrDefault(f => object.ReferenceEquals(f.Layer, mLayer));
+                LayerSelection layerSelection = _layers.FirstOrDefault(f => ReferenceEquals(f.Layer, mLayer));
                 if (layerSelection != null)
                     _layers.Remove(layerSelection);
                 else
@@ -65,7 +65,7 @@ namespace DotSpatial.Plugins.SetSelectable
             IFeatureLayer mLayer = layer as IFeatureLayer;
             if (mLayer == null) return;
 
-            int index = _layers.FindIndex(f => object.ReferenceEquals(f.Layer, mLayer));
+            int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
             if (index < 0 || index == newPosition) return;
 
             LayerSelection old = _layers[index];
@@ -89,7 +89,7 @@ namespace DotSpatial.Plugins.SetSelectable
             IFeatureLayer mLayer = layer as IFeatureLayer;
             if (mLayer != null)
             {
-                int index = _layers.FindIndex(f => object.ReferenceEquals(f.Layer, mLayer));
+                int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
                 if (index > -1)
                 {
                     mLayer.SelectionChanged -= SelectionChanged;
@@ -112,7 +112,7 @@ namespace DotSpatial.Plugins.SetSelectable
                 IFeatureLayer mLayer = collection[i] as IFeatureLayer;
                 if (mLayer != null)
                 {
-                    int index = _layers.FindIndex(f => object.ReferenceEquals(f.Layer, mLayer));
+                    int index = _layers.FindIndex(f => ReferenceEquals(f.Layer, mLayer));
                     if (index != reverseI)
                     {
                         var layer = _layers[index];

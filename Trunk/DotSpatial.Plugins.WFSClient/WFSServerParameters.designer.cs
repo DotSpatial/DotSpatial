@@ -1,11 +1,14 @@
-﻿namespace WFSPlugin
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Plugins.WFSClient
 {
     partial class WFSServerParameters
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -479,36 +482,36 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox uxServer;
-        private System.Windows.Forms.Button uxGetCapabilities;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox uxGroupWPS;
-        private System.Windows.Forms.TabControl uxTabWfs;
-        private System.Windows.Forms.TabPage uxInformation;
-        private System.Windows.Forms.TabPage uxLayers;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView uxLayersList;
-        private System.Windows.Forms.TabPage uxAttributes;
-        private System.Windows.Forms.TabPage uxOptions;
-        private System.Windows.Forms.TabPage uxFilter;
-        private System.Windows.Forms.TextBox uxLayer;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label uxVersion;
-        private System.Windows.Forms.Button uxOpen;
-        private System.Windows.Forms.TextBox uxInfo;
-        private System.Windows.Forms.DataGridView uxAttributesGrid;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox uxListServer;
-        private System.Windows.Forms.Label uxGeographicField;
-        private System.Windows.Forms.TabPage uxDescription;
-        private System.Windows.Forms.TextBox uxOutput;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TextBox uxRequest;
-        private System.Windows.Forms.SplitContainer splitContainer4;
+        private Label label1;
+        private TextBox uxServer;
+        private Button uxGetCapabilities;
+        private GroupBox groupBox1;
+        private GroupBox uxGroupWPS;
+        private TabControl uxTabWfs;
+        private TabPage uxInformation;
+        private TabPage uxLayers;
+        private SplitContainer splitContainer1;
+        private DataGridView uxLayersList;
+        private TabPage uxAttributes;
+        private TabPage uxOptions;
+        private TabPage uxFilter;
+        private TextBox uxLayer;
+        private Label label2;
+        private Label uxVersion;
+        private Button uxOpen;
+        private TextBox uxInfo;
+        private DataGridView uxAttributesGrid;
+        private TextBox textBox3;
+        private TextBox textBox2;
+        private Label label3;
+        private ComboBox uxListServer;
+        private Label uxGeographicField;
+        private TabPage uxDescription;
+        private TextBox uxOutput;
+        private SplitContainer splitContainer2;
+        private SplitContainer splitContainer3;
+        private TextBox uxRequest;
+        private SplitContainer splitContainer4;
     }
 }
 

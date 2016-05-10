@@ -19,7 +19,6 @@
 // ********************************************************************************************************
 
 using System.IO;
-using DotSpatial.Topology;
 
 namespace DotSpatial.Data.Forms
 {

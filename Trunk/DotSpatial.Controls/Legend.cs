@@ -27,6 +27,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
+using DotSpatial.Serialization;
 using DotSpatial.Symbology;
 using DotSpatial.Symbology.Forms;
 
@@ -1077,7 +1078,9 @@ namespace DotSpatial.Controls
             topLeft.X += 22;
         }
 
-        // Checks all the legend items and calculates a "page" large enough to contain everything currently visible.
+        /// <summary>
+        /// Checks all the legend items and calculates a "page" large enough to contain everything currently visible. 
+        /// </summary>
         private void SizePage()
         {
             int w = Width;
@@ -1123,8 +1126,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        ///  This isn't the best way to catch this.  only items in view should
-        ///  trigger a refresh.
+        ///  This isn't the best way to catch this. Only items in view should trigger a refresh.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

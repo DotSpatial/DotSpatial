@@ -28,7 +28,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -316,7 +316,7 @@ namespace DotSpatial.Controls
         /// Calling Initialize will set this automatically.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope { get; set; }
+        public Envelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
@@ -635,7 +635,7 @@ namespace DotSpatial.Controls
                     foreach (IFeature f in drawnFeatures)
                     {
                         BuildPolygon(DataSet.Vertex, f.ShapeIndex, borderPath, e,
-                                     drawExtents.Contains(f.Envelope) ? null : shClip);
+                                     drawExtents.Contains(f.Geometry.EnvelopeInternal) ? null : shClip);
                     }
                     borderPaths.Add(borderPath);
                 }
@@ -692,8 +692,6 @@ namespace DotSpatial.Controls
         }
 
         #endregion
-
-       
-
+		
     }
-  }
+}

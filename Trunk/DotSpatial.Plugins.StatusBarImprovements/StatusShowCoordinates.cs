@@ -2,11 +2,12 @@
 // <copyright file="StatusBarCoordinates.cs" company="">
 // </copyright>
 // -----------------------------------------------------------------------
-using DotSpatial.Controls.Header;
+
 using System;
 using DotSpatial.Controls;
+using DotSpatial.Controls.Header;
 
-namespace DemoMap
+namespace DotSpatial.Plugins.StatusBarImprovements
 {
     /// <summary>
     /// Displays latitude and longitude coordinates at the current cursor position.

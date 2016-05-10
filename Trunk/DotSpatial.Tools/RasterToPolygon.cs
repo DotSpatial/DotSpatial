@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
-using DotSpatial.Topology;
+using DotSpatial.Modeling.Forms.Parameters;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Tools
 {
@@ -139,8 +141,8 @@ namespace DotSpatial.Tools
             Func<int, int, int, int, bool> eqValues = (y1, x1, y2, x2) => get(y1, x1) == get(y2, x2);
 
             var enableCon = connectionGrid != null;
-            Func<int, int, int> connection = (y, x) => enableCon ? (int) connectionGrid.Value[y, x] : 0;
-            
+            Func<int, int, int> connection = (y, x) => enableCon ? (int)connectionGrid.Value[y, x] : 0;
+
             for (int y = 0; y < numRows; y++)
             {
                 int current = Convert.ToInt32((y * 100.0) / input.NumRows);
@@ -182,7 +184,7 @@ namespace DotSpatial.Tools
 
                     var con_8l = enableCon &&
                                 same(y + 1, x + 1, value) && !con_7 &&
-                                (curCon == 8 || connection(y + 1, x + 1) == 4);   
+                                (curCon == 8 || connection(y + 1, x + 1) == 4);
                     var con_8r = enableCon &&
                                 same(y + 1, x + 1, value) && !con_1 &&
                                 (curCon == 8 || connection(y + 1, x + 1) == 4);
@@ -213,14 +215,14 @@ namespace DotSpatial.Tools
                      cl    cr 
                      bl bc br   
                      */
-                    var tl = new Coordinate(xMin + x*width, yMax - (y + 1)*height);
-                    var tc = new Coordinate(xMin + (x + 0.5)*width, yMax - (y + 1)*height);
-                    var tr = new Coordinate(xMin + (x + 1)*width, yMax - (y + 1)*height);
-                    var cl = new Coordinate(xMin + x*width, yMax - (y + 0.5)*height);
-                    var cr = new Coordinate(xMin + (x + 1)*width, yMax - (y + 0.5)*height);
+                    var tl = new Coordinate(xMin + x * width, yMax - (y + 1) * height);
+                    var tc = new Coordinate(xMin + (x + 0.5) * width, yMax - (y + 1) * height);
+                    var tr = new Coordinate(xMin + (x + 1) * width, yMax - (y + 1) * height);
+                    var cl = new Coordinate(xMin + x * width, yMax - (y + 0.5) * height);
+                    var cr = new Coordinate(xMin + (x + 1) * width, yMax - (y + 0.5) * height);
                     var bl = new Coordinate(xMin + x * width, yMax - y * height);
-                    var bc = new Coordinate(xMin + (x + 0.5)*width, yMax - y*height);
-                    var br = new Coordinate(xMin + (x + 1)*width, yMax - y*height);
+                    var bc = new Coordinate(xMin + (x + 0.5) * width, yMax - y * height);
+                    var br = new Coordinate(xMin + (x + 1) * width, yMax - y * height);
 
                     /*
                      Cell edges:
@@ -267,7 +269,7 @@ namespace DotSpatial.Tools
                         {
                             e_tr = e_tl = true;
                         }
-                       
+
                         #endregion
                     }
 
@@ -325,7 +327,7 @@ namespace DotSpatial.Tools
                         {
                             e_rb = e_rt = true;
                         }
-                        
+
                         #endregion
                     }
 
@@ -460,7 +462,7 @@ namespace DotSpatial.Tools
                     {
                         lineList.AddSegment(tl, tc);
                     }
-                    else if(e_tr)
+                    else if (e_tr)
                     {
                         lineList.AddSegment(tc, tr);
                     }
@@ -510,7 +512,7 @@ namespace DotSpatial.Tools
                     // Right top out diagonals
                     if (con_8l)
                     {
-                        lineList.AddSegment(tc, new Coordinate(xMin + (x + 1)*width, yMax - (y + 1 + 0.5)*height));
+                        lineList.AddSegment(tc, new Coordinate(xMin + (x + 1) * width, yMax - (y + 1 + 0.5) * height));
                     }
                     if (con_8r)
                     {
@@ -536,7 +538,7 @@ namespace DotSpatial.Tools
                     // Left Top out diagonals
                     if (con_6r)
                     {
-                        lineList.AddSegment(tc, new Coordinate(xMin + x*width, yMax - (y + 1 + 0.5)*height));
+                        lineList.AddSegment(tc, new Coordinate(xMin + x * width, yMax - (y + 1 + 0.5) * height));
                     }
                     if (con_6l)
                     {
@@ -558,7 +560,7 @@ namespace DotSpatial.Tools
                             lineList.AddSegment(cl, bc);
                         }
                     }
-                    
+
                     if (cancelProgressHandler.Cancel)
                     {
                         return false;
@@ -575,7 +577,7 @@ namespace DotSpatial.Tools
                 var key = pair.Key;
                 var lineSegList = pair.Value.List;
 
-                var polyList = new List<Polygon>();
+                var polyList = new List<IPolygon>();
                 var ind = 0;
                 while (ind != lineSegList.Count)
                 {
@@ -610,12 +612,10 @@ namespace DotSpatial.Tools
                         polyShell.Add(segment.P0.Equals2D(last) ? segment.P1 : segment.P0);
                     }
 
-                    polyList.Add(new Polygon(polyShell));
+                    polyList.Add(new Polygon(new LinearRing(polyShell.ToArray())));
                 }
 
-                var geometry = polyList.Count == 1
-                                   ? (IBasicGeometry)polyList[0]
-                                   : new MultiPolygon(polyList.ToArray());
+                IGeometry geometry = polyList.Count == 1 ? (IGeometry)polyList[0] : new MultiPolygon(polyList.ToArray());
                 var f = output.AddFeature(geometry);
                 f.DataRow["Value"] = key;
 
@@ -629,7 +629,7 @@ namespace DotSpatial.Tools
             output.Save();
             return true;
         }
-       
+
         private class LineSegmentList
         {
             private readonly List<LineSegment> _list = new List<LineSegment>();
@@ -641,7 +641,7 @@ namespace DotSpatial.Tools
 
             public List<LineSegment> List { get { return _list; } }
         }
-      
+
 
         /// <summary>
         /// The Parameter array should be populated with default values here

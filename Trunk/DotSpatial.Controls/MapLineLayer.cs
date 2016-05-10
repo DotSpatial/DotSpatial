@@ -28,8 +28,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using DotSpatial.Topology;
-using Point = System.Drawing.Point;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
@@ -268,7 +267,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Builds a linestring into the graphics path, using minX, maxY, dx and dy for the transformations.
         /// </summary>
-        internal static void BuildLineString(GraphicsPath path, IBasicLineString ls, double minX, double maxY, double dx, double dy)
+        internal static void BuildLineString(GraphicsPath path, ILineString ls, double minX, double maxY, double dx, double dy)
         {
             IList<Coordinate> cs = ls.Coordinates;
             List<Point> points = new List<Point>();
@@ -366,7 +365,7 @@ namespace DotSpatial.Controls
         /// Calling Initialize will set this automatically.
         /// </summary>
         [ShallowCopy, Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnvelope BufferEnvelope { get; set; }
+        public Envelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
@@ -630,6 +629,5 @@ namespace DotSpatial.Controls
 
         #endregion
 
-       
     }
 }

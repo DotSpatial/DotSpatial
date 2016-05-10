@@ -25,8 +25,8 @@
 // ********************************************************************************************************
 
 using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Index;
+using GeoAPI.Geometries;
+using NetTopologySuite.Index;
 
 namespace DotSpatial.Data
 {
@@ -51,7 +51,7 @@ namespace DotSpatial.Data
         /// <param name="fileName"></param>
         /// <param name="spatialIndex"></param>
         /// <param name="shx"></param>
-        public LineShapefileShapeSource(string fileName, ISpatialIndex spatialIndex, ShapefileIndexFile shx)
+        public LineShapefileShapeSource(string fileName, ISpatialIndex<int> spatialIndex, ShapefileIndexFile shx)
             : base(fileName, spatialIndex, shx)
         {
         }
@@ -81,7 +81,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdocs/>
-        protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, IEnvelope envelope)
+        protected override Shape GetShapeAtIndex(FileStream fs, ShapefileIndexFile shx, ShapefileHeader header, int shp, Envelope envelope)
         {
             // Read from the index file because some deleted records
             // might still exist in the .shp file.

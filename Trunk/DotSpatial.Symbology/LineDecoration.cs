@@ -19,10 +19,10 @@
 // ********************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotSpatial.Serialization;
-using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {

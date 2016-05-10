@@ -33,7 +33,7 @@ using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Data.Forms;
 using DotSpatial.Symbology.Forms.Properties;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology.Forms
 {
@@ -255,7 +255,7 @@ namespace DotSpatial.Symbology.Forms
             IFeature currentFeature = _featureLayer.DataSet.FeatureFromRow(drv.Row);
             LayerFrame frame = _featureLayer.ParentMapFrame() as LayerFrame;
             if (frame == null) return;
-            IEnvelope env = currentFeature.Envelope.Copy();
+            Envelope env = currentFeature.Geometry.EnvelopeInternal.Clone();
 
             if (env.Width == 0 || env.Height == 0)
             {

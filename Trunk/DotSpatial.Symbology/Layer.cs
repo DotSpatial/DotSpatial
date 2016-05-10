@@ -26,7 +26,7 @@ using System.IO;
 using DotSpatial.Data;
 using DotSpatial.Projections;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -402,8 +402,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Fires the zoom to layer event, but specifies the extent.
         /// </summary>
-        /// <param name="env">IEnvelope env</param>
-        protected virtual void OnZoomToLayer(IEnvelope env)
+        /// <param name="env">Envelope env</param>
+        protected virtual void OnZoomToLayer(Envelope env)
         {
             var h = ZoomToLayer;
             if (h != null)
@@ -429,7 +429,7 @@ namespace DotSpatial.Symbology
             if (result.Handled) return;
 
             if (_propertyDialogProvider == null) return;
-            var editCopy = this.Copy();
+            var editCopy = CloneableEM.Copy(this);
             CopyProperties(editCopy); // for some reason we are getting blank layers during edits, this tries to fix that
             _propertyDialogProvider.ShowDialog(editCopy);
             editCopy.Dispose();
@@ -671,7 +671,7 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        public virtual bool ClearSelection(out IEnvelope affectedArea)
+        public virtual bool ClearSelection(out Envelope affectedArea)
         {
             affectedArea = null;
             return false;
@@ -685,7 +685,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        public virtual bool Select(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public virtual bool Select(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = null;
             return false;
@@ -699,7 +699,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        public virtual bool InvertSelection(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public virtual bool InvertSelection(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = null;
             return false;
@@ -713,7 +713,7 @@ namespace DotSpatial.Symbology
         /// <param name="mode"></param>
         /// <param name="affectedArea"></param>
         /// <returns></returns>
-        public virtual bool UnSelect(IEnvelope tolerant, IEnvelope strict, SelectionMode mode, out IEnvelope affectedArea)
+        public virtual bool UnSelect(Envelope tolerant, Envelope strict, SelectionMode mode, out Envelope affectedArea)
         {
             affectedArea = null;
             return false;

@@ -1,4 +1,4 @@
-// *******************************************************************************************************
+﻿// *******************************************************************************************************
 // File: C:\dev\DotSpatial\DotSpatial.Controls\Properties\AssemblyInfo.cs
 // Description: Contains assembly information for this assembly 
 // Copyright & License: See www.DotSpatial.org.
@@ -7,7 +7,6 @@
 // Contribution of code constitutes transferral of copyright to the DotSpatial Team.
 // *******************************************************************************************************
 
- 
 
 using System;
 using System.Reflection;

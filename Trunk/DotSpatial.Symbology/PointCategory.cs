@@ -23,7 +23,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
+using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
@@ -49,7 +50,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a new instanec of a default point scheme category where the geographic symbol size has been
+        /// Creates a new instance of a default point scheme category where the geographic symbol size has been
         /// scaled to the specified extent.
         /// </summary>
         /// <param name="extent">The geographic extent that is 100 times wider than the geographic size of the points.</param>

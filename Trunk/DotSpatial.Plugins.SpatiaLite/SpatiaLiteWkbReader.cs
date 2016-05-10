@@ -1,23 +1,24 @@
 ﻿using System.IO;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
+using GeoAPI.Geometries;
+using GeoAPI.IO;
+using NetTopologySuite.IO;
 
 namespace DotSpatial.Plugins.SpatiaLite
 {
     /// <summary>
     /// Helper class for reading binary data from the SpatiaLite database
     /// </summary>
-    public class SpatiaLiteWkbReader : WkbReader
+    public class SpatiaLiteWkbReader : WKBReader
     {
         /// <summary>
-        /// Convert a byte array to a DotSpatial.Topology geometry object
+        /// Reads SpatiaLite data from the given stream. This is also called by Read(byte[] data).
         /// </summary>
-        /// <param name="data">the data from the BLOB column</param>
-        /// <returns>the geometry object</returns>
-        public override IGeometry Read(byte[] data)
+        /// <param name="stream">Stream that should be used to read the data.</param>
+        /// <returns>IGeometry that is contained in the given stream.</returns>
+        public override IGeometry Read(Stream stream)
         {
             //specialized Read() method for SpatiaLite
-            using (Stream stream = new MemoryStream(data))
+            using (stream)
             {
                 //read first byte
                 BinaryReader reader = null;
@@ -26,7 +27,7 @@ namespace DotSpatial.Plugins.SpatiaLite
 
                 try
                 {
-                    reader = (byteOrder == ByteOrder.BigEndian) ? new BeBinaryReader(stream) : new BinaryReader(stream);
+                    reader = (byteOrder == ByteOrder.BigEndian) ? new BEBinaryReader(stream) : new BinaryReader(stream);
 
                     int srid = reader.ReadInt32();
                     double mbrMinX = reader.ReadDouble();

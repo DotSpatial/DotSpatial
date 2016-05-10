@@ -1,11 +1,14 @@
-﻿namespace DotSpatial.Projections.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace DotSpatial.Projections.Forms
 {
     partial class ProjectionSelectControl
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -233,18 +236,18 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox grpType;
-        private System.Windows.Forms.RadioButton radGeographic;
-        private System.Windows.Forms.RadioButton radProjected;
-        private System.Windows.Forms.ComboBox cmbMinorCategory;
-        private System.Windows.Forms.ComboBox cmbMajorCategory;
-        private System.Windows.Forms.NumericUpDown nudEpsgCode;
-        private System.Windows.Forms.Button btnFromEpsgCode;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox tbEsriProj4;
-        private System.Windows.Forms.Button btnUseESRI;
-        private System.Windows.Forms.CheckBox chbEsri;
+        private GroupBox grpType;
+        private RadioButton radGeographic;
+        private RadioButton radProjected;
+        private ComboBox cmbMinorCategory;
+        private ComboBox cmbMajorCategory;
+        private NumericUpDown nudEpsgCode;
+        private Button btnFromEpsgCode;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private TextBox tbEsriProj4;
+        private Button btnUseESRI;
+        private CheckBox chbEsri;
     }
 }

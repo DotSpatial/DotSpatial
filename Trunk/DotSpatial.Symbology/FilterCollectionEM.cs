@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 using DotSpatial.Data;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
@@ -54,9 +54,9 @@ namespace DotSpatial.Symbology
         /// <param name="self"></param>
         /// <param name="region"></param>
         /// <returns>True if any item was actually added to the collection</returns>
-        public static bool AddRegion(this  IFeatureSelection self, IEnvelope region)
+        public static bool AddRegion(this  IFeatureSelection self, Envelope region)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.AddRegion(region, out ignoreMe);
         }
 
@@ -83,9 +83,9 @@ namespace DotSpatial.Symbology
         /// <param name="self">The IFilterCollection that this should be applied to</param>
         /// <param name="region">The geographic region to remove</param>
         /// <returns>Boolean, true if the collection was changed</returns>
-        public static bool RemoveRegion(this  IFeatureSelection self, IEnvelope region)
+        public static bool RemoveRegion(this  IFeatureSelection self, Envelope region)
         {
-            IEnvelope ignoreMe;
+            Envelope ignoreMe;
             return self.RemoveRegion(region, out ignoreMe);
         }
 

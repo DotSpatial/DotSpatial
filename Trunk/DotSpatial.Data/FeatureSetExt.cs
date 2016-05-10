@@ -21,7 +21,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using DotSpatial.Topology;
+using DotSpatial.NTSExtension;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -50,7 +52,7 @@ namespace DotSpatial.Data
             foreach (IFeature original in self.Features)
             {
                 // Actually calculate the buffer geometry.
-                IFeature buffer = original.Buffer(distance);
+                IFeature buffer = new Feature(original.Geometry.Buffer(distance));
 
                 // Add the resulting polygon to the featureset
                 result.Features.Add(buffer);
@@ -77,7 +79,7 @@ namespace DotSpatial.Data
         {
             IFeatureSet result = new FeatureSet(self.FeatureType);
             var uniqueNames = new HashSet<string>();
-            foreach (var fs in new []{self, other})
+            foreach (var fs in new[] { self, other })
             {
                 foreach (DataColumn dc in fs.DataTable.Columns)
                 {
@@ -90,7 +92,7 @@ namespace DotSpatial.Data
                     }
                     uniqueNames.Add(name);
                     result.DataTable.Columns.Add(new DataColumn(name, dc.DataType));
-                }   
+                }
             }
             return result;
         }
@@ -115,10 +117,10 @@ namespace DotSpatial.Data
                 object value = feature.DataRow[fieldName];
                 if (resultFeatures.ContainsKey(value))
                 {
-                    IFeature union = resultFeatures[value].Union(feature);
+                    IFeature union = new Feature(resultFeatures[value].Geometry.Union(feature.Geometry));
                     union.DataRow = result.DataTable.NewRow();
                     union.DataRow[fieldName] = value;
-                    resultFeatures[value] = union;
+                    resultFeatures[value] = union; //TODO does this work without leaving remnants of the old datarow?
                 }
                 else
                 {
@@ -142,9 +144,9 @@ namespace DotSpatial.Data
         /// <param name="self">This feature</param>
         /// <param name="env">The envelope to test</param>
         /// <returns>Boolean, true if the intersection occurs</returns>
-        public static bool Intersects(this IFeature self, IEnvelope env)
+        public static bool Intersects(this IFeature self, Envelope env)
         {
-            return self.Envelope.Intersects(env) && Geometry.FromBasicGeometry(self.BasicGeometry).Intersects(env.ToPolygon());
+            return self.Geometry.EnvelopeInternal.Intersects(env) && self.Geometry.Intersects(env.ToPolygon());
         }
 
         /// <summary>
@@ -173,7 +175,7 @@ namespace DotSpatial.Data
             {
                 f = f.Union(fs.Features[i], fsunion, FieldJoinType.LocalOnly);
             }
-            fsunion.AddFeature(f);
+            fsunion.AddFeature(f.Geometry); //TODO jany_ why union feature if only geometry is used to create new feature?
             return fsunion;
         }
 
@@ -208,9 +210,9 @@ namespace DotSpatial.Data
                     foreach (int index in freeFeatures)
                     {
                         var intersectSource = fResult ?? fOriginal;
-                        if (intersectSource.Intersects(fs.Features[index]))
+                        if (intersectSource.Geometry.Intersects(fs.Features[index].Geometry))
                         {
-                            fResult = intersectSource.Union(fs.Features[index]);
+                            fResult = intersectSource.Union(fs.Features[index].Geometry);
                             shapeChanged = true;
 
                             // Don't modify the "freefeatures" list during a loop.  Keep track until later.
@@ -257,7 +259,7 @@ namespace DotSpatial.Data
                 for (int i = 0; i < self.Features.Count; i++)
                 {
                     IFeature selfFeature = self.Features[i];
-                    List<IFeature> potentialOthers = other.Select(selfFeature.Envelope.ToExtent());
+                    List<IFeature> potentialOthers = other.Select(selfFeature.Geometry.EnvelopeInternal.ToExtent());
                     foreach (IFeature otherFeature in potentialOthers)
                     {
                         selfFeature.Intersection(otherFeature, result, joinType);
@@ -279,12 +281,12 @@ namespace DotSpatial.Data
                     IFeature union = other.Features[0];
                     for (int i = 1; i < other.Features.Count; i++)
                     {
-                        union = union.Union(other.Features[i]);
+                        union = union.Union(other.Features[i].Geometry);
                         pm.CurrentValue = i;
                     }
                     pm.Reset();
                     pm = new ProgressMeter(progHandler, "Calculating Intersections", self.NumRows());
-                    Extent otherEnvelope = new Extent(union.Envelope);
+                    Extent otherEnvelope = union.Geometry.EnvelopeInternal.ToExtent();
                     for (int shp = 0; shp < self.ShapeIndices.Count; shp++)
                     {
                         if (!self.ShapeIndices[shp].Extent.Intersects(otherEnvelope)) continue;
@@ -308,7 +310,7 @@ namespace DotSpatial.Data
                     IFeature union = self.Features[0];
                     for (int i = 1; i < self.Features.Count; i++)
                     {
-                        union = union.Union(self.Features[i]);
+                        union = union.Union(self.Features[i].Geometry);
                         pm.CurrentValue = i;
                     }
                     pm.Reset();

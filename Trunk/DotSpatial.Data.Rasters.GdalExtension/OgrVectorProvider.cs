@@ -23,11 +23,9 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
-using DotSpatial.Data.Rasters.GdalExtension;
-using DotSpatial.Topology;
-using DotSpatial.Topology.Utilities;
+using NetTopologySuite.IO;
 
-namespace DotSpatial.Data.OgrExtension
+namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
     /// OgrVectorProvider
@@ -140,7 +138,7 @@ namespace DotSpatial.Data.OgrExtension
                     fs.DataTable.Columns.Add(new DataColumn(uniqueName, type));
                 }
 
-                var wkbReader = new WkbReader();
+                var wkbReader = new WKBReader();
                 while (reader.Read())
                 {
                     var wkbGeometry = (byte[]) reader["Geometry"];

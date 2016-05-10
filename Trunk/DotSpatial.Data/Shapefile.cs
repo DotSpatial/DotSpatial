@@ -27,7 +27,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
 using DotSpatial.Serialization;
 
 namespace DotSpatial.Data

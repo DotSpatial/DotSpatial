@@ -26,7 +26,7 @@
 
 using System;
 using System.IO;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -81,7 +81,7 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdocs/>
-        protected override void AppendBasicGeometry(ShapefileHeader header, IBasicGeometry feature, int numFeatures)
+        protected override void AppendBasicGeometry(ShapefileHeader header, IGeometry feature, int numFeatures)
         {
             var fi = new FileInfo(Filename);
             int offset = Convert.ToInt32(fi.Length / 2);
@@ -152,14 +152,14 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdoc/>
-        public override IFeatureSet Select(string filterExpression, IEnvelope envelope, ref int startIndex, int maxCount)
+        public override IFeatureSet Select(string filterExpression, Envelope envelope, ref int startIndex, int maxCount)
         {
             return Select(new PointShapefileShapeSource(Filename, Quadtree, null), filterExpression, envelope, ref startIndex,
                           maxCount);
         }
 
         /// <inheritdoc/>
-        public override void SearchAndModifyAttributes(IEnvelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
+        public override void SearchAndModifyAttributes(Envelope envelope, int chunkSize, FeatureSourceRowEditEvent rowCallback)
         {
             SearchAndModifyAttributes(new PointShapefileShapeSource(Filename, Quadtree, null), envelope, chunkSize, rowCallback);
         }

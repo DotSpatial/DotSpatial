@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using DotSpatial.NTSExtension;
 using DotSpatial.Projections;
 using DotSpatial.Tests.Common;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace DotSpatial.Data.Tests
@@ -119,7 +121,7 @@ namespace DotSpatial.Data.Tests
                 // Now try to open saved shapefile
                 // Points must have same location in WGS1984
                 var openFs = FeatureSet.Open(tmpFile);
-                var fs0 = (Point) openFs.Features[0].BasicGeometry;
+                var fs0 = (Point) openFs.Features[0].Geometry;
                 var c1 = new[] {fs0.X, fs0.Y};
                 Reproject.ReprojectPoints(c1, z, openFs.Projection, wgs, 0, 1); // reproject back to wgs1984
 
@@ -138,13 +140,12 @@ namespace DotSpatial.Data.Tests
             var outfile = FileTools.GetTempFileName(".shp");
             IFeatureSet fs = new FeatureSet();
             var c = new Coordinate(10.1, 20.2, 3.3, 4.4);
-            IFeature f = new Feature(c);
 
             fs.CoordinateType = CoordinateType.Z;
             fs.Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
             fs.DataTable.Columns.Add(new DataColumn(("ID"), typeof(int)));
 
-            f = fs.AddFeature(f);
+            IFeature f = fs.AddFeature(new Point(c));
             f.DataRow.BeginEdit();
             f.DataRow["ID"] = 1;
             f.DataRow.EndEdit();
@@ -171,7 +172,7 @@ namespace DotSpatial.Data.Tests
                 new Coordinate(11.1, 22.2, 3.3, 4.4)
             };
 
-            var mp = new MultiPoint(vertices);
+            var mp = new MultiPoint(vertices.CastToPointArray());
             var f = new Feature(mp);
             var fs = new FeatureSet(f.FeatureType)
             {

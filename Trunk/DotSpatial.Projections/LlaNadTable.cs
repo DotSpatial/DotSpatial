@@ -22,6 +22,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using DotSpatial.Projections.Nad;
 
 namespace DotSpatial.Projections
 {

@@ -32,7 +32,7 @@ namespace DotSpatial.Plugins.ShapeEditor
     /// </summary>
     public class ButtonHandler : IDisposable
     {
-        private IHeaderControl _Header;
+        private readonly IHeaderControl _header;
         private IFeatureLayer _activeLayer;
         private SimpleActionItem _addShape;
         private AddShapeFunction _addShapeFunction;
@@ -52,7 +52,7 @@ namespace DotSpatial.Plugins.ShapeEditor
             if (manager.HeaderControl == null)
                 throw new ArgumentNullException("manager", "A HeaderControl must be available through the AppManager.");
 
-            _Header = manager.HeaderControl;
+            _header = manager.HeaderControl;
             AddButtons();
         }
 
@@ -118,11 +118,11 @@ namespace DotSpatial.Plugins.ShapeEditor
             const string shapeEditorMenuKey = "kShapeEditor";
 
             //_Header.Add(new RootItem(ShapeEditorMenuKey, "Shape Editing"));
-            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
+            _header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.New, NewButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShapefile.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
             _addShape = new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Add_Shape, AddShapeButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.NewShape.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey };
-            _Header.Add(_addShape);
-            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.move, RootKey = HeaderControl.HomeRootItemKey });
-            _Header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
+            _header.Add(_addShape);
+            _header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Move_Vertex, MoveVertexButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.move, RootKey = HeaderControl.HomeRootItemKey });
+            _header.Add(new SimpleActionItem(shapeEditorMenuKey, ShapeEditorResources.Snapping, SnappingButton_Click) { GroupCaption = "Shape Editor", SmallImage = ShapeEditorResources.SnappingIcon.ToBitmap(), RootKey = HeaderControl.HomeRootItemKey });
         }
 
         private void SnappingButton_Click(object sender, EventArgs e)

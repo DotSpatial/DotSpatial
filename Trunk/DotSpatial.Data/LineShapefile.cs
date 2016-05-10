@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using DotSpatial.Topology;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
@@ -102,8 +102,9 @@ namespace DotSpatial.Data
         // Byte 48      NumPoints           Integer     1           Little
         // Byte 52      Parts               Integer     NumParts    Little
         // Byte X       Points              Point       NumPoints   Little
+        // X = 52 + 4 * NumParts
 
-        // X Y M Poly Lines
+        // X Y M Poly Lines: Total Length = 34 Bytes
         // ---------------------------------------------------------
         // Position     Value               Type        Number      Byte Order
         // ---------------------------------------------------------
@@ -118,8 +119,11 @@ namespace DotSpatial.Data
         // Byte Y*      Mmin                Double      1           Little
         // Byte Y + 8*  Mmax                Double      1           Little
         // Byte Y + 16* Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // * = optional
 
-        // X Y Z M Poly Lines
+        // X Y Z M Poly Lines: Total Length = 44 Bytes
         // ---------------------------------------------------------
         // Position     Value               Type        Number  Byte Order
         // ---------------------------------------------------------
@@ -137,6 +141,10 @@ namespace DotSpatial.Data
         // Byte Z*      Mmin                Double      1           Little
         // Byte Z+8*    Mmax                Double      1           Little
         // Byte Z+16*   Marray              Double      NumPoints   Little
+        // X = 52 + (4 * NumParts)
+        // Y = X + (16 * NumPoints)
+        // Z = Y + 16 + (8 * NumPoints)
+        // * = optional
 
         /// <summary>
         /// Gets the specified feature by constructing it from the vertices, rather
@@ -306,15 +314,15 @@ namespace DotSpatial.Data
                     var shape = shapeIndices[shp];
                     if (shape.ShapeType == ShapeType.NullShape) continue;
                     reader.Seek(shapeHeaders[shp].ByteOffset, SeekOrigin.Begin);
-                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes
+                    reader.Seek(3 * 4 + 32 + 2 * 4, SeekOrigin.Current); // Skip first bytes (Record Number, Content Length, Shapetype + BoundingBox + NumParts, NumPoints)
 
                     // Read parts
-                    var partsBytes = reader.ReadBytes(4 * shape.NumParts);
+                    var partsBytes = reader.ReadBytes(4 * shape.NumParts); //Numparts * Integer(4) = existing Parts
                     Buffer.BlockCopy(partsBytes, 0, parts, partsInd, partsBytes.Length);
                     partsInd += 4 * shape.NumParts;
 
                     // Read points
-                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints);
+                    var pointsBytes = reader.ReadBytes(8 * 2 * shape.NumPoints); //Numpoints * Point (X(8) + Y(8))
                     Buffer.BlockCopy(pointsBytes, 0, vert, vertInd, pointsBytes.Length);
                     vertInd += 8 * 2 * shape.NumPoints;
 
@@ -429,10 +437,10 @@ namespace DotSpatial.Data
                 offset += contentLength; // adding the previous content length from each loop calculates the word offset
                 List<Coordinate> points = new List<Coordinate>();
                 contentLength = 22;
-                for (int iPart = 0; iPart < f.NumGeometries; iPart++)
+                for (int iPart = 0; iPart < f.Geometry.NumGeometries; iPart++)
                 {
                     parts.Add(points.Count);
-                    IBasicLineString bl = f.GetBasicGeometryN(iPart) as IBasicLineString;
+                    ILineString bl = f.Geometry.GetGeometryN(iPart) as ILineString;
                     if (bl == null) continue;
                     points.AddRange(bl.Coordinates);
                 }
@@ -471,11 +479,11 @@ namespace DotSpatial.Data
                 {
                     continue;
                 }
-                IEnvelope env = f.Envelope ?? new Envelope();
-                bbWriter.Write(env.Minimum.X);            // Byte 12   Xmin          Double      1           Little
-                bbWriter.Write(env.Minimum.Y);            // Byte 20   Ymin          Double      1           Little
-                bbWriter.Write(env.Maximum.X);            // Byte 28   Xmax          Double      1           Little
-                bbWriter.Write(env.Maximum.Y);            // Byte 36   Ymax          Double      1           Little
+                Envelope env = f.Geometry.EnvelopeInternal ?? new Envelope();
+                bbWriter.Write(env.MinX);            // Byte 12   Xmin          Double      1           Little
+                bbWriter.Write(env.MinY);            // Byte 20   Ymin          Double      1           Little
+                bbWriter.Write(env.MaxX);            // Byte 28   Xmax          Double      1           Little
+                bbWriter.Write(env.MaxY);            // Byte 36   Ymax          Double      1           Little
                 bbWriter.Write(parts.Count);              // Byte 44   NumParts      Integer     1           Little
                 bbWriter.Write(points.Count);             // Byte 48   NumPoints     Integer     1           Little
                 // Byte 52   Parts         Integer     NumParts    Little
@@ -487,17 +495,17 @@ namespace DotSpatial.Data
                 double[] xyVals = new double[points.Count * 2];
                 for (int ipoint = 0; ipoint < points.Count; ipoint++)
                 {
-                    double[] c = points[ipoint].ToArray();
-                    xyVals[ipoint * 2] = c[0];
-                    xyVals[ipoint * 2 + 1] = c[1];
+                    //double[] c = points[ipoint];
+                    xyVals[ipoint * 2] = points[ipoint][Ordinate.X];
+                    xyVals[ipoint * 2 + 1] = points[ipoint][ Ordinate.Y];
                 }
                 bbWriter.Write(xyVals);
                 if (Header.ShapeType == ShapeType.PolyLineZ)
                 {
-                    if (f.Envelope != null)
+                    if (f.Geometry.EnvelopeInternal != null)
                     {
-                        bbWriter.Write(f.Envelope.Minimum.Z);
-                        bbWriter.Write(f.Envelope.Maximum.Z);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.Z);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.Z);
                     }
                     double[] zVals = new double[points.Count];
                     for (int ipoint = 0; ipoint < points.Count; ipoint++)
@@ -509,15 +517,15 @@ namespace DotSpatial.Data
 
                 if (Header.ShapeType == ShapeType.PolyLineM || Header.ShapeType == ShapeType.PolyLineZ)
                 {
-                    if (f.Envelope == null)
+                    if (f.Geometry.EnvelopeInternal == null)
                     {
                         bbWriter.Write(0.0);
                         bbWriter.Write(0.0);
                     }
                     else
                     {
-                        bbWriter.Write(f.Envelope.Minimum.M);
-                        bbWriter.Write(f.Envelope.Maximum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Minimum.M);
+                        bbWriter.Write(f.Geometry.EnvelopeInternal.Maximum.M);
                     }
 
                     double[] mVals = new double[points.Count];
