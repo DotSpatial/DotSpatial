@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using DotSpatial.NTSExtension;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
@@ -58,7 +59,7 @@ namespace DotSpatial.Symbology
         public DrawWindow(double x1, double x2, double y1, double y2, double z1, double z2) :
             base(x1, x2, y1, y2)
         {
-            InitZ(z1,z2);
+            this.InitZ(z1,z2);
             _geographicView = new Envelope(x1, x2, y1, y2);
         }
 

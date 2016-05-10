@@ -17,7 +17,8 @@
       <dependency id="DotSpatial.Controls" />
       <dependency id="DotSpatial.Data" />
       <dependency id="DotSpatial.Symbology" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
 </package>

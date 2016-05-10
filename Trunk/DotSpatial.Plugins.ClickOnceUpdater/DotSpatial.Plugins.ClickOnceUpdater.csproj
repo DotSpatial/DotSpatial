@@ -65,6 +65,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DotSpatial.Plugins.ClickOnceUpdater.nuspec">
       <SubType>Designer</SubType>
     </None>

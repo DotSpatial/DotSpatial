@@ -14,6 +14,8 @@
     <language>en-US</language>
     <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
     <dependencies>
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
 </package>

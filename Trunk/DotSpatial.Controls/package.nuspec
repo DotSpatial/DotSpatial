@@ -24,7 +24,8 @@
       <dependency id="DotSpatial.Serialization" />
       <dependency id="DotSpatial.Symbology" version="1.7" />
       <dependency id="DotSpatial.Symbology.Forms" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
   <files>

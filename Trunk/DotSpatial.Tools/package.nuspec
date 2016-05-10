@@ -19,7 +19,8 @@
       <dependency id="DotSpatial.Extensions" />
       <dependency id="DotSpatial.Modeling.Forms" />
       <dependency id="DotSpatial.Projections" />
-      <dependency id="DotSpatial.Topology" />
+      <dependency id="DotSpatial.NetTopologySuite" />
+      <dependency id="DotSpatial.GeoAPI" />
     </dependencies>
   </metadata>
   <files>

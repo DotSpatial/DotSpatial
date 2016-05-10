@@ -21,6 +21,7 @@
 
 using System;
 using System.IO;
+using DotSpatial.NTSExtension;
 using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
