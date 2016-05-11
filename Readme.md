@@ -35,6 +35,10 @@ Package |
 [	DotSpatial.Positioning.Forms](https://www.nuget.org/packages/DotSpatial.Positioning.Forms) |
 [	DotSpatial.Positioning.Design](https://www.nuget.org/packages/DotSpatial.Positioning.Design) |
 
+### Contribute
+
+See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
+
 ### Project Build Status
 
 [![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
