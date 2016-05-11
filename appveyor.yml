@@ -1,6 +1,6 @@
 version: 2.0.{build}
 configuration: Release
-cache: trunk\packages -> **\packages.config
+cache: source\packages -> **\packages.config
 build:
-  project: Trunk\DotSpatial.sln
+  project: source\DotSpatial.sln
   verbosity: minimal
