@@ -319,8 +319,6 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public void AddShape(Shape shape)
         {
-            IFeature addedFeature;
-
             // This first section controls the indices which need to happen regardless
             // because drawing uses indices even if editors like working with features.
             int count = (_vertices != null) ? _vertices.Length / 2 : 0; // Original number of points
@@ -383,7 +381,7 @@ namespace DotSpatial.Data
             if (!IndexMode)
             {
                 // Just add a new feature
-                addedFeature = new Feature(shape);
+                IFeature addedFeature = new Feature(shape);
 
                 Features.Add(addedFeature);
                 addedFeature.DataRow = AddAttributes(shape);
@@ -401,10 +399,12 @@ namespace DotSpatial.Data
         /// <inheritdoc/>
         public void AddShapes(IEnumerable<Shape> shapes)
         {
+            IEnumerable<Shape> enumShapes = shapes as IList<Shape> ?? shapes.ToList();
+
             if (!IndexMode)
             {
                 _features.SuspendEvents();
-                foreach (Shape shape in shapes)
+                foreach (Shape shape in enumShapes)
                 {
                     AddShape(shape);
                 }
@@ -418,7 +418,8 @@ namespace DotSpatial.Data
             int numPoints = count;
             bool hasZ = _z != null;
             bool hasM = _m != null;
-            foreach (Shape shape in shapes)
+
+            foreach (Shape shape in enumShapes)
             {
                 numPoints += shape.Range.NumPoints;
                 if (shape.M != null)
@@ -461,7 +462,7 @@ namespace DotSpatial.Data
             }
 
             int offset = count;
-            foreach (Shape shape in shapes)
+            foreach (Shape shape in enumShapes)
             {
                 int start = shape.Range.StartIndex;
                 int num = shape.Range.NumPoints;
@@ -1288,8 +1289,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// If the FeatureType is polygon, this is the code for converting the vertex array
-        /// into a feature.
+        /// If the FeatureType is polygon, this is the code for converting the vertex array into a feature.
         /// </summary>
         protected IFeature GetPolygon(int index)
         {
@@ -1345,32 +1345,28 @@ namespace DotSpatial.Data
             // Find holes
             foreach (ILinearRing t in holes)
             {
-                ILinearRing testRing = t;
-                ILinearRing minShell = null;
+                ILinearRing currentHole = t;
                 Envelope minEnv = null;
-                Envelope testEnv = testRing.EnvelopeInternal;
-                Coordinate testPt = testRing.Coordinates[0];
-                ILinearRing tryRing;
+                Envelope currentHoleEnv = currentHole.EnvelopeInternal;
+                Coordinate currentHoleFirstPt = currentHole.Coordinates[0];
+                int addToShell = -1; 
+
                 for (int j = 0; j < shells.Count; j++)
                 {
-                    tryRing = shells[j];
-                    Envelope tryEnv = tryRing.EnvelopeInternal;
-                    if (minShell != null)
-                    {
-                        minEnv = minShell.EnvelopeInternal;
-                    }
+                    ILinearRing currentShell = shells[j];
+                    Envelope currentShellEnv = currentShell.EnvelopeInternal;
 
                     // Check if this new containing ring is smaller than the current minimum ring
-                    if (tryEnv.Contains(testEnv) && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates) || PointInList(testPt, tryRing.Coordinates)))
+                    if (currentShellEnv.Contains(currentHoleEnv) && (CGAlgorithms.IsPointInRing(currentHoleFirstPt, currentShell.Coordinates) || PointInList(currentHoleFirstPt, currentShell.Coordinates)))
                     {
-                        if (minShell == null || minEnv.Contains(tryEnv))
+                        if (minEnv == null || minEnv.Contains(currentShellEnv))
                         {
-                            minShell = tryRing;
+                            minEnv = currentShellEnv;
+                            addToShell = j; //remember the index of the shell this holes fits into, this might still change if we find a smaller shell that still contains the hole
                         }
-
-                        holesForShells[j].Add(t);
                     }
                 }
+                if (addToShell > -1) holesForShells[addToShell].Add(t); //add the hole to the smallest shell it fits into
             }
 
             var polygons = new IPolygon[shells.Count];
@@ -1405,7 +1401,7 @@ namespace DotSpatial.Data
                 DataColumn[] columns = GetColumns();
                 Dictionary<string, object> rowContent = new Dictionary<string, object>();
                 object[] fixedContent = new object[columns.Length];
-                DataRow addedRow;
+                
                 if (shape.Attributes.Length != columns.Length)
                 {
                     throw new ArgumentException("Attribute column count mismatch.");
@@ -1430,7 +1426,7 @@ namespace DotSpatial.Data
                 if (AttributesPopulated)
                 {
                     // just add a new DataRow
-                    addedRow = _dataTable.NewRow();
+                    DataRow addedRow = _dataTable.NewRow();
                     addedRow.ItemArray = fixedContent;
                     return addedRow;
                 }
@@ -1443,8 +1439,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Copies the subset of specified features to create a new featureset that is restricted to
-        /// just the members specified.
+        /// Copies the subset of specified features to create a new featureset that is restricted to just the members specified.
         /// </summary>
         /// <param name="filterExpression">
         /// The string expression to test.
@@ -1494,9 +1489,7 @@ namespace DotSpatial.Data
             get
             {
                 //do not construct FilePath for FeatureSets without a Filename
-                if (String.IsNullOrEmpty(Filename)) return null;
-
-                return RelativePathTo(Filename);
+                return string.IsNullOrEmpty(Filename) ? null : RelativePathTo(Filename);
             }
 
             set
@@ -1568,7 +1561,7 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// This is an optional GeometryFactory that can be set to control how the geometries on features are
-        /// created.  The "Feature" prefix allows us to access the static Default instance on GeometryFactory.
+        /// created. The "Feature" prefix allows us to access the static Default instance on GeometryFactory.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IGeometryFactory FeatureGeometryFactory { get; set; }
@@ -1586,15 +1579,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets an enumeration specifying whether this
-        /// featureset contains Lines, Points, Polygons or an
-        /// unspecified type.
+        /// Gets or sets an enumeration specifying whether this featureset contains Lines, Points, Polygons or an unspecified type.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FeatureType FeatureType { get; set; }
 
         /// <summary>
-        /// A list of the features in this layer
+        /// A list of the features in this layer.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IFeatureList Features
@@ -1620,16 +1611,14 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the file name of a file based feature set. The file name should be the
-        /// absolute path including the file extension. For feature sets coming from a database
-        /// or a web service, the Filename property is NULL.
+        /// Gets or sets the file name of a file based feature set. The file name should be the absolute path including 
+        /// the file extension. For feature sets coming from a database or a web service, the Filename property is NULL.
         /// </summary>
         public virtual string Filename { get; set; }
 
         /// <summary>
-        /// If this is true, then the ShapeIndices and Vertex values are used,
-        /// and features are created on demand.  Otherwise the list of Features
-        /// is used directly.
+        /// If this is true, then the ShapeIndices and Vertex values are used, and features are created on demand.
+        /// Otherwise the list of Features is used directly.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IndexMode { get; set; }
@@ -1640,11 +1629,8 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_verticesAreValid == false)
-                {
+                if (!_verticesAreValid)
                     OnInitializeVertices();
-                }
-
                 return _m;
             }
 
@@ -1657,7 +1643,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Attempts to remove the specified shape.  If in memory, this will also remove the
         /// corresponding database row.  This has no affect on the underlying datasets.
-        /// To impact those, use the
         /// </summary>
         /// <param name="index">
         /// The integer index o the shape to remove.
@@ -1764,7 +1749,8 @@ namespace DotSpatial.Data
         /// </param>
         public void RemoveShapesAt(IEnumerable<int> indices)
         {
-            List<int> remove = indices.ToList(); // moved by jany_ (2015-06-11) because in non index mode the features have to be removed from largest to smallest index
+            IEnumerable<int> enumerable = indices as IList<int> ?? indices.ToList();
+            List<int> remove = enumerable.ToList(); // moved by jany_ (2015-06-11) because in non index mode the features have to be removed from largest to smallest index
             remove.Sort();
             if (remove.Count == 0)
                 return;
@@ -1840,7 +1826,7 @@ namespace DotSpatial.Data
             _vertices = vertex.ToArray();
             _m = m.ToArray();
             _z = z.ToArray();
-            remove = indices.ToList();
+            remove = enumerable.ToList();
             remove.Sort();
 
             ProgressMeter = new ProgressMeter(ProgressHandler, "Removing indices", remove.Count);
@@ -1862,7 +1848,7 @@ namespace DotSpatial.Data
             _shapeIndices = result;
             ProgressMeter.Reset();
 
-            remove = indices.ToList();
+            remove = enumerable.ToList();
             remove.Sort();
             remove.Reverse();
             ProgressMeter = new ProgressMeter(ProgressHandler, "Removing Attribute Rows", remove.Count);
@@ -1947,7 +1933,7 @@ namespace DotSpatial.Data
                 }
 
                 foreach (IFeature feature in Features)
-                { //TODO jany_ do we need to update the envelope?
+                { 
                     feature.Geometry.UpdateEnvelope();
                     MyExtent.ExpandToInclude(new Extent(feature.Geometry.EnvelopeInternal));
                 }
@@ -1973,11 +1959,8 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_verticesAreValid == false)
-                {
+                if (!_verticesAreValid)
                     OnInitializeVertices();
-                }
-
                 return _vertices;
             }
 
@@ -2015,11 +1998,8 @@ namespace DotSpatial.Data
         {
             get
             {
-                if (_verticesAreValid == false)
-                {
+                if (!_verticesAreValid)
                     OnInitializeVertices();
-                }
-
                 return _z;
             }
 
@@ -2031,7 +2011,7 @@ namespace DotSpatial.Data
 
         private static string AbsolutePathTo(string toPath)
         {
-            if (String.IsNullOrEmpty(toPath))
+            if (string.IsNullOrEmpty(toPath))
                 throw new ArgumentNullException("toPath");
 
             return Path.GetFullPath(toPath);
@@ -2106,9 +2086,9 @@ namespace DotSpatial.Data
         /// <exception cref="ArgumentNullException"></exception>
         public static string MakeRelativePath(string fromPath, string toPath)
         {
-            if (String.IsNullOrEmpty(fromPath))
+            if (string.IsNullOrEmpty(fromPath))
                 throw new ArgumentNullException("fromPath");
-            if (String.IsNullOrEmpty(toPath))
+            if (string.IsNullOrEmpty(toPath))
                 throw new ArgumentNullException("toPath");
 
             if (string.IsNullOrEmpty(Path.GetDirectoryName(toPath)))
@@ -2379,8 +2359,6 @@ namespace DotSpatial.Data
 
                 row++;
             }
-
-            return;
         }
 
         #endregion
@@ -2486,9 +2464,7 @@ namespace DotSpatial.Data
                 IList<Coordinate> coords = f.Geometry.Coordinates;
 
                 if (coords == null)
-                {
                     continue;
-                }
 
                 foreach (Coordinate c in coords)
                 {
