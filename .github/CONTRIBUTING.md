@@ -57,7 +57,6 @@ Please follow the style of the other messages in the commit history. Explain the
 
 Please follow the coding-style:
 
-- write StyleCop compliant code
 - include XML comments for all methods, properties and fields
 - use linq method syntax (not query syntax)
 - keep it simple
