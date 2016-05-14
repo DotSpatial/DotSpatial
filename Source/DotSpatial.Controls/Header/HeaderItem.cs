@@ -33,10 +33,7 @@ namespace DotSpatial.Controls.Header
         /// <value>The unique identifier.</value>
         public string Key
         {
-            get
-            {
-                return key;
-            }
+            get { return key; }
             set
             {
                 if (key == value)
@@ -45,6 +42,15 @@ namespace DotSpatial.Controls.Header
                 OnPropertyChanged("Key");
             }
         }
+
+        /// <summary>
+        /// An <see cref="Object"/> that contains data about the HeaderItem. The default is null.
+        /// </summary>
+        /// <remarks>
+        /// Any type derived from the <see cref="Object"/> class can be assigned to this property. 
+        /// A common use for the Tag property is to store data that is closely associated with the item. 
+        /// </remarks>
+        public object Tag { get; set; }
 
         #region INotifyPropertyChanged Members
 
