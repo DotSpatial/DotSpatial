@@ -28,7 +28,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DotSpatial.Plugins.ShapeEditor")]
 [assembly: AssemblyDescription("A visual way to create and move points in a shapefile.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.ShapeEditor")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
@@ -42,7 +41,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1bddbc5e-bb77-4e8e-8e0f-4a27ffe25274")]
-
-[assembly: AssemblyVersion("1.9")]
-
-[assembly: AssemblyFileVersion("1.9")]

@@ -1,18 +1,3 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Positioning.Design.dll
-// Description:  A library supporting optional windows forms designer elements for DotSpatial.Positioning
-// ********************************************************************************************************
-// The contents of this file are subject to the MIT License (MIT)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
-// ********************************************************************************************************
-
 using System;
 using System.Reflection;
 using System.Resources;
@@ -23,17 +8,13 @@ using System.Security;
 /* These assembly attributes will be the same regardless of the product. */
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyCompany("DotSpatial Team")]
+
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning.Design")]
 [assembly: AssemblyTitle("DotSpatial.Positioning.Design")]
-
-[assembly: AssemblyVersion("1.9")]
-
-[assembly: AssemblyFileVersion("1.9")]
 [assembly: AssemblyDescription("This assembly provides objects used to design geographic applications.")]
 
 /* This assembly contains language-specific resources.  Help the CLR find them. */

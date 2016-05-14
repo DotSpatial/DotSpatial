@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="DataManagement.cs" />
     <Compile Include="Hydrology.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

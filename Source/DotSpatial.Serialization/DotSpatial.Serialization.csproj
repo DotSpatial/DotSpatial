@@ -88,6 +88,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="AssemblyMissingException.cs" />
     <Compile Include="BaseCollection.cs" />
     <Compile Include="BaseList.cs" />

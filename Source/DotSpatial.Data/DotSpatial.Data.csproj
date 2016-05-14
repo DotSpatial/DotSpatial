@@ -107,6 +107,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="Argb.cs" />
     <Compile Include="BinaryReaderWriterExtensions.cs" />
     <Compile Include="DbaseLocaleRegistry.cs" />

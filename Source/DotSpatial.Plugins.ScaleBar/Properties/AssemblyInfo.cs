@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dotspatial.Plugins.ScaleBar")]
 [assembly: AssemblyDescription("Scalebar-Extension used for changing the map scale.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("Dotspatial.Plugins.ScaleBar")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2016")]
 [assembly: AssemblyTrademark("")]
@@ -20,16 +19,3 @@ using System.Runtime.InteropServices;
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 [assembly: Guid("44087953-b11f-42c6-9457-51bba832222d")]
-
-// Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
-//
-//      Hauptversion
-//      Nebenversion 
-//      Buildnummer
-//      Revision
-//
-// Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
-// übernehmen, indem Sie "*" eingeben:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9")]
-[assembly: AssemblyFileVersion("1.9")]

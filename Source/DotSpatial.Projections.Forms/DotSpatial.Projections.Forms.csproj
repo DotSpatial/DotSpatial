@@ -62,6 +62,9 @@
     <DocumentationFile>..\bin\Release\DotSpatial.Projections.Forms.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="DoubleBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

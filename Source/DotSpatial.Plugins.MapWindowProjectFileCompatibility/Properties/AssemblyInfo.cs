@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DotSpatial.Plugins.MapWindowProjectFileCompatibility")]
 [assembly: AssemblyDescription("Open MapWindow 4 (mwproj) project files.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.MapWindowProjectFileCompatibility")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
@@ -20,17 +19,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2dac72d9-9b01-4825-9ee1-c8c4bb1b3a14")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9")]
-
-[assembly: AssemblyFileVersion("1.9")]

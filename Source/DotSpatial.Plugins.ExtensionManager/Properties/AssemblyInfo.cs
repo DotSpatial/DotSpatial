@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DotSpatial.Plugins.ExtensionManager")]
 [assembly: AssemblyDescription("Download and install extensions into DotSpatial.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DotSpatial Team")]
 [assembly: AssemblyProduct("DotSpatial.Plugins.ExtensionManager")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
@@ -26,19 +25,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b6dcc7a6-5b1b-4b55-8e97-cc913322e17c")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-
-[assembly: AssemblyVersion("1.9")]
-
-[assembly: AssemblyFileVersion("1.9")]
-

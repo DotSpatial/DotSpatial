@@ -27,16 +27,11 @@ using System.Runtime.ConstrainedExecution;
 /* These assembly attributes will be the same regardless of the product. */
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyCompany("DotSpatial.Positioning")]
 [assembly: AssemblyCopyright("Copyright © DotSpatial Team 2012-2016")]
 [assembly: AssemblyTrademark("")]
 
 /* These attributes will change for each assembly. */
 [assembly: AssemblyProduct("DotSpatial.Positioning")]
-
-[assembly: AssemblyVersion("1.9")]
-
-[assembly: AssemblyFileVersion("1.9")]
 
 
 #if PocketPC
