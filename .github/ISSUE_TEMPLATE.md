@@ -6,8 +6,7 @@
 2.
 3.
 
-Platform:
-.NET version:
+DotSpatial version: 
 
 ### Expected behaviour
 
