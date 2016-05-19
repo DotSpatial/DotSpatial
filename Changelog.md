@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Switched to NTS/GeoAPI instead of DotSpatial.Topology (#633, #404) 
 - Tag property in ActionItem (#338)
+- Added property AppManager.BaseDirectory which allows to change base directory for plugins. (#758)
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
 
 ### Removed
-- DotSpatial.Topology assembly (#633)
+- Removed DotSpatial.Topology assembly (#633)
 
 ### Fixed
 - ShapeReader skipping one entry when switching the page (#774)

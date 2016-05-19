@@ -74,6 +74,11 @@ namespace DotSpatial.Controls
 
         #region Constructors and Destructors
 
+        static AppManager()
+        {
+            BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppManager"/> class.
         /// </summary>
@@ -125,6 +130,11 @@ namespace DotSpatial.Controls
         #region Public Properties
 
         /// <summary>
+        /// Used in conjuction with <see cref="UseBaseDirectoryForExtensionsDirectory"/>. Default is AppDomain.CurrentDomain.BaseDirectory.
+        /// </summary>
+        public static string BaseDirectory { get; set; }
+
+        /// <summary>
         /// A known directory from where extensions will be loaded, in addition to the configurable Directories list.
         /// Assemblies placed directly in this directory will not be loaded, but rather those nested inside of a folder
         /// more than one level deep.
@@ -135,12 +145,15 @@ namespace DotSpatial.Controls
             {
                 string absolutePathToExtensions;
                 if (UseBaseDirectoryForExtensionsDirectory)
-                    absolutePathToExtensions = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExtensionsDirectory);
+                {
+                    absolutePathToExtensions = Path.Combine(BaseDirectory, ExtensionsDirectory);
+                }
                 else
                 {
                     // by placing data in the AppData location, ClickOnce appications won't be subject to limits on size.
                     Assembly asm = Assembly.GetEntryAssembly();
-                    absolutePathToExtensions = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), asm.ManifestModule.Name, ExtensionsDirectory);
+                    absolutePathToExtensions = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                            asm.ManifestModule.Name, ExtensionsDirectory);
                 }
                 return absolutePathToExtensions;
             }
@@ -267,10 +280,10 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether extensions should be placed in AppDomain.CurrentDomain.BaseDirectory.
+        /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>
         /// </summary>
         /// <value>
-        /// <c>true</c> if extensions should be placed in AppDomain.CurrentDomain.BaseDirectory; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
+        /// <c>true</c> if extensions should be placed in <see cref="BaseDirectory"/>; otherwise, extensions will be placed in a user profile folder based on the entry assembly name.
         /// This must be set before calling LoadExtensions();
         /// </value>
         public static bool UseBaseDirectoryForExtensionsDirectory { get; set; }
@@ -564,7 +577,7 @@ namespace DotSpatial.Controls
             //check the installation directory
             foreach (string directory in Directories)
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);
+                string path = Path.Combine(BaseDirectory, directory);
 
                 if (Directory.Exists(path))
                 {
@@ -635,7 +648,7 @@ namespace DotSpatial.Controls
             Directories.Add(Mono.Mono.IsRunningOnMono() ? "Mono Extensions" : "Windows Extensions");
             foreach (string directory in Directories.Union(new[] { "Data Extensions", "Tools" }))
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);
+                string path = Path.Combine(BaseDirectory, directory);
 
                 if (Directory.Exists(path))
                 {
