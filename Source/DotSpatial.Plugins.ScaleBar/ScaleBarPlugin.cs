@@ -131,7 +131,7 @@ namespace DotSpatial.Plugins.ScaleBar
             {
                 var text = _combo.Text;
                 if (string.IsNullOrWhiteSpace(text)) return;
-                if (text.Contains(":")) text = text.Substring(text.IndexOf(":") + 1);
+                if (text.Contains(":")) text = text.Substring(text.IndexOf(":", StringComparison.InvariantCulture) + 1);
 
                 double nr;
                 if (double.TryParse(text, out nr)) ScaleTo(nr);
@@ -168,7 +168,7 @@ namespace DotSpatial.Plugins.ScaleBar
             if (!str.Contains("["))
             {
                 double nr;
-                if (double.TryParse(str.Substring(str.IndexOf(":") + 1), out nr))
+                if (double.TryParse(str.Substring(str.IndexOf(":", StringComparison.InvariantCulture) + 1), out nr))
                     ScaleTo(nr);
             }
         }
@@ -198,17 +198,20 @@ namespace DotSpatial.Plugins.ScaleBar
         /// <param name="scale"></param>
         private void ScaleTo(double scale)
         {
-            if ((scale == 0 || App.Map.Projection == null)) return;
+            if (scale == 0 || App.Map.Projection == null) return;
 
             var ext = App.Map.ViewExtents;
-            Point centerpoint = new Point((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
 
             //TODO this works for Meter-based coordinate-systems. How must this be done for lat/long?
-            const double dInchesPerMeter = 39.3700787401575;
-            double dScreenWidthInMeters = (App.Map.BufferedImage.Width / App.Map.BufferedImage.HorizontalResolution) / dInchesPerMeter;
-            double newwidth = ((scale * dScreenWidthInMeters) / App.Map.Projection.Unit.Meters) / 2;
-            double newheight = ((App.Map.ViewExtents.Height * newwidth) / App.Map.ViewExtents.Width) / 2;
-            App.Map.ViewExtents = new Extent(centerpoint.X - newwidth, centerpoint.Y - newheight, centerpoint.X + newwidth, centerpoint.Y + newheight);
+            if (ext.Width != 0)
+            {
+                Point centerpoint = new Point((ext.MinX + ext.MaxX) / 2, (ext.MinY + ext.MaxY) / 2);
+                const double dInchesPerMeter = 39.3700787401575;
+                double dScreenWidthInMeters = (App.Map.BufferedImage.Width / App.Map.BufferedImage.HorizontalResolution) / dInchesPerMeter;
+                double newwidth = ((scale * dScreenWidthInMeters) / App.Map.Projection.Unit.Meters) / 2;
+                double newheight = ((App.Map.ViewExtents.Height * newwidth) / App.Map.ViewExtents.Width) / 2;
+                App.Map.ViewExtents = new Extent(centerpoint.X - newwidth, centerpoint.Y - newheight, centerpoint.X + newwidth, centerpoint.Y + newheight);
+            }
             if (_combo.Owner != null) _combo.Owner.Focus(); //Remove focus because users expect focus to leave on pressing enter.
         }
 
