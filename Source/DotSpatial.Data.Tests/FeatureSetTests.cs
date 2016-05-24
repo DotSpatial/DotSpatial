@@ -45,7 +45,7 @@ namespace DotSpatial.Data.Tests
             FeatureSet target = new FeatureSet();
             string relPath1 = @"folder";
             string relPath2 = @"name\states.shp";
-            string relativeFilePath = relPath1 + " " +  relPath2;
+            string relativeFilePath = relPath1 + " " + relPath2;
             string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relPath1) +
                                       " " + relPath2;
             string actualFilePath;
@@ -65,7 +65,7 @@ namespace DotSpatial.Data.Tests
         {
             FeatureSet target = new FeatureSet();
             string relativeFilePath = @"inner\states.shp";
-            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(),relativeFilePath);
+            string expectedFullPath = Path.Combine(Directory.GetCurrentDirectory(), relativeFilePath);
 
             string actualFilePath;
             target.FilePath = relativeFilePath;
@@ -121,8 +121,8 @@ namespace DotSpatial.Data.Tests
                 // Now try to open saved shapefile
                 // Points must have same location in WGS1984
                 var openFs = FeatureSet.Open(tmpFile);
-                var fs0 = (Point) openFs.Features[0].Geometry;
-                var c1 = new[] {fs0.X, fs0.Y};
+                var fs0 = (Point)openFs.Features[0].Geometry;
+                var c1 = new[] { fs0.X, fs0.Y };
                 Reproject.ReprojectPoints(c1, z, openFs.Projection, wgs, 0, 1); // reproject back to wgs1984
 
                 Assert.IsTrue(Math.Abs(originalX - c1[0]) < 1e-8);
@@ -157,7 +157,7 @@ namespace DotSpatial.Data.Tests
             {
                 Assert.AreEqual(fs.CoordinateType, actual.CoordinateType);
             }
-            finally 
+            finally
             {
                 FileTools.DeleteShapeFile(outfile);
             }
@@ -196,5 +196,14 @@ namespace DotSpatial.Data.Tests
             var target = new FeatureSet();
             Assert.IsNotNull(target.FeatureLookup);
         }
+
+        [Test(Description = @"Checks that the Error NoDirEdges isn't thrown. (https://github.com/DotSpatial/DotSpatial/issues/602)")]
+        public void NoDirEdges()
+        {
+            IFeatureSet fs1 = FeatureSet.Open(Path.Combine(_shapefiles, @"noDirEdgeFiles\catchment.shp"));
+            IFeatureSet fs2 = FeatureSet.Open(Path.Combine(_shapefiles, @"noDirEdgeFiles\siteDesignArea.shp"));
+            Assert.DoesNotThrow(() => fs1.Intersection(fs2, FieldJoinType.All, null));
+        }
+
     }
 }
