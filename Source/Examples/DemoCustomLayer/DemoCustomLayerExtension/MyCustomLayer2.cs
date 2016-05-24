@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using GeoAPI.Geometries;
+using DotSpatial.Topology;
 using Point = System.Drawing.Point;
 using PointShape = DotSpatial.Symbology.PointShape;
 

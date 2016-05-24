@@ -67,6 +67,18 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.Positioning,  Version=1.9.0.0, Culture=neutral, PublicKeyToken=f6f66d1554473068, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.1.9\lib\net40-Client\DotSpatial.Positioning.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Design,  Version=1.9.0.0, Culture=neutral, PublicKeyToken=b4b0b185210c9dae, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.1.9\lib\net40-Client\DotSpatial.Positioning.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Positioning.Forms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3a45fedac1c4cdab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotSpatial.Positioning.Forms.1.9\lib\net40-Client\DotSpatial.Positioning.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -102,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -120,18 +133,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DotSpatial.Positioning.Forms\DotSpatial.Positioning.Forms.csproj">
-      <Project>{D4245DD6-79F6-466A-98D3-4AF15D8C39A9}</Project>
-      <Name>DotSpatial.Positioning.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DotSpatial.Positioning\DotSpatial.Positioning.csproj">
-      <Project>{26E18588-B04D-4987-BF36-8206A7E36FF9}</Project>
-      <Name>DotSpatial.Positioning</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
