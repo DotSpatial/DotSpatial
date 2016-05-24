@@ -36,7 +36,6 @@ namespace DotSpatial.Data.Tests
         }
 
         [Test(Description = @"https://github.com/DotSpatial/DotSpatial/issues/746")]
-        [Ignore] // todo: Unignore after updating GeoAPI
         public void OverlapWith2XyEqualCoordinatesInARow()
         {
             #region cList definitions
