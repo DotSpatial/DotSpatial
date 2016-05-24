@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<!---->
+<metadata xml:lang="en">
+  <Esri>
+    <MetaID>{DBBCA4FF-68B4-4CA4-91E8-420CAA6B64AE}</MetaID>
+    <CreaDate>20070514</CreaDate>
+    <CreaTime>19513100</CreaTime>
+    <SyncOnce>FALSE</SyncOnce>
+    <SyncDate>20070514</SyncDate>
+    <SyncTime>19513100</SyncTime>
+    <ModDate>20070514</ModDate>
+    <ModTime>19513100</ModTime>
+    <DataProperties>
+      <lineage>
+        <Process Name="CopyFeatures_8" ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Data Management Tools.tbx\CopyFeatures" Date="20070514" Time="195133">CopyFeatures RegCatchment_lyr D:\NHDPlusExtract_Output\NHDPlus05\NHDPlus05070201\Drainage\Catchment.shp # 0 0 0</Process>
+      </lineage>
+    </DataProperties>
+  </Esri>
+  <idinfo>
+    <native Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 9.1.0.780</native>
+    <descript>
+      <langdata Sync="TRUE">en</langdata>
+      <abstract>REQUIRED: A brief narrative summary of the data set.</abstract>
+      <purpose>REQUIRED: A summary of the intentions with which the data set was developed.</purpose>
+    </descript>
+    <citation>
+      <citeinfo>
+        <origin>REQUIRED: The name of an organization or individual that developed the data set.</origin>
+        <pubdate>REQUIRED: The date when the data set is published or otherwise made available for release.</pubdate>
+        <title Sync="TRUE">Catchment</title>
+        <ftname Sync="TRUE">Catchment</ftname>
+        <geoform Sync="TRUE">vector digital data</geoform>
+        <onlink Sync="TRUE">\\NHD-PROD\NHDPlusExtract_Output\NHDPlus05\NHDPlus05070201\Drainage\Catchment.shp</onlink>
+      </citeinfo>
+    </citation>
+    <timeperd>
+      <current>REQUIRED: The basis on which the time period of content information is determined.</current>
+      <timeinfo>
+        <sngdate>
+          <caldate>REQUIRED: The year (and optionally month, or month and day) for which the data set corresponds to the ground.</caldate>
+        </sngdate>
+      </timeinfo>
+    </timeperd>
+    <status>
+      <progress>REQUIRED: The state of the data set.</progress>
+      <update>REQUIRED: The frequency with which changes and additions are made to the data set after the initial data set is completed.</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc Sync="TRUE">-82.673</westbc>
+        <eastbc Sync="TRUE">-81.307</eastbc>
+        <northbc Sync="TRUE">38.139</northbc>
+        <southbc Sync="TRUE">37.117</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>REQUIRED: Reference to a formally registered thesaurus or a similar authoritative source of theme keywords.</themekt>
+        <themekey>REQUIRED: Common-use word or phrase used to describe the subject of the data set.</themekey>
+      </theme>
+    </keywords>
+    <accconst>REQUIRED: Restrictions and legal prerequisites for accessing the data set.</accconst>
+    <useconst>REQUIRED: Restrictions and legal prerequisites for using the data set after access is granted.</useconst>
+    <natvform Sync="TRUE">Shapefile</natvform>
+  </idinfo>
+  <dataqual>
+    <logic />
+    <complete />
+    <lineage>
+      <procstep>
+        <procdesc>Projected from ' +proj=longlat +datum=nad83 +no_defs' to ' +x_0=0 +y_0=0 +lon_0=0 +lat_1=0 +proj=merc +datum=wgs84 +no_defs'</procdesc>
+        <procdate>20130610</procdate>
+        <proctime>115214</proctime>
+      </procstep>
+      <procstep>
+        <procdesc>Downloaded from ftp://horizon-systems.com/NHDPlus/NHDPlusV1/NHDPlusExtensions/SubBasins/NHDPlus05/NHDPlus05070201.zip</procdesc>
+        <procdate>20130610</procdate>
+        <proctime>115159</proctime>
+      </procstep>
+      <procstep>
+        <procdesc>Read from cache file created 2013-06-10 11:51 'C:\otw_workspaces\workspac3e\sites\site4\WorkDir\NHDPlusCache\NHDPlus\NHDPlus05070201.zip'</procdesc>
+        <procdate>20130610</procdate>
+        <proctime>115223</proctime>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <dataIdInfo>
+    <envirDesc Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 9.1.0.780</envirDesc>
+    <dataLang>
+      <languageCode Sync="TRUE" value="en">
+      </languageCode>
+    </dataLang>
+    <idCitation>
+      <resTitle Sync="TRUE">Catchment</resTitle>
+      <presForm>
+        <PresFormCd Sync="TRUE" value="005">
+        </PresFormCd>
+      </presForm>
+    </idCitation>
+    <spatRpType>
+      <SpatRepTypCd Sync="TRUE" value="001">
+      </SpatRepTypCd>
+    </spatRpType>
+  </dataIdInfo>
+  <metainfo>
+    <langmeta Sync="TRUE">en</langmeta>
+    <metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+    <metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv>
+    <mettc Sync="TRUE">local time</mettc>
+    <metextns>
+      <onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink>
+      <metprof Sync="TRUE">ESRI Metadata Profile</metprof>
+    </metextns>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntper>REQUIRED: The person responsible for the metadata information.</cntper>
+          <cntorg>REQUIRED: The organization responsible for the metadata information.</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>REQUIRED: The mailing and/or physical address for the organization or individual.</addrtype>
+          <city>REQUIRED: The city of the address.</city>
+          <state>REQUIRED: The state or province of the address.</state>
+          <postal>REQUIRED: The ZIP or other postal code of the address.</postal>
+        </cntaddr>
+        <cntvoice>REQUIRED: The telephone number by which individuals can speak to the organization or individual.</cntvoice>
+      </cntinfo>
+    </metc>
+    <metd Sync="TRUE">20130610</metd>
+  </metainfo>
+  <mdLang>
+    <languageCode Sync="TRUE" value="en">
+    </languageCode>
+  </mdLang>
+  <mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName>
+  <mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer>
+  <mdChar>
+    <CharSetCd Sync="TRUE" value="004">
+    </CharSetCd>
+  </mdChar>
+  <mdHrLv>
+    <ScopeCd Sync="TRUE" value="005">
+    </ScopeCd>
+  </mdHrLv>
+  <mdHrLvName Sync="TRUE">dataset</mdHrLvName>
+  <distinfo>
+    <resdesc Sync="TRUE">Downloadable Data</resdesc>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <transize Sync="TRUE">0.000</transize>
+          <dssize Sync="TRUE">0.000</dssize>
+        </digtinfo>
+      </digform>
+    </stdorder>
+  </distinfo>
+  <distInfo>
+    <distributor>
+      <distorTran>
+        <onLineSrc>
+          <orDesc Sync="TRUE">002</orDesc>
+          <linkage Sync="TRUE">file://\\NHD-PROD\NHDPlusExtract_Output\NHDPlus05\NHDPlus05070201\Drainage\Catchment.shp</linkage>
+          <protocol Sync="TRUE">Local Area Network</protocol>
+        </onLineSrc>
+        <transSize Sync="TRUE">0.000</transSize>
+      </distorTran>
+      <distorFormat>
+        <formatName Sync="TRUE">Shapefile</formatName>
+      </distorFormat>
+    </distributor>
+  </distInfo>
+  <spdoinfo>
+    <direct Sync="TRUE">Vector</direct>
+    <ptvctinf>
+      <esriterm Name="Catchment">
+        <efeatyp Sync="TRUE">Simple</efeatyp>
+        <efeageom Sync="TRUE">Polygon</efeageom>
+        <esritopo Sync="TRUE">FALSE</esritopo>
+        <efeacnt Sync="TRUE">0</efeacnt>
+        <spindex Sync="TRUE">FALSE</spindex>
+        <linrefer Sync="TRUE">FALSE</linrefer>
+      </esriterm>
+      <sdtsterm Name="Catchment">
+        <sdtstype Sync="TRUE">G-polygon</sdtstype>
+        <ptvctcnt Sync="TRUE">0</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <cordsysn>
+        <geogcsn Sync="TRUE">GCS_North_American_1983</geogcsn>
+      </cordsysn>
+      <geograph>
+        <geogunit Sync="TRUE">Decimal degrees</geogunit>
+        <latres Sync="TRUE">0.000000</latres>
+        <longres Sync="TRUE">0.000000</longres>
+      </geograph>
+      <geodetic>
+        <horizdn Sync="TRUE">North American Datum of 1983</horizdn>
+        <ellips Sync="TRUE">Geodetic Reference System 80</ellips>
+        <semiaxis Sync="TRUE">6378137.000000</semiaxis>
+        <denflat Sync="TRUE">298.257222</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <refSysInfo>
+    <RefSystem>
+      <refSysID>
+        <identCode Sync="TRUE">GCS_North_American_1983</identCode>
+      </refSysID>
+    </RefSystem>
+  </refSysInfo>
+  <spatRepInfo>
+    <VectSpatRep>
+      <topLvl>
+        <TopoLevCd Sync="TRUE" value="001">
+        </TopoLevCd>
+      </topLvl>
+      <geometObjs Name="Catchment">
+        <geoObjTyp>
+          <GeoObjTypCd Sync="TRUE" value="001">
+          </GeoObjTypCd>
+        </geoObjTyp>
+        <geoObjCnt Sync="TRUE">0</geoObjCnt>
+      </geometObjs>
+    </VectSpatRep>
+  </spatRepInfo>
+  <eainfo>
+    <detailed Name="Catchment">
+      <enttyp>
+        <enttypl Sync="TRUE">Catchment</enttypl>
+        <enttypt Sync="TRUE">Feature Class</enttypt>
+        <enttypc Sync="TRUE">0</enttypc>
+      </enttyp>
+      <attr>
+        <attrlabl Sync="TRUE">FID</attrlabl>
+        <attalias Sync="TRUE">FID</attalias>
+        <attrtype Sync="TRUE">OID</attrtype>
+        <attwidth Sync="TRUE">4</attwidth>
+        <atprecis Sync="TRUE">0</atprecis>
+        <attscale Sync="TRUE">0</attscale>
+        <attrdef Sync="TRUE">Internal feature number.</attrdef>
+        <attrdefs Sync="TRUE">ESRI</attrdefs>
+        <attrdomv>
+          <udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">Shape</attrlabl>
+        <attalias Sync="TRUE">Shape</attalias>
+        <attrtype Sync="TRUE">Geometry</attrtype>
+        <attwidth Sync="TRUE">0</attwidth>
+        <atprecis Sync="TRUE">0</atprecis>
+        <attscale Sync="TRUE">0</attscale>
+        <attrdef Sync="TRUE">Feature geometry.</attrdef>
+        <attrdefs Sync="TRUE">ESRI</attrdefs>
+        <attrdomv>
+          <udom Sync="TRUE">Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">COMID</attrlabl>
+        <attalias Sync="TRUE">COMID</attalias>
+        <attrtype Sync="TRUE">Number</attrtype>
+        <attwidth Sync="TRUE">16</attwidth>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">GRID_CODE</attrlabl>
+        <attalias Sync="TRUE">GRID_CODE</attalias>
+        <attrtype Sync="TRUE">Number</attrtype>
+        <attwidth Sync="TRUE">11</attwidth>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">GRID_COUNT</attrlabl>
+        <attalias Sync="TRUE">GRID_COUNT</attalias>
+        <attrtype Sync="TRUE">Number</attrtype>
+        <attwidth Sync="TRUE">11</attwidth>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">PROD_UNIT</attrlabl>
+        <attalias Sync="TRUE">PROD_UNIT</attalias>
+        <attrtype Sync="TRUE">String</attrtype>
+        <attwidth Sync="TRUE">4</attwidth>
+      </attr>
+      <attr>
+        <attrlabl Sync="TRUE">AREASQKM</attrlabl>
+        <attalias Sync="TRUE">AREASQKM</attalias>
+        <attrtype Sync="TRUE">Number</attrtype>
+        <attwidth Sync="TRUE">12</attwidth>
+        <atnumdec Sync="TRUE">3</atnumdec>
+      </attr>
+    </detailed>
+  </eainfo>
+  <mdDateSt Sync="TRUE">20070514</mdDateSt>
+</metadata>
