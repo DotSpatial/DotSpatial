@@ -91,6 +91,7 @@
     <Compile Include="DataManagerTests.cs" />
     <Compile Include="DoubleRasterTest.cs" />
     <Compile Include="FeatureListTests.cs" />
+    <Compile Include="GeometryTests.cs" />
     <Compile Include="LineShapefileTests.cs" />
     <Compile Include="PointShapefileTests.cs" />
     <Compile Include="PolygonShapefileTests.cs" />
