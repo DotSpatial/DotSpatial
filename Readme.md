@@ -35,6 +35,13 @@ Package |
 [	DotSpatial.Positioning.Forms](https://www.nuget.org/packages/DotSpatial.Positioning.Forms) |
 [	DotSpatial.Positioning.Design](https://www.nuget.org/packages/DotSpatial.Positioning.Design) |
 
+
+### Questions & Documentation
+Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
+
+For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
+
+
 ### Contribute
 
 See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
