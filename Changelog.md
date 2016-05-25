@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
+- Demo and Apps projects should have build files (#120)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -23,3 +24,7 @@ All notable changes to this project will be documented in this file.
 - IsSimple returns true without checking (#656)
 - Polygonizer StackOverflowException (#509)
 - Topology: Area for a Polygon with Holes (#16)
+- Unhandled exception in ScaleBarPlugin (#789)
+- No outgoing dirEdge found #602
+- WKBWriter adds 4 null bytes? (#475)
+- Exception when calling feature.Intersects(otherFeature) (#746)
