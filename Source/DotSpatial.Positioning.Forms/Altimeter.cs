@@ -39,7 +39,7 @@ namespace DotSpatial.Positioning.Forms
     /// represent (from longest to shortest) hundreds, thousands and tens-of-thousands. The
     /// display of the Altimeter is controlled via the <strong>Value</strong> property.
     /// </remarks>
-    [ToolboxBitmap(typeof(Altimeter))]
+    [ToolboxBitmap(typeof(Altimeter), "Resources.Altimeter.bmp")]
     [DefaultProperty("Value")]
     [ToolboxItem(true)]
     public sealed class Altimeter : PolarControl

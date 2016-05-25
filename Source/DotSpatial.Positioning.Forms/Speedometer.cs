@@ -45,7 +45,7 @@ namespace DotSpatial.Positioning.Forms
     /// <summary>
     /// Represents a user control used to measure speed graphically.
     /// </summary>
-    [ToolboxBitmap(typeof(Speedometer))]
+    [ToolboxBitmap(typeof(Speedometer), "Resources.Speedometer.bmp")]
     [DefaultProperty("Value")]
 #endif
 #if Framework20

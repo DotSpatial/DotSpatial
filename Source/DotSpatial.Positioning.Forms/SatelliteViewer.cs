@@ -62,7 +62,7 @@ namespace DotSpatial.Positioning.Forms
     /// <summary>
     /// Represents a user control used to display the location and signal strength of GPS satellites.
     /// </summary>
-    [ToolboxBitmap(typeof(SatelliteViewer))]
+    [ToolboxBitmap(typeof(SatelliteViewer), "Resources.SatelliteViewer.bmp")]
     [DefaultProperty("Satellites")]
 #endif
 #if Framework20

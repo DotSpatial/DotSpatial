@@ -44,7 +44,7 @@ namespace DotSpatial.Positioning.Forms
     /// <summary>
     /// Represents a user control used to display the current direction of travel.
     /// </summary>
-    [ToolboxBitmap(typeof(Compass))]
+    [ToolboxBitmap(typeof(Compass), "Resources.Compass.bmp")]
     [DefaultProperty("Value")]
 #endif
 #if Framework20

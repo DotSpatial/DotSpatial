@@ -45,7 +45,7 @@ namespace DotSpatial.Positioning.Forms
     /// <summary>
     /// Represents a control used to display satellite signal strengths.
     /// </summary>
-    [ToolboxBitmap(typeof(SatelliteSignalBar))]
+    [ToolboxBitmap(typeof(SatelliteSignalBar), "Resources.SatelliteSignalBar.bmp")]
     [DefaultProperty("Satellites")]
 #endif
 #if Framework20

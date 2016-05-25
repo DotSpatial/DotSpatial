@@ -106,12 +106,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Altimeter.bmp" />
-    <Content Include="Resources\Clock.bmp" />
-    <Content Include="Resources\Compass.bmp" />
-    <Content Include="Resources\SatelliteSignalBar.bmp" />
-    <Content Include="Resources\SatelliteViewer.bmp" />
-    <Content Include="Resources\Speedometer.bmp" />
+    <EmbeddedResource Include="Resources\Altimeter.bmp" />
+    <EmbeddedResource Include="Resources\Clock.bmp" />
+    <EmbeddedResource Include="Resources\Compass.bmp" />
+    <EmbeddedResource Include="Resources\SatelliteSignalBar.bmp" />
+    <EmbeddedResource Include="Resources\SatelliteViewer.bmp" />
+    <EmbeddedResource Include="Resources\Speedometer.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

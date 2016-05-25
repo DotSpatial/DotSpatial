@@ -63,7 +63,7 @@ namespace DotSpatial.Positioning.Forms
     /// <summary>
     /// Represents a user control which displays the local or satellite-derived time.
     /// </summary>
-    [ToolboxBitmap(typeof(Clock))]
+    [ToolboxBitmap(typeof(Clock), "Resources.Clock.bmp")]
     [DefaultProperty("Value")]
 #endif
 #if Framework20
