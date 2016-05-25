@@ -28,3 +28,4 @@ All notable changes to this project will be documented in this file.
 - No outgoing dirEdge found #602
 - WKBWriter adds 4 null bytes? (#475)
 - Exception when calling feature.Intersects(otherFeature) (#746)
+- Remove Map Frame context menu doesn't work (#237)
