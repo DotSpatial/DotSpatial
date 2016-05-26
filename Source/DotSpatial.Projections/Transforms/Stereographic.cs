@@ -140,7 +140,6 @@ namespace DotSpatial.Projections.Transforms
                         xy[x] = double.NaN;
                         xy[y] = double.NaN;
                         continue;
-                        //ProjectionException(20);
                     }
                     xy[x] = (xy[y] = _akm1 / xy[y]) * cosphi * sinlam;
                     xy[y] *= (_mode == Modes.Equitorial)
@@ -160,7 +159,6 @@ namespace DotSpatial.Projections.Transforms
                         xy[x] = double.NaN;
                         xy[y] = double.NaN;
                         continue;
-                        //ProjectionException(20);
                     }
                     xy[x] = sinlam * (xy[y] = _akm1 * Math.Tan(FORT_PI + .5 * lp[phi]));
                     xy[y] *= coslam;
@@ -206,6 +204,9 @@ namespace DotSpatial.Projections.Transforms
                         halfe = -.5 * E;
                         break;
                 }
+
+                lp[lam] = double.NaN;
+                lp[phi] = double.NaN;
                 for (j = NITER; j-- > 0; phiL = lp[phi])
                 {
                     sinphi = E * Math.Sin(phiL);
@@ -214,13 +215,9 @@ namespace DotSpatial.Projections.Transforms
                     {
                         if (_mode == Modes.SouthPole) lp[phi] = -lp[phi];
                         lp[lam] = (xy[x] == 0 && xy[y] == 0) ? 0 : Math.Atan2(xy[x], xy[y]);
-                        return;
+                        break;
                     }
                 }
-                lp[lam] = double.NaN;
-                lp[phi] = double.NaN;
-                continue;
-                //ProjectionException(20);
             }
         }
 
