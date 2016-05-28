@@ -30,4 +30,6 @@ All notable changes to this project will be documented in this file.
 - Exception when calling feature.Intersects(otherFeature) (#746)
 - Remove Map Frame context menu doesn't work (#237)
 - ReprojectPoints() not working for more than 1 point for Stereographic transforms. (#781)
+- Projection ETRS1989LAEA (#387)
+- Problem with LAEA projection (#568)
 

@@ -54,5 +54,19 @@ namespace DotSpatial.Projections.Tests
                 Assert.AreEqual(onePoint[1], backWgs84[i * 2 + 1], DELTA);
             }            
         }
+
+        [Test(Description = "Checks that there is no NANs in output for LAEA projections (https://github.com/DotSpatial/DotSpatial/issues/387)")]
+        public void LAEA_Reprojection_NoNANs()
+        {
+            var source = ProjectionInfo.FromProj4String("proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
+            // Any LAEA projection
+            var dest = ProjectionInfo.FromProj4String("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +datum=WGS84");
+
+            double[] vertices = { 13.5, 51.3 };
+            Reproject.ReprojectPoints(vertices, null, source, dest, 0, 1);
+
+            Assert.IsTrue(!double.IsNaN(vertices[0]));
+            Assert.IsTrue(!double.IsNaN(vertices[1]));
+        }
     }
 }
