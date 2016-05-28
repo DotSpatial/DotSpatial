@@ -69,6 +69,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ClipPolygonWithLineTests.cs" />
     <Compile Include="RasterMagicTests.cs" />
     <Compile Include="RasterToPolygonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
