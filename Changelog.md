@@ -32,4 +32,7 @@ All notable changes to this project will be documented in this file.
 - ReprojectPoints() not working for more than 1 point for Stereographic transforms. (#781)
 - Projection ETRS1989LAEA (#387)
 - Problem with LAEA projection (#568)
+- Intersection Issue (#785) 
+- SqlServer raise WKB is not valid format. (#499)
+- error inside ClipPolygonWithLine that caused an exception because the output filename wasn't set
 
