@@ -40,18 +40,67 @@ namespace DotSpatial.Projections
         private Proj4Ellipsoid _knownEllipsoid;
         private string _name;
         private double _polarRadius;
-        private Dictionary<Proj4Ellipsoid, string> _proj4Names;
+        private static readonly Dictionary<Proj4Ellipsoid, string> _proj4Names;
 
         #endregion Private Variables
 
         #region Constructors
+
+        static Spheroid()
+        {
+            // Init well-known names
+            _proj4Names = new Dictionary<Proj4Ellipsoid, string>
+            {
+                {Proj4Ellipsoid.Airy_1830, "airy"},
+                {Proj4Ellipsoid.AiryModified, "mod_airy"},
+                {Proj4Ellipsoid.Andrae_1876, "andrae"},
+                {Proj4Ellipsoid.AppPhysics_1965, "APL4.9"},
+                {Proj4Ellipsoid.Austrailia_SouthAmerica, "aust_SA"},
+                {Proj4Ellipsoid.Bessel_1841, "bessel"},
+                {Proj4Ellipsoid.BesselNamibia, "bess_nam"},
+                {Proj4Ellipsoid.Clarke_1866, "clrk66"},
+                {Proj4Ellipsoid.ClarkeModified_1880, "clrk80"},
+                {Proj4Ellipsoid.CPM_1799, "CPM"},
+                {Proj4Ellipsoid.Custom, string.Empty},
+                {Proj4Ellipsoid.Delambre_1810, "delmbr"},
+                {Proj4Ellipsoid.Engelis_1985, "engelis"},
+                {Proj4Ellipsoid.Everest_1830, "evrst30"},
+                {Proj4Ellipsoid.Everest_1948, "evrst48"},
+                {Proj4Ellipsoid.Everest_1956, "evrst56"},
+                {Proj4Ellipsoid.Everest_1969, "evrst69"},
+                {Proj4Ellipsoid.Everest_SS, "evrstSS"},
+                {Proj4Ellipsoid.Fischer_1960, "fschr60"},
+                {Proj4Ellipsoid.FischerModified_1960, "fschr60m"},
+                {Proj4Ellipsoid.Fischer_1968, "fschr68"},
+                {Proj4Ellipsoid.GRS_1967, "GRS67"},
+                {Proj4Ellipsoid.GRS_1980, "GRS80"},
+                {Proj4Ellipsoid.Helmert_1906, "helmert"},
+                {Proj4Ellipsoid.Hough, "hough"},
+                {Proj4Ellipsoid.IAU_1976, "IAU76"},
+                {Proj4Ellipsoid.International_1909, "intl"},
+                {Proj4Ellipsoid.InternationalNew_1967, "new_intl"},
+                {Proj4Ellipsoid.Krassovsky_1942, "krass"},
+                {Proj4Ellipsoid.Lerch_1979, "lerch"},
+                {Proj4Ellipsoid.Maupertius_1738, "mprts"},
+                {Proj4Ellipsoid.Merit_1983, "MERIT"},
+                {Proj4Ellipsoid.NavalWeaponsLab_1965, "NWL9D"},
+                {Proj4Ellipsoid.Plessis_1817, "plessis"},
+                {Proj4Ellipsoid.SoutheastAsia, "SEasia"},
+                {Proj4Ellipsoid.SovietGeodeticSystem_1985, "SGS85"},
+                {Proj4Ellipsoid.Sphere, "sphere"},
+                {Proj4Ellipsoid.Walbeck, "walbeck"},
+                {Proj4Ellipsoid.WGS_1960, "WGS60"},
+                {Proj4Ellipsoid.WGS_1966, "WGS66"},
+                {Proj4Ellipsoid.WGS_1972, "WGS72"},
+                {Proj4Ellipsoid.WGS_1984, "WGS84"}
+            };
+        }
 
         /// <summary>
         /// Creates a new instance of Spheroid
         /// </summary>
         public Spheroid()
         {
-            AddNames();
             AssignKnownEllipsoid(Proj4Ellipsoid.WGS_1984);
         }
 
@@ -66,7 +115,6 @@ namespace DotSpatial.Projections
         {
             _equatorialRadius = equatorialRadius;
             InverseFlattening = inverseFlattening;
-            AddNames();
             AssignKnownEllipsoid(Proj4Ellipsoid.WGS_1984);
         }
 
@@ -80,7 +128,6 @@ namespace DotSpatial.Projections
         {
             _polarRadius = radius;
             _equatorialRadius = radius;
-            AddNames();
         }
 
         /// <summary>
@@ -92,7 +139,6 @@ namespace DotSpatial.Projections
         /// <param name="knownEllipse">Any of several predefined geographic ellipses</param>
         public Spheroid(Proj4Ellipsoid knownEllipse)
         {
-            AddNames();
             AssignKnownEllipsoid(knownEllipse);
         }
 
@@ -102,7 +148,6 @@ namespace DotSpatial.Projections
         /// <param name="proj4Ellips"></param>
         public Spheroid(string proj4Ellips)
         {
-            AddNames();
             foreach (KeyValuePair<Proj4Ellipsoid, string> pair in _proj4Names)
             {
                 if (pair.Value == proj4Ellips)
@@ -430,16 +475,6 @@ namespace DotSpatial.Projections
         #region Methods
 
         /// <summary>
-        /// Each of the enumerated known ellipsoids is encoded by an ellps parameter specified by
-        /// the corresponding string value.  Ellipsoids that are not found here or are specified
-        /// as "Custom" in the enuemration will be replaced with an 'a' and a 'b' parameter instead.
-        /// </summary>
-        public Dictionary<Proj4Ellipsoid, string> Proj4Names
-        {
-            get { return _proj4Names; }
-        }
-
-        /// <summary>
         /// Calculates the flattening factor, (a - b) / a.
         /// </summary>
         /// <returns></returns>
@@ -499,53 +534,6 @@ namespace DotSpatial.Projections
         public bool IsOblate()
         {
             return (_polarRadius < _equatorialRadius);
-        }
-
-        private void AddNames()
-        {
-            _proj4Names = new Dictionary<Proj4Ellipsoid, string>();
-            _proj4Names.Add(Proj4Ellipsoid.Airy_1830, "airy");
-            _proj4Names.Add(Proj4Ellipsoid.AiryModified, "mod_airy");
-            _proj4Names.Add(Proj4Ellipsoid.Andrae_1876, "andrae");
-            _proj4Names.Add(Proj4Ellipsoid.AppPhysics_1965, "APL4.9");
-            _proj4Names.Add(Proj4Ellipsoid.Austrailia_SouthAmerica, "aust_SA");
-            _proj4Names.Add(Proj4Ellipsoid.Bessel_1841, "bessel");
-            _proj4Names.Add(Proj4Ellipsoid.BesselNamibia, "bess_nam");
-            _proj4Names.Add(Proj4Ellipsoid.Clarke_1866, "clrk66");
-            _proj4Names.Add(Proj4Ellipsoid.ClarkeModified_1880, "clrk80");
-            _proj4Names.Add(Proj4Ellipsoid.CPM_1799, "CPM");
-            _proj4Names.Add(Proj4Ellipsoid.Custom, string.Empty);
-            _proj4Names.Add(Proj4Ellipsoid.Delambre_1810, "delmbr");
-            _proj4Names.Add(Proj4Ellipsoid.Engelis_1985, "engelis");
-            _proj4Names.Add(Proj4Ellipsoid.Everest_1830, "evrst30");
-            _proj4Names.Add(Proj4Ellipsoid.Everest_1948, "evrst48");
-            _proj4Names.Add(Proj4Ellipsoid.Everest_1956, "evrst56");
-            _proj4Names.Add(Proj4Ellipsoid.Everest_1969, "evrst69");
-            _proj4Names.Add(Proj4Ellipsoid.Everest_SS, "evrstSS");
-            _proj4Names.Add(Proj4Ellipsoid.Fischer_1960, "fschr60");
-            _proj4Names.Add(Proj4Ellipsoid.FischerModified_1960, "fschr60m");
-            _proj4Names.Add(Proj4Ellipsoid.Fischer_1968, "fschr68");
-            _proj4Names.Add(Proj4Ellipsoid.GRS_1967, "GRS67");
-            _proj4Names.Add(Proj4Ellipsoid.GRS_1980, "GRS80");
-            _proj4Names.Add(Proj4Ellipsoid.Helmert_1906, "helmert");
-            _proj4Names.Add(Proj4Ellipsoid.Hough, "hough");
-            _proj4Names.Add(Proj4Ellipsoid.IAU_1976, "IAU76");
-            _proj4Names.Add(Proj4Ellipsoid.International_1909, "intl");
-            _proj4Names.Add(Proj4Ellipsoid.InternationalNew_1967, "new_intl");
-            _proj4Names.Add(Proj4Ellipsoid.Krassovsky_1942, "krass");
-            _proj4Names.Add(Proj4Ellipsoid.Lerch_1979, "lerch");
-            _proj4Names.Add(Proj4Ellipsoid.Maupertius_1738, "mprts");
-            _proj4Names.Add(Proj4Ellipsoid.Merit_1983, "MERIT");
-            _proj4Names.Add(Proj4Ellipsoid.NavalWeaponsLab_1965, "NWL9D");
-            _proj4Names.Add(Proj4Ellipsoid.Plessis_1817, "plessis");
-            _proj4Names.Add(Proj4Ellipsoid.SoutheastAsia, "SEasia");
-            _proj4Names.Add(Proj4Ellipsoid.SovietGeodeticSystem_1985, "SGS85");
-            _proj4Names.Add(Proj4Ellipsoid.Sphere, "sphere");
-            _proj4Names.Add(Proj4Ellipsoid.Walbeck, "walbeck");
-            _proj4Names.Add(Proj4Ellipsoid.WGS_1960, "WGS60");
-            _proj4Names.Add(Proj4Ellipsoid.WGS_1966, "WGS66");
-            _proj4Names.Add(Proj4Ellipsoid.WGS_1972, "WGS72");
-            _proj4Names.Add(Proj4Ellipsoid.WGS_1984, "WGS84");
         }
 
         #endregion Methods
