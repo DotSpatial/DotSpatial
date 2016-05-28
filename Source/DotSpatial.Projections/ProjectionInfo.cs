@@ -1020,12 +1020,12 @@ namespace DotSpatial.Projections
                     Geoc = GeographicInfo.Datum.Spheroid.EccentricitySquared() != 0;
                     continue;
                 }
-                else if (s == "south")
+                if (s == "south")
                 {
                     IsSouth = true;
                     continue;
                 }
-                else if (s == "R_A")
+                if (s == "R_A")
                 {
                     //+R_A tells PROJ.4 to use a spherical radius that
                     //gives a sphere with the same surface area as the original ellipsoid.  I
@@ -1034,8 +1034,9 @@ namespace DotSpatial.Projections
                     //the R_A parameter indicates that an authalic auxiliary sphere should be used.
                     //from http://pdl.perl.org/?docs=Transform/Proj4&title=PDL::Transform::Proj4#r_a
                     AuxiliarySphereType = AuxiliarySphereType.Authalic;
+                    continue;
                 }
-                else if (s == "to")
+                if (s == "to")
                 {
                     // some "+to" parameters exist... e.g., DutchRD. but I'm not sure what to do with them.
                     // they seem to specify a second projection
