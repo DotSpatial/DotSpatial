@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Switched to NTS/GeoAPI instead of DotSpatial.Topology (#633, #404) 
 - Tag property in ActionItem (#338)
 - Added property AppManager.BaseDirectory which allows to change base directory for plugins. (#758)
+- Support for formatted ESRI projection files (#793)
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11

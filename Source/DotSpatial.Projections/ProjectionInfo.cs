@@ -688,9 +688,7 @@ namespace DotSpatial.Projections
         /// </param>
         public static ProjectionInfo Open(string prjFilename)
         {
-            StreamReader sr = File.OpenText(prjFilename);
-            string prj = sr.ReadLine();
-            sr.Close();
+            string prj = File.ReadAllText(prjFilename);
 
             return FromEsriString(prj);
         }
