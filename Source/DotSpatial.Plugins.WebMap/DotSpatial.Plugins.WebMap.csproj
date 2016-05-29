@@ -51,11 +51,11 @@
     </Reference>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.2\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.2.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.NetTopologySuite.1.14.2\lib\net40-client\DotSpatial.NetTopologySuite.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -120,6 +120,7 @@
     <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
       <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
       <Name>DotSpatial.NTSExtension</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>

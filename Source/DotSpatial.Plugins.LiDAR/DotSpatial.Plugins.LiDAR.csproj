@@ -42,7 +42,7 @@
   <ItemGroup>
     <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\DotSpatial.GeoAPI.1.7.4.2\lib\net40-client\DotSpatial.GeoAPI.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="pdal_swig_cs, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -107,6 +107,7 @@
     <ProjectReference Include="..\DotSpatial.NTSExtension\DotSpatial.NTSExtension.csproj">
       <Project>{034f7ade-ac2a-48ae-9cf2-0686eea97c25}</Project>
       <Name>DotSpatial.NTSExtension</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\DotSpatial.Projections\DotSpatial.Projections.csproj">
       <Project>{D286DF06-21FA-40BE-B384-6ACA509AC98C}</Project>
