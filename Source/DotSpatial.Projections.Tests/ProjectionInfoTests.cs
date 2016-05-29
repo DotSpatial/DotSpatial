@@ -154,5 +154,36 @@ namespace DotSpatial.Projections.Tests
             var proj4Str = pi.ToProj4String();
             Assert.IsTrue(proj4Str.Contains("+lat_0=23"));
         }
+
+        [Test]
+        [TestCase("FormattedProjectionFile")]
+        [TestCase("StandardProjectionFile")]
+        public void ReadProjectionFile(string resourceName)
+        {
+            string prjFile = System.IO.Path.GetTempFileName();
+            try
+            {
+                System.IO.File.WriteAllText(prjFile, Properties.Resources.ResourceManager.GetString(resourceName, Properties.Resources.Culture));
+                ProjectionInfo info = ProjectionInfo.Open(prjFile);
+
+                Assert.AreEqual("WGS_1984_Web_Mercator_Auxiliary_Sphere", info.Name);
+                Assert.AreEqual("GCS_WGS_1984", info.GeographicInfo.Name);
+                Assert.AreEqual("D_WGS_1984", info.GeographicInfo.Datum.Name);
+                Assert.AreEqual("WGS_1984", info.GeographicInfo.Datum.Spheroid.Name);
+                Assert.AreEqual(6378137, info.GeographicInfo.Datum.Spheroid.EquatorialRadius, 1e-10);
+                Assert.AreEqual(298.257223562997, info.GeographicInfo.Datum.Spheroid.InverseFlattening, 1e-10);
+                Assert.AreEqual("Greenwich", info.GeographicInfo.Meridian.Name);
+                Assert.AreEqual(0, info.GeographicInfo.Meridian.Longitude, 1e-10);
+                Assert.AreEqual("Degree", info.GeographicInfo.Unit.Name);
+                Assert.AreEqual(0.0174532925199433, info.GeographicInfo.Unit.Radians, 1e-10);
+                Assert.AreEqual("Mercator_Auxiliary_Sphere", info.Transform.Name);
+                Assert.AreEqual("Meter", info.Unit.Name);
+                Assert.AreEqual(1, info.Unit.Meters, 1e-10);
+            }
+            finally
+            {
+                System.IO.File.Delete(prjFile);
+            }
+        }
     }
 }
