@@ -68,5 +68,21 @@ namespace DotSpatial.Projections.Tests
             Assert.IsTrue(!double.IsNaN(vertices[0]));
             Assert.IsTrue(!double.IsNaN(vertices[1]));
         }
+
+        [Test(Description = "Verifies OSGB36 reprojection. (https://github.com/DotSpatial/DotSpatial/issues/732")]
+        public void OSGB36_Reprojection()
+        {
+            var sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", 27700);
+            var targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", 4326);
+            var xy = new double[] { 465000, 170000 };
+            Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
+
+            // see http://www.ordnancesurvey.co.uk/gps/transformation
+            const double expectedX = -1.066488;
+            const double expectedY = 51.425291;
+            const double eps = 0.0001;
+            Assert.AreEqual(expectedX, xy[0], eps);
+            Assert.AreEqual(expectedY, xy[1], eps);
+        }
     }
 }

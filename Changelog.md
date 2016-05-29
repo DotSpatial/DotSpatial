@@ -35,5 +35,6 @@ All notable changes to this project will be documented in this file.
 - Problem with LAEA projection (#568)
 - Intersection Issue (#785) 
 - SqlServer raise WKB is not valid format. (#499)
-- error inside ClipPolygonWithLine that caused an exception because the output filename wasn't set
+- Error inside ClipPolygonWithLine that caused an exception because the output filename wasn't set
+- Incorrect toWgs84 initialisation in Proj4DatumName set accesor (#732)
 
