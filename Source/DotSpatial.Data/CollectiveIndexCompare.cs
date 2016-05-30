@@ -33,7 +33,7 @@ namespace DotSpatial.Data
 
         private IEnumerable<T> _collection;
         private IComparer<T> _comparer;
-        private int _index = -1;
+        private int _index;
 
         #endregion
 
