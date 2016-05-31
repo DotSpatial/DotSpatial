@@ -184,14 +184,6 @@ namespace DotSpatial.Data
         void FillAttributes(IProgressHandler progressHandler);
 
         /// <summary>
-        /// Obtains the list of feature indices that match the specified filter expression.
-        /// </summary>
-        /// <param name="filterExpression">The filter expression to find features for.</param>
-        /// <returns>The list of integers that are the FIDs of the specified values.</returns>
-        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
-        List<int> Find(string filterExpression);
-
-        /// <summary>
         /// This forces the vertex initialization so that Vertices, ShapeIndices, and the
         /// ShapeIndex property on each feature will no longer be null.
         /// </summary>

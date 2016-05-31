@@ -99,7 +99,6 @@
     <Compile Include="Parameters\RasterParam.cs" />
     <Compile Include="ShowParamInModel.cs" />
     <Compile Include="Parameters\StringParam.cs" />
-    <Compile Include="ParamType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\BooleanElement.cs">
       <SubType>UserControl</SubType>

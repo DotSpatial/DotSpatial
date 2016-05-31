@@ -669,15 +669,6 @@ namespace DotSpatial.Data
         {
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Use SelectIndexByAttribute(filterExpression) instead.")] // Marked obsolete in 1.7.
-        public List<int> Find(string filterExpression)
-        {
-            var dt = DataTable;
-            DataRow[] hits = dt.Select(filterExpression);
-            return hits.Select(dr => dt.Rows.IndexOf(dr)).ToList();
-        }
-
         /// <summary>
         /// Gets the list of string names available as columns from the specified excel file.
         /// </summary>
@@ -942,18 +933,6 @@ namespace DotSpatial.Data
             result.Projection = Projection;
             result.Save();
             Filename = result.Filename;
-        }
-
-        [Obsolete("Use Select(region) instead")] // Marked in 1.7
-        public List<IFeature> IdentifySelect(Extent region)
-        {
-            return Select(region);
-        }
-
-        [Obsolete("Use Select(region, out affectedRegion) instead")] // Marked in 1.7
-        public List<IFeature> IdentifySelect(Extent region, out Extent affectedRegion)
-        {
-            return Select(region, out affectedRegion);
         }
 
         /// <inheritdoc/>

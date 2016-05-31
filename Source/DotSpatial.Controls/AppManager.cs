@@ -65,8 +65,8 @@ namespace DotSpatial.Controls
 
         private AggregateCatalog _catalog;
         private IContainer _components;
-        private string message = "";
-        private ISplashScreenManager splashScreen;
+        private string _message = "";
+        private ISplashScreenManager _splashScreen;
         private IHeaderControl _headerControl;
         private IMap _map;
 
@@ -264,20 +264,10 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the method for enabling extension Apps.
         /// </summary>
-        [Obsolete("Use ShowExtensionsDialogMode instead")] // Marked obsolete in 1.7
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ShowExtensionsDialog ShowExtensionsDialog { get; set; }
-
-        /// <summary>
-        /// Gets or sets the method for enabling extension Apps.
-        /// </summary>
         [Description("Gets or sets the method for enabling extension Apps.")]
-        public ShowExtensionsDialogMode ShowExtensionsDialogMode
-        {
-            get { return (ShowExtensionsDialogMode) ((int) ShowExtensionsDialog); }
-            set { ShowExtensionsDialog = (ShowExtensionsDialog) ((int) value); }
-        }
+        public ShowExtensionsDialogMode ShowExtensionsDialogMode { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether extensions should be placed in <see cref="BaseDirectory"/>
@@ -407,7 +397,7 @@ namespace DotSpatial.Controls
             }
 
             PackageManager.RemovePendingPackagesAndExtensions();
-            splashScreen = SplashScreenHelper.GetSplashScreenManager();
+            _splashScreen = SplashScreenHelper.GetSplashScreenManager();
 
             Thread updateThread = new Thread(AppLoadExtensions);
             updateThread.Start();
@@ -415,17 +405,17 @@ namespace DotSpatial.Controls
             //Update splash screen's progress bar while thread is active.
             while (updateThread.IsAlive)
             {
-                UpdateSplashScreen(message);
+                UpdateSplashScreen(_message);
             }
             updateThread.Join();
 
             ActivateAllExtensions();
             OnExtensionsActivated(EventArgs.Empty);
 
-            if (splashScreen != null)
+            if (_splashScreen != null)
             {
-                splashScreen.Deactivate();
-                splashScreen = null;
+                _splashScreen.Deactivate();
+                _splashScreen = null;
             }
 
             // Set the DefaultDataManager progress handler.
@@ -466,7 +456,7 @@ namespace DotSpatial.Controls
         /// <param name="msg">The message.</param>
         public void UpdateProgress(string msg)
         {
-            if (splashScreen != null)
+            if (_splashScreen != null)
                 UpdateSplashScreen(msg);
             else if (ProgressHandler != null)
                 ProgressHandler.Progress(String.Empty, 0, msg);
@@ -518,7 +508,7 @@ namespace DotSpatial.Controls
         /// </summary>
         private void AppLoadExtensions()
         {
-            message = "Discovering Extensions...";
+            _message = "Discovering Extensions...";
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             _catalog = GetCatalog();
 
@@ -534,7 +524,7 @@ namespace DotSpatial.Controls
                 throw;
             }
 
-            message = "Loading Extensions...";
+            _message = "Loading Extensions...";
             OnExtensionsActivating(EventArgs.Empty);
         }
 
@@ -630,7 +620,7 @@ namespace DotSpatial.Controls
                 // Add files in the current directory as well.
                 Trace.WriteLine("Cataloging: " + dir);
                 // UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
-                message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
+                _message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
                 if (!DirectoryCatalogExists(catalog, dir))
                     TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
             }
@@ -725,7 +715,7 @@ namespace DotSpatial.Controls
             {
                 Trace.WriteLine("Cataloging: " + dir);
                 //UpdateSplashScreen("Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit));
-                message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
+                _message = "Cataloging: " + PrefixWithEllipsis(dir, SplashDirectoryMessageLimit);
                 // todo: consider using a file system watcher if it would provider better performance.
                 if (!DirectoryCatalogExists(catalog, dir))
                     TryLoadingCatalog(catalog, new DirectoryCatalog(dir));
@@ -785,8 +775,8 @@ namespace DotSpatial.Controls
 
         public void UpdateSplashScreen(string text)
         {
-            if (splashScreen != null && text != null)
-                splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
+            if (_splashScreen != null && text != null)
+                _splashScreen.ProcessCommand(SplashScreenCommand.SetDisplayText, text);
         }
 
         #endregion

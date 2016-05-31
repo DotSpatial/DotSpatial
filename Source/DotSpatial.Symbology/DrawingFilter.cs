@@ -298,7 +298,6 @@ namespace DotSpatial.Symbology
                 if (_chunkSize != value)
                 {
                     _chunkSize = value;
-                    //UpdateChunks(); // chunks are obsolete
                 }
             }
         }

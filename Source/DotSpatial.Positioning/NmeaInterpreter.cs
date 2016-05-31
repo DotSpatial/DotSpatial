@@ -67,12 +67,6 @@ namespace DotSpatial.Positioning
         [Obsolete("This event is intended for debugging.  Use it to confirm that GPS data is arriving from your GPS device, but avoid it during production use to improve your application's performance.")]
         public event EventHandler<NmeaSentenceEventArgs> SentenceReceived;
 
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("In GPS.NET 3.0, valid NMEA sentences can be partially processed.  Use the 'SentenceReceived' event to examine the flow of raw GPS data.")]
-        //public event EventHandler<NmeaSentenceEventArgs> SentenceInterpreted;
-
         /// <summary>
         /// SentanceRecieved event handler
         /// </summary>
@@ -327,28 +321,5 @@ namespace DotSpatial.Positioning
 
         #endregion Overrides
 
-        //#region GPS.NET 2.0 upgrade help
-
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("Timeouts are now controlled at the device level.  You can modify the static 'DefaultReadTimeout' property in the devices class.  If this line of code is part of a Form, you can safely delete this line to use default values.")]
-        //public TimeSpan WriteTimeout
-        //{
-        //    get { throw new NotSupportedException(); }
-        //    set { throw new NotSupportedException(); }
-        //}
-
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("Timeouts are now controlled at the device level.  You can modify the static 'DefaultReadTimeout' property in the devices class.  If this line of code is part of a Form, you can safely delete this line to use default values.")]
-        //public TimeSpan ReadTimeout
-        //{
-        //    get { throw new NotSupportedException(); }
-        //    set { throw new NotSupportedException(); }
-        //}
-
-        //#endregion
     }
 }

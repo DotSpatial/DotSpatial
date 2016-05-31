@@ -44,7 +44,7 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         #region Fields
 
-        private static readonly Lazy<AuthorityCodeHandler> _lazyInstance = new Lazy<AuthorityCodeHandler>(() => new AuthorityCodeHandler(), true);
+        private static readonly Lazy<AuthorityCodeHandler> LazyInstance = new Lazy<AuthorityCodeHandler>(() => new AuthorityCodeHandler(), true);
         private readonly IDictionary<string, ProjectionInfo> _authorityCodeToProjectionInfo = new Dictionary<string, ProjectionInfo>();
         private readonly IDictionary<string, ProjectionInfo> _authorityNameToProjectionInfo = new Dictionary<string, ProjectionInfo>();
 
@@ -56,9 +56,9 @@ namespace DotSpatial.Projections.AuthorityCodes
         /// </summary>
         public static AuthorityCodeHandler Instance
         {
-            get { return _lazyInstance.Value; }
+            get { return LazyInstance.Value; }
         }
-   
+
         public ProjectionInfo this[string authorityCodeOrName]
         {
             get
@@ -97,7 +97,7 @@ namespace DotSpatial.Projections.AuthorityCodes
                 while (!sr.EndOfStream)
                 {
                     var line = sr.ReadLine();
-                    if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+                    if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal))
                         continue;
 
                     var parts = line.Split(seperator, 3);
@@ -182,13 +182,12 @@ namespace DotSpatial.Projections.AuthorityCodes
             {
                 throw new ArgumentOutOfRangeException("authorityCode", "Such projection already added.");
             }
-             var pi = ProjectionInfo.FromProj4String(proj4String);
-             pi.Authority = authorityCode.Substring(0, pos);
-             pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1));
-             pi.EpsgCode = int.Parse(authorityCode.Substring(pos + 1));
-             pi.Name = String.IsNullOrEmpty(name) ? authorityCode : name;
+            var pi = ProjectionInfo.FromProj4String(proj4String);
+            pi.Authority = authorityCode.Substring(0, pos);
+            pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1));
+            pi.Name = string.IsNullOrEmpty(name) ? authorityCode : name;
 
-             _authorityCodeToProjectionInfo[authorityCode] =  pi;
+            _authorityCodeToProjectionInfo[authorityCode] = pi;
 
             if (string.IsNullOrEmpty(name))
                 return;

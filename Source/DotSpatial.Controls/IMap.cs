@@ -97,30 +97,6 @@ namespace DotSpatial.Controls
         new IMapLayer AddLayer();
 
         /// <summary>
-        /// This will add a new label category that will only apply to the specified filter expression.  This will not remove any existing categories.
-        /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
-        /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
-        /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
-        /// <param name="name">The name of the category.</param>
-        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                       ILabelSymbolizer symbolizer, string name);
-
-        /// <summary>
-        /// This will add a new label category that will only apply to the specified filter expression.  This will not remove any existing categories.
-        /// </summary>
-        /// <param name="featureLayer">The feature layer that the labels should be applied to</param>
-        /// <param name="expression">The string expression where field names are in square brackets</param>
-        /// <param name="filterExpression">The string filter expression that controls which features are labeled.  Field names are in square brackets, strings in single quotes.</param>
-        /// <param name="symbolizer">The label symbolizer that controls the basic appearance of the labels in this category.</param>
-        /// <param name="width">A geographic width, so that if the map is zoomed to a geographic width smaller than this value, labels should appear.</param>
-        [Obsolete("Use featureLayer.AddLabels() instead")] // Marked in 1.7
-        void AddLabels(IFeatureLayer featureLayer, string expression, string filterExpression,
-                       ILabelSymbolizer symbolizer, double width);
-
-        /// <summary>
         /// Gets the subset of layers that are specifically raster layers, allowing
         /// you to control their symbology.
         /// </summary>

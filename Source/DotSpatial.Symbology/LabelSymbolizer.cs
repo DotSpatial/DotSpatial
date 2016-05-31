@@ -92,37 +92,13 @@ namespace DotSpatial.Symbology
          Serialize("BackColorEnabled")]
         public bool BackColorEnabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets the background color
-        /// </summary>
-        [Category("General"), Description("Gets or sets the background color of a rectangle around the label")]
-        [Serialize("BackColorOpacity")]
-        [Obsolete("Use BackColor.GetOpacity() instead")] // Marked in 1.7
-        public float BackColorOpacity
-        {
-            get { return BackColor.GetOpacity(); }
-            set { BackColor = BackColor.ToTransparent(value); }
-        }
-
-        /// <summary>
+     /// <summary>
         /// Gets or sets the border color
         /// </summary>
         [Category("Border"), Description("Gets or sets the border color"), Serialize("BorderColor")]
         public Color BorderColor { get; set; }
 
-        /// <summary>
-        /// Gets or sets the border color
-        /// </summary>
-        [Category("Border"), Description("Gets or sets the border color opacity")]
-        [Serialize("BorderColorOpacity")]
-        [Obsolete("Use BorderColor.GetOpacity() instead")] // Marked in 1.7
-        public float BorderColorOpacity
-        {
-            get { return BorderColor.GetOpacity(); }
-            set { BorderColor = BorderColor.ToTransparent(value); }
-        }
-
-        /// <summary>
+    /// <summary>
         /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
         /// </summary>
         [Category("Border"),
@@ -166,17 +142,6 @@ namespace DotSpatial.Symbology
         /// </summary>
         [Serialize("FontColor")]
         public Color FontColor { get; set; }
-
-        /// <summary>
-        /// Gets or set the color that the font should be drawn in.
-        /// </summary>
-        [Serialize("FontColorOpacity")]
-        [Obsolete("Use FontColor.GetOpacity() instead")] // Marked in 1.7
-        public float FontColorOpacity
-        {
-            get { return FontColor.GetOpacity(); }
-            set { FontColor = FontColor.ToTransparent(value); }
-        }
 
         /// <summary>
         /// Gets or sets the string font family name

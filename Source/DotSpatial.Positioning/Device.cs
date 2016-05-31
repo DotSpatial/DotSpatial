@@ -667,16 +667,6 @@ namespace DotSpatial.Positioning
             Open(FileAccess.Read, FileShare.Read);
         }
 
-        ///// <summary>
-        ///// Obsolete.
-        ///// </summary>
-        ///// <returns></returns>
-        //[Obsolete("GPS.NET 3.0 uses 'Device' objects instead of 'Stream' objects to manage GPS data.  Use a method such as 'NmeaInterpreter.Start(Device)' to open a new connection.  By using Device objects, GPS.NET 3.0 can more easily recover from lost connections.")]
-        //public object GetHardwareStream()
-        //{
-        //    throw new NotSupportedException();
-        //}
-
         /// <summary>
         /// Opens a new connection to the device.
         /// </summary>

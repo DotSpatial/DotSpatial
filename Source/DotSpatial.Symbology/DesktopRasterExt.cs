@@ -709,27 +709,6 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Obtains a list of unique values from the grid.
-        /// </summary>
-        /// <param name="raster">The IRaster to obtain unique values for</param>
-        /// <returns>A list of double values, where no value is repeated.</returns>
-        [Obsolete("Use overload with maxCount")] // Marked in 1.8
-        public static List<double> GetUniqueValues(this IRaster raster)
-        {
-            List<double> list = new List<double>();
-            for (int row = 0; row < raster.NumRows; row++)
-            {
-                for (int col = 0; col < raster.NumColumns; col++)
-                {
-                    double val = raster.Value[row, col];
-                    if (list.Contains(val) == false)
-                        list.Add(val);
-                }
-            }
-            return list;
-        }
-
-        /// <summary>
         /// Obtains an set of unique values.  If there are more than maxCount values, the process stops and overMaxCount is set to true.
         /// </summary>
         /// <param name="raster">the raster to obtain the unique values from.</param>

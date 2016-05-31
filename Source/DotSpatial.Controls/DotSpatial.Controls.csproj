@@ -139,9 +139,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="IMapView.cs" />
-    <Compile Include="IPreviewMap.cs" />
-    <Compile Include="IPreviewMapHandler.cs" />
-    <Compile Include="IUserControl.cs" />
     <Compile Include="LayoutBitmap.cs" />
     <Compile Include="LayoutControl.cs">
       <SubType>UserControl</SubType>
@@ -182,7 +179,6 @@
     </Compile>
     <Compile Include="DrawLegendItemArgs.cs" />
     <Compile Include="ILegend.cs" />
-    <Compile Include="ILegendHandler.cs" />
     <Compile Include="Legend.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -191,7 +187,6 @@
     <Compile Include="ListBoxDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChunkEventArgs.cs" />
     <Compile Include="IMap.cs" />
     <Compile Include="Map.cs">
       <SubType>UserControl</SubType>
@@ -217,7 +212,6 @@
     <Compile Include="IMapLayer.cs" />
     <Compile Include="IMapLayerCollection.cs" />
     <Compile Include="IMapLabelLayer.cs" />
-    <Compile Include="MapDrawTextArgs.cs" />
     <Compile Include="MapLabelLayer.cs" />
     <Compile Include="MapArgs.cs" />
     <Compile Include="MapDrawArgs.cs" />

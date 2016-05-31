@@ -198,14 +198,6 @@ namespace DotSpatial.Positioning
             }
         }
 
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        ///// <returns></returns>
-        //[Obsolete("Use the 'EstimatedPrecision' property to estimate precision as a measurable distance.")]
-        //public Distance GetEstimatedError()
-        //{ return EstimatedPrecision; }
-
         /// <summary>
         /// Returns a friendly name for the level of precision.
         /// </summary>

@@ -139,7 +139,7 @@
     <value>The cartesian X or Y coordinate was invalid</value>
   </data>
   <data name="Err16_ImproperDMS" xml:space="preserve">
-    <value>The Degree Minute Second value is formed imporperly</value>
+    <value>The Degree Minute Second value is formed improperly</value>
   </data>
   <data name="Err17_NonConvergentRMeridDist" xml:space="preserve">
     <value>The inverse meridinal distance was non-convergent</value>
@@ -238,7 +238,7 @@
     <value>Geocentric transformation missing z or ellips</value>
   </data>
   <data name="Err46_UknownPMID" xml:space="preserve">
-    <value>Uknown prime meridian conversion ID</value>
+    <value>Unknown prime meridian conversion ID</value>
   </data>
   <data name="Err4_NotNamed" xml:space="preserve">
     <value>Projection not named</value>
@@ -262,9 +262,12 @@
     <value>There was an index mismatch problem with the specified file.</value>
   </data>
   <data name="InverseShiftFailed" xml:space="preserve">
-    <value>Inverse grid shift iteration faield, presumably at grid edge.  Using first approximation.</value>
+    <value>Inverse grid shift iteration failed, presumably at grid edge. Using first approximation.</value>
   </data>
   <data name="InvShiftConvergeFailed" xml:space="preserve">
     <value>Inverse grid shift iterator failed to converge.</value>
+  </data>
+  <data name="AuthorityCodeNotFound" xml:space="preserve">
+    <value>Authority Code not found.</value>
   </data>
 </root>

@@ -237,9 +237,9 @@ namespace DotSpatial.Data
                 }
             }
 
-            int myFID = Fid;
-            int oFID = other.Fid;
-            return myFID.CompareTo(oFID);
+            int myFid = Fid;
+            int oFid = other.Fid;
+            return myFid.CompareTo(oFid);
         }
 
         /// <summary>
@@ -546,12 +546,6 @@ namespace DotSpatial.Data
         /// If it is cached, then the value is separate from the geometry.
         /// </summary>
         public CacheTypes NumPartsSource { get; set; }
-
-        /// <summary>
-        /// This specifies the offset, if any in the data file
-        /// </summary>
-        [Obsolete("This property no longer used.")] // Marked in 1.7
-        public long Offset { get; protected set; }
 
         #region IFeature Members
 

@@ -47,7 +47,7 @@ namespace DotSpatial.Symbology
 
         #region Private Variables
 
-        readonly int _originalThreadID;
+        private readonly int _originalThreadId;
 
         /// <summary>
         /// The real world extents for the entire buffer
@@ -72,7 +72,7 @@ namespace DotSpatial.Symbology
         {
             _image = new Bitmap(width, height);
             _extents = new Envelope();
-            _originalThreadID = Thread.CurrentThread.GetHashCode();
+            _originalThreadId = Thread.CurrentThread.GetHashCode();
         }
 
         #endregion
@@ -104,6 +104,14 @@ namespace DotSpatial.Symbology
                 _extents = value;
                 //System.Diagnostics.Debug.WriteLine("Buffer Extents Set.");
             }
+        }
+
+        /// <summary>
+        /// The envelope bounds in geographic coordinates.
+        /// </summary>
+        public Envelope Envelope
+        {
+            get { return _extents; }
         }
 
         /// <summary>
@@ -148,7 +156,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (Thread.CurrentThread.GetHashCode() != _originalThreadID)
+                if (Thread.CurrentThread.GetHashCode() != _originalThreadId)
                 {
                     return true;
                 }
@@ -175,20 +183,6 @@ namespace DotSpatial.Symbology
             get
             {
                 return Graphics.FromImage(_image);
-
-                // The following code was made obsolete by the introduction of a draw window
-                //if (_extents.IsNull) return result;
-                //Matrix m = new Matrix();
-                //float sx = Convert.ToSingle(_extents.Width / (double)_image.Width);
-                //float sy = Convert.ToSingle(_extents.Height / (double)_image.Height);
-                //m.Scale(1/sx, -1/sy);
-                //float dx = Convert.ToSingle(_extents.Minimum.X);
-                //float dy = Convert.ToSingle(_extents.Maximum.Y);
-                //m.Translate(-dx, -dy);
-                //result.Transform = m;
-                //RectangleF clipRect = new RectangleF(Convert.ToSingle(_extents.Minimum.X), Convert.ToSingle(_extents.Maximum.Y), Convert.ToSingle(_extents.Width), Convert.ToSingle(_extents.Height));
-                ////result.Clip = new Region(clipRect);
-                //return result;
             }
         }
 
@@ -199,9 +193,11 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         public Coordinate PixelToProj(PointF testPoint)
         {
-            Coordinate coord = new Coordinate();
-            coord.X = testPoint.X * _extents.Width / _image.Width + _extents.MinX;
-            coord.Y = _extents.MaxY - testPoint.Y * _extents.Height / _image.Height;
+            Coordinate coord = new Coordinate
+            {
+                X = testPoint.X * _extents.Width / _image.Width + _extents.MinX,
+                Y = _extents.MaxY - testPoint.Y * _extents.Height / _image.Height
+            };
             return coord;
         }
 
@@ -242,9 +238,11 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         public PointF ProjToPixel(Coordinate coord)
         {
-            PointF pt = new PointF();
-            pt.X = Convert.ToSingle(((coord.X - _extents.MinX) * _image.Width / _extents.Width));
-            pt.Y = Convert.ToSingle(((_extents.MaxY - coord.Y) * _image.Height / _extents.Height));
+            PointF pt = new PointF
+            {
+                X = Convert.ToSingle((coord.X - _extents.MinX) * _image.Width / _extents.Width),
+                Y = Convert.ToSingle((_extents.MaxY - coord.Y) * _image.Height / _extents.Height)
+            };
             return pt;
         }
 
@@ -264,13 +262,5 @@ namespace DotSpatial.Symbology
         }
 
         #endregion
-
-        /// <summary>
-        /// The envelope bounds in geographic coordinates.
-        /// </summary>
-        public Envelope Envelope
-        {
-            get { return _extents; }
-        }
     }
 }

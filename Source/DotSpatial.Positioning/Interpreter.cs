@@ -423,12 +423,6 @@ namespace DotSpatial.Positioning
                 Stopped(this, EventArgs.Empty);
         }
 
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("Use the 'OnDeviceChanged' override to be notified when the interpreter is using a new GPS device.")]
-        //public virtual void OnBaseStreamChanged(Stream obsolete) { throw new NotSupportedException(); }
-
         /// <summary>
         /// Occurs when a connection to a GPS device is suddenly lost.
         /// </summary>
@@ -1331,18 +1325,6 @@ namespace DotSpatial.Positioning
                 throw new InvalidOperationException("A request to stop the interpreter has timed out.  This can occur if a Start, Pause, or Resume command is also in progress.");
             }
         }
-
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("In GPS.NET 3.0, recording operations cannot be paused or resumed.  Use 'StopRecording' instead.")]
-        //public void PauseRecording() { throw new NotSupportedException(); }
-
-        ///// <summary>
-        ///// Obsolete.  See compiler warnings for upgrade help.
-        ///// </summary>
-        //[Obsolete("In GPS.NET 3.0, recording operations cannot be paused or resumed.  Use 'StartRecording' instead.")]
-        //public void ResumeRecording() { throw new NotSupportedException(); }
 
         /// <summary>
         /// Temporarily halts processing of GPS data.
