@@ -669,27 +669,6 @@ namespace DotSpatial.Data
         {
         }
 
-        /// <summary>
-        /// Gets the list of string names available as columns from the specified excel file.
-        /// </summary>
-        /// <param name="xlsFilePath">
-        /// </param>
-        /// <returns>
-        /// </returns>
-        /// Warning. This method should be moved outside of FeatureSet.
-        public List<string> GetColumnNames(string xlsFilePath)
-        {
-            OleDbConnection con =
-                new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + xlsFilePath +
-                                    "; Extended Properties=Excel 8.0");
-            // GIS Group of Maryland Environmental Service recommended this query string.
-            OleDbDataAdapter da = new OleDbDataAdapter("select * from [Data$]", con);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            return (from DataColumn column in dt.Columns
-                    select column.ColumnName).ToList();
-        }
-
         /// <inheritdoc/>
         public virtual IFeature GetFeature(int index)
         {
@@ -787,27 +766,15 @@ namespace DotSpatial.Data
             OnVerticesInvalidated();
         }
 
-        /// <summary>
-        /// For attributes that are small enough to be loaded into a data table, this
-        /// will join attributes from a foreign table (from an excel file).  This method
-        /// won't create new rows in this table, so only matching members are brought in,
-        /// but no rows are removed either, so not all rows will receive data.
-        /// </summary>
-        /// <param name="xlsFilePath">
-        /// The complete path of the file to join
-        /// </param>
-        /// <param name="localJoinField">
-        /// The field name to join on in this table
-        /// </param>
-        /// <param name="xlsJoinField">
-        /// The field in the foreign table.
-        /// </param>
-        /// <returns>
-        /// A modified featureset with the changes.
-        /// </returns>
-        public IFeatureSet Join(string xlsFilePath, string localJoinField, string xlsJoinField)
+        /// <inheritdoc/>
+        public IFeatureSet Join(DataTable table, string localJoinField, string dataTableJoinField)
         {
-            IFeatureSet res = Open(Filename);
+            if (!table.Columns.Contains(dataTableJoinField))
+            {
+                throw new Exception("The foreign join field specified not found.");
+            }
+
+            var res = Open(Filename);
             if (!res.AttributesPopulated)
             {
                 FillAttributes();
@@ -817,21 +784,9 @@ namespace DotSpatial.Data
             {
                 throw new Exception("The local join field specified is not in this table.");
             }
-
-            // This connection string will not likely work on 64 bit machines.
-            var con = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source="
-                                                      + xlsFilePath + "; Extended Properties=Excel 8.0");
-            var da = new OleDbDataAdapter("select * from [Data$]", con);
-            var dt = new DataTable();
-            da.Fill(dt);
-
-            if (!dt.Columns.Contains(xlsJoinField))
-            {
-                throw new Exception("The foreign join field specified is not in the xls data source specified.");
-            }
-
+            
             var copyColumns = new List<DataColumn>();
-            foreach (DataColumn column in dt.Columns)
+            foreach (DataColumn column in table.Columns)
             {
                 if (res.DataTable.Columns.Contains(column.ColumnName))
                 {
@@ -846,7 +801,7 @@ namespace DotSpatial.Data
             foreach (DataRow row in res.DataTable.Rows)
             {
                 string query;
-                if (dt.Columns[xlsJoinField].DataType == typeof(string))
+                if (table.Columns[dataTableJoinField].DataType == typeof(string))
                 {
                     // Replcase quote with double quote, if need
                     var localJoinStr = (string)row[localJoinField];
@@ -854,14 +809,14 @@ namespace DotSpatial.Data
                     {
                         localJoinStr = localJoinStr.Replace("'", "''");
                     }
-                    query = "[" + xlsJoinField + "] = '" + localJoinStr + "'";
+                    query = "[" + dataTableJoinField + "] = '" + localJoinStr + "'";
                 }
                 else
                 {
-                    query = "[" + xlsJoinField + "] = " + row[localJoinField];
+                    query = "[" + dataTableJoinField + "] = " + row[localJoinField];
                 }
 
-                var result = dt.Select(query);
+                var result = table.Select(query);
 
                 if (result.Length == 0)
                 {
@@ -875,6 +830,19 @@ namespace DotSpatial.Data
             }
 
             return res;
+        }
+
+        /// <inheritdoc/>
+        public IFeatureSet Join(string xlsFilePath, string localJoinField, string xlsJoinField)
+        {
+            // This connection string will not likely work on 64 bit machines.
+            var con = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source="
+                                                      + xlsFilePath + "; Extended Properties=Excel 8.0");
+            var da = new OleDbDataAdapter("select * from [Data$]", con);
+            var dt = new DataTable();
+            da.Fill(dt);
+
+            return Join(dt, localJoinField, xlsJoinField);
         }
 
         /// <inheritdoc/>

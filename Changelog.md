@@ -39,4 +39,4 @@ All notable changes to this project will be documented in this file.
 - Error inside ClipPolygonWithLine that caused an exception because the output filename wasn't set
 - Incorrect toWgs84 initialisation in Proj4DatumName set accesor (#732)
 - Unhandled exception when zoom to empty Group (#796)
-
+- Excel Join, wrong OleDbAdaptater. (#250)
