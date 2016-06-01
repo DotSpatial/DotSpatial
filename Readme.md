@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
+
 # What is DotSpatial?
 
 DotSpatial is a geographic information system library written for .NET 4. 
@@ -7,11 +9,23 @@ DotSpatial provides a map control for .NET and several GIS capabilities includin
 
 * Display a map in a .NET Windows Forms or Web application.
 * Open shapefiles, grids, rasters and images.
-* Render symbology and labels
-* Reproject on the fly
-* Manipulate and display attribute data
-* Scientific analysis
-* Read GPS data
+* Render symbology and labels.
+* Reproject on the fly.
+* Manipulate and display attribute data.
+* Scientific analysis.
+* Read GPS data.
+
+### Questions & Documentation
+
+Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
+
+For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
+
+Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master) to download latest binaries (from master branch).
+
+### Contribute
+
+See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
 
 ### NuGet packages
 
@@ -34,18 +48,3 @@ Package |
 [	DotSpatial.Positioning](https://www.nuget.org/packages/DotSpatial.Positioning) |
 [	DotSpatial.Positioning.Forms](https://www.nuget.org/packages/DotSpatial.Positioning.Forms) |
 [	DotSpatial.Positioning.Design](https://www.nuget.org/packages/DotSpatial.Positioning.Design) |
-
-
-### Questions & Documentation
-Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to post any discussions related to the development or use of DotSpatial libraries. This is a great place to discuss potential features and to ask questions about how to use the libraries.
-
-For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
-
-
-### Contribute
-
-See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
-
-### Project Build Status
-
-[![Build status](https://ci.appveyor.com/api/projects/status/7tof6s7m07qdad3b?svg=true)](https://ci.appveyor.com/project/mogikanin/dotspatial)
