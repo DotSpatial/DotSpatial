@@ -39,9 +39,9 @@ namespace DotSpatial.Serialization
         }
 
         /// <summary>
-        /// Obsolete
+        /// Creates a new ReadOnlyException with the given message.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message, the ReadOnlyException should show.</param>
         public ReadOnlyException(string message)
             : base(message)
         {
