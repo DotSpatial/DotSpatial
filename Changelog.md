@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
+- Removed obsolete methods\properties (#797)
 
 ### Fixed
 - ShapeReader skipping one entry when switching the page (#774)
