@@ -4,3 +4,6 @@ cache: source\packages -> **\packages.config
 build:
   project: source\DotSpatial.sln
   verbosity: minimal
+artifacts:
+- path: source\bin\Release
+  name: Release
