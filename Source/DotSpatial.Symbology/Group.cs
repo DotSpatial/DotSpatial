@@ -102,7 +102,7 @@ namespace DotSpatial.Symbology
             base.IsExpanded = true;
             ContextMenuItems = new List<SymbologyMenuItem>();
             ContextMenuItems.Add(new SymbologyMenuItem("Remove Group", Remove_Click));
-            ContextMenuItems.Add(new SymbologyMenuItem("Zoom to Group", ZoomToGroupClick));
+            ContextMenuItems.Add(new SymbologyMenuItem("Zoom to Group", (sender, args) => ZoomToGroup()));
             ContextMenuItems.Add(new SymbologyMenuItem("Create new Group", CreateGroupClick));
             _selectionEnabled = true;
         }
@@ -225,7 +225,7 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public virtual IList<ILayer> GetLayers()
         {
-            return _layers.Cast<ILayer>().ToList();
+            return _layers.ToList();
         }
 
         /// <inheritdoc />
@@ -340,17 +340,10 @@ namespace DotSpatial.Symbology
         /// </summary>
         public override bool IsVisible
         {
-            get
-            {
-                foreach (ILayer lyr in GetLayers())
-                {
-                    if (lyr.IsVisible) return true;
-                }
-                return false;
-            }
+            get { return GetLayers().Any(lyr => lyr.IsVisible); }
             set
             {
-                foreach (ILayer lyr in GetLayers())
+                foreach (var lyr in GetLayers())
                 {
                     lyr.IsVisible = value;
                 }
@@ -366,20 +359,19 @@ namespace DotSpatial.Symbology
         {
             get
             {
+                var layers = GetLayers();
+                if (layers == null) return null;
+
                 Extent ext = null;
-                IList<ILayer> layers = GetLayers();
-                if (layers != null)
+                foreach (var extent in layers
+                    .Select(layer => layer.Extent)
+                    .Where(extent => extent != null && !extent.IsEmpty()) // changed by jany (2015-07-17) don't add extents of empty layers, because they cause a wrong overall extent 
+                    )
                 {
-                    foreach (ILayer layer in layers)
-                    {
-                        if (layer.Extent != null && !layer.Extent.IsEmpty()) // changed by jany (2015-07-17) don't add extents of empty layers, because they cause a wrong overall extent 
-                        {
-                            if (ext == null)
-                                ext = (Extent)layer.Extent.Clone();
-                            else
-                                ext.ExpandToInclude(layer.Extent);
-                        }
-                    }
+                    if (ext == null)
+                        ext = (Extent)extent.Clone();
+                    else
+                        ext.ExpandToInclude(extent);
                 }
                 return ext;
             }
@@ -445,17 +437,10 @@ namespace DotSpatial.Symbology
         /// </summary>
         public bool LayersVisible
         {
-            get
-            {
-                foreach (ILayer layer in GetLayers())
-                {
-                    if (layer.IsVisible) return true;
-                }
-                return false;
-            }
+            get { return GetLayers().Any(layer => layer.IsVisible); }
             set
             {
-                foreach (ILayer layer in GetLayers())
+                foreach (var layer in GetLayers())
                 {
                     layer.IsVisible = value;
                 }
@@ -470,7 +455,7 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return _layers.Cast<ILegendItem>();
+                return _layers;
             }
         }
 
@@ -519,9 +504,16 @@ namespace DotSpatial.Symbology
             OnRemoveItem();
         }
 
-        private void ZoomToGroupClick(object sender, EventArgs e)
+        /// <summary>
+        /// Zoom to group
+        /// </summary>
+        internal void ZoomToGroup()
         {
-            OnZoomToLayer(Extent.ToEnvelope());
+            var extent = Extent;
+            if (extent != null)
+            {
+                OnZoomToLayer(extent.ToEnvelope());
+            }
         }
 
         private void CreateGroupClick(object sender, EventArgs e)
