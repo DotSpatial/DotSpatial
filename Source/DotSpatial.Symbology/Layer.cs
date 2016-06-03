@@ -362,8 +362,8 @@ namespace DotSpatial.Symbology
             {
                 if (base.IsSelected != value)
                 {
-                    OnLayerSelected(this, value);
                     base.IsSelected = value;
+                    OnLayerSelected(this, value);
                 }
             }
         }

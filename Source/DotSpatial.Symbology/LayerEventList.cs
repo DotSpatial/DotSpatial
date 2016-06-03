@@ -96,7 +96,7 @@ namespace DotSpatial.Symbology
         /// <param name="index">THe zero based integer index</param>
         public void SelectLayer(int index)
         {
-            _selectedLayer = this[index];
+            SelectedLayer = this[index];
         }
 
         #endregion
@@ -112,11 +112,11 @@ namespace DotSpatial.Symbology
             set
             {
                 _selectedLayer = value;
-                if (_selectedLayer != null)
+                if (value != null)
                 {
-                    OnLayerSelected(_selectedLayer, _selectedLayer.IsSelected);
+                    value.IsSelected = true;
+                    OnLayerSelected(value, true);
                 }
-                //OnListChanged();
             }
         }
 
@@ -206,10 +206,12 @@ namespace DotSpatial.Symbology
             OnListChanged();
         }
 
-        private void ItemLayerSelected(object sender, LayerEventArgs e)
+        private void ItemLayerSelected(object sender, LayerSelectedEventArgs e)
         {
-            // This will also automatically fire the event in the setter.
-            SelectedLayer = e.Layer;
+            if (e.IsSelected)
+            {
+                SelectedLayer = e.Layer;
+            }
         }
 
         /// <summary>
@@ -299,28 +301,16 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Handles the default selection behavior and fires the LayerSelected event.
-        /// </summary>
-        /// <param name="index">The integer index of the layer being selected</param>
-        protected virtual void OnLayerSelected(int index)
-        {
-            _selectedLayer = base[index];
-            if (LayerSelected != null)
-            {
-                LayerSelected(this, new LayerSelectedEventArgs(_selectedLayer, _selectedLayer.IsSelected));
-            }
-        }
-
-        /// <summary>
         /// Fires the LayerSelected event and adjusts the selected state of the layer.
         /// </summary>
         /// <param name="layer">The layer to select</param>
         /// <param name="selected">Boolean, true if the specified layer is selected</param>
         protected virtual void OnLayerSelected(ILayer layer, bool selected)
         {
-            if (LayerSelected != null)
+            var h = LayerSelected;
+            if (h != null)
             {
-                LayerSelected(this, new LayerSelectedEventArgs(layer, selected));
+                h(this, new LayerSelectedEventArgs(layer, selected));
             }
         }
 

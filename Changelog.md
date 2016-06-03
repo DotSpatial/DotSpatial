@@ -40,3 +40,4 @@ All notable changes to this project will be documented in this file.
 - Incorrect toWgs84 initialisation in Proj4DatumName set accesor (#732)
 - Unhandled exception when zoom to empty Group (#796)
 - Excel Join, wrong OleDbAdaptater. (#250)
+- Select Layer in the MapFrame (#743)
