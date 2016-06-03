@@ -12,7 +12,7 @@
     <description>$description$</description>
     <summary />
     <language>en-US</language>
-    <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
+    <tags>Spatial GIS DotSpatial</tags>
     <dependencies>
       <dependency id="DotSpatial.Projections" version="1.7"/>
     </dependencies>

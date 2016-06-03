@@ -30,8 +30,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         #region Constants and Fields
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
         public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
-
-        private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
+        
         private const int ScrollBarMargin = 25;
 
         private readonly DownloadForm downloadDialog = new DownloadForm();
@@ -39,10 +38,10 @@ namespace DotSpatial.Plugins.ExtensionManager
         private readonly Packages packages = new Packages();
         private readonly Paging paging;
 
-        private bool AllowProtectedCheck { get; set; }
+        
         private bool restartNeccesary = false;
         private int currentPageNumber;
-        private GetPackage getpack;
+        
         private AppManager _App;
         private string AppName;
 
@@ -55,8 +54,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         public ExtensionManagerForm()
         {
             InitializeComponent();
-
-            getpack = new GetPackage(packages);
+            
             paging = new Paging(packages, Add);
 
             Installed.TileSize = new Size((Installed.Width - ScrollBarMargin) / 4, 45);
@@ -560,7 +558,6 @@ namespace DotSpatial.Plugins.ExtensionManager
         /// <summary>
         /// Gives you an array of strings.
         /// </summary>
-        /// <typeparam name="IEnumerable\<T\>"></typeparam>
         /// <param name="source">Enumerable source object</param>
         /// <returns>List of strings from the enumerable source object</returns>
         private static string[] ToArrayOfStrings<T>(IEnumerable<T> source)

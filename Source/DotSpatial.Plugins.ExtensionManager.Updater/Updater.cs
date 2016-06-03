@@ -19,8 +19,6 @@ namespace DotSpatial.Plugins.ExtensionManager.Updater
 
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
         public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
-        private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
-        private const string HideFromAutoUpdate = "HideFromAutoUpdate";
         private const string ExtensionManager = "DotSpatial.Plugins.ExtensionManager";
         private const int ScrollBarMargin = 25;
         private readonly ListViewHelper Add = new ListViewHelper();

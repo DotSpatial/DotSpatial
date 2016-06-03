@@ -12,7 +12,7 @@
     <description>$description$</description>
     <summary />
     <language>en-US</language>
-    <tags>Spatial GIS DotSpatial HideReleaseFromEndUser</tags>
+    <tags>Spatial GIS DotSpatial</tags>
   </metadata>
   <files>
     <file src="$solutiondir$\bin\$configuration$\**\$id$.resources.dll" target="lib\net40-Client\" />

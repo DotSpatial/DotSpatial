@@ -15,7 +15,7 @@ namespace DotSpatial.Plugins.ExtensionManager
         public event EventHandler<PageSelectedEventArgs> PageChanged;
         private readonly ListViewHelper add;
         private readonly Packages packages;
-        private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
+        private const string DotSpatialPluginTag = "DotSpatial.Plugin";
         private string AppName;
 
         public const int PageSize = 9;
@@ -127,7 +127,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 try
                 {
                     var result = from item in packages.Repo.GetPackages()
-                                 where item.Id.Contains("Plugins") && (item.Tags == null || !item.Tags.Contains(HideReleaseFromEndUser))
+                                 where item.Tags != null && item.Tags.Contains(DotSpatialPluginTag)
                                  select item;
                     result = result.OrderBy(item => item.Id)
                                 .ThenByDescending(item => item.Version);

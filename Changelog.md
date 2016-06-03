@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
-- Demo and Apps projects should have build files (#120)
+- Demo and Apps projects should have build files (#120
+- ExtensionManager & HideReleaseFromEndUser (#798)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)

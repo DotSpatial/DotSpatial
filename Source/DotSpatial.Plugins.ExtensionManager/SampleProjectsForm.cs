@@ -14,8 +14,6 @@ namespace DotSpatial.Plugins.ExtensionManager
 {
     public class SampleProjectsForm : Form
     {
-        private const string SampleProject = "SampleProject";
-        private const string msgNotFound = "No project templates were found. Please install the templates.";
         private readonly Packages packages = new Packages();
         private IContainer components;
         private TabControl tabControl1;

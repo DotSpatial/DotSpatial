@@ -16,8 +16,8 @@ namespace DotSpatial.Plugins.ExtensionManager
         private AppManager App;
         private GetPackage getpack;
         private List<IPackage> list = null;
-        private const string HideReleaseFromEndUser = "HideReleaseFromEndUser";
-        private const string HideFromAutoUpdate = "HideFromAutoUpdate";
+        private const string SupportsAutoUpdate = "SupportsAutoUpdate";
+
         private bool updateApp = false;
         private string AppName;
 
@@ -163,7 +163,7 @@ namespace DotSpatial.Plugins.ExtensionManager
             }
             catch (Exception) { }
 
-            if (updates != null || updates.Count() < 1)
+            if (updates != null)
             {
                 List<IPackage> result = new List<IPackage>();
                 var sortedPackages = updates.OrderBy(item => item.Id)
@@ -172,8 +172,7 @@ namespace DotSpatial.Plugins.ExtensionManager
                 String id = "";
                 foreach (var package in sortedPackages)
                 {
-                    if (id != package.Id && (package.Tags == null || (!package.Tags.Contains(HideReleaseFromEndUser)
-                        && !package.Tags.Contains(HideFromAutoUpdate))))
+                    if (id != package.Id && package.Tags != null && package.Tags.Contains(SupportsAutoUpdate))
                     {
                         result.Add(package);
                         id = package.Id;
