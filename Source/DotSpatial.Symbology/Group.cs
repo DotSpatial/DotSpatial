@@ -182,8 +182,11 @@ namespace DotSpatial.Symbology
             foreach (ILayer layer in GetLayers())
             {
                 Envelope layerArea;
-                if (layer.ClearSelection(out layerArea)) changed = true;
-                affectedAreas.ExpandToInclude(layerArea);
+                if (layer.ClearSelection(out layerArea))
+                {
+                    changed = true;
+                    affectedAreas.ExpandToInclude(layerArea);
+                }
             }
             MapFrame.ResumeEvents();
 
@@ -205,9 +208,12 @@ namespace DotSpatial.Symbology
                 .Where(_ => _.SelectionEnabled && _.IsVisible))
             {
                 Envelope layerArea;
-                if (s.Select(tolerant, strict, mode, out layerArea)) somethingChanged = true;
-                affectedArea.ExpandToInclude(layerArea);
-				// removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
+                if (s.Select(tolerant, strict, mode, out layerArea))
+                {
+                    somethingChanged = true;
+                    affectedArea.ExpandToInclude(layerArea);
+                }
+                // removed by jany_: this selected only features of the first layer with features in the selected area, if user wanted to select features of another layer too they get ignored
                 // added SelectPlugin enables user to choose the layers in which he wants to select features
 			    //if (somethingChanged)
                 //{
@@ -260,8 +266,11 @@ namespace DotSpatial.Symbology
             {
                 if (s.SelectionEnabled == false) continue;
                 Envelope layerArea;
-                if (s.InvertSelection(tolerant, strict, mode, out layerArea)) somethingChanged = true;
-                affectedArea.ExpandToInclude(layerArea);
+                if (s.InvertSelection(tolerant, strict, mode, out layerArea))
+                {
+                    somethingChanged = true;
+                    affectedArea.ExpandToInclude(layerArea);
+                }
             }
             MapFrame.ResumeEvents();
             OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
@@ -278,8 +287,11 @@ namespace DotSpatial.Symbology
             foreach (ILayer s in GetLayers())
             {
                 Envelope layerArea;
-                if (s.UnSelect(tolerant, strict, mode, out layerArea)) somethingChanged = true;
-                affectedArea.ExpandToInclude(layerArea);
+                if (s.UnSelect(tolerant, strict, mode, out layerArea))
+                {
+                    somethingChanged = true;
+                    affectedArea.ExpandToInclude(layerArea);
+                }
             }
             ResumeEvents();
             OnSelectionChanged(); // fires only AFTER the individual layers have fired their events.
