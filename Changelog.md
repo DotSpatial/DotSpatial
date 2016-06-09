@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 - Polygonizer StackOverflowException (#509)
 - Topology: Area for a Polygon with Holes (#16)
 - Unhandled exception in ScaleBarPlugin (#789)
-- No outgoing dirEdge found #602
+- No outgoing dirEdge found (#602)
 - WKBWriter adds 4 null bytes? (#475)
 - Exception when calling feature.Intersects(otherFeature) (#746)
 - Remove Map Frame context menu doesn't work (#237)
@@ -43,3 +43,4 @@ All notable changes to this project will be documented in this file.
 - Excel Join, wrong OleDbAdaptater. (#250)
 - Select Layer in the MapFrame (#743)
 - Measure Plugin - unhandled exception (#792)
+- Error that caused the last value to be missing from the RasterSymbolizer.Scheme
