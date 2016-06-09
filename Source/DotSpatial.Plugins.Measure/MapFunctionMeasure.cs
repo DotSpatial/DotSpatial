@@ -39,11 +39,11 @@ namespace DotSpatial.Plugins.Measure
     /// </summary>
     public class MapFunctionMeasure : MapFunction
     {
+        private const double RadiusOfEarth = 111319.5;
         private bool _areaMode;
         private List<Coordinate> _coordinates;
         private double _currentArea;
         private double _currentDistance;
-        private IFeatureSet _featureSet;
         private bool _firstPartIsCounterClockwise;
         private MeasureDialog _measureDialog;
         private Point _mousePosition;
@@ -278,7 +278,7 @@ namespace DotSpatial.Plugins.Measure
                     double factor = Math.Cos(y * Math.PI / 180);
                     dx *= factor;
                     dist = Math.Sqrt(dx * dx + dy * dy);
-                    dist = dist * 111319.5;
+                    dist = dist * RadiusOfEarth;
                 }
                 else
                 {
@@ -313,7 +313,6 @@ namespace DotSpatial.Plugins.Measure
                 if (Map.Projection.IsLatLon)
                 {
                     // this code really assumes the location is near the equator
-                    const double RadiusOfEarth = 111319.5;
                     area *= RadiusOfEarth * RadiusOfEarth;
                 }
                 else
@@ -347,10 +346,10 @@ namespace DotSpatial.Plugins.Measure
             else
             {
                 List<Coordinate> tempPolygon = _coordinates.ToList();
-                tempPolygon.Add(c1);
+                if (!c1.Equals2D(_coordinates[_coordinates.Count - 1])) tempPolygon.Add(c1); //don't add the current coordinate again if it was added by mouse click
                 if (tempPolygon.Count < 3)
                 {
-                    if (tempPolygon.Count == 2)
+                    if (tempPolygon.Count > 1)
                     {
                         Rectangle r = Map.ProjToPixel(new LineString(tempPolygon.ToArray()).EnvelopeInternal.ToExtent());
                         r.Inflate(20, 20);
@@ -359,6 +358,7 @@ namespace DotSpatial.Plugins.Measure
                     _mousePosition = e.Location;
                     return;
                 }
+                tempPolygon.Add(_coordinates[0]); //changed by jany_ (2016-06-09) close the polygon, because they must be closed by definition
                 Polygon pg = new Polygon(new LinearRing(tempPolygon.ToArray()));
 
                 double area = GetArea(tempPolygon.ToArray());
@@ -439,7 +439,11 @@ namespace DotSpatial.Plugins.Measure
                 {
                     if (_coordinates.Count >= 3)
                     {
-                        double area = GetArea(_coordinates.ToArray());
+                        //changed by jany_ (2016-06-09) close the polygon to get the correct area
+                        List<Coordinate> tempPolygon = _coordinates.ToList();
+                        tempPolygon.Add(_coordinates[0]);
+
+                        double area = GetArea(tempPolygon.ToArray());
                         _currentArea = area;
                     }
                 }
@@ -488,10 +492,6 @@ namespace DotSpatial.Plugins.Measure
         /// <summary>
         /// Gets or sets the featureset to modify
         /// </summary>
-        public IFeatureSet FeatureSet
-        {
-            get { return _featureSet; }
-            set { _featureSet = value; }
-        }
+        public IFeatureSet FeatureSet { get; set; }
     }
 }
