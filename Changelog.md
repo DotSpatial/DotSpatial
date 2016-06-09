@@ -42,3 +42,4 @@ All notable changes to this project will be documented in this file.
 - Unhandled exception when zoom to empty Group (#796)
 - Excel Join, wrong OleDbAdaptater. (#250)
 - Select Layer in the MapFrame (#743)
+- Measure Plugin - unhandled exception (#792)
