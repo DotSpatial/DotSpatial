@@ -4,8 +4,17 @@ using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
+    /// <summary>
+    /// This contains extension methods for GeoApi.Geometries.Envelope.
+    /// </summary>
     public static class EnvelopeExt
     {
+        /// <summary>
+        /// Initializes the envelopes Minimum.Z with the smaller of the two given z values and the Maximum.Z with the bigger of the two given z values. 
+        /// </summary>
+        /// <param name="envelope">Envelope, whos Minimum and Maximum.Z should be initialized.</param>
+        /// <param name="z1">First z value.</param>
+        /// <param name="z2">Second z value.</param>
         public static void InitZ(this Envelope envelope, double z1, double z2)
         {
             if (z1 < z2)
@@ -20,6 +29,12 @@ namespace DotSpatial.NTSExtension
             }
         }
 
+        /// <summary>
+        /// Initializes the envelopes Minimum.M with the smaller of the two given m values and the Maximum.M with the bigger of the two given m values. 
+        /// </summary>
+        /// <param name="envelope">Envelope, whos Minimum and Maximum.M should be initialized.</param>
+        /// <param name="m1">First m value.</param>
+        /// <param name="m2">Second m value.</param>
         public static void InitM(this Envelope envelope, double m1, double m2)
         {
             if (m1 < m2)
@@ -34,6 +49,11 @@ namespace DotSpatial.NTSExtension
             }
         }
 
+        /// <summary>
+        /// Checks whether the given Envelope has M values.
+        /// </summary>
+        /// <param name="envelope">Envelope that gets checked.</param>
+        /// <returns>False if either envelope.Minimum.M or envelope.Maximum.M is not a number or Minimum.M is bigger than Maximum.M. </returns>
         public static bool HasM(this Envelope envelope)
         {
             if (double.IsNaN(envelope.Minimum.M) || double.IsNaN(envelope.Maximum.M))
@@ -41,6 +61,11 @@ namespace DotSpatial.NTSExtension
             return envelope.Minimum.M <= envelope.Maximum.M;
         }
 
+        /// <summary>
+        /// Checks whether the given Envelope has Z values.
+        /// </summary>
+        /// <param name="envelope">Envelope that gets checked.</param>
+        /// <returns>False if either envelope.Minimum.Z or envelope.Maximum.Z is not a number or Minimum.Z is bigger than Maximum.Z. </returns>
         public static bool HasZ(this Envelope envelope)
         {
             if (double.IsNaN(envelope.Minimum.Z) || double.IsNaN(envelope.Maximum.Z))

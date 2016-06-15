@@ -3,6 +3,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
+    /// <summary>
+    /// Contains extension methods for GeoAPI.Geometries.IGeometry.
+    /// </summary>
     public static class GeometryExt
     {
 
@@ -50,6 +53,7 @@ namespace DotSpatial.NTSExtension
                     break;
             }
         }
+      
         /// <summary>
         /// Rotates the given coordinate by the given radian angle around the origin.
         /// </summary>

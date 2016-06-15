@@ -4,12 +4,16 @@ using NetTopologySuite.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
+    /// <summary>
+    /// Contains extension methodes for GeoAPI.Geomtetries.ILineString.
+    /// </summary>
     public static class LineStringExt
     {
 
         /// <summary>
         /// Gets the value of the angle between the StartPoint and the EndPoint in Radian.
         /// </summary>
+        /// <param name="self">The ILineString, whose angle is returned.</param>
         /// <remarks>added by JLeiss</remarks>
         public static double RadAngle(this ILineString self)
         {
@@ -29,6 +33,7 @@ namespace DotSpatial.NTSExtension
         /// Given the specified test point, this checks each segment, and will
         /// return the closest point on the specified segment.
         /// </summary>
+        /// <param name="self">The ILineString, whose point is returned.</param>
         /// <param name="testPoint">The point to test.</param>
         public static Coordinate ClosestPoint(this ILineString self, Coordinate testPoint)
         {
