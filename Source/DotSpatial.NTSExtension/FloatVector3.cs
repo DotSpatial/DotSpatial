@@ -23,6 +23,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.NTSExtension
 {
+    /// <summary>
+    /// A float based 3 dimensional vector class, implementing all interesting features of vectors.
+    /// </summary>
     public struct FloatVector3
     {
         #region Fields

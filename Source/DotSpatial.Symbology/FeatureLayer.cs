@@ -2156,6 +2156,10 @@ namespace DotSpatial.Symbology
 
         #endregion
 
+        /// <summary>
+        /// Disposes the resources of the FeatureLayer.
+        /// </summary>
+        /// <param name="disposeManagedResources">Indicates whether managed resources should be disposed too.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
             if (disposeManagedResources)

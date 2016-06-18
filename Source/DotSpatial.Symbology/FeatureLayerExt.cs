@@ -22,14 +22,17 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Extension methods for DotSpatial.Symbology.IFeatureLayer.
+    /// </summary>
     public static class FeatureLayerExt
     {
         #region Methods
 
         /// <summary>
-        /// Inverts the selection
+        /// Inverts the selection.
         /// </summary>
-        /// <param name="featureLayer"></param>
+        /// <param name="featureLayer">IFeatureLayer whose selection is inverted.</param>
         public static void InvertSelection(this IFeatureLayer featureLayer)
         {
             Envelope ignoreMe;

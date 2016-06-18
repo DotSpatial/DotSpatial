@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         private ILabelSymbolizer _symbolizer;
 
 
-        private Expression _exp;
+        private readonly Expression _exp;
 
         #endregion
 
@@ -94,6 +94,10 @@ namespace DotSpatial.Symbology
             return result;
         }
 
+        /// <summary>
+        /// Returns the categories name or "No Name" if the name is not set.
+        /// </summary>
+        /// <returns>The categories name or "No Name" if the name is not set.</returns>
         public override string ToString()
         {
             return string.IsNullOrEmpty(Name) ? "<No Name>" : Name;
@@ -114,14 +118,14 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="row">Datarow the expression gets calculated for.</param>
         /// <param name="selected">Indicates whether the feature is selected.</param>
-        /// <param name="FID">The FID of the feature, the expression gets calculated for.</param>
+        /// <param name="fid">The FID of the feature, the expression gets calculated for.</param>
         /// <returns>null if there was an error while parsing the expression, else the calculated expression</returns>
-        public string CalculateExpression(DataRow row, bool selected, int FID)
+        public string CalculateExpression(DataRow row, bool selected, int fid)
         {
             string ff = (selected ? _selectionSymbolizer : _symbolizer).FloatingFormat;
             _exp.FloatingFormat = ff != null ? ff.Trim() : "";
             _exp.ParseExpression(_expression);
-            return _exp.CalculateRowValue(row, FID);
+            return _exp.CalculateRowValue(row, fid);
         }
 
         #endregion
