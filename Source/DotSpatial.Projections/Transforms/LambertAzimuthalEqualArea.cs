@@ -189,7 +189,7 @@ namespace DotSpatial.Projections.Transforms
                 double cy = xy[y];
                 if (_mode == Modes.Equitorial || _mode == Modes.Oblique)
                 {
-                    double rho = Proj.Hypot(cx /= _dd, cy * _dd);
+                    double rho = Proj.Hypot(cx /= _dd, cy *= _dd);
                     if (rho < EPS10)
                     {
                         lp[lam] = 0;
@@ -201,7 +201,7 @@ namespace DotSpatial.Projections.Transforms
                     cx *= (sCe = Math.Sin(sCe));
                     if (_mode == Modes.Oblique)
                     {
-                        ab = cCe * _sinb1 + y * sCe * _cosb1 / rho;
+                        ab = cCe * _sinb1 + cy * sCe * _cosb1 / rho;
                         //q = _qp*(ab);
                         cy = rho * _cosb1 * cCe - cy * _sinb1 * sCe;
                     }
