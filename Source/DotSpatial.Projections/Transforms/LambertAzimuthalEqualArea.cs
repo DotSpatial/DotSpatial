@@ -22,6 +22,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Christoph Perger    |  22/6/2016 |  Fixed some issues with projection from LAEA to WGS84
 // ********************************************************************************************************
 
 using System;
