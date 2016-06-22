@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Removed obsolete methods\properties (#797)
 
 ### Fixed
+- Fixed LAEA reprojected y coordinate that resulted in n.def (#813)
 - ShapeReader skipping one entry when switching the page (#774)
 - DotSpatial.Projections dll file is very big (#27)
 - ParseEsriString leaves datums.xml open (#713)

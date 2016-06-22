@@ -22,6 +22,7 @@
 //        Name         |    Date    |        Comment
 // --------------------|------------|------------------------------------------------------------
 // Ted Dunsford        |   5/3/2010 |  Updated project to DotSpatial.Projection and license to LGPL
+// Christoph Perger    |  22/6/2016 |  Fixed some issues with projection from LAEA to WGS84
 // ********************************************************************************************************
 
 using System;
@@ -189,7 +190,7 @@ namespace DotSpatial.Projections.Transforms
                 double cy = xy[y];
                 if (_mode == Modes.Equitorial || _mode == Modes.Oblique)
                 {
-                    double rho = Proj.Hypot(cx /= _dd, cy * _dd);
+                    double rho = Proj.Hypot(cx /= _dd, cy *= _dd);
                     if (rho < EPS10)
                     {
                         lp[lam] = 0;
@@ -201,7 +202,7 @@ namespace DotSpatial.Projections.Transforms
                     cx *= (sCe = Math.Sin(sCe));
                     if (_mode == Modes.Oblique)
                     {
-                        ab = cCe * _sinb1 + y * sCe * _cosb1 / rho;
+                        ab = cCe * _sinb1 + cy * sCe * _cosb1 / rho;
                         //q = _qp*(ab);
                         cy = rho * _cosb1 * cCe - cy * _sinb1 * sCe;
                     }
