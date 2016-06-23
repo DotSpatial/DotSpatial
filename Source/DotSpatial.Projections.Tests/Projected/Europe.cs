@@ -36,10 +36,10 @@ namespace DotSpatial.Projections.Tests.Projected
             Reproject.ReprojectPoints(xy, z, pEnd, pStart, 0, 1);
 
             // Test X
-            Assert.AreEqual(16.4, xy[0], 0.01);
+            Assert.AreEqual(lon, xy[0], 0.00001);
 
             // Test Y
-            Assert.AreEqual(48.2, xy[1], 0.01);
+            Assert.AreEqual(lat, xy[1], 0.00001);
         }
 
         private static IEnumerable<ProjectionInfoDesc> GetProjections()
