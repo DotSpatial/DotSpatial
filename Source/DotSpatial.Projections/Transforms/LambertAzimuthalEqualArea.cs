@@ -329,7 +329,7 @@ namespace DotSpatial.Projections.Transforms
                     _sinb1 = Proj.Qsfn(sinphi, E, OneEs)/_qp;
                     _cosb1 = Math.Sqrt(1 - _sinb1 * _sinb1);
                     _dd = Math.Cos(Phi0) / (Math.Sqrt(1 - Es * sinphi * sinphi) * _rq * _cosb1);
-                    _ymf = _xmf = _rq / _dd;
+                    _ymf = (_xmf = _rq) / _dd;
                     _xmf *= _dd;
                     break;
             }
