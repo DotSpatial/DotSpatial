@@ -78,10 +78,13 @@ namespace DotSpatial.Data
         //    set;
         //}
 
+        /// <summary>
+        /// Returns the FeatureType of the feature. This can either be Point, Multipoint, Line, Polygon or Unspecified if the feature has no geometry.
+        /// </summary>
         FeatureType FeatureType { get; }
 
         /// <summary>
-        /// Gets the key that is associated with this feature.  This returns -1 if
+        /// Gets the key that is associated with this feature. This returns -1 if
         /// this feature is not a member of a feature layer.
         /// </summary>
         int Fid
@@ -151,6 +154,9 @@ namespace DotSpatial.Data
         /// <returns>A Shape object</returns>
         Shape ToShape();
 
+        /// <summary>
+        /// Forces the features geometry to update its envelope.
+        /// </summary>
         void UpdateEnvelope();
 
         #endregion

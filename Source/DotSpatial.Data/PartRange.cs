@@ -23,7 +23,7 @@ using System;
 namespace DotSpatial.Data
 {
     /// <summary>
-    /// Vertices require methods to work quickly with data.  These are not designed to be inherited,
+    /// Vertices require methods to work quickly with data. These are not designed to be inherited,
     /// overridden or equiped with interfaces and properties.
     /// </summary>
     public sealed class PartRange : VertexRange, ICloneable
@@ -38,11 +38,11 @@ namespace DotSpatial.Data
         /// <param name="featureType"></param>
         public PartRange(FeatureType featureType)
         {
-            // _featureType = featureType;
+            _segments = new SegmentRange(this, featureType);
         }
 
         /// <summary>
-        /// Creates a new instance of Part
+        /// Creates a new instance of PartRange.
         /// </summary>
         /// <param name="allVertices">An array of all the vertex locations</param>
         /// <param name="shapeOffset">The point index of the shape. </param>
@@ -52,7 +52,6 @@ namespace DotSpatial.Data
             base(allVertices, shapeOffset, partOffset)
         {
             _segments = new SegmentRange(this, featureType);
-            //_featureType = featureType;
         }
 
         /// <summary>
@@ -110,8 +109,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// This creates a new extent and cylces through the coordinates to calculate what it is.
-        /// Since the vertices may change so easilly, this is not cached.
+        /// This creates a new extent and cycles through the coordinates to calculate what it is.
+        /// Since the vertices may change so easily, this is not cached.
         /// </summary>
         /// <returns></returns>
         public Extent CalculateExtent()
@@ -129,6 +128,5 @@ namespace DotSpatial.Data
 
         #endregion
 
-        //private FeatureType _featureType;
     }
 }

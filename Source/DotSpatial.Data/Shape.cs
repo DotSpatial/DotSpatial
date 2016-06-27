@@ -47,14 +47,14 @@ namespace DotSpatial.Data
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Shape
+        /// Creates a new instance of Shape.
         /// </summary>
         public Shape()
         {
         }
 
         /// <summary>
-        /// Creates a new shape type where the shaperange exists and has a type specified
+        /// Creates a new shape type where the shaperange exists and has a type specified.
         /// </summary>
         /// <param name="type"></param>
         public Shape(FeatureType type)
@@ -63,8 +63,8 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a shape based on the specified feature.  This shape will be standing alone,
-        /// all by itself.  The fieldnames and field types will be null.
+        /// Creates a shape based on the specified feature. This shape will be standing alone,
+        /// all by itself. The fieldnames and field types will be null.
         /// </summary>
         /// <param name="feature"></param>
         public Shape(IFeature feature)
@@ -73,13 +73,13 @@ namespace DotSpatial.Data
             if (Equals(feature, null))
                 throw new ArgumentNullException("feature");
             if (feature.Geometry.NumPoints == 0)
-                throw new ArgumentOutOfRangeException("feature", "The IFeature.NumPoints of the parameter feature must be greater than 0.");
+                throw new ArgumentOutOfRangeException("feature", DataStrings.Shape_ZeroPointsError);
             _attributes = feature.DataRow.ItemArray;
         }
 
         /// <summary>
-        /// Creates a shape based on the specified geometry.  This shape will be standing alone,
-        /// all by itself.  The attributes will be null.
+        /// Creates a shape based on the specified geometry. This shape will be standing alone,
+        /// all by itself. The attributes will be null.
         /// </summary>
         /// <param name="geometry">The geometry to create a shape from.</param>
         /// <param name="featureType"/>
@@ -115,7 +115,7 @@ namespace DotSpatial.Data
             _vertices = new double[geometry.NumPoints * 2];
             _z = new double[geometry.NumPoints];
             _m = new double[geometry.NumPoints];
-            for (var i = 0; i < coords.Length; i++) //TODO jany_ do we cause error if we replace list.count with array.length?
+            for (var i = 0; i < coords.Length; i++) 
             {
                 var c = coords[i];
                 _vertices[i * 2] = c.X;
@@ -127,9 +127,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a point shape from a coordinate
+        /// Creates a point shape from a coordinate.
         /// </summary>
-        /// <param name="coord"></param>
+        /// <param name="coord">Coordinate used for creating the point shape.</param>
         public Shape(Coordinate coord)
         {
             if (Equals(coord, null))
@@ -151,10 +151,10 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a point shape from a vertex
+        /// Creates a point shape from a vertex.
         /// </summary>
-        /// <param name="coord"></param>
-        public Shape(Vertex coord)
+        /// <param name="coord">Vertex that is used to create the point shape.</param>
+        public Shape(Vertex coord) 
         {
             _shapeRange = new ShapeRange(FeatureType.Point);
             _vertices = new[] { coord.X, coord.Y };
@@ -163,9 +163,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a clockwise polygon shape from an extent
+        /// Creates a clockwise polygon shape from an extent.
         /// </summary>
-        /// <param name="extent"></param>
+        /// <param name="extent">Extent that is used to create the polygon shape.</param>
         public Shape(IExtent extent)
         {
             if (Equals(extent, null))
@@ -181,9 +181,9 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a clockwise polygon shape from an envelope
+        /// Creates a clockwise polygon shape from an envelope.
         /// </summary>
-        /// <param name="envelope"></param>
+        /// <param name="envelope">Envelope that is used to create the polygon shape.</param>
         public Shape(Envelope envelope)
         {
             if (Equals(envelope, null))
@@ -256,7 +256,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Creates a new MultiPoint geometry from a MultiPoint shape
+        /// Creates a new MultiPoint geometry from a MultiPoint shape.
         /// </summary>
         /// <param name="factory">The IGeometryFactory to use to create the new shape.</param>
         /// <returns></returns>
@@ -284,7 +284,7 @@ namespace DotSpatial.Data
                 var coords = GetCoordinates(part);
                 lines.Add(factory.CreateLineString(coords.ToArray()));
             }
-            if (lines.Count == 1) return (IGeometry)lines[0];
+            if (lines.Count == 1) return lines[0];
             return factory.CreateMultiLineString(lines.ToArray());
         }
 
@@ -358,8 +358,8 @@ namespace DotSpatial.Data
                     if (minShell != null)
                         minEnv = minShell.EnvelopeInternal;
                     var isContained = tryEnv.Contains(testEnv)
-                                       && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
-                                           || (PointInList(testPt, tryRing.Coordinates)));
+                                      && (CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates)
+                                          || PointInList(testPt, tryRing.Coordinates));
 
                     // Check if this new containing ring is smaller than the current minimum ring
                     if (isContained)
@@ -412,7 +412,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Create a ShapeRange from a Geometry to use in constructing a Shape
+        /// Create a ShapeRange from a Geometry to use in constructing a Shape.
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="featureType"></param>
@@ -461,7 +461,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Create a ShapeRange from a Feature to use in constructing a Shape
+        /// Create a ShapeRange from a Feature to use in constructing a Shape.
         /// </summary>
         /// <param name="feature"></param>
         /// <param name="vertices"></param>
@@ -473,7 +473,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Create a ShapeRange from a Feature to use in constructing a Shape
+        /// Create a ShapeRange from a Feature to use in constructing a Shape.
         /// </summary>
         /// <param name="feature"></param>
         /// <param name="vertices"></param>
@@ -488,22 +488,22 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the minimum M
+        /// Gets or sets the minimum M.
         /// </summary>
         public double MinM { get; set; }
 
         /// <summary>
-        ///  Gets or sets the maximum M
+        ///  Gets or sets the maximum M.
         /// </summary>
         public double MaxM { get; set; }
 
         /// <summary>
-        ///  Gets or sets the minimum Z
+        ///  Gets or sets the minimum Z.
         /// </summary>
         public double MinZ { get; set; }
 
         /// <summary>
-        ///  Gets or sets the maximum Z
+        ///  Gets or sets the maximum Z.
         /// </summary>
         public double MaxZ { get; set; }
 
@@ -533,7 +533,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The Z values if any
+        /// The Z values if any.
         /// </summary>
         public double[] Z
         {
@@ -551,7 +551,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the attributes.  Since the most likely use is to copy values from one source to
+        /// Gets or sets the attributes. Since the most likely use is to copy values from one source to
         /// another, this should be an independant array in each shape and be deep-copied.
         /// </summary>
         public object[] Attributes
@@ -562,14 +562,14 @@ namespace DotSpatial.Data
 
         /// <summary>
         /// Without changing the feature type or anything else, simply update the local coordinates
-        /// to include the new coordinates.  All the new coordinates will be considered one part.
+        /// to include the new coordinates. All the new coordinates will be considered one part.
         /// Since point and multi-point shapes don't have parts, they will just be appended to the
         /// original part.
         /// </summary>
         public void AddPart(IEnumerable<Coordinate> coordinates, CoordinateType coordType)
         {
-            bool hasM = (coordType == CoordinateType.M || coordType == CoordinateType.Z);
-            bool hasZ = (coordType == CoordinateType.Z);
+            bool hasM = coordType == CoordinateType.M || coordType == CoordinateType.Z;
+            bool hasZ = coordType == CoordinateType.Z;
             List<double> vertices = new List<double>();
             List<double> z = new List<double>();
             List<double> m = new List<double>();

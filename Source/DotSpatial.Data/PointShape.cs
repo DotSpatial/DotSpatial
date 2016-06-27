@@ -28,7 +28,7 @@ namespace DotSpatial.Data
     public static class PointShape
     {
         /// <summary>
-        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon
+        /// Gets or sets the precision for calculating equality, but this is just a re-direction to Vertex.Epsilon.
         /// </summary>
         public static double Epsilon
         {
@@ -37,19 +37,19 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the intersection of a polygon shape without relying on the NTS geometry
+        /// Calculates the intersection of a point shape without relying on the NTS geometry.
         /// </summary>
-        /// <param name="pointShape"></param>
-        /// <param name="otherShape"></param>
-        /// <returns></returns>
+        /// <param name="pointShape">Point shape used for calculation.</param>
+        /// <param name="otherShape">Other shape of any feature type.</param>
+        /// <returns>True, if the given shape ranges intersect.</returns>
         public static bool Intersects(ShapeRange pointShape, ShapeRange otherShape)
         {
             if (pointShape.FeatureType != FeatureType.Point && pointShape.FeatureType != FeatureType.MultiPoint)
             {
-                throw new ArgumentException("The First parameter should be a point shape, but it was featuretype:" + pointShape.FeatureType);
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "pointShape", "point or multi point", pointShape.FeatureType)); 
             }
 
-            // Implmented in PolygonShape or line shape.  Point shape is the simplest and just looks for overlapping coordinates.
+            // Implemented in PolygonShape or line shape. Point shape is the simplest and just looks for overlapping coordinates.
             if (otherShape.FeatureType == FeatureType.Polygon || otherShape.FeatureType == FeatureType.Line)
             {
                 return otherShape.Intersects(pointShape);
@@ -60,9 +60,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Returns true if any vertices overlap
+        /// Returns true if any vertices overlap.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="pointShape">First point shape used for checking.</param>
+        /// <param name="otherPointShape">Second point shape used for checking.</param>
+        /// <returns>True if any vertices overlap.</returns>
         public static bool VerticesIntersect(ShapeRange pointShape, ShapeRange otherPointShape)
         {
             foreach (PartRange part in pointShape.Parts)

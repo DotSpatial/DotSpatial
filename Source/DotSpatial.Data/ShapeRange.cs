@@ -25,22 +25,25 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
+    /// <summary>
+    /// ShapeRange is used to store geometry information without using NTS.Geometry.
+    /// </summary>
     public sealed class ShapeRange : ICloneable
     {
         #region Private Variables
 
         /// <summary>
-        /// The feature type
+        /// The feature type.
         /// </summary>
         public FeatureType FeatureType { get; private set; }
 
         /// <summary>
-        /// The content length
+        /// The content length.
         /// </summary>
         public int ContentLength { get; set; }
 
         /// <summary>
-        /// Control the epsilon to use for the intersect calculations
+        /// Control the epsilon to use for the intersect calculations.
         /// </summary>
         public const double Epsilon = double.Epsilon;
 
@@ -79,7 +82,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the extent of this shape range.  Setting this will prevent
+        /// Gets or sets the extent of this shape range. Setting this will prevent
         /// the automatic calculations.
         /// </summary>
         public Extent Extent
@@ -96,7 +99,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The shape type for the header of this shape
+        /// The shape type for the header of this shape.
         /// </summary>
         public ShapeType ShapeType
         {
@@ -112,7 +115,7 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The number of points in the entire shape
+        /// The number of points in the entire shape.
         /// </summary>
         public int NumPoints
         {
@@ -234,7 +237,7 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="env">The envelope to turn into a shape range.</param>
         public ShapeRange(Envelope env)
-            :this(env.ToExtent())
+            : this(env.ToExtent())
         {
         }
 

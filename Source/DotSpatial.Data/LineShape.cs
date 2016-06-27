@@ -37,16 +37,16 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Calculates the intersection of a polygon shape without relying on the NTS geometry
+        /// Calculates the intersection of a polygon shape without relying on the NTS geometry.
         /// </summary>
-        /// <param name="lineShape"></param>
-        /// <param name="otherShape"></param>
-        /// <returns></returns>
+        /// <param name="lineShape">LineShape used for calculation.</param>
+        /// <param name="otherShape">Other shape of any feature type.</param>
+        /// <returns>True, if the given shape ranges intersect.</returns>
         public static bool Intersects(ShapeRange lineShape, ShapeRange otherShape)
         {
             if (lineShape.FeatureType != FeatureType.Line)
             {
-                throw new ArgumentException("The First parameter should be a point shape, but it was featuretype:" + lineShape.FeatureType);
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line", lineShape.FeatureType)); 
             }
 
             // Implmented in PolygonShape
@@ -74,9 +74,9 @@ namespace DotSpatial.Data
         /// <summary>
         /// Tests to see if any vertices from the other shape are coincident with a segment from this line shape.
         /// </summary>
-        /// <param name="lineShape"></param>
-        /// <param name="otherShape"></param>
-        /// <returns></returns>
+        /// <param name="lineShape">LineShape used for calculation.</param>
+        /// <param name="otherShape">Other shape of any feature type.</param>
+        /// <returns>True, if the shapes intersect.</returns>
         public static bool IntersectsVertex(ShapeRange lineShape, ShapeRange otherShape)
         {
             foreach (PartRange part in lineShape.Parts)
@@ -104,9 +104,9 @@ namespace DotSpatial.Data
         public static bool SegmentsIntersect(ShapeRange lineShape, ShapeRange otherShape)
         {
             if (lineShape.FeatureType != FeatureType.Line && lineShape.FeatureType != FeatureType.Polygon)
-                throw new ArgumentException("Expected lineShape to be a line or polygon feature type, got " + lineShape.FeatureType);
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "lineShape", "line or polygon", lineShape.FeatureType));
             if (otherShape.FeatureType != FeatureType.Line && otherShape.FeatureType != FeatureType.Polygon)
-                throw new ArgumentException("Expected otherShape to be a line or polygon feature type, got " + otherShape.FeatureType);
+                throw new ArgumentException(string.Format(DataStrings.Shape_WrongFeatureType, "otherShape", "line or polygon", otherShape.FeatureType));
 
             foreach (PartRange part in lineShape.Parts)
             {

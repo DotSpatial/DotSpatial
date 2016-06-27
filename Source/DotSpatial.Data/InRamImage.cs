@@ -155,6 +155,10 @@ namespace DotSpatial.Data
             return new InRamImageData(_myImage, Bounds.Extent);
         }
 
+        /// <summary>
+        /// Disposes of the unmanaged resources.
+        /// </summary>
+        /// <param name="isDisposing">True if the "Dispose" method was called instead of the destructor.</param>
         protected override void Dispose(bool isDisposing)
         {
             if (_myImage != null) _myImage.Dispose();

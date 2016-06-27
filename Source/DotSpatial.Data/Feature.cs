@@ -358,6 +358,11 @@ namespace DotSpatial.Data
 
         #endregion
 
+        /// <summary>
+        /// Determines the FeatureType of this feature based on the given geometry.
+        /// </summary>
+        /// <param name="geometry">Geometry that is used to determine the FeatureType.</param>
+        /// <returns>Unspecified if the geometry was null otherwise the FeatureType that corresponds to the geometries OgcGeometryType.</returns>
         private FeatureType FeatureTypeFromGeometryType(IGeometry geometry)
         {
             FeatureType featureType = FeatureType.Unspecified;
@@ -581,7 +586,6 @@ namespace DotSpatial.Data
             }
         }
 
-
         /// <summary>
         /// Gets the datarow containing all the attributes related to this geometry.
         /// This will query the parent feature layer's data Table by FID and then
@@ -601,10 +605,8 @@ namespace DotSpatial.Data
             }
         }
 
-
-
         /// <summary>
-        /// Returns either Point, Polygon or Line
+        /// Returns either Point, Polygon or Line.
         /// </summary>
         public FeatureType FeatureType
         {
