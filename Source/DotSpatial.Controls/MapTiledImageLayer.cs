@@ -28,7 +28,7 @@ using DotSpatial.Symbology;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// MapTiledImageLayer
+    /// This is a specialized FeatureLayer that specifically handles drawing tiled images.
     /// </summary>
     public class MapTiledImageLayer : TiledImageLayer
     {

@@ -29,6 +29,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// This is a specialized FeatureLayer that specifically handles raster drawing.
+    /// </summary>
     public class MapRasterLayer : RasterLayer, IMapRasterLayer
     {
         #region Events

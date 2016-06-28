@@ -32,6 +32,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// This is a specialized FeatureLayer that specifically handles polygon drawing.
+    /// </summary>
     public class MapPolygonLayer : PolygonLayer, IMapPolygonLayer
     {
         #region Events

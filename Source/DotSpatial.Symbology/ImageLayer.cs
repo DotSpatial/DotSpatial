@@ -27,7 +27,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// GeoImageLayer
+    /// A layer with drawing characteristics for images.
     /// </summary>
     public class ImageLayer : Layer, IImageLayer
     {
@@ -109,7 +109,7 @@ namespace DotSpatial.Symbology
         #region IImageLayer Members
 
         /// <summary>
-        /// Gets or sets the underlying data for this object
+        /// Gets or sets the underlying data for this object.
         /// </summary>
         [Serialize("ImageData")]
         public new IImageData DataSet
@@ -124,6 +124,10 @@ namespace DotSpatial.Symbology
             }
         }
 
+        /// <summary>
+        /// This updates the things that depend on the DataSet so that they fit to the changed DataSet.
+        /// </summary>
+        /// <param name="value">DataSet that was changed.</param>
         protected virtual void OnDataSetChanged(IImageData value)
         {
             IsVisible = value != null;
@@ -192,6 +196,7 @@ namespace DotSpatial.Symbology
                 ila.ShowProperties(this);
             }
         }
+    
         /// <summary>
         /// Handles export data from this layer.
         /// </summary>

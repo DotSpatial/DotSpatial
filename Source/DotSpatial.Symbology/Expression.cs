@@ -27,15 +27,13 @@ namespace DotSpatial.Symbology
 {
     public class Expression
     {
-
         #region Members
-        private List<ExpressionPart> _parts = new List<ExpressionPart>();
-        private List<Element> _variables = new List<Element>();
-        private List<Field> _fields = new List<Field>();
-        private List<Operation> _operations = new List<Operation>();
-        private List<string> _strings = new List<string>();
+        private readonly List<ExpressionPart> _parts = new List<ExpressionPart>();
+        private readonly List<Element> _variables = new List<Element>();
+        private readonly List<Field> _fields = new List<Field>();
+        private readonly List<Operation> _operations = new List<Operation>();
+        private readonly List<string> _strings = new List<string>();
         private bool _saveOperations;
-        private string _errorMessage; // the description of error
         private string _floatingFormat = "g";
 
         private bool _valid; //indicates whether the expression-syntax and -operations are valid
@@ -57,8 +55,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// ErrorMessage that was raised by last method.
         /// </summary>
-        public string ErrorMessage
-        { get { return _errorMessage; } }
+        public string ErrorMessage { get; private set; }
 
         #endregion
 
@@ -79,29 +76,29 @@ namespace DotSpatial.Symbology
         /// <summary>Uses the parsed expression to calculate the expression for the given row. If the expression is invalid only the Fields are replaced (This was the default action for expressions before DS 1.8).
         /// </summary>
         /// <param name="row">Row the expression gets calculated for.</param>
-        /// <param name="FID">FID value that is used to replace the FID field.</param>
+        /// <param name="fid">FID value that is used to replace the FID field.</param>
         /// <returns>The calculated expression.</returns>
-        public string CalculateRowValue(DataRow row, int FID)
+        public string CalculateRowValue(DataRow row, int fid)
         {
             if (IsEmpty()) return "";
-            _errorMessage = "";
-            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, FID); //expression is invalid and hasn't changed => simply replace fields
+            ErrorMessage = "";
+            if (!_valid && !_expChanged) return ReplaceFieldsOnly(row, fid); //expression is invalid and hasn't changed => simply replace fields
 
             foreach (Element e in _variables)
             {
-                if (e.isField)
+                if (e.IsField)
                 {
-                    if (e.field.Name.ToLower() == "fid")
-                    { e.setValue(FID); }
-                    else if (row.Table.Columns.Contains(e.field.Name))
-                    { e.setValue(row[e.field.Name]); }
+                    if (e.Field.Name.ToLower() == "fid")
+                    { e.SetValue(fid); }
+                    else if (row.Table.Columns.Contains(e.Field.Name))
+                    { e.SetValue(row[e.Field.Name]); }
                 }
             }
             ExpressionValue expval = Calculate();
             if (expval == null)
             {
                 _valid = false;
-                return ReplaceFieldsOnly(row, FID);
+                return ReplaceFieldsOnly(row, fid);
             }
             else
             {
@@ -128,21 +125,21 @@ namespace DotSpatial.Symbology
         {
             if (IsEmpty()) return false;
 
-            _errorMessage = "";
+            ErrorMessage = "";
             if (row == null) //no row -> use exampleValues
             {
                 foreach (Element e in _variables)
                 {
-                    if (e.isField)
+                    if (e.IsField)
                     {
-                        if (e.val.type == tkValueType.vtBoolean)
-                        { e.setValue(false); }
-                        else if (e.val.type == tkValueType.vtDouble)
-                        { e.setValue(2.4); }
-                        else if (e.val.type == tkValueType.vtObject)
-                        { e.setValue("obj"); }
-                        else if (e.val.type == tkValueType.vtString)
-                        { e.setValue("str"); }
+                        if (e.Value.Type == TkValueType.VtBoolean)
+                        { e.SetValue(false); }
+                        else if (e.Value.Type == TkValueType.VtDouble)
+                        { e.SetValue(2.4); }
+                        else if (e.Value.Type == TkValueType.VtObject)
+                        { e.SetValue("obj"); }
+                        else if (e.Value.Type == TkValueType.VtString)
+                        { e.SetValue("str"); }
                     }
                 }
             }
@@ -150,9 +147,9 @@ namespace DotSpatial.Symbology
             {
                 foreach (Element e in _variables)
                 {
-                    if (e.isField && row.Table.Columns.Contains(e.field.Name))
+                    if (e.IsField && row.Table.Columns.Contains(e.Field.Name))
                     {
-                        e.setValue(row[e.field.Name]);
+                        e.SetValue(row[e.Field.Name]);
                     }
                 }
             }
@@ -161,6 +158,7 @@ namespace DotSpatial.Symbology
             _valid = expval != null;
             if (_valid)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 retVal = expval.ToString();
                 _expChanged = false;
             }
@@ -174,7 +172,7 @@ namespace DotSpatial.Symbology
         /// <returns>True if string can be parsed to expression.</returns>
         public bool ParseExpression(string s)
         {
-            _errorMessage = "";
+            ErrorMessage = "";
             if (_expressionString != s)
             {
                 _expressionString = s;
@@ -189,7 +187,7 @@ namespace DotSpatial.Symbology
 
             if (s.Length == 0) return false;
 
-            ExpressionPart bracket = new ExpressionPart();
+            //ExpressionPart bracket = new ExpressionPart();
 
             _saveOperations = true;
             _variables.Clear();
@@ -200,10 +198,10 @@ namespace DotSpatial.Symbology
 
             foreach (string c in new string[] { "{", "}" })
             {
-                int pos = s.IndexOf(c);
+                int pos = s.IndexOf(c, StringComparison.Ordinal);
                 if (pos > -1)
                 {
-                    _errorMessage = "Unallowed character " + c + " at " + pos;
+                    ErrorMessage = "Unallowed character " + c + " at " + pos;
                     return false;
                 }
             }
@@ -226,17 +224,17 @@ namespace DotSpatial.Symbology
 
             if (s.Contains("\""))
             {
-                _errorMessage = SymbologyMessageStrings.Expression_UnpairedTextquotes;
+                ErrorMessage = SymbologyMessageStrings.Expression_UnpairedTextquotes;
                 return false;
             }
             if (s.Contains("[]"))
             {
-                _errorMessage = SymbologyMessageStrings.Expression_EmptyField;
+                ErrorMessage = SymbologyMessageStrings.Expression_EmptyField;
                 return false;
             }
             if (s.Contains("[") || s.Contains("]"))
             {
-                _errorMessage = SymbologyMessageStrings.Expression_UnpairedBracket;
+                ErrorMessage = SymbologyMessageStrings.Expression_UnpairedBracket;
                 return false;
             }
 
@@ -245,8 +243,8 @@ namespace DotSpatial.Symbology
             {
                 // seeking brackets
                 int begin = 0;
-                int end = 0;
-                found = GetBrackets(s, ref begin, ref end);
+                int end;
+                found = GetBrackets(s, ref begin, out end);
 
                 string expression = found ? s.Substring(begin + 1, end - begin - 1) : s;
                 if (!ParseExpressionPart(expression))
@@ -262,11 +260,11 @@ namespace DotSpatial.Symbology
             for (int i = 0; i < _parts.Count; i++)
             {
                 ExpressionPart part = _parts[i];
-                for (int j = 0; j < part.elements.Count; j++)
+                for (int j = 0; j < part.Elements.Count; j++)
                 {
-                    if (part.elements[j].isField)
+                    if (part.Elements[j].IsField)
                     {
-                        _variables.Add(part.elements[j]);
+                        _variables.Add(part.Elements[j]);
                     }
                 }
             }
@@ -314,11 +312,11 @@ namespace DotSpatial.Symbology
 
             foreach (var part in _parts) //reset calculations
             {
-                part.activeCount = part.elements.Count;
-                foreach (var ele in part.elements)
+                part.ActiveCount = part.Elements.Count;
+                foreach (var ele in part.Elements)
                 {
-                    ele.wasCalculated = false;
-                    ele.turnedOff = false;
+                    ele.WasCalculated = false;
+                    ele.TurnedOff = false;
                 }
             }
 
@@ -327,7 +325,7 @@ namespace DotSpatial.Symbology
                 ExpressionPart part = _parts[partIndex];
 
                 // if there is more then one element, then definitely some operation must be present
-                if (part.elements.Count > 1)
+                if (part.Elements.Count > 1)
                 {
                     // reading caching operation
                     bool found = false;
@@ -349,19 +347,19 @@ namespace DotSpatial.Symbology
                         return null;
                     }
 
-                    part.activeCount -= operation.binaryOperation ? 2 : 1;
+                    part.ActiveCount -= operation.BinaryOperation ? 2 : 1;
                 }
 
                 // if there is only one element left, we'll finalize the part
-                if (part.activeCount == 1)
+                if (part.ActiveCount == 1)
                 {
-                    int size = part.elements.Count;
+                    int size = part.Elements.Count;
                     for (int i = 0; i < size; i++)
                     {
-                        if (!part.elements[i].turnedOff)
+                        if (!part.Elements[i].TurnedOff)
                         {
-                            part.val = GetValue(part, i);
-                            part.elements[i].turnedOff = true;
+                            part.Value = GetValue(part, i);
+                            part.Elements[i].TurnedOff = true;
                             partIndex++;
                             break;
                         }
@@ -388,7 +386,7 @@ namespace DotSpatial.Symbology
                 _saveOperations = false;
             }
 
-            return success ? _parts[_parts.Count - 1].val : null;
+            return success ? _parts[_parts.Count - 1].Value : null;
         }
 
         /// <summary>
@@ -399,83 +397,78 @@ namespace DotSpatial.Symbology
         /// <returns></returns>
         private bool CalculateOperation(ExpressionPart part, Operation operation)
         {
-            ExpressionValue valLeft = null;
-            ExpressionValue valRight = null;
-            Element elLeft = null;
-            Element elRight = null;
+            TkOperation oper = part.Elements[operation.Id].Operation;
 
-            tkOperation oper = part.elements[operation.id].operation;
+            ExpressionValue valRight = GetValue(part, operation.Right);
+            Element elRight = part.Elements[operation.Right];
 
-            valRight = GetValue(part, operation.right);
-            elRight = part.elements[operation.right];
-
-            if (oper == tkOperation.operNOT)   //  tis is an unary operator and we read only right operand
+            if (oper == TkOperation.OperNot)   //  tis is an unary operator and we read only right operand
             {
-                if (valRight.type != tkValueType.vtBoolean)
+                if (valRight.Type != TkValueType.VtBoolean)
                 {
-                    _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                    ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                     return false;
                 }
-                elRight.calcVal.bln = !(valRight.bln);
-                elRight.calcVal.type = tkValueType.vtBoolean;
-                elRight.wasCalculated = true;
-                part.elements[operation.id].turnedOff = true;
+                elRight.CalcValue.Bln = !(valRight.Bln);
+                elRight.CalcValue.Type = TkValueType.VtBoolean;
+                elRight.WasCalculated = true;
+                part.Elements[operation.Id].TurnedOff = true;
             }
-            else if (oper == tkOperation.operChangeSign)  // tis is an unary operator and we read only right operand
+            else if (oper == TkOperation.OperChangeSign)  // tis is an unary operator and we read only right operand
             {
-                if (valRight.type != tkValueType.vtDouble)
+                if (valRight.Type != TkValueType.VtDouble)
                 {
-                    _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                    ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                     return false;
                 }
-                elRight.calcVal.dbl = -valRight.dbl;
-                elRight.calcVal.type = tkValueType.vtDouble;
-                elRight.wasCalculated = true;
-                part.elements[operation.id].turnedOff = true;
+                elRight.CalcValue.Dbl = -valRight.Dbl;
+                elRight.CalcValue.Type = TkValueType.VtDouble;
+                elRight.WasCalculated = true;
+                part.Elements[operation.Id].TurnedOff = true;
             }
             else // these are binary operators as we read left and right operands
             {
-                valLeft = GetValue(part, operation.left);
-                elLeft = part.elements[operation.left];
+                ExpressionValue valLeft = GetValue(part, operation.Left);
+                Element elLeft = part.Elements[operation.Left];
 
-                if (oper == tkOperation.operLineBreak)
+                if (oper == TkOperation.OperLineBreak)
                 {
-                    elLeft.calcVal.str = valLeft.ToString() + Environment.NewLine + valRight.ToString();
-                    elLeft.calcVal.type = tkValueType.vtString;
+                    elLeft.CalcValue.Str = valLeft + Environment.NewLine + valRight;
+                    elLeft.CalcValue.Type = TkValueType.VtString;
                 }
-                else if (valLeft.type == valRight.type)
+                else if (valLeft.Type == valRight.Type)
                 {
-                    if (valLeft.type == tkValueType.vtDouble)
+                    if (valLeft.Type == TkValueType.VtDouble)
                     {
                         CalculateDoubleOperation(oper, elLeft, elRight, valLeft, valRight);
                     }
-                    else if (valLeft.type == tkValueType.vtString)
+                    else if (valLeft.Type == TkValueType.VtString)
                     {
                         CalculateStringOperation(oper, elLeft, elRight, valLeft, valRight);
                     }
-                    else if (valLeft.type == tkValueType.vtBoolean)
+                    else if (valLeft.Type == TkValueType.VtBoolean)
                     {
                         CalculateBoolOperation(oper, elLeft, elRight, valLeft, valRight);
                     }
                 }
-                else if (oper != tkOperation.operPlus) // plus is the only operation that can have different valuetypes
+                else if (oper != TkOperation.OperPlus) // plus is the only operation that can have different valuetypes
                 {
-                    _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                    ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                     return false;
                 }
-                else if (valLeft.type == tkValueType.vtBoolean || valRight.type == tkValueType.vtBoolean) // boolean can't be added
+                else if (valLeft.Type == TkValueType.VtBoolean || valRight.Type == TkValueType.VtBoolean) // boolean can't be added
                 {
-                    _errorMessage = SymbologyMessageStrings.Expression_PlusNotAllowed;
+                    ErrorMessage = SymbologyMessageStrings.Expression_PlusNotAllowed;
                     return false;
                 }
                 else //concat strings and doubles
                 {
-                    elLeft.calcVal.str = valLeft.ToString() + valRight.ToString();
-                    elLeft.calcVal.type = tkValueType.vtString;
+                    elLeft.CalcValue.Str = valLeft + valRight.ToString();
+                    elLeft.CalcValue.Type = TkValueType.VtString;
                 }
-                elLeft.wasCalculated = true;
-                part.elements[operation.id].turnedOff = true;
-                part.elements[operation.right].turnedOff = true;
+                elLeft.WasCalculated = true;
+                part.Elements[operation.Id].TurnedOff = true;
+                part.Elements[operation.Right].TurnedOff = true;
             }
             return true;
         }
@@ -488,33 +481,33 @@ namespace DotSpatial.Symbology
         /// <param name="valLeft"></param>
         /// <param name="valRight"></param>
         /// <returns></returns>
-        private bool CalculateBoolOperation(tkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
+        private bool CalculateBoolOperation(TkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
         {
             switch (oper)
             {
                 // logical operators
-                case tkOperation.operOR:
-                    elLeft.calcVal.bln = valLeft.bln || valRight.bln;
+                case TkOperation.OperOr:
+                    elLeft.CalcValue.Bln = valLeft.Bln || valRight.Bln;
                     break;
-                case tkOperation.operAND:
-                    elLeft.calcVal.bln = valLeft.bln && valRight.bln;
+                case TkOperation.OperAnd:
+                    elLeft.CalcValue.Bln = valLeft.Bln && valRight.Bln;
                     break;
-                case tkOperation.operXOR:
-                    elLeft.calcVal.bln = valLeft.bln ^ valRight.bln;
+                case TkOperation.OperXor:
+                    elLeft.CalcValue.Bln = valLeft.Bln ^ valRight.Bln;
                     break;
-                case tkOperation.operEqual:
-                    elLeft.calcVal.bln = valLeft.bln == valRight.bln;
+                case TkOperation.OperEqual:
+                    elLeft.CalcValue.Bln = valLeft.Bln == valRight.Bln;
                     break;
-                case tkOperation.operNotEqual:
-                    elLeft.calcVal.bln = valLeft.bln != valRight.bln;
+                case TkOperation.OperNotEqual:
+                    elLeft.CalcValue.Bln = valLeft.Bln != valRight.Bln;
                     break;
                 default:
                     {
-                        _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                        ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                         return false;
                     }
             }
-            elLeft.calcVal.type = tkValueType.vtBoolean;
+            elLeft.CalcValue.Type = TkValueType.VtBoolean;
             return true;
         }
 
@@ -526,70 +519,70 @@ namespace DotSpatial.Symbology
         /// <param name="valLeft"></param>
         /// <param name="valRight"></param>
         /// <returns></returns>
-        private bool CalculateDoubleOperation(tkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
+        private bool CalculateDoubleOperation(TkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
         {
-            elLeft.calcVal.type = tkValueType.vtDouble;
+            elLeft.CalcValue.Type = TkValueType.VtDouble;
             switch (oper)
             {
-                case tkOperation.operLess:
-                    elLeft.calcVal.bln = valLeft.dbl < valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperLess:
+                    elLeft.CalcValue.Bln = valLeft.Dbl < valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operLessEqual:
-                    elLeft.calcVal.bln = valLeft.dbl <= valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperLessEqual:
+                    elLeft.CalcValue.Bln = valLeft.Dbl <= valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operGreater:
-                    elLeft.calcVal.bln = valLeft.dbl > valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperGreater:
+                    elLeft.CalcValue.Bln = valLeft.Dbl > valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operGrEqual:
-                    elLeft.calcVal.bln = valLeft.dbl >= valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperGrEqual:
+                    elLeft.CalcValue.Bln = valLeft.Dbl >= valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operEqual:
-                    elLeft.calcVal.bln = valLeft.dbl == valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperEqual:
+                    elLeft.CalcValue.Bln = valLeft.Dbl == valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operNotEqual:
-                    elLeft.calcVal.bln = valLeft.dbl != valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtBoolean;
+                case TkOperation.OperNotEqual:
+                    elLeft.CalcValue.Bln = valLeft.Dbl != valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtBoolean;
                     break;
-                case tkOperation.operMinus:
-                    elLeft.calcVal.dbl = valLeft.dbl - valRight.dbl;
-                    elLeft.calcVal.type = tkValueType.vtDouble;
+                case TkOperation.OperMinus:
+                    elLeft.CalcValue.Dbl = valLeft.Dbl - valRight.Dbl;
+                    elLeft.CalcValue.Type = TkValueType.VtDouble;
                     break;
-                case tkOperation.operMult:
-                    elLeft.calcVal.dbl = valLeft.dbl * valRight.dbl;
+                case TkOperation.OperMult:
+                    elLeft.CalcValue.Dbl = valLeft.Dbl * valRight.Dbl;
                     break;
-                case tkOperation.operExpon:
-                    elLeft.calcVal.dbl = Math.Pow(valLeft.dbl, valRight.dbl);
+                case TkOperation.OperExpon:
+                    elLeft.CalcValue.Dbl = Math.Pow(valLeft.Dbl, valRight.Dbl);
                     break;
-                case tkOperation.operMOD:
-                    elLeft.calcVal.dbl = (double)((int)valLeft.dbl % (int)valRight.dbl);
+                case TkOperation.OperMod:
+                    elLeft.CalcValue.Dbl = (int)valLeft.Dbl % (int)valRight.Dbl;
                     break;
-                case tkOperation.operDiv:
-                    if (valRight.dbl == 0.0)
+                case TkOperation.OperDiv:
+                    if (valRight.Dbl == 0.0)
                     {
-                        _errorMessage = SymbologyMessageStrings.Expression_ZeroDivision;
+                        ErrorMessage = SymbologyMessageStrings.Expression_ZeroDivision;
                         return false;
                     }
-                    elLeft.calcVal.dbl = valLeft.dbl / valRight.dbl;
+                    elLeft.CalcValue.Dbl = valLeft.Dbl / valRight.Dbl;
                     break;
-                case tkOperation.operDivInt:
-                    if (valRight.dbl == 0.0)
+                case TkOperation.OperDivInt:
+                    if (valRight.Dbl == 0.0)
                     {
-                        _errorMessage = SymbologyMessageStrings.Expression_ZeroDivision;
+                        ErrorMessage = SymbologyMessageStrings.Expression_ZeroDivision;
                         return false;
                     }
-                    elLeft.calcVal.dbl = (double)((int)valLeft.dbl / (int)valRight.dbl);
+                    elLeft.CalcValue.Dbl = (int)valLeft.Dbl / (int)valRight.Dbl;
                     break;
-                case tkOperation.operPlus:
-                    elLeft.calcVal.dbl = valLeft.dbl + valRight.dbl;
+                case TkOperation.OperPlus:
+                    elLeft.CalcValue.Dbl = valLeft.Dbl + valRight.Dbl;
                     break;
                 default:
                     {
-                        _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                        ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                         return false;
                     }
             }
@@ -604,37 +597,37 @@ namespace DotSpatial.Symbology
         /// <param name="valLeft"></param>
         /// <param name="valRight"></param>
         /// <returns></returns>
-        private bool CalculateStringOperation(tkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
+        private bool CalculateStringOperation(TkOperation oper, Element elLeft, Element elRight, ExpressionValue valLeft, ExpressionValue valRight)
         {
-            int res = string.Compare(valLeft.str.ToLower(), valRight.str.ToLower());
-            elLeft.calcVal.bln = false;
-            elLeft.calcVal.type = tkValueType.vtBoolean;
+            int res = string.Compare(valLeft.Str.ToLower(), valRight.Str.ToLower());
+            elLeft.CalcValue.Bln = false;
+            elLeft.CalcValue.Type = TkValueType.VtBoolean;
             switch (oper)
             {
-                case tkOperation.operPlus:
-                    elLeft.calcVal.str = valLeft.str + valRight.str;
-                    elLeft.calcVal.type = tkValueType.vtString;
+                case TkOperation.OperPlus:
+                    elLeft.CalcValue.Str = valLeft.Str + valRight.Str;
+                    elLeft.CalcValue.Type = TkValueType.VtString;
                     break;
-                case tkOperation.operLess:
-                    if (res < 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperLess:
+                    if (res < 0) elLeft.CalcValue.Bln = true;
                     break;
-                case tkOperation.operLessEqual:
-                    if (res <= 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperLessEqual:
+                    if (res <= 0) elLeft.CalcValue.Bln = true;
                     break;
-                case tkOperation.operGreater:
-                    if (res > 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperGreater:
+                    if (res > 0) elLeft.CalcValue.Bln = true;
                     break;
-                case tkOperation.operGrEqual:
-                    if (res >= 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperGrEqual:
+                    if (res >= 0) elLeft.CalcValue.Bln = true;
                     break;
-                case tkOperation.operEqual:
-                    if (res == 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperEqual:
+                    if (res == 0) elLeft.CalcValue.Bln = true;
                     break;
-                case tkOperation.operNotEqual:
-                    if (res != 0) elLeft.calcVal.bln = true;
+                case TkOperation.OperNotEqual:
+                    if (res != 0) elLeft.CalcValue.Bln = true;
                     break;
                 default:
-                    _errorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
+                    ErrorMessage = SymbologyMessageStrings.Expression_OperationNotSupported;
                     return false;
             }
             return true;
@@ -652,89 +645,89 @@ namespace DotSpatial.Symbology
             bool found = false;
             int priority = 255;
 
-            List<Element> elements = part.elements;
+            List<Element> elements = part.Elements;
             int size = elements.Count;
             for (int i = 0; i < size; i++)
             {
                 Element element = elements[i];
-                if (!element.turnedOff)
+                if (!element.TurnedOff)
                 {
-                    if (element.type == tkElementType.etOperation)
+                    if (element.Type == TkElementType.EtOperation)
                     {
-                        if (element.priority < priority)
+                        if (element.Priority < priority)
                         {
                             found = true;
-                            priority = element.priority;
-                            operation.id = i;
+                            priority = element.Priority;
+                            operation.Id = i;
                         }
                     }
                 }
             }
             if (!found)
             {
-                _errorMessage = SymbologyMessageStrings.Expression_OperationNotFound;
+                ErrorMessage = SymbologyMessageStrings.Expression_OperationNotFound;
                 return false;
             }
 
             // seeking right operand
-            operation.left = operation.right = -1;
-            for (int i = operation.id + 1; i < size; i++)
+            operation.Left = operation.Right = -1;
+            for (int i = operation.Id + 1; i < size; i++)
             {
                 Element element = elements[i];
-                if (!element.turnedOff)
+                if (!element.TurnedOff)
                 {
-                    if (element.type == tkElementType.etOperation)
+                    if (element.Type == TkElementType.EtOperation)
                     {
-                        if (element.operation != tkOperation.operNOT && element.operation != tkOperation.operChangeSign)
+                        if (element.Operation != TkOperation.OperNot && element.Operation != TkOperation.OperChangeSign)
                         {
-                            _errorMessage = SymbologyMessageStrings.Expression_OpereratorInsteadOfValue;
+                            ErrorMessage = SymbologyMessageStrings.Expression_OpereratorInsteadOfValue;
                             return false;
                         }
                     }
                     else
                     {
-                        operation.right = i;
+                        operation.Right = i;
                         break;
                     }
                 }
             }
-            if (operation.right == -1)
+            if (operation.Right == -1)
             {
-                _errorMessage = SymbologyMessageStrings.Expression_RightOperandMissing;
+                ErrorMessage = SymbologyMessageStrings.Expression_RightOperandMissing;
                 return false;
             }
 
             // if the operator is binary, seeking left operand
-            if (elements[operation.id].operation != tkOperation.operNOT && elements[operation.id].operation != tkOperation.operChangeSign)
+            if (elements[operation.Id].Operation != TkOperation.OperNot && elements[operation.Id].Operation != TkOperation.OperChangeSign)
             {
-                for (int i = operation.id - 1; i >= 0; i--)
+                for (int i = operation.Id - 1; i >= 0; i--)
                 {
-                    if (!elements[i].turnedOff)
+                    if (!elements[i].TurnedOff)
                     {
-                        operation.left = i;
+                        operation.Left = i;
                         break;
                     }
                 }
-                if (operation.left == -1)
+                if (operation.Left == -1)
                 {
-                    _errorMessage = SymbologyMessageStrings.Expression_LeftOperandMissing;
+                    ErrorMessage = SymbologyMessageStrings.Expression_LeftOperandMissing;
                     return false;
                 }
-                operation.binaryOperation = true;
+                operation.BinaryOperation = true;
             }
             else
             {
-                operation.binaryOperation = false;
+                operation.BinaryOperation = false;
             }
 
             // caching operations
             if (_saveOperations)
             {
                 Operation op = new Operation();
-                op.left = operation.left;
-                op.right = operation.right;
-                op.id = operation.id;
-                op.binaryOperation = operation.binaryOperation;
+                op.Left = operation.Left;
+                op.Right = operation.Right;
+                op.Id = operation.Id;
+                op.BinaryOperation = operation.BinaryOperation;
                 _operations.Add(op);
             }
             return true;
@@ -749,13 +742,13 @@ namespace DotSpatial.Symbology
         /// <param name="openingSymbol">OpeningSymbol that is searched for.</param>
         /// <param name="closingSymbol">ClosingSymbol that is searched for.</param>
         /// <returns>True if opening- and closingSymbol where found.</returns>
-        private bool GetBrackets(string expression, ref int begin, ref int end, string openingSymbol = "(", string closingSymbol = ")")
+        private bool GetBrackets(string expression, ref int begin, out int end, string openingSymbol = "(", string closingSymbol = ")")
         {
             // closing bracket
-            end = expression.IndexOf(closingSymbol);
+            end = expression.IndexOf(closingSymbol, StringComparison.Ordinal);
             if (end == -1) return false;
             //opening bracket
-            begin = expression.LastIndexOf(openingSymbol, end);
+            begin = expression.LastIndexOf(openingSymbol, end, StringComparison.Ordinal);
             return begin != -1;
         }
 
@@ -766,14 +759,11 @@ namespace DotSpatial.Symbology
         /// <returns>Value of the element.</returns>
         private ExpressionValue GetValue(ExpressionPart part, int elementId)
         {
-            Element element = part.elements[elementId];
+            Element element = part.Elements[elementId];
 
-            if (element.wasCalculated)
-                return element.calcVal;
-            else if (element.partIndex != -1)
-                return _parts[element.partIndex].val;
-            else
-                return element.val;
+            if (element.WasCalculated)
+                return element.CalcValue;
+            return element.PartIndex != -1 ? _parts[element.PartIndex].Value : element.Value;
         }
 
         /// <summary>
@@ -782,7 +772,7 @@ namespace DotSpatial.Symbology
         /// <param name="chr">Character that is checked.</param>
         /// <param name="exponential">Remembers whether last character was exponential to check whether +- are allowed.</param>
         /// <returns>False if character can't belong to a number.</returns>
-        private bool IsDecimal(Char chr, ref bool exponential)
+        private bool IsDecimal(char chr, ref bool exponential)
         {
             if (chr >= '0' && chr <= '9')
                 return true;
@@ -814,7 +804,7 @@ namespace DotSpatial.Symbology
         {
             if (string.IsNullOrWhiteSpace(_expressionString))
             {
-                _errorMessage = SymbologyMessageStrings.Expression_Empty;
+                ErrorMessage = SymbologyMessageStrings.Expression_Empty;
                 _valid = false;
                 return true;
             }
@@ -831,8 +821,7 @@ namespace DotSpatial.Symbology
             bool readVal = true; // true - reading values and unary operations; false - reading binary operations
 
             // adding a part
-            ExpressionPart part = new ExpressionPart();
-            part.expression = s;
+            ExpressionPart part = new ExpressionPart { Expression = s };
 
             for (int i = 0; i < s.Length; i++)
             {
@@ -852,19 +841,16 @@ namespace DotSpatial.Symbology
                 }
 
                 // saving element
-                part.elements.Add(element);
+                part.Elements.Add(element);
 
                 //in case operation was unary the next element should be value as well
-                if (element.operation != tkOperation.operNOT && element.operation != tkOperation.operChangeSign)
+                if (element.Operation != TkOperation.OperNot && element.Operation != TkOperation.OperChangeSign)
                     readVal = !readVal;
             }
 
-            if (part.elements.Count > 0)
-            {
-                _parts.Add(part);
-                return true;
-            }
-            return false;
+            if (part.Elements.Count <= 0) return false;
+            _parts.Add(part);
+            return true;
         }
 
         /// <summary> Checks whether there is a value or unary operator at the given position.</summary>
@@ -875,7 +861,7 @@ namespace DotSpatial.Symbology
         private bool ReadValue(string s, ref int position, Element element)
         {
             string sub = ""; // substring
-            Char chr = s[position];
+            char chr = s[position];
 
             switch (chr)
             {
@@ -886,10 +872,10 @@ namespace DotSpatial.Symbology
                         chr = s[position]; //s, p or f according to replaced text
                         position++;
 
-                        int closingIndex = s.IndexOf("}", position);
+                        int closingIndex = s.IndexOf("}", position, StringComparison.Ordinal);
                         if (closingIndex < 0)
                         {
-                            _errorMessage = SymbologyMessageStrings.Expression_ClosingBracket;
+                            ErrorMessage = SymbologyMessageStrings.Expression_ClosingBracket;
                             return false;
                         }
 
@@ -903,9 +889,9 @@ namespace DotSpatial.Symbology
                         {
                             int index = Convert.ToInt32(sub);
                             sub = _strings[index];
-                            element.type = tkElementType.etValue;
-                            element.val.type = tkValueType.vtString;
-                            element.val.str = sub;
+                            element.Type = TkElementType.EtValue;
+                            element.Value.Type = TkValueType.VtString;
+                            element.Value.Str = sub;
                         }
                         else if (chr == 'f') //field replacer
                         {
@@ -914,25 +900,25 @@ namespace DotSpatial.Symbology
 
                             if (sub.ToLower() == "fid")
                             {
-                                element.field = new Field("fid", typeof(int));
+                                element.Field = new Field("fid", typeof(int));
                             }
                             else
                             {
                                 int fieldIndex = _fields.FindIndex(p => p.Name.ToLower() == sub.ToLower());
                                 if (fieldIndex < 0)
                                 {
-                                    _errorMessage = SymbologyMessageStrings.Expression_FieldNotFound + sub;
+                                    ErrorMessage = SymbologyMessageStrings.Expression_FieldNotFound + sub;
                                     return false;
                                 }
-                                element.field = _fields[fieldIndex];
+                                element.Field = _fields[fieldIndex];
                             }
-                            element.isField = true;
-                            element.type = tkElementType.etValue;
+                            element.IsField = true;
+                            element.Type = TkElementType.EtValue;
                         }
                         else if (chr == 'p') //part replacer
                         {
-                            element.partIndex = Convert.ToInt32(sub);
-                            element.type = tkElementType.etPart;
+                            element.PartIndex = Convert.ToInt32(sub);
+                            element.Type = TkElementType.EtPart;
                         }
                         break;
                     }
@@ -953,7 +939,7 @@ namespace DotSpatial.Symbology
 
                         while (IsDecimal(chr, ref exponential))
                         {
-                            sub += (char)chr;
+                            sub += chr;
                             position++;
                             if (position > s.Length - 1)
                                 break;
@@ -964,13 +950,13 @@ namespace DotSpatial.Symbology
                         double res;
                         if (double.TryParse(sub, out res))
                         {
-                            element.type = tkElementType.etValue;
-                            element.val.type = tkValueType.vtDouble;
-                            element.val.dbl = res;
+                            element.Type = TkElementType.EtValue;
+                            element.Value.Type = TkValueType.VtDouble;
+                            element.Value.Dbl = res;
                         }
                         else
                         {
-                            _errorMessage = SymbologyMessageStrings.Expression_NotANumber + sub;
+                            ErrorMessage = SymbologyMessageStrings.Expression_NotANumber + sub;
                             return false;
                         }
                         break;
@@ -980,9 +966,9 @@ namespace DotSpatial.Symbology
                     if (s.Substring(position, 4).ToLower() == "true")
                     {
                         position += 3;
-                        element.val.type = tkValueType.vtBoolean;
-                        element.val.bln = true;
-                        element.type = tkElementType.etValue;
+                        element.Value.Type = TkValueType.VtBoolean;
+                        element.Value.Bln = true;
+                        element.Type = TkElementType.EtValue;
                     }
                     else
                     {
@@ -995,9 +981,9 @@ namespace DotSpatial.Symbology
                     if (s.Substring(position, 5).ToLower() == "false")
                     {
                         position += 4;
-                        element.val.type = tkValueType.vtBoolean;
-                        element.val.bln = false;
-                        element.type = tkElementType.etValue;
+                        element.Value.Type = TkValueType.VtBoolean;
+                        element.Value.Bln = false;
+                        element.Type = TkElementType.EtValue;
                     }
                     else
                     {
@@ -1010,9 +996,9 @@ namespace DotSpatial.Symbology
                     if (s.Substring(position, 3).ToLower() == "not")
                     {
                         position += 2;
-                        element.type = tkElementType.etOperation;
-                        element.priority = 5;
-                        element.operation = tkOperation.operNOT;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 5;
+                        element.Operation = TkOperation.OperNot;
                     }
                     else
                     {
@@ -1021,10 +1007,10 @@ namespace DotSpatial.Symbology
                     }
                     break;
                 case '-':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 3;
-                    element.operation = tkOperation.operChangeSign;
-                    element.type = tkElementType.etOperation;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 3;
+                    element.Operation = TkOperation.OperChangeSign;
+                    element.Type = TkElementType.EtOperation;
                     break;
                 default:
                     SetErrorMessage(position, s, false);
@@ -1047,9 +1033,9 @@ namespace DotSpatial.Symbology
                 case '!': // ! !=
                     if (s.Substring(position, 2) == "!=")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operNotEqual;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperNotEqual;
                         position++;
                     }
                     else
@@ -1061,47 +1047,47 @@ namespace DotSpatial.Symbology
                 case '<': // <, <>, "<="
                     if (s.Substring(position, 2) == "<=")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operLessEqual;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperLessEqual;
                         position++;
                     }
                     else if (s.Substring(position, 2) == "<>")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operNotEqual;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperNotEqual;
                         position++;
                     }
                     else
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operLess;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperLess;
                     }
                     break;
 
                 case '>': // >, >=
                     if (s.Substring(position, 2) == ">=")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operGrEqual;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperGrEqual;
                         position++;
                     }
                     else
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operGreater;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperGreater;
                     }
                     break;
                 case '=':
                     if (s.Substring(position, 2) == "==")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 4;
-                        element.operation = tkOperation.operEqual;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 4;
+                        element.Operation = TkOperation.OperEqual;
                         position += 1;
                     }
                     else
@@ -1111,47 +1097,47 @@ namespace DotSpatial.Symbology
                     }
                     break;
                 case '+':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 3;
-                    element.operation = tkOperation.operPlus;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 3;
+                    element.Operation = TkOperation.OperPlus;
                     break;
                 case '-':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 3;
-                    element.operation = tkOperation.operMinus;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 3;
+                    element.Operation = TkOperation.OperMinus;
                     break;
                 case '*':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 2;
-                    element.operation = tkOperation.operMult;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 2;
+                    element.Operation = TkOperation.OperMult;
                     break;
                 case '/':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 2;
-                    element.operation = tkOperation.operDiv;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 2;
+                    element.Operation = TkOperation.OperDiv;
                     break;
                 case '\n':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 5;
-                    element.operation = tkOperation.operLineBreak;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 5;
+                    element.Operation = TkOperation.OperLineBreak;
                     break;
                 case '\\':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 2;
-                    element.operation = tkOperation.operDivInt;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 2;
+                    element.Operation = TkOperation.OperDivInt;
                     break;
                 case '^':
-                    element.type = tkElementType.etOperation;
-                    element.priority = 1;
-                    element.operation = tkOperation.operExpon;
+                    element.Type = TkElementType.EtOperation;
+                    element.Priority = 1;
+                    element.Operation = TkOperation.OperExpon;
                     break;
                 case 'm':
                 case 'M':
                     if (s.Substring(position, 3).ToUpper() == "MOD")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 3;
-                        element.operation = tkOperation.operMOD;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 3;
+                        element.Operation = TkOperation.OperMod;
                         position += 2;
                     }
                     else
@@ -1164,9 +1150,9 @@ namespace DotSpatial.Symbology
                 case 'A':
                     if (s.Substring(position, 3).ToUpper() == "AND")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 5;
-                        element.operation = tkOperation.operAND;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 5;
+                        element.Operation = TkOperation.OperAnd;
                         position += 2;
                     }
                     else
@@ -1179,9 +1165,9 @@ namespace DotSpatial.Symbology
                 case 'O':
                     if (s.Substring(position, 2).ToUpper() == "OR")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 6;
-                        element.operation = tkOperation.operOR;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 6;
+                        element.Operation = TkOperation.OperOr;
                         position++;
                     }
                     else
@@ -1194,9 +1180,9 @@ namespace DotSpatial.Symbology
                 case 'X':
                     if (s.Substring(position, 3).ToUpper() == "XOR")
                     {
-                        element.type = tkElementType.etOperation;
-                        element.priority = 6;
-                        element.operation = tkOperation.operXOR;
+                        element.Type = TkElementType.EtOperation;
+                        element.Priority = 6;
+                        element.Operation = TkOperation.OperXor;
                         position += 2;
                     }
                     else
@@ -1215,9 +1201,9 @@ namespace DotSpatial.Symbology
         /// <summary>Replaces only the Fields in invalid expressions. Before DS 1.8 this was the only thing that got replaced in expressions.
         /// </summary>
         /// <param name="row">Datarow that contains the data used to replace the fields.</param>
-        /// <param name="FID">FID that is used to replace the FID field.</param>
+        /// <param name="fid">FID that is used to replace the FID field.</param>
         /// <returns>ExpressionString with replaced Fields.</returns>
-        private string ReplaceFieldsOnly(DataRow row, int FID)
+        private string ReplaceFieldsOnly(DataRow row, int fid)
         {
             if (_expressionString == null) return "";
             string s = _expressionString;
@@ -1231,7 +1217,7 @@ namespace DotSpatial.Symbology
 
                 if (colName.ToLower() == "fid")
                 {
-                    s = s.Replace(matches[i].Value, SaveToString(FID));
+                    s = s.Replace(matches[i].Value, SaveToString(fid));
                 }
                 else if (row.Table.Columns.Contains(colName))
                 {
@@ -1266,10 +1252,9 @@ namespace DotSpatial.Symbology
         {
             if (value == null || value == DBNull.Value)
                 return string.Empty;
-            else if (value is short || value is ushort || value is int || value is uint || value is long || value is ulong || value is float || value is double || value is decimal)
+            if (value is short || value is ushort || value is int || value is uint || value is long || value is ulong || value is float || value is double || value is decimal)
                 return Convert.ToDouble(value).ToString(_floatingFormat);
-            else
-                return value.ToString();
+            return value.ToString();
         }
 
         /// <summary>
@@ -1280,7 +1265,7 @@ namespace DotSpatial.Symbology
         /// <param name="oper">Indicates whether operator or operand is missing.</param>
         private void SetErrorMessage(int position, string s, bool oper = true)
         {
-            _errorMessage = string.Format((oper ? SymbologyMessageStrings.Expression_OperatorExprected : SymbologyMessageStrings.Expression_OperandExpected), s[position], position);
+            ErrorMessage = string.Format((oper ? SymbologyMessageStrings.Expression_OperatorExprected : SymbologyMessageStrings.Expression_OperandExpected), s[position], position);
         }
 
         /// <summary>Finds the next position that is not a space.</summary>
@@ -1297,81 +1282,81 @@ namespace DotSpatial.Symbology
         #endregion
 
         #region Enums
-        public enum tkValueType
+        private enum TkValueType
         {
-            vtDouble = 0,
-            vtString = 1,
-            vtBoolean = 2,
-            vtObject = 3
+            VtDouble = 0,
+            VtString = 1,
+            VtBoolean = 2,
+            VtObject = 3
         };
 
-        enum tkElementType
+        private enum TkElementType
         {
-            etValue = 0,
-            etOperation = 1,
-            etPart = 2,
-            etNone = 3
+            EtValue = 0,
+            EtOperation = 1,
+            EtPart = 2,
+            EtNone = 3
         }
 
-        private enum tkOperation
+        private enum TkOperation
         {
-            operEqual = 0, // =
-            operNotEqual = 1, // <>
-            operLessEqual = 2, // <=
-            operGrEqual = 3, // >=
-            operGreater = 4, // >
-            operLess = 5, // <
+            OperEqual = 0, // =
+            OperNotEqual = 1, // <>
+            OperLessEqual = 2, // <=
+            OperGrEqual = 3, // >=
+            OperGreater = 4, // >
+            OperLess = 5, // <
 
-            operOR = 6, // OR
-            operAND = 7, // AND
-            operNOT = 8, // NOT (unary)
-            operXOR = 9, // XOR
+            OperOr = 6, // OR
+            OperAnd = 7, // AND
+            OperNot = 8, // NOT (unary)
+            OperXor = 9, // XOR
 
-            operPlus = 11, // +
-            operMinus = 12, // -
-            operDiv = 13, // /
-            operMult = 14, // *
-            operMOD = 15, // MOD
-            operDivInt = 16, // \
-            operExpon = 17, // ^
-            operChangeSign = 18, // - (unary)
+            OperPlus = 11, // +
+            OperMinus = 12, // -
+            OperDiv = 13, // /
+            OperMult = 14, // *
+            OperMod = 15, // MOD
+            OperDivInt = 16, // \
+            OperExpon = 17, // ^
+            OperChangeSign = 18, // - (unary)
 
-            operNone = 19,
-            operLineBreak = 20
+            OperNone = 19,
+            OperLineBreak = 20
         }
         #endregion
 
         #region Classes
-        public class ExpressionValue
+        private class ExpressionValue
         {
-            public double dbl;
-            public string str;
-            public bool bln;
-            public object obj;
-            public tkValueType type;
-            private string _floatingFormat;
+            public double Dbl;
+            public string Str;
+            public bool Bln;
+            public object Obj;
+            public TkValueType Type;
+            private readonly string _floatingFormat;
 
             public ExpressionValue(ref string floatingFormat)
             {
-                dbl = 0.0;
-                bln = false;
-                type = tkValueType.vtDouble;
+                Dbl = 0.0;
+                Bln = false;
+                Type = TkValueType.VtDouble;
                 _floatingFormat = floatingFormat;
             }
 
             public override string ToString()
             {
-                switch (type)
+                switch (Type)
                 {
-                    case tkValueType.vtString:
-                        return str;
-                    case tkValueType.vtObject:
-                        if (obj == null || obj == DBNull.Value) return null;
-                        return obj.ToString();
-                    case tkValueType.vtDouble:
-                        return dbl.ToString(_floatingFormat);
-                    case tkValueType.vtBoolean:
-                        return bln.ToString();
+                    case TkValueType.VtString:
+                        return Str;
+                    case TkValueType.VtObject:
+                        if (Obj == null || Obj == DBNull.Value) return null;
+                        return Obj.ToString();
+                    case TkValueType.VtDouble:
+                        return Dbl.ToString(_floatingFormat);
+                    case TkValueType.VtBoolean:
+                        return Bln.ToString();
                     default: return null;
                 }
             }
@@ -1379,28 +1364,28 @@ namespace DotSpatial.Symbology
 
         private class Field
         {
-            public string Name;
-            public tkValueType valueType;
+            public readonly string Name;
+            public readonly TkValueType ValueType;
 
-            public Field(string Name, Type type)
+            public Field(string name, Type type)
             {
-                this.Name = Name;
+                this.Name = name;
 
-                if (type == typeof(Boolean))
+                if (type == typeof(bool))
                 {
-                    this.valueType = tkValueType.vtBoolean;
+                    this.ValueType = TkValueType.VtBoolean;
                 }
-                else if (type == typeof(Decimal) || type == typeof(Double) || type == typeof(Int16) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Single) || type == typeof(UInt16) || type == typeof(UInt32) || type == typeof(UInt64))
+                else if (type == typeof(decimal) || type == typeof(double) || type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong))
                 {
-                    this.valueType = tkValueType.vtDouble;
+                    this.ValueType = TkValueType.VtDouble;
                 }
-                else if (type == typeof(String) || type == typeof(Char))
+                else if (type == typeof(string) || type == typeof(char))
                 {
-                    this.valueType = tkValueType.vtString;
+                    this.ValueType = TkValueType.VtString;
                 }
                 else
                 {
-                    this.valueType = tkValueType.vtObject;
+                    this.ValueType = TkValueType.VtObject;
                 }
             }
         }
@@ -1409,57 +1394,57 @@ namespace DotSpatial.Symbology
         {
             public Element(ref string floatingFormat)
             {
-                wasCalculated = false;
-                type = tkElementType.etNone;
-                turnedOff = false;
-                priority = 255;
+                WasCalculated = false;
+                Type = TkElementType.EtNone;
+                TurnedOff = false;
+                Priority = 255;
 
-                operation = tkOperation.operNone;
-                isField = false;
-                partIndex = -1;
-                val = new ExpressionValue(ref floatingFormat);
-                calcVal = new ExpressionValue(ref floatingFormat);
+                Operation = TkOperation.OperNone;
+                IsField = false;
+                PartIndex = -1;
+                Value = new ExpressionValue(ref floatingFormat);
+                CalcValue = new ExpressionValue(ref floatingFormat);
             }
 
-            public tkElementType type; // type of element
-            public tkOperation operation; // type of operation
-            public int priority; // priority of operation, with less absolute values of priority are preformed first
-            public ExpressionValue val; // initial value
-            public ExpressionValue calcVal; // value after calculation (in case of consecutive calculations it doesn't rewrite the initial value)
+            public TkElementType Type; // type of element
+            public TkOperation Operation; // type of operation
+            public int Priority; // priority of operation, with less absolute values of priority are preformed first
+            public readonly ExpressionValue Value; // initial value
+            public readonly ExpressionValue CalcValue; // value after calculation (in case of consecutive calculations it doesn't rewrite the initial value)
 
-            public bool isField; // the element is field from table
-            public Field field;
+            public bool IsField; // the element is field from table
+            public Field Field;
 
             // perfoming calculation
-            public bool wasCalculated; // the value has been calculated, so calc value should be used henceforth
-            public bool turnedOff; // turned off till the end of calculation
-            public int partIndex; // the element is result of calculations on the bracket with given index
+            public bool WasCalculated; // the value has been calculated, so calc value should be used henceforth
+            public bool TurnedOff; // turned off till the end of calculation
+            public int PartIndex; // the element is result of calculations on the bracket with given index
 
-            public bool setValue(object value)
+            public bool SetValue(object value)
             {
-                if (isField) val.type = field.valueType;
+                if (IsField) Value.Type = Field.ValueType;
 
-                if (val.type == tkValueType.vtBoolean)
+                if (Value.Type == TkValueType.VtBoolean)
                 {
-                    if (value is bool) val.bln = (bool)value;
+                    if (value is bool) Value.Bln = (bool)value;
                     else return false;
                 }
-                else if (val.type == tkValueType.vtString)
+                else if (Value.Type == TkValueType.VtString)
                 {
                     if (value == null || value == DBNull.Value)
-                        val.str = "";
+                        Value.Str = "";
                     else
-                        val.str = value.ToString();
+                        Value.Str = value.ToString();
                 }
-                else if (val.type == tkValueType.vtDouble)
+                else if (Value.Type == TkValueType.VtDouble)
                 {
                     if (value is short || value is ushort || value is int || value is uint || value is long || value is ulong || value is float || value is double || value is decimal)
-                        val.dbl = Convert.ToDouble(value);
+                        Value.Dbl = Convert.ToDouble(value);
                     else return false;
                 }
-                else if (val.type == tkValueType.vtObject)
+                else if (Value.Type == TkValueType.VtObject)
                 {
-                    val.obj = value;
+                    Value.Obj = value;
                 }
                 return true;
             }
@@ -1468,25 +1453,24 @@ namespace DotSpatial.Symbology
         // part of expression in brackets
         private class ExpressionPart
         {
-            public List<Element> elements = new List<Element>(); // fields, operators, constants
-            public string expression; // for debugging
-            public ExpressionValue val;
-            public int activeCount;
+            public readonly List<Element> Elements = new List<Element>(); // fields, operators, constants
+            public string Expression; // for debugging
+            public ExpressionValue Value;
+            public int ActiveCount;
 
             public ExpressionPart()
             {
-                activeCount = 0;
+                ActiveCount = 0;
             }
         }
 
         private class Operation
         {
-            public int id;
-            public int left;
-            public int right;
-            public bool binaryOperation;
+            public int Id;
+            public int Left;
+            public int Right;
+            public bool BinaryOperation;
         }
         #endregion
-
     }
 }

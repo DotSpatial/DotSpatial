@@ -21,6 +21,7 @@ namespace DotSpatial.Symbology
         /// Show Dynamic Visibility dialog
         /// </summary>
         /// <param name="e">Dynamic Visibility</param>
-        void DynamicVisibility(IDynamicVisibility e, IFrame MapFrame);
+        /// <param name="mapFrame"></param>
+        void DynamicVisibility(IDynamicVisibility e, IFrame mapFrame);
     }
 }

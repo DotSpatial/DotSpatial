@@ -28,13 +28,16 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// This is a specialized layer that specifically handles image drawing.
+    /// </summary>
     public class MapImageLayer : ImageLayer, IMapImageLayer
     {
         #region Events
 
         /// <summary>
         /// Fires an event that indicates to the parent map-frame that it should first
-        /// redraw the specified clip
+        /// redraw the specified clip.
         /// </summary>
         public event EventHandler<ClipArgs> BufferChanged;
 
@@ -42,8 +45,7 @@ namespace DotSpatial.Controls
 
         #region Private Variables
 
-        private Image _backBuffer; // draw to the back buffer, and swap to the stencil when done.
-        private Color transparent;
+        private Color _transparent;
 
         #endregion
 
@@ -57,13 +59,13 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Creates a new instance of GeoImageLayer
+        /// Creates a new instance of MapImageLayer.
         /// </summary>
         public MapImageLayer(IImageData baseImage)
             : base(baseImage) { }
 
         /// <summary>
-        /// Creates a new instance of a GeoImageLayer
+        /// Creates a new instance of a MapImageLayer.
         /// </summary>
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="container">The Layers collection that keeps track of the image layer</param>
@@ -71,20 +73,24 @@ namespace DotSpatial.Controls
             : base(baseImage, container) { }
 
         /// <summary>
-        /// Creates a new instance of a GeoImageLayer
+        /// Creates a new instance of a MapImageLayer.
         /// </summary>
         /// <param name="baseImage">The image to draw as a layer</param>
         /// <param name="transparent">The color to make transparent when drawing the image.</param>
         public MapImageLayer(IImageData baseImage, Color transparent)
             : base(baseImage)
         {
-            this.transparent = transparent;
+            this._transparent = transparent;
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// This updates the things that depend on the DataSet so that they fit to the changed DataSet.
+        /// </summary>
+        /// <param name="value">DataSet that was changed.</param>
         protected override void OnDataSetChanged(IImageData value)
         {
             base.OnDataSetChanged(value);
@@ -96,9 +102,8 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// This will draw any features that intersect this region.  To specify the features
-        /// directly, use OnDrawFeatures.  This will not clear existing buffer content.
-        /// For that call Initialize instead.
+        /// This will draw any features that intersect this region. To specify the features directly, use OnDrawFeatures.
+        /// This will not clear existing buffer content. For that call Initialize instead.
         /// </summary>
         /// <param name="args">A GeoArgs clarifying the transformation from geographic to image space</param>
         /// <param name="regions">The geographic regions to draw</param>
@@ -121,11 +126,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
-        public Image BackBuffer
-        {
-            get { return _backBuffer; }
-            set { _backBuffer = value; }
-        }
+        public Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
@@ -155,7 +156,7 @@ namespace DotSpatial.Controls
         #region Protected Methods
 
         /// <summary>
-        /// Fires the OnBufferChanged event
+        /// Fires the OnBufferChanged event.
         /// </summary>
         /// <param name="clipRectangles">The Rectangle in pixels</param>
         protected virtual void OnBufferChanged(List<Rectangle> clipRectangles)
@@ -171,7 +172,7 @@ namespace DotSpatial.Controls
         #region Private Methods
 
         /// <summary>
-        /// This draws to the back buffer.  If the Backbuffer doesn't exist, this will create one.
+        /// This draws to the back buffer. If the Backbuffer doesn't exist, this will create one.
         /// This will not flip the back buffer to the front.
         /// </summary>
         /// <param name="args"></param>
@@ -186,8 +187,8 @@ namespace DotSpatial.Controls
             }
             else
             {
-                if (_backBuffer == null) _backBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
-                g = Graphics.FromImage(_backBuffer);
+                if (BackBuffer == null) BackBuffer = new Bitmap(BufferRectangle.Width, BufferRectangle.Height);
+                g = Graphics.FromImage(BackBuffer);
             }
             int numBounds = Math.Min(regions.Count, clipRectangles.Count);
 
@@ -208,7 +209,7 @@ namespace DotSpatial.Controls
                 try
                 {
                     bmp = DataSet.GetBitmap(env, r);
-                    if (!transparent.Name.Equals("0")) { bmp.MakeTransparent(transparent); }
+                    if (!_transparent.Name.Equals("0")) { bmp.MakeTransparent(_transparent); }
                 }
                 catch
                 {

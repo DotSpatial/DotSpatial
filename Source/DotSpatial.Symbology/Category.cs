@@ -27,38 +27,32 @@ namespace DotSpatial.Symbology
 {
     public class Category : LegendItem
     {
-        #region Private Variables
-
-        private Range _range;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Category
+        /// Creates a new instance of Category.
         /// </summary>
         public Category()
         {
         }
 
         /// <summary>
-        /// Creaates a new instance of this category, and tailors the range to the specifeid values.
+        /// Creates a new instance of this category, and tailors the range to the specifeid values.
         /// </summary>
         /// <param name="startValue">The start value</param>
         /// <param name="endValue">The end value</param>
         public Category(double? startValue, double? endValue)
         {
-            _range = new Range(startValue, endValue);
+            Range = new Range(startValue, endValue);
         }
 
         /// <summary>
-        /// Creates a category that has the same value for both minimum and maximum
+        /// Creates a category that has the same value for both minimum and maximum.
         /// </summary>
         /// <param name="value">The value to use</param>
         public Category(double value)
         {
-            _range = new Range(value);
+            Range = new Range(value);
         }
 
         #endregion
@@ -144,7 +138,7 @@ namespace DotSpatial.Symbology
         /// <returns>Boolean, true if the value was found in the range</returns>
         public bool Contains(double value)
         {
-            return _range == null || _range.Contains(value);
+            return Range == null || Range.Contains(value);
         }
 
         /// <summary>
@@ -155,7 +149,7 @@ namespace DotSpatial.Symbology
         /// <returns>The string created using the specified number format and precision.</returns>
         public override string ToString()
         {
-            return _range.ToString();
+            return Range.ToString();
         }
 
         /// <summary>
@@ -166,7 +160,7 @@ namespace DotSpatial.Symbology
         /// <returns>A string with the formatted number.</returns>
         public virtual string ToString(IntervalSnapMethod method, int digits)
         {
-            return _range.ToString(method, digits);
+            return Range.ToString(method, digits);
         }
 
         #endregion
@@ -182,16 +176,16 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return _range != null ? _range.Maximum : null;
+                return Range != null ? Range.Maximum : null;
             }
             set
             {
-                if (_range == null)
+                if (Range == null)
                 {
-                    _range = new Range(null, value);
+                    Range = new Range(null, value);
                     return;
                 }
-                _range.Maximum = value;
+                Range.Maximum = value;
             }
         }
 
@@ -206,16 +200,16 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                return _range != null ? _range.Minimum : null;
+                return Range != null ? Range.Minimum : null;
             }
             set
             {
-                if (_range == null)
+                if (Range == null)
                 {
-                    _range = new Range(value, null);
+                    Range = new Range(value, null);
                     return;
                 }
-                _range.Minimum = value;
+                Range.Minimum = value;
             }
         }
 
@@ -223,11 +217,7 @@ namespace DotSpatial.Symbology
         /// Gets the numeric Range for this color break.
         /// </summary>
         [Serialize("Range")]
-        public Range Range
-        {
-            get { return _range; }
-            set { _range = value; }
-        }
+        public Range Range { get; set; }
 
         /// <summary>
         /// Gets or sets a status message for this string.

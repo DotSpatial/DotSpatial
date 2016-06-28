@@ -11,6 +11,9 @@ using Msg = DotSpatial.Controls.MessageStrings;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// This contains menu bars and tools that are always added to the header control.
+    /// </summary>
     public class DefaultMenuBars
     {
         #region Fields
@@ -18,14 +21,18 @@ namespace DotSpatial.Controls
         private const string FileMenuKey = HeaderControl.ApplicationMenuKey;
         private const string HomeMenuKey = HeaderControl.HomeRootItemKey;
 
-        private SimpleActionItem _ZoomNext;
-        private SimpleActionItem _ZoomPrevious;
-        private SimpleActionItem _ZoomToLayer;
+        private SimpleActionItem _zoomNext;
+        private SimpleActionItem _zoomPrevious;
+        private SimpleActionItem _zoomToLayer;
 
         private AppManager App { get; set; }
 
         #endregion
 
+        /// <summary>
+        /// Creates a new DefaultMenuBars object with the given AppManager.
+        /// </summary>
+        /// <param name="app">AppManager that contains the Map the tools should work on.</param>
         public DefaultMenuBars(AppManager app)
         {
             if (app == null) throw new ArgumentNullException("app");
@@ -34,6 +41,10 @@ namespace DotSpatial.Controls
             App.MapChanged += (sender, args) => OnAppMapChanged(args);
         }
 
+        /// <summary>
+        /// Adds the default tools to the given header. 
+        /// </summary>
+        /// <param name="header">IHeaderControl the default tools should be added to.</param>
         public void Initialize(IHeaderControl header)
         {
             if (header == null) throw new ArgumentNullException("header");
@@ -88,12 +99,12 @@ namespace DotSpatial.Controls
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_In, ZoomIn_Click) { Key = Msg.Zoom_In, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_In_Tooltip, SmallImage = Images.zoom_in_16x16, LargeImage = Images.zoom_in_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_Out, ZoomOut_Click) { Key = Msg.Zoom_Out, GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Out_Tooltip, SmallImage = Images.zoom_out_16x16, LargeImage = Images.zoom_out_32x32, ToggleGroupKey = Msg.Map_Tools_Group });
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Extents, ZoomToMaxExtents_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_To_Extents_Tooltip, SmallImage = Images.zoom_extend_16x16, LargeImage = Images.zoom_extend_32x32 });
-            _ZoomPrevious = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Images.zoom_to_previous_16, LargeImage = Images.zoom_to_previous, Enabled = false };
-            header.Add(_ZoomPrevious);
-            _ZoomNext = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Images.zoom_to_next_16, LargeImage = Images.zoom_to_next, Enabled = false };
-            header.Add(_ZoomNext);
-            _ZoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Images.zoom_layer_16x16, LargeImage = Images.zoom_layer_32x32 };
-            header.Add(_ZoomToLayer);
+            _zoomPrevious = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Previous, ZoomPrevious_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Previous_Tooltip, SmallImage = Images.zoom_to_previous_16, LargeImage = Images.zoom_to_previous, Enabled = false };
+            header.Add(_zoomPrevious);
+            _zoomNext = new SimpleActionItem(HomeMenuKey, Msg.Zoom_Next, ZoomNext_Click) { GroupCaption = Msg.Zoom_Group, ToolTipText = Msg.Zoom_Next_Tooltip, SmallImage = Images.zoom_to_next_16, LargeImage = Images.zoom_to_next, Enabled = false };
+            header.Add(_zoomNext);
+            _zoomToLayer = new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Layer, ZoomToLayer_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Images.zoom_layer_16x16, LargeImage = Images.zoom_layer_32x32 };
+            header.Add(_zoomToLayer);
 
             header.Add(new SimpleActionItem(HomeMenuKey, Msg.Zoom_To_Coordinates, Coordinates_Click) { GroupCaption = Msg.Zoom_Group, SmallImage = Images.zoom_coordinate_16x16, LargeImage = Images.zoom_coordinate_32x32 });
 
@@ -107,7 +118,7 @@ namespace DotSpatial.Controls
 
         private static void ShowSaveAsError(string fileName)
         {
-            MessageBox.Show(String.Format(Msg.FailedToWriteTheSpecifiedMapFile, fileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(string.Format(Msg.FailedToWriteTheSpecifiedMapFile, fileName), Msg.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -117,11 +128,13 @@ namespace DotSpatial.Controls
         {
             App.Map.AddLayers();
         }
-        
 
-        void Layers_LayerSelected(object sender, LayerSelectedEventArgs e)
+        /// <summary>
+        /// De-/activates the zoom to layer button depending on a layer being selected.
+        /// </summary>
+        private void Layers_LayerSelected(object sender, LayerSelectedEventArgs e)
         {
-            _ZoomToLayer.Enabled = App.Map.Layers.SelectedLayer != null;
+            _zoomToLayer.Enabled = App.Map.Layers.SelectedLayer != null;
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -140,8 +153,8 @@ namespace DotSpatial.Controls
         private void MapFrame_ViewExtentsChanged(object sender, ExtentArgs e)
         {
             var mapFrame = (MapFrame)sender;
-            _ZoomNext.Enabled = mapFrame.CanZoomToNext();
-            _ZoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
+            _zoomNext.Enabled = mapFrame.CanZoomToNext();
+            _zoomPrevious.Enabled = mapFrame.CanZoomToPrevious();
         }
 
         private void NewProject_Click(object sender, EventArgs e)
@@ -151,7 +164,7 @@ namespace DotSpatial.Controls
             {
                 App.SerializationManager.New();
             }
-            else if (String.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
+            else if (string.IsNullOrEmpty(App.SerializationManager.CurrentProjectFile))
             {
                 //if the current project is not specified - just ask to discard changes
                 if (MessageBox.Show(Msg.ClearAllDataAndStartANewMap, Msg.DiscardChanges, MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -162,7 +175,7 @@ namespace DotSpatial.Controls
             else
             {
                 //the current project is specified - ask the users if they want to save changes to current project
-                string saveProjectMessage = String.Format(Msg.SaveChangesToCurrentProject, Path.GetFileName(App.SerializationManager.CurrentProjectFile));
+                string saveProjectMessage = string.Format(Msg.SaveChangesToCurrentProject, Path.GetFileName(App.SerializationManager.CurrentProjectFile));
                 DialogResult msgBoxResult = MessageBox.Show(saveProjectMessage, Msg.DiscardChanges, MessageBoxButtons.YesNoCancel);
 
                 if (msgBoxResult == DialogResult.Yes)
@@ -191,17 +204,17 @@ namespace DotSpatial.Controls
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show(String.Format(Msg.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Msg.Error,
+                    MessageBox.Show(string.Format(Msg.CouldNotOpenTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (XmlException)
                 {
-                    MessageBox.Show(String.Format(Msg.FailedToReadTheSpecifiedMapFile, dlg.FileName), Msg.Error,
+                    MessageBox.Show(string.Format(Msg.FailedToReadTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (ArgumentException)
                 {
-                    MessageBox.Show(String.Format(Msg.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Msg.Error,
+                    MessageBox.Show(string.Format(Msg.FailedToReadAPortionOfTheSpecifiedMapFile, dlg.FileName), Msg.Error,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -236,7 +249,7 @@ namespace DotSpatial.Controls
             {
                 if (!new PrinterSettings().IsValid)
                 {
-                    MessageBox.Show("No printers installed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(MessageStrings.NoPrintersInstalled, MessageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -300,11 +313,12 @@ namespace DotSpatial.Controls
 
         private void SaveProject_Click(object sender, EventArgs e)
         {
-            String fullPath = App.SerializationManager.CurrentProjectFile;
-            String file = Path.GetFileNameWithoutExtension(fullPath);
+            string fullPath = App.SerializationManager.CurrentProjectFile;
+            string file = Path.GetFileNameWithoutExtension(fullPath);
 
             //Hardcoded names of sample projects into Save button so that if user tries to save over project file they will have to pick a new filename.
-            if (String.IsNullOrEmpty(fullPath)
+            if (string.IsNullOrEmpty(fullPath)
+                || string.IsNullOrEmpty(file)
                 || file.Contains("SampleProjects")
                 || file.ToLower().Contains("elbe")
                 || file.Contains("Jacob's Well Spring")
@@ -417,8 +431,8 @@ namespace DotSpatial.Controls
 
         private void ZoomToCoordinates()
         {
-            using (var CoordinateDialog = new ZoomToCoordinatesDialog(App.Map))
-                CoordinateDialog.ShowDialog();
+            using (var coordinateDialog = new ZoomToCoordinatesDialog(App.Map))
+                coordinateDialog.ShowDialog();
         }
 
     }

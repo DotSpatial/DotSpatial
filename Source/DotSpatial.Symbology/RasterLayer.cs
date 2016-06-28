@@ -150,12 +150,12 @@ namespace DotSpatial.Symbology
 
             IImageData result = DataManager.DefaultDataManager.CreateImage(fileName, rows, cols, false, progressHandler, bandType);
             int numBlocks = 1;
-            const int maxRC = 8000 * 8000;
-            if (rows * cols > maxRC)
+            const int maxRc = 8000 * 8000;
+            if (rows * cols > maxRc)
             {
-                numBlocks = Convert.ToInt32(Math.Ceiling(maxRC / (double)cols));
+                numBlocks = Convert.ToInt32(Math.Ceiling(maxRc / (double)cols));
             }
-            int blockRows = maxRC / cols;
+            int blockRows = maxRc / cols;
             ProjectionHelper ph = new ProjectionHelper(DataSet.Extent, new Rectangle(0, 0, cols, rows));
             for (int iblock = 0; iblock < numBlocks; iblock++)
             {

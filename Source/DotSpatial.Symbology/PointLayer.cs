@@ -27,7 +27,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// This is a specialized FeatureLayer that specifically handles point drawing
+    /// A layer with drawing characteristics for points.
     /// </summary>
     public class PointLayer : FeatureLayer, IPointLayer
     {

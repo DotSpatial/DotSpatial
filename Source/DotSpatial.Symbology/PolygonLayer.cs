@@ -29,7 +29,7 @@ using DotSpatial.Serialization;
 namespace DotSpatial.Symbology
 {
     /// <summary>
-    /// A layer with drawing characteristics for LineStrings
+    /// A layer with drawing characteristics for polygons.
     /// </summary>
     public class PolygonLayer : FeatureLayer, IPolygonLayer
     {

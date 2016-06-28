@@ -33,7 +33,7 @@ using GeoAPI.Geometries;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// This is a specialized FeatureLayer that specifically handles point drawing
+    /// This is a specialized FeatureLayer that specifically handles point drawing.
     /// </summary>
     public class MapPointLayer : PointLayer, IMapPointLayer
     {

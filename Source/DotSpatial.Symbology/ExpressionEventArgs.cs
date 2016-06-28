@@ -31,9 +31,9 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of StringEventArgs
+        /// Creates a new instance of ExpressionEventArgs.
         /// </summary>
-        /// <param name="expression">The string expression for this event args</param>
+        /// <param name="expression">The string expression for this event args.</param>
         public ExpressionEventArgs(string expression)
         {
             Expression = expression;

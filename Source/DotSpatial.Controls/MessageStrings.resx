@@ -924,4 +924,7 @@ Reproject the layer to match the map coordinate system? This will not affect the
   <data name="File_Options" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="NoPrintersInstalled" xml:space="preserve">
+    <value>No printers installed.</value>
+  </data>
 </root>

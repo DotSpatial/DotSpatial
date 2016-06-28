@@ -211,13 +211,13 @@ namespace DotSpatial.Controls
         public void ClearSelection()
         {
             var list = _selection.ToList();
-            IFrame ParentMap = null;
+            IFrame parentMap = null;
             if (list.Count > 0)
             {
-                ParentMap = list[0].ParentMapFrame();
-                if (ParentMap != null)
+                parentMap = list[0].ParentMapFrame();
+                if (parentMap != null)
                 {
-                    ParentMap.SuspendEvents();
+                    parentMap.SuspendEvents();
                 }
             }
             foreach (var lb in list)
@@ -227,9 +227,9 @@ namespace DotSpatial.Controls
             
             _selection.Clear();
 
-            if (ParentMap != null)
+            if (parentMap != null)
             {
-                ParentMap.ResumeEvents();
+                parentMap.ResumeEvents();
             }
 
             RefreshNodes();
