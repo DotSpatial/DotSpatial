@@ -96,7 +96,7 @@
     <Compile Include="EnvelopeArgs.cs" />
     <Compile Include="FeatureChangeArgs.cs" />
     <Compile Include="FeatureChangeEnvelopeArgs.cs" />
-    <Compile Include="FilterCollectionEM.cs" />
+    <Compile Include="FeatureSelectionExt.cs" />
     <Compile Include="GradientModel.cs" />
     <Compile Include="GraphicsPathExt.cs" />
     <Compile Include="Group.cs" />

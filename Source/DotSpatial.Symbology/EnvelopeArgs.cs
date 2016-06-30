@@ -23,6 +23,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Represents the argument for events that need an envelope.
+    /// </summary>
     public class EnvelopeArgs : EventArgs
     {
         #region Private Variables
@@ -32,7 +35,7 @@ namespace DotSpatial.Symbology
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of EnvelopeArgs
+        /// Creates a new instance of EnvelopeArgs.
         /// </summary>
         public EnvelopeArgs(Envelope inEnvelope)
         {

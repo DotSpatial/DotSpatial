@@ -25,6 +25,9 @@ using System.Text.RegularExpressions;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Expressions define the scheme that should be used to build the labels of a LabelCategory. 
+    /// </summary>
     public class Expression
     {
         #region Members

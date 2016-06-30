@@ -23,13 +23,16 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// Represents the argument for events that need to report changed features.
+    /// </summary>
     public class FeatureChangeArgs : EventArgs
     {
-      
+
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of SelectionEventArgs
+        /// Creates a new instance of FeatureChangeArgs.
         /// </summary>
         public FeatureChangeArgs(List<int> inChangedFeatures)
         {

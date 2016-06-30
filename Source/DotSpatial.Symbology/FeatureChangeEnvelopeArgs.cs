@@ -23,9 +23,9 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureChangeEnvelopeArgs
-    /// </summary>
+    ///<summary>
+    ///Represents the argument for events that need to report changed features and the corresponding envelope.
+    ///</summary>
     public class FeatureChangeEnvelopeArgs : FeatureChangeArgs
     {
         #region Constructors
@@ -33,6 +33,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Creates a new instance of FeatureChangeEnvelopeArgs
         /// </summary>
+        /// <param name="inChangedFeatures">Features that were changed.</param>
+        /// <param name="inEnvelope">Geographic envelope for the most recent selection event.</param>
         public FeatureChangeEnvelopeArgs(List<int> inChangedFeatures, Envelope inEnvelope)
             : base(inChangedFeatures)
         {

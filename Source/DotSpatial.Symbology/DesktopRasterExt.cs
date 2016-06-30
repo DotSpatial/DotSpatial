@@ -20,6 +20,9 @@ using DotSpatial.NTSExtension;
 
 namespace DotSpatial.Symbology
 {
+    /// <summary>
+    /// DesktopRasterExt contains extension methods for rasters.
+    /// </summary>
     public static class DesktopRasterExt
     {
         #region CreateHillShade
@@ -68,7 +71,6 @@ namespace DotSpatial.Symbology
                 getValue = (row, col) => raster.Value[row, col];
             }
 
-
             return CreateHillShadeT(raster, getValue, shadedRelief, pm);
         }
 
@@ -85,9 +87,7 @@ namespace DotSpatial.Symbology
             return CreateHillShadeT(raster, (row, col) => raster.Data[row][col], shadedRelief, progressMeter);
         }
 
-        private static float[][] CreateHillShadeT<T>(this IRaster raster,
-            Func<int, int, T> getValue,
-            IShadedRelief shadedRelief, ProgressMeter progressMeter) where T : IEquatable<T>, IComparable<T>
+        private static float[][] CreateHillShadeT<T>(this IRaster raster, Func<int, int, T> getValue, IShadedRelief shadedRelief, ProgressMeter progressMeter) where T : IEquatable<T>, IComparable<T>
         {
             if (!raster.IsInRam) return null;
             int numCols = raster.NumColumns;
@@ -191,12 +191,11 @@ namespace DotSpatial.Symbology
 
         #region DrawToBitmap
 
-
         /// <summary>
-        /// Creates a bitmap from this raster using the specified rasterSymbolizer
+        /// Creates a bitmap from this raster using the specified rasterSymbolizer.
         /// </summary>
-        /// <param name="raster">The raster to draw to a bitmap</param>
-        /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors</param>
+        /// <param name="raster">The raster to draw to a bitmap.</param>
+        /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors.</param>
         /// <param name="bitmap">This must be an Format32bbpArgb bitmap that has already been saved to a file so that it exists.</param>
         /// <param name="progressHandler">The progress handler to use.</param>
         /// <exception cref="ArgumentNullException">rasterSymbolizer cannot be null</exception>
@@ -239,7 +238,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Creates a bitmap from this raster using the specified rasterSymbolizer
+        /// Creates a bitmap from this raster using the specified rasterSymbolizer.
         /// </summary>
         /// <param name="raster">The raster to draw to a bitmap</param>
         /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors</param>
@@ -260,19 +259,14 @@ namespace DotSpatial.Symbology
             }
         }
 
-        private static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, IntPtr rgbData, int stride, ProgressMeter pm)
-           where T : struct, IEquatable<T>, IComparable<T>
-        {
-            DrawToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col],
-               i => Marshal.ReadByte(rgbData, i), (i, b) => Marshal.WriteByte(rgbData, i, b), rasterSymbolizer, stride, pm);
-
-            if (rasterSymbolizer.IsSmoothed)
-            {
-                var mySmoother = new Smoother(stride, raster.NumColumns, raster.NumRows, rgbData, pm.ProgressHandler);
-                mySmoother.Smooth();
-            }
-        }
-
+        /// <summary>
+        /// Creates a bitmap from this raster using the specified rasterSymbolizer.
+        /// </summary>
+        /// <param name="raster">The raster to draw to a bitmap.</param>
+        /// <param name="rasterSymbolizer">The raster symbolizer to use for assigning colors.</param>
+        /// <param name="rgbData">Byte values representing the ARGB image bytes.</param>
+        /// <param name="stride">The stride</param>
+        /// <param name="pm">The progress meter to use.</param>
         public static void DrawToBitmap(this IRaster raster, IRasterSymbolizer rasterSymbolizer, byte[] rgbData, int stride, ProgressMeter pm)
         {
             if (raster.DataType == typeof(int))
@@ -305,6 +299,19 @@ namespace DotSpatial.Symbology
                     var mySmoother = new Smoother(stride, raster.NumColumns, raster.NumRows, rgbData, pm.ProgressHandler);
                     mySmoother.Smooth();
                 }
+            }
+        }
+
+        private static void DrawToBitmapT<T>(Raster<T> raster, IRasterSymbolizer rasterSymbolizer, IntPtr rgbData, int stride, ProgressMeter pm)
+         where T : struct, IEquatable<T>, IComparable<T>
+        {
+            DrawToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col],
+               i => Marshal.ReadByte(rgbData, i), (i, b) => Marshal.WriteByte(rgbData, i, b), rasterSymbolizer, stride, pm);
+
+            if (rasterSymbolizer.IsSmoothed)
+            {
+                var mySmoother = new Smoother(stride, raster.NumColumns, raster.NumRows, rgbData, pm.ProgressHandler);
+                mySmoother.Smooth();
             }
         }
 
@@ -344,7 +351,7 @@ namespace DotSpatial.Symbology
         }
 
         private static void DrawToBitmapT<T>(IRaster raster, T noData, Func<int, int, T> getValue, Func<int, byte> getByte,
-            Action<int, byte> setByte, IRasterSymbolizer rasterSymbolizer, int stride, ProgressMeter pm)
+                                             Action<int, byte> setByte, IRasterSymbolizer rasterSymbolizer, int stride, ProgressMeter pm)
             where T : struct, IEquatable<T>, IComparable<T>
         {
             if (raster == null) throw new ArgumentNullException("raster");
@@ -478,13 +485,11 @@ namespace DotSpatial.Symbology
         public static void PaintColorSchemeToBitmapT<T>(this Raster<T> raster, IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler)
             where T : struct, IEquatable<T>, IComparable<T>
         {
-            PaintColorSchemeToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col],
-                rasterSymbolizer, bitmap, progressHandler);
+            PaintColorSchemeToBitmapT(raster, GetNoData(raster), (row, col) => raster.Data[row][col], rasterSymbolizer, bitmap, progressHandler);
         }
 
-        private static void PaintColorSchemeToBitmapT<T>(this IRaster raster,
-            T noData, Func<int, int, T> getValue,
-            IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler)
+        private static void PaintColorSchemeToBitmapT<T>(this IRaster raster, T noData, Func<int, int, T> getValue,
+                                                         IRasterSymbolizer rasterSymbolizer, Bitmap bitmap, IProgressHandler progressHandler)
            where T : struct, IEquatable<T>, IComparable<T>
         {
             if (raster == null) throw new ArgumentNullException("raster");
@@ -709,7 +714,7 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Obtains an set of unique values.  If there are more than maxCount values, the process stops and overMaxCount is set to true.
+        /// Obtains an set of unique values. If there are more than maxCount values, the process stops and overMaxCount is set to true.
         /// </summary>
         /// <param name="raster">the raster to obtain the unique values from.</param>
         /// <param name="maxCount">An integer specifying the maximum number of values to add to the list of unique values</param>
@@ -759,13 +764,12 @@ namespace DotSpatial.Symbology
 
         /// <summary>
         /// This will sample randomly from the raster, preventing duplicates.
-        /// If the sampleSize is larger than this raster, this returns all of the
-        /// values from the raster.  If a "Sample" has been prefetched and stored
-        /// in the Sample array, then this will return that.
+        /// If the sampleSize is larger than this raster, this returns all of the values from the raster.
+        /// If a "Sample" has been prefetched and stored in the Sample array, then this will return that.
         /// </summary>
-        /// <param name="raster"></param>
-        /// <param name="sampleSize"></param>
-        /// <returns></returns>
+        /// <param name="raster">The raster to obtain the values from.</param>
+        /// <param name="sampleSize">Number of values to get.</param>
+        /// <returns>List of random double values contained in the raster.</returns>
         public static List<double> GetRandomValues(this IRaster raster, int sampleSize)
         {
             if (raster.Sample != null) return raster.Sample.ToList();
