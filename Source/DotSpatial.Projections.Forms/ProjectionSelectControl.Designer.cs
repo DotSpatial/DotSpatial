@@ -136,7 +136,7 @@ namespace DotSpatial.Projections.Forms
             this.btnFromEpsgCode.TabIndex = 8;
             this.btnFromEpsgCode.Text = "Find";
             this.btnFromEpsgCode.UseVisualStyleBackColor = true;
-            this.btnFromEpsgCode.Click += new System.EventHandler(this.button2_Click);
+            this.btnFromEpsgCode.Click += new System.EventHandler(this.btnFromEpsgCode_Click);
             // 
             // groupBox1
             // 
@@ -212,7 +212,7 @@ namespace DotSpatial.Projections.Forms
             this.btnUseESRI.TabIndex = 8;
             this.btnUseESRI.Text = "Parse";
             this.btnUseESRI.UseVisualStyleBackColor = true;
-            this.btnUseESRI.Click += new System.EventHandler(this.button1_Click);
+            this.btnUseESRI.Click += new System.EventHandler(this.btnUseESRI_Click);
             // 
             // ProjectionSelectControl
             // 

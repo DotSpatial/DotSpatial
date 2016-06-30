@@ -123,4 +123,16 @@
   <data name="DoubleHelp" xml:space="preserve">
     <value>Enter a double precision floating point value.</value>
   </data>
+  <data name="NotFoundInPredefined" xml:space="preserve">
+    <value>Not found in Predefined</value>
+  </data>
+  <data name="UnknownEpsgCode" xml:space="preserve">
+    <value>Unknown EPSG code!</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="UnknownEsriOrProj4String" xml:space="preserve">
+    <value>Unknown ESRI or Proj4 string!</value>
+  </data>
 </root>

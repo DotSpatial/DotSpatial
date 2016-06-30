@@ -33,7 +33,15 @@ namespace DotSpatial.Projections.Forms
         private string _originalString;
         private ProjectionInfo _selectedProjection;
         private string _layerName;
+
+        /// <summary>
+        /// Used to remember the windows header text.
+        /// </summary>
         private string _originalFormText;
+
+        /// <summary>
+        /// Indicates whether _originalFormText should be updated when the windows header text gets changed.
+        /// </summary>
         private bool _ignoreTextChanged;
 
         /// <summary>
@@ -127,11 +135,14 @@ namespace DotSpatial.Projections.Forms
                 _layerName = value;
 
                 _ignoreTextChanged = true;
-                Text = String.IsNullOrWhiteSpace(value) ? _originalFormText : _originalFormText + " - " + value;
+                Text = string.IsNullOrWhiteSpace(value) ? _originalFormText : _originalFormText + " - " + value;
                 _ignoreTextChanged = false;
             }
         }
 
+        /// <summary>
+        /// Changes the _originalFormText to Text, if _ignoreTextChanged is not set.
+        /// </summary>
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);

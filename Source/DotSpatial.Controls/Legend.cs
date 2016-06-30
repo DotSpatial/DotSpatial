@@ -34,7 +34,7 @@ using DotSpatial.Symbology.Forms;
 namespace DotSpatial.Controls
 {
     /// <summary>
-    /// Legend
+    /// The legend is used to show a list of all the layers inside of Map. It describes the different categories of each layer with the help of a symbol and the categories legend text.
     /// </summary>
     [ToolboxItem(true)]
     public class Legend : ScrollingControl, ILegend
@@ -86,14 +86,10 @@ namespace DotSpatial.Controls
         private IColorCategory _editCategory;
         private Pen _highlightBorderPen;
         private bool _ignoreHide;
-        private int _indentation;
         private bool _isDragging;
         private List<LegendBox> _legendBoxes; // for hit-testing
-        private SymbologyEventManager _manager;
         private Rectangle _previousLine;
         private LegendBox _previousMouseDown;
-        private IProgressHandler _progressHandler;
-        private List<ILegendItem> _rootNodes;
         private Brush _selectionFontBrush;
         private Color _selectionFontColor;
         private Color _selectionHighlight;
@@ -104,18 +100,18 @@ namespace DotSpatial.Controls
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of Legend
+        /// Creates a new instance of Legend.
         /// </summary>
         public Legend()
         {
-            _rootNodes = new List<ILegendItem>();
+            RootNodes = new List<ILegendItem>();
             _icoChecked = Images.Checked;
             _icoUnchecked = Images.Unchecked;
             _contextMenu = new ContextMenu();
             _selection = new HashSet<ILegendItem>();
             _editBox = new TextBox { Parent = this, Visible = false };
             _editBox.LostFocus += EditBoxLostFocus;
-            _indentation = 30;
+            Indentation = 30;
             _legendBoxes = new List<LegendBox>();
 
             base.BackColor = Color.White;
@@ -124,7 +120,7 @@ namespace DotSpatial.Controls
 
             // Adding a legend ensures that symbology dialogs will be properly launched.
             // Otherwise, an ordinary map may not even need them.
-            _manager = new SymbologyEventManager { Owner = FindForm() };
+            SharedEventHandlers = new SymbologyEventManager { Owner = FindForm() };
         }
 
         private void TabColorDialogChangesApplied(object sender, EventArgs e)
@@ -162,7 +158,6 @@ namespace DotSpatial.Controls
 
         #region Methods
 
-        
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update
         /// when the mapframe triggers an ItemChanged event.
@@ -171,11 +166,11 @@ namespace DotSpatial.Controls
         public void AddMapFrame(IFrame mapFrame)
         {
             mapFrame.IsSelected = true;
-            if (!_rootNodes.Contains(mapFrame))
+            if (!RootNodes.Contains(mapFrame))
             {
                 OnIncludeMapFrame(mapFrame);
             }
-            _rootNodes.Add(mapFrame);
+            RootNodes.Add(mapFrame);
             RefreshNodes();
         }
 
@@ -186,8 +181,8 @@ namespace DotSpatial.Controls
         /// <param name="preventRefresh">Boolean, if true, removing the map frame will not automatically force a refresh of the legend.</param>
         public void RemoveMapFrame(IFrame mapFrame, bool preventRefresh)
         {
-            _rootNodes.Remove(mapFrame);
-            if (_rootNodes.Contains(mapFrame) == false) OnExcludeMapFrame(mapFrame);
+            RootNodes.Remove(mapFrame);
+            if (RootNodes.Contains(mapFrame) == false) OnExcludeMapFrame(mapFrame);
             if (preventRefresh) return;
             RefreshNodes();
         }
@@ -224,7 +219,7 @@ namespace DotSpatial.Controls
             {
                 lb.IsSelected = false;
             }
-            
+
             _selection.Clear();
 
             if (parentMap != null)
@@ -245,7 +240,6 @@ namespace DotSpatial.Controls
             mapFrame.LayerSelected += LayersLayerSelected;
             mapFrame.LayerRemoved += MapFrameOnLayerRemoved;
         }
-        
 
         /// <summary>
         /// Occurs when we need to no longer listen to the map frame events
@@ -296,21 +290,13 @@ namespace DotSpatial.Controls
         /// Gets or sets the SharedEventHandler that is used for working with shared layer events.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SymbologyEventManager SharedEventHandlers
-        {
-            get { return _manager; }
-            set { _manager = value; }
-        }
+        public SymbologyEventManager SharedEventHandlers { get; set; }
 
         /// <summary>
         /// Gets or sets an integer representing how far child nodes are indented when compared to the parent nodes.
         /// </summary>
         [Category("Appearance"), Description("Gets or sets the indentation in pixels between a parent item and its children.")]
-        public int Indentation
-        {
-            get { return _indentation; }
-            set { _indentation = value; }
-        }
+        public int Indentation { get; set; }
 
         /// <summary>
         /// This calculates a height for each item based on the height of the font.
@@ -363,11 +349,7 @@ namespace DotSpatial.Controls
         /// Gets or sets the list of map frames being displayed by this legend.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<ILegendItem> RootNodes
-        {
-            get { return _rootNodes; }
-            set { _rootNodes = value; }
-        }
+        public List<ILegendItem> RootNodes { get; set; }
 
         #endregion
 
@@ -377,11 +359,7 @@ namespace DotSpatial.Controls
         /// Gets or sets the progress handler for any progress messages like re-drawing images for rasters
         /// </summary>
         [Category("Controls"), Description("Gets or sets the progress handler for any progress messages like re-drawing images for rasters")]
-        public IProgressHandler ProgressHandler
-        {
-            get { return _progressHandler; }
-            set { _progressHandler = value; }
-        }
+        public IProgressHandler ProgressHandler { get; set; }
 
         /// <summary>
         ///
@@ -457,9 +435,9 @@ namespace DotSpatial.Controls
             // draw standard background image to buffer
             base.OnInitialize(e);
             PointF topLeft = new Point(0, 0);
-            if (_rootNodes == null || _rootNodes.Count == 0) return;
+            if (RootNodes == null || RootNodes.Count == 0) return;
             _legendBoxes = new List<LegendBox>();
-            foreach (var item in _rootNodes)
+            foreach (var item in RootNodes)
             {
                 var args = new DrawLegendItemArgs(e.Graphics, item, ClientRectangle, topLeft);
                 OnInitializeItem(args);
@@ -499,11 +477,10 @@ namespace DotSpatial.Controls
             }
         }
 
-
         private void UpdateActions(ILegendItem mapLayer)
         {
             var manager = SharedEventHandlers;
-            
+
             var layer = mapLayer as Layer;
             if (layer != null)
             {
@@ -519,7 +496,7 @@ namespace DotSpatial.Controls
             var fl = mapLayer as FeatureLayer;
             if (fl != null)
             {
-                fl.FeatureLayerActions = manager == null? null : manager.FeatureLayerActions;
+                fl.FeatureLayerActions = manager == null ? null : manager.FeatureLayerActions;
             }
 
             var il = mapLayer as ImageLayer;
@@ -534,7 +511,12 @@ namespace DotSpatial.Controls
                 rl.RasterLayerActions = manager == null ? null : manager.RasterLayerActions;
             }
         }
-      
+
+        /// <summary>
+        /// Draws the legend item from the DrawLegendItemArgs with all its child items.
+        /// </summary>
+        /// <param name="e">DrawLegendItemArgs that are needed to draw the legend item.</param>
+        /// <returns>The position where the next LegendItem can be drawn.</returns>
         protected virtual PointF OnInitializeItem(DrawLegendItemArgs e)
         {
             if (e.Item.LegendItemVisible == false) return e.TopLeft;
@@ -555,7 +537,7 @@ namespace DotSpatial.Controls
                 _legendBoxes.Add(itemBox);
                 itemBox.Item = e.Item;
                 itemBox.Bounds = new Rectangle(0, (int)topLeft.Y, Width, ItemHeight);
-                itemBox.Indent = (int)topLeft.X / _indentation;
+                itemBox.Indent = (int)topLeft.X / Indentation;
 
                 DrawPlusMinus(e.Graphics, ref tempTopLeft, itemBox);
 
@@ -615,7 +597,7 @@ namespace DotSpatial.Controls
 
             if (e.Item.IsExpanded)
             {
-                topLeft.X += _indentation;
+                topLeft.X += Indentation;
                 if (e.Item.LegendItems != null)
                 {
                     List<ILegendItem> items = e.Item.LegendItems.ToList();
@@ -627,7 +609,7 @@ namespace DotSpatial.Controls
                         if (topLeft.Y > ControlRectangle.Bottom) break;
                     }
                 }
-                topLeft.X -= _indentation;
+                topLeft.X -= Indentation;
             }
             return topLeft;
         }
@@ -780,7 +762,7 @@ namespace DotSpatial.Controls
                     LegendBox container = BoxFromItem(_dragTarget.Item.GetValidContainerFor(_dragItem.Item));
                     if (container != null)
                     {
-                        left = (container.Indent + 1) * _indentation;
+                        left = (container.Indent + 1) * Indentation;
                     }
                     if (_dragTarget.Item.CanReceiveItem(_dragItem.Item))
                     {
@@ -993,16 +975,16 @@ namespace DotSpatial.Controls
                         ClearSelection();
                     }
                     e.ItemBox.Item.IsSelected = true;
-              
-                    //_selection.Add(e.ItemBox);
-                    //IsInitialized = false;
-                    //Invalidate();
-                    //return;
                 }
             }
         }
 
-        // Draw the symbol for a particualr item
+        /// <summary>
+        /// Draw the symbol for a particular item.
+        /// </summary>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="topLeft">TopLeft position where the symbol should be drawn.</param>
+        /// <param name="itemBox">LegendBox of the item, the symbol should be added to.</param>
         private void DrawSymbol(Graphics g, ref PointF topLeft, LegendBox itemBox)
         {
             ILegendItem item = itemBox.Item;
@@ -1026,7 +1008,12 @@ namespace DotSpatial.Controls
             topLeft.X += tH + 6;
         }
 
-        // Draw the plus or minus visible for controlling expansion
+        /// <summary>
+        /// If the LegendBox doesn't contain a symbol draw the plus or minus visible for controlling expansion.
+        /// </summary>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="topLeft">TopLeft position where the symbol should be drawn.</param>
+        /// <param name="itemBox">LegendBox of the item, the +/- should be added to.</param>
         private void DrawPlusMinus(Graphics g, ref PointF topLeft, LegendBox itemBox)
         {
             ILegendItem item = itemBox.Item;
@@ -1052,7 +1039,12 @@ namespace DotSpatial.Controls
             topLeft.X += 13;
         }
 
-        // Draw the checkbox for an item
+        /// <summary>
+        /// If the LegendBox contains a checkbox item draw the checkbox for an item.
+        /// </summary>
+        /// <param name="g">Graphics object used for drawing.</param>
+        /// <param name="topLeft">TopLeft position where the symbol should be drawn.</param>
+        /// <param name="itemBox">LegendBox of the item, the checkbox should be added to.</param>
         private void DrawCheckBoxes(Graphics g, ref PointF topLeft, LegendBox itemBox)
         {
             ILegendItem item = itemBox.Item;
@@ -1087,7 +1079,7 @@ namespace DotSpatial.Controls
             int totalHeight = 0;
             using (var g = CreateGraphics())
             {
-                foreach (var li in _rootNodes)
+                foreach (var li in RootNodes)
                 {
                     var itemSize = SizeItem(0, li, g);
                     totalHeight += itemSize.Height;
@@ -1116,7 +1108,7 @@ namespace DotSpatial.Controls
                 {
                     foreach (ILegendItem child in item.LegendItems)
                     {
-                        Size cs = SizeItem(offset + _indentation, child, g);
+                        Size cs = SizeItem(offset + Indentation, child, g);
                         height += cs.Height;
                         if (cs.Width > width) width = cs.Width;
                     }
@@ -1142,7 +1134,11 @@ namespace DotSpatial.Controls
             RefreshNodes();
         }
 
-        // Given a legend item, it searches the list of LegendBoxes until it finds it.
+        /// <summary>
+        /// Given a legend item, it searches the list of LegendBoxes until it finds it.
+        /// </summary>
+        /// <param name="item">LegendItem to find.</param>
+        /// <returns>LegendBox belonging to the item.</returns>
         private LegendBox BoxFromItem(ILegendItem item)
         {
             return _legendBoxes.FirstOrDefault(box => box.Item == item);

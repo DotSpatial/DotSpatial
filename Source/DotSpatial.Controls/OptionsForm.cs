@@ -3,10 +3,17 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// This allows the user to switch between stop zooming out on max extent and zooming out farther than max extent.
+    /// </summary>
     public partial class OptionsForm : Form
     {
-        IMap _map;
+        private readonly IMap _map;
 
+        /// <summary>
+        /// Creates a new instance of options form.
+        /// </summary>
+        /// <param name="map">The IMap the options should be applied to.</param>
         public OptionsForm(IMap map)
         {
             InitializeComponent();

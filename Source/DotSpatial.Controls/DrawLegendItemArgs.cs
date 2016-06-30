@@ -23,16 +23,19 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Represents the argument used for drawing legend items.
+    /// </summary>
     public class DrawLegendItemArgs
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of DrawLegendItemArgs
+        /// Creates a new instance of DrawLegendItemArgs.
         /// </summary>
-        /// <param name="g">A Graphics surface to draw on</param>
-        /// <param name="item">The legend item to draw</param>
-        /// <param name="clipRectangle">The bounds that drawing should occur within</param>
+        /// <param name="g">A Graphics surface to draw on.</param>
+        /// <param name="item">The legend item to draw.</param>
+        /// <param name="clipRectangle">The bounds that drawing should occur within.</param>
         /// <param name="topLeft">The position of the top left corner where drawing should start.</param>
         public DrawLegendItemArgs(Graphics g, ILegendItem item, Rectangle clipRectangle, PointF topLeft)
         {
@@ -47,12 +50,12 @@ namespace DotSpatial.Controls
         #region Properties
 
         /// <summary>
-        /// Gets the interface for the legend item being drawn
+        /// Gets the interface for the legend item being drawn.
         /// </summary>
         public ILegendItem Item { get; protected set; }
 
         /// <summary>
-        /// Gets the rectangle that limits where drawing should occur
+        /// Gets the rectangle that limits where drawing should occur.
         /// </summary>
         public Rectangle ClipRectangle { get; protected set; }
 
@@ -62,7 +65,7 @@ namespace DotSpatial.Controls
         public PointF TopLeft { get; protected set; }
 
         /// <summary>
-        /// Gets the graphics object for drawing to
+        /// Gets the graphics object for drawing to.
         /// </summary>
         public Graphics Graphics { get; protected set; }
 

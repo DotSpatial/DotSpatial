@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Projections.Forms
 {
+    /// <summary>
+    /// ProjectionSelectControl can be used to choose a coordinate system from KnownCoordinateSystems.
+    /// </summary>
     public partial class ProjectionSelectControl : UserControl
     {
         #region Fields
@@ -14,6 +17,9 @@ namespace DotSpatial.Projections.Forms
 
         #endregion
 
+        /// <summary>
+        /// Creates a new instance of ProjectionSelectControl.
+        /// </summary>
         public ProjectionSelectControl()
         {
             InitializeComponent();
@@ -30,7 +36,7 @@ namespace DotSpatial.Projections.Forms
         }
 
         /// <summary>
-        /// Gets or sets the currently chosen coordinate system
+        /// Gets or sets the currently chosen coordinate system.
         /// </summary>
         [Browsable(false)]
         public ProjectionInfo SelectedCoordinateSystem
@@ -56,7 +62,7 @@ namespace DotSpatial.Projections.Forms
                     var prc = GetProjectionCategory(_selectedCoordinateSystem);
                     if (prc == null)
                     {
-                        cmbMinorCategory.Text = cmbMajorCategory.Text = "Not found in Predefined";
+                        cmbMinorCategory.Text = cmbMajorCategory.Text = ProjectionStrings.NotFoundInPredefined;
                         return;
                     }
 
@@ -173,16 +179,16 @@ namespace DotSpatial.Projections.Forms
             _userChanges = false;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnFromEpsgCode_Click(object sender, EventArgs e)
         {
             ProjectionInfo proj;
             try
             {
-                proj = ProjectionInfo.FromEpsgCode((int) nudEpsgCode.Value);
+                proj = ProjectionInfo.FromEpsgCode((int)nudEpsgCode.Value);
             }
             catch (Exception)
             {
-                MessageBox.Show(this, "Unknown EPSG code!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, ProjectionStrings.UnknownEpsgCode, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 proj = null;
             }
 
@@ -192,7 +198,7 @@ namespace DotSpatial.Projections.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnUseESRI_Click(object sender, EventArgs e)
         {
             ProjectionInfo proj;
             try
@@ -203,13 +209,13 @@ namespace DotSpatial.Projections.Forms
             }
             catch (Exception)
             {
-                MessageBox.Show(this, "Unknown ESRI or Proj4 string!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, ProjectionStrings.UnknownEsriOrProj4String, ProjectionStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 proj = null;
             }
             if (proj != null)
             {
                 SelectedCoordinateSystem = proj;
-            }   
+            }
         }
 
         private void chbEsri_CheckedChanged(object sender, EventArgs e)
@@ -219,5 +225,6 @@ namespace DotSpatial.Projections.Forms
                     ? SelectedCoordinateSystem.ToEsriString()
                     : SelectedCoordinateSystem.ToProj4String();
         }
+         
     }
 }
