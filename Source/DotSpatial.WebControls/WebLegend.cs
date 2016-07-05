@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using System.Drawing;
 using System.IO;

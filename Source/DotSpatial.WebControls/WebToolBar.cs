@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Drawing;
 
 namespace DotSpatial.WebControls
 {
@@ -76,7 +72,7 @@ namespace DotSpatial.WebControls
             {
                 string name = "";
 
-                Object o = ViewState["name"];
+                object o = ViewState["name"];
 
                 if (o == null)
                 {
@@ -168,7 +164,7 @@ namespace DotSpatial.WebControls
             "cursor:pointer; position:absolute; z-index:1000; left:21px; top:96px;"
 
         };
-        
+
         private string[] _tooltips =
         {
             "",
@@ -198,7 +194,7 @@ namespace DotSpatial.WebControls
         {
             get
             {
-                Object o = System.Web.HttpContext.Current.Session["Buttons_" + Name];
+                object o = System.Web.HttpContext.Current.Session["Buttons_" + Name];
 
                 if (o == null)
                 {
@@ -217,7 +213,7 @@ namespace DotSpatial.WebControls
         {
             get
             {
-                String s = (String)ViewState["WebMapControlID"];
+                string s = (string)ViewState["WebMapControlID"];
                 return s;
             }
 
@@ -254,7 +250,7 @@ namespace DotSpatial.WebControls
             AddButton(WebButtonType.Space);
 
             AddButton(WebButtonType.Edit);
-                    
+
         }
 
         public void CreateSmartNavigation()
@@ -269,41 +265,41 @@ namespace DotSpatial.WebControls
             AddButton(WebButtonType.ToolsMoveZoomOut);
         }
 
-        public void AddButton(WebButtonType type, string Command = "", string ImageURL = "",  string Style="", string ToolTip="" )
+        public void AddButton(WebButtonType type, string command = "", string imageUrl = "", string style = "", string toolTip = "")
         {
             WebButton b = new WebButton();
             b.Type = type;
-            
-            if (ImageURL != "")
+
+            if (imageUrl != "")
             {
-                b.ImageURL = ImageURL;
+                b.ImageURL = imageUrl;
             }
             else
             {
                 b.ImageURL = Page.ClientScript.GetWebResourceUrl(this.GetType(), _images[(int)type]);
             }
 
-            if (Command != "")
+            if (command != "")
             {
-                b.Command = Command;
+                b.Command = command;
             }
             else
             {
                 b.Command = _commands[(int)type];
             }
 
-            if (Style != "")
+            if (style != "")
             {
-                b.Style = Style;
+                b.Style = style;
             }
             else
             {
                 b.Style = _styles[(int)type];
             }
 
-            if (ToolTip != "")
+            if (toolTip != "")
             {
-                b.ToolTip = ToolTip;
+                b.ToolTip = toolTip;
             }
             else
             {
@@ -313,7 +309,7 @@ namespace DotSpatial.WebControls
             List<WebButton> btns = Buttons;
             btns.Add(b);
             Buttons = btns;
-              
+
         }
 
         protected override void RenderContents(HtmlTextWriter output)
@@ -321,50 +317,50 @@ namespace DotSpatial.WebControls
 
             if (this.DesignMode)
             {
-                    output.Write("<table style='border-color:Black;background-color:" + BackColor.ToString() + "'><tr><td style='vertical-align:middle;text-align:center'> ToolBar: " + ClientID + "</td></tr></table>");
+                output.Write("<table style='border-color:Black;background-color:" + BackColor.ToString() + "'><tr><td style='vertical-align:middle;text-align:center'> ToolBar: " + ClientID + "</td></tr></table>");
             }
             else
             {
-                List<WebButton> _buttons = Buttons;
+                List<WebButton> buttons = Buttons;
 
                 string htm = "";
-                string MapID = WebMapID;
-                string ControlID;
+                string mapId = WebMapID;
+                string controlId;
 
-                for (int i = 0; i < _buttons.Count; i++)
+                for (int i = 0; i < buttons.Count; i++)
                 {
-                    WebButton b = _buttons[i];
+                    WebButton b = buttons[i];
 
                     if (b.Type != WebButtonType.Space)
                     {
-                        ControlID = "Tool_" + MapID + i.ToString(); 
+                        controlId = "Tool_" + mapId + i.ToString();
                     }
                     else
                     {
-                        ControlID = "Space_" + MapID + i.ToString();
+                        controlId = "Space_" + mapId + i.ToString();
                     }
 
-                    string command = b.Command.Replace("<WebMapID>", MapID);
-                    command = command.Replace("<index>", ControlID);
+                    string command = b.Command.Replace("<WebMapID>", mapId);
+                    command = command.Replace("<index>", controlId);
 
                     if (b.Type != WebButtonType.Space)
                     {
-                    htm += "<input id=\"" + ControlID +
-                           "\" type=\"button" +
-                           "\" title=\"" + b.ToolTip + 
-                           "\" onclick=\"" + command + 
-                           "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" + 
-                           "\" style=\"" + b.Style + 
-                           " background-image: url(" + b.ImageURL + ");" +
-                           " background-color: transparent; border-width: 2px; height: 28px; width: 28px;\" />";
+                        htm += "<input id=\"" + controlId +
+                               "\" type=\"button" +
+                               "\" title=\"" + b.ToolTip +
+                               "\" onclick=\"" + command +
+                               "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" +
+                               "\" style=\"" + b.Style +
+                               " background-image: url(" + b.ImageURL + ");" +
+                               " background-color: transparent; border-width: 2px; height: 28px; width: 28px;\" />";
                     }
                     else
                     {
-                    htm += "<img id=\"" + ControlID + 
-                           "\" title=\"" + b.ToolTip + 
-                           "\" onclick=\"" + command + 
-                           "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" +
-                           " src=\"" + b.ImageURL + "\" style=\"" + b.Style + "\" />";
+                        htm += "<img id=\"" + controlId +
+                               "\" title=\"" + b.ToolTip +
+                               "\" onclick=\"" + command +
+                               "\" ondrag(event)=\"return false\" onSelectStart=\"return false\"" +
+                               " src=\"" + b.ImageURL + "\" style=\"" + b.Style + "\" />";
                     }
                 }
 

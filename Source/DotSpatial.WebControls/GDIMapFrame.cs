@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DotSpatial.Serialization;
 using DotSpatial.Controls;
 using System.Drawing;
 using DotSpatial.Data;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using DotSpatial.Symbology;
-using DotSpatial.Topology;
 using Point = System.Drawing.Point;
 using DotSpatial.Projections;
+using GeoAPI.Geometries;
 
 
 namespace DotSpatial.WebControls
@@ -75,10 +72,10 @@ namespace DotSpatial.WebControls
                 
                 _view = value;
 
-                Extent Ext = PixelToProj(_view); 
+                Extent ext = PixelToProj(_view); 
 
-                ResetAspectRatio(Ext);
-                _viewextent = Ext;
+                ResetAspectRatio(ext);
+                _viewextent = ext;
             }
         }
 
@@ -106,7 +103,6 @@ namespace DotSpatial.WebControls
         /// <summary>
         /// Converts a single point location into an equivalent geographic coordinate
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="position">The client coordinate relative to the map control</param>
         /// <returns>The geographic ICoordinate interface</returns>
         public Coordinate PixelToProj(Point position)
@@ -128,7 +124,6 @@ namespace DotSpatial.WebControls
         /// Converts a rectangle in pixel coordinates relative to the map control into
         /// a geographic envelope.
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="rect">The rectangle to convert</param>
         /// <returns>An IEnvelope interface</returns>
         public Extent PixelToProj( Rectangle rect)
@@ -143,7 +138,6 @@ namespace DotSpatial.WebControls
         /// <summary>
         /// Projects all of the rectangles int the specified list of rectangles into geographic regions.
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="clipRects">The clip rectangles</param>
         /// <returns>A List of IEnvelope geographic bounds that correspond to the specified clip rectangles.</returns>
         public List<Extent> PixelToProj(List<Rectangle> clipRects)
@@ -160,7 +154,6 @@ namespace DotSpatial.WebControls
         /// Converts a single geographic location into the equivalent point on the
         /// screen relative to the top left corner of the map.
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="location">The geographic position to transform</param>
         /// <returns>A Point with the new location.</returns>
         public Point ProjToPixel( Coordinate location)
@@ -177,7 +170,6 @@ namespace DotSpatial.WebControls
         /// Converts a single geographic envelope into an equivalent Rectangle
         /// as it would be drawn on the screen.
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="env">The geographic IEnvelope</param>
         /// <returns>A Rectangle</returns>
         public Rectangle ProjToPixel(Extent env)
@@ -192,7 +184,6 @@ namespace DotSpatial.WebControls
         /// <summary>
         /// Translates all of the geographic regions, forming an equivalent list of rectangles.
         /// </summary>
-        /// <param name="self">This IProj</param>
         /// <param name="regions">The list of geographic regions to project</param>
         /// <returns>A list of pixel rectangles that describe the specified region</returns>
         public List<Rectangle> ProjToPixel(List<Extent> regions)
@@ -210,7 +201,6 @@ namespace DotSpatial.WebControls
         /// Calculates an integer length distance in pixels that corresponds to the double
         /// length specified in the image.
         /// </summary>
-        /// <param name="self">The IProj that this describes</param>
         /// <param name="distance">The double distance to obtain in pixels</param>
         /// <returns>The integer distance in pixels</returns>
         public double ProjToPixel(double distance)
@@ -357,7 +347,7 @@ namespace DotSpatial.WebControls
 
             double controlAspect = w / h;
             double envelopeAspect = newEnv.Width / newEnv.Height;
-            Coordinate center = newEnv.ToEnvelope().Center();
+            Coordinate center = newEnv.ToEnvelope().Centre;
 
             if (controlAspect > envelopeAspect)
             {

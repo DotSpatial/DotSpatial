@@ -9,9 +9,6 @@ using DotSpatial.Data;
 using System.IO;
 using System.Net;
 using System.Drawing;
-//using System.Windows.Forms;
-using System.Diagnostics;
-using DotSpatial.Controls;
 using DotSpatial.WebControls;
 using System.Web.UI.WebControls;
 using DotSpatial.Projections;
@@ -27,8 +24,8 @@ namespace DotSpatial.MapWebClient
         public string Version { get; set; }
 
         private string _CRS;
-        public string CRS 
-        { 
+        public string CRS
+        {
             get
             {
                 return _CRS;
@@ -37,7 +34,7 @@ namespace DotSpatial.MapWebClient
             {
                 _CRS = value;
 
-                string [] t = _CRS.Split(':');
+                string[] t = _CRS.Split(':');
 
                 if (t != null)
                 {
@@ -55,7 +52,7 @@ namespace DotSpatial.MapWebClient
                             catch
                             {
                             }
-                            
+
                         }
                     }
                 }
@@ -112,7 +109,7 @@ namespace DotSpatial.MapWebClient
 
         }
 
-        public void ReadCapabilities(string server="")
+        public void ReadCapabilities(string server = "")
         {
 
             if (server != "")
@@ -131,7 +128,7 @@ namespace DotSpatial.MapWebClient
                 stream = GetRemoteXmlStream(uri, Proxy);
             }
 
-           
+
             XmlDocument xml = GetXml(stream);
             ParseCapabilities(xml);
 
@@ -140,11 +137,11 @@ namespace DotSpatial.MapWebClient
         public string CreateCapabiltiesRequest(string url)
         {
             var strReq = new StringBuilder(url);
-            
+
             if (!url.Contains("?"))
                 strReq.Append("?");
 
-            if (!strReq.ToString().EndsWith("&") && !strReq.ToString().EndsWith("?"))
+            if (!strReq.ToString().EndsWith("&", StringComparison.Ordinal) && !strReq.ToString().EndsWith("?", StringComparison.Ordinal))
                 strReq.Append("&");
 
             if (!url.ToLower().Contains("service=wms"))
@@ -153,8 +150,8 @@ namespace DotSpatial.MapWebClient
             if (!url.ToLower().Contains("request=getcapabilities"))
                 strReq.AppendFormat("REQUEST=GetCapabilities&");
 
-            if (!url.ToLower().Contains("version=") && Version !=null )
-                strReq.AppendFormat("version="+Version+"&");
+            if (!url.ToLower().Contains("version=") && Version != null)
+                strReq.AppendFormat("version=" + Version + "&");
 
             return strReq.ToString();
         }
@@ -180,9 +177,9 @@ namespace DotSpatial.MapWebClient
             {
                 var r = new XmlTextReader(stream);
                 r.XmlResolver = null;
-                
+
                 var doc = new XmlDocument();
-                
+
                 doc.XmlResolver = null;
                 doc.Load(r);
 
@@ -257,20 +254,20 @@ namespace DotSpatial.MapWebClient
         /// Parses service description node
         /// </summary>
         /// <param name="xnlServiceDescription"></param>
-        private void ParseServiceDescription(XmlNode xnlServiceDescription, XmlNamespaceManager _nsmgr)
+        private void ParseServiceDescription(XmlNode xnlServiceDescription, XmlNamespaceManager nsmgr)
         {
-            XmlNode node = xnlServiceDescription.SelectSingleNode("sm:Title", _nsmgr);
+            XmlNode node = xnlServiceDescription.SelectSingleNode("sm:Title", nsmgr);
             _serviceDescription.Title = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:OnlineResource/@xlink:href", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:OnlineResource/@xlink:href", nsmgr);
             _serviceDescription.OnlineResource = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:Abstract", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:Abstract", nsmgr);
             _serviceDescription.Abstract = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:Fees", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:Fees", nsmgr);
             _serviceDescription.Fees = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:AccessConstraints", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:AccessConstraints", nsmgr);
             _serviceDescription.AccessConstraints = (node != null ? node.InnerText : null);
 
-            XmlNodeList xnlKeywords = xnlServiceDescription.SelectNodes("sm:KeywordList/sm:Keyword", _nsmgr);
+            XmlNodeList xnlKeywords = xnlServiceDescription.SelectNodes("sm:KeywordList/sm:Keyword", nsmgr);
             if (xnlKeywords != null)
             {
                 _serviceDescription.Keywords = new string[xnlKeywords.Count];
@@ -279,31 +276,31 @@ namespace DotSpatial.MapWebClient
             }
             //Contact information
             _serviceDescription.ContactInformation = new ServiceDescription.WmsContactInformation();
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:Address", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:Address", nsmgr);
             _serviceDescription.ContactInformation.Address.Address = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:AddressType", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:AddressType", nsmgr);
             _serviceDescription.ContactInformation.Address.AddressType = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:City", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:City", nsmgr);
             _serviceDescription.ContactInformation.Address.City = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:Country", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:Country", nsmgr);
             _serviceDescription.ContactInformation.Address.Country = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:PostCode", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactAddress/sm:PostCode", nsmgr);
             _serviceDescription.ContactInformation.Address.PostCode = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactElectronicMailAddress", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactElectronicMailAddress", nsmgr);
             _serviceDescription.ContactInformation.Address.StateOrProvince = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactElectronicMailAddress", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactElectronicMailAddress", nsmgr);
             _serviceDescription.ContactInformation.ElectronicMailAddress = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactFacsimileTelephone", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactFacsimileTelephone", nsmgr);
             _serviceDescription.ContactInformation.FacsimileTelephone = (node != null ? node.InnerText : null);
             node =
                 xnlServiceDescription.SelectSingleNode(
-                    "sm:ContactInformation/sm:ContactPersonPrimary/sm:ContactOrganisation", _nsmgr);
+                    "sm:ContactInformation/sm:ContactPersonPrimary/sm:ContactOrganisation", nsmgr);
             _serviceDescription.ContactInformation.PersonPrimary.Organisation = (node != null ? node.InnerText : null);
             node =
                 xnlServiceDescription.SelectSingleNode(
-                    "sm:ContactInformation/sm:ContactPersonPrimary/sm:ContactPerson", _nsmgr);
+                    "sm:ContactInformation/sm:ContactPersonPrimary/sm:ContactPerson", nsmgr);
             _serviceDescription.ContactInformation.PersonPrimary.Person = (node != null ? node.InnerText : null);
-            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactVoiceTelephone", _nsmgr);
+            node = xnlServiceDescription.SelectSingleNode("sm:ContactInformation/sm:ContactVoiceTelephone", nsmgr);
             _serviceDescription.ContactInformation.VoiceTelephone = (node != null ? node.InnerText : null);
         }
 
@@ -479,15 +476,15 @@ namespace DotSpatial.MapWebClient
 
             if (Version == "1.3.0")
             {
-                XmlNode GeographicBoundingBox = xmlLayer.SelectSingleNode("sm:EX_GeographicBoundingBox", _nsmgr);
-                if (GeographicBoundingBox != null)
+                XmlNode geographicBoundingBox = xmlLayer.SelectSingleNode("sm:EX_GeographicBoundingBox", _nsmgr);
+                if (geographicBoundingBox != null)
                 {
                     double minx, miny, maxx, maxy;
 
-                    XmlNode w = GeographicBoundingBox.SelectSingleNode("sm:westBoundLongitude", _nsmgr);
-                    XmlNode e = GeographicBoundingBox.SelectSingleNode("sm:eastBoundLongitude", _nsmgr);
-                    XmlNode s = GeographicBoundingBox.SelectSingleNode("sm:southBoundLatitude", _nsmgr);
-                    XmlNode n = GeographicBoundingBox.SelectSingleNode("sm:northBoundLatitude", _nsmgr);
+                    XmlNode w = geographicBoundingBox.SelectSingleNode("sm:westBoundLongitude", _nsmgr);
+                    XmlNode e = geographicBoundingBox.SelectSingleNode("sm:eastBoundLongitude", _nsmgr);
+                    XmlNode s = geographicBoundingBox.SelectSingleNode("sm:southBoundLatitude", _nsmgr);
+                    XmlNode n = geographicBoundingBox.SelectSingleNode("sm:northBoundLatitude", _nsmgr);
 
                     if (!double.TryParse(w.InnerText, NumberStyles.Any, CultureInfo.InvariantCulture, out minx) &
                         !double.TryParse(s.InnerText, NumberStyles.Any, CultureInfo.InvariantCulture, out miny) &
@@ -500,15 +497,15 @@ namespace DotSpatial.MapWebClient
             }
             else
             {
-                XmlNode GeographicBoundingBox = xmlLayer.SelectSingleNode("sm:LatLonBoundingBox", _nsmgr);
-                if (GeographicBoundingBox != null)
+                XmlNode geographicBoundingBox = xmlLayer.SelectSingleNode("sm:LatLonBoundingBox", _nsmgr);
+                if (geographicBoundingBox != null)
                 {
                     double minx, miny, maxx, maxy;
 
-                    if (!double.TryParse(GeographicBoundingBox.Attributes["minx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out minx) &
-                        !double.TryParse(GeographicBoundingBox.Attributes["miny"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out miny) &
-                        !double.TryParse(GeographicBoundingBox.Attributes["maxx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxx) &
-                        !double.TryParse(GeographicBoundingBox.Attributes["maxy"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxy))
+                    if (!double.TryParse(geographicBoundingBox.Attributes["minx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out minx) &
+                        !double.TryParse(geographicBoundingBox.Attributes["miny"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out miny) &
+                        !double.TryParse(geographicBoundingBox.Attributes["maxx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxx) &
+                        !double.TryParse(geographicBoundingBox.Attributes["maxy"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out maxy))
                         throw new ArgumentException("Invalid LatLonBoundingBox on layer '" + layer.Name + "'");
 
                     layer.LatLonBoundingBox = new Extent(minx, miny, maxx, maxy);
@@ -518,19 +515,19 @@ namespace DotSpatial.MapWebClient
 
             if (Version == "1.3.0")
             {
-                XmlNodeList CrsExtent = xmlLayer.SelectNodes("sm:BoundingBox", _nsmgr);
+                XmlNodeList crsExtent = xmlLayer.SelectNodes("sm:BoundingBox", _nsmgr);
 
-                if (CrsExtent != null)
+                if (crsExtent != null)
                 {
                     layer.CrsExtent = new Extent[layer.Crs.Count()];
 
-                    foreach (XmlNode nd in CrsExtent)
+                    foreach (XmlNode nd in crsExtent)
                     {
-                        string CRS = nd.Attributes["CRS"].Value;
+                        string crs = nd.Attributes["CRS"].Value;
 
                         double minx, miny, maxx, maxy;
 
-                        int i = Array.IndexOf(layer.Crs, CRS);
+                        int i = Array.IndexOf(layer.Crs, crs);
 
                         if (!double.TryParse(nd.Attributes["minx"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out minx) &
                             !double.TryParse(nd.Attributes["miny"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out miny) &
@@ -569,9 +566,9 @@ namespace DotSpatial.MapWebClient
             else
             {
 
-                XmlNodeList CrsExtent = xmlLayer.SelectNodes("sm:BoundingBox", _nsmgr);
+                XmlNodeList crsExtent = xmlLayer.SelectNodes("sm:BoundingBox", _nsmgr);
 
-                if (CrsExtent != null)
+                if (crsExtent != null)
                 {
 
                     int n = layer.Crs.Count();
@@ -580,13 +577,13 @@ namespace DotSpatial.MapWebClient
 
                     layer.CrsExtent = new Extent[n];
 
-                    foreach (XmlNode nd in CrsExtent)
+                    foreach (XmlNode nd in crsExtent)
                     {
-                        string CRS = nd.Attributes["SRS"].Value;
+                        string crs = nd.Attributes["SRS"].Value;
 
                         double minx, miny, maxx, maxy;
 
-                        int i = Array.IndexOf(layer.Crs, CRS);
+                        int i = Array.IndexOf(layer.Crs, crs);
 
                         if (i < 0) i = 0;
 
@@ -601,14 +598,14 @@ namespace DotSpatial.MapWebClient
 
                 }
 
-                XmlNode ScaleHint = xmlLayer.SelectSingleNode("sm:ScaleHint", _nsmgr);
+                XmlNode scaleHint = xmlLayer.SelectSingleNode("sm:ScaleHint", _nsmgr);
 
-                if (ScaleHint != null)
+                if (scaleHint != null)
                 {
                     double min, max;
 
-                    if (!double.TryParse(ScaleHint.Attributes["min"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out min) ||
-                        !double.TryParse(ScaleHint.Attributes["max"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out max))
+                    if (!double.TryParse(scaleHint.Attributes["min"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out min) ||
+                        !double.TryParse(scaleHint.Attributes["max"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out max))
                     {
                         throw new ArgumentException("No hint scale on layer '" + layer.Name + "'");
                     }
@@ -622,7 +619,7 @@ namespace DotSpatial.MapWebClient
             return layer;
         }
 
-        private List<ServerLayer> GetVisibleLayer(ServerLayer layer=null,List<ServerLayer> list = null)
+        private List<ServerLayer> GetVisibleLayer(ServerLayer layer = null, List<ServerLayer> list = null)
         {
             if (list == null)
             {
@@ -630,18 +627,18 @@ namespace DotSpatial.MapWebClient
             }
 
             if (layer == null) layer = _layer;
-            
-            if (layer.visible == true)
-            {
-                    if (layer.Name != null) list.Add(layer);
 
-                    if (layer.ChildLayers != null)
+            if (layer.visible)
+            {
+                if (layer.Name != null) list.Add(layer);
+
+                if (layer.ChildLayers != null)
+                {
+                    foreach (ServerLayer l in layer.ChildLayers)
                     {
-                        foreach (ServerLayer l in layer.ChildLayers)
-                        {
-                            GetVisibleLayer(l, list);
-                        }
+                        GetVisibleLayer(l, list);
                     }
+                }
 
             }
 
@@ -767,7 +764,7 @@ namespace DotSpatial.MapWebClient
                             tn.ImageUrl = _layer.Style[0].LegendUrl.OnlineResource.OnlineResource;
                         }
                     }
-                
+
 
                     List(tree, _layer, tn);
                 }
@@ -795,18 +792,18 @@ namespace DotSpatial.MapWebClient
             }
         }
 
-        public string GetHTML(ref GDIMap m, Size size, string DivID)
+        public string GetHTML(ref GDIMap m, Size size, string divId)
         {
             string htm = "";
 
             int w = size.Width;
             int h = size.Height;
 
-            Rectangle Rect = m.ProjToPixel(m.ViewExtents);
+            Rectangle rect = m.ProjToPixel(m.ViewExtents);
 
-            Extent WmsEx = m.ViewExtents;
+            Extent wmsEx = m.ViewExtents;
 
-            if(Projection != m.Projection)
+            if (Projection != m.Projection)
             {
 
                 double[] xy = new double[4];
@@ -819,17 +816,17 @@ namespace DotSpatial.MapWebClient
                 double[] z = { };
 
 
-                Projections.Reproject.ReprojectPoints(xy, z, m.Projection, Projection, 0, 2);
+                Reproject.ReprojectPoints(xy, z, m.Projection, Projection, 0, 2);
 
-                WmsEx.MinX = Math.Min(xy[0], xy[2]);
-                WmsEx.MinY = Math.Min(xy[1], xy[3]);
+                wmsEx.MinX = Math.Min(xy[0], xy[2]);
+                wmsEx.MinY = Math.Min(xy[1], xy[3]);
 
-                WmsEx.MaxX = Math.Max(xy[0], xy[2]);
-                WmsEx.MaxY = Math.Max(xy[1], xy[3]);
+                wmsEx.MaxX = Math.Max(xy[0], xy[2]);
+                wmsEx.MaxY = Math.Max(xy[1], xy[3]);
 
-                if (double.IsNaN(WmsEx.MinX) | double.IsNaN(WmsEx.MinY) | double.IsNaN(WmsEx.MaxX) | double.IsNaN(WmsEx.MaxY))
+                if (double.IsNaN(wmsEx.MinX) | double.IsNaN(wmsEx.MinY) | double.IsNaN(wmsEx.MaxX) | double.IsNaN(wmsEx.MaxY))
                 {
-                    htm += "<div id=\"Back_" + DivID + "\" style=\"position:absolute; left:" + Rect.Left.ToString() + "px; top:" + Rect.Top.ToString() + "px; width:" + Rect.Width.ToString() + "px; height:" + Rect.Height.ToString() + "px; \">";
+                    htm += "<div id=\"Back_" + divId + "\" style=\"position:absolute; left:" + rect.Left.ToString() + "px; top:" + rect.Top.ToString() + "px; width:" + rect.Width.ToString() + "px; height:" + rect.Height.ToString() + "px; \">";
                     htm += "<p>Out of WMS zone</p>";
                     htm += "</div>";
 
@@ -837,9 +834,9 @@ namespace DotSpatial.MapWebClient
                 }
             }
 
-            htm += "<div id=\"Back_" + DivID + "\" style=\"position:absolute; left:" + Rect.Left.ToString() + "px; top:" + Rect.Top.ToString() + "px; width:" + Rect.Width.ToString() + "px; height:" + Rect.Height.ToString() + "px; \">";
+            htm += "<div id=\"Back_" + divId + "\" style=\"position:absolute; left:" + rect.Left.ToString() + "px; top:" + rect.Top.ToString() + "px; width:" + rect.Width.ToString() + "px; height:" + rect.Height.ToString() + "px; \">";
 
-            double Hint = Math.Sqrt(Math.Pow(m.ViewExtents.Width / size.Width, 2) + Math.Pow(m.ViewExtents.Height / size.Height, 2));
+            double hint = Math.Sqrt(Math.Pow(m.ViewExtents.Width / size.Width, 2) + Math.Pow(m.ViewExtents.Height / size.Height, 2));
 
             List<ServerLayer> list = GetVisibleLayer();
 
@@ -853,12 +850,12 @@ namespace DotSpatial.MapWebClient
 
                 int num = list.Count;
 
-                string Lays = "";
+                string lays = "";
                 for (int i = 0; i < num - 1; i++)
                 {
-                    Lays += list[i].Name + ",";
+                    lays += list[i].Name + ",";
                 }
-                Lays += list[num - 1].Name;
+                lays += list[num - 1].Name;
 
 
                 string svr = Server;
@@ -877,9 +874,9 @@ namespace DotSpatial.MapWebClient
                 string f = svr;
                 f += "Version=" + Version;
                 f += "&REQUEST=GetMap";
-                f += "&Layers=" + Lays;
+                f += "&Layers=" + lays;
 
-                if (Version=="1.3.0")
+                if (Version == "1.3.0")
                 {
                     f += "&crs=" + CRS;
                 }
@@ -887,7 +884,7 @@ namespace DotSpatial.MapWebClient
                 {
                     f += "&srs=" + CRS;
                 }
-                
+
                 f += "&format=image/png";
 
                 f += "&styles=";
@@ -897,7 +894,7 @@ namespace DotSpatial.MapWebClient
                 f += "&TRANSPARENT=TRUE";
 
                 //string t = string.Format(CultureInfo.InvariantCulture, f, m.ViewExtents.MinX, m.ViewExtents.MinY, m.ViewExtents.MaxX, m.ViewExtents.MaxY, size.Width, size.Height);
-                string t = string.Format(CultureInfo.InvariantCulture, f, WmsEx.MinX, WmsEx.MinY, WmsEx.MaxX, WmsEx.MaxY, size.Width, size.Height);
+                string t = string.Format(CultureInfo.InvariantCulture, f, wmsEx.MinX, wmsEx.MinY, wmsEx.MaxX, wmsEx.MaxY, size.Width, size.Height);
 
                 string o = "";
                 if (Opacity != 100)
@@ -909,17 +906,12 @@ namespace DotSpatial.MapWebClient
                 htm += "<img alt=\"\" style=\"position:absolute; " + o + "left:0px; top:0px; width:" + size.Width.ToString() + "px; height:" + size.Height.ToString() + "px; \" src=\"" + t + "\" />";
 
             }
-            
+
             htm += "</div>";
 
             return htm;
 
         }
-
-
-
-
-
 
         #region WMS Data structures
 
@@ -1382,7 +1374,7 @@ namespace DotSpatial.MapWebClient
 
     //        return x;
     //    }
- 
+
     //    public void  ReadCapabilities(string server, string XMLCustomFile="",  WebProxy proxy=null)
     //    {
     //        Uri u;
@@ -1395,8 +1387,8 @@ namespace DotSpatial.MapWebClient
     //        {
     //            u = new Uri(XMLCustomFile);
     //        }
-                                
-            
+
+
     //        Stream stream;
     //        if (u.IsAbsoluteUri && u.IsFile) //assume web if relative because IsFile is not supported on relative paths
     //        {
@@ -1723,7 +1715,7 @@ namespace DotSpatial.MapWebClient
     //            for (int i = 0; i < xnlLayers.Count; i++)
     //                layer.ChildLayers[i] = ParseLayer(xnlLayers[i]);
     //        }
-            
+
     //        if (Version == "1.3.0")
     //        {
     //            XmlNode GeographicBoundingBox = xmlLayer.SelectSingleNode("sm:EX_GeographicBoundingBox", _nsmgr);
@@ -1824,7 +1816,7 @@ namespace DotSpatial.MapWebClient
     //                int n = layer.Crs.Count();
 
     //                if (n <= 0) n = 1;
-                    
+
     //                layer.CrsExtent = new Extent[n];
 
     //                foreach (XmlNode nd in CrsExtent)
@@ -1979,7 +1971,7 @@ namespace DotSpatial.MapWebClient
     //    public void CheckLayer(string[] keys, bool check, WmsServerLayer l = null)
     //    {
     //        if (keys.Count() == 0) return;
-            
+
     //        if (l == null)
     //        {
     //            if (_layer.Title == keys[0])
@@ -2095,7 +2087,7 @@ namespace DotSpatial.MapWebClient
     //                svr += "&";
     //            else
     //                svr += "?";
-   
+
 
     //            string f = svr +
     //                        "Version=1.1.1" +// + Version +
@@ -2128,7 +2120,7 @@ namespace DotSpatial.MapWebClient
     //    public string GetHTMLOld(ref Map m, Size size, string ClientID)
     //    {
     //        TileInfoSet[] Ts = GetTile(m.ViewExtents, size);
-            
+
     //        if (Ts.Count() == 0)
     //        {
     //            return "<p> No layer </p>";

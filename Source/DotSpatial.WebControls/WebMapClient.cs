@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using DotSpatial.Projections;
 using DotSpatial.Data;
 using System.Drawing;
 using System.Net;
-using DotSpatial.Controls;
-using System.Globalization;
 using DotSpatial.WebControls;
 
 namespace DotSpatial.MapWebClient

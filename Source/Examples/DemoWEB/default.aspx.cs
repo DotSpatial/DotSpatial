@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using DotSpatial.MapWebClient;
 using DotSpatial.Projections;
 using DotSpatial.Data;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using System.Drawing;
-using System.Net;
 
 namespace DemoWEB
 {
@@ -32,7 +26,7 @@ namespace DemoWEB
         private void CreateMap()
         {
 
-            String BasePath = Server.MapPath(@"~\Shape");
+            string basePath = Server.MapPath(@"~\Shape");
             WebMap1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
             WebMap1.MapViewExtents = new Extent(-20037508.342789, -20037508.342789, 20037508.342789, 20037508.342789);
 
@@ -40,49 +34,46 @@ namespace DemoWEB
             WebMapClient client = new WebMapClient();
 
 
-            WMTClient WMT1 = new WMTClient();
-            WMT1.Create(WebServiceType.BingHybrid);
-            
-            
-            string WMSServerWMS0 = "http://maps.ngdc.noaa.gov/soap/web_mercator/nos_hydro/MapServer/WMSServer";
-            WMSClient WMS0 = new WMSClient();
+            WMTClient wmt1 = new WMTClient();
+            wmt1.Create(WebServiceType.BingHybrid);
 
-            WMS0.ReadCapabilities(WMSServerWMS0);
-            WMS0.CRS = "EPSG:3857";
-            WMS0.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+
+            string WMSServerWMS0 = "http://maps.ngdc.noaa.gov/soap/web_mercator/marine_geology/MapServer/WMSServer";
+            WMSClient wms0 = new WMSClient();
+
+            wms0.ReadCapabilities(WMSServerWMS0);
+            wms0.CRS = "EPSG:3857";
+            wms0.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
 
 
             string WMSServerWMS1 = "http://maps.ngdc.noaa.gov/soap/web_mercator/graticule/MapServer/WMSServer";
 
-            WMSClient WMS1 = new WMSClient();
+            WMSClient wms1 = new WMSClient();
 
-            WMS1.ReadCapabilities(WMSServerWMS1);
-            WMS1.CRS = "EPSG:3857";
-            WMS1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
+            wms1.ReadCapabilities(WMSServerWMS1);
+            wms1.CRS = "EPSG:3857";
+            wms1.Projection = KnownCoordinateSystems.Projected.World.WebMercator;
 
 
-            client.AddService(WMT1);
-            client.AddService(WMS0);
-            client.AddService(WMS1);
+            client.AddService(wmt1);
+            client.AddService(wms0);
+            client.AddService(wms1);
 
             WebMap1.Back = client;
 
 
-            IMapFeatureLayer CountriesLayer = (IMapFeatureLayer)WebMap1.AddLayer(BasePath + @"\10m_admin_0_countries.shp");
-            PolygonSymbolizer SymbCountries = new PolygonSymbolizer(Color.FromArgb(0, 191, 0));
-            SymbCountries.SetFillColor(Color.Transparent);
-            SymbCountries.OutlineSymbolizer = new LineSymbolizer(Color.Magenta, 1);
-            CountriesLayer.Symbolizer = SymbCountries;
+            IMapFeatureLayer countriesLayer = (IMapFeatureLayer)WebMap1.AddLayer(basePath + @"\10m_admin_0_countries.shp");
+            PolygonSymbolizer symbCountries = new PolygonSymbolizer(Color.FromArgb(0, 191, 0));
+            symbCountries.SetFillColor(Color.Transparent);
+            symbCountries.OutlineSymbolizer = new LineSymbolizer(Color.Magenta, 1);
+            countriesLayer.Symbolizer = symbCountries;
 
 
-            IMapFeatureLayer Graticules30Layer = (IMapFeatureLayer)WebMap1.AddLayer(BasePath + @"\10m_graticules_30.shp");
-            LineSymbolizer SymbGratitules30 = new LineSymbolizer(Color.Red, 1);
-            Graticules30Layer.Symbolizer = SymbGratitules30;
+            IMapFeatureLayer graticules30Layer = (IMapFeatureLayer)WebMap1.AddLayer(basePath + @"\10m_graticules_30.shp");
+            LineSymbolizer symbGratitules30 = new LineSymbolizer(Color.Red, 1);
+            graticules30Layer.Symbolizer = symbGratitules30;
 
-            Graticules30Layer.IsVisible = false;
-
-
-
+            graticules30Layer.IsVisible = false;
         }
 
     }

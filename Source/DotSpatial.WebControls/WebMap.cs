@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -11,14 +10,12 @@ using System.Drawing;
 using System.Web.Caching;
 using System.IO;
 using DotSpatial.Data;
-using DotSpatial.Topology;
 using System.Globalization;
-using System.Collections.Specialized;
 using DotSpatial.Symbology;
 using System.Data;
 using DotSpatial.MapWebClient;
 using DotSpatial.Projections;
-
+using GeoAPI.Geometries;
 
 
 namespace DotSpatial.WebControls
@@ -27,14 +24,14 @@ namespace DotSpatial.WebControls
     /// <summary>
     /// Event Args on click
     /// </summary>
-    public class MapClickEventArgs: EventArgs
+    public class MapClickEventArgs : EventArgs
     {
-   
-        private int _button=-999;
+
+        private int _button = -999;
         /// <summary>
         /// button clicked 1=left, 2= right
         /// </summary>
-        public int button
+        public int Button
         {
             set
             {
@@ -47,62 +44,37 @@ namespace DotSpatial.WebControls
 
         }
 
-        private double _x=0;
         /// <summary>
         /// x coordinate on map
         /// </summary>
-        public double x
+        public double X { set; get; }
+
+        public MapClickEventArgs()
         {
-            set
-            {
-                _x = value;
-            }
-            get
-            {
-                return _x;
-            }
+            Y = 0;
+            X = 0;
         }
-        
-        private double _y=0;
+
         /// <summary>
         /// y coordinate on map
         /// </summary>
-        public double y
-        {
-            set
-            {
-                _y = value;
-            }
-            get
-            {
-                return _y;
-            }
-
-        }
-
+        public double Y { set; get; }
     }
 
     /// <summary>
     /// Event args on Data Event
     /// </summary>
-    public class DataGridEventArgs: EventArgs
+    public class DataGridEventArgs : EventArgs
     {
-        private DataTable _datatable = null;
+        public DataGridEventArgs()
+        {
+            Recordsource = null;
+        }
+
         /// <summary>
         /// Recordsource
         /// </summary>
-        public DataTable Recordsource
-        {
-            set
-            {
-                _datatable = value;
-            }
-            get
-            {
-                return _datatable;
-            }
-        }
-
+        public DataTable Recordsource { set; get; }
     }
 
     #endregion
@@ -116,31 +88,31 @@ namespace DotSpatial.WebControls
         /// <summary>
         /// Occurs when map is clicked with Pan&click tool active
         /// </summary>
-        public delegate void delegateMapClick(Object Sender, MapClickEventArgs e);
+        public delegate void DelegateMapClick(object sender, MapClickEventArgs e);
         /// <summary>
         /// Occurs when map is clicked with Pan&click tool active
         /// </summary>
-        public event delegateMapClick MapClick;
+        public event DelegateMapClick MapClick;
 
-        public delegate void delegateDataOnGrid(Object Sender, DataGridEventArgs e);
-        public event delegateDataOnGrid DataOnGrid;
+        public delegate void DelegateDataOnGrid(object sender, DataGridEventArgs e);
+        public event DelegateDataOnGrid DataOnGrid;
 
-        public delegate void delegateAddFeature(Object Sender, FeatureSet fs, Feature f);
-        public event delegateAddFeature AddFeature;
+        public delegate void DelegateAddFeature(object sender, FeatureSet fs, Feature f);
+        public event DelegateAddFeature AddFeature;
 
-        public delegate void delegateOnRedraw(Object Sender);
-        public event delegateOnRedraw OnRedraw;
+        public delegate void DelegateOnRedraw(object sender);
+        public event DelegateOnRedraw OnRedraw;
 
         [Browsable(false)]
         public WebMapClient Back
         {
             set
             {
-                System.Web.HttpContext.Current.Session["bck_" + SessionName] = value;
+                HttpContext.Current.Session["bck_" + SessionName] = value;
             }
             get
             {
-                object o = System.Web.HttpContext.Current.Session["bck_" + SessionName];
+                object o = HttpContext.Current.Session["bck_" + SessionName];
 
                 if (o != null)
                 {
@@ -157,11 +129,11 @@ namespace DotSpatial.WebControls
         {
             set
             {
-                System.Web.HttpContext.Current.Session["mrk_" + SessionName] = value;
+                HttpContext.Current.Session["mrk_" + SessionName] = value;
             }
             get
             {
-                object o = System.Web.HttpContext.Current.Session["mrk_" + SessionName];
+                object o = HttpContext.Current.Session["mrk_" + SessionName];
 
                 if (o != null)
                 {
@@ -205,14 +177,15 @@ namespace DotSpatial.WebControls
 
                         if (MapClick != null)
                         {
-                            System.Drawing.Point pt1 = new System.Drawing.Point(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
+                            Point pt1 = new Point(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
                             Coordinate pm1 = m.PixelToProj(pt1);
 
-                            MapClickEventArgs mc = new MapClickEventArgs();
-
-                            mc.button = Convert.ToInt32(arg[1]); ;
-                            mc.x = pm1.X;
-                            mc.y = pm1.Y;
+                            MapClickEventArgs mc = new MapClickEventArgs
+                            {
+                                Button = Convert.ToInt32(arg[1]),
+                                X = pm1.X,
+                                Y = pm1.Y
+                            };
 
                             MapClick(this, mc);
                         }
@@ -220,9 +193,9 @@ namespace DotSpatial.WebControls
                     }
                     break;
 
-//                case "ADDFEATURE":  //moved to RaiseCallbackEvent
+                //                case "ADDFEATURE":  //moved to RaiseCallbackEvent
 
-//                case "DATAGRID":  //never gets here - wrong place? moved to RaiseCallbackEvent
+                //                case "DATAGRID":  //never gets here - wrong place? moved to RaiseCallbackEvent
 
                 case "FORCEREFRESH":
                     {
@@ -245,39 +218,36 @@ namespace DotSpatial.WebControls
         {
             get
             {
-                GDIMap m = (GDIMap)System.Web.HttpContext.Current.Session[SessionName];
+                GDIMap m = (GDIMap)HttpContext.Current.Session[SessionName];
 
                 if (m == null)
                 {
                     m = new GDIMap();
 
-                    //m.Legend = new Legend();
-
-                    System.Web.HttpContext.Current.Session[SessionName] = m;
-
+                    HttpContext.Current.Session[SessionName] = m;
                 }
 
                 return m;
             }
             set
             {
-                Object o = System.Web.HttpContext.Current.Session[SessionName];
+                object o = HttpContext.Current.Session[SessionName];
 
                 if (o == null)
                 {
-                    System.Web.HttpContext.Current.Session[SessionName] = value;
+                    HttpContext.Current.Session[SessionName] = value;
                 }
                 else
                 {
                     GDIMap newMap = value;
-                    GDIMap actMap = (GDIMap)System.Web.HttpContext.Current.Session[SessionName];
+                    GDIMap actMap = (GDIMap)HttpContext.Current.Session[SessionName];
 
                     newMap.Size = actMap.Size;
 
                     newMap.ViewExtents = actMap.ViewExtents;
 
-                    System.Web.HttpContext.Current.Session[SessionName] = newMap;
-                
+                    HttpContext.Current.Session[SessionName] = newMap;
+
                 }
             }
         }
@@ -313,9 +283,9 @@ namespace DotSpatial.WebControls
         {
             get
             {
-                string name="";
+                string name = "";
 
-                Object o = ViewState[ClientID];
+                object o = ViewState[ClientID];
 
                 if (o == null)
                 {
@@ -329,7 +299,7 @@ namespace DotSpatial.WebControls
 
                 return name;
             }
-        
+
         }
 
         [Browsable(false)]
@@ -337,19 +307,19 @@ namespace DotSpatial.WebControls
         {
             set
             {
-                System.Web.HttpContext.Current.Session["MapViewExtents" + SessionName] = value;
+                HttpContext.Current.Session["MapViewExtents" + SessionName] = value;
 
             }
             get
             {
-                Object o = System.Web.HttpContext.Current.Session["MapViewExtents" + SessionName];
+                object o = HttpContext.Current.Session["MapViewExtents" + SessionName];
 
                 if (o == null)
                 {
                     return null;
                 }
 
-                return (Extent)System.Web.HttpContext.Current.Session["MapViewExtents" + SessionName];
+                return (Extent)HttpContext.Current.Session["MapViewExtents" + SessionName];
 
             }
         }
@@ -358,19 +328,19 @@ namespace DotSpatial.WebControls
         {
             get
             {
-                Object o = System.Web.HttpContext.Current.Session["size_" + SessionName];
+                object o = HttpContext.Current.Session["size_" + SessionName];
 
                 if (o == null)
                 {
                     return new Size(0, 0);
                 }
-                return (Size)System.Web.HttpContext.Current.Session["size_" + SessionName];
+                return (Size)HttpContext.Current.Session["size_" + SessionName];
             }
             set
             {
                 Size sz = value;
-                System.Web.HttpContext.Current.Session["size_" + SessionName] = sz;
-                
+                HttpContext.Current.Session["size_" + SessionName] = sz;
+
                 ControlMap.Size = sz;
             }
         }
@@ -391,8 +361,8 @@ namespace DotSpatial.WebControls
         public void Move(ref GDIMap m, int direction)
         {
 
-            int w = ControlSize.Width/2;
-            int h = ControlSize.Height/2;
+            int w = ControlSize.Width / 2;
+            int h = ControlSize.Height / 2;
 
             int dx = 0, dy = 0;
 
@@ -421,14 +391,14 @@ namespace DotSpatial.WebControls
                     break;
             }
 
-            m.MapFrame.Pan(new System.Drawing.Point(dx, dy));
+            m.MapFrame.Pan(new Point(dx, dy));
         }
 
         protected override void RenderContents(HtmlTextWriter output)
         {
             base.RenderContents(output);
-            
-            if (this.DesignMode )
+
+            if (this.DesignMode)
             {
                 output.Write("<table style='border-color:Black;background-color:" + BackColor.ToString() + "'><tr><td style='vertical-align:middle;text-align:center'> Map: " + ClientID + "</td></tr></table>");
 
@@ -443,36 +413,36 @@ namespace DotSpatial.WebControls
             {
                 if (Page.IsPostBack)
                 {
-                    GDIMap m = ControlMap; 
-                    string htm = redraw(ref m);
+                    GDIMap m = ControlMap;
+                    string htm = Redraw(ref m);
                     output.Write(htm);
                 }
             }
-                        
+
         }
 
-  
-        private string refresh(ref GDIMap m)
-        {
-            Rectangle Rect = m.ProjToPixel(m.ViewExtents); 
 
-            WebMapClient MapClient = (WebMapClient)System.Web.HttpContext.Current.Session["bck_" + SessionName];
+        private string Refresh(ref GDIMap m)
+        {
+            Rectangle rect = m.ProjToPixel(m.ViewExtents);
+
+            WebMapClient mapClient = (WebMapClient)HttpContext.Current.Session["bck_" + SessionName];
 
             string htm = "";
-            string MS = Milliseconds();
+            string ms = Milliseconds();
 
             NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
             MapOnCache(ref m);
 
-            htm = htm + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + MS; // + "|";
+            htm = htm + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + ms; // + "|";
 
 
-            if (MapClient != null)
+            if (mapClient != null)
             {
 
-                string h = MapClient.GetHTML(ref m, ControlSize, ClientID);
+                string h = mapClient.GetHTML(ref m, ControlSize, ClientID);
 
-                htm += "|" + h + "|" + Rect.Left.ToString() + "|" + Rect.Top.ToString() + "|" + Rect.Width.ToString() + "|" + Rect.Height.ToString() + "|" + "copi";
+                htm += "|" + h + "|" + rect.Left.ToString() + "|" + rect.Top.ToString() + "|" + rect.Width.ToString() + "|" + rect.Height.ToString() + "|" + "copi";
 
             }
             else
@@ -480,12 +450,12 @@ namespace DotSpatial.WebControls
                 htm += "|Tile|Tl|Tt|Tw|Th|(C)";
             }
 
-            WebMarkers Markers = (WebMarkers)System.Web.HttpContext.Current.Session["mrk_" + SessionName];
+            WebMarkers markers = (WebMarkers)HttpContext.Current.Session["mrk_" + SessionName];
 
-            if (Markers != null)
+            if (markers != null)
             {
                 htm += "|";
-                htm += Markers.ToHtml(ref m);
+                htm += markers.ToHtml(ref m);
             }
             else
             {
@@ -495,12 +465,12 @@ namespace DotSpatial.WebControls
             htm = htm + "|" + m.ViewExtents.MinX.ToString(nfi) + "|";
             htm = htm + m.ViewExtents.MinY.ToString(nfi) + "|";
             htm = htm + m.ViewExtents.MaxX.ToString(nfi) + "|";
-            htm = htm + m.ViewExtents.MaxY.ToString(nfi) ;
+            htm = htm + m.ViewExtents.MaxY.ToString(nfi);
 
             return htm;
         }
 
-        private string redraw(ref GDIMap m)
+        private string Redraw(ref GDIMap m)
         {
             //MessageBox.Show(this.ID + " " + Name);
 
@@ -508,110 +478,110 @@ namespace DotSpatial.WebControls
 
             //Rectangle Rect = new Rectangle(0, 0, (int)this.Width.Value, (int)this.Height.Value);
 
-            bool NullMap = (this.DesignMode | m == null);
-            
+            bool nullMap = (this.DesignMode | m == null);
+
             NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
 
-            string MS = Milliseconds();
+            string ms = Milliseconds();
 
-            if (!NullMap) MapOnCache(ref m);
+            if (!nullMap) MapOnCache(ref m);
 
             string htm = "";
 
             htm += "<div id=\"Container_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%;  overflow:hidden \">";
 
-                WebMapClient MapClient = (WebMapClient)System.Web.HttpContext.Current.Session["bck_" + SessionName];
+            WebMapClient mapClient = (WebMapClient)HttpContext.Current.Session["bck_" + SessionName];
 
-                if (MapClient != null)
+            if (mapClient != null)
+            {
+
+                string x = mapClient.GetHTML(ref m, ControlSize, ClientID);
+
+                htm += x;
+
+            }
+
+            htm += "<div id=\"DivCanvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:2; overflow:hidden \">";
+
+            if (!nullMap)
+            {
+                htm += "<img id=\"Buffer_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; z-index:1; \" src=\"" + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + ms + "\" />";
+                htm += "<img id=\"Canvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; z-index:2; \" src=\"" + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + ms + "\" />";
+            }
+
+            htm += "</div>";
+
+            htm += "<div id=\"EditCanvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:1000; overflow:hidden \">";
+            htm += "</div>";
+
+
+            htm += "<div id=\"Wait_" + ClientID + "\" style=\"position:absolute; visibility:visible; left:0px; top:0px; width:100%; height:100%;background-color:white;filter:alpha(opacity=50);z-index:2000\">";
+
+            htm += "<table style=\"width:100%; height:100%\"><tr><td style=\"vertical-align:middle; text-align:center\">";
+            htm += "<img id=\"ImgWait_" + ClientID + "\" alt=\"\" src=\"" + Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotSpatial.WebControls.Images.Wait.gif") + "\" style=\"z-index:2001\" />";
+            htm += "</td></tr></table>";
+
+            htm += "</div>";
+
+            int activeLayerType = -1;
+
+            if (m.Layers.SelectedLayer != null)
+            {
+                //                    IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
+                // exception if cast MapRasterLayer in previous line, so use IMapLayer:
+                IMapLayer mfl = m.Layers.SelectedLayer;
+
+                activeLayerType = 0;
+                if (mfl.GetType() == typeof(MapPointLayer))
                 {
-
-                    string x = MapClient.GetHTML(ref m, ControlSize, ClientID);
-
-                    htm += x;
-
+                    activeLayerType = 1;
+                }
+                if (mfl.GetType() == typeof(MapLineLayer))
+                {
+                    activeLayerType = 2;
+                }
+                if (mfl.GetType() == typeof(MapPolygonLayer))
+                {
+                    activeLayerType = 3;
                 }
 
-                htm += "<div id=\"DivCanvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:2; overflow:hidden \">";
+            }
 
-                if (!NullMap)
-                {
-                    htm += "<img id=\"Buffer_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; z-index:1; \" src=\"" + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + MS + "\" />";
-                    htm += "<img id=\"Canvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; z-index:2; \" src=\"" + "ImageHandler.ashx?ID=" + (string)ViewState[ClientID] + "?" + MS + "\" />";
-                }   
+            htm += "<div id=\"LayerType_" + ClientID + "\" style=\"visibility:hidden;\">" + activeLayerType.ToString() + "</div>";
 
+
+
+            // QQQ
+            //if (theTiler != null)
+            //{
+            //    htm += "<div id=\"Copyright_" + ClientID + "\" style=\"position:absolute; top:auto; left:3px; bottom:3px; right:auto; width:auto; z-index:200000; font-family: Arial, Helvetica, sans-serif; font-size: x-small; font-weight: normal; color: #000000;  border: 1px solid #C0C0C0; background-color: #FFFFFF \">&nbsp;" + theTiler.Copyright + "&nbsp;</div>";
+            //}
+
+            //htm += "<div id=\"StatusBar_" + ClientID + "\" style=\"position:absolute; top:auto; left:auto; bottom:3px; right:3px; width:auto; height:24px; border: 1px solid #000000; background-color: #FFFFFF; z-index:1000\"></div>";
+
+            htm += "<div id=\"MinX_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MinX.ToString(nfi) + "</div>";
+            htm += "<div id=\"MinY_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MinY.ToString(nfi) + "</div>";
+            htm += "<div id=\"MaxX_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MaxX.ToString(nfi) + "</div>";
+            htm += "<div id=\"MaxY_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MaxY.ToString(nfi) + "</div>";
+
+
+            string islatlon = "0";
+
+            //if (m.Extent.MaxX <= 180 && m.Extent.MinX >= -180.0 & m.Extent.MinY >= -90 & m.Extent.MaxY <= 90.0)
+            if (m.Projection.IsLatLon == true) islatlon = "1";
+
+            htm += "<div id=\"IsLatLon_" + ClientID + "\" style=\"visibility:hidden;\" >" + islatlon + "</div>";
+
+            htm += "<div id =\"Floater_" + ClientID + "\" style=\"border: 1px solid #000000; background: #FFFF00; position:absolute; width: 0px; height:0px; top:0px; left:0px; visibility:hidden; z-index:11\" onmousedown=\"\" onmousemove=\"\" onmouseup=\"\" ondrag(event)=\"return false\" onSelectStart=\"return false\"></div>";
+
+            WebMarkers markers = (WebMarkers)HttpContext.Current.Session["mrk_" + SessionName];
+
+            if (markers != null)
+            {
+                htm += "<div id =\"Markers_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:300\">";
+                htm += markers.ToHtml(ref m);
                 htm += "</div>";
-     
-                htm += "<div id=\"EditCanvas_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:1000; overflow:hidden \">";
-                htm += "</div>";
-
-
-                htm += "<div id=\"Wait_" + ClientID + "\" style=\"position:absolute; visibility:visible; left:0px; top:0px; width:100%; height:100%;background-color:white;filter:alpha(opacity=50);z-index:2000\">";
-    
-                    htm+="<table style=\"width:100%; height:100%\"><tr><td style=\"vertical-align:middle; text-align:center\">";
-                    htm += "<img id=\"ImgWait_" + ClientID + "\" alt=\"\" src=\"" + Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotSpatial.WebControls.Images.Wait.gif") + "\" style=\"z-index:2001\" />";
-                    htm += "</td></tr></table>";
-
-                htm += "</div>";
-
-                int ActiveLayerType = -1;
-
-                if (m.Layers.SelectedLayer != null)
-                {
-//                    IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
-// exception if cast MapRasterLayer in previous line, so use IMapLayer:
-                    IMapLayer MFL = (IMapLayer)m.Layers.SelectedLayer;
-                        
-                    ActiveLayerType = 0;
-                    if(MFL.GetType() == typeof(MapPointLayer))
-                    {
-                        ActiveLayerType = 1;
-                    }
-                    if(MFL.GetType() == typeof( MapLineLayer))
-                    {
-                        ActiveLayerType = 2;
-                    }
-                    if(MFL.GetType() == typeof( MapPolygonLayer))
-                    {
-                        ActiveLayerType = 3;
-                    }
-                       
-                }
-                    
-                htm += "<div id=\"LayerType_" + ClientID + "\" style=\"visibility:hidden;\">" + ActiveLayerType.ToString() + "</div>";
-                    
-
-
-                // QQQ
-                //if (theTiler != null)
-                //{
-                //    htm += "<div id=\"Copyright_" + ClientID + "\" style=\"position:absolute; top:auto; left:3px; bottom:3px; right:auto; width:auto; z-index:200000; font-family: Arial, Helvetica, sans-serif; font-size: x-small; font-weight: normal; color: #000000;  border: 1px solid #C0C0C0; background-color: #FFFFFF \">&nbsp;" + theTiler.Copyright + "&nbsp;</div>";
-                //}
- 
-                //htm += "<div id=\"StatusBar_" + ClientID + "\" style=\"position:absolute; top:auto; left:auto; bottom:3px; right:3px; width:auto; height:24px; border: 1px solid #000000; background-color: #FFFFFF; z-index:1000\"></div>";
-            
-                htm += "<div id=\"MinX_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MinX.ToString(nfi) + "</div>";
-                htm += "<div id=\"MinY_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MinY.ToString(nfi) + "</div>";
-                htm += "<div id=\"MaxX_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MaxX.ToString(nfi) + "</div>";
-                htm += "<div id=\"MaxY_" + ClientID + "\" style=\"visibility:hidden;\">" + m.ViewExtents.MaxY.ToString(nfi) + "</div>";
-            
-
-                string islatlon = "0";
-
-                //if (m.Extent.MaxX <= 180 && m.Extent.MinX >= -180.0 & m.Extent.MinY >= -90 & m.Extent.MaxY <= 90.0)
-                if(m.Projection.IsLatLon==true) islatlon = "1";
-
-                htm += "<div id=\"IsLatLon_" + ClientID + "\" style=\"visibility:hidden;\" >" + islatlon + "</div>";
-
-                htm += "<div id =\"Floater_" + ClientID + "\" style=\"border: 1px solid #000000; background: #FFFF00; position:absolute; width: 0px; height:0px; top:0px; left:0px; visibility:hidden; z-index:11\" onmousedown=\"\" onmousemove=\"\" onmouseup=\"\" ondrag(event)=\"return false\" onSelectStart=\"return false\"></div>";
-
-                WebMarkers Markers = (WebMarkers)System.Web.HttpContext.Current.Session["mrk_" + SessionName];
-
-                if (Markers != null)
-                {
-                    htm += "<div id =\"Markers_" + ClientID + "\" style=\"position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:300\">";
-                    htm += Markers.ToHtml(ref m);
-                    htm += "</div>";
-                }
+            }
 
 
             htm += "</div>";
@@ -633,23 +603,22 @@ namespace DotSpatial.WebControls
 
             //m.MapFrame.Print(g, r);
 
+            using (Bitmap b = m.Draw())
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    b.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] buffer = ms.ToArray();
+                    HttpContext.Current.Cache.Insert((string)ViewState[ClientID], buffer, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(1));
+                }
 
-            Bitmap b = m.Draw();
-
-            MemoryStream MS = new MemoryStream();
-            b.Save(MS, System.Drawing.Imaging.ImageFormat.Png);
-            byte[] buffer = MS.ToArray();
-            HttpContext.Current.Cache.Insert((string)ViewState[ClientID], buffer, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(1));
-           
-
-            //g.Dispose();
-            b.Dispose();
-
+                //g.Dispose();
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            
+
             base.OnPreRender(e);
 
             //if (!this.DesignMode & !Page.IsPostBack)
@@ -659,17 +628,17 @@ namespace DotSpatial.WebControls
 
                 if (!cm.IsClientScriptBlockRegistered("CallServer"))
                 {
-//                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "", true);
-                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "''", true);
+                    //                    String callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "", true);
+                    string callbackReference = cm.GetCallbackEventReference(this, "arg", "ReceiveServerData", "''", true);
                     callbackReference = callbackReference.Replace("'" + ClientID + "'", "ID");
-                    String callBackScript = "function CallServer(ID,arg) {" + callbackReference + "; }";
+                    string callBackScript = "function CallServer(ID,arg) {" + callbackReference + "; }";
                     //String callBackScript = "function CallServer(arg, context) {alert(arg.toString()+' '+context.toString()); }";
                     cm.RegisterClientScriptBlock(this.GetType(), "CallServer", callBackScript, true);
                 }
 
                 if (!cm.IsClientScriptBlockRegistered("CallPostBack"))
                 {
-                    String postBackReference = cm.GetPostBackEventReference(this, "arg");
+                    string postBackReference = cm.GetPostBackEventReference(this, "arg");
                     postBackReference = postBackReference.Replace("'" + ClientID + "'", "ID");
                     postBackReference = postBackReference.Replace("'arg'", "arg");
                     string postBackScript = "function CallPostBack(ID,arg) {" + postBackReference + ";}";
@@ -677,8 +646,8 @@ namespace DotSpatial.WebControls
                 }
 
                 //string StartUP = "window.onload = function() {Initialize(\"" + ClientID + "\")}";
-                string StartUP = "Initialize(\"" + ClientID + "\");";
-                cm.RegisterStartupScript(this.GetType(), "StartUp" + ClientID, StartUP, true);
+                string startUp = "Initialize(\"" + ClientID + "\");";
+                cm.RegisterStartupScript(this.GetType(), "StartUp" + ClientID, startUp, true);
 
                 string resourceName = "DotSpatial.WebControls.Script.WebDsScript.js";
                 cm.RegisterClientScriptResource(GetType(), resourceName);
@@ -689,24 +658,22 @@ namespace DotSpatial.WebControls
                 resourceName = "DotSpatial.WebControls.Script.wz_jsgraphics.js";
                 cm.RegisterClientScriptResource(GetType(), resourceName);
 
-// These .js scripts no longer needed with HTML tooltips (title):
-//                resourceName = "DotSpatial.WebControls.Script.wz_tooltip.js";
-//                cm.RegisterClientScriptResource(GetType(), resourceName);
+                // These .js scripts no longer needed with HTML tooltips (title):
+                //                resourceName = "DotSpatial.WebControls.Script.wz_tooltip.js";
+                //                cm.RegisterClientScriptResource(GetType(), resourceName);
 
-//                resourceName = "DotSpatial.WebControls.Script.tip_balloon.js";
-//                cm.RegisterClientScriptResource(GetType(), resourceName);
+                //                resourceName = "DotSpatial.WebControls.Script.tip_balloon.js";
+                //                cm.RegisterClientScriptResource(GetType(), resourceName);
 
                 resourceName = "DotSpatial.WebControls.Script.CookieManager.js";
                 cm.RegisterClientScriptResource(GetType(), resourceName);
-
-     
             }
 
         }
 
         protected override void CreateChildControls()
         {
-            if (!Page.IsCallback & !Page.IsPostBack )
+            if (!Page.IsCallback & !Page.IsPostBack)
             {
                 this.Attributes.Add("onmousedown", "OnMouseDown(this,event)");
                 this.Attributes.Add("onmousemove", "OnMouseMove(this,event)");
@@ -716,400 +683,398 @@ namespace DotSpatial.WebControls
             //base.CreateChildControls();
         }
 
-        private string returnValue = "";
-        private string returnCommand = "";
+        private string _returnValue = "";
+        private string _returnCommand = "";
 
         public string GetCallbackResult()
         {
 
-            string sr = string.Format("{0}|{1}|{2}", this.ClientID, returnCommand, returnValue);
+            string sr = string.Format("{0}|{1}|{2}", this.ClientID, _returnCommand, _returnValue);
 
             return sr;
 
         }
-       
-        public void RaiseCallbackEvent(String eventArgument)
-//        public virtual void RaiseCallbackEvent(String eventArgument)  //to override in subclass
+
+        public void RaiseCallbackEvent(string eventArgument)
+        //        public virtual void RaiseCallbackEvent(String eventArgument)  //to override in subclass
         {
-//            returnCommand = "REFRESH";  //unsightly refresh when change legend selection
-            returnCommand = "NOTHING";
+            //            returnCommand = "REFRESH";  //unsightly refresh when change legend selection
+            _returnCommand = "NOTHING";
 
-//            string Nm = SessionName;  //not used
+            //            string Nm = SessionName;  //not used
 
-            GDIMap m = (GDIMap)System.Web.HttpContext.Current.Session[(string)ViewState[ClientID]];
+            GDIMap m = (GDIMap)HttpContext.Current.Session[(string)ViewState[ClientID]];
 
             if (m == null) return;
 
-                string[] arg = eventArgument.Split('|');
+            string[] arg = eventArgument.Split('|');
 
-                string cmd = arg[0].ToUpper();
+            string cmd = arg[0].ToUpper();
 
-                switch (cmd)
-                {
-                    case "ZOOMALL":
+            switch (cmd)
+            {
+                case "ZOOMALL":
+                    {
+                        ZoomAll(ref m);
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "SELECT":
+                    {
+                        if (m.Layers.SelectedLayer != null)
                         {
-                            ZoomAll(ref m);
-                            returnCommand = "REFRESHANDHIDEBUFFER";
-                        }
-                        break;
-
-                    case "SELECT":
-                        {
-                            if (m.Layers.SelectedLayer != null)
-                            {
-                                System.Drawing.Point pt1 = new System.Drawing.Point(Convert.ToInt32(arg[1]), Convert.ToInt32(arg[2]));
-                                System.Drawing.Point pt2 = new System.Drawing.Point(Convert.ToInt32(arg[3]), Convert.ToInt32(arg[4]));
-
-                                Coordinate pm1 = m.PixelToProj(pt1);
-                                Coordinate pm2 = m.PixelToProj(pt2);
-
-                                Extent ex = new Extent(Math.Min(pm1.X, pm2.X), Math.Min(pm1.Y, pm2.Y),
-                                                       Math.Max(pm1.X, pm2.X), Math.Max(pm1.Y, pm2.Y));
-
-                                IEnvelope MapEnv = m.Extent.ToEnvelope();
-
-                                m.Layers.SelectedLayer.ClearSelection(out MapEnv);
-
-
-                                m.Layers.SelectedLayer.ClearSelection();
-
-                                IEnvelope affectedarea = null;
-
-//                                m.Layers.SelectedLayer.Select(m.ViewExtents.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.IntersectsExtent, out affectedarea);
-                                m.Layers.SelectedLayer.Select(ex.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.Intersects, out affectedarea);
-
-                                returnCommand = "STRUCTURE";
-
-                            }
-                            else
-                            {
-                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
-                                returnCommand = "POPUP";
-//                                returnValue = "Select a layer first.";
-//                                returnCommand = "ALERT";
-                            }
-
-                        }
-                        break;
-
-                    case "INFO":
-                        {
-
-                            System.Drawing.Point pt = new System.Drawing.Point(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
-                            Coordinate pm = m.PixelToProj(pt);
-
-                            Extent ex = new Extent(pm.X, pm.Y, pm.X, pm.Y);
-
-                            if (m.Layers.SelectedLayer != null)
-                            {
-                                FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
-
-//                                List<IFeature> flist = fs.Select(ex);  //returns empty list when IndexMode == false
-                                List<int> flist = fs.SelectIndices(ex);
-
-                                int n = flist.Count;
-
-//                                returnValue = "<table border='1'>";  //looks goofy
-                                returnValue = "<table>";
-
-                                if (n > 0)
-                                {
-                                    for (int i = 0; i < fs.DataTable.Columns.Count; i++)
-                                    {
-                                        returnValue += "<tr><td>" + fs.DataTable.Columns[i].ColumnName + 
-//                                                       "</td><td>" + flist[0].DataRow[i].ToString() + "</td></tr>";
-                                                       "</td><td>" + fs.GetFeature(flist[0]).DataRow[i].ToString() + "</td></tr>";
-                                    }
-
-                                    returnValue += "</table>";
-                                    returnCommand = "POPUP";
-                                }
-                            }
-                            else
-                            {
-                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
-                                returnCommand = "POPUP";
-//                                returnValue = "Select a layer first.";
-//                                returnCommand = "ALERT";
-                            }
-                        }
-                        break;
-
-
-                    case "RESIZE":
-                        {
-
-                            Size NewSz = new Size(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
-                            Size ActualSz = ControlSize;
-
-                            if (ActualSz.Width == 0 || ActualSz.Height == 0)
-                            {
-                                ControlSize = NewSz;
-
-                                ZoomAll(ref m);
-
-                                returnCommand = "STRUCTURE";
-                            }
-                            else
-                            {
-                                if (NewSz != ActualSz)
-                                {
-                                    ControlSize = NewSz;
-
-                                    returnCommand = "STRUCTURE";
-                                }
-                                else
-                                {
-                                    returnCommand = "NOTHING";
-                                }
-                            }
-
-                        }
-                        break;
-
-                    case "ZOOMRECT":
-                        {
-
-                            System.Drawing.Point pt1 = new System.Drawing.Point(Convert.ToInt32(arg[1]), Convert.ToInt32(arg[2]));
-                            System.Drawing.Point pt2 = new System.Drawing.Point(Convert.ToInt32(arg[3]), Convert.ToInt32(arg[4]));
+                            Point pt1 = new Point(Convert.ToInt32(arg[1]), Convert.ToInt32(arg[2]));
+                            Point pt2 = new Point(Convert.ToInt32(arg[3]), Convert.ToInt32(arg[4]));
 
                             Coordinate pm1 = m.PixelToProj(pt1);
                             Coordinate pm2 = m.PixelToProj(pt2);
 
-                            Extent x = new Extent(Math.Min(pm1.X, pm2.X),
-                                                  Math.Min(pm1.Y, pm2.Y),
-                                                  Math.Max(pm1.X, pm2.X),
-                                                  Math.Max(pm1.Y, pm2.Y));
+                            Extent ex = new Extent(Math.Min(pm1.X, pm2.X), Math.Min(pm1.Y, pm2.Y),
+                                                   Math.Max(pm1.X, pm2.X), Math.Max(pm1.Y, pm2.Y));
 
-                            m.ViewExtents = x;
-                            returnCommand = "REFRESHANDHIDEBUFFER";
+                            Envelope mapEnv;
+
+                            m.Layers.SelectedLayer.ClearSelection(out mapEnv);
+
+
+                            m.Layers.SelectedLayer.ClearSelection();
+
+                            Envelope affectedarea = null;
+
+                            //                                m.Layers.SelectedLayer.Select(m.ViewExtents.ToEnvelope(), ex.ToEnvelope(), Symbology.SelectionMode.IntersectsExtent, out affectedarea);
+                            m.Layers.SelectedLayer.Select(ex.ToEnvelope(), ex.ToEnvelope(), SelectionMode.Intersects, out affectedarea);
+
+                            _returnCommand = "STRUCTURE";
+
                         }
-                        break;
-
-                    case "ZOOMIN":
+                        else
                         {
-                            int x = Convert.ToInt32(arg[1]);
-                            int y = Convert.ToInt32(arg[2]);
-
-                            System.Drawing.Point pntZoomAndCenter = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
-                            m.MapFrame.Pan(pntZoomAndCenter);
-                            m.ZoomIn();
-                            returnCommand = "REFRESHANDHIDEBUFFER";
+                            _returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
+                            _returnCommand = "POPUP";
+                            //                                returnValue = "Select a layer first.";
+                            //                                returnCommand = "ALERT";
                         }
-                        break;
 
-                    case "ZOOMOUT":
+                    }
+                    break;
+
+                case "INFO":
+                    {
+
+                        Point pt = new Point(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
+                        Coordinate pm = m.PixelToProj(pt);
+
+                        Extent ex = new Extent(pm.X, pm.Y, pm.X, pm.Y);
+
+                        if (m.Layers.SelectedLayer != null)
                         {
-                            int x = Convert.ToInt32(arg[1]);
-                            int y = Convert.ToInt32(arg[2]);
+                            FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
 
-                            System.Drawing.Point pnt = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
+                            //                                List<IFeature> flist = fs.Select(ex);  //returns empty list when IndexMode == false
+                            List<int> flist = fs.SelectIndices(ex);
 
-                            m.MapFrame.Pan(pnt);
-                            m.ZoomOut();
-                            returnCommand = "REFRESHANDHIDEBUFFER";
-                        }
-                        break;
+                            int n = flist.Count;
 
-                    case "PAN":
-                        {
-                            int x = Convert.ToInt32(arg[1]);
-                            int y = Convert.ToInt32(arg[2]);
+                            //                                returnValue = "<table border='1'>";  //looks goofy
+                            _returnValue = "<table>";
 
-// not used:                System.Drawing.Point pnt = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
-
-                            m.MapFrame.Pan(new System.Drawing.Point(x, y));
-                            returnCommand = "REFRESH";
-                        }
-                        break;
-
-                    case "WHEELIN":
-                        {
-                            m.ZoomIn();
-                            returnCommand = "REFRESHANDHIDEBUFFER";
-                        }
-                        break;
-
-                    case "WHEELOUT":
-                        {
-                            m.ZoomOut();
-                            returnCommand = "REFRESHANDHIDEBUFFER";
-                        }
-                        break;
-
-                    case "DATAGRID":  //moved to here from RaisePostBackEvent
-                        {
-                            if (m.Layers.SelectedLayer != null)
+                            if (n > 0)
                             {
-                                //string script=null;
-
-                                IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
-
-                                int n = MFL.Selection.Count;
-
-                                FeatureSet fs;
-                                DataTable rs;
-                                if (n > 0)
+                                for (int i = 0; i < fs.DataTable.Columns.Count; i++)
                                 {
-                                    fs = MFL.Selection.ToFeatureSet();
-                                    rs = fs.DataTable;
-                                }
-                                else
-                                {
-                                    fs = MFL.DataSet as FeatureSet;
-                                    rs = fs.DataTable;
+                                    _returnValue += "<tr><td>" + fs.DataTable.Columns[i].ColumnName +
+                                        //                                                       "</td><td>" + flist[0].DataRow[i].ToString() + "</td></tr>";
+                                                   "</td><td>" + fs.GetFeature(flist[0]).DataRow[i].ToString() + "</td></tr>";
                                 }
 
-                                if (DataOnGrid != null)  //Let event handler display grid?
-                                {
-                                    DataGridEventArgs e = new DataGridEventArgs();
-                                    e.Recordsource = rs;
-                                    DataOnGrid(this, e);
-                                }
-                                else  //Display default HTML grid
-                                {
-                                    returnValue = "<table border='1'><tr>";
+                                _returnValue += "</table>";
+                                _returnCommand = "POPUP";
+                            }
+                        }
+                        else
+                        {
+                            _returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
+                            _returnCommand = "POPUP";
+                            //                                returnValue = "Select a layer first.";
+                            //                                returnCommand = "ALERT";
+                        }
+                    }
+                    break;
 
-                                    for (int h = 0; h < rs.Columns.Count; h++)
-                                    {
-                                        returnValue += "<th>" + rs.Columns[h].ColumnName + "</th>";
-                                    }
-                                    returnValue += "</tr>";
 
-                                    string rowHtml;
-                                    for (int r = 0; r < rs.Rows.Count; r++)
-                                    {  //note: _much_ faster if build each row separately
-                                        rowHtml = "<tr>";
-                                        for (int c = 0; c < rs.Columns.Count; c++)
-                                        {
-                                            rowHtml += "<td>" + fs.GetFeature(r).DataRow[c].ToString() + "</td>";
-                                        }
-                                        rowHtml += "</tr>";
-                                        returnValue += rowHtml;
-                                    }
-                                    returnValue += "</table>";
-                                    returnCommand = "POPUP";
-                                }
+                case "RESIZE":
+                    {
 
+                        Size newSz = new Size(Convert.ToInt32(arg[2]), Convert.ToInt32(arg[3]));
+                        Size actualSz = ControlSize;
+
+                        if (actualSz.Width == 0 || actualSz.Height == 0)
+                        {
+                            ControlSize = newSz;
+
+                            ZoomAll(ref m);
+
+                            _returnCommand = "STRUCTURE";
+                        }
+                        else
+                        {
+                            if (newSz != actualSz)
+                            {
+                                ControlSize = newSz;
+
+                                _returnCommand = "STRUCTURE";
                             }
                             else
                             {
-                                returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
-                                returnCommand = "POPUP";
+                                _returnCommand = "NOTHING";
                             }
                         }
-                        break;
 
-                    case "ADDFEATURE":  //moved to here from RaisePostBackEvent
+                    }
+                    break;
+
+                case "ZOOMRECT":
+                    {
+
+                        Point pt1 = new Point(Convert.ToInt32(arg[1]), Convert.ToInt32(arg[2]));
+                        Point pt2 = new Point(Convert.ToInt32(arg[3]), Convert.ToInt32(arg[4]));
+
+                        Coordinate pm1 = m.PixelToProj(pt1);
+                        Coordinate pm2 = m.PixelToProj(pt2);
+
+                        Extent x = new Extent(Math.Min(pm1.X, pm2.X),
+                                              Math.Min(pm1.Y, pm2.Y),
+                                              Math.Max(pm1.X, pm2.X),
+                                              Math.Max(pm1.Y, pm2.Y));
+
+                        m.ViewExtents = x;
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "ZOOMIN":
+                    {
+                        int x = Convert.ToInt32(arg[1]);
+                        int y = Convert.ToInt32(arg[2]);
+
+                        Point pntZoomAndCenter = new Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
+                        m.MapFrame.Pan(pntZoomAndCenter);
+                        m.ZoomIn();
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "ZOOMOUT":
+                    {
+                        int x = Convert.ToInt32(arg[1]);
+                        int y = Convert.ToInt32(arg[2]);
+
+                        Point pnt = new Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
+
+                        m.MapFrame.Pan(pnt);
+                        m.ZoomOut();
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "PAN":
+                    {
+                        int x = Convert.ToInt32(arg[1]);
+                        int y = Convert.ToInt32(arg[2]);
+
+                        // not used:                System.Drawing.Point pnt = new System.Drawing.Point((x - m.Size.Width / 2), (y - m.Size.Height / 2));
+
+                        m.MapFrame.Pan(new Point(x, y));
+                        _returnCommand = "REFRESH";
+                    }
+                    break;
+
+                case "WHEELIN":
+                    {
+                        m.ZoomIn();
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "WHEELOUT":
+                    {
+                        m.ZoomOut();
+                        _returnCommand = "REFRESHANDHIDEBUFFER";
+                    }
+                    break;
+
+                case "DATAGRID":  //moved to here from RaisePostBackEvent
+                    {
+                        if (m.Layers.SelectedLayer != null)
                         {
-                            int num = Convert.ToInt32(arg[1]);
+                            //string script=null;
 
-                            System.Drawing.Point pt = new System.Drawing.Point();
-                            Coordinate[] pm = new Coordinate[num];
+                            IMapFeatureLayer mfl = (IMapFeatureLayer)m.Layers.SelectedLayer;
 
-                            for (int i = 0; i < num; i++)
+                            int n = mfl.Selection.Count;
+
+                            FeatureSet fs;
+                            DataTable rs;
+                            if (n > 0)
                             {
-                                pt.X = Convert.ToInt32(arg[(i + 1) * 2]);
-                                pt.Y = Convert.ToInt32(arg[(i + 1) * 2 + 1]);
-
-                                pm[i] = m.PixelToProj(pt);
+                                fs = mfl.Selection.ToFeatureSet();
+                                rs = fs.DataTable;
+                            }
+                            else
+                            {
+                                fs = mfl.DataSet as FeatureSet;
+                                rs = fs.DataTable;
                             }
 
-                            if (m.Layers.SelectedLayer != null)
+                            if (DataOnGrid != null)  //Let event handler display grid?
                             {
-                                FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
-                                Feature f;
-                                FeatureType ft = FeatureType.Unspecified;
+                                DataGridEventArgs e = new DataGridEventArgs();
+                                e.Recordsource = rs;
+                                DataOnGrid(this, e);
+                            }
+                            else  //Display default HTML grid
+                            {
+                                _returnValue = "<table border='1'><tr>";
 
-                                IMapFeatureLayer MFL = (IMapFeatureLayer)m.Layers.SelectedLayer;
-
-                                if(MFL.GetType() == typeof(MapPointLayer))
+                                for (int h = 0; h < rs.Columns.Count; h++)
                                 {
-                                    ft = FeatureType.Point;
+                                    _returnValue += "<th>" + rs.Columns[h].ColumnName + "</th>";
                                 }
-                                if(MFL.GetType() == typeof(MapLineLayer))
-                                {
-                                    ft = FeatureType.Line;
-                                }
-                                if(MFL.GetType() == typeof(MapPolygonLayer))
-                                {
-                                    ft = FeatureType.Polygon;
-                                }
+                                _returnValue += "</tr>";
 
-                                if (ft != FeatureType.Unspecified)
-                                {
-
-                                    f = new Feature(ft, pm);
-
-                                    try
+                                string rowHtml;
+                                for (int r = 0; r < rs.Rows.Count; r++)
+                                {  //note: _much_ faster if build each row separately
+                                    rowHtml = "<tr>";
+                                    for (int c = 0; c < rs.Columns.Count; c++)
                                     {
-                                        if (AddFeature != null)
-                                        {
-                                            AddFeature(this, fs, f);
-                                        }
-                                        else
-                                        {
-                                            try
-                                            {
-                                                fs.AddFeature(f);
-                                                fs.Save();
-                                            }
-                                            catch
-                                            {
-                                                fs.Features.Remove(f);
-                                                throw;  //re-throw exception
-                                            }
-                                            fs.InitializeVertices();
-                                        }
-                                        //Apparently have to force recreating labels when add feature.
-                                        if (MFL.LabelLayer != null)
-                                        {
-                                              // Recreating label layer works.
-//                                            MapLabelLayer NewLabels = new MapLabelLayer();
-//                                            NewLabels.Symbology = MFL.LabelLayer.Symbology;
-//                                            NewLabels.Symbolizer = MFL.LabelLayer.Symbolizer;
-//                                            MFL.LabelLayer = NewLabels;
-                                            // Recreating just labels also works.
-                                            MFL.LabelLayer.CreateLabels();
-                                        }
-                                        returnCommand = "FORCEREFRESH";
+                                        rowHtml += "<td>" + fs.GetFeature(r).DataRow[c].ToString() + "</td>";
                                     }
-                                    catch (Exception e)
-                                    {
-                                        returnValue = "Unable to save feature.<p>" + e.Message;
-                                        returnCommand = "POPUPANDREFRESH";  //erase new shape too
-                                    }
-
-//                                    fs.IndexMode = true;
-                                     //Adding a feature sets FeatureSet.IndexMode to false,
-                                     // causing fs.Select above in INFO case to return a list
-                                     // with Count == 0. One workaround is to set IndexMode
-                                     // back to true. This does cause all existing labels
-                                     // to disapper with refresh, but recreating label layer
-                                     // above fixed that. (Also tried InitializeVertices,
-                                     // InvalidateEnvelope, InvalidateVertices, UpdateExtents, etc.)
-                                     // Oops, setting IndexMode back to true corrupts shapes...
+                                    rowHtml += "</tr>";
+                                    _returnValue += rowHtml;
                                 }
+                                _returnValue += "</table>";
+                                _returnCommand = "POPUP";
                             }
 
                         }
-                        break;
+                        else
+                        {
+                            _returnValue = "<table><tr><td>Select a layer first.<p></td></tr><table>";
+                            _returnCommand = "POPUP";
+                        }
+                    }
+                    break;
 
-                }
+                case "ADDFEATURE":  //moved to here from RaisePostBackEvent
+                    {
+                        int num = Convert.ToInt32(arg[1]);
+
+                        Point pt = new Point();
+                        Coordinate[] pm = new Coordinate[num];
+
+                        for (int i = 0; i < num; i++)
+                        {
+                            pt.X = Convert.ToInt32(arg[(i + 1) * 2]);
+                            pt.Y = Convert.ToInt32(arg[(i + 1) * 2 + 1]);
+
+                            pm[i] = m.PixelToProj(pt);
+                        }
+
+                        if (m.Layers.SelectedLayer != null)
+                        {
+                            FeatureSet fs = m.Layers.SelectedLayer.DataSet as FeatureSet;
+                            FeatureType ft = FeatureType.Unspecified;
+
+                            IMapFeatureLayer mfl = (IMapFeatureLayer)m.Layers.SelectedLayer;
+
+                            if (mfl.GetType() == typeof(MapPointLayer))
+                            {
+                                ft = FeatureType.Point;
+                            }
+                            if (mfl.GetType() == typeof(MapLineLayer))
+                            {
+                                ft = FeatureType.Line;
+                            }
+                            if (mfl.GetType() == typeof(MapPolygonLayer))
+                            {
+                                ft = FeatureType.Polygon;
+                            }
+
+                            if (ft != FeatureType.Unspecified)
+                            {
+                                Feature f = new Feature(ft, pm);
+
+                                try
+                                {
+                                    if (AddFeature != null)
+                                    {
+                                        AddFeature(this, fs, f);
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            fs.Features.Add(f);
+                                            fs.Save();
+                                        }
+                                        catch
+                                        {
+                                            fs.Features.Remove(f);
+                                            throw;  //re-throw exception
+                                        }
+                                        fs.InitializeVertices();
+                                    }
+                                    //Apparently have to force recreating labels when add feature.
+                                    if (mfl.LabelLayer != null)
+                                    {
+                                        // Recreating label layer works.
+                                        //                                            MapLabelLayer NewLabels = new MapLabelLayer();
+                                        //                                            NewLabels.Symbology = MFL.LabelLayer.Symbology;
+                                        //                                            NewLabels.Symbolizer = MFL.LabelLayer.Symbolizer;
+                                        //                                            MFL.LabelLayer = NewLabels;
+                                        // Recreating just labels also works.
+                                        mfl.LabelLayer.CreateLabels();
+                                    }
+                                    _returnCommand = "FORCEREFRESH";
+                                }
+                                catch (Exception e)
+                                {
+                                    _returnValue = "Unable to save feature.<p>" + e.Message;
+                                    _returnCommand = "POPUPANDREFRESH";  //erase new shape too
+                                }
+
+                                //                                    fs.IndexMode = true;
+                                //Adding a feature sets FeatureSet.IndexMode to false,
+                                // causing fs.Select above in INFO case to return a list
+                                // with Count == 0. One workaround is to set IndexMode
+                                // back to true. This does cause all existing labels
+                                // to disapper with refresh, but recreating label layer
+                                // above fixed that. (Also tried InitializeVertices,
+                                // InvalidateEnvelope, InvalidateVertices, UpdateExtents, etc.)
+                                // Oops, setting IndexMode back to true corrupts shapes...
+                            }
+                        }
+
+                    }
+                    break;
+
+            }
 
             //ControlMap = m;
-            System.Web.HttpContext.Current.Session[(string)ViewState[ClientID]] = m;
- 
-            if (returnCommand == "STRUCTURE")
-            {                
-                returnValue = redraw(ref m);
+            HttpContext.Current.Session[(string)ViewState[ClientID]] = m;
+
+            if (_returnCommand == "STRUCTURE")
+            {
+                _returnValue = Redraw(ref m);
 
                 if (OnRedraw != null) OnRedraw(this);
             }
 
-            if (returnCommand == "REFRESH" | returnCommand == "REFRESHANDHIDEBUFFER")
+            if (_returnCommand == "REFRESH" | _returnCommand == "REFRESHANDHIDEBUFFER")
             {
-                returnValue = refresh(ref m);
+                _returnValue = Refresh(ref m);
 
                 if (OnRedraw != null) OnRedraw(this);
             }

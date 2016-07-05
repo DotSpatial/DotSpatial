@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
 using DotSpatial.Data;
 using System.Drawing;
 using DotSpatial.Serialization;
-using DotSpatial.Topology;
 using Point = System.Drawing.Point;
 using DotSpatial.Projections;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.WebControls
 {
@@ -129,7 +128,7 @@ namespace DotSpatial.WebControls
 
             Size = new Size(800, 600);
 
-            if (Data.DataSet.ProjectionSupported())
+            if (DataSet.ProjectionSupported())
             {
                 Projection = KnownCoordinateSystems.Geographic.World.WGS1984;
             }
@@ -264,7 +263,7 @@ namespace DotSpatial.WebControls
         /// </summary>
         /// <param name="position">The client coordinate relative to the map control</param>
         /// <returns>The geographic ICoordinate interface</returns>
-        public Coordinate PixelToProj(System.Drawing.Point position)
+        public Coordinate PixelToProj(Point position)
         {
             return _gdiMapFrame.PixelToProj(position);
         }
@@ -286,7 +285,7 @@ namespace DotSpatial.WebControls
         /// </summary>
         /// <param name="location">The geographic position to transform</param>
         /// <returns>A Point with the new location.</returns>
-        public System.Drawing.Point ProjToPixel(Coordinate location)
+        public Point ProjToPixel(Coordinate location)
         {
             return _gdiMapFrame.ProjToPixel(location);
         }

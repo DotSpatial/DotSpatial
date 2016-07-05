@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using DotSpatial.Data;
 using System.Drawing;
@@ -9,12 +7,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using DotSpatial.Projections;
-using DotSpatial.Topology;
-//using System.Windows.Forms;
-using DotSpatial.Controls;
-using System.Globalization;
 using DotSpatial.WebControls;
 using System.Web.UI.WebControls;
+using GeoAPI.Geometries;
 
 namespace DotSpatial.MapWebClient
 {
@@ -823,28 +818,28 @@ namespace DotSpatial.MapWebClient
             return quadKey.ToString();
         }
 
-        private TileInfo GetTile(int Zoom, Coordinate C)
+        private TileInfo GetTile(int zoom, Coordinate c)
         {
             TileInfo T = new TileInfo();
 
-            T.col = (int)((double)((C.X - _Extent.MinX) / _Extent.Width) * (double)NumTileX[Zoom]);
+            T.col = (int)((double)((c.X - _Extent.MinX) / _Extent.Width) * (double)NumTileX[zoom]);
             if (T.col < 0) T.col = 0;
-            if (T.col > NumTileX[Zoom] - 1) T.col = NumTileX[Zoom] - 1;
+            if (T.col > NumTileX[zoom] - 1) T.col = NumTileX[zoom] - 1;
 
             if (InvertedAxis == true)
             {
-                T.row = (int)((double)((_Extent.MaxY - C.Y) / _Extent.Height) * (double)NumTileY[Zoom]);
+                T.row = (int)((double)((_Extent.MaxY - c.Y) / _Extent.Height) * (double)NumTileY[zoom]);
             }
             else
             {
-                T.row = (int)((double)((C.Y - _Extent.MinY) / _Extent.Height) * (double)NumTileY[Zoom]);
+                T.row = (int)((double)((c.Y - _Extent.MinY) / _Extent.Height) * (double)NumTileY[zoom]);
             }
 
             if (T.row < 0) T.row = 0;
-            if (T.row > NumTileY[Zoom] - 1) T.row = NumTileY[Zoom] - 1;
+            if (T.row > NumTileY[zoom] - 1) T.row = NumTileY[zoom] - 1;
 
-            double cx = _Extent.Width / (double)NumTileX[Zoom];
-            double cy = _Extent.Height / (double)NumTileY[Zoom];
+            double cx = _Extent.Width / (double)NumTileX[zoom];
+            double cy = _Extent.Height / (double)NumTileY[zoom];
 
             if (InvertedAxis == false)
             {
@@ -865,7 +860,7 @@ namespace DotSpatial.MapWebClient
             //char letter = 'a';
             //T.url = string.Format("http://{0}.tile.openstreetmap.org/{1}/{2}/{3}.png", letter, Zoom, T.col, T.row);
 
-            T.url = GetUrl(T.row, T.col, Zoom, Type);
+            T.url = GetUrl(T.row, T.col, zoom, Type);
 
             return T;
         }
@@ -934,30 +929,30 @@ namespace DotSpatial.MapWebClient
                 Ts[set] = new TileInfoSet();
             }
 
-            Coordinate CUpperLeft, CBottomRight;
+            Coordinate cUpperLeft, cBottomRight;
 
-            if (InvertedAxis == true)
+            if (InvertedAxis)
             {
-                CUpperLeft = new Coordinate(extent.MinX, extent.MaxY);
-                CBottomRight = new Coordinate(extent.MaxX, extent.MinY);
+                cUpperLeft = new Coordinate(extent.MinX, extent.MaxY);
+                cBottomRight = new Coordinate(extent.MaxX, extent.MinY);
             }
             else
             {
-                CUpperLeft = new Coordinate(extent.MinX, extent.MinY);
-                CBottomRight = new Coordinate(extent.MaxX, extent.MaxY);
+                cUpperLeft = new Coordinate(extent.MinX, extent.MinY);
+                cBottomRight = new Coordinate(extent.MaxX, extent.MaxY);
             }
 
 
-            TileInfo UL = GetTile(zoom, CUpperLeft);
-            TileInfo BR = GetTile(zoom, CBottomRight);
+            TileInfo ul = GetTile(zoom, cUpperLeft);
+            TileInfo br = GetTile(zoom, cBottomRight);
 
 
             for (set = 0; set < numSet; set++)
             {
-                Ts[set].rows = BR.row - UL.row + 1;
-                Ts[set].cols = BR.col - UL.col + 1;
+                Ts[set].rows = br.row - ul.row + 1;
+                Ts[set].cols = br.col - ul.col + 1;
 
-                Ts[set].Extent = new Extent(UL.Extent.MinX, Math.Min(UL.Extent.MinY, BR.Extent.MinY), BR.Extent.MaxX, Math.Max(UL.Extent.MaxY, BR.Extent.MaxY));
+                Ts[set].Extent = new Extent(ul.Extent.MinX, Math.Min(ul.Extent.MinY, br.Extent.MinY), br.Extent.MaxX, Math.Max(ul.Extent.MaxY, br.Extent.MaxY));
 
                 Ts[set].Tiles = new TileInfo[Ts[set].rows][];
             }
@@ -1001,12 +996,12 @@ namespace DotSpatial.MapWebClient
 
                     if (labels == false)
                     {
-                        Ts[0].Tiles[r][c].url = GetUrl(r + UL.row, c + UL.col, zoom, Type);
+                        Ts[0].Tiles[r][c].url = GetUrl(r + ul.row, c + ul.col, zoom, Type);
                     }
                     else
                     {
-                        Ts[0].Tiles[r][c].url = GetUrl(r + UL.row, c + UL.col, zoom, BaseType);
-                        Ts[1].Tiles[r][c].url = GetUrl(r + UL.row, c + UL.col, zoom, LabelType);
+                        Ts[0].Tiles[r][c].url = GetUrl(r + ul.row, c + ul.col, zoom, BaseType);
+                        Ts[1].Tiles[r][c].url = GetUrl(r + ul.row, c + ul.col, zoom, LabelType);
                     }
 
                 }
@@ -1016,7 +1011,7 @@ namespace DotSpatial.MapWebClient
 
         }
 
-        public string GetHTML(ref GDIMap m, Size size, string DivID)
+        public string GetHTML(ref GDIMap m, Size size, string divId)
         {
 
             TileInfoSet[] Ts = GetTile(m.ViewExtents, size);
@@ -1038,15 +1033,12 @@ namespace DotSpatial.MapWebClient
                 }
             }
 
+            Rectangle rect = m.ProjToPixel(TilesExtent);
 
+            int w = (int)((rect.Width + 1) / (double)Ts[0].cols);
+            int h = (int)((rect.Height + 1) / (double)Ts[0].rows);
 
-
-            Rectangle Rect = m.ProjToPixel(TilesExtent);
-
-            int w = (int)((double)(Rect.Width + 1) / (double)Ts[0].cols);
-            int h = (int)((double)(Rect.Height + 1) / (double)Ts[0].rows);
-
-            htm += "<div id=\"Back_" + DivID + "\" style=\"position:absolute; left:" + Rect.Left.ToString() + "px; top:" + Rect.Top.ToString() + "px; width:" + Rect.Width.ToString() + "px; height:" + Rect.Height.ToString() + "px; \">";
+            htm += "<div id=\"Back_" + divId + "\" style=\"position:absolute; left:" + rect.Left.ToString() + "px; top:" + rect.Top.ToString() + "px; width:" + rect.Width.ToString() + "px; height:" + rect.Height.ToString() + "px; \">";
 
             for (int r = 0; r < Ts[0].rows; r++)
             {
