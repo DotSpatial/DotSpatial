@@ -89,33 +89,23 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Executes the RasterFromLAS tool.
         /// </summary>
-        /// <param name="filenameLAS">The string filename of the LAS file to convert.</param>
+        /// <param name="filenameLas">The string filename of the LAS file to convert.</param>
         /// <param name="outputExtent">The extent of the output raster.</param>
         /// <param name="numRows">The integer number of rows of the output raster.</param>
         /// <param name="numColumns">The integer number of columns.</param>
         /// <param name="output">The output raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean, true if the method was successful.</returns>
-        public bool Execute(
-            string filenameLAS,
-            Extent outputExtent,
-            int numRows,
-            int numColumns,
-            IRaster output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(string filenameLas, Extent outputExtent, int numRows, int numColumns, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // create output raster
-            output = Raster.CreateRaster(
-                output.Filename, string.Empty, numColumns, numRows, 1, typeof(int), new[] { string.Empty });
+            output = Raster.CreateRaster(output.Filename, string.Empty, numColumns, numRows, 1, typeof(int), new[] { string.Empty });
             RasterBounds bound = new RasterBounds(numRows, numColumns, outputExtent);
             output.Bounds = bound;
 
             output.NoDataValue = int.MinValue;
 
-            ProgressMeter pm = new ProgressMeter(
-                cancelProgressHandler,
-                TextStrings.ConvertingLAS + filenameLAS + TextStrings.Progresstoraster + "...",
-                numRows);
+            ProgressMeter pm = new ProgressMeter(cancelProgressHandler, TextStrings.ConvertingLAS + filenameLas + TextStrings.Progresstoraster + "...", numRows);
 
             for (int row = 0; row < numRows; row++)
             {
@@ -146,18 +136,17 @@ namespace DotSpatial.Tools
                                  {
                                      HelpText = TextStrings.LasFullpath
                                  };
-            ExtentParam p = new ExtentParam(TextStrings.RasterExtent);
-            p.HelpText = TextStrings.GeographicExtent;
-            p.DefaultToMapExtent = true;
-
-            _inputParam[1] = p;
-
+            _inputParam[1] = new ExtentParam(TextStrings.RasterExtent)
+                                {
+                                    HelpText = TextStrings.GeographicExtent,
+                                    DefaultToMapExtent = true
+                                };
             _inputParam[2] = new IntParam(TextStrings.NumRows) { HelpText = TextStrings.numberofrows };
-
             _inputParam[3] = new IntParam(TextStrings.NumColumns) { HelpText = TextStrings.numberofcolums };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputRaster) { HelpText = TextStrings.ResultRasterDirectory };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>
@@ -166,7 +155,6 @@ namespace DotSpatial.Tools
         /// </summary>
         public override void ParameterChanged(Parameter sender)
         {
-            return;
         }
 
         #endregion

@@ -751,10 +751,9 @@ namespace DotSpatial.Tools
             _inputParam[0] = new PolygonFeatureSetParam(TextStrings.input1PolygonShapefile) { HelpText = TextStrings.InputPolygonforCliping };
             _inputParam[1] = new LineFeatureSetParam(TextStrings.input2LineforCliping) { HelpText = TextStrings.Inputlineforcliping };
 
-            _outputParam = new Parameter[1];
-
-            // _outputParam[0] = new PolygonFeatureSetParam(TextStrings.OutputShapefile);
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.ResultShapefile) { HelpText = TextStrings.SelectResultShapefileDirectory };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

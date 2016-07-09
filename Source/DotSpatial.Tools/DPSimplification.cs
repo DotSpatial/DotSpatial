@@ -16,9 +16,7 @@
 // ********************************************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms;
 using DotSpatial.Modeling.Forms.Parameters;
@@ -159,8 +157,7 @@ namespace DotSpatial.Tools
         /// <param name="output">The output polygon feature set</param>
         /// <param name="cancelProgressHandler">The progress handler</param>
         /// <returns></returns>
-        public bool Execute(
-            IFeatureSet input, double tolerance, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet input, double tolerance, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input == null || output == null)
@@ -212,21 +209,14 @@ namespace DotSpatial.Tools
                 }
 
                 // Status updates is done here, shows number of old / new points
-                cancelProgressHandler.Progress(
-                    string.Empty,
-                    Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100),
-                    numOldPoints + "-->" + numNewPoints);
+                cancelProgressHandler.Progress(string.Empty, Convert.ToInt32((Convert.ToDouble(j) / Convert.ToDouble(input.Features.Count)) * 100), numOldPoints + "-->" + numNewPoints);
                 if (cancelProgressHandler.Cancel)
                 {
                     return false;
                 }
             }
 
-            cancelProgressHandler.Progress(
-                string.Empty,
-                100,
-                TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints
-                + numTotalNewPoints);
+            cancelProgressHandler.Progress(string.Empty, 100, TextStrings.Originalnumberofpoints + numTotalOldPoints + " " + TextStrings.Newnumberofpoints + numTotalNewPoints);
 
             output.Save();
             return true;
@@ -241,8 +231,9 @@ namespace DotSpatial.Tools
             _inputParam[0] = new LineFeatureSetParam(TextStrings.LineFeatureSet);
             _inputParam[1] = new DoubleParam(TextStrings.Tolerance) { Value = 10.0 };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new LineFeatureSetParam(TextStrings.LineFeatureSet);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

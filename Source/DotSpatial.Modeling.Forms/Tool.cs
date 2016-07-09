@@ -19,7 +19,6 @@ namespace DotSpatial.Modeling.Forms
 
         private string author;
         private string description;
-        private string helpUrl;
         private string name;
 
         #endregion
@@ -75,17 +74,7 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Returns the address of the tools help web page in HTTP://... format. Returns null if no URL has been specified.
         /// </summary>
-        public virtual string HelpUrl
-        {
-            get
-            {
-                return helpUrl;
-            }
-            set
-            {
-                helpUrl = value;
-            }
-        }
+        public virtual string HelpUrl { get; set; }
 
         /// <summary>
         /// 32x32 Bitmap - The Large icon that will appears in the Tool Dialog Next to the tools name

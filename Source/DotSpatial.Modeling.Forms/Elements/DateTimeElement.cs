@@ -40,13 +40,13 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void InitializeComponent()
         {
             this._dateTimePicker2 = new DateTimePicker();
-            this.GroupBox1.SuspendLayout();
+            this.GroupBox.SuspendLayout();
             this.SuspendLayout();
             //
             // GroupBox1
             //
-            this.GroupBox1.Controls.Add(this._dateTimePicker2);
-            this.GroupBox1.Controls.SetChildIndex(this._dateTimePicker2, 0);
+            this.GroupBox.Controls.Add(this._dateTimePicker2);
+            this.GroupBox.Controls.SetChildIndex(this._dateTimePicker2, 0);
             //
             // _dateTimePicker2
             //
@@ -61,7 +61,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             //
             this.AutoScaleDimensions = new SizeF(6F, 13F);
             this.Name = "DateTimeElement";
-            this.GroupBox1.ResumeLayout(false);
+            this.GroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 

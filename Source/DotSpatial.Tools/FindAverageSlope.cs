@@ -100,12 +100,7 @@ namespace DotSpatial.Tools
         /// <param name="poly">The flow poly shapefile path.</param>
         /// <param name="output">The resulting DEM of slopes</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        public bool Execute(
-            IRaster ras,
-            double zFactor,
-            IFeatureSet poly,
-            IFeatureSet output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IRaster ras, double zFactor, IFeatureSet poly, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (ras == null || poly == null || output == null)
@@ -120,7 +115,7 @@ namespace DotSpatial.Tools
             }
 
             output.DataTable.Columns.Add("FID", typeof(int));
-            output.DataTable.Columns.Add(TextStrings.AveSlope, typeof(Double));
+            output.DataTable.Columns.Add(TextStrings.AveSlope, typeof(double));
 
             IRaster slopeGrid = new Raster { DataType = ras.DataType, Bounds = ras.Bounds };
 
@@ -233,12 +228,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.FindAverageSlopeDescription
                                  };
 
-            // _inputParam[2] = new FeatureSetParam(TextStrings."input1 polygon feature set");
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Outputfeaturesetwithaverageslope)
                                   {
                                       HelpText = TextStrings.Resultofaverageslope
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

@@ -67,7 +67,7 @@ namespace DotSpatial.Symbology.Forms
         #endregion
 
         #region Fields
-        
+
         private IFeatureLayer _featureLayer;
         private string _fidField;
         private bool _ignoreSelectionChanged;
@@ -88,7 +88,7 @@ namespace DotSpatial.Symbology.Forms
         public TableEditorControl()
             : this(null)
         {
-           
+
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DotSpatial.Symbology.Forms
                 dataGridView1.SelectionChanged += DataGridView1SelectionChanged;
             };
         }
-       
+
 
         #endregion
 
@@ -149,14 +149,16 @@ namespace DotSpatial.Symbology.Forms
             this.mnuTools.DropDownItems.Remove(generateOrUpdateMWShapeIDFieldsToolStripMenuItem);
             this.mnuTools.DropDownItems.Remove(fieldCalculatorToolToolStripMenuItem);
         }
-       
+
 
         private void DataGridView1CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             e.Value = _attributeCache.RetrieveElement(e.RowIndex, e.ColumnIndex);
         }
 
-        //when the selected features are changed on the feature layer
+        /// <summary>
+        /// Updates the selection shown in the datagridview when the selected features are changed on the feature layer.
+        /// </summary>
         private void SelectedFeaturesChanged(object sender, EventArgs e)
         {
             SetSelectionFromLayer();
@@ -182,7 +184,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
-                            int fid = (int) row.Cells[_fidField].Value;
+                            int fid = (int)row.Cells[_fidField].Value;
                             row.Selected = states[fid].Selected;
                         }
                     }
@@ -205,7 +207,7 @@ namespace DotSpatial.Symbology.Forms
                     {
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
-                            int fid = (int) row.Cells[_fidField].Value;
+                            int fid = (int)row.Cells[_fidField].Value;
                             row.Selected = fs.Filter.DrawnStates[_featureLayer.DataSet.Features[fid]].IsSelected;
                         }
                     }
@@ -229,7 +231,7 @@ namespace DotSpatial.Symbology.Forms
                 dataGridView1.ResumeLayout();
             }
         }
-        
+
 
         #region Methods
 
@@ -265,7 +267,7 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This assumes that the datarows displayed correspond to features in the data Table.
+        /// This assumes that the displayed datarows correspond to features in the dataTable.
         /// </summary>
         /// <param name="features"></param>
         public void SelectFeatures(IEnumerable<IFeature> features)
@@ -282,7 +284,7 @@ namespace DotSpatial.Symbology.Forms
             foreach (int row in rows)
             {
                 //dataGridView1.SelectedRows[row].Selected = true;
-                //It should be full row of collectiion
+                //It should be full row of collection
                 dataGridView1.Rows[row].Selected = true;
                 dataGridView1.FirstDisplayedScrollingRowIndex = row;
             }
@@ -546,7 +548,7 @@ namespace DotSpatial.Symbology.Forms
                     //set the selected state of the corresponding feature
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
-                        int fid = (int) row.Cells[_fidField].Value;
+                        int fid = (int)row.Cells[_fidField].Value;
                         if (row.Selected)
                         {
                             sel.Add(fid);
@@ -706,7 +708,7 @@ namespace DotSpatial.Symbology.Forms
             {
                 h(this, EventArgs.Empty);
             }
-            
+
             _ignoreSelectionChanged = false;
         }
 
@@ -925,8 +927,7 @@ namespace DotSpatial.Symbology.Forms
         #region Private Methods
 
         /// <summary>
-        /// when 'IsEditable' is set to false, some toolbar icons are
-        /// hidden
+        /// When 'IsEditable' is set to false, some toolbar icons are hidden.
         /// </summary>
         private void SetEditableIcons()
         {
@@ -946,7 +947,10 @@ namespace DotSpatial.Symbology.Forms
             dataGridView1.ReadOnly = !_isEditable;
         }
 
-        //Shows all rows (both selected and unselected)
+
+        /// <summary>
+        /// Shows all rows (both selected and unselected).
+        /// </summary>
         private void ShowAllRows()
         {
             _showOnlySelectedRows = false;
@@ -971,7 +975,10 @@ namespace DotSpatial.Symbology.Forms
             Refresh();
         }
 
-        //Limits the displayed rows only to rows which are selected
+
+        /// <summary>
+        /// Limits the displayed rows only to rows which are selected.
+        /// </summary>
         private void ShowOnlySelectedRows()
         {
             _ignoreSelectionChanged = true;
@@ -1041,7 +1048,6 @@ namespace DotSpatial.Symbology.Forms
 
             try
             {
-
                 // remove fid column
                 if (_fidField != null)
                 {
@@ -1059,8 +1065,7 @@ namespace DotSpatial.Symbology.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ +
-                                ex.Message);
+                MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_SaveEdits_Unable_to_save_edits__ + ex.Message);
             }
             finally
             {
@@ -1073,12 +1078,9 @@ namespace DotSpatial.Symbology.Forms
         {
             OpenFileDialog dlg = new OpenFileDialog
                                      {
-                                         Filter =
-                                             SymbologyFormsMessageStrings.
-                                             TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
+                                         Filter = SymbologyFormsMessageStrings.TableEditorControl_ImportFieldsFromDbf_DBase_Files____dbf____DBF
                                      };
-            FeatureSet fsTemp = new FeatureSet();
-            fsTemp.CopyFeatures(_featureLayer.DataSet, true);
+            IFeatureSet fsTemp = _featureLayer.DataSet.CopySubset("");
             if (dlg.ShowDialog() != DialogResult.OK)
             {
                 MessageBox.Show(SymbologyFormsMessageStrings.TableEditorControl_ImportFieldsFromDbf_Could_not_import_column_fields);
@@ -1101,7 +1103,9 @@ namespace DotSpatial.Symbology.Forms
             dataGridView1.DataSource = fsTemp.DataTable;
         }
 
-        //Executes a query
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
         private void QueryExe()
         {
             var queryDialog = new SQLExpressionDialog();
@@ -1144,7 +1148,9 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
-        //add a new field (column)
+        /// <summary>
+        /// Add a new field (column).
+        /// </summary>
         private void CreateNewColumn()
         {
             if (!_featureLayer.DataSet.AttributesPopulated)
@@ -1169,7 +1175,9 @@ namespace DotSpatial.Symbology.Forms
             dataGridView1.ClearSelection();
         }
 
-        //select all features in the Table and map
+        /// <summary>
+        /// Select all features in the table and map.
+        /// </summary>
         private void SelectAll()
         {
             if (_showOnlySelectedRows)
@@ -1247,7 +1255,9 @@ namespace DotSpatial.Symbology.Forms
             _ignoreSelectionChanged = false;
         }
 
-        //unselect all features in the Table and map
+        /// <summary>
+        /// Unselect all features in the Table and map.
+        /// </summary>
         private void SelectNone()
         {
             _ignoreSelectionChanged = true;
@@ -1275,7 +1285,9 @@ namespace DotSpatial.Symbology.Forms
             _ignoreSelectionChanged = false;
         }
 
-        //invert selection
+        /// <summary>
+        /// Invert selection.
+        /// </summary>
         private void InvertSelection()
         {
             if (_ignoreSelectionChanged) return;
@@ -1450,10 +1462,10 @@ namespace DotSpatial.Symbology.Forms
         }
 
         /// <summary>
-        /// This will copy the FID of features to given column
+        /// This will copy the FID of the features to the given column.
         /// </summary>
-        /// <param name="field">the field where FID should be copied</param>
-        /// <param name="isNewField">if isNewField is true, a new field will be added</param>
+        /// <param name="field">The field where FID should be copied to.</param>
+        /// <param name="isNewField">If isNewField is true, the given field will be added.</param>
         private void CopyFid(string field, bool isNewField)
         {
             if (!_featureLayer.DataSet.AttributesPopulated)
@@ -1507,7 +1519,7 @@ namespace DotSpatial.Symbology.Forms
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            lblSelectedNumber.Text = String.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, dataGridView1.SelectedRows.Count, _featureLayer.DataSet.NumRows());
+            lblSelectedNumber.Text = string.Format(SymbologyFormsMessageStrings.TableEditorControl_SelectedRowCountStringFormat, dataGridView1.SelectedRows.Count, _featureLayer.DataSet.NumRows());
 
             OnSelectionChanged();
         }

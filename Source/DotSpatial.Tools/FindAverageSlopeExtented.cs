@@ -118,16 +118,8 @@ namespace DotSpatial.Tools
         /// <param name="output">The path to save created slope Feature set.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns></returns>
-        public bool Execute(
-            IRaster ras,
-            double inZFactor,
-            bool slopeInPercent,
-            IFeatureSet poly,
-            string fldInPolyToStoreSlope,
-            IFeatureSet outerShpFile,
-            int outerShpIndex,
-            IFeatureSet output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IRaster ras, double inZFactor, bool slopeInPercent, IFeatureSet poly, string fldInPolyToStoreSlope, IFeatureSet outerShpFile,
+                            int outerShpIndex, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (ras == null || poly == null || outerShpFile == null || output == null)
@@ -255,11 +247,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.Fieldnamecolomavrageslope
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Outputwithaverageslope)
                                   {
                                       HelpText = TextStrings.SelecttheResultofOutput
                                   };
+            _outputParam[2] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion
@@ -274,12 +267,7 @@ namespace DotSpatial.Tools
         /// <param name="slopeInPercent">If this is true, the slope is returned as a percentage.</param>
         /// <param name="result">The output slope raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        private static void Slope(
-            IRaster ras,
-            double inZFactor,
-            bool slopeInPercent,
-            IRaster result,
-            ICancelProgressHandler cancelProgressHandler)
+        private static void Slope(IRaster ras,double inZFactor,bool slopeInPercent,IRaster result,ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (ras == null || result == null)
@@ -293,8 +281,7 @@ namespace DotSpatial.Tools
                 int noOfRow = ras.NumRows;
 
                 // Create the new raster with the appropriate dimensions
-                IRaster temp = Raster.CreateRaster(
-                    "SlopeRaster.bgd", string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
+                IRaster temp = Raster.CreateRaster("SlopeRaster.bgd", string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
                 temp.NoDataValue = ras.NoDataValue;
                 temp.Bounds = ras.Bounds;
 
@@ -348,14 +335,10 @@ namespace DotSpatial.Tools
                 if (result.IsFullyWindowed())
                 {
                     result.Save();
-                    return;
                 }
-
-                return;
             }
             catch (Exception ex)
             {
-                // throw new SystemException("Error in Slope: ", ex);
                 throw new SystemException(ex.ToString());
             }
         }

@@ -42,7 +42,7 @@ namespace DotSpatial.Controls
         #region Constants and Fields
 
         private readonly ToolTip _toolTipTree;
-        private ITool toolToExecute;
+        private ITool _toolToExecute;
 
         #endregion
 
@@ -328,9 +328,9 @@ namespace DotSpatial.Controls
 
             if (progForm == null) return;
             if (toolToExecute == null) return;
-            progForm.Progress(String.Empty, 0, "==================");
-            progForm.Progress(String.Empty, 0, String.Format("Executing Tool: {0}", toolToExecute.Name));
-            progForm.Progress(String.Empty, 0, "==================");
+            progForm.Progress(string.Empty, 0, "==================");
+            progForm.Progress(string.Empty, 0, string.Format("Executing Tool: {0}", toolToExecute.Name));
+            progForm.Progress(string.Empty, 0, "==================");
             bool result = false;
             try
             {
@@ -338,20 +338,26 @@ namespace DotSpatial.Controls
             }
             catch (Exception ex)
             {
-                progForm.Progress(String.Empty, 100, "Error: " + ex);
+                progForm.Progress(string.Empty, 100, "Error: " + ex);
             }
             e.Result = result;
             progForm.ExecutionComplete();
-            progForm.Progress(String.Empty, 100, "==================");
-            progForm.Progress(String.Empty, 100, String.Format("Done Executing Tool: {0}", toolToExecute.Name));
-            progForm.Progress(String.Empty, 100, "==================");
+            progForm.Progress(string.Empty, 100, "==================");
+            progForm.Progress(string.Empty, 100, string.Format("Done Executing Tool: {0}", toolToExecute.Name));
+            progForm.Progress(string.Empty, 100, "==================");
         }
 
-        private void executionComplete(object sender, RunWorkerCompletedEventArgs e)
+        private void ExecutionComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (toolToExecute.OutputParameters != null && (bool)e.Result)
+            if (_toolToExecute.OutputParameters != null && (bool)e.Result)
             {
-                foreach (var p in toolToExecute.OutputParameters)
+
+                if (_toolToExecute.OutputParameters.Any(_ => _.Name == "AddToMap" && !(bool)_.Value)) //has Parameter AddToMap set to false -> don't add to map
+                {
+                    return;
+                }
+
+                foreach (var p in _toolToExecute.OutputParameters)
                 {
                     try
                     {
@@ -386,8 +392,8 @@ namespace DotSpatial.Controls
             // checks if the user clicked a tool or a category
 
             // Get an instance of the tool and dialog box to go with it
-            toolToExecute = GetTool(theNode.Name);
-            if (toolToExecute != null)
+            _toolToExecute = GetTool(theNode.Name);
+            if (_toolToExecute != null)
             {
                 Extent ex = new Extent(-180, -90, 180, 90);
 
@@ -398,7 +404,7 @@ namespace DotSpatial.Controls
                     if (mf != null) ex = mf.ViewExtents;
                 }
 
-                ToolDialog td = new ToolDialog(toolToExecute, DataSets, ex);
+                ToolDialog td = new ToolDialog(_toolToExecute, DataSets, ex);
                 DialogResult tdResult = td.ShowDialog(this);
                 while (tdResult == DialogResult.OK && td.ToolStatus != ToolStatus.Ok)
                 {
@@ -414,10 +420,10 @@ namespace DotSpatial.Controls
                     //We create a background worker thread to execute the tool
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += BwDoWork;
-                    bw.RunWorkerCompleted += executionComplete;
+                    bw.RunWorkerCompleted += ExecutionComplete;
 
                     object[] threadParameter = new object[2];
-                    threadParameter[0] = toolToExecute;
+                    threadParameter[0] = _toolToExecute;
                     threadParameter[1] = progForm;
 
                     // Show the progress dialog and kick off the Async thread
@@ -425,15 +431,6 @@ namespace DotSpatial.Controls
                     bw.RunWorkerAsync(threadParameter);
                 }
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            //
-            // ToolManager
-            //
-            this.ResumeLayout(false);
         }
 
         #endregion

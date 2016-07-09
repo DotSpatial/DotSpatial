@@ -40,7 +40,7 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// <summary>
         /// The group box for this element
         /// </summary>
-        public GroupBox GroupBox1;
+        private GroupBox _groupBox;
 
         // The group box that every other component sites in
 
@@ -56,7 +56,7 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         #endregion
 
-        #region methods
+        #region Methods
 
         /// <summary>
         /// Creates a blank dialog element
@@ -77,6 +77,16 @@ namespace DotSpatial.Modeling.Forms.Elements
         protected virtual void ParamValueChanged(Parameter sender)
         {
             Refresh();
+        }
+
+        /// <summary>
+        /// Sets the given text as the tooltip text of the given control.
+        /// </summary>
+        /// <param name="control">Control whose tooltip text is set.</param>
+        /// <param name="toolTipText">Text that should be shown in tooltip of the control.</param>
+        protected void SetToolTipText(Control control, string toolTipText)
+        {
+            _lightTip.SetToolTip(control, toolTipText);
         }
 
         #endregion
@@ -112,8 +122,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         protected GroupBox GroupBox
         {
-            get { return GroupBox1; }
-            set { GroupBox1 = value; }
+            get { return _groupBox; }
+            set { _groupBox = value; }
         }
 
         /// <summary>
@@ -134,7 +144,7 @@ namespace DotSpatial.Modeling.Forms.Elements
             set { _lightTip.SetToolTip(_lblStatus, value); }
         }
 
-        /// <summary>
+      /// <summary>
         /// Gets the current status the input
         /// </summary>
         public virtual ToolStatus Status
@@ -197,22 +207,22 @@ namespace DotSpatial.Modeling.Forms.Elements
         private void InitializeComponent()
         {
             ComponentResourceManager resources = new ComponentResourceManager(typeof(DialogElement));
-            this.GroupBox1 = new GroupBox();
+            this._groupBox = new GroupBox();
             this._lblStatus = new Label();
-            this.GroupBox1.SuspendLayout();
+            this._groupBox.SuspendLayout();
             this.SuspendLayout();
             //
             // GroupBox1
             //
-            this.GroupBox1.BackgroundImageLayout = ImageLayout.None;
-            this.GroupBox1.Controls.Add(this._lblStatus);
-            this.GroupBox1.Dock = DockStyle.Fill;
-            this.GroupBox1.Location = new Point(0, 0);
-            this.GroupBox1.Name = "GroupBox1";
-            this.GroupBox1.Size = new Size(492, 45);
-            this.GroupBox1.TabIndex = 2;
-            this.GroupBox1.TabStop = false;
-            this.GroupBox1.Click += new EventHandler(this.DialogElement_Click);
+            this._groupBox.BackgroundImageLayout = ImageLayout.None;
+            this._groupBox.Controls.Add(this._lblStatus);
+            this._groupBox.Dock = DockStyle.Fill;
+            this._groupBox.Location = new Point(0, 0);
+            this._groupBox.Name = "_groupBox";
+            this._groupBox.Size = new Size(492, 45);
+            this._groupBox.TabIndex = 2;
+            this._groupBox.TabStop = false;
+            this._groupBox.Click += new EventHandler(this.DialogElement_Click);
             //
             // _lblStatus
             //
@@ -228,11 +238,11 @@ namespace DotSpatial.Modeling.Forms.Elements
             this.AutoScaleDimensions = new SizeF(6F, 13F);
 
             this.AutoSize = true;
-            this.Controls.Add(this.GroupBox1);
+            this.Controls.Add(this._groupBox);
             this.Name = "DialogElement";
             this.Size = new Size(492, 45);
             this.Click += new EventHandler(this.DialogElement_Click);
-            this.GroupBox1.ResumeLayout(false);
+            this._groupBox.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 

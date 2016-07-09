@@ -106,8 +106,7 @@ namespace DotSpatial.Tools
         /// <param name="cancelProgressHandler">The progress handler for progress message updates</param>
         /// <returns></returns>
         /// Ping delete "static" for external testing
-        public bool Execute(
-            IFeatureSet input, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet input, IFeatureSet input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input == null || input2 == null || output == null)
@@ -151,8 +150,9 @@ namespace DotSpatial.Tools
             _inputParam[0] = new FeatureSetParam(TextStrings.Featuresettoclip);
             _inputParam[1] = new PolygonFeatureSetParam(TextStrings.Clipbounds);
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.Clippedfeatureset);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

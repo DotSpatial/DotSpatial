@@ -109,13 +109,13 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             this.txtDataTable = new TextBox();
             this.btnAddData = new Button();
-            this.GroupBox1.SuspendLayout();
+            this.GroupBox.SuspendLayout();
             this.SuspendLayout();
             //
             // GroupBox1
             //
-            this.GroupBox1.Controls.Add(this.btnAddData);
-            this.GroupBox1.Controls.SetChildIndex(this.btnAddData, 0);
+            this.GroupBox.Controls.Add(this.btnAddData);
+            this.GroupBox.Controls.SetChildIndex(this.btnAddData, 0);
             //
             // txtDataTable
             //
@@ -140,9 +140,9 @@ namespace DotSpatial.Modeling.Forms.Elements
 
             this.Controls.Add(this.txtDataTable);
             this.Name = "SaveFileElement";
-            this.Controls.SetChildIndex(this.GroupBox1, 0);
+            this.Controls.SetChildIndex(this.GroupBox, 0);
             this.Controls.SetChildIndex(this.txtDataTable, 0);
-            this.GroupBox1.ResumeLayout(false);
+            this.GroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

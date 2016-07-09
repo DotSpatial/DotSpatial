@@ -38,8 +38,8 @@ namespace DotSpatial.Modeling.Forms.Elements
         private readonly List<DataSetArray> _dataSets;
         private DataSetArray _addedTextFile;
         private bool _refreshCombo = true;
-        private Button btnAddData;
-        private ComboBox comboFile;
+        private Button _btnAddData;
+        private ComboBox _comboFile;
 
         #endregion
 
@@ -99,20 +99,17 @@ namespace DotSpatial.Modeling.Forms.Elements
             //We set the combo boxes status to empty to start
             base.Status = ToolStatus.Empty;
             LightTipText = ModelingMessageStrings.FeaturesetMissing;
-            comboFile.Items.Clear();
+            _comboFile.Items.Clear();
 
             //If the user added a text file
             if (_addedTextFile != null)
             {
-                comboFile.Items.Add(_addedTextFile);
-                if (Param.Value != null && Param.DefaultSpecified)
+                _comboFile.Items.Add(_addedTextFile);
+                if (Param.Value != null && Param.DefaultSpecified && _addedTextFile.DataSet == Param.Value)
                 {
-                    if (_addedTextFile.DataSet == Param.Value)
-                    {
-                        comboFile.SelectedItem = _addedTextFile;
-                        base.Status = ToolStatus.Ok;
-                        LightTipText = ModelingMessageStrings.FeaturesetValid;
-                    }
+                    _comboFile.SelectedItem = _addedTextFile;
+                    base.Status = ToolStatus.Ok;
+                    LightTipText = ModelingMessageStrings.FeaturesetValid;
                 }
             }
 
@@ -121,27 +118,20 @@ namespace DotSpatial.Modeling.Forms.Elements
             {
                 foreach (DataSetArray dsa in _dataSets)
                 {
-                    TextFile aTextFile = (dsa.DataSet as TextFile);
-                    if (aTextFile != null)
+                    TextFile aTextFile = dsa.DataSet as TextFile;
+                    if (aTextFile != null && !_comboFile.Items.Contains(dsa))
                     {
                         //If the featureset is the correct type and isn't already in the combo box we add it
-                        if (comboFile.Items.Contains(dsa) == false)
+                        _comboFile.Items.Add(dsa);
+                        if (Param.Value != null && Param.DefaultSpecified && dsa.DataSet == Param.Value)
                         {
-                            comboFile.Items.Add(dsa);
-                            if (Param.Value != null && Param.DefaultSpecified)
-                            {
-                                if (dsa.DataSet == Param.Value)
-                                {
-                                    comboFile.SelectedItem = dsa;
-                                    base.Status = ToolStatus.Ok;
-                                    LightTipText = ModelingMessageStrings.FeaturesetValid;
-                                }
-                            }
+                            _comboFile.SelectedItem = dsa;
+                            base.Status = ToolStatus.Ok;
+                            LightTipText = ModelingMessageStrings.FeaturesetValid;
                         }
                     }
                 }
             }
-
             _refreshCombo = true;
         }
 
@@ -155,25 +145,23 @@ namespace DotSpatial.Modeling.Forms.Elements
 
         private void btnAddData_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Select File Name";
-            if (Param == null) Param = new FileParam("open filename");
-            FileParam p = Param as FileParam;
-            if (p != null) dialog.Filter = p.DialogFilter;
-
-            if (dialog.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                TextFile tmpTextFile = new TextFile(dialog.FileName);
-                _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
+                dialog.Title = ModelingMessageStrings.OpenFileElement_btnAddDataClick_SelectFileName;
+                if (Param == null) Param = new FileParam("open filename");
+                FileParam p = Param as FileParam;
+                if (p != null) dialog.Filter = p.DialogFilter;
 
-                Param.ModelName = _addedTextFile.Name;
-                Param.Value = _addedTextFile.DataSet;
-                Refresh();
-                base.Status = ToolStatus.Ok;
-            }
-            else
-            {
-                return;
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    TextFile tmpTextFile = new TextFile(dialog.FileName);
+                    _addedTextFile = new DataSetArray(Path.GetFileNameWithoutExtension(dialog.FileName), tmpTextFile);
+
+                    Param.ModelName = _addedTextFile.Name;
+                    Param.Value = _addedTextFile.DataSet;
+                    Refresh();
+                    base.Status = ToolStatus.Ok;
+                }
             }
         }
 
@@ -181,12 +169,11 @@ namespace DotSpatial.Modeling.Forms.Elements
         {
             if (_refreshCombo)
             {
-                DataSetArray dsa = comboFile.SelectedItem as DataSetArray;
+                DataSetArray dsa = _comboFile.SelectedItem as DataSetArray;
                 if (dsa != null)
                 {
                     Param.ModelName = dsa.Name;
                     Param.Value = dsa.DataSet;
-                    return;
                 }
             }
         }
@@ -199,44 +186,44 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAddData = new Button();
-            this.comboFile = new ComboBox();
-            this.GroupBox1.SuspendLayout();
+            this._btnAddData = new Button();
+            this._comboFile = new ComboBox();
+            this.GroupBox.SuspendLayout();
             this.SuspendLayout();
             //
-            // GroupBox1
+            // GroupBox
             //
-            this.GroupBox1.Controls.Add(this.btnAddData);
-            this.GroupBox1.Controls.Add(this.comboFile);
-            this.GroupBox1.Controls.SetChildIndex(this.comboFile, 0);
-            this.GroupBox1.Controls.SetChildIndex(this.btnAddData, 0);
+            this.GroupBox.Controls.Add(this._btnAddData);
+            this.GroupBox.Controls.Add(this._comboFile);
+            this.GroupBox.Controls.SetChildIndex(this._comboFile, 0);
+            this.GroupBox.Controls.SetChildIndex(this._btnAddData, 0);
             //
             // btnAddData
             //
-            this.btnAddData.Image = Images.AddLayer;
-            this.btnAddData.Location = new Point(450, 10);
-            this.btnAddData.Name = "btnAddData";
-            this.btnAddData.Size = new Size(26, 26);
-            this.btnAddData.TabIndex = 9;
-            this.btnAddData.UseVisualStyleBackColor = true;
-            this.btnAddData.Click += new EventHandler(this.btnAddData_Click);
+            this._btnAddData.Image = Images.AddLayer;
+            this._btnAddData.Location = new Point(450, 10);
+            this._btnAddData.Name = "_btnAddData";
+            this._btnAddData.Size = new Size(26, 26);
+            this._btnAddData.TabIndex = 9;
+            this._btnAddData.UseVisualStyleBackColor = true;
+            this._btnAddData.Click += new EventHandler(this.btnAddData_Click);
             //
             // comboFile
             //
-            this.comboFile.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.comboFile.FormattingEnabled = true;
-            this.comboFile.Location = new Point(34, 12);
-            this.comboFile.Name = "comboFile";
-            this.comboFile.Size = new Size(410, 21);
-            this.comboFile.TabIndex = 10;
-            this.comboFile.SelectedValueChanged += new EventHandler(this.comboFile_SelectedValueChanged);
+            this._comboFile.DropDownStyle = ComboBoxStyle.DropDownList;
+            this._comboFile.FormattingEnabled = true;
+            this._comboFile.Location = new Point(34, 12);
+            this._comboFile.Name = "_comboFile";
+            this._comboFile.Size = new Size(410, 21);
+            this._comboFile.TabIndex = 10;
+            this._comboFile.SelectedValueChanged += new EventHandler(this.comboFile_SelectedValueChanged);
             //
             // OpenFileElement
             //
             this.AutoScaleDimensions = new SizeF(6F, 13F);
 
             this.Name = "OpenFileElement";
-            this.GroupBox1.ResumeLayout(false);
+            this.GroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 

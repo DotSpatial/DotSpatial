@@ -114,29 +114,25 @@ namespace DotSpatial.Tools
         /// <param name="destProjection">The target projected coordinate system to reproject the featureset to</param>
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
-        /// Ping deleted "static" for external testing
+        /// <remarks>Ping deleted "static" for external testing</remarks>
         /// <returns></returns>
-        public bool Execute(
-            IFeatureSet featureSet,
-            ProjectionInfo sourceProjection,
-            ProjectionInfo destProjection,
-            IFeatureSet output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet featureSet, ProjectionInfo sourceProjection, ProjectionInfo destProjection, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
-            output.CopyFeatures(featureSet, true);
-            output.Projection = featureSet.Projection;
+            string filename = output.Filename;
+            output = featureSet.CopySubset("");
+
             if (sourceProjection != null)
             {
                 output.Projection = sourceProjection;
             }
 
             output.Reproject(destProjection);
-            output.SaveAs(output.Filename, true);
+            output.SaveAs(filename, true);
             return true;
         }
 
         /// <summary>
-        /// The parameters array should be populated with default values here
+        /// The parameters array should be populated with default values here.
         /// </summary>
         public override void Initialize()
         {
@@ -156,11 +152,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.Thedestinationprojection
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet)
                                   {
                                       HelpText = TextStrings.SelectResultFeatureSetDirectory
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>

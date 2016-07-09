@@ -166,11 +166,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.InputFeatureSettogenerate
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet)
                                   {
                                       HelpText = TextStrings.SelectResultFeatureSetDirectory
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

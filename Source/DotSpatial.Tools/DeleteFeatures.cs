@@ -109,8 +109,7 @@ namespace DotSpatial.Tools
         /// <param name="output">The output FeatureSet.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns></returns>
-        public bool Execute(
-            IFeatureSet input1, string input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet input1, string input2, IFeatureSet output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input1 == null || input2 == null || output == null)
@@ -177,11 +176,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.ExpressionSelectFeatures
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet)
                                   {
                                       HelpText = TextStrings.SelectResultFeatureSetDirectory
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>

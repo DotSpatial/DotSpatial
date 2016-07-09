@@ -100,12 +100,7 @@ namespace DotSpatial.Tools
         /// <param name="output">The output slope raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True if the method worked.</returns>
-        public bool Execute(
-            IRaster ras,
-            double inZFactor,
-            bool slopeInPercent,
-            IRaster output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IRaster ras, double inZFactor, bool slopeInPercent, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (ras == null || output == null)
@@ -117,8 +112,7 @@ namespace DotSpatial.Tools
             {
                 int noOfCol = ras.NumColumns;
                 int noOfRow = ras.NumRows;
-                output = Raster.CreateRaster(
-                    output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
+                output = Raster.CreateRaster(output.Filename, string.Empty, noOfCol, noOfRow, 1, typeof(double), new[] { string.Empty });
                 output.NoDataValue = ras.NoDataValue;
 
                 // output.Bounds = ras.Bounds.Copy();
@@ -192,7 +186,6 @@ namespace DotSpatial.Tools
             }
             catch (Exception ex)
             {
-                // throw new SystemException("Error in Slope: ", ex);
                 throw new SystemException(ex.ToString());
             }
         }
@@ -216,11 +209,12 @@ namespace DotSpatial.Tools
                                      HelpText = TextStrings.slopeinpercentageindegree
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputslopeRaster)
                                   {
                                       HelpText = TextStrings.Resultofaverageslope
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

@@ -83,26 +83,24 @@ namespace DotSpatial.Tools
         public override bool Execute(ICancelProgressHandler cancelProgressHandler)
         {
             //Get the needed input and output parameters
-            IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;          
+            IFeatureSet inputFeatures = _inputParam[0].Value as IFeatureSet;
             IFeatureSet outputFeatures = _outputParam[0].Value as IFeatureSet;
             IntParam intInput = _inputParam[1] as IntParam;
 
             int numPoints = 1;
-            if (intInput != null){ numPoints = intInput.Value; }
+            if (intInput != null) { numPoints = intInput.Value; }
 
             RandomGeometry.RandomPoints(inputFeatures, numPoints, outputFeatures, cancelProgressHandler);
-            
+
             if (cancelProgressHandler.Cancel)
             {
                 //Set output param to null so that ToolManager does not attempt to open file.
                 _outputParam = null;
                 return false;
             }
-            else
-            {
-                outputFeatures.Save();
-                return true;
-            }
+
+            outputFeatures.Save();
+            return true;
         }
 
 
@@ -114,8 +112,9 @@ namespace DotSpatial.Tools
             _inputParam = new Parameter[2];
             _inputParam[0] = new FeatureSetParam(TextStrings.InputFeatureSet);
             _inputParam[1] = new IntParam(TextStrings.RandomGeometryNumPoint, 10);
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.OutputFeatureSet);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

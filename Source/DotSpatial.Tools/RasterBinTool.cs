@@ -38,13 +38,12 @@ namespace DotSpatial.Tools
         /// <summary>
         /// Initializes a new instance of the RasterBinTool class.
         /// </summary>
-        public RasterBinTool()
+        public RasterBinTool() 
         {
-            this.Name = "Raster Bin";
+            this.Name = TextStrings.RasterBinTool_Name;
             this.Category = TextStrings.TerrainAnalysis;
-            this.Description =
-                "This bins the values of a raster so that there will be large regions of equal values. This will replace the raster value with the middle value of the bin range that it falls with.  The baseValue represents the starting point of the first boundary, while the bin size represents the total distance between raster values.  So for instance, an interval of every 20, starting at 10 would have a bin size of 20, and a base value of 10.  The cells ranging from 10 to 30 would all get the half value of 20.";
-            this.ToolTip = "Bins the continuous values into histogram like categories.";
+            this.Description = TextStrings.RasterBinTool_Description;
+            this.ToolTip = TextStrings.RasterBinTool_Tooltip;
             this.Author = "Ted Dunsford?";
         }
 
@@ -99,12 +98,7 @@ namespace DotSpatial.Tools
         /// <param name="result">The output slope raster.</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>True if the method worked.</returns>
-        public bool Execute(
-            IRaster source,
-            double baseValue,
-            double binSize,
-            IRaster result,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IRaster source, double baseValue, double binSize, IRaster result, ICancelProgressHandler cancelProgressHandler)
         {
             RasterBin rasterBin = new RasterBin { BaseValue = baseValue, BinSize = binSize };
 
@@ -115,7 +109,7 @@ namespace DotSpatial.Tools
             catch (Exception ex)
             {
                 Debug.WriteLine("The Execute method failed for RasterBin tool: " + ex.Message);
-                MessageBox.Show("The RasterBin tool failed to complete successfully.");
+                MessageBox.Show(TextStrings.RasterBinTool_Execute_FailedToCompleteSuccessfully);
                 return false;
             }
         }
@@ -132,20 +126,19 @@ namespace DotSpatial.Tools
                                  };
             _inputParam[1] = new DoubleParam("Base value", 0)
                                  {
-                                     HelpText =
-                                         "The starting point for bin calculations.  A base value of 10 with a bin size of 20 would give all values from 10 to 30 a value of 20."
+                                     HelpText = TextStrings.RasterBinTool_Initialize_BaseValueHelText
                                  };
             _inputParam[2] = new DoubleParam("Bin size", 10)
                                  {
-                                     HelpText =
-                                         "The size of the bins.  A base value of 10 with a bin size of 20 would give all the values from 10 to 30 a value of 20."
+                                     HelpText = TextStrings.RasterBinTool_Initialize_BinSizeHelpText
                                  };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputslopeRaster)
                                   {
                                       HelpText = TextStrings.Resultofaverageslope
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>
@@ -153,7 +146,6 @@ namespace DotSpatial.Tools
         /// </summary>
         public override void ParameterChanged(Parameter sender)
         {
-            return;
         }
 
         #endregion

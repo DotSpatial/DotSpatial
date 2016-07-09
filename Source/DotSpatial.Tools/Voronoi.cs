@@ -86,6 +86,8 @@ namespace DotSpatial.Tools
 
             IFeatureSet output = _outputParam[0].Value as IFeatureSet;
 
+            if (output == null) return false;
+
             Analysis.Voronoi.VoronoiPolygons(input, output, true);
             output.Save();
             return true;
@@ -99,8 +101,9 @@ namespace DotSpatial.Tools
             _inputParam = new Parameter[1];
             _inputParam[0] = new PointFeatureSetParam(TextStrings.PointFeatureSet);
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.PolygonFeatureSet);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

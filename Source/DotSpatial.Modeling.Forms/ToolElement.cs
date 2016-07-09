@@ -30,15 +30,13 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class ToolElement : ModelElement
     {
-        #region --------------- class variables
+        #region Variables
 
         private readonly ITool _tool;
-        private ToolExecuteStatus _toolExecuteStatus;
-        private ToolStatus _toolStatus;
 
         #endregion
 
-        #region --------------- Constructors
+        #region Constructors
 
         /// <summary>
         /// Creates an instance of the tool element
@@ -54,16 +52,12 @@ namespace DotSpatial.Modeling.Forms
 
         #endregion
 
-        #region --------------- Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets the status of the tools execution, used when the modeler runs the model.
         /// </summary>
-        public ToolExecuteStatus ExecutionStatus
-        {
-            get { return _toolExecuteStatus; }
-            set { _toolExecuteStatus = value; }
-        }
+        public ToolExecuteStatus ExecutionStatus { get; set; }
 
         /// <summary>
         /// Gets the ITool this element represents
@@ -85,22 +79,19 @@ namespace DotSpatial.Modeling.Forms
         /// <summary>
         /// Gets the current status of the tool
         /// </summary>
-        public ToolStatus ToolStatus
-        {
-            get { return _toolStatus; }
-        }
+        public ToolStatus ToolStatus { get; private set; }
 
         #endregion
 
-        #region --------------- Methods
+        #region Methods
 
         /// <summary>
         /// Updates the status indicator
         /// </summary>
         public void UpdateStatus()
         {
-            ToolDialog td = new ToolDialog(_tool, ModelElements);
-            _toolStatus = td.ToolStatus;
+            using (ToolDialog td = new ToolDialog(_tool, ModelElements))
+            { ToolStatus = td.ToolStatus; }
         }
 
         /// <summary>
@@ -118,15 +109,14 @@ namespace DotSpatial.Modeling.Forms
         }
 
         /// <summary>
-        /// When the user doulbe clicks on a tool call this method
+        /// When the user double clicks on a tool call this method.
         /// </summary>
         public override bool DoubleClick()
         {
-            ToolDialog td = new ToolDialog(_tool, ModelElements);
-            td.ShowDialog();
-            if (td.DialogResult == DialogResult.OK)
-                return true;
-            return false;
+            using (ToolDialog td = new ToolDialog(_tool, ModelElements))
+            {
+                return td.ShowDialog() == DialogResult.OK;
+            }
         }
 
         #endregion

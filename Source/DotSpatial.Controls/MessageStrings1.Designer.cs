@@ -2304,6 +2304,15 @@ namespace DotSpatial.Controls {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to add layer. Reason: .
+        /// </summary>
+        internal static string ToolManager_ExecutionComplete_UnableToAddLayerReason {
+            get {
+                return ResourceManager.GetString("ToolManager_ExecutionComplete_UnableToAddLayerReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The tool cannot be run because one or more of its parameters is not set..
         /// </summary>
         internal static string ToolSetupIncorectly {

@@ -95,60 +95,28 @@ namespace DotSpatial.Tools
         /// <param name="resultData">The result FeatureSet of aggregated features..</param>
         /// <param name="cancelProgressHandler">The progress handler.</param>
         /// <returns>Boolean if the result is true.</returns>
-        public bool Execute(
-            IFeatureSet sourceData, IFeatureSet resultData, ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IFeatureSet sourceData, IFeatureSet resultData, ICancelProgressHandler cancelProgressHandler)
         // removed "static" dpa 12/2009 so that this can be run from an external call directly.
         {
             // Validates the input and output data
-            if (sourceData == null || sourceData.Features == null || sourceData.Features.Count == 0
-                || resultData == null)
+            if (sourceData == null || sourceData.Features == null || sourceData.Features.Count == 0 || resultData == null)
             {
                 return false;
             }
 
             IFeature oneFeature = sourceData.Features[0];
 
-            // MapWindow.Main.ProgressMeter pm = new MapWindow.Main.ProgressMeter(cancelProgressHandler, TextStrings.UnioningShapes, self.Features.Count);
             for (int i = 1; i < sourceData.Features.Count; i++)
             {
-                if (sourceData.Features[i] == null)
-                {
-                    continue;
-                }
+                if (sourceData.Features[i] == null) continue;
 
                 oneFeature = oneFeature.Union(sourceData.Features[i].Geometry);
-
-                // pm.CurrentValue = i;
             }
 
-            // pm.Reset();
             resultData.Features.Add(oneFeature);
             resultData.SaveAs(resultData.Filename, true);
             return true;
         }
-
-        // public bool Execute(IFeatureSet SourceData, IFeatureSet ResultData)
-        ////Ping Yang removed the progress handler for testing
-        // {
-        // //Validates the input and output data
-
-        // if (SourceData == null || SourceData.Features == null || SourceData.Features.Count == 0 || ResultData == null)
-        // {
-        // return false;
-        // }
-
-        // IFeature OneFeature = SourceData.Features[0];
-        // for (int i = 1; i < SourceData.Features.Count; i++)
-        // {
-        // if (SourceData.Features[i] == null) continue;
-        // OneFeature = OneFeature.Union(SourceData.Features[i]);
-        // //     pm.CurrentValue = i;
-        // }
-        // // pm.Reset();
-        // ResultData.Features.Add(OneFeature);
-        // ResultData.SaveAs(ResultData.Filename, true);
-        // return true;
-        // }
 
         /// <summary>
         /// The Parameter array should be populated with default values here
@@ -158,8 +126,9 @@ namespace DotSpatial.Tools
             _inputParam = new Parameter[1];
             _inputParam[0] = new PolygonFeatureSetParam(TextStrings.BaseFeatureSet);
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.UnionFeatureSet);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

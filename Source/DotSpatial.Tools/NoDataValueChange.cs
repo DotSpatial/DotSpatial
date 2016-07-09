@@ -100,12 +100,7 @@ namespace DotSpatial.Tools
         /// <param name="output">The output raster</param>
         /// <param name="cancelProgressHandler">The progress handler</param>
         /// <returns></returns>
-        public bool Execute(
-            IRaster input,
-            double oldValue,
-            double newValue,
-            IRaster output,
-            ICancelProgressHandler cancelProgressHandler)
+        public bool Execute(IRaster input, double oldValue, double newValue, IRaster output, ICancelProgressHandler cancelProgressHandler)
         {
             // Validates the input and output data
             if (input == null || newValue == 0 || output == null)
@@ -163,7 +158,7 @@ namespace DotSpatial.Tools
             // output = Temp;
             output.Save();
             return true;
-        }                                           
+        }
 
         /// <summary>
         /// The Parameter array should be populated with default values here
@@ -175,8 +170,9 @@ namespace DotSpatial.Tools
             _inputParam[1] = new StringParam(TextStrings.Optional) { HelpText = TextStrings.Optionaltochange };
             _inputParam[2] = new StringParam(TextStrings.UserNewValues) { HelpText = TextStrings.UserinputNewValue };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new RasterParam(TextStrings.OutputRaster) { HelpText = TextStrings.newrastername };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         /// <summary>

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DotSpatial.Data;
 using DotSpatial.Modeling.Forms.Elements;
@@ -42,13 +43,13 @@ namespace DotSpatial.Modeling.Forms
 
         private int _elementHeight = 3;
 
-        private Extent _extent;
+        private readonly Extent _extent;
 
-        private List<DialogElement> _listOfDialogElements = new List<DialogElement>();
+        private readonly List<DialogElement> _listOfDialogElements = new List<DialogElement>();
 
         private ITool _tool;
 
-        private IContainer components = null;
+        private readonly IContainer components = null;
 
         #endregion
 
@@ -82,12 +83,14 @@ namespace DotSpatial.Modeling.Forms
             // We store all the element names here and extract the datasets
             foreach (ModelElement me in modelElements)
             {
-                if (me as DataElement != null)
+                DataElement de = me as DataElement;
+
+                if (de != null)
                 {
                     bool addData = true;
                     foreach (Parameter par in tool.OutputParameters)
                     {
-                        if (par.ModelName == (me as DataElement).Parameter.ModelName)
+                        if (par.ModelName == de.Parameter.ModelName)
                         {
                             addData = false;
                         }
@@ -97,7 +100,7 @@ namespace DotSpatial.Modeling.Forms
 
                     if (addData)
                     {
-                        _dataSets.Add(new DataSetArray(me.Name, (me as DataElement).Parameter.Value as IDataSet));
+                        _dataSets.Add(new DataSetArray(me.Name, de.Parameter.Value as IDataSet));
                     }
                 }
             }
@@ -132,15 +135,7 @@ namespace DotSpatial.Modeling.Forms
         {
             get
             {
-                foreach (DialogElement de in _listOfDialogElements)
-                {
-                    if (de.Status != ToolStatus.Ok)
-                    {
-                        return ToolStatus.Error;
-                    }
-                }
-
-                return ToolStatus.Ok;
+                return _listOfDialogElements.Any(de => de.Status != ToolStatus.Ok) ? ToolStatus.Error : ToolStatus.Ok;
             }
         }
 
@@ -249,7 +244,7 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="title">The text to appear in the help box.</param>
         /// <param name="body">The title to appear in the help box.</param>
         /// <param name="image">The bitmap to appear at the bottom of the help box.</param>
-        private void PopulateHelp(String title, String body, Image image)
+        private void PopulateHelp(string title, string body, Image image)
         {
             rtbHelp.Text = string.Empty;
             rtbHelp.Size = new Size(0, 0);
@@ -349,7 +344,6 @@ namespace DotSpatial.Modeling.Forms
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            return;
         }
 
         /// <summary>
@@ -377,7 +371,8 @@ namespace DotSpatial.Modeling.Forms
             // LinkData property of the Link object.
             string target = e.Link.LinkData as string;
 
-            Process.Start(target);
+            if (target != null)
+                Process.Start(target);
         }
 
         /// <summary>

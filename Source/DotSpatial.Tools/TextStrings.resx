@@ -927,4 +927,28 @@
   <data name="RandomGeometryToolTip" xml:space="preserve">
     <value>Select an area from the map and specify the number of points to generate inside of it.</value>
   </data>
+  <data name="OutputParameter_AddToMap" xml:space="preserve">
+    <value>AddToMap</value>
+  </data>
+  <data name="OutputParameter_AddToMap_CheckboxText" xml:space="preserve">
+    <value>Add the resulting layer to the map</value>
+  </data>
+  <data name="RasterBinTool_Execute_FailedToCompleteSuccessfully" xml:space="preserve">
+    <value>The RasterBin tool failed to complete successfully.</value>
+  </data>
+  <data name="RasterBinTool_Initialize_BaseValueHelText" xml:space="preserve">
+    <value>The starting point for bin calculations. A base value of 10 with a bin size of 20 would give all values from 10 to 30 a value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Initialize_BinSizeHelpText" xml:space="preserve">
+    <value>The size of the bins. A base value of 10 with a bin size of 20 would give all the values from 10 to 30 a value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Description" xml:space="preserve">
+    <value>This bins the values of a raster so that there will be large regions of equal values. This will replace the raster value with the middle value of the bin range that it falls with. The baseValue represents the starting point of the first boundary, while the bin size represents the total distance between raster values.  So for instance, an interval of every 20, starting at 10 would have a bin size of 20, and a base value of 10. The cells ranging from 10 to 30 would all get the half value of 20.</value>
+  </data>
+  <data name="RasterBinTool_Tooltip" xml:space="preserve">
+    <value>Bins the continuous values into histogram like categories.</value>
+  </data>
+  <data name="RasterBinTool_Name" xml:space="preserve">
+    <value>Raster Bin</value>
+  </data>
 </root>

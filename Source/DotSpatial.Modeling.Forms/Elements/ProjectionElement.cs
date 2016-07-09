@@ -33,9 +33,8 @@ namespace DotSpatial.Modeling.Forms.Elements
     {
         #region Private Variables
 
-        private ToolTip _tthelp;
-        private Button cmdSelect;
-        private Label lblProjection;
+        private Button _cmdSelect;
+        private Label _lblProjection;
 
         #endregion
 
@@ -46,95 +45,124 @@ namespace DotSpatial.Modeling.Forms.Elements
         /// </summary>
         public ProjectionElement(ProjectionParam value)
         {
-            _tthelp = new ToolTip();
             base.Param = value;
             InitializeComponent();
-            if (value == null) return;
-            GroupBox.Text = value.Name;
-            if (value.Value != null)
-            {
-                lblProjection.Text = value.Value.ToProj4String();
-            }
-            value.ValueChanged += ParamValueChanged;
+            DoRefresh();
         }
 
         /// <inheritdoc/>
         protected override void ParamValueChanged(Parameter sender)
         {
-            if (Param == null) return;
-            if (Param.Value == null)
-            {
-                lblProjection.Text = string.Empty;
-                return;
-            }
-            lblProjection.Text = Param.Value.ToProj4String();
+            DoRefresh();
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Updates the elements layout if the param's been changed.
+        /// </summary>
+        private void DoRefresh()
+        {
+            Status = ToolStatus.Empty;
+            LightTipText = ModelingMessageStrings.ParameterInvalid;
+            if (Param == null || Param.Value == null)
+            {
+                _lblProjection.Text = ModelingMessageStrings.ProjectionElement_PressButtonToSelectProjection;
+                SetToolTipText(_lblProjection, "");
+                return;
+            }
+            GroupBox.Text = Param.Name;
+            _lblProjection.Text = Param.Value.ToProj4String();
+            SetToolTipText(_lblProjection, _lblProjection.Text);
+            Status = ToolStatus.Ok;
+            LightTipText = ModelingMessageStrings.ParameterValid;
+        }
+
+        /// <summary>
+        /// Updates the elements layout if the param's been changed.
+        /// </summary>
+        public override void Refresh()
+        {
+            DoRefresh();
+        }
+
+        /// <summary>
+        /// Changes the projection of this param via the ProjectionSelectDialog.
+        /// </summary>
+        private void CmdSelectClick(object sender, EventArgs e)
+        {
+            using (ProjectionSelectDialog dlg = new ProjectionSelectDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                if (Param == null)
+                {
+                    Param = new ProjectionParam("destination projection", dlg.SelectedCoordinateSystem);
+                }
+                else
+                {
+                    Param.Value = dlg.SelectedCoordinateSystem;
+                }
+            }
+        }
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the Parameter that the element represents
+        /// Gets or sets the Parameter that the element represents.
         /// </summary>
         public new ProjectionParam Param
         {
             get { return (ProjectionParam)base.Param; }
             set
             {
-                Status = ToolStatus.Empty;
-                LightTipText = ModelingMessageStrings.ParameterInvalid;
                 base.Param = value;
-                if (value == null) return;
-                if (value.Value == null) return;
-                lblProjection.Text = value.Value.ToProj4String();
-                Status = ToolStatus.Ok;
-                LightTipText = ModelingMessageStrings.ParameterValid;
+                DoRefresh();
                 Invalidate();
             }
         }
 
         #endregion
 
+        #region Generate by the designer
+
         private void InitializeComponent()
         {
-            lblProjection = new Label();
-            cmdSelect = new Button();
+            _lblProjection = new Label();
+            _cmdSelect = new Button();
             SuspendLayout();
             //
             // groupBox1
             //
-            GroupBox.Controls.Add(lblProjection);
-            GroupBox.Controls.Add(cmdSelect);
-            GroupBox.Controls.SetChildIndex(cmdSelect, 0);
-            GroupBox.Controls.SetChildIndex(lblProjection, 0);
+            GroupBox.Controls.Add(_lblProjection);
+            GroupBox.Controls.Add(_cmdSelect);
+            GroupBox.Controls.SetChildIndex(_cmdSelect, 0);
+            GroupBox.Controls.SetChildIndex(_lblProjection, 0);
             GroupBox.Controls.SetChildIndex(StatusLabel, 0);
             //
             // lblProjection
             //
-            lblProjection.Anchor = (AnchorStyles.Top | AnchorStyles.Left)
-                                   | AnchorStyles.Right;
-            lblProjection.BackColor = Color.White;
-            lblProjection.BorderStyle = BorderStyle.Fixed3D;
-            lblProjection.Location = new Point(39, 16);
-            lblProjection.Name = "lblProjection";
-            lblProjection.Size = new Size(405, 20);
-            lblProjection.TabIndex = 2;
-            lblProjection.Text = "Press the button to select a projection";
+            _lblProjection.Anchor = (AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right;
+            _lblProjection.BackColor = Color.White;
+            _lblProjection.BorderStyle = BorderStyle.Fixed3D;
+            _lblProjection.Location = new Point(39, 16);
+            _lblProjection.Name = "_lblProjection";
+            _lblProjection.Size = new Size(405, 20);
+            _lblProjection.TabIndex = 2;
+            _lblProjection.Text = ModelingMessageStrings.ProjectionElement_PressButtonToSelectProjection;
             //
             // cmdSelect
             //
-            cmdSelect.Location = new Point(450, 15);
-            cmdSelect.Name = "cmdSelect";
-            cmdSelect.Size = new Size(36, 23);
-            cmdSelect.TabIndex = 3;
-            cmdSelect.Text = "...";
-            cmdSelect.UseVisualStyleBackColor = true;
-            cmdSelect.Click += CmdSelectClick;
+            _cmdSelect.Location = new Point(450, 15);
+            _cmdSelect.Name = "_cmdSelect";
+            _cmdSelect.Size = new Size(36, 23);
+            _cmdSelect.TabIndex = 3;
+            _cmdSelect.Text = ModelingMessageStrings.SelectButtonText;
+            _cmdSelect.UseVisualStyleBackColor = true;
+            _cmdSelect.Click += CmdSelectClick;
             //
             // ProjectionElement
             //
@@ -143,30 +171,6 @@ namespace DotSpatial.Modeling.Forms.Elements
             ResumeLayout(false);
         }
 
-        private void CmdSelectClick(object sender, EventArgs e)
-        {
-            ProjectionSelectDialog dlg = new ProjectionSelectDialog();
-            if (dlg.ShowDialog() != DialogResult.OK) return;
-            if (Param == null)
-            {
-                Param = new ProjectionParam("destination projection", dlg.SelectedCoordinateSystem);
-            }
-            else
-            {
-                Param.Value = dlg.SelectedCoordinateSystem;
-            }
-            lblProjection.Text = Param.Value.ToProj4String();
-            _tthelp.SetToolTip(lblProjection, Param.Value.ToProj4String());
-        }
-
-        public override void Refresh()
-        {
-            Status = ToolStatus.Empty;
-            LightTipText = ModelingMessageStrings.ParameterInvalid;
-            if (Param == null) return;
-            if (Param.Value == null) return;
-            Status = ToolStatus.Ok;
-            LightTipText = ModelingMessageStrings.ParameterValid;
-        }
+        #endregion
     }
 }

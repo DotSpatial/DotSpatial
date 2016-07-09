@@ -97,13 +97,10 @@ namespace DotSpatial.Tools
                 _outputParam = null;
                 return false;
             }
-            else
-            {
-                result.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
-                result.Save();
-                _outputParam[0].Value = result;
-                return true;
-            }
+            result.Filename = ((IFeatureSet)_outputParam[0].Value).Filename;
+            result.Save();
+            _outputParam[0].Value = result;
+            return true;
         }
 
         /// <summary>
@@ -114,8 +111,9 @@ namespace DotSpatial.Tools
             _inputParam = new Parameter[2];
             _inputParam[0] = new FeatureSetParam(TextStrings.BaseFeatureSet);
             _inputParam[1] = new FeatureSetParam(TextStrings.RemoveFeatureSet);
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new FeatureSetParam(TextStrings.ErasedResultFeatureSet);
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion

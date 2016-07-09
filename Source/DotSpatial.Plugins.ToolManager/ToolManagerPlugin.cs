@@ -13,7 +13,7 @@ namespace DotSpatial.Plugins.ToolManager
 {
     public class ToolManagerPlugin : Extension, IPartImportsSatisfiedNotification
     {
-        private Controls.ToolManager toolManager;
+        private Controls.ToolManager _toolManager;
 
         [Import("Shell", typeof(ContainerControl))]
         private ContainerControl Shell { get; set; }
@@ -55,7 +55,7 @@ namespace DotSpatial.Plugins.ToolManager
         {
             App.HeaderControl.RemoveAll();
             App.DockManager.Remove("kTools");
-            toolManager = null;
+            _toolManager = null;
             base.Deactivate();
         }
 
@@ -68,8 +68,8 @@ namespace DotSpatial.Plugins.ToolManager
         {
             if (Tools != null && Tools.Any())
             {
-                if (toolManager != null) return;
-                toolManager = new Controls.ToolManager
+                if (_toolManager != null) return;
+                _toolManager = new Controls.ToolManager
                 {
                     App = App,
                     Legend = App.Legend,
@@ -79,13 +79,13 @@ namespace DotSpatial.Plugins.ToolManager
                     TabIndex = 1
                 };
 
-                App.CompositionContainer.ComposeParts(toolManager);
-                Shell.Controls.Add(toolManager);
-                App.DockManager.Add(new DockablePanel("kTools", "Tools", toolManager, DockStyle.Left) { SmallImage = toolManager.ImageList.Images["Hammer"] });
+                App.CompositionContainer.ComposeParts(_toolManager);
+                Shell.Controls.Add(_toolManager);
+                App.DockManager.Add(new DockablePanel("kTools", "Tools", _toolManager, DockStyle.Left) { SmallImage = _toolManager.ImageList.Images["Hammer"] });
             }
             else
             {
-                toolManager = null;
+                _toolManager = null;
                 App.DockManager.Remove("kTools");
             }
         }

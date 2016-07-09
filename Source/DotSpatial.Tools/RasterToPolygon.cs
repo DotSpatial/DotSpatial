@@ -651,11 +651,12 @@ namespace DotSpatial.Tools
             _inputParam = new Parameter[1];
             _inputParam[0] = new RasterParam(TextStrings.inputRaster) { HelpText = TextStrings.inputrastetoconvert };
 
-            _outputParam = new Parameter[1];
+            _outputParam = new Parameter[2];
             _outputParam[0] = new PolygonFeatureSetParam(TextStrings.Convertedfeatureset)
                                   {
                                       HelpText = TextStrings.featuresetcreated
                                   };
+            _outputParam[1] = new BooleanParam(TextStrings.OutputParameter_AddToMap, TextStrings.OutputParameter_AddToMap_CheckboxText, true);
         }
 
         #endregion
