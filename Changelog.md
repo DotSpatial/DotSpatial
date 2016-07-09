@@ -8,10 +8,11 @@ All notable changes to this project will be documented in this file.
 - Added property AppManager.BaseDirectory which allows to change base directory for plugins. (#758)
 - Support for formatted ESRI projection files (#793)
 - XML comments for publicly visible types and members
+- "Add layer to Map"-checkbox to the ToolDialog (#147)
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
-- Demo and Apps projects should have build files (#120
+- Demo and Apps projects should have build files (#120)
 - ExtensionManager & HideReleaseFromEndUser (#798)
 - Moved localizeable strings to resource files
 - Renamed FilterCollectionEM to FeatureSelectionExt because it contains extension methods for IFeatureSelection
@@ -49,3 +50,4 @@ All notable changes to this project will be documented in this file.
 - Select Layer in the MapFrame (#743)
 - Measure Plugin - unhandled exception (#792)
 - Error that caused the last value to be missing from the RasterSymbolizer.Scheme
+- Bug in tool Reproject Features (#761)
