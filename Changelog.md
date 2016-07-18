@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Support for formatted ESRI projection files (#793)
 - XML comments for publicly visible types and members
 - "Add layer to Map"-checkbox to the ToolDialog (#147)
+- CopySubset overloads with withAttributes parameters
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
@@ -51,3 +52,5 @@ All notable changes to this project will be documented in this file.
 - Measure Plugin - unhandled exception (#792)
 - Error that caused the last value to be missing from the RasterSymbolizer.Scheme
 - Bug in tool Reproject Features (#761)
+- Clone a featureset with CopyFeatures throws exception (#780)
+- Make sure Feature.Copy doesn't throw an error if the Feature doesn't have a ParentFeatureSet
