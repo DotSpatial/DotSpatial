@@ -477,15 +477,19 @@ namespace DotSpatial.Data
         {
             Feature clone = (Feature)MemberwiseClone();
             clone.Geometry = Geometry.Copy();
-            DataTable table = ParentFeatureSet.DataTable;
-            clone._dataRow = table.NewRow();
-            if (DataRow != null)
+            if (ParentFeatureSet != null && ParentFeatureSet.DataTable != null)
             {
-                for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+                DataTable table = ParentFeatureSet.DataTable;
+                clone._dataRow = table.NewRow();
+                if (DataRow != null)
                 {
-                    clone._dataRow[i] = DataRow[i];
+                    for (int i = 0; i < ParentFeatureSet.DataTable.Columns.Count; i++)
+                    {
+                        clone._dataRow[i] = DataRow[i];
+                    }
                 }
             }
+
             return clone;
         }
 
