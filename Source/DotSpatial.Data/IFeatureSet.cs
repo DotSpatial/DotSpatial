@@ -83,8 +83,7 @@ namespace DotSpatial.Data
         /// <returns>
         /// A modified featureset with the changes.
         /// </returns>
-        IFeatureSet Join(string xlsFilePath, string localJoinField,
-                         string xlsJoinField);
+        IFeatureSet Join(string xlsFilePath, string localJoinField, string xlsJoinField);
 
         /// <summary>
         /// If this featureset is in index mode, this will append the vertices and shapeindex of the shape.
@@ -112,14 +111,13 @@ namespace DotSpatial.Data
         IFeature GetFeature(int index);
 
         /// <summary>
-        /// Gets a shape at the specified shape index.  If the featureset is in
-        /// indexmode, this returns a copy of the shape.  If not, it will create
-        /// a new shape based on the specified feature.
+        /// Gets a shape at the specified shape index. If the featureset is in IndexMode, this returns a copy of the shape.
+        /// If not, it will create a new shape based on the specified feature.
         /// </summary>
         /// <param name="index">The zero based integer index of the shape.</param>
         /// <param name="getAttributes">If getAttributes is true, then this also try to get attributes for that shape.
-        /// If attributes are loaded, then it will use the existing datarow.  Otherwise, it will read the attributes
-        /// from the file.  (This second option is not recommended for large repeats.  In such a case, the attributes
+        /// If attributes are loaded, then it will use the existing datarow. Otherwise, it will read the attributes
+        /// from the file. (This second option is not recommended for large repeats. In such a case, the attributes
         /// can be set manually from a larger bulk query of the data source.)</param>
         /// <returns>The Shape object</returns>
         Shape GetShape(int index, bool getAttributes);
@@ -146,27 +144,45 @@ namespace DotSpatial.Data
         void AddFid();
 
         /// <summary>
-        /// Copies all the features from the specified featureset.
+        /// Copies all the features to a new featureset.
         /// </summary>
-        /// <param name="source">The source IFeatureSet to copy features from.</param>
-        /// <param name="copyAttributes">Boolean, true if the attributes should be copied as well.  If this is true,
+        /// <param name="withAttributes">Indicates whether the features attributes should be copied. If this is true,
         /// and the attributes are not loaded, a FillAttributes call will be made.</param>
-        void CopyFeatures(IFeatureSet source, bool copyAttributes);
+        IFeatureSet CopyFeatures(bool withAttributes);
 
         /// <summary>
-        /// Retrieves a subset using exclusively the features matching the specified values.
+        /// Retrieves a subset using exclusively the features matching the specified values. Attributes are always copied.
         /// </summary>
         /// <param name="indices">An integer list of indices to copy into the new FeatureSet</param>
         /// <returns>A FeatureSet with the new items.</returns>
         IFeatureSet CopySubset(List<int> indices);
 
         /// <summary>
+        /// Retrieves a subset using exclusively the features matching the specified values. Attributes are only copied if withAttributes is true.
+        /// </summary>
+        /// <param name="indices">An integer list of indices to copy into the new FeatureSet.</param>
+        /// <param name="withAttributes">Indicates whether the features attributes should be copied.</param>
+        /// <returns>A FeatureSet with the new items.</returns>
+        IFeatureSet CopySubset(List<int> indices, bool withAttributes);
+
+        /// <summary>
+        /// Copies the subset of specified features to create a new featureset that is restricted to
+        /// just the members specified. Attributes are always copied.
+        /// </summary>
+        /// <param name="filterExpression">The string expression to that specifies the features that should be copied. 
+        /// An empty expression copies all features.</param>
+        /// <returns>A FeatureSet that has members that only match the specified members.</returns>
+        IFeatureSet CopySubset(string filterExpression);
+
+        /// <summary>
         /// Copies the subset of specified features to create a new featureset that is restricted to
         /// just the members specified.
         /// </summary>
-        /// <param name="filterExpression">The string expression to test.</param>
+        /// <param name="filterExpression">The string expression to that specifies the features that should be copied. 
+        /// An empty expression copies all features.</param>
+        /// <param name="withAttributes">Indicates whether the features attributes should be copied.</param>
         /// <returns>A FeatureSet that has members that only match the specified members.</returns>
-        IFeatureSet CopySubset(string filterExpression);
+        IFeatureSet CopySubset(string filterExpression, bool withAttributes);
 
         /// <summary>
         /// Copies only the names and types of the attribute fields, without copying any of the attributes or features.
