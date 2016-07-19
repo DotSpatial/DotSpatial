@@ -54,3 +54,4 @@ All notable changes to this project will be documented in this file.
 - Bug in tool Reproject Features (#761)
 - Clone a featureset with CopyFeatures throws exception (#780)
 - Make sure Feature.Copy doesn't throw an error if the Feature doesn't have a ParentFeatureSet
+- Symbology.IndexSelection.RemoveRegion is working slow (#718)
