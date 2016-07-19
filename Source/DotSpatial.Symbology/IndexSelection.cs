@@ -44,7 +44,7 @@ namespace DotSpatial.Symbology
         {
             foreach (int index in indices)
             {
-                _layer.DrawnStates[index].Selected = _selectionState;
+                _layer.DrawnStates[index].Selected = SelectionState;
             }
             OnChanged();
         }
@@ -61,51 +61,50 @@ namespace DotSpatial.Symbology
             SuspendChanges();
             Extent affected = new Extent();
             IPolygon reg = region.ToPolygon();
-            //ProgressMeter pm = new ProgressMeter(ProgressHandler, "Selecting shapes", _layer.DrawnStates.Length);
+
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
-                //pm.Next();
-                if (_regionCategory != null && _layer.DrawnStates[shp].Category != _regionCategory) continue;
+                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
                 bool doAdd = false;
                 ShapeRange shape = _shapes[shp];
 
-                if (_selectionMode == SelectionMode.Intersects)
+                if (SelectionMode == SelectionMode.Intersects)
                 {
                     // Prevent geometry creation (which is slow) and use ShapeRange instead
                     ShapeRange env = new ShapeRange(region);
                     if (env.Intersects(shape))
                     {
-                        _layer.DrawnStates[shp].Selected = _selectionState;
+                        _layer.DrawnStates[shp].Selected = SelectionState;
                         affected.ExpandToInclude(shape.Extent);
                         added = true;
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.IntersectsExtent)
+                else if (SelectionMode == SelectionMode.IntersectsExtent)
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        _layer.DrawnStates[shp].Selected = _selectionState;
+                        _layer.DrawnStates[shp].Selected = SelectionState;
                         affected.ExpandToInclude(shape.Extent);
                         added = true;
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.ContainsExtent)
+                else if (SelectionMode == SelectionMode.ContainsExtent)
                 {
                     if (shape.Extent.Within(region))
                     {
-                        _layer.DrawnStates[shp].Selected = _selectionState;
+                        _layer.DrawnStates[shp].Selected = SelectionState;
                         affected.ExpandToInclude(shape.Extent);
                         added = true;
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.Disjoint)
+                else if (SelectionMode == SelectionMode.Disjoint)
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
+                        IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
                         if (reg.Disjoint(g)) doAdd = true;
                     }
                     else
@@ -117,7 +116,7 @@ namespace DotSpatial.Symbology
                 {
                     if (!shape.Extent.Intersects(region)) continue;
                     IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry;
-                    switch (_selectionMode)
+                    switch (SelectionMode)
                     {
                         case SelectionMode.Contains:
                             if (shape.Extent.Within(region))
@@ -158,11 +157,11 @@ namespace DotSpatial.Symbology
                 }
                 if (!doAdd) continue;
                 OnChanged();
-                _layer.DrawnStates[shp].Selected = _selectionState;
+                _layer.DrawnStates[shp].Selected = SelectionState;
                 affected.ExpandToInclude(shape.Extent);
                 added = true;
             }
-            //pm.Reset();
+
             ResumeChanges();
             affectedArea = affected.ToEnvelope();
             return added;
@@ -182,10 +181,10 @@ namespace DotSpatial.Symbology
             IPolygon reg = region.ToPolygon();
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
-                if (_regionCategory != null && _layer.DrawnStates[shp].Category != _regionCategory) continue;
+                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
                 bool doFlip = false;
                 ShapeRange shape = _shapes[shp];
-                if (_selectionMode == SelectionMode.Intersects)
+                if (SelectionMode == SelectionMode.Intersects)
                 {
                     // Prevent geometry creation (which is slow) and use ShapeRange instead
                     ShapeRange env = new ShapeRange(region);
@@ -197,7 +196,7 @@ namespace DotSpatial.Symbology
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.IntersectsExtent)
+                else if (SelectionMode == SelectionMode.IntersectsExtent)
                 {
                     if (shape.Extent.Intersects(region))
                     {
@@ -207,7 +206,7 @@ namespace DotSpatial.Symbology
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.ContainsExtent)
+                else if (SelectionMode == SelectionMode.ContainsExtent)
                 {
                     if (shape.Extent.Within(region))
                     {
@@ -217,11 +216,11 @@ namespace DotSpatial.Symbology
                         OnChanged();
                     }
                 }
-                else if (_selectionMode == SelectionMode.Disjoint)
+                else if (SelectionMode == SelectionMode.Disjoint)
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        IGeometry g = _layer.DataSet.Features[shp].Geometry;
+                        IGeometry g = _layer.DataSet.GetFeature(shp).Geometry;
                         if (reg.Disjoint(g)) doFlip = true;
                     }
                     else
@@ -232,12 +231,11 @@ namespace DotSpatial.Symbology
                 else
                 {
                     if (!shape.Extent.Intersects(region)) continue;
-                    IFeature f = _layer.DataSet.Features[shp]; // only get this if envelopes intersect
-                    IGeometry geom = f.Geometry;
+                    IGeometry geom = _layer.DataSet.GetFeature(shp).Geometry;  // only get this if envelopes intersect
                     switch (SelectionMode)
                     {
                         case SelectionMode.Contains:
-                            if (region.Intersects(f.Geometry.EnvelopeInternal))
+                            if (region.Intersects(geom.EnvelopeInternal))
                             {
                                 if (reg.Contains(geom)) doFlip = true;
                             }
@@ -249,7 +247,7 @@ namespace DotSpatial.Symbology
                             if (reg.Covers(geom)) doFlip = true;
                             break;
                         case SelectionMode.Intersects:
-                            if (region.Intersects(f.Geometry.EnvelopeInternal))
+                            if (region.Intersects(geom.EnvelopeInternal))
                             {
                                 if (reg.Intersects(geom)) doFlip = true;
                             }
@@ -267,6 +265,7 @@ namespace DotSpatial.Symbology
                 }
                 if (!doFlip) continue;
                 flipped = true;
+                OnChanged();
                 _layer.DrawnStates[shp].Selected = !_layer.DrawnStates[shp].Selected;
                 affected.ExpandToInclude(shape.Extent);
             }
@@ -296,8 +295,8 @@ namespace DotSpatial.Symbology
                 }
                 else
                 {
-                    if (drawnStates[index].Selected != !_selectionState) changed = true;
-                    drawnStates[index].Selected = !_selectionState;
+                    if (drawnStates[index].Selected != !SelectionState) changed = true;
+                    drawnStates[index].Selected = !SelectionState;
                 }
             }
             return !problem && changed;
@@ -316,31 +315,42 @@ namespace DotSpatial.Symbology
 
             Extent affected = new Extent();
             IPolygon reg = region.ToPolygon();
-            FastDrawnState[] drawnStates = _layer.DrawnStates;
-            for (int shp = 0; shp < drawnStates.Length; shp++)
+
+            for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
-                if (_regionCategory != null && drawnStates[shp].Category != _regionCategory) continue;
+                if (RegionCategory != null && _layer.DrawnStates[shp].Category != RegionCategory) continue;
                 bool doRemove = false;
                 ShapeRange shape = _shapes[shp];
-                if (_selectionMode == SelectionMode.IntersectsExtent)
+                if (SelectionMode == SelectionMode.Intersects)
+                {
+                    // Prevent geometry creation (which is slow) and use ShapeRange instead
+                    ShapeRange env = new ShapeRange(region);
+                    if (env.Intersects(shape))
+                    {
+                        _layer.DrawnStates[shp].Selected = !SelectionState;
+                        affected.ExpandToInclude(shape.Extent);
+                        removed = true;
+                    }
+                }
+                else if (SelectionMode == SelectionMode.IntersectsExtent)
                 {
                     if (shape.Extent.Intersects(region))
                     {
-                        drawnStates[shp].Selected = !_selectionState;
+                        _layer.DrawnStates[shp].Selected = !SelectionState;
                         affected.ExpandToInclude(shape.Extent);
                         removed = true;
                     }
                 }
-                else if (_selectionMode == SelectionMode.ContainsExtent)
+                else if (SelectionMode == SelectionMode.ContainsExtent)
                 {
                     if (shape.Extent.Within(region))
                     {
-                        drawnStates[shp].Selected = !_selectionState;
+                        _layer.DrawnStates[shp].Selected = !SelectionState;
                         affected.ExpandToInclude(shape.Extent);
                         removed = true;
                     }
                 }
-                if (_selectionMode == SelectionMode.Disjoint)
+                else if (SelectionMode == SelectionMode.Disjoint)
                 {
                     if (shape.Extent.Intersects(region))
                     {
@@ -356,7 +366,7 @@ namespace DotSpatial.Symbology
                 {
                     if (!shape.Extent.Intersects(region)) continue;
                     IGeometry geom = _layer.DataSet.Features[shp].Geometry;
-                    switch (_selectionMode)
+                    switch (SelectionMode)
                     {
                         case SelectionMode.Contains:
                             if (shape.Extent.Within(region))
@@ -396,7 +406,8 @@ namespace DotSpatial.Symbology
                     }
                 }
                 if (!doRemove) continue;
-                drawnStates[shp].Selected = !_selectionState;
+                OnChanged();
+                _layer.DrawnStates[shp].Selected = !SelectionState;
                 affected.ExpandToInclude(shape.Extent);
                 removed = true;
             }
@@ -426,7 +437,7 @@ namespace DotSpatial.Symbology
             FastDrawnState[] drawnStates = _layer.DrawnStates;
             for (int shp = 0; shp < drawnStates.Length; shp++)
             {
-                if (drawnStates[shp].Selected == _selectionState)
+                if (drawnStates[shp].Selected == SelectionState)
                 {
                     result.Add(_layer.DataSet.GetFeature(shp));
                 }
@@ -441,12 +452,12 @@ namespace DotSpatial.Symbology
         {
             get
             {
-                if (_layer.DrawnStatesNeeded == false) return new Envelope();
+                if (!_layer.DrawnStatesNeeded) return new Envelope();
                 Extent ext = new Extent();
                 FastDrawnState[] drawnStates = _layer.DrawnStates;
                 for (int shp = 0; shp < drawnStates.Length; shp++)
                 {
-                    if (drawnStates[shp].Selected == _selectionState)
+                    if (drawnStates[shp].Selected == SelectionState)
                     {
                         ext.ExpandToInclude(_shapes[shp].Extent);
                     }
@@ -458,27 +469,13 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Selection Mode controls how envelopes are treated when working with geometries.
         /// </summary>
-        public SelectionMode SelectionMode
-        {
-            get
-            {
-                return _selectionMode;
-            }
-            set
-            {
-                _selectionMode = value;
-            }
-        }
+        public SelectionMode SelectionMode { get; set; }
 
         /// <summary>
         /// Gets or sets whether this should work as "Selected" indices (true) or
         /// "UnSelected" indices (false).
         /// </summary>
-        public bool SelectionState
-        {
-            get { return _selectionState; }
-            set { _selectionState = value; }
-        }
+        public bool SelectionState { get; set; }
 
         /// <inheritdoc />
         public DataTable GetAttributes(int startIndex, int numRows)
@@ -571,8 +568,8 @@ namespace DotSpatial.Symbology
         public void Add(int index)
         {
             if (index < 0 || index >= _layer.DrawnStates.Length) return;
-            if (_layer.DrawnStates[index].Selected == _selectionState) return;
-            _layer.DrawnStates[index].Selected = _selectionState;
+            if (_layer.DrawnStates[index].Selected == SelectionState) return;
+            _layer.DrawnStates[index].Selected = SelectionState;
             OnChanged();
         }
 
@@ -581,7 +578,7 @@ namespace DotSpatial.Symbology
         {
             for (int shp = 0; shp < _layer.DrawnStates.Length; shp++)
             {
-                _layer.DrawnStates[shp].Selected = !_selectionState;
+                _layer.DrawnStates[shp].Selected = !SelectionState;
             }
             OnChanged();
         }
@@ -589,7 +586,7 @@ namespace DotSpatial.Symbology
         /// <inheritdoc />
         public bool Contains(int index)
         {
-            return (_layer.DrawnStates[index].Selected == _selectionState);
+            return _layer.DrawnStates[index].Selected == SelectionState;
         }
 
         /// <inheritdoc />
@@ -612,7 +609,7 @@ namespace DotSpatial.Symbology
                 if (_layer.DrawnStates == null) return 0;
                 for (int i = 0; i < _layer.DrawnStates.Length; i++)
                 {
-                    if (_layer.DrawnStates[i].Selected == _selectionState) count++;
+                    if (_layer.DrawnStates[i].Selected == SelectionState) count++;
                 }
                 return count;
             }
@@ -628,8 +625,8 @@ namespace DotSpatial.Symbology
         public bool Remove(int index)
         {
             if (index < 0 || index >= _layer.DrawnStates.Length) return false;
-            if (_layer.DrawnStates[index].Selected != _selectionState) return false;
-            _layer.DrawnStates[index].Selected = !_selectionState;
+            if (_layer.DrawnStates[index].Selected != SelectionState) return false;
+            _layer.DrawnStates[index].Selected = !SelectionState;
             OnChanged();
             return true;
         }
@@ -638,16 +635,12 @@ namespace DotSpatial.Symbology
         /// Setting this to a specific category will only allow selection by
         /// region to affect the features that are within the specified category.
         /// </summary>
-        public IFeatureCategory RegionCategory
-        {
-            get { return _regionCategory; }
-            set { _regionCategory = value; }
-        }
+        public IFeatureCategory RegionCategory { get; set; }
 
         /// <inheritdoc />
         public IEnumerator<int> GetEnumerator()
         {
-            return new IndexSelectionEnumerator(_layer.DrawnStates, _selectionState);
+            return new IndexSelectionEnumerator(_layer.DrawnStates, SelectionState);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -814,9 +807,6 @@ namespace DotSpatial.Symbology
 
         private readonly IFeatureLayer _layer;
         private readonly List<ShapeRange> _shapes;
-        private IFeatureCategory _regionCategory;
-        private SelectionMode _selectionMode;
-        private bool _selectionState;
 
         #endregion
 
@@ -830,7 +820,7 @@ namespace DotSpatial.Symbology
             _layer = layer;
             _shapes = layer.DataSet.ShapeIndices;
             SelectionMode = SelectionMode.IntersectsExtent;
-            _selectionState = true;
+            SelectionState = true;
         }
 
         #endregion
