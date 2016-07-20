@@ -21,11 +21,13 @@ Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to
 
 For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
 
-Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master) to download latest binaries (from master branch).
-
 ### Contribute
 
 See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
+
+### Download
+
+Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master) to download latest binaries (from master branch).
 
 ### NuGet packages
 
