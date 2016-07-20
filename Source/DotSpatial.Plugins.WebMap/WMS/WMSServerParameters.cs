@@ -163,8 +163,8 @@ namespace DotSpatial.Plugins.WebMap.WMS
             ProjectionInfo projectionInfo;
             try
             {
-                var crs = (string) lbCRS.SelectedItem;
-                if (string.Equals(crs, "CRS:84", StringComparison.OrdinalIgnoreCase))
+                var crs = ((string) lbCRS.SelectedItem).ToUpper();
+                if (string.Equals(crs, "CRS:84"))
                 {
                     crs = "EPSG:4326";
                 }
