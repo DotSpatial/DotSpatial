@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - ExtensionManager & HideReleaseFromEndUser (#798)
 - Moved localizeable strings to resource files
 - Renamed FilterCollectionEM to FeatureSelectionExt because it contains extension methods for IFeatureSelection
+- Move FeatureSet.Filename / FilePath to DataSet #821
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
