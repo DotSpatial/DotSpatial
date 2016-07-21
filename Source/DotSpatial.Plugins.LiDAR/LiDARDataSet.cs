@@ -81,6 +81,10 @@ namespace DotSpatial.Plugins.LiDAR
             }
         }
 
+        public string Filename { get; set; }
+
+        public string FilePath { get; set; }
+
         public bool IsDisposed
         {
             get { return false; }

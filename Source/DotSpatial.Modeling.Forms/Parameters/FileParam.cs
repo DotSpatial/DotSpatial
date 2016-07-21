@@ -93,7 +93,7 @@ namespace DotSpatial.Modeling.Forms.Parameters
         {
             TextFile addedTextFile = new TextFile
                                      {
-                                         FileName =
+                                         Filename =
                                              Path.GetDirectoryName(path) +
                                              Path.DirectorySeparatorChar + ModelName
                                      };

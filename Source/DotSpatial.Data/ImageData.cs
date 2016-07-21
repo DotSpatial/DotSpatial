@@ -20,7 +20,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {
@@ -30,8 +29,6 @@ namespace DotSpatial.Data
     public class ImageData : RasterBoundDataSet, IImageData
     {
         #region Private Variables
-
-        private int _bytesPerPixel;
 
         #endregion
 
@@ -175,23 +172,7 @@ namespace DotSpatial.Data
         /// Gets or sets an integer indicating how many bytes exist for each pixel.
         /// Eg. 32 ARGB = 4, 24 RGB = 3, 16 bit GrayScale = 2
         /// </summary>
-        public int BytesPerPixel
-        {
-            get
-            {
-                return _bytesPerPixel;
-            }
-            set
-            {
-                _bytesPerPixel = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the fileName.
-        /// </summary>
-        [Serialize("Filename", ConstructorArgumentIndex = 0)]
-        public string Filename { get; set; }
+        public int BytesPerPixel { get; set; }
 
         /// <summary>
         /// Creates a color structure from the byte values in the values array that correspond to the

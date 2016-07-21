@@ -29,8 +29,6 @@ namespace DotSpatial.Modeling.Forms
     /// </summary>
     public class TextFile : DataSet
     {
-        private string _fileName;
-
         /// <summary>
         /// Text File constructor
         /// </summary>
@@ -44,16 +42,7 @@ namespace DotSpatial.Modeling.Forms
         /// <param name="fileName">the associated file name</param>
         public TextFile(string fileName)
         {
-            _fileName = fileName;
-        }
-
-        /// <summary>
-        /// The file name associated with this text file
-        /// </summary>
-        public string FileName
-        {
-            get { return _fileName; }
-            set { _fileName = value; }
+            Filename = fileName;
         }
 
         /// <summary>
@@ -62,7 +51,7 @@ namespace DotSpatial.Modeling.Forms
         /// <returns></returns>
         public override string ToString()
         {
-            return FileName;
+            return Filename;
         }
     }
 }

@@ -311,15 +311,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the string fileName for this feature layer, if any
-        /// </summary>
-        string Filename
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// These specifically allow the user to make sense of the Vertices array.  These are
         /// fast acting sealed classes and are not meant to be overridden or support clever
         /// new implementations.

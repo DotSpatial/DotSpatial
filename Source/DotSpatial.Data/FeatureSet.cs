@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
@@ -1345,31 +1344,6 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the current file path. This is the relative path relative to
-        /// the current project folder. For feature sets coming from a database
-        /// or a web service, the FilePath property is NULL.
-        /// </summary>
-        /// <value>
-        /// The relative file path.
-        /// </value>
-        /// <remarks>This property is used when saving source file information to a DSPX project.</remarks>
-        [Serialize("FilePath")]
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual string FilePath
-        {
-            get
-            {
-                //do not construct FilePath for FeatureSets without a Filename
-                return string.IsNullOrEmpty(Filename) ? null : RelativePathTo(Filename);
-            }
-
-            set
-            {
-                Filename = AbsolutePathTo(value);
-            }
-        }
-
-        /// <summary>
         /// Gets whether or not the attributes have all been loaded into the data table.
         /// </summary>
         public virtual bool AttributesPopulated
@@ -1480,12 +1454,6 @@ namespace DotSpatial.Data
                 OnIncludeFeatures(_features);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the file name of a file based feature set. The file name should be the absolute path including 
-        /// the file extension. For feature sets coming from a database or a web service, the Filename property is NULL.
-        /// </summary>
-        public virtual string Filename { get; set; }
 
         /// <summary>
         /// If this is true, then the ShapeIndices and Vertex values are used, and features are created on demand.
@@ -1878,103 +1846,6 @@ namespace DotSpatial.Data
             {
                 _z = value;
             }
-        }
-
-        private static string AbsolutePathTo(string toPath)
-        {
-            if (string.IsNullOrEmpty(toPath))
-                throw new ArgumentNullException("toPath");
-
-            return Path.GetFullPath(toPath);
-        }
-
-        /// <summary>
-        /// Creates a relative path from one file or folder to another.
-        /// </summary>
-        /// <param name="toPath">
-        /// Contains the path that defines the endpoint of the relative path.
-        /// </param>
-        /// <returns>
-        /// The relative path from the start directory to the end path.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Occurs when the toPath is NULL</exception>
-        //http://weblogs.asp.net/pwelter34/archive/2006/02/08/create-a-relative-path-code-snippet.aspx
-        public static string RelativePathTo(string toPath)
-        {
-            string fromDirectory = Directory.GetCurrentDirectory();
-
-            if (toPath == null)
-                throw new ArgumentNullException("toPath");
-
-            if (Path.IsPathRooted(fromDirectory) && Path.IsPathRooted(toPath))
-            {
-                if (string.Compare(Path.GetPathRoot(fromDirectory), Path.GetPathRoot(toPath), true) != 0)
-                    return toPath;
-            }
-
-            StringCollection relativePath = new StringCollection();
-            string[] fromDirectories = fromDirectory.Split(Path.DirectorySeparatorChar);
-
-            string[] toDirectories = toPath.Split(Path.DirectorySeparatorChar);
-
-            int length = Math.Min(fromDirectories.Length, toDirectories.Length);
-
-            int lastCommonRoot = -1;
-
-            // find common root
-            for (int x = 0; x < length; x++)
-            {
-                if (string.Compare(fromDirectories[x], toDirectories[x], true) != 0)
-                    break;
-
-                lastCommonRoot = x;
-            }
-            if (lastCommonRoot == -1)
-                return toPath;
-
-            // add relative folders in from path
-            for (int x = lastCommonRoot + 1; x < fromDirectories.Length; x++)
-                if (fromDirectories[x].Length > 0)
-                    relativePath.Add("..");
-
-            // add to folders to path
-            for (int x = lastCommonRoot + 1; x < toDirectories.Length; x++)
-                relativePath.Add(toDirectories[x]);
-
-            // create relative path
-            string[] relativeParts = new string[relativePath.Count];
-            relativePath.CopyTo(relativeParts, 0);
-
-            return string.Join(Path.DirectorySeparatorChar.ToString(), relativeParts);
-        }
-
-        /// <summary>
-        /// Creates a relative path from one file or folder to another.
-        /// </summary>
-        /// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
-        /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
-        /// <returns>The relative path from the start directory to the end path.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static string MakeRelativePath(string fromPath, string toPath)
-        {
-            if (string.IsNullOrEmpty(fromPath))
-                throw new ArgumentNullException("fromPath");
-            if (string.IsNullOrEmpty(toPath))
-                throw new ArgumentNullException("toPath");
-
-            if (string.IsNullOrEmpty(Path.GetDirectoryName(toPath)))
-                // it looks like we only have a file name.
-                return toPath;
-
-            if (!fromPath.EndsWith(@"\"))
-                fromPath += @"\";
-
-            Uri fromUri = new Uri(fromPath);
-            Uri toUri = new Uri(toPath);
-
-            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
-
-            return relativeUri.ToString();
         }
 
         /// <summary>

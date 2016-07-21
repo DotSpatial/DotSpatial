@@ -92,7 +92,7 @@ namespace DotSpatial.Modeling.Forms.Elements
                     return;
                 TextFile addedTextFile = new TextFile(sfd.FileName);
                 //This inserts the new featureset into the list
-                txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.FileName);
+                txtDataTable.Text = Path.GetFileNameWithoutExtension(addedTextFile.Filename);
                 Param.Value = addedTextFile;
             }
             base.Status = ToolStatus.Ok;

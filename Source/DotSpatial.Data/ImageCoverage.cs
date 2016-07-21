@@ -34,10 +34,6 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
-        //private RasterBounds _bounds;
-        [Serialize("FileName", ConstructorArgumentIndex = 0)]
-        private string _fileName;
-
         private List<IImageData> _images;
 
         #endregion
@@ -115,15 +111,6 @@ namespace DotSpatial.Data
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the Filename
-        /// </summary>
-        public string FileName
-        {
-            get { return _fileName; }
-            set { _fileName = value; }
-        }
 
         /// <inheritdoc />
         public int Count

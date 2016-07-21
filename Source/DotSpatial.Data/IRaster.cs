@@ -217,15 +217,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets the complete path and fileName of the current file
-        /// </summary>
-        string Filename
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets the file type of this grid.
         /// </summary>
         RasterFileType FileType

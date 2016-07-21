@@ -496,17 +496,30 @@ namespace DotSpatial.Symbology
         }
 
         /// <summary>
-        /// Gets the fileName where this raster is saved.
+        /// Gets the file name where this raster is saved.
         /// </summary>
         [Category("Raster Properties")]
-        [Description("The fileName of this raster.")]
-        [Serialize("Filename", ConstructorArgumentIndex = 0)]
-        public virtual string Filename
+        [Description("The file name of this raster.")]
+        public string Filename
         {
             get
             {
                 if (DataSet != null) return DataSet.Filename;
                 return "No Raster Specified";
+            }
+        }
+
+        /// <summary>
+        /// Gets the relative file path to where this raster is saved.
+        /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Serialize("FilePath", ConstructorArgumentIndex = 0)]
+        public string FilePath
+        {
+            get
+            {
+                if (DataSet != null) return DataSet.FilePath;
+                return null;
             }
         }
 

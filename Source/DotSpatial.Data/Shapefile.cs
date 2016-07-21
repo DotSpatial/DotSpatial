@@ -158,14 +158,6 @@ namespace DotSpatial.Data
             }
         }
 
-        /// <inheritdoc />
-        [Serialize("FilePath", ConstructorArgumentIndex = 0)]
-        public override string FilePath
-        {
-            get { return base.FilePath; }
-            set { base.FilePath = value; }
-        }
-
         /// <summary>
         /// Gets the count of members that match the expression
         /// </summary>

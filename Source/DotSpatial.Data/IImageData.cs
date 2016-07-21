@@ -144,11 +144,6 @@ namespace DotSpatial.Data
         #region Properties
 
         /// <summary>
-        /// Gets or sets the fileName.
-        /// </summary>
-        string Filename { get; set; }
-
-        /// <summary>
         /// Gets the image height in pixels
         /// </summary>
         int Height { get; set; }

@@ -32,7 +32,6 @@ namespace DotSpatial.Data
     {
         #region Private Variables
 
-        private string _fileName;
         private int _numBands;
         private int _stride;
         private TileCollection _tiles;
@@ -49,7 +48,7 @@ namespace DotSpatial.Data
         /// <param name="fileName"></param>
         public TiledImage(string fileName)
         {
-            _fileName = fileName;
+            Filename = fileName;
         }
 
         /// <summary>
@@ -155,13 +154,6 @@ namespace DotSpatial.Data
         #endregion
 
         #region Properties
-
-        /// <inheritdoc />
-        public string Filename
-        {
-            get { return _fileName; }
-            set { _fileName = value; }
-        }
 
         /// <inheritdoc />
         public int Height

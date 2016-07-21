@@ -37,15 +37,6 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the fileName for this tiled image.
-        /// </summary>
-        string Filename
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the integer height in pixels for the combined image at its maximum resolution
         /// </summary>
         int Height

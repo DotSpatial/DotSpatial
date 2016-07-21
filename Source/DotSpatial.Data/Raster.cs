@@ -391,13 +391,6 @@ namespace DotSpatial.Data
         public virtual int EndRow { get; protected set; }
 
         /// <summary>
-        /// Gets or Sets the complete path and fileName of the current file
-        /// </summary>
-        [Category("Data")]
-        [Description("Gets or Sets the complete path and fileName of the current file")]
-        public virtual string Filename { get; set; }
-
-        /// <summary>
         /// Returns the grid file type.  Only Binary or ASCII are supported natively, without GDAL.
         /// </summary>
         [Category("Data")]
