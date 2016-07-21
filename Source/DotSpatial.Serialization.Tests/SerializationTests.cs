@@ -152,7 +152,7 @@ namespace DotSpatial.Serialization.Tests
             MapPointLayer newPointLayer = d.Deserialize<MapPointLayer>(result);
 
             Assert.IsNotNull(newPointLayer);
-            Assert.True(filename.Contains(newPointLayer.DataSet.Filename));
+            Assert.AreEqual(newPointLayer.DataSet.Filename, Path.GetFullPath(filename));
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace DotSpatial.Serialization.Tests
             string filename = Path.Combine("Data", "test-RandomPts.shp");
             string projectFileName = FileTools.GetTempFileName(".dspx");
             _filesToRemove.Add(projectFileName);
-            
+
             AppManager manager = new AppManager();
             Map map = new Map();
             manager.Map = map;
@@ -279,10 +279,10 @@ namespace DotSpatial.Serialization.Tests
 
     // ReSharper disable UnusedMember.Global
     public class PointSerializationMap : SerializationMap
-// ReSharper restore UnusedMember.Global
+    // ReSharper restore UnusedMember.Global
     {
         public PointSerializationMap()
-            :base(typeof(Point))
+            : base(typeof(Point))
         {
             var t = typeof(Point);
 
@@ -294,9 +294,9 @@ namespace DotSpatial.Serialization.Tests
         }
     }
 
-// ReSharper disable UnusedMember.Global
+    // ReSharper disable UnusedMember.Global
     public class RectangleSerializationMap : SerializationMap
-// ReSharper restore UnusedMember.Global
+    // ReSharper restore UnusedMember.Global
     {
         public RectangleSerializationMap()
             : base(typeof(Rectangle))
