@@ -55,3 +55,4 @@ All notable changes to this project will be documented in this file.
 - Clone a featureset with CopyFeatures throws exception (#780)
 - Make sure Feature.Copy doesn't throw an error if the Feature doesn't have a ParentFeatureSet
 - Symbology.IndexSelection.RemoveRegion is working slow (#718)
+- Exception in WebMap plugin if "espg"-substring is lower-case (#777)
