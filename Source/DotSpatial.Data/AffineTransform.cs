@@ -165,8 +165,8 @@ namespace DotSpatial.Data
                 rw = (c[3] + c[4] * location.X / c[1] - c[4] * c[0] / c[1] - location.Y) / div;
                 cl = (location.X - c[2] * rw - c[0]) / c[1];
             }
-            var iRow = (int)Math.Floor(rw);
-            var iCol = (int)Math.Floor(cl);
+            var iRow = (int)Math.Round(rw);
+            var iCol = (int)Math.Round(cl);
             return new RcIndex(iRow, iCol);
         }
 

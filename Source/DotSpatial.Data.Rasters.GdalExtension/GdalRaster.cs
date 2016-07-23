@@ -582,6 +582,10 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             double[] affine = new double[6];
             _dataset.GetGeoTransform(affine);
+            // in gdal (affine[0], affine[3]) are coordinates of the top-left corner of the top-left cell
+            // we modify them to give coordinates of the center of the top-left cell
+            affine[0] = affine[0] + affine[1] * 0.5 + affine[2] * 0.5;
+            affine[3] = affine[3] + affine[4] * 0.5 + affine[5] * 0.5;
             ProjectionString = projString;
             Bounds = new RasterBounds(base.NumRows, base.NumColumns, affine);
             PixelSpace = Marshal.SizeOf(typeof(T));
