@@ -119,10 +119,10 @@ namespace DotSpatial.Data
         /// <summary>
         ///  Given the row and column, this returns new affine coefficients transformed to that cell
         /// </summary>
-        /// <param name="startRow">The integer row index from 0 to numRows - 1</param>
-        /// <param name="startColumn">The integer column index from 0 to numColumns - 1</param>
-        /// <returns>Transoformed affine coefficients</returns>
-        public double[] TransfromToCorner(int startColumn, int startRow)
+        /// <param name="startRow">The row index from 0 to numRows - 1</param>
+        /// <param name="startColumn">The column index from 0 to numColumns - 1</param>
+        /// <returns>Transformed affine coefficients</returns>
+        public double[] TransfromToCorner(double startColumn, double startRow)
         {
             // X = [0] + [1] * column + [2] * row;
             // Y = [3] + [4] * column + [5] * row;
