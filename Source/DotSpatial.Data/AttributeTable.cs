@@ -729,7 +729,7 @@ namespace DotSpatial.Data
         {
             Contract.Requires(!String.IsNullOrEmpty(fileName), "fileName is null or empty.");
 
-            _fileName = Path.ChangeExtension(fileName, ".dbf");
+            Filename = Path.ChangeExtension(fileName, ".dbf");
             Contract.Assert(File.Exists(_fileName), "The dbf file for this shapefile was not found.");
 
             _attributesPopulated = false; // we had a file, but have not read the dbf content into memory yet.
@@ -834,7 +834,7 @@ namespace DotSpatial.Data
             _attributesPopulated = false;
             _dataTable.Rows.Clear(); // if we have already loaded data, clear the data.
             _isFilling = true;
-            if (File.Exists(_fileName) == false)
+            if (!File.Exists(_fileName))
             {
                 _numRecords = numRows;
                 _dataTable.BeginLoadData();
@@ -1701,12 +1701,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The fileName of the dbf file
+        /// Gets or sets the file name of the dbf file. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
         public string Filename
         {
             get { return _fileName; }
-            set { _fileName = value; }
+            set { _fileName = Path.GetFullPath(value); }
         }
 
         /// <summary>

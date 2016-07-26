@@ -105,7 +105,7 @@ namespace DotSpatial.Data
         /// <param name="inFilename">The fileName to read</param>
         public void Open(string inFilename)
         {
-            _fileName = inFilename;
+            Filename = inFilename;
 
             //  Position        Field           Value       Type        ByteOrder
             //  --------------------------------------------------------------
@@ -128,7 +128,7 @@ namespace DotSpatial.Data
             //  Byte 92         Bounding Box    Mmax        Double      Little
 
             // This may throw an IOException if the file is already in use.
-            BufferedBinaryReader bbReader = new BufferedBinaryReader(inFilename);
+            BufferedBinaryReader bbReader = new BufferedBinaryReader(Filename);
 
             bbReader.FillBuffer(100); // we only need to read 100 bytes from the header.
 
@@ -163,8 +163,7 @@ namespace DotSpatial.Data
 
             bbReader.Dispose();
 
-            string shxFile = Path.ChangeExtension(Filename, ".shx");
-            FileInfo fi = new FileInfo(shxFile);
+            FileInfo fi = new FileInfo(ShxFilename);
             if (fi.Exists)
             {
                 _shxLength = Convert.ToInt32(fi.Length / 2); //length is in 16 bit words.
@@ -186,8 +185,8 @@ namespace DotSpatial.Data
         /// <param name="outFilename">The string fileName to create.</param>
         public void SaveAs(string outFilename)
         {
-            _fileName = outFilename;
-            Write(_fileName, _fileLength);
+            Filename = outFilename;
+            Write(Filename, _fileLength);
             Write(ShxFilename, _shxLength);
         }
 
@@ -271,12 +270,12 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the string fileName to use for this header
+        /// Gets or sets the string fileName to use for this header. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
         public string Filename
         {
             get { return _fileName; }
-            set { _fileName = value; }
+            set { _fileName = Path.GetFullPath(value); }
         }
 
         /// <summary>

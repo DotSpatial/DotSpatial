@@ -40,7 +40,7 @@ namespace DotSpatial.Data
         private byte[] _buffer;
         private long _bufferOffset; // Position of the start of the buffer relative to the start of the file
         private int _bufferSize;
-        private string _fileName;
+        private readonly string _fileName;
         private long _fileOffset; // position in the entire file
         private FileStream _fileStream;
         private bool _isBufferLoaded;
@@ -73,8 +73,8 @@ namespace DotSpatial.Data
         {
             //Modified 9/22/09 by L. C. Wilson to open as read-only so it is possible to open read-only files
             //Not sure if elsewhere write access is required
-            _fileName = fileName;
-            _fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            _fileName = Path.GetFullPath(fileName);
+            _fileStream = new FileStream(_fileName, FileMode.Open, FileAccess.Read);
             _binaryReader = new BinaryReader(_fileStream);
 
             FileInfo fi = new FileInfo(fileName);
@@ -255,7 +255,6 @@ namespace DotSpatial.Data
 
             _fileOffset = startPosition;
             if (_fileStream.CanSeek) _fileStream.Seek(offset, origin);
-            return;
         }
 
         #region Read Methods

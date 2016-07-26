@@ -63,7 +63,7 @@ namespace DotSpatial.Data
 
             Filename = fileName;
             IndexMode = true;
-            Header = new ShapefileHeader(fileName);
+            Header = new ShapefileHeader(Filename);
 
             switch (Header.ShapeType)
             {
@@ -80,9 +80,9 @@ namespace DotSpatial.Data
 
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
-            Attributes.Open(fileName);
+            Attributes.Open(Filename);
 
-            FillPoints(fileName, progressHandler);
+            FillPoints(Filename, progressHandler);
             ReadProjection();
         }
 
@@ -275,8 +275,8 @@ namespace DotSpatial.Data
                 Header.FileLength = Features.Count * wordSize + 50;
             }
 
-            Header.SaveAs(fileName);
-            var shpStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
+            Header.SaveAs(Filename);
+            var shpStream = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
             var shxStream = new FileStream(Header.ShxFilename, FileMode.Append, FileAccess.Write, FileShare.None, 1000000);
 
             // Special slightly faster writing for index mode

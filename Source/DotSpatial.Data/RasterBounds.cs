@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.IO;
 
 namespace DotSpatial.Data
 {
@@ -304,13 +305,13 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// Gets or sets the fileName of the wordfile that describes the geographic coordinates of this raster.
+        /// Gets or sets the fileName of the wordfile that describes the geographic coordinates of this raster. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
         [Category("GeoReference"), Description("Returns the Geographic width of the envelope that completely contains this raster.")]
         public string WorldFile
         {
             get { return _worldFile; }
-            set { _worldFile = value; }
+            set { _worldFile = Path.GetFullPath(value); }
         }
 
         /// <summary>

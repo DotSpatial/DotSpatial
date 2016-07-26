@@ -30,15 +30,21 @@ namespace DotSpatial.Data
     /// </summary>
     public class ShapefileIndexFile
     {
+        private string _filename;
+
         /// <summary>
         /// Gets or sets the header
         /// </summary>
         public ShapefileHeader Header { get; set; }
 
         /// <summary>
-        /// Gets or sets the fileName
+        /// Gets or sets the file name of this shx file. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
-        public string Filename { get; set; }
+        public string Filename
+        {
+            get { return _filename; }
+            set { _filename = Path.GetFullPath(value); }
+        }
 
         /// <summary>
         /// Gets or sets the list of shape headers

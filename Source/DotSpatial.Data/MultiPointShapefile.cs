@@ -328,7 +328,7 @@ namespace DotSpatial.Data
             IndexMode = true;
             Filename = fileName;
             FeatureType = FeatureType.MultiPoint;
-            Header = new ShapefileHeader(fileName);
+            Header = new ShapefileHeader(Filename);
 
             switch (Header.ShapeType)
             {
@@ -345,8 +345,8 @@ namespace DotSpatial.Data
 
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
-            Attributes.Open(fileName);
-            FillPoints(fileName, progressHandler);
+            Attributes.Open(Filename);
+            FillPoints(Filename, progressHandler);
             ReadProjection();
         }
 
@@ -373,15 +373,15 @@ namespace DotSpatial.Data
             {
                 Header.ShapeType = ShapeType.MultiPointZ;
             }
-            HeaderSaveAs(fileName);
+            HeaderSaveAs(Filename);
 
             if (IndexMode)
             {
-                SaveAsIndexed(fileName);
+                SaveAsIndexed(Filename);
                 return;
             }
 
-            var bbWriter = new BufferedBinaryWriter(fileName);
+            var bbWriter = new BufferedBinaryWriter(Filename);
             var indexWriter = new BufferedBinaryWriter(Header.ShxFilename);
             int fid = 0;
             int offset = 50; // the shapefile header starts at 100 bytes, so the initial offset is 50 words
@@ -574,7 +574,7 @@ namespace DotSpatial.Data
             shxStream.Close();
 
             offset += contentLength;
-            WriteFileLength(Filename, offset);
+            WriteFileLength(fileName, offset);
             UpdateAttributes();
             SaveProjection();
         }

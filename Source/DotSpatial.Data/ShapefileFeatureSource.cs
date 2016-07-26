@@ -40,6 +40,8 @@ namespace DotSpatial.Data
     ///</summary>
     public abstract class ShapefileFeatureSource : IFeatureSource
     {
+        private string _fileName;
+
         #region Constructors
 
         /// <summary>
@@ -72,9 +74,13 @@ namespace DotSpatial.Data
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the Filename of this polygon shapefile.
+        /// Gets or sets the absolute Filename of this ShapefileFeatureSource. If a relative path gets assigned it is changed to the absolute path including the file extension.
         /// </summary>
-        public string Filename { get; set; }
+        public string Filename
+        {
+            get { return _fileName; }
+            set { _fileName = Path.GetFullPath(value); }
+        }
 
         /// <summary>
         /// The integer maximum number of records to return in a single page of results.

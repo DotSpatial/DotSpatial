@@ -35,6 +35,7 @@ namespace DotSpatial.Data
     /// </summary>
     public abstract class ShapefileShapeSource : IShapeSource
     {
+        private string _filename;
         private readonly ISpatialIndex<int> _spatialIndex;
 
         /// <summary>
@@ -67,7 +68,11 @@ namespace DotSpatial.Data
         }
 
         /// <inheritdocs/>
-        public string Filename { get; set; }
+        public string Filename
+        {
+            get { return _filename; }
+            set { _filename = Path.GetFullPath(value); }
+        }
 
         /// <summary>
         /// Get the shape type (without M or Z) supported by this shape source
@@ -110,7 +115,7 @@ namespace DotSpatial.Data
                 throw new NullReferenceException(Filename);
             }
 
-            if (File.Exists(Filename) == false)
+            if (!File.Exists(Filename))
             {
                 throw new FileNotFoundException(Filename);
             }

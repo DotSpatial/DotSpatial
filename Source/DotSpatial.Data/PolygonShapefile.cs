@@ -64,7 +64,7 @@ namespace DotSpatial.Data
 
             Filename = fileName;
             IndexMode = true;
-            Header = new ShapefileHeader(fileName);
+            Header = new ShapefileHeader(Filename);
 
             switch (Header.ShapeType)
             {
@@ -81,9 +81,9 @@ namespace DotSpatial.Data
 
             Extent = Header.ToExtent();
             Name = Path.GetFileNameWithoutExtension(fileName);
-            Attributes.Open(fileName);
+            Attributes.Open(Filename);
 
-            LineShapefile.FillLines(fileName, progressHandler, this, FeatureType.Polygon);
+            LineShapefile.FillLines(Filename, progressHandler, this, FeatureType.Polygon);
             ReadProjection();
         }
 
