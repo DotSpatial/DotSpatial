@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Removed obsolete methods\properties (#797)
 
 ### Fixed
+- inconsistent use of affine coefficients (#822)
 - Fixed the shift in x-coordinate when reprojecting from WGS84 to LAEA (#815)
 - Fixed LAEA reprojected y coordinate that resulted in n.def (#813)
 - ShapeReader skipping one entry when switching the page (#774)

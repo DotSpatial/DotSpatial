@@ -124,6 +124,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             NumBands = _dataset.RasterCount;
             var test = new double[6];
             _dataset.GetGeoTransform(test);
+            test = (new AffineTransform(test)).TransfromToCorner(0.5, 0.5);//shift origin by half a cell
             ProjectionString = _dataset.GetProjection();
             Bounds = new RasterBounds(Height, Width, test);
             WorldFile.Affine = test;

@@ -86,6 +86,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AffineCoefficientsTests.cs" />
     <Compile Include="AttributeTableTests.cs" />
     <Compile Include="BinaryRasterProviderTests.cs" />
     <Compile Include="DataManagerTests.cs" />
