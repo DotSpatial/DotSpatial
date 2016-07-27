@@ -23,6 +23,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -35,9 +36,8 @@ namespace DotSpatial.Controls
     /// <summary>
     /// Preconfigured tool strip menu.
     /// </summary>
-    //This control will no longer be visible
-    [ToolboxItem(false)]
-   // [ToolboxBitmap(typeof(SpatialToolStrip), "SpatialToolStrip.ico")]
+    [ToolboxItem(true)]
+    [ToolboxBitmap(typeof(SpatialToolStrip), "Resources.SpatialToolStrip.ico")]
     public partial class SpatialToolStrip : ToolStrip
     {
         #region Private Variables
