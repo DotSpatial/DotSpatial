@@ -347,11 +347,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                     blocYsize = Math.Min(100, _red.YSize);
                 }
             }
-            int i, j;
 
             int nbX, nbY;
             //limit the block size to the viewable image.
-            //FIXME do the same for Y dim.
             if (w < blocXsize)
             {
                 blocXsize = (int)(w);
@@ -359,38 +357,39 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             else
             {
-                nbX = (int)((w) / blocXsize);
+                nbX = (int)((w) / blocXsize) + 1; 
             }
-            //the plus 1 is to take in consideration the last stripe which probably is only displayed in part
-            //FIXME do the same for X 
-            nbY = (int)((h) / blocYsize) + 1;
+
+            if (h < blocYsize)
+            {
+                blocYsize = (int)(h);
+                nbY = 1;
+            }
+            else
+            {
+                nbY = (int)((h) / blocYsize) + 1;
+            }
+
             try
             {
-                for (i = 0; i < nbX; i++)
-                {
-                    for (j = 0; j < nbY; j++)
+                for (var i = 0; i < nbX; i++)
+                    for (var j = 0; j < nbY; j++)
                     {
-                        //FIXME the +2 is to remove the white stripes artifacts
-                        Bitmap b = ReadBlock((int)(_TLX / Math.Pow(2, _overview + 1)) + i * blocXsize,
-                                             (int)(_TLY / Math.Pow(2, _overview + 1)) + j * blocYsize, blocXsize, blocYsize + 2);
-                        //System .Console .WriteLine ("i:" + i + " j:" + j + " x " + ((int)(_TLX / Math.Pow(2, _overview + 1)) + i * blocXsize) + 
-                        //                            " y " + ((int)(_TLY / Math.Pow(2, _overview + 1)) + j * blocYsize )+ " " + blocXsize + " " + blocYsize);
+                        // The +1 is to remove the white stripes artifacts
+                        var bytes = ReadBlock(
+                            (int) (_TLX/Math.Pow(2, _overview + 1)) + i*blocXsize,
+                            (int) (_TLY/Math.Pow(2, _overview + 1)) + j*blocYsize, blocXsize + 1, blocYsize + 1);
 
-                        g.DrawImage(b, (int)(_TLX / Math.Pow(2, _overview + 1)) + i * blocXsize,
-                                       (int)(_TLY / Math.Pow(2, _overview + 1)) + j * blocYsize);
+                        g.DrawImage(bytes,
+                            (int) (_TLX/Math.Pow(2, _overview + 1)) + i*blocXsize,
+                            (int) (_TLY/Math.Pow(2, _overview + 1)) + j*blocYsize);
 
                     }
-                }
             }
             catch (Exception e)
             {
                 Console.WriteLine("exception:" + e.Message);
             }
-            //}
-            //else
-            //{
-            //    g.DrawImage(_image, new PointF(0, 0));
-            //} 
             g.Dispose();
             return result;
         }

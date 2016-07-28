@@ -60,3 +60,4 @@ All notable changes to this project will be documented in this file.
 - Make sure Feature.Copy doesn't throw an error if the Feature doesn't have a ParentFeatureSet
 - Symbology.IndexSelection.RemoveRegion is working slow (#718)
 - Exception in WebMap plugin if "espg"-substring is lower-case (#777)
+- Problem in rendering ECW images (#824)
