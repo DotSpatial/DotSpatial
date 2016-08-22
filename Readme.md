@@ -29,7 +29,10 @@ See [Contributing](.github/CONTRIBUTING.md) for information about how to contrib
 
 Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifacts/Source/bin/Release.zip?branch=master) to download latest binaries (from master branch).
 
+Have a look at the [Changelog](https://github.com/DotSpatial/DotSpatial/blob/master/Changelog.md) to see the difference between the master branch and the latest stable release.
+
 ### NuGet packages
+You can download the latest stable release via NuGet.
 
 Package | 
 --------|
