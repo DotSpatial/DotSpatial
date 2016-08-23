@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - XML comments for publicly visible types and members
 - "Add layer to Map"-checkbox to the ToolDialog (#147)
 - CopySubset overloads with withAttributes parameters
+- Jenks Natural Breaks support in categories binning.
 
 ### Changed
 - GdalExtension: Updated to GDAL 1.1.11
@@ -19,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Renamed FilterCollectionEM to FeatureSelectionExt because it contains extension methods for IFeatureSelection
 - Move FeatureSet.Filename / FilePath to DataSet (#821)
 - Changed Filename to absolute path so it stays the same even if CurrentDirectory is changed
+- Renamed IntervalMethod.Quantile to IntervalMethod.EqualFrequency for better consistency.
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)

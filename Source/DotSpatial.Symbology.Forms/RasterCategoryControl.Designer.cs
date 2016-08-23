@@ -39,8 +39,12 @@ namespace DotSpatial.Symbology.Forms
             this.btnQuick = new System.Windows.Forms.Button();
             this.btnRamp = new System.Windows.Forms.Button();
             this.cmdRefresh = new System.Windows.Forms.Button();
+            this.angLightDirection = new DotSpatial.Symbology.Forms.AngleControl();
+            this.dbxElevationFactor = new DotSpatial.Symbology.Forms.DoubleBox();
             this.tabScheme = new System.Windows.Forms.TabControl();
             this.tabStatistics = new System.Windows.Forms.TabPage();
+            this.dbxMax = new DotSpatial.Symbology.Forms.DoubleBox();
+            this.dbxMin = new DotSpatial.Symbology.Forms.DoubleBox();
             this.nudSigFig = new System.Windows.Forms.NumericUpDown();
             this.lblSigFig = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -58,6 +62,7 @@ namespace DotSpatial.Symbology.Forms
             this.chkLog = new System.Windows.Forms.CheckBox();
             this.chkShowStd = new System.Windows.Forms.CheckBox();
             this.chkShowMean = new System.Windows.Forms.CheckBox();
+            this.breakSliderGraph1 = new DotSpatial.Symbology.Forms.BreakSliderGraph();
             this.dgvCategories = new System.Windows.Forms.DataGridView();
             this.colSymbol = new System.Windows.Forms.DataGridViewImageColumn();
             this.colValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,13 +79,8 @@ namespace DotSpatial.Symbology.Forms
             this.opacityNoData = new DotSpatial.Symbology.Forms.RampSlider();
             this.colorNoData = new DotSpatial.Symbology.Forms.ColorButton();
             this.sldSchemeOpacity = new DotSpatial.Symbology.Forms.RampSlider();
-            this.angLightDirection = new DotSpatial.Symbology.Forms.AngleControl();
-            this.dbxElevationFactor = new DotSpatial.Symbology.Forms.DoubleBox();
             this.mwProgressBar1 = new DotSpatial.Symbology.Forms.SymbologyProgressBar();
             this.tccColorRange = new DotSpatial.Symbology.Forms.TabColorControl();
-            this.dbxMax = new DotSpatial.Symbology.Forms.DoubleBox();
-            this.dbxMin = new DotSpatial.Symbology.Forms.DoubleBox();
-            this.breakSliderGraph1 = new DotSpatial.Symbology.Forms.BreakSliderGraph();
             this.tabScheme.SuspendLayout();
             this.tabStatistics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSigFig)).BeginInit();
@@ -117,6 +117,33 @@ namespace DotSpatial.Symbology.Forms
             this.cmdRefresh.UseVisualStyleBackColor = true;
             this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
             // 
+            // angLightDirection
+            // 
+            this.angLightDirection.Angle = 45;
+            this.angLightDirection.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.angLightDirection, "angLightDirection");
+            this.angLightDirection.Clockwise = true;
+            this.angLightDirection.KnobColor = System.Drawing.Color.Green;
+            this.angLightDirection.Name = "angLightDirection";
+            this.angLightDirection.StartAngle = 90;
+            this.ttHelp.SetToolTip(this.angLightDirection, resources.GetString("angLightDirection.ToolTip"));
+            // 
+            // dbxElevationFactor
+            // 
+            this.dbxElevationFactor.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.dbxElevationFactor.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dbxElevationFactor, "dbxElevationFactor");
+            this.dbxElevationFactor.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.dbxElevationFactor.IsValid = true;
+            this.dbxElevationFactor.Name = "dbxElevationFactor";
+            this.dbxElevationFactor.NumberFormat = "E7";
+            this.dbxElevationFactor.RegularHelp = "The Elevation Factor is a constant multiplier that converts the elevation unit (e" +
+    "g. feet) into the projection units (eg. decimal degrees).";
+            this.ttHelp.SetToolTip(this.dbxElevationFactor, resources.GetString("dbxElevationFactor.ToolTip"));
+            this.dbxElevationFactor.Value = 0D;
+            this.dbxElevationFactor.TextChanged += new System.EventHandler(this.dbxElevationFactor_TextChanged);
+            // 
             // tabScheme
             // 
             this.tabScheme.Controls.Add(this.tabStatistics);
@@ -141,6 +168,34 @@ namespace DotSpatial.Symbology.Forms
             resources.ApplyResources(this.tabStatistics, "tabStatistics");
             this.tabStatistics.Name = "tabStatistics";
             this.tabStatistics.UseVisualStyleBackColor = true;
+            // 
+            // dbxMax
+            // 
+            this.dbxMax.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.dbxMax.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dbxMax, "dbxMax");
+            this.dbxMax.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.dbxMax.IsValid = true;
+            this.dbxMax.Name = "dbxMax";
+            this.dbxMax.NumberFormat = null;
+            this.dbxMax.RegularHelp = "Enter a double precision floating point value.";
+            this.dbxMax.Value = 1000000D;
+            this.dbxMax.TextChanged += new System.EventHandler(this.dbxMax_TextChanged);
+            // 
+            // dbxMin
+            // 
+            this.dbxMin.BackColorInvalid = System.Drawing.Color.Salmon;
+            this.dbxMin.BackColorRegular = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.dbxMin, "dbxMin");
+            this.dbxMin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
+    "ating point value.";
+            this.dbxMin.IsValid = true;
+            this.dbxMin.Name = "dbxMin";
+            this.dbxMin.NumberFormat = null;
+            this.dbxMin.RegularHelp = "Enter a double precision floating point value.";
+            this.dbxMin.Value = -100000D;
+            this.dbxMin.TextChanged += new System.EventHandler(this.dbxMin_TextChanged);
             // 
             // nudSigFig
             // 
@@ -214,10 +269,6 @@ namespace DotSpatial.Symbology.Forms
             // cmbInterval
             // 
             this.cmbInterval.FormattingEnabled = true;
-            this.cmbInterval.Items.AddRange(new object[] {
-            resources.GetString("cmbInterval.Items"),
-            resources.GetString("cmbInterval.Items1"),
-            resources.GetString("cmbInterval.Items2")});
             resources.ApplyResources(this.cmbInterval, "cmbInterval");
             this.cmbInterval.Name = "cmbInterval";
             this.cmbInterval.SelectedIndexChanged += new System.EventHandler(this.cmbInterval_SelectedIndexChanged);
@@ -301,6 +352,30 @@ namespace DotSpatial.Symbology.Forms
             this.chkShowMean.Name = "chkShowMean";
             this.chkShowMean.UseVisualStyleBackColor = true;
             this.chkShowMean.CheckedChanged += new System.EventHandler(this.chkShowMean_CheckedChanged);
+            // 
+            // breakSliderGraph1
+            // 
+            this.breakSliderGraph1.AttributeSource = null;
+            this.breakSliderGraph1.BackColor = System.Drawing.Color.White;
+            this.breakSliderGraph1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.breakSliderGraph1.BreakColor = System.Drawing.Color.Blue;
+            this.breakSliderGraph1.BreakSelectedColor = System.Drawing.Color.Red;
+            this.breakSliderGraph1.FontColor = System.Drawing.Color.Black;
+            this.breakSliderGraph1.IntervalMethod = DotSpatial.Symbology.IntervalMethod.EqualInterval;
+            resources.ApplyResources(this.breakSliderGraph1, "breakSliderGraph1");
+            this.breakSliderGraph1.LogY = false;
+            this.breakSliderGraph1.MaximumSampleSize = 10000;
+            this.breakSliderGraph1.MinHeight = 20;
+            this.breakSliderGraph1.Name = "breakSliderGraph1";
+            this.breakSliderGraph1.NumColumns = 40;
+            this.breakSliderGraph1.RasterLayer = null;
+            this.breakSliderGraph1.Scheme = null;
+            this.breakSliderGraph1.ShowMean = false;
+            this.breakSliderGraph1.ShowStandardDeviation = false;
+            this.breakSliderGraph1.Title = "Statistical Breaks:";
+            this.breakSliderGraph1.TitleColor = System.Drawing.Color.Black;
+            this.breakSliderGraph1.TitleFont = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold);
+            this.breakSliderGraph1.SliderMoved += new System.EventHandler<DotSpatial.Symbology.Forms.BreakSliderEventArgs>(this.breakSliderGraph1_SliderMoved);
             // 
             // dgvCategories
             // 
@@ -483,33 +558,6 @@ namespace DotSpatial.Symbology.Forms
             this.sldSchemeOpacity.Value = 1D;
             this.sldSchemeOpacity.ValueChanged += new System.EventHandler(this.sldSchemeOpacity_ValueChanged);
             // 
-            // angLightDirection
-            // 
-            this.angLightDirection.Angle = 45;
-            this.angLightDirection.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(this.angLightDirection, "angLightDirection");
-            this.angLightDirection.Clockwise = true;
-            this.angLightDirection.KnobColor = System.Drawing.Color.Green;
-            this.angLightDirection.Name = "angLightDirection";
-            this.angLightDirection.StartAngle = 90;
-            this.ttHelp.SetToolTip(this.angLightDirection, resources.GetString("angLightDirection.ToolTip"));
-            // 
-            // dbxElevationFactor
-            // 
-            this.dbxElevationFactor.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.dbxElevationFactor.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.dbxElevationFactor, "dbxElevationFactor");
-            this.dbxElevationFactor.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.dbxElevationFactor.IsValid = true;
-            this.dbxElevationFactor.Name = "dbxElevationFactor";
-            this.dbxElevationFactor.NumberFormat = "E7";
-            this.dbxElevationFactor.RegularHelp = "The Elevation Factor is a constant multiplier that converts the elevation unit (e" +
-    "g. feet) into the projection units (eg. decimal degrees).";
-            this.ttHelp.SetToolTip(this.dbxElevationFactor, resources.GetString("dbxElevationFactor.ToolTip"));
-            this.dbxElevationFactor.Value = 0D;
-            this.dbxElevationFactor.TextChanged += new System.EventHandler(this.dbxElevationFactor_TextChanged);
-            // 
             // mwProgressBar1
             // 
             this.mwProgressBar1.FontColor = System.Drawing.Color.Black;
@@ -526,58 +574,6 @@ namespace DotSpatial.Symbology.Forms
             this.tccColorRange.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.tccColorRange.UseRangeChecked = true;
             this.tccColorRange.ColorChanged += new System.EventHandler<DotSpatial.Symbology.Forms.ColorRangeEventArgs>(this.tccColorRange_ColorChanged);
-            // 
-            // dbxMax
-            // 
-            this.dbxMax.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.dbxMax.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.dbxMax, "dbxMax");
-            this.dbxMax.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.dbxMax.IsValid = true;
-            this.dbxMax.Name = "dbxMax";
-            this.dbxMax.NumberFormat = null;
-            this.dbxMax.RegularHelp = "Enter a double precision floating point value.";
-            this.dbxMax.Value = 1000000D;
-            this.dbxMax.TextChanged += new System.EventHandler(this.dbxMax_TextChanged);
-            // 
-            // dbxMin
-            // 
-            this.dbxMin.BackColorInvalid = System.Drawing.Color.Salmon;
-            this.dbxMin.BackColorRegular = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.dbxMin, "dbxMin");
-            this.dbxMin.InvalidHelp = "The value entered could not be correctly parsed into a valid double precision flo" +
-    "ating point value.";
-            this.dbxMin.IsValid = true;
-            this.dbxMin.Name = "dbxMin";
-            this.dbxMin.NumberFormat = null;
-            this.dbxMin.RegularHelp = "Enter a double precision floating point value.";
-            this.dbxMin.Value = -100000D;
-            this.dbxMin.TextChanged += new System.EventHandler(this.dbxMin_TextChanged);
-            // 
-            // breakSliderGraph1
-            // 
-            this.breakSliderGraph1.AttributeSource = null;
-            this.breakSliderGraph1.BackColor = System.Drawing.Color.White;
-            this.breakSliderGraph1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.breakSliderGraph1.BreakColor = System.Drawing.Color.Blue;
-            this.breakSliderGraph1.BreakSelectedColor = System.Drawing.Color.Red;
-            this.breakSliderGraph1.FontColor = System.Drawing.Color.Black;
-            this.breakSliderGraph1.IntervalMethod = DotSpatial.Symbology.IntervalMethod.EqualInterval;
-            resources.ApplyResources(this.breakSliderGraph1, "breakSliderGraph1");
-            this.breakSliderGraph1.LogY = false;
-            this.breakSliderGraph1.MaximumSampleSize = 10000;
-            this.breakSliderGraph1.MinHeight = 20;
-            this.breakSliderGraph1.Name = "breakSliderGraph1";
-            this.breakSliderGraph1.NumColumns = 40;
-            this.breakSliderGraph1.RasterLayer = null;
-            this.breakSliderGraph1.Scheme = null;
-            this.breakSliderGraph1.ShowMean = false;
-            this.breakSliderGraph1.ShowStandardDeviation = false;
-            this.breakSliderGraph1.Title = "Statistical Breaks:";
-            this.breakSliderGraph1.TitleColor = System.Drawing.Color.Black;
-            this.breakSliderGraph1.TitleFont = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold);
-            this.breakSliderGraph1.SliderMoved += new System.EventHandler<DotSpatial.Symbology.Forms.BreakSliderEventArgs>(this.breakSliderGraph1_SliderMoved);
             // 
             // RasterCategoryControl
             // 

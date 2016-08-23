@@ -256,6 +256,60 @@
   <data name="&gt;&gt;cmdRefresh.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
+  <data name="angLightDirection.Caption" xml:space="preserve">
+    <value>Light Direction:</value>
+  </data>
+  <data name="angLightDirection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 23</value>
+  </data>
+  <data name="angLightDirection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 83</value>
+  </data>
+  <data name="angLightDirection.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="angLightDirection.ToolTip" xml:space="preserve">
+    <value>This controls the light direction, specified as an Azimuth angle, where north is 0 and the angle increases clockwise.</value>
+  </data>
+  <data name="&gt;&gt;angLightDirection.Name" xml:space="preserve">
+    <value>angLightDirection</value>
+  </data>
+  <data name="&gt;&gt;angLightDirection.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;angLightDirection.Parent" xml:space="preserve">
+    <value>grpHillshade</value>
+  </data>
+  <data name="&gt;&gt;angLightDirection.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="dbxElevationFactor.Caption" xml:space="preserve">
+    <value>Elevation Factor</value>
+  </data>
+  <data name="dbxElevationFactor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 112</value>
+  </data>
+  <data name="dbxElevationFactor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 32</value>
+  </data>
+  <data name="dbxElevationFactor.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="dbxElevationFactor.ToolTip" xml:space="preserve">
+    <value>This factor defaults to a value that converts feet into degrees of latitude and longitude.  If your elevation and projection are the same unit, this should be 1.  If your elevation is in feet but your projection is meters, this should be about .3048</value>
+  </data>
+  <data name="&gt;&gt;dbxElevationFactor.Name" xml:space="preserve">
+    <value>dbxElevationFactor</value>
+  </data>
+  <data name="&gt;&gt;dbxElevationFactor.Type" xml:space="preserve">
+    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
+  </data>
+  <data name="&gt;&gt;dbxElevationFactor.Parent" xml:space="preserve">
+    <value>grpHillshade</value>
+  </data>
+  <data name="&gt;&gt;dbxElevationFactor.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="dbxMax.Caption" xml:space="preserve">
     <value>Exclude Values &gt; </value>
   </data>
@@ -465,15 +519,6 @@
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="cmbInterval.Items" xml:space="preserve">
-    <value>EqualInterval</value>
-  </data>
-  <data name="cmbInterval.Items1" xml:space="preserve">
-    <value>Manual</value>
-  </data>
-  <data name="cmbInterval.Items2" xml:space="preserve">
-    <value>Quantile</value>
   </data>
   <data name="cmbInterval.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 10</value>
@@ -895,33 +940,6 @@
   <data name="&gt;&gt;btnShadedRelief.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="angLightDirection.Caption" xml:space="preserve">
-    <value>Light Direction:</value>
-  </data>
-  <data name="angLightDirection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 23</value>
-  </data>
-  <data name="angLightDirection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 83</value>
-  </data>
-  <data name="angLightDirection.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="angLightDirection.ToolTip" xml:space="preserve">
-    <value>This controls the light direction, specified as an Azimuth angle, where north is 0 and the angle increases clockwise.</value>
-  </data>
-  <data name="&gt;&gt;angLightDirection.Name" xml:space="preserve">
-    <value>angLightDirection</value>
-  </data>
-  <data name="&gt;&gt;angLightDirection.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.AngleControl, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
-  </data>
-  <data name="&gt;&gt;angLightDirection.Parent" xml:space="preserve">
-    <value>grpHillshade</value>
-  </data>
-  <data name="&gt;&gt;angLightDirection.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnElevation.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -945,33 +963,6 @@
   </data>
   <data name="&gt;&gt;btnElevation.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="dbxElevationFactor.Caption" xml:space="preserve">
-    <value>Elevation Factor</value>
-  </data>
-  <data name="dbxElevationFactor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 112</value>
-  </data>
-  <data name="dbxElevationFactor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 32</value>
-  </data>
-  <data name="dbxElevationFactor.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="dbxElevationFactor.ToolTip" xml:space="preserve">
-    <value>This factor defaults to a value that converts feet into degrees of latitude and longitude.  If your elevation and projection are the same unit, this should be 1.  If your elevation is in feet but your projection is meters, this should be about .3048</value>
-  </data>
-  <data name="&gt;&gt;dbxElevationFactor.Name" xml:space="preserve">
-    <value>dbxElevationFactor</value>
-  </data>
-  <data name="&gt;&gt;dbxElevationFactor.Type" xml:space="preserve">
-    <value>DotSpatial.Symbology.Forms.DoubleBox, DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382</value>
-  </data>
-  <data name="&gt;&gt;dbxElevationFactor.Parent" xml:space="preserve">
-    <value>grpHillshade</value>
-  </data>
-  <data name="&gt;&gt;dbxElevationFactor.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="grpHillshade.Location" type="System.Drawing.Point, System.Drawing">
     <value>20, 341</value>

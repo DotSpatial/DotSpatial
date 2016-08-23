@@ -26,37 +26,25 @@ namespace DotSpatial.Symbology
     public enum IntervalMethod
     {
         /// <summary>
-        /// A numeric value fixes a constant separation between breaks.
-        /// </summary>
-        DefinedInterval,
-        /// <summary>
         /// The breaks are set to being evenly spaced.
         /// </summary>
         EqualInterval,
+
         /// <summary>
-        /// Breaks are calculated according to the following restrictions:
-        /// 1) break sizes follow a geometric progression
-        /// 2) the number of breaks is specified
-        /// 3) the sum of squares of the counts per bin is minimized
+        /// The breaks are positioned to ensure close to equal quantities
+        /// in each break. (each group contains approximately same number of values)
         /// </summary>
-        Geometrical,
-        /// <summary>
-        /// Breaks start equally placed, but can be positioned manually instead.
-        /// </summary>
-        Manual,
+        EqualFrequency,
+
         /// <summary>
         /// Jenks natural breaks looks for "clumping" in the data and
         /// attempts to group according to the clumps.
         /// </summary>
         NaturalBreaks,
+
         /// <summary>
-        /// The breaks are positioned to ensure close to equal quantities
-        /// in each break.
+        /// Breaks start equally placed, but can be positioned manually instead.
         /// </summary>
-        Quantile,
-        /// <summary>
-        /// Not sure how this works yet.  Something to do with standard deviations.
-        /// </summary>
-        StandardDeviation,
+        Manual,
     }
 }

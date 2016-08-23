@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 
 namespace DotSpatial.Symbology
 {
@@ -49,12 +50,12 @@ namespace DotSpatial.Symbology
             /// <summary>
             /// A double value for the maximum value for the break
             /// </summary>
-            public double? Maximum;
+            public double? Maximum { get; set; }
 
             /// <summary>
             /// The string name
             /// </summary>
-            public string Name;
+            public string Name { get; set; }
 
             /// <summary>
             ///  Creates a new instance of a break
@@ -171,13 +172,17 @@ namespace DotSpatial.Symbology
         protected void CreateBreakCategories()
         {
             int count = EditorSettings.NumBreaks;
-            if (EditorSettings.IntervalMethod == IntervalMethod.Quantile)
+            switch (EditorSettings.IntervalMethod)
             {
-                Breaks = GetQuantileBreaks(count);
-            }
-            else
-            {
-                Breaks = GetEqualBreaks(count);
+                case IntervalMethod.EqualFrequency:
+                    Breaks = GetQuantileBreaks(count);
+                    break;
+                case IntervalMethod.NaturalBreaks:
+                    Breaks = GetNaturalBreaks(count);
+                    break;
+                default:
+                    Breaks = GetEqualBreaks(count);
+                    break;
             }
             ApplyBreakSnapping();
             SetBreakNames(Breaks);
@@ -208,7 +213,7 @@ namespace DotSpatial.Symbology
                 colorIndex++;
             }
         }
-
+      
         /// <summary>
         /// THe defaul
         /// </summary>
@@ -477,6 +482,24 @@ namespace DotSpatial.Symbology
                 }
             }
             return result;
+        }
+
+        protected List<Break> GetNaturalBreaks(int count)
+        {
+            var breaks = new JenksBreaksCalcuation(Values, count);
+            breaks.Optimize();
+            var results = breaks.GetResults();
+
+            var output = new List<Break>(count);
+            output.AddRange(results.Select(result => new Break
+            {
+                Maximum = Values[result]
+            }));
+
+            // Set latest Maximum to null
+            output.Last().Maximum = null;
+
+            return output;
         }
 
         /// <summary>

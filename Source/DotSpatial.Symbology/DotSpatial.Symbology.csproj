@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="BackBuffer.cs" />
     <Compile Include="BitmapFormatException.cs" />
+    <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="ExtentExtcs.cs" />
     <Compile Include="IColorCategoryActions.cs" />

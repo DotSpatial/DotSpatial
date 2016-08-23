@@ -61,7 +61,7 @@ namespace DotSpatial.Symbology
             _maxSampleCount = 10000;
             _intervalMethod = IntervalMethod.EqualInterval;
             _rampColors = true;
-            _intervalSnapMethod = IntervalSnapMethod.Rounding;
+            _intervalSnapMethod = IntervalSnapMethod.DataValue;
             _intervalRoundingDigits = 0;
             _numBreaks = 5;
         }
