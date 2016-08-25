@@ -416,7 +416,7 @@ namespace DotSpatial.Symbology
                     {
                         if (item.Maximum == null) continue;
                         double val = (double)item.Maximum;
-                        item.Maximum = SigFig(val, EditorSettings.IntervalRoundingDigits);
+                        item.Maximum = Utils.SigFig(val, EditorSettings.IntervalRoundingDigits);
                     }
                     break;
                 case IntervalSnapMethod.Rounding:
@@ -430,29 +430,10 @@ namespace DotSpatial.Symbology
                     foreach (Break item in Breaks)
                     {
                         if (item.Maximum == null) continue;
-                        item.Maximum = NearestValue((double)item.Maximum, Values);
+                        item.Maximum = Utils.GetNearestValue((double)item.Maximum, Values);
                     }
                     break;
             }
-        }
-
-        /// <summary>
-        /// Searches the list and returns the nearest value in the list to the specified value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        private static double NearestValue(double value, List<double> values)
-        {
-            return GetNearestValue(value, values);
-        }
-
-        private static double SigFig(double value, int numFigures)
-        {
-            int md = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
-            md -= numFigures;
-            double norm = Math.Pow(10, md);
-            return norm * Math.Round(value / norm);
         }
 
         /// <summary>

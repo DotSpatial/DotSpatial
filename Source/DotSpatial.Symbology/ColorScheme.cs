@@ -182,7 +182,7 @@ namespace DotSpatial.Symbology
             }
 
             Color lowColor, midColor, highColor;
-            int alpha = ByteRange(Convert.ToInt32(_opacity * 255F));
+            int alpha = Utils.ByteRange(Convert.ToInt32(_opacity * 255F));
             switch (schemeType)
             {
                 case ColorSchemeType.Summer_Mountains:

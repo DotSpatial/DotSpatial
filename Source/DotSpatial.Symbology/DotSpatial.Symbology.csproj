@@ -314,6 +314,7 @@
     <Compile Include="SelectionEM.cs" />
     <Compile Include="SelectionMode.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DotSpatial.Symbology.snk" />

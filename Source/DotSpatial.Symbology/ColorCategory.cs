@@ -221,10 +221,10 @@ namespace DotSpatial.Symbology
                     break;
             }
 
-            int alpha = ByteRange(LowColor.A + Math.Round((HighColor.A - LowColor.A) * p));
-            int red = ByteRange(LowColor.R + Math.Round((HighColor.R - LowColor.R) * p));
-            int green = ByteRange(LowColor.G + Math.Round((HighColor.G - LowColor.G) * p));
-            int blue = ByteRange(LowColor.B + Math.Round((HighColor.B - LowColor.B) * p));
+            int alpha = Utils.ByteRange(LowColor.A + Math.Round((HighColor.A - LowColor.A) * p));
+            int red = Utils.ByteRange(LowColor.R + Math.Round((HighColor.R - LowColor.R) * p));
+            int green = Utils.ByteRange(LowColor.G + Math.Round((HighColor.G - LowColor.G) * p));
+            int blue = Utils.ByteRange(LowColor.B + Math.Round((HighColor.B - LowColor.B) * p));
             return Color.FromArgb(alpha, red, green, blue);
         }
 

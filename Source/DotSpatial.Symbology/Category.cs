@@ -71,11 +71,11 @@ namespace DotSpatial.Symbology
                 case IntervalSnapMethod.SignificantFigures:
                     if (Maximum != null)
                     {
-                        Maximum = SigFig(Maximum.Value, numDigits);
+                        Maximum = Utils.SigFig(Maximum.Value, numDigits);
                     }
                     if (Minimum != null)
                     {
-                        Minimum = SigFig(Minimum.Value, numDigits);
+                        Minimum = Utils.SigFig(Minimum.Value, numDigits);
                     }
                     break;
                 case IntervalSnapMethod.Rounding:
@@ -91,33 +91,14 @@ namespace DotSpatial.Symbology
                 case IntervalSnapMethod.DataValue:
                     if (Maximum != null)
                     {
-                        Maximum = NearestValue((double)Maximum, values);
+                        Maximum = Utils.GetNearestValue((double)Maximum, values);
                     }
                     if (Minimum != null)
                     {
-                        Minimum = NearestValue((double)Minimum, values);
+                        Minimum = Utils.GetNearestValue((double)Minimum, values);
                     }
                     break;
             }
-        }
-
-        private static double SigFig(double value, int numFigures)
-        {
-            int md = (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
-            md -= numFigures;
-            double norm = Math.Pow(10, md);
-            return norm * Math.Round(value / norm);
-        }
-
-        /// <summary>
-        /// Searches the list and returns the nearest value in the list to the specified value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        private static double NearestValue(double value, List<double> values)
-        {
-            return GetNearestValue(value, values);
         }
 
         /// <summary>

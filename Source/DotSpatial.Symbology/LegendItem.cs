@@ -186,55 +186,7 @@ namespace DotSpatial.Symbology
 
             b.Dispose();
         }
-
-        /// <summary>
-        /// Gets the nearest value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="values">The values.</param>
-        /// <returns></returns>
-        protected static double GetNearestValue(double value, List<double> values)
-        {
-            if (values == null || values.Count == 0)
-                return 0;
-            int indx = values.BinarySearch(value);
-            if (indx >= 0)
-            {
-                return values[indx];
-            }
-            int iHigh = -indx;
-            if (iHigh >= 0 && iHigh < values.Count)
-            {
-                double high = values[iHigh];
-                int iLow = -indx - 1;
-                if (iLow >= 0 && iLow < values.Count && iLow != iHigh)
-                {
-                    double low = values[iLow];
-                    return value - low < high - value ? low : high;
-                }
-            }
-            int iLow2 = -indx - 1;
-            if (iLow2 >= 0 && iLow2 < values.Count)
-            {
-                return values[iLow2];
-            }
-            return 0;
-        }
-
-        /// <summary>
-        /// Bytes the range.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        protected static int ByteRange(double value)
-        {
-            int rounded = (int)Math.Round(value);
-            if (rounded > 255)
-                return 255;
-            if (rounded < 0)
-                return 0;
-            return rounded;
-        }
+       
 
         /// <summary>
         /// Handles updating event handlers during a copy process
