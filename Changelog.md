@@ -63,3 +63,4 @@ All notable changes to this project will be documented in this file.
 - Symbology.IndexSelection.RemoveRegion is working slow (#718)
 - Exception in WebMap plugin if "espg"-substring is lower-case (#777)
 - Problem in rendering ECW images (#824)
+- Polygon layer - scheme partially resets when open properties window (#842)
