@@ -306,7 +306,7 @@ namespace DotSpatial.Controls
         }
 
         /// <summary>
-        /// Gets a list of just the line layers (and not the general layers)
+        /// Gets a list of just the polygon layers (and not the general layers)
         /// </summary>
         /// <returns></returns>
         public IMapPolygonLayer[] GetPolygonLayers()
