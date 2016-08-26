@@ -4,7 +4,7 @@ cache: source\packages -> **\packages.config
 build:
   project: source\DotSpatial.sln
   verbosity: minimal
-afterbuild:
+after_build:
  - ps: '[System.IO.File]::WriteAllText("source\bin\$env:CONFIGURATION\version.txt", $env:APPVEYOR_REPO_COMMIT)'
 artifacts:
 - path: source\bin\Release
