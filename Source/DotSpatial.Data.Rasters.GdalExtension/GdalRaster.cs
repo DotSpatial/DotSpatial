@@ -173,8 +173,8 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 List<T> result = new List<T>();
                 foreach (long index in indices)
                 {
-                    int row = (int)index / NumColumnsInFile;
-                    int col = (int)index % NumColumnsInFile;
+                    int row = (int)(index / NumColumnsInFile);
+                    int col = (int)(index % NumColumnsInFile);
 
                     T[] data = new T[1];
 

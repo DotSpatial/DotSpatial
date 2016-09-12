@@ -467,7 +467,7 @@ namespace DotSpatial.Data
             {
                 List<T> values = (from index in indices
                                   let row = (int)Math.Floor(index / (double)NumColumnsInFile)
-                                  let col = (int)index % NumColumnsInFile
+                                  let col = (int)(index % NumColumnsInFile)
                                   select Data[row][col]).ToList();
                 return values;
             }
@@ -475,7 +475,7 @@ namespace DotSpatial.Data
             // by file access code that is optimized, but if not, then this will be slow.
             return (from index in indices
                     let row = (int)Math.Floor(index / (double)NumColumnsInFile)
-                    let col = (int)index % NumColumnsInFile
+                    let col = (int)(index % NumColumnsInFile)
                     select (T)Convert.ChangeType(Value[row, col], typeof(T))).ToList();
         }
 
