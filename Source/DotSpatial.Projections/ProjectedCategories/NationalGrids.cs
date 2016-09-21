@@ -484,9 +484,9 @@ namespace DotSpatial.Projections.ProjectedCategories
             MGIBalkans6 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18 +k=0.999900 +x_0=6500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             MGIBalkans7 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=24 +k=0.999900 +x_0=8500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             MGIBalkans8 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=24 +k=0.999900 +x_0=8500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            MGIM28 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1.000000 +x_0=0 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            MGIM31 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.33333333333333 +k=1.000000 +x_0=0 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            MGIM34 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=16.33333333333334 +k=1.000000 +x_0=0 +y_0=0 +ellps=bessel +units=m +no_defs ");
+            MGIM28 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=150000 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs ");
+            MGIM31 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.33333333333333 +k=1 +x_0=450000 +y_0=0 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs ");
+            MGIM34 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1 +x_0=750000 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs ");
             MGISloveniaGrid = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=0.999900 +x_0=500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
             MonteMarioItaly1 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=9 +k=0.999600 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs ");
             MonteMarioItaly2 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=0.999600 +x_0=2520000 +y_0=0 +ellps=intl +units=m +no_defs ");

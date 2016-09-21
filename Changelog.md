@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Removed obsolete methods\properties (#797)
 
 ### Fixed
+- Parameters for the Austrian Bundesmeldenetz in DotSpatial.Projections.ProjectedCategories.NationalGrids are incorrect (#855)
 - Raster extent shifts from correct extent (#725)
 - Inconsistent use of affine coefficients (#822)
 - Fixed the shift in x-coordinate when reprojecting from WGS84 to LAEA (#815)
