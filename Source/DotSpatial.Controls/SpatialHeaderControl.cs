@@ -93,9 +93,9 @@ namespace DotSpatial.Controls
             }
         }
 
-        public void Add(HeaderItem item)
+        public object Add(HeaderItem item)
         {
-            _menuBar.Add(item);
+            return _menuBar.Add(item);
         }
 
         public void Remove(string key)

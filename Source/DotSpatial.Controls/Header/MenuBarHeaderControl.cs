@@ -49,7 +49,7 @@ namespace DotSpatial.Controls.Header
         /// <param name="item">
         /// The item.
         /// </param>
-        public override void Add(MenuContainerItem item)
+        public override object Add(MenuContainerItem item)
         {
             var menu = new ToolStripMenuItem(item.Caption) { Name = item.Key };
 
@@ -59,13 +59,15 @@ namespace DotSpatial.Controls.Header
                 root.DropDownItems.Add(menu);
                 root.Visible = true;
             }
+
+            return menu;
         }
 
         /// <summary>
         /// Adds the separator.
         /// </summary>
         /// <param name="item">The item.</param>
-        public override void Add(SeparatorItem item)
+        public override object Add(SeparatorItem item)
         {
             var separator = new ToolStripSeparator();
             var strip = GetOrCreateStrip(item.GroupCaption);
@@ -74,6 +76,8 @@ namespace DotSpatial.Controls.Header
             {
                 strip.Items.Add(separator);
             }
+
+            return separator;
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace DotSpatial.Controls.Header
         /// </param>
         /// <remarks>
         /// </remarks>
-        public override void Add(RootItem item)
+        public override object Add(RootItem item)
         {
             // The root may have already been created.
             var root = _menuStrip.Items[item.Key] as ToolStripDropDownButton;
@@ -102,6 +106,8 @@ namespace DotSpatial.Controls.Header
             }
 
             RefreshRootItemOrder();
+
+            return root;
         }
 
         /// <summary>
@@ -112,7 +118,7 @@ namespace DotSpatial.Controls.Header
         /// </param>
         /// <remarks>
         /// </remarks>
-        public override void Add(SimpleActionItem item)
+        public override object Add(SimpleActionItem item)
         {
             ToolStripItem menu;
 
@@ -183,13 +189,14 @@ namespace DotSpatial.Controls.Header
             }
 
             item.PropertyChanged += SimpleActionItem_PropertyChanged;
+            return menu;
         }
 
         /// <summary>
         /// Adds a combo box style item
         /// </summary>
         /// <param name="item">The item.</param>
-        public override void Add(DropDownActionItem item)
+        public override object Add(DropDownActionItem item)
         {
             var strip = GetOrCreateStrip(item.GroupCaption);
             var combo = new ToolStripComboBox(item.Key);
@@ -214,15 +221,15 @@ namespace DotSpatial.Controls.Header
             {
                 strip.Items.Add(combo);
             }
-            item.combobox = combo;
             item.PropertyChanged += DropDownActionItem_PropertyChanged;
+            return combo;
         }
 
         /// <summary>
         /// Adds the specified textbox item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public override void Add(TextEntryActionItem item)
+        public override object Add(TextEntryActionItem item)
         {
             var strip = GetOrCreateStrip(item.GroupCaption);
             var textBox = new ToolStripTextBox(item.Key);
@@ -243,6 +250,7 @@ namespace DotSpatial.Controls.Header
             }
 
             item.PropertyChanged += TextEntryActionItem_PropertyChanged;
+            return textBox;
         }
 
         /// <summary>

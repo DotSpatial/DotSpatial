@@ -76,9 +76,11 @@ namespace DotSpatial.Plugins.ScaleBar
             _scaleDropDown.RootKey = HeaderControl.HomeRootItemKey;
 
             //Add it to the Header
-            App.HeaderControl.Add(_scaleDropDown);
-            _combo = _scaleDropDown.combobox;
-            _combo.KeyPress += Combo_KeyPress;
+            _combo = App.HeaderControl.Add(_scaleDropDown) as ToolStripComboBox;
+            if (_combo != null)
+            {
+                _combo.KeyPress += Combo_KeyPress;
+            }
 
             ComputeMapScale();
 
@@ -95,7 +97,10 @@ namespace DotSpatial.Plugins.ScaleBar
         public override void Deactivate()
         {
             _scaleDropDown.SelectedValueChanged -= ScaleToSelected;
-            _combo.KeyPress -= Combo_KeyPress;
+            if (_combo != null)
+            {
+                _combo.KeyPress -= Combo_KeyPress;
+            }
             _combo = null;
             _scaleDropDown = null;
 
@@ -212,7 +217,7 @@ namespace DotSpatial.Plugins.ScaleBar
                 double newheight = ((App.Map.ViewExtents.Height * newwidth) / App.Map.ViewExtents.Width) / 2;
                 App.Map.ViewExtents = new Extent(centerpoint.X - newwidth, centerpoint.Y - newheight, centerpoint.X + newwidth, centerpoint.Y + newheight);
             }
-            if (_combo.Owner != null) _combo.Owner.Focus(); //Remove focus because users expect focus to leave on pressing enter.
+            if (_combo != null && _combo.Owner != null) _combo.Owner.Focus(); //Remove focus because users expect focus to leave on pressing enter.
         }
 
         /// <summary>

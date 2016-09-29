@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Move FeatureSet.Filename / FilePath to DataSet (#821)
 - Changed Filename to absolute path so it stays the same even if CurrentDirectory is changed
 - Renamed IntervalMethod.Quantile to IntervalMethod.EqualFrequency for better consistency.
+- IHeaderControl.Add() now returns object which represents added GUI item.
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)

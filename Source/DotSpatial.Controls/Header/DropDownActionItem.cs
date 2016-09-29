@@ -17,7 +17,6 @@ namespace DotSpatial.Controls.Header
         private Color fontColor;
         private bool multiSelect;
         private string displayText;
-        public System.Windows.Forms.ToolStripComboBox combobox {get;set;}
 
         /// <summary>
         /// Initializes a new instance of the DropDownActionItem class.

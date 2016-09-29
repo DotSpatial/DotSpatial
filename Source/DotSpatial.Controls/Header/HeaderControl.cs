@@ -61,7 +61,7 @@ namespace DotSpatial.Controls.Header
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
         /// <remarks>Should only be called by the plugin (from the plugin assembly).</remarks>
-        public virtual void Add(HeaderItem item)
+        public virtual object Add(HeaderItem item)
         {
             Contract.Requires(item != null, "item is null.");
 
@@ -83,7 +83,7 @@ namespace DotSpatial.Controls.Header
             dynamic test = item;
             // The correct overload of Add will be called below as the specifc type of item is determined at runtime.
             // See http://msdn.microsoft.com/en-us/library/dd264736.aspx
-            Add(test);
+            return Add(test);
         }
 
         /// <summary>
@@ -117,38 +117,38 @@ namespace DotSpatial.Controls.Header
         /// Adds the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public abstract void Add(SimpleActionItem item);
+        public abstract object Add(SimpleActionItem item);
 
         /// <summary>
         /// Adds the menu container item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public abstract void Add(MenuContainerItem item);
+        public abstract object Add(MenuContainerItem item);
 
         /// <summary>
         /// Adds the specified root item.
         /// </summary>
         /// <param name="item">The root item.</param>
         /// <remarks>The RootItem should not be visible until it contains other items.</remarks>
-        public abstract void Add(RootItem item);
+        public abstract object Add(RootItem item);
 
         /// <summary>
         /// Adds a combo box style item
         /// </summary>
         /// <param name="item">The item.</param>
-        public abstract void Add(DropDownActionItem item);
+        public abstract object Add(DropDownActionItem item);
 
         /// <summary>
         /// Adds a visible separator.
         /// </summary>
         /// <param name="item">The item.</param>
-        public abstract void Add(SeparatorItem item);
+        public abstract object Add(SeparatorItem item);
 
         /// <summary>
         /// Adds the specified textbox item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public abstract void Add(TextEntryActionItem item);
+        public abstract object Add(TextEntryActionItem item);
 
         /// <summary>
         /// Adds the item to dictionary so that it can be removed later.

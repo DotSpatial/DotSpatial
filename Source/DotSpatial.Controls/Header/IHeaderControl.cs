@@ -38,7 +38,8 @@ namespace DotSpatial.Controls.Header
         /// <summary>
         /// This will add a new item that will appear on the standard toolbar or ribbon control.
         /// </summary>
-        void Add(HeaderItem item);
+        /// <returns>Added GUI item</returns>
+        object Add(HeaderItem item);
 
         /// <summary>
         /// Remove item from the standard toolbar or ribbon control
