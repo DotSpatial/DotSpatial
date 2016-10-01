@@ -950,12 +950,12 @@ namespace DotSpatial.Controls
                 {
                     _isDragging = true;
                     ILegendItem li = e.ItemBox.Item;
-                    while (li != null && li as ILayer == null)
+                    while (li != null && !(li is ILayer))
                     {
                         li = li.GetParentItem();
                     }
                     ILayer lyr = li as ILayer;
-                    if (lyr != null)
+                    if (lyr != null && !RootNodes.Contains(lyr)) // don't allow to drag root nodes
                     {
                         _dragItem = BoxFromItem(lyr);
                     }

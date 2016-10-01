@@ -67,3 +67,4 @@ All notable changes to this project will be documented in this file.
 - Problem in rendering ECW images (#824)
 - Polygon layer - scheme partially resets when open properties window (#842)
 - Index Glitch in GdalRaster with Very Large Rasters (#849)
+- Map Frame Dragging (#772)
