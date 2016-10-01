@@ -70,6 +70,14 @@ namespace DotSpatial.Data
             return new Rectangle(self.X - distance, self.Y - distance, self.Width + 2 * distance, self.Height + 2 * distance);
         }
 
+        /// <summary>
+        /// Expands the rectangle by the specified integer distances.
+        /// </summary>
+        public static Rectangle ExpandBy(this Rectangle self, int dx, int dy)
+        {
+            return new Rectangle(self.X - dx, self.Y - dy, self.Width + 2*dx, self.Height + 2*dy);
+        }
+
         #endregion
     }
 }

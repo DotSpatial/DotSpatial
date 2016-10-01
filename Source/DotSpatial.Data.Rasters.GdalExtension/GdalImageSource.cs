@@ -31,21 +31,22 @@ using OSGeo.GDAL;
 namespace DotSpatial.Data.Rasters.GdalExtension
 {
     /// <summary>
-    /// gdalImage
+    /// GDAL Image Source
     /// </summary>
     public class GdalImageSource : IImageSource
     {
         #region Private Variables
 
-        Band _alpha;
-        Band _blue;
+        private Band _alpha;
+        private Band _blue;
+        private Band _green;
+        private Band _red;
 
         private RasterBounds _bounds;
-        Dataset _dataset;
+        private Dataset _dataset;
         private string _fileName;
-        Band _green;
+        
         private int _numOverviews;
-        Band _red;
 
         #endregion
 
@@ -135,21 +136,20 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             EnsureDatasetOpen();
             _red = _dataset.GetRasterBand(1);
             byte[] result = null;
-            if (_red.GetRasterColorInterpretation() == ColorInterp.GCI_PaletteIndex)
+            switch (_red.GetRasterColorInterpretation())
             {
-                result = ReadPaletteBuffered(startRow, startColumn, numRows, numColumns, overview);
-            }
-            if (_red.GetRasterColorInterpretation() == ColorInterp.GCI_GrayIndex)
-            {
-                result = ReadGrayIndex(startRow, startColumn, numRows, numColumns, overview);
-            }
-            if (_red.GetRasterColorInterpretation() == ColorInterp.GCI_RedBand)
-            {
-                result = ReadRgb(startRow, startColumn, numRows, numColumns, overview);
-            }
-            if (_red.GetRasterColorInterpretation() == ColorInterp.GCI_AlphaBand)
-            {
-                result = ReadArgb(startRow, startColumn, numRows, numColumns, overview);
+                case ColorInterp.GCI_PaletteIndex:
+                    result = ReadPaletteBuffered(startRow, startColumn, numRows, numColumns, overview);
+                    break;
+                case ColorInterp.GCI_GrayIndex:
+                    result = ReadGrayIndex(startRow, startColumn, numRows, numColumns, overview);
+                    break;
+                case ColorInterp.GCI_RedBand:
+                    result = ReadRgb(startRow, startColumn, numRows, numColumns, overview);
+                    break;
+                case ColorInterp.GCI_AlphaBand:
+                    result = ReadArgb(startRow, startColumn, numRows, numColumns, overview);
+                    break;
             }
             return result;
         }
