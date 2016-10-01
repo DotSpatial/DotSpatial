@@ -21,6 +21,8 @@ Please use the [discussion list](https://dotspatial.codeplex.com/discussions) to
 
 For documentation and code samples have a look at the [documentation page](https://dotspatial.codeplex.com/documentation) and the [examples folder](https://github.com/DotSpatial/DotSpatial/tree/master/Source/Examples).
 
+Still have questions? Maybe someone already [asked them](https://github.com/DotSpatial/DotSpatial/issues?utf8=✓&q=label%3Aquestion).
+
 ### Contribute
 
 See [Contributing](.github/CONTRIBUTING.md) for information about how to contribute!
