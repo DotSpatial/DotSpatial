@@ -194,6 +194,7 @@
     <Compile Include="ProjectedSystems.cs" />
     <Compile Include="ProjectionException.cs" />
     <Compile Include="ProjectionInfo.cs" />
+    <Compile Include="ProjectionInfoExtensions.cs" />
     <Compile Include="ProjectionInvalidEsriFormatException.cs" />
     <Compile Include="ProjectionMessages.Designer.cs">
       <DependentUpon>ProjectionMessages.resx</DependentUpon>
@@ -347,6 +348,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DeflateStreamUtility\DeflateStreamUtility.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AuthorityCodes\AuthorityCodeToProj4.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

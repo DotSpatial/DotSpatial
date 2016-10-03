@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Changed Filename to absolute path so it stays the same even if CurrentDirectory is changed
 - Renamed IntervalMethod.Quantile to IntervalMethod.EqualFrequency for better consistency.
 - IHeaderControl.Add() now returns object which represents added GUI item.
+- Added authority and authority code as optional parameters to method ProjectionInfo.FromProj4String.
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
@@ -68,3 +69,5 @@ All notable changes to this project will be documented in this file.
 - Polygon layer - scheme partially resets when open properties window (#842)
 - Index Glitch in GdalRaster with Very Large Rasters (#849)
 - Map Frame Dragging (#772)
+- Fixed reprojection errors between RT90 and SWEREF99, caused by missing TOWGS parameters in transformation attributes (#861)
+- Incorrect reprojection between RT90 2,5 gon V and WGS84 (#618)

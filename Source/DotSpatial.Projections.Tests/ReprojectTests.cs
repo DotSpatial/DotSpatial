@@ -84,5 +84,64 @@ namespace DotSpatial.Projections.Tests
             Assert.AreEqual(expectedX, xy[0], eps);
             Assert.AreEqual(expectedY, xy[1], eps);
         }
+
+        [TestCase(3021, 3006, new double[] { 1366152.968, 6851307.390 }, new double[] { 408700, 6847800 }, 0.08)] // tolerance 8 cm
+        [TestCase(3006, 3021, new double[] { 408700, 6847800 }, new double[] { 1366152.968, 6851307.390 }, 0.08)] // tolerance 8 cm
+        [TestCase(3013, 3006, new double[] { 19061.000, 6851822.032 }, new double[] { 408700, 6847800 }, 1E-3)] // tolerance 1 mm
+        [TestCase(3022, 3021, new double[] { 1536875.736, 7037950.238 }, new double[] { 1649079.352, 7041217.283 }, 1E-3)] // tolerance 1 mm
+        public void Reproject_Swedish_Projections_Using_AuthorityCodes(int fromEpsgCode, int toEpsgCode, double[] xy, double[] expected, double tolerance )
+        {
+            var sourceProjection = ProjectionInfo.FromAuthorityCode("EPSG", fromEpsgCode);
+            var targetProjection = ProjectionInfo.FromAuthorityCode("EPSG", toEpsgCode);
+            Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
+            Assert.AreEqual(expected[0], xy[0], tolerance);
+            Assert.AreEqual(expected[1], xy[1], tolerance);
+        }
+
+        [TestCase(3021, 3006, new double[] { 1366152.968, 6851307.390 }, new double[] { 408700, 6847800 }, 0.08)] // tolerance 8 cm
+        [TestCase(3006, 3021, new double[] { 408700, 6847800 }, new double[] { 1366152.968, 6851307.390 }, 0.08)] // tolerance 8 cm
+        [TestCase(3013, 3006, new double[] { 19061.000, 6851822.032 }, new double[] { 408700, 6847800 }, 1E-3)] // tolerance 1 mm
+        [TestCase(3022, 3021, new double[] { 1536875.736, 7037950.238 }, new double[] { 1649079.352, 7041217.283 }, 1E-3)] // tolerance 1 mm
+        public void Reproject_Swedish_Projections_Using_KnownCrsNames(int fromEpsgCode, int toEpsgCode, double[] xy, double[] expected, double tolerance)
+        {
+            var sourceProjection = getProjectionUsingKnownCrsName(fromEpsgCode);
+            var targetProjection = getProjectionUsingKnownCrsName(toEpsgCode);
+            Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
+            Assert.AreEqual(expected[0], xy[0], tolerance);
+            Assert.AreEqual(expected[1], xy[1], tolerance);
+        }
+
+        [Test]
+        public void RT9025gonV_to_WGS84()
+        {
+            // Test from https://github.com/DotSpatial/DotSpatial/issues/618
+            var target = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
+            var dest = KnownCoordinateSystems.Geographic.World.WGS1984;
+
+            var xy = new double[] { 1411545, 6910904 };
+            Reproject.ReprojectPoints(xy, null, target, dest, 0, 1);
+
+            Assert.AreEqual(xy[0], 14.10000, 1e-3);
+            Assert.AreEqual(xy[1], 62.30000, 1e-3);
+        }
+
+        private ProjectionInfo getProjectionUsingKnownCrsName(int epsgCode)
+        {
+            ProjectionInfo proj = null; 
+            if (epsgCode == 3021)
+                proj = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
+            else if (epsgCode == 3022)
+                proj = KnownCoordinateSystems.Projected.NationalGridsSweden.RT900gon;
+            else if (epsgCode == 3013)
+                proj = KnownCoordinateSystems.Projected.NationalGridsSweden.SWEREF991545;
+            else if (epsgCode == 3006)
+                proj = KnownCoordinateSystems.Projected.NationalGridsSweden.SWEREF99TM;
+            else
+                throw new Exception("Not included in this test");
+
+            Assert.AreEqual(epsgCode,proj.AuthorityCode);
+                return proj;
+
+        }
     }
 }

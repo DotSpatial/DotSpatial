@@ -39,10 +39,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         private Band _green;
         private Bitmap _image;
         private Band _red;
-        private byte[] r;
-        private byte[] g;
-        private byte[] b;
-        private byte[] vals;
         private int _overview;
         private bool _isOpened;
 
@@ -147,56 +143,35 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             _dataset = Helpers.Open(Filename);
             int numBands = _dataset.RasterCount;
             _red = _dataset.GetRasterBand(1);
-            this.BandType = ImageBandType.RGB;
+            BandType = ImageBandType.RGB;
             for (int i = 1; i <= numBands; i++)
             {
-                Band tempBand = _dataset.GetRasterBand(i);
-                if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_GrayIndex)
+                var tempBand = _dataset.GetRasterBand(i);
+                switch (tempBand.GetRasterColorInterpretation())
                 {
-                    this.BandType = ImageBandType.Gray;
-                    _red = tempBand;
-                }
-                if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_PaletteIndex)
-                {
-                    this.BandType = ImageBandType.PalletCoded;
-                    _red = tempBand;
-                }
-
-                if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_RedBand)
-                {
-                    _red = tempBand;
-                }
-                if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_AlphaBand)
-                {
-                    _alpha = tempBand;
-                    this.BandType = ImageBandType.ARGB;
-                }
-                else if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_BlueBand)
-                {
-                    _blue = tempBand;
-                }
-                else if (tempBand.GetRasterColorInterpretation() == ColorInterp.GCI_GreenBand)
-                {
-                    _green = tempBand;
+                    case ColorInterp.GCI_GrayIndex:
+                        BandType = ImageBandType.Gray;
+                        _red = tempBand;
+                        break;
+                    case ColorInterp.GCI_PaletteIndex:
+                        BandType = ImageBandType.PalletCoded;
+                        _red = tempBand;
+                        break;
+                    case ColorInterp.GCI_RedBand:
+                        _red = tempBand;
+                        break;
+                    case ColorInterp.GCI_AlphaBand:
+                        _alpha = tempBand;
+                        BandType = ImageBandType.ARGB;
+                        break;
+                    case ColorInterp.GCI_BlueBand:
+                        _blue = tempBand;
+                        break;
+                    case ColorInterp.GCI_GreenBand:
+                        _green = tempBand;
+                        break;
                 }
             }
-            /*
-            if (this.BandType == ImageBandType.PalletCoded)
-            {
-                ReadPaletteBuffered();
-            }
-            else if (this.BandType == ImageBandType.Gray)
-            {
-                ReadGrayIndex();
-            }
-            else if (this.BandType == ImageBandType.ARGB)
-            {
-                ReadArgb();
-            }
-            else if (this.BandType == ImageBandType.RGB)
-            {
-                ReadRgb();
-            }*/
             _isOpened = true;
         }
 
@@ -236,16 +211,23 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 return null;
             }
 
-            Bitmap result = new Bitmap(window.Width, window.Height);
-            Graphics g = Graphics.FromImage(result);
+            var result = new Bitmap(window.Width, window.Height);
+            using (var g = Graphics.FromImage(result))
+            {
+                DrawGraphics(g, envelope, window);
+            }
+            return result;
+        }
 
+        private void DrawGraphics(Graphics g, Extent envelope, Rectangle window)
+        {
             // Gets the scaling factor for converting from geographic to pixel coordinates
-            double dx = (window.Width / (envelope.Width));
-            double dy = (window.Height / envelope.Height);
-
+            double dx = window.Width / envelope.Width;
+            double dy = window.Height / envelope.Height;
+            
             double[] a = Bounds.AffineCoefficients;
-
-            //calculate inverse
+            
+            // calculate inverse
             double p = 1 / (a[1] * a[5] - a[2] * a[4]);
             double[] a_inv = new double[4];
             a_inv[0] = a[5] * p;
@@ -253,7 +235,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             a_inv[2] = -a[4] * p;
             a_inv[3] = a[1] * p;
 
-            //estimate rectangle coordinates
+            // estimate rectangle coordinates
             double TLX = (envelope.MinX - a[0]) * a_inv[0] + (envelope.MaxY - a[3]) * a_inv[1];
             double TLY = (envelope.MinX - a[0]) * a_inv[2] + (envelope.MaxY - a[3]) * a_inv[3];
             double TRX = (envelope.MaxX - a[0]) * a_inv[0] + (envelope.MaxY - a[3]) * a_inv[1];
@@ -263,14 +245,15 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             double BRX = (envelope.MaxX - a[0]) * a_inv[0] + (envelope.MinY - a[3]) * a_inv[1];
             double BRY = (envelope.MaxX - a[0]) * a_inv[2] + (envelope.MinY - a[3]) * a_inv[3];
 
-            //get absolute maximum and minimum coordinates to make a rectangle on projected coordinates
-            //that overlaps all the visible area.
+            // get absolute maximum and minimum coordinates to make a rectangle on projected coordinates
+            // that overlaps all the visible area.
             double _TLX = Math.Min(Math.Min(Math.Min(TLX, TRX), BLX), BRX);
             double _TLY = Math.Min(Math.Min(Math.Min(TLY, TRY), BLY), BRY);
             double _BRX = Math.Max(Math.Max(Math.Max(TLX, TRX), BLX), BRX);
             double _BRY = Math.Max(Math.Max(Math.Max(TLY, TRY), BLY), BRY);
 
-            //limit it to the available image
+            // limit it to the available image
+            // todo: why we compare NumColumns\Rows and X,Y coordinates??
             if (_TLX > Bounds.NumColumns) _TLX = Bounds.NumColumns;
             if (_TLY > Bounds.NumRows) _TLY = Bounds.NumRows;
             if (_BRX > Bounds.NumColumns) _BRX = Bounds.NumColumns;
@@ -290,108 +273,103 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             float t = (float)(a[3] - .5 * (a[4] + a[5])); // top of top left pixel
             float xShift = (float)((l - envelope.MinX) * dx);
             float yShift = (float)((envelope.MaxY - t) * dy);
-            g.Transform = new Matrix(m11, m12, m21, m22, xShift, yShift);
             g.PixelOffsetMode = PixelOffsetMode.Half;
-            _overview = 0;
-            double w = _BRX - _TLX;
-            double h = _BRY - _TLY;
-            if (m11 > 1 || m22 > 1)
+            
+            if (m11 > 1 || m22 > 1) // out of pyramids
             {
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
                 _overview = -1; //don't use overviews when zooming behind the max res.
             }
             else
             {
-                //estimate the pyramids that we need.
-                //when using unreferenced images m11 or m22 can be negative resulting on inf logarithm.
-                //so the Math.abs
-                _overview = (int)Math.Min(Math.Log(Math.Abs(1 / m11), 2), Math.Log(Math.Abs(1 / m22), 2));
-                //limit it to the available pyramids
-                if (_overview >= _red.GetOverviewCount())
-                {
-                    _overview = _red.GetOverviewCount() - 1;
-                }
-                //additional test but probably not needed
+                // estimate the pyramids that we need.
+                // when using unreferenced images m11 or m22 can be negative resulting on inf logarithm.
+                // so the Math.abs
+                _overview = (int) Math.Min(Math.Log(Math.Abs(1/m11), 2), Math.Log(Math.Abs(1/m22), 2));
+
+                // limit it to the available pyramids
+                _overview = Math.Min(_overview, _red.GetOverviewCount() - 1);
+
+                // additional test but probably not needed
                 if (_overview < 0)
                 {
                     _overview = -1;
                 }
-                //with and height of the image that we have to request to the pyramid.
-                w = (int)((_BRX - _TLX) / Math.Pow(2.0, _overview + 1));
-                h = (int)((_BRY - _TLY) / Math.Pow(2.0, _overview + 1));
-                //if using pyr. we have to update the transform between image and frame.
-                g.Transform = new Matrix(m11 * (float)Math.Pow(2.0, _overview + 1),
-                                        m12 * (float)Math.Pow(2.0, _overview + 1),
-                                        m21 * (float)Math.Pow(2.0, _overview + 1),
-                                        m22 * (float)Math.Pow(2.0, _overview + 1), xShift, yShift);
-                //g.Transform.Scale((float)Math.Pow(2.0, _overview + 1), (float)Math.Pow(2.0, _overview + 1));
             }
-            //if (_image == null)
-            //{
-            int blocXsize, blocYsize;
-            //get the optimal block size to request gdal. 
-            //if the image is stored line by line then ask for a 100px stripe.
-            if (_red.GetOverviewCount() > 0 && _overview >= 0)
+
+            var overviewPow = Math.Pow(2, _overview + 1);
+
+            // witdh and height of the image
+            var w = (_BRX - _TLX) / overviewPow;
+            var h = (_BRY - _TLY) / overviewPow;
+
+            using (var matrix = new Matrix(
+                    m11 * (float)overviewPow,
+                    m12 * (float)overviewPow,
+                    m21 * (float)overviewPow,
+                    m22 * (float)overviewPow, xShift, yShift))
             {
-                _red.GetOverview(_overview).GetBlockSize(out blocXsize, out blocYsize);
-                if (blocYsize == 1)
+                g.Transform = matrix;
+            }
+
+            int blockXsize, blockYsize;
+            // get the optimal block size to request gdal. 
+            // if the image is stored line by line then ask for a 100px stripe.
+            if (_overview >= 0 && _red.GetOverviewCount() > 0)
+            {
+                using (var overview = _red.GetOverview(_overview))
                 {
-                    blocYsize = Math.Min(100, _red.GetOverview(_overview).YSize);
+                    overview.GetBlockSize(out blockXsize, out blockYsize);
+                    if (blockYsize == 1)
+                    {
+                        blockYsize = Math.Min(100, overview.YSize);
+                    }
                 }
             }
             else
             {
-                _red.GetBlockSize(out blocXsize, out blocYsize);
-                if (blocYsize == 1)
+                _red.GetBlockSize(out blockXsize, out blockYsize);
+                if (blockYsize == 1)
                 {
-                    blocYsize = Math.Min(100, _red.YSize);
+                    blockYsize = Math.Min(100, _red.YSize);
                 }
             }
 
             int nbX, nbY;
-            //limit the block size to the viewable image.
-            if (w < blocXsize)
+            // limit the block size to the viewable image.
+            if (w < blockXsize)
             {
-                blocXsize = (int)(w);
+                blockXsize = (int)w;
                 nbX = 1;
             }
             else
             {
-                nbX = (int)((w) / blocXsize) + 1; 
+                nbX = (int)(w / blockXsize) + 1;
             }
 
-            if (h < blocYsize)
+            if (h < blockYsize)
             {
-                blocYsize = (int)(h);
+                blockYsize = (int)h;
                 nbY = 1;
             }
             else
             {
-                nbY = (int)((h) / blocYsize) + 1;
+                nbY = (int)(h / blockYsize) + 1;
             }
-
-            try
-            {
-                for (var i = 0; i < nbX; i++)
-                    for (var j = 0; j < nbY; j++)
+            
+            for (var i = 0; i < nbX; i++)
+                for (var j = 0; j < nbY; j++)
+                {
+                    // The +1 is to remove the white stripes artifacts
+                    using (var bitmap = ReadBlock(
+                        (int)(_TLX / overviewPow) + i * blockXsize,
+                        (int)(_TLY / overviewPow) + j * blockYsize, blockXsize + 1, blockYsize + 1))
                     {
-                        // The +1 is to remove the white stripes artifacts
-                        var bytes = ReadBlock(
-                            (int) (_TLX/Math.Pow(2, _overview + 1)) + i*blocXsize,
-                            (int) (_TLY/Math.Pow(2, _overview + 1)) + j*blocYsize, blocXsize + 1, blocYsize + 1);
-
-                        g.DrawImage(bytes,
-                            (int) (_TLX/Math.Pow(2, _overview + 1)) + i*blocXsize,
-                            (int) (_TLY/Math.Pow(2, _overview + 1)) + j*blocYsize);
-
+                        g.DrawImage(bitmap,
+                            (int)(_TLX / overviewPow) + i * blockXsize,
+                            (int)(_TLY / overviewPow) + j * blockYsize);
                     }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("exception:" + e.Message);
-            }
-            g.Dispose();
-            return result;
+                }
         }
 
         #endregion
@@ -406,16 +384,18 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             if (ColorPalette == null)
             {
                 _dataset = Helpers.Open(Filename);
-                Band first = _dataset.GetRasterBand(1);
-                ColorTable ct = first.GetRasterColorTable();
-                int count = ct.GetCount();
-                List<Color> result = new List<Color>();
-                for (int i = 0; i < count; i++)
+                using (var first = _dataset.GetRasterBand(1))
+                using(var ct = first.GetRasterColorTable())
                 {
-                    ColorEntry ce = ct.GetColorEntry(i);
-                    result.Add(Color.FromArgb(ce.c4, ce.c1, ce.c2, ce.c3));
+                    int count = ct.GetCount();
+                    var result = new List<Color>(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        using(var ce = ct.GetColorEntry(i))
+                            result.Add(Color.FromArgb(ce.c4, ce.c1, ce.c2, ce.c3));
+                    }
+                    ColorPalette = result;
                 }
-                ColorPalette = result;
             }
 
             return ColorPalette;
@@ -432,13 +412,15 @@ namespace DotSpatial.Data.Rasters.GdalExtension
 
             ColorTable ct = new ColorTable(PaletteInterp.GPI_RGB);
             int index = 0;
-            foreach (Color c in value)
+            foreach (var c in value)
             {
-                ColorEntry ce = new ColorEntry();
-                ce.c4 = c.A;
-                ce.c3 = c.B;
-                ce.c2 = c.G;
-                ce.c1 = c.R;
+                ColorEntry ce = new ColorEntry
+                {
+                    c4 = c.A,
+                    c3 = c.B,
+                    c2 = c.G,
+                    c1 = c.R
+                };
                 ct.SetColorEntry(index, ce);
                 index++;
             }
@@ -446,54 +428,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 first.SetRasterColorTable(ct);
             }
-        }
-
-        private void ReadPaletteBuffered()
-        {
-            ColorTable ct = _red.GetRasterColorTable();
-            if (ct == null)
-            {
-                throw new GdalException("Image was stored with a palette interpretation but has no color table.");
-            }
-            if (ct.GetPaletteInterpretation() != PaletteInterp.GPI_RGB)
-            {
-                throw new GdalException(String.Format("Only RGB palette interpretation is currently supported by this plug-in, {0} is not supported.", ct.GetPaletteInterpretation()));
-            }
-            int width = Width;
-            int height = Height;
-            byte[] r = new byte[width * height];
-            _red.ReadRaster(0, 0, width, height, r, width, height, 0, 0);
-
-            _image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-
-            BitmapData bData = _image.LockBits(new Rectangle(0, 0, width, height),
-                                               ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            Stride = bData.Stride;
-            _image.UnlockBits(bData);
-
-            const int bpp = 4;
-            int stride = Stride;
-            byte[] vals = new byte[width * height * 4];
-            byte[][] colorTable = new byte[ct.GetCount()][];
-            for (int i = 0; i < ct.GetCount(); i++)
-            {
-                ColorEntry ce = ct.GetColorEntry(i);
-                colorTable[i] = new[]
-                                    {
-                                        (byte) ce.c3, (byte) ce.c2, (byte) ce.c1,
-                                        (byte) ce.c4
-                                    };
-            }
-            for (int row = 0; row < height; row++)
-            {
-                for (int col = 0; col < width; col++)
-                {
-                    Array.Copy(colorTable[r[col + row * width]], 0, vals,
-                               row * stride + col * bpp, 4);
-                }
-            }
-            Values = vals;
-            CopyValuesToBitmap();
         }
 
         private Bitmap ReadPaletteBuffered(int xOffset, int yOffset, int xSize, int ySize, Band first)
@@ -508,28 +442,29 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 throw new GdalException("Only RGB palette interpretation is currently supported by this " +
                                         " plug-in, " + ct.GetPaletteInterpretation() + " is not supported.");
             }
+
             Band first_o;
-            int width = xSize;
-            int height = ySize;
-            byte[] r = new byte[width * height];
-            if (first.GetOverviewCount() > 0 && _overview >= 0)
+            bool dispose_o = false;
+            if (_overview >= 0 && first.GetOverviewCount() > 0)
             {
                 first_o = first.GetOverview(_overview);
+                dispose_o = true;
             }
             else
             {
                 first_o = first;
             }
-            if (xOffset + width > first_o.XSize)
-            {
-                width = first_o.XSize - xOffset;
-            }
-            if (yOffset + height > first_o.YSize)
-            {
-                height = first_o.YSize - yOffset;
-            }
+           
+
+            int width, height;
+            NormalizeSizeToBand(xOffset, yOffset, xSize, ySize, first_o, out width, out height);
+            byte[] r = new byte[width * height];
 
             first_o.ReadRaster(xOffset, yOffset, width, height, r, width, height, 0, 0);
+            if (dispose_o)
+            {
+                first_o.Dispose();
+            }
 
             Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
@@ -553,8 +488,7 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 for (int col = 0; col < width; col++)
                 {
-                    Array.Copy(colorTable[r[col + row * stride]], 0, vals,
-                               row * stride + col * bpp, 4);
+                    Array.Copy(colorTable[r[col + row*width]], 0, vals, row*stride + col*bpp, 4);
                 }
             }
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
@@ -608,10 +542,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
         /// <summary>
         /// Finds the closest color in the table based on the hamming distance.
         /// </summary>
-        /// <param name="vals"></param>
-        /// <param name="offset"></param>
-        /// <param name="colorTable"></param>
-        /// <returns></returns>
         private static byte MatchColor(byte[] vals, int offset, byte[][] colorTable)
         {
             int shortestDistance = int.MaxValue;
@@ -633,66 +563,48 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             return Convert.ToByte(result);
         }
 
-        private void ReadGrayIndex()
+        private static void NormalizeSizeToBand(int xOffset, int yOffset, int xSize, int ySize, Band band, out int width, out int height)
         {
-            Width = _red.XSize;
-            Height = _red.YSize;
-            _image = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            byte[] r = new byte[Width * Height];
-            _red.ReadRaster(0, 0, Width, Height, r, Width, Height, 0, 0);
-            BitmapData bData =
-                _image.LockBits(new Rectangle(0, 0, Width, Height),
-                                ImageLockMode.ReadWrite,
-                                PixelFormat.Format32bppArgb);
-            Stride = bData.Stride;
-            _image.UnlockBits(bData);
-            byte[] vals = new byte[Width * Height * 4];
+            width = xSize;
+            height = ySize;
 
-            BytesPerPixel = 4;
-            int height = Height;
-            int width = Width;
-            int stride = Stride;
-            int bpp = BytesPerPixel;
-
-            for (int row = 0; row < height; row++)
+            if (xOffset + width > band.XSize)
             {
-                for (int col = 0; col < width; col++)
-                {
-                    byte value = r[row * width + col];
-                    vals[row * stride + col * bpp] = value;
-                    vals[row * stride + col * bpp + 1] = value;
-                    vals[row * stride + col * bpp + 2] = value;
-                    vals[row * stride + col * bpp + 3] = 255;
-                }
+                width = band.XSize - xOffset;
             }
-            Values = vals;
-            CopyValuesToBitmap();
+            if (yOffset + height > band.YSize)
+            {
+                height = band.YSize - yOffset;
+            }
         }
 
         private Bitmap ReadGrayIndex(int xOffset, int yOffset, int xSize, int ySize, Band first)
         {
             Band first_o;
-            int width = xSize;
-            int height = ySize;
-            if (first.GetOverviewCount() > 0 && _overview >= 0)
+            var dispose_o = false;
+
+            if (_overview >= 0 && first.GetOverviewCount() > 0)
             {
                 first_o = first.GetOverview(_overview);
+                dispose_o = true;
             }
             else
             {
                 first_o = first;
             }
-            if (xOffset + width > first_o.XSize)
-            {
-                width = first_o.XSize - xOffset;
-            }
-            if (yOffset + height > first_o.YSize)
-            {
-                height = first_o.YSize - yOffset;
-            }
+
+            int width, height;
+            NormalizeSizeToBand(xOffset, yOffset, xSize, ySize, first_o, out width, out height);
+
             Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             byte[] r = new byte[width * height];
-            first.ReadRaster(xOffset, yOffset, width, height, r, width, height, 0, 0);
+            first_o.ReadRaster(xOffset, yOffset, width, height, r, width, height, 0, 0);
+
+            if (dispose_o)
+            {
+                first_o.Dispose();
+            }
+
             BitmapData bData =
                 result.LockBits(new Rectangle(0, 0, xSize, ySize),
                                 ImageLockMode.ReadWrite,
@@ -702,16 +614,14 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             byte[] vals = new byte[height * stride];
 
             for (int row = 0; row < height; row++)
-            {
                 for (int col = 0; col < width; col++)
                 {
-                    byte value = r[row * width + col];
-                    vals[row * stride + col * 4] = value;
-                    vals[row * stride + col * 4 + 1] = value;
-                    vals[row * stride + col * 4 + 2] = value;
-                    vals[row * stride + col * 4 + 3] = 255;
+                    byte value = r[row*width + col];
+                    vals[row*stride + col*4] = value;
+                    vals[row*stride + col*4 + 1] = value;
+                    vals[row*stride + col*4 + 2] = value;
+                    vals[row*stride + col*4 + 3] = 255;
                 }
-            }
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
             result.UnlockBits(bData);
             return result;
@@ -748,61 +658,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             first.WriteRaster(xOffset, yOffset, width, height, vals, width, height, 0, 0);
         }
 
-        private void ReadRgb()
-        {
-            if (_dataset.RasterCount < 3)
-            {
-                throw new GdalException(
-                    "RGB Format was indicated but there are only " +
-                    _dataset.RasterCount +
-                    " bands!");
-            }
-
-            Width = _red.XSize;
-            Height = _red.YSize;
-            try
-            {
-                _image = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-
-                byte[] r = new byte[Width * Height];
-                byte[] g = new byte[Width * Height];
-                byte[] b = new byte[Width * Height];
-
-                _red.ReadRaster(0, 0, Width, Height, r, Width, Height, 0, 0);
-                _green.ReadRaster(0, 0, Width, Height, g, Width, Height, 0, 0);
-                _blue.ReadRaster(0, 0, Width, Height, b, Width, Height, 0, 0);
-
-                BitmapData bData =
-                    _image.LockBits(new Rectangle(0, 0, Width, Height),
-                                    ImageLockMode.ReadWrite,
-                                    PixelFormat.Format32bppArgb);
-                Stride = bData.Stride;
-                _image.UnlockBits(bData);
-                byte[] vals = new byte[Width * Height * 4];
-                BytesPerPixel = 4;
-                int stride = Stride;
-                int bpp = BytesPerPixel;
-                int width = Width;
-                int height = Height;
-                for (int row = 0; row < height; row++)
-                {
-                    for (int col = 0; col < width; col++)
-                    {
-                        vals[row * stride + col * bpp] = b[row * width + col];
-                        vals[row * stride + col * bpp + 1] = g[row * width + col];
-                        vals[row * stride + col * bpp + 2] = r[row * width + col];
-                        vals[row * stride + col * bpp + 3] = 255;
-                    }
-                }
-                Values = vals;
-                CopyValuesToBitmap();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
         private Bitmap ReadRgb(int xOffset, int yOffset, int xSize, int ySize, Band first, Dataset set)
         {
             if (set.RasterCount < 3)
@@ -815,15 +670,16 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             Band first_o;
             Band green_o;
             Band blue_o;
-            Band green = set.GetRasterBand(2);
-            Band blue = set.GetRasterBand(3);
-            int width = xSize;
-            int height = ySize;
-            if (first.GetOverviewCount() > 0 && _overview >= 0)
+            var dispose_o = false;
+
+            var green = set.GetRasterBand(2);
+            var blue = set.GetRasterBand(3);
+            if (_overview >= 0 && first.GetOverviewCount() > 0)
             {
                 first_o = first.GetOverview(_overview);
                 green_o = green.GetOverview(_overview);
                 blue_o = blue.GetOverview(_overview);
+                dispose_o = true;
             }
             else
             {
@@ -831,65 +687,35 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 green_o = green;
                 blue_o = blue;
             }
-            if (xOffset + width > first_o.XSize)
-            {
-                width = first_o.XSize - xOffset;
-            }
-            if (yOffset + height > first_o.YSize)
-            {
-                height = first_o.YSize - yOffset;
-            }
 
+            int width, height;
+            NormalizeSizeToBand(xOffset, yOffset, xSize, ySize, first_o, out width, out height);
             Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            //byte[] r;
-            if (r == null || r.Length != width * height)
-            {
-                r = new byte[width * height];
-            }
-            if (g == null || g.Length != width * height)
-            {
-                g = new byte[width * height];
-            }
-            if (b == null || b.Length != width * height)
-            {
-                b = new byte[width * height];
-            }
-            if (vals == null || vals.Length != width * height * 4)
-            {
-                vals = new byte[width * height * 4];
-            }
+            
+            byte[] r = new byte[width * height];
+            byte[] g = new byte[width * height];
+            byte[] b = new byte[width * height];
+
             first_o.ReadRaster(xOffset, yOffset, width, height, r, width, height, 0, 0);
             green_o.ReadRaster(xOffset, yOffset, width, height, g, width, height, 0, 0);
             blue_o.ReadRaster(xOffset, yOffset, width, height, b, width, height, 0, 0);
-            /* alternative way to call gdal 
-            unsafe
-            {
-                fixed (byte* p = r)
-                {
-                    IntPtr ptr = (IntPtr)p;
-                    first_o.ReadRaster(xOffset, yOffset, width, height, ptr, width, height, DataType.GDT_Byte, 0, 0);
-                }
-                fixed (byte* p = g)
-                {
-                    IntPtr ptr = (IntPtr)p;
-                    green_o.ReadRaster(xOffset, yOffset, width, height, ptr, width, height, DataType.GDT_Byte, 0, 0);
-                }
-                fixed (byte* p = b)
-                {
-                    IntPtr ptr = (IntPtr)p;
-                    blue_o.ReadRaster(xOffset, yOffset, width, height, ptr, width, height, DataType.GDT_Byte, 0, 0);
-                }
-            }*/
 
-            //first disposed in caller
+            if (dispose_o) // It's local copies, dispose them
+            {
+                first_o.Dispose();
+                green_o.Dispose();
+                blue_o.Dispose();
+            }
             green.Dispose();
             blue.Dispose();
 
-            BitmapData bData =
+            var bData =
                 result.LockBits(new Rectangle(0, 0, width, height),
                                 ImageLockMode.ReadWrite,
                                 PixelFormat.Format32bppArgb);
             int stride = Math.Abs(bData.Stride);
+
+            var vals = new byte[width * height * 4];
             for (int row = 0; row < height; row++)
             {
                 for (int col = 0; col < width; col++)
@@ -902,10 +728,6 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             }
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
             result.UnlockBits(bData);
-            //vals = null;
-            //r = null;
-            //g = null;
-            //b = null;
             return result;
         }
 
@@ -968,20 +790,19 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             Band red_o;
             Band green_o;
             Band blue_o;
+            var dispose_o = false;
 
             Band red = set.GetRasterBand(2);
             Band green = set.GetRasterBand(3);
             Band blue = set.GetRasterBand(4);
 
-            int width = xSize;
-            int height = ySize;
-
-            if (first.GetOverviewCount() > 0 && _overview >= 0)
+            if (_overview >= 0 && first.GetOverviewCount() > 0)
             {
                 first_o = first.GetOverview(_overview);
                 red_o = red.GetOverview(_overview);
                 green_o = green.GetOverview(_overview);
                 blue_o = blue.GetOverview(_overview);
+                dispose_o = true;
             }
             else
             {
@@ -990,14 +811,9 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 green_o = green;
                 blue_o = blue;
             }
-            if (xOffset + width > first_o.XSize)
-            {
-                width = first_o.XSize - xOffset;
-            }
-            if (yOffset + height > first_o.YSize)
-            {
-                height = first_o.YSize - yOffset;
-            }
+
+            int width, height;
+            NormalizeSizeToBand(xOffset, yOffset, xSize, ySize, first_o, out width, out height);
             Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             byte[] a = new byte[width * height];
@@ -1009,6 +825,14 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             red_o.ReadRaster(0, 0, width, height, r, width, height, 0, 0);
             green_o.ReadRaster(0, 0, width, height, g, width, height, 0, 0);
             blue_o.ReadRaster(0, 0, width, height, b, width, height, 0, 0);
+
+            if (dispose_o)
+            {
+                first_o.Dispose();
+                red_o.Dispose();
+                green_o.Dispose();
+                blue_o.Dispose();
+            }
             // Alpha disposed in caller
             red.Dispose();
             green.Dispose();
@@ -1026,69 +850,15 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 for (int col = 0; col < width; col++)
                 {
-                    vals[row * stride + col * 4] =
-                        b[row * width + col];
-                    vals[row * stride + col * 4 + 1] =
-                        g[row * width + col];
-                    vals[row * stride + col * 4 + 2] =
-                        r[row * width + col];
-                    vals[row * stride + col * 4 + 3] =
-                        a[row * width + col];
+                    vals[row * stride + col * 4] = b[row * width + col];
+                    vals[row * stride + col * 4 + 1] = g[row * width + col];
+                    vals[row * stride + col * 4 + 2] = r[row * width + col];
+                    vals[row * stride + col * 4 + 3] = a[row * width + col];
                 }
             }
             Marshal.Copy(vals, 0, bData.Scan0, vals.Length);
             result.UnlockBits(bData);
             return result;
-        }
-
-        private void ReadArgb()
-        {
-            if (_dataset.RasterCount < 4)
-            {
-                throw new GdalException(
-                    "ARGB Format was indicated but there are only " +
-                    _dataset.RasterCount +
-                    " bands!");
-            }
-
-            Width = _red.XSize;
-            Height = _red.YSize;
-
-            _image = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-
-            byte[] a = new byte[Width * Height];
-            byte[] r = new byte[Width * Height];
-            byte[] g = new byte[Width * Height];
-            byte[] b = new byte[Width * Height];
-
-            _alpha.ReadRaster(0, 0, Width, Height, a, Width, Height, 0, 0);
-            _red.ReadRaster(0, 0, Width, Height, r, Width, Height, 0, 0);
-            _green.ReadRaster(0, 0, Width, Height, g, Width, Height, 0, 0);
-            _blue.ReadRaster(0, 0, Width, Height, b, Width, Height, 0, 0);
-
-            BitmapData bData =
-                _image.LockBits(new Rectangle(0, 0, Width, Height),
-                                ImageLockMode.ReadWrite,
-                                PixelFormat.Format32bppArgb);
-            Stride = bData.Stride;
-            _image.UnlockBits(bData);
-            Values = new byte[Width * Height * 4];
-            BytesPerPixel = 4;
-            for (int row = 0; row < Height; row++)
-            {
-                for (int col = 0; col < Width; col++)
-                {
-                    Values[row * Stride + col * BytesPerPixel] =
-                        b[row * Width + col];
-                    Values[row * Stride + col * BytesPerPixel + 1] =
-                        g[row * Width + col];
-                    Values[row * Stride + col * BytesPerPixel + 2] =
-                        r[row * Width + col];
-                    Values[row * Stride + col * BytesPerPixel + 3] =
-                        a[row * Width + col];
-                }
-            }
-            CopyValuesToBitmap();
         }
 
         private static void WriteArgb(Bitmap value, int xOffset, int yOffset, Band first, Dataset set)
@@ -1182,26 +952,26 @@ namespace DotSpatial.Data.Rasters.GdalExtension
             {
                 _dataset = Helpers.Open(Filename);
             }
-            Band first = _dataset.GetRasterBand(1);
-            Bitmap result = null;
 
-            if (first.GetRasterColorInterpretation() == ColorInterp.GCI_PaletteIndex)
+            Bitmap result = null;
+            using (var first = _dataset.GetRasterBand(1))
             {
-                result = ReadPaletteBuffered(xOffset, yOffset, xSize, ySize, first);
+                switch (first.GetRasterColorInterpretation())
+                {
+                    case ColorInterp.GCI_PaletteIndex:
+                        result = ReadPaletteBuffered(xOffset, yOffset, xSize, ySize, first);
+                        break;
+                    case ColorInterp.GCI_GrayIndex:
+                        result = ReadGrayIndex(xOffset, yOffset, xSize, ySize, first);
+                        break;
+                    case ColorInterp.GCI_RedBand:
+                        result = ReadRgb(xOffset, yOffset, xSize, ySize, first, _dataset);
+                        break;
+                    case ColorInterp.GCI_AlphaBand:
+                        result = ReadArgb(xOffset, yOffset, xSize, ySize, first, _dataset);
+                        break;
+                }
             }
-            if (first.GetRasterColorInterpretation() == ColorInterp.GCI_GrayIndex)
-            {
-                result = ReadGrayIndex(xOffset, yOffset, xSize, ySize, first);
-            }
-            if (first.GetRasterColorInterpretation() == ColorInterp.GCI_RedBand)
-            {
-                result = ReadRgb(xOffset, yOffset, xSize, ySize, first, _dataset);
-            }
-            if (first.GetRasterColorInterpretation() == ColorInterp.GCI_AlphaBand)
-            {
-                result = ReadArgb(xOffset, yOffset, xSize, ySize, first, _dataset);
-            }
-            first.Dispose();
             // data set disposed on disposing this image
             return result;
         }
@@ -1222,25 +992,24 @@ namespace DotSpatial.Data.Rasters.GdalExtension
                 _dataset = Gdal.Open(Filename, Access.GA_Update);
             }
 
-            Band first = _dataset.GetRasterBand(1);
-
-            if (BandType == ImageBandType.PalletCoded)
+            using (var first = _dataset.GetRasterBand(1))
             {
-                WritePaletteBuffered(value, xOffset, yOffset, first);
+                switch (BandType)
+                {
+                    case ImageBandType.PalletCoded:
+                        WritePaletteBuffered(value, xOffset, yOffset, first);
+                        break;
+                    case ImageBandType.Gray:
+                        WriteGrayIndex(value, xOffset, yOffset, first);
+                        break;
+                    case ImageBandType.RGB:
+                        WriteRgb(value, xOffset, yOffset, first, _dataset);
+                        break;
+                    case ImageBandType.ARGB:
+                        WriteArgb(value, xOffset, yOffset, first, _dataset);
+                        break;
+                }
             }
-            if (BandType == ImageBandType.Gray)
-            {
-                WriteGrayIndex(value, xOffset, yOffset, first);
-            }
-            if (BandType == ImageBandType.RGB)
-            {
-                WriteRgb(value, xOffset, yOffset, first, _dataset);
-            }
-            if (BandType == ImageBandType.ARGB)
-            {
-                WriteArgb(value, xOffset, yOffset, first, _dataset);
-            }
-            first.Dispose();
         }
 
         /// <inheritdocs/>

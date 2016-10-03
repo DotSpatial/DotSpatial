@@ -199,7 +199,9 @@ namespace DotSpatial.Controls
                 // but should correspond to 1 pixel in the source image.
 
                 int dx = (int)Math.Ceiling(DataSet.Bounds.AffineCoefficients[1] * clipRectangles[i].Width / regions[i].Width);
-                Rectangle r = clipRectangles[i].ExpandBy(dx * 2);
+                int dy = (int)Math.Ceiling(-DataSet.Bounds.AffineCoefficients[5] * clipRectangles[i].Height / regions[i].Height);
+
+                Rectangle r = clipRectangles[i].ExpandBy(dx * 2, dy * 2);
                 if (r.X < 0) r.X = 0;
                 if (r.Y < 0) r.Y = 0;
                 if (r.Width > 2 * clipRectangles[i].Width) r.Width = 2 * clipRectangles[i].Width;
@@ -222,10 +224,11 @@ namespace DotSpatial.Controls
                 {
                     ColorMatrix matrix = new ColorMatrix(); //draws the image not completely opaque
                     matrix.Matrix33 = Symbolizer.Opacity;
-                    ImageAttributes attributes = new ImageAttributes();
-                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                    g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
-                    attributes.Dispose();
+                    using (var attributes = new ImageAttributes())
+                    {
+                        attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                        g.DrawImage(bmp, r, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                    }                    
                 }
                 else
                 {
