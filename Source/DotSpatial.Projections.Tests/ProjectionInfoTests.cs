@@ -190,7 +190,9 @@ namespace DotSpatial.Projections.Tests
         [TestCase(2400, 3006, false)]
         [TestCase(3006, 3007, false)]
         [TestCase(4326, 3857, false)]
-        [TestCase(3785, 3857, true)]  
+        [TestCase(3785, 3857, true)]
+        [TestCase(32250, 32251, false)]
+
         //[TestCase(3857, 102100, true)]
         public void Test_Projection_Info_Equality(int code1, int code2, bool expectedResult)
         {
