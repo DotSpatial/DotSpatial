@@ -185,5 +185,19 @@ namespace DotSpatial.Projections.Tests
                 System.IO.File.Delete(prjFile);
             }
         }
+
+        [TestCase(2400, 3021, true)] // EPSG:2400 and 3021 are the same (2400 is obsolete but is still used in practice)
+        [TestCase(2400, 3006, false)]
+        [TestCase(3006, 3007, false)]
+        [TestCase(4326, 3857, false)]
+        [TestCase(3785, 3857, true)]  
+        //[TestCase(3857, 102100, true)]
+        public void Test_Projection_Info_Equality(int code1, int code2, bool expectedResult)
+        {
+            var proj1 = ProjectionInfo.FromEpsgCode(code1);
+            var proj2 = ProjectionInfo.FromEpsgCode(code2);
+
+            Assert.IsTrue(proj1.Equals(proj2) == expectedResult);
+        }
     }
 }
