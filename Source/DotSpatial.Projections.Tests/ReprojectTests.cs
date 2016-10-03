@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.Security.Cryptography;
 using NUnit.Framework;
 
 namespace DotSpatial.Projections.Tests
@@ -111,6 +109,20 @@ namespace DotSpatial.Projections.Tests
             Reproject.ReprojectPoints(xy, null, sourceProjection, targetProjection, 0, 1);
             Assert.AreEqual(expected[0], xy[0], tolerance);
             Assert.AreEqual(expected[1], xy[1], tolerance);
+        }
+
+        [Test]
+        public void RT9025gonV_to_WGS84()
+        {
+            // Test from https://github.com/DotSpatial/DotSpatial/issues/618
+            var target = KnownCoordinateSystems.Projected.NationalGridsSweden.RT9025gonV;
+            var dest = KnownCoordinateSystems.Geographic.World.WGS1984;
+
+            var xy = new double[] { 1411545, 6910904 };
+            Reproject.ReprojectPoints(xy, null, target, dest, 0, 1);
+
+            Assert.AreEqual(xy[0], 14.10000, 1e-3);
+            Assert.AreEqual(xy[1], 62.30000, 1e-3);
         }
 
         private ProjectionInfo getProjectionUsingKnownCrsName(int epsgCode)
