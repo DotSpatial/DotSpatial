@@ -669,10 +669,14 @@ namespace DotSpatial.Projections
         /// <param name="proj4String">
         /// The proj4String to read in while defining the projection
         /// </param>
-        public static ProjectionInfo FromProj4String(string proj4String)
+        /// <param name="authority">[Optional] Authority, for example "EPSG"</param>
+        /// <param name="authorityCode">[Optional] Authority code, for example 4326</param>
+        public static ProjectionInfo FromProj4String(string proj4String, string authority = null, int authorityCode = -1)
         {
             var info = new ProjectionInfo();
             info.ParseProj4String(proj4String);
+            if (!string.IsNullOrWhiteSpace(authority)) info.Authority = authority;
+            if (authorityCode > 0) info.AuthorityCode = authorityCode;
             return info;
         }
 

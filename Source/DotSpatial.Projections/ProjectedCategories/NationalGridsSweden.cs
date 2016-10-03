@@ -66,31 +66,56 @@ namespace DotSpatial.Projections.ProjectedCategories
         /// </summary>
         public NationalGridsSweden()
         {
-            RT380gon = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.05827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT3825gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT3825gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT385gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=22.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT385gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT3875gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=11.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT900gon = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.05827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT9025gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT9025gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT905gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=22.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT905gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            RT9075gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=11.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ");
-            SWEREF991200 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=12 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991330 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.5 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991415 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=14.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991500 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991545 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991630 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=16.5 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991715 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=17.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991800 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF991845 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF992015 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF992145 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=21.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF992315 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=23.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +units=m +no_defs ");
-            SWEREF99TM = ProjectionInfo.FromProj4String("+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs ");
+            // EPSG:3028
+            RT380gon = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.05827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3028);
+            // EPSG:3029
+            RT3825gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3029);
+            // EPSG:3027
+            RT3825gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3027);
+            // EPSG:3030
+            RT385gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=22.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3030);
+            // EPSG:3026
+            RT385gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.55827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3026);
+            // EPSG:3025
+            RT3875gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=11.30827777777778 +k=1.000000 +x_0=1500000 +y_0=0 +ellps=bessel +units=m +no_defs ", "EPSG", 3025);
+            // EPSG:3022
+            RT900gon = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.05827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3022);
+            // EPSG:3023
+            RT9025gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.30827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3023);
+            // EPSG:3021
+            RT9025gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3021);
+            // EPSG:3024
+            RT905gonO = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=22.55827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3024);
+            // EPSG:3020
+            RT905gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.55827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3020);
+            // EPSG:3019
+            RT9075gonV = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=11.30827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=419.384,99.3335,591.345,0.850389,1.81728,-7.86224,-0.99496 +units=m +no_defs ", "EPSG", 3019);
+            // EPSG:3007
+            SWEREF991200 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3007);
+            // EPSG:3008
+            SWEREF991330 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=13.5 +k=1 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3008);
+            // EPSG:3012
+            SWEREF991415 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=14.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG");
+            // EPSG:3009
+            SWEREF991500 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15 +k=1 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs  ", "EPSG", 3009);
+            // EPSG:3013
+            SWEREF991545 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=15.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3013);
+            // EPSG:3010
+            SWEREF991630 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=16.5 +k=1 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs  ", "EPSG", 3010);
+            // EPSG:3014
+            SWEREF991715 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=17.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3014);
+            // EPSG:3011
+            SWEREF991800 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3011);
+            // EPSG:3015
+            SWEREF991845 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=18.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3015);
+            // EPSG:3016
+            SWEREF992015 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=20.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3016);
+            // EPSG:3017
+            SWEREF992145 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=21.75 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3017);
+            // EPSG:3018
+            SWEREF992315 = ProjectionInfo.FromProj4String("+proj=tmerc +lat_0=0 +lon_0=23.25 +k=1.000000 +x_0=150000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3018);
+            // EPSG:3006
+            SWEREF99TM = ProjectionInfo.FromProj4String("+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ", "EPSG", 3006);
             RT380gon.Name = "RT38_0_gon";
             RT3825gonO.Name = "RT38_25_gon_O";
             RT3825gonV.Name = "RT38_25_gon_V";
