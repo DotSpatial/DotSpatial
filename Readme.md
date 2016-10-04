@@ -33,6 +33,10 @@ Use this [link](https://ci.appveyor.com/api/projects/mogikanin/dotspatial/artifa
 
 Have a look at the [Changelog](https://github.com/DotSpatial/DotSpatial/blob/master/Changelog.md) to see the difference between the master branch and the latest stable release.
 
+### License
+
+It's MIT. The original DotSpatial (dotspatial.codeplex.com) was released under the LGPL, the new version hosted on GitHub is released under the MIT license.
+
 ### NuGet packages
 You can download the latest stable release via NuGet.
 
