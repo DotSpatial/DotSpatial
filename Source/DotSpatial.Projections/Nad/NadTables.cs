@@ -42,7 +42,7 @@ namespace DotSpatial.Projections.Nad
         /// </summary>
         public NadTables()
         {
-            Assembly a = Assembly.GetExecutingAssembly();
+            var a = Assembly.GetExecutingAssembly();
             foreach (var s in a.GetManifestResourceNames())
             {
                 string[] ss = s.Split('.');
@@ -81,24 +81,16 @@ namespace DotSpatial.Projections.Nad
         public void InitializeExternalGrids(string strGridsFolder, bool recursive)
         {
             SearchOption opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            string[] gridTypes = { "*.los", "*.gsb", "*.dat", "*.lla" };
-            List<string> names = new List<string>();
-            foreach (string gridType in gridTypes)
-            {
-                string[] tmp = Directory.GetFiles(strGridsFolder, gridType, opt);
-                names.AddRange(tmp);
-            }
-
-            foreach (var s in names)
-            {
-                string coreName = "@" + Path.GetFileNameWithoutExtension(s);
-                if (_tables.ContainsKey(coreName)) continue;
-                string ext = Path.GetExtension(s).ToLower();
-                if (ext != ".los" && ext != ".gsb" && ext != ".dat") continue;
-                if (ext == ".los" && !File.Exists(s.Replace(".los", ".las"))) continue;
-                var s1 = s;
-                _tables.Add(coreName, new Lazy<NadTable>(() => NadTable.FromSourceName(s1, false), true));
-            }
+            foreach (var gridType in new[] {"*.los", "*.gsb", "*.dat", "*.lla"})
+                foreach (var s in Directory.EnumerateFiles(strGridsFolder, gridType, opt))
+                {
+                    string coreName = "@" + Path.GetFileNameWithoutExtension(s);
+                    if (_tables.ContainsKey(coreName)) continue;
+                    string ext = Path.GetExtension(s).ToLower();
+                    if (ext == ".los" && !File.Exists(s.Replace(".los", ".las"))) continue;
+                    var s1 = s;
+                    _tables.Add(coreName, new Lazy<NadTable>(() => NadTable.FromSourceName(s1, false), true));
+                }
         }
 
         #endregion

@@ -11,6 +11,7 @@ namespace DotSpatial.Projections.Tests.Projected
     {
         [Test]
         [TestCaseSource("GetProjections")]
+        [Ignore] // GridShiftMissingException
         public void UtmNad1927Tests(ProjectionInfoDesc pInfo)
         {
             Tester.TestProjection(pInfo.ProjectionInfo);

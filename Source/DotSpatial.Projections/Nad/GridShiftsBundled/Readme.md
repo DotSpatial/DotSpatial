@@ -1,0 +1,1 @@
+This folder contains grid shifts bundled into DotSpatial.

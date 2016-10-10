@@ -39,11 +39,23 @@ namespace DotSpatial.Projections
 
         #endregion
 
+        static GridShift()
+        {
+            ThrowGridShiftMissingExceptions = true;
+        }
+
+        /// <summary>
+        /// Gets or sets a boolean which controls raising <see cref="GridShiftMissingException"/> in case when grid shift table is not found during applying grid shift.
+        /// By default it is true.
+        /// </summary>
+        public static bool ThrowGridShiftMissingExceptions { get; set; }
+
         #region Methods
 
         /// <summary>
         /// Applies either a forward or backward gridshift based on the specified name
         /// </summary>
+        /// <exception cref="GridShiftMissingException"/>
         public static void Apply(string[] names, bool inverse, double[] xy, int startIndex, long numPoints)
         {
             for (int i = startIndex; i < numPoints; i++)
@@ -69,12 +81,7 @@ namespace DotSpatial.Projections
                         foreach (NadTable subGrid in table.SubGrids)
                         {
                             /* skip tables that don't match our point at all.  */
-                            double wLam = subGrid.LowerLeft.Lambda;
-                            double eLam = wLam + (subGrid.NumLambdas - 1) * subGrid.CellSize.Lambda;
-                            double sPhi = subGrid.LowerLeft.Phi;
-                            double nPhi = sPhi + (subGrid.NumPhis - 1) * subGrid.CellSize.Lambda;
-                            if (input.Lambda < wLam || input.Lambda > eLam ||
-                                input.Phi < sPhi || input.Phi > nPhi) continue;
+                            if (!TryGrid(input, subGrid)) continue;
                             table = subGrid;
                             found = true;
                             break;
@@ -84,36 +91,44 @@ namespace DotSpatial.Projections
                     else
                     {
                         /* skip tables that don't match our point at all.  */
-                        double minLam = table.LowerLeft.Lambda;
-                        double maxLam = minLam + (table.NumLambdas - 1) * table.CellSize.Lambda;
-                        double minPhi = table.LowerLeft.Phi;
-                        double maxPhi = minPhi + (table.NumPhis - 1) * table.CellSize.Lambda;
-                        if (input.Lambda < minLam || input.Lambda > maxLam ||
-                            input.Phi < minPhi || input.Phi > maxPhi) continue;
+                        if (!TryGrid(input, table)) continue;
                     }
 
                     // TO DO: handle child nodes?  Not sure what format would require this
                     output = Convert(input, inverse, table);
-                    if (output.Lambda == HUGE_VAL)
-                    {
-                        Debug.WriteLine("GridShift failed");
-                        break;
-                    }
                     break;
                 }
 
                 if (output.Lambda == HUGE_VAL)
                 {
-                    Debug.WriteLine(
-                        "pj_apply_gridshift(): failed to find a grid shift Table for location: ("
-                        + xy[i * 2] * 180 / Math.PI + ", " + xy[i * 2 + 1] * 180 / Math.PI + ")");
+                    Trace.WriteLine(string.Format("pj_apply_gridshift(): failed to find a grid shift Table for location: ({0}, {1}). Names: {2}",
+                        xy[i * 2] * 180 / Math.PI, xy[i * 2 + 1] * 180 / Math.PI, string.Join(",", names)));
+
+                    if (ThrowGridShiftMissingExceptions)
+                    {
+                        throw new GridShiftMissingException();
+                    }
                 }
                 else
                 {
                     xy[i * 2] = output.Lambda;
-                    xy[i * 2 + 1] = output.Phi;
+                    xy[i * 2 + 1] = output.Phi;    
                 }
             }
+        }
+
+        private static bool TryGrid(PhiLam input, NadTable table)
+        {
+            var wLam = table.LowerLeft.Lambda;
+            var eLam = wLam + (table.NumLambdas - 1) * table.CellSize.Lambda;
+            var sPhi = table.LowerLeft.Phi;
+            var nPhi = sPhi + (table.NumPhis - 1) * table.CellSize.Lambda;
+            if (input.Lambda < wLam || input.Lambda > eLam ||
+                input.Phi < sPhi || input.Phi > nPhi)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static PhiLam Convert(PhiLam input, bool inverse, NadTable table)
@@ -177,12 +192,6 @@ namespace DotSpatial.Projections
             return input;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="t"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
         private static PhiLam NadInterpolate(PhiLam t, NadTable ct)
         {
             PhiLam result, remainder;
@@ -308,8 +317,8 @@ namespace DotSpatial.Projections
         /// <summary>
         /// Load grids from the specified folder
         /// </summary>
-        /// <param name="gridsFolder"></param>
-        /// <param name="recursive"></param>
+        /// <param name="gridsFolder">Path to folder with gridshift transformations</param>
+        /// <param name="recursive">Recursively read folder, or not.</param>
         public static void InitializeExternalGrids(string gridsFolder, bool recursive)
         {
             _shift.InitializeExternalGrids(gridsFolder, recursive);
