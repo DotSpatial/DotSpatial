@@ -1,7 +1,7 @@
 // *******************************************************************************************************
 // Product: DotSpatial.Analysis.VectorToRaster.cs
 // Description: Converts Vectors to Raster by drawing them to a GDI bitmap
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

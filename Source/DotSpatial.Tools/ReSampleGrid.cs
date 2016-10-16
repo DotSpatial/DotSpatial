@@ -2,7 +2,7 @@
 // *******************************************************************************************************
 // Product: DotSpatial.Tools.ReSampleGrid.cs
 // Description:  Change the cell size.
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

@@ -2,7 +2,7 @@
 // Product: DotSpatial.Tools.DPSimplification.cs
 // Description:  This tool reduces the number of points on polylines using the Douglas-Peucker line
 //               simplification algorithm
-// Copyright & License: See www.DotSpatial.org.
+
 // *******************************************************************************************************
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 

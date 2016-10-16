@@ -1,7 +1,7 @@
 ﻿// *******************************************************************************************************
 // Product:  DotSpatial.Symbology.Forms.IIWin32WindowOwner
 // Description:  Contains IWin32Window Owner
-// Copyright & License: See www.DotSpatial.org.
+
 // Contributor(s): Open source contributors may list themselves and their modifications here.
 // Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
 //--------------------------------------------------------------------------------------------------------
