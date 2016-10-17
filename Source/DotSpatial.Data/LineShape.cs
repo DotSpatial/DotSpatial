@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// LineShape
-    /// </summary>
     public static class LineShape
     {
         /// <summary>

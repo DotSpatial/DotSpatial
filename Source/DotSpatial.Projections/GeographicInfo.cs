@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// GeographicInfo
-    /// </summary>
     public class GeographicInfo : ProjDescriptor, IEsriString
     {
         #region Private Variables

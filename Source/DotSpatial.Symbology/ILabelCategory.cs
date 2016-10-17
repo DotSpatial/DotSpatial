@@ -16,9 +16,6 @@ using System.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILabelCategory
-    /// </summary>
     public interface ILabelCategory : ICloneable
     {
         #region Methods
@@ -53,48 +50,28 @@ namespace DotSpatial.Symbology
         /// Gets or sets the string expression that controls the integration of field values into the label text. 
         /// This is the raw text that is used to do calculations and concat fields and strings.
         /// </summary>
-        string Expression
-        {
-            get;
-            set;
-        }
+        string Expression { get; set; }
 
         /// <summary>
         /// Gets or sets the string filter expression that controls which features
         /// that this should apply itself to.
         /// </summary>
-        string FilterExpression
-        {
-            get;
-            set;
-        }
+        string FilterExpression { get; set; }
 
         /// <summary>
         /// Gets or sets the string name
         /// </summary>
-        string Name
-        {
-            get;
-            set;
-        }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the text symbolizer to use for this category
         /// </summary>
-        ILabelSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        ILabelSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the text symbolizer to use for this category
         /// </summary>
-        ILabelSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        ILabelSymbolizer SelectionSymbolizer { get; set; }
 
         #endregion
     }

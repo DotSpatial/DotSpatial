@@ -70,7 +70,7 @@
     <Compile Include="BitmapFormatException.cs" />
     <Compile Include="JenksBreaksCalcuation.cs" />
     <Compile Include="Expression.cs" />
-    <Compile Include="ExtentExtcs.cs" />
+    <Compile Include="ExtentExt.cs" />
     <Compile Include="IColorCategoryActions.cs" />
     <Compile Include="IDynamicVisibility.cs" />
     <Compile Include="IFeatureLayerActions.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Group.cs" />
     <Compile Include="ICategory.cs" />
     <Compile Include="IChangeable.cs" />
-    <Compile Include="IDescriptora.cs" />
+    <Compile Include="IDescriptor.cs" />
     <Compile Include="IFrame.cs" />
     <Compile Include="IGroup.cs" />
     <Compile Include="ILayer.cs" />

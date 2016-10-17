@@ -16,9 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// GraphicsPathEM
-    /// </summary>
     public static class GraphicsPathExt
     {
         #region Methods

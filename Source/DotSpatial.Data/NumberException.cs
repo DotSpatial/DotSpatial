@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// NumberException
-    /// </summary>
     public class NumberException : Exception
     {
         /// <summary>

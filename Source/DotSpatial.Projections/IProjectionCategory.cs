@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// IProjectionCategory
-    /// </summary>
     public interface IProjectionCategory
     {
         #region Properties

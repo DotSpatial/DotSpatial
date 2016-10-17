@@ -18,9 +18,6 @@ using System.Drawing;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// A general
-    /// </summary>
     public interface IRaster : IRasterBoundDataSet, ICloneable
     {
         #region Methods

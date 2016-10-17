@@ -15,9 +15,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IGradientPath
-    /// </summary>
     public interface IGradientPattern : IPattern
     {
         #region Methods
@@ -29,40 +26,24 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the angle for the gradient pattern.
         /// </summary>
-        double Angle
-        {
-            get;
-            set;
-        }
+        double Angle { get; set; }
 
         /// <summary>
         /// Gets or sets an array of colors that match the corresponding positions.  The length of
         /// colors and positions should be the same length.
         /// </summary>
-        Color[] Colors
-        {
-            get;
-            set;
-        }
+        Color[] Colors { get; set; }
 
         /// <summary>
         /// The positions as floating point values from 0 to 1 that represent the corresponding location
         /// in the gradient brush pattern.
         /// </summary>
-        float[] Positions
-        {
-            get;
-            set;
-        }
+        float[] Positions { get; set; }
 
         /// <summary>
         /// Gets or sets the gradient type
         /// </summary>
-        GradientType GradientType
-        {
-            get;
-            set;
-        }
+        GradientType GradientType { get; set; }
 
         #endregion
     }

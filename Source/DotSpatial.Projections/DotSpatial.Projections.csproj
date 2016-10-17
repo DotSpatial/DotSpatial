@@ -114,11 +114,11 @@
     <Compile Include="IDatumTransformStage.cs" />
     <Compile Include="LasLosNadTable.cs" />
     <Compile Include="LlaNadTable.cs" />
-    <Compile Include="ProjCloneableEM.cs" />
+    <Compile Include="ICloneableExtensions.cs" />
     <Compile Include="IDescriptor.cs" />
     <Compile Include="IMatchable.cs" />
     <Compile Include="IRandomizable.cs" />
-    <Compile Include="MatchableEM.cs" />
+    <Compile Include="IProjMatchableExtensions.cs" />
     <Compile Include="AngularUnit.cs" />
     <Compile Include="CoordinateSystemCategory.cs" />
     <Compile Include="CopyBase.cs" />

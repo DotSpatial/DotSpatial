@@ -18,9 +18,6 @@ using System.Globalization;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Meridian
-    /// </summary>
     public class Meridian : ProjDescriptor, IEsriString
     {
         #region Private Variables

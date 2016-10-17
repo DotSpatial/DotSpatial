@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PyramidException
-    /// </summary>
     public class PyramidException : Exception
     {
         #region Constructors

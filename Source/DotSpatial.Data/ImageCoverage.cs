@@ -13,7 +13,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using DotSpatial.Serialization;
 
 namespace DotSpatial.Data
 {

@@ -15,9 +15,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IGeoGroup
-    /// </summary>
     public interface IMapGroup : IGroup, IMapLayer
     {
         #region Properties
@@ -25,19 +22,12 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the GeoLayerCollection for members contained by this group.
         /// </summary>
-        IMapLayerCollection Layers
-        {
-            get;
-            set;
-        }
+        IMapLayerCollection Layers { get; set; }
 
         /// <summary>
         /// Gets the map frame for this group.
         /// </summary>
-        IMapFrame ParentMapFrame
-        {
-            get;
-        }
+        IMapFrame ParentMapFrame { get; }
 
         #endregion
     }

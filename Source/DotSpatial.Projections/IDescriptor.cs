@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// IDescriptor
-    /// </summary>
     public interface IProjDescriptor : IProjMatchable, IProjRandomizable, ICloneable
     {
         #region Methods

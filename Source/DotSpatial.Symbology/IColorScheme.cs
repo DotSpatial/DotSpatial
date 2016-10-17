@@ -15,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IColorScheme
-    /// </summary>
     public interface IColorScheme : IScheme
     {
         #region Methods
@@ -51,29 +48,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the floating point value for the opacity
         /// </summary>
-        float Opacity
-        {
-            get;
-            set;
-        }
+        float Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of color scheme categories to use.
         /// </summary>
-        ColorCategoryCollection Categories
-        {
-            get;
-            set;
-        }
+        ColorCategoryCollection Categories { get; set; }
 
         /// <summary>
         /// gets or sets the editor settings for controls that affect the color scheme.
         /// </summary>
-        new RasterEditorSettings EditorSettings
-        {
-            get;
-            set;
-        }
+        new RasterEditorSettings EditorSettings { get; set; }
 
         #endregion
     }

@@ -67,84 +67,51 @@ namespace DotSpatial.Symbology
         /// These are in addition to any that are supported by default.
         /// Handlers should be added to this list before it is retrieved.
         /// </summary>
-        List<SymbologyMenuItem> ContextMenuItems
-        {
-            get;
-            set;
-        }
+        List<SymbologyMenuItem> ContextMenuItems { get; set; }
 
         /// <summary>
         /// Gets or sets whether or not this legend item should be visible.
         /// This will not be altered unless the LegendSymbolMode is set
         /// to CheckBox.
         /// </summary>
-        bool Checked
-        {
-            get;
-            set;
-        }
+        bool Checked { get; set; }
 
         /// <summary>
         /// Gets or sets whether this legend item is expanded.
         /// </summary>
-        bool IsExpanded
-        {
-            get;
-            set;
-        }
+        bool IsExpanded { get; set; }
 
         /// <summary>
         /// Gets or sets whether this legend item is currently selected (and therefore drawn differently)
         /// </summary>
-        bool IsSelected
-        {
-            get;
-            set;
-        }
+        bool IsSelected { get; set; }
 
         /// <summary>
         /// Gets whatever the child collection is and returns it as an IEnumerable set of legend items
         /// in order to make it easier to cycle through those values.
         /// </summary>
-        IEnumerable<ILegendItem> LegendItems
-        {
-            get;
-        }
+        IEnumerable<ILegendItem> LegendItems { get; }
 
         /// <summary>
         /// Gets or sets a boolean, that if false will prevent this item, or any of its child items
         /// from appearing in the legend when the legend is drawn.
         /// </summary>
-        bool LegendItemVisible
-        {
-            get;
-            set;
-        }
+        bool LegendItemVisible { get; set; }
 
         /// <summary>
         /// Gets the symbol mode for this legend item.
         /// </summary>
-        SymbolMode LegendSymbolMode
-        {
-            get;
-        }
+        SymbolMode LegendSymbolMode { get; }
 
         /// <summary>
         /// The text that will appear in the legend
         /// </summary>
-        string LegendText
-        {
-            get;
-            set;
-        }
+        string LegendText { get; set; }
 
         /// <summary>
         /// Gets or sets a pre-defined behavior in the legend when referring to drag and drop functionality.
         /// </summary>
-        LegendType LegendType
-        {
-            get;
-        }
+        LegendType LegendType { get; }
 
         #endregion
     }

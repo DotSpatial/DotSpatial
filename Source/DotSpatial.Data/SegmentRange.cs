@@ -16,9 +16,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// SegmentSet
-    /// </summary>
     public class SegmentRange : IEnumerable<Segment>
     {
         #region IEnumerable<Segment> Members

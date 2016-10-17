@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// Bonne
-    /// </summary>
     public class Bonne : EllipticalTransform
     {
         #region Private Variables

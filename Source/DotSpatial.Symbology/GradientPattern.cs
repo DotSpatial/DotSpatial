@@ -18,9 +18,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// GradientPattern
-    /// </summary>
     public class GradientPattern : Pattern, IGradientPattern
     {
         #region Private Variables

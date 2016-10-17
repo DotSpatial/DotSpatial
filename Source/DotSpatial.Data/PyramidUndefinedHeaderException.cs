@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PyramidUndefinedHeader
-    /// </summary>
     public class PyramidUndefinedHeaderException : PyramidException
     {
         #region Constructors

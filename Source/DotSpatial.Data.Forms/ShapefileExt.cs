@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// Extension method for shapefile
+    /// Extension method for <see cref="Shapefile"/>
     /// </summary>
     public static class ShapefileExt
     {

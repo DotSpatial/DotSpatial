@@ -16,9 +16,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILayerEvents
-    /// </summary>
     public interface ILayerEvents : IChangeItem
     {
         /// <summary>

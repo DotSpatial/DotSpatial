@@ -3,6 +3,9 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
+    /// <summary>
+    /// Contains extension methods for <see cref="IFeatureLayer"/>
+    /// </summary>
     public static class IFeatureLayerExtensions
     {
         /// <summary>

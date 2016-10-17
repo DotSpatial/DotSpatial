@@ -147,6 +147,7 @@
     <Compile Include="MiscUtil\ExpressionUtil.cs" />
     <Compile Include="MiscUtil\NullOp.cs" />
     <Compile Include="MiscUtil\Operator.cs" />
+    <Compile Include="FilePathUtils.cs" />
     <Compile Include="PointShape.cs" />
     <Compile Include="PointShapefileFeatureSource.cs" />
     <Compile Include="PointShapefileShapeSource.cs" />
@@ -178,7 +179,6 @@
     <Compile Include="BufferedBinaryReader.cs" />
     <Compile Include="BufferedBinaryWriter.cs" />
     <Compile Include="IDataManager.cs" />
-    <Compile Include="ILog.cs" />
     <Compile Include="DataStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -328,7 +328,7 @@
     <Compile Include="IChangeEventList.cs" />
     <Compile Include="IChangeItem.cs" />
     <Compile Include="IEventList.cs" />
-    <Compile Include="IListEM.cs" />
+    <Compile Include="IListExtensions.cs" />
     <Compile Include="INamedList.cs" />
     <Compile Include="IndividualEventArgs.cs" />
     <Compile Include="IndividualCancelEventArgs.cs" />

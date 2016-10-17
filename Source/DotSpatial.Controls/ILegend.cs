@@ -49,11 +49,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the list of map frames being displayed by this legend.
         /// </summary>
-        List<ILegendItem> RootNodes
-        {
-            get;
-            set;
-        }
+        List<ILegendItem> RootNodes { get; set; }
 
         /// <summary>
         /// Adds a map frame as a root node, and links an event handler to update

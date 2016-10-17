@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// AnalyticCodes
-    /// </summary>
     [Flags]
     public enum AnalyticModes
     {

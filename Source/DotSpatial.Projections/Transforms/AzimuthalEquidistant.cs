@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// AzimuthalEquidistant
-    /// </summary>
     public class AzimuthalEquidistant : EllipticalTransform
     {
         #region Private Variables

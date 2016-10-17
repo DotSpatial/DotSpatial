@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPropertyDialogProvider
-    /// </summary>
     public interface IPropertyDialogProvider
     {
         #region Events
@@ -44,10 +41,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the item that was changed by this operation.
         /// </summary>
-        object ChangeItem
-        {
-            get;
-        }
+        object ChangeItem { get; }
 
         #endregion
     }

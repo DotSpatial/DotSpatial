@@ -19,9 +19,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IBasicMap
-    /// </summary>
     public interface IBasicMap : IMapView, ISelectable
     {
         #region Methods
@@ -85,26 +82,17 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets the bounding rectangle representing this map in screen coordinates
         /// </summary>
-        Rectangle Bounds
-        {
-            get;
-        }
+        Rectangle Bounds { get; }
 
         /// <summary>
         /// Gets an image that has been buffered
         /// </summary>
-        Image BufferedImage
-        {
-            get;
-        }
+        Image BufferedImage { get; }
 
         /// <summary>
         /// Gets the client rectangle of the map control
         /// </summary>
-        Rectangle ClientRectangle
-        {
-            get;
-        }
+        Rectangle ClientRectangle { get; }
 
         /// <summary>
         /// Gets or sets the current tool mode.  This rapidly enables or disables specific tools to give
@@ -112,27 +100,17 @@ namespace DotSpatial.Controls
         /// enabled manually by enabling the specific tool in the GeoTools dictionary.
         /// </summary>
         [Category("Behavior"), Description("Gets or sets which tool or combination of tools are enabled on the map.")]
-        FunctionMode FunctionMode
-        {
-            get;
-            set;
-        }
+        FunctionMode FunctionMode { get; set; }
 
         /// <summary>
         /// Gets the geographic bounds of all of the different data layers currently visible on the map.
         /// </summary>
-        Extent Extent
-        {
-            get;
-        }
+        Extent Extent { get; }
 
         /// <summary>
         /// Gets the height of the control
         /// </summary>
-        int Height
-        {
-            get;
-        }
+        int Height { get; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether a map-function is currently interacting with the map.
@@ -140,62 +118,38 @@ namespace DotSpatial.Controls
         /// should suspend themselves to prevent conflict.  Setting this actually increments an internal integer,
         /// so when that integer is 0, the map is "Not" busy, but multiple busy processes can work independently.
         /// </summary>
-        bool IsBusy
-        {
-            get;
-            set;
-        }
+        bool IsBusy { get; set; }
 
         /// <summary>
         /// Indicates whether the Map is Zoomed out to full extent or not.
         /// Added 1/3/2013 by Eric Hullinger
         /// </summary>
-        bool IsZoomedToMaxExtent
-        {
-            get;
-            set;
-        }
+        bool IsZoomedToMaxExtent { get; set; }
 
         /// <summary>
         /// Gets the screen coordinates of the
         /// </summary>
-        int Left
-        {
-            get;
-        }
+        int Left { get; }
 
         /// <summary>
         /// Gets the legend, if any, associated with this map control.
         /// </summary>
-        ILegend Legend
-        {
-            get;
-            set;
-        }
+        ILegend Legend { get; set; }
 
         /// <summary>
         /// A MapFrame
         /// </summary>
-        IFrame MapFrame
-        {
-            get;
-        }
+        IFrame MapFrame { get; }
 
         /// <summary>
         /// Gets the screen coordinates of the top of this control
         /// </summary>
-        int Top
-        {
-            get;
-        }
+        int Top { get; }
 
         /// <summary>
         /// Gets the width of the control
         /// </summary>
-        int Width
-        {
-            get;
-        }
+        int Width { get; }
 
         /// <summary>
         /// Instructs the map to clear the layers.

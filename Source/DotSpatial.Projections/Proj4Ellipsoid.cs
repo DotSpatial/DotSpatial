@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Proj4Ellipsoids
-    /// </summary>
     public enum Proj4Ellipsoid
     {
         /// <summary>

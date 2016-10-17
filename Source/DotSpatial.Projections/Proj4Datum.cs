@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Proj4Datums
-    /// </summary>
     public enum Proj4Datum
     {
         /// <summary>

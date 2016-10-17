@@ -15,9 +15,6 @@ using System.IO;
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// FolderItem
-    /// </summary>
     public class FolderItem : DirectoryItem
     {
         #region Private Variables

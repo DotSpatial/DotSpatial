@@ -17,9 +17,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IClient
-    /// </summary>
     public interface IMapView
     {
         #region Methods
@@ -62,11 +59,7 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the geographic extents to show in the view.
         /// </summary>
-        Extent ViewExtents
-        {
-            get;
-            set;
-        }
+        Extent ViewExtents { get; set; }
 
         #endregion
     }

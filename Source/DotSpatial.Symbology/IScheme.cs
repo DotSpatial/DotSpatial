@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IScheme
-    /// </summary>
     public interface IScheme : ILegendItem
     {
         #region Methods
@@ -108,30 +105,20 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the editor settings that control how this scheme operates.
         /// </summary>
-        EditorSettings EditorSettings
-        {
-            get;
-            set;
-        }
+        EditorSettings EditorSettings { get; set; }
 
         /// <summary>
         /// This is cached until a GetValues call is made, at which time the statistics will
         /// be re-calculated from the values.
         /// </summary>
-        Statistics Statistics
-        {
-            get;
-        }
+        Statistics Statistics { get; }
 
         /// <summary>
         /// Gets the current list of values calculated in the case of numeric breaks.
         /// This includes only members that are not excluded by the exclude expression,
         /// and have a valid numeric value.
         /// </summary>
-        List<double> Values
-        {
-            get;
-        }
+        List<double> Values { get; }
 
         #endregion
     }

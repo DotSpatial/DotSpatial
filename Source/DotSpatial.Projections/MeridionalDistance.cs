@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// MeridinalDistance
-    /// </summary>
     public static class MeridionalDistance
     {
         private const double C00 = 1;

@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// AuxiliarySphereTypes
-    /// </summary>
     public enum AuxiliarySphereType
     {
         /// <summary>

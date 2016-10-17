@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// NumberFormat
-    /// </summary>
     public struct Number : IComparable, IComparable<Number>, IComparable<double>
     {
         #region Private methods

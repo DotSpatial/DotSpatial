@@ -18,10 +18,7 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILineSymbolizer
-    /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof (ExpandableObjectConverter))]
     public interface ILineSymbolizer : IFeatureSymbolizer
     {
         #region Methods
@@ -72,11 +69,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the list of strokes that will be combined to make up a single drawing pass for this line.
         /// </summary>
-        IList<IStroke> Strokes
-        {
-            get;
-            set;
-        }
+        IList<IStroke> Strokes { get; set; }
 
         #endregion
     }

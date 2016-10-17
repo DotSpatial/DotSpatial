@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// IRandomizable
-    /// </summary>
     public interface IProjRandomizable
     {
         /// <summary>

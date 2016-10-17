@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IRandomizable
-    /// </summary>
     public interface IRandomizable
     {
         /// <summary>

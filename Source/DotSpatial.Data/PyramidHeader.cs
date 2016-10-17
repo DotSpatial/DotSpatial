@@ -16,9 +16,6 @@ using System.Xml.Serialization;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PyramidHeader
-    /// </summary>
     [XmlRoot("PyramidHeader")]
     public class PyramidHeader
     {

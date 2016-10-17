@@ -28,29 +28,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer describing the selection on the default category.
         /// </summary>
-        new IPolygonSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        new IPolygonSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbolizer describing the symbolizer on the default category.
         /// </summary>
-        new IPolygonSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        new IPolygonSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the polygon scheme that symbolically breaks down the drawing into symbol categories.
         /// </summary>
-        new IPolygonScheme Symbology
-        {
-            get;
-            set;
-        }
+        new IPolygonScheme Symbology { get; set; }
 
         #endregion
     }

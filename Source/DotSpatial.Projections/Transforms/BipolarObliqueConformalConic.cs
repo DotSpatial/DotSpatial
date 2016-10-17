@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// BipolarObliqueConformalConic
-    /// </summary>
     public class BipolarObliqueConformalConic : Transform
     {
         #region Private Variables

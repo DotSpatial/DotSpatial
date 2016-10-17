@@ -23,7 +23,8 @@ namespace DotSpatial.Symbology
     /// It is recommended to create derived classes that inherit from an
     /// abstract layer that implements the majority of this shared functionality
     /// </summary>
-    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock, IReproject
+    public interface ILayer : ILegendItem, IRenderable, ISelectable, IDynamicVisibility, IDisposable, IDisposeLock,
+        IReproject
     {
         #region Events
 
@@ -80,37 +81,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the core dataset for this layer.
         /// </summary>
-        IDataSet DataSet
-        {
-            get;
-            set;
-        }
+        IDataSet DataSet { get; set; }
 
         /// <summary>
         /// Gets the currently invalidated region.
         /// </summary>
-        Extent InvalidRegion
-        {
-            get;
-        }
+        Extent InvalidRegion { get; }
 
         /// <summary>
         /// Gets the MapFrame that contains this layer.
         /// </summary>
-        IFrame MapFrame
-        {
-            get;
-            set;
-        }
+        IFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the progress handler
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         #endregion
     }

@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PyramidOutOfBoundsException
-    /// </summary>
     public class PyramidOutOfBoundsException : PyramidException
     {
         #region Constructors

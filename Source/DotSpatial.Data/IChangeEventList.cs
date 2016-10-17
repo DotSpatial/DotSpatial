@@ -15,10 +15,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IChangeEventList
-    /// </summary>
-    //[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
     public interface IChangeEventList<T> : IList<T>, ISuspendEvents, IChangeItem where T : IChangeItem
     {
         /// <summary>

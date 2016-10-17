@@ -17,26 +17,17 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ISelection
-    /// </summary>
     public interface ISelection : IChangeable, IAttributeSource
     {
         /// <summary>
         /// Gets the integer count of the members in the collection
         /// </summary>
-        int Count
-        {
-            get;
-        }
+        int Count { get; }
 
         /// <summary>
         /// Calculates the envelope of this collection
         /// </summary>
-        Envelope Envelope
-        {
-            get;
-        }
+        Envelope Envelope { get; }
 
         /// <summary>
         /// Gets or sets the handler to use for progress messages during selection.
@@ -46,31 +37,19 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Selection Mode controls how envelopes are treated when working with geometries.
         /// </summary>
-        SelectionMode SelectionMode
-        {
-            get;
-            set;
-        }
+        SelectionMode SelectionMode { get; set; }
 
         /// <summary>
         /// Gets or sets whether this should work as "Selected" indices (true) or
         /// "UnSelected" indices (false).
         /// </summary>
-        bool SelectionState
-        {
-            get;
-            set;
-        }
+        bool SelectionState { get; set; }
 
         /// <summary>
         /// Setting this to a specific category will only allow selection by
         /// region to affect the features that are within the specified category.
         /// </summary>
-        IFeatureCategory RegionCategory
-        {
-            get;
-            set;
-        }
+        IFeatureCategory RegionCategory { get; set; }
 
         /// <summary>
         /// Clears the selection

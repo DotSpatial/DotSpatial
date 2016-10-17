@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// InterlaceMethods
-    /// </summary>
     public enum InterlaceMethod : byte
     {
         /// <summary>

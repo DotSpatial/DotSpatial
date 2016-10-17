@@ -17,9 +17,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Segment
-    /// </summary>
     public class Segment
     {
         #region Private Variables

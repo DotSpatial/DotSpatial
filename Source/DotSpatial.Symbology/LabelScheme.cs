@@ -16,9 +16,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LabelScheme
-    /// </summary>
     public class LabelScheme : ILabelScheme
     {
         #region Private Variables

@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IChangeable
-    /// </summary>
     public interface IChangeable
     {
         #region Events
@@ -53,10 +50,7 @@ namespace DotSpatial.Symbology
         /// To suspend events, call SuspendChanges.  Then to resume events, call ResumeEvents.  If the
         /// suspension is greater than 0, then events are suspended.
         /// </summary>
-        bool ChangesSuspended
-        {
-            get;
-        }
+        bool ChangesSuspended { get; }
 
         #endregion
     }

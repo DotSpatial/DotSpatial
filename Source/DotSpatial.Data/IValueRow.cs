@@ -25,11 +25,6 @@ namespace DotSpatial.Data
         /// </summary>
         /// <param name="cell">The 0 based integer column index to access on this row.</param>
         /// <returns>An object reference to the actual data value, which can be many types.</returns>
-        double this[int cell]
-        {
-            get;
-
-            set;
-        }
+        double this[int cell] { get; set; }
     }
 }

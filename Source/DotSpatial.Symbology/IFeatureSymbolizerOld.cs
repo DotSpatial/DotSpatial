@@ -27,40 +27,23 @@ namespace DotSpatial.Symbology
         /// Gets or sets the color of the brush used to fill the shape.
         /// Setting this will change the brush to a new SolidBrush.
         /// </summary>
-        Color FillColor
-        {
-            get;
-            set;
-        }
+        Color FillColor { get; set; }
 
         /// <summary>
         /// Gets or sets the brush used to fill the shape.
         /// </summary>
-        Brush FillBrush
-        {
-            get;
-            set;
-        }
+        Brush FillBrush { get; set; }
 
         /// <summary>
         /// Gets or sets whether or not to use a texture when drawing these lines.  By default, this either
         /// checks the DefaultLineProvider or else it is false.
         /// </summary>
-        bool IsTextured
-        {
-            get;
-
-            set;
-        }
+        bool IsTextured { get; set; }
 
         /// <summary>
         /// Gets or sets a string name to help identify this Symbolizer
         /// </summary>
-        string Name
-        {
-            get;
-            set;
-        }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a float value from 0 to 1 where 0 is completely transparent
@@ -69,49 +52,29 @@ namespace DotSpatial.Symbology
         /// without affecting the others.  The final transparency of the feature will
         /// be that alpha multiplied by this value and rounded to the nearest byte.
         /// </summary>
-        float Opacity
-        {
-            get;
-            set;
-        }
+        float Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets the string TextureFile to define the fill texture
         /// </summary>
-        string TextureFile
-        {
-            get;
-            set;
-        }
+        string TextureFile { get; set; }
 
         /// <summary>
         /// Gets or sets the actual bitmap to use for the texture.
         /// </summary>
-        Bitmap TextureImage
-        {
-            get;
-            set;
-        }
+        Bitmap TextureImage { get; set; }
 
         /// <summary>
         /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
         /// properties like width or size use pixels or world coordinates.  If pixels are
         /// specified, a back transform is used to approximate pixel sizes.
         /// </summary>
-        ScaleMode ScaleMode
-        {
-            get;
-            set;
-        }
+        ScaleMode ScaleMode { get; set; }
 
         /// <summary>
         /// Gets or sets the smoothing mode to use that controls advanced features like
         /// anti-aliasing.  By default this is set to antialias.
         /// </summary>
-        SmoothingMode Smoothing
-        {
-            get;
-            set;
-        }
+        SmoothingMode Smoothing { get; set; }
     }
 }

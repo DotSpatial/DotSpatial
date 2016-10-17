@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Reproject
-    /// </summary>
     public static class Reproject
     {
         #region Private Variables

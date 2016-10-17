@@ -25,9 +25,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureScheme
-    /// </summary>
     public abstract class FeatureScheme : Scheme, IFeatureScheme
     {
         #region IFeatureScheme Members

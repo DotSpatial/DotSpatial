@@ -17,9 +17,6 @@ using DotSpatial.Symbology;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IGeoLayerCollection
-    /// </summary>
     public interface IMapLayerCollection : ILayerEventList<IMapLayer>
     {
         #region Events
@@ -88,39 +85,23 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the map frame that this belongs to.  These are designed to only work with one map frame at a time.
         /// </summary>
-        IMapFrame MapFrame
-        {
-            get;
-            set;
-        }
+        IMapFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the ParentGroup for this layer collection, even if that parent group
         /// is not actually a map frame.
         /// </summary>
-        IMapGroup ParentGroup
-        {
-            get;
-            set;
-        }
+        IMapGroup ParentGroup { get; set; }
 
         /// <summary>
         /// Gets or sets the progress handler to report progress for time consuming actions.
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the currently active layer.
         /// </summary>
-        IMapLayer SelectedLayer
-        {
-            get;
-            set;
-        }
+        IMapLayer SelectedLayer { get; set; }
 
         /// <summary>
         /// Given a base name, this increments a number for appending

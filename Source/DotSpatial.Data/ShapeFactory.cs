@@ -13,9 +13,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ShapeFactory
-    /// </summary>
     public class ShapeFactory
     {
         private static ShapeFactory _instance;

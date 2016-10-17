@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IChangeItem
-    /// </summary>
     public interface IChangeItem
     {
         /// <summary>

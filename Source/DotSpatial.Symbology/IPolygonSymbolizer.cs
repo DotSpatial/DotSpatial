@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPolygonSymbolizer
-    /// </summary>
     public interface IPolygonSymbolizer : IFeatureSymbolizer
     {
         #region Methods
@@ -54,20 +51,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the method for drawing the lines that make up the borders of this polygon
         /// </summary>
-        ILineSymbolizer OutlineSymbolizer
-        {
-            get;
-            set;
-        }
+        ILineSymbolizer OutlineSymbolizer { get; set; }
 
         /// <summary>
         /// gets or sets the list of patterns to use for filling polygons.
         /// </summary>
-        IList<IPattern> Patterns
-        {
-            get;
-            set;
-        }
+        IList<IPattern> Patterns { get; set; }
 
         #endregion
     }

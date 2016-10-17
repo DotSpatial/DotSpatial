@@ -15,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILabelLayer
-    /// </summary>
     public interface ILabelLayer : ILayer
     {
         #region Methods
@@ -55,48 +52,28 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the featureSet that defines the text for the labels on this layer.
         /// </summary>
-        IFeatureSet FeatureSet
-        {
-            get;
-            set;
-        }
+        IFeatureSet FeatureSet { get; set; }
 
         /// <summary>
         /// Gets or sets an optional layer to link this layer to.  If this is specified, then drawing will
         /// be associated with this layer.
         /// </summary>
-        IFeatureLayer FeatureLayer
-        {
-            get;
-            set;
-        }
+        IFeatureLayer FeatureLayer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbology
         /// </summary>
-        ILabelScheme Symbology
-        {
-            get;
-            set;
-        }
+        ILabelScheme Symbology { get; set; }
 
         /// <summary>
         /// Gets or sets the selection symbolizer from the first TextSymbol group.
         /// </summary>
-        ILabelSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        ILabelSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the regular symbolizer from the first TextSymbol group.
         /// </summary>
-        ILabelSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        ILabelSymbolizer Symbolizer { get; set; }
 
         #endregion
     }

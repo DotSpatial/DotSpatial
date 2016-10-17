@@ -15,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FeatureSchemeCategoryCollection
-    /// </summary>
     public class FeatureCategoryCollection : ChangeEventList<IFeatureCategory>
     {
         private IFeatureScheme _scheme;

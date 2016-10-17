@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LabelDrawState
-    /// </summary>
     public class LabelDrawState
     {
         /// <summary>

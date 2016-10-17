@@ -15,18 +15,12 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IIndexSelection
-    /// </summary>
     public interface IIndexSelection : ISelection, ICollection<int>
     {
         /// <summary>
         /// Gets the integer count of the members in the collection
         /// </summary>
-        new int Count
-        {
-            get;
-        }
+        new int Count { get; }
 
         /// <summary>
         /// Clears the selection

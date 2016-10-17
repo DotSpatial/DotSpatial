@@ -22,9 +22,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IndexSelection
-    /// </summary>
     public class IndexSelection : Changeable, IIndexSelection
     {
         #region IIndexSelection Members

@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// KnownCoordinateSystems
-    /// </summary>
     public static class KnownCoordinateSystems
     {
         /// <summary>

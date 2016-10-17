@@ -21,9 +21,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// IMapFrame
-    /// </summary>
     public interface IMapFrame : IFrame, IMapGroup, IProj
     {
         #region Events
@@ -193,57 +190,34 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the buffered image.  Mess with this at your own risk.
         /// </summary>
-        Image BufferImage
-        {
-            get;
-            set;
-        }
+        Image BufferImage { get; set; }
 
         /// <summary>
         /// Gets a rectangle indicating the size of the map frame image
         /// </summary>
-        Rectangle ClientRectangle
-        {
-            get;
-        }
+        Rectangle ClientRectangle { get; }
 
         /// <summary>
         /// Gets or sets the integer that specifies the chunk that is actively being drawn
         /// </summary>
-        int CurrentChunk
-        {
-            get;
-            set;
-        }
+        int CurrentChunk { get; set; }
 
         /// <summary>
         /// Gets or sets whether this map frame should define its buffer
         /// region to be the same size as the client, or three times larger.
         /// </summary>
-        bool ExtendBuffer
-        {
-            get;
-            set;
-        }
+        bool ExtendBuffer { get; set; }
 
         /// <summary>
         /// Gets or sets whether this map frame is currently in the process of redrawing the
         /// stencils after a pan operation.  Drawing should not take place if this is true.
         /// </summary>
-        bool IsPanning
-        {
-            get;
-            set;
-        }
+        bool IsPanning { get; set; }
 
         /// <summary>
         /// Gets or sets the parent control for this map frame.
         /// </summary>
-        Control Parent
-        {
-            get;
-            set;
-        }
+        Control Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the PromptMode that determines how to warn users when attempting to add a layer with
@@ -260,20 +234,12 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the layers
         /// </summary>
-        new IMapLayerCollection Layers
-        {
-            get;
-            set;
-        }
+        new IMapLayerCollection Layers { get; set; }
 
         /// <summary>
         /// gets or sets the rectangle in pixel coordinates that will be drawn to the entire screen.
         /// </summary>
-        Rectangle View
-        {
-            get;
-            set;
-        }
+        Rectangle View { get; set; }
 
         ///// <summary>
         ///// This instructs the MapFrame to abort any current efforts to update the back-buffer so that

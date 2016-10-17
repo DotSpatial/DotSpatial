@@ -16,9 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IStroke
-    /// </summary>
     public interface IStroke : IDescriptor
     {
         #region Methods
@@ -61,10 +58,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the stroke style for this stroke
         /// </summary>
-        StrokeStyle StrokeStyle
-        {
-            get;
-        }
+        StrokeStyle StrokeStyle { get; }
 
         #endregion
     }

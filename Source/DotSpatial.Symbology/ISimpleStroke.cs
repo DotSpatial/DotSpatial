@@ -16,9 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ISimpleStroke
-    /// </summary>
     public interface ISimpleStroke : IStroke
     {
         #region Properties
@@ -26,40 +23,24 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the color for this drawing layer
         /// </summary>
-        Color Color
-        {
-            get;
-            set;
-        }
+        Color Color { get; set; }
 
         /// <summary>
         /// Gets or sets the DashStyle for this stroke.  (Custom is just solid for simple strokes)
         /// </summary>
-        DashStyle DashStyle
-        {
-            get;
-            set;
-        }
+        DashStyle DashStyle { get; set; }
 
         /// <summary>
         /// gets or sets the opacity of the color.  1 is fully opaque while 0 is fully transparent.
         /// </summary>
-        float Opacity
-        {
-            get;
-            set;
-        }
+        float Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets the width of this line.  In geographic ScaleMode,
         /// this width is the actual geographic width of the line.  In Symbolic scale mode
         /// this is the width of the line in pixels.
         /// </summary>
-        double Width
-        {
-            get;
-            set;
-        }
+        double Width { get; set; }
 
         #endregion
     }

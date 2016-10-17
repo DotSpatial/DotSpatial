@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// FastLabelDrawnState
-    /// </summary>
     public class FastLabelDrawnState
     {
         /// <summary>

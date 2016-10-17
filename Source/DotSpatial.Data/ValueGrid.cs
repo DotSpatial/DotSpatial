@@ -168,8 +168,5 @@ namespace DotSpatial.Data
         }
 
         #endregion
-
-        // float to double
-        //public abstract double ToDouble(T val);
     }
 }

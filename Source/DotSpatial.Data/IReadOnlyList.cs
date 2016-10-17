@@ -15,9 +15,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IReadOnlyList
-    /// </summary>
     public interface IReadOnlyList<T> : IEnumerable<T>
     {
         #region Methods

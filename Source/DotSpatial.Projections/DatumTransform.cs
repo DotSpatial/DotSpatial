@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// IDatumTransform
-    /// </summary>
     [Serializable]
     public class DatumTransform : IDatumTransform
     {

@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IDrawnFeature
-    /// </summary>
     public interface IDrawnState
     {
         #region Methods
@@ -27,38 +24,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the integer chunk that this item belongs to.
         /// </summary>
-        int Chunk
-        {
-            get;
-            set;
-        }
+        int Chunk { get; set; }
 
         /// <summary>
         /// Gets or sets the scheme category
         /// </summary>
-        IFeatureCategory SchemeCategory
-        {
-            get;
-            set;
-        }
+        IFeatureCategory SchemeCategory { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean, true if this feature is currently selected
         /// </summary>
-        bool IsSelected
-        {
-            get;
-            set;
-        }
+        bool IsSelected { get; set; }
 
         /// <summary>
         /// Gets or sets whether this feature is currently being drawn.
         /// </summary>
-        bool IsVisible
-        {
-            get;
-            set;
-        }
+        bool IsVisible { get; set; }
 
         #endregion
     }

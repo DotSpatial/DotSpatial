@@ -34,10 +34,6 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether dynamic visibility should be enabled.
         /// </summary>
-        bool UseDynamicVisibility
-        {
-            get;
-            set;
-        }
+        bool UseDynamicVisibility { get; set; }
     }
 }

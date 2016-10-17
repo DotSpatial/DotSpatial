@@ -56,18 +56,12 @@ namespace DotSpatial.Symbology
         /// Obtains an Envelope in world coordinates that contains this object
         /// </summary>
         /// <returns></returns>
-        Extent Extent
-        {
-            get;
-        }
+        Extent Extent { get; }
 
         /// <summary>
         /// Gets whether or not the unmanaged drawing structures have been created for this item
         /// </summary>
-        bool IsInitialized
-        {
-            get;
-        }
+        bool IsInitialized { get; }
 
         /// <summary>
         /// If this is false, then the drawing function will not render anything.
@@ -75,11 +69,7 @@ namespace DotSpatial.Symbology
         /// as part of the drawing methods and will also abort the drawing methods of any
         /// sub-members to this IRenderable.
         /// </summary>
-        bool IsVisible
-        {
-            get;
-            set;
-        }
+        bool IsVisible { get; set; }
 
         #endregion
     }

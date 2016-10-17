@@ -16,9 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IHatchPattern
-    /// </summary>
     public interface IHatchPattern : IPattern
     {
         #region Properties
@@ -26,47 +23,27 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the hatch style
         /// </summary>
-        HatchStyle HatchStyle
-        {
-            get;
-            set;
-        }
+        HatchStyle HatchStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the fore color of the hatch pattern
         /// </summary>
-        Color ForeColor
-        {
-            get;
-            set;
-        }
+        Color ForeColor { get; set; }
 
         /// <summary>
         /// Sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
         /// </summary>
-        float ForeColorOpacity
-        {
-            get;
-            set;
-        }
+        float ForeColorOpacity { get; set; }
 
         /// <summary>
         /// Gets or sets the background color of the hatch pattern
         /// </summary>
-        Color BackColor
-        {
-            get;
-            set;
-        }
+        Color BackColor { get; set; }
 
         /// <summary>
         /// Sets the opacity of this simple pattern by modifying the alpha channel of the fill color.
         /// </summary>
-        float BackColorOpacity
-        {
-            get;
-            set;
-        }
+        float BackColorOpacity { get; set; }
 
         #endregion
     }

@@ -16,9 +16,6 @@ using System.Xml.Serialization;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PyramidImageHeader
-    /// </summary>
     public class PyramidImageHeader
     {
         #region Private Variables

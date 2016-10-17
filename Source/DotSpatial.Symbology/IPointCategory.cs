@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPointSchemeCategory
-    /// </summary>
     public interface IPointCategory : IFeatureCategory
     {
         #region Methods
@@ -27,20 +24,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer for this category
         /// </summary>
-        new IPointSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        new IPointSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbolizer to use to draw selected features from this category.
         /// </summary>
-        new IPointSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        new IPointSymbolizer SelectionSymbolizer { get; set; }
 
         #endregion
     }

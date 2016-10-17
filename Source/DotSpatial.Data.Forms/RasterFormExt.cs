@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// Extension method for raster
+    /// Extension methods for <see cref="Raster"/>
     /// </summary>
     public static class RasterExt
     {

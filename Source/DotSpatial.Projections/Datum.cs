@@ -20,9 +20,6 @@ using System.Linq;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Datum
-    /// </summary>
     public class Datum : ProjDescriptor, IEsriString
     {
         #region Private Variables

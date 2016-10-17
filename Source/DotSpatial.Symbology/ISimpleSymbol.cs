@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ISimpleSymbol
-    /// </summary>
     public interface ISimpleSymbol : IOutlinedSymbol, IColorable
     {
         #region Methods
@@ -27,11 +24,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the PointTypes enumeration that describes how to draw the simple symbol.
         /// </summary>
-        PointShape PointShape
-        {
-            get;
-            set;
-        }
+        PointShape PointShape { get; set; }
 
         #endregion
     }

@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// AlbersConicEqualArea
-    /// </summary>
     public class AlbersConicEqualArea : AlbersEqualArea
     {
         #region Constructors

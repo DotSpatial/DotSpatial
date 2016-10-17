@@ -16,9 +16,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILayerProvider
-    /// </summary>
     public interface ILayerProvider
     {
         #region Methods
@@ -46,36 +43,24 @@ namespace DotSpatial.Symbology
         /// by the | symbol.  Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided
         /// on this object.
         /// </summary>
-        string DialogReadFilter
-        {
-            get;
-        }
+        string DialogReadFilter { get; }
 
         /// <summary>
         /// Gets a dialog filter that lists each of the file type descriptions and extensions for a Save File Dialog.
         /// Each will appear in DotSpatial's open file dialog filter, preceeded by the name provided on this object.
         /// </summary>
-        string DialogWriteFilter
-        {
-            get;
-        }
+        string DialogWriteFilter { get; }
 
         /// <summary>
         /// Gets a prefereably short name that identifies this data provider.  Example might be GDAL.
         /// This will be prepended to each of the DialogReadFilter members from this plugin.
         /// </summary>
-        string Name
-        {
-            get;
-        }
+        string Name { get; }
 
         /// <summary>
         /// This provides a basic description of what your provider does.
         /// </summary>
-        string Description
-        {
-            get;
-        }
+        string Description { get; }
 
         #endregion
     }

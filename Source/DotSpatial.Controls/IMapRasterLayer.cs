@@ -20,9 +20,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// GeoImageLayer
-    /// </summary>
     public interface IMapRasterLayer : IRasterLayer, IMapLayer
     {
         #region Events
@@ -67,50 +64,30 @@ namespace DotSpatial.Controls
         /// <summary>
         /// Gets or sets the back buffer that will be drawn to as part of the initialization process.
         /// </summary>
-        Image BackBuffer
-        {
-            get;
-            set;
-        }
+        Image BackBuffer { get; set; }
 
         /// <summary>
         /// Gets the current buffer.
         /// </summary>
-        Image Buffer
-        {
-            get;
-            set;
-        }
+        Image Buffer { get; set; }
 
         /// <summary>
         /// Gets or sets the geographic region represented by the buffer
         /// Calling Initialize will set this automatically.
         /// </summary>
-        Envelope BufferEnvelope
-        {
-            get;
-            set;
-        }
+        Envelope BufferEnvelope { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle in pixels to use as the back buffer.
         /// Calling Initialize will set this automatically.
         /// </summary>
-        Rectangle BufferRectangle
-        {
-            get;
-            set;
-        }
+        Rectangle BufferRectangle { get; set; }
 
         /// <summary>
         /// Gets or sets whether the image layer is initialized
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        new bool IsInitialized
-        {
-            get;
-            set;
-        }
+        new bool IsInitialized { get; set; }
 
         #endregion
     }

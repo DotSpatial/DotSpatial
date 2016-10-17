@@ -22,9 +22,6 @@ using SelectionMode = DotSpatial.Symbology.SelectionMode;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// SelectTool
-    /// </summary>
     public class MapFunctionSelect : MapFunction
     {
         #region Private Variables

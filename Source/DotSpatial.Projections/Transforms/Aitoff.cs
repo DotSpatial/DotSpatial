@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// Aitoff
-    /// </summary>
     public class Aitoff : Transform
     {
         #region Constructors

@@ -20,9 +20,6 @@ using DotSpatial.Projections.ProjectedCategories;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Projected
-    /// </summary>
     public class ProjectedSystems : ICoordinateSystemCategoryHolder
     {
         #region Fields

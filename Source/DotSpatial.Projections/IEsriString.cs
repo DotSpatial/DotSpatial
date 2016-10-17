@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// EsriString
-    /// </summary>
     public interface IEsriString
     {
         #region Methods

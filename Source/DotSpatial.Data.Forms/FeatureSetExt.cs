@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace DotSpatial.Data.Forms
 {
     /// <summary>
-    /// extension method for feature set
+    /// Extension methods for <see cref="FeatureSet"/>
     /// </summary>
     public static class FeatureSetExt
     {

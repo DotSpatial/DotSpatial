@@ -17,9 +17,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IDrawingFilter
-    /// </summary>
     public interface IDrawingFilter : IEnumerable<IFeature>, ICloneable
     {
         /// <summary>
@@ -62,31 +59,19 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the scheme category to use
         /// </summary>
-        IFeatureCategory Category
-        {
-            get;
-            set;
-        }
+        IFeatureCategory Category { get; set; }
 
         /// <summary>
         /// Gets the integer chunk that the filter should use
         /// </summary>
-        int Chunk
-        {
-            get;
-            set;
-        }
+        int Chunk { get; set; }
 
         /// <summary>
         /// Gets or sets the integer size of each chunk.  Setting this to
         /// a new value will cycle through and update the chunk on all
         /// the features.
         /// </summary>
-        int ChunkSize
-        {
-            get;
-            set;
-        }
+        int ChunkSize { get; set; }
 
         /// <summary>
         /// If the drawing state for any features has changed, or else if
@@ -94,54 +79,35 @@ namespace DotSpatial.Symbology
         /// the filter members and cache a new count.  If nothing has
         /// changed, then this will simply return the cached value.
         /// </summary>
-        int Count
-        {
-            get;
-        }
+        int Count { get; }
 
         /// <summary>
         /// Gets the default category for the scheme.
         /// </summary>
-        IFeatureCategory DefaultCategory
-        {
-            get;
-        }
+        IFeatureCategory DefaultCategory { get; }
 
         /// <summary>
         /// Gets the dictionary of drawn states that this drawing filter uses.
         /// </summary>
-        IDictionary<IFeature, IDrawnState> DrawnStates
-        {
-            get;
-        }
+        IDictionary<IFeature, IDrawnState> DrawnStates { get; }
 
         /// <summary>
         /// Gets the underlying list of features that this drawing filter
         /// is ultimately based upon.
         /// </summary>
-        IFeatureList FeatureList
-        {
-            get;
-        }
+        IFeatureList FeatureList { get; }
 
         /// <summary>
         /// If chunks are being used, then this indicates the total count of chunks.
         /// Otherwise, this returns 1 as everything is effectively in one chunk.
         /// </summary>
-        int NumChunks
-        {
-            get;
-        }
+        int NumChunks { get; }
 
         /// <summary>
         /// If UseSelection is true, this will get or set the boolean selection state
         /// that will be used to select values.
         /// </summary>
-        bool Selected
-        {
-            get;
-            set;
-        }
+        bool Selected { get; set; }
 
         /// <summary>
         /// This uses the feature as the key and attempts to find the specified drawn state
@@ -153,11 +119,7 @@ namespace DotSpatial.Symbology
         /// The disadvantage is that duplicate features in the same featureset
         /// will cause an exception.</remarks>
         /// <returns></returns>
-        IDrawnState this[IFeature key]
-        {
-            get;
-            set;
-        }
+        IDrawnState this[IFeature key] { get; set; }
 
         /// <summary>
         /// This is less direct as it requires searching two indices rather than one, but
@@ -165,56 +127,32 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="index">The integer index in the underlying featureSet.</param>
         /// <returns>The current IDrawnState for the current feature.</returns>
-        IDrawnState this[int index]
-        {
-            get;
-            set;
-        }
+        IDrawnState this[int index] { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether we should use the chunk
         /// </summary>
-        bool UseChunks
-        {
-            get;
-            set;
-        }
+        bool UseChunks { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether this filter should use the Selected
         /// </summary>
-        bool UseSelection
-        {
-            get;
-            set;
-        }
+        bool UseSelection { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether the filter should subdivide based on category.
         /// </summary>
-        bool UseCategory
-        {
-            get;
-            set;
-        }
+        bool UseCategory { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether the filter should consider the IsVisible property
         /// </summary>
-        bool UseVisibility
-        {
-            get;
-            set;
-        }
+        bool UseVisibility { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that specifies whether to return visible, or hidden features if UseVisibility is true.
         /// </summary>
-        bool Visible
-        {
-            get;
-            set;
-        }
+        bool Visible { get; set; }
 
         #endregion
     }

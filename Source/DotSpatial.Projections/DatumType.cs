@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// DatumTypes
-    /// </summary>
     public enum DatumType
     {
         /// <summary>

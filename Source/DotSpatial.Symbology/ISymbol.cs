@@ -15,9 +15,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ISymbol
-    /// </summary>
     public interface ISymbol : IDescriptor
     {
         #region Methods
@@ -77,37 +74,22 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the double precision floating point that controls the angle in degrees counter clockwise.
         /// </summary>
-        double Angle
-        {
-            get;
-            set;
-        }
+        double Angle { get; set; }
 
         /// <summary>
         /// Gets or sets the 2D offset for this particular symbol
         /// </summary>
-        Position2D Offset
-        {
-            get;
-            set;
-        }
+        Position2D Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the size
         /// </summary>
-        Size2D Size
-        {
-            get;
-            set;
-        }
+        Size2D Size { get; set; }
 
         /// <summary>
         /// Gets the symbol type for this symbol.
         /// </summary>
-        SymbolType SymbolType
-        {
-            get;
-        }
+        SymbolType SymbolType { get; }
 
         #endregion
     }

@@ -14,9 +14,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IFeatureProvider
-    /// </summary>
     public interface IVectorProvider : IDataProvider
     {
         /// <summary>

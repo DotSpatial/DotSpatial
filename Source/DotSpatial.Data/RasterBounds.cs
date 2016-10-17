@@ -17,9 +17,6 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// RasterBounds
-    /// </summary>
     public class RasterBounds : IRasterBounds
     {
         #region Private Variables

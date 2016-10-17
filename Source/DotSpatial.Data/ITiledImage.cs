@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// ITiledImage
-    /// </summary>
     public interface ITiledImage : IImageSet
     {
         #region Properties

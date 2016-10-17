@@ -15,9 +15,6 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Controls
 {
-    /// <summary>
-    /// ItemMouseEventArgs
-    /// </summary>
     public class ItemMouseEventArgs : MouseEventArgs
     {
         #region Private Variables
@@ -37,7 +34,8 @@ namespace DotSpatial.Controls
         /// <param name="inY">The Y coordinate</param>
         /// <param name="inDelta">The delta of the mouse wheel</param>
         /// <param name="inItemBox">A LegendBox for comparision</param>
-        public ItemMouseEventArgs(MouseButtons inButton, int inClicks, int inX, int inY, int inDelta, LegendBox inItemBox)
+        public ItemMouseEventArgs(MouseButtons inButton, int inClicks, int inX, int inY, int inDelta,
+            LegendBox inItemBox)
             : base(inButton, inClicks, inX, inY, inDelta)
         {
             _box = inItemBox;

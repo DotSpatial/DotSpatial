@@ -15,9 +15,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureSymbolizer
-    /// </summary>
     public interface IFeatureSymbolizer : ILegendItem
     {
         #region Methods
@@ -36,41 +33,25 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether or not this specific feature should be drawn.
         /// </summary>
-        bool IsVisible
-        {
-            get;
-            set;
-        }
+        bool IsVisible { get; set; }
 
         /// <summary>
         /// Gets or Sets a ScaleModes enumeration that determines whether non-coordinate drawing
         /// properties like width or size use pixels or world coordinates.  If pixels are
         /// specified, a back transform is used to approximate pixel sizes.
         /// </summary>
-        ScaleMode ScaleMode
-        {
-            get;
-            set;
-        }
+        ScaleMode ScaleMode { get; set; }
 
         /// <summary>
         /// Gets or sets the smoothing mode to use that controls advanced features like
         /// anti-aliasing.  By default this is set to antialias.
         /// </summary>
-        bool Smoothing
-        {
-            get;
-            set;
-        }
+        bool Smoothing { get; set; }
 
         /// <summary>
         /// Gets or sets the graphics unit to work with.
         /// </summary>
-        GraphicsUnit Units
-        {
-            get;
-            set;
-        }
+        GraphicsUnit Units { get; set; }
 
         /// <summary>
         /// Sets the outline, assuming that the symbolizer either supports outlines, or

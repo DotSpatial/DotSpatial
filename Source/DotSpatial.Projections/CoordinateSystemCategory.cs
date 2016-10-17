@@ -18,9 +18,6 @@ using System.Linq;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// CoordinateSystem
-    /// </summary>
     public class CoordinateSystemCategory
     {
         #region Private Variables

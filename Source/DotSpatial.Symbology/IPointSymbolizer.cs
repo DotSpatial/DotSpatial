@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPointSymbolizer
-    /// </summary>
     public interface IPointSymbolizer : IFeatureSymbolizer
     {
         #region Methods
@@ -69,11 +66,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the list of symbols.
         /// </summary>
-        IList<ISymbol> Symbols
-        {
-            get;
-            set;
-        }
+        IList<ISymbol> Symbols { get; set; }
 
         #endregion
     }

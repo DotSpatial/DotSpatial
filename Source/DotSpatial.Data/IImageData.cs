@@ -13,9 +13,6 @@ using System.Drawing;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IImageData
-    /// </summary>
     public interface IImageData : IRasterBoundDataSet, IGetBitmap
     {
         #region Methods

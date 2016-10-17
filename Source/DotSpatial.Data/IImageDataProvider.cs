@@ -14,9 +14,6 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IImageProvider
-    /// </summary>
     public interface IImageDataProvider : IDataProvider
     {
         /// <summary>

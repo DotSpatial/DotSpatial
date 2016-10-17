@@ -16,9 +16,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// NullExceptioncs
-    /// </summary>
     public class NullException : ArgumentNullException
     {
         #region Constructors

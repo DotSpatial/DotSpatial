@@ -15,9 +15,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ITiledImageLayer
-    /// </summary>
     public interface ITiledImageLayer : ILayer
     {
         #region Methods
@@ -29,11 +26,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the TiledImage that supports the tile data for this image.
         /// </summary>
-        new ITiledImage DataSet
-        {
-            get;
-            set;
-        }
+        new ITiledImage DataSet { get; set; }
 
         #endregion
     }

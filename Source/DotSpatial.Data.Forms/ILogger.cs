@@ -27,10 +27,7 @@ namespace DotSpatial.Data.Forms
         /// <summary>
         /// Gets a string description for this logger.
         /// </summary>
-        string Description
-        {
-            get;
-        }
+        string Description { get; }
 
         /// <summary>
         /// Gets or Sets an integer key to keep track of this logger.
@@ -38,11 +35,7 @@ namespace DotSpatial.Data.Forms
         /// logger by using the key it was given.  If that key is already in use, this
         /// will be set to the next available integer.
         /// </summary>
-        int Key
-        {
-            get;
-            set;
-        }
+        int Key { get; set; }
 
         /// <summary>
         /// The Complete exception is passed here.  To get the stack

@@ -16,9 +16,6 @@ using System.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PngHeader
-    /// </summary>
     public class PngHeader
     {
         #region Private Variables

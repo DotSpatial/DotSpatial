@@ -19,9 +19,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureScheme
-    /// </summary>
     public interface IFeatureScheme : IScheme
     {
         /// <summary>
@@ -71,38 +68,24 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the dialog settings
         /// </summary>
-        new FeatureEditorSettings EditorSettings
-        {
-            get;
-            set;
-        }
+        new FeatureEditorSettings EditorSettings { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that indicates whether or not the legend should draw this item as a categorical
         /// tier in the legend.  If so, it will allow the LegendText to be visible as a kind of group for the
         /// categories.  If not, the categories will appear directly below the layer.C:\dev\Mapwindow6Dev\DotSpatial\DotSpatial\Drawing\Vectors\Points\PointCategoryCollection.cs
         /// </summary>
-        bool AppearsInLegend
-        {
-            get;
-            set;
-        }
+        bool AppearsInLegend { get; set; }
 
         /// <summary>
         /// Gets the number of categories of this scheme.
         /// </summary>
-        int NumCategories
-        {
-            get;
-        }
+        int NumCategories { get; }
 
         /// <summary>
         /// Gets or sets the UITypeEditor to use for editing this FeatureScheme
         /// </summary>
-        UITypeEditor PropertyEditor
-        {
-            get;
-        }
+        UITypeEditor PropertyEditor { get; }
 
         /// <summary>
         /// When using this scheme to define the symbology, these individual categories will be referenced in order to

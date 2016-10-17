@@ -12,9 +12,6 @@
 // ********************************************************************************************************
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// DatumTransformStage interface
-    /// </summary>
     public interface IDatumTransformStage
     {
         /// <summary>

@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PngInsuficientLengthException
-    /// </summary>
     public class PngInsuficientLengthException : ArgumentException
     {
         #region Constructors

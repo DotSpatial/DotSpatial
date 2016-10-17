@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// Cassini
-    /// </summary>
     public class Cassini : EllipticalTransform
     {
         #region Private Variables

@@ -15,10 +15,7 @@
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IRasterBounds
-    /// </summary>
-    public interface IRasterBounds// : IRectangle
+    public interface IRasterBounds
     {
         #region Methods
 

@@ -16,38 +16,23 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ILayerCollection2
-    /// </summary>
     public interface ILayerCollection : ILayerEventList<ILayer>, IDisposable, IDisposeLock
     {
         /// <summary>
         /// Gets or sets the ParentGroup for this layer collection, even if that parent group
         /// is not actually a map frame.
         /// </summary>
-        IGroup ParentGroup
-        {
-            get;
-            set;
-        }
+        IGroup ParentGroup { get; set; }
 
         /// <summary>
         /// Gets or sets the MapFrame for this layer collection.
         /// </summary>
-        IFrame MapFrame
-        {
-            get;
-            set;
-        }
+        IFrame MapFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the currently active layer.
         /// </summary>
-        ILayer SelectedLayer
-        {
-            get;
-            set;
-        }
+        ILayer SelectedLayer { get; set; }
 
         /// <summary>
         /// Given a base name, this increments a number for appending

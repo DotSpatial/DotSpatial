@@ -25,21 +25,12 @@ namespace DotSpatial.Data
         /// <param name="row">The 0 based vertical row index from the top</param>
         /// <param name="column">The 0 based horizontal column index from the left</param>
         /// <returns>An object reference to the actual value in the data member.</returns>
-        double this[int row, int column]
-        {
-            get;
-
-            set;
-        }
+        double this[int row, int column] { get; set; }
 
         /// <summary>
         /// Boolean, gets or sets the flag indicating if the values have been changed
         /// since the last time this flag was set to false.
         /// </summary>
-        bool Updated
-        {
-            get;
-            set;
-        }
+        bool Updated { get; set; }
     }
 }

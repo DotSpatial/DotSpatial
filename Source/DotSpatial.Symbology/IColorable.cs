@@ -22,20 +22,12 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the Color
         /// </summary>
-        Color Color
-        {
-            get;
-            set;
-        }
+        Color Color { get; set; }
 
         /// <summary>
         /// Gets or sets the opacity
         /// </summary>
-        float Opacity
-        {
-            get;
-            set;
-        }
+        float Opacity { get; set; }
 
         #endregion
     }

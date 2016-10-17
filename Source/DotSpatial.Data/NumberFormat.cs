@@ -13,7 +13,6 @@
 
 namespace DotSpatial.Data
 {
-    // We don't support hex or round-trip
     /// <summary>
     /// NumberFormats
     /// </summary>

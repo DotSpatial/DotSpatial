@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IChangeEvent
-    /// </summary>
     public interface ISuspendEvents : ICloneable
     {
         /// <summary>

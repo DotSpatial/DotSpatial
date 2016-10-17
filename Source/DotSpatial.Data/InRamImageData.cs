@@ -17,9 +17,6 @@ using System.Runtime.InteropServices;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// MWImageData
-    /// </summary>
     public class InRamImageData : ImageData
     {
         /// <summary>

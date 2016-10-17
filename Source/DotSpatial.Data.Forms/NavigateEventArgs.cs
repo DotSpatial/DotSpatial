@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// NavigateEventArgs
-    /// </summary>
     public class NavigateEventArgs : EventArgs
     {
         #region Private Variables

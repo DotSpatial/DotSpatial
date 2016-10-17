@@ -17,9 +17,6 @@ using System;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// ProjectionErrorCodes
-    /// </summary>
     public class ProjectionException : Exception
     {
         private readonly int _errorCode;

@@ -18,9 +18,6 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// Raster
-    /// </summary>
     public class Raster<T> : Raster where T : IEquatable<T>, IComparable<T>
     {
         #region Private Variables

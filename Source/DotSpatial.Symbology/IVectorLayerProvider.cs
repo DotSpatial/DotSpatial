@@ -17,9 +17,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureProvider
-    /// </summary>
     public interface IVectorLayerProvider : ILayerProvider
     {
         /// <summary>

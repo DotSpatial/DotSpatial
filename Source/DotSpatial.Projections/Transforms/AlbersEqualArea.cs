@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// AlbersEqualArea
-    /// </summary>
     public class AlbersEqualArea : Transform
     {
         #region Private Variables

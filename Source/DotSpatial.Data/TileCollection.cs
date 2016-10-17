@@ -17,9 +17,6 @@ using System.Collections.Generic;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// TileCollection
-    /// </summary>
     public class TileCollection : IEnumerable<IImageData>
     {
         #region Private Variables

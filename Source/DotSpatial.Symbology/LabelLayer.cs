@@ -18,9 +18,6 @@ using DotSpatial.Serialization;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// LabelLayer
-    /// </summary>
     public class LabelLayer : Layer, ILabelLayer
     {
         #region Events

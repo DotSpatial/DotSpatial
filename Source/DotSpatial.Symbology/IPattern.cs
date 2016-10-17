@@ -18,9 +18,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPattern
-    /// </summary>
     public interface IPattern : ICloneable, IChangeItem
     {
         #region Methods
@@ -68,37 +65,22 @@ namespace DotSpatial.Symbology
         /// Gets or sets the rectangular bounds.  This controls how the gradient is drawn, and
         /// should be set to the envelope of the entire layer being drawn
         /// </summary>
-        RectangleF Bounds
-        {
-            get;
-            set;
-        }
+        RectangleF Bounds { get; set; }
 
         /// <summary>
         /// Gets or sets the line symbolizer that is the outline for this pattern.
         /// </summary>
-        ILineSymbolizer Outline
-        {
-            get;
-            set;
-        }
+        ILineSymbolizer Outline { get; set; }
 
         /// <summary>
         /// Gets the pattern type of this pattern.
         /// </summary>
-        PatternType PatternType
-        {
-            get;
-        }
+        PatternType PatternType { get; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not the pattern should use the outline symbolizer.
         /// </summary>
-        bool UseOutline
-        {
-            get;
-            set;
-        }
+        bool UseOutline { get; set; }
 
         #endregion
     }

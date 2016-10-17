@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// DynamicVisibilityModes
-    /// </summary>
     public enum DynamicVisibilityMode
     {
         /// <summary>

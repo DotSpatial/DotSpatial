@@ -18,10 +18,7 @@ using GeoAPI.Geometries;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// ITextSymbolizer
-    /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof (ExpandableObjectConverter))]
     public interface ILabelSymbolizer : ICloneable
     {
         #region Properties
@@ -47,7 +44,8 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a background color should be used
         /// </summary>
-        [Category("General"), Description("Gets or sets a boolean indicating whether or not a background color should be used.")]
+        [Category("General"),
+         Description("Gets or sets a boolean indicating whether or not a background color should be used.")]
         bool BackColorEnabled { get; set; }
 
         /// <summary>
@@ -59,31 +57,37 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets a boolean indicating whether or not a border should be drawn around the label.
         /// </summary>
-        [Category("Border"), Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
+        [Category("Border"),
+         Description("Gets or sets a boolean indicating whether or not a border should be drawn around the label.")]
         bool BorderVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.
         /// </summary>
-        [Category("Shadow"), Description("Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.")]
+        [Category("Shadow"),
+         Description("Gets or sets the color of the actual shadow.  Use the alpha channel to specify opacity.")]
         Color DropShadowColor { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean that will force a shadow to be drawn if this is true.
         /// </summary>
-        [Category("Shadow"), Description("Gets or sets a boolean that will force a shadow to be drawn if this is true.")]
+        [Category("Shadow"), Description("Gets or sets a boolean that will force a shadow to be drawn if this is true.")
+        ]
         bool DropShadowEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic
         /// </summary>
-        [Category("Shadow"), Description("Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.")]
+        [Category("Shadow"),
+         Description("Gets or sets an X and Y geographic offset that is only used if ScaleMode is set to Geographic.")]
         Coordinate DropShadowGeographicOffset { get; set; }
 
         /// <summary>
         /// Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.
         /// </summary>
-        [Category("Shadow"), Description("Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.")]
+        [Category("Shadow"),
+         Description("Gets or sets an X and Y pixel offset that is used if the ScaleMode is set to Symbolic or Simple.")
+        ]
         PointF DropShadowPixelOffset { get; set; }
 
         /// <summary>
@@ -209,13 +213,15 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or set a boolean indicating whether or not <see cref="LabelAngleField"/> should be used
         /// </summary>
-        [Category("General"), Description("Gets or set a boolean indicating whether or not LabelAngleField should be used.")]
+        [Category("General"),
+         Description("Gets or set a boolean indicating whether or not LabelAngleField should be used.")]
         bool UseLabelAngleField { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean indicating whether or not the LineOrientation gets used.
         /// </summary>
-        [Category("General"), Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
+        [Category("General"),
+         Description("Gets or sets a boolean indicating whether or not LineOrientation should be used.")]
         bool UseLineOrientation { get; set; }
 
         #endregion

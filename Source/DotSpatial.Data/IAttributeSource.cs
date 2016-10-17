@@ -16,9 +16,6 @@ using System.Data;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// IDataPageRetriever
-    /// </summary>
     public interface IAttributeSource
     {
         /// <summary>

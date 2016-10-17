@@ -21,9 +21,6 @@ using DotSpatial.Projections.GeographicCategories;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// GeographicSystems
-    /// </summary>
     public class GeographicSystems : ICoordinateSystemCategoryHolder
     {
         #region Private Variables

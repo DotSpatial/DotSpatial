@@ -15,10 +15,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IPointScheme
-    /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof (ExpandableObjectConverter))]
     public interface ILineScheme : IFeatureScheme
     {
         #region Methods
@@ -30,11 +27,7 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets the list of scheme categories belonging to this scheme.
         /// </summary>
-        LineCategoryCollection Categories
-        {
-            get;
-            set;
-        }
+        LineCategoryCollection Categories { get; set; }
 
         #endregion
     }

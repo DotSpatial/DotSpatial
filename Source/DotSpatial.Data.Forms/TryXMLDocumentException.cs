@@ -15,15 +15,12 @@ using System;
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// TryXmlDocumentException
-    /// </summary>
-    public class TryXmlDocumentException : ApplicationException, ILog
+    public class TryXmlDocumentException : ApplicationException
     {
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of TryXmlDocumentException
+        /// Creates a new instance of <see cref="TryXmlDocumentException"/>
         /// </summary>
         public TryXmlDocumentException(string exceptionText)
             : base(exceptionText)

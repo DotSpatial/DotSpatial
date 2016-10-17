@@ -20,9 +20,6 @@ using DotSpatial.Projections.Reflection;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// CopyBase
-    /// </summary>
     [Serializable]
     public class ProjCopyBase : ICloneable
     {

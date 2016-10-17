@@ -20,9 +20,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// GridShiftTableFormats
-    /// </summary>
     public enum GridShiftTableFormat
     {
         /// <summary>

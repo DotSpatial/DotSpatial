@@ -15,9 +15,6 @@
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Proj4Meridians
-    /// </summary>
     public enum Proj4Meridian
     {
         /// <summary>

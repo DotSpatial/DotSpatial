@@ -18,9 +18,6 @@ using System.Globalization;
 
 namespace DotSpatial.Projections
 {
-    /// <summary>
-    /// Unit
-    /// </summary>
     public class AngularUnit : ProjDescriptor, IEsriString
     {
         #region Private Variables

@@ -18,9 +18,6 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IDataManager
-    /// </summary>
     public interface ILayerManager
     {
         #region Events
@@ -132,7 +129,7 @@ namespace DotSpatial.Symbology
         /// <param name="options">The options to be used.</param>
         /// <returns>An IRaster</returns>
         IRasterLayer CreateRasterLayer(string name, string driverCode, int xSize, int ySize, int numBands, Type dataType,
-                                       string[] options);
+            string[] options);
 
         #endregion
 
@@ -171,94 +168,54 @@ namespace DotSpatial.Symbology
         /// map frame.  This list on the DefaultLayerManager is what is used to create the
         /// list that populates dropdowns that can take a Layer as a parameter.
         /// </summary>
-        IList<ILayer> ActiveProjectLayers
-        {
-            get;
-            set;
-        }
+        IList<ILayer> ActiveProjectLayers { get; set; }
 
         /// <summary>
         /// Gets or sets the list of IDataProviders that should be used in the project.
         /// </summary>
-        List<ILayerProvider> LayerProviders
-        {
-            get;
-            set;
-        }
+        List<ILayerProvider> LayerProviders { get; set; }
 
         /// <summary>
         /// Gets or sets the path (either as a full path or as a path relative to
         /// the DotSpatial.dll) to search for plugins that implement the IDataProvider interface.
         /// </summary>
-        List<string> LayerProviderDirectories
-        {
-            get;
-            set;
-        }
+        List<string> LayerProviderDirectories { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files.
         /// </summary>
-        string DialogReadFilter
-        {
-            get;
-            set;
-        }
+        string DialogReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving data files.
         /// </summary>
-        string DialogWriteFilter
-        {
-            get;
-            set;
-        }
+        string DialogWriteFilter { get; set; }
 
         /// <summary>
         /// Sets the default condition for how this data manager should try to load layers.
         /// This will be overridden if the inRam property is specified as a parameter.
         /// </summary>
-        bool LoadInRam
-        {
-            get;
-            set;
-        }
+        bool LoadInRam { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening data files that are specifically raster formats.
         /// </summary>
-        string RasterReadFilter
-        {
-            get;
-            set;
-        }
+        string RasterReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving raster files.
         /// </summary>
-        string RasterWriteFilter
-        {
-            get;
-            set;
-        }
+        string RasterWriteFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog read filter to use for opening vector files.
         /// </summary>
-        string VectorReadFilter
-        {
-            get;
-            set;
-        }
+        string VectorReadFilter { get; set; }
 
         /// <summary>
         /// Gets or sets the dialog write filter to use for saving vector files.
         /// </summary>
-        string VectorWriteFilter
-        {
-            get;
-            set;
-        }
+        string VectorWriteFilter { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary of IDataProviders keyed by the extension.  The
@@ -266,21 +223,13 @@ namespace DotSpatial.Symbology
         /// fails, then it will check the list of dataProviders, and finally, if that fails,
         /// it will check the plugin Data Providers in directories.
         /// </summary>
-        Dictionary<string, ILayerProvider> PreferredProviders
-        {
-            get;
-            set;
-        }
+        Dictionary<string, ILayerProvider> PreferredProviders { get; set; }
 
         /// <summary>
         /// Gets or sets a progress handler for any open operations that are intiated by this
         /// DataManager.
         /// </summary>
-        IProgressHandler ProgressHandler
-        {
-            get;
-            set;
-        }
+        IProgressHandler ProgressHandler { get; set; }
 
         #endregion
     }

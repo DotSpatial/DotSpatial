@@ -21,9 +21,6 @@ using System;
 
 namespace DotSpatial.Projections.Transforms
 {
-    /// <summary>
-    /// CrasterParabolic
-    /// </summary>
     public class CrasterParabolic : Transform
     {
         #region Private Variables

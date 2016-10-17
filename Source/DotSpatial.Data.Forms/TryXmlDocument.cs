@@ -17,9 +17,6 @@ using System.Xml;
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// TryXmlDocument
-    /// </summary>
     public class TryXmlDocument
     {
         #region Private Variables

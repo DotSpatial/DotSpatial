@@ -15,9 +15,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IColorCategory
-    /// </summary>
     public interface IColorCategory : ICategory
     {
         #region Methods
@@ -38,30 +35,19 @@ namespace DotSpatial.Symbology
         /// Gets or sets how the color changes are distributed across the
         /// BiValued range.  If IsBiValue is false, this does nothing.
         /// </summary>
-        GradientModel GradientModel
-        {
-            get;
-            set;
-        }
+        GradientModel GradientModel { get; set; }
 
         /// <summary>
         /// Gets or sets the second of two colors to be used.
         /// This is only used for BiValued breaks.
         /// </summary>
-        Color HighColor
-        {
-            get;
-            set;
-        }
+        Color HighColor { get; set; }
 
         /// <summary>
         /// This not only indicates that there are two values,
         /// but that the values are also different from one another.
         /// </summary>
-        bool IsBiValue
-        {
-            get;
-        }
+        bool IsBiValue { get; }
 
         /// <summary>
         /// Gets or sets the color to be used for this break.  For
@@ -69,11 +55,7 @@ namespace DotSpatial.Symbology
         /// this is higher than the high value, both are set to this.
         /// If this equals the high value, IsBiValue will be false.
         /// </summary>
-        Color LowColor
-        {
-            get;
-            set;
-        }
+        Color LowColor { get; set; }
 
         #endregion
     }

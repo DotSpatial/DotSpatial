@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// GradientTypes
-    /// </summary>
     public enum GradientType
     {
         /// <summary>

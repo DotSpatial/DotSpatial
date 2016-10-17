@@ -16,9 +16,6 @@ using System.Drawing;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFeatureCategory
-    /// </summary>
     public interface IFeatureCategory : ICategory
     {
         /// <summary>
@@ -66,29 +63,17 @@ namespace DotSpatial.Symbology
         /// <summary>
         /// Gets or sets the symbolizer used for this category.
         /// </summary>
-        IFeatureSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        IFeatureSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the symbolizer used for this category
         /// </summary>
-        IFeatureSymbolizer SelectionSymbolizer
-        {
-            get;
-            set;
-        }
+        IFeatureSymbolizer SelectionSymbolizer { get; set; }
 
         /// <summary>
         /// Gets or set the filter expression that is used to add members to generate a category based on this scheme.
         /// </summary>
-        string FilterExpression
-        {
-            get;
-            set;
-        }
+        string FilterExpression { get; set; }
 
         #endregion
     }

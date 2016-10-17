@@ -13,9 +13,6 @@
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// ItemTypes
-    /// </summary>
     public enum ItemType
     {
         /// <summary>

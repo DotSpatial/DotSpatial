@@ -18,9 +18,6 @@ using NetTopologySuite.IO;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// WKBPointReader
-    /// </summary>
     public static class WKBFeatureReader
     {
         private static ByteOrder _endian;

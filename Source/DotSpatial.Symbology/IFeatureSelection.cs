@@ -16,26 +16,17 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IFilterCollection
-    /// </summary>
     public interface IFeatureSelection : ICollection<IFeature>, ISelection
     {
         /// <summary>
         /// Gets the integer count of the members in the collection
         /// </summary>
-        new int Count
-        {
-            get;
-        }
+        new int Count { get; }
 
         /// <summary>
         /// Gets the drawing filter used by this collection.
         /// </summary>
-        IDrawingFilter Filter
-        {
-            get;
-        }
+        IDrawingFilter Filter { get; }
 
         /// <summary>
         /// Clears the selection

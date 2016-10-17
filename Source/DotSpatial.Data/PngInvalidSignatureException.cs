@@ -15,9 +15,6 @@ using System;
 
 namespace DotSpatial.Data
 {
-    /// <summary>
-    /// PngInvalidSignatureException
-    /// </summary>
     public class PngInvalidSignatureException : ApplicationException
     {
         #region Constructors

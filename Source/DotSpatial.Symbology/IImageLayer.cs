@@ -15,37 +15,22 @@ using DotSpatial.Data;
 
 namespace DotSpatial.Symbology
 {
-    /// <summary>
-    /// IImageLayer
-    /// </summary>
     public interface IImageLayer : ILayer
     {
         /// <summary>
         /// Gets or sets a class that has some basic parameters that control how the image layer
         /// is drawn.
         /// </summary>
-        IImageSymbolizer Symbolizer
-        {
-            get;
-            set;
-        }
+        IImageSymbolizer Symbolizer { get; set; }
 
         /// <summary>
         /// Gets or sets the dataset specifically as an IImageData object
         /// </summary>
-        new IImageData DataSet
-        {
-            get;
-            set;
-        }
+        new IImageData DataSet { get; set; }
 
         /// <summary>
         /// Gets or sets the image being drawn by this layer
         /// </summary>
-        IImageData Image
-        {
-            get;
-            set;
-        }
+        IImageData Image { get; set; }
     }
 }

@@ -16,9 +16,6 @@ using System.Windows.Forms;
 
 namespace DotSpatial.Data.Forms
 {
-    /// <summary>
-    /// SelectEventArgs
-    /// </summary>
     public class SelectEventArgs : EventArgs
     {
         #region Private Variables
