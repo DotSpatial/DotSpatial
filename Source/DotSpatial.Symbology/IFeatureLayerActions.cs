@@ -54,5 +54,11 @@ namespace DotSpatial.Symbology
         /// </summary>
         /// <param name="e">Feature layer</param>
         void ExportData(IFeatureLayer e);
+
+        /// <summary>
+        /// Shows select by attributes dialog
+        /// </summary>
+        /// <param name="featureLayer">Feature layer</param>
+        void SelectByAttributes(FeatureLayer featureLayer);
     }
 }

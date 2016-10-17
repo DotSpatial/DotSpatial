@@ -1,27 +1,24 @@
-// ********************************************************************************************************
-// Product Name: DotSpatial.Symbology.Forms.dll
-// Description:  The core assembly for the DotSpatial 6.0 distribution.
-// ********************************************************************************************************
-//
-// The Original Code is DotSpatial.dll
-//
-// The Initial Developer of this Original Code is Ted Dunsford. Created 4/10/2009 9:45:17 AM
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-//
-// ********************************************************************************************************
+// *******************************************************************************************************
+// Product:  DotSpatial.Symbology.Forms.SelectByAttributes
+// Description: Window for selecting features by attributes.
+
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// *******************************************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DotSpatial.Symbology.Forms
 {
-    /// <summary>
-    /// SelectByAttributes
-    /// </summary>
     public class SelectByAttributes : Form
     {
         private Button btnApply;
@@ -35,6 +32,8 @@ namespace DotSpatial.Symbology.Forms
 
         private IFeatureLayer _activeLayer;
         private IFrame _mapFrame;
+        private IFeatureLayer[] _layersToSelect;
+
         private Button btnClose;
 
         /// <summary>
@@ -55,124 +54,86 @@ namespace DotSpatial.Symbology.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new Container();
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(SelectByAttributes));
-            this.lblLayer = new Label();
-            this.cmbLayers = new ComboBox();
-            this.lblMethod = new Label();
-            this.cmbMethod = new ComboBox();
-            this.btnOk = new Button();
-            this.btnApply = new Button();
-            this.ttHelp = new ToolTip(this.components);
-            this.btnClose = new Button();
-            this.sqlQueryControl1 = new SQLQueryControl();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectByAttributes));
+            this.lblLayer = new System.Windows.Forms.Label();
+            this.cmbLayers = new System.Windows.Forms.ComboBox();
+            this.lblMethod = new System.Windows.Forms.Label();
+            this.cmbMethod = new System.Windows.Forms.ComboBox();
+            this.btnOk = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.ttHelp = new System.Windows.Forms.ToolTip(this.components);
+            this.btnClose = new System.Windows.Forms.Button();
+            this.sqlQueryControl1 = new DotSpatial.Symbology.Forms.SQLQueryControl();
             this.SuspendLayout();
-            //
+            // 
             // lblLayer
-            //
-            this.lblLayer.AccessibleDescription = null;
-            this.lblLayer.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblLayer, "lblLayer");
-            this.lblLayer.Font = null;
             this.lblLayer.Name = "lblLayer";
-            this.ttHelp.SetToolTip(this.lblLayer, resources.GetString("lblLayer.ToolTip"));
-            //
+            // 
             // cmbLayers
-            //
-            this.cmbLayers.AccessibleDescription = null;
-            this.cmbLayers.AccessibleName = null;
+            // 
             resources.ApplyResources(this.cmbLayers, "cmbLayers");
-            this.cmbLayers.BackgroundImage = null;
-            this.cmbLayers.Font = null;
+            this.cmbLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLayers.FormattingEnabled = true;
             this.cmbLayers.Name = "cmbLayers";
             this.ttHelp.SetToolTip(this.cmbLayers, resources.GetString("cmbLayers.ToolTip"));
-            this.cmbLayers.SelectedIndexChanged += new EventHandler(this.cmbLayers_SelectedIndexChanged);
-            //
+            this.cmbLayers.SelectedIndexChanged += new System.EventHandler(this.cmbLayers_SelectedIndexChanged);
+            // 
             // lblMethod
-            //
-            this.lblMethod.AccessibleDescription = null;
-            this.lblMethod.AccessibleName = null;
+            // 
             resources.ApplyResources(this.lblMethod, "lblMethod");
-            this.lblMethod.Font = null;
             this.lblMethod.Name = "lblMethod";
-            this.ttHelp.SetToolTip(this.lblMethod, resources.GetString("lblMethod.ToolTip"));
-            //
+            // 
             // cmbMethod
-            //
-            this.cmbMethod.AccessibleDescription = null;
-            this.cmbMethod.AccessibleName = null;
+            // 
             resources.ApplyResources(this.cmbMethod, "cmbMethod");
-            this.cmbMethod.BackgroundImage = null;
-            this.cmbMethod.Font = null;
+            this.cmbMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMethod.FormattingEnabled = true;
             this.cmbMethod.Items.AddRange(new object[] {
-                                                           resources.GetString("cmbMethod.Items"),
-                                                           resources.GetString("cmbMethod.Items1"),
-                                                           resources.GetString("cmbMethod.Items2"),
-                                                           resources.GetString("cmbMethod.Items3")});
+            resources.GetString("cmbMethod.Items"),
+            resources.GetString("cmbMethod.Items1"),
+            resources.GetString("cmbMethod.Items2"),
+            resources.GetString("cmbMethod.Items3")});
             this.cmbMethod.Name = "cmbMethod";
             this.ttHelp.SetToolTip(this.cmbMethod, resources.GetString("cmbMethod.ToolTip"));
-            //
+            // 
             // btnOk
-            //
-            this.btnOk.AccessibleDescription = null;
-            this.btnOk.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnOk, "btnOk");
-            this.btnOk.BackgroundImage = null;
-            this.btnOk.Font = null;
             this.btnOk.Name = "btnOk";
-            this.ttHelp.SetToolTip(this.btnOk, resources.GetString("btnOk.ToolTip"));
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new EventHandler(this.btnOk_Click);
-            //
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
             // btnApply
-            //
-            this.btnApply.AccessibleDescription = null;
-            this.btnApply.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnApply, "btnApply");
-            this.btnApply.BackgroundImage = null;
-            this.btnApply.Font = null;
             this.btnApply.Name = "btnApply";
-            this.ttHelp.SetToolTip(this.btnApply, resources.GetString("btnApply.ToolTip"));
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new EventHandler(this.btnApply_Click);
-            //
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
             // btnClose
-            //
-            this.btnClose.AccessibleDescription = null;
-            this.btnClose.AccessibleName = null;
+            // 
             resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.BackgroundImage = null;
-            //            this.btnClose.DialogResult = DialogResult.Cancel;
-            this.btnClose.Font = null;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
-            this.ttHelp.SetToolTip(this.btnClose, resources.GetString("btnClose.ToolTip"));
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new EventHandler(this.btnClose_Click);
-            //
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // sqlQueryControl1
-            //
-            this.sqlQueryControl1.AccessibleDescription = null;
-            this.sqlQueryControl1.AccessibleName = null;
-            resources.ApplyResources(this.sqlQueryControl1, "sqlQueryControl1");
+            // 
             this.sqlQueryControl1.AttributeSource = null;
-            this.sqlQueryControl1.BackgroundImage = null;
-            this.sqlQueryControl1.ExpressionText = string.Empty;
-            this.sqlQueryControl1.Font = null;
+            this.sqlQueryControl1.ExpressionText = "";
+            resources.ApplyResources(this.sqlQueryControl1, "sqlQueryControl1");
             this.sqlQueryControl1.Name = "sqlQueryControl1";
             this.sqlQueryControl1.Table = null;
-            this.ttHelp.SetToolTip(this.sqlQueryControl1, resources.GetString("sqlQueryControl1.ToolTip"));
-            //
+            // 
             // SelectByAttributes
-            //
+            // 
             this.AcceptButton = this.btnOk;
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
-            resources.ApplyResources(this, "$this");
-
-            this.BackgroundImage = null;
             this.CancelButton = this.btnClose;
+            resources.ApplyResources(this, "$this");
             this.Controls.Add(this.sqlQueryControl1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnApply);
@@ -181,17 +142,14 @@ namespace DotSpatial.Symbology.Forms
             this.Controls.Add(this.lblMethod);
             this.Controls.Add(this.cmbLayers);
             this.Controls.Add(this.lblLayer);
-            this.Font = null;
-            //            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.HelpButton = true;
-            this.Icon = null;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SelectByAttributes";
             this.ShowIcon = false;
-            this.ttHelp.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -210,10 +168,25 @@ namespace DotSpatial.Symbology.Forms
         /// <summary>
         /// Creates a new instance of SelectByAttributes
         /// </summary>
-        /// <param name="mapFrame">the MapFrame containing the layers</param>
+        /// <param name="mapFrame">The MapFrame containing the layers</param>
         public SelectByAttributes(IFrame mapFrame)
         {
             _mapFrame = mapFrame;
+
+            InitializeComponent();
+            Configure();
+        }
+
+        /// <summary>
+        /// Creates a new instance of SelectByAttributes
+        /// </summary>
+        /// <param name="layersToSelect">Layers to select</param>
+        public SelectByAttributes(params IFeatureLayer[] layersToSelect)
+        {
+            if (layersToSelect == null) throw new ArgumentNullException("layersToSelect");
+
+            _layersToSelect = layersToSelect;
+
             InitializeComponent();
             Configure();
         }
@@ -224,22 +197,37 @@ namespace DotSpatial.Symbology.Forms
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Value", typeof(IFeatureLayer));
 
-            foreach (ILayer layer in _mapFrame)
+            IEnumerable<ILayer> layersSource;
+            if (_layersToSelect != null)
             {
-                IFeatureLayer fl = layer as IFeatureLayer;
-                if (fl != null)
-                {
-                    DataRow dr = dt.NewRow();
-                    dr["Name"] = fl.LegendText;
-                    dr["Value"] = fl;
-                    dt.Rows.Add(dr);
-                }
+                layersSource = _layersToSelect;
+            }
+            else if (_mapFrame != null)
+            {
+                layersSource = _mapFrame;
+            }
+            else
+            {
+                layersSource = Enumerable.Empty<ILayer>();
+            }
+            
+            foreach (var layer in layersSource.OfType<IFeatureLayer>())
+            {
+                DataRow dr = dt.NewRow();
+                dr["Name"] = layer.LegendText;
+                dr["Value"] = layer;
+                dt.Rows.Add(dr);
             }
             cmbLayers.DataSource = dt;
             cmbLayers.DisplayMember = "Name";
             cmbLayers.ValueMember = "Value";
+
             cmbMethod.SelectedIndex = 0;
-            if (cmbLayers.Items.Count > 0) cmbLayers.SelectedIndex = 0;
+
+            if (cmbLayers.Items.Count > 0)
+            {
+                cmbLayers.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -258,6 +246,7 @@ namespace DotSpatial.Symbology.Forms
             get { return _mapFrame; }
             set
             {
+                _layersToSelect = null;
                 _mapFrame = value;
                 Configure();
             }

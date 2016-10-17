@@ -131,6 +131,14 @@ namespace DotSpatial.Symbology.Forms
             }
         }
 
+        public void SelectByAttributes(FeatureLayer featureLayer)
+        {
+            using (var form = new SelectByAttributes(featureLayer))
+            {
+                form.ShowDialog(Owner);
+            }
+        }
+
         private static void LoadFeatureSetAsLayer(IFeatureLayer e, FeatureSet fs, string newLayerName)
         {
             var layerType = e.GetType();

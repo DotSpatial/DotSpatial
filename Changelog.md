@@ -72,3 +72,4 @@ All notable changes to this project will be documented in this file.
 - Map Frame Dragging (#772)
 - Fixed reprojection errors between RT90 and SWEREF99, caused by missing TOWGS parameters in transformation attributes (#861)
 - Incorrect reprojection between RT90 2,5 gon V and WGS84 (#618)
+- SelectByAttributes - Unhandled Exception (#253)

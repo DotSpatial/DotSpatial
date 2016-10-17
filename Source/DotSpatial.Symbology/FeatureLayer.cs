@@ -234,6 +234,7 @@ namespace DotSpatial.Symbology
                                                           SelectionZoomClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_Create_Layer_From_Selected_Features, SymbologyImages.Copy,
                                                           SelectionToLayerClick));
+            selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectByAttributes, SelectByAtributesClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_SelectAll, SymbologyImages.select_all, SelectAllClick));
             selection.MenuItems.Add(new SymbologyMenuItem(Msg.FeatureLayer_UnselectAll, SymbologyImages.deselect_16x16, UnselectAllClick));
 
@@ -260,6 +261,15 @@ namespace DotSpatial.Symbology
             _selection.Changed += SelectedFeaturesChanged;
 
             _drawnStatesNeeded = false;
+        }
+
+        private void SelectByAtributesClick(object sender, EventArgs e)
+        {
+            var fla = FeatureLayerActions;
+            if (fla != null)
+            {
+                fla.SelectByAttributes(this);
+            }
         }
 
         private void DataSetVerticesInvalidated(object sender, EventArgs e)
