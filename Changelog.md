@@ -74,3 +74,4 @@ All notable changes to this project will be documented in this file.
 - Incorrect reprojection between RT90 2,5 gon V and WGS84 (#618)
 - SelectByAttributes - Unhandled Exception (#253)
 - AttributeTable.Columns.Add (#303)
+- Spheroid International_1924 in EuropeanDatum1950UTMZone30N coordinate system (#623)
