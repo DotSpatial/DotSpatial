@@ -99,7 +99,7 @@
     </Compile>
     <Compile Include="AuthorityCodes\AuthorityCodeHandler.cs" />
     <Compile Include="AuxiliarySphereType.cs" />
-    <EmbeddedResource Include="AuthorityCodes\AuthorityCodeToProj4.ds" />
+    <EmbeddedResource Include="AuthorityCodes\epsg.ds" />
     <None Include="DeflateStreamUtility\DeflateStreamUtility.cs" />
     <Compile Include="DatNadTable.cs" />
     <Compile Include="DatumsHandler.cs" />
@@ -347,7 +347,7 @@
     <None Include="DeflateStreamUtility\DeflateStreamUtility.exe" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AuthorityCodes\AuthorityCodeToProj4.txt" />
+    <None Include="AuthorityCodes\epsg.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

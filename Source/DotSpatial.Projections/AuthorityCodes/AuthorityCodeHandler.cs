@@ -1,47 +1,25 @@
-// ********************************************************************************************************
-// The contents of this file are subject to the Lesser GNU Public License (LGPL)
-// you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license  Alternately, you can access an earlier version of this content from
-// the Net Topology Suite, which is also protected by the GNU Lesser Public License and the sourcecode
-// for the Net Topology Suite can be obtained here: http://sourceforge.net/projects/nts.
-//
-// Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
-// ANY KIND, either expressed or implied. See the License for the specific language governing rights and
-// limitations under the License.
-//
-//
-// Contributor(s): (Open source contributors should list themselves and their modifications here).
-// |         Name         |    Date    |                              Comment
-// |----------------------|------------|------------------------------------------------------------
-// |                      |            |
-// ********************************************************************************************************
+// *******************************************************************************************************
+// Product:   DotSpatial.Projections.AuthorityCodes.AuthorityCodeHandler
+// Description:  Reads and holds projections per authority codes.
+// Contributor(s): Open source contributors may list themselves and their modifications here.
+// Contribution of code constitutes transferral of copyright from authors to DotSpatial copyright holders. 
+//--------------------------------------------------------------------------------------------------------
+// Name               |   Date             |         Comments
+//--------------------|--------------------|--------------------------------------------------------------
+// *******************************************************************************************************
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Reflection;
-using System.Text;
 
 namespace DotSpatial.Projections.AuthorityCodes
 {
     /// <summary>
-    /// AuthorityCodeHandler
+    /// Reads and holds projections per authority codes
     /// </summary>
     public sealed class AuthorityCodeHandler
     {
-        #region Constructor
-
-        /// <summary>
-        /// Creates an instance of this class
-        /// </summary>
-        private AuthorityCodeHandler()
-        {
-            ReadDefault();
-            ReadCustom();
-        }
-
-        #endregion
-
         #region Fields
 
         private static readonly Lazy<AuthorityCodeHandler> LazyInstance = new Lazy<AuthorityCodeHandler>(() => new AuthorityCodeHandler(), true);
@@ -50,6 +28,19 @@ namespace DotSpatial.Projections.AuthorityCodes
 
         #endregion
 
+        #region Constructor
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        private AuthorityCodeHandler()
+        {
+            ReadDefault();
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// The one and only <see cref="AuthorityCodeHandler"/>
@@ -72,56 +63,9 @@ namespace DotSpatial.Projections.AuthorityCodes
             }
         }
 
-        private void ReadDefault()
-        {
-            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.AuthorityCodeToProj4.ds"))
-            {
-                ReadFromStream(str, false);
-            }
-        }
+        #endregion
 
-        private void ReadCustom()
-        {
-            var fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
-            if (File.Exists(fileName))
-            {
-                ReadFromStream(File.OpenRead(fileName), true);
-            }
-        }
-
-        private void ReadFromStream(Stream s, bool replace)
-        {
-            using (var sr = new StreamReader(s))
-            {
-                var seperator = new[] { '\t' };
-                while (!sr.EndOfStream)
-                {
-                    var line = sr.ReadLine();
-                    if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal))
-                        continue;
-
-                    var parts = line.Split(seperator, 3);
-                    if (parts.Length > 1)
-                    {
-                        if (parts.Length == 2)
-                            Add(parts[0], string.Empty, parts[1], replace);
-                        else
-                            Add(parts[0], parts[1], parts[2], replace);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds the specified authority.
-        /// </summary>
-        /// <param name="authority">The authority.</param>
-        /// <param name="code">The code.</param>
-        /// <param name="proj4String">The proj4 string.</param>
-        public void Add(string authority, int code, string proj4String)
-        {
-            Add(authority, code, proj4String, false);
-        }
+        #region Public methods
 
         /// <summary>
         /// Adds the specified authority.
@@ -130,22 +74,11 @@ namespace DotSpatial.Projections.AuthorityCodes
         /// <param name="code">The code.</param>
         /// <param name="proj4String">The proj4 string.</param>
         /// <param name="replace">if set to <c>true</c> [replace].</param>
-        public void Add(string authority, int code, string proj4String, bool replace)
+        public void Add(string authority, int code, string proj4String, bool replace = false)
         {
             Add(authority, code, string.Empty, proj4String, replace);
         }
 
-        /// <summary>
-        /// Adds the specified authority.
-        /// </summary>
-        /// <param name="authority">The authority.</param>
-        /// <param name="code">The code.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="proj4String">The proj4 string.</param>
-        public void Add(string authority, int code, string name, string proj4String)
-        {
-            Add(authority, code, name, proj4String, false);
-        }
 
         /// <summary>
         /// Adds a new projection info to the store, replaces the old one
@@ -155,22 +88,43 @@ namespace DotSpatial.Projections.AuthorityCodes
         /// <param name="name">A declarative name</param>
         /// <param name="proj4String">the proj4 definition string</param>
         /// <param name="replace">a value indicating if a previously defined projection should be replaced or not.</param>
-        public void Add(string authority, int code, string name, string proj4String, bool replace)
+        public void Add(string authority, int code, string name, string proj4String, bool replace = false)
         {
             var authorityCode = string.Format("{0}:{1}", authority, code);
             Add(authorityCode, name, proj4String, replace);
-            AddToAdditionalProjections(authorityCode, name, proj4String);
         }
 
-        private static void AddToAdditionalProjections(string authorityCode, string name, string proj4String)
+        #endregion
+
+        #region Private methods
+
+        private void ReadDefault()
         {
-            var fileName = Assembly.GetCallingAssembly().Location + "\\AdditionalProjections.proj4";
-
-            var fm = File.Exists(fileName) ? FileMode.Append : FileMode.CreateNew;
-            using (var fileStream = File.Open(fileName, fm, FileAccess.Write, FileShare.None))
-            using (var sw = new StreamWriter(fileStream, Encoding.ASCII))
-                sw.WriteLine("{0}\t{1}\t{2}", authorityCode, name, proj4String);
+            using (var str = DeflateStreamReader.DecodeEmbeddedResource("DotSpatial.Projections.AuthorityCodes.epsg.ds"))
+            {
+                ReadFromStream(str, "EPSG");
+            }
         }
+
+        private void ReadFromStream(Stream s, string authority)
+        {
+            using (var sr = new StreamReader(s))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#", StringComparison.Ordinal)) continue;
+                    if (!line.StartsWith("<") || !line.EndsWith("<>")) continue;
+
+                    var endAuthorityCode = line.IndexOf('>', 1);
+                    var authorityCode = line.Substring(1, endAuthorityCode - 1);
+                    var projString = line.Substring(endAuthorityCode + 1, line.Length - 2 - (endAuthorityCode + 1)).Trim();
+
+                    Add(string.Format("{0}:{1}", authority, authorityCode), string.Empty, projString, false);
+                }
+            }
+        }
+
 
         private void Add(string authorityCode, string name, string proj4String, bool replace)
         {
@@ -182,9 +136,20 @@ namespace DotSpatial.Projections.AuthorityCodes
             {
                 throw new ArgumentOutOfRangeException("authorityCode", "Such projection already added.");
             }
-            var pi = ProjectionInfo.FromProj4String(proj4String);
+            ProjectionInfo pi;
+            try
+            {
+                pi = ProjectionInfo.FromProj4String(proj4String);
+            }
+            catch (ProjectionException)
+            {
+                // todo: geocent not supported yet by DS
+                if (proj4String.Contains("+proj=geocent")) return;
+                throw;
+            }
+            
             pi.Authority = authorityCode.Substring(0, pos);
-            pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1));
+            pi.AuthorityCode = int.Parse(authorityCode.Substring(pos + 1), CultureInfo.InvariantCulture);
             pi.Name = string.IsNullOrEmpty(name) ? authorityCode : name;
 
             _authorityCodeToProjectionInfo[authorityCode] = pi;
@@ -198,5 +163,7 @@ namespace DotSpatial.Projections.AuthorityCodes
             }
             _authorityNameToProjectionInfo[name] = pi;
         }
+
+        #endregion
     }
 }

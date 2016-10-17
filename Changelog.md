@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Renamed IntervalMethod.Quantile to IntervalMethod.EqualFrequency for better consistency.
 - IHeaderControl.Add() now returns object which represents added GUI item.
 - Added authority and authority code as optional parameters to method ProjectionInfo.FromProj4String.
+- Update proj4 strings to EPSG db 8.9 (#870)
 
 ### Removed
 - Removed DotSpatial.Topology assembly (#633)
