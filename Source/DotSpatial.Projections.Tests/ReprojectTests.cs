@@ -143,5 +143,20 @@ namespace DotSpatial.Projections.Tests
                 return proj;
 
         }
+
+        [Test]
+        public void EuropeanDatum1950UTMZone30N_to_WGS84()
+        {
+            // Test from https://github.com/DotSpatial/DotSpatial/issues/623
+
+            var ed50 = KnownCoordinateSystems.Projected.UtmOther.EuropeanDatum1950UTMZone30N;
+            var wgs84 = KnownCoordinateSystems.Geographic.World.WGS1984;
+            double[] xy = { 450306.555, 4480448.5634 };
+
+            Reproject.ReprojectPoints(xy, null, ed50, wgs84, 0, 1);
+
+            Assert.AreEqual(xy[0], -3.5875, 1e-3);
+            Assert.AreEqual(xy[1], 40.47136, 1e-3);
+        }
     }
 }
