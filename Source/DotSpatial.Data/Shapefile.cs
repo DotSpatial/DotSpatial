@@ -736,13 +736,9 @@ namespace DotSpatial.Data
         /// </summary>
         public override DataColumn[] GetColumns()
         {
-            var result = new DataColumn[_attributeTable.Columns.Count];
-            for (var i = 0; i < _attributeTable.Columns.Count; i++)
-            {
-                var field = _attributeTable.Columns[i];
-                result[i] = new Field(field.ColumnName, field.TypeCharacter, field.Length, field.DecimalCount);
-            }
-            return result;
+            return _attributeTable.Columns
+                .Select(_ => (DataColumn) new Field(_.ColumnName, _.TypeCharacter, _.Length, _.DecimalCount))
+                .ToArray();
         }
 
         /// <summary>

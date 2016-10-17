@@ -297,8 +297,6 @@ namespace DotSpatial.Data
         /// <summary>
         /// Get a DataTable containing the specified rows
         /// </summary>
-        /// <param name="rowNumbers"></param>
-        /// <returns></returns>
         public DataTable GetAttributes(IEnumerable<int> rowNumbers)
         {
             using (var myReader = GetBinaryReader())
@@ -1677,12 +1675,11 @@ namespace DotSpatial.Data
         }
 
         /// <summary>
-        /// The columns
+        /// Gets enumerable of columns
         /// </summary>
-        public List<Field> Columns
+        public IEnumerable<Field> Columns
         {
             get { return _columns; }
-            set { _columns = value; }
         }
 
         /// <summary>
